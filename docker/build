@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo $(git rev-list --date=short --format=format:'%cd' --max-count=1 `git rev-parse HEAD`) > build/appVersion
+
+docker build -t ergonode/frontend .

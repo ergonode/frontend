@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="72px" viewBox="0 0 24 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>button</title>
+    <desc>Created with Sketch.</desc>
+    <g id="button" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Mask" fill="#FFFFFF" points="11 5 11 11 5 11 5 13 11 13 11 19 13 19 13 13 19 13 19 11 13 11 13 5"></polygon>
+        <polygon id="Mask-Copy" fill="#33373E" points="11 29 11 35 5 35 5 37 11 37 11 43 13 43 13 37 19 37 19 35 13 35 13 29"></polygon>
+        <polygon id="Mask-Copy-2" fill="#85878B" points="11 53 11 59 5 59 5 61 11 61 11 67 13 67 13 61 19 61 19 59 13 59 13 53"></polygon>
+    </g>
+</svg>

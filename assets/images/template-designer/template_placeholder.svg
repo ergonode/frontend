@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="80px" height="75px" viewBox="0 0 80 75" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="🗒-Templates" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Templates-list" transform="translate(-527.000000, -183.000000)" fill-rule="nonzero">
+            <g id="Group-2" transform="translate(527.000000, 183.000000)">
+                <path d="M1.40625,0 L61.09375,0 C61.8704004,-1.42668369e-16 62.5,0.629599571 62.5,1.40625 L62.5,61.09375 C62.5,61.8704004 61.8704004,62.5 61.09375,62.5 L1.40625,62.5 C0.629599571,62.5 9.51122462e-17,61.8704004 0,61.09375 L0,1.40625 C-9.51122462e-17,0.629599571 0.629599571,1.42668369e-16 1.40625,0 Z M2.84090909,2.84090909 L2.84090909,59.6590909 L59.6590909,59.6590909 L59.6590909,2.84090909 L2.84090909,2.84090909 Z" id="Combined-Shape-Copy" fill="#85878B"></path>
+                <polygon id="Combined-Shape" fill="#ADAFB2" points="29.2857143 44.0854167 38.3482143 33.75 50 47.5 13.75 47.5 22.8125 37.1875"></polygon>
+                <circle id="Path" fill="#D6D7D8" cx="20" cy="20" r="5"></circle>
+                <path d="M69.9667015,14.9763604 L83.9945289,18.7351054 C84.7447156,18.9361174 85.1899098,19.7072162 84.9888978,20.4574029 L69.6587124,77.6704339 C69.4577005,78.4206206 68.6866016,78.8658148 67.9364149,78.6648028 L11.0054711,63.4102024 C10.2552844,63.2091905 9.81009023,62.4380917 10.0111022,61.6879049 L10.7879251,58.7887623 L13.5627387,59.2780368 L13.0883072,61.0486396 L67.3134074,75.5782114 L81.9116928,21.0966683 L69.4751131,17.7642968 L69.9667015,14.9763604 Z" id="Combined-Shape-Copy-3" fill="#ADAFB2" transform="translate(47.500000, 46.875000) rotate(-10.000000) translate(-47.500000, -46.875000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,151 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+@import "reset";
+
+html, body {
+    @include setFont(medium, regular, regular, $darkGraphite);
+    -webkit-text-size-adjust: 100%; //fix for iOS
+}
+
+.l-spacing {
+    &--half {
+        letter-spacing: 0.5px;
+    }
+
+    &--quarter {
+        letter-spacing: 0.25px;
+    }
+
+    &--negative-half {
+        letter-spacing: -0.5px;
+    }
+}
+
+.typo-title {
+    @include setFont(medium, huge, large);
+}
+
+.typo-list {
+    @include setFont(medium, medium, medium);
+}
+
+.typo-subtitle {
+    @include setFont(medium, regular, regular);
+}
+
+.typo-btn {
+    @include setFont(semiBold, regular, regular);
+
+    &--xs {
+        @include setFont(medium, small, regular);
+    }
+}
+
+.typo-label {
+    @include setFont(medium, small, regular);
+
+    &--strong {
+        @include setFont(bold, small, regular);
+    }
+}
+
+.typo-input {
+    @include setFont(medium, small, regular);
+}
+
+.typo-hint {
+    @include setFont(medium, tiny, tiny);
+}
+
+.txt-fixed {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.txt {
+    //  Colors
+    &--primary {
+        color: $primary;
+    }
+
+    &--information {
+        color: $information;
+    }
+
+    &--error {
+        color: $error;
+    }
+
+    &--warning {
+        color: $warning;
+    }
+
+    &--success {
+        color: $success;
+    }
+
+    &--dark-graphite {
+        color: $darkGraphite;
+    }
+
+    &--graphite {
+        color: $graphite;
+    }
+
+    &--light-graphite {
+        color: $lightGraphite;
+    }
+
+    &--dark-grey {
+        color: $darkGrey;
+    }
+
+    &--grey {
+        color: $grey;
+    }
+
+    &--light-grey {
+        color: $lightGrey;
+    }
+
+    &--background {
+        color: $background;
+    }
+
+    &--white {
+        color: $white;
+    }
+
+    // Alignment
+    &--centered {
+        text-align: center;
+    }
+
+    &--left {
+        text-align: left;
+    }
+
+    &--right {
+        text-align: right;
+    }
+
+    // Transform
+    &--capital {
+        text-transform: capitalize;
+    }
+
+    &--upper {
+        text-transform: uppercase;
+    }
+
+    &--lower {
+        text-transform: lowercase;
+    }
+
+    &--none {
+        text-transform: none;
+    }
+}

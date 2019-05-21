@@ -1,0 +1,78 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+.login-wrapper {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: space-between;
+
+    .login__form {
+        display: flex;
+        flex: 0 0 40%;
+        flex-flow: column wrap;
+        justify-content: center;
+        align-items: center;
+
+        .login-form {
+            &__logo {
+                width: 250px;
+                margin-bottom: 30px;
+            }
+
+            &__content {
+                display: flex;
+                flex-direction: column;
+                width: 350px;
+                @media only screen and (max-width: 1024px) {
+                    width: 80%;
+                }
+
+                .content__input {
+                    height: 48px;
+                    margin-bottom: 12px;
+                }
+
+                .content__checkbox {
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+                    margin-top: 12px;
+
+                    .checkbox-description {
+                        @include setFont(medium, medium, regular);
+                        margin-left: 8px;
+                    }
+                }
+
+                .content__button {
+                    margin-top: 34px;
+                }
+            }
+        }
+    }
+
+    .login__background {
+        display: flex;
+        flex: 1;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-end;
+        align-content: flex-end;
+        padding: 0 2% 10% 5%;
+        background: url("~assets/images/login/login_background.jpg") top right / cover no-repeat border-box;
+        @media only screen and (max-width: 1024px) {
+            background-position: right 30% top;
+        }
+
+        &__header {
+            @include setFont(bold, 48, 56, $white);
+            width: 100%;
+            margin: 2% 0 5%;
+        }
+
+        &__subheader {
+            @include setFont(bold, 38, 56);
+        }
+    }
+}

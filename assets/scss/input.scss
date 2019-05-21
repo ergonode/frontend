@@ -1,0 +1,221 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+@import "_extends/input-line";
+
+.input {
+    $input: &;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    &__content {
+        position: relative;
+        display: flex;
+        flex: 1;
+        align-items: center;
+
+        &--small {
+            height: 32px;
+        }
+
+        &--regular {
+            height: 40px;
+        }
+
+        input, textarea {
+            @include setFont(medium, regular, regular, $darkGraphite);
+
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            outline: none;
+            max-width: 100%;
+            min-width: 0;
+            min-height: 16px;
+            border: none;
+        }
+    }
+
+    &__information-label {
+        margin-top: 2px;
+    }
+
+    &.floating-label {
+        margin-top: 4px;
+
+        #{$input}__label {
+            position: absolute;
+            top: calc(50% - 8px);
+            transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+            color: $lightGraphite;
+
+            &--required {
+                padding: 0 8px 0 2px;
+            }
+
+            &--required::after {
+                position: absolute;
+                color: $error;
+                content: "*";
+            }
+        }
+    }
+
+    &.solid {
+        #{$input}__content {
+            border: 1px solid $darkGrey;
+            padding: 6px 12px;
+            box-sizing: border-box;
+        }
+
+        #{$input}__label {
+            position: absolute;
+            left: 12px;
+            color: $lightGraphite;
+        }
+
+        #{$input}__information-label {
+            margin-left: 12px;
+        }
+
+        &:hover {
+            border-color: $primary;
+        }
+    }
+
+    &.underline {
+        #{$input}__content::before {
+            bottom: 0;
+            width: 100%;
+            border: solid $darkGrey;
+            border-width: thin 0 0;
+            @extend %defaultLine;
+        }
+
+        #{$input}__content:hover::before {
+            border-color: $primary;
+        }
+    }
+
+    &.left-alignment {
+        #{$input}__content {
+            input, textarea {
+                text-align: left;
+            }
+        }
+
+        #{$input}__content::after {
+            bottom: 0;
+            right: 100%;
+            height: 2px;
+            background-color: $primary;
+            @extend %defaultLine;
+        }
+    }
+
+    &.center-alignment {
+        #{$input}__content {
+            input, textarea {
+                text-align: center;
+            }
+        }
+
+        #{$input}__content::after {
+            bottom: -1px;
+            width: 100%;
+            border: solid $darkGrey;
+            border-width: thin 0;
+            transform: scaleX(0);
+            @extend %defaultLine;
+        }
+    }
+
+    &--focused {
+        &.left-alignment {
+            #{$input}__content::after {
+                right: 0;
+            }
+        }
+
+        &.center-alignment {
+            #{$input}__content::after {
+                transform: scaleX(1);
+            }
+        }
+
+        &:not(#{$input}--error) {
+            &.floating-label {
+                #{$input}__label {
+                    color: $success;
+                }
+            }
+
+            &.center-alignment {
+                #{$input}__content::after {
+                    border-color: $primary;
+                }
+            }
+
+            &.solid {
+                #{$input}__content {
+                    border: 2px solid $success;
+                    padding: 5px 11px;
+                }
+            }
+        }
+
+        &.input--error {
+            &.solid {
+                #{$input}__content {
+                    border: 2px solid $error;
+                    padding: 5px 11px;
+                }
+            }
+
+            &.floating-label {
+                #{$input}__label {
+                    color: $error;
+                }
+            }
+        }
+    }
+
+    &--error {
+        &.left-alignment {
+            #{$input}__content::after {
+                background-color: $error;
+            }
+        }
+
+        &.underline {
+            #{$input}__content:hover::before {
+                border-color: $error;
+            }
+        }
+
+        &:not(#{$input}--focused) {
+            &.solid {
+                #{$input}__content {
+                    border: 1px solid $error;
+                }
+            }
+        }
+    }
+
+    &--disabled {
+        pointer-events: none;
+
+        #{$input}__content {
+            background-color: $background;
+
+            input, textarea {
+                background-color: $background;
+                opacity: 0.4;
+                color: $darkGraphite;
+            }
+        }
+    }
+}

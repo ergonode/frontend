@@ -1,0 +1,14 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+.page-selector {
+    display: flex;
+    align-items: center;
+
+    &__text {
+        @include setFont(medium, small, regular, $lightGraphite);
+        flex: 0 0 auto;
+        margin: 0 4px;
+    }
+}

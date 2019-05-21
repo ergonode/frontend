@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="96px" viewBox="0 0 24 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>feedback</title>
+    <desc>Created with Sketch.</desc>
+    <g id="feedback" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M12,2 C17.52,2 22,6.48 22,12 C22,17.52 17.52,22 12,22 C6.48,22 2,17.52 2,12 C2,6.48 6.48,2 12,2 Z M14,6 L5,15 L6.41,16.42 L14,8.83 L17.59,12.41 L19,11 L14,6 Z" id="Combined-Shape" fill="#00BC87" fill-rule="nonzero" transform="translate(12.000000, 12.000000) rotate(-180.000000) translate(-12.000000, -12.000000) "></path>
+        <path d="M12,26 C6.48,26 2,30.48 2,36 C2,41.52 6.48,46 12,46 C17.52,46 22,41.52 22,36 C22,30.48 17.52,26 12,26 L12,26 Z M13,41 L11,41 L11,39 L13,39 L13,41 L13,41 Z M13,37 L11,37 L11,31 L13,31 L13,37 L13,37 Z" id="Shape" fill="#2096F3" fill-rule="nonzero" transform="translate(12.000000, 36.000000) rotate(-180.000000) translate(-12.000000, -36.000000) "></path>
+        <path d="M12,50 C6.48,50 2,54.48 2,60 C2,65.52 6.48,70 12,70 C17.52,70 22,65.52 22,60 C22,54.48 17.52,50 12,50 L12,50 Z M13,65 L11,65 L11,63 L13,63 L13,65 L13,65 Z M13,61 L11,61 L11,55 L13,55 L13,61 L13,61 Z" id="Shape-Copy" fill="#FFC108" fill-rule="nonzero"></path>
+        <path d="M1,92 L23,92 L12,73 L1,92 L1,92 Z M13,89 L11,89 L11,87 L13,87 L13,89 L13,89 Z M13,85 L11,85 L11,81 L13,81 L13,85 L13,85 Z" id="Shape" fill="#F44336" fill-rule="nonzero"></path>
+    </g>
+</svg>

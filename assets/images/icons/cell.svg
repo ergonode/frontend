@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="72px" viewBox="0 0 24 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>cell</title>
+    <desc>Created with Sketch.</desc>
+    <g id="cell" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M14.6666667,11.0168316 L14.6666667,9.66666667 C14.6666667,7.9083693 13.4093643,7 11.9998192,7 C10.5902741,7 9.33333333,7.9083693 9.33333333,9.66666667 L9.33333333,11.0168316 L8,11.0168316 L8,17 L16,17 L16,11.0168316 L14.6666667,11.0168316 Z M10.3333333,9.66666667 C10.3333333,8.71984241 10.8910146,7.95594129 11.9998493,7.95594129 C13.1086841,7.95594129 13.6666667,8.71981224 13.6666667,9.66666667 L13.6666667,11 L10.3333333,11 L10.3333333,9.66666667 Z" id="Shape-Copy" fill="#85878B" fill-rule="nonzero"></path>
+        <polygon id="Path" fill="#00BC87" points="10.4761905 40 6.66666667 36.1538462 7.73333333 35.0769231 10.4761905 37.8461538 16.2666667 32 17.3333333 33.0769231"></polygon>
+        <g id="Group" transform="translate(5.000000, 54.000000)">
+            <polygon id="Path" fill="#F44336" points="0 12 13 12 6.5 0"></polygon>
+            <rect id="Rectangle" fill="#FFFFFF" fill-rule="nonzero" x="6" y="5" width="1" height="3"></rect>
+            <rect id="Rectangle" fill="#FFFFFF" fill-rule="nonzero" x="6" y="9" width="1" height="1"></rect>
+        </g>
+    </g>
+</svg>

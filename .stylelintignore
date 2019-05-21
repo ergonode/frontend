@@ -1,0 +1,14 @@
+nuxt.config.js
+package.json
+package-lock.json
+router.js
+.stylelintrc.js
+Dockerfile
+Jenkinsfile
+node_modules/
+tests/
+build/
+docker/
+static/
+coverage/
+

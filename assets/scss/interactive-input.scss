@@ -1,0 +1,33 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+.input-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    outline: none;
+    width: 100%;
+    border-radius: 4px;
+
+    .content {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    &--fab {
+        border-radius: 50%;
+    }
+
+    &--rounded {
+        border-radius: 999px;
+    }
+
+    &:hover {
+        box-shadow:
+            0 2px 2px 0 rgba(0, 0, 0, 0.14),
+            0 3px 1px -2px rgba(0, 0, 0, 0.12),
+            0 1px 5px 0 rgba(0, 0, 0, 0.2);
+    }
+}

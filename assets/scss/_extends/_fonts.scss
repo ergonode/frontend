@@ -1,0 +1,24 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+@function fontSize($key) {
+    @if map-has-key($fontSizes, $key) {
+        @return map-get($fontSizes, $key);
+    }
+    @return $key;
+}
+
+@function fontWeight($key) {
+    @if map-has-key($fontWeights, $key) {
+        @return map-get($fontWeights, $key);
+    }
+    @return $key;
+}
+
+@function lineHeight($key) {
+    @if map-has-key($lineHeights, $key) {
+        @return map-get($lineHeights, $key);
+    }
+    @return $key;
+}

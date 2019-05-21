@@ -1,0 +1,33 @@
+# dependencies
+node_modules
+package-lock.json
+report
+
+# jest test coverage
+coverage
+
+# logs
+npm-debug.log
+
+# Nuxt build
+.nuxt
+
+# Nuxt generate
+dist
+
+# ESLint generate
+.eslintcache
+
+###> phpstorm & vs code ###
+.history
+.idea
+.vscode
+
+/build
+!/build/.gitkeep
+/tmp
+/foto
+/ftp
+###> symfony/framework-bundle ###
+.env
+

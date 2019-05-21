@@ -1,0 +1,133 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+// ----------------- Icons -----------------
+
+$switchSpriteIcons: (
+    ("positive"),
+);
+$windowActionsSpriteIcons: (
+    ("close"),
+);
+$alertSpriteIcons: (
+    ("success"),
+    ("information"),
+    ("warning"),
+    ("error"),
+);
+$arrowIcons: (
+    ("double"),
+    ("dart"),
+    ("single"),
+    ("triangle"),
+    ("triangle-white"),
+    ("dart-white"),
+    ("double-white"),
+    ("single-white"),
+    ("sort"),
+    ("sort-active"),
+);
+$systemSpriteIcons: (
+    ("dots"),
+    ("edit"),
+    ("search"),
+    ("remove"),
+    ("trash"),
+);
+$additionSpriteIcons: (
+    ("add-light"),
+    ("add-dark"),
+    ("add-grey"),
+);
+$checkboxSpriteIcons: (
+    ("checked"),
+    ("checked-any"),
+    ("default"),
+    ("checked--disabled"),
+    ("default--disabled"),
+);
+$cellSpriteIcons: (
+    ("locked"),
+    ("draft"),
+    ("error"),
+);
+$viewSpriteIcons: (
+    ("table-small"),
+    ("table-medium"),
+    ("table-large"),
+    ("grid-small"),
+    ("grid-large"),
+);
+$attributeSpriteIcons: (
+    ("image"),
+    ("date"),
+    ("price"),
+    ("multi-select"),
+    ("text"),
+    ("textarea"),
+    ("unit"),
+    ("numberic"),
+    ("single-select"),
+);
+$menuSpriteIcons: (
+    ("home"),
+    ("paper"),
+    ("boxes"),
+    ("folder"),
+    ("tree"),
+    ("puzzel"),
+    ("img"),
+    ("circles"),
+    ("import"),
+    ("export"),
+    ("user"),
+    ("workflow"),
+    ("settings"),
+);
+$sidebarSpriteIcons: (
+    ("translation"),
+    ("filter"),
+    ("categoiries"),
+    ("widgets"),
+    ("mass"),
+    ("attributes"),
+);
+$navbarSpriteIcons: (
+    ("menu-full"),
+    ("menu-icons"),
+    ("menu-hidden"),
+    ("bell"),
+    ("arrow"),
+    ("refresh"),
+    ("user"),
+);
+
+// ----------------- Icon configurations ---
+
+$iconStates: (
+    ("deactive"),
+    ("selected"),
+    ("active"),
+);
+
+$iconValueSizes: (
+    (16px),
+    (24px),
+    (48px),
+    (72px),
+);
+
+$iconSizes: (
+    ("small"), // 16px
+    ("medium"), // 24px
+    ("large"), // 48px
+    ("hugh"), // 72px
+);
+
+$iconTransforms: (
+    ("none"),
+    ("quarter"),
+    ("half"),
+    ("three-fourth"),
+);

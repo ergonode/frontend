@@ -1,0 +1,72 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+// browser configurations
+@import "_mixins/scroll";
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px $white inset !important;
+    -webkit-text-fill-color: $graphite !important;
+}
+
+* {
+    @include scrollbars(4px, $grey);
+}
+
+html, body {
+    @include scrollbars(4px, $darkGraphite);
+}
+
+.grid-scroll {
+    @include scrollbars(0, $grey);
+}
+
+// Vue-typer plugin
+
+.placeholder-wrapper .vue-typer {
+    & .custom.char.typed {
+        color: $primary;
+    }
+
+    & .caret {
+        background-color: $primary;
+    }
+}
+
+.login-wrapper .vue-typer {
+    & .custom.char.typed {
+        color: $white;
+    }
+
+    & .caret {
+        background-color: $white;
+    }
+}
+
+// Ripple plugin
+
+.ripple-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.ripple-effect {
+    position: relative;
+    z-index: 9999;
+    width: 1px;
+    height: 1px;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 0;
+    margin-left: 0;
+    border-radius: 50%;
+    pointer-events: none;
+}
