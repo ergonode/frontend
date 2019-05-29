@@ -6,7 +6,8 @@
     <div class="editable-image-cell">
         <UploadImage
             :value="value"
-            @upload="updateValue" />
+            @upload="updateValue"
+            @remove="updateValue" />
     </div>
 </template>
 
@@ -23,19 +24,17 @@ export default {
             default: '',
         },
     },
-    data() {
-        return {
-            imageID: '',
-        };
+    created() {
+        this.imageID = this.value;
     },
     destroyed() {
-        if (this.imageID !== this.value && this.imageID) {
+        if (this.imageID !== this.value) {
             this.$emit('imageid', this.imageID);
         }
     },
     methods: {
         updateValue(value) {
-            this.imageID = value;
+            this.imageID = value || '';
         },
     },
 };

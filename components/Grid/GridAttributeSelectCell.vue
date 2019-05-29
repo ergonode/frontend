@@ -7,7 +7,9 @@
         :dismissible="!multiselect"
         :error-messages="errorMessages"
         :autofocus="autofocus"
-        @focus="onFocus">
+        @focus="onFocus"
+        @input="onValueChange"
+        @apply="onApply">
         <TranslationMultiselectListContent
             v-if="multiselect"
             slot="selectContent"
@@ -62,8 +64,15 @@ export default {
         onFocus(isFocused) {
             this.$emit('focus', isFocused);
         },
+        onApply() {
+            this.$emit('focus', false);
+        },
         onValueChange(value) {
-            this.$emit('input', Array.isArray(value) ? value : value.key);
+            if (value) {
+                this.$emit('input', Array.isArray(value) ? value : value.key);
+            } else {
+                this.$emit('input', value);
+            }
         },
     },
 };

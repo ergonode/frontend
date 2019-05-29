@@ -70,7 +70,7 @@ export default {
             this.createTemplateDesigner({
                 data: prepareJSON({
                     title: this.templateTitle,
-                    // image: this.templateImage, // uncomment when the BE corrects update errors
+                    image: this.templateImage,
                     layout: this.templateDesignerLayout,
                 }),
                 onSuccess: this.onCreateTemplateDesignerSuccess,

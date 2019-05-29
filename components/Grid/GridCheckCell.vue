@@ -4,7 +4,9 @@
  */
 <template>
     <div class="check-cell">
-        <CheckBox v-model="selectionState" />
+        <CheckBox
+            :value="selectionState"
+            @input="onSelect" />
     </div>
 </template>
 
@@ -21,15 +23,10 @@ export default {
             type: Number,
             required: true,
         },
-        isSelected: {
+        isHeader: {
             type: Boolean,
             required: false,
             default: false,
-        },
-    },
-    watch: {
-        isSelected() {
-            this.setSelectedRow({ row: this.row, value: !this.selectionState });
         },
     },
     computed: {
@@ -37,19 +34,32 @@ export default {
             isSelectedAllRows: state => state.isSelectedAllRows,
             selectedRows: state => state.selectedRows,
         }),
-        selectionState: {
-            get() {
-                return this.selectedRows[this.row] || this.isSelectedAllRows;
-            },
-            set(value) {
-                this.setSelectedRow({ row: this.row, value });
-            },
+        selectionState() {
+            if (this.isHeader) {
+                const rowsAreSelected = Boolean(Object.entries(this.selectedRows).length);
+
+                if (!rowsAreSelected) {
+                    return +this.isSelectedAllRows;
+                }
+
+                return rowsAreSelected ? 2 : 0;
+            }
+            return this.selectedRows[this.row] || this.isSelectedAllRows;
         },
     },
     methods: {
         ...mapActions('grid', [
             'setSelectedRow',
+            'setSelectionForAllRows',
+            'setEditingCellCoordinates',
         ]),
+        onSelect(value) {
+            if (this.isHeader) {
+                this.setSelectionForAllRows({ isSelected: Boolean(value) });
+            } else {
+                this.setSelectedRow({ row: this.row, value });
+            }
+        },
     },
 };
 </script>
@@ -60,5 +70,6 @@ export default {
         flex: 1;
         justify-content: center;
         align-items: center;
+        margin: 8px;
     }
 </style>

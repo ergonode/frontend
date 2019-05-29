@@ -8,7 +8,6 @@
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave">
         <span
-            v-if="title && title !== 'extender'"
             class="header-cell__title txt-fixed"
             v-text="title" />
         <div
@@ -44,23 +43,13 @@ export default {
         Icon: () => import('~/components/Icon/Icon'),
     },
     props: {
-        title: {
-            type: String,
-            required: false,
-            default: '',
-        },
-        columnId: {
-            type: String,
+        column: {
+            type: Object,
             required: true,
         },
-        column: {
+        columnIndex: {
             type: Number,
             required: true,
-        },
-        isPinnedColumn: {
-            type: Boolean,
-            required: false,
-            default: false,
         },
         isColumnEditable: {
             type: Boolean,
@@ -80,13 +69,17 @@ export default {
         ...mapState('grid', {
             sortedByColumn: state => state.sortedByColumn,
         }),
+        isPinnedColumn() {
+            const { isLeftPinned, isRightPinned } = this.column;
+            return isLeftPinned || isRightPinned;
+        },
         contextualMenuStateIcon() {
             return this.isContextualMenuActive
                 ? 'sprite-system system-dots--selected'
                 : 'sprite-system system-dots--deactive';
         },
         isSorted() {
-            return this.sortedByColumn.index === this.columnId;
+            return this.sortedByColumn.index === this.column.id;
         },
         sortingIcon() {
             if (this.isSorted) {
@@ -99,6 +92,36 @@ export default {
             }
 
             return 'arrow-sort';
+        },
+        title() {
+            const {
+                id,
+                type,
+                label,
+                language,
+                parameter,
+            } = this.column;
+            let suffix = '';
+            const columnIDs = id.split(':');
+
+            if (type === 'PRICE') {
+                suffix = parameter.currency;
+            }
+            if (type === 'ACTION' && label === null) {
+                return 'Edit';
+            }
+
+            if (!language) {
+                return `${label} ${suffix}`;
+            }
+
+            if (columnIDs.length > 1) {
+                return `${label || id} ${suffix}`;
+            }
+
+            return label
+                ? `${label} ${language} ${suffix}`
+                : `${id} ${language} ${suffix}`;
         },
     },
     watch: {
@@ -123,7 +146,7 @@ export default {
                     orderState = 'ASC';
                 }
             }
-            this.setSortingState({ index: this.columnId, orderState });
+            this.setSortingState({ index: this.column.id, orderState });
 
             this.$emit('sort');
         },
@@ -136,12 +159,12 @@ export default {
         onSelectValue(value) {
             // TODO: It is going to be populated in next tasks, when we will assign actions for selected items
             if (value === 'Remove') {
-                const columnElement = this.getColumnAtIndex(this.column);
+                const columnElement = this.getColumnAtIndex(this.columnIndex);
 
                 // We are hovering element while removing it
                 this.borderColumnAction('add', columnElement);
-                this.removeColumnAtIndex({ index: this.column });
-                this.removeIDFromColumnsIDCookie({ index: this.column });
+                this.removeColumnAtIndex({ index: this.columnIndex });
+                this.removeIDFromColumnsIDCookie({ index: this.columnIndex });
             }
         },
         removeIDFromColumnsIDCookie({ index }) {
@@ -160,7 +183,7 @@ export default {
         onMouseEnter() {
             if (this.title === '' || this.isColumnDragging) return;
 
-            const columnElement = this.getColumnAtIndex(this.column);
+            const columnElement = this.getColumnAtIndex(this.columnIndex);
 
             columnElement.classList.add('hover');
             this.isMouseOver = true;
@@ -170,7 +193,7 @@ export default {
         onMouseLeave() {
             if (this.title === '' || this.isColumnDragging) return;
 
-            const columnElement = this.getColumnAtIndex(this.column);
+            const columnElement = this.getColumnAtIndex(this.columnIndex);
 
             columnElement.classList.remove('hover');
             this.isMouseOver = false;

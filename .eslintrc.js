@@ -54,7 +54,7 @@ module.exports = {
         'vue/component-name-in-template-casing': ['error',
              'PascalCase',
              {
-                'ignores': ['nuxt', 'nuxt-link','vue-typer','no-ssr'],
+                'ignores': ['nuxt', 'nuxt-link'],
              }
         ],
         'vue/order-in-components': ['error', {

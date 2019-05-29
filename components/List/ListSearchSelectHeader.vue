@@ -6,17 +6,19 @@
     <ListHeader :header="header">
         <Select
             v-show="!isSearchBtnClicked"
-            v-model="localSelectedOption"
+            :value="selectedOption"
             class="options-select"
             solid
-            :options="options" />
+            :options="options"
+            @input="onLanguageSelect" />
         <TextField
             v-show="isSearchBtnClicked"
-            v-model="searchResult"
+            :value="searchResult"
             class="search-text-field"
             solid
             placeholder="Search..."
             :append-icon="searchStateIcon"
+            @input="onSearch"
             @focus="onSearchFocus" />
         <Button
             class="search-btn"
@@ -31,6 +33,7 @@ import ListHeader from '~/components/List/ListHeader';
 import Button from '~/components/Buttons/Button';
 import Select from '~/components/Inputs/Select/Select';
 import TextField from '~/components/Inputs/TextField';
+import debounce from 'debounce';
 
 export default {
     name: 'ListSearchSelectHeader',
@@ -58,20 +61,14 @@ export default {
         return {
             isSearchBtnClicked: false,
             isSearchFocused: false,
-            localSelectedOption: '',
             searchResult: '',
         };
     },
     created() {
-        this.localSelectedOption = this.selectedOption;
-    },
-    watch: {
-        localSelectedOption() {
-            this.$emit('selectOption', this.localSelectedOption);
-        },
-        searchResult() {
-            this.$emit('searchResult', this.searchResult);
-        },
+        this.debounceFunc = debounce((value) => {
+            this.searchResult = value;
+            this.$emit('searchResult', value);
+        }, 500);
     },
     computed: {
         searchBtnIcon() {
@@ -86,6 +83,12 @@ export default {
         },
     },
     methods: {
+        onSearch(value) {
+            this.debounceFunc(value);
+        },
+        onLanguageSelect(value) {
+            this.$emit('selectOption', value);
+        },
         onSearchBtnClick() {
             this.isSearchBtnClicked = !this.isSearchBtnClicked;
         },

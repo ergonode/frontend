@@ -298,6 +298,8 @@ export default {
             this.isFocused = false;
             this.isClickedOutside = false;
             this.lostFocusOnTabulator = false;
+
+            this.$emit('apply');
         },
         onClickOutside(event) {
             const inputActivator = this.$el.querySelector('.input__content');
