@@ -49,7 +49,6 @@ export default {
         GridWrapperCell: () => import('~/components/Grid/GridWrapperCell'),
         GridWrapperHeaderActionCell: () => import('~/components/Grid/GridWrapperHeaderActionCell'),
         GridWrapperHeaderCell: () => import('~/components/Grid/GridWrapperHeaderCell'),
-        GridHeaderCell: () => import('~/components/Grid/GridHeaderCell'),
         GridPlaceholder: () => import('~/components/Grid/GridPlaceholder'),
     },
     props: {

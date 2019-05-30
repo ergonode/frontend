@@ -63,7 +63,7 @@ export default {
         },
         errorImage() {
             const asset = this.isNotFound ? '404' : 'socket';
-            return require(`~/assets/images/icons/${asset}.svg`);
+            return require(`~/assets/images/icons/${asset}.svg`); // eslint-disable-line global-require, import/no-dynamic-require
         },
         errorTitle() {
             return this.isNotFound ? 'Not found' : 'Error';
@@ -96,7 +96,6 @@ export default {
 
             .navigation-section {
                 width: 285px;
-
 
                 &__header {
                     font: bold 56px/56px "Inter UI";

@@ -23,7 +23,6 @@
         </div>
         <TranslationSelectListContent
             slot="selectContent"
-            slot-scope="{ options }"
             :options="options"
             @value="onValueChange" />
     </Select>
