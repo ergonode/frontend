@@ -47,7 +47,6 @@ module.exports = {
         '~plugins/directives',
         '~plugins/axios',
         {mode: 'client', src: '~plugins/alerts'},
-        {mode: 'client', src: '~plugins/vueTyper'},
     ],
 
     /*
@@ -67,7 +66,6 @@ module.exports = {
   ** Axios module configuration
   */
     axios: {
-        // debug: true,
         credentials: false,
         baseURL: `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_PREFIX}`,
     },
@@ -89,6 +87,12 @@ module.exports = {
             alias['@Modules'] = path.join(__dirname, '/modules');
             alias['@NodeModules'] = path.join(__dirname, '/node_modules');
         },
+        optimization: {
+            splitChunks: {
+                chunks: 'all'
+            },
+        },
+        optimizeCSS: true,
     },
     env: {
         baseURL: `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_PREFIX}`,

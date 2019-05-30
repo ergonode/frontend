@@ -132,16 +132,20 @@ export default {
 
             if (this.filter && this.filter.options) {
                 if (Array.isArray(this.cellValue)) {
-                    return this.cellValue.map(val => this.filter.options[val]);
+                    return this.cellValue.map(val => this.filter.options[val] || '');
                 }
-                return this.filter.options[this.cellValue];
+                if (typeof this.filter.options[this.cellValue] !== 'undefined') {
+                    return this.filter.options[this.cellValue] || 'No translation';
+                }
+
+                return '';
             }
 
             return this.cellValue;
         },
         draftValue() {
             // Product draft ID
-            if (this.draft && this.draft[this.columnId]) {
+            if (this.draft && typeof this.draft[this.columnId] !== 'undefined') {
                 return this.draft[this.columnId];
             }
 
@@ -173,7 +177,7 @@ export default {
                 return false;
             }
 
-            if (this.draft[this.columnId]) {
+            if (typeof this.draft[this.columnId] !== 'undefined') {
                 return this.draft[this.columnId] !== this.value;
             }
 
@@ -189,7 +193,7 @@ export default {
         displayingCell() {
             switch (this.columnType) {
             case 'ACTION':
-                return () => import('~/components/Grid/GridActionCell');
+                return () => import('~/components/Grid/GridEditCell');
             case 'IMAGE':
                 return () => import('~/components/Grid/GridImageCell');
             case 'CHECK':

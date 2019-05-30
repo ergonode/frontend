@@ -8,7 +8,7 @@ export default () => ({
     rows: [],
     count: 0,
     filtered: 0,
-    filter: '',
+    filter: {},
     globalFilters: [],
     displayedPage: 1,
     configuration: {},

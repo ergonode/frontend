@@ -6,11 +6,12 @@
     <ListHeader :header="header">
         <TextField
             v-show="isSearchBtnClicked"
-            v-model="searchResult"
+            :value="searchResult"
             class="search-text-field"
             solid
             placeholder="Search..."
             :append-icon="searchStateIcon"
+            @input="onSearch"
             @focus="onSearchFocus" />
         <Button
             class="search-btn"
@@ -24,6 +25,7 @@
 import ListHeader from '~/components/List/ListHeader';
 import Button from '~/components/Buttons/Button';
 import TextField from '~/components/Inputs/TextField';
+import debounce from 'debounce';
 
 export default {
     name: 'ListSearchHeader',
@@ -45,6 +47,12 @@ export default {
             searchResult: '',
         };
     },
+    created() {
+        this.debounceFunc = debounce((value) => {
+            this.searchResult = value;
+            this.$emit('searchResult', value);
+        }, 500);
+    },
     watch: {
         searchResult() {
             this.$emit('searchResult', this.searchResult);
@@ -63,6 +71,9 @@ export default {
         },
     },
     methods: {
+        onSearch(value) {
+            this.debounceFunc(value);
+        },
         onSearchBtnClick() {
             this.isSearchBtnClicked = !this.isSearchBtnClicked;
         },

@@ -13,6 +13,7 @@
             <input
                 class="upload-image__activator"
                 type="file"
+                accept="image/*"
                 :value="selectedFileID"
                 @input="e => onUpload(e)">
             <img

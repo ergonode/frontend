@@ -214,7 +214,7 @@ export default {
             this.$emit('focus', isFocused);
         },
         onClear() {
-            this.$emit('input', []);
+            this.$emit('input', this.multiselect ? [] : '');
         },
         getSelectBoundingBox() {
             const { $el } = this;

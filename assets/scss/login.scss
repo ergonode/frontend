@@ -73,6 +73,8 @@
 
         &__subheader {
             @include setFont(bold, 38, 56);
+            height: 46px;
+            min-width: 1px;
         }
     }
 }

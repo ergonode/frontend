@@ -8,11 +8,13 @@
             :is="editableComponent"
             v-model="localValue"
             v-bind="editableComponentProps"
-            @imageid="onImageIDChange" />
+            @imageid="onImageIDChange"
+            @focus="onFocus" />
     </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 
 export default {
     name: 'GridEditableCell',
@@ -53,7 +55,7 @@ export default {
         };
     },
     destroyed() {
-        this.$emit('updateDraft', this.localValue);
+        this.$emit('updateValue', this.localValue);
     },
     computed: {
         editableCellClasses() {
@@ -102,8 +104,16 @@ export default {
         },
     },
     methods: {
+        ...mapActions('grid', [
+            'setEditingCellCoordinates',
+        ]),
         onImageIDChange(id) {
             this.localValue = id;
+        },
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.setEditingCellCoordinates();
+            }
         },
     },
 };
@@ -114,31 +124,24 @@ export default {
         position: absolute;
         z-index: 999;
         display: flex;
-        flex-direction: column;
         justify-content: center;
-        padding: 8px;
         background-color: $white;
-        box-shadow:
-            0 6px 10px 0 rgba(0, 0, 0, 0.14),
-            0 1px 18px 0 rgba(0, 0, 0, 0.12),
-            0 3px 5px -1px rgba(0, 0, 0, 0.2);
 
         &--text {
             top: -4px;
             left: -4px;
-            padding: 8px;
+            padding: 4px;
             box-shadow:
                 0 2px 2px 0 rgba(0, 0, 0, 0.14),
                 0 3px 1px -2px rgba(0, 0, 0, 0.12),
                 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-            min-width: calc(100% + 8px);
-            min-height: calc(100% + 8px);
+            min-width: 100%;
+            min-height: 100%;
         }
 
         &--select {
             position: relative;
             flex: 1;
-            padding: 0;
         }
     }
 </style>

@@ -9,7 +9,9 @@
     transition:
         width 0.3s,
         opacity 0.3s;
-    will-change: width, opacity;
+    will-change:
+        width,
+        opacity;
 
     .side-bar {
         position: sticky;

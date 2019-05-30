@@ -3,21 +3,19 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="action-cell">
-        <nuxt-link
-            class="link"
-            :to="actionLink"
-            aria-label="edit">
-            <Icon
-                icon="sprite-system system-edit--deactive"
-                size="medium" />
-        </nuxt-link>
-    </div>
+    <nuxt-link
+        class="action-link"
+        :to="actionLink"
+        aria-label="edit">
+        <Icon
+            icon="sprite-system system-edit--deactive"
+            size="medium" />
+    </nuxt-link>
 </template>
 
 <script>
 export default {
-    name: 'GridActionCell',
+    name: 'GridEditCell',
     components: {
         Icon: () => import('~/components/Icon/Icon'),
     },
@@ -53,15 +51,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .action-cell {
+    .action-link {
         display: flex;
         flex: 1;
         justify-content: center;
         align-items: center;
         padding: 8px;
-
-        .link {
-            display: flex;
-        }
     }
 </style>
