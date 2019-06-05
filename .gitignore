@@ -3,8 +3,8 @@ node_modules
 package-lock.json
 report
 
-# jest test coverage
-coverage
+# jest test
+/coverage
 
 # logs
 npm-debug.log
@@ -18,16 +18,23 @@ dist
 # ESLint generate
 .eslintcache
 
-###> phpstorm & vs code ###
+###> IDE ###
 .history
 .idea
 .vscode
+.awcache
 
+###> symfony/framework-bundle ###
 /build
 !/build/.gitkeep
 /tmp
 /foto
 /ftp
-###> symfony/framework-bundle ###
-.env
 
+# misc
+.DS_Store
+lerna-debug.log
+npm-debug.log
+yarn-error.log
+/**/npm-debug.log
+.env
