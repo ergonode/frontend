@@ -4,11 +4,9 @@
  */
 <template>
     <div class="menu-section">
-        <h3
+        <MenuListHeader
             v-if="sectionTitle"
-            class="menu-section__title">
-            {{ sectionTitle }}
-        </h3>
+            :title="sectionTitle" />
         <ul class="menu-section__list">
             <MenuListElement
                 v-for="(item, index) in sectionMenu"
@@ -23,6 +21,7 @@ export default {
     name: 'MenuList',
     components: {
         MenuListElement: () => import('~/components/Navigation/MenuListElement'),
+        MenuListHeader: () => import('~/components/Navigation/MenuListHeader'),
     },
     props: {
         sectionTitle: {
