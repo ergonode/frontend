@@ -4,9 +4,10 @@
  */
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import { Store } from 'vuex-mock-store';
-import ToolBarUserMenuTop from '~/components/Navigation/ToolBar/ToolBarUserMenuTop';
+import NavigationBarUserButton from '~/components/Navigation/NavigationBar/NavigationBarUserButton';
 
 const localVue = createLocalVue();
+localVue.directive('ripple', {});
 const store = new Store({
   state: {
     authentication: {
@@ -18,21 +19,22 @@ const mocks = {
   $store: store,
 };
 afterEach(() => store.reset());
-describe('Navigation/ToolBar/ToolBarUserMenuTop', () => {
+describe('Navigation/NavigationBar/NavigationBarUserButton', () => {
   let wrapper;
   beforeEach(() => {
-      wrapper = shallowMount(ToolBarUserMenuTop, {
+      wrapper = shallowMount(NavigationBarUserButton, {
         localVue,
         mocks,
+        stubs: ['NuxtLink'],
       });
   });
 
   it("Component renders correctly", () => {
-    expect(wrapper.is(ToolBarUserMenuTop)).toBe(true);
+    expect(wrapper.is(NavigationBarUserButton)).toBe(true);
   });
 
   it('Check if component is named correctly', () => {
-    expect(typeof ToolBarUserMenuTop.name).toBe('string');
-    expect(ToolBarUserMenuTop.name).toEqual('ToolBarUserMenuTop');
+    expect(typeof NavigationBarUserButton.name).toBe('string');
+    expect(NavigationBarUserButton.name).toEqual('NavigationBarUserButton');
   });
 });

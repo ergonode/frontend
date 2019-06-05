@@ -8,22 +8,22 @@ export default [
         menu: [
             {
                 title: 'My profile',
-                action: '/placeholder/profil',
+                routing: '/placeholder/profil',
                 icon: 'user',
             },
             {
                 title: 'Work schedule',
-                action: '/placeholder/schedule',
+                routing: '/placeholder/schedule',
                 icon: 'workflow',
             },
             {
                 title: 'Activity log',
-                action: '/placeholder/log',
+                routing: '/placeholder/log',
                 icon: 'circles',
             },
             {
                 title: 'Settings',
-                action: '/placeholder/settings',
+                routing: '/placeholder/settings',
                 icon: 'settings',
             },
         ],

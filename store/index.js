@@ -20,7 +20,6 @@ export const actions = {
         commit('gridDraft/clearStorage');
         commit('list/clearStorage');
         commit('productsDraft/clearStorage');
-        commit('settings/clearStorage');
         commit('templateDesigner/clearStorage');
         commit('translations/clearStorage');
         commit('tree/clearStorage');

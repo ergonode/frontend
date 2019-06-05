@@ -9,7 +9,7 @@
         :column="columnIndex"
         :locked="!isActionCell"
         :action-cell="isActionCell"
-        @edit.native="onEdit">
+        :on-edit="onEdit">
         <Component
             :is="infoComponent"
             v-bind="infoComponentProps"

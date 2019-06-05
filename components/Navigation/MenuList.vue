@@ -13,11 +13,7 @@
             <MenuListElement
                 v-for="(item, index) in sectionMenu"
                 :key="index"
-                :icon="item.icon"
-                :title="item.title"
-                :action="item.action"
-                :selected-element="selectedElement"
-            />
+                :item="item" />
         </ul>
     </div>
 </template>
@@ -37,11 +33,6 @@ export default {
         sectionMenu: {
             type: Array,
             required: true,
-        },
-        selectedElement: {
-            type: String,
-            required: false,
-            default: '',
         },
     },
 };
