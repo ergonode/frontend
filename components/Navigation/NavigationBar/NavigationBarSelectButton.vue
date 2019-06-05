@@ -9,10 +9,10 @@
         <slot name="prependIcon" />
         <span
             class="title"
-            v-text="capitalizedTitle" />
+            v-text="title" />
         <div class="icon-wrapper">
             <Icon
-                :icon="`sprite-navbar ${arrowIcon}`"
+                :icon="arrowIcon"
                 size="medium" />
         </div>
         <div
@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import { toCapitalize } from '~/model/stringOperations';
 
 export default {
     name: 'NavigationBarSelectButton',
@@ -37,7 +36,7 @@ export default {
         title: {
             type: String,
             required: false,
-            default: '',
+            default: 'Unknown',
         },
     },
     data() {
@@ -47,11 +46,10 @@ export default {
         };
     },
     computed: {
-        capitalizedTitle() {
-            return toCapitalize(this.title);
-        },
         arrowIcon() {
-            return !this.isSelected ? 'navbar-arrow' : 'navbar-arrow trans-half';
+            const icon = !this.isSelected ? 'navbar-arrow' : 'navbar-arrow trans-half';
+
+            return `sprite-navbar ${icon}`;
         },
     },
     methods: {

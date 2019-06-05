@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <NavigationBarSelectButton :title="user.first_name">
+    <NavigationBarSelectButton :title="capitalizedUserFirstName || capitalizedUserLastName">
         <div
             slot="prependIcon"
             class="user-image">
@@ -38,17 +38,22 @@ export default {
         Picture: () => import('~/components/Inputs/Image/Picture'),
         Icon: () => import('~/components/Icon/Icon'),
     },
-    data: () => ({
-        isActive: false,
-    }),
     computed: {
         ...mapState('authentication', {
             user: state => state.user,
         }),
-        userInitials() {
-            const { first_name: firstName, last_name: lastName } = this.user;
+        capitalizedUserFirstName() {
+            const { first_name: firstName } = this.user;
 
-            return `${toCapitalize(firstName)} ${toCapitalize(lastName)}`;
+            return toCapitalize(firstName);
+        },
+        capitalizedUserLastName() {
+            const { last_name: lastName } = this.user;
+
+            return toCapitalize(lastName);
+        },
+        userInitials() {
+            return `${this.capitalizedUserFirstName} ${this.capitalizedUserLastName}`;
         },
     },
 };

@@ -11,7 +11,11 @@ localVue.directive('ripple', {});
 const store = new Store({
   state: {
     authentication: {
-      user: {}
+      user: {
+        first_name: 'jan',
+        last_name: 'kowalski',
+        email: 'test@gmail.com',
+      }
     }
   }
 });
@@ -21,6 +25,7 @@ const mocks = {
 afterEach(() => store.reset());
 describe('Navigation/NavigationBar/NavigationBarUserButton', () => {
   let wrapper;
+
   beforeEach(() => {
       wrapper = shallowMount(NavigationBarUserButton, {
         localVue,
@@ -36,5 +41,21 @@ describe('Navigation/NavigationBar/NavigationBarUserButton', () => {
   it('Check if component is named correctly', () => {
     expect(typeof NavigationBarUserButton.name).toBe('string');
     expect(NavigationBarUserButton.name).toEqual('NavigationBarUserButton');
+  });
+
+  it('Check if user is logged it', () => {
+    expect(wrapper.find('.user')).toBeTruthy();
+  });
+
+  it('Check if user first name is capitalized', () => {
+    expect(wrapper.vm.capitalizedUserFirstName).toBe('Jan');
+  });
+
+  it('Check if user last name is capitalized', () => {
+    expect(wrapper.vm.capitalizedUserLastName).toBe('Kowalski');
+  });
+
+  it('Check if user initials are correct', () => {
+    expect(wrapper.vm.userInitials).toBe('Jan Kowalski');
   });
 });

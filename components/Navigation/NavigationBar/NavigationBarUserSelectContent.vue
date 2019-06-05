@@ -4,25 +4,10 @@
 */
 <template>
     <div class="user-content">
-        <div class="header">
-            <div class="header__image">
-                <Picture
-                    v-if="avatarId"
-                    fab
-                    :image-id="avatarId" />
-                <Icon
-                    v-else
-                    class="user-img"
-                    icon="sprite-navbar navbar-user"
-                    size="hugh" />
-            </div>
-            <span
-                class="header__initials"
-                v-text="initials" />
-            <span
-                class="header__email"
-                v-text="email" />
-        </div>
+        <NavigationBarUserSelectContentHeader
+            :initials="initials"
+            :avatar-id="avatarId"
+            :email="email" />
         <Divider />
         <MenuList
             v-for="(item, index) in userMenuElements"
@@ -47,9 +32,8 @@ import navigationBarUserMenu from '~/model/navigation/navigationBarUserMenu';
 export default {
     name: 'NavigationBarUserSelectContent',
     components: {
-        Picture: () => import('~/components/Inputs/Image/Picture'),
         Divider: () => import('~/components/Dividers/Divider'),
-        Icon: () => import('~/components/Icon/Icon'),
+        NavigationBarUserSelectContentHeader: () => import('~/components/Navigation/NavigationBar/NavigationBarUserSelectContentHeader'),
         MenuList: () => import('~/components/Navigation/MenuList'),
         Button: () => import('~/components/Buttons/Button'),
     },
@@ -61,13 +45,11 @@ export default {
         },
         initials: {
             type: String,
-            required: false,
-            default: '',
+            required: true,
         },
         email: {
             type: String,
-            required: false,
-            default: '',
+            required: true,
         },
     },
     data() {
@@ -92,41 +74,6 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
-
-        .header {
-            display: grid;
-            grid-template-columns: 64px auto;
-            grid-column-gap: 24px;
-            align-items: center;
-            margin: 24px;
-
-            &__image {
-                display: flex;
-                grid-column: 1;
-                grid-row: 1 / 3;
-
-                & > img {
-                    height: 64px;
-                    object-fit: contain;
-                }
-            }
-
-            &__initials, &__email {
-                grid-column: 2;
-            }
-
-            &__initials {
-                @include setFont(medium, medium, medium, $darkGraphite, 0.1);
-                grid-row: 1;
-                align-self: flex-end;
-            }
-
-            &__email {
-                @include setFont(medium, small, regular, $darkGrey);
-                grid-row: 2;
-                align-self: flex-start;
-            }
-        }
 
         .footer {
             display: flex;
