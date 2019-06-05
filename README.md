@@ -32,7 +32,7 @@ It is a system that can be easily integrated with many popular e-commerce platfo
 
 Ergonode will be always full open-source project. Currently, the system is in the phase of product catalog stabilization and import. We invite all developers who want to develop a new quality of shopping experience with us, we are open to contributors and support, because the project is not developed by large team (we are small but  extraordinary team of designers, programmers and product managers).  
 
-If you are a new developer and need help, feel-free to ask questions our core team on our [slack](http://ergonode.slack.com/):
+If you are a new developer and need help, feel-free to ask questions our core team on our [discord][discord] channel.
 
 `@Marcin Piwowarczyk` (product vision and strategy)
 
@@ -81,7 +81,7 @@ All of this, included in a simple and intuitive wizard, allows you to create any
 
 From the very beginning, Ergonode was designed to provide maximum satisfaction not only for product and conent managers, but especially for developers. 
 
-The system architecture was built entirely based on **[Domain Driven Design](https://en.wikipedia.org/wiki/Domain-driven_design)** approach using **[Command Query Responsibility Segregation (CQRS)](https://en.wikipedia.org/wiki/Command%E2%80%93query_separation)** and **[Event Sourcing](https://dev.to/barryosull/event-sourcing-what-it-is-and-why-its-awesome)**. 
+The system architecture was built entirely based on **[Domain Driven Design][ddd]** approach using **[Command Query Responsibility Segregation (CQRS)][cqrs]** and **[Event Sourcing][es]**. 
 
 Thanks to this, we have gained unprecedented flexibility in managing every element of the system from the moment of its creation and a trouble-free division/exchange of databases in individual areas of the system.
 
@@ -128,11 +128,37 @@ On the front side we've used headless approach with Vue.js application. Thanks t
 - ES
 - SAGA
 - EVENT BUS
-  
 
-## Build with us community on Slack
+## Instalation
 
-If you have any questions or ideas feel free to join our slack: https://ergonode.slack.com/ via [invitation link](https://join.slack.com/t/ergonode/shared_invite/enQtNjI5NzU3NzM2MzU2LTY0ZGM4MGMyNGZjOGEyNDY5OGI1NzM5ZDNiMTY3YjA2YmRhMzY1OWE1MjJjZWEzM2YwOThkZDBjODZlZjY0ZmI).
+Download project repository (ergonode) to your local directory:
+```bash
+git clone git@github.com:ergonode/frontend.git
+```
+Open your terminal in local project, and execute:
+```bash
+npm install
+```
+Execute CLI command and set you API URL:
+```bash
+npm run cli:run
+```
+> *You can also copy .env.dist file as .env and set your API URL configuration.*
+
+Run server
+```bash
+#development
+npm run dev
+
+#production
+npm run build
+npm run start
+```
+
+
+## Build with us community on Discord
+
+If you have any questions or ideas feel free to join our   [discord][discord].
 
 
 ## Is it production ready?
@@ -144,19 +170,19 @@ No! At the moment we have only one testing implementation to production environm
 
 The project is in early stage and we have got a lot of milestones to develop.  We do our best to deliver great documentation, but - to be honest -  it is the hardest thing in open-source projects :)
 
-**Please find out what we've already prepared on [docs.ergonode.com](https://docs.ergonode.com)**
+**Please find out what we've already prepared on [docs.ergonode.com][docs]**
 
 
 ## Roadmap
 
-If you would like to find the current and future milestones for our project go to our [Roadmap](https://ergonode.com/features/#roadmap) page.
+If you would like to find the current and future milestones for our project go to our [Roadmap][roadmap] page.
 
 At the moment we finalize development of Milestone 1 of the project. 
 
 
 ## Build Ergonode with us!
 
-We are looking for Contributors: Back-end Dev, JS Devs, Tech Writers and Designers. Please read our [contribution rules](https://docs.ergonode.com/contribution/) before making any pull request. If you have any questions or ideas feel free to join our slack: https://ergonode.slack.com/ via [invitation link](https://join.slack.com/t/ergonode/shared_invite/enQtNjI5NzU3NzM2MzU2LTY0ZGM4MGMyNGZjOGEyNDY5OGI1NzM5ZDNiMTY3YjA2YmRhMzY1OWE1MjJjZWEzM2YwOThkZDBjODZlZjY0ZmI) or send us an email: contributors@ergonode.com
+We are looking for Contributors: Back-end Dev, JS Devs, Tech Writers and Designers. Please read our [contribution rules][contribut] before making any pull request. If you have any questions or ideas feel free to join our [discord][discord] or send us an email: contributors@ergonode.com
 
 
 ## Partners
@@ -166,4 +192,13 @@ Ergonode is open-source, and it can be brought to you only by great community an
 
 ## The license
 
-Ergonode source code is released under the [OSL 3.0 License](LICENSE.txt).
+Ergonode source code is released under the [OSL 3.0 License][license].
+
+[discord]: https://discord.gg/NntXFa4
+[contribut]: ./.github/CONTRIBUTING.md
+[license]: ./LICENSE.txt
+[roadmap]: https://ergonode.com/features/#roadmap
+[docs]: https://docs.ergonode.com
+[ddd]: https://en.wikipedia.org/wiki/Domain-driven_design
+[cqrs]: https://en.wikipedia.org/wiki/Command%E2%80%93query_separation
+[es]: https://dev.to/barryosull/event-sourcing-what-it-is-and-why-its-awesome
