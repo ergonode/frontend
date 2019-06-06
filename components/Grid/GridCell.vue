@@ -130,7 +130,9 @@ export default {
             return true;
         },
         onDblcClick() {
-            this.onEdit(true);
+            if (this.editingAllowed) {
+                this.onEdit(true);
+            }
         },
     },
 };
