@@ -1,6 +1,6 @@
 <template>
     <img
-        class="image"
+        :class="['image', { 'image--fab': fab }]"
         :src="image">
 </template>
 
@@ -14,6 +14,11 @@ export default {
         imageId: {
             type: String,
             required: true,
+        },
+        fab: {
+            type: Boolean,
+            required: false,
+            default: false,
         },
     },
     data() {
@@ -50,5 +55,9 @@ export default {
         width: 100%;
         max-height: 100%;
         object-fit: cover;
+
+        &--fab {
+            border-radius: 50%;
+        }
     }
 </style>

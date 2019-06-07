@@ -9,7 +9,7 @@
         :column="columnIndex"
         :locked="isLockedCell"
         :action-cell="isActionCell"
-        @edit.native="onEdit">
+        :on-edit="onEdit">
         <Component
             :is="infoComponent"
             v-if="!isEditingCell || isActionCell"
@@ -168,7 +168,7 @@ export default {
             'setFilter',
             'changeDisplayingPage',
         ]),
-        onEdit({ detail: { isEditing } }) {
+        onEdit(isEditing) {
             if (this.column.type !== 'CHECK') {
                 this.setEditingCellCoordinates(isEditing
                     ? { column: this.columnIndex, row: this.rowIndex }

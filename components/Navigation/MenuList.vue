@@ -4,20 +4,14 @@
  */
 <template>
     <div class="menu-section">
-        <h3
+        <MenuListHeader
             v-if="sectionTitle"
-            class="menu-section__title">
-            {{ sectionTitle }}
-        </h3>
+            :title="sectionTitle" />
         <ul class="menu-section__list">
             <MenuListElement
                 v-for="(item, index) in sectionMenu"
                 :key="index"
-                :icon="item.icon"
-                :title="item.title"
-                :action="item.action"
-                :selected-element="selectedElement"
-            />
+                :item="item" />
         </ul>
     </div>
 </template>
@@ -27,6 +21,7 @@ export default {
     name: 'MenuList',
     components: {
         MenuListElement: () => import('~/components/Navigation/MenuListElement'),
+        MenuListHeader: () => import('~/components/Navigation/MenuListHeader'),
     },
     props: {
         sectionTitle: {
@@ -37,11 +32,6 @@ export default {
         sectionMenu: {
             type: Array,
             required: true,
-        },
-        selectedElement: {
-            type: String,
-            required: false,
-            default: '',
         },
     },
 };

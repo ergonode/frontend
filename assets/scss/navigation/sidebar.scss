@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 .side-bar-wrapper {
+    position: relative;
     z-index: 9990;
-    width: 0;
     background-color: $white;
     transition:
         width 0.3s,
@@ -14,7 +14,7 @@
         opacity;
 
     .side-bar {
-        position: sticky;
+        position: absolute;
         height: 100%;
         background-color: $white;
         box-shadow:
@@ -44,20 +44,16 @@
 
 .menu--full {
     width: $sideBarMaxWidth;
-
-    .menu-section__title::after {
-        opacity: 0;
-    }
 }
 
 .menu--icons {
     width: $sideBarMinWidth;
+
+    .menu-section__title::after {
+        opacity: 1;
+    }
 }
 
 .menu--hidden {
     width: 0;
-
-    .menu-section__title::after {
-        opacity: 0;
-    }
 }

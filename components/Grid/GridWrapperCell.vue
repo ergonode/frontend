@@ -12,7 +12,7 @@
         :draft="isDraftCell"
         :action-cell="isActionCell"
         :selected="isSelected"
-        @edit.native="onEdit">
+        :on-edit="onEdit">
         <Component
             :is="infoComponent"
             v-if="!isEditingCell || isActionCell"
@@ -209,7 +209,7 @@ export default {
             'getDraft',
             'updateDraftValue',
         ]),
-        onEdit({ detail: { isEditing } }) {
+        onEdit(isEditing) {
             if (this.column.type === 'CHECK') {
                 this.setSelectedRow({ row: this.rowIndex, value: isEditing });
             } else {

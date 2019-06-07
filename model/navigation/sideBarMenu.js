@@ -8,7 +8,7 @@ export default [
         menu: [
             {
                 title: 'Dashboard',
-                action: '/dashboard',
+                routing: '/dashboard',
                 icon: 'home',
             },
         ],
@@ -18,37 +18,37 @@ export default [
         menu: [
             {
                 title: 'Product catalog',
-                action: '/products',
+                routing: '/products',
                 icon: 'paper',
             },
             {
                 title: 'Product templates',
-                action: '/templates',
+                routing: '/templates',
                 icon: 'boxes',
             },
             {
                 title: 'Categories',
-                action: '/categories',
+                routing: '/categories',
                 icon: 'folder',
             },
             {
                 title: 'Category trees',
-                action: '/placeholder/category-trees',
+                routing: '/placeholder/category-trees',
                 icon: 'tree',
             },
             {
                 title: 'Attributes',
-                action: '/attributes',
+                routing: '/attributes',
                 icon: 'puzzel',
             },
             {
                 title: 'Medias',
-                action: '/placeholder/media',
+                routing: '/placeholder/media',
                 icon: 'img',
             },
             {
                 title: 'Segments',
-                action: '/placeholder/segments',
+                routing: '/placeholder/segments',
                 icon: 'boxes',
             },
         ],
@@ -58,17 +58,17 @@ export default [
         menu: [
             {
                 title: 'Import',
-                action: '/import',
+                routing: '/import',
                 icon: 'import',
             },
             {
                 title: 'Export',
-                action: '/placeholder/export',
+                routing: '/placeholder/export',
                 icon: 'export',
             },
             {
                 title: 'Channels',
-                action: '/placeholder/channels',
+                routing: '/placeholder/channels',
                 icon: 'circles',
             },
         ],
@@ -78,17 +78,17 @@ export default [
         menu: [
             {
                 title: 'Users',
-                action: '/users',
+                routing: '/users',
                 icon: 'user',
             },
             {
                 title: 'Workflows',
-                action: '/placeholder/workflow',
+                routing: '/placeholder/workflow',
                 icon: 'workflow',
             },
             {
                 title: 'Settings',
-                action: '/settings',
+                routing: '/settings',
                 icon: 'settings',
             },
         ],

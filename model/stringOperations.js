@@ -3,6 +3,8 @@
  * See LICENSE for license details.
  */
 export function toCapitalize(string) {
+    if (!string) return '';
+
     return string.replace(
         /^\w/, c => c.toUpperCase(),
     );

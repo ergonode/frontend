@@ -72,12 +72,14 @@ export default {
     methods: {
         ...mapActions('authentication', [
             'authenticateUser',
+            'getUser',
         ]),
         ...mapActions([
             'resetState',
         ]),
         async onSubmit() {
             await this.authenticateUser({ data: this.userAuthData });
+            await this.getUser();
 
             this.$router.push('/dashboard');
         },

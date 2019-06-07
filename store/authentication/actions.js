@@ -3,11 +3,10 @@
  * See LICENSE for license details.
  */
 export default {
-    authenticateUser({ commit, dispatch }, { data }) {
+    authenticateUser({ commit }, { data }) {
         return this.app.$axios.$post('login', data).then(({ token }) => {
             this.$cookies.set('jwt', token);
             commit('setAction', { key: 'jwt', value: token });
-            dispatch('getUser');
         }).catch(e => console.log(e));
     },
     getUser({ commit }) {

@@ -4,67 +4,51 @@
  */
 import VueRouter from 'vue-router'
 import { shallowMount, createLocalVue } from "@vue/test-utils"
-import { Store } from 'vuex-mock-store'
-import SideBarMenu from '~/components/Navigation/SideBar/SideBarMenu';
+import SideBar from '~/components/Navigation/SideBar/SideBar';
 
 const localVue = createLocalVue();
-// localVue.use(VueRouter);
 const router = new VueRouter();
-const store = new Store({
-  state: {
-    settings: {
-      sideBarState: 0,
-    },
-  }
-});
 const mocks = {
-  $store: store,
   $route: {
     path: '/products',
     params: { placeholder: '2' }
   }
 };
-afterEach(() => store.reset());
-describe('Navigation/SideBar/SideBarMenu', () => {
+describe('Navigation/SideBar/SideBar', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(SideBarMenu, {
+        wrapper = shallowMount(SideBar, {
           localVue,
           router,
           mocks,
-          stubs: ['nuxt-link'],
+          stubs: ['NuxtLink'],
         });
     });
 
     it("component renders correctly", () => {
-      expect(wrapper.is(SideBarMenu)).toBe(true);
+      expect(wrapper.is(SideBar)).toBe(true);
     });
 
-    it('check name SideBarMenu component', () => {
-      expect(typeof SideBarMenu.name).toBe('string');
-      expect(SideBarMenu.name).toEqual('SideBarMenu');
+    it('check name SideBar component', () => {
+      expect(typeof SideBar.name).toBe('string');
+      expect(SideBar.name).toEqual('SideBar');
     });
 
     it('check if the data is provided', () => {
-        expect(typeof SideBarMenu.data).toBe('function');
-        expect(wrapper.vm.selectedElement).toBeTruthy();
+        expect(typeof SideBar.data).toBe('function');
+        expect(wrapper.vm.value).toBeTruthy();
         expect(wrapper.vm.menu).toBeTruthy();
     });
 
-    it("returns the class name for sideBarState property", () => {
-      expect(wrapper.vm.sideBarState).toBe(0);
-      expect(wrapper.vm.getClassName).toBe("hidden");
+    it("returns the menu state class", () => {
+      expect(wrapper.vm.value).toBe(2);
+      expect(wrapper.vm.menuStateClass).toBe("menu--full");
       wrapper.vm.$nextTick(() => {
-        expect(SideBarMenu.computed.getClassName.call({ sideBarState: 2 })).toBe("full");
+        expect(SideBar.computed.menuStateClass.call({ value: 0 })).toBe("menu--hidden");
       });
       wrapper.vm.$nextTick(() => {
-        expect(SideBarMenu.computed.getClassName.call({ sideBarState: 1 })).toBe("icons");
+        expect(SideBar.computed.menuStateClass.call({ value: 1 })).toBe("menu--icons");
       });
-    });
-
-    it("check is selectedElement value is correct", () => {
-      expect(typeof wrapper.vm.$route).toBe('object');
-      expect(wrapper.vm.selectedElement).toBe('/products/2');
     });
 
     it("render menu items", () => {

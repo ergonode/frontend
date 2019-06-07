@@ -4,20 +4,20 @@
  */
 <template>
     <li
-        :class="['list-element', { 'list-element--selected': isSelected(action) }]"
-        @mouseover="mouseover(action)"
-        @mouseout="mouseout(action)">
-        <nuxt-link
+        :class="['list-element', { 'list-element--selected': isSelected }]"
+        @mouseover="onMouseOver"
+        @mouseout="onMouseOut">
+        <NuxtLink
             class="list-element__link"
-            :to="createNuxtLink(action)">
+            :to="{ path: item.routing }">
             <Icon
                 class="link-icon"
-                :icon="`sprite-menu ${setIcon}`"
+                :icon="`sprite-menu ${elementIcon}`"
                 size="medium" />
-            <span class="link-text">
-                {{ title }}
-            </span>
-        </nuxt-link>
+            <span
+                class="link-text"
+                v-text="item.title" />
+        </NuxtLink>
     </li>
 </template>
 
@@ -28,49 +28,33 @@ export default {
         Icon: () => import('~/components/Icon/Icon'),
     },
     props: {
-        title: {
-            type: String,
+        item: {
+            type: Object,
             required: true,
-        },
-        action: {
-            type: String,
-            required: true,
-        },
-        icon: {
-            type: String,
-            required: true,
-        },
-        selectedElement: {
-            type: String,
-            required: false,
-            default: '',
         },
     },
-    data: () => ({
-        isHover: false,
-    }),
+    data() {
+        return {
+            isHover: false,
+        };
+    },
     computed: {
-        setIcon() {
+        elementIcon() {
             let iconColor = 'deactive';
             if (this.isHover) iconColor = 'selected';
-            if (this.selectedElement === this.action) iconColor = 'active';
-            return `menu-${this.icon}--${iconColor}`;
+            if (this.isSelected) iconColor = 'active';
+            return `menu-${this.item.icon}--${iconColor}`;
+        },
+        isSelected() {
+            return this.$route.path.includes(this.item.routing);
         },
     },
     methods: {
-        mouseover(title) {
-            if (!this.isSelected(title)) this.isHover = true;
+        onMouseOver() {
+            if (!this.isSelected) this.isHover = true;
         },
-        mouseout() {
+        onMouseOut() {
             this.isHover = false;
-        },
-        isSelected(item) {
-            return item === this.selectedElement;
-        },
-        createNuxtLink(target) {
-            return {
-                path: target,
-            };
         },
     },
 

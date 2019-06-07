@@ -4,13 +4,10 @@
 */
 <template>
     <div
-        v-grid-navigationable="{
-            actionCell,
-            editingAllowed,
-            column,
-            row,
-        }"
-        :class="gridCellClasses">
+        :tabindex="0"
+        :class="gridCellClasses"
+        @keydown="onKeyDown"
+        @dblclick="onDblcClick">
         <slot />
     </div>
 </template>
@@ -56,6 +53,10 @@ export default {
             required: false,
             default: false,
         },
+        onEdit: {
+            type: Function,
+            required: true,
+        },
     },
     computed: {
         gridCellClasses() {
@@ -69,6 +70,69 @@ export default {
                     'grid-cell--draft': this.draft,
                 },
             ];
+        },
+    },
+    methods: {
+        onKeyDown(event) {
+            const { keyCode } = event;
+
+            let element;
+
+            if (!event.target.classList.contains('grid-cell') && !this.actionCell && keyCode !== 13 && keyCode !== 9) {
+                return false;
+            }
+
+            switch (keyCode) {
+            case 13:
+                // Key: ENTER
+                if (this.editingAllowed) {
+                    element = this.$el;
+                    if (!event.target.classList.contains('grid-cell') || event.target.classList.contains('grid-cell--selected')) {
+                        element.focus();
+                        this.onEdit(false);
+                    } else {
+                        this.onEdit(true);
+                    }
+                }
+                break;
+            case 37:
+                // Key: LEFT
+                element = document.querySelector(`.coordinates-${this.column - 1}-${this.row}`);
+                break;
+            case 38:
+                // Key: UP
+                element = document.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
+                break;
+            case 39:
+            case 9:
+                // Key: RIGHT || TAB
+                element = document.querySelector(`.coordinates-${this.column + 1}-${this.row}`);
+                if (!element) {
+                    // We get out of bounds - go to the next line
+                    element = document.querySelector(`.coordinates-0-${this.row + 1}`);
+                }
+                break;
+            case 40:
+                // Key: DOWN
+                element = document.querySelector(`.coordinates-${this.column}-${this.row + 1}`);
+                break;
+            default: break;
+            }
+
+            event.preventDefault();
+
+            if (keyCode !== 13) {
+                if (element) {
+                    element.focus();
+                }
+            }
+
+            return true;
+        },
+        onDblcClick() {
+            if (this.editingAllowed) {
+                this.onEdit(true);
+            }
         },
     },
 };

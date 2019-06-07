@@ -4,22 +4,31 @@
  */
 import { shallowMount, createLocalVue } from "@vue/test-utils"
 import MenuList from '~/components/Navigation/MenuList';
+import VueRouter from 'vue-router'
 
 const localVue = createLocalVue();
+const router = new VueRouter();
+const mocks = {
+    $route: {
+        path: '/products',
+    }
+};
 
 describe('Navigation/MenuList', () => {
     let wrapper;
     beforeEach(() => {
       wrapper = shallowMount(MenuList, {
-        localVue,
-        propsData: {
+          localVue,
+          router,
+          mocks,
+          propsData: {
           sectionMenu: [{
             title: 'Products',
-            action: '/products',
+            routing: '/products',
             icon: 'paper',
           }],
         },
-        stubs: ['nuxt-link'],
+        stubs: ['NuxtLink'],
       });
     });
 
@@ -36,21 +45,7 @@ describe('Navigation/MenuList', () => {
       let SectionContainer = wrapper.find('.menu-section');
       expect(wrapper.vm.sectionTitle).toBeNull();
       expect(wrapper.vm.sectionMenu).toBeTruthy();
-      expect(wrapper.vm.selectedElement).toBeFalsy();
       expect(SectionContainer.contains('h3.menu-section__title')).toBeFalsy();
       expect(SectionContainer.contains('h3.list-element--selected')).toBeFalsy();
     });
-
-    it("render menu section and items", () => {
-      let SectionContainer = wrapper.find('.menu-section');
-      SectionContainer.setProps({
-        sectionTitle: 'CATALOG',
-        selectedElement: '/products',
-      });
-      expect(SectionContainer.find('h3.menu-section__title').text()).toMatch("CATALOG");
-      expect(SectionContainer.contains('ul.menu-section__list')).toBe(true);
-      expect(SectionContainer.find('li.list-element').find('span').text()).toMatch('Products');
-      expect(SectionContainer.find('li.list-element--selected')).toBeTruthy();
-    });
-
 });
