@@ -21,16 +21,11 @@
             }
 
             &__content {
-                display: flex;
-                flex-direction: column;
+                display: grid;
                 width: 350px;
+                grid-row-gap: 24px;
                 @media only screen and (max-width: 1024px) {
                     width: 80%;
-                }
-
-                .content__input {
-                    height: 48px;
-                    margin-bottom: 12px;
                 }
 
                 .content__checkbox {
