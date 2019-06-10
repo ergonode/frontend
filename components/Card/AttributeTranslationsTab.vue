@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import Translation from '~/model/attributes/Translation';
 import { mapState } from 'vuex';
 
 export default {
@@ -30,9 +29,11 @@ export default {
             required: true,
         },
     },
-    data: () => ({
-        defaultTranslation: new Translation(),
-    }),
+    data() {
+        return {
+            defaultTranslation: { hint: '', label: '', placeholder: '' },
+        };
+    },
     computed: {
         ...mapState('translations', {
             translations: state => state.translations,

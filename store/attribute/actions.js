@@ -2,9 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import Translation from '~/model/attributes/Translation';
 import { getMappedGroupLabels, getMappedOptionKeysValues, getMappedParameterValues } from '~/model/mappers/attributeMapper';
-import { setDefaultTranslation } from '~/model/mappers/translationMapper';
 
 export default {
     setAttributeID: ({ commit }, payload) => {
@@ -75,7 +73,6 @@ export default {
             placeholder = '',
             multilingual,
         }) => {
-            let newTranslatins = {};
             const translations = {
                 hint,
                 label,
@@ -92,11 +89,7 @@ export default {
                     groups,
                 ),
             });
-
-            const { language: languageCode } = rootState.authentication.user;
-            newTranslatins = translations || setDefaultTranslation(new Translation(), languageCode);
-
-            commit('translations/setTabTranslations', { translations: newTranslatins }, { root: true });
+            commit('translations/setTabTranslations', { translations }, { root: true });
 
             if (parameters) {
                 commit('setAttributeParameter', { parameter: getMappedParameterValues(type, parameters, rootState.data) });
