@@ -339,6 +339,10 @@ export function generateProductLayout(
                     hint: hint || '',
                 };
 
+                if (type === 'MULTI_SELECT') {
+                    parsedElement.multiselect = true;
+                }
+
                 if (options) {
                     parsedElement.options = options;
                 }
