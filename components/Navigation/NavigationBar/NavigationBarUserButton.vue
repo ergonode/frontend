@@ -61,6 +61,7 @@ export default {
 
 <style lang="scss" scoped>
     .user-image {
+        display: flex;
         width: 24px;
         height: 24px;
 
