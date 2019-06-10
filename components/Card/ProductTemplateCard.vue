@@ -75,6 +75,7 @@ export default {
                 hint,
                 parameters,
                 options,
+                multiselect,
             } = element;
 
             switch (component) {
@@ -89,6 +90,7 @@ export default {
             case 'ProductTemplateOptions':
                 return {
                     options,
+                    multiselect,
                     placeholder,
                     name,
                     errorMessages,
