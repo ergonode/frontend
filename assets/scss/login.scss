@@ -31,17 +31,11 @@
                 .content__checkbox {
                     display: flex;
                     align-items: center;
-                    width: 100%;
-                    margin-top: 12px;
 
                     .checkbox-description {
                         @include setFont(medium, medium, regular);
                         margin-left: 8px;
                     }
-                }
-
-                .content__button {
-                    margin-top: 34px;
                 }
             }
         }
