@@ -48,7 +48,7 @@ export default {
 <style lang="scss" scoped>
     .header {
         display: grid;
-        grid-template-columns: 64px auto;
+        grid-template-columns: 72px auto;
         grid-column-gap: 24px;
         align-items: center;
         margin: 24px;
@@ -59,7 +59,7 @@ export default {
             grid-row: 1 / 3;
 
             & > img {
-                height: 64px;
+                height: 72px;
                 object-fit: contain;
             }
         }
