@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { getValueByKey } from '~/model/objectWrapper';
 
 export default {
@@ -29,8 +29,11 @@ export default {
         },
     },
     methods: {
+        ...mapActions('translations', [
+            'setTabTranslationPropertyValue',
+        ]),
         setTranslationPropertyValue(value, propertyName) {
-            this.$store.dispatch('translations/setTabTranslationPropertyValue', {
+            this.setTabTranslationPropertyValue({
                 languageCode: this.languageCode,
                 propertyName,
                 value,

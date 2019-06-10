@@ -12,7 +12,7 @@ export function setTranslation(translations, defaultTranslation, languageCode) {
 }
 
 export function isThereAnyTranslation(obj) {
-    return Object.keys(obj).find(entry => obj[entry] !== '') ? obj : false;
+    return !!Object.keys(obj).find(entry => obj[entry] !== '');
 }
 
 export function clearEmptyTranslations(obj) {

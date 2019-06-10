@@ -76,15 +76,16 @@ export function getMappedOptionKeysValues(options) {
     const optionKeys = [];
     const optionTranslations = {};
     options.forEach((option) => {
-        const { key, translation } = option;
+        const { key, value } = option;
         optionKeys.push(key);
-        Object.entries(translation).forEach(([transKey, transValue]) => {
-            if (optionTranslations[transKey]) {
-                optionTranslations[transKey].push(transValue);
-            } else {
+
+        if (!value) return;
+
+        Object.entries(value).forEach(([transKey, transValue]) => {
+            if (!optionTranslations[transKey]) {
                 optionTranslations[transKey] = [];
-                optionTranslations[transKey].push(transValue);
             }
+            optionTranslations[transKey].push(transValue);
         });
     });
 
@@ -95,18 +96,18 @@ export function getMappedOptions(optionKeys, optionTranslations) {
     const options = [];
 
     optionKeys.forEach((key, optIndex) => {
-        const translation = {};
+        const value = {};
 
         Object.entries(optionTranslations).forEach(([transKey, transValue]) => {
             // We do not want to send an empty option key values
             if (transValue[optIndex]) {
-                translation[transKey] = transValue[optIndex];
+                value[transKey] = transValue[optIndex];
             }
         });
 
         options.push({
             key,
-            translation,
+            value,
         });
     });
 

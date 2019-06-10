@@ -96,12 +96,14 @@ export default {
             }
 
             if (options) {
-                const { optionKeys, optionTranslations } = getMappedOptionKeysValues(options);
+                if (multilingual) {
+                    const { optionKeys, optionTranslations } = getMappedOptionKeysValues(options);
 
-                commit('initializeOptionKeys', { optionKeys });
-                commit('translations/initializeOptionTranslationValues', { optionTranslations }, { root: true });
+                    commit('initializeOptionKeys', { optionKeys });
+                    commit('translations/initializeOptionTranslationValues', { optionTranslations }, { root: true });
+                }
             }
-        }).catch(e => onError(e.data));
+        }).catch(e => console.log(e));
     },
     setMultilingualAttribute: ({ commit }, payload) => commit('setMultilingualAttribute', payload),
     createAttribute(

@@ -98,12 +98,15 @@ export default {
                     this.$store.state.data,
                 );
             }
+
             if (isThereAnyTranslation(label)) {
                 propertiesToUpdate.label = clearEmptyTranslations(label);
             }
+
             if (isThereAnyTranslation(hint)) {
                 propertiesToUpdate.hint = clearEmptyTranslations(hint);
             }
+
             if (isThereAnyTranslation(placeholder)) {
                 propertiesToUpdate.placeholder = clearEmptyTranslations(placeholder);
             }
