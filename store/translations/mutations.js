@@ -18,20 +18,8 @@ export default {
             [languageCode]: value,
         };
     },
-    initializeOptionTranslationValues: (state, { optionTranslations }) => {
-        state.optionTranslationsValues = optionTranslations;
-    },
-    addOptionTranslationValueForLanguage: (state, { languageCode }) => {
-        state.optionTranslationsValues[languageCode].push('');
-    },
-    addMultilingualOptionTranslation: (state, { languageCode }) => {
-        state.optionTranslationsValues = {
-            ...state.optionTranslationsValues, [languageCode]: [],
-        };
-    },
     clearStorage: (state) => {
         state.translations = {};
         state.cardsLanguageCodes = [];
-        state.optionTranslationsValues = {};
     },
 };

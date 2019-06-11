@@ -36,13 +36,11 @@ export default {
             multilingual: state => state.isMultilingual,
             parameter: state => state.parameter,
             optionKeys: state => state.optionKeys,
+            optionValues: state => state.optionValues,
         }),
         ...mapState('data', {
             attrTypes: state => state.attrTypes,
             attrGroups: state => state.attrGroups,
-        }),
-        ...mapState('translations', {
-            optionTranslationsValues: state => state.optionTranslationsValues,
         }),
     },
     created() {
@@ -89,7 +87,7 @@ export default {
                 ),
                 options: getMappedOptions(
                     this.optionKeys,
-                    this.optionTranslationsValues,
+                    this.optionValues,
                 ),
                 multilingual: this.multilingual,
             };

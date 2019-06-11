@@ -80,6 +80,7 @@ export function getMappedOptionKeysValues(options, isMultilingual) {
         const { key, value } = option;
         optionKeys.push(key);
 
+
         if (isMultilingual) {
             if (!value) return;
 
@@ -90,25 +91,29 @@ export function getMappedOptionKeysValues(options, isMultilingual) {
                 optionValues[transKey].push(transValue);
             });
         } else {
-            // TODO: Add support for non multilingual attributes
+            optionValues.push(value);
         }
     });
 
     return { optionKeys, optionValues };
 }
 
-export function getMappedOptions(optionKeys, optionTranslations) {
+export function getMappedOptions(optionKeys, optionValues, isMultilingual) {
     const options = [];
 
     optionKeys.forEach((key, optIndex) => {
-        const value = null;
+        let value = null;
 
-        Object.entries(optionTranslations).forEach(([transKey, transValue]) => {
-            // We do not want to send an empty option key values
-            if (transValue[optIndex]) {
-                value[transKey] = transValue[optIndex];
-            }
-        });
+        if (isMultilingual) {
+            Object.entries(optionValues).forEach(([transKey, transValue]) => {
+                // We do not want to send an empty option key values
+                if (transValue[optIndex]) {
+                    value[transKey] = transValue[optIndex];
+                }
+            });
+        } else {
+            value = optionValues[optIndex];
+        }
 
         options.push({
             key,

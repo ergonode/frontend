@@ -91,9 +91,10 @@ export default {
             if (options) {
                 const {
                     optionKeys, optionValues,
-                } = getMappedOptionKeysValues(options, multilingual);
+                } = getMappedOptionKeysValues(options, false);
 
                 commit('initializeOptionKeys', { optionKeys });
+                commit('initializeOptionValues', { optionValues });
             }
         }).catch(e => onError(e));
     },

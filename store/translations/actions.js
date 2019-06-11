@@ -51,16 +51,6 @@ export default {
             });
         }
     },
-    addMultilingualOptionTranslation: ({ commit, state }, { languageCode }) => {
-        const { optionTranslationsValues } = state;
-        if (!optionTranslationsValues[languageCode]) {
-            commit('addMultilingualOptionTranslation', { languageCode });
-        }
-
-        Object.keys(optionTranslationsValues).forEach((transLanguageCode) => {
-            commit('addOptionTranslationValueForLanguage', { languageCode: transLanguageCode });
-        });
-    },
     clearTranslations: ({ commit }) => {
         commit('clearStorage');
     },
