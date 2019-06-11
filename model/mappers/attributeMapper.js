@@ -72,24 +72,29 @@ export function getMappedGroupLabels(groups, selectedGroups) {
     return mappedGroups;
 }
 
-export function getMappedOptionKeysValues(options) {
+export function getMappedOptionKeysValues(options, isMultilingual) {
     const optionKeys = [];
-    const optionTranslations = {};
+    const optionValues = isMultilingual ? {} : [];
+
     options.forEach((option) => {
         const { key, value } = option;
         optionKeys.push(key);
 
-        if (!value) return;
+        if (isMultilingual) {
+            if (!value) return;
 
-        Object.entries(value).forEach(([transKey, transValue]) => {
-            if (!optionTranslations[transKey]) {
-                optionTranslations[transKey] = [];
-            }
-            optionTranslations[transKey].push(transValue);
-        });
+            Object.entries(value).forEach(([transKey, transValue]) => {
+                if (!optionValues[transKey]) {
+                    optionValues[transKey] = [];
+                }
+                optionValues[transKey].push(transValue);
+            });
+        } else {
+            // TODO: Add support for non multilingual attributes
+        }
     });
 
-    return { optionKeys, optionTranslations };
+    return { optionKeys, optionValues };
 }
 
 export function getMappedOptions(optionKeys, optionTranslations) {

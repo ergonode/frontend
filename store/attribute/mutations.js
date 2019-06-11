@@ -28,8 +28,8 @@ export default {
     initializeOptionValueForLanguageCode: (state, { languageCode }) => {
         state.optionValues[languageCode] = [];
     },
-    initializeOptionValues: (state) => {
-        state.optionValues = [];
+    initializeOptionValues: (state, { optionValues = [] }) => {
+        state.optionValues = optionValues;
     },
     setOptionValueForLanguageCode: (state, { languageCode, index, value }) => {
         state.optionValues[languageCode][index] = value;
