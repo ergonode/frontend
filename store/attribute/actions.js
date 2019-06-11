@@ -2,48 +2,39 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import Translation from '~/model/attributes/Translation';
 import { getMappedGroupLabels, getMappedOptionKeysValues, getMappedParameterValues } from '~/model/mappers/attributeMapper';
-import { setDefaultTranslation } from '~/model/mappers/translationMapper';
 
 export default {
     setAttributeID: ({ commit }, payload) => {
         commit('setAttributeID', payload);
     },
-    addAttributeOptionKey: ({ commit, rootState }, { key }) => {
-        const { language: userLanguageCode } = rootState.authentication.user;
-        commit('addAttributeOptionKey', { key });
-
-        if (!rootState.translations.optionTranslationsValues[userLanguageCode]) {
-            commit('translations/addOptionTranslation', { languageCode: userLanguageCode }, { root: true });
-        }
-
-        Object.keys(rootState.translations.optionTranslationsValues).forEach((languageCode) => {
-            commit('translations/addOptionTranslationValueForLanguage', { languageCode }, { root: true });
-        });
-    },
+    addAttributeOptionKey: ({ commit }, { key }) => commit('addAttributeOptionKey', { key }),
     removeAttributeOptions: ({ commit }) => commit('initializeOptionKeys', { optionKeys: [] }),
-    removeAttributeOptionKey: ({ commit, rootState }, { index }) => {
+    removeAttributeOptionKey: ({ commit, state }, { index }) => {
+        const { optionValues, isMultilingual } = state;
+
         commit('removeAttributeOptionKey', { index });
-        Object.keys(rootState.translations.optionTranslationsValues).forEach((languageCode) => {
-            commit('translations/removeAttributeOptionTranslationValueForLanguage', { languageCode, index }, { root: true });
-        });
+
+        if (isMultilingual) {
+            Object.keys(optionValues).forEach((languageCode) => {
+                commit('removeAttributeOptionValue', { languageCode, index });
+            });
+        }
     },
     setAttributeOptionKey: ({ commit }, { index, key }) => {
         commit('setAttributeOptionKey', { index, key });
     },
-    setAttributeOptionKeyValue: ({ commit, state, rootState }, { index, value, languageCode }) => {
-        if (!state.isMultilingual) {
-            const firstElement = Object.keys(rootState.translations.translations)[0];
-            Object.keys(rootState.translations.translations[firstElement]).forEach((language) => {
-                commit('translations/setAttributeOptionKeyValue', {
-                    languageCode: language,
-                    index,
-                    value,
-                }, { root: true });
-            });
+    setOptionValueForLanguageCode: ({ commit, state }, { index, value, languageCode }) => {
+        const { isMultilingual, optionValues } = state;
+
+        if (isMultilingual) {
+            if (!optionValues[languageCode]) commit('initializeOptionValueForLanguageCode', { languageCode });
+
+            commit('setOptionValueForLanguageCode', { languageCode, index, value });
         } else {
-            commit('translations/setAttributeOptionKeyValue', { index, value, languageCode }, { root: true });
+            if (!Array.isArray(optionValues)) commit('initializeOptionValues');
+
+            commit('setOptionValue', { index, value });
         }
     },
     setAttributeCode: ({ commit }, payload) => {
@@ -75,7 +66,6 @@ export default {
             placeholder = '',
             multilingual,
         }) => {
-            let newTranslatins = {};
             const translations = {
                 hint,
                 label,
@@ -92,23 +82,21 @@ export default {
                     groups,
                 ),
             });
-
-            const { language: languageCode } = rootState.authentication.user;
-            newTranslatins = translations || setDefaultTranslation(new Translation(), languageCode);
-
-            commit('translations/setTabTranslations', { translations: newTranslatins }, { root: true });
+            commit('translations/setTabTranslations', { translations }, { root: true });
 
             if (parameters) {
                 commit('setAttributeParameter', { parameter: getMappedParameterValues(type, parameters, rootState.data) });
             }
 
             if (options) {
-                const { optionKeys, optionTranslations } = getMappedOptionKeysValues(options);
+                const {
+                    optionKeys, optionValues,
+                } = getMappedOptionKeysValues(options, multilingual);
 
                 commit('initializeOptionKeys', { optionKeys });
-                commit('translations/initializeOptionTranslationValues', { optionTranslations }, { root: true });
+                commit('initializeOptionValues', { optionValues });
             }
-        }).catch(e => onError(e.data));
+        }).catch(e => onError(e));
     },
     setMultilingualAttribute: ({ commit }, payload) => commit('setMultilingualAttribute', payload),
     createAttribute(

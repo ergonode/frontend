@@ -6,13 +6,14 @@
     <div class="container-header">
         <div>
             <Select
-                v-model="selectedTranslationCardLanguages"
+                :value="selectedLanguageCards"
                 :options="languagesValues"
                 solid
                 regular
                 label="Translations"
                 :dismissible="false"
-                multiselect />
+                multiselect
+                @input="onLanguageCardSelected" />
         </div>
     </div>
 </template>
@@ -31,10 +32,6 @@ export default {
             type: Array,
             required: true,
         },
-        translations: {
-            type: Object,
-            required: true,
-        },
         defaultTranslation: {
             type: Object,
             required: true,
@@ -47,30 +44,28 @@ export default {
         languagesValues() {
             return Object.values(this.languages);
         },
-        selectedTranslationCardLanguages: {
-            get() {
-                const languageNames = getValuesByKeys(this.languages, this.cardsLanguageCodes);
+        selectedLanguageCards() {
+            const languageNames = getValuesByKeys(this.languages, this.cardsLanguageCodes);
 
-                return this.languagesValues.filter(
-                    language => languageNames.some(
-                        name => name === language,
-                    ),
-                );
-            },
-            set(newCardTranslations) {
-                const languageCodes = getKeysByValues(this.languages, newCardTranslations);
-
-                this.setTabVisibleCardTranslations({
-                    languages: languageCodes,
-                    defaultTranslation: this.defaultTranslation,
-                });
-            },
+            return this.languagesValues.filter(
+                language => languageNames.some(
+                    name => name === language,
+                ),
+            );
         },
     },
     methods: {
         ...mapActions('translations', [
-            'setTabVisibleCardTranslations',
+            'setVisibleCardTranslations',
         ]),
+        onLanguageCardSelected(languageCode) {
+            const languageCodes = getKeysByValues(this.languages, languageCode);
+
+            this.setVisibleCardTranslations({
+                languages: languageCodes,
+                defaultTranslation: this.defaultTranslation,
+            });
+        },
     },
 };
 </script>
