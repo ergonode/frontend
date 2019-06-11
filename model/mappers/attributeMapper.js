@@ -80,7 +80,6 @@ export function getMappedOptionKeysValues(options, isMultilingual) {
         const { key, value } = option;
         optionKeys.push(key);
 
-
         if (isMultilingual) {
             if (!value) return;
 
@@ -105,7 +104,9 @@ export function getMappedOptions(optionKeys, optionValues, isMultilingual) {
         let value = null;
 
         if (isMultilingual) {
-            Object.entries(optionValues).forEach(([transKey, transValue]) => {
+            value = {};
+            const optionsEntries = Object.entries(optionValues);
+            optionsEntries.forEach(([transKey, transValue]) => {
                 // We do not want to send an empty option key values
                 if (transValue[optIndex]) {
                     value[transKey] = transValue[optIndex];
