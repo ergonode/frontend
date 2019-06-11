@@ -41,7 +41,7 @@ export default {
     computed: {
         nameValue: {
             get() {
-                return this.translations.name[this.languageCode];
+                return this.translations.name[this.languageCode] || '';
             },
             set(newName) {
                 const nameIndex = 'name';

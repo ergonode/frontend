@@ -74,7 +74,7 @@ export default {
         }),
         nameValue: {
             get() {
-                return this.translations.label[this.languageCode];
+                return this.translations.label[this.languageCode] || '';
             },
             set(newName) {
                 const labelIndex = 'label';
@@ -86,7 +86,7 @@ export default {
         },
         placeholderValue: {
             get() {
-                return this.translations.placeholder[this.languageCode];
+                return this.translations.placeholder[this.languageCode] || '';
             },
             set(newPlaceholder) {
                 const placeholderIndex = 'placeholder';
@@ -98,7 +98,7 @@ export default {
         },
         tooltipValue: {
             get() {
-                return this.translations.hint[this.languageCode];
+                return this.translations.hint[this.languageCode] || '';
             },
             set(newTooltip) {
                 const hintIndex = 'hint';
