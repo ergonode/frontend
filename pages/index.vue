@@ -12,15 +12,15 @@
             <form class="login-form__content">
                 <TextField
                     v-model="userAuthData.username"
-                    class="content__input"
                     left-alignment
+                    regular
                     underline
                     label="User name" />
                 <TextField
                     v-model="userAuthData.password"
-                    class="content__input"
                     :input="{ type: 'password' }"
                     left-alignment
+                    regular
                     underline
                     label="Password"
                     @keyup.13="onSubmit" />
@@ -31,7 +31,6 @@
                     </span>
                 </div>
                 <Button
-                    class="content__button"
                     large
                     color="success"
                     title="Log in"
