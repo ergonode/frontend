@@ -8,8 +8,8 @@ export default {
     setTabTranslations: ({ commit }, payload) => {
         commit('setTabTranslations', payload);
     },
-    setTabTranslationPropertyValue: ({ commit }, payload) => {
-        commit('setTabTranslationPropertyValue', payload);
+    setMultilingualTranslationPropertyValue: ({ commit }, payload) => {
+        commit('setMultilingualTranslationPropertyValue', payload);
     },
     addCardLanguageCode: ({ commit }, payload) => commit('addCardLanguageCode', payload),
     setVisibleCardTranslations: ({ commit, state }, { languages, defaultTranslation }) => {
@@ -46,14 +46,21 @@ export default {
                     defaultTranslation,
                     languageCode,
                 );
-                commit('setTabTranslations', {
-                    translations: translation,
-                });
+                commit('setTabTranslations', { translations: translation });
                 commit('addCardLanguageCode', { languageCode });
             });
         }
     },
-    addOptionTranslation: ({ commit }, payload) => commit('addOptionTranslation', payload),
+    addMultilingualOptionTranslation: ({ commit, state }, { languageCode }) => {
+        const { optionTranslationsValues } = state;
+        if (!optionTranslationsValues[languageCode]) {
+            commit('addMultilingualOptionTranslation', { languageCode });
+        }
+
+        Object.keys(optionTranslationsValues).forEach((transLanguageCode) => {
+            commit('addOptionTranslationValueForLanguage', { languageCode: transLanguageCode });
+        });
+    },
     clearTranslations: ({ commit }) => {
         commit('clearStorage');
     },

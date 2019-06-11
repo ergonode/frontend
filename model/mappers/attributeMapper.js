@@ -96,7 +96,7 @@ export function getMappedOptions(optionKeys, optionTranslations) {
     const options = [];
 
     optionKeys.forEach((key, optIndex) => {
-        const value = {};
+        const value = null;
 
         Object.entries(optionTranslations).forEach(([transKey, transValue]) => {
             // We do not want to send an empty option key values

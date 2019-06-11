@@ -7,7 +7,6 @@
         <OptionsHeader
             slot="header"
             :cards-language-codes="cardsLanguageCodes"
-            :translations="translations"
             :default-translation="defaultTranslation" />
         <slot slot="content" />
         <Footer
@@ -46,7 +45,6 @@ export default {
             languages: state => state.languages,
         }),
         ...mapState('translations', {
-            translations: state => state.translations,
             cardsLanguageCodes: state => state.cardsLanguageCodes,
         }),
     },

@@ -12,14 +12,13 @@ export default {
             required: false,
             default: '',
         },
-        translations: {
-            type: Object,
-            required: true,
-        },
     },
     computed: {
         ...mapState('data', {
             languages: state => state.languages,
+        }),
+        ...mapState('translations', {
+            translations: state => state.translations,
         }),
         selectedLanguage() {
             return getValueByKey(this.languages, this.languageCode);
@@ -30,10 +29,10 @@ export default {
     },
     methods: {
         ...mapActions('translations', [
-            'setTabTranslationPropertyValue',
+            'setMultilingualTranslationPropertyValue',
         ]),
         setTranslationPropertyValue(value, propertyName) {
-            this.setTabTranslationPropertyValue({
+            this.setMultilingualTranslationPropertyValue({
                 languageCode: this.languageCode,
                 propertyName,
                 value,

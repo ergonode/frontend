@@ -32,10 +32,6 @@ export default {
             type: Array,
             required: true,
         },
-        translations: {
-            type: Object,
-            required: true,
-        },
         defaultTranslation: {
             type: Object,
             required: true,
