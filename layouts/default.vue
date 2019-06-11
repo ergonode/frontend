@@ -4,9 +4,21 @@
  */
 <template>
     <App>
-        <ToolBar />
+        <NavigationBar>
+            <template slot="leftSectionContent">
+                <NavigationBarMenuButton
+                    :value="sideBarState"
+                    @state="onStateChange" />
+                <NavigationBarDashboardButton />
+            </template>
+            <template slot="rightSectionContent">
+                <NavigationBarUserButton />
+                <NavigationBarSynchronizationButton />
+                <NavigationBarNotificationButton />
+            </template>
+        </NavigationBar>
         <Content>
-            <SideBarMenu />
+            <SideBar :value="sideBarState" />
             <nuxt class="nuxt-container" />
             <FlashMessage />
         </Content>
@@ -14,26 +26,30 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 
 export default {
     middleware: ['setDictionaries', 'authenticated'],
     components: {
         App: () => import('~/components/Layout/App'),
         Content: () => import('~/components/Layout/Content'),
-        SideBarMenu: () => import('~/components/Navigation/SideBar/SideBarMenu'),
-        ToolBar: () => import('~/components/Navigation/ToolBar/ToolBar'),
+        SideBar: () => import('~/components/Navigation//SideBar/SideBar'),
+        NavigationBar: () => import('~/components/Navigation/NavigationBar/NavigationBar'),
+        NavigationBarMenuButton: () => import('~/components/Navigation/NavigationBar/NavigationBarMenuButton'),
+        NavigationBarUserButton: () => import('~/components/Navigation/NavigationBar/NavigationBarUserButton'),
+        NavigationBarDashboardButton: () => import('~/components/Navigation/NavigationBar/NavigationBarDashboardButton'),
+        NavigationBarSynchronizationButton: () => import('~/components/Navigation/NavigationBar/NavigationBarSynchronizationButton'),
+        NavigationBarNotificationButton: () => import('~/components/Navigation/NavigationBar/NavigationBarNotificationButton'),
         FlashMessage: () => import('~/components/Alerts/FlashMessage'),
     },
-    beforeMount() {
-        if (localStorage.sideBarState) {
-            this.setSideBarState(parseInt(localStorage.sideBarState, 10));
-        }
+    data() {
+        return {
+            sideBarState: 2,
+        };
     },
     methods: {
-        ...mapActions('settings', [
-            'setSideBarState',
-        ]),
+        onStateChange(value) {
+            this.sideBarState = value;
+        },
     },
 };
 </script>

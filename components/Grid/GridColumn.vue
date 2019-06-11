@@ -78,14 +78,6 @@ export default {
         display: grid;
         padding-right: 1px;
 
-        div:nth-child(odd) {
-            background-color: $background;
-        }
-
-        div:nth-child(even) {
-            background-color: $white;
-        }
-
         &--border-right {
             border-right: 1px solid $grey;
             padding-right: 0;
@@ -111,10 +103,9 @@ export default {
                 inset 0 1px 5px 0 rgba(0, 0, 0, 0.2);
         }
 
-        &__right-pinned, &__left-pinned, &__extender {
+        &__right-pinned, &__extender {
             position: sticky;
             z-index: 3;
-            border-right: none;
         }
 
         &__right-pinned {
@@ -123,10 +114,6 @@ export default {
 
         &__left-pinned {
             left: 0;
-
-            div {
-                border-right: 1px solid $grey;
-            }
         }
     }
 </style>

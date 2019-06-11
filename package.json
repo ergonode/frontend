@@ -4,6 +4,9 @@
   "description": "Ergonode - Desktop PWA Ready Product Information Management Platform",
   "author": "Ergonode team",
   "private": true,
+  "bin": {
+    "cli:run": "./lib/index.js"
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
@@ -13,7 +16,8 @@
     "lint:dev": "npm run lint -- --cache && npm run lint:scss",
     "precommit": "npm run lint",
     "test": "jest --no-cache",
-    "test:dev": "npm run test -- --coverage --u"
+    "test:dev": "npm run test -- --coverage --u",
+    "cli:run": "./lib/index.js"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.4.1",
@@ -26,9 +30,16 @@
     "moment": "^2.24.0",
     "nuxt": "^2.7.1",
     "vue-input-autowidth": "^1.0.2",
-    "vue-typer": "^1.2.0",
     "vue-uuid": "^1.1.1",
-    "vuex": "^3.1.1"
+    "vuex": "^3.1.1",
+    "chalk": "^2.4.2",
+    "clear": "^0.1.0",
+    "commander": "^2.20.0",
+    "figlet": "^1.2.1",
+    "fs": "0.0.1-security",
+    "inquirer": "^6.3.1",
+    "ora": "^3.4.0",
+    "shelljs": "^0.8.3"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

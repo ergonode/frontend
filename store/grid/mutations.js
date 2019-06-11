@@ -9,7 +9,7 @@ export default {
         state.rows = [];
         state.count = 0;
         state.filtered = 0;
-        state.filter = '';
+        state.filter = {};
         state.globalFilters = [];
         state.displayedPage = 1;
         state.configuration = {};

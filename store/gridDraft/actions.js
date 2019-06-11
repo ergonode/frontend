@@ -30,9 +30,11 @@ export default {
             }
         });
     },
-    getDraft({ commit }, {
+    getDraft({ commit, state }, {
         id, languageCode, onError,
     }) {
+        if (state.drafts[id]) return null;
+
         return this.app.$axios.$get(`${languageCode}/drafts/product/${id}`).then(({
             draft_id: draftId,
             product_id: productId,

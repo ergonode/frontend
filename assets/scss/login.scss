@@ -21,32 +21,21 @@
             }
 
             &__content {
-                display: flex;
-                flex-direction: column;
+                display: grid;
                 width: 350px;
+                grid-row-gap: 24px;
                 @media only screen and (max-width: 1024px) {
                     width: 80%;
-                }
-
-                .content__input {
-                    height: 48px;
-                    margin-bottom: 12px;
                 }
 
                 .content__checkbox {
                     display: flex;
                     align-items: center;
-                    width: 100%;
-                    margin-top: 12px;
 
                     .checkbox-description {
                         @include setFont(medium, medium, regular);
                         margin-left: 8px;
                     }
-                }
-
-                .content__button {
-                    margin-top: 34px;
                 }
             }
         }
@@ -73,6 +62,8 @@
 
         &__subheader {
             @include setFont(bold, 38, 56);
+            height: 46px;
+            min-width: 1px;
         }
     }
 }

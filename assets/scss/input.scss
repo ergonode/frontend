@@ -9,6 +9,8 @@
 
     position: relative;
     display: flex;
+    display: -webkit-box;
+    flex: 1;
     flex-direction: column;
 
     &__content {
@@ -44,7 +46,7 @@
     }
 
     &.floating-label {
-        margin-top: 4px;
+        margin-top: 6px;
 
         #{$input}__label {
             position: absolute;

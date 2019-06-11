@@ -18,20 +18,8 @@
                     class="delorean"
                     src="~assets/images/placeholders/delorean.svg">
                 <div class="section__info">
-                    <h1 class="txt--success">
-                        <vue-typer
-                            class="info__header"
-                            :text="['Future', 'Feature']"
-                            :repeat="Infinity"
-                            initial-action="typing"
-                            :pre-type-delay="70"
-                            :type-delay="70"
-                            :pre-erase-delay="2000"
-                            :erase-delay="130"
-                            erase-style="backspace"
-                            :erase-on-complete="false"
-                            caret-animation="smooth"
-                        />
+                    <h1 class="info__header txt--success">
+                        <Typer :value="['Future', 'Feature']" />
                     </h1>
                     <p class="info__text txt--dark-graphite typo-list">
                         This feature will be implemented in the near future!
@@ -72,6 +60,7 @@ export default {
     name: 'Placeholder',
     components: {
         Button: () => import('~/components/Buttons/Button'),
+        Typer: () => import('~/components/Inputs/Typer'),
     },
 };
 </script>
@@ -116,6 +105,8 @@ export default {
 
                 .info__header {
                     @include setFont(extraBold, 56, 56);
+                    height: 56px;
+                    min-width: 1px;
                 }
 
                 .info__text {

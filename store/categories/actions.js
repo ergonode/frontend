@@ -2,9 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { setDefaultTranslation } from '~/model/mappers/translationMapper';
-import Translation from '~/model/categories/Translation';
-
 export default {
     setAction: ({ commit }, payload) => {
         commit('setState', payload);
@@ -27,12 +24,7 @@ export default {
             commit('setState', { key: 'code', value: code });
             commit('setState', { key: 'name', value: name });
 
-            const newTranslations = translations || setDefaultTranslation(
-                new Translation(),
-                userLanguageCode,
-            );
-
-            commit('translations/setTabTranslations', { translations: newTranslations }, { root: true });
+            commit('translations/setTabTranslations', { translations }, { root: true });
         }).catch(e => onError(e.data));
     },
     createCategory(

@@ -3,19 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="image-cell">
-        <img
-            v-if="value"
-            :src="image"
-            class="image-cell__image">
-    </div>
+    <Picture
+        v-if="value"
+        class="image-cell"
+        :image-id="value" />
 </template>
 
 <script>
-import { getImageData } from '~/model/multimedia';
-
 export default {
     name: 'GridImageCell',
+    components: {
+        Picture: () => import('~/components/Inputs/Image/Picture'),
+    },
     props: {
         value: {
             type: String,
@@ -23,44 +22,13 @@ export default {
             default: '',
         },
     },
-    data() {
-        return {
-            image: null,
-        };
-    },
-    watch: {
-        value() {
-            if (this.value) {
-                this.$axios.$get(`multimedia/${this.value}`, {
-                    responseType: 'arraybuffer',
-                }).then(response => this.onSuccess(response)).catch(e => this.onError(e.data));
-            }
-        },
-    },
-    methods: {
-        onSuccess(response) {
-            this.image = getImageData(response);
-        },
-        onError(e) {
-            console.log(e);
-        },
-    },
 };
 </script>
 
 <style lang="scss" scoped>
     .image-cell {
-        display: flex;
         flex: 1;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        padding: 8px;
-
-        &__image {
-            width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
+        margin: 8px;
+        max-width: 120px;
     }
 </style>
