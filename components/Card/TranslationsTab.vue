@@ -7,7 +7,6 @@
         <OptionsHeader
             slot="header"
             :cards-language-codes="cardsLanguageCodes"
-            :translations="translations"
             :default-translation="defaultTranslation" />
         <slot slot="content" />
         <Footer
@@ -18,7 +17,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { setTransaltion, setDefaultTranslation } from '~/model/mappers/translationMapper';
 import BaseTab from '~/components/Card/BaseTab';
 import Footer from '~/components/ReusableFooter/Footer';
 
@@ -41,30 +39,22 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            user: state => state.user,
+            userLanguageCode: state => state.user.language,
         }),
         ...mapState('data', {
             languages: state => state.languages,
         }),
         ...mapState('translations', {
-            translations: state => state.translations,
             cardsLanguageCodes: state => state.cardsLanguageCodes,
         }),
     },
     created() {
-        // Initialize card translation for user base language
-        const { language: languageCode } = this.user;
-        const translations = this.translations
-            ? setTransaltion(this.translations, this.defaultTranslation, languageCode)
-            : setDefaultTranslation(this.defaultTranslation, languageCode);
-        this.setTabTranslations({ translations });
-        if (!this.cardsLanguageCodes.find(langCode => langCode === languageCode)) {
-            this.addCardLanguageCode({ languageCode });
+        if (!this.cardsLanguageCodes.find(langCode => langCode === this.userLanguageCode)) {
+            this.addCardLanguageCode({ languageCode: this.userLanguageCode });
         }
     },
     methods: {
         ...mapActions('translations', [
-            'setTabTranslations',
             'addCardLanguageCode',
             'clearTranslations',
         ]),
