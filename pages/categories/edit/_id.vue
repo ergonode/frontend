@@ -36,21 +36,13 @@ export default {
             translations: state => state.translations,
         }),
     },
-    destroyed() {
-        this.clearStorage();
-        this.clearTranslations();
-    },
     methods: {
         ...mapActions('categories', [
-            'clearStorage',
             'updateCategory',
         ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
-        ]),
-        ...mapActions('translations', [
-            'clearTranslations',
         ]),
         onDismiss() {
             this.$router.push('/categories');
@@ -79,7 +71,9 @@ export default {
         params,
         error,
     }) {
-        return store.dispatch('categories/getCategoryById', {
+        await store.dispatch('translations/clearStorage');
+        await store.dispatch('categories/clearStorage');
+        await store.dispatch('categories/getCategoryById', {
             categoryId: params.id,
             onError: (err) => {
                 if (err.response && err.response.status === 404) {

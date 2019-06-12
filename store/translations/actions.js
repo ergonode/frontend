@@ -54,7 +54,7 @@ export default {
         }
     },
     addOptionTranslation: ({ commit }, payload) => commit('addOptionTranslation', payload),
-    clearTranslations: ({ commit }) => {
+    clearStorage: ({ commit }) => {
         commit('clearStorage');
     },
 };

@@ -7,9 +7,9 @@
         <NavigationHeader
             :title="title"
             :buttons="buttons"
-            :icon="icon" />
-        <HorizontalTabBar
-            :items="tabs" />
+            :breadcrumbs="breadcrumbs"
+            icon="sprite-menu menu-tree--selected" />
+        <HorizontalTabBar :items="tabs" />
         <Blur
             v-show="isBlurVisible"
             :style="blurZIndex" />
@@ -27,27 +27,25 @@ export default {
     components: {
         Blur: () => import('~/components/Blur/Blur'),
     },
-    props: {
-        buttons: {
-            type: Array,
-            required: true,
-        },
-        icon: {
-            type: String,
-            required: false,
-            default: null,
-        },
+    data() {
+        return {
+            breadcrumbs: [],
+            buttons: [],
+            tabs: [
+                {
+                    title: 'Tree design',
+                    path: '/category-trees/tree',
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: 'SAVE CHANGES',
+                            action: this.onSave,
+                        },
+                    },
+                },
+            ],
+        };
     },
-    data: () => ({
-        tabs: [
-            {
-                title: 'Tree design',
-                path: '/category-trees/tree',
-                active: true,
-                isContextualMenu: false,
-            },
-        ],
-    }),
     computed: {
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,

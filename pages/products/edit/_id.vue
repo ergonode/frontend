@@ -42,6 +42,7 @@ export default {
             'clearStorage',
         ]),
         onDraftAppliedSuccess() {
+            console.log('test23w442');
             this.$addAlert(this.$store, { type: 'success', message: 'Product updated' });
             this.$router.push('/products');
         },
@@ -64,6 +65,7 @@ export default {
                 onSuccess: () => {},
                 onError: () => {},
             });
+            console.log('test', id);
             this.applyDraft({
                 id: this.id,
                 onSuccess: this.onDraftAppliedSuccess,
@@ -78,7 +80,7 @@ export default {
     }) {
         const { language: languageCode } = store.state.authentication.user;
         const { id } = params;
-        return store.dispatch('productsDraft/getProductDraft', {
+        await store.dispatch('productsDraft/getProductDraft', {
             languageCode,
             id,
             onError: (err) => {

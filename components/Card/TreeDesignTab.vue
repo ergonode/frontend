@@ -12,7 +12,9 @@
                 <CategoryTreeWrapper />
             </div>
         </div>
-        <GridFooter :is-pagination-visible="false" />
+        <Footer
+            slot="footer"
+            :buttons="[...updateButton]" />
     </div>
 </template>
 
@@ -22,7 +24,13 @@ export default {
     components: {
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
         CategoryTreeWrapper: () => import('~/components/CategoryTree/CategoryTreeWrapper'),
-        GridFooter: () => import('~/components/Grid/GridFooter'),
+        Footer: () => import('~/components/ReusableFooter/Footer'),
+    },
+    props: {
+        updateButton: {
+            type: Object,
+            required: true,
+        },
     },
     data: () => ({
         verticalTabs: [

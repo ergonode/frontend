@@ -14,7 +14,7 @@
         :disabled="isElementDisabled(draggableListID, languageCode)">
         <ListElementDescription
             :title="item.code"
-            subtitle="? Products"
+            :subtitle="productsCount"
             title-typo="typo-subtitle"
             title-color="txt--dark-graphite"
             subtitle-typo="typo-hint"
@@ -53,6 +53,9 @@ export default {
         ...mapGetters('list', [
             'isElementDisabled',
         ]),
+        productsCount() {
+            return `${this.item.elements_count || 0} Product${this.item.elements_count === 1 ? '' : 's'}`;
+        },
     },
     methods: {
         ...mapActions('draggable', [

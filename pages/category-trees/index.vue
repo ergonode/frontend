@@ -5,8 +5,7 @@
 <template>
     <CategoryTreesPage
         :title="title"
-        :buttons="buttons"
-        icon="sprite-menu menu-tree--selected" />
+        @save="onSave" />
 </template>
 
 <script>
@@ -21,16 +20,6 @@ export default {
     data() {
         return {
             title: 'Category tree',
-            buttons: [
-                // uncomment when we create removal options
-                // {
-                //     title: 'REMOVE TREE',
-                //     color: 'transparent',
-                //     theme: 'dark',
-                //     icon: 'sprite-system system-trash--deactive',
-                //     action: this.onCancel,
-                // },
-            ],
         };
     },
     created() {
@@ -46,11 +35,8 @@ export default {
         ...mapActions('list', {
             setConfigurationForList: 'setConfigurationForList',
         }),
-        onCancel() {
-            this.$router.back();
-        },
-        onCreate() {
-            // TODO: Adding a function body when the tree designer is ready
+        onSave() {
+            // placeholder for backend action
         },
     },
     async fetch({ store, error }) {

@@ -34,9 +34,9 @@ const UserAvatarTab = () => import('~/components/Card/UserAvatarTab').then(m => 
 const CategoryBaseTab = () => import('~/components/Card/CategoryBaseTab').then(m => m.default || m);
 const CategoryTranslationsTab = () => import('~/components/Card/CategoryTranslationsTab').then(m => m.default || m);
 const ProductGridTab = () => import('~/components/Card/ProductGridTab').then(m => m.default || m);
-const TreeDesignTab = () => import('~/components/Card/TreeDesignTab').then(m => m.default || m);
 const ProductBaseTab = () => import('~/components/Card/ProductBaseTab').then(m => m.default || m);
 const ProductTemplateTab = () => import('~/components/Card/ProductTemplateTab').then(m => m.default || m);
+const TreeDesignTab = () => import('~/components/Card/TreeDesignTab').then(m => m.default || m);
 
 export const pages = [ // eslint-disable-line import/prefer-default-export
     {
