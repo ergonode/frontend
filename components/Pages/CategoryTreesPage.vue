@@ -19,20 +19,15 @@
 <script>
 
 import { mapState } from 'vuex';
+import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
-    name: 'GridProductPage',
+    name: 'CategoryTreesPage',
+    mixins: [categoryManagementPageBaseMixin],
     components: {
-        HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
-        NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
-        PageWrapper: () => import('~/components/Layout/PageWrapper'),
         Blur: () => import('~/components/Blur/Blur'),
     },
     props: {
-        title: {
-            type: String,
-            required: true,
-        },
         buttons: {
             type: Array,
             required: true,
@@ -46,7 +41,7 @@ export default {
     data: () => ({
         tabs: [
             {
-                title: 'Visual designer',
+                title: 'Tree design',
                 path: '/category-trees/tree',
                 active: true,
                 isContextualMenu: false,

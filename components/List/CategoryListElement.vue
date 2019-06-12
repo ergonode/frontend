@@ -5,12 +5,16 @@
 <template>
     <ListElement
         :key="item.id"
-        v-draggable-element="{ id: item.code, draggedElementStyle, onDraggedState }"
+        v-draggable-element="{
+            id: draggableListID,
+            draggedElementStyle,
+            onDraggedState,
+        }"
         :dragged="isDragged"
-        :disabled="isElementDisabled(item.code, languageCode)">
+        :disabled="isElementDisabled(draggableListID, languageCode)">
         <ListElementDescription
             :title="item.code"
-            subtitle="127 Products"
+            subtitle="? Products"
             title-typo="typo-subtitle"
             title-color="txt--dark-graphite"
             subtitle-typo="typo-hint"
@@ -42,6 +46,7 @@ export default {
         return {
             isDragged: false,
             draggedElementStyle: { width: 246, height: 32, backgroundColor: '#fff' },
+            draggableListID: this.item.code,
         };
     },
     computed: {
@@ -72,7 +77,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-
-</style>

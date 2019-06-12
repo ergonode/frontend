@@ -4,21 +4,25 @@
  */
 <template>
     <div class="tab">
-        <div class="tab__options">
-            <VerticalTabBar :items="verticalTabs" />
+        <div class="horizontal-wrapper">
+            <div class="tab__options">
+                <VerticalTabBar :items="verticalTabs" />
+            </div>
+            <div class="tab__grid">
+                <CategoryTreeWrapper />
+            </div>
         </div>
-        <div class="tab__tree">
-            <CategoryTreeWrapper />
-        </div>
+        <GridFooter :is-pagination-visible="false" />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'CategoryTreeTab',
+    name: 'TreeDesignTab',
     components: {
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
         CategoryTreeWrapper: () => import('~/components/CategoryTree/CategoryTreeWrapper'),
+        GridFooter: () => import('~/components/Grid/GridFooter'),
     },
     data: () => ({
         verticalTabs: [
@@ -36,22 +40,27 @@ export default {
 <style lang="scss" scoped>
     .tab {
         display: flex;
-        width: 100%;
-        height: 100%;
+        flex: 1;
+        flex-direction: column;
         background-color: $white;
+
+        .horizontal-wrapper {
+            display: flex;
+            flex: 1;
+        }
 
         &__options {
             display: flex;
             margin: 24px 12px 0 24px;
         }
 
-        &__tree {
+        &__grid {
             display: flex;
             flex: 1;
             flex-direction: column;
             width: 0;
             margin: 24px 12px 0 0;
-            overflow: auto;
+            overflow: hidden;
         }
     }
 </style>

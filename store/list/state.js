@@ -5,7 +5,5 @@
 export default () => ({
     groups: {},
     elements: {},
-    elementsAreMultiDraggable: true,
-    isListMultilingual: true,
     draggedElementsStore: {},
 });

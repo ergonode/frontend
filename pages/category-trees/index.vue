@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <TreePage
+    <CategoryTreesPage
         :title="title"
         :buttons="buttons"
         icon="sprite-menu menu-tree--selected" />
@@ -16,7 +16,7 @@ export default {
     name: 'NewCategoryTree',
     middleware: ['tab/redirectToCategoryTree'],
     components: {
-        TreePage: () => import('~/components/Pages/TreePage'),
+        CategoryTreesPage: () => import('~/components/Pages/CategoryTreesPage'),
     },
     data() {
         return {
@@ -35,8 +35,6 @@ export default {
     },
     created() {
         this.setConfigurationForList({
-            elementsAreMultiDraggable: false,
-            isListMultilingual: false,
             draggedElementsStore: {
                 storeName: 'tree',
                 stateName: 'treeData',
@@ -47,7 +45,6 @@ export default {
     methods: {
         ...mapActions('list', {
             setConfigurationForList: 'setConfigurationForList',
-            clearStorageList: 'clearStorage',
         }),
         onCancel() {
             this.$router.back();
@@ -57,7 +54,12 @@ export default {
         },
     },
     async fetch({ store, error }) {
-        const treeRequest = store.dispatch('tree/getTreeById', {
+        const {
+            user: { language: userLanguageCode },
+        } = store.state.authentication;
+
+        await store.dispatch('tree/clearStorage');
+        await store.dispatch('tree/getTreeById', {
             treeId: 'c5500df0-4861-47ec-aaaa-6716fcf356d4',
             onError: (err) => {
                 if (err.response && err.response.status === 404) {
@@ -66,21 +68,14 @@ export default {
                 return error();
             },
         });
-        const listElementsRequest = store.dispatch('list/getElementsForGroup', {
+
+        await store.dispatch('list/clearStorage');
+        await store.dispatch('list/getElementsForGroup', {
             listType: 'categories',
             groupId: null,
             elementsCount: 9999,
-            languageCode: store.state.authentication.user.language,
-            onSuccess: () => {},
-            onError: () => {},
+            languageCode: userLanguageCode,
         });
-
-        await store.dispatch('list/clearStorage');
-
-        return Promise.all([
-            treeRequest,
-            listElementsRequest,
-        ]);
     },
 };
 </script>

@@ -70,8 +70,6 @@ export default {
             // ];
         }
         this.setConfigurationForList({
-            elementsAreMultiDraggable: false,
-            isListMultilingual: false,
             draggedElementsStore: {
                 storeName: 'templateDesigner',
                 stateName: 'templateLayout',

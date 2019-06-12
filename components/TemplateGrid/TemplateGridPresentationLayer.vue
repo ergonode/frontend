@@ -56,11 +56,7 @@ export default {
 
 <style lang="scss" scoped>
     .presentation-layer {
-        position: absolute;
-        top: 0;
-        left: 0;
         display: grid;
-        width: 100%;
         height: auto;
         border-right: 1px dashed $grey;
 

@@ -39,6 +39,7 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
+        width: 275px;
 
         .add-btn-wrapper {
             position: absolute;

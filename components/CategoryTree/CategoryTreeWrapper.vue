@@ -45,7 +45,6 @@
                 </TemplateGridItemsContainer>
             </TemplateGridContainer>
         </TemplateGridScroll>
-        <GridFooter :is-pagination-visible="false" />
     </div>
 </template>
 
@@ -59,7 +58,6 @@ import TemplateGridItemArea from '~/components/TemplateGrid/TemplateGridItemArea
 import TemplateGridScroll from '~/components/TemplateGrid/TemplateGridScroll';
 import TemplateGridHeader from '~/components/TemplateGrid/TemplateGridHeader';
 import CategoryTreeItem from '~/components/CategoryTree/CategoryTreeItem';
-import GridFooter from '~/components/Grid/GridFooter';
 
 export default {
     name: 'CategoryTreeWrapper',
@@ -72,7 +70,6 @@ export default {
         TemplateGridScroll,
         TemplateGridHeader,
         CategoryTreeItem,
-        GridFooter,
     },
     computed: {
         ...mapState('tree', {
