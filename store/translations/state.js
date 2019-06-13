@@ -5,5 +5,4 @@
 export default () => ({
     translations: {},
     cardsLanguageCodes: [],
-    optionTranslationsValues: {},
 });

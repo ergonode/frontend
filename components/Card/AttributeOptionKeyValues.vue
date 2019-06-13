@@ -43,6 +43,10 @@ export default {
     computed: {
         ...mapState('attribute', {
             optionKeys: state => state.optionKeys,
+            isMultilingual: state => state.isMultilingual,
+        }),
+        ...mapState('authentication', {
+            userLanguageCode: state => state.user.language,
         }),
     },
     methods: {
@@ -50,6 +54,9 @@ export default {
             'addAttributeOptionKey',
             'removeAttributeOptionKey',
             'setAttributeOptionKey',
+        ]),
+        ...mapActions('translations', [
+            'addMultilingualOptionTranslation',
         ]),
         updateOptionKey(index, key) {
             this.setAttributeOptionKey({ index, key });
