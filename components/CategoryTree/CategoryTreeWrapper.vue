@@ -5,47 +5,41 @@
 <template>
     <div class="category-tree-wrapper">
         <TemplateGridHeader
-            :grid-styles="gridStyles"
+            :style="gridStyles"
             :columns="columns" />
-        <TemplateGridScroll
-            :data-row-length="filteredGridData.length"
+        <TemplateGridContainer
+            :columns="columns"
+            :rows="rowsCount"
             :rows-height="rowsHeight"
+            :grid-data="filteredGridData"
+            :dragged-element="draggedElement"
+            :hidden-items="hiddenItems"
+            @addItem="addTreeItem"
+            @removeItem="removeTreeItem"
+            @rebuildGrid="rebuildTree"
             @setRowsCount="setAction">
-            <TemplateGridContainer
+            <TemplateGridPresentationLayer
+                :style="gridStyles"
                 :columns="columns"
-                :rows="rowsCount"
-                :rows-height="rowsHeight"
-                :grid-data="filteredGridData"
-                :dragged-element="draggedElement"
-                :hidden-items="hiddenItems"
-                @addItem="addTreeItem"
-                @removeItem="removeTreeItem"
-                @rebuildGrid="rebuildTree"
-                @setRowsCount="setAction">
-                <TemplateGridPresentationLayer
-                    :grid-styles="gridStyles"
-                    :columns="columns"
-                    :rows="rowsCount" />
-                <TemplateGridItemsContainer
-                    :grid-styles="gridStyles">
-                    <TemplateGridItemArea
-                        v-for="item in filteredGridData"
-                        v-show="!isHidden(item.id)"
-                        :key="item.id"
-                        :item="item"
-                        :columns="columns">
-                        <TemplateGridGhostItem
-                            v-if="item.ghost" />
-                        <CategoryTreeItem
-                            v-else
-                            :number-of-children="getChildren(item.id).length"
-                            :item-name="item.id"
-                            @expandItem="e => expandItem(e, item)" />
-                    </TemplateGridItemArea>
-                </TemplateGridItemsContainer>
-            </TemplateGridContainer>
-        </TemplateGridScroll>
-        <GridFooter :is-pagination-visible="false" />
+                :rows="rowsCount" />
+            <TemplateGridItemsContainer
+                :style="gridStyles">
+                <TemplateGridItemArea
+                    v-for="item in filteredGridData"
+                    v-show="!isHidden(item.id)"
+                    :key="item.id"
+                    :item="item"
+                    :columns="columns">
+                    <TemplateGridGhostItem
+                        v-if="item.ghost" />
+                    <CategoryTreeItem
+                        v-else
+                        :number-of-children="getChildren(item.id).length"
+                        :item-name="item.id"
+                        @expandItem="e => expandItem(e, item)" />
+                </TemplateGridItemArea>
+            </TemplateGridItemsContainer>
+        </TemplateGridContainer>
     </div>
 </template>
 
@@ -56,10 +50,8 @@ import TemplateGridItemsContainer from '~/components/TemplateGrid/TemplateGridIt
 import TemplateGridContainer from '~/components/TemplateGrid/TemplateGridContainer';
 import TemplateGridGhostItem from '~/components/TemplateGrid/TemplateGridGhostItem';
 import TemplateGridItemArea from '~/components/TemplateGrid/TemplateGridItemArea';
-import TemplateGridScroll from '~/components/TemplateGrid/TemplateGridScroll';
 import TemplateGridHeader from '~/components/TemplateGrid/TemplateGridHeader';
 import CategoryTreeItem from '~/components/CategoryTree/CategoryTreeItem';
-import GridFooter from '~/components/Grid/GridFooter';
 
 export default {
     name: 'CategoryTreeWrapper',
@@ -69,10 +61,8 @@ export default {
         TemplateGridContainer,
         TemplateGridGhostItem,
         TemplateGridItemArea,
-        TemplateGridScroll,
         TemplateGridHeader,
         CategoryTreeItem,
-        GridFooter,
     },
     computed: {
         ...mapState('tree', {
@@ -137,6 +127,7 @@ export default {
 
 <style lang="scss" scoped>
     .category-tree-wrapper {
+        z-index: 20;
         display: flex;
         flex-direction: column;
         height: 100%;

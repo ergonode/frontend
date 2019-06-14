@@ -56,8 +56,7 @@ export default {
         const gridPath = `${userLanguageCode}/imports`;
 
         await store.dispatch('grid/clearStorage');
-
-        return store.dispatch('grid/getData', { path: gridPath });
+        await store.dispatch('grid/getData', { path: gridPath });
     },
 };
 </script>

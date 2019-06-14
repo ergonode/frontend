@@ -45,8 +45,6 @@ export default {
     },
     created() {
         this.setConfigurationForList({
-            elementsAreMultiDraggable: false,
-            isListMultilingual: true,
             draggedElementsStore: {
                 storeName: 'grid',
                 stateName: 'columns',
@@ -54,13 +52,9 @@ export default {
             },
         });
     },
-    destroyed() {
-        this.clearListStorage();
-    },
     methods: {
         ...mapActions('list', {
             setConfigurationForList: 'setConfigurationForList',
-            clearListStorage: 'clearStorage',
         }),
         addNewProduct() {
             this.$router.push('/products/new');
@@ -71,21 +65,17 @@ export default {
         const {
             user: { language: userLanguageCode },
         } = store.state.authentication;
-
         const gridPath = `${userLanguageCode}/products`;
-        const groupsRequest = store.dispatch('list/getGroups', {
+
+        await store.dispatch('list/clearStorage');
+        await store.dispatch('list/getGroups', {
             languageCode: userLanguageCode,
             onSuccess: () => {},
             onError: () => {},
         });
-        const gridRequest = store.dispatch('grid/getData', { path: gridPath });
 
         await store.dispatch('grid/clearStorage');
-
-        return Promise.all([
-            gridRequest,
-            groupsRequest,
-        ]);
+        await store.dispatch('grid/getData', { path: gridPath });
     },
 };
 </script>

@@ -7,9 +7,9 @@
         <NavigationHeader
             :title="title"
             :buttons="buttons"
-            :icon="icon" />
-        <HorizontalTabBar
-            :items="tabs" />
+            :breadcrumbs="breadcrumbs"
+            icon="sprite-menu menu-tree--selected" />
+        <HorizontalTabBar :items="tabs" />
         <Blur
             v-show="isBlurVisible"
             :style="blurZIndex" />
@@ -19,40 +19,33 @@
 <script>
 
 import { mapState } from 'vuex';
+import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
-    name: 'GridProductPage',
+    name: 'CategoryTreesPage',
+    mixins: [categoryManagementPageBaseMixin],
     components: {
-        HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
-        NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
-        PageWrapper: () => import('~/components/Layout/PageWrapper'),
         Blur: () => import('~/components/Blur/Blur'),
     },
-    props: {
-        title: {
-            type: String,
-            required: true,
-        },
-        buttons: {
-            type: Array,
-            required: true,
-        },
-        icon: {
-            type: String,
-            required: false,
-            default: null,
-        },
+    data() {
+        return {
+            breadcrumbs: [],
+            buttons: [],
+            tabs: [
+                {
+                    title: 'Tree design',
+                    path: '/category-trees/tree',
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: 'SAVE CHANGES',
+                            action: this.onSave,
+                        },
+                    },
+                },
+            ],
+        };
     },
-    data: () => ({
-        tabs: [
-            {
-                title: 'Visual designer',
-                path: '/category-trees/tree',
-                active: true,
-                isContextualMenu: false,
-            },
-        ],
-    }),
     computed: {
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,
