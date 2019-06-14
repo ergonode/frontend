@@ -42,7 +42,6 @@ export default {
             'clearStorage',
         ]),
         onDraftAppliedSuccess() {
-            console.log('test23w442');
             this.$addAlert(this.$store, { type: 'success', message: 'Product updated' });
             this.$router.push('/products');
         },
@@ -65,7 +64,6 @@ export default {
                 onSuccess: () => {},
                 onError: () => {},
             });
-            console.log('test', id);
             this.applyDraft({
                 id: this.id,
                 onSuccess: this.onDraftAppliedSuccess,

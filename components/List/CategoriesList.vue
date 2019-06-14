@@ -5,7 +5,7 @@
 <template>
     <List group>
         <CategoryListElement
-            v-for="element in elementsByGroupInLanguage"
+            v-for="element in elementsByLanguageCode"
             :key="element.id"
             :item="element"
             :language-code="languageCode" />
@@ -31,11 +31,11 @@ export default {
         ...mapState('list', {
             elements: state => state.elements,
         }),
-        elementsByGroupInLanguage() {
-            if (!this.elements[this.languageCode]
-                || this.elements[this.languageCode].length === 0) return [];
+        elementsByLanguageCode() {
+            const { [this.languageCode]: language } = this.elements;
+            if (!language || language.length === 0) return [];
 
-            return this.elements[this.languageCode];
+            return language;
         },
     },
 };
