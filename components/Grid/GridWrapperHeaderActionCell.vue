@@ -83,7 +83,7 @@ export default {
             return type === 'SELECT' || type === 'MULTI_SELECT';
         },
         isMultiSelect() {
-            const { type } = this.column;
+            const { filter: { type } } = this.column;
 
             return type === 'MULTI_SELECT';
         },

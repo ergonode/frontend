@@ -72,41 +72,53 @@ export function getMappedGroupLabels(groups, selectedGroups) {
     return mappedGroups;
 }
 
-export function getMappedOptionKeysValues(options) {
+export function getMappedOptionKeysValues(options, isMultilingual) {
     const optionKeys = [];
-    const optionTranslations = {};
+    const optionValues = isMultilingual ? {} : [];
+
     options.forEach((option) => {
-        const { key, translation } = option;
+        const { key, value } = option;
         optionKeys.push(key);
-        Object.entries(translation).forEach(([transKey, transValue]) => {
-            if (optionTranslations[transKey]) {
-                optionTranslations[transKey].push(transValue);
-            } else {
-                optionTranslations[transKey] = [];
-                optionTranslations[transKey].push(transValue);
-            }
-        });
+
+        if (isMultilingual) {
+            if (!value) return;
+
+            Object.entries(value).forEach(([transKey, transValue]) => {
+                if (!optionValues[transKey]) {
+                    optionValues[transKey] = [];
+                }
+                optionValues[transKey].push(transValue);
+            });
+        } else {
+            optionValues.push(value);
+        }
     });
 
-    return { optionKeys, optionTranslations };
+    return { optionKeys, optionValues };
 }
 
-export function getMappedOptions(optionKeys, optionTranslations) {
+export function getMappedOptions(optionKeys, optionValues, isMultilingual) {
     const options = [];
 
     optionKeys.forEach((key, optIndex) => {
-        const translation = {};
+        let value = null;
 
-        Object.entries(optionTranslations).forEach(([transKey, transValue]) => {
-            // We do not want to send an empty option key values
-            if (transValue[optIndex]) {
-                translation[transKey] = transValue[optIndex];
-            }
-        });
+        if (isMultilingual) {
+            value = {};
+            const optionsEntries = Object.entries(optionValues);
+            optionsEntries.forEach(([transKey, transValue]) => {
+                // We do not want to send an empty option key values
+                if (transValue[optIndex]) {
+                    value[transKey] = transValue[optIndex];
+                }
+            });
+        } else {
+            value = optionValues[optIndex];
+        }
 
         options.push({
             key,
-            translation,
+            value,
         });
     });
 

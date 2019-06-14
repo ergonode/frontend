@@ -33,6 +33,8 @@ export default {
             type: state => state.type,
             parameter: state => state.parameter,
             optionKeys: state => state.optionKeys,
+            optionValues: state => state.optionValues,
+            isMultilingual: state => state.isMultilingual,
         }),
         ...mapState('data', {
             attrGroups: state => state.attrGroups,
@@ -40,7 +42,6 @@ export default {
         }),
         ...mapState('translations', {
             translations: state => state.translations,
-            optionTranslationsValues: state => state.optionTranslationsValues,
         }),
     },
     methods: {
@@ -77,7 +78,8 @@ export default {
             if (this.optionKeys.length > 0) {
                 propertiesToUpdate.options = getMappedOptions(
                     this.optionKeys,
-                    this.optionTranslationsValues,
+                    this.optionValues,
+                    this.isMultilingual,
                 );
             }
 
@@ -90,12 +92,15 @@ export default {
                     this.$store.state.data,
                 );
             }
+
             if (isThereAnyTranslation(label)) {
                 propertiesToUpdate.label = clearEmptyTranslations(label);
             }
+
             if (isThereAnyTranslation(hint)) {
                 propertiesToUpdate.hint = clearEmptyTranslations(hint);
             }
+
             if (isThereAnyTranslation(placeholder)) {
                 propertiesToUpdate.placeholder = clearEmptyTranslations(placeholder);
             }
