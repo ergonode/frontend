@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default {
-    attributeTypeData: state => type => state.types.find(
+    elementDataByType: state => type => state.types.find(
         attributeType => attributeType.type === type,
     ),
     layoutElementByCoordinates: state => coordinates => state.templateLayout.find(

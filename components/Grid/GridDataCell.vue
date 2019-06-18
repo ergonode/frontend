@@ -144,7 +144,7 @@ export default {
             return this.cellValue;
         },
         draftValue() {
-            // Product draft ID
+            // ProductDesigner draft ID
             if (this.draft && typeof this.draft[this.columnId] !== 'undefined') {
                 return this.draft[this.columnId];
             }

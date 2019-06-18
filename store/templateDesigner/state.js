@@ -4,8 +4,7 @@
  */
 export default () => ({
     templateLayout: [],
-    highlightingHintPoints: [],
-    highlightingHoverPoints: [],
+    layoutElements: [],
     isDraggedElementColliding: false,
     title: '',
     image: null,

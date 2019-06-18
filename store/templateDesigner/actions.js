@@ -2,12 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { generateLayout } from '~/model/template_designer/layout/LayoutGenerator';
-import { getObstaclePointsForBaseCoordinates } from '~/model/template_designer/layout/LayoutProvider';
 
 export default {
     getTemplateByID(
-        { commit, getters },
+        { commit },
         { path, onError },
     ) {
         return this.app.$axios.$get(path).then(({
@@ -16,34 +14,9 @@ export default {
             sections,
             elements,
         }) => {
-            const numberOfColumns = 4;
-            const numberOfItems = 100;
-            const templateLayout = generateLayout(numberOfColumns, numberOfItems, 'TemplateGridItem', elements, sections);
+            // TODO: Map elements
             commit('setTemplateDesignerTitle', { title: name });
             commit('setTemplateDesignerImage', { image: imageID });
-            commit('setTemplateDesignerLayout', templateLayout);
-
-            const obstaclesBaseCoordinates = templateLayout.filter(
-                e => e.component === 'AttributeElement',
-            ).map(
-                e => e.coordinates,
-            );
-            obstaclesBaseCoordinates.forEach((coordinates) => {
-                const points = getObstaclePointsForBaseCoordinates(
-                    coordinates,
-                );
-
-                points.forEach((point) => {
-                    const index = getters.layoutElementIndex(
-                        point.x,
-                        point.y,
-                    );
-                    commit('updateObstacleStageOfElement', {
-                        index,
-                        isObstacle: true,
-                    });
-                });
-            });
         }).catch(e => onError(e.data));
     },
     updateTemplateDesigner(
@@ -79,6 +52,40 @@ export default {
             onSuccess();
         }).catch(e => onError(e.data));
     },
+    addListElementToLayout: ({
+        commit, rootState, rootGetters, getters,
+    }, { row, column }) => {
+        const { draggedElement } = rootState.draggable;
+        const { 'list/elementByCode': elementByCode } = rootGetters;
+        const { elementDataByType } = getters;
+        const {
+            id,
+            type,
+            label,
+        } = elementByCode(draggedElement.split(':')[0]);
+        const {
+            min_width: minWidth,
+            min_height: minHeight,
+            max_width: maxWidth,
+            max_height: maxHeight,
+        } = elementDataByType(type);
+        const layoutElement = {
+            id,
+            row,
+            column,
+            width: 1,
+            height: 1,
+            minWidth,
+            maxWidth,
+            minHeight,
+            maxHeight,
+            type,
+            label,
+            required: false,
+        };
+
+        commit('addListElementToLayout', layoutElement);
+    },
     addElementToLayoutAtCoordinates: ({ commit, getters }, { elementToAdd }) => {
         const index = getters.layoutElementIndex(
             elementToAdd.coordinates.xPos.start,
@@ -113,17 +120,13 @@ export default {
             });
         });
     },
-    initializeDraggedElementCollision: ({ commit }, payload) => commit('initializeDraggedElementCollision', payload),
-    initializeHighlightingHintPoints: ({ commit }, payload) => commit('initializeHighlightingHintPoints', payload),
-    initializeHighlightingHoverPoints: ({ commit, state }, payload) => {
-        if (payload && state.highlightingHoverPoints.length !== payload.length) {
-            commit('initializeHighlightingHoverPoints', payload);
-        }
-
-        if (!payload) {
-            commit('initializeHighlightingHoverPoints');
-        }
+    updateLayoutElementBounds: ({ commit }, { index, width, height }) => {
+        commit('updateLayoutElementBounds', { index, width, height });
     },
+    updateLayoutElementPosition: ({ commit }, { index, row, column }) => {
+        commit('updateLayoutElementPosition', { index, row, column });
+    },
+    initializeDraggedElementCollision: ({ commit }, payload) => commit('initializeDraggedElementCollision', payload),
     setTemplateDesignerSectionTitle: ({ commit, getters }, { row, column, title }) => {
         const index = getters.layoutElementIndex(
             column,

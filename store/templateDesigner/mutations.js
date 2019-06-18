@@ -13,11 +13,13 @@ export default {
         state.templateLayout[index] = { ...element, isObstacle };
         state.templateLayout = [...state.templateLayout];
     },
-    initializeHighlightingHintPoints: (state, payload = []) => {
-        state.highlightingHintPoints = [...payload];
+    updateLayoutElementBounds: (state, { index, width, height }) => {
+        state.layoutElements[index] = { ...state.layoutElements[index], width, height };
+        state.layoutElements = [...state.layoutElements];
     },
-    initializeHighlightingHoverPoints: (state, payload = []) => {
-        state.highlightingHoverPoints = [...payload];
+    updateLayoutElementPosition: (state, { index, row, column }) => {
+        state.layoutElements[index] = { ...state.layoutElements[index], row, column };
+        state.layoutElements = [...state.layoutElements];
     },
     setTemplateDesignerLayout: (state, payload) => {
         state.templateLayout = payload;
@@ -27,6 +29,9 @@ export default {
 
         state.templateLayout[index] = element;
         state.templateLayout = [...state.templateLayout];
+    },
+    addListElementToLayout: (state, layoutElement) => {
+        state.layoutElements.push(layoutElement);
     },
     insertElementToLayout: (state, payload) => {
         const { index, element } = payload;
@@ -64,8 +69,6 @@ export default {
     },
     clearStorage: (state) => {
         state.templateLayout = [];
-        state.highlightingHintPoints = [];
-        state.highlightingHoverPoints = [];
         state.isDraggedElementColliding = false;
         state.title = '';
         state.image = null;

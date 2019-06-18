@@ -46,7 +46,6 @@
 
 import { mapState, mapActions } from 'vuex';
 import {
-    getObstaclePointsForBaseCoordinates,
     getHighlightingHintPoints,
     getHoveredPoints,
     getMaxRowForGivenColumn,
@@ -106,7 +105,7 @@ export default {
         ...mapActions('templateDesigner', [
             'addElementToLayoutAtCoordinates',
             'initializeHighlightingHintPoints',
-            'initializeHighlightingHoverPoints',
+            'initializeHighlightingPositions',
             'setElementRequirement',
             'updateLayoutElementCoordinates',
             'updateObstaclesAtPoints',

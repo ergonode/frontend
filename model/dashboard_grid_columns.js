@@ -17,7 +17,7 @@ export default [
     },
     {
         // TODO: Waiting for icon from Dina, for now I've used some random.
-        title: 'Product',
+        title: 'ProductDesigner',
         actionTitle: 'Create product',
         icon: 'add_template.svg',
         action: '/products',
