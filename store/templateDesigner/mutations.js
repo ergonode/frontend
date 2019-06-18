@@ -11,12 +11,6 @@ export default {
         state.layoutElements[index] = { ...state.layoutElements[index], row, column };
         state.layoutElements = [...state.layoutElements];
     },
-    addElementToLayoutAtCoordinates: (state, payload) => {
-        const { index, element } = payload;
-
-        state.templateLayout[index] = element;
-        state.templateLayout = [...state.templateLayout];
-    },
     addListElementToLayout: (state, layoutElement) => {
         state.layoutElements.push(layoutElement);
     },
@@ -41,13 +35,13 @@ export default {
     },
     setTemplateDesignerSectionTitle: (state, payload) => {
         const { index, title } = payload;
-        const element = state.templateLayout[index];
+        const element = state.layoutElements[index];
 
-        state.templateLayout[index] = { ...element, label: title };
-        state.templateLayout = [...state.templateLayout];
+        state.layoutElements[index] = { ...element, label: title };
+        state.layoutElements = [...state.layoutElements];
     },
     clearStorage: (state) => {
-        state.templateLayout = [];
+        state.layoutElements = [];
         state.title = '';
         state.image = null;
         state.types = [];

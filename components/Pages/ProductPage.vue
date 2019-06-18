@@ -42,7 +42,7 @@ export default {
                     },
                 },
                 {
-                    title: 'ProductDesigner template',
+                    title: 'Product template',
                     path: `/products/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/template`,
                     active: this.isEdit,
                     props: {

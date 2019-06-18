@@ -45,7 +45,7 @@ export default {
         },
         onCreateProductSuccess(id) {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'ProductDesigner created' });
+            this.$addAlert(this.$store, { type: 'success', message: 'Product created' });
             this.$router.push({
                 name: 'products-edit-id',
                 params: {

@@ -42,7 +42,7 @@ export default {
             'clearStorage',
         ]),
         onDraftAppliedSuccess() {
-            this.$addAlert(this.$store, { type: 'success', message: 'ProductDesigner updated' });
+            this.$addAlert(this.$store, { type: 'success', message: 'Product updated' });
             this.$router.push('/products');
         },
         onDraftAppliedError() {

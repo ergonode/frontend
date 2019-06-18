@@ -3,34 +3,6 @@
  * See LICENSE for license details.
  */
 
-// Private functions
-
-function getPointsBasedOnBounds({
-    row, column, width, height,
-}) {
-    const points = [];
-
-    for (let x = column; x <= width; x += 1) {
-        for (let y = row; y <= height; y += 1) {
-            points.push({
-                row: y,
-                column: x,
-            });
-        }
-    }
-
-    return points;
-}
-
-function getMaxRowInLayout(layout) {
-    return layout.reduce((previous, current) => {
-        const { yPos: prevYPos } = previous.coordinates;
-        const { yPos: currYPos } = current.coordinates;
-
-        return (prevYPos.end > currYPos.end ? previous : current);
-    }).coordinates.yPos.end;
-}
-
 // When element is in resizing mode,
 // we need to determinate which area is going to be marked as obstacle or not
 export function getObstaclePointsForElement({
@@ -47,10 +19,6 @@ export function getObstaclePointsForElement({
     }
 
     return obstaclePoints;
-}
-
-export function getHoveredPoints(bounds) {
-    return getPointsBasedOnBounds(bounds);
 }
 
 // Determinate max expanding area for element.
@@ -136,44 +104,3 @@ export function getRowBasedOnHeight(height, elementMinHeight, elementRow) {
     const paddingGap = 16;
     return Math.floor(height / (elementMinHeight + paddingGap)) + elementRow;
 }
-
-export function isDraggedElementColliding(draggedElementCoordinates, layout) {
-    const { xPos, yPos } = draggedElementCoordinates;
-    const width = xPos.end - xPos.start;
-    const height = yPos.end - yPos.start;
-    const maxColumns = 4;
-    const maxColumnIndex = maxColumns + 1;
-    const maxRow = getMaxRowInLayout(layout);
-
-    // Element is out of bounds with width
-    if (xPos.start + width > maxColumnIndex) {
-        return true;
-    }
-
-    // Element is out of bounds with height
-    if (yPos.start + height > maxRow) {
-        return true;
-    }
-
-    return layout.some((layoutElement) => {
-        const { coordinates, isObstacle } = layoutElement;
-        const { xPos: xPosElement, yPos: yPosElement } = coordinates;
-
-        const draggedElOverflowObstacle = xPosElement.start >= xPos.start
-            && xPosElement.start < xPos.end
-            && yPosElement.start >= yPos.start
-            && yPosElement.start < yPos.end;
-
-        return draggedElOverflowObstacle && isObstacle;
-    });
-}
-
-export default {
-    getHoveredPoints,
-    getHighlightingHintPoints,
-    getMaxColumnForGivenRow,
-    getMaxRowForGivenColumn,
-    getColumnBasedOnWidth,
-    getRowBasedOnHeight,
-    isDraggedElementColliding,
-};

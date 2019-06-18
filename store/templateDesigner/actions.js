@@ -86,17 +86,6 @@ export default {
 
         commit('addListElementToLayout', layoutElement);
     },
-    addElementToLayoutAtCoordinates: ({ commit, getters }, { elementToAdd }) => {
-        const index = getters.layoutElementIndex(
-            elementToAdd.coordinates.xPos.start,
-            elementToAdd.coordinates.yPos.start,
-        );
-
-        commit('addElementToLayoutAtCoordinates', {
-            index,
-            element: elementToAdd,
-        });
-    },
     updateLayoutElementBounds: ({ commit }, { index, width, height }) => {
         commit('updateLayoutElementBounds', { index, width, height });
     },
