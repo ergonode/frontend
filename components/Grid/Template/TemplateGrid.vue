@@ -18,7 +18,10 @@
                     <template v-for="item in draggableGridAreaLenght">
                         <TemplateGridGhostItem
                             :key="item"
-                            :position="{ row: Math.ceil(item / columnsNumber), column: item % columnsNumber }"
+                            :position="{
+                                row: Math.ceil(item / columnsNumber),
+                                column: item % columnsNumber,
+                            }"
                             @drop="onDrop" />
                     </template>
                     <div
@@ -117,7 +120,7 @@ export default {
         onDrop(position) {
             this.insertedItems.push({ ...position });
         },
-        onRowsCountChange({ key, value }) {
+        onRowsCountChange({ /** key, */ value }) {
             this.maxRows = value;
         },
         getComponentViaName(name) {
