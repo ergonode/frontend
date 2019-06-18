@@ -105,7 +105,7 @@ export default {
         },
         gridStyles() {
             return {
-                gridTemplateColumns: 'repeat(4, 1fr)',
+                gridTemplateColumns: `repeat(${this.columnsNumber}, 1fr)`,
                 gridAutoRows: '50px',
             };
         },
