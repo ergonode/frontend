@@ -10,8 +10,8 @@ export const actions = {
         commit('authentication/setAction', { key: 'jwt', value: token });
         commit('authentication/setAction', { key: 'user', value: user });
     },
-    resetState({ commit }) {
-        commit('attribute/clearStorage');
+    resetState({ dispatch, commit }) {
+        dispatch('attribute/clearStorage');
         commit('authentication/clearStorage');
         commit('data/clearStorage');
         commit('categories/clearStorage');

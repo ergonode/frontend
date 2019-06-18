@@ -2,60 +2,79 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+export const types = {
+    SET_ATTRIBUTE_ID: 'SET_ATTRIBUTE_ID',
+    INITIALIZE_OPTION_KEYS: 'INITIALIZE_OPTION_KEYS',
+    ADD_ATTRIBUTE_OPTION_KEY: 'ADD_ATTRIBUTE_OPTION_KEY',
+    REMOVE_ATTRIBUTE_OPTION_KEY: 'REMOVE_ATTRIBUTE_OPTION_KEY',
+    REMOVE_ATTRIBUTE_OPTION_VALUE: 'REMOVE_ATTRIBUTE_OPTION_VALUE',
+    SET_ATTRIBUTE_OPTION_KEY: 'SET_ATTRIBUTE_OPTION_KEY',
+    SET_MULTILINGUAL_ATTRIBUTE: 'SET_MULTILINGUAL_ATTRIBUTE',
+    INITIALIZE_OPTION_VALUE_FOR_LANGUAGE_CODE: 'INITIALIZE_OPTION_VALUE_FOR_LANGUAGE_CODE',
+    INITIALIZE_OPTION_VALUES: 'INITIALIZE_OPTION_VALUES',
+    SET_OPTION_VALUE_FOR_LANGUAGE_CODE: 'SET_OPTION_VALUE_FOR_LANGUAGE_CODE',
+    SET_OPTION_VALUE: 'SET_OPTION_VALUE',
+    SET_ATTRIBUTE_CODE: 'SET_ATTRIBUTE_CODE',
+    SET_ATTRIBUTE_PARAMETER: 'SET_ATTRIBUTE_PARAMETER',
+    SET_ATTRIBUTE_GROUPS: 'SET_ATTRIBUTE_GROUPS',
+    SET_ATTRIBUTE_TYPE: 'SET_ATTRIBUTE_TYPE',
+    CLEAR_STATE: 'CLEAR_STATE',
+};
+
 export default {
-    setAttributeID: (state, { id }) => {
+    [types.SET_ATTRIBUTE_ID]: (state, id) => {
         state.id = id;
     },
-    initializeOptionKeys: (state, { optionKeys }) => {
+    [types.INITIALIZE_OPTION_KEYS]: (state, optionKeys) => {
         state.optionKeys = optionKeys;
     },
-    addAttributeOptionKey: (state, { key }) => {
+    [types.ADD_ATTRIBUTE_OPTION_KEY]: (state, key) => {
         state.optionKeys.push(key);
     },
-    removeAttributeOptionKey: (state, { index }) => {
+    [types.REMOVE_ATTRIBUTE_OPTION_KEY]: (state, index) => {
         state.optionKeys.splice(index, 1);
     },
-    removeAttributeOptionValue: (state, { languageCode, index }) => {
+    [types.REMOVE_ATTRIBUTE_OPTION_VALUE]: (state, { languageCode, index }) => {
         state.optionValues[languageCode].splice(index, 1);
     },
-    setMultilingualAttribute: (state, { isMultilingual }) => {
+    [types.SET_MULTILINGUAL_ATTRIBUTE]: (state, { isMultilingual }) => {
         state.isMultilingual = isMultilingual;
     },
-    setAttributeOptionKey: (state, { index, key }) => {
+    [types.SET_ATTRIBUTE_OPTION_KEY]: (state, { index, key }) => {
         state.optionKeys[index] = key;
         state.optionKeys = [...state.optionKeys];
     },
-    initializeOptionValueForLanguageCode: (state, { languageCode }) => {
+    [types.INITIALIZE_OPTION_VALUE_FOR_LANGUAGE_CODE]: (state, languageCode) => {
         state.optionValues[languageCode] = [];
     },
-    initializeOptionValues: (state, { optionValues = [] }) => {
+    [types.INITIALIZE_OPTION_VALUES]: (state, optionValues = []) => {
         state.optionValues = optionValues;
     },
-    setOptionValueForLanguageCode: (state, { languageCode, index, value }) => {
+    [types.SET_OPTION_VALUE_FOR_LANGUAGE_CODE]: (state, { languageCode, index, value }) => {
         state.optionValues[languageCode][index] = value;
         state.optionValues = {
             ...state.optionValues,
         };
     },
-    setOptionValue: (state, { index, value }) => {
+    [types.SET_OPTION_VALUE]: (state, { index, value }) => {
         state.optionValues[index] = value;
         state.optionValues = [
             ...state.optionValues,
         ];
     },
-    setAttributeCode: (state, { code }) => {
+    [types.SET_ATTRIBUTE_CODE]: (state, code) => {
         state.code = code;
     },
-    setAttributeParameter: (state, { parameter }) => {
+    [types.SET_ATTRIBUTE_PARAMETER]: (state, parameter) => {
         state.parameter = parameter;
     },
-    setAttributeGroups: (state, { groups }) => {
+    [types.SET_ATTRIBUTE_GROUPS]: (state, groups) => {
         state.groups = groups;
     },
-    setAttributeType: (state, { type }) => {
+    [types.SET_ATTRIBUTE_TYPE]: (state, type) => {
         state.type = type;
     },
-    clearStorage: (state) => {
+    [types.CLEAR_STATE]: (state) => {
         state.id = null;
         state.code = '';
         state.groups = [];
