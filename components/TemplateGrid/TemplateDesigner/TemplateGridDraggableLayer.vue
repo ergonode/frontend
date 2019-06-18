@@ -1,13 +1,12 @@
 <template>
     <div class="draggable-layer">
-        <template v-for="(position, index) in gridLayerPositions">
-            <TemplateGridGhostItem
-                :key="index"
-                :style="{ gridArea: `${position.row} / ${position.column} / auto / auto` }"
-                :position="position"
-                :highlighting-positions="highlightedPositions"
-                @drop="onDrop" />
-        </template>
+        <TemplateGridGhostItem
+            v-for="(position, index) in gridLayerPositions"
+            :key="index"
+            :style="{ gridArea: `${position.row} / ${position.column} / auto / auto` }"
+            :position="position"
+            :highlighting-positions="highlightedPositions"
+            @drop="onDrop" />
         <LayoutElement
             v-for="(element, index) in layoutElements"
             :key="`${element.row}/${element.column}`"
@@ -49,10 +48,12 @@ export default {
         gridLayerPositions() {
             const length = this.rowsNumber * this.columnsNumber;
             const positions = [];
-            for (let i = 0; i < length; i += 1) {
+
+            for (let i = 1; i <= length; i += 1) {
                 const row = Math.ceil(i / this.columnsNumber);
                 const tmpColumn = i % this.columnsNumber;
                 const column = tmpColumn !== 0 ? tmpColumn : this.columnsNumber;
+
                 positions.push({
                     row,
                     column,

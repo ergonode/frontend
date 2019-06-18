@@ -46,7 +46,7 @@
 <script>
 
 import {
-    getHighlightingHintPoints,
+    getHighlightingPositions,
     getMaxRowForGivenColumn,
     getMaxColumnForGivenRow,
     getRowBasedOnHeight,
@@ -91,7 +91,7 @@ export default {
             newHeight: 0,
             actualElementRow: 0,
             actualElementColumn: 0,
-            highlightingPoints: [],
+            highlightingPositions: [],
             elementsGap: 16,
             isContextualMenuActive: false,
             contextualMenuItems: ['Require', 'Remove'],
@@ -157,7 +157,7 @@ export default {
                 height: elementHeight,
             } = this.$el.getBoundingClientRect();
 
-            this.highlightingPoints = getHighlightingHintPoints(
+            this.highlightingPositions = getHighlightingPositions(
                 {
                     row,
                     column,
@@ -208,7 +208,7 @@ export default {
                 false,
             );
 
-            this.$emit('highlightedPositionChange', this.highlightingPoints);
+            this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
         doResizeDrag(event) {
             const { row, column } = this.element;
@@ -218,11 +218,11 @@ export default {
             const rowBellowMouse = getRowBasedOnHeight(height, this.minHeight, row);
             const maxColumn = getMaxColumnForGivenRow(
                 this.actualElementRow,
-                this.highlightingPoints,
+                this.highlightingPositions,
             );
             const maxRow = getMaxRowForGivenColumn(
                 this.actualElementColumn,
-                this.highlightingPoints,
+                this.highlightingPositions,
             );
 
             if (width >= this.minWidth && columnBellowMouse <= maxColumn) {
@@ -278,7 +278,7 @@ export default {
                 false,
             );
             this.isDraggingEnabled = true;
-            this.highlightingPoints = [];
+            this.highlightingPositions = [];
 
             removeGhostElementFromDraggableLayer();
 
