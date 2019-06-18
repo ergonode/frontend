@@ -32,21 +32,8 @@ export default {
             templateDesignerLayout: state => state.templateLayout,
         }),
     },
-    created() {
-        const numberOfColumns = 4;
-        const numberOfItems = 100;
-
-        this.setTemplateDesignerLayout(
-            generateLayout(
-                numberOfColumns,
-                numberOfItems,
-                'TemplateGridItem',
-            ),
-        );
-    },
     methods: {
         ...mapActions('templateDesigner', [
-            'setTemplateDesignerLayout',
             'createTemplateDesigner',
         ]),
         ...mapActions('validations', [

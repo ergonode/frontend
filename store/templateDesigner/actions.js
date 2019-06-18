@@ -97,36 +97,12 @@ export default {
             element: elementToAdd,
         });
     },
-    updateLayoutElementCoordinates: ({ commit, getters }, payload) => {
-        const index = getters.layoutElementIndex(
-            payload.xPos.start,
-            payload.yPos.start,
-        );
-
-        commit('updateLayoutElementCoordinates', {
-            index,
-            coordinates: payload,
-        });
-    },
-    updateObstaclesAtPoints: ({ commit, getters }, { points, isObstacle }) => {
-        points.forEach((point) => {
-            const index = getters.layoutElementIndex(
-                point.x,
-                point.y,
-            );
-            commit('updateObstacleStageOfElement', {
-                index,
-                isObstacle,
-            });
-        });
-    },
     updateLayoutElementBounds: ({ commit }, { index, width, height }) => {
         commit('updateLayoutElementBounds', { index, width, height });
     },
     updateLayoutElementPosition: ({ commit }, { index, row, column }) => {
         commit('updateLayoutElementPosition', { index, row, column });
     },
-    initializeDraggedElementCollision: ({ commit }, payload) => commit('initializeDraggedElementCollision', payload),
     setTemplateDesignerSectionTitle: ({ commit, getters }, { row, column, title }) => {
         const index = getters.layoutElementIndex(
             column,
@@ -138,19 +114,9 @@ export default {
             title,
         });
     },
+    removeLayoutElementAtIndex: ({ commit }, index) => commit('removeLayoutElementAtIndex', index),
     setTemplateDesignerTitle: ({ commit }, { title }) => commit('setTemplateDesignerTitle', { title }),
     setTemplateDesignerImage: ({ commit }, { image }) => commit('setTemplateDesignerImage', { image }),
-    insertElementToLayout: ({ commit }, payload) => commit('insertElementToLayout', payload),
-    setElementRequirement: ({ commit, state }, { id, required }) => {
-        const elementIndex = state.templateLayout.findIndex(
-            element => element.data && element.data.id === id,
-        );
-
-        commit('setElementRequirement', {
-            required,
-            index: elementIndex,
-        });
-    },
-    setTemplateDesignerLayout: ({ commit }, payload) => commit('setTemplateDesignerLayout', payload),
+    setLayoutElementRequirement: ({ commit }, payload) => commit('setLayoutElementRequirement', payload),
     clearStorage: ({ commit }) => commit('clearStorage'),
 };

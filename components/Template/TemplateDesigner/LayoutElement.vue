@@ -7,7 +7,9 @@
         class="layout-element"
         :draggable="isDraggingEnabled"
         @dragstart="onDragStart"
-        @dragend="onDragEnd">
+        @dragend="onDragEnd"
+        @mouseover="onMouseOver"
+        @mouseout="onMouseOut">
         <div class="horizontal-wrapper">
             <div class="layout-element__icon">
                 <Icon
@@ -28,6 +30,12 @@
                     class="txt--dark-graphite typo-subtitle txt-fixed "
                     v-text="element.label || 'No translation'" />
             </div>
+            <ButtonSelect
+                :class="['layout-element__contextual-menu', contextualMenuHoveStateClasses]"
+                :icon="contextualMenuStateIcon"
+                :options="contextualMenuItems"
+                @input="onSelectValue"
+                @focus="onSelectFocus" />
             <div
                 class="layout-element__resizer"
                 @mousedown="initResizeDrag" />
@@ -51,6 +59,8 @@ import {
     removeGhostElementFromDraggableLayer,
 } from '~/model/template_designer/layout/GhostElement';
 import { mapState, mapActions } from 'vuex';
+import Icon from '~/components/Icon/Icon';
+import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
 
 export default {
     name: 'LayoutElement',
@@ -65,7 +75,8 @@ export default {
         },
     },
     components: {
-        Icon: () => import('~/components/Icon/Icon'),
+        Icon,
+        ButtonSelect,
     },
     data() {
         return {
@@ -82,6 +93,9 @@ export default {
             actualElementColumn: 0,
             highlightingPoints: [],
             elementsGap: 16,
+            isContextualMenuActive: false,
+            contextualMenuItems: ['Require', 'Remove'],
+            isHovered: false,
         };
     },
     computed: {
@@ -94,15 +108,31 @@ export default {
 
             return `sprite-attribute attribute-${convertedType}`;
         },
+        contextualMenuHoveStateClasses() {
+            return { 'layout-element__contextual-menu--hovered': this.isHovered };
+        },
+        contextualMenuStateIcon() {
+            return this.isContextualMenuActive
+                ? 'sprite-system system-dots--selected'
+                : 'sprite-system system-dots--deactive';
+        },
     },
     methods: {
         ...mapActions('templateDesigner', [
             'updateLayoutElementBounds',
             'updateLayoutElementPosition',
+            'setLayoutElementRequirement',
+            'removeLayoutElementAtIndex',
         ]),
         ...mapActions('draggable', [
             'setDraggedElement',
         ]),
+        onMouseOver() {
+            this.isHovered = true;
+        },
+        onMouseOut() {
+            if (!this.isContextualMenuActive) this.isHovered = false;
+        },
         onDragStart() {
             this.setDraggedElement({ ...this.element, index: this.index });
         },
@@ -254,6 +284,25 @@ export default {
 
             this.$emit('highlightedPositionChange', []);
         },
+        onSelectFocus(isFocused) {
+            if (!isFocused) this.isHovered = false;
+
+            this.isContextualMenuActive = isFocused;
+        },
+        onSelectValue(value) {
+            switch (value) {
+            case 'Require':
+                this.setLayoutElementRequirement({
+                    index: this.index,
+                    required: !this.element.required,
+                });
+                break;
+            case 'Remove':
+                this.removeLayoutElementAtIndex();
+                break;
+            default: break;
+            }
+        },
     },
 };
 </script>
@@ -270,19 +319,22 @@ export default {
         box-sizing: border-box;
         background-color: $background;
         user-select: none;
-        overflow: hidden;
-        resize: both;
+        cursor: grab;
 
         .horizontal-wrapper {
             z-index: 5;
             display: flex;
             flex: 1;
+            height: 100%;
             padding-left: 10px;
             background-color: $background;
+            overflow: hidden;
+            resize: both;
         }
 
         .vertical-wrapper {
             display: flex;
+            flex: 1;
             flex-direction: column;
             padding: 8px;
         }
@@ -290,6 +342,15 @@ export default {
         &__icon {
             display: flex;
             padding-top: 12px;
+        }
+
+        &__contextual-menu {
+            flex: 0;
+            opacity: 0;
+
+            &--hovered {
+                opacity: 1;
+            }
         }
 
         &__resizer {

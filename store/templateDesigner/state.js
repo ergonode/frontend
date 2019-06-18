@@ -5,7 +5,6 @@
 export default () => ({
     templateLayout: [],
     layoutElements: [],
-    isDraggedElementColliding: false,
     title: '',
     image: null,
     titleValidationError: null,
