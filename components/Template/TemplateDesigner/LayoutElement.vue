@@ -143,8 +143,6 @@ export default {
             const {
                 row,
                 column,
-                width,
-                height,
                 maxWidth,
                 maxHeight,
             } = this.element;
@@ -170,8 +168,8 @@ export default {
                 height: this.startHeight,
             });
 
-            this.minWidth = (this.startWidth - (this.elementsGap * (width - 1))) / width;
-            this.minHeight = (this.startHeight - (this.elementsGap * (height - 1))) / height;
+            this.minWidth = this.getElementMinWidth();
+            this.minHeight = this.getElementMinHeight();
 
             this.addEventListenersForResizeState();
 
@@ -224,6 +222,14 @@ export default {
         },
         getElementHeightBasedOnMouseYPosition(yPos) {
             return this.startHeight + yPos - this.startY;
+        },
+        getElementMinWidth() {
+            const { width } = this.element;
+            return (this.startWidth - (this.elementsGap * (width - 1))) / width;
+        },
+        getElementMinHeight() {
+            const { height } = this.element;
+            return (this.startHeight - (this.elementsGap * (height - 1))) / height;
         },
         updateElementWidth(width) {
             const { column } = this.element;
