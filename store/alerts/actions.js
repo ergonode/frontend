@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
+import types from './mutation-types';
 import { SUCCESS, ALERT_TIME_TO_LEAVE } from '~/defaults/alerts';
 
 export default {

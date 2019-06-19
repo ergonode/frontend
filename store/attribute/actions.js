@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
+import types from './mutation-types';
 import { getMappedGroupLabels, getMappedOptionKeysValues, getMappedParameterValues } from '~/model/mappers/attributeMapper';
 
 export default {
@@ -85,7 +85,7 @@ export default {
             commit(types.SET_ATTRIBUTE_ID, id);
             commit(types.SET_ATTRIBUTE_CODE, code);
             commit(types.SET_ATTRIBUTE_TYPE, rootState.data.attrTypes[type]);
-            commit(types.SET_MULTILINGUAL_ATTRIBUTE, { isMultilingual: multilingual });
+            commit(types.SET_MULTILINGUAL_ATTRIBUTE, multilingual);
             commit(types.SET_ATTRIBUTE_GROUPS, getMappedGroupLabels(
                 rootState.data.attrGroups,
                 groups,
@@ -110,8 +110,8 @@ export default {
             }
         }).catch(e => onError(e));
     },
-    setMultilingualAttribute({ commit }, payload) {
-        commit(types.SET_MULTILINGUAL_ATTRIBUTE, payload);
+    setMultilingualAttribute({ commit }, { isMultilingual }) {
+        commit(types.SET_MULTILINGUAL_ATTRIBUTE, isMultilingual);
     },
     createAttribute(
         { commit, rootState },

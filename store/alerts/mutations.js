@@ -2,10 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export const types = {
-    APPEND_ALERT: 'APPEND_ALERT',
-    REMOVE_ALERT: 'REMOVE_ALERT',
-};
+import types from './mutation-types';
 
 export default {
     [types.APPEND_ALERT](state, payload) {
