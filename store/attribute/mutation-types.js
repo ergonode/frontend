@@ -1,3 +1,7 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
 export default {
     SET_ATTRIBUTE_ID: 'SET_ATTRIBUTE_ID',
     INITIALIZE_OPTION_KEYS: 'INITIALIZE_OPTION_KEYS',
