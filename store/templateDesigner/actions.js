@@ -11,8 +11,9 @@ export default {
         return this.app.$axios.$get(path).then(({
             name,
             image_id: imageID,
+            /**
             sections,
-            elements,
+            elements, */
         }) => {
             // TODO: Map elements
             commit('setTemplateDesignerTitle', { title: name });
