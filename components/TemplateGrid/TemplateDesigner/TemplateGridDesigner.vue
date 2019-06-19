@@ -23,22 +23,22 @@ export default {
     data() {
         return {
             rowHeight: 50,
+            debounceFunc: null,
         };
+    },
+    created() {
+        this.debounceFunc = debounce(this.emitRowsNumber, 100);
     },
     mounted() {
         this.emitRowsNumber();
-        window.addEventListener('resize', this.debounceRowsNumberCalculation);
+        window.addEventListener('resize', this.debounceFunc);
     },
     destroyed() {
-        window.removeEventListener('resize', this.debounceRowsNumberCalculation);
+        window.removeEventListener('resize', this.debounceFunc);
     },
     methods: {
-        debounceRowsNumberCalculation(time = 300) {
-            debounce(() => {
-                this.emitRowsNumber();
-            }, time)();
-        },
         emitRowsNumber() {
+            console.log('dupa');
             this.$emit('rowsCount', { key: 'rowsCount', value: this.getTotalRowsInTemplate() });
         },
         getTotalRowsInTemplate() {

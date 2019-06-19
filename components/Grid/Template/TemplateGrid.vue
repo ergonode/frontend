@@ -8,7 +8,7 @@
             <VerticalTabBar :items="verticalTabs" />
             <TemplateGridDesigner @rowsCount="onRowsCountChange">
                 <TemplateGridPresentationLayer
-                    :grid-styles="gridStyles"
+                    :style="gridStyles"
                     :columns="columnsNumber"
                     :rows="maxRows"
                     :is-header="false" />
