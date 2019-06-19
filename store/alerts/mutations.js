@@ -8,10 +8,10 @@ export const types = {
 };
 
 export default {
-    [types.APPEND_ALERT]: (state, payload) => {
+    [types.APPEND_ALERT](state, payload) {
         state.alerts.push(payload);
     },
-    [types.REMOVE_ALERT]: (state, index) => {
+    [types.REMOVE_ALERT](state, index) {
         state.alerts.splice(index, 1);
     },
 };

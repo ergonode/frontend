@@ -6,7 +6,7 @@ import { types } from './mutations';
 import { SUCCESS, ALERT_TIME_TO_LEAVE } from '~/defaults/alerts';
 
 export default {
-    addAlert: ({ commit, dispatch }, alert) => {
+    addAlert({ commit, dispatch }, alert) {
         const id = Math.random().toString(36).substr(2, 9);
         const {
             message = '',
@@ -19,7 +19,7 @@ export default {
 
         commit(types.APPEND_ALERT, { AlertData: { id, type, message }, timeOut });
     },
-    removeAlert: ({ commit, state }, index) => {
+    removeAlert({ commit, state }, index) {
         const indexToRemove = state.alerts.findIndex(
             alert => alert.AlertData.id === index,
         );
