@@ -148,45 +148,20 @@ export default {
                 maxWidth,
                 maxHeight,
             } = this.element;
-            const {
-                clientX,
-                clientY,
-            } = event;
-            const {
-                width: elementWidth,
-                height: elementHeight,
-            } = this.$el.getBoundingClientRect();
+            this.highlightingPositions = getHighlightingPositions({
+                row,
+                column,
+                maxWidth,
+                maxHeight,
+            },
+            this.layoutElements);
 
-            this.highlightingPositions = getHighlightingPositions(
-                {
-                    row,
-                    column,
-                    maxWidth,
-                    maxHeight,
-                },
-                this.layoutElements,
-            );
-
-            this.newWidth = width;
-            this.newHeight = height;
-            this.isDraggingEnabled = false;
-            this.isHovered = false;
-            this.startX = clientX;
-            this.startY = clientY;
-            this.startWidth = parseInt(
-                elementWidth,
-                10,
-            );
-            this.startHeight = parseInt(
-                elementHeight,
-                10,
-            );
-            this.actualElementRow = row;
-            this.actualElementColumn = column;
-            this.$el.style.position = 'absolute';
-            this.$el.style.width = `${this.startWidth}px`;
-            this.$el.style.height = `${this.startHeight}px`;
-            this.$el.style.border = '2px solid #00bc87';
+            this.blockOtherInteractionsOnResizeEvent();
+            this.initActualElementNormalizedBoundary();
+            this.initElementNormalizedBoundary();
+            this.initMousePosition(event);
+            this.initElementBoundary();
+            this.initElementStyleForResizeState();
 
             addGhostElementToDraggableLayer({
                 top: this.$el.offsetTop,
@@ -198,90 +173,30 @@ export default {
             this.minWidth = (this.startWidth - (this.elementsGap * (width - 1))) / width;
             this.minHeight = (this.startHeight - (this.elementsGap * (height - 1))) / height;
 
-            document.documentElement.addEventListener(
-                'mousemove',
-                this.doResizeDrag,
-                false,
-            );
-            document.documentElement.addEventListener(
-                'mouseup',
-                this.stopResizeDrag,
-                false,
-            );
+            this.addEventListenersForResizeState();
 
             this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
         doResizeDrag(event) {
-            const { row, column } = this.element;
-            const width = this.startWidth + event.clientX - this.startX;
-            const height = this.startHeight + event.clientY - this.startY;
-            const columnBellowMouse = getColumnBasedOnWidth(width, this.minWidth, column);
-            const rowBellowMouse = getRowBasedOnHeight(height, this.minHeight, row);
-            const maxColumn = getMaxColumnForGivenRow(
-                this.actualElementRow,
-                this.highlightingPositions,
-            );
-            const maxRow = getMaxRowForGivenColumn(
-                this.actualElementColumn,
-                this.highlightingPositions,
-            );
+            const { clientX, clientY } = event;
+            const width = this.getElementWidthBasedOnMouseXPosition(clientX);
+            const height = this.getElementHeightBasedOnMouseYPosition(clientY);
 
-            if (width >= this.minWidth && columnBellowMouse <= maxColumn) {
-                this.newWidth = columnBellowMouse - column + 1;
-
-                if (columnBellowMouse !== this.actualElementColumn) {
-                    const gapsValue = this.elementsGap * (this.newWidth - 1);
-                    const ghostElementWidth = this.minWidth * this.newWidth
-                        + gapsValue;
-
-                    updateGhostElementWidth(ghostElementWidth);
-                }
-
-                this.$el.style.width = `${width}px`;
-                this.actualElementColumn = columnBellowMouse;
-            }
-
-            if (height >= this.minHeight && rowBellowMouse <= maxRow) {
-                this.newHeight = rowBellowMouse - row + 1;
-
-                if (rowBellowMouse !== this.actualElementRow) {
-                    const gapsValue = this.elementsGap * (this.newHeight - 1);
-                    const ghostElementHeight = this.minHeight * this.newHeight
-                        + gapsValue;
-
-                    updateGhostElementHeight(ghostElementHeight);
-                }
-
-                this.$el.style.height = `${height}px`;
-                this.actualElementRow = rowBellowMouse;
-            }
+            this.updateElementWidth(width);
+            this.updateElementHeight(height);
         },
         stopResizeDrag() {
-            this.$el.style.border = '1px solid #d6d7d8';
-            this.$el.style.position = 'relative';
-            this.$el.style.width = null;
-            this.$el.style.height = null;
-
             this.updateLayoutElementBounds({
                 index: this.index,
                 width: this.newWidth,
                 height: this.newHeight,
             });
 
-            document.documentElement.removeEventListener(
-                'mousemove',
-                this.doResizeDrag,
-                false,
-            );
-            document.documentElement.removeEventListener(
-                'mouseup',
-                this.stopResizeDrag,
-                false,
-            );
-            this.isDraggingEnabled = true;
-            this.highlightingPositions = [];
+            this.resetElementStyleForEndResizeInteraction();
+            this.resetDataForEndResizeInteraction();
 
             removeGhostElementFromDraggableLayer();
+            this.removeEventListenersForResizeState();
 
             this.$emit('highlightedPositionChange', []);
         },
@@ -303,6 +218,127 @@ export default {
                 break;
             default: break;
             }
+        },
+        getElementWidthBasedOnMouseXPosition(xPos) {
+            return this.startWidth + xPos - this.startX;
+        },
+        getElementHeightBasedOnMouseYPosition(yPos) {
+            return this.startHeight + yPos - this.startY;
+        },
+        updateElementWidth(width) {
+            const { column } = this.element;
+            const columnBellowMouse = getColumnBasedOnWidth(width, this.minWidth, column);
+            const maxColumn = getMaxColumnForGivenRow(
+                this.actualElementRow,
+                this.highlightingPositions,
+            );
+
+            if (width >= this.minWidth && columnBellowMouse <= maxColumn) {
+                this.newWidth = columnBellowMouse - column + 1;
+
+                if (columnBellowMouse !== this.actualElementColumn) {
+                    const gapsValue = this.elementsGap * (this.newWidth - 1);
+                    const ghostElementWidth = this.minWidth * this.newWidth
+                        + gapsValue;
+
+                    updateGhostElementWidth(ghostElementWidth);
+                }
+
+                this.$el.style.width = `${width}px`;
+                this.actualElementColumn = columnBellowMouse;
+            }
+        },
+        updateElementHeight(height) {
+            const { row } = this.element;
+            const rowBellowMouse = getRowBasedOnHeight(height, this.minHeight, row);
+            const maxRow = getMaxRowForGivenColumn(
+                this.actualElementColumn,
+                this.highlightingPositions,
+            );
+
+            if (height >= this.minHeight && rowBellowMouse <= maxRow) {
+                this.newHeight = rowBellowMouse - row + 1;
+
+                if (rowBellowMouse !== this.actualElementRow) {
+                    const gapsValue = this.elementsGap * (this.newHeight - 1);
+                    const ghostElementHeight = this.minHeight * this.newHeight
+                        + gapsValue;
+
+                    updateGhostElementHeight(ghostElementHeight);
+                }
+
+                this.$el.style.height = `${height}px`;
+                this.actualElementRow = rowBellowMouse;
+            }
+        },
+        addEventListenersForResizeState() {
+            document.documentElement.addEventListener(
+                'mousemove',
+                this.doResizeDrag,
+                false,
+            );
+            document.documentElement.addEventListener(
+                'mouseup',
+                this.stopResizeDrag,
+                false,
+            );
+        },
+        removeEventListenersForResizeState() {
+            document.documentElement.removeEventListener(
+                'mousemove',
+                this.doResizeDrag,
+                false,
+            );
+            document.documentElement.removeEventListener(
+                'mouseup',
+                this.stopResizeDrag,
+                false,
+            );
+        },
+        blockOtherInteractionsOnResizeEvent() {
+            this.isDraggingEnabled = false;
+            this.isHovered = false;
+        },
+        initMousePosition({ clientX, clientY }) {
+            this.startX = clientX;
+            this.startY = clientY;
+        },
+        initActualElementNormalizedBoundary() {
+            const { row, column } = this.element;
+
+            this.actualElementRow = row;
+            this.actualElementColumn = column;
+        },
+        initElementBoundary() {
+            const {
+                width: elementWidth,
+                height: elementHeight,
+            } = this.$el.getBoundingClientRect();
+
+            this.startWidth = parseInt(elementWidth, 10);
+            this.startHeight = parseInt(elementHeight, 10);
+        },
+        initElementNormalizedBoundary() {
+            const { width, height } = this.element;
+
+            this.newWidth = width;
+            this.newHeight = height;
+        },
+        initElementStyleForResizeState() {
+            this.$el.style.position = 'absolute';
+            this.$el.style.width = `${this.startWidth}px`;
+            this.$el.style.height = `${this.startHeight}px`;
+            this.$el.style.border = '2px solid #00bc87';
+        },
+        resetElementStyleForEndResizeInteraction() {
+            this.$el.style.border = '1px solid #d6d7d8';
+            this.$el.style.position = 'relative';
+            this.$el.style.width = null;
+            this.$el.style.height = null;
+        },
+        resetDataForEndResizeInteraction() {
+            this.isDraggingEnabled = true;
+            this.highlightingPositions = [];
         },
     },
 };

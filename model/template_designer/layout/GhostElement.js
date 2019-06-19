@@ -1,3 +1,7 @@
+// Helpers
+const draggableLayerElementClass = '.draggable-layer';
+const ghostElementClass = '.ghost-element';
+
 export function addGhostElementToDraggableLayer({
     top, left, width, height,
 }) {
@@ -18,29 +22,37 @@ export function addGhostElementToDraggableLayer({
     `;
 
     ghostElement.setAttribute('style', ghostElementStyle);
-    ghostElement.classList.add('ghost-element');
+    ghostElement.classList.add(ghostElementClass);
 
-    const draggableLayerElement = document.documentElement.querySelector('.draggable-layer');
+    const draggableLayerElement = document.documentElement.querySelector(
+        draggableLayerElementClass,
+    );
     draggableLayerElement.appendChild(ghostElement);
 }
 
 export function updateGhostElementWidth(width) {
-    const draggableLayerElement = document.documentElement.querySelector('.draggable-layer');
-    const ghostElement = draggableLayerElement.querySelector('.ghost-element');
+    const draggableLayerElement = document.documentElement.querySelector(
+        draggableLayerElementClass,
+    );
+    const ghostElement = draggableLayerElement.querySelector(ghostElementClass);
 
     ghostElement.style.width = `${width}px`;
 }
 
 export function updateGhostElementHeight(height) {
-    const draggableLayerElement = document.documentElement.querySelector('.draggable-layer');
-    const ghostElement = draggableLayerElement.querySelector('.ghost-element');
+    const draggableLayerElement = document.documentElement.querySelector(
+        draggableLayerElementClass,
+    );
+    const ghostElement = draggableLayerElement.querySelector(ghostElementClass);
 
     ghostElement.style.height = `${height}px`;
 }
 
 export function removeGhostElementFromDraggableLayer() {
-    const draggableLayerElement = document.documentElement.querySelector('.draggable-layer');
-    const ghostElement = draggableLayerElement.querySelector('.ghost-element');
+    const draggableLayerElement = document.documentElement.querySelector(
+        draggableLayerElementClass,
+    );
+    const ghostElement = draggableLayerElement.querySelector(ghostElementClass);
 
     draggableLayerElement.removeChild(ghostElement);
 }
