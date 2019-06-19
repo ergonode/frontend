@@ -128,7 +128,7 @@ export default {
             'setDraggedElement',
         ]),
         onMouseOver() {
-            this.isHovered = true;
+            if (this.isDraggingEnabled) this.isHovered = true;
         },
         onMouseOut() {
             if (!this.isContextualMenuActive) this.isHovered = false;
@@ -170,6 +170,7 @@ export default {
             this.newWidth = width;
             this.newHeight = height;
             this.isDraggingEnabled = false;
+            this.isHovered = false;
             this.startX = clientX;
             this.startY = clientY;
             this.startWidth = parseInt(
