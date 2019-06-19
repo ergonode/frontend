@@ -2,10 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import types from './mutation-types';
+
 export default {
-    setAction: ({ commit }, payload) => {
-        commit('setState', payload);
-    },
     getCategoryById(
         { commit, rootState },
         { categoryId, onError },
@@ -20,9 +19,9 @@ export default {
                 name,
             };
 
-            commit('setState', { key: 'id', value: id });
-            commit('setState', { key: 'code', value: code });
-            commit('setState', { key: 'name', value: name });
+            commit(types.SET_ID, id);
+            commit(types.SET_CODE, code);
+            commit(types.SET_NAME, name);
 
             commit('translations/setTabTranslations', { translations }, { root: true });
         }).catch(e => onError(e.data));
@@ -37,7 +36,7 @@ export default {
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$post(`${userLanguageCode}/categories`, data).then(({ id }) => {
-            commit('setState', { key: 'id', value: id });
+            commit(types.SET_ID, id);
             onSuccess(id);
         }).catch(e => onError(e.data));
     },
@@ -53,7 +52,10 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$put(`${userLanguageCode}/categories/${id}`, data).then(response => onSuccess(response)).catch(e => onError(e.data));
     },
-    clearStorage: ({ commit }) => {
-        commit('clearStorage');
+    setCategoryCode({ commit }, code) {
+        commit(types.SET_CODE, code);
+    },
+    clearStorage({ commit }) {
+        commit(types.CLEAR_STATE);
     },
 };
