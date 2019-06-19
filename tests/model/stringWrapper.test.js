@@ -5,7 +5,7 @@
 import {
   toCapitalize,
   capitalizeAndConcatenationArray,
-} from '~/model/stringOperations';
+} from '~/model/stringWrapper';
 
 it('Capitalize first letter', () => {
   const fun = toCapitalize('tEst');

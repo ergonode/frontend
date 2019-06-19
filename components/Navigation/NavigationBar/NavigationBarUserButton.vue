@@ -28,7 +28,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { toCapitalize } from '~/model/stringOperations';
+import { toCapitalize } from '~/model/stringWrapper';
 
 export default {
     name: 'NavigationBarUserButton',

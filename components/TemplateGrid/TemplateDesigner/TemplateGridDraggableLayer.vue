@@ -6,6 +6,10 @@
             :style="{ gridArea: `${position.row} / ${position.column} / auto / auto` }"
             :position="position"
             :highlighting-positions="highlightedPositions"
+            :min-highlighted-column="minHighlightedColumn"
+            :max-highlighted-column="maxHighlightedColumn"
+            :min-highlighted-row="minHighlightedRow"
+            :max-highlighted-row="maxHighlightedRow"
             @drop="onDrop" />
         <LayoutElement
             v-for="(element, index) in layoutElements"
@@ -18,6 +22,11 @@
 </template>
 
 <script>
+import {
+    maxObjectValueInArrayByObjectKey,
+    minObjectValueInArrayByObjectKey,
+} from '~/model/arrayWrapper';
+
 export default {
     name: 'TemplateGridDraggableLayer',
     components: {
@@ -42,6 +51,10 @@ export default {
     data() {
         return {
             highlightedPositions: [],
+            minHighlightedRow: 0,
+            maxHighlightedRow: 0,
+            minHighlightedColumn: 0,
+            maxHighlightedColumn: 0,
         };
     },
     computed: {
@@ -69,6 +82,11 @@ export default {
         },
         onHighlightedPositionsChange(positions) {
             this.highlightedPositions = positions;
+
+            this.maxHighlightedRow = maxObjectValueInArrayByObjectKey(positions, 'row');
+            this.minHighlightedRow = minObjectValueInArrayByObjectKey(positions, 'row');
+            this.minHighlightedColumn = minObjectValueInArrayByObjectKey(positions, 'column');
+            this.maxHighlightedColumn = maxObjectValueInArrayByObjectKey(positions, 'column');
         },
         getGhostItemPosition({
             row, column, width, height,

@@ -31,9 +31,24 @@ export default {
             type: Object,
             required: true,
         },
+        minHighlightedColumn: {
+            type: Number,
+            default: 0,
+        },
+        maxHighlightedColumn: {
+            type: Number,
+            default: 0,
+        },
+        minHighlightedRow: {
+            type: Number,
+            default: 0,
+        },
+        maxHighlightedRow: {
+            type: Number,
+            default: 0,
+        },
         highlightingPositions: {
             type: Array,
-            required: false,
             default: () => [],
         },
     },
@@ -49,23 +64,26 @@ export default {
         draggableStateClasses() {
             return {
                 'ghost-item--highlighted': this.isHighlighted,
-                'ghost-item--last-row-highlighted': this.isLastRowHighlighted,
+                'ghost-item--first-row-highlighted': this.isFirstRowHighlighted,
+                'ghost-item--first-column-highlighted': this.isFirstColumnHighlighted,
             };
         },
         isHighlighted() {
             return this.highlightingPositions.find(this.isEqualToPosition);
         },
-        isLastRowHighlighted() {
-            const { row } = this.position;
-            const { length } = this.highlightingPositions;
+        isFirstRowHighlighted() {
+            const { row, column } = this.position;
 
-            if (length === 0) return false;
+            return row === this.minHighlightedRow
+                && column <= this.maxHighlightedColumn
+                && column >= this.minHighlightedColumn;
+        },
+        isFirstColumnHighlighted() {
+            const { row, column } = this.position;
 
-            const { row: lastRow } = this.highlightingPositions.reduce(
-                (prev, current) => ((prev.row > current.row) ? prev : current),
-            );
-
-            return lastRow === row;
+            return column === this.minHighlightedColumn
+                && row <= this.maxHighlightedRow
+                && row >= this.minHighlightedRow;
         },
     },
     methods: {
@@ -89,9 +107,9 @@ export default {
 
             this.removeGhostElementIfExist();
         },
-        isEqualToPosition(point) {
+        isEqualToPosition(position) {
             const { row, column } = this.position;
-            return row === point.row && column === point.column;
+            return row === position.row && column === position.column;
         },
         addGhostElementIfNeeded() {
             if (typeof this.draggedElement === 'object') {
@@ -123,6 +141,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    $border: 1px dashed $success;
+
     .ghost-item {
         position: relative;
         display: flex;
@@ -141,12 +161,16 @@ export default {
         &--highlighted {
             flex: 1;
             background-color: $lightGreen;
-            border-left: 1px dashed $success;
-            border-top: 1px dashed $success;
+            border-right: $border;
+            border-bottom: $border;
         }
 
-        &--last-row-highlighted {
-            border-bottom: 1px dashed $success;
+        &--first-column-highlighted {
+            border-left: $border;
+        }
+
+        &--first-row-highlighted {
+            border-top: $border;
         }
     }
 </style>
