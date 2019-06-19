@@ -56,7 +56,6 @@ export default {
     methods: {
         ...mapActions('translations', [
             'addCardLanguageCode',
-            'clearTranslations',
         ]),
     },
 };

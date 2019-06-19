@@ -4,6 +4,7 @@
  */
 <template>
     <div
+        class="grid-container"
         @dragover="onDragOver"
         @dragleave="onDragLeave"
         @drop="onDrop">
@@ -12,6 +13,8 @@
 </template>
 
 <script>
+import debounce from 'debounce';
+
 export default {
     name: 'TemplateGridContainer',
     props: {
@@ -59,7 +62,22 @@ export default {
             return Math.max(...this.dataWithoutGhostElement.map(item => item.row));
         },
     },
+    mounted() {
+        this.calculateRowsCount(0);
+        window.addEventListener('resize', this.calculateRowsCount);
+    },
+    destroyed() {
+        window.removeEventListener('resize', this.calculateRowsCount);
+    },
     methods: {
+        calculateRowsCount(time = 300) {
+            debounce(() => {
+                const { clientHeight } = document.querySelector('.grid-container');
+                const visibleRows = Math.ceil(clientHeight / this.rowsHeight);
+                const totalRows = Math.max(this.gridData.length, visibleRows) + 1;
+                this.$emit('setRowsCount', { key: 'rowsCount', value: totalRows });
+            }, time)();
+        },
         setGhostItemPosition({ column, row }) {
             if (
                 (this.lastColumn !== column || this.lastRow !== row)
@@ -228,7 +246,7 @@ export default {
                 const findElements = this.dataWithoutGhostElement.filter(
                     e => (e.column === column - 1 && e.row < row),
                 );
-                const parent = Math.max(...findElements.map(item => item.row));
+                const parent = Math.floor(Math.max(...findElements.map(item => item.row)));
                 parentId = this.dataWithoutGhostElement[parent].id;
             }
             if (this.dataWithoutGhostElement.length >= this.rows - 2) {
@@ -251,7 +269,7 @@ export default {
                 e => (e.column === column && e.row < row),
             );
             if (findBrothers.length) {
-                const brother = Math.max(...findBrothers.map(item => item.row));
+                const brother = Math.floor(Math.max(...findBrothers.map(item => item.row)));
                 const brotherId = this.dataWithoutGhostElement[brother].id;
                 const childrenToChange = this.dataWithoutGhostElement.filter(
                     e => (e.parent === brotherId && e.row > row),
@@ -271,3 +289,11 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .grid-container {
+        position: relative;
+        height: 100%;
+        overflow: auto;
+    }
+</style>

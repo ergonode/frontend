@@ -4,8 +4,7 @@
  */
 <template>
     <div
-        class="grid-items-container"
-        :style="gridStyles">
+        class="grid-items-container">
         <slot />
     </div>
 </template>
@@ -13,18 +12,15 @@
 <script>
 export default {
     name: 'TemplateGridItemsContainer',
-    props: {
-        gridStyles: {
-            type: Object,
-            required: true,
-        },
-    },
 };
 </script>
 
 <style lang="scss" scoped>
     .grid-items-container {
+        position: absolute;
+        top: 0;
         display: grid;
+        width: 100%;
         height: auto;
     }
 </style>

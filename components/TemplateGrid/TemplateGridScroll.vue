@@ -4,12 +4,9 @@
  */
 <template>
     <div
-        :class="['grid-scroll-wrapper', topGradient, bottomGradient]">
-        <div
-            class="grid-scroll"
-            @scroll="onScroll">
-            <slot />
-        </div>
+        class="grid-scroll"
+        @scroll="onScroll">
+        <slot />
     </div>
 </template>
 
@@ -20,11 +17,6 @@ import debounce from 'debounce';
 export default {
     name: 'TemplateGridScroll',
     props: {
-        isGradientOnScroll: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
         dataRowLength: {
             type: Number,
             required: true,
@@ -38,14 +30,6 @@ export default {
         isBottomBoundReached: false,
         isTopBoundReached: true,
     }),
-    computed: {
-        topGradient() {
-            return this.isGradientOnScroll && !this.isTopBoundReached ? 'grid-scroll-wrapper--top-gradient' : null;
-        },
-        bottomGradient() {
-            return this.isGradientOnScroll && !this.isBottomBoundReached ? 'grid-scroll-wrapper--bottom-gradient' : null;
-        },
-    },
     mounted() {
         this.calculateRowsCount(0);
         window.addEventListener('resize', this.calculateRowsCount);

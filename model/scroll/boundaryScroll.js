@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export function rightBound({ xOffset, maxWidth }) {
-    return xOffset === maxWidth;
+    return xOffset && maxWidth ? xOffset === maxWidth : false;
 }
 
 export function leftBound({ xOffset }) {
@@ -15,5 +15,5 @@ export function topBound({ yOffset }) {
 }
 
 export function bottomBound({ yOffset, maxHeight }) {
-    return yOffset === maxHeight;
+    return yOffset && maxHeight ? yOffset === maxHeight : false;
 }

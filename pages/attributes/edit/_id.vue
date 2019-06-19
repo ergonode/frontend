@@ -44,21 +44,13 @@ export default {
             translations: state => state.translations,
         }),
     },
-    destroyed() {
-        this.clearStorage();
-        this.clearTranslations();
-    },
     methods: {
         ...mapActions('attribute', [
-            'clearStorage',
             'updateAttribute',
         ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
-        ]),
-        ...mapActions('translations', [
-            'clearTranslations',
         ]),
         onDismiss() {
             this.$router.push('/attributes');
@@ -126,7 +118,9 @@ export default {
         params,
         error,
     }) {
-        return store.dispatch('attribute/getAttributeById', {
+        await store.dispatch('translations/clearStorage');
+        await store.dispatch('attribute/clearStorage');
+        await store.dispatch('attribute/getAttributeById', {
             attributeId: params.id,
             onError: (err) => {
                 if (err.response && err.response.status === 404) {

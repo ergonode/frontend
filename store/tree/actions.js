@@ -57,7 +57,5 @@ export default {
     removeHiddenItem: ({ commit }, key) => {
         commit('removeHiddenItem', key);
     },
-    clearStorage: ({ commit }) => {
-        commit('clearStorage');
-    },
+    clearStorage: ({ commit }) => commit('clearStorage'),
 };
