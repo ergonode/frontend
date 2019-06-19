@@ -38,7 +38,6 @@ export default {
     },
     methods: {
         emitRowsNumber() {
-            console.log('dupa');
             this.$emit('rowsCount', { key: 'rowsCount', value: this.getTotalRowsInTemplate() });
         },
         getTotalRowsInTemplate() {
