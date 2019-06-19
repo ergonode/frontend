@@ -21,10 +21,6 @@ export default {
         TemplateGridShadowItem,
     },
     props: {
-        gridStyles: {
-            type: Object,
-            required: true,
-        },
         columns: {
             type: Number,
             required: true,
