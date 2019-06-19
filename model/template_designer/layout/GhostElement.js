@@ -1,6 +1,6 @@
 // Helpers
-const draggableLayerElementClass = '.draggable-layer';
-const ghostElementClass = '.ghost-element';
+const draggableLayerElementSelector = '.draggable-layer';
+const ghostElementSelector = '.ghost-element';
 
 export function addGhostElementToDraggableLayer({
     top, left, width, height,
@@ -22,37 +22,39 @@ export function addGhostElementToDraggableLayer({
     `;
 
     ghostElement.setAttribute('style', ghostElementStyle);
-    ghostElement.classList.add(ghostElementClass);
+    ghostElement.classList.add('ghost-element');
 
     const draggableLayerElement = document.documentElement.querySelector(
-        draggableLayerElementClass,
+        draggableLayerElementSelector,
     );
     draggableLayerElement.appendChild(ghostElement);
 }
 
 export function updateGhostElementWidth(width) {
     const draggableLayerElement = document.documentElement.querySelector(
-        draggableLayerElementClass,
+        draggableLayerElementSelector,
     );
-    const ghostElement = draggableLayerElement.querySelector(ghostElementClass);
+    const ghostElement = draggableLayerElement.querySelector(ghostElementSelector);
+
+    console.log();
 
     ghostElement.style.width = `${width}px`;
 }
 
 export function updateGhostElementHeight(height) {
     const draggableLayerElement = document.documentElement.querySelector(
-        draggableLayerElementClass,
+        draggableLayerElementSelector,
     );
-    const ghostElement = draggableLayerElement.querySelector(ghostElementClass);
+    const ghostElement = draggableLayerElement.querySelector(ghostElementSelector);
 
     ghostElement.style.height = `${height}px`;
 }
 
 export function removeGhostElementFromDraggableLayer() {
     const draggableLayerElement = document.documentElement.querySelector(
-        draggableLayerElementClass,
+        draggableLayerElementSelector,
     );
-    const ghostElement = draggableLayerElement.querySelector(ghostElementClass);
+    const ghostElement = draggableLayerElement.querySelector(ghostElementSelector);
 
     draggableLayerElement.removeChild(ghostElement);
 }
