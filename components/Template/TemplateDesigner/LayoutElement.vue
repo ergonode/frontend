@@ -8,6 +8,7 @@
         :draggable="isDraggingEnabled"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
+        @dragenter="onDragEnter"
         @mouseover="onMouseOver"
         @mouseout="onMouseOut">
         <div class="horizontal-wrapper">
@@ -120,7 +121,6 @@ export default {
     methods: {
         ...mapActions('templateDesigner', [
             'updateLayoutElementBounds',
-            'updateLayoutElementPosition',
             'setLayoutElementRequirement',
             'removeLayoutElementAtIndex',
         ]),
@@ -135,6 +135,9 @@ export default {
         },
         onDragStart() {
             this.setDraggedElement({ ...this.element, index: this.index });
+        },
+        onDragEnter() {
+            this.removeLayoutElementAtIndex({ index: this.index });
         },
         onDragEnd() {
             this.setDraggedElement();
