@@ -78,7 +78,7 @@ export default {
     }) {
         const { language: languageCode } = store.state.authentication.user;
         const { id } = params;
-        return store.dispatch('productsDraft/getProductDraft', {
+        await store.dispatch('productsDraft/getProductDraft', {
             languageCode,
             id,
             onError: (err) => {

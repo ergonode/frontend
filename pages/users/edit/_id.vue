@@ -79,7 +79,7 @@ export default {
         params,
         error,
     }) {
-        return store.dispatch('users/getUserById', {
+        await store.dispatch('users/getUserById', {
             userId: params.id,
             onError: (err) => {
                 if (err.response && err.response.status === 404) {

@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
     name: 'Templates',
@@ -61,13 +61,7 @@ export default {
             sectionElementsByID: 'sectionElementsByID',
         }),
     },
-    destroyed() {
-        this.clearStorage();
-    },
     methods: {
-        ...mapActions('templateLists', [
-            'clearStorage',
-        ]),
         onCreate() {
             this.$router.push('templates/new');
         },
@@ -77,7 +71,8 @@ export default {
             limit: 5000,
             offset: 0,
         };
-        return store.dispatch('templateLists/getTemplatesSection', {
+        await store.dispatch('templateLists/clearStorage');
+        await store.dispatch('templateLists/getTemplatesSection', {
             params,
             onError: (err) => {
                 if (err.response && err.response.status === 404) {

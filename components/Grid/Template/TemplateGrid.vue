@@ -8,10 +8,9 @@
             <VerticalTabBar :items="verticalTabs" />
             <TemplateGridDesigner @rowsCount="onRowsCountChange">
                 <TemplateGridPresentationLayer
-                    :grid-styles="gridStyles"
+                    :style="gridStyles"
                     :columns="columnsNumber"
-                    :rows="maxRows"
-                    :is-header="false" />
+                    :rows="maxRows" />
                 <TemplateGridDraggableLayer
                     :style="gridStyles"
                     :rows-number="maxRows"
@@ -30,7 +29,7 @@ import { mapState, mapActions } from 'vuex';
 export default {
     name: 'TemplateGrid',
     components: {
-        TemplateGridPresentationLayer: () => import('~/components/TemplateGrid/TemplateGridPresentationLayer'),
+        TemplateGridPresentationLayer: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridPresentationLayer'),
         TemplateGridDesigner: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridDesigner'),
         TemplateGridDraggableLayer: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer'),
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
@@ -104,7 +103,7 @@ export default {
             'addListElementToLayout',
             'updateLayoutElementPosition',
         ]),
-        onRowsCountChange({ key, value }) {
+        onRowsCountChange({ value }) {
             this.maxRows = value;
         },
         updateLayoutElement(position) {

@@ -23,8 +23,6 @@ export default {
     clearStorage: (state) => {
         state.groups = {};
         state.elements = {};
-        state.elementsAreMultiDraggable = true;
-        state.isListMultilingual = true;
         state.draggedElementsStore = {};
     },
 };
