@@ -60,7 +60,7 @@ export default {
         top: 0;
         left: 0;
         display: grid;
-        width: 100%;
+        width: calc(100% - 1px);
         height: auto;
         border-right: 1px dashed $grey;
 
