@@ -7,9 +7,8 @@ export default {
         state.layoutElements[index] = { ...state.layoutElements[index], width, height };
         state.layoutElements = [...state.layoutElements];
     },
-    updateLayoutElementPosition: (state, { index, row, column }) => {
-        state.layoutElements[index] = { ...state.layoutElements[index], row, column };
-        state.layoutElements = [...state.layoutElements];
+    updateLayoutElementPosition: (state, element) => {
+        state.layoutElements.push(element);
     },
     addListElementToLayout: (state, layoutElement) => {
         state.layoutElements.push(layoutElement);
