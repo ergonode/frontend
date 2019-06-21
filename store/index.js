@@ -14,7 +14,7 @@ export const actions = {
     resetState({ dispatch, commit }) {
         dispatch('attribute/clearStorage');
         dispatch('authentication/clearStorage');
-        dispatch('dictionaries/clearStorage');
+        dispatch('data/clearStorage');
         commit('categories/clearStorage');
         commit('draggable/clearStorage');
         commit('grid/clearStorage');
