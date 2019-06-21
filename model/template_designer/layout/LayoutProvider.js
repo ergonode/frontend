@@ -3,6 +3,10 @@
  * See LICENSE for license details.
  */
 
+// Helpers
+const paddingGap = 16;
+
+
 // When element is in resizing mode,
 // we need to determinate which area is going to be marked as obstacle or not
 export function getObstaclePositionsForElement({
@@ -98,11 +102,9 @@ export function getMaxRowForGivenColumn(column, highlightingPositions) {
 }
 
 export function getColumnBasedOnWidth(width, elementMinWidth, elementColumn) {
-    const paddingGap = 16;
     return Math.floor(width / (elementMinWidth + paddingGap)) + elementColumn;
 }
 
 export function getRowBasedOnHeight(height, elementMinHeight, elementRow) {
-    const paddingGap = 16;
     return Math.floor(height / (elementMinHeight + paddingGap)) + elementRow;
 }

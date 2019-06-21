@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export function maxObjectValueInArrayByObjectKey(array, propName) {
-    if (array.length < 1) return 0;
+export function getMaxObjectValueInArrayByObjectKey(array, propName) {
+    if (!array.length) return 0;
 
     return array.reduce(
         (prev, current) => {
@@ -13,8 +13,8 @@ export function maxObjectValueInArrayByObjectKey(array, propName) {
     )[propName];
 }
 
-export function minObjectValueInArrayByObjectKey(array, propName) {
-    if (array.length < 1) return 0;
+export function getMinObjectValueInArrayByObjectKey(array, propName) {
+    if (!array.length) return 0;
 
     return array.reduce(
         (prev, current) => {

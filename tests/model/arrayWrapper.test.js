@@ -6,8 +6,8 @@ import {
   arrayToObject,
   sumArray,
   swapItemPosition,
-  maxObjectValueInArrayByObjectKey,
-  minObjectValueInArrayByObjectKey,
+  getMaxObjectValueInArrayByObjectKey,
+  getMinObjectValueInArrayByObjectKey,
 } from '~/model/arrayWrapper';
 
 describe('arrayWrapper/swapItemPosition', () => {
@@ -34,13 +34,13 @@ describe('arrayWrapper/maxObjectValueInArrayByObjectKeyByObjectKey', () => {
   it('Getting max value of object property in array', () => {
     const array = [{ a: 1 }, null, { a: 2 }, { a: 6}, { a: 2 }, null ];
 
-    const maxValue = maxObjectValueInArrayByObjectKey(array, 'a');
+    const maxValue = getMaxObjectValueInArrayByObjectKey(array, 'a');
 
     expect(maxValue).toEqual(6);
   });
 
   it('Array has no elements', () => {
-    const maxValue = maxObjectValueInArrayByObjectKey([], 'a');
+    const maxValue = getMaxObjectValueInArrayByObjectKey([], 'a');
 
     expect(maxValue).toEqual(0);
   });
@@ -50,13 +50,13 @@ describe('arrayWrapper/maxObjectValueInArrayByObjectKeyByObjectKey', () => {
   it('Getting min value of object property in array', () => {
     const array = [{ a: 1 }, { a: 2 }, null, { a: 6}, { a: 2 }, null ];
 
-    const minValue = minObjectValueInArrayByObjectKey(array, 'a');
+    const minValue = getMinObjectValueInArrayByObjectKey(array, 'a');
 
     expect(minValue).toEqual(1);
   });
 
   it('Array has no elements', () => {
-    const maxValue = maxObjectValueInArrayByObjectKey([], 'a');
+    const maxValue = getMaxObjectValueInArrayByObjectKey([], 'a');
 
     expect(maxValue).toEqual(0);
   });
