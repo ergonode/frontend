@@ -5,6 +5,9 @@
 
 // Helpers
 const paddingGap = 16;
+const isObstacle = (obstacles, x, y) => obstacles.find(
+    obstacle => obstacle.row === y && obstacle.column === x,
+);
 
 
 // When element is in resizing mode,
@@ -25,6 +28,41 @@ export function getObstaclePositionsForElement({
     }
 
     return obstaclePositions;
+}
+
+export function getHighlightingLayoutDropPositions({
+    draggedElWidth, draggedElHeight, layoutWidth, layoutHeight, layoutElements,
+}) {
+    const { length } = layoutElements;
+    let layoutObstaclePositions = [];
+
+    for (let i = 0; i < length; i += 1) {
+        const elementObstaclePositions = getObstaclePositionsForElement(layoutElements[i]);
+
+        layoutObstaclePositions = [...layoutObstaclePositions, ...elementObstaclePositions];
+    }
+
+    let width = 0;
+
+    const highlightingPositions = [];
+
+    for (let x = 0; x < layoutWidth; x += 1, width += 1) {
+        let height = 0;
+
+        for (let y = 0; y < layoutHeight; y += 1) {
+            if (!isObstacle(layoutObstaclePositions, x, y)) {
+                height += 1;
+
+                if (width >= draggedElWidth && height >= draggedElHeight) {
+                    // Max
+                    highlightingPositions.push({ column: x, row: y });
+                }
+            } else {
+                width = 0;
+                break;
+            }
+        }
+    }
 }
 
 // Determinate max expanding area for element.
@@ -59,11 +97,10 @@ export function getHighlightingPositions({
 
     for (let x = column; x < maxColumn; x += 1) {
         for (let y = row; y < maxRowForGivenColumn; y += 1) {
-            if (layoutObstaclePositions.find(
-                element => element.row === y && element.column === x,
-            )) {
+            if (isObstacle(layoutObstaclePositions, x, y)) {
                 maxRowForGivenColumn = y;
             }
+
             if (y < maxRowForGivenColumn) {
                 highlightingPositions.push({ row: y, column: x });
             }

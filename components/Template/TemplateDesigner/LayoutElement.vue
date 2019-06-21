@@ -48,6 +48,7 @@
 
 import {
     getHighlightingPositions,
+    getHighlightingLayoutDropPositions,
     getMaxRowForGivenColumn,
     getMaxColumnForGivenRow,
     getRowBasedOnHeight,
@@ -103,6 +104,9 @@ export default {
         ...mapState('templateDesigner', {
             layoutElements: state => state.layoutElements,
         }),
+        ...mapState('draggable', {
+            draggedElement: state => state.draggedElement,
+        }),
         iconByType() {
             const { type } = this.element;
             const convertedType = type.toLowerCase().replace('_', '-');
@@ -137,7 +141,20 @@ export default {
             this.setDraggedElement({ ...this.element, index: this.index });
         },
         onDragEnter() {
-            this.removeLayoutElementAtIndex({ index: this.index });
+            const { width, height } = this.element;
+
+            if (typeof this.draggedElement === 'object') {
+                this.removeLayoutElementAtIndex({ index: this.index });
+            }
+
+            // TODO: Init areas when we can drag
+            getHighlightingLayoutDropPositions({
+                draggedElWidth: width,
+                draggedElHeight: height,
+                layoutWidth: 4,
+                layoutHeight: 10,
+                layoutElements: this.layoutElements,
+            });
         },
         onDragEnd() {
             this.setDraggedElement();
