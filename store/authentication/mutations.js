@@ -2,7 +2,11 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import types from './mutation-types';
+export const types = {
+    SET_USER: 'SET_USER',
+    SET_JWT_TOKEN: 'SET_JWT_TOKEN',
+    CLEAR_STATE: 'CLEAR_STATE',
+};
 
 export default {
     [types.SET_USER](state, user) {
