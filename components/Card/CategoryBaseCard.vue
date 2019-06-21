@@ -13,7 +13,8 @@
             :disabled="isDisabled"
             label="Code"
             hint="Category code must be unique"
-            @input="(code) => setAction({ key: 'code', value: code })" />
+            @input="setCategoryCode($event)"
+        />
     </BaseCard>
 </template>
 
@@ -43,9 +44,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('categories', [
-            'setAction',
-        ]),
+        ...mapActions('categories', ['setCategoryCode']),
     },
 };
 </script>
