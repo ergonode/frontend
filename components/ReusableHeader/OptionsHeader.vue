@@ -21,11 +21,12 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getKeysByValues, getValuesByKeys } from '~/model/objectWrapper';
+import Select from '~/components/Inputs/Select/Select';
 
 export default {
     name: 'OptionsHeader',
     components: {
-        Select: () => import('~/components/Inputs/Select/Select'),
+        Select,
     },
     props: {
         cardsLanguageCodes: {

@@ -209,55 +209,6 @@ export function generateProductSection(
     );
 }
 
-export function generateLayout(
-    numberOfColumns,
-    numberOfItems,
-    defaultComponent,
-    elements = [],
-    sections = [],
-) {
-    const templateLayout = [];
-
-    // Generating template designer
-    let i = 0;
-    let numberOfSections = 0;
-    let layoutElement;
-
-    while (i < numberOfItems) {
-        const row = calculateRowByIndex(numberOfColumns + 1, i);
-        // Every 5th element is a section
-        const isSection = i % (numberOfColumns + 1) === 0;
-        if (isSection) {
-            // Section
-            numberOfSections += 1;
-            layoutElement = generateSectionBasedOnRow(
-                numberOfSections,
-                numberOfColumns,
-                row,
-                sections,
-                'TemplateGridSection',
-            );
-        } else {
-            const column = calculateColumnByIndex(numberOfColumns + 1, i);
-            const element = elementBasedOnPosition(elements, row, column, numberOfSections);
-
-            layoutElement = element
-                ? generateAttributeElement(element)
-                : generatePlaceholderBasedOnRowAndColumn(
-                    numberOfSections,
-                    0,
-                    row,
-                    column,
-                    defaultComponent,
-                );
-        }
-        templateLayout.push(layoutElement);
-        i += 1;
-    }
-
-    return templateLayout;
-}
-
 export function generateProductLayout(
     elements,
 ) {
@@ -365,6 +316,5 @@ export default {
     generateSectionBasedOnRow,
     generateProductSection,
     generateProductElement,
-    generateLayout,
     generateProductLayout,
 };

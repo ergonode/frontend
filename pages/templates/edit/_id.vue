@@ -42,7 +42,6 @@ export default {
     methods: {
         ...mapActions('templateDesigner', [
             'updateTemplateDesigner',
-            'addElementToLayoutAtCoordinates',
             'getTemplateByID',
             'clearStorage',
         ]),

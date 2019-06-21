@@ -19,7 +19,7 @@ describe('Navigation/NavigationBar/NavigationBarButton', () => {
     expect(wrapper.is(NavigationBarButton)).toBe(true);
   });
 
-  it('Check if component is named correctly', () => {
+  it('Component is named well', () => {
     expect(typeof NavigationBarButton.name).toBe('string');
     expect(NavigationBarButton.name).toEqual('NavigationBarButton');
   });

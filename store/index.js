@@ -12,10 +12,10 @@ export const actions = {
         dispatch('authentication/setAuth', { user, token });
     },
     resetState({ dispatch, commit }) {
+        dispatch('categories/clearStorage');
         dispatch('attribute/clearStorage');
         dispatch('authentication/clearStorage');
-        commit('data/clearStorage');
-        commit('categories/clearStorage');
+        dispatch('data/clearStorage');
         dispatch('draggable/clearStorage');
         commit('grid/clearStorage');
         commit('gridDraft/clearStorage');

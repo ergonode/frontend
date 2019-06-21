@@ -2,11 +2,24 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+export const types = {
+    SET_ID: 'SET_ID',
+    SET_CODE: 'SET_CODE',
+    SET_NAME: 'SET_NAME',
+    CLEAR_STATE: 'CLEAR_STATE',
+};
+
 export default {
-    setState: (state, { key, value }) => {
-        state[key] = value;
+    [types.SET_ID](state, id) {
+        state.id = id;
     },
-    clearStorage: (state) => {
+    [types.SET_CODE](state, code) {
+        state.code = code;
+    },
+    [types.SET_NAME](state, name) {
+        state.name = name;
+    },
+    [types.CLEAR_STATE](state) {
         state.id = null;
         state.code = '';
         state.name = '';

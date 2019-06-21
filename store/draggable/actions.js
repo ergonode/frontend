@@ -14,4 +14,7 @@ export default {
     setDraggedElement({ commit }, element = null) {
         commit(types.SET_DRAGGED_ELEMENT, element);
     },
+    clearStorage({ commit }) {
+        commit(types.CLEAR_STATE);
+    },
 };

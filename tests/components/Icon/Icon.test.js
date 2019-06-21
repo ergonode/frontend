@@ -18,10 +18,10 @@ describe('Icon/Icon', () => {
             },
         });
     });
-    it("Component rendered correctly", () => {
+    it("Component is rendered", () => {
         expect(wrapper.is(Icon)).toBe(true);
     });
-    it('Check if component is named correctly', () => {
+    it('Component is named well', () => {
         expect(typeof Icon.name).toBe('string');
         expect(Icon.name).toEqual('Icon');
     });

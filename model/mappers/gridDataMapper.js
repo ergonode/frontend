@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { toCapitalize } from '~/model/stringOperations';
+import { toCapitalize } from '~/model/stringWrapper';
 
 // From whole rows in grid we have to find only those from whose we did fetch draft value
 const getRowsBasedOnDrafts = ({ drafts, rows }) => {

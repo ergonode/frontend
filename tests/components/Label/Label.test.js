@@ -16,11 +16,11 @@ describe('Label/Label', () => {
     });
   });
 
-  it("Component rendered correctly", () => {
+  it("Component is rendered", () => {
     expect(wrapper.is(Label)).toBe(true);
   });
 
-  it('Check if component is named correctly', () => {
+  it('Component is named well', () => {
     expect(typeof Label.name).toBe('string');
     expect(Label.name).toEqual('Label');
   });
