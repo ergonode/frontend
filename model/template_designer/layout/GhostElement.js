@@ -36,8 +36,6 @@ export function updateGhostElementWidth(width) {
     );
     const ghostElement = draggableLayerElement.querySelector(ghostElementSelector);
 
-    console.log();
-
     ghostElement.style.width = `${width}px`;
 }
 

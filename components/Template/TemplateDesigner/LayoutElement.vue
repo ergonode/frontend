@@ -140,19 +140,10 @@ export default {
             this.setDraggedElement();
         },
         initResizeDrag(event) {
-            const {
-                row,
-                column,
-                maxWidth,
-                maxHeight,
-            } = this.element;
-            this.highlightingPositions = getHighlightingPositions({
-                row,
-                column,
-                maxWidth,
-                maxHeight,
-            },
-            this.layoutElements);
+            this.highlightingPositions = getHighlightingPositions(
+                this.element,
+                this.layoutElements,
+            );
 
             this.blockOtherInteractionsOnResizeEvent();
             this.initActualElementNormalizedBoundary();
