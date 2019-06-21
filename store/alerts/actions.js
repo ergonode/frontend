@@ -11,11 +11,12 @@ export default {
         const {
             message = '',
             type = SUCCESS,
+            duration = ALERT_TIME_TO_LEAVE,
         } = alert;
 
         const timeOut = setTimeout(() => {
             dispatch('removeAlert', id);
-        }, ALERT_TIME_TO_LEAVE);
+        }, duration);
 
         commit(types.APPEND_ALERT, { AlertData: { id, type, message }, timeOut });
     },
