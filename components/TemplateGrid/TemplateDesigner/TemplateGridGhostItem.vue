@@ -9,16 +9,47 @@
         @dragenter="onDragEnter"
         @dragleave="onDragLeave"
         @dragover="onDragOver"
-        @drop="onDrop" />
+        @drop="onDrop">
+        <div
+            v-if="isInside"
+            class="ghost-item__placeholder" />
+    </div>
 </template>
 
 <script>
+
+import {
+    addGhostElementToDraggableLayer,
+    removeGhostElementFromDraggableLayer,
+} from '~/model/template_designer/layout/GhostElement';
+import { mapState } from 'vuex';
+
 export default {
     name: 'TemplateGridGhostItem',
     props: {
         position: {
             type: Object,
             required: true,
+        },
+        minHighlightedColumn: {
+            type: Number,
+            default: 0,
+        },
+        maxHighlightedColumn: {
+            type: Number,
+            default: 0,
+        },
+        minHighlightedRow: {
+            type: Number,
+            default: 0,
+        },
+        maxHighlightedRow: {
+            type: Number,
+            default: 0,
+        },
+        highlightingPositions: {
+            type: Array,
+            default: () => [],
         },
     },
     data() {
@@ -27,15 +58,40 @@ export default {
         };
     },
     computed: {
+        ...mapState('draggable', {
+            draggedElement: state => state.draggedElement,
+        }),
         draggableStateClasses() {
             return {
-                'ghost-item--inside': this.isInside,
+                'ghost-item--highlighted': this.isHighlighted,
+                'ghost-item--first-row-highlighted': this.isFirstRowHighlighted,
+                'ghost-item--first-column-highlighted': this.isFirstColumnHighlighted,
             };
+        },
+        isHighlighted() {
+            return this.highlightingPositions.find(this.isEqualToPosition);
+        },
+        isFirstRowHighlighted() {
+            const { row, column } = this.position;
+
+            return row === this.minHighlightedRow
+                && column <= this.maxHighlightedColumn
+                && column >= this.minHighlightedColumn;
+        },
+        isFirstColumnHighlighted() {
+            const { row, column } = this.position;
+
+            return column === this.minHighlightedColumn
+                && row <= this.maxHighlightedRow
+                && row >= this.minHighlightedRow;
         },
     },
     methods: {
         onDrop() {
             this.isInside = false;
+
+            this.removeGhostElementIfExist();
+
             this.$emit('drop', this.position);
         },
         onDragOver(event) {
@@ -43,18 +99,78 @@ export default {
         },
         onDragEnter() {
             this.isInside = true;
+
+            this.addGhostElementIfNeeded();
         },
         onDragLeave() {
             this.isInside = false;
+
+            this.removeGhostElementIfExist();
+        },
+        isEqualToPosition(position) {
+            const { row, column } = this.position;
+            return row === position.row && column === position.column;
+        },
+        addGhostElementIfNeeded() {
+            if (typeof this.draggedElement === 'object') {
+                const elementsGap = 16;
+                const {
+                    width, height,
+                } = this.$el.getBoundingClientRect();
+                const {
+                    width: draggedElementWidth, height: draggedElementHeight,
+                } = this.draggedElement;
+                const normalizedWidth = width * draggedElementWidth - elementsGap;
+                const normalizedHeight = height * draggedElementHeight - elementsGap;
+
+                addGhostElementToDraggableLayer({
+                    top: this.$el.offsetTop + (elementsGap / 2),
+                    left: this.$el.offsetLeft + (elementsGap / 2),
+                    width: normalizedWidth,
+                    height: normalizedHeight,
+                });
+            }
+        },
+        removeGhostElementIfExist() {
+            if (typeof this.draggedElement === 'object') {
+                removeGhostElementFromDraggableLayer();
+            }
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
+    $border: 1px dashed $success;
+
     .ghost-item {
-        &--inside {
+        position: relative;
+        display: flex;
+        padding: 8px;
+
+        &__placeholder {
+            pointer-events: none;
+            flex: 1;
             background-color: $success;
+            box-shadow:
+                inset 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                inset 0 3px 1px 0 rgba(0, 0, 0, 0.12),
+                inset 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        &--highlighted {
+            flex: 1;
+            background-color: $lightGreen;
+            border-right: $border;
+            border-bottom: $border;
+        }
+
+        &--first-column-highlighted {
+            border-left: $border;
+        }
+
+        &--first-row-highlighted {
+            border-top: $border;
         }
     }
 </style>

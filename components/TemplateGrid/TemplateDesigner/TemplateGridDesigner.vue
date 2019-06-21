@@ -22,7 +22,7 @@ export default {
     },
     data() {
         return {
-            rowHeight: 50,
+            rowHeight: 62,
             debounceFunc: null,
         };
     },

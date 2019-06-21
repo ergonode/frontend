@@ -12,7 +12,6 @@
 <script>
 
 import { mapState, mapActions } from 'vuex';
-import { generateLayout } from '~/model/template_designer/layout/LayoutGenerator';
 import prepareJSON from '~/model/template_designer/JSON/prepareJSON';
 import { asyncRequestWrapper } from '~/model/wrappers/asyncRequestWrapper';
 
@@ -32,21 +31,8 @@ export default {
             templateDesignerLayout: state => state.templateLayout,
         }),
     },
-    created() {
-        const numberOfColumns = 4;
-        const numberOfItems = 100;
-
-        this.setTemplateDesignerLayout(
-            generateLayout(
-                numberOfColumns,
-                numberOfItems,
-                'TemplateGridItem',
-            ),
-        );
-    },
     methods: {
         ...mapActions('templateDesigner', [
-            'setTemplateDesignerLayout',
             'createTemplateDesigner',
         ]),
         ...mapActions('validations', [

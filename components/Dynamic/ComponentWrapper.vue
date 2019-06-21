@@ -24,7 +24,7 @@ export default {
     },
     computed: {
         loadComponent() {
-            return () => import(`~/components/Template/Product/${this.componentName}`);
+            return () => import(`~/components/Template/ProductDesigner/${this.componentName}`);
         },
     },
 };

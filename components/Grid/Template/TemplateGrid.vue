@@ -10,26 +10,13 @@
                 <TemplateGridPresentationLayer
                     :style="gridStyles"
                     :columns="columnsNumber"
-                    :rows="maxRows"
-                    :is-header="false" />
-                <div
+                    :rows="maxRows" />
+                <TemplateGridDraggableLayer
                     :style="gridStyles"
-                    class="draggable-grid">
-                    <template v-for="item in draggableGridAreaLenght">
-                        <TemplateGridGhostItem
-                            :key="item"
-                            :position="{
-                                row: Math.ceil(item / columnsNumber),
-                                column: item % columnsNumber,
-                            }"
-                            @drop="onDrop" />
-                    </template>
-                    <div
-                        v-for="item in insertedItems"
-                        :key="item"
-                        :style="{ gridRow: item.row, gridColumn: item.column }"
-                        class="inserted" />
-                </div>
+                    :rows-number="maxRows"
+                    :columns-number="columnsNumber"
+                    :layout-elements="layoutElements"
+                    @addListElementToLayout="updateLayoutElement" />
             </TemplateGridDesigner>
         </div>
         <Footer :buttons="buttons" />
@@ -38,16 +25,13 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import TemplateGridItem from './TemplateGridItem';
-import TemplateGridSection from './TemplateGridSection';
-import AttributeElement from '~/components/Template/AttributeElement';
 
 export default {
     name: 'TemplateGrid',
     components: {
-        TemplateGridPresentationLayer: () => import('~/components/TemplateGrid/TemplateGridPresentationLayer'),
-        TemplateGridGhostItem: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridGhostItem'),
+        TemplateGridPresentationLayer: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridPresentationLayer'),
         TemplateGridDesigner: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridDesigner'),
+        TemplateGridDraggableLayer: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer'),
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
         Footer: () => import('~/components/ReusableFooter/Footer'),
     },
@@ -61,7 +45,6 @@ export default {
         return {
             columnsNumber: 4,
             maxRows: 0,
-            insertedItems: [],
             buttons: [
                 // TODO: Uncomment when we will have this feature
                 // {
@@ -89,8 +72,12 @@ export default {
         ...mapState('templateDesigner', {
             templateGroups: state => state.templateGroups,
             layout: state => state.templateLayout,
+            layoutElements: state => state.layoutElements,
             titleValidationError: state => state.titleValidationError,
             title: state => state.title,
+        }),
+        ...mapState('draggable', {
+            draggedElement: state => state.draggedElement,
         }),
         vmTitle: {
             get() {
@@ -100,39 +87,31 @@ export default {
                 this.setTemplateDesignerTitle({ title: value });
             },
         },
-        draggableGridAreaLenght() {
-            return this.maxRows * this.columnsNumber;
-        },
         errorMessages() {
             return this.titleValidationError ? [this.titleValidationError] : null;
         },
         gridStyles() {
             return {
                 gridTemplateColumns: `repeat(${this.columnsNumber}, 1fr)`,
-                gridAutoRows: '50px',
+                gridAutoRows: '62px',
             };
         },
     },
     methods: {
         ...mapActions('templateDesigner', [
             'setTemplateDesignerTitle',
+            'addListElementToLayout',
+            'updateLayoutElementPosition',
         ]),
-        onDrop(position) {
-            this.insertedItems.push({ ...position });
-        },
-        onRowsCountChange({ /** key, */ value }) {
+        onRowsCountChange({ value }) {
             this.maxRows = value;
         },
-        getComponentViaName(name) {
-            switch (name) {
-            case 'TemplateGridItem':
-                return TemplateGridItem;
-            case 'TemplateGridSection':
-                return TemplateGridSection;
-            case 'AttributeElement':
-                return AttributeElement;
-            default:
-                return null;
+        updateLayoutElement(position) {
+            if (typeof this.draggedElement === 'object') {
+                const { index } = this.draggedElement;
+                this.updateLayoutElementPosition({ index, ...position });
+            } else {
+                this.addListElementToLayout(position);
             }
         },
         onPreview() {
@@ -153,16 +132,6 @@ export default {
             display: flex;
             flex: 1;
             margin: 24px 24px 0;
-
-            .grid-wrapper {
-                position: relative;
-                display: flex;
-                flex: 1;
-                flex-direction: column;
-                width: 0;
-                margin: 12px;
-                overflow: auto;
-            }
         }
 
         &__grid {
@@ -174,16 +143,4 @@ export default {
             grid-template-columns: repeat(4, minmax(240px, auto));
         }
     }
-
-    .draggable-grid {
-        z-index: 3;
-        display: grid;
-        height: 0;
-        flex-grow: 1;
-
-        .inserted {
-            background-color: #4c9aff;
-        }
-    }
-
 </style>

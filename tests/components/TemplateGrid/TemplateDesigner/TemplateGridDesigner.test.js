@@ -10,7 +10,7 @@ const columnsNumber = 4;
 const maxRows = 0;
 const rowHeight = 50;
 const gridStyle = {
-    gridTemplateColumns: 'repeat(4, 1fr)',
+    gridTemplateColumns: `repeat(${columnsNumber}, 1fr)`,
     gridAutoRows: `${rowHeight}px`,
 };
 
@@ -45,11 +45,11 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridDesigner', () => {
         });
     });
 
-    it("Component rendered correctly", () => {
+    it("Component is rendered", () => {
         expect(wrapper.is(TemplateGridDesigner)).toBe(true);
     });
 
-    it('Check if component is named correctly', () => {
+    it('Component is named well', () => {
         expect(typeof TemplateGridDesigner.name).toBe('string');
         expect(TemplateGridDesigner.name).toEqual('TemplateGridDesigner');
     });

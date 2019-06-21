@@ -21,11 +21,11 @@ describe('TemplateGrid/TemplateGridPresentationLayer', () => {
       });
     });
 
-    it("Component rendered correctly", () => {
+    it("Component is rendered", () => {
       expect(wrapper.is(TemplateGridPresentationLayer)).toBe(true);
     });
 
-    it('Check if component is named correctly', () => {
+    it('Component is named well', () => {
       expect(typeof TemplateGridPresentationLayer.name).toBe('string');
       expect(TemplateGridPresentationLayer.name).toEqual('TemplateGridPresentationLayer');
     });

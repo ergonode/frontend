@@ -5,7 +5,5 @@
 export default {
     setDraggableState: ({ commit }, { propName, value }) => commit('setDraggableState', { propName, value }),
     setDraggedElementProperty: ({ commit }, { propName, value }) => commit('setDraggedElementProperty', { propName, value }),
-    setDraggedElement: ({ commit }, element = null) => {
-        commit('setDraggedElement', element);
-    },
+    setDraggedElement: ({ commit }, element = null) => commit('setDraggedElement', element),
 };

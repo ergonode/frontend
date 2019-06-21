@@ -10,11 +10,11 @@ describe('TemplateGrid/TemplateGridGhostItem', () => {
     beforeEach(() => {
       wrapper = mount(TemplateGridGhostItem);
     });
-    it("Component rendered correctly", () => {
+    it("Component is rendered", () => {
       expect(wrapper.is(TemplateGridGhostItem)).toBe(true);
     });
 
-    it('Check if component is named correctly', () => {
+    it('Component is named well', () => {
       expect(typeof TemplateGridGhostItem.name).toBe('string');
       expect(TemplateGridGhostItem.name).toEqual('TemplateGridGhostItem');
     });

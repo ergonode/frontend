@@ -2,48 +2,22 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { generateLayout } from '~/model/template_designer/layout/LayoutGenerator';
-import { getObstaclePointsForBaseCoordinates } from '~/model/template_designer/layout/LayoutProvider';
 
 export default {
     getTemplateByID(
-        { commit, getters },
+        { commit },
         { path, onError },
     ) {
         return this.app.$axios.$get(path).then(({
             name,
             image_id: imageID,
+            /**
             sections,
-            elements,
+            elements, */
         }) => {
-            const numberOfColumns = 4;
-            const numberOfItems = 100;
-            const templateLayout = generateLayout(numberOfColumns, numberOfItems, 'TemplateGridItem', elements, sections);
+            // TODO: Map elements
             commit('setTemplateDesignerTitle', { title: name });
             commit('setTemplateDesignerImage', { image: imageID });
-            commit('setTemplateDesignerLayout', templateLayout);
-
-            const obstaclesBaseCoordinates = templateLayout.filter(
-                e => e.component === 'AttributeElement',
-            ).map(
-                e => e.coordinates,
-            );
-            obstaclesBaseCoordinates.forEach((coordinates) => {
-                const points = getObstaclePointsForBaseCoordinates(
-                    coordinates,
-                );
-
-                points.forEach((point) => {
-                    const index = getters.layoutElementIndex(
-                        point.x,
-                        point.y,
-                    );
-                    commit('updateObstacleStageOfElement', {
-                        index,
-                        isObstacle: true,
-                    });
-                });
-            });
         }).catch(e => onError(e.data));
     },
     updateTemplateDesigner(
@@ -79,50 +53,45 @@ export default {
             onSuccess();
         }).catch(e => onError(e.data));
     },
-    addElementToLayoutAtCoordinates: ({ commit, getters }, { elementToAdd }) => {
-        const index = getters.layoutElementIndex(
-            elementToAdd.coordinates.xPos.start,
-            elementToAdd.coordinates.yPos.start,
-        );
+    addListElementToLayout: ({
+        commit, rootState, rootGetters, getters,
+    }, { row, column }) => {
+        const { draggedElement } = rootState.draggable;
+        const { 'list/elementByCode': elementByCode } = rootGetters;
+        const { elementDataByType } = getters;
+        const {
+            id,
+            type,
+            label,
+        } = elementByCode(draggedElement.split(':')[0]);
+        const {
+            min_width: minWidth,
+            min_height: minHeight,
+            max_width: maxWidth,
+            max_height: maxHeight,
+        } = elementDataByType(type);
+        const layoutElement = {
+            id,
+            row,
+            column,
+            width: 1,
+            height: 1,
+            minWidth,
+            maxWidth,
+            minHeight,
+            maxHeight,
+            type,
+            label,
+            required: false,
+        };
 
-        commit('addElementToLayoutAtCoordinates', {
-            index,
-            element: elementToAdd,
-        });
+        commit('addListElementToLayout', layoutElement);
     },
-    updateLayoutElementCoordinates: ({ commit, getters }, payload) => {
-        const index = getters.layoutElementIndex(
-            payload.xPos.start,
-            payload.yPos.start,
-        );
-
-        commit('updateLayoutElementCoordinates', {
-            index,
-            coordinates: payload,
-        });
+    updateLayoutElementBounds: ({ commit }, { index, width, height }) => {
+        commit('updateLayoutElementBounds', { index, width, height });
     },
-    updateObstaclesAtPoints: ({ commit, getters }, { points, isObstacle }) => {
-        points.forEach((point) => {
-            const index = getters.layoutElementIndex(
-                point.x,
-                point.y,
-            );
-            commit('updateObstacleStageOfElement', {
-                index,
-                isObstacle,
-            });
-        });
-    },
-    initializeDraggedElementCollision: ({ commit }, payload) => commit('initializeDraggedElementCollision', payload),
-    initializeHighlightingHintPoints: ({ commit }, payload) => commit('initializeHighlightingHintPoints', payload),
-    initializeHighlightingHoverPoints: ({ commit, state }, payload) => {
-        if (payload && state.highlightingHoverPoints.length !== payload.length) {
-            commit('initializeHighlightingHoverPoints', payload);
-        }
-
-        if (!payload) {
-            commit('initializeHighlightingHoverPoints');
-        }
+    updateLayoutElementPosition: ({ commit }, { index, row, column }) => {
+        commit('updateLayoutElementPosition', { index, row, column });
     },
     setTemplateDesignerSectionTitle: ({ commit, getters }, { row, column, title }) => {
         const index = getters.layoutElementIndex(
@@ -135,19 +104,9 @@ export default {
             title,
         });
     },
+    removeLayoutElementAtIndex: ({ commit }, index) => commit('removeLayoutElementAtIndex', index),
     setTemplateDesignerTitle: ({ commit }, { title }) => commit('setTemplateDesignerTitle', { title }),
     setTemplateDesignerImage: ({ commit }, { image }) => commit('setTemplateDesignerImage', { image }),
-    insertElementToLayout: ({ commit }, payload) => commit('insertElementToLayout', payload),
-    setElementRequirement: ({ commit, state }, { id, required }) => {
-        const elementIndex = state.templateLayout.findIndex(
-            element => element.data && element.data.id === id,
-        );
-
-        commit('setElementRequirement', {
-            required,
-            index: elementIndex,
-        });
-    },
-    setTemplateDesignerLayout: ({ commit }, payload) => commit('setTemplateDesignerLayout', payload),
+    setLayoutElementRequirement: ({ commit }, payload) => commit('setLayoutElementRequirement', payload),
     clearStorage: ({ commit }) => commit('clearStorage'),
 };
