@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import types from './mutation-types';
+import { types } from './mutations';
 import { JWT_KEY, USER_KEY } from '~/defaults/authenticate/cookies';
 
 export default {
