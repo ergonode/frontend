@@ -2,7 +2,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import types from './mutation-types';
+export const types = {
+    SET_ID: 'SET_ID',
+    SET_CODE: 'SET_CODE',
+    SET_NAME: 'SET_NAME',
+    CLEAR_STATE: 'CLEAR_STATE',
+};
 
 export default {
     [types.SET_ID](state, id) {
