@@ -15,7 +15,7 @@ export const actions = {
         dispatch('categories/clearStorage');
         dispatch('attribute/clearStorage');
         dispatch('authentication/clearStorage');
-        commit('data/clearStorage');
+        dispatch('data/clearStorage');
         commit('draggable/clearStorage');
         commit('grid/clearStorage');
         commit('gridDraft/clearStorage');
