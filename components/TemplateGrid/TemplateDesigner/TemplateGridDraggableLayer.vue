@@ -23,8 +23,8 @@
 
 <script>
 import {
-    maxObjectValueInArrayByObjectKey,
-    minObjectValueInArrayByObjectKey,
+    getMaxObjectValueInArrayByObjectKey,
+    getMinObjectValueInArrayByObjectKey,
 } from '~/model/arrayWrapper';
 
 export default {
@@ -83,10 +83,10 @@ export default {
         onHighlightedPositionsChange(positions) {
             this.highlightedPositions = positions;
 
-            this.maxHighlightedRow = maxObjectValueInArrayByObjectKey(positions, 'row');
-            this.minHighlightedRow = minObjectValueInArrayByObjectKey(positions, 'row');
-            this.minHighlightedColumn = minObjectValueInArrayByObjectKey(positions, 'column');
-            this.maxHighlightedColumn = maxObjectValueInArrayByObjectKey(positions, 'column');
+            this.maxHighlightedRow = getMaxObjectValueInArrayByObjectKey(positions, 'row');
+            this.minHighlightedRow = getMinObjectValueInArrayByObjectKey(positions, 'row');
+            this.minHighlightedColumn = getMinObjectValueInArrayByObjectKey(positions, 'column');
+            this.maxHighlightedColumn = getMaxObjectValueInArrayByObjectKey(positions, 'column');
         },
         getGhostItemPosition({
             row, column, width, height,
