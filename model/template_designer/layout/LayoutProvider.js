@@ -5,10 +5,22 @@
 
 // Helpers
 const paddingGap = 16;
-const isObstacle = (obstacles, x, y) => obstacles.find(
+const isObstacle = (obstacles, x, y) => obstacles.some(
     obstacle => obstacle.row === y && obstacle.column === x,
 );
+const fillHighlightingPositions = (highlightingPositions, x, y, width, height) => {
+    for (let column = x; column <= x && column > x - width; column -= 1) {
+        for (let row = y; row <= y && row > y - height; row -= 1) {
+            const hasPosition = highlightingPositions.some(
+                pos => pos.row === row && pos.column === column,
+            );
 
+            if (!hasPosition) {
+                highlightingPositions.push({ row, column });
+            }
+        }
+    }
+};
 
 // When element is in resizing mode,
 // we need to determinate which area is going to be marked as obstacle or not
@@ -42,27 +54,40 @@ export function getHighlightingLayoutDropPositions({
         layoutObstaclePositions = [...layoutObstaclePositions, ...elementObstaclePositions];
     }
 
-    let width = 0;
-
     const highlightingPositions = [];
+    let widthExceeded = false;
+    let tmpWidth = 1;
+    const previous = {};
 
-    for (let x = 0; x < layoutWidth; x += 1, width += 1) {
-        let height = 0;
+    for (let x = 1; x <= layoutWidth; x += 1, tmpWidth += 1) {
+        let tmpHeight = 0;
+        let heightExceeded = false;
 
-        for (let y = 0; y < layoutHeight; y += 1) {
-            if (!isObstacle(layoutObstaclePositions, x, y)) {
-                height += 1;
-
-                if (width >= draggedElWidth && height >= draggedElHeight) {
-                    // Max
-                    highlightingPositions.push({ column: x, row: y });
-                }
+        for (let y = 1; y <= layoutHeight; y += 1) {
+            if (previous[`${x - 1}|${y}`]) {
+                tmpWidth = previous[`${x - 1}|${y}`] + 1;
+            }
+            if (isObstacle(layoutObstaclePositions, x, y)) {
+                heightExceeded = false;
+                widthExceeded = false;
+                tmpHeight = 0;
+                tmpWidth = 1;
             } else {
-                width = 0;
-                break;
+                previous[`${x}|${y}`] = tmpWidth;
+
+                tmpHeight += 1;
+            }
+
+            heightExceeded = tmpHeight >= draggedElHeight;
+            widthExceeded = tmpWidth >= draggedElWidth;
+
+            if (heightExceeded && widthExceeded) {
+                fillHighlightingPositions(highlightingPositions, x, y, tmpWidth, tmpHeight);
             }
         }
     }
+
+    return highlightingPositions;
 }
 
 // Determinate max expanding area for element.

@@ -147,14 +147,14 @@ export default {
                 this.removeLayoutElementAtIndex({ index: this.index });
             }
 
-            // TODO: Init areas when we can drag
-            getHighlightingLayoutDropPositions({
+            const highlightingPositions = getHighlightingLayoutDropPositions({
                 draggedElWidth: width,
                 draggedElHeight: height,
                 layoutWidth: 4,
                 layoutHeight: 10,
                 layoutElements: this.layoutElements,
             });
+
         },
         onDragEnd() {
             this.setDraggedElement();
