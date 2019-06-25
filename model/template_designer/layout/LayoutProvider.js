@@ -19,11 +19,21 @@ const fillHighlightingPositions = (highlightingPositions, x, y, xRange, yRange) 
         let row = y;
 
         while (row <= yRange) {
-            highlightingPositions.add({ row, column });
+            highlightingPositions.add(`${row}|${column}`);
             row += 1;
         }
         column += 1;
     }
+};
+const positionsSetToArray = (set) => {
+    const array = [];
+
+    set.forEach((position) => {
+        const [row, column] = position.split('|');
+        array.push({ row: +row, column: +column });
+    });
+
+    return array;
 };
 
 // When element is in resizing mode,
@@ -79,7 +89,7 @@ export function getHighlightingLayoutDropPositions({
         }
     }
 
-    return Array.from(highlightingPositions);
+    return positionsSetToArray(highlightingPositions);
 }
 
 // Determinate max expanding area for element.

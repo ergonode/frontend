@@ -218,69 +218,50 @@ test('Getting normalized row', () => {
     expect(normalizedRow).toEqual(3);
 });
 
-test('Based on layout elements getting highlighting positions where we can drop element', () => {
-    const layoutElements = [
-        {
-            row: 3,
-            column: 2,
-            width: 2,
-            height: 1,
-        },
-        // {
-        //     row: 3,
-        //     column: 4,
-        //     width: 1,
-        //     height: 3,
-        // },
-        // {
-        //     row: 4,
-        //     column: 1,
-        //     width: 1,
-        //     height: 2,
-        // },
-    ];
-
-    const highlightingPositions = getHighlightingLayoutDropPositions({
-        draggedElWidth: 2,
-        draggedElHeight: 2,
-        layoutWidth: 4,
-        layoutHeight: 5,
-        layoutElements
-    });
-
-    expect(highlightingPositions.length).toEqual(16);
-});
-
-// test('Based on layout elements getting highlighting positions where we can drop element', () => {
-//     const layoutElements = [
-//         {
-//             row: 4,
-//             column: 1,
-//             width: 1,
-//             height: 1,
-//         },
-//     ];
-//
-//     const highlightingPositions = getHighlightingLayoutDropPositions({
-//         draggedElWidth: 1,
-//         draggedElHeight: 1,
-//         layoutWidth: 4,
-//         layoutHeight: 5,
-//         layoutElements
-//     });
-//
-//     expect(highlightingPositions.length).toEqual(19);
-// });
-
 test('Based on non layout elements getting highlighting positions where we can drop element', () => {
-    const layoutElements = [];
-    const highlightingPositions = getHighlightingLayoutDropPositions({
-        draggedElWidth: 2,
-        draggedElHeight: 2,
-        layoutWidth: 4,
-        layoutHeight: 5,
-        layoutElements
+    describe('Zero layout elements', () => {
+        const layoutElements = [];
+        const highlightingPositions = getHighlightingLayoutDropPositions({
+            draggedElWidth: 2,
+            draggedElHeight: 2,
+            layoutWidth: 4,
+            layoutHeight: 5,
+            layoutElements
+        });
+
+        expect(highlightingPositions.length).toEqual(20);
     });
 
-    expect(highlightingPositions.length).toEqual(20);
+    describe('Many layout elements', () => {
+        const layoutElements = [
+            {
+                row: 3,
+                column: 2,
+                width: 2,
+                height: 1,
+            },
+            {
+                row: 3,
+                column: 4,
+                width: 1,
+                height: 3,
+            },
+            {
+                row: 4,
+                column: 1,
+                width: 1,
+                height: 2,
+            },
+        ];
+
+        const highlightingPositions = getHighlightingLayoutDropPositions({
+            draggedElWidth: 2,
+            draggedElHeight: 2,
+            layoutWidth: 4,
+            layoutHeight: 5,
+            layoutElements
+        });
+
+        expect(highlightingPositions.length).toEqual(12);
+    });
 });
