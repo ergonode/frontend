@@ -1,4 +1,5 @@
 export function addLayoutElementCopyToDocumentBody(event) {
+    const { offsetX, offsetY } = event;
     const { width, height } = event.target.getBoundingClientRect();
     const clonedDOMElement = event.target.cloneNode(true);
     const clonedDOMElementStyle = `
@@ -10,7 +11,7 @@ export function addLayoutElementCopyToDocumentBody(event) {
     clonedDOMElement.setAttribute('style', clonedDOMElementStyle);
     clonedDOMElement.classList.add('cloned-layout-element');
     document.body.appendChild(clonedDOMElement);
-    event.dataTransfer.setDragImage(clonedDOMElement, width / 2, 0);
+    event.dataTransfer.setDragImage(clonedDOMElement, offsetX, offsetY);
 }
 
 export function removeLayoutElementCopyFromDocumentBody() {

@@ -5,7 +5,6 @@
 <template>
     <div
         :class="['ghost-item', draggableStateClasses]"
-        draggable
         @dragenter="onDragEnter"
         @dragleave="onDragLeave"
         @dragover="onDragOver"
@@ -31,22 +30,6 @@ export default {
             type: Object,
             required: true,
         },
-        minHighlightedColumn: {
-            type: Number,
-            default: 0,
-        },
-        maxHighlightedColumn: {
-            type: Number,
-            default: 0,
-        },
-        minHighlightedRow: {
-            type: Number,
-            default: 0,
-        },
-        maxHighlightedRow: {
-            type: Number,
-            default: 0,
-        },
         highlightingPositions: {
             type: Array,
             default: () => [],
@@ -64,26 +47,10 @@ export default {
         draggableStateClasses() {
             return {
                 'ghost-item--highlighted': this.isHighlighted,
-                'ghost-item--first-row-highlighted': this.isFirstRowHighlighted,
-                'ghost-item--first-column-highlighted': this.isFirstColumnHighlighted,
             };
         },
         isHighlighted() {
             return this.highlightingPositions.find(this.isEqualToPosition);
-        },
-        isFirstRowHighlighted() {
-            const { row, column } = this.position;
-
-            return row === this.minHighlightedRow
-                && column <= this.maxHighlightedColumn
-                && column >= this.minHighlightedColumn;
-        },
-        isFirstColumnHighlighted() {
-            const { row, column } = this.position;
-
-            return column === this.minHighlightedColumn
-                && row <= this.maxHighlightedRow
-                && row >= this.minHighlightedRow;
         },
     },
     methods: {
@@ -112,7 +79,7 @@ export default {
             return row === position.row && column === position.column;
         },
         addGhostElementIfNeeded() {
-            if (typeof this.draggedElement === 'object') {
+            if (typeof this.draggedElement === 'object' && this.isHighlighted) {
                 const elementsGap = 16;
                 const {
                     width, height,
@@ -132,7 +99,7 @@ export default {
             }
         },
         removeGhostElementIfExist() {
-            if (typeof this.draggedElement === 'object') {
+            if (typeof this.draggedElement === 'object' && this.isHighlighted) {
                 removeGhostElementFromDraggableLayer();
             }
         },
