@@ -33,7 +33,7 @@ import ListHeader from '~/components/List/ListHeader';
 import Button from '~/components/Buttons/Button';
 import Select from '~/components/Inputs/Select/Select';
 import TextField from '~/components/Inputs/TextField';
-import debounce from 'debounce';
+import { debounce } from 'debounce';
 
 export default {
     name: 'ListSearchSelectHeader',

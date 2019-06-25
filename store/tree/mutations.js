@@ -5,10 +5,13 @@
 import { removeFromObjectByKey } from '~/model/objectWrapper';
 
 export default {
-    setState: (state, { key, value }) => {
-        state[key] = value;
+    setRowsCount: (state, value) => {
+        state.rowsCount = value;
     },
-    addTreeItem: (state, { item }) => {
+    setTree: (state, value) => {
+        state.treeData = value;
+    },
+    addTreeItem: (state, item) => {
         state.treeData.push(item);
         state.treeData.sort((a, b) => a.row - b.row);
     },

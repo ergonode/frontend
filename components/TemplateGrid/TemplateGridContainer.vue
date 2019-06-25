@@ -45,19 +45,24 @@ export default {
         },
     },
     data: () => ({
-        ghostIndex: 'ghost_item',
         positionBeetwenRows: 0.5,
-        lastColumn: null,
-        lastRow: null,
+        ghostElement: {
+            id: 'ghost_item',
+            column: null,
+            row: null,
+            ghost: true,
+        },
+        mousePosition: {
+            overColumn: null,
+            overRow: null,
+            positionOverRow: null,
+            shadowItem: null,
+        },
         debounceFunc: null,
     }),
     computed: {
         dataWithoutGhostElement() {
-            return this.gridData.filter(element => element.id !== this.ghostIndex);
-        }, // ok
-        ghostElement() {
-            // Last row might be 0 - that's why === null
-            return this.lastRow === null ? null : this.gridData[this.lastRow];
+            return this.gridData.filter(element => element.id !== this.ghostElement.id);
         },
         maxRow() {
             return Math.max(...this.dataWithoutGhostElement.map(item => item.row));
@@ -78,80 +83,60 @@ export default {
             const { clientHeight } = document.querySelector('.grid-container');
             const visibleRows = Math.ceil(clientHeight / this.rowsHeight);
             const totalRows = Math.max(this.gridData.length, visibleRows) + 1;
-            this.$emit('setRowsCount', { key: 'rowsCount', value: totalRows });
+            this.$emit('setRowsCount', totalRows);
         },
         onDragOver(event) {
-            if (!this.dataWithoutGhostElement.length) {
-                this.setGhostItemPosition({
-                    column: 0,
-                    row: 0,
-                });
-                event.preventDefault();
-                return false;
-            } // ok
-
             const { clientX, clientY } = event;
-            const allowedItemPosition = {
-                column: null,
-                row: null,
-            };
+            let allowedRow = null;
+            let allowedColumn = null;
+
+            if (this.onDragFirstItem(event)) return false;
+            this.getMouseOverProps(clientX, clientY);
 
             const {
                 overColumn,
                 overRow,
                 positionOverRow,
-            } = this.getMouseOverProps(clientX, clientY);
-
-            if (overColumn !== null && overRow !== null) {
-                const collidingItem = this.collisionsDetect(overRow);
-                let allowedRow = null;
-                let allowedColumn = null;
-
-                if (collidingItem !== null) {
-                    const relation = this.checkCollidingRelation(positionOverRow);
-                    allowedColumn = this.setAllowedColumn(
-                        overColumn,
-                        collidingItem,
-                        relation,
-                    );
-                    allowedRow = this.setAllowedRow(collidingItem.row, relation);
-                } else if (collidingItem === null && overRow > this.maxRow) {
-                    allowedColumn = this.setAllowedColumn(
-                        overColumn,
-                        this.isRowSet(this.maxRow),
-                    );
-                    allowedRow = this.maxRow;
-                }
-                allowedItemPosition.column = allowedColumn;
-                allowedItemPosition.row = allowedRow + this.positionBeetwenRows;
+            } = this.mousePosition;
+            const collidingItem = this.collisionsDetect(overRow);
+            if (collidingItem !== null) {
+                // const relation = this.checkCollidingRelation(positionOverRow);
+                // allowedColumn = this.setAllowedColumn(
+                //     overColumn,
+                //     collidingItem,
+                //     relation,
+                // );
+                // allowedRow = this.setAllowedRow(collidingItem.row, relation);
+            } else if (collidingItem === null && overRow > this.maxRow) {
+                allowedColumn = this.setAllowedColumn(
+                    overColumn,
+                    this.isRowSet(this.maxRow),
+                );
+                allowedRow = this.maxRow;
+                // console.log(allowedColumn, allowedRow);
             }
-
-            this.setGhostItemPosition(allowedItemPosition);
+            this.setGhostItemPosition({
+                column: allowedColumn,
+                row: allowedRow + this.positionBeetwenRows,
+            });
             event.preventDefault();
-
             return true;
         },
         onDragLeave(event) {
-            // I assume that lastRow and lastColumn has to be cleared when we remove ghost element right ?
             const { fromElement } = event;
             if (fromElement && fromElement.classList.contains('blur')) {
-                this.$emit('removeItem', { index: this.lastRow });
-                this.lastRow = null;
-                this.lastColumn = null;
+                this.removeGhostElement();
             }
             event.preventDefault();
         },
         onDrop(event) {
-            if (!this.ghostElement) {
-                event.stopPropagation();
-                return null;
-            }
-            const { row, column } = this.ghostElement;
-            this.$emit('removeItem', { index: this.lastRow });
-            this.lastRow = null;
-            this.lastColumn = null;
-
             let parentId = 'root';
+            const { row, column } = this.ghostElement;
+            if (row === null) {
+                event.preventDefault();
+                return false;
+            }
+            this.removeGhostElement();
             if (column > 0) {
                 const findElements = this.dataWithoutGhostElement.filter(
                     e => (e.column === column - 1 && e.row < row),
@@ -160,55 +145,62 @@ export default {
                 parentId = this.dataWithoutGhostElement[parent].id;
             }
             if (this.dataWithoutGhostElement.length >= this.rows - 2) {
-                this.$emit('setRowsCount', { key: 'rowsCount', value: this.rows + 1 });
+                this.$emit('setRowsCount', this.rows + 1);
             }
-            this.$emit('addItem', {
-                item: {
-                    id: this.draggedElement,
-                    column,
-                    row,
-                    parent: parentId,
-                },
+            this.addItem({
+                id: this.draggedElement,
+                column,
+                row,
+                parent: parentId,
             });
             this.changeItemRelation({ row, column, parentId: this.draggedElement });
             this.$emit('rebuildGrid', { id: this.draggedElement });
-            return 1;
+            return true;
+        },
+        removeGhostElement() {
+            const { row } = this.ghostElement;
+            this.$emit('removeItem', { index: row });
+            this.ghostElement.row = null;
+            this.ghostElement.column = null;
+        },
+        addItem(item) {
+            this.$emit('addItem', item);
+        },
+        onDragFirstItem(e) {
+            if (!this.dataWithoutGhostElement.length) {
+                this.setGhostItemPosition({
+                    column: 0,
+                    row: 0,
+                });
+                e.preventDefault();
+                return true;
+            }
+            return false;
         },
         setGhostItemPosition({ column, row }) {
             if (
-                (this.lastColumn !== column || this.lastRow !== row)
+                (this.ghostElement.column !== column || this.ghostElement.row !== row)
                 && row !== null
                 && column !== null
             ) {
                 const newRow = this.setRowIfCollapse(row + this.positionBeetwenRows);
-                this.lastColumn = column;
-                this.lastRow = newRow || row;
-                // Seems like lastRow is a ghost element index in the array data
-                // - no need to filter for the ghost element when we have it index
-                this.$emit('addItem', {
-                    item: {
-                        id: this.ghostIndex,
-                        column: this.lastColumn,
-                        row: this.lastRow,
-                        ghost: true,
-                    },
-                });
+                this.ghostElement.row = newRow || row;
+                this.ghostElement.column = column;
+                this.addItem({ ...this.ghostElement });
             }
         },
         getMouseOverProps(clientX, clientY) {
             const elements = document.elementsFromPoint(clientX, clientY);
             const shadowItem = elements.find(e => e.classList.contains('shadow-grid-item'));
-            const shadowItemId = shadowItem ? shadowItem.getAttribute('shadow-id') : null;
-            const overRow = shadowItemId ? Math.floor((shadowItemId - 1) / this.columns) : null;
-            const overColumn = shadowItemId ? (shadowItemId - 1) % this.columns : null;
-            const positionOverRow = shadowItemId
-                ? Math.floor(clientY - shadowItem.getBoundingClientRect().top)
-                : null;
-            return {
-                overColumn,
-                overRow,
-                positionOverRow,
-            };
+            if (shadowItem !== this.mousePosition.shadowItem) {
+                const shadowItemId = shadowItem ? shadowItem.getAttribute('shadow-id') : null;
+                this.mousePosition = {
+                    overColumn: shadowItemId % this.columns,
+                    overRow: Math.floor(shadowItemId / this.columns),
+                    positionOverRow: Math.floor(clientY - shadowItem.getBoundingClientRect().top),
+                    shadowItem,
+                };
+            }
         },
         checkCollidingRelation(layerPositionY) {
             const centerPosition = Math.floor(this.rowsHeight / 2);
@@ -219,12 +211,9 @@ export default {
             return item || null;
         },
         collisionsDetect(row) {
-            const ghostElementRow = this.ghostElement ? this.ghostElement.row : null;
-            if (
-                this.ghostElementRow !== null
-                && row === ghostElementRow + this.positionBeetwenRows
-            ) return null;
-            const newRow = ghostElementRow !== null && row > ghostElementRow
+            const { row: ghostRow } = this.ghostElement;
+            if (ghostRow !== null && row === ghostRow + this.positionBeetwenRows) return false;
+            const newRow = ghostRow !== null && row > ghostRow
                 ? row - 1
                 : row;
             return this.isRowSet(newRow);
@@ -277,13 +266,11 @@ export default {
                     e => (e.parent === brotherId && e.row > row),
                 );
                 childrenToChange.forEach((e) => {
-                    this.$emit('addItem', {
-                        item: {
-                            id: e.id,
-                            column: e.column,
-                            row: e.row,
-                            parent: parentId,
-                        },
+                    this.addItem({
+                        id: e.id,
+                        column: e.column,
+                        row: e.row,
+                        parent: parentId,
                     });
                 });
             }
