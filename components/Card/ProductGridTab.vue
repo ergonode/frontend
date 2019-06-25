@@ -56,9 +56,9 @@ export default {
         title: 'products',
         verticalTabs: [
             {
-                title: 'Filters & Columns',
+                title: 'Attributes',
                 component: () => import('~/components/Card/AttributesListTab'),
-                icon: 'sprite-sidebar sidebar-filter',
+                icon: 'sprite-sidebar sidebar-attributes',
                 active: true,
             },
         ],

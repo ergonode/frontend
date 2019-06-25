@@ -65,6 +65,7 @@ export default {
     methods: {
         onSelectTabBarItem(index) {
             this.selectedTabIndex = index;
+            this.isExpanded = true;
         },
         expandTabContent() {
             this.isExpanded = !this.isExpanded;
