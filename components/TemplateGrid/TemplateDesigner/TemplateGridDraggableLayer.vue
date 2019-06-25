@@ -17,6 +17,8 @@
             :style="getGhostItemPosition(element)"
             :index="index"
             :element="element"
+            :columns-number="columnsNumber"
+            :rows-number="rowsNumber"
             @highlightedPositionChange="onHighlightedPositionsChange" />
     </div>
 </template>
@@ -78,6 +80,12 @@ export default {
     },
     methods: {
         onDrop(position) {
+            this.highlightedPositions = [];
+            this.minHighlightedRow = 0;
+            this.maxHighlightedRow = 0;
+            this.minHighlightedColumn = 0;
+            this.maxHighlightedColumn = 0;
+
             this.$emit('addListElementToLayout', position);
         },
         onHighlightedPositionsChange(positions) {

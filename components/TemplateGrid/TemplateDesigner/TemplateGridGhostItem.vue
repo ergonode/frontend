@@ -147,6 +147,7 @@ export default {
         position: relative;
         display: flex;
         padding: 8px;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
 
         &__placeholder {
             pointer-events: none;
@@ -161,16 +162,8 @@ export default {
         &--highlighted {
             flex: 1;
             background-color: $lightGreen;
-            border-right: $border;
-            border-bottom: $border;
-        }
-
-        &--first-column-highlighted {
             border-left: $border;
-        }
-
-        &--first-row-highlighted {
-            border-top: $border;
+            border-bottom: $border;
         }
     }
 </style>

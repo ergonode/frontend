@@ -4,11 +4,10 @@
 */
 <template>
     <div
-        class="layout-element"
+        :class="['layout-element', { 'layout-element--dragged': isDragged}]"
         :draggable="isDraggingEnabled"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
-        @dragenter="onDragEnter"
         @mouseover="onMouseOver"
         @mouseout="onMouseOut">
         <div class="horizontal-wrapper">
@@ -60,6 +59,10 @@ import {
     updateGhostElementHeight,
     removeGhostElementFromDraggableLayer,
 } from '~/model/template_designer/layout/GhostElement';
+import {
+    addLayoutElementCopyToDocumentBody,
+    removeLayoutElementCopyFromDocumentBody,
+} from '~/model/template_designer/layout/LayoutElementCopy';
 import { mapState, mapActions } from 'vuex';
 import Icon from '~/components/Icon/Icon';
 import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
@@ -73,6 +76,14 @@ export default {
         },
         element: {
             type: Object,
+            required: true,
+        },
+        columnsNumber: {
+            type: Number,
+            required: true,
+        },
+        rowsNumber: {
+            type: Number,
             required: true,
         },
     },
@@ -98,6 +109,7 @@ export default {
             isContextualMenuActive: false,
             contextualMenuItems: ['Require', 'Remove'],
             isHovered: false,
+            isDragged: false,
         };
     },
     computed: {
@@ -137,27 +149,28 @@ export default {
         onMouseOut() {
             if (!this.isContextualMenuActive) this.isHovered = false;
         },
-        onDragStart() {
+        onDragStart(event) {
+            const { id, width, height } = this.element;
+
             this.setDraggedElement({ ...this.element, index: this.index });
-        },
-        onDragEnter() {
-            const { width, height } = this.element;
-
-            if (typeof this.draggedElement === 'object') {
-                this.removeLayoutElementAtIndex({ index: this.index });
-            }
-
-            const highlightingPositions = getHighlightingLayoutDropPositions({
+            window.requestAnimationFrame(() => { this.isDragged = true; });
+            addLayoutElementCopyToDocumentBody(event);
+            this.highlightingPositions = getHighlightingLayoutDropPositions({
                 draggedElWidth: width,
                 draggedElHeight: height,
-                layoutWidth: 4,
-                layoutHeight: 10,
-                layoutElements: this.layoutElements,
+                layoutWidth: this.columnsNumber,
+                layoutHeight: this.rowsNumber,
+                layoutElements: this.layoutElements.filter(el => el.id !== id),
             });
 
+            this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
         onDragEnd() {
+            this.isDragged = false;
+            this.highlightingPositions = [];
             this.setDraggedElement();
+            removeLayoutElementCopyFromDocumentBody();
+            this.$emit('highlightedPositionChange', []);
         },
         initResizeDrag(event) {
             this.highlightingPositions = getHighlightingPositions(
@@ -420,6 +433,10 @@ export default {
             position: absolute;
             color: $error;
             content: "*";
+        }
+
+        &--dragged {
+            visibility: hidden;
         }
     }
 </style>

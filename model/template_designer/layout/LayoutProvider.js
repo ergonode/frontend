@@ -8,17 +8,21 @@ const paddingGap = 16;
 const isObstacle = (obstacles, x, y) => obstacles.some(
     obstacle => obstacle.row === y && obstacle.column === x,
 );
-const fillHighlightingPositions = (highlightingPositions, x, y, width, height) => {
-    for (let column = x; column <= x && column > x - width; column -= 1) {
-        for (let row = y; row <= y && row > y - height; row -= 1) {
-            const hasPosition = highlightingPositions.some(
-                pos => pos.row === row && pos.column === column,
-            );
+const isObstacleInRangeOf = (obstacles, x, y, xRange, yRange) => obstacles.some((obstacle) => {
+    const { row, column } = obstacle;
 
-            if (!hasPosition) {
-                highlightingPositions.push({ row, column });
-            }
+    return row >= y && row <= yRange && column >= x && column <= xRange;
+});
+const fillHighlightingPositions = (highlightingPositions, x, y, xRange, yRange) => {
+    let column = x;
+    while (column <= xRange) {
+        let row = y;
+
+        while (row <= yRange) {
+            highlightingPositions.add({ row, column });
+            row += 1;
         }
+        column += 1;
     }
 };
 
@@ -54,40 +58,28 @@ export function getHighlightingLayoutDropPositions({
         layoutObstaclePositions = [...layoutObstaclePositions, ...elementObstaclePositions];
     }
 
-    const highlightingPositions = [];
-    let widthExceeded = false;
-    let tmpWidth = 1;
-    const previous = {};
+    const highlightingPositions = new Set();
 
-    for (let x = 1; x <= layoutWidth; x += 1, tmpWidth += 1) {
-        let tmpHeight = 0;
-        let heightExceeded = false;
-
+    for (let x = 1; x <= layoutWidth; x += 1) {
         for (let y = 1; y <= layoutHeight; y += 1) {
-            if (previous[`${x - 1}|${y}`]) {
-                tmpWidth = previous[`${x - 1}|${y}`] + 1;
-            }
-            if (isObstacle(layoutObstaclePositions, x, y)) {
-                heightExceeded = false;
-                widthExceeded = false;
-                tmpHeight = 0;
-                tmpWidth = 1;
-            } else {
-                previous[`${x}|${y}`] = tmpWidth;
+            const xRange = x - 1 + draggedElWidth;
+            const yRange = y - 1 + draggedElHeight;
+            const rangeIsNotOutOfLayoutBounds = (xRange > layoutWidth || yRange > layoutHeight);
 
-                tmpHeight += 1;
-            }
-
-            heightExceeded = tmpHeight >= draggedElHeight;
-            widthExceeded = tmpWidth >= draggedElWidth;
-
-            if (heightExceeded && widthExceeded) {
-                fillHighlightingPositions(highlightingPositions, x, y, tmpWidth, tmpHeight);
+            if (!rangeIsNotOutOfLayoutBounds
+                && !isObstacleInRangeOf(layoutObstaclePositions, x, y, xRange, yRange)) {
+                fillHighlightingPositions(
+                    highlightingPositions,
+                    x,
+                    y,
+                    xRange,
+                    yRange,
+                );
             }
         }
     }
 
-    return highlightingPositions;
+    return Array.from(highlightingPositions);
 }
 
 // Determinate max expanding area for element.
