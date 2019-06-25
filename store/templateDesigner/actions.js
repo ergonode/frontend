@@ -87,12 +87,8 @@ export default {
 
         commit('addListElementToLayout', layoutElement);
     },
-    updateLayoutElementBounds: ({ commit }, { index, width, height }) => {
-        commit('updateLayoutElementBounds', { index, width, height });
-    },
-    updateLayoutElementPosition: ({ commit }, { index, row, column }) => {
-        commit('updateLayoutElementPosition', { index, row, column });
-    },
+    updateLayoutElementBounds: ({ commit }, { index, width, height }) => commit('updateLayoutElementBounds', { index, width, height }),
+    updateLayoutElementPosition: ({ commit }, payload) => commit('updateLayoutElementPosition', payload),
     setTemplateDesignerSectionTitle: ({ commit, getters }, { row, column, title }) => {
         const index = getters.layoutElementIndex(
             column,

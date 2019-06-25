@@ -5,7 +5,6 @@
 <template>
     <div
         :class="['ghost-item', draggableStateClasses]"
-        draggable
         @dragenter="onDragEnter"
         @dragleave="onDragLeave"
         @dragover="onDragOver"
@@ -31,22 +30,6 @@ export default {
             type: Object,
             required: true,
         },
-        minHighlightedColumn: {
-            type: Number,
-            default: 0,
-        },
-        maxHighlightedColumn: {
-            type: Number,
-            default: 0,
-        },
-        minHighlightedRow: {
-            type: Number,
-            default: 0,
-        },
-        maxHighlightedRow: {
-            type: Number,
-            default: 0,
-        },
         highlightingPositions: {
             type: Array,
             default: () => [],
@@ -64,26 +47,10 @@ export default {
         draggableStateClasses() {
             return {
                 'ghost-item--highlighted': this.isHighlighted,
-                'ghost-item--first-row-highlighted': this.isFirstRowHighlighted,
-                'ghost-item--first-column-highlighted': this.isFirstColumnHighlighted,
             };
         },
         isHighlighted() {
-            return this.highlightingPositions.find(this.isEqualToPosition);
-        },
-        isFirstRowHighlighted() {
-            const { row, column } = this.position;
-
-            return row === this.minHighlightedRow
-                && column <= this.maxHighlightedColumn
-                && column >= this.minHighlightedColumn;
-        },
-        isFirstColumnHighlighted() {
-            const { row, column } = this.position;
-
-            return column === this.minHighlightedColumn
-                && row <= this.maxHighlightedRow
-                && row >= this.minHighlightedRow;
+            return this.highlightingPositions.some(this.isEqualToPosition);
         },
     },
     methods: {
@@ -109,6 +76,7 @@ export default {
         },
         isEqualToPosition(position) {
             const { row, column } = this.position;
+
             return row === position.row && column === position.column;
         },
         addGhostElementIfNeeded() {
@@ -147,6 +115,7 @@ export default {
         position: relative;
         display: flex;
         padding: 8px;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
 
         &__placeholder {
             pointer-events: none;
@@ -161,16 +130,8 @@ export default {
         &--highlighted {
             flex: 1;
             background-color: $lightGreen;
-            border-right: $border;
-            border-bottom: $border;
-        }
-
-        &--first-column-highlighted {
             border-left: $border;
-        }
-
-        &--first-row-highlighted {
-            border-top: $border;
+            border-bottom: $border;
         }
     }
 </style>

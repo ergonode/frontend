@@ -72,7 +72,7 @@ export default {
         this.setConfigurationForList({
             draggedElementsStore: {
                 storeName: 'templateDesigner',
-                stateName: 'templateLayout',
+                stateName: 'layoutElements',
                 idName: ['data', 'id'],
             },
         });
