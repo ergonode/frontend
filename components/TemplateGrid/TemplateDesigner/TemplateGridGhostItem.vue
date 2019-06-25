@@ -50,7 +50,7 @@ export default {
             };
         },
         isHighlighted() {
-            return this.highlightingPositions.find(this.isEqualToPosition);
+            return this.highlightingPositions.some(this.isEqualToPosition);
         },
     },
     methods: {
@@ -76,10 +76,11 @@ export default {
         },
         isEqualToPosition(position) {
             const { row, column } = this.position;
+
             return row === position.row && column === position.column;
         },
         addGhostElementIfNeeded() {
-            if (typeof this.draggedElement === 'object' && this.isHighlighted) {
+            if (typeof this.draggedElement === 'object') {
                 const elementsGap = 16;
                 const {
                     width, height,
@@ -99,7 +100,7 @@ export default {
             }
         },
         removeGhostElementIfExist() {
-            if (typeof this.draggedElement === 'object' && this.isHighlighted) {
+            if (typeof this.draggedElement === 'object') {
                 removeGhostElementFromDraggableLayer();
             }
         },
