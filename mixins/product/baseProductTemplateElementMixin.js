@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 import { mapActions } from 'vuex';
-import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import debounce from 'debounce';
+import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
     mixins: [errorValidationMixin],
