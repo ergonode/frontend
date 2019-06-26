@@ -10,7 +10,9 @@
         @dragend="onDragEnd"
         @mouseover="onMouseOver"
         @mouseout="onMouseOut">
-        <div class="horizontal-wrapper">
+        <div
+            ref="horizontalWrapper"
+            class="horizontal-wrapper">
             <div class="layout-element__icon">
                 <Icon
                     size="medium"
@@ -30,12 +32,13 @@
                     class="txt--dark-graphite typo-subtitle txt-fixed "
                     v-text="element.label || 'No translation'" />
             </div>
-            <ButtonSelect
-                :class="['layout-element__contextual-menu', contextualMenuHoveStateClasses]"
-                :icon="contextualMenuStateIcon"
-                :options="contextualMenuItems"
-                @input="onSelectValue"
-                @focus="onSelectFocus" />
+            <div :class="['layout-element__contextual-menu', contextualMenuHoveStateClasses]">
+                <ButtonSelect
+                    :icon="contextualMenuStateIcon"
+                    :options="contextualMenuItems"
+                    @input="onSelectValue"
+                    @focus="onSelectFocus" />
+            </div>
             <div
                 class="layout-element__resizer"
                 @mousedown="initResizeDrag" />
@@ -358,12 +361,16 @@ export default {
             this.$el.style.width = `${this.startWidth}px`;
             this.$el.style.height = `${this.startHeight}px`;
             this.$el.style.border = '2px solid #00bc87';
+            this.$el.style.zIndex = '5';
+            this.$refs.horizontalWrapper.style.zIndex = '5';
         },
         resetElementStyleForEndResizeInteraction() {
             this.$el.style.border = '1px solid #d6d7d8';
             this.$el.style.position = 'relative';
             this.$el.style.width = null;
             this.$el.style.height = null;
+            this.$el.style.zIndex = 'unset';
+            this.$refs.horizontalWrapper.style.zIndex = 'unset';
         },
         resetDataForEndResizeInteraction() {
             this.isDraggingEnabled = true;
@@ -376,7 +383,6 @@ export default {
 <style lang="scss" scoped>
     .layout-element {
         position: relative;
-        z-index: 5;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -388,7 +394,6 @@ export default {
         cursor: grab;
 
         .horizontal-wrapper {
-            z-index: 5;
             display: flex;
             flex: 1;
             height: 100%;
@@ -402,7 +407,7 @@ export default {
             display: flex;
             flex: 1;
             flex-direction: column;
-            padding: 8px;
+            padding: 6px 8px;
         }
 
         &__icon {
@@ -412,6 +417,8 @@ export default {
 
         &__contextual-menu {
             flex: 0;
+            align-items: flex-start;
+            padding: 12px 0;
             opacity: 0;
 
             &--hovered {

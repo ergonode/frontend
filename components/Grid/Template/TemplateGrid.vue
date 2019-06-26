@@ -60,10 +60,19 @@ export default {
             ],
             verticalTabs: [
                 {
-                    title: 'Filters & Columns',
+                    title: 'Attributes',
                     component: () => import('~/components/Card/AttributesListTab'),
-                    icon: 'sprite-sidebar sidebar-filter',
+                    props: {
+                        isSelectLanguage: false,
+                    },
+                    icon: 'sprite-sidebar sidebar-attributes',
                     active: true,
+                },
+                {
+                    title: 'Widgets',
+                    component: () => import('~/components/Card/WidgetsListTab'),
+                    icon: 'sprite-sidebar sidebar-widgets',
+                    active: false,
                 },
             ],
         };
