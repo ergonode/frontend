@@ -2,9 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { mapActions } from 'vuex';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import debounce from 'debounce';
-import { mapActions } from 'vuex';
 
 export default {
     mixins: [errorValidationMixin],

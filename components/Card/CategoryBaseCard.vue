@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import BaseCard from '~/components/Card/BaseCard';
 import { mapState, mapActions } from 'vuex';
+import BaseCard from '~/components/Card/BaseCard';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
