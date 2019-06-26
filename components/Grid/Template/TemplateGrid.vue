@@ -16,7 +16,14 @@
                     :rows-number="maxRows"
                     :columns-number="columnsNumber"
                     :layout-elements="layoutElements"
-                    @addListElementToLayout="updateLayoutElement" />
+                    @addListElementToLayout="updateLayoutElement"
+                    @editSectionTitle="onEditSectionTitle" />
+                <ModalSectionTitleTemplate
+                    :value="isSectionAdded"
+                    :section-position="sectionPosition"
+                    :section-title="sectionTitle"
+                    :section-index="sectionIndex"
+                    @input="onCloseSectionModal" />
             </TemplateGridDesigner>
         </div>
         <Footer :buttons="buttons" />
@@ -34,6 +41,7 @@ export default {
         TemplateGridDraggableLayer: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer'),
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
         Footer: () => import('~/components/ReusableFooter/Footer'),
+        ModalSectionTitleTemplate: () => import('~/components/Modals/ModalSectionTitleTemplate'),
     },
     props: {
         updateButton: {
@@ -43,6 +51,10 @@ export default {
     },
     data() {
         return {
+            isSectionAdded: false,
+            sectionPosition: null,
+            sectionIndex: null,
+            sectionTitle: '',
             columnsNumber: 4,
             maxRows: 0,
             buttons: [
@@ -121,9 +133,24 @@ export default {
                 const index = this.layoutElements.findIndex(el => el.id === this.draggedElement.id);
 
                 this.updateLayoutElementPosition({ index, row, column });
+            } else if (this.draggedElement === 'SECTION') {
+                this.sectionPosition = position;
+                this.isSectionAdded = true;
             } else {
                 this.addListElementToLayout(position);
             }
+        },
+        onEditSectionTitle(index) {
+            const { [index]: layoutElement } = this.layoutElements;
+            this.sectionTitle = layoutElement.label;
+            this.sectionIndex = index;
+            this.isSectionAdded = true;
+        },
+        onCloseSectionModal() {
+            this.sectionPosition = null;
+            this.isSectionAdded = false;
+            this.sectionTitle = '';
+            this.sectionIndex = null;
         },
         onPreview() {
 

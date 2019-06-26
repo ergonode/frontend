@@ -10,7 +10,7 @@
             onDraggedState,
         }"
         :dragged="isDragged">
-        <ListElementIcon :icon="iconByType" />
+        <ListElementIcon icon="editor-font-size-24" />
         <ListElementDescription
             :title="item.type"
             :subtitle="item.label" />
@@ -45,10 +45,6 @@ export default {
         ...mapGetters('list', [
             'isElementDisabled',
         ]),
-        iconByType() {
-            // TODO: waiting for an ICON
-            return '';
-        },
     },
     methods: {
         ...mapActions('draggable', [

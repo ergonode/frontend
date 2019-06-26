@@ -96,6 +96,7 @@
             @include generateIconTypeClasses("feedback", $alertSpriteIcons, $sizeValue, 1, null, 1, 1);
 
             @include generateIconTypeClasses("switch", $switchSpriteIcons, 1, 1, null, null, null);
+            @include generateIconTypeClasses("editor", $editorSpriteIcons, 0, 1, null, null, null);
             @include generateIconTypeClasses("window", $windowActionsSpriteIcons, 0, 1, null, null, null);
 
             @include generateIconTypeClasses("menu", $menuSpriteIcons, $sizeValue, 3, 1, null, 1);

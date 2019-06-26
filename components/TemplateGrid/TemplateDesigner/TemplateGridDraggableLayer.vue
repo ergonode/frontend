@@ -15,7 +15,19 @@
             :element="element"
             :columns-number="columnsNumber"
             :rows-number="rowsNumber"
-            @highlightedPositionChange="onHighlightedPositionsChange" />
+            @highlightedPositionChange="onHighlightedPositionsChange">
+            <template v-slot:content>
+                <AttributeElementContent
+                    v-if="element.type !== 'SECTION TITLE'"
+                    :element="element"
+                    :index="index" />
+                <SectionElementContent
+                    v-else
+                    :element="element"
+                    :index="index"
+                    @editTitle="onEditSectionTitle" />
+            </template>
+        </LayoutElement>
     </div>
 </template>
 
@@ -26,6 +38,8 @@ export default {
     components: {
         TemplateGridGhostItem: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridGhostItem'),
         LayoutElement: () => import('~/components/Template/TemplateDesigner/LayoutElement'),
+        AttributeElementContent: () => import('~/components/Template/TemplateDesigner/AttributeElementContent'),
+        SectionElementContent: () => import('~/components/Template/TemplateDesigner/SectionElementContent'),
     },
     props: {
         columnsNumber: {
@@ -71,6 +85,9 @@ export default {
             this.highlightedPositions = [];
 
             this.$emit('addListElementToLayout', position);
+        },
+        onEditSectionTitle(index) {
+            this.$emit('editSectionTitle', index);
         },
         onHighlightedPositionsChange(positions) {
             this.highlightedPositions = positions;
