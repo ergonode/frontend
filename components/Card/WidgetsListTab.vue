@@ -3,6 +3,7 @@
         <ListSearchHeader
             header="Widgets"
             @searchResult="onSearch" />
+        <WidgetsList />
     </div>
 </template>
 
@@ -12,6 +13,7 @@ export default {
     name: 'WidgetsListTab',
     components: {
         ListSearchHeader: () => import('~/components/List/ListSearchHeader'),
+        WidgetsList: () => import('~/components/List/WidgetsList'),
     },
     methods: {
         onSearch() {
