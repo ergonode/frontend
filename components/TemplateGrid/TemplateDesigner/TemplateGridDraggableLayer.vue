@@ -6,10 +6,6 @@
             :style="{ gridArea: `${position.row} / ${position.column} / auto / auto` }"
             :position="position"
             :highlighting-positions="highlightedPositions"
-            :min-highlighted-column="minHighlightedColumn"
-            :max-highlighted-column="maxHighlightedColumn"
-            :min-highlighted-row="minHighlightedRow"
-            :max-highlighted-row="maxHighlightedRow"
             @drop="onDrop" />
         <LayoutElement
             v-for="(element, index) in layoutElements"
@@ -17,15 +13,13 @@
             :style="getGhostItemPosition(element)"
             :index="index"
             :element="element"
+            :columns-number="columnsNumber"
+            :rows-number="rowsNumber"
             @highlightedPositionChange="onHighlightedPositionsChange" />
     </div>
 </template>
 
 <script>
-import {
-    getMaxObjectValueInArrayByObjectKey,
-    getMinObjectValueInArrayByObjectKey,
-} from '~/model/arrayWrapper';
 
 export default {
     name: 'TemplateGridDraggableLayer',
@@ -51,10 +45,6 @@ export default {
     data() {
         return {
             highlightedPositions: [],
-            minHighlightedRow: 0,
-            maxHighlightedRow: 0,
-            minHighlightedColumn: 0,
-            maxHighlightedColumn: 0,
         };
     },
     computed: {
@@ -78,15 +68,12 @@ export default {
     },
     methods: {
         onDrop(position) {
+            this.highlightedPositions = [];
+
             this.$emit('addListElementToLayout', position);
         },
         onHighlightedPositionsChange(positions) {
             this.highlightedPositions = positions;
-
-            this.maxHighlightedRow = getMaxObjectValueInArrayByObjectKey(positions, 'row');
-            this.minHighlightedRow = getMinObjectValueInArrayByObjectKey(positions, 'row');
-            this.minHighlightedColumn = getMinObjectValueInArrayByObjectKey(positions, 'column');
-            this.maxHighlightedColumn = getMaxObjectValueInArrayByObjectKey(positions, 'column');
         },
         getGhostItemPosition({
             row, column, width, height,

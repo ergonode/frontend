@@ -108,8 +108,10 @@ export default {
         },
         updateLayoutElement(position) {
             if (typeof this.draggedElement === 'object') {
-                const { index } = this.draggedElement;
-                this.updateLayoutElementPosition({ index, ...position });
+                const { row, column } = position;
+                const index = this.layoutElements.findIndex(el => el.id === this.draggedElement.id);
+
+                this.updateLayoutElementPosition({ index, row, column });
             } else {
                 this.addListElementToLayout(position);
             }

@@ -4,7 +4,7 @@
 */
 <template>
     <div
-        class="layout-element"
+        :class="['layout-element', { 'layout-element--dragged': isDragged}]"
         :draggable="isDraggingEnabled"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
@@ -44,9 +44,10 @@
 </template>
 
 <script>
-
+import { mapState, mapActions } from 'vuex';
 import {
     getHighlightingPositions,
+    getHighlightingLayoutDropPositions,
     getMaxRowForGivenColumn,
     getMaxColumnForGivenRow,
     getRowBasedOnHeight,
@@ -58,7 +59,10 @@ import {
     updateGhostElementHeight,
     removeGhostElementFromDraggableLayer,
 } from '~/model/template_designer/layout/GhostElement';
-import { mapState, mapActions } from 'vuex';
+import {
+    addLayoutElementCopyToDocumentBody,
+    removeLayoutElementCopyFromDocumentBody,
+} from '~/model/template_designer/layout/LayoutElementCopy';
 import Icon from '~/components/Icon/Icon';
 import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
 
@@ -71,6 +75,14 @@ export default {
         },
         element: {
             type: Object,
+            required: true,
+        },
+        columnsNumber: {
+            type: Number,
+            required: true,
+        },
+        rowsNumber: {
+            type: Number,
             required: true,
         },
     },
@@ -96,11 +108,15 @@ export default {
             isContextualMenuActive: false,
             contextualMenuItems: ['Require', 'Remove'],
             isHovered: false,
+            isDragged: false,
         };
     },
     computed: {
         ...mapState('templateDesigner', {
             layoutElements: state => state.layoutElements,
+        }),
+        ...mapState('draggable', {
+            draggedElement: state => state.draggedElement,
         }),
         iconByType() {
             const { type } = this.element;
@@ -120,7 +136,6 @@ export default {
     methods: {
         ...mapActions('templateDesigner', [
             'updateLayoutElementBounds',
-            'updateLayoutElementPosition',
             'setLayoutElementRequirement',
             'removeLayoutElementAtIndex',
         ]),
@@ -133,11 +148,28 @@ export default {
         onMouseOut() {
             if (!this.isContextualMenuActive) this.isHovered = false;
         },
-        onDragStart() {
+        onDragStart(event) {
+            const { id, width, height } = this.element;
+
             this.setDraggedElement({ ...this.element, index: this.index });
+            window.requestAnimationFrame(() => { this.isDragged = true; });
+            addLayoutElementCopyToDocumentBody(event);
+            this.highlightingPositions = getHighlightingLayoutDropPositions({
+                draggedElWidth: width,
+                draggedElHeight: height,
+                layoutWidth: this.columnsNumber,
+                layoutHeight: this.rowsNumber,
+                layoutElements: this.layoutElements.filter(el => el.id !== id),
+            });
+
+            this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
         onDragEnd() {
+            this.isDragged = false;
+            this.highlightingPositions = [];
             this.setDraggedElement();
+            removeLayoutElementCopyFromDocumentBody();
+            this.$emit('highlightedPositionChange', []);
         },
         initResizeDrag(event) {
             this.highlightingPositions = getHighlightingPositions(
@@ -400,6 +432,10 @@ export default {
             position: absolute;
             color: $error;
             content: "*";
+        }
+
+        &--dragged {
+            visibility: hidden;
         }
     }
 </style>
