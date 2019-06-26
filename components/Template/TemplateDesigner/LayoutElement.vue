@@ -47,7 +47,7 @@
 </template>
 
 <script>
-
+import { mapState, mapActions } from 'vuex';
 import {
     getHighlightingPositions,
     getHighlightingLayoutDropPositions,
@@ -66,7 +66,6 @@ import {
     addLayoutElementCopyToDocumentBody,
     removeLayoutElementCopyFromDocumentBody,
 } from '~/model/template_designer/layout/LayoutElementCopy';
-import { mapState, mapActions } from 'vuex';
 import Icon from '~/components/Icon/Icon';
 import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
 

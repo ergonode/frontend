@@ -7,7 +7,7 @@ export function addLayoutElementCopyToDocumentBody(event) {
                 background-color: #fff;
                 height: ${height}px;
                 width: ${width}px;
-            `;
+    `;
     clonedDOMElement.setAttribute('style', clonedDOMElementStyle);
     clonedDOMElement.classList.add('cloned-layout-element');
     document.body.appendChild(clonedDOMElement);

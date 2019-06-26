@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import { getValueByKey, getKeyByValue } from '~/model/objectWrapper';
 import { mapState, mapActions } from 'vuex';
+import { getValueByKey, getKeyByValue } from '~/model/objectWrapper';
 
 export default {
     name: 'AttributesListTab',

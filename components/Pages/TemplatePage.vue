@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 import { mapActions } from 'vuex';
+import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'TemplatePage',

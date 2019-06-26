@@ -16,12 +16,11 @@
 </template>
 
 <script>
-
+import { mapState } from 'vuex';
 import {
     addGhostElementToDraggableLayer,
     removeGhostElementFromDraggableLayer,
 } from '~/model/template_designer/layout/GhostElement';
-import { mapState } from 'vuex';
 
 export default {
     name: 'TemplateGridGhostItem',
