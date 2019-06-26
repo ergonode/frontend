@@ -53,7 +53,6 @@ export default {
     data: () => ({
         selectedTabIndex: 0,
         isExpanded: true,
-        contentWidth: 200,
     }),
     computed: {
         btnExpanderImage() {

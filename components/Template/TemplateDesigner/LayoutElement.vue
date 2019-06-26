@@ -413,6 +413,8 @@ export default {
 
         &__contextual-menu {
             flex: 0;
+            align-items: flex-start;
+            margin: 12px 0;
             opacity: 0;
 
             &--hovered {
