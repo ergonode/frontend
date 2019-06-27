@@ -4,7 +4,7 @@
 */
 <template>
     <div
-        :class="['ghost-item', draggableStateClasses]"
+        :class="['ghost-item', highlightedStateClasses]"
         @dragenter="onDragEnter"
         @dragleave="onDragLeave"
         @dragover="onDragOver"
@@ -43,13 +43,25 @@ export default {
         ...mapState('draggable', {
             draggedElement: state => state.draggedElement,
         }),
-        draggableStateClasses() {
+        highlightedStateClasses() {
             return {
                 'ghost-item--highlighted': this.isHighlighted,
+                'ghost-item--top-border': this.isHighlighted && !this.isTopNeighbour,
+                'ghost-item--right-border': this.isHighlighted && !this.isRightNeighbour,
             };
         },
         isHighlighted() {
             return this.highlightingPositions.some(this.isEqualToPosition);
+        },
+        isTopNeighbour() {
+            return this.highlightingPositions.some(
+                this.isEqualToPosition && this.isEqualToTopPosition,
+            );
+        },
+        isRightNeighbour() {
+            return this.highlightingPositions.some(
+                this.isEqualToPosition && this.isEqualToRightPosition,
+            );
         },
     },
     methods: {
@@ -77,6 +89,16 @@ export default {
             const { row, column } = this.position;
 
             return row === position.row && column === position.column;
+        },
+        isEqualToTopPosition(position) {
+            const { row } = this.position;
+
+            return row - 1 === position.row;
+        },
+        isEqualToRightPosition(position) {
+            const { column } = this.position;
+
+            return column + 1 === position.column;
         },
         addGhostElementIfNeeded() {
             if (typeof this.draggedElement === 'object') {
@@ -131,6 +153,14 @@ export default {
             background-color: $lightGreen;
             border-left: $border;
             border-bottom: $border;
+        }
+
+        &--top-border {
+            border-top: $border;
+        }
+
+        &--right-border {
+            border-right: $border;
         }
     }
 </style>
