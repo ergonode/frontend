@@ -7,42 +7,11 @@
         :class="['layout-element', { 'layout-element--dragged': isDragged}]"
         :draggable="isDraggingEnabled"
         @dragstart="onDragStart"
-        @dragend="onDragEnd"
-        @mouseover="onMouseOver"
-        @mouseout="onMouseOut">
+        @dragend="onDragEnd">
+        <slot name="content" />
         <div
-            ref="horizontalWrapper"
-            class="horizontal-wrapper">
-            <div class="layout-element__icon">
-                <Icon
-                    size="medium"
-                    :icon="iconByType" />
-            </div>
-            <div class="vertical-wrapper">
-                <span
-                    :class="[
-                        { 'layout-element--required': element.required },
-                        'txt--light-graphite',
-                        'typo-label',
-                        'l-spacing--half',
-                        'txt-fixed',
-                    ]"
-                    v-text="element.type" />
-                <span
-                    class="txt--dark-graphite typo-subtitle txt-fixed "
-                    v-text="element.label || 'No translation'" />
-            </div>
-            <div :class="['layout-element__contextual-menu', contextualMenuHoveStateClasses]">
-                <ButtonSelect
-                    :icon="contextualMenuStateIcon"
-                    :options="contextualMenuItems"
-                    @input="onSelectValue"
-                    @focus="onSelectFocus" />
-            </div>
-            <div
-                class="layout-element__resizer"
-                @mousedown="initResizeDrag" />
-        </div>
+            class="layout-element__resizer"
+            @mousedown="initResizeDrag" />
     </div>
 </template>
 
@@ -66,8 +35,6 @@ import {
     addLayoutElementCopyToDocumentBody,
     removeLayoutElementCopyFromDocumentBody,
 } from '~/model/template_designer/layout/LayoutElementCopy';
-import Icon from '~/components/Icon/Icon';
-import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
 
 export default {
     name: 'LayoutElement',
@@ -89,10 +56,6 @@ export default {
             required: true,
         },
     },
-    components: {
-        Icon,
-        ButtonSelect,
-    },
     data() {
         return {
             isDraggingEnabled: true,
@@ -108,9 +71,6 @@ export default {
             actualElementColumn: 0,
             highlightingPositions: [],
             elementsGap: 16,
-            isContextualMenuActive: false,
-            contextualMenuItems: ['Require', 'Remove'],
-            isHovered: false,
             isDragged: false,
         };
     },
@@ -121,36 +81,15 @@ export default {
         ...mapState('draggable', {
             draggedElement: state => state.draggedElement,
         }),
-        iconByType() {
-            const { type } = this.element;
-            const convertedType = type.toLowerCase().replace('_', '-');
-
-            return `sprite-attribute attribute-${convertedType}`;
-        },
-        contextualMenuHoveStateClasses() {
-            return { 'layout-element__contextual-menu--hovered': this.isHovered };
-        },
-        contextualMenuStateIcon() {
-            return this.isContextualMenuActive
-                ? 'sprite-system system-dots--selected'
-                : 'sprite-system system-dots--deactive';
-        },
     },
     methods: {
         ...mapActions('templateDesigner', [
             'updateLayoutElementBounds',
-            'setLayoutElementRequirement',
             'removeLayoutElementAtIndex',
         ]),
         ...mapActions('draggable', [
             'setDraggedElement',
         ]),
-        onMouseOver() {
-            if (this.isDraggingEnabled) this.isHovered = true;
-        },
-        onMouseOut() {
-            if (!this.isContextualMenuActive) this.isHovered = false;
-        },
         onDragStart(event) {
             const { id, width, height } = this.element;
 
@@ -223,25 +162,6 @@ export default {
             this.removeEventListenersForResizeState();
 
             this.$emit('highlightedPositionChange', []);
-        },
-        onSelectFocus(isFocused) {
-            if (!isFocused) this.isHovered = false;
-
-            this.isContextualMenuActive = isFocused;
-        },
-        onSelectValue(value) {
-            switch (value) {
-            case 'Require':
-                this.setLayoutElementRequirement({
-                    index: this.index,
-                    required: !this.element.required,
-                });
-                break;
-            case 'Remove':
-                this.removeLayoutElementAtIndex();
-                break;
-            default: break;
-            }
         },
         getElementWidthBasedOnMouseXPosition(xPos) {
             return this.startWidth + xPos - this.startX;
@@ -329,7 +249,6 @@ export default {
         },
         blockOtherInteractionsOnResizeEvent() {
             this.isDraggingEnabled = false;
-            this.isHovered = false;
         },
         initMousePosition({ clientX, clientY }) {
             this.startX = clientX;
@@ -362,7 +281,6 @@ export default {
             this.$el.style.height = `${this.startHeight}px`;
             this.$el.style.border = '2px solid #00bc87';
             this.$el.style.zIndex = '5';
-            this.$refs.horizontalWrapper.style.zIndex = '5';
         },
         resetElementStyleForEndResizeInteraction() {
             this.$el.style.border = '1px solid #d6d7d8';
@@ -370,7 +288,6 @@ export default {
             this.$el.style.width = null;
             this.$el.style.height = null;
             this.$el.style.zIndex = 'unset';
-            this.$refs.horizontalWrapper.style.zIndex = 'unset';
         },
         resetDataForEndResizeInteraction() {
             this.isDraggingEnabled = true;
@@ -393,39 +310,6 @@ export default {
         user-select: none;
         cursor: grab;
 
-        .horizontal-wrapper {
-            display: flex;
-            flex: 1;
-            height: 100%;
-            padding-left: 10px;
-            background-color: $background;
-            overflow: hidden;
-            resize: both;
-        }
-
-        .vertical-wrapper {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            padding: 6px 8px;
-        }
-
-        &__icon {
-            display: flex;
-            padding-top: 12px;
-        }
-
-        &__contextual-menu {
-            flex: 0;
-            align-items: flex-start;
-            padding: 12px 0;
-            opacity: 0;
-
-            &--hovered {
-                opacity: 1;
-            }
-        }
-
         &__resizer {
             position: absolute;
             bottom: 0;
@@ -433,12 +317,6 @@ export default {
             width: 10px;
             height: 10px;
             cursor: se-resize;
-        }
-
-        &--required::after {
-            position: absolute;
-            color: $error;
-            content: "*";
         }
 
         &--dragged {

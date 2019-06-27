@@ -85,20 +85,39 @@ export default {
             required: false,
         };
 
-        commit('addListElementToLayout', layoutElement);
+        commit('addElementToLayout', layoutElement);
+    },
+    addSectionElementToLayout: ({
+        commit, state,
+    }, { row, column, title }) => {
+        const { types } = state;
+        const [sectionType] = types.filter(type => type.type === 'SECTION');
+        const {
+            min_width: minWidth,
+            min_height: minHeight,
+            max_width: maxWidth,
+            max_height: maxHeight,
+        } = sectionType;
+        const layoutElement = {
+            id: Math.random().toString(36).substr(2, 9),
+            row,
+            column,
+            width: 1,
+            height: 1,
+            minWidth,
+            maxWidth,
+            minHeight,
+            maxHeight,
+            type: 'SECTION TITLE',
+            label: title,
+        };
+
+        commit('addElementToLayout', layoutElement);
     },
     updateLayoutElementBounds: ({ commit }, { index, width, height }) => commit('updateLayoutElementBounds', { index, width, height }),
     updateLayoutElementPosition: ({ commit }, payload) => commit('updateLayoutElementPosition', payload),
-    setTemplateDesignerSectionTitle: ({ commit, getters }, { row, column, title }) => {
-        const index = getters.layoutElementIndex(
-            column,
-            row,
-        );
-
-        commit('setTemplateDesignerSectionTitle', {
-            index,
-            title,
-        });
+    updateSectionElementTitle: ({ commit }, payload) => {
+        commit('updateSectionElementTitle', payload);
     },
     removeLayoutElementAtIndex: ({ commit }, index) => commit('removeLayoutElementAtIndex', index),
     setTemplateDesignerTitle: ({ commit }, { title }) => commit('setTemplateDesignerTitle', { title }),
