@@ -9,12 +9,9 @@
                 'tab-bar-item',
                 {
                     'tab-bar-item--selected': (isSelected && isContentExpanded),
-                    'tab-bar-item--disabled': !item.active,
-                    'nonIcon': !Boolean(item.icon),
                     'not-expanded-content': !isContentExpanded,
                 }
             ]"
-        :disabled="!item.active"
         @click="onClick">
         <Icon
             :icon="tabIcon"
@@ -40,7 +37,7 @@ export default {
                 return null;
             }
 
-            return this.item.active && this.isContentExpanded
+            return this.isSelected && this.isContentExpanded
                 ? `${this.item.icon}--selected`
                 : `${this.item.icon}--deactive`;
         },
@@ -55,20 +52,23 @@ export default {
 
 <style lang="scss" scoped>
     .tab-bar-item {
-        @include setFont(medium, small, regular, $graphite);
+        @include setFont(medium, small, 15, $graphite);
+        $tabItem: &;
+
         position: relative;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 8px;
+        padding: 14px 8px;
         background-color: $white;
         outline: none;
         border-left: 1px solid $grey;
         border-top: 1px solid $grey;
+        text-align: center;
 
         &__title {
-            text-align: center;
+            margin-top: 8px;
         }
 
         &:not(&--selected), &.not-expanded-content {
@@ -78,15 +78,6 @@ export default {
 
         &:last-child {
             border-bottom: 1px solid $grey;
-        }
-
-        &.nonIcon {
-            min-height: 56px;
-        }
-
-        &--disabled {
-            color: $grey;
-            border-color: $grey;
         }
 
         &:after {
@@ -103,6 +94,13 @@ export default {
 
         &--selected:after {
             opacity: 1;
+        }
+
+        &--selected {
+            #{$tabItem}__title {
+                opacity: 0.9;
+                color: $darkGraphite;
+            }
         }
     }
 </style>

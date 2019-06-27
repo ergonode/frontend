@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <List group>
+    <List>
         <CategoryListElement
             v-for="element in elementsByLanguageCode"
             :key="element.id"

@@ -19,9 +19,8 @@ export default {
 
         return Promise.all([
             this.app.$axios.$get(groupsPath).then(({ collection: groups }) => {
-                // eslint-disable-next-line camelcase
-                const tmpGroups = groups.map(({ id, label, elements_count }) => ({
-                    id, label, elementsCount: elements_count,
+                const tmpGroups = groups.map(({ id, label, elements_count: elementsCount }) => ({
+                    id, label, elementsCount,
                 }));
                 parsedGroups = { ...parsedGroups, ...tmpGroups };
             }).catch(e => console.log(e)),
