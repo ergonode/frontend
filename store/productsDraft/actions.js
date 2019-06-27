@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 import { generateProductLayout } from '~/model/template_designer/layout/LayoutGenerator';
-import { getMappedCategoryValues } from '~/model/mappers/categoryMapper';
+import {
+    getMappedCategoryValues, getMappedTemplateName,
+} from '~/model/mappers/categoryMapper';
 
 export default {
     setProductSku: ({ commit }, payload) => commit('setProductSku', payload),
@@ -11,7 +13,7 @@ export default {
     setProductCategories: ({ commit }, payload) => commit('setProductCategories', payload),
     async setDraftLanguageCode({ commit, state }, { languageCode }) {
         const { id } = state;
-        commit('setDraftLanguageCode', { languageCode });
+        commit('setDraftLanguageCode', languageCode);
 
         await this.app.$axios.$get(`${languageCode}/drafts/${id}/template`).then(({ elements }) => {
             const templateLayout = generateProductLayout(elements);
@@ -20,15 +22,11 @@ export default {
         }).catch(e => console.log(e));
 
         await this.app.$axios.$get(`${languageCode}/drafts/${id}/completeness`).then((completeness) => {
-            commit('setProductCompleteness', { completeness });
+            commit('setProductCompleteness', completeness);
         }).catch(e => console.log(e));
     },
-    getProductDraft({ commit }, {
-        id,
-        languageCode,
-        onError,
-    }) {
-        commit('setDraftLanguageCode', { languageCode });
+    getProductDraft({ commit, state }, { languageCode, id, onError }) {
+        commit('setDraftLanguageCode', languageCode);
 
         return this.app.$axios.$get(`${languageCode}/drafts/product/${id}`).then(({
             template_id: templateId,
@@ -36,60 +34,44 @@ export default {
             category_ids: categoryIds,
             sku,
         }) => {
+            const { categories, templates } = state;
+
+            if (categoryIds) {
+                const selectedCategories = getMappedCategoryValues(
+                    categories,
+                    categoryIds,
+                );
+                commit('setProductCategories', selectedCategories);
+            }
+
+            if (templateId) {
+                const template = getMappedTemplateName(templates, templateId);
+                commit('setProductTemplate', template);
+            }
+
             commit('setProductId', { id: draftId });
             commit('setProductSku', { sku });
-
-            return this.app.$axios.$get(`${languageCode}/templates?limit=5000&offset=0`).then(({ collection: templates }) => {
-                commit('setTemplates', { templates });
-                if (templateId) {
-                    const template = templates.find(tmp => tmp.id === templateId).name;
-                    commit('setProductTemplate', { template });
-                }
-
-                return this.app.$axios.$get(`${languageCode}/drafts/${draftId}/template`).then(({ elements }) => {
-                    const templateLayout = generateProductLayout(elements);
-
-                    commit('setTemplateLayout', { templateLayout });
-
-                    return this.app.$axios.$get(`${languageCode}/drafts/${draftId}/completeness`).then(({ data: completeness }) => {
-                        commit('setProductCompleteness', { completeness });
-                        return this.app.$axios.$get(`${languageCode}/categories?limit=5000&offset=0&show=DATA`).then(({ collection: categories }) => {
-                            commit('setCategories', { categories });
-                            if (categoryIds) {
-                                const selectedCategories = getMappedCategoryValues(
-                                    categories,
-                                    categoryIds,
-                                );
-                                commit('setProductCategories', { selectedCategories });
-                            }
-                        }).catch(e => onError(e.data));
-                    }).catch(e => onError(e.data));
-                }).catch(e => onError(e.data));
-            }).catch(e => onError(e.data));
         }).catch(e => onError(e.data));
     },
-    getTemplates({ commit, rootState }, { onError }) {
+    getTemplates({ commit, rootState }, onError) {
         const { authentication: { user: { language } } } = rootState;
         return this.app.$axios.$get(`${language}/templates?limit=5000&offset=0`).then(({ collection: templates }) => {
-            commit('setTemplates', { templates });
+            commit('setTemplates', templates);
         }).catch(e => onError(e.data));
     },
-    getCategories({ commit, rootState }, { onError }) {
+    getCategories({ commit, rootState }, onError) {
         const { authentication: { user: { language } } } = rootState;
         return this.app.$axios.$get(`${language}/categories?limit=5000&offset=0`).then(({ collection: categories }) => {
-            commit('setCategories', { categories });
+            commit('setCategories', categories);
         }).catch(e => onError(e.data));
     },
-    getProductCompleteness(
-        { commit },
-        {
-            id,
-            languageCode,
-            onError,
-        },
-    ) {
+    getProductCompleteness({ commit }, {
+        id,
+        languageCode,
+        onError,
+    }) {
         return this.app.$axios.$get(`${languageCode}/drafts/${id}/completeness`).then((completeness) => {
-            commit('setProductCompleteness', { completeness });
+            commit('setProductCompleteness', completeness);
         }).catch(e => onError(e.data));
     },
     async setProductTemplateElementValue({ commit, state, dispatch }, {

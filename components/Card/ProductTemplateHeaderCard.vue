@@ -41,6 +41,7 @@ export default {
     },
     created() {
         this.language = getValueByKey(this.languages, this.languageCode);
+        console.log(this.language);
     },
     computed: {
         ...mapState('data', {

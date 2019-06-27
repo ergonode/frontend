@@ -57,16 +57,6 @@ export default {
         languagesValues() {
             return objectToArray(this.languages);
         },
-        selectedLanguage: {
-            get() {
-                return getObjectByKey(this.languages, this.languageCode);
-            },
-            set(newLanguage) {
-                this.$store.dispatch('productsDraft/setDraftLanguageCode', {
-                    languageCode: newLanguage,
-                });
-            },
-        },
     },
 };
 </script>
