@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import DraggableStates from '~/model/draggableStates';
 import { mapActions, mapGetters } from 'vuex';
+import DraggableStates from '~/model/draggableStates';
 
 export default {
     name: 'AttributeListElement',
