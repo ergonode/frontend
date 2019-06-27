@@ -33,9 +33,9 @@ export default {
 <style lang="scss" scoped>
     .overlay {
         position: fixed;
-        z-index: 9999999;
         top: 0;
         left: 0;
+        z-index: 9999999;
         display: flex;
         justify-content: center;
         align-items: center;
