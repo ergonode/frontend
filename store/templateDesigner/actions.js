@@ -3,21 +3,31 @@
  * See LICENSE for license details.
  */
 
+import {
+    getMappedLayoutElements,
+    getMappedLayoutElement,
+    getMappedLayoutSectionElement,
+} from '~/model/mappers/templateMapper';
+
 export default {
     getTemplateByID(
-        { commit },
+        { commit, getters },
         { path, onError },
     ) {
         return this.app.$axios.$get(path).then(({
             name,
             image_id: imageID,
-            /**
-            sections,
-            elements, */
+            elements,
         }) => {
-            // TODO: Map elements
-            commit('setTemplateDesignerTitle', { title: name });
-            commit('setTemplateDesignerImage', { image: imageID });
+            const { elementDataByType } = getters;
+            const layoutElements = getMappedLayoutElements(
+                elements,
+                elementDataByType,
+            );
+
+            commit('initializeLayoutElements', layoutElements);
+            commit('setTemplateDesignerTitle', name);
+            commit('setTemplateDesignerImage', imageID);
         }).catch(e => onError(e.data));
     },
     updateTemplateDesigner(
@@ -49,79 +59,43 @@ export default {
         path, params, onSuccess, onError,
     }) {
         return this.app.$axios.$get(path, { params }).then(({ collection: types }) => {
-            commit('setTypes', { types });
+            commit('setTypes', types);
             onSuccess();
         }).catch(e => onError(e.data));
     },
     addListElementToLayout: ({
         commit, rootState, rootGetters, getters,
-    }, { row, column }) => {
+    }, position) => {
         const { draggedElement } = rootState.draggable;
         const { 'list/elementByCode': elementByCode } = rootGetters;
         const { elementDataByType } = getters;
-        const {
-            id,
-            type,
-            label,
-        } = elementByCode(draggedElement.split(':')[0]);
-        const {
-            min_width: minWidth,
-            min_height: minHeight,
-            max_width: maxWidth,
-            max_height: maxHeight,
-        } = elementDataByType(type);
-        const layoutElement = {
-            id,
-            row,
-            column,
-            width: 1,
-            height: 1,
-            minWidth,
-            maxWidth,
-            minHeight,
-            maxHeight,
-            type,
-            label,
-            required: false,
-        };
+        const element = elementByCode(draggedElement.split(':')[0]);
+        const layoutElement = getMappedLayoutElement(
+            element.id,
+            elementDataByType(element.type),
+            position,
+        );
 
         commit('addElementToLayout', layoutElement);
     },
     addSectionElementToLayout: ({
-        commit, state,
+        commit, getters,
     }, { row, column, title }) => {
-        const { types } = state;
-        const [sectionType] = types.filter(type => type.type === 'SECTION');
-        const {
-            min_width: minWidth,
-            min_height: minHeight,
-            max_width: maxWidth,
-            max_height: maxHeight,
-        } = sectionType;
-        const layoutElement = {
-            id: Math.random().toString(36).substr(2, 9),
-            row,
-            column,
-            width: 1,
-            height: 1,
-            minWidth,
-            maxWidth,
-            minHeight,
-            maxHeight,
-            type: 'SECTION TITLE',
-            label: title,
-        };
+        const { elementDataByType } = getters;
+        const layoutElement = getMappedLayoutSectionElement(
+            title,
+            elementDataByType('SECTION'),
+            { row, column },
+        );
 
         commit('addElementToLayout', layoutElement);
     },
-    updateLayoutElementBounds: ({ commit }, { index, width, height }) => commit('updateLayoutElementBounds', { index, width, height }),
+    updateLayoutElementBounds: ({ commit }, payload) => commit('updateLayoutElementBounds', payload),
     updateLayoutElementPosition: ({ commit }, payload) => commit('updateLayoutElementPosition', payload),
-    updateSectionElementTitle: ({ commit }, payload) => {
-        commit('updateSectionElementTitle', payload);
-    },
+    updateSectionElementTitle: ({ commit }, payload) => commit('updateSectionElementTitle', payload),
     removeLayoutElementAtIndex: ({ commit }, index) => commit('removeLayoutElementAtIndex', index),
-    setTemplateDesignerTitle: ({ commit }, { title }) => commit('setTemplateDesignerTitle', { title }),
-    setTemplateDesignerImage: ({ commit }, { image }) => commit('setTemplateDesignerImage', { image }),
+    setTemplateDesignerTitle: ({ commit }, title) => commit('setTemplateDesignerTitle', title),
+    setTemplateDesignerImage: ({ commit }, image) => commit('setTemplateDesignerImage', image),
     setLayoutElementRequirement: ({ commit }, payload) => commit('setLayoutElementRequirement', payload),
     clearStorage: ({ commit }) => commit('clearStorage'),
 };

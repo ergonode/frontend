@@ -24,7 +24,7 @@ import {
     getMaxColumnForGivenRow,
     getRowBasedOnHeight,
     getColumnBasedOnWidth,
-} from '~/model/template_designer/layout/LayoutProvider';
+} from '~/model/template_designer/layout/LayoutCalculations';
 import {
     addGhostElementToDraggableLayer,
     updateGhostElementWidth,

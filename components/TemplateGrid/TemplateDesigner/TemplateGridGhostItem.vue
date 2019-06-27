@@ -130,13 +130,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    $border: 1px dashed $success;
+    $highlightingBorder: 1px dashed $success;
+    $border: 1px dashed $grey;
 
     .ghost-item {
         position: relative;
         display: flex;
         padding: 8px;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        border-left: $border;
+        border-bottom: $border;
 
         &__placeholder {
             pointer-events: none;
@@ -151,16 +154,16 @@ export default {
         &--highlighted {
             flex: 1;
             background-color: $lightGreen;
-            border-left: $border;
-            border-bottom: $border;
+            border-left: $highlightingBorder;
+            border-bottom: $highlightingBorder;
         }
 
         &--top-border {
-            border-top: $border;
+            border-top: $highlightingBorder;
         }
 
         &--right-border {
-            border-right: $border;
+            border-right: $highlightingBorder;
         }
     }
 </style>
