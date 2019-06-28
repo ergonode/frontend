@@ -28,13 +28,13 @@ export default {
             commit('addTreeItem', item);
         }
     },
-    removeTreeItem: ({ commit }, { index }) => {
-        commit('removeTreeItem', { index });
+    removeTreeItem: ({ commit }, id) => {
+        commit('removeTreeItem', id);
     },
-    rebuildTree: ({ commit, state }, { id }) => {
+    rebuildTree: ({ commit, state }, id) => {
         const findIndex = state.treeData.findIndex(el => el.id === id);
         const newTree = state.treeData.reduce((accumulator, current, i) => {
-            if (i === findIndex) {
+            if (i === findIndex && current.row !== 0) {
                 accumulator.push({ ...current, row: current.row + 0.5 });
             } else if (i > findIndex) {
                 accumulator.push({ ...current, row: current.row + 1 });

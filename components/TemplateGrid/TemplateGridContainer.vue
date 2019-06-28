@@ -55,7 +55,7 @@ export default {
         mousePosition: {
             overColumn: null,
             overRow: null,
-            positionOverRow: null,
+            collisionRelation: null,
             shadowItem: null,
         },
         debounceFunc: null,
@@ -87,38 +87,19 @@ export default {
         },
         onDragOver(event) {
             const { clientX, clientY } = event;
-            let allowedRow = null;
-            let allowedColumn = null;
-
+            const { overRow, collisionRelation } = this.mousePosition;
             if (this.onDragFirstItem(event)) return false;
-            this.getMouseOverProps(clientX, clientY);
-
-            const {
-                overColumn,
-                overRow,
-                positionOverRow,
-            } = this.mousePosition;
+            const tmpCollisionRelation = this.getMouseOverProps(clientX, clientY);
             const collidingItem = this.collisionsDetect(overRow);
-            if (collidingItem !== null) {
-                // const relation = this.checkCollidingRelation(positionOverRow);
-                // allowedColumn = this.setAllowedColumn(
-                //     overColumn,
-                //     collidingItem,
-                //     relation,
-                // );
-                // allowedRow = this.setAllowedRow(collidingItem.row, relation);
+
+            if (collidingItem !== null && collisionRelation !== tmpCollisionRelation) {
+                this.setGhostItemPosition(this.getCollidingPosition(collidingItem));
             } else if (collidingItem === null && overRow > this.maxRow) {
-                allowedColumn = this.setAllowedColumn(
-                    overColumn,
-                    this.isRowSet(this.maxRow),
-                );
-                allowedRow = this.maxRow;
-                // console.log(allowedColumn, allowedRow);
+                this.setGhostItemPosition({
+                    column: this.setAllowedColumn(),
+                    row: this.maxRow + this.positionBeetwenRows,
+                });
             }
-            this.setGhostItemPosition({
-                column: allowedColumn,
-                row: allowedRow + this.positionBeetwenRows,
-            });
             event.preventDefault();
             return true;
         },
@@ -130,41 +111,63 @@ export default {
             event.preventDefault();
         },
         onDrop(event) {
-            let parentId = 'root';
             const { row, column } = this.ghostElement;
-            if (row === null) {
-                event.preventDefault();
-                return false;
-            }
+            const { length: withoutGhostLength } = this.dataWithoutGhostElement;
             this.removeGhostElement();
-            if (column > 0) {
-                const findElements = this.dataWithoutGhostElement.filter(
-                    e => (e.column === column - 1 && e.row < row),
-                );
-                const parent = Math.floor(Math.max(...findElements.map(item => item.row)));
-                parentId = this.dataWithoutGhostElement[parent].id;
-            }
-            if (this.dataWithoutGhostElement.length >= this.rows - 2) {
-                this.$emit('setRowsCount', this.rows + 1);
-            }
             this.addItem({
                 id: this.draggedElement,
                 column,
                 row,
-                parent: parentId,
+                parent: this.setParentId(row, column),
             });
-            this.changeItemRelation({ row, column, parentId: this.draggedElement });
-            this.$emit('rebuildGrid', { id: this.draggedElement });
+            if (withoutGhostLength >= this.rows - 2) {
+                this.$emit('setRowsCount', this.rows + 1);
+            }
+            this.$emit('rebuildGrid', this.draggedElement);
+            event.preventDefault();
             return true;
         },
         removeGhostElement() {
-            const { row } = this.ghostElement;
-            this.$emit('removeItem', { index: row });
+            this.$emit('removeItem', this.ghostElement.id);
             this.ghostElement.row = null;
             this.ghostElement.column = null;
         },
         addItem(item) {
             this.$emit('addItem', item);
+        },
+        getBottomCollidingColumn({ adjacentElColumn, collidingElColumn }) {
+            const { overColumn } = this.mousePosition;
+            if (adjacentElColumn !== null && collidingElColumn < adjacentElColumn) {
+                return adjacentElColumn;
+            }
+            return overColumn > collidingElColumn ? collidingElColumn + 1 : collidingElColumn;
+        },
+        getTopCollidingColumn({ adjacentElColumn, collidingElColumn }) {
+            const { overColumn } = this.mousePosition;
+            if (overColumn >= collidingElColumn && overColumn <= adjacentElColumn + 1) {
+                return overColumn;
+            }
+            return collidingElColumn;
+        },
+        getCollidingPosition(collidingEl) {
+            const { collisionRelation } = this.mousePosition;
+            const isTop = collisionRelation === 'top';
+            const [adjacentEl] = this.dataWithoutGhostElement.filter(
+                el => el.row === (isTop ? collidingEl.row - 1 : collidingEl.row + 1),
+            );
+            const collidingData = {
+                adjacentElColumn: adjacentEl ? adjacentEl.column : null,
+                collidingElColumn: collidingEl.column,
+            };
+            if ((!adjacentEl || collidingEl.row === 0) && isTop) {
+                return { column: 0, row: -this.positionBeetwenRows };
+            }
+            return {
+                column: isTop
+                    ? this.getTopCollidingColumn(collidingData)
+                    : this.getBottomCollidingColumn(collidingData),
+                row: (isTop ? collidingEl.row - 1 : collidingEl.row) + this.positionBeetwenRows,
+            };
         },
         onDragFirstItem(e) {
             if (!this.dataWithoutGhostElement.length) {
@@ -177,14 +180,24 @@ export default {
             }
             return false;
         },
+        setParentId(row, column) {
+            let parentId = 'root';
+            if (column > 0) {
+                const findElements = this.dataWithoutGhostElement.filter(
+                    e => (e.column === column - 1 && e.row < row),
+                );
+                const parent = Math.floor(Math.max(...findElements.map(item => item.row)));
+                parentId = this.dataWithoutGhostElement[parent].id;
+            }
+            return parentId;
+        },
         setGhostItemPosition({ column, row }) {
             if (
                 (this.ghostElement.column !== column || this.ghostElement.row !== row)
                 && row !== null
                 && column !== null
             ) {
-                const newRow = this.setRowIfCollapse(row + this.positionBeetwenRows);
-                this.ghostElement.row = newRow || row;
+                this.ghostElement.row = row;
                 this.ghostElement.column = column;
                 this.addItem({ ...this.ghostElement });
             }
@@ -192,19 +205,25 @@ export default {
         getMouseOverProps(clientX, clientY) {
             const elements = document.elementsFromPoint(clientX, clientY);
             const shadowItem = elements.find(e => e.classList.contains('shadow-grid-item'));
+            const positionOverRow = clientY - shadowItem.getBoundingClientRect().top;
+            const collisionRelation = this.checkCollidingRelation(positionOverRow);
+
+            if (collisionRelation !== this.mousePosition.collisionRelation) {
+                this.mousePosition.collisionRelation = collisionRelation;
+            }
             if (shadowItem !== this.mousePosition.shadowItem) {
                 const shadowItemId = shadowItem ? shadowItem.getAttribute('shadow-id') : null;
                 this.mousePosition = {
                     overColumn: shadowItemId % this.columns,
                     overRow: Math.floor(shadowItemId / this.columns),
-                    positionOverRow: Math.floor(clientY - shadowItem.getBoundingClientRect().top),
                     shadowItem,
                 };
             }
+            return collisionRelation;
         },
         checkCollidingRelation(layerPositionY) {
             const centerPosition = Math.floor(this.rowsHeight / 2);
-            return layerPositionY > centerPosition ? 'son' : 'brother';
+            return layerPositionY > centerPosition ? 'bottom' : 'top';
         },
         isRowSet(row) {
             const [item] = this.dataWithoutGhostElement.filter(element => element.row === row);
@@ -212,68 +231,16 @@ export default {
         },
         collisionsDetect(row) {
             const { row: ghostRow } = this.ghostElement;
-            if (ghostRow !== null && row === ghostRow + this.positionBeetwenRows) return false;
+            if (ghostRow !== null && row === ghostRow + this.positionBeetwenRows) return null;
             const newRow = ghostRow !== null && row > ghostRow
                 ? row - 1
                 : row;
             return this.isRowSet(newRow);
         },
-        setAllowedColumn(column, interactionItem, relation = false) {
-            const { column: interactionItemColumn, row: interactionItemRow } = interactionItem;
-            const topBrother = this.isRowSet(interactionItemRow - 1);
-            if (column === null) return null;
-            if (relation) {
-                if (topBrother && column > topBrother.column + 1 && relation === 'brother') return null;
-                return column > interactionItemColumn ? interactionItemColumn + 1 : column;
-            }
-            return column > interactionItemColumn ? interactionItemColumn + 1 : column;
-        },
-        setAllowedRow(interactionRow, relation) {
-            return relation === 'brother' ? interactionRow - 1 : interactionRow;
-        },
-        hasChildren(id) {
-            return this.dataWithoutGhostElement.some(element => element.parent === id);
-        },
-        setCollapseParent(id) {
-            return Object.keys(this.hiddenItems).reduce((acc, el) => {
-                let x = acc;
-                if (this.hiddenItems[el].some(e => e === id)) {
-                    x = el;
-                }
-                return x;
-            }, '');
-        },
-        setRowIfCollapse(row) {
-            const item = this.isRowSet(row);
-            if (!item) return null;
-            const hiddenItemParent = this.setCollapseParent(item.id);
-            if (!hiddenItemParent) return null;
-            const collapseItem = this.hiddenItems[hiddenItemParent];
-            const lastCollapseChildId = collapseItem[collapseItem.length - 1];
-            const [lastItem] = this.dataWithoutGhostElement.filter(
-                el => el.id === lastCollapseChildId,
-            );
-            return lastItem.row + this.positionBeetwenRows || null;
-        },
-        changeItemRelation({ row, column, parentId }) {
-            const findBrothers = this.dataWithoutGhostElement.filter(
-                e => (e.column === column && e.row < row),
-            );
-            if (findBrothers.length) {
-                const brother = Math.floor(Math.max(...findBrothers.map(item => item.row)));
-                const brotherId = this.dataWithoutGhostElement[brother].id;
-                const childrenToChange = this.dataWithoutGhostElement.filter(
-                    e => (e.parent === brotherId && e.row > row),
-                );
-                childrenToChange.forEach((e) => {
-                    this.addItem({
-                        id: e.id,
-                        column: e.column,
-                        row: e.row,
-                        parent: parentId,
-                    });
-                });
-            }
+        setAllowedColumn() {
+            const { overColumn } = this.mousePosition;
+            const { column: interactionColumn } = this.isRowSet(this.maxRow);
+            return overColumn > interactionColumn ? interactionColumn + 1 : overColumn;
         },
     },
 };
