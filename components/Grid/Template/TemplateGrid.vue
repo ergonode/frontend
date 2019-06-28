@@ -7,10 +7,6 @@
         <div class="horizontal-wrapper">
             <VerticalTabBar :items="verticalTabs" />
             <TemplateGridDesigner @rowsCount="onRowsCountChange">
-                <TemplateGridPresentationLayer
-                    :style="gridStyles"
-                    :columns="columnsNumber"
-                    :rows="maxRows" />
                 <TemplateGridDraggableLayer
                     :style="gridStyles"
                     :rows-number="maxRows"
@@ -36,7 +32,6 @@ import { mapState, mapActions } from 'vuex';
 export default {
     name: 'TemplateGrid',
     components: {
-        TemplateGridPresentationLayer: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridPresentationLayer'),
         TemplateGridDesigner: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridDesigner'),
         TemplateGridDraggableLayer: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer'),
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
@@ -92,7 +87,6 @@ export default {
     computed: {
         ...mapState('templateDesigner', {
             templateGroups: state => state.templateGroups,
-            layout: state => state.templateLayout,
             layoutElements: state => state.layoutElements,
             titleValidationError: state => state.titleValidationError,
             title: state => state.title,
@@ -105,7 +99,7 @@ export default {
                 return this.title;
             },
             set(value) {
-                this.setTemplateDesignerTitle({ title: value });
+                this.setTemplateDesignerTitle(value);
             },
         },
         errorMessages() {

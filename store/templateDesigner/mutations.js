@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 export default {
+    initializeLayoutElements: (state, elements) => {
+        state.layoutElements = elements;
+    },
     updateLayoutElementBounds: (state, { index, width, height }) => {
         state.layoutElements[index] = { ...state.layoutElements[index], width, height };
         state.layoutElements = [...state.layoutElements];
@@ -14,11 +17,10 @@ export default {
     addElementToLayout: (state, layoutElement) => {
         state.layoutElements.push(layoutElement);
     },
-    setTypes: (state, { types }) => {
+    setTypes: (state, types) => {
         state.types = types;
     },
-    setLayoutElementRequirement: (state, payload) => {
-        const { required, index } = payload;
+    setLayoutElementRequirement: (state, { required, index }) => {
         const element = state.layoutElements[index];
 
         state.layoutElements[index] = { ...element, required };
@@ -27,10 +29,10 @@ export default {
     removeLayoutElementAtIndex: (state, index) => {
         state.layoutElements.splice(index, 1);
     },
-    setTemplateDesignerTitle: (state, { title }) => {
+    setTemplateDesignerTitle: (state, title) => {
         state.title = title;
     },
-    setTemplateDesignerImage: (state, { image }) => {
+    setTemplateDesignerImage: (state, image) => {
         state.image = image;
     },
     updateSectionElementTitle: (state, { index, title }) => {

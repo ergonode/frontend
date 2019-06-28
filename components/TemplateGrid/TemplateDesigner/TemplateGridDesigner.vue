@@ -57,7 +57,7 @@ export default {
         flex: 1;
         flex-direction: column;
         width: 0;
-        margin: 12px;
+        margin-left: 24px;
         overflow: auto;
     }
 </style>

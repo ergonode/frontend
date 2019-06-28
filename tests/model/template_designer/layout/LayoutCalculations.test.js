@@ -6,7 +6,7 @@ import {
     getMaxRowForGivenColumn,
     getColumnBasedOnWidth,
     getRowBasedOnHeight,
-} from "~/model/template_designer/layout/LayoutProvider";
+} from "~/model/template_designer/layout/LayoutCalculations";
 
 test('Element has correct number of obstacle points', () => {
     let elementBounds = {
