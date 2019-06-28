@@ -11,8 +11,9 @@
 </template>
 
 <script>
+
+import debounce from 'debounce';
 import { topBound, bottomBound } from '~/model/scroll/boundaryScroll';
-import { debounce } from 'debounce';
 
 export default {
     name: 'TemplateGridScroll',

@@ -45,6 +45,9 @@ export default {
             isClickedOutside: false,
         };
     },
+    destroyed() {
+        window.removeEventListener('click', this.onClickOutside);
+    },
     computed: {
         arrowIcon() {
             const icon = !this.isSelected ? 'navbar-arrow' : 'navbar-arrow trans-half';

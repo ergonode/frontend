@@ -5,11 +5,16 @@
 <template>
     <div class="tab-wrapper">
         <ListSearchSelectHeader
+            v-if="isSelectLanguage"
             header="Attributes"
             :options="formattedLanguages"
             :selected-option="attributesLanguageCode"
             @searchResult="onSearch"
             @selectOption="onSelect" />
+        <ListSearchHeader
+            v-else
+            header="Attributes"
+            @searchResult="onSearch" />
         <AttributesList :language-code="languageCode" />
         <div class="add-btn-wrapper">
             <Button
@@ -21,15 +26,22 @@
 </template>
 
 <script>
-import { getValueByKey, getKeyByValue } from '~/model/objectWrapper';
 import { mapState, mapActions } from 'vuex';
+import { getValueByKey, getKeyByValue } from '~/model/objectWrapper';
 
 export default {
     name: 'AttributesListTab',
     components: {
         AttributesList: () => import('~/components/List/AttributesList'),
         ListSearchSelectHeader: () => import('~/components/List/ListSearchSelectHeader'),
+        ListSearchHeader: () => import('~/components/List/ListSearchHeader'),
         Button: () => import('~/components/Buttons/Button'),
+    },
+    props: {
+        isSelectLanguage: {
+            type: Boolean,
+            default: true,
+        },
     },
     data() {
         return {
@@ -80,6 +92,7 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
+        width: 275px;
 
         .add-btn-wrapper {
             position: absolute;

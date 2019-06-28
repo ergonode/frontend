@@ -34,11 +34,10 @@
 </template>
 
 <script>
-
+import moment from 'moment';
 import Select from '~/components/Inputs/Select/Select';
 import DatePickerContent from '~/components/Inputs/Select/Contents/DatePickerContent';
 import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
-import moment from 'moment';
 
 export default {
     name: 'ProductTemplateDate',

@@ -4,8 +4,7 @@
 */
 <template>
     <div
-        :class="['ghost-item', draggableStateClasses]"
-        draggable
+        :class="['ghost-item', highlightedStateClasses]"
         @dragenter="onDragEnter"
         @dragleave="onDragLeave"
         @dragover="onDragOver"
@@ -17,12 +16,11 @@
 </template>
 
 <script>
-
+import { mapState } from 'vuex';
 import {
     addGhostElementToDraggableLayer,
     removeGhostElementFromDraggableLayer,
 } from '~/model/template_designer/layout/GhostElement';
-import { mapState } from 'vuex';
 
 export default {
     name: 'TemplateGridGhostItem',
@@ -30,22 +28,6 @@ export default {
         position: {
             type: Object,
             required: true,
-        },
-        minHighlightedColumn: {
-            type: Number,
-            default: 0,
-        },
-        maxHighlightedColumn: {
-            type: Number,
-            default: 0,
-        },
-        minHighlightedRow: {
-            type: Number,
-            default: 0,
-        },
-        maxHighlightedRow: {
-            type: Number,
-            default: 0,
         },
         highlightingPositions: {
             type: Array,
@@ -61,29 +43,25 @@ export default {
         ...mapState('draggable', {
             draggedElement: state => state.draggedElement,
         }),
-        draggableStateClasses() {
+        highlightedStateClasses() {
             return {
                 'ghost-item--highlighted': this.isHighlighted,
-                'ghost-item--first-row-highlighted': this.isFirstRowHighlighted,
-                'ghost-item--first-column-highlighted': this.isFirstColumnHighlighted,
+                'ghost-item--top-border': this.isHighlighted && !this.isTopNeighbour,
+                'ghost-item--right-border': this.isHighlighted && !this.isRightNeighbour,
             };
         },
         isHighlighted() {
-            return this.highlightingPositions.find(this.isEqualToPosition);
+            return this.highlightingPositions.some(this.isEqualToPosition);
         },
-        isFirstRowHighlighted() {
-            const { row, column } = this.position;
-
-            return row === this.minHighlightedRow
-                && column <= this.maxHighlightedColumn
-                && column >= this.minHighlightedColumn;
+        isTopNeighbour() {
+            return this.highlightingPositions.some(
+                this.isEqualToPosition && this.isEqualToTopPosition,
+            );
         },
-        isFirstColumnHighlighted() {
-            const { row, column } = this.position;
-
-            return column === this.minHighlightedColumn
-                && row <= this.maxHighlightedRow
-                && row >= this.minHighlightedRow;
+        isRightNeighbour() {
+            return this.highlightingPositions.some(
+                this.isEqualToPosition && this.isEqualToRightPosition,
+            );
         },
     },
     methods: {
@@ -109,7 +87,18 @@ export default {
         },
         isEqualToPosition(position) {
             const { row, column } = this.position;
+
             return row === position.row && column === position.column;
+        },
+        isEqualToTopPosition(position) {
+            const { row } = this.position;
+
+            return row - 1 === position.row;
+        },
+        isEqualToRightPosition(position) {
+            const { column } = this.position;
+
+            return column + 1 === position.column;
         },
         addGhostElementIfNeeded() {
             if (typeof this.draggedElement === 'object') {
@@ -141,12 +130,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    $border: 1px dashed $success;
+    $highlightingBorder: 1px dashed $success;
+    $border: 1px dashed $grey;
 
     .ghost-item {
         position: relative;
         display: flex;
         padding: 8px;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        border-left: $border;
+        border-bottom: $border;
 
         &__placeholder {
             pointer-events: none;
@@ -161,16 +154,16 @@ export default {
         &--highlighted {
             flex: 1;
             background-color: $lightGreen;
-            border-right: $border;
-            border-bottom: $border;
+            border-left: $highlightingBorder;
+            border-bottom: $highlightingBorder;
         }
 
-        &--first-column-highlighted {
-            border-left: $border;
+        &--top-border {
+            border-top: $highlightingBorder;
         }
 
-        &--first-row-highlighted {
-            border-top: $border;
+        &--right-border {
+            border-right: $highlightingBorder;
         }
     }
 </style>

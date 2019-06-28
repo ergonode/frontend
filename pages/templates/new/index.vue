@@ -10,9 +10,8 @@
 </template>
 
 <script>
-
 import { mapState, mapActions } from 'vuex';
-import prepareJSON from '~/model/template_designer/JSON/prepareJSON';
+import { getMappedLayoutElementsForAPIUpdate } from '~/model/mappers/templateMapper';
 import { asyncRequestWrapper } from '~/model/wrappers/asyncRequestWrapper';
 
 export default {
@@ -28,7 +27,7 @@ export default {
         ...mapState('templateDesigner', {
             templateTitle: state => state.title,
             templateImage: state => state.image,
-            templateDesignerLayout: state => state.templateLayout,
+            layoutElements: state => state.layoutElements,
         }),
     },
     methods: {
@@ -54,11 +53,11 @@ export default {
         },
         onCreate() {
             this.createTemplateDesigner({
-                data: prepareJSON({
-                    title: this.templateTitle,
+                data: {
+                    name: this.templateTitle,
                     image: this.templateImage,
-                    layout: this.templateDesignerLayout,
-                }),
+                    elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
+                },
                 onSuccess: this.onCreateTemplateDesignerSuccess,
                 onError: this.onError,
             });

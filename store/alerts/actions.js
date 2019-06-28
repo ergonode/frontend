@@ -4,10 +4,11 @@
  */
 import { types } from './mutations';
 import { SUCCESS, ALERT_TIME_TO_LEAVE } from '~/defaults/alerts';
+import { getUUID } from '~/model/stringWrapper';
 
 export default {
     addAlert({ commit, dispatch }, alert) {
-        const id = Math.random().toString(36).substr(2, 9);
+        const id = getUUID();
         const {
             message = '',
             type = SUCCESS,
