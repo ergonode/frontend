@@ -7,16 +7,19 @@
         <div class="horizontal-wrapper">
             <VerticalTabBar :items="verticalTabs" />
             <TemplateGridDesigner @rowsCount="onRowsCountChange">
-                <TemplateGridPresentationLayer
-                    :style="gridStyles"
-                    :columns="columnsNumber"
-                    :rows="maxRows" />
                 <TemplateGridDraggableLayer
                     :style="gridStyles"
                     :rows-number="maxRows"
                     :columns-number="columnsNumber"
                     :layout-elements="layoutElements"
-                    @addListElementToLayout="updateLayoutElement" />
+                    @addListElementToLayout="updateLayoutElement"
+                    @editSectionTitle="onEditSectionTitle" />
+                <ModalSectionTitleTemplate
+                    :value="isSectionAdded"
+                    :section-position="sectionPosition"
+                    :section-title="sectionTitle"
+                    :section-index="sectionIndex"
+                    @input="onCloseSectionModal" />
             </TemplateGridDesigner>
         </div>
         <Footer :buttons="buttons" />
@@ -29,11 +32,11 @@ import { mapState, mapActions } from 'vuex';
 export default {
     name: 'TemplateGrid',
     components: {
-        TemplateGridPresentationLayer: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridPresentationLayer'),
         TemplateGridDesigner: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridDesigner'),
         TemplateGridDraggableLayer: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer'),
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
         Footer: () => import('~/components/ReusableFooter/Footer'),
+        ModalSectionTitleTemplate: () => import('~/components/Modals/ModalSectionTitleTemplate'),
     },
     props: {
         updateButton: {
@@ -43,6 +46,10 @@ export default {
     },
     data() {
         return {
+            isSectionAdded: false,
+            sectionPosition: null,
+            sectionIndex: null,
+            sectionTitle: '',
             columnsNumber: 4,
             maxRows: 0,
             buttons: [
@@ -60,10 +67,19 @@ export default {
             ],
             verticalTabs: [
                 {
-                    title: 'Filters & Columns',
+                    title: 'Attributes',
                     component: () => import('~/components/Card/AttributesListTab'),
-                    icon: 'sprite-sidebar sidebar-filter',
+                    props: {
+                        isSelectLanguage: false,
+                    },
+                    icon: 'sprite-sidebar sidebar-attributes',
                     active: true,
+                },
+                {
+                    title: 'Widgets',
+                    component: () => import('~/components/Card/WidgetsListTab'),
+                    icon: 'sprite-sidebar sidebar-widgets',
+                    active: false,
                 },
             ],
         };
@@ -71,7 +87,6 @@ export default {
     computed: {
         ...mapState('templateDesigner', {
             templateGroups: state => state.templateGroups,
-            layout: state => state.templateLayout,
             layoutElements: state => state.layoutElements,
             titleValidationError: state => state.titleValidationError,
             title: state => state.title,
@@ -84,7 +99,7 @@ export default {
                 return this.title;
             },
             set(value) {
-                this.setTemplateDesignerTitle({ title: value });
+                this.setTemplateDesignerTitle(value);
             },
         },
         errorMessages() {
@@ -108,11 +123,28 @@ export default {
         },
         updateLayoutElement(position) {
             if (typeof this.draggedElement === 'object') {
-                const { index } = this.draggedElement;
-                this.updateLayoutElementPosition({ index, ...position });
+                const { row, column } = position;
+                const index = this.layoutElements.findIndex(el => el.id === this.draggedElement.id);
+
+                this.updateLayoutElementPosition({ index, row, column });
+            } else if (this.draggedElement === 'SECTION') {
+                this.sectionPosition = position;
+                this.isSectionAdded = true;
             } else {
                 this.addListElementToLayout(position);
             }
+        },
+        onEditSectionTitle(index) {
+            const { [index]: layoutElement } = this.layoutElements;
+            this.sectionTitle = layoutElement.label;
+            this.sectionIndex = index;
+            this.isSectionAdded = true;
+        },
+        onCloseSectionModal() {
+            this.sectionPosition = null;
+            this.isSectionAdded = false;
+            this.sectionTitle = '';
+            this.sectionIndex = null;
         },
         onPreview() {
 

@@ -53,7 +53,6 @@ export default {
     data: () => ({
         selectedTabIndex: 0,
         isExpanded: true,
-        contentWidth: 200,
     }),
     computed: {
         btnExpanderImage() {
@@ -65,6 +64,7 @@ export default {
     methods: {
         onSelectTabBarItem(index) {
             this.selectedTabIndex = index;
+            this.isExpanded = true;
         },
         expandTabContent() {
             this.isExpanded = !this.isExpanded;

@@ -14,12 +14,14 @@ export default {
     props: {
         dragged: {
             type: Boolean,
-            required: false,
             default: false,
         },
         disabled: {
             type: Boolean,
-            required: false,
+            default: false,
+        },
+        regular: {
+            type: Boolean,
             default: false,
         },
     },
@@ -30,6 +32,7 @@ export default {
                 {
                     'element--dragged': this.dragged,
                     'element--disabled': this.disabled,
+                    'element--regular': this.regular,
                 },
             ];
         },
@@ -77,6 +80,10 @@ export default {
                 0 3px 1px -2px rgba(0, 0, 0, 0.12),
                 0 1px 5px 0 rgba(0, 0, 0, 0.2);
             opacity: 1;
+        }
+
+        &--regular {
+            height: 24px;
         }
     }
 </style>

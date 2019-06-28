@@ -17,7 +17,6 @@
 </template>
 
 <script>
-
 import { mapState } from 'vuex';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 

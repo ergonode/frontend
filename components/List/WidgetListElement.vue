@@ -4,18 +4,16 @@
  */
 <template>
     <ListElement
-        :key="item.id"
         v-draggable-element="{
             id: draggableListID,
             draggedElementStyle,
             onDraggedState,
         }"
-        :dragged="isDragged"
-        :disabled="isElementDisabled(item.id, languageCode)">
-        <ListElementIcon :icon="iconByType" />
+        :dragged="isDragged">
+        <ListElementIcon icon="editor-font-size-24" />
         <ListElementDescription
             :title="item.type"
-            :subtitle="item.label || item.code" />
+            :subtitle="item.label" />
     </ListElement>
 </template>
 
@@ -35,29 +33,18 @@ export default {
             type: Object,
             required: true,
         },
-        languageCode: {
-            type: String,
-            required: true,
-        },
     },
     data() {
         return {
             isDragged: false,
             draggedElementStyle: { width: 246, height: 32, backgroundColor: '#fff' },
-            draggableListID: `${this.item.code}:${this.languageCode}`,
+            draggableListID: this.item.type,
         };
     },
     computed: {
         ...mapGetters('list', [
             'isElementDisabled',
         ]),
-        iconByType() {
-            if (!this.item.type) return '';
-
-            const convertedType = this.item.type.toLowerCase().replace('_', '-');
-
-            return `sprite-attribute attribute-${convertedType}`;
-        },
     },
     methods: {
         ...mapActions('draggable', [

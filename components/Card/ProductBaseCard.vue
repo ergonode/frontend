@@ -44,9 +44,9 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 import BaseCard from '~/components/Card/BaseCard';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
-import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'ProductBaseCard',

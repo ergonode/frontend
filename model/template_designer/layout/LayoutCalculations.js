@@ -5,7 +5,36 @@
 
 // Helpers
 const paddingGap = 16;
+const isObstacle = (obstacles, x, y) => obstacles.some(
+    obstacle => obstacle.row === y && obstacle.column === x,
+);
+const isObstacleInRangeOf = (obstacles, x, y, xRange, yRange) => obstacles.some((obstacle) => {
+    const { row, column } = obstacle;
 
+    return row >= y && row <= yRange && column >= x && column <= xRange;
+});
+const fillHighlightingPositions = (highlightingPositions, x, y, xRange, yRange) => {
+    let column = x;
+    while (column <= xRange) {
+        let row = y;
+
+        while (row <= yRange) {
+            highlightingPositions.add(`${row}|${column}`);
+            row += 1;
+        }
+        column += 1;
+    }
+};
+const positionsSetToArray = (set) => {
+    const array = [];
+
+    set.forEach((position) => {
+        const [row, column] = position.split('|');
+        array.push({ row: +row, column: +column });
+    });
+
+    return array;
+};
 
 // When element is in resizing mode,
 // we need to determinate which area is going to be marked as obstacle or not
@@ -25,6 +54,42 @@ export function getObstaclePositionsForElement({
     }
 
     return obstaclePositions;
+}
+
+export function getHighlightingLayoutDropPositions({
+    draggedElWidth, draggedElHeight, layoutWidth, layoutHeight, layoutElements,
+}) {
+    const { length } = layoutElements;
+    let layoutObstaclePositions = [];
+
+    for (let i = 0; i < length; i += 1) {
+        const elementObstaclePositions = getObstaclePositionsForElement(layoutElements[i]);
+
+        layoutObstaclePositions = [...layoutObstaclePositions, ...elementObstaclePositions];
+    }
+
+    const highlightingPositions = new Set();
+
+    for (let x = 1; x <= layoutWidth; x += 1) {
+        for (let y = 1; y <= layoutHeight; y += 1) {
+            const xRange = x - 1 + draggedElWidth;
+            const yRange = y - 1 + draggedElHeight;
+            const rangeIsNotOutOfLayoutBounds = (xRange > layoutWidth || yRange > layoutHeight);
+
+            if (!rangeIsNotOutOfLayoutBounds
+                && !isObstacleInRangeOf(layoutObstaclePositions, x, y, xRange, yRange)) {
+                fillHighlightingPositions(
+                    highlightingPositions,
+                    x,
+                    y,
+                    xRange,
+                    yRange,
+                );
+            }
+        }
+    }
+
+    return positionsSetToArray(highlightingPositions);
 }
 
 // Determinate max expanding area for element.
@@ -59,11 +124,10 @@ export function getHighlightingPositions({
 
     for (let x = column; x < maxColumn; x += 1) {
         for (let y = row; y < maxRowForGivenColumn; y += 1) {
-            if (layoutObstaclePositions.find(
-                element => element.row === y && element.column === x,
-            )) {
+            if (isObstacle(layoutObstaclePositions, x, y)) {
                 maxRowForGivenColumn = y;
             }
+
             if (y < maxRowForGivenColumn) {
                 highlightingPositions.push({ row: y, column: x });
             }

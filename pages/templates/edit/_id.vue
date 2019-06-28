@@ -11,10 +11,8 @@
 </template>
 
 <script>
-
 import { mapState, mapActions } from 'vuex';
-import prepareJSON from '~/model/template_designer/JSON/prepareJSON';
-import { asyncRequestWrapper } from '~/model/wrappers/asyncRequestWrapper';
+import { getMappedLayoutElementsForAPIUpdate } from '~/model/mappers/templateMapper';
 
 export default {
     validate({ params }) {
@@ -33,7 +31,7 @@ export default {
             groups: state => state.templateGroups,
             templateTitle: state => state.title,
             templateImage: state => state.image,
-            templateDesignerLayout: state => state.templateLayout,
+            layoutElements: state => state.layoutElements,
         }),
     },
     destroyed() {
@@ -61,11 +59,11 @@ export default {
             const { id } = this.$route.params;
             this.updateTemplateDesigner({
                 id,
-                data: prepareJSON({
-                    title: this.templateTitle,
+                data: {
+                    name: this.templateTitle,
                     image: this.templateImage,
-                    layout: this.templateDesignerLayout,
-                }),
+                    elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
+                },
                 onSuccess: this.onUpdateTemplateDesignerSuccess,
                 onError: this.onError,
             });
@@ -77,26 +75,26 @@ export default {
         } = store.state.authentication;
         const { id } = params;
 
-        const groupsRequest = store.dispatch('list/getGroups', {
+        await store.dispatch('list/clearStorage');
+        await store.dispatch('templateDesigner/getTypes', {
+            path: `${userLanguageCode}/templates/types`,
+            onSuccess: () => {},
+            onError: (err) => {
+                if (err.response && err.response.status === 404) {
+                    return error({ statusCode: 404, message: err.message });
+                }
+                return error();
+            },
+        });
+        await store.dispatch('list/getGroups', {
             languageCode: userLanguageCode,
             onSuccess: () => {},
             onError: () => {},
         });
-
-        const templateRequest = store.dispatch('templateDesigner/getTemplateByID', {
+        await store.dispatch('templateDesigner/getTemplateByID', {
             path: `${userLanguageCode}/templates/${id}`,
             onError: () => {},
         });
-
-        const getTypesRequest = asyncRequestWrapper({
-            action: 'templateDesigner/getTypes',
-            path: `${userLanguageCode}/templates/types`,
-            params: {},
-            store,
-            error,
-        });
-        await store.dispatch('list/clearStorage');
-        return Promise.all([groupsRequest, getTypesRequest, templateRequest]);
     },
 };
 </script>

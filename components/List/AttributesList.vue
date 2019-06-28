@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <List group>
+    <List>
         <div class="group-wrapper">
             <AttributeListGroup
                 v-for="(group, index) in groups[languageCode]"
