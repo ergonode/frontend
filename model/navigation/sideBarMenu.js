@@ -42,7 +42,7 @@ export default [
                 icon: 'puzzel',
             },
             {
-                title: 'Medias',
+                title: 'Media',
                 routing: '/placeholder/media',
                 icon: 'img',
             },

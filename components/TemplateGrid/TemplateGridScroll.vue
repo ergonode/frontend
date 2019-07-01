@@ -11,6 +11,7 @@
 </template>
 
 <script>
+
 import debounce from 'debounce';
 import { topBound, bottomBound } from '~/model/scroll/boundaryScroll';
 
@@ -43,7 +44,7 @@ export default {
                 const { clientHeight } = document.querySelector('.grid-scroll-wrapper');
                 const visibleRows = Math.ceil(clientHeight / this.rowsHeight);
                 const totalRows = Math.max(this.dataRowLength, visibleRows) + 1;
-                this.$emit('setRowsCount', { key: 'rowsCount', value: totalRows });
+                this.$emit('setRowsCount', totalRows);
             }, time)();
         },
         onScroll(event) {

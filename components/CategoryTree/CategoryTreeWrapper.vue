@@ -17,7 +17,7 @@
             @addItem="addTreeItem"
             @removeItem="removeTreeItem"
             @rebuildGrid="rebuildTree"
-            @setRowsCount="setAction">
+            @setRowsCount="setRowsCount">
             <TemplateGridPresentationLayer
                 :style="gridStyles"
                 :columns="columns"
@@ -87,7 +87,7 @@ export default {
     },
     methods: {
         ...mapActions('tree', [
-            'setAction',
+            'setRowsCount',
             'addTreeItem',
             'removeTreeItem',
             'rebuildTree',

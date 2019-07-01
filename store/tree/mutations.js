@@ -5,10 +5,13 @@
 import { removeFromObjectByKey } from '~/model/objectWrapper';
 
 export default {
-    setState: (state, { key, value }) => {
-        state[key] = value;
+    setRowsCount: (state, value) => {
+        state.rowsCount = value;
     },
-    addTreeItem: (state, { item }) => {
+    setTree: (state, value) => {
+        state.treeData = value;
+    },
+    addTreeItem: (state, item) => {
         state.treeData.push(item);
         state.treeData.sort((a, b) => a.row - b.row);
     },
@@ -16,15 +19,14 @@ export default {
         state.treeData[index] = item;
         state.treeData.sort((a, b) => a.row - b.row);
     },
-    removeTreeItem: (state, { index }) => {
-        state.treeData.splice(index, 1);
+    removeTreeItem: (state, id) => {
+        state.treeData = state.treeData.filter(el => el.id !== id);
     },
     rebuildTree: (state, { tree }) => {
         state.treeData = tree;
     },
     setHiddenItem: (state, { key, value }) => {
         state.hiddenItems = { ...state.hiddenItems, [key]: value };
-        // state.hiddenItems[key] = value;
     },
     removeHiddenItem: (state, key) => {
         state.hiddenItems = removeFromObjectByKey(state.hiddenItems, key);
