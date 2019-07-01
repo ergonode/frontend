@@ -5,13 +5,11 @@
 import { mapActions } from 'vuex';
 import debounce from 'debounce';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
+import ProductTemplateDetailsContent from '~/components/Template/ProductDesigner/ProductTemplateDetailsContent';
 
 export default {
     mixins: [errorValidationMixin],
-    components: {
-        InfoHint: () => import('~/components/Inputs/Hint/InfoHint'),
-        ErrorHint: () => import('~/components/Inputs/Hint/ErrorHint'),
-    },
+    components: { ProductTemplateDetailsContent },
     props: {
         placeholder: {
             type: String,

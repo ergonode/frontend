@@ -12,15 +12,15 @@
         :error-messages="isError ? [' '] : null"
         :required="required"
         @focus="onFocusChange">
-        <div
+        <ProductTemplateDetailsContent
             slot="appendIcon"
-            class="horizontal-wrapper">
-            <Icon :icon="appendStateIcon" />
-            <InfoHint
-                v-if="hint && !isError"
-                :hint="hint" />
-            <ErrorHint v-if="isError" />
-        </div>
+            :hint="hint"
+            :error-messages="errorMessages"
+            :is-error="isError">
+            <template v-slot:append>
+                <Icon :icon="appendStateIcon" />
+            </template>
+        </ProductTemplateDetailsContent>
         <TranslationSelectListContent
             slot="selectContent"
             :options="options"
