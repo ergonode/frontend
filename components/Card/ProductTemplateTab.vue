@@ -16,7 +16,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { getObjectByKey, objectToArray } from '~/model/objectWrapper';
+import { objectToArray } from '~/model/objectWrapper';
 import BaseTab from '~/components/Card/BaseTab';
 
 export default {

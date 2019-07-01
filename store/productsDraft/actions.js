@@ -2,36 +2,46 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { generateProductLayout } from '~/model/template_designer/layout/LayoutGenerator';
 import {
     getMappedCategoryValues, getMappedTemplateName,
 } from '~/model/mappers/categoryMapper';
+import {
+    getMappedLayoutElements,
+} from '~/model/mappers/productMapper';
 
 export default {
     setProductSku: ({ commit }, payload) => commit('setProductSku', payload),
     setProductTemplate: ({ commit }, payload) => commit('setProductTemplate', payload),
     setProductCategories: ({ commit }, payload) => commit('setProductCategories', payload),
-    async setDraftLanguageCode({ commit, state }, { languageCode }) {
+    async setDraftLanguageCode({ commit, state, dispatch }, { languageCode }) {
         const { id } = state;
         commit('setDraftLanguageCode', languageCode);
 
-        await this.app.$axios.$get(`${languageCode}/drafts/${id}/template`).then(({ elements }) => {
-            const templateLayout = generateProductLayout(elements);
+        const data = { id, languageCode, onError: err => console.log(err) };
 
-            commit('setTemplateLayout', { templateLayout });
-        }).catch(e => console.log(e));
+        const productTemplateRequest = dispatch('getProductTemplate', data);
+        const completenessRequest = dispatch('getProductCompleteness', data);
+        const productDraftRequest = dispatch('getProductDraft', data);
 
-        await this.app.$axios.$get(`${languageCode}/drafts/${id}/completeness`).then((completeness) => {
-            commit('setProductCompleteness', completeness);
-        }).catch(e => console.log(e));
+        await Promise.all([
+            completenessRequest,
+            productTemplateRequest,
+            productDraftRequest,
+        ]);
     },
-    getProductDraft({ commit, state }, { languageCode, id, onError }) {
+    getProductDraft({ commit }, { languageCode, id, onError }) {
         commit('setDraftLanguageCode', languageCode);
 
-        return this.app.$axios.$get(`${languageCode}/drafts/product/${id}`).then(({
-            template_id: templateId,
-            draft_id: draftId,
-            category_ids: categoryIds,
+        return this.app.$axios.$get(`${languageCode}/products/${id}/draft`).then((draft) => {
+            commit('setProductDraft', draft);
+        }).catch(e => onError(e.data));
+    },
+    getProduct({ commit, state }, { languageCode, id, onError }) {
+        commit('setDraftLanguageCode', languageCode);
+
+        return this.app.$axios.$get(`${languageCode}/products/${id}`).then(({
+            design_template_id: templateId,
+            categories: categoryIds,
             sku,
         }) => {
             const { categories, templates } = state;
@@ -49,8 +59,15 @@ export default {
                 commit('setProductTemplate', template);
             }
 
-            commit('setProductId', { id: draftId });
+            commit('setProductId', { id });
             commit('setProductSku', { sku });
+        }).catch(e => onError(e.data));
+    },
+    getProductTemplate({ commit }, { languageCode, id, onError }) {
+        commit('setDraftLanguageCode', languageCode);
+
+        return this.app.$axios.$get(`${languageCode}/products/${id}/template`).then(({ elements }) => {
+            commit('setLayoutElements', getMappedLayoutElements(elements));
         }).catch(e => onError(e.data));
     },
     getTemplates({ commit, rootState }, onError) {
@@ -70,7 +87,7 @@ export default {
         languageCode,
         onError,
     }) {
-        return this.app.$axios.$get(`${languageCode}/drafts/${id}/completeness`).then((completeness) => {
+        return this.app.$axios.$get(`${languageCode}/products/${id}/draft/completeness`).then((completeness) => {
             commit('setProductCompleteness', completeness);
         }).catch(e => onError(e.data));
     },
@@ -86,10 +103,11 @@ export default {
             id,
             languageCode,
         } = state;
-        const index = state.templateLayout.findIndex(
+        const index = state.layoutElements.findIndex(
             element => element.attributeId === attributeId,
         );
-        await this.app.$axios.$put(`${languageCode}/drafts/${id}/${attributeId}/value`, { value }).then(() => {
+
+        await this.app.$axios.$put(`${languageCode}/products/${id}/draft/${attributeId}/value`, { value }).then(() => {
             commit('setProductTemplateElementValue', { index, value });
             // Update completeness only for required elements
             if (required) {

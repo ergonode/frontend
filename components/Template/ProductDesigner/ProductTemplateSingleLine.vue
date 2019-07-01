@@ -6,7 +6,7 @@
     <TextField
         :value="localValue"
         solid
-        :label="name"
+        :label="label"
         :placeholder="placeholder"
         :error-messages="isError ? [' '] : null"
         :required="required"

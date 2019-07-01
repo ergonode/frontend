@@ -16,12 +16,13 @@ export default {
         state.selectedCategories = selectedCategories;
     },
     clearStorage: (state) => {
+        state.draft = {};
         state.id = null;
         state.sku = '';
         state.template = '';
         state.selectedCategories = [];
         state.languageCode = '';
-        state.templateLayout = [];
+        state.layoutElements = [];
         state.completeness = {};
         state.templates = [];
         state.categories = [];
@@ -38,11 +39,14 @@ export default {
     setProductCompleteness: (state, completeness) => {
         state.completeness = completeness;
     },
-    setTemplateLayout: (state, { templateLayout }) => {
-        state.templateLayout = templateLayout;
+    setLayoutElements: (state, layoutElements) => {
+        state.layoutElements = layoutElements;
+    },
+    setProductDraft: (state, draft) => {
+        state.draft = draft;
     },
     setProductTemplateElementValue: (state, { index, value }) => {
-        state.templateLayout[index].value = value;
+        state.layoutElements[index].value = value;
     },
     setProductsValueForKey: (state, { key, value }) => {
         state.product[key] = value;

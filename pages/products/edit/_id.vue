@@ -88,17 +88,9 @@ export default {
         await Promise.all([
             store.dispatch('productsDraft/getCategories', onError),
             store.dispatch('productsDraft/getTemplates', onError),
-            store.dispatch('productsDraft/getProductCompleteness', {
-                languageCode,
-                id,
-                onError,
-            }),
+            store.dispatch('productsDraft/getProductDraft', { languageCode, id, onError }),
         ]);
-        await store.dispatch('productsDraft/getProductDraft', {
-            languageCode,
-            id,
-            onError,
-        });
+        await store.dispatch('productsDraft/getProduct', { languageCode, id, onError });
     },
 };
 </script>
