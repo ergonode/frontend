@@ -73,7 +73,7 @@ export default {
             this.initializeColumnBounds();
 
             this.getColumnBellowMouse({ clientX, gridColumns }, ({ index, gridColumn }) => {
-                const { 0: header } = gridColumn.children;
+                const [header] = gridColumn.children;
                 const { y, height } = header.getBoundingClientRect();
 
                 const isMouseAboveColumnHeader = y <= clientY && y + height >= clientY;
@@ -243,8 +243,7 @@ export default {
             const { length } = gridColumns;
 
             for (let i = 0; i < length; i += 1) {
-                const { [i]: columnBounds } = this.columnBounds;
-                const { x, width } = columnBounds;
+                const { x, width } = this.columnBounds[i];
 
                 if (x <= clientX && x + width >= clientX) {
                     return completion({ index: i, gridColumn: gridColumns[i] });
