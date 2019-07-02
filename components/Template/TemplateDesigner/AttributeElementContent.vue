@@ -100,7 +100,7 @@ export default {
             const { type } = this.element;
             const convertedType = type.toLowerCase().replace('_', '-');
 
-            return `sprite-attribute attribute-${convertedType}`;
+            return `attribute-${convertedType}`;
         },
         contextualMenuHoveStateClasses() {
             return { 'element-content__contextual-menu--hovered': this.isHovered };
