@@ -25,7 +25,7 @@
             slot="select"
             slot-scope="{ dismissSelect }"
             :style="selectBoundingBox"
-            :selected-date="new Date(value)"
+            :selected-date="parsedDate"
             @apply="e => onApplyDate(e, dismissSelect)"
             @clear="onClearDate" />
     </Select>
@@ -57,6 +57,9 @@ export default {
             return this.isFocused
                 ? 'arrow-triangle trans-half'
                 : 'arrow-triangle';
+        },
+        parsedDate() {
+            return moment(this.value, this.parameters.format).toDate();
         },
     },
     methods: {
