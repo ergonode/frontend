@@ -42,7 +42,7 @@ import { mapState, mapGetters, mapActions } from 'vuex';
 export default {
     name: 'ProductGridTab',
     components: {
-        GridWrapper: () => import('~/components/Grid/GridWrapper'),
+        GridWrapper: () => import('~/components/Grid/Wrappers/GridWrapper'),
         GridFilterActions: () => import('~/components/Grid/GridFilterActions'),
         GridLayoutConfigurator: () => import('~/components/Grid/GridLayoutConfigurator'),
         GridFooter: () => import('~/components/Grid/GridFooter'),

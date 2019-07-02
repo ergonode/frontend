@@ -221,6 +221,10 @@ export default {
                 const { clientX } = event;
                 const { children: gridColumns } = this.$el;
 
+                if (!this.columnBounds.length) {
+                    this.initializeColumnBounds();
+                }
+
                 this.getColumnBellowMouse({ clientX, gridColumns }, ({ index, gridColumn }) => {
                     const isMouseAbovePinnedColumn = gridColumn.classList.contains('column__right-pinned')
                         || gridColumn.classList.contains('column__left-pinned');
