@@ -16,13 +16,15 @@ export default {
     props: {
         maxRow: {
             type: Number,
-            required: false,
             default: 0,
+        },
+        rowHeight: {
+            type: Number,
+            default: 62,
         },
     },
     data() {
         return {
-            rowHeight: 62,
             debounceFunc: null,
         };
     },
@@ -56,7 +58,7 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
-        width: 0;
+        min-width: 0;
         margin-left: 24px;
         overflow: auto;
     }

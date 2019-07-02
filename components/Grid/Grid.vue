@@ -33,6 +33,7 @@ export default {
         ghostColumnIndex: -1,
         draggedColumnIndex: -1,
         draggedColumn: null,
+        columnBounds: [],
     }),
     computed: {
         ...mapState('grid', {
@@ -69,8 +70,10 @@ export default {
             const { clientX, clientY } = event;
             const { children: gridColumns } = this.$el;
 
+            this.initializeColumnBounds();
+
             this.getColumnBellowMouse({ clientX, gridColumns }, ({ index, gridColumn }) => {
-                const { 0: header } = gridColumn.children;
+                const [header] = gridColumn.children;
                 const { y, height } = header.getBoundingClientRect();
 
                 const isMouseAboveColumnHeader = y <= clientY && y + height >= clientY;
@@ -127,6 +130,7 @@ export default {
             this.ghostColumnIndex = -1;
             this.draggedColumnIndex = -1;
             this.draggedColumn = null;
+            this.columnBounds = [];
         },
         onDrop(event) {
             if (!this.isColumnDragging) {
@@ -239,14 +243,23 @@ export default {
             const { length } = gridColumns;
 
             for (let i = 0; i < length; i += 1) {
-                const columnBounds = gridColumns[i].getBoundingClientRect();
-                const { x, width } = columnBounds;
+                const { x, width } = this.columnBounds[i];
 
                 if (x <= clientX && x + width >= clientX) {
                     return completion({ index: i, gridColumn: gridColumns[i] });
                 }
             }
             return null;
+        },
+        initializeColumnBounds() {
+            const { children: gridColumns } = this.$el;
+
+            const { length } = gridColumns;
+
+            for (let i = 0; i < length; i += 1) {
+                const bounds = gridColumns[i].getBoundingClientRect();
+                this.columnBounds.push(bounds);
+            }
         },
         createColumnCopy({ event, gridColumn }) {
             const clonedDOMElement = gridColumn.cloneNode(true);

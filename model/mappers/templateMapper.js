@@ -75,7 +75,6 @@ export function getMappedLayoutElements(elements, elementDataByType) {
         } = element;
         const { attribute_id: attrID, required, label } = properties;
         const { x: column, y: row } = position;
-
         if (attrID) {
             return getMappedLayoutElement(
                 attrID,
@@ -90,6 +89,7 @@ export function getMappedLayoutElements(elements, elementDataByType) {
             label,
             elementDataByType('SECTION'),
             { row: row + 1, column: column + 1 },
+            size,
         );
     });
 }

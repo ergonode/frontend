@@ -10,7 +10,7 @@
         <LayoutElement
             v-for="(element, index) in layoutElements"
             :key="`${element.row}/${element.column}`"
-            :style="getGhostItemPosition(element)"
+            :style="getItemPosition(element)"
             :index="index"
             :element="element"
             :columns-number="columnsNumber"
@@ -92,7 +92,7 @@ export default {
         onHighlightedPositionsChange(positions) {
             this.highlightedPositions = positions;
         },
-        getGhostItemPosition({
+        getItemPosition({
             row, column, width, height,
         }) {
             return { gridArea: `${row} / ${column} / ${row + height} / ${column + width}` };

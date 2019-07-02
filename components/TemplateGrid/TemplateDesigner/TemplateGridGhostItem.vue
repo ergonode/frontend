@@ -8,11 +8,7 @@
         @dragenter="onDragEnter"
         @dragleave="onDragLeave"
         @dragover="onDragOver"
-        @drop="onDrop">
-        <div
-            v-if="isInside"
-            class="ghost-item__placeholder" />
-    </div>
+        @drop="onDrop" />
 </template>
 
 <script>
@@ -33,11 +29,6 @@ export default {
             type: Array,
             default: () => [],
         },
-    },
-    data() {
-        return {
-            isInside: false,
-        };
     },
     computed: {
         ...mapState('draggable', {
@@ -66,9 +57,7 @@ export default {
     },
     methods: {
         onDrop() {
-            this.isInside = false;
-
-            this.removeGhostElementIfExist();
+            removeGhostElementFromDraggableLayer();
 
             this.$emit('drop', this.position);
         },
@@ -76,14 +65,10 @@ export default {
             event.preventDefault();
         },
         onDragEnter() {
-            this.isInside = true;
-
-            this.addGhostElementIfNeeded();
+            this.addGhostElement();
         },
         onDragLeave() {
-            this.isInside = false;
-
-            this.removeGhostElementIfExist();
+            removeGhostElementFromDraggableLayer();
         },
         isEqualToPosition(position) {
             const { row, column } = this.position;
@@ -100,30 +85,28 @@ export default {
 
             return column + 1 === position.column;
         },
-        addGhostElementIfNeeded() {
-            if (typeof this.draggedElement === 'object') {
-                const elementsGap = 16;
-                const {
-                    width, height,
-                } = this.$el.getBoundingClientRect();
-                const {
-                    width: draggedElementWidth, height: draggedElementHeight,
-                } = this.draggedElement;
-                const normalizedWidth = width * draggedElementWidth - elementsGap;
-                const normalizedHeight = height * draggedElementHeight - elementsGap;
+        addGhostElement() {
+            let draggedElementWidth = 1;
+            let draggedElementHeight = 1;
 
-                addGhostElementToDraggableLayer({
-                    top: this.$el.offsetTop + (elementsGap / 2),
-                    left: this.$el.offsetLeft + (elementsGap / 2),
-                    width: normalizedWidth,
-                    height: normalizedHeight,
-                });
-            }
-        },
-        removeGhostElementIfExist() {
             if (typeof this.draggedElement === 'object') {
-                removeGhostElementFromDraggableLayer();
+                draggedElementWidth = this.draggedElement.width;
+                draggedElementHeight = this.draggedElement.height;
             }
+
+            const elementsGap = 16;
+            const {
+                width, height,
+            } = this.$el.getBoundingClientRect();
+            const normalizedWidth = width * draggedElementWidth - elementsGap;
+            const normalizedHeight = height * draggedElementHeight - elementsGap;
+
+            addGhostElementToDraggableLayer({
+                top: this.$el.offsetTop + (elementsGap / 2),
+                left: this.$el.offsetLeft + (elementsGap / 2),
+                width: normalizedWidth,
+                height: normalizedHeight,
+            });
         },
     },
 };
@@ -140,16 +123,6 @@ export default {
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         border-left: $border;
         border-bottom: $border;
-
-        &__placeholder {
-            pointer-events: none;
-            flex: 1;
-            background-color: $success;
-            box-shadow:
-                inset 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                inset 0 3px 1px 0 rgba(0, 0, 0, 0.12),
-                inset 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-        }
 
         &--highlighted {
             flex: 1;

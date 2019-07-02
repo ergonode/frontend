@@ -3,12 +3,13 @@
  * See LICENSE for license details.
  */
 export default () => ({
+    draft: {},
     id: null,
     sku: '',
     template: '',
     selectedCategories: [],
     languageCode: '',
-    templateLayout: [],
+    layoutElements: [],
     completeness: {},
     templates: [],
     categories: [],
