@@ -99,16 +99,19 @@ export default {
 
             if (innerHeight - top < maxHeight) {
                 const offsetBottom = innerHeight - top;
+                const marginBottom = 1;
 
                 return {
                     left: `${left}px`,
-                    bottom: `${offsetBottom + 1}px`,
+                    bottom: `${offsetBottom + marginBottom}px`,
                 };
             }
 
+            const marginTop = 2;
+
             return {
                 left: `${left}px`,
-                top: `${top + height + 2}px`,
+                top: `${top + height + marginTop}px`,
             };
         },
     },
