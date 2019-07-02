@@ -35,6 +35,42 @@ const positionsSetToArray = (set) => {
 
     return array;
 };
+const addObstaclesToHighlightingPositions = ({
+    positions, obstacles, draggedElWidth, draggedElHeight, layoutWidth, layoutHeight,
+}) => {
+    const { length: obstaclesLength } = obstacles;
+    const tmpPositions = [...positions];
+
+    for (let i = 0; i < obstaclesLength; i += 1) {
+        const { row, column } = obstacles[i];
+
+        for (let x = column - draggedElWidth + 1; x <= column; x += 1) {
+            for (let y = row - draggedElHeight + 1; y <= row; y += 1) {
+                const posIndex = positions.findIndex(
+                    position => position.row === y && position.column === x,
+                );
+
+                if (posIndex > -1) {
+                    tmpPositions[posIndex].isObstacle = true;
+                }
+            }
+        }
+    }
+
+    const { length: positionsLength } = tmpPositions;
+
+    for (let i = 0; i < positionsLength; i += 1) {
+        const { row, column } = tmpPositions[i];
+        const isOutOfBoundsWithWidth = column + draggedElWidth - 1 > layoutWidth;
+        const isOutOfBoundsWithHeight = row + draggedElHeight - 1 > layoutHeight;
+
+        if (isOutOfBoundsWithWidth || isOutOfBoundsWithHeight) {
+            tmpPositions[i].isObstacle = true;
+        }
+    }
+
+    return tmpPositions;
+};
 
 // When element is in resizing mode,
 // we need to determinate which area is going to be marked as obstacle or not
@@ -47,6 +83,7 @@ export function getObstaclePositionsForElement({
 
     for (let y = row; y < row + height; y += 1) {
         let x = column;
+
         while (x < column + width) {
             obstaclePositions.push({ row: y, column: x });
             x += 1;
@@ -89,7 +126,14 @@ export function getHighlightingLayoutDropPositions({
         }
     }
 
-    return positionsSetToArray(highlightingPositions);
+    return addObstaclesToHighlightingPositions({
+        positions: positionsSetToArray(highlightingPositions),
+        obstacles: layoutObstaclePositions,
+        draggedElWidth,
+        draggedElHeight,
+        layoutWidth,
+        layoutHeight,
+    });
 }
 
 // Determinate max expanding area for element.

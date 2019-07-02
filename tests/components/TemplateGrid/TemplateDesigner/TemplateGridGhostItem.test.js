@@ -51,7 +51,7 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridGhostItem', () => {
                 ],
             });
 
-            expect(wrapper.vm.isHighlighted).toBeTruthy();
+            expect(wrapper.vm.highlightedElement).toBeTruthy();
         });
 
         it('Is not highlighted', () => {
@@ -64,7 +64,7 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridGhostItem', () => {
                 ],
             });
 
-            expect(wrapper.vm.isHighlighted).toBeFalsy();
+            expect(wrapper.vm.highlightedElement).toBeFalsy();
         });
 
         it('Is top border highlighted', () => {
@@ -120,6 +120,15 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridGhostItem', () => {
         document.body.appendChild(draggableLayerElement);
 
         it('Ghost element is added on drag enter', () => {
+            wrapper.setProps({
+                highlightingPositions: [
+                    {
+                        row: 1,
+                        column: 1,
+                    },
+                ],
+            });
+
             wrapper.find('.ghost-item').trigger('dragenter');
 
             const ghostElement = draggableLayerElement.querySelector('.ghost-element');
@@ -128,6 +137,15 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridGhostItem', () => {
         });
 
         it('Ghost element is removed on drag leave', () => {
+            wrapper.setProps({
+                highlightingPositions: [
+                    {
+                        row: 1,
+                        column: 1,
+                    },
+                ],
+            });
+
             wrapper.find('.ghost-item').trigger('dragleave');
 
             const ghostElement = draggableLayerElement.querySelector('.ghost-element');

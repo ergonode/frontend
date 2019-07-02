@@ -2,14 +2,29 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount } from "@vue/test-utils";
+import { mount, createLocalVue } from "@vue/test-utils";
 import TemplateGridDraggableLayer from '~/components/TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer';
+import { Store } from 'vuex-mock-store';
+
+const localVue = createLocalVue();
+const store = new Store({
+    state: {
+        draggable: {
+            draggedElement: {},
+        }
+    }
+});
+const mocks = {
+    $store: store,
+};
 
 describe('TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer', () => {
     let wrapper;
 
     beforeEach(() => {
         wrapper = mount(TemplateGridDraggableLayer, {
+            localVue,
+            mocks,
             propsData: {
                 columnsNumber: 4,
                 rowsNumber: 4,
