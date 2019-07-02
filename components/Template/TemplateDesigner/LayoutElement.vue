@@ -4,7 +4,7 @@
 */
 <template>
     <div
-        :class="['layout-element', { 'layout-element--dragged': isDragged}]"
+        :class="['layout-element', draggableClasses]"
         :draggable="isDraggingEnabled"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
@@ -81,6 +81,12 @@ export default {
         ...mapState('draggable', {
             draggedElement: state => state.draggedElement,
         }),
+        draggableClasses() {
+            return {
+                'layout-element--dragged': this.isDragged,
+                'layout-element--resized': !this.isDraggingEnabled,
+            };
+        },
     },
     methods: {
         ...mapActions('templateDesigner', [
@@ -276,18 +282,12 @@ export default {
             this.newHeight = height;
         },
         initElementStyleForResizeState() {
-            this.$el.style.position = 'absolute';
             this.$el.style.width = `${this.startWidth}px`;
             this.$el.style.height = `${this.startHeight}px`;
-            this.$el.style.border = '2px solid #00bc87';
-            this.$el.style.zIndex = '5';
         },
         resetElementStyleForEndResizeInteraction() {
-            this.$el.style.border = '1px solid #d6d7d8';
-            this.$el.style.position = 'relative';
             this.$el.style.width = null;
             this.$el.style.height = null;
-            this.$el.style.zIndex = 'unset';
         },
         resetDataForEndResizeInteraction() {
             this.isDraggingEnabled = true;
@@ -300,6 +300,7 @@ export default {
 <style lang="scss" scoped>
     .layout-element {
         position: relative;
+        z-index: unset;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -321,6 +322,12 @@ export default {
 
         &--dragged {
             visibility: hidden;
+        }
+
+        &--resized {
+            position: absolute;
+            z-index: 5;
+            border: 2px solid $success;
         }
     }
 </style>

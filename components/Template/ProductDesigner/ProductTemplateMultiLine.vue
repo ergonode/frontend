@@ -6,21 +6,16 @@
     <TextArea
         :value="value"
         solid
-        :label="name"
+        :label="label"
         :placeholder="placeholder"
         :required="required"
         :error-messages="errorMessages"
         @input="onValueChange">
-        <div
+        <ProductTemplateDetailsContent
             slot="appendIcon"
-            class="horizontal-wrapper">
-            <InfoHint
-                v-if="hint && !isError"
-                :hint="hint" />
-            <ErrorHint
-                v-if="isError"
-                :hint="errorMessages" />
-        </div>
+            :hint="hint"
+            :error-messages="errorMessages"
+            :is-error="isError" />
     </TextArea>
 </template>
 
@@ -35,10 +30,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .horizontal-wrapper {
-        display: flex;
-        align-items: center;
-    }
-</style>

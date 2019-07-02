@@ -9,40 +9,44 @@ export default {
     setProductSku: (state, { sku }) => {
         state.sku = sku;
     },
-    setProductTemplate: (state, { template }) => {
+    setProductTemplate: (state, template) => {
         state.template = template;
     },
-    setProductCategories: (state, { selectedCategories }) => {
+    setProductCategories: (state, selectedCategories) => {
         state.selectedCategories = selectedCategories;
     },
     clearStorage: (state) => {
+        state.draft = {};
         state.id = null;
         state.sku = '';
         state.template = '';
         state.selectedCategories = [];
         state.languageCode = '';
-        state.templateLayout = [];
+        state.layoutElements = [];
         state.completeness = {};
         state.templates = [];
         state.categories = [];
     },
-    setDraftLanguageCode: (state, { languageCode }) => {
+    setDraftLanguageCode: (state, languageCode) => {
         state.languageCode = languageCode;
     },
-    setTemplates: (state, { templates }) => {
+    setTemplates: (state, templates) => {
         state.templates = templates;
     },
-    setCategories: (state, { categories }) => {
+    setCategories: (state, categories) => {
         state.categories = categories;
     },
-    setProductCompleteness: (state, { completeness }) => {
-        state.completeness = { ...completeness };
+    setProductCompleteness: (state, completeness) => {
+        state.completeness = completeness;
     },
-    setTemplateLayout: (state, { templateLayout }) => {
-        state.templateLayout = templateLayout;
+    setLayoutElements: (state, layoutElements) => {
+        state.layoutElements = layoutElements;
+    },
+    setProductDraft: (state, draft) => {
+        state.draft = draft;
     },
     setProductTemplateElementValue: (state, { index, value }) => {
-        state.templateLayout[index].value = value;
+        state.layoutElements[index].value = value;
     },
     setProductsValueForKey: (state, { key, value }) => {
         state.product[key] = value;

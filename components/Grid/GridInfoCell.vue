@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
+<template functional>
     <span
         class="typo-btn--xs txt--dark-graphite info-cell"
-        v-text="value" />
+        v-text="props.value" />
 </template>
 
 <script>

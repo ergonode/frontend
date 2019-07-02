@@ -16,7 +16,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { getObjectByKey, objectToArray } from '~/model/objectWrapper';
+import { objectToArray } from '~/model/objectWrapper';
 import BaseTab from '~/components/Card/BaseTab';
 
 export default {
@@ -56,16 +56,6 @@ export default {
         }),
         languagesValues() {
             return objectToArray(this.languages);
-        },
-        selectedLanguage: {
-            get() {
-                return getObjectByKey(this.languages, this.languageCode);
-            },
-            set(newLanguage) {
-                this.$store.dispatch('productsDraft/setDraftLanguageCode', {
-                    languageCode: newLanguage,
-                });
-            },
         },
     },
 };

@@ -10,7 +10,7 @@ export default {
     }) {
         const { drafts } = state;
         const { [productId]: { draftId } } = drafts;
-        const path = `${languageCode}/drafts/${draftId}/${elementId}/value`;
+        const path = `${languageCode}/products/${draftId}/draft/${elementId}/value`;
 
         if (!drafts[productId][columnId]) {
             commit('addColumnKey', { productId, columnId });
@@ -35,8 +35,8 @@ export default {
     }) {
         if (state.drafts[id]) return null;
 
-        return this.app.$axios.$get(`${languageCode}/drafts/product/${id}`).then(({
-            draft_id: draftId,
+        return this.app.$axios.$get(`${languageCode}/products/${id}/draft`).then(({
+            id: draftId,
             product_id: productId,
         }) => {
             commit('addRowKey', { productId });

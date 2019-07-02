@@ -12,17 +12,15 @@
         :dismissible="false"
         :required="required"
         @focus="onSelectFocus">
-        <div
+        <ProductTemplateDetailsContent
             slot="appendIcon"
-            class="horizontal-wrapper">
-            <Icon :icon="appendStateIcon" />
-            <InfoHint
-                v-if="hint && !isError"
-                :hint="hint" />
-            <ErrorHint
-                v-if="isError"
-                :hint="errorMessages" />
-        </div>
+            :hint="hint"
+            :error-messages="errorMessages"
+            :is-error="isError">
+            <template v-slot:append>
+                <Icon :icon="appendStateIcon" />
+            </template>
+        </ProductTemplateDetailsContent>
         <DatePickerContent
             slot="select"
             slot-scope="{ dismissSelect }"
@@ -111,10 +109,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .horizontal-wrapper {
-        display: flex;
-        align-items: center;
-    }
-</style>
