@@ -15,7 +15,7 @@
 
 <script>
 export default {
-    name: 'GridEditCell',
+    name: 'GridEditRowCell',
     components: {
         Icon: () => import('~/components/Icon/Icon'),
     },
