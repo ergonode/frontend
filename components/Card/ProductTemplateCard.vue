@@ -115,9 +115,5 @@ export default {
             grid-template-columns: repeat(4, minmax(150px, 250px));
             height: 0;
         }
-
-        .test {
-            background-color: #00bc87;
-        }
     }
 </style>
