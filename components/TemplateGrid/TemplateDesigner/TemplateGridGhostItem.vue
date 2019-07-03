@@ -36,13 +36,13 @@ export default {
         }),
         highlightedStateClasses() {
             return {
-                'ghost-item--highlighted': this.isHighlighted,
-                'ghost-item--top-border': this.isHighlighted && !this.isTopNeighbour,
-                'ghost-item--right-border': this.isHighlighted && !this.isRightNeighbour,
+                'ghost-item--highlighted': this.highlightedElement,
+                'ghost-item--top-border': this.highlightedElement && !this.isTopNeighbour,
+                'ghost-item--right-border': this.highlightedElement && !this.isRightNeighbour,
             };
         },
-        isHighlighted() {
-            return this.highlightingPositions.some(this.isEqualToPosition);
+        highlightedElement() {
+            return this.highlightingPositions.find(this.isEqualToPosition);
         },
         isTopNeighbour() {
             return this.highlightingPositions.some(
@@ -65,10 +65,14 @@ export default {
             event.preventDefault();
         },
         onDragEnter() {
-            this.addGhostElement();
+            if (this.highlightedElement && !this.highlightedElement.isObstacle) {
+                this.addGhostElement();
+            }
         },
         onDragLeave() {
-            removeGhostElementFromDraggableLayer();
+            if (this.highlightedElement && !this.highlightedElement.isObstacle) {
+                removeGhostElementFromDraggableLayer();
+            }
         },
         isEqualToPosition(position) {
             const { row, column } = this.position;

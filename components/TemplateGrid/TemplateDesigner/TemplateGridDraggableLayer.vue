@@ -32,14 +32,22 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import {
+    getHighlightingLayoutDropPositions,
+} from '~/model/template_designer/layout/LayoutCalculations';
+import TemplateGridGhostItem from '~/components/TemplateGrid/TemplateDesigner/TemplateGridGhostItem';
+import LayoutElement from '~/components/Template/TemplateDesigner/LayoutElement';
+import AttributeElementContent from '~/components/Template/TemplateDesigner/AttributeElementContent';
+import SectionElementContent from '~/components/Template/TemplateDesigner/SectionElementContent';
 
 export default {
     name: 'TemplateGridDraggableLayer',
     components: {
-        TemplateGridGhostItem: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridGhostItem'),
-        LayoutElement: () => import('~/components/Template/TemplateDesigner/LayoutElement'),
-        AttributeElementContent: () => import('~/components/Template/TemplateDesigner/AttributeElementContent'),
-        SectionElementContent: () => import('~/components/Template/TemplateDesigner/SectionElementContent'),
+        TemplateGridGhostItem,
+        LayoutElement,
+        AttributeElementContent,
+        SectionElementContent,
     },
     props: {
         columnsNumber: {
@@ -61,7 +69,25 @@ export default {
             highlightedPositions: [],
         };
     },
+    watch: {
+        isListElementDragging() {
+            if (this.isListElementDragging) {
+                this.highlightedPositions = getHighlightingLayoutDropPositions({
+                    draggedElWidth: 1,
+                    draggedElHeight: 1,
+                    layoutWidth: this.columnsNumber,
+                    layoutHeight: this.rowsNumber,
+                    layoutElements: this.layoutElements,
+                });
+            } else {
+                this.highlightedPositions = [];
+            }
+        },
+    },
     computed: {
+        ...mapState('draggable', {
+            isListElementDragging: state => state.isListElementDragging,
+        }),
         gridLayerPositions() {
             const length = this.rowsNumber * this.columnsNumber;
             const positions = [];
