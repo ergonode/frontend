@@ -1,50 +1,51 @@
 /*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
- * See LICENSE for license details.
- */
+* Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+* See LICENSE for license details.
+*/
 <template>
     <Select
         :value="value"
         solid
-        :label="name"
         :placeholder="parameters.format"
         :error-messages="errorMessages"
         :dismissible="false"
-        :required="required"
-        @focus="onSelectFocus">
-        <ProductTemplateDetailsContent
-            slot="appendIcon"
-            :hint="hint"
-            :error-messages="errorMessages"
-            :is-error="isError">
-            <template v-slot:append>
-                <Icon :icon="appendStateIcon" />
-            </template>
-        </ProductTemplateDetailsContent>
+        autofocus
+        @focus="onFocus">
         <DatePickerContent
             slot="select"
             slot-scope="{ dismissSelect }"
             :style="selectBoundingBox"
             :selected-date="parsedDate"
-            @apply="e => onApplyDate(e, dismissSelect)"
-            @clear="onClearDate" />
+            @apply="e => onApply(e, dismissSelect)"
+            @clear="onClear" />
     </Select>
 </template>
 
 <script>
 import moment from 'moment';
-import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
 import Select from '~/components/Inputs/Select/Select';
 import DatePickerContent from '~/components/Inputs/Select/Contents/DatePickerContent';
-import Icon from '~/components/Icon/Icon';
 
 export default {
-    name: 'ProductTemplateDate',
-    mixins: [baseProductTemplateElementMixin],
+    name: 'GridEditDateCell',
     components: {
         Select,
         DatePickerContent,
-        Icon,
+    },
+    props: {
+        value: {
+            type: String,
+            required: true,
+        },
+        errorMessages: {
+            type: [String, Array],
+            required: false,
+            default: '',
+        },
+        parameters: {
+            type: Object,
+            required: true,
+        },
     },
     data() {
         return {
@@ -63,27 +64,27 @@ export default {
         },
     },
     methods: {
-        onFocusChange(isFocused) {
-            this.isFocused = isFocused;
+        onFocus(isFocused) {
+            if (isFocused) {
+                this.selectBoundingBox = this.getSelectBoundingBox();
+            }
+
+            this.$emit('focus', isFocused);
         },
-        onApplyDate(date, dismissSelect) {
+        onApply(date, dismissSelect) {
             dismissSelect();
 
-            this.debounceFunc(this.formatDate(date));
+            this.$emit('input', this.formatDate(date));
+            this.$emit('focus', false);
         },
-        onClearDate() {
-            this.debounceFunc('');
+        onClear() {
+            this.$emit('input', '');
         },
         formatDate(date) {
             if (!date) return null;
             const { format } = this.parameters;
 
             return moment(date).format(format);
-        },
-        onSelectFocus(isFocused) {
-            if (isFocused) {
-                this.selectBoundingBox = this.getSelectBoundingBox();
-            }
         },
         getSelectBoundingBox() {
             const { $el } = this;
@@ -98,16 +99,19 @@ export default {
 
             if (innerHeight - top < maxHeight) {
                 const offsetBottom = innerHeight - top;
+                const marginBottom = 1;
 
                 return {
                     left: `${left}px`,
-                    bottom: `${offsetBottom + 1}px`,
+                    bottom: `${offsetBottom + marginBottom}px`,
                 };
             }
 
+            const marginTop = 2;
+
             return {
                 left: `${left}px`,
-                top: `${top + height + 2}px`,
+                top: `${top + height + marginTop}px`,
             };
         },
     },

@@ -32,7 +32,7 @@ html, body {
 }
 
 .typo-subtitle {
-    @include setFont(medium, regular, regular);
+    @include setFont(medium, regular, semiRegular);
 }
 
 .typo-btn {
@@ -44,7 +44,7 @@ html, body {
 }
 
 .typo-label {
-    @include setFont(medium, small, regular);
+    @include setFont(semiBold, small, regular);
 
     &--strong {
         @include setFont(bold, small, regular);

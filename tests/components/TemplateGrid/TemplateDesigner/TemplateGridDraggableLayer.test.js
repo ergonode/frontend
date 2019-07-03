@@ -2,14 +2,29 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount } from "@vue/test-utils";
+import { mount, createLocalVue } from "@vue/test-utils";
 import TemplateGridDraggableLayer from '~/components/TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer';
+import { Store } from 'vuex-mock-store';
+
+const localVue = createLocalVue();
+const store = new Store({
+    state: {
+        draggable: {
+            draggedElement: {},
+        }
+    }
+});
+const mocks = {
+    $store: store,
+};
 
 describe('TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer', () => {
     let wrapper;
 
     beforeEach(() => {
         wrapper = mount(TemplateGridDraggableLayer, {
+            localVue,
+            mocks,
             propsData: {
                 columnsNumber: 4,
                 rowsNumber: 4,
@@ -26,7 +41,7 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer', () => {
         expect(TemplateGridDraggableLayer.name).toEqual('TemplateGridDraggableLayer');
     });
 
-    it('Check interactive placeholder positions', () => {
+    it('Interactive placeholder positions', () => {
         const positions = [
             {
                 row: 1,
@@ -97,7 +112,7 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer', () => {
         expect(wrapper.vm.gridLayerPositions).toEqual(positions);
     });
 
-    it('Check layout element position in draggable grid layer', function () {
+    it('Get layout element position in draggable grid layer', function () {
         const bounds = {
             row: 1,
             column: 1,
@@ -105,7 +120,7 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer', () => {
             height: 2,
         };
 
-        expect(wrapper.vm.getGhostItemPosition(bounds)).toEqual({
+        expect(wrapper.vm.getItemPosition(bounds)).toEqual({
             gridArea: '1 / 1 / 3 / 3',
         });
     });

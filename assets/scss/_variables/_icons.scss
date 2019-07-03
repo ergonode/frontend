@@ -62,16 +62,16 @@ $viewSpriteIcons: (
     ("grid-small"),
     ("grid-large"),
 );
-$attributeSpriteIcons: (
-    ("image"),
+$attributeIcons: (
     ("date"),
-    ("price"),
+    ("image"),
     ("multi-select"),
+    ("numeric"),
+    ("price"),
+    ("select"),
     ("text"),
     ("textarea"),
     ("unit"),
-    ("numberic"),
-    ("single-select"),
 );
 $menuSpriteIcons: (
     ("home"),

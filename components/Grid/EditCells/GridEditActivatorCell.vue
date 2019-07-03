@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="editableCellClasses">
+    <div :class="editCellClasses">
         <Component
             :is="editableComponent"
             v-model="localValue"
@@ -17,7 +17,7 @@
 import { mapActions } from 'vuex';
 
 export default {
-    name: 'GridEditableCell',
+    name: 'GridEditActivatorCell',
     props: {
         value: {
             type: [String, Number, Array, Boolean],
@@ -25,27 +25,26 @@ export default {
         },
         type: {
             type: String,
-            required: false,
             default: null,
         },
         isSelectKind: {
             type: Boolean,
-            required: false,
             default: false,
         },
         isMultiSelect: {
             type: Boolean,
-            required: false,
             default: false,
         },
         options: {
             type: Array,
-            required: false,
             default: () => [],
+        },
+        parameters: {
+            type: Object,
+            default: () => {},
         },
         errorMessages: {
             type: [String, Array],
-            required: false,
             default: '',
         },
     },
@@ -58,10 +57,10 @@ export default {
         this.$emit('updateValue', this.localValue);
     },
     computed: {
-        editableCellClasses() {
+        editCellClasses() {
             return [
-                'editable-cell',
-                `editable-cell--${this.isSelectKind ? 'select' : 'text'}`,
+                'edit-cell',
+                `edit-cell--${this.isSelectKind || this.isDateType ? 'select' : 'text'}`,
             ];
         },
         isTextAreaType() {
@@ -70,35 +69,41 @@ export default {
         isImageType() {
             return this.type === 'IMAGE';
         },
+        isDateType() {
+            return this.type === 'DATE';
+        },
         editableComponent() {
-            if (this.isSelectKind) return () => import('~/components/Grid/GridAttributeSelectCell');
+            if (this.isSelectKind) return () => import('~/components/Grid/EditCells/GridEditSelectCell');
             if (this.isTextAreaType) return () => import('~/components/Inputs/TextArea');
-            if (this.isImageType) return () => import('~/components/Grid/GridEditableImageCell');
+            if (this.isImageType) return () => import('~/components/Grid/EditCells/GridEditImageCell');
+            if (this.isDateType) return () => import('~/components/Grid/EditCells/GridEditDateCell');
 
             return () => import('~/components/Inputs/TextField');
         },
         editableComponentProps() {
             if (this.isImageType) {
+                return { value: this.value };
+            }
+
+            if (this.isDateType) {
                 return {
                     value: this.value,
+                    errorMessages: this.errorMessages,
+                    parameters: this.parameters,
                 };
             }
 
-            const baseProps = {
-                autofocus: true,
-                errorMessages: this.errorMessages,
-            };
-
             if (this.isSelectKind) {
                 return {
-                    ...baseProps,
+                    errorMessages: this.errorMessages,
                     multiselect: this.isMultiSelect,
                     options: this.options,
                 };
             }
 
             return {
-                ...baseProps,
+                autofocus: true,
+                errorMessages: this.errorMessages,
                 leftAlignment: true,
             };
         },
@@ -120,7 +125,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .editable-cell {
+    .edit-cell {
         position: absolute;
         z-index: 999;
         display: flex;

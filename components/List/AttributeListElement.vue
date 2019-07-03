@@ -56,7 +56,7 @@ export default {
 
             const convertedType = this.item.type.toLowerCase().replace('_', '-');
 
-            return `sprite-attribute attribute-${convertedType}`;
+            return `attribute-${convertedType}`;
         },
     },
     methods: {

@@ -6,22 +6,16 @@
     <TextField
         :value="localValue"
         solid
-        :label="name"
+        :label="label"
         :placeholder="placeholder"
         :error-messages="isError ? [' '] : null"
         :required="required"
         @input="onValueChange">
-        <div
+        <ProductTemplateDetailsContent
             slot="appendIcon"
-            class="horizontal-wrapper">
-            <span>{{ suffix }}</span>
-            <InfoHint
-                v-if="hint && !isError"
-                :hint="hint" />
-            <ErrorHint
-                v-if="isError"
-                :hint="errorMessages" />
-        </div>
+            :hint="hint"
+            :error-messages="errorMessages"
+            :is-error="isError" />
     </TextField>
 </template>
 
@@ -50,10 +44,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .horizontal-wrapper {
-        display: flex;
-        align-items: center;
-    }
-</style>

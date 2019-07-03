@@ -4,6 +4,10 @@
  */
 const draggableLayerElementSelector = '.draggable-layer';
 const ghostElementSelector = '.ghost-element';
+const getDraggableLayerElement = () => document.documentElement.querySelector(
+    draggableLayerElementSelector,
+);
+const getGhostElement = draggableLayer => draggableLayer.querySelector(ghostElementSelector);
 
 export function addGhostElementToDraggableLayer({
     top, left, width, height,
@@ -27,35 +31,28 @@ export function addGhostElementToDraggableLayer({
     ghostElement.setAttribute('style', ghostElementStyle);
     ghostElement.classList.add('ghost-element');
 
-    const draggableLayerElement = document.documentElement.querySelector(
-        draggableLayerElementSelector,
-    );
+    const draggableLayerElement = getDraggableLayerElement();
+
     draggableLayerElement.appendChild(ghostElement);
 }
 
 export function updateGhostElementWidth(width) {
-    const draggableLayerElement = document.documentElement.querySelector(
-        draggableLayerElementSelector,
-    );
-    const ghostElement = draggableLayerElement.querySelector(ghostElementSelector);
+    const draggableLayerElement = getDraggableLayerElement();
+    const ghostElement = getGhostElement(draggableLayerElement);
 
     ghostElement.style.width = `${width}px`;
 }
 
 export function updateGhostElementHeight(height) {
-    const draggableLayerElement = document.documentElement.querySelector(
-        draggableLayerElementSelector,
-    );
-    const ghostElement = draggableLayerElement.querySelector(ghostElementSelector);
+    const draggableLayerElement = getDraggableLayerElement();
+    const ghostElement = getGhostElement(draggableLayerElement);
 
     ghostElement.style.height = `${height}px`;
 }
 
 export function removeGhostElementFromDraggableLayer() {
-    const draggableLayerElement = document.documentElement.querySelector(
-        draggableLayerElementSelector,
-    );
-    const ghostElement = draggableLayerElement.querySelector(ghostElementSelector);
+    const draggableLayerElement = getDraggableLayerElement();
+    const ghostElement = getGhostElement(draggableLayerElement);
 
     draggableLayerElement.removeChild(ghostElement);
 }
