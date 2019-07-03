@@ -3,10 +3,10 @@ export function addLayoutElementCopyToDocumentBody(event) {
     const { width, height } = event.target.getBoundingClientRect();
     const clonedDOMElement = event.target.cloneNode(true);
     const clonedDOMElementStyle = `
-                position: absolute;
-                background-color: #fff;
-                height: ${height}px;
-                width: ${width}px;
+        position: absolute;
+        background-color: #fff;
+        height: ${height}px;
+        width: ${width}px;
     `;
     clonedDOMElement.setAttribute('style', clonedDOMElementStyle);
     clonedDOMElement.classList.add('cloned-layout-element');
