@@ -140,6 +140,7 @@ export default {
                     params: { id },
                     actionPath: this.editRoutingPath,
                     isSelected: this.isEditingCell,
+                    row: this.rowIndex,
                 };
             case 'CHECK':
                 return {

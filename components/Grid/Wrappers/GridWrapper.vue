@@ -4,7 +4,9 @@
  */
 <template>
     <div :class="gridWrapperClasses">
-        <Grid :columns="columns">
+        <Grid
+            :columns="columns"
+            :is-placeholder="isEmptyGrid">
             <GridColumn
                 v-for="(column, colIndex) in columns"
                 :key="column.id"

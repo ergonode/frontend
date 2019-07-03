@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        class="grid"
+        :class="['grid', {'grid--placeholder': isPlaceholder}]"
         :style="templateColumns"
         :draggable="isColumnMoveable"
         @dragstart="onDragStart"
@@ -26,6 +26,10 @@ export default {
     props: {
         columns: {
             type: Array,
+            required: true,
+        },
+        isPlaceholder: {
+            type: Boolean,
             required: true,
         },
     },
@@ -323,5 +327,9 @@ export default {
         background-color: $background;
         border-bottom: none;
         overflow: auto;
+
+        &--placeholder {
+            flex-shrink: 0;
+        }
     }
 </style>
