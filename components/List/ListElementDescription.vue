@@ -43,7 +43,7 @@ export default {
         titleColor: {
             type: String,
             required: false,
-            default: 'txt--light-graphite',
+            default: 'txt--graphite',
         },
         subtitleColor: {
             type: String,

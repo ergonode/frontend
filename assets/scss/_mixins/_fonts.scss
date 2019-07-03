@@ -15,9 +15,7 @@
         font-display: swap;
         font-style: $style;
         font-weight: $weight;
-        src:
-            url("~assets/fonts/intern/Inter-UI-#{$name}.woff2") format("woff2"),
-            url("~assets/fonts/intern/Inter-UI-#{$name}.woff") format("woff");
+        src: url("~assets/fonts/intern/Inter-UI-#{$name}.woff2") format("woff2");
     }
 }
 
