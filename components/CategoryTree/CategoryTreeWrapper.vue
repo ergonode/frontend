@@ -102,13 +102,13 @@ export default {
             return hiddenItems.some(e => e === id);
         },
         getChildren(itemId) {
-            return this.gridData.filter(item => item.parent === itemId);
+            return this.gridData.filter(({ parent }) => parent === itemId);
         },
-        expandItem(isExpanded, item) {
-            const children = this.getChildren(item.id);
+        expandItem(isExpanded, { id, row, column }) {
+            const children = this.getChildren(id);
             const childrenRows = children.map(e => e.row);
             const [neighbor] = this.gridData.filter(
-                e => e.column <= item.column && e.row > item.row,
+                e => e.column <= column && e.row > row,
             );
             const minChildRow = Math.min(...childrenRows);
             const maxChildRow = neighbor ? neighbor.row : this.gridData.length;
@@ -116,9 +116,9 @@ export default {
                 e => e.row >= minChildRow && e.row <= maxChildRow - 1,
             );
             if (!isExpanded) {
-                this.setHiddenItem({ key: item.id, value: childrenToHide.map(e => e.id) });
+                this.setHiddenItem({ key: id, value: childrenToHide.map(e => e.id) });
             } else {
-                this.removeHiddenItem(item.id);
+                this.removeHiddenItem(id);
             }
         },
     },

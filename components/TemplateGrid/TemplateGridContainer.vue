@@ -140,39 +140,71 @@ export default {
         setRowsCount(number) {
             this.$emit('setRowsCount', number);
         },
-        getBottomCollidingColumn({ adjacentElColumn, collidingElColumn }) {
+        getBottomCollidingColumn({ neighbourElColumn, collidingElColumn }) {
             const { overColumn } = this.mousePosition;
-            if (adjacentElColumn !== null && collidingElColumn < adjacentElColumn) {
-                return adjacentElColumn;
+            if (neighbourElColumn !== null && collidingElColumn < neighbourElColumn) {
+                return neighbourElColumn;
             }
             return overColumn > collidingElColumn ? collidingElColumn + 1 : collidingElColumn;
         },
-        getTopCollidingColumn({ adjacentElColumn, collidingElColumn }) {
+        getTopCollidingColumn({ neighbourElColumn, collidingElColumn }) {
             const { overColumn } = this.mousePosition;
-            if (overColumn >= collidingElColumn && overColumn <= adjacentElColumn + 1) {
+            if (overColumn >= collidingElColumn && overColumn <= neighbourElColumn + 1) {
                 return overColumn;
             }
             return collidingElColumn;
         },
+        getGhostCollidingColumn(topNeighbourColumn, bottomNeighbourColumn) {
+            const { overColumn } = this.mousePosition;
+            const isTopNeighbourLowerThenBottom = topNeighbourColumn < bottomNeighbourColumn;
+            const maxColumn = Math.max(topNeighbourColumn, bottomNeighbourColumn);
+            const minColumn = Math.min(topNeighbourColumn, bottomNeighbourColumn);
+            const isNeighbourInTopRange = overColumn <= maxColumn
+                && overColumn > minColumn;
+            const isNeighbourinTopRange = overColumn <= maxColumn + 1
+                && overColumn >= minColumn;
+
+            if ((isTopNeighbourLowerThenBottom && isNeighbourInTopRange)
+                || (!isTopNeighbourLowerThenBottom && isNeighbourinTopRange)) {
+                return overColumn;
+            }
+            return null;
+        },
         getCollidingPosition(collidingEl) {
+            const { row: collidingElRow, column: collidingElColumn } = collidingEl;
+            if (collidingEl.ghost) {
+                const topNeighbour = this.dataWithoutGhostElement[
+                    collidingElRow - this.positionBeetwenRows
+                ];
+                const bottomNeighbour = this.dataWithoutGhostElement[
+                    collidingElRow + this.positionBeetwenRows
+                ];
+                const columnForLastRow = !bottomNeighbour ? this.getAllowedColumn() : 0;
+                return {
+                    column: bottomNeighbour && topNeighbour
+                        ? this.getGhostCollidingColumn(topNeighbour.column, bottomNeighbour.column)
+                        : columnForLastRow,
+                    row: collidingElRow,
+                };
+            }
             const { directionOfCollision } = this.mousePosition;
             const isTop = directionOfCollision === 'top';
-            const [adjacentEl] = this.dataWithoutGhostElement.filter(
-                el => el.row === (isTop ? collidingEl.row - 1 : collidingEl.row + 1),
+            const [neighbourEl] = this.dataWithoutGhostElement.filter(
+                el => el.row === (isTop ? collidingElRow - 1 : collidingElRow + 1),
             );
-            const collidingData = {
-                adjacentElColumn: adjacentEl ? adjacentEl.column : null,
-                collidingElColumn: collidingEl.column,
-            };
-            const isFirstElement = (!adjacentEl || collidingEl.row === 0) && isTop;
+            const isFirstElement = (!neighbourEl || collidingElRow === 0) && isTop;
             if (isFirstElement) {
                 return { column: 0, row: -this.positionBeetwenRows };
             }
+            const collidingData = {
+                neighbourElColumn: neighbourEl ? neighbourEl.column : null,
+                collidingElColumn,
+            };
             return {
                 column: isTop
                     ? this.getTopCollidingColumn(collidingData)
                     : this.getBottomCollidingColumn(collidingData),
-                row: (isTop ? collidingEl.row - 1 : collidingEl.row) + this.positionBeetwenRows,
+                row: (isTop ? collidingElRow - 1 : collidingElRow) + this.positionBeetwenRows,
             };
         },
         onDragFirstItem() {
@@ -196,9 +228,7 @@ export default {
         },
         setGhostItemPosition({ column, row }) {
             const isPositionNotDuplicated = (this.ghostElement.column !== column
-                || this.ghostElement.row !== row)
-                && row !== null
-                && column !== null;
+                || this.ghostElement.row !== row) && (row !== null && column !== null);
             if (isPositionNotDuplicated) {
                 this.ghostElement.row = row;
                 this.ghostElement.column = column;
@@ -229,12 +259,14 @@ export default {
             return layerPositionY > centerPosition ? 'bottom' : 'top';
         },
         isRowGet(row) {
-            const [item] = this.dataWithoutGhostElement.filter(element => element.row === row);
+            const [item] = this.gridData.filter(element => element.row === row);
             return item || null;
         },
         getCollidingItemAtRow(row) {
             const { row: ghostRow } = this.ghostElement;
-            if (ghostRow !== null && row === ghostRow + this.positionBeetwenRows) return null;
+            if (ghostRow !== null && row === ghostRow + this.positionBeetwenRows) {
+                return this.isRowGet(ghostRow);
+            }
             const newRow = ghostRow !== null && row > ghostRow
                 ? row - 1
                 : row;
