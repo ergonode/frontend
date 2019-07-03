@@ -140,32 +140,32 @@ export default {
         setRowsCount(number) {
             this.$emit('setRowsCount', number);
         },
-        getBottomCollidingColumn({ neighborElColumn, collidingElColumn }) {
+        getBottomCollidingColumn({ neighbourElColumn, collidingElColumn }) {
             const { overColumn } = this.mousePosition;
-            if (neighborElColumn !== null && collidingElColumn < neighborElColumn) {
-                return neighborElColumn;
+            if (neighbourElColumn !== null && collidingElColumn < neighbourElColumn) {
+                return neighbourElColumn;
             }
             return overColumn > collidingElColumn ? collidingElColumn + 1 : collidingElColumn;
         },
-        getTopCollidingColumn({ neighborElColumn, collidingElColumn }) {
+        getTopCollidingColumn({ neighbourElColumn, collidingElColumn }) {
             const { overColumn } = this.mousePosition;
-            if (overColumn >= collidingElColumn && overColumn <= neighborElColumn + 1) {
+            if (overColumn >= collidingElColumn && overColumn <= neighbourElColumn + 1) {
                 return overColumn;
             }
             return collidingElColumn;
         },
-        getGhostCollidingColumn(topNeighborColumn, bottomNeighborColumn) {
+        getGhostCollidingColumn(topNeighbourColumn, bottomNeighbourColumn) {
             const { overColumn } = this.mousePosition;
-            const isTopNeighborLowerThenBottom = topNeighborColumn < bottomNeighborColumn;
-            const maxColumn = Math.max(topNeighborColumn, bottomNeighborColumn);
-            const minColumn = Math.min(topNeighborColumn, bottomNeighborColumn);
-            const isRangeIsCorrectWithTopNeighbor = overColumn <= maxColumn
+            const isTopNeighbourLowerThenBottom = topNeighbourColumn < bottomNeighbourColumn;
+            const maxColumn = Math.max(topNeighbourColumn, bottomNeighbourColumn);
+            const minColumn = Math.min(topNeighbourColumn, bottomNeighbourColumn);
+            const isNeighbourInTopRange = overColumn <= maxColumn
                 && overColumn > minColumn;
-            const isRangeIsCorrectWithBottomNeighbor = overColumn <= maxColumn + 1
+            const isNeighbourinTopRange = overColumn <= maxColumn + 1
                 && overColumn >= minColumn;
 
-            if ((isTopNeighborLowerThenBottom && isRangeIsCorrectWithTopNeighbor)
-                || (!isTopNeighborLowerThenBottom && isRangeIsCorrectWithBottomNeighbor)) {
+            if ((isTopNeighbourLowerThenBottom && isNeighbourInTopRange)
+                || (!isTopNeighbourLowerThenBottom && isNeighbourinTopRange)) {
                 return overColumn;
             }
             return null;
@@ -173,31 +173,31 @@ export default {
         getCollidingPosition(collidingEl) {
             const { row: collidingElRow, column: collidingElColumn } = collidingEl;
             if (collidingEl.ghost) {
-                const topNeighbor = this.dataWithoutGhostElement[
+                const topNeighbour = this.dataWithoutGhostElement[
                     collidingElRow - this.positionBeetwenRows
                 ];
-                const bottomNeighbor = this.dataWithoutGhostElement[
+                const bottomNeighbour = this.dataWithoutGhostElement[
                     collidingElRow + this.positionBeetwenRows
                 ];
-                const columnForLastRow = !bottomNeighbor ? this.getAllowedColumn() : 0;
+                const columnForLastRow = !bottomNeighbour ? this.getAllowedColumn() : 0;
                 return {
-                    column: bottomNeighbor && topNeighbor
-                        ? this.getGhostCollidingColumn(topNeighbor.column, bottomNeighbor.column)
+                    column: bottomNeighbour && topNeighbour
+                        ? this.getGhostCollidingColumn(topNeighbour.column, bottomNeighbour.column)
                         : columnForLastRow,
                     row: collidingElRow,
                 };
             }
             const { directionOfCollision } = this.mousePosition;
             const isTop = directionOfCollision === 'top';
-            const [neighborEl] = this.dataWithoutGhostElement.filter(
+            const [neighbourEl] = this.dataWithoutGhostElement.filter(
                 el => el.row === (isTop ? collidingElRow - 1 : collidingElRow + 1),
             );
-            const isFirstElement = (!neighborEl || collidingElRow === 0) && isTop;
+            const isFirstElement = (!neighbourEl || collidingElRow === 0) && isTop;
             if (isFirstElement) {
                 return { column: 0, row: -this.positionBeetwenRows };
             }
             const collidingData = {
-                neighborElColumn: neighborEl ? neighborEl.column : null,
+                neighbourElColumn: neighbourEl ? neighbourEl.column : null,
                 collidingElColumn,
             };
             return {
