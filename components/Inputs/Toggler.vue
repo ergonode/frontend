@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        :class="switchClasses"
+        :class="['toggler', togglerStateClasses]"
         @click="onClick">
         <div class="toggler__state-wrapper">
             <Icon
@@ -15,26 +15,29 @@
 </template>
 
 <script>
+import Icon from '~/components/Icon/Icon';
+
 export default {
     name: 'Toggler',
     components: {
-        Icon: () => import('~/components/Icon/Icon'),
+        Icon,
     },
     props: {
         value: {
             type: Boolean,
-            required: false,
+            default: false,
+        },
+        disabled: {
+            type: Boolean,
             default: false,
         },
     },
     computed: {
-        switchClasses() {
-            return [
-                'toggler',
-                {
-                    'toggler--selected': this.value,
-                },
-            ];
+        togglerStateClasses() {
+            return [{
+                'toggler--selected': this.value,
+                'toggler--disabled': this.disabled,
+            }];
         },
     },
     methods: {
@@ -60,14 +63,10 @@ export default {
             width: 100%;
             height: 12px;
             border-radius: 8px;
-            background-color: $lightGrey;
             box-shadow:
                 inset 0 2px 2px 0 rgba(0, 0, 0, 0.14),
                 inset 0 3px 1px 0 rgba(0, 0, 0, 0.12),
-                inset 0 1px 5px 0 rgba(0, 0, 0, 0.2),
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
+                inset 0 1px 5px 0 rgba(0, 0, 0, 0.2);
             content: "";
         }
 
@@ -87,13 +86,13 @@ export default {
         &--selected {
             justify-content: flex-end;
 
-            &::before {
-                background-color: $lightGreen;
-            }
-
             .toggler__state-wrapper {
                 background-color: $success;
             }
+        }
+
+        &--disabled {
+            pointer-events: none;
         }
     }
 </style>
