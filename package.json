@@ -54,6 +54,7 @@
     "eslint-loader": "^2.1.2",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jest": "^22.2.2",
+    "eslint-plugin-notice": "^0.8.8",
     "eslint-plugin-vue": "^5.1.0",
     "husky": "^3.0.0",
     "jest": "^24.7.1",
