@@ -29,6 +29,7 @@
         <div class="horizontal-wrapper">
             <Toggler
                 :value="isMultilingual"
+                :disabled="isDisabled"
                 @input="(isMultilingual) => setMultilingualAttribute({ isMultilingual })" />
             <Label
                 text="Multilingual attribute"
