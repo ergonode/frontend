@@ -24,7 +24,7 @@ export default {
             ticker: null,
         };
     },
-    created() {
+    mounted() {
         this.tick();
     },
     destroyed() {
