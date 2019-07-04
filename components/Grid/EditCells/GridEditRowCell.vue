@@ -4,7 +4,7 @@
  */
 <template>
     <nuxt-link
-        class="action-link"
+        :class="['action-link', {'action-link--odd': row % 2 === 0}]"
         :to="actionLink"
         aria-label="edit">
         <Icon
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-    name: 'GridEditCell',
+    name: 'GridEditRowCell',
     components: {
         Icon: () => import('~/components/Icon/Icon'),
     },
@@ -28,9 +28,12 @@ export default {
             type: Object,
             required: true,
         },
+        row: {
+            type: Number,
+            required: true,
+        },
         isSelected: {
             type: Boolean,
-            required: false,
             default: false,
         },
     },
@@ -57,5 +60,9 @@ export default {
         justify-content: center;
         align-items: center;
         padding: 8px;
+
+        &--odd {
+            background-color: $background;
+        }
     }
 </style>

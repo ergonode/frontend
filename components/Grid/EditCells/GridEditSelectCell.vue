@@ -1,7 +1,7 @@
 /*
-* Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
-* See LICENSE for license details.
-*/
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
 <template>
     <Select
         :value="value"
@@ -10,7 +10,7 @@
         :multiselect="multiselect"
         :dismissible="!multiselect"
         :error-messages="errorMessages"
-        :autofocus="autofocus"
+        autofocus
         @focus="onFocus"
         @input="onValueChange"
         @apply="onApply">
@@ -35,7 +35,7 @@ import TranslationSelectListContent from '~/components/Inputs/Select/Contents/Tr
 import TranslationMultiselectListContent from '~/components/Inputs/Select/Contents/TranslationMultiselectListContent';
 
 export default {
-    name: 'GridAttributeSelectCell',
+    name: 'GridEditSelectCell',
     components: {
         Select,
         TranslationSelectListContent,
@@ -47,10 +47,6 @@ export default {
             required: true,
         },
         multiselect: {
-            type: Boolean,
-            required: true,
-        },
-        autofocus: {
             type: Boolean,
             required: true,
         },

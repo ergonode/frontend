@@ -230,6 +230,7 @@ export default {
         justify-content: space-between;
         align-items: center;
         padding: 8px;
+        background-color: $background;
         user-select: none;
 
         &__title {

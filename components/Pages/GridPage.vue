@@ -36,7 +36,7 @@ export default {
     name: 'GridPage',
     components: {
         NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
-        GridWrapper: () => import('~/components/Grid/GridWrapper'),
+        GridWrapper: () => import('~/components/Grid/Wrappers/GridWrapper'),
         GridFooter: () => import('~/components/Grid/GridFooter'),
         GridPageSelector: () => import('~/components/Grid/GridPageSelector'),
         GridPagination: () => import('~/components/Grid/GridPagination'),

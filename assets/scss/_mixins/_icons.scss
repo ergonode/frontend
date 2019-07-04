@@ -98,12 +98,12 @@
             @include generateIconTypeClasses("switch", $switchSpriteIcons, 1, 1, null, null, null);
             @include generateIconTypeClasses("editor", $editorSpriteIcons, 0, 1, null, null, null);
             @include generateIconTypeClasses("window", $windowActionsSpriteIcons, 0, 1, null, null, null);
+            @include generateIconTypeClasses("attribute", $attributeIcons, 0, 1, null, null, null);
 
             @include generateIconTypeClasses("menu", $menuSpriteIcons, $sizeValue, 3, 1, null, 1);
             @include generateIconTypeClasses("sidebar", $sidebarSpriteIcons, $sizeValue, 2, 1, null, 1);
 
             @include generateIconTypeClasses("navbar", $navbarSpriteIcons, $sizeValue, 1, null, 1, 1);
-            @include generateIconTypeClasses("attribute", $attributeSpriteIcons, $sizeValue, 1, null, 1, 1);
         }
     }
 }

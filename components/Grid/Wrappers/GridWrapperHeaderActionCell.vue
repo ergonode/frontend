@@ -1,7 +1,7 @@
 /*
-* Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
-* See LICENSE for license details.
-*/
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
 <template>
     <GridCell
         :editing-allowed="column.editable || isActionCell || isFilterCell"
@@ -14,7 +14,7 @@
             :is="infoComponent"
             v-if="!isEditingCell || isActionCell"
             v-bind="infoComponentProps" />
-        <GridEditableCell
+        <GridEditActivatorCell
             v-else
             :is-select-kind="isSelectKind"
             :is-multi-select="isMultiSelect"
@@ -31,7 +31,7 @@ export default {
     name: 'GridWrapperHeaderActionCell',
     components: {
         GridCell: () => import('~/components/Grid/GridCell'),
-        GridEditableCell: () => import('~/components/Grid/GridEditableCell'),
+        GridEditActivatorCell: () => import('~/components/Grid/EditCells/GridEditActivatorCell'),
     },
     props: {
         columnIndex: {

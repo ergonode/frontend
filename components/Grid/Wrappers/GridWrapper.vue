@@ -4,7 +4,9 @@
  */
 <template>
     <div :class="gridWrapperClasses">
-        <Grid :columns="columns">
+        <Grid
+            :columns="columns"
+            :is-placeholder="isEmptyGrid">
             <GridColumn
                 v-for="(column, colIndex) in columns"
                 :key="column.id"
@@ -46,9 +48,9 @@ export default {
     components: {
         Grid: () => import('~/components/Grid/Grid'),
         GridColumn: () => import('~/components/Grid/GridColumn'),
-        GridWrapperCell: () => import('~/components/Grid/GridWrapperCell'),
-        GridWrapperHeaderActionCell: () => import('~/components/Grid/GridWrapperHeaderActionCell'),
-        GridWrapperHeaderCell: () => import('~/components/Grid/GridWrapperHeaderCell'),
+        GridWrapperCell: () => import('~/components/Grid/Wrappers/GridWrapperCell'),
+        GridWrapperHeaderActionCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderActionCell'),
+        GridWrapperHeaderCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderCell'),
         GridPlaceholder: () => import('~/components/Grid/GridPlaceholder'),
     },
     props: {

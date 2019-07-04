@@ -1,7 +1,7 @@
 /*
-* Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
-* See LICENSE for license details.
-*/
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
 <template>
     <div class="info-select-cell">
         <GridInfoCell :value="parsedValue" />
@@ -47,6 +47,6 @@ export default {
         flex: 1;
         justify-content: space-between;
         align-items: center;
-        padding-right: 8px;
+        padding-right: 13px;
     }
 </style>

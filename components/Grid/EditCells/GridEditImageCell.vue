@@ -13,7 +13,7 @@
 
 <script>
 export default {
-    name: 'GridEditableImageCell',
+    name: 'GridEditImageCell',
     components: {
         UploadImage: () => import('~/components/Inputs/Image/UploadImage'),
     },

@@ -25,7 +25,7 @@
             slot="select"
             slot-scope="{ dismissSelect }"
             :style="selectBoundingBox"
-            :selected-date="new Date(value)"
+            :selected-date="parsedDate"
             @apply="e => onApplyDate(e, dismissSelect)"
             @clear="onClearDate" />
     </Select>
@@ -33,9 +33,10 @@
 
 <script>
 import moment from 'moment';
+import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
 import Select from '~/components/Inputs/Select/Select';
 import DatePickerContent from '~/components/Inputs/Select/Contents/DatePickerContent';
-import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
+import Icon from '~/components/Icon/Icon';
 
 export default {
     name: 'ProductTemplateDate',
@@ -43,7 +44,7 @@ export default {
     components: {
         Select,
         DatePickerContent,
-        Icon: () => import('~/components/Icon/Icon'),
+        Icon,
     },
     data() {
         return {
@@ -56,6 +57,9 @@ export default {
             return this.isFocused
                 ? 'arrow-triangle trans-half'
                 : 'arrow-triangle';
+        },
+        parsedDate() {
+            return moment(this.value, this.parameters.format).toDate();
         },
     },
     methods: {

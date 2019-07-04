@@ -23,10 +23,19 @@ module.exports = {
     // required to lint *.vue files
     plugins: [
         'vue',
-        'jest'
+        'jest',
+        'notice'
     ],
     // add your custom rules here
     rules: {
+        'notice/notice':[
+          "error", {
+            "templateFile":"./config/copyright.js",
+            "messages":{
+              "whenFailedToMatch":"Couldn't find 'License Header', are you sure you added it?"
+            }
+          },
+        ],
         'no-console': 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
         'import/no-unresolved': ['off'],

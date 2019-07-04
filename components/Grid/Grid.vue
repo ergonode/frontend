@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        class="grid"
+        :class="['grid', {'grid--placeholder': isPlaceholder}]"
         :style="templateColumns"
         :draggable="isColumnMoveable"
         @dragstart="onDragStart"
@@ -26,6 +26,10 @@ export default {
     props: {
         columns: {
             type: Array,
+            required: true,
+        },
+        isPlaceholder: {
+            type: Boolean,
             required: true,
         },
     },
@@ -221,6 +225,10 @@ export default {
                 const { clientX } = event;
                 const { children: gridColumns } = this.$el;
 
+                if (!this.columnBounds.length) {
+                    this.initializeColumnBounds();
+                }
+
                 this.getColumnBellowMouse({ clientX, gridColumns }, ({ index, gridColumn }) => {
                     const isMouseAbovePinnedColumn = gridColumn.classList.contains('column__right-pinned')
                         || gridColumn.classList.contains('column__left-pinned');
@@ -319,5 +327,9 @@ export default {
         background-color: $background;
         border-bottom: none;
         overflow: auto;
+
+        &--placeholder {
+            flex-shrink: 0;
+        }
     }
 </style>

@@ -35,7 +35,7 @@ describe('TemplateGrid/TemplateGridShadowItem', () => {
     it('Check item default id', () => {
       expect(wrapper.vm.lastRow).toBeFalsy();
       expect(wrapper.vm.itemId).toBe(1);
-      expect(wrapper.contains('[shadow-id="1"]')).toBe(true)
+      expect(wrapper.contains('[shadow-id="0"]')).toBe(true);
     });
     it('Check item id', () => {
       wrapper.setProps({
@@ -43,6 +43,6 @@ describe('TemplateGrid/TemplateGridShadowItem', () => {
       });
       expect(wrapper.vm.lastRow).toBeFalsy();
       expect(wrapper.vm.itemId).toBe(3);
-      expect(wrapper.contains('[shadow-id="3"]')).toBe(true)
+      expect(wrapper.contains('[shadow-id="2"]')).toBe(true);
     });
 });

@@ -5,7 +5,7 @@
 import { JWT_KEY, USER_KEY } from '~/defaults/authenticate/cookies';
 
 export const actions = {
-    async nuxtServerInit({ dispatch, commit }) {
+    async nuxtServerInit({ dispatch }) {
         const token = this.$cookies.get(JWT_KEY) || null;
         const user = this.$cookies.get(USER_KEY) || null;
 
@@ -18,12 +18,12 @@ export const actions = {
         dispatch('data/clearStorage');
         dispatch('grid/clearStorage');
         dispatch('draggable/clearStorage');
+        dispatch('tree/clearStorage');
         commit('gridDraft/clearStorage');
         commit('list/clearStorage');
         commit('productsDraft/clearStorage');
         commit('templateDesigner/clearStorage');
         commit('translations/clearStorage');
-        commit('tree/clearStorage');
         commit('users/clearStorage');
         commit('validations/clearStorage');
     },

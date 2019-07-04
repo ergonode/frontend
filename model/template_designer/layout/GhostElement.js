@@ -1,4 +1,7 @@
-// Helpers
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
 const draggableLayerElementSelector = '.draggable-layer';
 const ghostElementSelector = '.ghost-element';
 const getDraggableLayerElement = () => document.documentElement.querySelector(

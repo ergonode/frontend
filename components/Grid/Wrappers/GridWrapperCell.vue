@@ -1,7 +1,7 @@
 /*
-* Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
-* See LICENSE for license details.
-*/
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
 <template>
     <GridCell
         :editing-allowed="column.editable || isActionCell"
@@ -17,13 +17,14 @@
             :is="infoComponent"
             v-if="!isEditingCell || isActionCell"
             v-bind="infoComponentProps" />
-        <GridEditableCell
+        <GridEditActivatorCell
             v-else
             :is-select-kind="isSelectKind"
             :is-multi-select="isMultiSelect"
             :type="column.type"
             :value="draftValue || cellValue"
             :options="options"
+            :parameters="column.parameters"
             :error-messages="errorValue"
             @updateValue="onUpdateDraft" />
     </GridCell>
@@ -36,7 +37,7 @@ export default {
     name: 'GridWrapperCell',
     components: {
         GridCell: () => import('~/components/Grid/GridCell'),
-        GridEditableCell: () => import('~/components/Grid/GridEditableCell'),
+        GridEditActivatorCell: () => import('~/components/Grid/EditCells/GridEditActivatorCell'),
     },
     props: {
         rowIndex: {
@@ -117,7 +118,7 @@ export default {
 
             switch (type) {
             case 'ACTION':
-                return () => import('~/components/Grid/GridEditCell');
+                return () => import('~/components/Grid/EditCells/GridEditRowCell');
             case 'IMAGE':
                 return () => import('~/components/Grid/GridImageCell');
             case 'CHECK':
@@ -139,6 +140,7 @@ export default {
                     params: { id },
                     actionPath: this.editRoutingPath,
                     isSelected: this.isEditingCell,
+                    row: this.rowIndex,
                 };
             case 'CHECK':
                 return {
