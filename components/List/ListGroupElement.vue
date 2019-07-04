@@ -76,9 +76,5 @@ export default {
                 opacity: 1;
             }
         }
-
-        .items {
-            flex: 1;
-        }
     }
 </style>
