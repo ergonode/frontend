@@ -36,7 +36,7 @@ export default {
         language() {
             const languageCode = getKeyByValue(this.languages, this.language);
 
-            this.setDraftLanguageCode({ languageCode });
+            this.setDraftLanguageCode(languageCode);
         },
     },
     created() {

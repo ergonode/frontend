@@ -42,7 +42,6 @@ module.exports = {
         '~assets/scss/icons.scss',
     ],
     plugins: [
-        '~plugins/inputAutoWidth',
         '~plugins/directives',
         '~plugins/axios',
         {mode: 'client', src: '~plugins/alerts'},

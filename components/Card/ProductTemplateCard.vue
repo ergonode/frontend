@@ -15,6 +15,7 @@
                     v-for="(element, index) in layoutElements"
                     :key="index"
                     :style="getItemPosition(element)"
+                    :value="draft.attributes[element.id]"
                     v-bind="element" />
             </div>
         </TemplateGridDesigner>
@@ -52,6 +53,7 @@ export default {
     computed: {
         ...mapState('productsDraft', {
             layoutElements: state => state.layoutElements,
+            draft: state => state.draft,
         }),
         maxRowOfLayoutElements() {
             const maxElementRow = getMaxObjectValueInArrayByObjectKey(this.layoutElements, 'row');
