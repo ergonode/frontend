@@ -50,6 +50,8 @@ export default {
 
 <style lang="scss" scoped>
     .toggler {
+        $toogler: &;
+
         position: relative;
         display: flex;
         justify-content: flex-start;
@@ -86,13 +88,17 @@ export default {
         &--selected {
             justify-content: flex-end;
 
-            .toggler__state-wrapper {
+            #{$toogler}__state-wrapper {
                 background-color: $success;
             }
         }
 
         &--disabled {
             pointer-events: none;
+
+            #{$toogler}__state-wrapper {
+                background-color: $darkGrey;
+            }
         }
     }
 </style>
