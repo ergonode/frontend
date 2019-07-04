@@ -29,7 +29,6 @@
     "dotenv": "^6.2.0",
     "moment": "^2.24.0",
     "nuxt": "^2.7.1",
-    "vue-input-autowidth": "^1.0.2",
     "vue-uuid": "^1.1.1",
     "vuex": "^3.1.1",
     "chalk": "^2.4.2",

@@ -23,7 +23,7 @@
             :error-messages="errorTemplateMessage"
             :options="templateValues"
             :disabled="isDisabled"
-            @input="(template) => setProductTemplate({ template })" />
+            @input="(template) => setProductTemplate(template)" />
         <Select
             :value="selectedCategories"
             solid
