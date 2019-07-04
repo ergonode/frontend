@@ -3,10 +3,10 @@
  * See LICENSE for license details.
  */
 export default {
-    setProductId: (state, { id }) => {
+    setProductId: (state, id) => {
         state.id = id;
     },
-    setProductSku: (state, { sku }) => {
+    setProductSku: (state, sku) => {
         state.sku = sku;
     },
     setProductTemplate: (state, template) => {

@@ -13,7 +13,7 @@
             required
             :error-messages="errorSkuMessage"
             :disabled="isDisabled"
-            @input="(sku) => setProductSku({ sku })" />
+            @input="(sku) => setProductSku(sku)" />
         <Select
             :value="template"
             solid
@@ -91,14 +91,10 @@ export default {
             'setProductCategories',
         ]),
         onCategoriesChange(categories) {
-            this.setProductCategories({
-                selectedCategories: categories,
-            });
+            this.setProductCategories(categories);
         },
         clearContent() {
-            this.setProductCategories({
-                selectedCategories: [],
-            });
+            this.setProductCategories();
         },
     },
 };

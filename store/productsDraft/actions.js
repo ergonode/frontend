@@ -10,10 +10,10 @@ import {
 } from '~/model/mappers/productMapper';
 
 export default {
-    setProductSku: ({ commit }, payload) => commit('setProductSku', payload),
-    setProductTemplate: ({ commit }, payload) => commit('setProductTemplate', payload),
-    setProductCategories: ({ commit }, payload) => commit('setProductCategories', payload),
-    async setDraftLanguageCode({ commit, state, dispatch }, { languageCode }) {
+    setProductSku: ({ commit }, sku) => commit('setProductSku', sku),
+    setProductTemplate: ({ commit }, template) => commit('setProductTemplate', template),
+    setProductCategories: ({ commit }, categories = []) => commit('setProductCategories', categories),
+    async setDraftLanguageCode({ commit, state, dispatch }, languageCode) {
         const { id } = state;
         commit('setDraftLanguageCode', languageCode);
 
@@ -59,8 +59,8 @@ export default {
                 commit('setProductTemplate', template);
             }
 
-            commit('setProductId', { id });
-            commit('setProductSku', { sku });
+            commit('setProductId', id);
+            commit('setProductSku', sku);
         }).catch(e => onError(e.data));
     },
     getProductTemplate({ commit }, { languageCode, id, onError }) {
@@ -133,7 +133,7 @@ export default {
     ) {
         const { authentication: { user: { language } } } = rootState;
         return this.app.$axios.$post(`${language}/products`, data).then(({ id }) => {
-            commit('setProductId', { id });
+            commit('setProductId', id);
             onSuccess(id);
         }).catch(e => onError(e.data));
     },
