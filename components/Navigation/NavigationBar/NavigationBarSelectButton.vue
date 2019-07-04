@@ -1,7 +1,7 @@
 /*
-* Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
-* See LICENSE for license details.
-*/
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
 <template>
     <NavigationBarButton
         :is-selected="isSelected"
@@ -44,6 +44,9 @@ export default {
             isSelected: false,
             isClickedOutside: false,
         };
+    },
+    destroyed() {
+        window.removeEventListener('click', this.onClickOutside);
     },
     computed: {
         arrowIcon() {

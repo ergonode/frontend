@@ -15,17 +15,19 @@
             <div
                 class="btn__select-content"
                 :style="selectContentPosition">
-                <List>
-                    <ListElement
-                        v-for="(option, index) in options"
-                        :key="index"
-                        @click.native="onSelectedValue(index)">
-                        <ListElementDescription
-                            :subtitle="option"
-                            subtitle-typo="typo-btn--xs"
-                            subtitle-color="txt--graphite" />
-                    </ListElement>
-                </List>
+                <slot name="content">
+                    <List>
+                        <ListElement
+                            v-for="(option, index) in options"
+                            :key="index"
+                            regular
+                            @click.native="onSelectedValue(index)">
+                            <ListElementDescription
+                                :subtitle="option"
+                                subtitle-color="txt--graphite" />
+                        </ListElement>
+                    </List>
+                </slot>
             </div>
         </Transition>
     </div>

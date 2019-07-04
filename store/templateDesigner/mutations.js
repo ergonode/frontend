@@ -3,70 +3,44 @@
  * See LICENSE for license details.
  */
 export default {
-    initializeDraggedElementCollision: (state, payload) => {
-        state.isDraggedElementColliding = payload;
+    initializeLayoutElements: (state, elements) => {
+        state.layoutElements = elements;
     },
-    updateObstacleStageOfElement: (state, payload) => {
-        const { index, isObstacle } = payload;
-        const element = state.templateLayout[index];
-
-        state.templateLayout[index] = { ...element, isObstacle };
-        state.templateLayout = [...state.templateLayout];
+    updateLayoutElementBounds: (state, { index, width, height }) => {
+        state.layoutElements[index] = { ...state.layoutElements[index], width, height };
+        state.layoutElements = [...state.layoutElements];
     },
-    initializeHighlightingHintPoints: (state, payload = []) => {
-        state.highlightingHintPoints = [...payload];
+    updateLayoutElementPosition: (state, { index, row, column }) => {
+        state.layoutElements[index] = { ...state.layoutElements[index], row, column };
+        state.layoutElements = [...state.layoutElements];
     },
-    initializeHighlightingHoverPoints: (state, payload = []) => {
-        state.highlightingHoverPoints = [...payload];
+    addElementToLayout: (state, layoutElement) => {
+        state.layoutElements.push(layoutElement);
     },
-    setTemplateDesignerLayout: (state, payload) => {
-        state.templateLayout = payload;
-    },
-    addElementToLayoutAtCoordinates: (state, payload) => {
-        const { index, element } = payload;
-
-        state.templateLayout[index] = element;
-        state.templateLayout = [...state.templateLayout];
-    },
-    insertElementToLayout: (state, payload) => {
-        const { index, element } = payload;
-        state.templateLayout.splice(index, 0, element);
-    },
-    setTypes: (state, { types }) => {
+    setTypes: (state, types) => {
         state.types = types;
     },
-    setElementRequirement: (state, payload) => {
-        const { required, index } = payload;
-        const element = state.templateLayout[index];
+    setLayoutElementRequirement: (state, { required, index }) => {
+        const element = state.layoutElements[index];
 
-        state.templateLayout[index] = { ...element, required };
-        state.templateLayout = [...state.templateLayout];
+        state.layoutElements[index] = { ...element, required };
+        state.layoutElements = [...state.layoutElements];
     },
-    updateLayoutElementCoordinates: (state, payload) => {
-        const { index, coordinates } = payload;
-        const element = state.templateLayout[index];
-
-        state.templateLayout[index] = { ...element, coordinates };
-        state.templateLayout = [...state.templateLayout];
+    removeLayoutElementAtIndex: (state, index) => {
+        state.layoutElements.splice(index, 1);
     },
-    setTemplateDesignerTitle: (state, { title }) => {
+    setTemplateDesignerTitle: (state, title) => {
         state.title = title;
     },
-    setTemplateDesignerImage: (state, { image }) => {
+    setTemplateDesignerImage: (state, image) => {
         state.image = image;
     },
-    setTemplateDesignerSectionTitle: (state, payload) => {
-        const { index, title } = payload;
-        const element = state.templateLayout[index];
-
-        state.templateLayout[index] = { ...element, label: title };
-        state.templateLayout = [...state.templateLayout];
+    updateSectionElementTitle: (state, { index, title }) => {
+        state.layoutElements[index].label = title;
+        state.layoutElements = [...state.layoutElements];
     },
     clearStorage: (state) => {
-        state.templateLayout = [];
-        state.highlightingHintPoints = [];
-        state.highlightingHoverPoints = [];
-        state.isDraggedElementColliding = false;
+        state.layoutElements = [];
         state.title = '';
         state.image = null;
         state.types = [];

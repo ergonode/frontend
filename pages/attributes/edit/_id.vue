@@ -33,6 +33,8 @@ export default {
             type: state => state.type,
             parameter: state => state.parameter,
             optionKeys: state => state.optionKeys,
+            optionValues: state => state.optionValues,
+            isMultilingual: state => state.isMultilingual,
         }),
         ...mapState('data', {
             attrGroups: state => state.attrGroups,
@@ -40,24 +42,15 @@ export default {
         }),
         ...mapState('translations', {
             translations: state => state.translations,
-            optionTranslationsValues: state => state.optionTranslationsValues,
         }),
-    },
-    destroyed() {
-        this.clearStorage();
-        this.clearTranslations();
     },
     methods: {
         ...mapActions('attribute', [
-            'clearStorage',
             'updateAttribute',
         ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
-        ]),
-        ...mapActions('translations', [
-            'clearTranslations',
         ]),
         onDismiss() {
             this.$router.push('/attributes');
@@ -85,7 +78,8 @@ export default {
             if (this.optionKeys.length > 0) {
                 propertiesToUpdate.options = getMappedOptions(
                     this.optionKeys,
-                    this.optionTranslationsValues,
+                    this.optionValues,
+                    this.isMultilingual,
                 );
             }
 
@@ -98,12 +92,15 @@ export default {
                     this.$store.state.data,
                 );
             }
+
             if (isThereAnyTranslation(label)) {
                 propertiesToUpdate.label = clearEmptyTranslations(label);
             }
+
             if (isThereAnyTranslation(hint)) {
                 propertiesToUpdate.hint = clearEmptyTranslations(hint);
             }
+
             if (isThereAnyTranslation(placeholder)) {
                 propertiesToUpdate.placeholder = clearEmptyTranslations(placeholder);
             }
@@ -121,7 +118,9 @@ export default {
         params,
         error,
     }) {
-        return store.dispatch('attribute/getAttributeById', {
+        await store.dispatch('translations/clearStorage');
+        await store.dispatch('attribute/clearStorage');
+        await store.dispatch('attribute/getAttributeById', {
             attributeId: params.id,
             onError: (err) => {
                 if (err.response && err.response.status === 404) {

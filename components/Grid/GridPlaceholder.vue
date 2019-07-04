@@ -31,6 +31,7 @@ export default {
         padding-top: 80px;
         border-left: 1px solid $grey;
         border-right: 1px solid $grey;
+        overflow: auto;
 
         .description-wrapper {
             display: flex;

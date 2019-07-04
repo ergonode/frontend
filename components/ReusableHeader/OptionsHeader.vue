@@ -6,13 +6,14 @@
     <div class="container-header">
         <div>
             <Select
-                v-model="selectedTranslationCardLanguages"
+                :value="selectedLanguageCards"
                 :options="languagesValues"
                 solid
                 regular
                 label="Translations"
                 :dismissible="false"
-                multiselect />
+                multiselect
+                @input="onLanguageCardSelected" />
         </div>
     </div>
 </template>
@@ -20,19 +21,16 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getKeysByValues, getValuesByKeys } from '~/model/objectWrapper';
+import Select from '~/components/Inputs/Select/Select';
 
 export default {
     name: 'OptionsHeader',
     components: {
-        Select: () => import('~/components/Inputs/Select/Select'),
+        Select,
     },
     props: {
         cardsLanguageCodes: {
             type: Array,
-            required: true,
-        },
-        translations: {
-            type: Object,
             required: true,
         },
         defaultTranslation: {
@@ -47,30 +45,28 @@ export default {
         languagesValues() {
             return Object.values(this.languages);
         },
-        selectedTranslationCardLanguages: {
-            get() {
-                const languageNames = getValuesByKeys(this.languages, this.cardsLanguageCodes);
+        selectedLanguageCards() {
+            const languageNames = getValuesByKeys(this.languages, this.cardsLanguageCodes);
 
-                return this.languagesValues.filter(
-                    language => languageNames.some(
-                        name => name === language,
-                    ),
-                );
-            },
-            set(newCardTranslations) {
-                const languageCodes = getKeysByValues(this.languages, newCardTranslations);
-
-                this.setTabVisibleCardTranslations({
-                    languages: languageCodes,
-                    defaultTranslation: this.defaultTranslation,
-                });
-            },
+            return this.languagesValues.filter(
+                language => languageNames.some(
+                    name => name === language,
+                ),
+            );
         },
     },
     methods: {
         ...mapActions('translations', [
-            'setTabVisibleCardTranslations',
+            'setVisibleCardTranslations',
         ]),
+        onLanguageCardSelected(languageCode) {
+            const languageCodes = getKeysByValues(this.languages, languageCode);
+
+            this.setVisibleCardTranslations({
+                languages: languageCodes,
+                defaultTranslation: this.defaultTranslation,
+            });
+        },
     },
 };
 </script>

@@ -29,6 +29,7 @@
         <div class="horizontal-wrapper">
             <Toggler
                 :value="isMultilingual"
+                :disabled="isDisabled"
                 @input="(isMultilingual) => setMultilingualAttribute({ isMultilingual })" />
             <Label
                 text="Multilingual attribute"
@@ -65,7 +66,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { toCapitalize } from '~/model/stringOperations';
+import { toCapitalize } from '~/model/stringWrapper';
 import { hasParams, hasOptions, getParamsOptionsForType } from '~/model/attributes/AttributeTypes';
 import { getMappedParameterKey } from '~/model/mappers/attributeMapper';
 import { getKeyByValue } from '~/model/objectWrapper';

@@ -12,35 +12,14 @@ export default {
     setTabTranslations: (state, { translations }) => {
         state.translations = { ...translations };
     },
-    setTabTranslationPropertyValue: (state, { languageCode, propertyName, value }) => {
+    setMultilingualTranslationPropertyValue: (state, { languageCode, propertyName, value }) => {
         state.translations[propertyName] = {
             ...state.translations[propertyName],
             [languageCode]: value,
         };
     },
-    initializeOptionTranslationValues: (state, { optionTranslations }) => {
-        state.optionTranslationsValues = optionTranslations;
-    },
-    addOptionTranslationValueForLanguage: (state, { languageCode }) => {
-        state.optionTranslationsValues[languageCode].push('');
-    },
-    addOptionTranslation: (state, { languageCode }) => {
-        state.optionTranslationsValues = {
-            ...state.optionTranslationsValues, [languageCode]: [],
-        };
-    },
-    setAttributeOptionKeyValue: (state, { languageCode, index, value }) => {
-        state.optionTranslationsValues[languageCode][index] = value;
-        state.optionTranslationsValues[languageCode] = [
-            ...state.optionTranslationsValues[languageCode],
-        ];
-    },
-    removeAttributeOptionTranslationValueForLanguage: (state, { index, languageCode }) => {
-        state.optionTranslationsValues[languageCode].splice(index, 1);
-    },
     clearStorage: (state) => {
         state.translations = {};
         state.cardsLanguageCodes = [];
-        state.optionTranslationsValues = {};
     },
 };

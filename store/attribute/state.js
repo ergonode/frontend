@@ -9,5 +9,6 @@ export default () => ({
     type: '',
     parameter: '',
     optionKeys: [],
+    optionValues: {},
     isMultilingual: true,
 });

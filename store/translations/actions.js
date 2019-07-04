@@ -2,17 +2,17 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { setTransaltion } from '~/model/mappers/translationMapper';
+import { setTranslation } from '~/model/mappers/translationMapper';
 
 export default {
     setTabTranslations: ({ commit }, payload) => {
         commit('setTabTranslations', payload);
     },
-    setTabTranslationPropertyValue: ({ commit }, payload) => {
-        commit('setTabTranslationPropertyValue', payload);
+    setMultilingualTranslationPropertyValue: ({ commit }, payload) => {
+        commit('setMultilingualTranslationPropertyValue', payload);
     },
     addCardLanguageCode: ({ commit }, payload) => commit('addCardLanguageCode', payload),
-    setTabVisibleCardTranslations: ({ commit, state }, { languages, defaultTranslation }) => {
+    setVisibleCardTranslations: ({ commit, state }, { languages, defaultTranslation }) => {
         const { cardsLanguageCodes, translations } = state;
         const { length: numberOfCards } = cardsLanguageCodes;
         const { length: numberOfSelectedLanguages } = languages;
@@ -41,20 +41,18 @@ export default {
                 ),
             );
             languageCodesToAdd.forEach((languageCode) => {
-                const translation = setTransaltion(
+                const translation = setTranslation(
                     translations,
                     defaultTranslation,
                     languageCode,
                 );
-                commit('setTabTranslations', {
-                    translations: translation,
-                });
+                commit('setTabTranslations', { translations: translation });
                 commit('addCardLanguageCode', { languageCode });
             });
         }
     },
     addOptionTranslation: ({ commit }, payload) => commit('addOptionTranslation', payload),
-    clearTranslations: ({ commit }) => {
+    clearStorage: ({ commit }) => {
         commit('clearStorage');
     },
 };

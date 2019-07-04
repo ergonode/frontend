@@ -2,67 +2,68 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import Translation from '~/model/attributes/Translation';
+import { types } from './mutations';
 import { getMappedGroupLabels, getMappedOptionKeysValues, getMappedParameterValues } from '~/model/mappers/attributeMapper';
-import { setDefaultTranslation } from '~/model/mappers/translationMapper';
 
 export default {
-    setAttributeID: ({ commit }, payload) => {
-        commit('setAttributeID', payload);
+    setAttributeID({ commit }, { id }) {
+        commit(types.SET_ATTRIBUTE_ID, id);
     },
-    addAttributeOptionKey: ({ commit, rootState }, { key }) => {
-        const { language: userLanguageCode } = rootState.authentication.user;
-        commit('addAttributeOptionKey', { key });
+    addAttributeOptionKey({ commit }, { key }) {
+        commit(types.ADD_ATTRIBUTE_OPTION_KEY, key);
+    },
+    removeAttributeOptions({ commit }) {
+        commit(types.INITIALIZE_OPTION_KEYS, []);
+    },
+    removeAttributeOptionKey({ commit, state }, { index }) {
+        const { optionValues, isMultilingual } = state;
 
-        if (!rootState.translations.optionTranslationsValues[userLanguageCode]) {
-            commit('translations/addOptionTranslation', { languageCode: userLanguageCode }, { root: true });
-        }
+        commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index);
 
-        Object.keys(rootState.translations.optionTranslationsValues).forEach((languageCode) => {
-            commit('translations/addOptionTranslationValueForLanguage', { languageCode }, { root: true });
-        });
-    },
-    removeAttributeOptions: ({ commit }) => commit('initializeOptionKeys', { optionKeys: [] }),
-    removeAttributeOptionKey: ({ commit, rootState }, { index }) => {
-        commit('removeAttributeOptionKey', { index });
-        Object.keys(rootState.translations.optionTranslationsValues).forEach((languageCode) => {
-            commit('translations/removeAttributeOptionTranslationValueForLanguage', { languageCode, index }, { root: true });
-        });
-    },
-    setAttributeOptionKey: ({ commit }, { index, key }) => {
-        commit('setAttributeOptionKey', { index, key });
-    },
-    setAttributeOptionKeyValue: ({ commit, state, rootState }, { index, value, languageCode }) => {
-        if (!state.isMultilingual) {
-            const firstElement = Object.keys(rootState.translations.translations)[0];
-            Object.keys(rootState.translations.translations[firstElement]).forEach((language) => {
-                commit('translations/setAttributeOptionKeyValue', {
-                    languageCode: language,
-                    index,
-                    value,
-                }, { root: true });
+        if (isMultilingual) {
+            Object.keys(optionValues).forEach((languageCode) => {
+                commit(types.REMOVE_ATTRIBUTE_OPTION_VALUE, { languageCode, index });
             });
-        } else {
-            commit('translations/setAttributeOptionKeyValue', { index, value, languageCode }, { root: true });
         }
     },
-    setAttributeCode: ({ commit }, payload) => {
-        commit('setAttributeCode', payload);
+    setAttributeOptionKey({ commit }, { index, key }) {
+        commit(types.SET_ATTRIBUTE_OPTION_KEY, { index, key });
     },
-    setAttributeParameter: ({ commit }, payload) => {
-        commit('setAttributeParameter', payload);
+    setOptionValueForLanguageCode({ commit, state }, { index, value, languageCode }) {
+        const { isMultilingual, optionValues } = state;
+
+        if (isMultilingual) {
+            if (!optionValues[languageCode]) {
+                commit(types.INITIALIZE_OPTION_VALUE_FOR_LANGUAGE_CODE, languageCode);
+            }
+
+            commit(types.SET_OPTION_VALUE_FOR_LANGUAGE_CODE, { languageCode, index, value });
+        } else {
+            if (!Array.isArray(optionValues)) {
+                commit(types.INITIALIZE_OPTION_VALUES);
+            }
+
+            commit(types.SET_OPTION_VALUE, { index, value });
+        }
     },
-    setAttributeGroups: ({ commit }, payload) => {
-        commit('setAttributeGroups', payload);
+    setAttributeCode({ commit }, { code }) {
+        commit(types.SET_ATTRIBUTE_CODE, code);
     },
-    setAttributeType: ({ commit }, payload) => {
-        commit('setAttributeType', payload);
+    setAttributeParameter({ commit }, { parameter }) {
+        commit(types.SET_ATTRIBUTE_PARAMETER, parameter);
+    },
+    setAttributeGroups({ commit }, { groups }) {
+        commit(types.SET_ATTRIBUTE_GROUPS, groups);
+    },
+    setAttributeType({ commit }, { type }) {
+        commit(types.SET_ATTRIBUTE_TYPE, type);
     },
     getAttributeById(
-        { commit, rootState },
+        { dispatch, commit, rootState },
         { attributeId, onError },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
+
         return this.app.$axios.$get(`${userLanguageCode}/attributes/${attributeId}`).then(({
             id,
             code,
@@ -75,42 +76,43 @@ export default {
             placeholder = '',
             multilingual,
         }) => {
-            let newTranslatins = {};
             const translations = {
                 hint,
                 label,
                 placeholder,
             };
 
-            commit('setAttributeID', { id });
-            commit('setAttributeCode', { code });
-            commit('setAttributeType', { type: rootState.data.attrTypes[type] });
-            commit('setMultilingualAttribute', { isMultilingual: multilingual });
-            commit('setAttributeGroups', {
-                groups: getMappedGroupLabels(
-                    rootState.data.attrGroups,
-                    groups,
-                ),
-            });
+            commit(types.SET_ATTRIBUTE_ID, id);
+            commit(types.SET_ATTRIBUTE_CODE, code);
+            commit(types.SET_ATTRIBUTE_TYPE, rootState.data.attrTypes[type]);
+            commit(types.SET_MULTILINGUAL_ATTRIBUTE, multilingual);
+            commit(types.SET_ATTRIBUTE_GROUPS, getMappedGroupLabels(
+                rootState.data.attrGroups,
+                groups,
+            ));
 
-            const { language: languageCode } = rootState.authentication.user;
-            newTranslatins = translations || setDefaultTranslation(new Translation(), languageCode);
-
-            commit('translations/setTabTranslations', { translations: newTranslatins }, { root: true });
+            dispatch('translations/setTabTranslations', { translations }, { root: true });
 
             if (parameters) {
-                commit('setAttributeParameter', { parameter: getMappedParameterValues(type, parameters, rootState.data) });
+                commit(
+                    types.SET_ATTRIBUTE_PARAMETER,
+                    getMappedParameterValues(type, parameters, rootState.data),
+                );
             }
 
             if (options) {
-                const { optionKeys, optionTranslations } = getMappedOptionKeysValues(options);
+                const {
+                    optionKeys, optionValues,
+                } = getMappedOptionKeysValues(options, multilingual);
 
-                commit('initializeOptionKeys', { optionKeys });
-                commit('translations/initializeOptionTranslationValues', { optionTranslations }, { root: true });
+                commit(types.INITIALIZE_OPTION_KEYS, optionKeys);
+                commit(types.INITIALIZE_OPTION_VALUES, optionValues);
             }
-        }).catch(e => onError(e.data));
+        }).catch(e => onError(e));
     },
-    setMultilingualAttribute: ({ commit }, payload) => commit('setMultilingualAttribute', payload),
+    setMultilingualAttribute({ commit }, { isMultilingual }) {
+        commit(types.SET_MULTILINGUAL_ATTRIBUTE, isMultilingual);
+    },
     createAttribute(
         { commit, rootState },
         {
@@ -121,7 +123,7 @@ export default {
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$post(`${userLanguageCode}/attributes`, data).then(({ id }) => {
-            commit('setAttributeID', { id });
+            commit(types.SET_ATTRIBUTE_ID, id);
             onSuccess(id);
         }).catch(e => onError(e.data));
     },
@@ -139,7 +141,7 @@ export default {
             onSuccess();
         }).catch(e => onError(e.data));
     },
-    clearStorage: ({ commit }) => {
-        commit('clearStorage');
+    clearStorage({ commit }) {
+        commit(types.CLEAR_STATE);
     },
 };

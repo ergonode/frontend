@@ -11,7 +11,7 @@
             regular
             :error-messages="errorNameMessage"
             label="Template name"
-            @input="(title) => setTemplateDesignerTitle({ title })" />
+            @input="(title) => setTemplateDesignerTitle(title)" />
         <UploadImage
             :value="templateImage"
             style="height: 180px;"
@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import BaseCard from '~/components/Card/BaseCard';
 import { mapState, mapActions } from 'vuex';
+import BaseCard from '~/components/Card/BaseCard';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
@@ -50,7 +50,7 @@ export default {
             'setTemplateDesignerImage',
         ]),
         uploadValue(value = '') {
-            this.setTemplateDesignerImage({ image: value });
+            this.setTemplateDesignerImage(value);
         },
     },
 };

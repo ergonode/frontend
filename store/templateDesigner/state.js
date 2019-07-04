@@ -3,10 +3,7 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    templateLayout: [],
-    highlightingHintPoints: [],
-    highlightingHoverPoints: [],
-    isDraggedElementColliding: false,
+    layoutElements: [],
     title: '',
     image: null,
     titleValidationError: null,

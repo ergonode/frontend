@@ -1,24 +1,24 @@
 <p align="center">
-  <a href="https://vuejs.org" target="_blank" rel="noopener noreferrer">
+  <a href="https://vuejs.org" rel="noopener noreferrer">
     <img width="300" src="https://ergonode.com/wp-content/themes/ergonode/assets/img/logo.svg" alt="Egronode logo">
   </a>
 </p>
 <p align="center">Desktop PWA Ready Product Information Management Platform</p>
 
 <p align="center">
-  <a href="https://ergonode.com" target="_blank">
+  <a href="https://ergonode.com">
     <img src="https://img.shields.io/badge/version-0.1.0-4c9aff.svg" alt="Version">
   </a>
-  <a href="https://ergonode.com" target="_blank">
+  <a href="https://ergonode.com">
     <img src="https://img.shields.io/badge/version%20code-Vegas-00bc87.svg" alt="Code Version">
   </a>
-  <a href="http://ergonode.slack.com/" target="_blank">
-    <img src="https://img.shields.io/badge/chat-on%20slack-e51670.svg" alt="Chat">
+  <a href="https://discord.gg/NntXFa4">
+    <img src="https://img.shields.io/badge/chat-on%20discord-e51670.svg" alt="Chat">
   </a>
-  <a href="https://docs.ergonode.com" target="_blank">
+  <a href="https://docs.ergonode.com">
     <img src="https://img.shields.io/badge/docs-read-ffc108.svg" alt="Docs">
   </a>
-  <a href="https://github.com/ergonode/frontend/blob/master/LICENSE.txt" target="_blank">
+  <a href="https://github.com/ergonode/frontend/blob/master/LICENSE.txt">
     <img src="https://img.shields.io/github/license/ergonode/frontend.svg" alt="License">
   </a>
 </p>
@@ -46,7 +46,7 @@ If you are a new developer and need help, feel-free to ask questions our core te
 
 `@Marcin Warzynski` (product requirements management)
 
-**We are looking for core team members who willing to support us and help Ergonode awesome software.** Interested? Contact to @Marcin Piwowarczyk on slack.
+**We are looking for core team members who willing to support us and help Ergonode awesome software.** Interested? Contact to @Marcin Piwowarczyk on discord.
 
 At the moment we prepare full list contribution rules, to support devs before making any pull request. Pull request that doesn't meet these rules will not be merged and included to core functions. 
 

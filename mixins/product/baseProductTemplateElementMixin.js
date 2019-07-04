@@ -2,23 +2,21 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
-import debounce from 'debounce';
 import { mapActions } from 'vuex';
+import debounce from 'debounce';
+import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
+import ProductTemplateDetailsContent from '~/components/Template/ProductDesigner/ProductTemplateDetailsContent';
 
 export default {
     mixins: [errorValidationMixin],
-    components: {
-        InfoHint: () => import('~/components/Inputs/Hint/InfoHint'),
-        ErrorHint: () => import('~/components/Inputs/Hint/ErrorHint'),
-    },
+    components: { ProductTemplateDetailsContent },
     props: {
         placeholder: {
             type: String,
             required: false,
             default: '',
         },
-        name: {
+        label: {
             type: String,
             required: true,
         },
@@ -30,7 +28,7 @@ export default {
             type: [Array, Object, Number, String],
             required: true,
         },
-        attributeId: {
+        id: {
             type: String,
             required: true,
         },
@@ -57,7 +55,7 @@ export default {
     },
     computed: {
         errorMessages() {
-            return this.elementIsValidate(this.name);
+            return this.elementIsValidate(this.label);
         },
         isError() {
             return this.errorMessages !== null && this.errorMessages.length > 0;
@@ -82,9 +80,9 @@ export default {
         this.debounceFunc = debounce((value) => {
             this.$store.dispatch('productsDraft/setProductTemplateElementValue', {
                 value,
-                attributeId: this.attributeId,
+                attributeId: this.id,
                 required: this.required,
-                name: this.name,
+                name: this.label,
                 onSuccess: this.onSuccess,
                 onError: this.onError,
             });

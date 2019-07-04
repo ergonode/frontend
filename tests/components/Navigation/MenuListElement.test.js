@@ -33,7 +33,7 @@ describe('Navigation/MenuListElement', () => {
   it("Component renders correctly", () => {
     expect(wrapper.is(MenuListElement)).toBe(true);
   });
-  it('Check if component is named correctly', () => {
+  it('Component is named well', () => {
     expect(typeof MenuListElement.name).toBe('string');
     expect(MenuListElement.name).toEqual('MenuListElement');
   });

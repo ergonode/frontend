@@ -4,8 +4,7 @@
  */
 <template>
     <div
-        class="grid-header"
-        :style="gridStyles">
+        class="grid-header">
         <label
             v-for="index in columns"
             :key="index"
@@ -20,10 +19,6 @@ export default {
     props: {
         columns: {
             type: Number,
-            required: true,
-        },
-        gridStyles: {
-            type: Object,
             required: true,
         },
         headerName: {

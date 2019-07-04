@@ -2,12 +2,26 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export function arrayToObject(arr, keyField = 'id') {
-    return { ...arr.map(item => ({ [keyField]: item })) };
+export function getMaxObjectValueInArrayByObjectKey(array, propName) {
+    if (!array.length) return 0;
+
+    return array.reduce(
+        (prev, current) => {
+            if (!current || !current[propName]) return prev;
+            return (prev[propName] > current[propName] ? prev : current);
+        },
+    )[propName];
 }
 
-export function sumArray(arr) {
-    return arr.reduce((a, b) => a + b, 0);
+export function getMinObjectValueInArrayByObjectKey(array, propName) {
+    if (!array.length) return 0;
+
+    return array.reduce(
+        (prev, current) => {
+            if (!current || !current[propName]) return prev;
+            return (prev[propName] < current[propName] ? prev : current);
+        },
+    )[propName];
 }
 
 export function swapItemPosition(array, pos1, pos2) {

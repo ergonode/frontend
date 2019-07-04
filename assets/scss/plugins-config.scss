@@ -21,6 +21,6 @@ html, body {
     @include scrollbars(4px, $darkGraphite);
 }
 
-.grid-scroll {
+.grid-container {
     @include scrollbars(0, $grey);
 }

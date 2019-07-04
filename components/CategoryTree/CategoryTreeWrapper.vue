@@ -5,47 +5,41 @@
 <template>
     <div class="category-tree-wrapper">
         <TemplateGridHeader
-            :grid-styles="gridStyles"
+            :style="gridStyles"
             :columns="columns" />
-        <TemplateGridScroll
-            :data-row-length="filteredGridData.length"
+        <TemplateGridContainer
+            :columns="columns"
+            :rows="rowsCount"
             :rows-height="rowsHeight"
-            @setRowsCount="setAction">
-            <TemplateGridContainer
+            :grid-data="filteredGridData"
+            :dragged-element="draggedElement"
+            :hidden-items="hiddenItems"
+            @addItem="addTreeItem"
+            @removeItem="removeTreeItem"
+            @rebuildGrid="rebuildTree"
+            @setRowsCount="setRowsCount">
+            <TemplateGridPresentationLayer
+                :style="gridStyles"
                 :columns="columns"
-                :rows="rowsCount"
-                :rows-height="rowsHeight"
-                :grid-data="filteredGridData"
-                :dragged-element="draggedElement"
-                :hidden-items="hiddenItems"
-                @addItem="addTreeItem"
-                @removeItem="removeTreeItem"
-                @rebuildGrid="rebuildTree"
-                @setRowsCount="setAction">
-                <TemplateGridPresentationLayer
-                    :grid-styles="gridStyles"
-                    :columns="columns"
-                    :rows="rowsCount" />
-                <TemplateGridItemsContainer
-                    :grid-styles="gridStyles">
-                    <TemplateGridItemArea
-                        v-for="item in filteredGridData"
-                        v-show="!isHidden(item.id)"
-                        :key="item.id"
-                        :item="item"
-                        :columns="columns">
-                        <TemplateGridGhostItem
-                            v-if="item.ghost" />
-                        <CategoryTreeItem
-                            v-else
-                            :number-of-children="getChildren(item.id).length"
-                            :item-name="item.id"
-                            @expandItem="e => expandItem(e, item)" />
-                    </TemplateGridItemArea>
-                </TemplateGridItemsContainer>
-            </TemplateGridContainer>
-        </TemplateGridScroll>
-        <GridFooter :is-pagination-visible="false" />
+                :rows="rowsCount" />
+            <TemplateGridItemsContainer
+                :style="gridStyles">
+                <TemplateGridItemArea
+                    v-for="item in filteredGridData"
+                    v-show="!isHidden(item.id)"
+                    :key="item.id"
+                    :item="item"
+                    :columns="columns">
+                    <TemplateGridGhostItem
+                        v-if="item.ghost" />
+                    <CategoryTreeItem
+                        v-else
+                        :number-of-children="getChildren(item.id).length"
+                        :item-name="item.id"
+                        @expandItem="e => expandItem(e, item)" />
+                </TemplateGridItemArea>
+            </TemplateGridItemsContainer>
+        </TemplateGridContainer>
     </div>
 </template>
 
@@ -56,10 +50,8 @@ import TemplateGridItemsContainer from '~/components/TemplateGrid/TemplateGridIt
 import TemplateGridContainer from '~/components/TemplateGrid/TemplateGridContainer';
 import TemplateGridGhostItem from '~/components/TemplateGrid/TemplateGridGhostItem';
 import TemplateGridItemArea from '~/components/TemplateGrid/TemplateGridItemArea';
-import TemplateGridScroll from '~/components/TemplateGrid/TemplateGridScroll';
 import TemplateGridHeader from '~/components/TemplateGrid/TemplateGridHeader';
 import CategoryTreeItem from '~/components/CategoryTree/CategoryTreeItem';
-import GridFooter from '~/components/Grid/GridFooter';
 
 export default {
     name: 'CategoryTreeWrapper',
@@ -69,10 +61,8 @@ export default {
         TemplateGridContainer,
         TemplateGridGhostItem,
         TemplateGridItemArea,
-        TemplateGridScroll,
         TemplateGridHeader,
         CategoryTreeItem,
-        GridFooter,
     },
     computed: {
         ...mapState('tree', {
@@ -97,7 +87,7 @@ export default {
     },
     methods: {
         ...mapActions('tree', [
-            'setAction',
+            'setRowsCount',
             'addTreeItem',
             'removeTreeItem',
             'rebuildTree',
@@ -112,13 +102,13 @@ export default {
             return hiddenItems.some(e => e === id);
         },
         getChildren(itemId) {
-            return this.gridData.filter(item => item.parent === itemId);
+            return this.gridData.filter(({ parent }) => parent === itemId);
         },
-        expandItem(isExpanded, item) {
-            const children = this.getChildren(item.id);
+        expandItem(isExpanded, { id, row, column }) {
+            const children = this.getChildren(id);
             const childrenRows = children.map(e => e.row);
             const [neighbor] = this.gridData.filter(
-                e => e.column <= item.column && e.row > item.row,
+                e => e.column <= column && e.row > row,
             );
             const minChildRow = Math.min(...childrenRows);
             const maxChildRow = neighbor ? neighbor.row : this.gridData.length;
@@ -126,9 +116,9 @@ export default {
                 e => e.row >= minChildRow && e.row <= maxChildRow - 1,
             );
             if (!isExpanded) {
-                this.setHiddenItem({ key: item.id, value: childrenToHide.map(e => e.id) });
+                this.setHiddenItem({ key: id, value: childrenToHide.map(e => e.id) });
             } else {
-                this.removeHiddenItem(item.id);
+                this.removeHiddenItem(id);
             }
         },
     },
@@ -137,6 +127,7 @@ export default {
 
 <style lang="scss" scoped>
     .category-tree-wrapper {
+        z-index: 20;
         display: flex;
         flex-direction: column;
         height: 100%;

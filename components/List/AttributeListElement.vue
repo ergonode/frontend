@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import DraggableStates from '~/model/draggableStates';
 import { mapActions, mapGetters } from 'vuex';
+import DraggableStates from '~/model/draggableStates';
 
 export default {
     name: 'AttributeListElement',
@@ -56,7 +56,7 @@ export default {
 
             const convertedType = this.item.type.toLowerCase().replace('_', '-');
 
-            return `sprite-attribute attribute-${convertedType}`;
+            return `attribute-${convertedType}`;
         },
     },
     methods: {

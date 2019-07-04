@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 import { mapActions } from 'vuex';
+import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'TemplatePage',
@@ -70,11 +70,9 @@ export default {
             // ];
         }
         this.setConfigurationForList({
-            elementsAreMultiDraggable: false,
-            isListMultilingual: false,
             draggedElementsStore: {
                 storeName: 'templateDesigner',
-                stateName: 'templateLayout',
+                stateName: 'layoutElements',
                 idName: ['data', 'id'],
             },
         });

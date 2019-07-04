@@ -19,11 +19,11 @@ describe('Alerts/Alert', () => {
     });
   });
 
-  it("Component rendered correctly", () => {
+  it("Component is rendered", () => {
     expect(wrapper.is(Alert)).toBe(true);
   });
 
-  it('Check if component is named correctly', () => {
+  it('Component is named well', () => {
     expect(typeof Alert.name).toBe('string');
     expect(Alert.name).toEqual('Alert');
   });
