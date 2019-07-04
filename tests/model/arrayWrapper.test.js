@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import {
-  arrayToObject,
   sumArray,
   swapItemPosition,
   getMaxObjectValueInArrayByObjectKey,

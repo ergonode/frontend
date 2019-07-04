@@ -49,6 +49,10 @@ describe('Template/TemplateDesigner/LayoutElement', () => {
         expect(LayoutElement.name).toEqual('LayoutElement');
     });
 
+    describe('Dragging events', () => {
+
+    });
+
     describe('Setting data', () => {
         it('Element width and height is set', () => {
             wrapper.setData({
