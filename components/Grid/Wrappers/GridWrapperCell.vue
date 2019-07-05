@@ -154,7 +154,7 @@ export default {
             }
         },
         cellKeyValue() {
-            const { [this.column.id]: value } = this.row;
+            const value = this.row[this.column.id];
             const { filter } = this.column;
 
             if (!value) return '';
@@ -175,7 +175,7 @@ export default {
             return value;
         },
         cellValue() {
-            const { [this.column.id]: value } = this.row;
+            const value = this.row[this.column.id];
             const { filter } = this.column;
 
             if (!value) return '';

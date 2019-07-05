@@ -228,10 +228,7 @@ export default {
                 const { children: gridColumns } = this.$el;
 
                 if (!this.columnBounds.length) {
-                    console.log('dupa');
                     this.initializeColumnBounds();
-                } else {
-                    console.log('Initialized!!');
                 }
 
                 this.getColumnBellowMouse({ clientX, gridColumns }, ({ index, gridColumn }) => {

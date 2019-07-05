@@ -53,7 +53,6 @@ export default {
             filter: groupId ? getMappedFilter({ groups: groupId }) : 'groups=',
         };
 
-        console.log(params.filter);
         return this.app.$axios.$get(path, { params }).then(({ collection: elements }) => {
             if (!stateElements[languageCode]) {
                 commit('initializeElementsForLanguage', { languageCode });
