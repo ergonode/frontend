@@ -112,7 +112,7 @@ export default {
 <style lang="scss" scoped>
     .grid-wrapper {
         display: flex;
-        flex: 1;
+        flex: 1 1 auto;
         flex-direction: column;
         justify-content: space-between;
         height: 0;
