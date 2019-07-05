@@ -61,7 +61,7 @@ export default {
 
             commit('setProductId', id);
             commit('setProductSku', sku);
-        }).catch(e => onError(e.data));
+        }).catch(e => onError(e));
     },
     getProductTemplate({ commit }, { languageCode, id, onError }) {
         commit('setDraftLanguageCode', languageCode);
