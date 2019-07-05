@@ -49,7 +49,7 @@ export function getMappedLayoutSectionElement({
 }
 
 export function getMappedTemplateID(templates, selectedTemplate) {
-    const templateByName = templates.some(
+    const templateByName = templates.find(
         template => template.name === selectedTemplate,
     );
     return templateByName
