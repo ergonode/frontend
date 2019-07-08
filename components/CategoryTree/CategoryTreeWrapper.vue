@@ -23,7 +23,8 @@
                 :columns="columns"
                 :rows="rowsCount" />
             <TemplateGridItemsContainer
-                :style="gridStyles">
+                :style="gridStyles"
+                @removeItem="removeTreeItem">
                 <TemplateGridItemArea
                     v-for="item in filteredGridData"
                     v-show="!isHidden(item.id)"
