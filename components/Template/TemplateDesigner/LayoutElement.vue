@@ -311,7 +311,7 @@ export default {
         user-select: none;
         cursor: grab;
 
-        &:hover {
+        &:hover:not(&--resized) {
             border: unset;
             box-shadow:
                 0 2px 2px 0 rgba(0, 0, 0, 0.14),

@@ -6,16 +6,16 @@ import { types } from './mutations';
 import { getMappedGroupLabels, getMappedOptionKeysValues, getMappedParameterValues } from '~/model/mappers/attributeMapper';
 
 export default {
-    setAttributeID({ commit }, { id }) {
+    setAttributeID({ commit }, id) {
         commit(types.SET_ATTRIBUTE_ID, id);
     },
-    addAttributeOptionKey({ commit }, { key }) {
+    addAttributeOptionKey({ commit }, key) {
         commit(types.ADD_ATTRIBUTE_OPTION_KEY, key);
     },
     removeAttributeOptions({ commit }) {
         commit(types.INITIALIZE_OPTION_KEYS, []);
     },
-    removeAttributeOptionKey({ commit, state }, { index }) {
+    removeAttributeOptionKey({ commit, state }, index) {
         const { optionValues, isMultilingual } = state;
 
         commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index);
@@ -46,16 +46,16 @@ export default {
             commit(types.SET_OPTION_VALUE, { index, value });
         }
     },
-    setAttributeCode({ commit }, { code }) {
+    setAttributeCode({ commit }, code) {
         commit(types.SET_ATTRIBUTE_CODE, code);
     },
-    setAttributeParameter({ commit }, { parameter }) {
+    setAttributeParameter({ commit }, parameter) {
         commit(types.SET_ATTRIBUTE_PARAMETER, parameter);
     },
-    setAttributeGroups({ commit }, { groups }) {
+    setAttributeGroups({ commit }, groups) {
         commit(types.SET_ATTRIBUTE_GROUPS, groups);
     },
-    setAttributeType({ commit }, { type }) {
+    setAttributeType({ commit }, type) {
         commit(types.SET_ATTRIBUTE_TYPE, type);
     },
     getAttributeById(
@@ -110,7 +110,7 @@ export default {
             }
         }).catch(e => onError(e));
     },
-    setMultilingualAttribute({ commit }, { isMultilingual }) {
+    setMultilingualAttribute({ commit }, isMultilingual) {
         commit(types.SET_MULTILINGUAL_ATTRIBUTE, isMultilingual);
     },
     createAttribute(
