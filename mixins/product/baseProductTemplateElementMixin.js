@@ -67,7 +67,7 @@ export default {
             'removeValidationError',
         ]),
         onValueChange(value) {
-            const tmpValue = value.key ? value.key : value;
+            const tmpValue = Array.isArray(value) ? value : value.key;
 
             this.localValue = tmpValue;
             this.debounceFunc(tmpValue);

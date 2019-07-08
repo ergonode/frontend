@@ -87,7 +87,6 @@ export default {
 
             if (this.isDateType) {
                 return {
-                    value: this.value,
                     errorMessages: this.errorMessages,
                     parameters: this.parameters,
                 };

@@ -13,7 +13,7 @@ export default {
         const notAssignedElementsParams = {
             limit: 9999,
             offset: 0,
-            filter: { groups: null },
+            filter: 'groups=',
         };
         let parsedGroups = {};
 
@@ -50,7 +50,7 @@ export default {
         const params = {
             limit: elementsCount,
             offset: 0,
-            filter: groupId ? getMappedFilter({ groups: groupId }) : null,
+            filter: groupId ? getMappedFilter({ groups: groupId }) : 'groups=',
         };
 
         return this.app.$axios.$get(path, { params }).then(({ collection: elements }) => {

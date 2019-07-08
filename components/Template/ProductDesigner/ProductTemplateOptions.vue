@@ -8,6 +8,8 @@
         solid
         :label="name"
         :placeholder="placeholder"
+        :multiselect="multiselect"
+        :dismissible="!multiselect"
         :options="options"
         :error-messages="isError ? [' '] : null"
         :required="required"
@@ -21,9 +23,17 @@
                 <Icon :icon="appendStateIcon" />
             </template>
         </ProductTemplateDetailsContent>
-        <TranslationSelectListContent
+        <TranslationMultiselectListContent
+            v-if="multiselect"
             slot="selectContent"
             :options="options"
+            :selected-options="localValue || []"
+            @values="onValueChange" />
+        <TranslationSelectListContent
+            v-else
+            slot="selectContent"
+            :options="options"
+            :selected-option="localValue"
             @value="onValueChange" />
     </Select>
 </template>
@@ -37,6 +47,7 @@ export default {
     components: {
         Select: () => import('~/components/Inputs/Select/Select'),
         TranslationSelectListContent: () => import('~/components/Inputs/Select/Contents/TranslationSelectListContent'),
+        TranslationMultiselectListContent: () => import('~/components/Inputs/Select/Contents/TranslationMultiselectListContent'),
         Icon: () => import('~/components/Icon/Icon'),
     },
     props: {
@@ -44,6 +55,11 @@ export default {
             type: Array,
             required: false,
             default: () => [],
+        },
+        multiselect: {
+            type: Boolean,
+            required: false,
+            default: false,
         },
     },
     data() {

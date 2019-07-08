@@ -105,7 +105,7 @@ export default {
 
             if (filter) {
                 if (Array.isArray(filter)) {
-                    return filter.map(val => this.column.filter.options[val] || '').join(', ');
+                    return filter.map(val => this.column.filter.options[val] || 'No translation').join(', ');
                 }
                 if (this.column.filter.options && typeof this.column.filter.options[filter] !== 'undefined') {
                     return this.column.filter.options[filter] || 'No translation';

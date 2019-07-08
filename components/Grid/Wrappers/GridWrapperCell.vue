@@ -22,7 +22,7 @@
             :is-select-kind="isSelectKind"
             :is-multi-select="isMultiSelect"
             :type="column.type"
-            :value="draftValue || cellValue"
+            :value="draftValue || cellKeyValue"
             :options="options"
             :parameters="column.parameters"
             :error-messages="errorValue"
@@ -32,6 +32,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { getKeyByValue } from '~/model/objectWrapper';
 
 export default {
     name: 'GridWrapperCell',
@@ -146,20 +147,14 @@ export default {
                 return {
                     row: this.rowIndex,
                 };
-            case 'SELECT':
-            case 'MULTI_SELECT':
-                return {
-                    value: this.draftValue || this.cellValue,
-                    filterOptions: this.column.filter.options,
-                };
             default:
                 return {
                     value: this.draftValue || this.cellValue,
                 };
             }
         },
-        cellValue() {
-            const { [this.column.id]: value } = this.row;
+        cellKeyValue() {
+            const value = this.row[this.column.id];
             const { filter } = this.column;
 
             if (!value) return '';
@@ -167,7 +162,32 @@ export default {
                 const { options } = filter;
 
                 if (Array.isArray(value)) {
-                    return value.map(val => options[val] || '').join(', ');
+                    return value.map((val) => {
+                        const key = getKeyByValue(options, val);
+
+                        return key || '';
+                    });
+                }
+
+                return getKeyByValue(options, value);
+            }
+
+            return value;
+        },
+        cellValue() {
+            const value = this.row[this.column.id];
+            const { filter } = this.column;
+
+            if (!value) return '';
+            if (filter && filter.options) {
+                const { options } = filter;
+
+                if (Array.isArray(value)) {
+                    return value.map((val) => {
+                        const key = getKeyByValue(options, val);
+
+                        return options[key] || '';
+                    }).join(', ');
                 }
                 if (typeof options[value] !== 'undefined') {
                     return options[value] || 'No translation';
@@ -179,7 +199,21 @@ export default {
             return value;
         },
         draftValue() {
+            const { filter } = this.column;
+
             if (this.draft && typeof this.draft[this.column.id] !== 'undefined') {
+                if (filter && filter.options) {
+                    const { options } = filter;
+                    const value = this.draft[this.column.id];
+
+                    if (Array.isArray(value)) {
+                        return value.map(val => options[val] || 'No translation').join(', ');
+                    }
+                    if (typeof options[value] !== 'undefined') {
+                        return options[value] || 'No translation';
+                    }
+                }
+
                 return this.draft[this.column.id];
             }
 

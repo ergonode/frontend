@@ -152,6 +152,8 @@ export default {
                     // Clear cache
                     this.ghostColumnIndex = -1;
                 }
+
+                this.columnBounds = [];
             }
         },
         onDragOver(event) {
