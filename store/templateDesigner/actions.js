@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-
+import { types } from './mutations';
 import {
     getMappedLayoutElements,
     getMappedLayoutElement,
@@ -25,9 +25,9 @@ export default {
                 elementDataByType,
             );
 
-            commit('initializeLayoutElements', layoutElements);
-            commit('setTemplateDesignerTitle', name);
-            commit('setTemplateDesignerImage', imageID);
+            commit(types.INITIALIZE_LAYOUT_ELEMENTS, layoutElements);
+            commit(types.SET_TEMPLATE_DESIGNER_TITLE, name);
+            commit(types.SET_TEMPLATE_DESIGNER_IMAGE, imageID);
         }).catch(e => onError(e.data));
     },
     updateTemplateDesigner(
@@ -58,8 +58,8 @@ export default {
     getTypes({ commit }, {
         path, params, onSuccess, onError,
     }) {
-        return this.app.$axios.$get(path, { params }).then(({ collection: types }) => {
-            commit('setTypes', types);
+        return this.app.$axios.$get(path, { params }).then(({ collection }) => {
+            commit(types.SET_TYPES, collection);
             onSuccess();
         }).catch(e => onError(e.data));
     },
@@ -76,7 +76,7 @@ export default {
             position,
         );
 
-        commit('addElementToLayout', layoutElement);
+        commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
     },
     addSectionElementToLayout: ({
         commit, getters,
@@ -88,14 +88,28 @@ export default {
             { row, column },
         );
 
-        commit('addElementToLayout', layoutElement);
+        commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
     },
-    updateLayoutElementBounds: ({ commit }, payload) => commit('updateLayoutElementBounds', payload),
-    updateLayoutElementPosition: ({ commit }, payload) => commit('updateLayoutElementPosition', payload),
-    updateSectionElementTitle: ({ commit }, payload) => commit('updateSectionElementTitle', payload),
-    removeLayoutElementAtIndex: ({ commit }, index) => commit('removeLayoutElementAtIndex', index),
-    setTemplateDesignerTitle: ({ commit }, title) => commit('setTemplateDesignerTitle', title),
-    setTemplateDesignerImage: ({ commit }, image) => commit('setTemplateDesignerImage', image),
-    setLayoutElementRequirement: ({ commit }, payload) => commit('setLayoutElementRequirement', payload),
-    clearStorage: ({ commit }) => commit('clearStorage'),
+    updateLayoutElementBounds: ({ commit }, bounds) => {
+        commit(types.UPDATE_LAYOUT_ELEMENT_BOUNDS, bounds);
+    },
+    updateLayoutElementPosition: ({ commit }, position) => {
+        commit(types.UPDATE_LAYOUT_ELEMENT_POSITION, position);
+    },
+    updateSectionElementTitle: ({ commit }, title) => {
+        commit(types.UPDATE_SECTION_ELEMENT_TITLE, title);
+    },
+    removeLayoutElementAtIndex: ({ commit }, index) => {
+        commit(types.REMOVE_LAYOUT_ELEMENT_AT_INDEX, index);
+    },
+    setTemplateDesignerTitle: ({ commit }, title) => {
+        commit(types.SET_TEMPLATE_DESIGNER_TITLE, title);
+    },
+    setTemplateDesignerImage: ({ commit }, image) => {
+        commit(types.SET_TEMPLATE_DESIGNER_IMAGE, image);
+    },
+    setLayoutElementRequirement: ({ commit }, payload) => {
+        commit(types.SET_LAYOUT_ELEMENT_REQUIREMENT, payload);
+    },
+    clearStorage: ({ commit }) => commit(types.CLEAR_STATE),
 };
