@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import { debounce } from 'debounce';
 import { mapActions } from 'vuex';
+import { debounce } from 'debounce';
 import {
     addTreeElementCopyToDocumentBody,
     removeTreeElementCopyFromDocumentBody,
@@ -117,9 +117,7 @@ export default {
                     this.setDraggedElement(categoryId);
                     this.setDraggableState({ propName: 'isListElementDragging', value: true });
                     addTreeElementCopyToDocumentBody(event, category);
-                    setTimeout(() => {
-                        this.$emit('removeItem', index);
-                    }, 1);
+                    this.$emit('removeItem', index);
                 } else {
                     event.preventDefault();
                 }
