@@ -26,6 +26,7 @@ export default {
                 {
                     title: 'Attributes',
                     icon: 'sprite-menu menu-puzzel--deactive',
+                    path: '/attributes',
                 },
             ],
             buttons: [],

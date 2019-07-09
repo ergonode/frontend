@@ -33,7 +33,10 @@ export default {
         state.treeData.sort((a, b) => a.row - b.row);
     },
     [types.REMOVE_TREE_ITEM](state, id) {
-        state.treeData = state.treeData.filter(el => el.id !== id);
+        const newTree = !Number.isInteger(id)
+            ? state.treeData.filter(el => el.id !== id)
+            : state.treeData.filter((el, index) => index !== id);
+        state.treeData = newTree;
     },
     [types.REBUILD_TREE](state, { tree }) {
         state.treeData = tree;
