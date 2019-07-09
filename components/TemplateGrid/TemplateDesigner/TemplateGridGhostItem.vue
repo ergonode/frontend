@@ -30,6 +30,11 @@ export default {
             default: () => [],
         },
     },
+    data() {
+        return {
+            isGhostElement: false,
+        };
+    },
     computed: {
         ...mapState('draggable', {
             draggedElement: state => state.draggedElement,
@@ -57,9 +62,11 @@ export default {
     },
     methods: {
         onDrop() {
-            removeGhostElementFromDraggableLayer();
+            if (this.isGhostElement) {
+                removeGhostElementFromDraggableLayer();
 
-            this.$emit('drop', this.position);
+                this.$emit('drop', this.position);
+            }
         },
         onDragOver(event) {
             event.preventDefault();
@@ -67,11 +74,13 @@ export default {
         onDragEnter() {
             if (this.highlightedElement && !this.highlightedElement.isObstacle) {
                 this.addGhostElement();
+                this.isGhostElement = true;
             }
         },
         onDragLeave() {
             if (this.highlightedElement && !this.highlightedElement.isObstacle) {
                 removeGhostElementFromDraggableLayer();
+                this.isGhostElement = false;
             }
         },
         isEqualToPosition(position) {

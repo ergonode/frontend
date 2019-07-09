@@ -19,10 +19,10 @@ export const actions = {
         dispatch('grid/clearStorage');
         dispatch('draggable/clearStorage');
         dispatch('tree/clearStorage');
+        dispatch('productsDraft/clearStorage');
+        dispatch('templateDesigner/clearStorage');
         commit('gridDraft/clearStorage');
         commit('list/clearStorage');
-        commit('productsDraft/clearStorage');
-        commit('templateDesigner/clearStorage');
         commit('translations/clearStorage');
         commit('users/clearStorage');
         commit('validations/clearStorage');

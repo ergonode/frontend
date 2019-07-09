@@ -24,7 +24,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { getMaxObjectValueInArrayByObjectKey } from '~/model/arrayWrapper';
+import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
 import TemplateGridDesigner from '~/components/TemplateGrid/TemplateDesigner/TemplateGridDesigner';
 import ProductTemplateSection from '~/components/Template/ProductDesigner/ProductTemplateSection';
 import ProductTemplateDate from '~/components/Template/ProductDesigner/ProductTemplateDate';
@@ -56,7 +56,8 @@ export default {
             draft: state => state.draft,
         }),
         maxRowOfLayoutElements() {
-            const maxElementRow = getMaxObjectValueInArrayByObjectKey(this.layoutElements, 'row');
+            const { row, height } = getObjectWithMaxValueInArrayByObjectKey(this.layoutElements, 'row');
+            const maxElementRow = row + height;
             const maxVisibleRows = this.columnsNumber * this.maxRows;
 
             return Math.min(maxElementRow, maxVisibleRows);

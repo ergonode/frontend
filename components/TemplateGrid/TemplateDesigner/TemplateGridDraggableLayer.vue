@@ -19,7 +19,8 @@
             :element="element"
             :columns-number="columnsNumber"
             :rows-number="rowsNumber"
-            @highlightedPositionChange="onHighlightedPositionsChange">
+            @highlightedPositionChange="onHighlightedPositionsChange"
+            @resizingElMaxRow="onResizingElMaxRow">
             <template v-slot:content>
                 <AttributeElementContent
                     v-if="element.type !== 'SECTION TITLE'"
@@ -121,6 +122,9 @@ export default {
         },
         onHighlightedPositionsChange(positions) {
             this.highlightedPositions = positions;
+        },
+        onResizingElMaxRow(row) {
+            this.$emit('resizingElMaxRow', row);
         },
         getItemPosition({
             row, column, width, height,

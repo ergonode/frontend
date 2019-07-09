@@ -9,11 +9,12 @@
             <TemplateGridDesigner @rowsCount="onRowsCountChange">
                 <TemplateGridDraggableLayer
                     :style="gridStyles"
-                    :rows-number="maxRows"
+                    :rows-number="maxLayoutRow"
                     :columns-number="columnsNumber"
                     :layout-elements="layoutElements"
                     @addListElementToLayout="updateLayoutElement"
-                    @editSectionTitle="onEditSectionTitle" />
+                    @editSectionTitle="onEditSectionTitle"
+                    @resizingElMaxRow="onResizingElMaxRow" />
                 <ModalSectionTitleTemplate
                     :value="isSectionAdded"
                     :section-position="sectionPosition"
@@ -28,6 +29,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
 
 export default {
     name: 'TemplateGrid',
@@ -51,7 +53,7 @@ export default {
             sectionIndex: null,
             sectionTitle: '',
             columnsNumber: 4,
-            maxRows: 0,
+            maxRow: 0,
             buttons: [
                 // TODO: Uncomment when we will have this feature
                 // {
@@ -111,6 +113,11 @@ export default {
                 gridAutoRows: '62px',
             };
         },
+        maxLayoutRow() {
+            const { row, height } = getObjectWithMaxValueInArrayByObjectKey(this.layoutElements, 'row');
+
+            return Math.max(this.maxRow, row + height);
+        },
     },
     methods: {
         ...mapActions('templateDesigner', [
@@ -118,8 +125,13 @@ export default {
             'addListElementToLayout',
             'updateLayoutElementPosition',
         ]),
+        onResizingElMaxRow(row) {
+            if (row > this.maxRow) {
+                this.maxRow = row;
+            }
+        },
         onRowsCountChange({ value }) {
-            this.maxRows = value;
+            this.maxRow = value;
         },
         updateLayoutElement(position) {
             if (typeof this.draggedElement === 'object') {
