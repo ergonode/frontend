@@ -143,8 +143,6 @@ export default {
 
             this.minWidth = this.getElementMinWidth();
             this.minHeight = this.getElementMinHeight();
-            this.maxWidth = this.getElementMaxWidth();
-            this.maxHeight = this.getElementMaxHeight();
 
             this.addEventListenersForResizeState();
 
@@ -187,12 +185,10 @@ export default {
             const { height } = this.element;
             return (this.startHeight - (this.elementsGap * (height - 1))) / height;
         },
-        getElementMaxWidth() {
-            const { maxWidth } = this.element;
+        getElementMaxWidth(maxWidth) {
             return (this.minWidth * maxWidth) + ((maxWidth - 1) * this.elementsGap);
         },
-        getElementMaxHeight() {
-            const { maxHeight } = this.element;
+        getElementMaxHeight(maxHeight) {
             return (this.minHeight * maxHeight) + ((maxHeight - 1) * this.elementsGap);
         },
         updateElementWidth(width) {
@@ -202,10 +198,10 @@ export default {
                 this.actualElementRow,
                 this.highlightingPositions,
             );
+            const elWidth = 1 + maxColumn - column;
+            this.maxWidth = this.getElementMaxWidth(elWidth);
 
-            if (width <= this.maxWidth
-                && width >= this.minWidth
-                && columnBellowMouse <= maxColumn) {
+            if (width <= this.maxWidth && width >= this.minWidth) {
                 this.newWidth = columnBellowMouse - column + 1;
 
                 if (columnBellowMouse !== this.actualElementColumn) {
@@ -227,8 +223,10 @@ export default {
                 this.actualElementColumn,
                 this.highlightingPositions,
             );
+            const elHeight = 1 + maxRow - row;
+            this.maxHeight = this.getElementMaxHeight(elHeight);
 
-            if (height <= this.maxHeight && height >= this.minHeight && rowBellowMouse <= maxRow) {
+            if (height <= this.maxHeight && height >= this.minHeight) {
                 this.newHeight = rowBellowMouse - row + 1;
 
                 if (rowBellowMouse !== this.actualElementRow) {
