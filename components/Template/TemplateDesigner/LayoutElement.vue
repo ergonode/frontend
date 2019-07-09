@@ -186,7 +186,11 @@ export default {
             return (this.startHeight - (this.elementsGap * (height - 1))) / height;
         },
         getElementMaxWidth(maxWidth) {
-            return (this.minWidth * maxWidth) + ((maxWidth - 1) * this.elementsGap);
+            const { column } = this.element;
+            const columnsNumberToFill = maxWidth - (column - 1);
+            const elementGapsNumber = columnsNumberToFill - 1;
+
+            return (this.minWidth * columnsNumberToFill) + (elementGapsNumber * this.elementsGap);
         },
         getElementMaxHeight(maxHeight) {
             return (this.minHeight * maxHeight) + ((maxHeight - 1) * this.elementsGap);
