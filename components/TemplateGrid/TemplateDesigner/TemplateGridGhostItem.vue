@@ -50,13 +50,17 @@ export default {
             return this.highlightingPositions.find(this.isEqualToPosition);
         },
         isTopNeighbour() {
+            const { row: rowPos, column: columnPos } = this.position;
+
             return this.highlightingPositions.some(
-                this.isEqualToPosition && this.isEqualToTopPosition,
+                ({ row, column }) => row === rowPos - 1 && column === columnPos,
             );
         },
         isRightNeighbour() {
+            const { row: rowPos, column: columnPos } = this.position;
+
             return this.highlightingPositions.some(
-                this.isEqualToPosition && this.isEqualToRightPosition,
+                ({ row, column }) => row === rowPos && column === columnPos + 1,
             );
         },
     },
@@ -87,16 +91,6 @@ export default {
             const { row, column } = this.position;
 
             return row === position.row && column === position.column;
-        },
-        isEqualToTopPosition(position) {
-            const { row } = this.position;
-
-            return row - 1 === position.row;
-        },
-        isEqualToRightPosition(position) {
-            const { column } = this.position;
-
-            return column + 1 === position.column;
         },
         addGhostElement() {
             let draggedElementWidth = 1;
