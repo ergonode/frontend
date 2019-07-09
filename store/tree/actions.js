@@ -4,6 +4,10 @@
  */
 import { types } from './mutations';
 import treeData from '~/model/tree/treeData';
+import {
+    rebuildTreeWhenElementRemoved,
+    rebuildTreeWhenGhostElementRemoved,
+} from '~/model/tree/TreeCalculations';
 
 export default {
     setRowsCount: ({ commit }, value) => {
@@ -29,22 +33,16 @@ export default {
             commit(types.ADD_TREE_ITEM, item);
         }
     },
-    removeTreeItem: ({ commit }, id) => {
+    removeTreeItem: ({ commit, state }, id) => {
         commit(types.REMOVE_TREE_ITEM, id);
+        if (Number.isInteger(id)) {
+            const newTree = rebuildTreeWhenElementRemoved(state.treeData, id);
+            commit(types.REBUILD_TREE, { tree: newTree });
+        }
     },
     rebuildTree: ({ commit, state }, id) => {
-        const positionBeetwenRows = 0.5;
         const findIndex = state.treeData.findIndex(el => el.id === id);
-        const newTree = state.treeData.reduce((accumulator, current, i) => {
-            if (i === findIndex && current.row !== 0) {
-                accumulator.push({ ...current, row: current.row + positionBeetwenRows });
-            } else if (i > findIndex) {
-                accumulator.push({ ...current, row: current.row + 1 });
-            } else {
-                accumulator.push(current);
-            }
-            return accumulator;
-        }, []);
+        const newTree = rebuildTreeWhenGhostElementRemoved(state.treeData, findIndex);
         commit(types.REBUILD_TREE, { tree: newTree });
     },
     setHiddenItem: ({ commit }, { key, value }) => {

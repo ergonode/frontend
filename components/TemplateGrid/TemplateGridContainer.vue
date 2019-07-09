@@ -5,6 +5,9 @@
 <template>
     <div
         class="grid-container"
+        :draggable="isDraggingEnabled"
+        @dragstart="onDragStart"
+        @dragend="onDragEnd"
         @dragover="onDragOver"
         @dragleave="onDragLeave"
         @drop="onDrop">
@@ -13,7 +16,16 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { debounce } from 'debounce';
+import {
+    addTreeElementCopyToDocumentBody,
+    removeTreeElementCopyFromDocumentBody,
+} from '~/model/tree/TreeElementCopy';
+import {
+    initializeRowBounds,
+    getRowBellowMouse,
+} from '~/model/tree/TreeCalculations';
 import { getMaxObjectValueInArrayByObjectKey } from '~/model/arrayWrapper';
 
 export default {
@@ -46,6 +58,7 @@ export default {
         },
     },
     data: () => ({
+        isDraggingEnabled: true,
         positionBeetwenRows: 0.5,
         ghostElement: {
             id: 'ghost_item',
@@ -80,11 +93,39 @@ export default {
         window.removeEventListener('resize', this.debounceFunc);
     },
     methods: {
+        ...mapActions('draggable', [
+            'setDraggedElement',
+            'setDraggableState',
+        ]),
         calculateRowsCount() {
             const { clientHeight } = document.querySelector('.grid-container');
             const visibleRows = Math.ceil(clientHeight / this.rowsHeight);
             const totalRows = Math.max(this.gridData.length, visibleRows) + 1;
             this.setRowsCount(totalRows);
+        },
+        onDragStart(event) {
+            const { clientY } = event;
+            const { children: categories } = this.$el.querySelector('.grid-items-container');
+            getRowBellowMouse({
+                clientY,
+                elements: categories,
+                elementBounds: initializeRowBounds(categories),
+            }, ({ index, category }) => {
+                const hasChildren = category.querySelector('.grid-item__categoies-length');
+                if (category && !hasChildren) {
+                    const categoryId = category.getAttribute('item-id');
+                    this.setDraggedElement(categoryId);
+                    this.setDraggableState({ propName: 'isListElementDragging', value: true });
+                    addTreeElementCopyToDocumentBody(event, category);
+                    this.$emit('removeItem', index);
+                } else {
+                    event.preventDefault();
+                }
+            });
+        },
+        onDragEnd(event) {
+            this.setDraggableState({ propName: 'isListElementDragging', value: false });
+            removeTreeElementCopyFromDocumentBody(event);
         },
         onDragOver(event) {
             event.preventDefault();
