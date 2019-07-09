@@ -2,6 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import defaultState from './state';
+
 export const types = {
     INITIALIZE_LAYOUT_ELEMENTS: 'INITIALIZE_LAYOUT_ELEMENTS',
     UPDATE_LAYOUT_ELEMENT_BOUNDS: 'UPDATE_LAYOUT_ELEMENT_BOUNDS',
@@ -54,9 +56,9 @@ export default {
         state.layoutElements = [...state.layoutElements];
     },
     [types.CLEAR_STATE](state) {
-        state.layoutElements = [];
-        state.title = '';
-        state.image = null;
-        state.types = [];
+        const states = defaultState();
+        Object.keys(states).forEach((key) => {
+            state[key] = states[key];
+        });
     },
 };

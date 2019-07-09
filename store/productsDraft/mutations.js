@@ -2,6 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import defaultState from './state';
+
 export const types = {
     SET_PRODUCT_ID: 'SET_PRODUCT_ID',
     SET_PRODUCT_SKU: 'SET_PRODUCT_SKU',
@@ -52,15 +54,9 @@ export default {
         state.layoutElements[index].value = value;
     },
     [types.CLEAR_STATE](state) {
-        state.draft = {};
-        state.id = null;
-        state.sku = '';
-        state.template = '';
-        state.selectedCategories = [];
-        state.languageCode = '';
-        state.layoutElements = [];
-        state.completeness = {};
-        state.templates = [];
-        state.categories = [];
+        const states = defaultState();
+        Object.keys(states).forEach((key) => {
+            state[key] = states[key];
+        });
     },
 };
