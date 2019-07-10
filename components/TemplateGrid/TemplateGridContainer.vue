@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { debounce } from 'debounce';
 import {
     addTreeElementCopyToDocumentBody,
@@ -51,11 +51,6 @@ export default {
             type: Number,
             required: true,
         },
-        draggedElement: {
-            type: String,
-            required: false,
-            default: null,
-        },
     },
     data: () => ({
         isDraggingEnabled: true,
@@ -75,6 +70,15 @@ export default {
         debounceFunc: null,
     }),
     computed: {
+        ...mapState('authentication', {
+            language: state => state.user.language,
+        }),
+        ...mapState('draggable', {
+            draggedElement: state => state.draggedElement,
+        }),
+        ...mapState('list', {
+            listElements: state => state.elements,
+        }),
         dataWithoutGhostElement() {
             return this.gridData.filter(element => element.id !== this.ghostElement.id);
         },
@@ -158,9 +162,12 @@ export default {
         onDrop() {
             const { row, column } = this.ghostElement;
             const { length: withoutGhostLength } = this.dataWithoutGhostElement;
+            const { code: categoryCode } = this.listElements[this.language]
+                .find(e => e.id === this.draggedElement);
             this.removeGhostElement();
             this.addItem({
                 id: this.draggedElement,
+                code: categoryCode,
                 column,
                 row,
                 parent: this.getParentId(row, column),

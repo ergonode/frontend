@@ -46,7 +46,7 @@ export default {
         return {
             isDragged: false,
             draggedElementStyle: { width: 246, height: 32, backgroundColor: '#fff' },
-            draggableListID: this.item.code,
+            draggableListID: this.item.id,
         };
     },
     computed: {
