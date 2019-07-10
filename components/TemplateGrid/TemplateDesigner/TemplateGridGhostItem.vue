@@ -30,6 +30,11 @@ export default {
             default: () => [],
         },
     },
+    data() {
+        return {
+            isGhostElement: false,
+        };
+    },
     computed: {
         ...mapState('draggable', {
             draggedElement: state => state.draggedElement,
@@ -45,21 +50,27 @@ export default {
             return this.highlightingPositions.find(this.isEqualToPosition);
         },
         isTopNeighbour() {
+            const { row: rowPos, column: columnPos } = this.position;
+
             return this.highlightingPositions.some(
-                this.isEqualToPosition && this.isEqualToTopPosition,
+                ({ row, column }) => row === rowPos - 1 && column === columnPos,
             );
         },
         isRightNeighbour() {
+            const { row: rowPos, column: columnPos } = this.position;
+
             return this.highlightingPositions.some(
-                this.isEqualToPosition && this.isEqualToRightPosition,
+                ({ row, column }) => row === rowPos && column === columnPos + 1,
             );
         },
     },
     methods: {
         onDrop() {
-            removeGhostElementFromDraggableLayer();
+            if (this.isGhostElement) {
+                removeGhostElementFromDraggableLayer();
 
-            this.$emit('drop', this.position);
+                this.$emit('drop', this.position);
+            }
         },
         onDragOver(event) {
             event.preventDefault();
@@ -67,27 +78,19 @@ export default {
         onDragEnter() {
             if (this.highlightedElement && !this.highlightedElement.isObstacle) {
                 this.addGhostElement();
+                this.isGhostElement = true;
             }
         },
         onDragLeave() {
             if (this.highlightedElement && !this.highlightedElement.isObstacle) {
                 removeGhostElementFromDraggableLayer();
+                this.isGhostElement = false;
             }
         },
         isEqualToPosition(position) {
             const { row, column } = this.position;
 
             return row === position.row && column === position.column;
-        },
-        isEqualToTopPosition(position) {
-            const { row } = this.position;
-
-            return row - 1 === position.row;
-        },
-        isEqualToRightPosition(position) {
-            const { column } = this.position;
-
-            return column + 1 === position.column;
         },
         addGhostElement() {
             let draggedElementWidth = 1;

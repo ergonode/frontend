@@ -27,6 +27,7 @@ export default {
                 {
                     title: 'Templates',
                     icon: 'sprite-menu menu-puzzel--deactive',
+                    path: '/templates',
                 },
             ],
             buttons: [],

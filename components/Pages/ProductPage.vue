@@ -26,6 +26,7 @@ export default {
                 {
                     title: 'Products',
                     icon: 'sprite-menu menu-paper--selected',
+                    path: '/products',
                 },
             ],
             buttons: [],

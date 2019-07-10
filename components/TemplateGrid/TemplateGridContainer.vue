@@ -26,7 +26,7 @@ import {
     initializeRowBounds,
     getRowBellowMouse,
 } from '~/model/tree/TreeCalculations';
-import { getMaxObjectValueInArrayByObjectKey } from '~/model/arrayWrapper';
+import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
 
 export default {
     name: 'TemplateGridContainer',
@@ -83,7 +83,7 @@ export default {
             return this.gridData.filter(element => element.id !== this.ghostElement.id);
         },
         maxRow() {
-            return getMaxObjectValueInArrayByObjectKey(this.dataWithoutGhostElement, 'row');
+            return getObjectWithMaxValueInArrayByObjectKey(this.dataWithoutGhostElement, 'row').row;
         },
     },
     created() {
@@ -269,7 +269,7 @@ export default {
                 const findElements = this.dataWithoutGhostElement.filter(
                     e => (e.column === column - 1 && e.row < row),
                 );
-                const parent = Math.floor(getMaxObjectValueInArrayByObjectKey(findElements, 'row'));
+                const parent = Math.floor(getObjectWithMaxValueInArrayByObjectKey(findElements, 'row').row);
                 parentId = this.dataWithoutGhostElement[parent].id;
             }
             return parentId;

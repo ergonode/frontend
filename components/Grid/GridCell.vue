@@ -150,6 +150,10 @@ export default {
             &:nth-child(even) {
                 background-color: $white;
             }
+
+            &:nth-child(odd) {
+                background-color: $background;
+            }
         }
 
         &:not(&--error):not(&--locked) {
