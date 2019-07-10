@@ -3,11 +3,11 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import treeData from '~/model/tree/treeData';
 import {
     rebuildTreeWhenElementRemoved,
     rebuildTreeWhenGhostElementRemoved,
 } from '~/model/tree/TreeCalculations';
+import { mapDataFromApi } from '~/model/mappers/treeMapper';
 
 export default {
     setRowsCount: ({ commit }, value) => {
@@ -17,12 +17,10 @@ export default {
         { commit, rootState },
         { treeId, onError },
     ) {
-        const sortedData = treeData.sort((a, b) => a.row - b.row);
-        commit(types.SET_TREE, sortedData);
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(() => {
-            // TODO: uncomment when we have date from API
-            // commit(types.SET_TREE, response.data);
+        const { [userLanguageCode]: categories } = rootState.list.elements;
+        return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({ categories: treeData }) => {
+            commit(types.SET_TREE, mapDataFromApi(treeData, categories));
         }).catch(e => onError(e.data));
     },
     addTreeItem: ({ commit, state }, item) => {
@@ -50,6 +48,20 @@ export default {
     },
     removeHiddenItem: ({ commit }, key) => {
         commit(types.REMOVE_HIDDEN_ITEM, key);
+    },
+    updateTree(
+        { rootState },
+        {
+            id,
+            data,
+            onSuccess,
+            onError,
+        },
+    ) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$put(`${userLanguageCode}/trees/${id}`, data).then(() => {
+            onSuccess();
+        }).catch(e => onError(e.data));
     },
     clearStorage: ({ commit }) => commit(types.CLEAR_STORAGE),
 };
