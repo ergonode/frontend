@@ -75,7 +75,7 @@ export function getMappedLayoutElements(elements, elementDataByType) {
         } = element;
         const { attribute_id: attrID, required, label } = properties;
         const { x: column, y: row } = position;
-        if (attrID) {
+        if (type !== 'SECTION') {
             return getMappedLayoutElement(
                 attrID,
                 elementDataByType(type),

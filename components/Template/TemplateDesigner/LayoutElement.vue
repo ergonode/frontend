@@ -65,6 +65,8 @@ export default {
             startHeight: 0,
             minWidth: 0,
             minHeight: 0,
+            maxWidth: 0,
+            maxHeight: 0,
             newWidth: 0,
             newHeight: 0,
             actualElementRow: 0,
@@ -183,6 +185,16 @@ export default {
             const { height } = this.element;
             return (this.startHeight - (this.elementsGap * (height - 1))) / height;
         },
+        getElementMaxWidth(maxWidth) {
+            const { column } = this.element;
+            const columnsNumberToFill = maxWidth - (column - 1);
+            const elementGapsNumber = columnsNumberToFill - 1;
+
+            return (this.minWidth * columnsNumberToFill) + (elementGapsNumber * this.elementsGap);
+        },
+        getElementMaxHeight(maxHeight) {
+            return (this.minHeight * maxHeight) + ((maxHeight - 1) * this.elementsGap);
+        },
         updateElementWidth(width) {
             const { column } = this.element;
             const columnBellowMouse = getColumnBasedOnWidth(width, this.minWidth, column);
@@ -190,8 +202,10 @@ export default {
                 this.actualElementRow,
                 this.highlightingPositions,
             );
+            const elWidth = 1 + maxColumn - column;
+            this.maxWidth = this.getElementMaxWidth(elWidth);
 
-            if (width >= this.minWidth && columnBellowMouse <= maxColumn) {
+            if (width <= this.maxWidth && width >= this.minWidth) {
                 this.newWidth = columnBellowMouse - column + 1;
 
                 if (columnBellowMouse !== this.actualElementColumn) {
@@ -213,8 +227,10 @@ export default {
                 this.actualElementColumn,
                 this.highlightingPositions,
             );
+            const elHeight = 1 + maxRow - row;
+            this.maxHeight = this.getElementMaxHeight(elHeight);
 
-            if (height >= this.minHeight && rowBellowMouse <= maxRow) {
+            if (height <= this.maxHeight && height >= this.minHeight) {
                 this.newHeight = rowBellowMouse - row + 1;
 
                 if (rowBellowMouse !== this.actualElementRow) {
@@ -227,6 +243,8 @@ export default {
 
                 this.$el.style.height = `${height}px`;
                 this.actualElementRow = rowBellowMouse;
+
+                this.$emit('resizingElMaxRow', this.newHeight + row);
             }
         },
         addEventListenersForResizeState() {
@@ -311,7 +329,7 @@ export default {
         user-select: none;
         cursor: grab;
 
-        &:hover {
+        &:hover:not(&--resized) {
             border: unset;
             box-shadow:
                 0 2px 2px 0 rgba(0, 0, 0, 0.14),

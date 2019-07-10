@@ -2,47 +2,63 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import defaultState from './state';
+
+export const types = {
+    INITIALIZE_LAYOUT_ELEMENTS: 'INITIALIZE_LAYOUT_ELEMENTS',
+    UPDATE_LAYOUT_ELEMENT_BOUNDS: 'UPDATE_LAYOUT_ELEMENT_BOUNDS',
+    UPDATE_LAYOUT_ELEMENT_POSITION: 'UPDATE_LAYOUT_ELEMENT_POSITION',
+    ADD_ELEMENT_TO_LAYOUT: 'ADD_ELEMENT_TO_LAYOUT',
+    SET_TYPES: 'SET_TYPES',
+    SET_LAYOUT_ELEMENT_REQUIREMENT: 'SET_LAYOUT_ELEMENT_REQUIREMENT',
+    REMOVE_LAYOUT_ELEMENT_AT_INDEX: 'REMOVE_LAYOUT_ELEMENT_AT_INDEX',
+    SET_TEMPLATE_DESIGNER_TITLE: 'SET_TEMPLATE_DESIGNER_TITLE',
+    SET_TEMPLATE_DESIGNER_IMAGE: 'SET_TEMPLATE_DESIGNER_IMAGE',
+    UPDATE_SECTION_ELEMENT_TITLE: 'UPDATE_SECTION_ELEMENT_TITLE',
+    CLEAR_STATE: 'CLEAR_STATE',
+};
+
 export default {
-    initializeLayoutElements: (state, elements) => {
+    [types.INITIALIZE_LAYOUT_ELEMENTS](state, elements) {
         state.layoutElements = elements;
     },
-    updateLayoutElementBounds: (state, { index, width, height }) => {
+    [types.UPDATE_LAYOUT_ELEMENT_BOUNDS](state, { index, width, height }) {
         state.layoutElements[index] = { ...state.layoutElements[index], width, height };
         state.layoutElements = [...state.layoutElements];
     },
-    updateLayoutElementPosition: (state, { index, row, column }) => {
+    [types.UPDATE_LAYOUT_ELEMENT_POSITION](state, { index, row, column }) {
         state.layoutElements[index] = { ...state.layoutElements[index], row, column };
         state.layoutElements = [...state.layoutElements];
     },
-    addElementToLayout: (state, layoutElement) => {
+    [types.ADD_ELEMENT_TO_LAYOUT](state, layoutElement) {
         state.layoutElements.push(layoutElement);
     },
-    setTypes: (state, types) => {
-        state.types = types;
+    [types.SET_TYPES](state, attrTypes) {
+        state.types = attrTypes;
     },
-    setLayoutElementRequirement: (state, { required, index }) => {
+    [types.SET_LAYOUT_ELEMENT_REQUIREMENT](state, { required, index }) {
         const element = state.layoutElements[index];
 
         state.layoutElements[index] = { ...element, required };
         state.layoutElements = [...state.layoutElements];
     },
-    removeLayoutElementAtIndex: (state, index) => {
+    [types.REMOVE_LAYOUT_ELEMENT_AT_INDEX](state, index) {
         state.layoutElements.splice(index, 1);
     },
-    setTemplateDesignerTitle: (state, title) => {
+    [types.SET_TEMPLATE_DESIGNER_TITLE](state, title) {
         state.title = title;
     },
-    setTemplateDesignerImage: (state, image) => {
+    [types.SET_TEMPLATE_DESIGNER_IMAGE](state, image) {
         state.image = image;
     },
-    updateSectionElementTitle: (state, { index, title }) => {
+    [types.UPDATE_SECTION_ELEMENT_TITLE](state, { index, title }) {
         state.layoutElements[index].label = title;
         state.layoutElements = [...state.layoutElements];
     },
-    clearStorage: (state) => {
-        state.layoutElements = [];
-        state.title = '';
-        state.image = null;
-        state.types = [];
+    [types.CLEAR_STATE](state) {
+        const states = defaultState();
+        Object.keys(states).forEach((key) => {
+            state[key] = states[key];
+        });
     },
 };

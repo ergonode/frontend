@@ -62,10 +62,10 @@ export default {
             this.setAttributeOptionKey({ index, key });
         },
         addOptionKey() {
-            this.addAttributeOptionKey({ key: '' });
+            this.addAttributeOptionKey('');
         },
         removeOptionKey(index) {
-            this.removeAttributeOptionKey({ index });
+            this.removeAttributeOptionKey(index);
         },
     },
 };

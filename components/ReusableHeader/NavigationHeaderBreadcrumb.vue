@@ -43,7 +43,7 @@ export default {
             this.isMouseOver = false;
         },
         onClick() {
-            this.$router.back();
+            this.$router.push(this.breadcrumb.path);
         },
     },
 };

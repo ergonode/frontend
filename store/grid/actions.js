@@ -99,7 +99,7 @@ export default {
         }
 
         return this.app.$axios.$get(path, { params }).then(({
-            collection, columns,
+            collection: rows, columns,
         }) => {
             this.$cookies.set(COLUMN_IDS, parsedColumnsID);
 
@@ -107,7 +107,7 @@ export default {
             columnToInsert.width = getMappedColumnWidth(columnToInsert);
 
             commit(types.INSERT_COLUMN_AT_INDEX, { column: columnToInsert, index });
-            commit(types.SET_ROWS, collection);
+            commit(types.SET_ROWS, rows);
         }).catch(err => console.log(err));
     },
     setFilter({ commit, state }, { filter: filterToSet, id }) {

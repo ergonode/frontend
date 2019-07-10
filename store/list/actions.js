@@ -9,38 +9,15 @@ export default {
         languageCode,
     }) {
         const groupsPath = `${languageCode}/attributes/groups`;
-        const notAssignedElementsPath = `${languageCode}/attributes`;
-        const notAssignedElementsParams = {
-            limit: 9999,
-            offset: 0,
-            filter: 'groups=',
-        };
-        let parsedGroups = {};
 
-        return Promise.all([
-            this.app.$axios.$get(groupsPath).then(({ collection: groups }) => {
-                const tmpGroups = groups.map(({ id, label, elements_count: elementsCount }) => ({
+        return this.app.$axios.$get(groupsPath).then(({ collection: groups }) => {
+            commit('setGroupsForLanguage', {
+                languageCode,
+                groups: groups.map(({ id, label, elements_count: elementsCount }) => ({
                     id, label, elementsCount,
-                }));
-                parsedGroups = { ...parsedGroups, ...tmpGroups };
-            }).catch(e => console.log(e)),
-            this.app.$axios.$get(notAssignedElementsPath,
-                { params: notAssignedElementsParams }).then(({ filtered }) => {
-                // TODO: We need to get the number of not assigned elements in group,
-                //  the best option would be to call get elements and get count of them,
-                //  subtraction all groups count with all elements count will be the correct number
-                //  of elements not signed to any of the group. - Waiting for BE - it is workaround.
-
-                const defaultGroup = { id: null, label: 'Unassigned attributes', elementsCount: filtered };
-
-                parsedGroups = {
-                    ...parsedGroups,
-                    [Object.keys(parsedGroups).length]: defaultGroup,
-                };
-            }).then(() => {
-                commit('setGroupsForLanguage', { languageCode, groups: parsedGroups });
-            }).catch(e => console.log(e)),
-        ]);
+                })),
+            });
+        }).catch(e => console.log(e));
     },
     getElementsForGroup({ commit, state }, {
         listType, groupId, elementsCount, languageCode,
