@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export function mapDataFromApi(tree, categories) {
+export function getParsedTreeData(tree, categories) {
     const newTree = [];
     let rowCounter = 0;
     const buildTree = (treeArray, parent, column) => {
@@ -24,7 +24,7 @@ export function mapDataFromApi(tree, categories) {
     return newTree;
 }
 
-export function mapDataToApi(treeArray) {
+export function getMappedTreeData(treeArray) {
     const newTree = [];
     for (let i = 0; i < treeArray.length; i += 1) {
         const { parent, id } = treeArray[i];

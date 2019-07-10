@@ -7,7 +7,7 @@ import {
     rebuildTreeWhenElementRemoved,
     rebuildTreeWhenGhostElementRemoved,
 } from '~/model/tree/TreeCalculations';
-import { mapDataFromApi } from '~/model/mappers/treeMapper';
+import { getParsedTreeData } from '~/model/mappers/treeMapper';
 
 export default {
     setRowsCount: ({ commit }, value) => {
@@ -20,7 +20,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { [userLanguageCode]: categories } = rootState.list.elements;
         return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({ categories: treeData }) => {
-            commit(types.SET_TREE, mapDataFromApi(treeData, categories));
+            commit(types.SET_TREE, getParsedTreeData(treeData, categories));
         }).catch(e => onError(e.data));
     },
     addTreeItem: ({ commit, state }, item) => {

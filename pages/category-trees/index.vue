@@ -10,7 +10,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { mapDataToApi } from '~/model/mappers/treeMapper';
+import { getMappedTreeData } from '~/model/mappers/treeMapper';
 
 export default {
     name: 'NewCategoryTree',
@@ -52,7 +52,7 @@ export default {
             const categoryTree = {
                 id: treeId,
                 name: 'default',
-                categories: mapDataToApi(this.treeData),
+                categories: getMappedTreeData(this.treeData),
             };
             this.updateTree({
                 id: treeId,
