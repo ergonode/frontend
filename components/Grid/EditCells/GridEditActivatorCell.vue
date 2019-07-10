@@ -115,6 +115,7 @@ export default {
             this.localValue = id;
         },
         onFocus(isFocused) {
+            console.log(isFocused);
             if (!isFocused) {
                 this.setEditingCellCoordinates();
             }
