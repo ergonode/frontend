@@ -24,15 +24,13 @@
         @focus="onFocus">
         <textarea
             slot="input"
-            slot-scope="{ onFocusLost }"
             :value="value"
             :placeholder="placeholder"
             :autofocus="autofocus"
             :disabled="disabled"
             :aria-label="label || 'no description'"
             :style="textareaStyle"
-            @input="emitValue"
-            @focusout="onFocusLost" />
+            @input="emitValue" />
     </InputBase>
 </template>
 

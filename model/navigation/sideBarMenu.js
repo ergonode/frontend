@@ -17,7 +17,7 @@ export default [
         title: 'MANAGE',
         menu: [
             {
-                title: 'Product catalog',
+                title: 'Products catalog',
                 routing: '/products',
                 icon: 'paper',
             },

@@ -23,6 +23,7 @@
             v-model="internalValue"
             style="width: 64px;"
             solid
+            center-alignment
             :input="inputNumberType" />
         <span class="pagination__text">
             of

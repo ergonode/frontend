@@ -19,5 +19,6 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
+        background-color: $background;
     }
 </style>

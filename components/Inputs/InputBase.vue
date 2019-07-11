@@ -10,7 +10,7 @@
         <div
             ref="inputContent"
             :class="inputContentStyle"
-            @click="focusInput">
+            @click="onFocusInput">
             <label
                 v-if="label"
                 :class="floatingLabelClasses"
@@ -21,9 +21,7 @@
                     v-if="prependIcon"
                     :icon="prependIcon" />
             </slot>
-            <slot
-                name="input"
-                :on-focus-lost="blurInput" />
+            <slot name="input" />
             <slot name="appendIcon">
                 <Icon
                     v-if="appendIcon"
@@ -139,8 +137,6 @@ export default {
     data() {
         return {
             isFocused: false,
-            isClickedOutside: false,
-            lostFocusOnTabulator: false,
             isMounted: false,
         };
     },
@@ -229,27 +225,11 @@ export default {
                 : this.errorMessages;
         },
     },
-    watch: {
-        isFocused() {
-            const input = this.$el.querySelector('input') || this.$el.querySelector('textarea');
-
-            if (!this.isFocused) {
-                window.removeEventListener('click', this.onClickOutside);
-            } else {
-                window.addEventListener('click', this.onClickOutside);
-                input.focus();
-            }
-
-            this.$emit('focus', this.isFocused);
-        },
-    },
     mounted() {
-        // Focus input on auto focus set
         if (this.autofocus) {
+            this.focusInput();
+
             this.isFocused = true;
-            window.addEventListener('click', this.onClickOutside);
-            const input = this.$el.querySelector('input') || this.$el.querySelector('textarea');
-            input.focus();
         }
 
         this.isMounted = true;
@@ -258,12 +238,21 @@ export default {
         window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
+        focusInput() {
+            const input = this.$el.querySelector('input') || this.$el.querySelector('textarea');
+            window.addEventListener('click', this.onClickOutside);
+            input.focus();
+        },
+        blurInput() {
+            const input = this.$el.querySelector('input') || this.$el.querySelector('textarea');
+            window.removeEventListener('click', this.onClickOutside);
+            input.blur();
+        },
         onKeyUp(event) {
             const { keyCode } = event;
             // Tab
             if (keyCode === 9 && !this.isFocused) {
                 this.isFocused = true;
-                this.lostFocusOnTabulator = false;
             }
         },
         onKeyDown(event) {
@@ -272,51 +261,62 @@ export default {
             // Tab
             if (keyCode === 9 && this.isFocused) {
                 this.isFocused = false;
-                this.lostFocusOnTabulator = true;
             }
         },
-        focusInput(event) {
+        onFocusInput(event) {
             const isDoubleClicked = event.detail > 1;
 
             if (isDoubleClicked || this.isFocused) {
                 return false;
             }
 
-            this.isFocused = true;
-            this.isClickedOutside = false;
-            this.lostFocusOnTabulator = false;
+            this.focusInput();
+
+            this.$emit('focus', true);
 
             return true;
         },
-        blurInput(event) {
-            const isClickedInsideInput = this.$el.contains(event.target);
-            this.isFocused = isClickedInsideInput
-                && !this.isClickedOutside
-                && !this.lostFocusOnTabulator;
-        },
         dismissSelect() {
             this.isFocused = false;
-            this.isClickedOutside = false;
-            this.lostFocusOnTabulator = false;
-
-            this.$emit('apply');
         },
         onClickOutside(event) {
+            const { clientX, clientY } = event;
             const inputActivator = this.$el.querySelector('.input__content');
             const {
                 top, left, width, height,
             } = inputActivator.getBoundingClientRect();
-            const { clientX, clientY } = event;
-
-            if (!this.dismissible) {
-                const isClickedInsideInput = this.$el.contains(event.target);
-                this.isFocused = isClickedInsideInput && !this.dismissible;
-            } else if (!(clientX > left
+            const isClickedInsideInput = this.$el.contains(event.target)
+                && clientX > left
                 && clientX < left + width
                 && clientY > top
-                && clientY < top + height)) {
+                && clientY < top + height;
+
+            if (isClickedInsideInput) {
+                this.isFocused = !this.isFocused;
+            } else if (this.dismissible) {
                 this.isFocused = false;
-                this.isClickedOutside = true;
+            } else {
+                const selectContentEl = this.$el.querySelector('.select-content');
+
+                if (selectContentEl) {
+                    const {
+                        top: contentTop,
+                        left: contentLeft,
+                        width: contentWidth,
+                        height: contentHeight,
+                    } = selectContentEl.getBoundingClientRect();
+                    const isClickedInsideSelectContent = clientX > left
+                        && clientX < contentLeft + contentWidth
+                        && clientY > contentTop
+                        && clientY < contentTop + contentHeight;
+                    if (!isClickedInsideSelectContent) this.isFocused = false;
+                }
+            }
+
+            if (!this.isFocused) {
+                this.blurInput();
+
+                this.$emit('focus', false);
             }
         },
     },

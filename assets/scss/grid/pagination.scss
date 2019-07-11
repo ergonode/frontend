@@ -11,11 +11,11 @@
     }
 
     &__text {
-        @include setFont(medium, small, regular, $lightGraphite);
+        @include setFont(medium, small, regular, $darkGraphite);
     }
 
     &__number {
-        @include setFont(medium, small, regular, $graphite);
+        @include setFont(medium, small, regular, $darkGraphite);
     }
 
     &__icon {

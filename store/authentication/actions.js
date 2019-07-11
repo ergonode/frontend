@@ -10,10 +10,12 @@ export default {
         commit(types.SET_USER, user);
         commit(types.SET_JWT_TOKEN, token);
     },
-    authenticateUser({ commit }, { data }) {
+    authenticateUser({ commit, dispatch }, { data }) {
         return this.app.$axios.$post('login', data).then(({ token }) => {
             this.$cookies.set(JWT_KEY, token);
             commit(types.SET_JWT_TOKEN, token);
+
+            return dispatch('getUser');
         }).catch(err => console.log(err));
     },
     getUser({ commit }) {
