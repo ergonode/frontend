@@ -9,7 +9,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
+import { getMappedTreeData } from '~/model/mappers/treeMapper';
 
 export default {
     name: 'NewCategoryTree',
@@ -22,6 +23,11 @@ export default {
             title: 'Category tree',
         };
     },
+    computed: {
+        ...mapState('tree', {
+            treeData: state => state.treeData,
+        }),
+    },
     created() {
         this.setConfigurationForList({
             draggedElementsStore: {
@@ -32,11 +38,28 @@ export default {
         });
     },
     methods: {
+        ...mapActions('tree', [
+            'updateTree',
+        ]),
         ...mapActions('list', {
             setConfigurationForList: 'setConfigurationForList',
         }),
+        onUpdateTreeSuccess() {
+            this.$addAlert(this.$store, { type: 'success', message: 'Tree updated' });
+        },
         onSave() {
-            // placeholder for backend action
+            const treeId = 'ed8121fd-e815-4f9e-ae8f-9c37615fb0f9';
+            const categoryTree = {
+                id: treeId,
+                name: 'default',
+                categories: getMappedTreeData(this.treeData),
+            };
+            this.updateTree({
+                id: treeId,
+                data: categoryTree,
+                onSuccess: this.onUpdateTreeSuccess,
+                onError: () => {},
+            });
         },
     },
     async fetch({ store, error }) {
@@ -44,23 +67,22 @@ export default {
             user: { language: userLanguageCode },
         } = store.state.authentication;
 
-        await store.dispatch('tree/clearStorage');
-        await store.dispatch('tree/getTreeById', {
-            treeId: 'c5500df0-4861-47ec-aaaa-6716fcf356d4',
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return error();
-            },
-        });
-
         await store.dispatch('list/clearStorage');
         await store.dispatch('list/getElementsForGroup', {
             listType: 'categories',
             groupId: null,
             elementsCount: 9999,
             languageCode: userLanguageCode,
+        });
+        await store.dispatch('tree/clearStorage');
+        await store.dispatch('tree/getTreeById', {
+            treeId: 'ed8121fd-e815-4f9e-ae8f-9c37615fb0f9',
+            onError: (err) => {
+                if (err.response && err.response.status === 404) {
+                    return error({ statusCode: 404, message: err.message });
+                }
+                return error();
+            },
         });
     },
 };

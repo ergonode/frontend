@@ -12,7 +12,6 @@
             :rows="rowsCount"
             :rows-height="rowsHeight"
             :grid-data="filteredGridData"
-            :dragged-element="draggedElement"
             :hidden-items="hiddenItems"
             @addItem="addTreeItem"
             @removeItem="removeTreeItem"
@@ -36,7 +35,7 @@
                     <CategoryTreeItem
                         v-else
                         :number-of-children="getChildren(item.id).length"
-                        :item-name="item.id"
+                        :item-name="item.code"
                         @expandItem="e => expandItem(e, item)" />
                 </TemplateGridItemArea>
             </TemplateGridItemsContainer>
@@ -72,9 +71,6 @@ export default {
             rowsCount: state => state.rowsCount,
             gridData: state => state.treeData,
             hiddenItems: state => state.hiddenItems,
-        }),
-        ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
         }),
         gridStyles() {
             return {
