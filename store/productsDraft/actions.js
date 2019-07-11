@@ -149,7 +149,7 @@ export default {
         },
     ) {
         const { authentication: { user: { language } } } = rootState;
-        return this.app.$axios.$put(`${language}/drafts/${id}/persist`, {}).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {}).then(() => onSuccess()).catch(e => onError(e.data));
     },
     updateProduct(
         { rootState },

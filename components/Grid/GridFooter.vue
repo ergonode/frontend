@@ -16,7 +16,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { areAnyDraftsInGrid } from '~/model/mappers/gridDataMapper';
 
 export default {
     name: 'GridFooter',
@@ -47,31 +46,31 @@ export default {
     },
     methods: {
         ...mapActions('gridDraft', [
-            'applyDraft',
             'removeDraft',
             'forceDraftsMutation',
+        ]),
+        ...mapActions('productsDraft', [
+            'applyDraft',
         ]),
         ...mapActions('grid', [
             'addDraftToProduct',
         ]),
         saveDrafts() {
-            if (!areAnyDraftsInGrid({ drafts: this.drafts, rows: this.rows })) {
-                return;
-            }
-
             const promises = [];
 
-            Object.entries(this.drafts).forEach(([productId, draft]) => {
-                const { draftId } = draft;
+            Object.entries(this.drafts).forEach(([productId, column]) => {
+                Object.entries(column).forEach(([columnId, languageCode]) => {
+                    const [value] = Object.values(languageCode);
 
-                promises.push(this.applyDraft({
-                    id: draftId,
-                    onSuccess: () => {
-                        this.addDraftToProduct({ draft, productId });
-                        this.removeDraft({ productId });
-                    },
-                    onError: () => {},
-                }));
+                    promises.push(this.applyDraft({
+                        id: productId,
+                        onSuccess: () => {
+                            this.addDraftToProduct({ columnId, productId, value });
+                            this.removeDraft(productId);
+                        },
+                        onError: () => {},
+                    }));
+                });
             });
 
             Promise.all(promises).then(() => {

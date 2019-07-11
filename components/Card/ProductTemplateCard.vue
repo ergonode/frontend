@@ -15,7 +15,7 @@
                     v-for="(element, index) in layoutElements"
                     :key="index"
                     :style="getItemPosition(element)"
-                    :value="draft.attributes[element.id]"
+                    :value="draft.attributes[element.id] || ''"
                     v-bind="element" />
             </div>
         </TemplateGridDesigner>
@@ -88,7 +88,7 @@ export default {
             case 'SELECT':
             case 'MULTI_SELECT':
                 return ProductTemplateOptions;
-            case 'NUMBER':
+            case 'NUMERIC':
             case 'TEXT':
             case 'UNIT':
             case 'PRICE':
@@ -108,15 +108,14 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
-        align-items: center;
-        padding: 40px 40px 0;
         overflow: auto;
 
         .products-template-grid {
             display: grid;
             grid-gap: 24px;
-            grid-template-columns: repeat(4, minmax(150px, 250px));
+            grid-template-columns: repeat(4, 1fr);
             height: 0;
+            margin: 0 200px;
         }
     }
 </style>

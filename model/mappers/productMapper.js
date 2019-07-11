@@ -12,7 +12,7 @@ export function getMappedLayoutElement({
 }) {
     const { x: column, y: row } = position;
     const {
-        attribute_id: id, required, hint, placeholder,
+        attribute_id: id, required, hint, placeholder, parameters, options,
     } = properties;
     const { width, height } = size;
 
@@ -27,6 +27,8 @@ export function getMappedLayoutElement({
         hint,
         placeholder,
         required,
+        parameters,
+        options,
     };
 }
 

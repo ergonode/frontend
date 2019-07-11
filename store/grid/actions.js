@@ -202,20 +202,16 @@ export default {
             }
         }
     },
-    addDraftToProduct({ commit, state }, { draft, productId }) {
+    addDraftToProduct({ commit, state }, { columnId, productId, value }) {
         const { rows } = state;
         const productIndex = rows.findIndex(row => row.id === productId);
 
         if (productIndex !== -1) {
-            Object.keys(draft).forEach((key) => {
-                if (rows[productIndex][key] !== undefined) {
-                    const productToAdd = { ...rows[productIndex], [key]: draft[key] };
+            const productToAdd = { ...rows[productIndex], [columnId]: value };
 
-                    commit(types.ADD_DRAFT_TO_PRODUCT_AT_INDEX, {
-                        index: productIndex,
-                        product: productToAdd,
-                    });
-                }
+            commit(types.ADD_DRAFT_TO_PRODUCT_AT_INDEX, {
+                index: productIndex,
+                product: productToAdd,
             });
         }
     },

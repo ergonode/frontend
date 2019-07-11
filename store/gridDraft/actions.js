@@ -9,13 +9,19 @@ export default {
         productId, columnId, elementId, value, languageCode,
     }) {
         const { drafts } = state;
-        const { [productId]: { draftId } } = drafts;
-        const path = `${languageCode}/products/${draftId}/draft/${elementId}/value`;
+        const path = `${languageCode}/products/${productId}/draft/${elementId}/value`;
+
+        if (!drafts[productId]) {
+            commit('initializeProductDraft', productId);
+        }
 
         if (!drafts[productId][columnId]) {
-            commit('addColumnKey', { productId, columnId });
+            commit('initializeColumnProductDraft', { productId, columnId });
         }
-        commit('addColumnKeyValue', { productId, columnId, value });
+
+        commit('addDraftValueForLanguageCode', {
+            productId, columnId, languageCode, value,
+        });
 
         await this.app.$axios.$put(path, { value }).then(() => {
             // Clear validation error if exist
@@ -30,25 +36,6 @@ export default {
             }
         });
     },
-    getDraft({ commit, state }, {
-        id, languageCode, onError,
-    }) {
-        if (state.drafts[id]) return null;
-
-        return this.app.$axios.$get(`${languageCode}/products/${id}/draft`).then(({
-            id: draftId,
-            product_id: productId,
-        }) => {
-            commit('addRowKey', { productId });
-            commit('addDraftKey', { productId, draftId });
-        }).catch(e => onError(e.data));
-    },
-    applyDraft({ rootState }, {
-        id, onSuccess, onError,
-    }) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/drafts/${id}/persist`, {}).then(response => onSuccess(response)).catch(e => onError(e.data));
-    },
-    removeDraft: ({ commit }, { productId }) => commit('removeDraft', { productId }),
+    removeDraft: ({ commit }, productId) => commit('removeDraft', productId),
     forceDraftsMutation: ({ commit }) => commit('forceDraftsMutation'),
 };

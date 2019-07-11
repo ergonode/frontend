@@ -6,7 +6,7 @@
     <Select
         :value="localValue"
         solid
-        :label="name"
+        :label="label"
         :placeholder="placeholder"
         :multiselect="multiselect"
         :dismissible="!multiselect"
