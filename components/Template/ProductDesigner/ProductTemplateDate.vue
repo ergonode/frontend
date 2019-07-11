@@ -6,7 +6,7 @@
     <Select
         :value="value"
         solid
-        :label="name"
+        :label="label"
         :placeholder="parameters.format"
         :error-messages="errorMessages"
         :dismissible="false"
