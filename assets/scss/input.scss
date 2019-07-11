@@ -139,7 +139,7 @@
             }
         }
 
-        &.center-alignment {
+        &.center-alignment, &:not(&.solid) {
             #{$input}__content::after {
                 transform: scaleX(1);
             }

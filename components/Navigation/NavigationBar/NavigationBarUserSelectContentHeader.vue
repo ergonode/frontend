@@ -59,11 +59,12 @@ export default {
 
         &__image {
             display: flex;
+            flex-direction: column;
             grid-column: 1;
             grid-row: 1 / 3;
 
             & > img {
-                height: 72px;
+                height: 64px;
                 object-fit: contain;
             }
         }

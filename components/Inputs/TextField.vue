@@ -24,7 +24,6 @@
         @focus="onFocus">
         <input
             slot="input"
-            slot-scope="{ onFocusLost }"
             :value="value"
             :placeholder="placeholder"
             :autofocus="autofocus"
@@ -33,8 +32,7 @@
             :max="maxRange"
             :disabled="disabled"
             :aria-label="label || 'no description'"
-            @input="emitValue"
-            @focusout="onFocusLost">
+            @input="emitValue">
         <slot
             slot="appendIcon"
             name="appendIcon" />

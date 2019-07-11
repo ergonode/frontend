@@ -189,6 +189,12 @@ export default {
             selectBoundingBox: {},
         };
     },
+    mounted() {
+        if (this.autofocus) {
+            this.selectBoundingBox = this.getSelectBoundingBox();
+            this.focused = true;
+        }
+    },
     computed: {
         appendStateIcon() {
             return this.focused

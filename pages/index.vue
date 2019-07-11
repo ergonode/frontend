@@ -78,7 +78,6 @@ export default {
         ]),
         async onSubmit() {
             await this.authenticateUser({ data: this.userAuthData });
-            await this.getUser();
 
             this.$router.push('/dashboard');
         },

@@ -82,11 +82,12 @@ export default {
 
         &:after {
             position: absolute;
-            top: 0;
+            top: -1px;
             left: -1px;
+            bottom: -1px;
             z-index: 1;
             width: 3px;
-            height: 100%;
+            height: calc(100% + 2px);
             background-color: $success;
             opacity: 0;
             content: "";

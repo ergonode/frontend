@@ -62,7 +62,8 @@ export default {
         justify-content: center;
         align-items: center;
         width: 400px;
-        padding: 18px;
+        padding: 10px 18px;
+        margin: 2px 0;
         background-color: $white;
 
         &__title {
