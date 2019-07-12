@@ -7,6 +7,7 @@ import { removeFromObjectByKey } from '~/model/objectWrapper';
 
 export const types = {
     SET_ROWS_COUNT: 'SET_ROWS_COUNT',
+    SET_TREE_ID: 'SET_TREE_ID',
     SET_TREE: 'SET_TREE',
     ADD_TREE_ITEM: 'ADD_TREE_ITEM',
     SET_TREE_ITEM: 'SET_TREE_ITEM',
@@ -23,6 +24,9 @@ export default {
     },
     [types.SET_TREE](state, value) {
         state.treeData = value;
+    },
+    [types.SET_TREE_ID](state, value) {
+        state.treeId = value;
     },
     [types.ADD_TREE_ITEM](state, item) {
         state.treeData.push(item);

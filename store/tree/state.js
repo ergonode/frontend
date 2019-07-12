@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 const state = () => ({
+    treeId: null,
     treeLevels: 5,
     rowsHeight: 50,
     rowsCount: 0,
