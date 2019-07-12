@@ -58,7 +58,7 @@ export function isArrayEqualToArray(arr1, arr2) {
     const { length: arr1Length } = arr1;
     const { length: arr2Length } = arr2;
 
-    if (!arr1Length || !arr2Length) return false;
+    if (!arr1Length || !arr2Length || arr1Length !== arr2Length) return false;
 
     for (let i = 0; i < arr1Length; i += 1) {
         let isEqual = false;
