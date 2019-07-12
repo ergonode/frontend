@@ -93,6 +93,7 @@ export default {
             }
 
             if (this.isSelectKind) {
+                console.log(this.options);
                 return {
                     errorMessages: this.errorMessages,
                     multiselect: this.isMultiSelect,

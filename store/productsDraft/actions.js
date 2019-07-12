@@ -107,7 +107,7 @@ export default {
             languageCode,
         } = state;
         const index = state.layoutElements.findIndex(
-            element => element.attributeId === attributeId,
+            element => element.id === attributeId,
         );
 
         await this.app.$axios.$put(`${languageCode}/products/${id}/draft/${attributeId}/value`, { value }).then(() => {

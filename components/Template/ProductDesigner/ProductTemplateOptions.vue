@@ -4,13 +4,12 @@
  */
 <template>
     <Select
-        :value="localValue"
+        :value="parsedValue"
         solid
         :label="label"
         :placeholder="placeholder"
         :multiselect="multiselect"
         :dismissible="!multiselect"
-        :options="options"
         :error-messages="isError ? [' '] : null"
         :required="required"
         @focus="onFocusChange">
@@ -26,13 +25,13 @@
         <TranslationMultiselectListContent
             v-if="multiselect"
             slot="selectContent"
-            :options="options"
+            :options="parsedOptions"
             :selected-options="localValue || []"
             @values="onValueChange" />
         <TranslationSelectListContent
             v-else
             slot="selectContent"
-            :options="options"
+            :options="parsedOptions"
             :selected-option="localValue"
             @value="onValueChange" />
     </Select>
@@ -40,6 +39,7 @@
 
 <script>
 import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
+import { getValuesByKeys, getValueByKey } from '~/model/objectWrapper';
 
 export default {
     name: 'ProductTemplateOptions',
@@ -52,9 +52,8 @@ export default {
     },
     props: {
         options: {
-            type: Array,
-            required: false,
-            default: () => [],
+            type: Object,
+            required: true,
         },
         multiselect: {
             type: Boolean,
@@ -65,7 +64,15 @@ export default {
     data() {
         return {
             isFocused: false,
+            parsedValue: '',
         };
+    },
+    mounted() {
+        this.parsedValue = Array.isArray(this.value)
+            ? getValuesByKeys(this.options, this.value)
+            : getValueByKey(this.options, this.value);
+
+        this.localValue = this.value;
     },
     computed: {
         appendStateIcon() {
@@ -73,10 +80,26 @@ export default {
                 ? 'arrow-triangle trans-half'
                 : 'arrow-triangle';
         },
+        parsedOptions() {
+            const optionKeys = Object.keys(this.options);
+
+            return optionKeys.map(key => ({ key, value: this.options[key] }));
+        },
     },
     methods: {
         onFocusChange(isFocused) {
             this.isFocused = isFocused;
+        },
+        onValueChange(value) {
+            if (Array.isArray(value)) {
+                this.localValue = value;
+                this.parsedValue = getValuesByKeys(this.options, value);
+            } else {
+                this.localValue = value.key;
+                this.parsedValue = value.value;
+            }
+
+            this.debounceFunc(this.localValue);
         },
     },
 };

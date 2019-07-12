@@ -70,10 +70,8 @@ export default {
             'setProductTemplateElementValue',
         ]),
         onValueChange(value) {
-            const tmpValue = Array.isArray(value) ? value : value.key;
-
-            this.localValue = tmpValue;
-            this.debounceFunc(tmpValue);
+            this.localValue = value;
+            this.debounceFunc(value);
         },
         onSuccess(name) {
             this.removeValidationError(name);

@@ -15,7 +15,8 @@
                     v-for="(element, index) in layoutElements"
                     :key="index"
                     :style="getItemPosition(element)"
-                    :value="draft.attributes[element.id] || ''"
+                    :value="getValueForLayoutElementByCode(element.code, element.type)"
+                    :multiselect="element.type === 'MULTI_SELECT'"
                     v-bind="element" />
             </div>
         </TemplateGridDesigner>
@@ -98,6 +99,15 @@ export default {
             default:
                 return null;
             }
+        },
+        getValueForLayoutElementByCode(code, type) {
+            if (!this.draft.attributes[code]) return '';
+
+            if (type === 'SELECT' || type === 'MULTI_SELECT') {
+                return this.draft.attributes[code].value;
+            }
+
+            return this.draft.attributes[code].value[this.languageCode] || '';
         },
     },
 };

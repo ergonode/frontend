@@ -4,7 +4,7 @@
  */
 <template>
     <Select
-        :value="value"
+        :value="localValue"
         solid
         :label="label"
         :placeholder="parameters.format"
@@ -69,7 +69,9 @@ export default {
         onApplyDate(date, dismissSelect) {
             dismissSelect();
 
-            this.debounceFunc(this.formatDate(date));
+            this.localValue = this.formatDate(date);
+
+            this.debounceFunc(this.localValue);
         },
         onClearDate() {
             this.debounceFunc('');

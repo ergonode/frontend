@@ -12,12 +12,13 @@ export function getMappedLayoutElement({
 }) {
     const { x: column, y: row } = position;
     const {
-        attribute_id: id, required, hint, placeholder, parameters, options,
+        attribute_id: id, attribute_code: code, required, hint, placeholder, parameters, options,
     } = properties;
     const { width, height } = size;
 
     return {
         id,
+        code,
         row: row + 1,
         column: column + 1,
         width,
