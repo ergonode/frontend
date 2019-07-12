@@ -70,6 +70,7 @@ describe('arrayWrapper/isArrayEqualToArray', () => {
 
     expect(areEqual).toEqual(true);
   });
+
   it('Arrays are not equal', () => {
     let arr1 = [1, 2, 3];
     let arr2 = [1, 2, 3, 4];

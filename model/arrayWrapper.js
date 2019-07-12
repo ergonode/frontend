@@ -69,8 +69,8 @@ export function isArrayEqualToArray(arr1, arr2) {
             }
         }
 
-        if (!isEqual) return false;
+        return isEqual;
     }
 
-    return true;
+    return false;
 }
