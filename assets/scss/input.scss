@@ -165,7 +165,7 @@
             &.solid {
                 #{$input}__content {
                     border: 2px solid $success;
-                    padding: 6px 9px;
+                    padding: 5px 9px;
                 }
             }
         }
@@ -174,7 +174,7 @@
             &.solid {
                 #{$input}__content {
                     border: 2px solid $error;
-                    padding: 6px 9px;
+                    padding: 5px 9px;
                 }
             }
 
