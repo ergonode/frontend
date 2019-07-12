@@ -264,7 +264,6 @@ export default {
                 value,
                 languageCode: this.column.language || this.userLanguageCode,
             });
-            console.log(value);
         },
     },
 };

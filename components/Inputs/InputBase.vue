@@ -191,9 +191,10 @@ export default {
 
             if (this.isFocused || !this.isEmpty || this.isPlaceholder) {
                 const { inputContent } = this.$refs;
+                const transform = `translateY(-${inputContent.offsetHeight / 2}px)`;
 
                 return {
-                    transform: `translateY(-${inputContent.offsetHeight / 2}px)`,
+                    transform,
                     backgroundColor: '#fff',
                 };
             }
