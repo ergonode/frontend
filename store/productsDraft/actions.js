@@ -107,7 +107,7 @@ export default {
             languageCode,
         } = state;
         const index = state.layoutElements.findIndex(
-            element => element.attributeId === attributeId,
+            element => element.id === attributeId,
         );
 
         await this.app.$axios.$put(`${languageCode}/products/${id}/draft/${attributeId}/value`, { value }).then(() => {
@@ -149,7 +149,7 @@ export default {
         },
     ) {
         const { authentication: { user: { language } } } = rootState;
-        return this.app.$axios.$put(`${language}/drafts/${id}/persist`, {}).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {}).then(() => onSuccess()).catch(e => onError(e.data));
     },
     updateProduct(
         { rootState },

@@ -6,7 +6,7 @@
     <TextField
         :value="localValue"
         solid
-        :label="label"
+        :label="labelWithSuffix"
         :placeholder="placeholder"
         :error-messages="isError ? [' '] : null"
         :required="required"
@@ -29,17 +29,17 @@ export default {
         TextField: () => import('~/components/Inputs/TextField'),
     },
     computed: {
-        suffix() {
+        labelWithSuffix() {
             if (this.parameters) {
                 if (this.parameters.code) {
-                    return this.parameters.code;
+                    return `${this.label} [${this.parameters.code}]`;
                 }
                 if (this.parameters.currency) {
-                    return this.parameters.currency;
+                    return `${this.label} ${this.parameters.currency}`;
                 }
-                return '';
+                return this.label;
             }
-            return '';
+            return this.label;
         },
     },
 };

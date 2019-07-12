@@ -202,9 +202,11 @@ export default {
             const { filter } = this.column;
 
             if (this.draft && typeof this.draft[this.column.id] !== 'undefined') {
+                const languageCode = this.column.language || this.userLanguageCode;
+
                 if (filter && filter.options) {
                     const { options } = filter;
-                    const value = this.draft[this.column.id];
+                    const value = this.draft[this.column.id][languageCode];
 
                     if (Array.isArray(value)) {
                         return value.map(val => options[val] || 'No translation').join(', ');
@@ -214,7 +216,7 @@ export default {
                     }
                 }
 
-                return this.draft[this.column.id];
+                return this.draft[this.column.id][languageCode];
             }
 
             return null;
@@ -242,7 +244,6 @@ export default {
             'setSelectedRow',
         ]),
         ...mapActions('gridDraft', [
-            'getDraft',
             'updateDraftValue',
         ]),
         onEdit(isEditing) {
@@ -252,14 +253,6 @@ export default {
                 this.setEditingCellCoordinates(isEditing
                     ? { column: this.columnIndex, row: this.rowIndex }
                     : {});
-
-                if (isEditing) {
-                    this.getDraft({
-                        id: this.row.id,
-                        languageCode: this.column.language || this.userLanguageCode,
-                        onError: () => {},
-                    });
-                }
             }
         },
         onUpdateDraft(value) {

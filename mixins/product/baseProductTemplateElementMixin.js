@@ -66,11 +66,12 @@ export default {
             'onError',
             'removeValidationError',
         ]),
+        ...mapActions('productsDraft', [
+            'setProductTemplateElementValue',
+        ]),
         onValueChange(value) {
-            const tmpValue = Array.isArray(value) ? value : value.key;
-
-            this.localValue = tmpValue;
-            this.debounceFunc(tmpValue);
+            this.localValue = value;
+            this.debounceFunc(value);
         },
         onSuccess(name) {
             this.removeValidationError(name);
@@ -78,7 +79,7 @@ export default {
     },
     created() {
         this.debounceFunc = debounce((value) => {
-            this.$store.dispatch('productsDraft/setProductTemplateElementValue', {
+            this.setProductTemplateElementValue({
                 value,
                 attributeId: this.id,
                 required: this.required,

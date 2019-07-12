@@ -36,6 +36,10 @@
             min-width: 0;
             border: none;
         }
+
+        textarea {
+            height: 100%;
+        }
     }
 
     &__information-label {
@@ -50,9 +54,10 @@
             top: calc(50% - 8px);
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             color: $lightGraphite;
+            padding-left: 2px;
 
             &--required {
-                padding: 0 8px 0 2px;
+                padding-right: 8px;
             }
 
             &--required::after {
@@ -72,7 +77,6 @@
 
         #{$input}__label {
             position: absolute;
-            left: 12px;
             color: $lightGraphite;
         }
 
@@ -161,7 +165,7 @@
             &.solid {
                 #{$input}__content {
                     border: 2px solid $success;
-                    padding: 5px 9px;
+                    padding: 6px 9px;
                 }
             }
         }
@@ -170,7 +174,7 @@
             &.solid {
                 #{$input}__content {
                     border: 2px solid $error;
-                    padding: 5px 9px;
+                    padding: 6px 9px;
                 }
             }
 
