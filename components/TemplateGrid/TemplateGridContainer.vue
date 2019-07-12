@@ -35,10 +35,6 @@ export default {
             type: Array,
             required: true,
         },
-        hiddenItems: {
-            type: Object,
-            required: true,
-        },
         columns: {
             type: Number,
             required: true,
@@ -109,7 +105,15 @@ export default {
         },
         onDragStart(event) {
             const { clientY } = event;
-            const { children: categories } = this.$el.querySelector('.grid-items-container');
+            const itemsContainer = this.$el.querySelector('.grid-items-container');
+            const { children: categories } = itemsContainer;
+            const {
+                top: containerTop,
+                height: containerHeight,
+            } = itemsContainer.getBoundingClientRect();
+            if (clientY > containerHeight + containerTop) {
+                event.preventDefault();
+            }
             getRowBellowMouse({
                 clientY,
                 elements: categories,
