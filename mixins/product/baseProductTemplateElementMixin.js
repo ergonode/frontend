@@ -13,7 +13,6 @@ export default {
     props: {
         placeholder: {
             type: String,
-            required: false,
             default: '',
         },
         label: {
@@ -34,7 +33,7 @@ export default {
         },
         hint: {
             type: String,
-            required: true,
+            default: '',
         },
         parameters: {
             type: [Array, Object],

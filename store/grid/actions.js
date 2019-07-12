@@ -49,8 +49,9 @@ export default {
         }
 
         return this.app.$axios.$get(path, { params }).then(({
-            configuration, collection: rows, columns, count, filtered,
+            configuration, collection: rows, columns, info,
         }) => {
+            const { count, filtered } = info;
             const columnsToMap = columnsID ? getSortedColumnsByIDs(columns, columnsID) : columns;
             const visibleColumns = columnsToMap.filter(col => col.visible);
             const mappedColumns = getMappedColumns(visibleColumns);

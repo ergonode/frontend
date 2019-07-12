@@ -22,9 +22,9 @@
             :is-select-kind="isSelectKind"
             :is-multi-select="isMultiSelect"
             :type="column.type"
-            :value="draftValue || cellKeyValue"
+            :value="draftValue || row[column.id] || ''"
             :options="options"
-            :parameters="column.parameters"
+            :parameters="parameters"
             :error-messages="errorValue"
             @updateValue="onUpdateDraft" />
     </GridCell>
@@ -32,7 +32,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getKeyByValue } from '~/model/objectWrapper';
+import { isArrayEqualToArray } from '~/model/arrayWrapper';
+import { hasParams } from '~/model/attributes/AttributeTypes';
 
 export default {
     name: 'GridWrapperCell',
@@ -148,31 +149,10 @@ export default {
                     row: this.rowIndex,
                 };
             default:
-                return {
-                    value: this.draftValue || this.cellValue,
-                };
+                if (this.draftValue === null) return { value: this.cellValue };
+
+                return { value: this.draftValue };
             }
-        },
-        cellKeyValue() {
-            const value = this.row[this.column.id];
-            const { filter } = this.column;
-
-            if (!value) return '';
-            if (filter && filter.options) {
-                const { options } = filter;
-
-                if (Array.isArray(value)) {
-                    return value.map((val) => {
-                        const key = getKeyByValue(options, val);
-
-                        return key || '';
-                    });
-                }
-
-                return getKeyByValue(options, value);
-            }
-
-            return value;
         },
         cellValue() {
             const value = this.row[this.column.id];
@@ -183,11 +163,7 @@ export default {
                 const { options } = filter;
 
                 if (Array.isArray(value)) {
-                    return value.map((val) => {
-                        const key = getKeyByValue(options, val);
-
-                        return options[key] || '';
-                    }).join(', ');
+                    return value.map(key => options[key] || '').join(', ');
                 }
                 if (typeof options[value] !== 'undefined') {
                     return options[value] || 'No translation';
@@ -237,6 +213,13 @@ export default {
 
             return optionKeys.map(key => ({ key, value: options[key] }));
         },
+        parameters() {
+            if (hasParams(this.column.type)) {
+                return this.column.parameters;
+            }
+
+            return null;
+        },
     },
     methods: {
         ...mapActions('grid', [
@@ -256,7 +239,11 @@ export default {
             }
         },
         onUpdateDraft(value) {
-            if (this.cellValue === value) return;
+            const cellValue = this.row[this.column.id] || '';
+
+            if (cellValue === value
+                || (Array.isArray(value) && isArrayEqualToArray(value, cellValue))) return;
+
             this.updateDraftValue({
                 productId: this.row.id,
                 columnId: this.column.id,

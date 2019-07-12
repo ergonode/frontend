@@ -4,7 +4,7 @@
  */
 <template>
     <nuxt-link
-        :class="['action-link', {'action-link--odd': row % 2 === 0}]"
+        class="action-link"
         :to="actionLink"
         aria-label="edit">
         <Icon
@@ -60,9 +60,5 @@ export default {
         justify-content: center;
         align-items: center;
         padding: 8px;
-
-        &--odd {
-            background-color: $background;
-        }
     }
 </style>

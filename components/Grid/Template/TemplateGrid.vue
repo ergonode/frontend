@@ -173,8 +173,10 @@ export default {
         flex-grow: 1;
 
         .horizontal-wrapper {
-            display: flex;
+            display: grid;
+            grid-template-columns: max-content auto;
             flex: 1;
+            grid-column-gap: 24px;
             margin: 24px 24px 0;
         }
 

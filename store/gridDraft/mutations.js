@@ -13,6 +13,8 @@ export default {
         productId, columnId, languageCode, value,
     }) => {
         state.drafts[productId][columnId][languageCode] = value;
+        state.drafts[productId] = { ...state.drafts[productId] };
+        state.drafts = { ...state.drafts };
     },
     removeDraft: (state, productId) => {
         delete state.drafts[productId];

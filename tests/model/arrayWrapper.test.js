@@ -3,10 +3,10 @@
  * See LICENSE for license details.
  */
 import {
-  sumArray,
   swapItemPosition,
   getObjectWithMaxValueInArrayByObjectKey,
   getMinObjectValueInArrayByObjectKey,
+  isArrayEqualToArray,
 } from '~/model/arrayWrapper';
 
 describe('arrayWrapper/swapItemPosition', () => {
@@ -58,5 +58,39 @@ describe('arrayWrapper/maxObjectValueInArrayByObjectKeyByObjectKey', () => {
     const maxValue = getObjectWithMaxValueInArrayByObjectKey([], 'a');
 
     expect(maxValue).toEqual(0);
+  });
+});
+
+describe('arrayWrapper/isArrayEqualToArray', () => {
+  it('Arrays are equal', () => {
+    const arr1 = [1, 2, 3, 4];
+    const arr2 = [1, 2, 3, 4];
+
+    const areEqual = isArrayEqualToArray(arr1, arr2);
+
+    expect(areEqual).toEqual(true);
+  });
+
+  it('Arrays are not equal', () => {
+    let arr1 = [1, 2, 3];
+    let arr2 = [1, 2, 3, 4];
+
+    let areEqual = isArrayEqualToArray(arr1, arr2);
+
+    expect(areEqual).toEqual(false);
+
+    arr1 = [1];
+    arr2 = [2, 3];
+
+    areEqual = isArrayEqualToArray(arr1, arr2);
+
+    expect(areEqual).toEqual(false);
+
+    arr1 = [];
+    arr2 = [];
+
+    areEqual = isArrayEqualToArray(arr1, arr2);
+
+    expect(areEqual).toEqual(false);
   });
 });
