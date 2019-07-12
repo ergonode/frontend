@@ -26,6 +26,7 @@ export default {
     computed: {
         ...mapState('tree', {
             treeData: state => state.treeData,
+            treeId: state => state.treeId,
         }),
     },
     created() {
@@ -48,14 +49,12 @@ export default {
             this.$addAlert(this.$store, { type: 'success', message: 'Tree updated' });
         },
         onSave() {
-            const treeId = 'ed8121fd-e815-4f9e-ae8f-9c37615fb0f9';
             const categoryTree = {
-                id: treeId,
                 name: 'default',
                 categories: getMappedTreeData(this.treeData),
             };
             this.updateTree({
-                id: treeId,
+                id: this.treeId,
                 data: categoryTree,
                 onSuccess: this.onUpdateTreeSuccess,
                 onError: () => {},
@@ -76,7 +75,7 @@ export default {
         });
         await store.dispatch('tree/clearStorage');
         await store.dispatch('tree/getTreeById', {
-            treeId: 'ed8121fd-e815-4f9e-ae8f-9c37615fb0f9',
+            treeName: 'default',
             onError: (err) => {
                 if (err.response && err.response.status === 404) {
                     return error({ statusCode: 404, message: err.message });
