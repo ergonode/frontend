@@ -10,6 +10,7 @@
         :placeholder="placeholder"
         :required="required"
         :error-messages="errorMessages"
+        resize="none"
         @input="onValueChange">
         <ProductTemplateDetailsContent
             slot="appendIcon"

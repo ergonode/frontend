@@ -53,3 +53,24 @@ export function swapItemPosition(array, pos1, pos2) {
 
     return tmpArray;
 }
+
+export function isArrayEqualToArray(arr1, arr2) {
+    const { length: arr1Length } = arr1;
+    const { length: arr2Length } = arr2;
+
+    if (!arr1Length || !arr2Length) return false;
+
+    for (let i = 0; i < arr1Length; i += 1) {
+        let isEqual = false;
+        for (let j = 0; j < arr2Length; j += 1) {
+            if (arr1[i] === arr2[j]) {
+                isEqual = true;
+                break;
+            }
+        }
+
+        if (!isEqual) return false;
+    }
+
+    return true;
+}

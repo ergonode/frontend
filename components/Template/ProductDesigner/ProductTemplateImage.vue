@@ -26,9 +26,9 @@ export default {
         updateValue(value = '') {
             this.setProductTemplateElementValue({
                 value,
-                attributeId: this.attributeId,
+                attributeId: this.id,
                 required: this.required,
-                name: this.name,
+                name: this.label,
                 onSuccess: this.onSuccess,
                 onError: this.onError,
             });
