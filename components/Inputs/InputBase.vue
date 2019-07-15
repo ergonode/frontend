@@ -282,6 +282,8 @@ export default {
         dismissSelect() {
             this.isFocused = false;
             this.blurInput();
+
+            this.$emit('focus', false);
         },
         onClickOutside(event) {
             const { clientX, clientY } = event;
