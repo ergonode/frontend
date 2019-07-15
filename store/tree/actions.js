@@ -13,6 +13,9 @@ export default {
     setRowsCount: ({ commit }, value) => {
         commit(types.SET_ROWS_COUNT, value);
     },
+    setTree: ({ commit }, tree) => {
+        commit(types.SET_TREE, tree);
+    },
     getTreeById(
         { commit, rootState },
         { treeName, onError },

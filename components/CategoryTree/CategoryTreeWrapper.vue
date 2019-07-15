@@ -12,7 +12,6 @@
             :rows="rowsCount"
             :rows-height="rowsHeight"
             :grid-data="filteredGridData"
-            :hidden-items="hiddenItems"
             @addItem="addTreeItem"
             @removeItem="removeTreeItem"
             @rebuildGrid="rebuildTree"
@@ -79,11 +78,14 @@ export default {
             };
         },
         filteredGridData() {
-            return this.gridData.filter(item => item.column < this.columns);
+            return this.gridData.filter(
+                item => item.column < this.columns,
+            );
         },
     },
     methods: {
         ...mapActions('tree', [
+            'setTree',
             'setRowsCount',
             'addTreeItem',
             'removeTreeItem',
@@ -96,10 +98,12 @@ export default {
                 acc.push(...this.hiddenItems[el]);
                 return acc;
             }, []);
-            return hiddenItems.some(e => e === id);
+            return hiddenItems.some(e => e.id === id);
         },
-        getChildren(itemId) {
-            return this.gridData.filter(({ parent }) => parent === itemId);
+        getChildren(parentId) {
+            const visibleChildren = this.gridData.filter(({ parent }) => parent === parentId);
+            const hiddenChilden = this.hiddenItems[parentId] || [];
+            return visibleChildren.length > 0 ? visibleChildren : hiddenChilden;
         },
         expandItem(isExpanded, { id, row, column }) {
             const children = this.getChildren(id);
@@ -109,11 +113,17 @@ export default {
             );
             const minChildRow = Math.min(...childrenRows);
             const maxChildRow = neighbor ? neighbor.row : this.gridData.length;
-            const childrenToHide = this.gridData.filter(
-                e => e.row >= minChildRow && e.row <= maxChildRow - 1,
-            );
+            const newGrdData = this.gridData.reduce((acc, e) => {
+                if (e.row >= minChildRow && e.row <= maxChildRow - 1) {
+                    acc.hidden.push(e);
+                } else {
+                    acc.visible.push(e);
+                }
+                return acc;
+            }, { hidden: [], visible: [] });
             if (!isExpanded) {
-                this.setHiddenItem({ key: id, value: childrenToHide.map(e => e.id) });
+                this.setHiddenItem({ key: id, value: newGrdData.hidden });
+                // this.setTree(newGrdData.visible); // rebuild indexes in array
             } else {
                 this.removeHiddenItem(id);
             }
