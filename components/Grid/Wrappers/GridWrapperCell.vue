@@ -175,20 +175,14 @@ export default {
             return value;
         },
         draftValue() {
-            if (this.draft && typeof this.draft[this.column.id] !== 'undefined') {
-                const languageCode = this.column.language || this.userLanguageCode;
-
-                return this.draft[this.column.id][languageCode];
-            }
+            this.isDraft(languageCode => this.draft[this.column.id][languageCode]);
 
             return null;
         },
         parsedDraftValue() {
             const { filter } = this.column;
 
-            if (this.draft && typeof this.draft[this.column.id] !== 'undefined') {
-                const languageCode = this.column.language || this.userLanguageCode;
-
+            this.isDraft((languageCode) => {
                 if (filter && filter.options) {
                     const { options } = filter;
                     const value = this.draft[this.column.id][languageCode];
@@ -202,7 +196,7 @@ export default {
                 }
 
                 return this.draft[this.column.id][languageCode];
-            }
+            });
 
             return null;
         },
@@ -260,6 +254,13 @@ export default {
                 value,
                 languageCode: this.column.language || this.userLanguageCode,
             });
+        },
+        isDraft(completion) {
+            if (this.draft && typeof this.draft[this.column.id] !== 'undefined') {
+                const languageCode = this.column.language || this.userLanguageCode;
+
+                completion(languageCode);
+            }
         },
     },
 };
