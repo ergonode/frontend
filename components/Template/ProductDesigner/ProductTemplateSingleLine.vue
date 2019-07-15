@@ -42,5 +42,10 @@ export default {
             return this.label;
         },
     },
+    watch: {
+        value() {
+            this.localValue = this.value;
+        },
+    },
 };
 </script>

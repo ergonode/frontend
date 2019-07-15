@@ -47,11 +47,6 @@ export default {
             debounceFunc: null,
         };
     },
-    watch: {
-        value() {
-            this.localValue = this.value;
-        },
-    },
     computed: {
         errorMessages() {
             return this.elementIsValidate(this.label);
