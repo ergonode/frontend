@@ -122,14 +122,10 @@ export default {
                 return acc;
             }, { hidden: [], visible: [] });
             if (!isExpanded) {
-                // TODO: tests
-                // TODO: remove isHidden function
-                // TODO: 3 array on storage; VISIBLE, HIDDEN, ALL
                 this.setHiddenItem({ key: id, value: newGrdData.hidden });
-                this.setTree(newGrdData.visible); // rebuild indexes in array
+                // this.setTree(newGrdData.visible); // rebuild indexes in array
             } else {
                 this.removeHiddenItem(id);
-                // TODO: add children to parent when visible
             }
         },
     },
