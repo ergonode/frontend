@@ -67,12 +67,13 @@ export default {
             parsedValue: '',
         };
     },
-    mounted() {
-        this.parsedValue = Array.isArray(this.value)
-            ? getValuesByKeys(this.options, this.value)
-            : getValueByKey(this.options, this.value);
-
-        this.localValue = this.value;
+    watch: {
+        parsedOptions() {
+            this.initializeValues(this.value);
+        },
+    },
+    created() {
+        this.initializeValues(this.value);
     },
     computed: {
         appendStateIcon() {
@@ -87,6 +88,13 @@ export default {
         },
     },
     methods: {
+        initializeValues(value) {
+            this.parsedValue = Array.isArray(value)
+                ? getValuesByKeys(this.options, value)
+                : getValueByKey(this.options, value);
+
+            this.localValue = value;
+        },
         onFocusChange(isFocused) {
             this.isFocused = isFocused;
         },
