@@ -254,6 +254,8 @@ export default {
             // Tab
             if (keyCode === 9 && !this.isFocused) {
                 this.isFocused = true;
+                this.focusInput();
+                this.$emit('focus', true);
             }
         },
         onKeyDown(event) {
@@ -262,6 +264,7 @@ export default {
             // Tab
             if (keyCode === 9 && this.isFocused) {
                 this.isFocused = false;
+                this.blurInput();
             }
         },
         onFocusInput(event) {
@@ -272,13 +275,13 @@ export default {
             }
 
             this.focusInput();
-
             this.$emit('focus', true);
 
             return true;
         },
         dismissSelect() {
             this.isFocused = false;
+            this.blurInput();
         },
         onClickOutside(event) {
             const { clientX, clientY } = event;
