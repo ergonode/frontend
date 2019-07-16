@@ -123,7 +123,7 @@ export default {
             }, { hidden: [], visible: [] });
             if (!isExpanded) {
                 this.setHiddenItem({ key: id, value: newGrdData.hidden });
-                // this.setTree(newGrdData.visible); // rebuild indexes in array
+                // this.setTree(newGrdData.visible); // TODO: rebuild indexes in array
             } else {
                 this.removeHiddenItem(id);
             }
