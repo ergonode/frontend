@@ -33,15 +33,15 @@ describe('arrayWrapper/maxObjectValueInArrayByObjectKeyByObjectKey', () => {
   it('Getting max value of object property in array', () => {
     const array = [{ a: 1 }, null, { a: 2 }, { a: 6}, { a: 2 }, null ];
 
-    const maxValue = getObjectWithMaxValueInArrayByObjectKey(array, 'a');
+    const maxObject = getObjectWithMaxValueInArrayByObjectKey(array, 'a');
 
-    expect(maxValue.a).toEqual(6);
+    expect(maxObject.a).toEqual(6);
   });
 
   it('Array has no elements', () => {
-    const maxValue = getObjectWithMaxValueInArrayByObjectKey([], 'a');
+    const maxObject = getObjectWithMaxValueInArrayByObjectKey([], 'a');
 
-    expect(maxValue).toEqual(0);
+    expect(maxObject).toEqual(null);
   });
 });
 
@@ -52,12 +52,6 @@ describe('arrayWrapper/maxObjectValueInArrayByObjectKeyByObjectKey', () => {
     const minValue = getMinObjectValueInArrayByObjectKey(array, 'a');
 
     expect(minValue).toEqual(1);
-  });
-
-  it('Array has no elements', () => {
-    const maxValue = getObjectWithMaxValueInArrayByObjectKey([], 'a');
-
-    expect(maxValue).toEqual(0);
   });
 });
 

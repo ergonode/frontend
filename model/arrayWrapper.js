@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export function getObjectWithMaxValueInArrayByObjectKey(array, propName) {
-    if (!array.length) return 0;
+    if (!array.length) return null;
 
     return array.reduce(
         (prev, current) => {
