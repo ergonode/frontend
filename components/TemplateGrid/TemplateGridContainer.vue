@@ -171,7 +171,6 @@ export default {
                 || leftAtTheLeft
                 || leftAtTheRight);
             if (isOutOfBounds) {
-                // event.preventDefault();
                 this.removeGhostElement();
             }
         },
