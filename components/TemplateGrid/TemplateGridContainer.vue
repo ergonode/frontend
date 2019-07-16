@@ -157,9 +157,20 @@ export default {
             return true;
         },
         onDragLeave(event) {
-            event.preventDefault();
-            const { fromElement } = event;
-            if (fromElement && fromElement.classList.contains('blur')) {
+            const { clientX, clientY } = event;
+            const itemsContainer = document.querySelector('.grid-container');
+            const {
+                top, right, width, height,
+            } = itemsContainer.getBoundingClientRect();
+            const leftAtTheLeft = clientX <= right - width;
+            const leftAtTheRight = clientX >= right;
+            const leftAtTheTop = clientY <= top;
+            const leftAtTheBottom = clientY >= (top + height);
+            const isOutOfBounds = (leftAtTheTop
+                || leftAtTheBottom
+                || leftAtTheLeft
+                || leftAtTheRight);
+            if (isOutOfBounds) {
                 this.removeGhostElement();
             }
         },
