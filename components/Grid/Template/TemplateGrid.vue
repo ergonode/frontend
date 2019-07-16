@@ -114,9 +114,15 @@ export default {
             };
         },
         maxLayoutRow() {
-            const { row, height } = getObjectWithMaxValueInArrayByObjectKey(this.layoutElements, 'row');
+            const layoutElement = getObjectWithMaxValueInArrayByObjectKey(this.layoutElements, 'row');
 
-            return Math.max(this.maxRow, row + height);
+            if (layoutElement) {
+                const { row, height } = layoutElement;
+
+                return Math.max(this.maxRow, row + height);
+            }
+
+            return this.maxRow;
         },
     },
     methods: {

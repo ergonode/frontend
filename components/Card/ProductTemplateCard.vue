@@ -57,11 +57,17 @@ export default {
             draft: state => state.draft,
         }),
         maxRowOfLayoutElements() {
-            const { row, height } = getObjectWithMaxValueInArrayByObjectKey(this.layoutElements, 'row');
-            const maxElementRow = row + height;
             const maxVisibleRows = this.columnsNumber * this.maxRows;
+            const layoutElement = getObjectWithMaxValueInArrayByObjectKey(this.layoutElements, 'row');
 
-            return Math.min(maxElementRow, maxVisibleRows);
+            if (layoutElement) {
+                const { row, height } = layoutElement;
+                const maxElementRow = row + height;
+
+                return Math.min(maxElementRow, maxVisibleRows);
+            }
+
+            return maxVisibleRows;
         },
         gridStyle() {
             return {

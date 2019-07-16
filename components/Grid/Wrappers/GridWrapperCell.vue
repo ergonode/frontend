@@ -149,9 +149,9 @@ export default {
                     row: this.rowIndex,
                 };
             default:
-                if (this.draftValue === null) return { value: this.cellValue };
+                if (this.parsedDraftValue === null) return { value: this.cellValue };
 
-                return { value: this.draftValue };
+                return { value: this.parsedDraftValue };
             }
         },
         cellValue() {
@@ -163,7 +163,7 @@ export default {
                 const { options } = filter;
 
                 if (Array.isArray(value)) {
-                    return value.map(key => options[key] || '').join(', ');
+                    return value.map(key => options[key] || 'No translation').join(', ');
                 }
                 if (typeof options[value] !== 'undefined') {
                     return options[value] || 'No translation';
@@ -175,6 +175,15 @@ export default {
             return value;
         },
         draftValue() {
+            if (this.draft && typeof this.draft[this.column.id] !== 'undefined') {
+                const languageCode = this.column.language || this.userLanguageCode;
+
+                return this.draft[this.column.id][languageCode];
+            }
+
+            return null;
+        },
+        parsedDraftValue() {
             const { filter } = this.column;
 
             if (this.draft && typeof this.draft[this.column.id] !== 'undefined') {
