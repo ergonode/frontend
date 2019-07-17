@@ -137,6 +137,7 @@ export default {
             this.columnBounds = [];
         },
         onDrop(event) {
+            event.preventDefault();
             if (!this.isColumnDragging) {
                 const columnId = event.dataTransfer.getData('text/plain');
 

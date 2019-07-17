@@ -136,8 +136,11 @@ export default {
     .category-tree-wrapper {
         z-index: 20;
         display: flex;
+        flex: 1 1 auto;
         flex-direction: column;
-        height: 100%;
+        justify-content: space-between;
+        height: 0;
+        padding: 0 12px;
     }
 
     .bounce-enter-active, .bounce-leave-active {
