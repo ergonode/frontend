@@ -4,7 +4,7 @@
  */
 <template>
     <List>
-        <div class="list-wrapper">
+        <div class="element-wrapper">
             <CategoryListElement
                 v-for="element in elementsByLanguageCode"
                 :key="element.id"
@@ -44,7 +44,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .list-wrapper {
+    .element-wrapper {
         height: 0;
     }
 </style>
