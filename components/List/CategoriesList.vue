@@ -4,11 +4,13 @@
  */
 <template>
     <List>
-        <CategoryListElement
-            v-for="element in elementsByLanguageCode"
-            :key="element.id"
-            :item="element"
-            :language-code="languageCode" />
+        <div class="list-wrapper">
+            <CategoryListElement
+                v-for="element in elementsByLanguageCode"
+                :key="element.id"
+                :item="element"
+                :language-code="languageCode" />
+        </div>
     </List>
 </template>
 
@@ -40,3 +42,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .list-wrapper {
+        height: 0;
+    }
+</style>

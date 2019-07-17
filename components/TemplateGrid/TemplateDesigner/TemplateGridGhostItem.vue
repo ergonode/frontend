@@ -65,7 +65,8 @@ export default {
         },
     },
     methods: {
-        onDrop() {
+        onDrop(event) {
+            event.preventDefault();
             if (this.isGhostElement) {
                 removeGhostElementFromDraggableLayer();
 

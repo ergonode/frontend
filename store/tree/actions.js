@@ -22,7 +22,7 @@ export default {
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { [userLanguageCode]: categories } = rootState.list.elements;
-        return this.app.$axios.$get(`${userLanguageCode}/trees/`).then(({ collection }) => {
+        return this.app.$axios.$get(`${userLanguageCode}/trees`).then(({ collection }) => {
             const treeId = collection.find(e => e.name === treeName).id;
             commit(types.SET_TREE_ID, treeId);
             return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({ categories: treeData }) => {
