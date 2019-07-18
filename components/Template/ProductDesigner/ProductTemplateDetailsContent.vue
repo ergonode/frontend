@@ -31,7 +31,7 @@ export default {
         },
         hint: {
             type: String,
-            required: true,
+            default: '',
         },
         errorMessages: {
             type: String,
