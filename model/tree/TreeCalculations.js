@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-const positionBeetwenRows = 0.5;
+const positionBetweenRows = 0.5;
 
 export function rebuildTreeWhenElementRemoved(treeData, index) {
     return treeData.reduce((accumulator, current, i) => {
@@ -15,16 +15,45 @@ export function rebuildTreeWhenElementRemoved(treeData, index) {
     }, []);
 }
 
-export function rebuildTreeWhenGhostElementRemoved(treeData, index) {
+export function rebuildTreeWhenGhostElementRemoved(treeData, id) {
+    const findIndex = treeData.findIndex(el => el.id === id);
     return treeData.reduce((accumulator, current, i) => {
-        if (i === index && current.row !== 0) {
-            accumulator.push({ ...current, row: current.row + positionBeetwenRows });
-        } else if (i > index) {
+        if (i === findIndex && current.row !== 0) {
+            accumulator.push({ ...current, row: current.row + positionBetweenRows });
+        } else if (i > findIndex) {
             accumulator.push({ ...current, row: current.row + 1 });
         } else {
             accumulator.push(current);
         }
         return accumulator;
+    }, []);
+}
+
+export function rebuildTreeWhenElementCollapse(treeData, id) {
+    const findIndex = treeData.findIndex(el => el.id === id);
+    return treeData.reduce((accumulator, current, i) => {
+        if (i > findIndex) {
+            accumulator.push({ ...current, row: i });
+        } else {
+            accumulator.push(current);
+        }
+        return accumulator;
+    }, []);
+}
+
+export function rebuildTreeWhenElementExpand(hiddenTree, visibleTree, index) {
+    const hiddenChildren = hiddenTree[index];
+    const findIndex = visibleTree.findIndex(el => el.id === index);
+    return visibleTree.reduce((accumulator, current, i) => {
+        let expandedTree = accumulator;
+        if (i === findIndex) {
+            expandedTree = [...expandedTree, current, ...hiddenChildren];
+        } else if (i > findIndex) {
+            expandedTree.push({ ...current, row: current.row + hiddenChildren.length });
+        } else {
+            expandedTree.push(current);
+        }
+        return expandedTree;
     }, []);
 }
 

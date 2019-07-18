@@ -12,7 +12,6 @@ export const types = {
     ADD_TREE_ITEM: 'ADD_TREE_ITEM',
     SET_TREE_ITEM: 'SET_TREE_ITEM',
     REMOVE_TREE_ITEM: 'REMOVE_TREE_ITEM',
-    REBUILD_TREE: 'REBUILD_TREE',
     SET_HIDDEN_ITEM: 'SET_HIDDEN_ITEM',
     REMOVE_HIDDEN_ITEM: 'REMOVE_HIDDEN_ITEM',
     CLEAR_STORAGE: 'CLEAR_STORAGE',
@@ -41,9 +40,6 @@ export default {
             ? state.treeData.filter(el => el.id !== id)
             : state.treeData.filter((el, index) => index !== id);
         state.treeData = newTree;
-    },
-    [types.REBUILD_TREE](state, { tree }) {
-        state.treeData = tree;
     },
     [types.SET_HIDDEN_ITEM](state, { key, value }) {
         state.hiddenItems = { ...state.hiddenItems, [key]: value };

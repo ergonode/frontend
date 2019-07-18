@@ -11,7 +11,7 @@
             :columns="columns"
             :rows="rowsCount"
             :rows-height="rowsHeight"
-            :grid-data="filteredGridData"
+            :tree-data="filteredTreeData"
             @addItem="addTreeItem"
             @removeItem="removeTreeItem"
             @rebuildGrid="rebuildTree"
@@ -24,8 +24,7 @@
                 :style="gridStyles"
                 @removeItem="removeTreeItem">
                 <TemplateGridItemArea
-                    v-for="item in filteredGridData"
-                    v-show="!isHidden(item.id)"
+                    v-for="item in filteredTreeData"
                     :key="item.id"
                     :item="item"
                     :columns="columns">
@@ -68,7 +67,7 @@ export default {
             columns: state => state.treeLevels,
             rowsHeight: state => state.rowsHeight,
             rowsCount: state => state.rowsCount,
-            gridData: state => state.treeData,
+            treeData: state => state.treeData,
             hiddenItems: state => state.hiddenItems,
         }),
         gridStyles() {
@@ -77,15 +76,16 @@ export default {
                 gridAutoRows: `${this.rowsHeight}px`,
             };
         },
-        filteredGridData() {
-            return this.gridData.filter(
+        filteredTreeData() {
+            return this.treeData.filter(
                 item => item.column < this.columns,
             );
         },
     },
     methods: {
         ...mapActions('tree', [
-            'setTree',
+            'setTreeWhenCollapse',
+            'setTreeWhenExpand',
             'setRowsCount',
             'addTreeItem',
             'removeTreeItem',
@@ -101,19 +101,19 @@ export default {
             return hiddenItems.some(e => e.id === id);
         },
         getChildren(parentId) {
-            const visibleChildren = this.gridData.filter(({ parent }) => parent === parentId);
-            const hiddenChilden = this.hiddenItems[parentId] || [];
-            return visibleChildren.length > 0 ? visibleChildren : hiddenChilden;
+            const visibleChildren = this.treeData.filter(({ parent }) => parent === parentId);
+            const hiddenChildren = this.hiddenItems[parentId] || [];
+            return visibleChildren.length > 0 ? visibleChildren : hiddenChildren;
         },
         expandItem(isExpanded, { id, row, column }) {
             const children = this.getChildren(id);
             const childrenRows = children.map(e => e.row);
-            const [neighbor] = this.gridData.filter(
+            const [neighbor] = this.treeData.filter(
                 e => e.column <= column && e.row > row,
             );
             const minChildRow = Math.min(...childrenRows);
-            const maxChildRow = neighbor ? neighbor.row : this.gridData.length;
-            const newGrdData = this.gridData.reduce((acc, e) => {
+            const maxChildRow = neighbor ? neighbor.row : this.treeData.length;
+            const treeCategories = this.treeData.reduce((acc, e) => {
                 if (e.row >= minChildRow && e.row <= maxChildRow - 1) {
                     acc.hidden.push(e);
                 } else {
@@ -122,9 +122,11 @@ export default {
                 return acc;
             }, { hidden: [], visible: [] });
             if (!isExpanded) {
-                this.setHiddenItem({ key: id, value: newGrdData.hidden });
-                // this.setTree(newGrdData.visible); // TODO: rebuild indexes in array
+                this.setHiddenItem({ key: id, value: treeCategories.hidden });
+                // TODO: uncomment when algorithm to removing category from tree will be over
+                this.setTreeWhenCollapse({ tree: treeCategories.visible, id });
             } else {
+                this.setTreeWhenExpand(id);
                 this.removeHiddenItem(id);
             }
         },

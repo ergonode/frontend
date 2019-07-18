@@ -7,7 +7,6 @@
         class="grid-item"
         :title="itemName">
         <Icon
-            v-show="false"
             v-if="hasChildren"
             class="grid-item__icon"
             :icon="btnExpanderIcon"
@@ -20,7 +19,7 @@
         </span>
         <span
             v-if="hasChildren"
-            class="grid-item__categoies-length txt-fixed typo-hint txt--dark-graphite"
+            class="grid-item__categories-length txt-fixed typo-hint txt--dark-graphite"
             :title="getNumberOfCategoriesLabel">
             {{ getNumberOfCategoriesLabel }}
         </span>
@@ -95,7 +94,7 @@ export default {
             margin: 0 8px;
         }
 
-        &__categoies-length {
+        &__categories-length {
             flex: 0 1 auto;
             border: 1px solid $grey;
             padding: 2px 8px;

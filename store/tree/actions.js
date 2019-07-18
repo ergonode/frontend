@@ -6,6 +6,8 @@ import { types } from './mutations';
 import {
     rebuildTreeWhenElementRemoved,
     rebuildTreeWhenGhostElementRemoved,
+    rebuildTreeWhenElementCollapse,
+    rebuildTreeWhenElementExpand,
 } from '~/model/tree/TreeCalculations';
 import { getParsedTreeData } from '~/model/mappers/treeMapper';
 
@@ -23,7 +25,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { [userLanguageCode]: categories } = rootState.list.elements;
         return this.app.$axios.$get(`${userLanguageCode}/trees`).then(({ collection }) => {
-            const treeId = collection.find(e => e.name === treeName).id;
+            const treeId = collection.find(e => e.name.toLowerCase() === treeName.toLowerCase()).id;
             commit(types.SET_TREE_ID, treeId);
             return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({ categories: treeData }) => {
                 commit(types.SET_TREE, getParsedTreeData(treeData, categories));
@@ -42,13 +44,20 @@ export default {
         commit(types.REMOVE_TREE_ITEM, id);
         if (Number.isInteger(id)) {
             const newTree = rebuildTreeWhenElementRemoved(state.treeData, id);
-            commit(types.REBUILD_TREE, { tree: newTree });
+            commit(types.SET_TREE, newTree);
         }
     },
+    setTreeWhenCollapse: ({ commit }, { tree, id }) => {
+        const newTree = rebuildTreeWhenElementCollapse(tree, id);
+        commit(types.SET_TREE, newTree);
+    },
+    setTreeWhenExpand: ({ commit, state }, id) => {
+        const newTree = rebuildTreeWhenElementExpand(state.hiddenItems, state.treeData, id);
+        commit(types.SET_TREE, newTree);
+    },
     rebuildTree: ({ commit, state }, id) => {
-        const findIndex = state.treeData.findIndex(el => el.id === id);
-        const newTree = rebuildTreeWhenGhostElementRemoved(state.treeData, findIndex);
-        commit(types.REBUILD_TREE, { tree: newTree });
+        const newTree = rebuildTreeWhenGhostElementRemoved(state.treeData, id);
+        commit(types.SET_TREE, newTree);
     },
     setHiddenItem: ({ commit }, { key, value }) => {
         commit(types.SET_HIDDEN_ITEM, { key, value });

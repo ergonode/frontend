@@ -29,7 +29,7 @@ describe('CategoryTree/CategoryTreeItem', () => {
       expect(wrapper.vm.numberOfChildren).toEqual(0)
       expect(wrapper.vm.hasChildren).toBeFalsy();
       expect(wrapper.find('.grid-item__icon').exists()).toBe(false);
-      expect(wrapper.find('.grid-item__categoies-length').exists()).toBe(false);
+      expect(wrapper.find('.grid-item__categories-length').exists()).toBe(false);
     });
 
     it('Check if item has children', () => {
@@ -37,7 +37,7 @@ describe('CategoryTree/CategoryTreeItem', () => {
         numberOfChildren: 3,
       });
       const icon = wrapper.find('.grid-item__icon');
-      const categoiesLength = wrapper.find('.grid-item__categoies-length');
+      const categoiesLength = wrapper.find('.grid-item__categories-length');
       expect(wrapper.vm.hasChildren).toBeTruthy();
       expect(icon).toBeTruthy();
       expect(categoiesLength).toBeTruthy();
