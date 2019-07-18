@@ -3,10 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="['header-cell', { 'header-cell--draggable': !isPinnedColumn && isColumnEditable }]"
-        @mouseenter="onMouseEnter"
-        @mouseleave="onMouseLeave">
+    <div :class="['header-cell', { 'draggable': !isPinnedColumn && isColumnEditable }]">
         <span
             class="header-cell__title txt-fixed"
             v-text="title" />
@@ -57,11 +54,25 @@ export default {
             default: false,
         },
     },
-    data: () => ({
-        contextualMenuItems: ['Remove'],
-        isContextualMenuActive: false,
-        isMouseOver: false,
-    }),
+    data() {
+        return {
+            contextualMenuItems: ['Remove'],
+            isContextualMenuActive: false,
+            isMouseOver: false,
+        };
+    },
+    mounted() {
+        if (!this.isPinnedColumn) {
+            this.$el.addEventListener('mouseenter', this.onMouseEnter);
+            this.$el.addEventListener('mouseleave', this.onMouseLeave);
+        }
+    },
+    destroyed() {
+        if (!this.isPinnedColumn) {
+            this.$el.removeEventListener('mouseenter', this.onMouseEnter);
+            this.$el.removeEventListener('mouseleave', this.onMouseLeave);
+        }
+    },
     computed: {
         ...mapState('draggable', {
             isColumnDragging: state => state.isColumnDragging,
@@ -236,7 +247,7 @@ export default {
             @include setFont(bold, small, regular, $graphite);
         }
 
-        &--draggable {
+        .draggable {
             cursor: grab;
         }
 
