@@ -4,79 +4,73 @@
  */
 <template>
     <div class="date-range-picker">
-        <div class="date-picker">
+        <div class="date-range-picker__left">
             <DatePickerNavigationHeader
                 :header="getDisplayingMonthAndYear(
                     lowerBoundMonth, lowerBoundYear
-                )"
-                @previousDate="onPreviousDate"
-                @nextDate="onNextDate" />
-            <!--            <DatePickerContentHeader :headers="weekDays" />-->
-            <!--            <DatePickerMonthDays-->
-            <!--                :dates="lowerBoundCalendarDates"-->
-            <!--                :selected-dates="parsedRange"-->
-            <!--                @select="onSelectRange" />-->
-            <DatePickerCalendarContent
-                :date="value.from"
-                :month="month"
-                :current-month="currentMonth"
-                :year="year"
-                :years="years"
-                :current-year="currentYear"
-                :calendar-type="selectedCalendarType"
-                @input="onDateChange"
-                @month="onMonthChange"
-                @year="onYearChange"
-                @calendarType="onCalendarTypeChange"
-                @calendarHeader="onCalendarHeaderChange" />
+                )">
+                <Button
+                    slot="previous"
+                    icon="arrow-dart trans-quarter"
+                    fab
+                    color="transparent"
+                    ripple-color="rgba(235, 235, 236, 1)"
+                    @click.native="previousMonth" />
+                <div
+                    slot="next"
+                    class="expander" />
+            </DatePickerNavigationHeader>
+            <DatePickerContentHeader :headers="weekDays" />
+            <DatePickerMonthDays
+                :dates="lowerBoundCalendarDates"
+                :selected-dates="parsedRange"
+                @select="onSelectRange" />
         </div>
-        <div class="vertical-divider" />
-        <div class="date-picker">
+        <div class="date-range-picker__right">
             <DatePickerNavigationHeader
                 :header="getDisplayingMonthAndYear(
                     upperBoundMonth, upperBoundYear
-                )"
-                @previousDate="onPreviousDate"
-                @nextDate="onNextDate" />
-            <!--            <DatePickerContentHeader :headers="weekDays" />-->
-            <!--            <DatePickerMonthDays-->
-            <!--                :dates="upperBoundCalendarDates"-->
-            <!--                :selected-dates="parsedRange"-->
-            <!--                @select="onSelectRange" />-->
-            <DatePickerCalendarContent
-                :date="value.to"
-                :month="month"
-                :current-month="currentMonth"
-                :year="year"
-                :years="years"
-                :current-year="currentYear"
-                :calendar-type="selectedCalendarType"
-                @input="onDateChange"
-                @month="onMonthChange"
-                @year="onYearChange"
-                @calendarType="onCalendarTypeChange"
-                @calendarHeader="onCalendarHeaderChange" />
+                )">
+                <div
+                    slot="previous"
+                    class="expander" />
+                <Button
+                    slot="next"
+                    icon="arrow-dart trans-three-fourth"
+                    fab
+                    color="transparent"
+                    ripple-color="rgba(235, 235, 236, 1)"
+                    @click.native="nextMonth" />
+            </DatePickerNavigationHeader>
+            <DatePickerContentHeader :headers="weekDays" />
+            <DatePickerMonthDays
+                :dates="upperBoundCalendarDates"
+                :selected-dates="parsedRange"
+                @select="onSelectRange" />
         </div>
     </div>
 </template>
 
 <script>
-import DatePickerCalendarContent from '~/components/Inputs/Date/DatePickerCalendarContent';
+
+import Button from '~/components/Buttons/Button';
+import DatePickerMonthDays from '~/components/Inputs/Date/DatePickerMonthDays';
+import DatePickerContentHeader from '~/components/Inputs/Date/DatePickerContentHeader';
 import DatePickerNavigationHeader from '~/components/Inputs/Date/DatePickerNavigationHeader';
 import calendar, {
     getNextMonth,
     getPreviousMonth,
-    getYearsWithinRange,
-    getHeaderForCalendarDaysType,
-    getHeaderForCalendarYearsType,
+    WEEK_DAYS,
+    CALENDAR_MONTHS,
 } from '~/model/calendar/calendar';
-import { CalendarType } from '~/model/calendar/CalendarType';
 
 export default {
     name: 'DateRangePicker',
     components: {
+        Button,
+        DatePickerMonthDays,
+        DatePickerContentHeader,
         DatePickerNavigationHeader,
-        DatePickerCalendarContent,
     },
     props: {
         value: {
@@ -91,20 +85,16 @@ export default {
         const year = today.getFullYear();
 
         return {
-            years: getYearsWithinRange([], year),
-            currentYear: year,
-            currentMonth: month,
-            month,
-            year,
-            selectedCalendarType: CalendarType.DAY,
-            calendarHeader: getHeaderForCalendarDaysType(month, year),
-            // lowerBoundMonth: month,
-            // lowerBoundYear: year,
-            // upperBoundMonth: month === 12 ? 1 : month + 1,
-            // upperBoundYear: month === 12 ? year + 1 : year,
+            lowerBoundMonth: month,
+            lowerBoundYear: year,
+            upperBoundMonth: month === 12 ? 1 : month + 1,
+            upperBoundYear: month === 12 ? year + 1 : year,
         };
     },
     computed: {
+        weekDays() {
+            return Object.values(WEEK_DAYS);
+        },
         lowerBoundCalendarDates() {
             return calendar(this.lowerBoundMonth, this.lowerBoundYear);
         },
@@ -122,7 +112,37 @@ export default {
         },
     },
     methods: {
-        onDateChange(date) {
+        getDisplayingMonthAndYear(month, year) {
+            return `${this.getDisplayingMonth(month)} ${year}`;
+        },
+        getDisplayingMonth(month) {
+            return Object.keys(CALENDAR_MONTHS)[Math.max(0, Math.min(month - 1, 11))];
+        },
+        previousMonth() {
+            const { month, year } = getPreviousMonth(this.lowerBoundMonth, this.lowerBoundYear);
+
+            this.lowerBoundMonth = month;
+            this.lowerBoundYear = year;
+            this.upperBoundMonth = this.upperBoundMonth > 1
+                ? this.upperBoundMonth - 1
+                : 12;
+            this.upperBoundYear = this.upperBoundMonth === 12
+                ? this.upperBoundYear - 1
+                : this.upperBoundYear;
+        },
+        nextMonth() {
+            const { month, year } = getNextMonth(this.upperBoundMonth, this.upperBoundYear);
+
+            this.upperBoundMonth = month;
+            this.upperBoundYear = year;
+            this.lowerBoundMonth = this.lowerBoundMonth < 12
+                ? this.lowerBoundMonth + 1
+                : 1;
+            this.lowerBoundYear = this.lowerBoundMonth === 1
+                ? this.lowerBoundYear + 1
+                : this.lowerBoundYear;
+        },
+        onSelectRange(date) {
             const to = this.value.to
                 ? new Date(this.value.to)
                 : null;
@@ -145,76 +165,24 @@ export default {
 
             this.$emit('input', { from, to: dateToInsert });
         },
-        onMonthChange(month) {
-            this.month = month;
-        },
-        onYearChange(year) {
-            this.year = year;
-        },
-        onCalendarTypeChange(type) {
-            this.selectedCalendarType = type;
-        },
-        onCalendarHeaderChange(header) {
-            this.calendarHeader = header;
-        },
-        onPreviousDate() {
-            const { month, year } = getPreviousMonth(this.lowerBoundMonth, this.lowerBoundYear);
-
-            this.lowerBoundMonth = month;
-            this.lowerBoundYear = year;
-            this.upperBoundMonth = this.upperBoundMonth > 1
-                ? this.upperBoundMonth - 1
-                : 12;
-            this.upperBoundYear = this.upperBoundMonth === 12
-                ? this.upperBoundYear - 1
-                : this.upperBoundYear;
-        },
-        onNextDate() {
-            const { month, year } = getNextMonth(this.upperBoundMonth, this.upperBoundYear);
-
-            this.upperBoundMonth = month;
-            this.upperBoundYear = year;
-            this.lowerBoundMonth = this.lowerBoundMonth < 12
-                ? this.lowerBoundMonth + 1
-                : 1;
-            this.lowerBoundYear = this.lowerBoundMonth === 1
-                ? this.lowerBoundYear + 1
-                : this.lowerBoundYear;
-        },
-        onChangeCalendarType() {
-            switch (this.selectedCalendarType) {
-            case CalendarType.DAY:
-                this.selectedCalendarType = CalendarType.MONTH;
-                this.calendarHeader = this.year;
-                break;
-            case CalendarType.MONTH:
-                this.selectedCalendarType = CalendarType.YEAR;
-                this.calendarHeader = getHeaderForCalendarYearsType(this.years);
-                break;
-            case CalendarType.YEAR:
-                this.selectedCalendarType = CalendarType.DAY;
-                this.calendarHeader = getHeaderForCalendarDaysType(this.month, this.year);
-                break;
-            default: break;
-            }
-        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
     .date-range-picker {
-        display: grid;
-        grid-template-columns: 256px 1px 256px;
-        grid-auto-flow: column;
+        display: flex;
 
-        .date-picker {
-            padding: 16px;
+        &__left {
+            margin-right: 8px;
         }
 
-        .vertical-divider {
-            height: 100%;
-            background-color: $lightGrey;
+        &__right {
+            margin-left: 8px;
+        }
+
+        .expander {
+            flex-basis: 32px;
         }
     }
 </style>

@@ -4,24 +4,26 @@
  */
 <template>
     <div class="date-picker-header">
-        <Button
-            slot="previous"
-            icon="arrow-single trans-quarter"
-            fab
-            color="transparent"
-            ripple-color="rgba(235, 235, 236, 1)"
-            @click.native="onPrevious" />
+        <slot name="previous">
+            <Button
+                icon="arrow-single trans-quarter"
+                fab
+                color="transparent"
+                ripple-color="rgba(235, 235, 236, 1)"
+                @click.native="onPrevious" />
+        </slot>
         <span
             class="header"
             @click="onClick"
             v-text="header" />
-        <Button
-            slot="next"
-            icon="arrow-single trans-three-fourth"
-            fab
-            color="transparent"
-            ripple-color="rgba(235, 235, 236, 1)"
-            @click.native="onNext" />
+        <slot name="next">
+            <Button
+                icon="arrow-single trans-three-fourth"
+                fab
+                color="transparent"
+                ripple-color="rgba(235, 235, 236, 1)"
+                @click.native="onNext" />
+        </slot>
     </div>
 </template>
 

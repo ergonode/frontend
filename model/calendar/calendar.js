@@ -31,7 +31,7 @@ export const CALENDAR_MONTHS = {
     December: 'Dec',
 };
 
-export const CALENDAR_WEEKS = 6;
+export const CALENDAR_WEEKS = 5;
 
 // Pads a string value with leading zeroes(0) until length is reached
 // For example: zeroPad(5, 2) => "05"

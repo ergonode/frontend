@@ -4,6 +4,9 @@
  */
 <template>
     <div class="date-picker">
+        <slot name="header">
+            <DatePickerHeader :header="header" />
+        </slot>
         <DatePickerNavigationHeader
             :header="calendarHeader"
             @changeCalendarType="onChangeCalendarType"
@@ -26,6 +29,7 @@
 </template>
 
 <script>
+import DatePickerHeader from '~/components/Inputs/Date/DatePickerHeader';
 import DatePickerNavigationHeader from '~/components/Inputs/Date/DatePickerNavigationHeader';
 import DatePickerCalendarContent from '~/components/Inputs/Date/DatePickerCalendarContent';
 import {
@@ -38,12 +42,15 @@ import {
     getYearsWithinRange,
     getHeaderForCalendarDaysType,
     getHeaderForCalendarYearsType,
+    zeroPad,
+    CALENDAR_MONTHS,
 } from '~/model/calendar/calendar';
 import { CalendarType } from '~/model/calendar/CalendarType';
 
 export default {
     name: 'DatePicker',
     components: {
+        DatePickerHeader,
         DatePickerNavigationHeader,
         DatePickerCalendarContent,
     },
@@ -52,21 +59,49 @@ export default {
             type: Date,
             default: null,
         },
+        calendarDate: {
+            type: Date,
+            default() {
+                return new Date();
+            },
+        },
     },
     data() {
-        const currentDate = new Date();
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth() + 1;
+        const today = new Date();
+        const year = this.calendarDate.getFullYear();
+        const month = this.calendarDate.getMonth() + 1;
 
         return {
             years: getYearsWithinRange([], year),
-            currentYear: year,
-            currentMonth: month,
+            currentYear: today.getFullYear(),
+            currentMonth: today.getMonth() + 1,
             month,
             year,
             selectedCalendarType: CalendarType.DAY,
             calendarHeader: getHeaderForCalendarDaysType(month, year),
         };
+    },
+    computed: {
+        header() {
+            if (!this.value) return 'Pick a date';
+
+            const day = this.value.getDate();
+            const month = this.value.getMonth();
+            const year = this.value.getFullYear();
+
+            switch (this.selectedCalendarType) {
+            case CalendarType.DAY:
+                return `${day}.${zeroPad(month, 2)}.${year}`;
+            case CalendarType.MONTH: {
+                const monthDesc = Object.values(CALENDAR_MONTHS)[month];
+                return `${monthDesc} ${year}`;
+            }
+            case CalendarType.YEAR:
+                return year;
+            default:
+                return '';
+            }
+        },
     },
     methods: {
         onDateChange(value) {
