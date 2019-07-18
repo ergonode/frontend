@@ -4,13 +4,15 @@
  */
 <template>
     <List>
-        <AttributeListGroup
-            v-for="(group, index) in groups[languageCode]"
-            :key="index"
-            :group="group"
-            :language-code="languageCode"
-            :is-expanded="expendedGroupId === group.id"
-            @expandedGroup="setExpandedGroupID" />
+        <div class="group-wrapper">
+            <AttributeListGroup
+                v-for="(group, index) in groups[languageCode]"
+                :key="index"
+                :group="group"
+                :language-code="languageCode"
+                :is-expanded="expendedGroupId === group.id"
+                @expandedGroup="setExpandedGroupID" />
+        </div>
     </List>
 </template>
 
