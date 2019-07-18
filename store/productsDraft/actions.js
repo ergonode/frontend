@@ -54,6 +54,7 @@ export default {
                     categories,
                     categoryIds,
                 );
+
                 commit(types.SET_PRODUCT_CATEGORIES, selectedCategories);
             }
 

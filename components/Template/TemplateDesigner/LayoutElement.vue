@@ -114,11 +114,11 @@ export default {
 
             this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
-        onDragEnd() {
+        onDragEnd(event) {
             this.isDragged = false;
             this.highlightingPositions = [];
             this.setDraggedElement();
-            removeLayoutElementCopyFromDocumentBody();
+            removeLayoutElementCopyFromDocumentBody(event);
             this.$emit('highlightedPositionChange', []);
         },
         initResizeDrag(event) {

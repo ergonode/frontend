@@ -16,7 +16,7 @@
                 :class="typeLabelClasses"
                 v-text="element.type" />
             <span
-                class="txt--dark-graphite typo-subtitle txt-fixed "
+                class="element-content__subheader txt--dark-graphite typo-subtitle"
                 v-text="element.label" />
         </div>
         <div :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
@@ -70,10 +70,10 @@ export default {
         },
         typeLabelClasses() {
             return [
+                'element-content__header',
                 'txt--light-graphite',
                 'typo-label',
                 'l-spacing--half',
-                'txt-fixed',
             ];
         },
     },
@@ -119,6 +119,16 @@ export default {
         &__icon {
             display: flex;
             padding-top: 12px;
+        }
+
+        &__subheader {
+            height: 20px;
+        }
+
+        &__header, &__subheader {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            word-break: break-all;
         }
 
         &__contextual-menu {
