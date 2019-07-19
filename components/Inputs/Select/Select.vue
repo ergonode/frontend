@@ -30,9 +30,9 @@
             :aria-label="label || 'no description'"
             type="text"
             readonly>
-        <slot
-            slot="appendIcon"
-            name="appendIcon" />
+        <template v-slot:appendIcon>
+            <slot name="appendIcon" />
+        </template>
         <FadeTransition
             v-if="isFocused"
             slot="select"

@@ -16,9 +16,11 @@ export function addLayoutElementCopyToDocumentBody(event) {
     clonedDOMElement.classList.add('cloned-layout-element');
     document.body.appendChild(clonedDOMElement);
     event.dataTransfer.setDragImage(clonedDOMElement, offsetX, offsetY);
+    event.dataTransfer.setData('text/plain', 'layoutElement');
 }
 
-export function removeLayoutElementCopyFromDocumentBody() {
+export function removeLayoutElementCopyFromDocumentBody(event) {
     const clonedDOMElement = document.documentElement.querySelector('.cloned-layout-element');
     document.body.removeChild(clonedDOMElement);
+    event.dataTransfer.clearData();
 }

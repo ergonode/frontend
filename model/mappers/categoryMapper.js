@@ -6,7 +6,7 @@
 export function getMappedCategoryValues(categories, selectedCategories) {
     return categories.filter(
         category => selectedCategories.some(
-            selectedCategory => category.id === selectedCategory,
+            selectedCategory => category.code === selectedCategory,
         ),
     ).map(category => category.code);
 }
