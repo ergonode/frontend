@@ -13,15 +13,12 @@
         :dragged="isDragged"
         :disabled="isElementDisabled(draggableListID, languageCode)">
         <ListElementDescription
-            :title="getCategoryName()"
+            :title="getCategoryName"
             :subtitle="productsCount"
             title-typo="typo-subtitle"
             title-color="txt--dark-graphite"
             subtitle-typo="typo-hint"
             subtitle-color="txt--light-graphite" />
-        <span
-            v-if="isTranslation"
-            class="typo-hint txt--light-graphite">No translation</span>
     </ListElement>
 </template>
 
@@ -48,7 +45,6 @@ export default {
     data() {
         return {
             isDragged: false,
-            isTranslation: false,
             draggedElementStyle: { width: 246, height: 32, backgroundColor: '#fff' },
             draggableListID: this.item.id,
         };
@@ -59,6 +55,10 @@ export default {
         ]),
         productsCount() {
             return `${this.item.elements_count || 0} Product${this.item.elements_count === 1 ? '' : 's'}`;
+        },
+        getCategoryName() {
+            const { name, code } = this.item;
+            return name || code;
         },
     },
     methods: {
@@ -80,14 +80,6 @@ export default {
             }
 
             this.setDraggableState({ propName: 'isListElementDragging', value: this.isDragged });
-        },
-        getCategoryName() {
-            const { name, code } = this.item;
-            if (!name) {
-                this.isTranslation = true;
-                return code;
-            }
-            return name;
         },
     },
 };
