@@ -124,9 +124,9 @@ export default {
             if (!isExpanded) {
                 this.setHiddenItem({ key: id, value: treeCategories.hidden });
                 // TODO: uncomment when algorithm to removing category from tree will be over
-                this.setTreeWhenCollapse({ tree: treeCategories.visible, id });
+                // this.setTreeWhenCollapse({ tree: treeCategories.visible, id });
             } else {
-                this.setTreeWhenExpand(id);
+                // this.setTreeWhenExpand(id);
                 this.removeHiddenItem(id);
             }
         },
