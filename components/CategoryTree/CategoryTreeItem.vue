@@ -7,7 +7,6 @@
         class="grid-item"
         :title="itemName">
         <Icon
-            v-show="false"
             v-if="hasChildren"
             class="grid-item__icon"
             :icon="btnExpanderIcon"

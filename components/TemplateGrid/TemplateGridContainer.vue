@@ -127,6 +127,9 @@ export default {
                     addTreeElementCopyToDocumentBody(event, category);
                     this.$emit('removeItem', index);
                 } else {
+                    // const categoryId = category.getAttribute('item-id');
+                    // const item = this.dataWithoutGhostElement.find(e => e.id === categoryId);
+                    // this.$emit('expandItem', false, item);
                     this.$addAlert(this.$store, { type: 'warning', message: 'Can`t move the category which has subcategory.', duration: 1500 });
                     event.preventDefault();
                 }
@@ -183,20 +186,22 @@ export default {
             const { code: categoryCode, name: categoryName } = this.listElements[this.language]
                 .find(e => e.id === this.draggedElement);
             this.removeGhostElement();
-            this.addItem({
+            const droppedItem = {
                 id: this.draggedElement,
                 code: categoryCode,
                 name: categoryName,
                 column,
                 row,
                 parent: this.getParentId(row, column),
-            });
+            };
+            this.addItem(droppedItem);
             if (withoutGhostLength >= this.rows - 2) {
                 this.setRowsCount(this.rows + 1);
             }
             this.$emit('rebuildGrid', this.draggedElement);
             this.setDraggedElement();
             this.setDraggableState({ propName: 'isListElementDragging', value: false });
+            // this.$emit('expandItem', true, droppedItem);
         },
         removeGhostElement() {
             this.ghostElement.row = null;
