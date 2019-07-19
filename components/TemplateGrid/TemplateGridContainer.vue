@@ -180,12 +180,13 @@ export default {
             event.preventDefault();
             const { row, column } = this.ghostElement;
             const { length: withoutGhostLength } = this.dataWithoutGhostElement;
-            const { code: categoryCode } = this.listElements[this.language]
+            const { code: categoryCode, name: categoryName } = this.listElements[this.language]
                 .find(e => e.id === this.draggedElement);
             this.removeGhostElement();
             this.addItem({
                 id: this.draggedElement,
                 code: categoryCode,
+                name: categoryName,
                 column,
                 row,
                 parent: this.getParentId(row, column),
