@@ -4,10 +4,12 @@
  */
 <template>
     <List>
-        <WidgetListElement
-            v-for="(widget, index) in widgets"
-            :key="index"
-            :item="widget" />
+        <div class="elements-wrapper">
+            <WidgetListElement
+                v-for="(widget, index) in widgets"
+                :key="index"
+                :item="widget" />
+        </div>
     </List>
 </template>
 
@@ -30,3 +32,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .elements-wrapper {
+        height: 0;
+    }
+</style>

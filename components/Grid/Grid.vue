@@ -111,7 +111,7 @@ export default {
             const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
             const ghostColumnExists = this.ghostColumnIndex !== -1;
 
-            this.removeColumnCopy();
+            this.removeColumnCopy(event);
 
             if (ghostColumnExists) {
                 this.removeColumnAtIndex({ index: this.ghostColumnIndex });
@@ -282,6 +282,7 @@ export default {
             document.body.appendChild(clonedDOMElement);
 
             event.dataTransfer.setDragImage(clonedDOMElement, clonedDOMElement.offsetWidth / 2, 0);
+            event.dataTransfer.setData('text/plain', 'gridColumn');
         },
         insertIDToColumnsIDCookie({ index }) {
             const columnsID = this.columns.map(col => col.id).filter(id => id !== 'extender' && id !== 'ghost');
@@ -296,7 +297,8 @@ export default {
             const columnsID = this.columns.map(col => col.id).filter(id => id !== 'extender' && id !== 'ghost');
             this.$cookies.set('columnsID', columnsID.join(','));
         },
-        removeColumnCopy() {
+        removeColumnCopy(event) {
+            event.preventDefault();
             const clonedDOMElement = document.body.querySelector('.cloned-column-element');
             document.body.removeChild(clonedDOMElement);
         },

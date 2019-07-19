@@ -13,27 +13,28 @@
         :error-messages="isError ? [' '] : null"
         :required="required"
         @focus="onFocusChange">
-        <ProductTemplateDetailsContent
-            slot="appendIcon"
-            :hint="hint"
-            :error-messages="errorMessages"
-            :is-error="isError">
-            <template v-slot:append>
-                <Icon :icon="appendStateIcon" />
-            </template>
-        </ProductTemplateDetailsContent>
-        <TranslationMultiselectListContent
-            v-if="multiselect"
-            slot="selectContent"
-            :options="parsedOptions"
-            :selected-options="localValue || []"
-            @values="onValueChange" />
-        <TranslationSelectListContent
-            v-else
-            slot="selectContent"
-            :options="parsedOptions"
-            :selected-option="localValue"
-            @value="onValueChange" />
+        <template v-slot:appendIcon>
+            <ProductTemplateDetailsContent
+                :hint="hint"
+                :error-messages="errorMessages"
+                :is-error="isError">
+                <template v-slot:append>
+                    <Icon :icon="appendStateIcon" />
+                </template>
+            </ProductTemplateDetailsContent>
+        </template>
+        <template v-slot:selectContent>
+            <TranslationMultiselectListContent
+                v-if="multiselect"
+                :options="parsedOptions"
+                :selected-options="localValue || []"
+                @values="onValueChange" />
+            <TranslationSelectListContent
+                v-else
+                :options="parsedOptions"
+                :selected-option="localValue"
+                @value="onValueChange" />
+        </template>
     </Select>
 </template>
 
