@@ -10,17 +10,19 @@
         :locked="isLockedCell"
         :action-cell="isActionCell"
         :on-edit="onEdit">
-        <Component
-            :is="infoComponent"
-            v-if="!isEditingCell || isActionCell"
-            v-bind="infoComponentProps" />
-        <GridEditActivatorCell
-            v-else
-            :is-select-kind="isSelectKind"
-            :is-multi-select="isMultiSelect"
-            :value="filterValue"
-            :options="options"
-            @updateValue="onUpdateFilter" />
+        <template v-if="!isExtenderColumn">
+            <Component
+                :is="infoComponent"
+                v-if="!isEditingCell || isActionCell"
+                v-bind="infoComponentProps" />
+            <GridEditActivatorCell
+                v-else
+                :is-select-kind="isSelectKind"
+                :is-multi-select="isMultiSelect"
+                :value="filterValue"
+                :options="options"
+                @updateValue="onUpdateFilter" />
+        </template>
     </GridCell>
 </template>
 
@@ -58,6 +60,9 @@ export default {
             isSelectedAllRows: state => state.isSelectedAllRows,
             editingCellCoordinates: state => state.editingCellCoordinates,
         }),
+        isExtenderColumn() {
+            return this.column.id === 'extender';
+        },
         isEditingCell() {
             const { row, column } = this.editingCellCoordinates;
 

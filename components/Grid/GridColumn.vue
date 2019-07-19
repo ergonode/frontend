@@ -49,9 +49,11 @@ export default {
             default: false,
         },
     },
-    data: () => ({
-        isDragged: false,
-    }),
+    data() {
+        return {
+            isDragged: false,
+        };
+    },
     computed: {
         colRowsTemplate() {
             return {
@@ -63,9 +65,6 @@ export default {
         },
         isGhostColumn() {
             return this.column.id === 'ghost';
-        },
-        isStickyColumn() {
-            return this.column.isLeftPinned || this.column.isRightPinned;
         },
     },
 };
@@ -103,13 +102,10 @@ export default {
                 inset 0 1px 5px 0 rgba(0, 0, 0, 0.2);
         }
 
-        &__right-pinned, &__extender {
-            position: sticky;
-            z-index: 3;
-        }
-
         &__right-pinned {
+            position: sticky;
             right: 0;
+            z-index: 3;
         }
 
         &__left-pinned {

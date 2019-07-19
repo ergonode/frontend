@@ -13,20 +13,22 @@
         :action-cell="isActionCell"
         :selected="isSelected"
         :on-edit="onEdit">
-        <Component
-            :is="infoComponent"
-            v-if="!isEditingCell || isActionCell"
-            v-bind="infoComponentProps" />
-        <GridEditActivatorCell
-            v-else
-            :is-select-kind="isSelectKind"
-            :is-multi-select="isMultiSelect"
-            :type="column.type"
-            :value="draftValue || row[column.id] || ''"
-            :options="options"
-            :parameters="parameters"
-            :error-messages="errorValue"
-            @updateValue="onUpdateDraft" />
+        <template v-if="!isExtenderColumn">
+            <Component
+                :is="infoComponent"
+                v-if="!isEditingCell || isActionCell"
+                v-bind="infoComponentProps" />
+            <GridEditActivatorCell
+                v-else
+                :is-select-kind="isSelectKind"
+                :is-multi-select="isMultiSelect"
+                :type="column.type"
+                :value="draftValue || row[column.id] || ''"
+                :options="options"
+                :parameters="parameters"
+                :error-messages="errorValue"
+                @updateValue="onUpdateDraft" />
+        </template>
     </GridCell>
 </template>
 
@@ -84,6 +86,9 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
+        isExtenderColumn() {
+            return this.column.id === 'extender';
+        },
         isEditingCell() {
             const { row, column } = this.editingCellCoordinates;
 

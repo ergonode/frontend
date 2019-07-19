@@ -83,8 +83,11 @@ export default {
                 const isMouseAboveColumnHeader = y <= clientY && y + height >= clientY;
                 const isMouseAbovePinnedColumn = gridColumn.classList.contains('column__right-pinned')
                     || gridColumn.classList.contains('column__left-pinned');
+                const isMouseAboveExtenderColumn = gridColumn.classList.contains('column-extender');
 
-                if (!isMouseAboveColumnHeader || isMouseAbovePinnedColumn) {
+                if (!isMouseAboveColumnHeader
+                    || isMouseAbovePinnedColumn
+                    || isMouseAboveExtenderColumn) {
                     event.preventDefault();
                     return false;
                 }
