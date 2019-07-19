@@ -13,7 +13,7 @@
         :dragged="isDragged"
         :disabled="isElementDisabled(draggableListID, languageCode)">
         <ListElementDescription
-            :title="getCategoryName"
+            :title="item.name || item.code"
             :subtitle="productsCount"
             title-typo="typo-subtitle"
             title-color="txt--dark-graphite"
@@ -55,10 +55,6 @@ export default {
         ]),
         productsCount() {
             return `${this.item.elements_count || 0} Product${this.item.elements_count === 1 ? '' : 's'}`;
-        },
-        getCategoryName() {
-            const { name, code } = this.item;
-            return name || code;
         },
     },
     methods: {
