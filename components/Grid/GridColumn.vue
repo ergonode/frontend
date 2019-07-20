@@ -18,6 +18,9 @@
             ]"
         :style="colRowsTemplate">
         <slot v-if="!isGhostColumn" />
+        <div
+            class="column__resizer"
+            @mousedown="initResizeDrag" />
     </div>
 </template>
 <script>
@@ -52,6 +55,8 @@ export default {
     data() {
         return {
             isDragged: false,
+            startWidth: 0,
+            startX: 0,
         };
     },
     computed: {
@@ -67,6 +72,66 @@ export default {
             return this.column.id === 'ghost';
         },
     },
+    methods: {
+        initResizeDrag(event) {
+            this.initMousePosition(event);
+            this.initElementWidth();
+            this.initElementStyleForResizeState();
+            this.addEventListenersForResizeState();
+        },
+        doResizeDrag(event) {
+            const { clientX } = event;
+            const width = this.getElementWidthBasedOnMouseXPosition(clientX);
+
+            this.updateElementWidth(width);
+        },
+        stopResizeDrag() {
+            this.removeEventListenersForResizeState();
+        },
+        initMousePosition({ clientX }) {
+            this.startX = clientX;
+        },
+        initElementWidth() {
+            const {
+                width: elementWidth,
+            } = this.$el.getBoundingClientRect();
+
+            this.startWidth = parseInt(elementWidth, 10);
+        },
+        initElementStyleForResizeState() {
+            this.$el.style.width = `${this.startWidth}px`;
+        },
+        getElementWidthBasedOnMouseXPosition(xPos) {
+            return this.startWidth + xPos - this.startX;
+        },
+        updateElementWidth(width) {
+            this.$el.style.width = `${width}px`;
+        },
+        addEventListenersForResizeState() {
+            document.documentElement.addEventListener(
+                'mousemove',
+                this.doResizeDrag,
+                false,
+            );
+            document.documentElement.addEventListener(
+                'mouseup',
+                this.stopResizeDrag,
+                false,
+            );
+        },
+        removeEventListenersForResizeState() {
+            document.documentElement.removeEventListener(
+                'mousemove',
+                this.doResizeDrag,
+                false,
+            );
+            document.documentElement.removeEventListener(
+                'mouseup',
+                this.stopResizeDrag,
+                false,
+            );
+        },
+    },
 };
 </script>
 
@@ -77,20 +142,54 @@ export default {
         display: grid;
         padding-right: 1px;
 
-        &--border-right {
-            border-right: 1px solid $grey;
-            padding-right: 0;
+        &::before {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 1px;
+            height: 100%;
+            background-color: $grey;
+            opacity: 0;
+            content: "";
         }
 
-        &.hover, &__right-pinned {
+        &::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             box-shadow:
                 0 2px 2px 0 rgba(0, 0, 0, 0.14),
                 0 3px 1px -2px rgba(0, 0, 0, 0.12),
                 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            pointer-events: none;
+            content: "";
+        }
+
+        &--border-right {
+            &::before {
+                opacity: 1;
+            }
         }
 
         &.hover {
-            z-index: 5;
+            z-index: 3;
+
+            &::after {
+                opacity: 1;
+            }
+        }
+
+        &__resizer {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 5px;
+            height: 100%;
+            background-color: #4c9aff;
+            cursor: col-resize;
         }
 
         &__ghost {

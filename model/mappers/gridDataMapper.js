@@ -22,7 +22,7 @@ export function insertExtendingColumn(columns) {
 export function getMappedColumnWidth({ width }) {
     return width
         ? `minmax(max-content, ${width}px)`
-        : 'minmax(auto, 200px)';
+        : 'minmax(max-content, 200px)';
 }
 
 export function getSortedColumnsByIDs(columns, columnsID) {

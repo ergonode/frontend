@@ -21,7 +21,7 @@
                 @click.native="onClickSort" />
             <ButtonSelect
                 v-if="isColumnEditable"
-                v-show="isContextualMenuActive || !isSorted || isMouseOver"
+                v-visible="isContextualMenuActive || isSorted || isMouseOver"
                 :icon="contextualMenuStateIcon"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
@@ -242,6 +242,7 @@ export default {
         align-items: center;
         padding: 8px;
         user-select: none;
+        pointer-events: auto;
 
         &__title {
             @include setFont(bold, small, regular, $graphite);

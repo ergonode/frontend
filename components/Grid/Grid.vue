@@ -33,12 +33,14 @@ export default {
             required: true,
         },
     },
-    data: () => ({
-        ghostColumnIndex: -1,
-        draggedColumnIndex: -1,
-        draggedColumn: null,
-        columnBounds: [],
-    }),
+    data() {
+        return {
+            ghostColumnIndex: -1,
+            draggedColumnIndex: -1,
+            draggedColumn: null,
+            columnBounds: [],
+        };
+    },
     computed: {
         ...mapState('grid', {
             isColumnMoveable: state => state.configuration.isColumnMoveable,
@@ -78,16 +80,20 @@ export default {
 
             this.getColumnBellowMouse({ clientX, gridColumns }, ({ index, gridColumn }) => {
                 const [header] = gridColumn.children;
-                const { y, height } = header.getBoundingClientRect();
-
+                const {
+                    x, y, width, height,
+                } = header.getBoundingClientRect();
+                const columnResizerWidth = 7.5;
                 const isMouseAboveColumnHeader = y <= clientY && y + height >= clientY;
                 const isMouseAbovePinnedColumn = gridColumn.classList.contains('column__right-pinned')
                     || gridColumn.classList.contains('column__left-pinned');
                 const isMouseAboveExtenderColumn = gridColumn.classList.contains('column-extender');
+                const isMouseAboveResizerOfColumn = x + width - clientX - columnResizerWidth <= 5.0;
 
                 if (!isMouseAboveColumnHeader
                     || isMouseAbovePinnedColumn
-                    || isMouseAboveExtenderColumn) {
+                    || isMouseAboveExtenderColumn
+                    || isMouseAboveResizerOfColumn) {
                     event.preventDefault();
                     return false;
                 }
