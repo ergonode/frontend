@@ -185,7 +185,7 @@ export default {
         &__resizer {
             position: absolute;
             top: 0;
-            right: 0;
+            right: 1px;
             width: 5px;
             height: 100%;
             background-color: #4c9aff;

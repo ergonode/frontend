@@ -88,7 +88,7 @@ export default {
                 const isMouseAbovePinnedColumn = gridColumn.classList.contains('column__right-pinned')
                     || gridColumn.classList.contains('column__left-pinned');
                 const isMouseAboveExtenderColumn = gridColumn.classList.contains('column-extender');
-                const isMouseAboveResizerOfColumn = x + width - clientX - columnResizerWidth <= 5.0;
+                const isMouseAboveResizerOfColumn = x + width - columnResizerWidth - clientX <= 5.0;
 
                 if (!isMouseAboveColumnHeader
                     || isMouseAbovePinnedColumn
