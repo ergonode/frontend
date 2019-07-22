@@ -18,6 +18,7 @@ export const types = {
     SET_SELECTION_FOR_ALL_ROWS: 'SET_SELECTION_FOR_ALL_ROWS',
     SET_SELECTED_ROWS: 'SET_SELECTED_ROWS',
     SET_SELECTED_ROW: 'SET_SELECTED_ROW',
+    SET_COLUMN_WIDTH_AT_INDEX: 'SET_COLUMN_WIDTH_AT_INDEX',
     REMOVE_SELECTED_ROW: 'REMOVE_SELECTED_ROW',
     REMOVE_SELECTED_ROWS: 'REMOVE_SELECTED_ROWS',
     ADD_DRAFT_TO_PRODUCT_AT_INDEX: 'ADD_DRAFT_TO_PRODUCT_AT_INDEX',
@@ -72,6 +73,9 @@ export default {
     },
     [types.SET_SELECTED_ROWS](state, rows) {
         state.selectedRows = rows;
+    },
+    [types.SET_COLUMN_WIDTH_AT_INDEX](state, { index, width }) {
+        state.columns[index].width = width;
     },
     [types.SET_SELECTED_ROW](state, row) {
         state.selectedRows = { ...state.selectedRows, [row]: true };

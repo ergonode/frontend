@@ -5,7 +5,6 @@
 import {
     getMappedGridConfiguration,
     getMappedColumns,
-    getMappedColumnWidth,
     getSortedColumnsByIDs,
     getMappedFilter,
 } from '~/model/mappers/gridDataMapper';
@@ -105,7 +104,6 @@ export default {
             this.$cookies.set(COLUMN_IDS, parsedColumnsID);
 
             const columnToInsert = columns.find(col => col.id === columnId);
-            columnToInsert.width = getMappedColumnWidth(columnToInsert);
 
             commit(types.INSERT_COLUMN_AT_INDEX, { column: columnToInsert, index });
             commit(types.SET_ROWS, rows);
@@ -146,6 +144,9 @@ export default {
             const page = Math.floor(filtered / numberOfDisplayedElements);
             commit(types.SET_CURRENT_PAGE, Math.min(page, displayedPage));
         }
+    },
+    updateColumnWidthAtIndex({ commit }, payload) {
+        commit(types.SET_COLUMN_WIDTH_AT_INDEX, payload);
     },
     changeDisplayingPage({ commit }, { number }) {
         commit(types.SET_CURRENT_PAGE, number);

@@ -57,7 +57,7 @@ export default {
             };
         },
         columnWidths() {
-            return this.columns.map(column => column.width);
+            return this.columns.map(column => (+column.width ? `minmax(min-content, ${column.width}px)` : column.width));
         },
     },
     methods: {

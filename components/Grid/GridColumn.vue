@@ -24,6 +24,7 @@
     </div>
 </template>
 <script>
+import { mapActions } from 'vuex';
 
 export default {
     name: 'GridColumn',
@@ -57,6 +58,8 @@ export default {
             isDragged: false,
             startWidth: 0,
             startX: 0,
+            minWidth: this.column.width,
+            columnWidth: null,
         };
     },
     computed: {
@@ -73,6 +76,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('grid', [
+            'updateColumnWidthAtIndex',
+        ]),
         initResizeDrag(event) {
             this.initMousePosition(event);
             this.initElementWidth();
@@ -83,9 +89,13 @@ export default {
             const { clientX } = event;
             const width = this.getElementWidthBasedOnMouseXPosition(clientX);
 
-            this.updateElementWidth(width);
+            if (width > this.minWidth) {
+                this.columnWidth = width;
+                this.updateElementWidth(width);
+            }
         },
         stopResizeDrag() {
+            this.updateColumnWidthAtIndex({ index: this.index, width: this.columnWidth });
             this.removeEventListenersForResizeState();
         },
         initMousePosition({ clientX }) {
@@ -141,6 +151,7 @@ export default {
         position: relative;
         display: grid;
         padding-right: 1px;
+        min-width: min-content;
 
         &::before {
             position: absolute;
@@ -188,7 +199,6 @@ export default {
             right: 1px;
             width: 5px;
             height: 100%;
-            background-color: #4c9aff;
             cursor: col-resize;
         }
 

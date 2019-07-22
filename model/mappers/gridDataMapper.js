@@ -19,12 +19,6 @@ export function insertExtendingColumn(columns) {
     ];
 }
 
-export function getMappedColumnWidth({ width }) {
-    return width
-        ? `minmax(max-content, ${width}px)`
-        : 'minmax(max-content, 200px)';
-}
-
 export function getSortedColumnsByIDs(columns, columnsID) {
     return columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id));
 }
@@ -32,10 +26,13 @@ export function getSortedColumnsByIDs(columns, columnsID) {
 export function getMappedColumns(columns) {
     const unchangedColumns = columns;
     const { length } = unchangedColumns;
+    const defaultColumnWidth = 200;
     let actionColumnIndex = length - 1;
 
     for (let i = 0; i < length; i += 1) {
-        unchangedColumns[i].width = getMappedColumnWidth(unchangedColumns[i]);
+        const { width } = unchangedColumns[i];
+
+        unchangedColumns[i].width = width || defaultColumnWidth;
         if (unchangedColumns[i].type === 'CHECK') {
             unchangedColumns[i].isLeftPinned = true;
         }
