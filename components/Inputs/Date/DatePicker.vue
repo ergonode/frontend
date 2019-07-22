@@ -149,11 +149,13 @@ export default {
         onNextDate() {
             switch (this.selectedCalendarType) {
             case CalendarType.DAY: {
-                const { month, year } = getNextMonth(this.month, this.year);
+                const {
+                    month: nextMonth, year: nextYear,
+                } = getNextMonth(this.month, this.year);
 
-                this.month = month;
-                this.year = year;
-                this.calendarHeader = getHeaderForCalendarDaysType(month, year);
+                this.month = nextMonth;
+                this.year = nextYear;
+                this.calendarHeader = getHeaderForCalendarDaysType(nextMonth, nextYear);
 
                 break;
             }

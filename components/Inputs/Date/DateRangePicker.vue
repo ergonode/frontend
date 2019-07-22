@@ -133,10 +133,12 @@ export default {
                 : this.upperBoundYear;
         },
         nextMonth() {
-            const { month, year } = getNextMonth(this.upperBoundMonth, this.upperBoundYear);
+            const {
+                month: nextMonth, year: nextYear,
+            } = getNextMonth(this.upperBoundMonth, this.upperBoundYear);
 
-            this.upperBoundMonth = month;
-            this.upperBoundYear = year;
+            this.upperBoundMonth = nextMonth;
+            this.upperBoundYear = nextYear;
             this.lowerBoundMonth = this.lowerBoundMonth < 12
                 ? this.lowerBoundMonth + 1
                 : 1;
