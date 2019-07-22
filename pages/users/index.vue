@@ -3,9 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridPage
+    <GridUsersPage
         :title="title"
-        :action-paths="actionPaths"
         :buttons="buttons"
         icon="sprite-menu menu-user--selected" />
 </template>
@@ -14,8 +13,9 @@ import { mapState } from 'vuex';
 
 export default {
     name: 'Users',
+    middleware: ['tab/redirectToUsersGrid'],
     components: {
-        GridPage: () => import('~/components/Pages/GridPage'),
+        GridUsersPage: () => import('~/components/Pages/GridUsersPage'),
     },
     data() {
         return {
@@ -34,12 +34,6 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        actionPaths() {
-            return {
-                getData: `${this.userLanguageCode}/accounts`,
-                routerEdit: 'users-edit-id',
-            };
-        },
     },
     methods: {
         addNewUser() {
