@@ -53,6 +53,15 @@
                 value: passwordRepeat
             })" />
         <Select
+            :value="status"
+            solid
+            required
+            regular
+            label="Activity status"
+            :options="['Inactive', 'Active']"
+            :error-messages="errorStatusMessage"
+            @input="(status) => setAction({ key: 'status', value: status })" />
+        <Select
             :value="parsedLanguage"
             solid
             required
@@ -90,6 +99,7 @@ export default {
             password: state => state.password,
             passwordRepeat: state => state.passwordRepeat,
             language: state => state.language,
+            status: state => state.status,
         }),
         parsedLanguage() {
             return getValueByKey(this.languages, this.language);
@@ -123,6 +133,10 @@ export default {
         errorLanguageMessage() {
             const languageIndex = 'language';
             return this.elementIsValidate(languageIndex);
+        },
+        errorStatusMessage() {
+            const statusIndex = 'status';
+            return this.elementIsValidate(statusIndex);
         },
     },
     methods: {
