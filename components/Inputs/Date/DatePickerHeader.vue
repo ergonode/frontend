@@ -3,21 +3,17 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="date-picker-header">
-        <slot name="previous" />
-        <span
-            class="typo-list txt--dark-graphite"
-            v-text="header" />
-        <slot name="next" />
+    <div class="header">
+        <span v-text="header" />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'DatePickerNavigationHeader',
+    name: 'DatePickerHeader',
     props: {
         header: {
-            type: String,
+            type: [String, Number],
             required: true,
         },
     },
@@ -25,10 +21,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .date-picker-header {
+    .header {
+        @include setFont(medium, small, regular, $graphite);
+
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
-        width: 224px;
+        height: 32px;
     }
 </style>
