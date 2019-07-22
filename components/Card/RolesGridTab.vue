@@ -27,6 +27,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
+import gridModule from '~/reusableStore/grid/state';
 
 export default {
     name: 'RolesGridTab',
@@ -46,6 +47,14 @@ export default {
         filtersNumber: 0,
         filtersExpanded: true,
     }),
+    beforeCreate() {
+        if (!this.$store.state.rolesGrid) {
+            this.$store.registerModule('rolesGrid', gridModule);
+        }
+    },
+    destroyed() {
+        this.$store.unregisterModule('rolesGrid');
+    },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
