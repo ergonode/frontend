@@ -286,6 +286,10 @@ export default {
             this.$emit('focus', false);
         },
         onClickOutside(event) {
+            const isDoubleClicked = event.detail > 1;
+
+            if (isDoubleClicked) return false;
+
             const { clientX, clientY } = event;
             const inputActivator = this.$el.querySelector('.input__content');
             const {
@@ -324,6 +328,8 @@ export default {
 
                 this.$emit('focus', false);
             }
+
+            return true;
         },
     },
 };
