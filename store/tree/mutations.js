@@ -9,9 +9,9 @@ export const types = {
     SET_ROWS_COUNT: 'SET_ROWS_COUNT',
     SET_TREE_ID: 'SET_TREE_ID',
     SET_TREE: 'SET_TREE',
+    SET_FULL_TREE: 'SET_FULL_TREE',
     ADD_TREE_ITEM: 'ADD_TREE_ITEM',
     SET_TREE_ITEM: 'SET_TREE_ITEM',
-    REMOVE_TREE_ITEM: 'REMOVE_TREE_ITEM',
     SET_HIDDEN_ITEM: 'SET_HIDDEN_ITEM',
     REMOVE_HIDDEN_ITEM: 'REMOVE_HIDDEN_ITEM',
     CLEAR_STORAGE: 'CLEAR_STORAGE',
@@ -24,6 +24,9 @@ export default {
     [types.SET_TREE](state, value) {
         state.treeData = value;
     },
+    [types.SET_FULL_TREE](state, value) {
+        state.fullTreeData = value;
+    },
     [types.SET_TREE_ID](state, value) {
         state.treeId = value;
     },
@@ -34,12 +37,6 @@ export default {
     [types.SET_TREE_ITEM](state, { index, item }) {
         state.treeData[index] = item;
         state.treeData.sort((a, b) => a.row - b.row);
-    },
-    [types.REMOVE_TREE_ITEM](state, id) {
-        const newTree = !Number.isInteger(id)
-            ? state.treeData.filter(el => el.id !== id)
-            : state.treeData.filter((el, index) => index !== id);
-        state.treeData = newTree;
     },
     [types.SET_HIDDEN_ITEM](state, { key, value }) {
         state.hiddenItems = { ...state.hiddenItems, [key]: value };

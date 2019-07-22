@@ -4,8 +4,20 @@
  */
 const positionBetweenRows = 0.5;
 
+export function getMinChildRow(parentChildren) {
+    const childrenRows = parentChildren.map(e => e.row);
+    return Math.min(...childrenRows);
+}
+
+export function getMaxChildRow(tree, column, row) {
+    const [neighbor] = tree.filter(
+        e => e.column <= column && e.row > row,
+    );
+    return neighbor ? neighbor.row : tree.length;
+}
+
 export function rebuildTreeWhenElementRemoved(treeData, index) {
-    return treeData.reduce((accumulator, current, i) => {
+    return treeData.filter((el, idx) => idx !== index).reduce((accumulator, current, i) => {
         if (i >= index) {
             accumulator.push({ ...current, row: current.row - 1 });
         } else {
@@ -15,12 +27,11 @@ export function rebuildTreeWhenElementRemoved(treeData, index) {
     }, []);
 }
 
-export function rebuildTreeWhenGhostElementRemoved(treeData, id) {
-    const findIndex = treeData.findIndex(el => el.id === id);
+export function rebuildTreeWhenGhostElementRemoved(treeData, index) {
     return treeData.reduce((accumulator, current, i) => {
-        if (i === findIndex && current.row !== 0) {
+        if (i === index && current.row !== 0) {
             accumulator.push({ ...current, row: current.row + positionBetweenRows });
-        } else if (i > findIndex) {
+        } else if (i > index) {
             accumulator.push({ ...current, row: current.row + 1 });
         } else {
             accumulator.push(current);
@@ -29,10 +40,9 @@ export function rebuildTreeWhenGhostElementRemoved(treeData, id) {
     }, []);
 }
 
-export function rebuildTreeWhenElementCollapse(treeData, id) {
-    const findIndex = treeData.findIndex(el => el.id === id);
+export function rebuildTreeWhenElementCollapse(treeData, index) {
     return treeData.reduce((accumulator, current, i) => {
-        if (i > findIndex) {
+        if (i > index) {
             accumulator.push({ ...current, row: i });
         } else {
             accumulator.push(current);
@@ -41,14 +51,12 @@ export function rebuildTreeWhenElementCollapse(treeData, id) {
     }, []);
 }
 
-export function rebuildTreeWhenElementExpand(hiddenTree, visibleTree, index) {
-    const hiddenChildren = hiddenTree[index];
-    const findIndex = visibleTree.findIndex(el => el.id === index);
-    return visibleTree.reduce((accumulator, current, i) => {
+export function rebuildTreeWhenElementExpand(hiddenChildren, treeData, index) {
+    return treeData.reduce((accumulator, current, i) => {
         let expandedTree = accumulator;
-        if (i === findIndex) {
+        if (i === index) {
             expandedTree = [...expandedTree, current, ...hiddenChildren];
-        } else if (i > findIndex) {
+        } else if (i > index) {
             expandedTree.push({ ...current, row: current.row + hiddenChildren.length });
         } else {
             expandedTree.push(current);

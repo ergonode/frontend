@@ -4,10 +4,11 @@
  */
 const state = () => ({
     treeId: null,
-    treeLevels: 5,
+    treeLevels: 10,
     rowsHeight: 50,
     rowsCount: 0,
     treeData: [],
+    fullTreeData: [],
     hiddenItems: {},
 });
 

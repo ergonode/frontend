@@ -138,6 +138,7 @@ export default {
         onDragEnd(event) {
             event.preventDefault();
             removeTreeElementCopyFromDocumentBody(event);
+            this.setDraggedElement();
             this.setDraggableState({ propName: 'isListElementDragging', value: false });
         },
         onDragOver(event) {
@@ -199,8 +200,6 @@ export default {
                 this.setRowsCount(this.rows + 1);
             }
             this.$emit('rebuildGrid', this.draggedElement);
-            this.setDraggedElement();
-            this.setDraggableState({ propName: 'isListElementDragging', value: false });
             // this.$emit('expandItem', true, droppedItem);
         },
         removeGhostElement() {

@@ -33,7 +33,7 @@ export default {
         this.setConfigurationForList({
             draggedElementsStore: {
                 storeName: 'tree',
-                stateName: 'treeData',
+                stateName: 'fullTreeData',
                 idName: ['id'],
             },
         });
