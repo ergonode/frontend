@@ -6,9 +6,6 @@
     <div class="tab">
         <div class="tab__grid">
             <div class="filters-panel-wrapper">
-                <GridFilterActions
-                    v-model="filtersExpanded"
-                    :filters-number="filtersNumber" />
                 <GridLayoutConfigurator v-model="rowsHeight" />
             </div>
             <GridWrapper
@@ -35,7 +32,6 @@ export default {
     name: 'UsersGridTab',
     components: {
         GridWrapper: () => import('~/components/Grid/Wrappers/GridWrapper'),
-        GridFilterActions: () => import('~/components/Grid/GridFilterActions'),
         GridLayoutConfigurator: () => import('~/components/Grid/GridLayoutConfigurator'),
         GridFooter: () => import('~/components/Grid/GridFooter'),
         GridPageSelector: () => import('~/components/Grid/GridPageSelector'),
@@ -144,7 +140,7 @@ export default {
 
             .filters-panel-wrapper {
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-end;
                 padding: 12px 12px 0;
             }
         }
