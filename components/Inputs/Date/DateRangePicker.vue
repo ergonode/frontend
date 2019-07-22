@@ -119,10 +119,12 @@ export default {
             return Object.keys(CALENDAR_MONTHS)[Math.max(0, Math.min(month - 1, 11))];
         },
         previousMonth() {
-            const { month, year } = getPreviousMonth(this.lowerBoundMonth, this.lowerBoundYear);
+            const {
+                month: previousMonth, year: previousYear,
+            } = getPreviousMonth(this.lowerBoundMonth, this.lowerBoundYear);
 
-            this.lowerBoundMonth = month;
-            this.lowerBoundYear = year;
+            this.lowerBoundMonth = previousMonth;
+            this.lowerBoundYear = previousYear;
             this.upperBoundMonth = this.upperBoundMonth > 1
                 ? this.upperBoundMonth - 1
                 : 12;

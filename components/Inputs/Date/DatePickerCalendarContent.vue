@@ -110,8 +110,6 @@ export default {
                 if (date.getFullYear() === this.year) {
                     return this.months[date.getMonth()];
                 }
-
-                return '';
             }
 
             return '';

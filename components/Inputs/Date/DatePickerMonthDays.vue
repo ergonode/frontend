@@ -44,12 +44,6 @@ export default {
         };
     },
     methods: {
-        onMouseOver() {
-
-        },
-        onMouseOut() {
-
-        },
         onSelectDate(date) {
             this.$emit('select', { ...date });
         },

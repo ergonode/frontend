@@ -122,11 +122,13 @@ export default {
         onPreviousDate() {
             switch (this.selectedCalendarType) {
             case CalendarType.DAY: {
-                const { month, year } = getPreviousMonth(this.month, this.year);
+                const {
+                    month: previousMonth, year: previousYear,
+                } = getPreviousMonth(this.month, this.year);
 
-                this.month = month;
-                this.year = year;
-                this.calendarHeader = getHeaderForCalendarDaysType(month, year);
+                this.month = previousMonth;
+                this.year = previousYear;
+                this.calendarHeader = getHeaderForCalendarDaysType(previousMonth, previousYear);
 
                 break;
             }
