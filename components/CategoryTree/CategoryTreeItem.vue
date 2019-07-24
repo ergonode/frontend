@@ -34,25 +34,25 @@ export default {
         Icon,
     },
     props: {
+        isExpand: {
+            type: Boolean,
+            default: false,
+        },
         itemName: {
             type: String,
             required: true,
         },
         numberOfChildren: {
             type: Number,
-            required: false,
             default: 0,
         },
     },
-    data: () => ({
-        isExpanded: true,
-    }),
     computed: {
         hasChildren() {
             return this.numberOfChildren > 0;
         },
         btnExpanderIcon() {
-            return this.isExpanded
+            return this.isExpand
                 ? 'arrow-double trans-none'
                 : 'arrow-double trans-half';
         },
@@ -65,8 +65,7 @@ export default {
     },
     methods: {
         toggleItemExpand() {
-            this.isExpanded = !this.isExpanded;
-            this.$emit('expandItem', this.isExpanded);
+            this.$emit('expandItem');
         },
     },
 };
@@ -99,17 +98,6 @@ export default {
             border: 1px solid $grey;
             padding: 2px 8px;
             border-radius: 12px;
-        }
-
-        &__outside-tree {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            cursor: help;
-
-            &::after {
-                content: "→";
-            }
         }
     }
 </style>

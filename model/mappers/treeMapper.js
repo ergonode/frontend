@@ -21,6 +21,7 @@ export function getParsedTreeData(tree, categories) {
                 column,
                 parent,
                 children: childrenLength,
+                expand: false,
             });
             rowCounter += 1;
             buildTree(treeArray[i].childrens, categoryId, column + 1);

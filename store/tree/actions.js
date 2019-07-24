@@ -8,6 +8,7 @@ import {
     rebuildTreeWhenGhostElementRemoved,
     rebuildTreeWhenElementCollapse,
     rebuildTreeWhenElementExpand,
+    rebuildFullTree,
 } from '~/model/tree/TreeCalculations';
 import { getParsedTreeData } from '~/model/mappers/treeMapper';
 
@@ -46,7 +47,8 @@ export default {
         let newTree = [];
         if (Number.isInteger(id)) {
             newTree = rebuildTreeWhenElementRemoved(state.treeData, id);
-            commit(types.SET_FULL_TREE, newTree);
+            const newFullTree = rebuildFullTree(state.hiddenItems, newTree);
+            commit(types.SET_FULL_TREE, newFullTree);
         } else {
             newTree = state.treeData.filter(el => el.id !== id);
         }
@@ -65,8 +67,18 @@ export default {
     rebuildTree: ({ commit, state, getters }, id) => {
         const index = getters.getIndexById(id);
         const newTree = rebuildTreeWhenGhostElementRemoved(state.treeData, index);
+        const newFullTree = rebuildFullTree(state.hiddenItems, newTree);
         commit(types.SET_TREE, newTree);
-        commit(types.SET_FULL_TREE, newTree);
+        commit(types.SET_FULL_TREE, newFullTree);
+    },
+    setExpandItem: ({ commit, getters }, { id, value }) => {
+        const index = getters.getIndexById(id);
+        commit(types.SET_EXPAND_ITEM, { index, value });
+    },
+    setChildrenLength: ({ commit, state, getters }, { id, value }) => {
+        const index = getters.getIndexById(id);
+        const { children } = state.treeData[index];
+        commit(types.SET_CHILDREN_LENGTH, { index, value: children + value });
     },
     setHiddenItem: ({ commit }, { key, value }) => {
         commit(types.SET_HIDDEN_ITEM, { key, value });

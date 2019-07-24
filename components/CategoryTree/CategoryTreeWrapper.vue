@@ -16,14 +16,13 @@
             @removeItem="removeTreeItem"
             @rebuildGrid="rebuildTree"
             @setRowsCount="setRowsCount"
-            @expandItem="(e, i) => expandItem(e, i)">
+            @expandItem="(i) => expandItem(i)">
             <TemplateGridPresentationLayer
                 :style="gridStyles"
                 :columns="columns"
                 :rows="rowsCount" />
             <TemplateGridItemsContainer
-                :style="gridStyles"
-                @removeItem="removeTreeItem">
+                :style="gridStyles">
                 <TemplateGridItemArea
                     v-for="item in filteredTreeData"
                     :key="item.id"
@@ -34,8 +33,9 @@
                     <CategoryTreeItem
                         v-else
                         :number-of-children="getChildrenLengthById(item.id)"
+                        :is-expand="getExpandStateById(item.id)"
                         :item-name="item.name || item.code"
-                        @expandItem="e => expandItem(e, item)" />
+                        @expandItem="expandItem(item)" />
                 </TemplateGridItemArea>
             </TemplateGridItemsContainer>
         </TemplateGridContainer>
@@ -79,6 +79,7 @@ export default {
         ...mapGetters('tree', [
             'getChildrenByParentId',
             'getChildrenLengthById',
+            'getExpandStateById',
         ]),
         gridStyles() {
             return {
@@ -102,8 +103,11 @@ export default {
             'rebuildTree',
             'setHiddenItem',
             'removeHiddenItem',
+            'setExpandItem',
         ]),
-        expandItem(isExpanded, { id, row, column }) {
+        expandItem({
+            id, row, column, expand,
+        }) {
             const minChildRow = getMinChildRow(this.getChildrenByParentId(id));
             const maxChildRow = getMaxChildRow(this.treeData, column, row);
             const treeCategories = this.treeData.reduce((acc, e) => {
@@ -114,12 +118,14 @@ export default {
                 }
                 return acc;
             }, { hidden: [], visible: [] });
-            if (!isExpanded) {
+            if (!expand) {
                 this.setHiddenItem({ key: id, value: treeCategories.hidden });
                 this.setTreeWhenCollapse({ tree: treeCategories.visible, id });
+                this.setExpandItem({ id, value: true });
             } else {
                 this.setTreeWhenExpand(id);
                 this.removeHiddenItem(id);
+                this.setExpandItem({ id, value: false });
             }
         },
     },

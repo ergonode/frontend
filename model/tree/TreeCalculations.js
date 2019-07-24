@@ -85,3 +85,12 @@ export function getRowBellowMouse({ clientY, elements, elementBounds }, completi
     }
     return null;
 }
+
+export function rebuildFullTree(hiddenChildren, treeData) {
+    let fullTree = treeData;
+    Object.keys(hiddenChildren).reverse().forEach((key) => {
+        const index = fullTree.findIndex(el => el.id === key);
+        fullTree = rebuildTreeWhenElementExpand(hiddenChildren[key], fullTree, index);
+    });
+    return fullTree;
+}

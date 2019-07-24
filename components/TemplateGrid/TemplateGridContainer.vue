@@ -66,6 +66,9 @@ export default {
         debounceFunc: null,
     }),
     computed: {
+        ...mapState('tree', {
+            fullTreeData: state => state.fullTreeData,
+        }),
         ...mapState('authentication', {
             language: state => state.user.language,
         }),
@@ -97,10 +100,13 @@ export default {
             'setDraggedElement',
             'setDraggableState',
         ]),
+        ...mapActions('tree', [
+            'setChildrenLength',
+        ]),
         calculateRowsCount() {
             const { clientHeight } = document.querySelector('.grid-container');
             const visibleRows = Math.ceil(clientHeight / this.rowsHeight);
-            const totalRows = Math.max(this.treeData.length, visibleRows) + 1;
+            const totalRows = Math.max(this.fullTreeData.length, visibleRows) + 1;
             this.setRowsCount(totalRows);
         },
         onDragStart(event) {
@@ -122,14 +128,16 @@ export default {
                 const hasChildren = category.querySelector('.grid-item__categories-length');
                 if (category && !hasChildren) {
                     const categoryId = category.getAttribute('item-id');
+                    const { row, column } = this.dataWithoutGhostElement[index];
+                    const parentId = this.getParentId(row, column);
                     this.setDraggedElement(categoryId);
                     this.setDraggableState({ propName: 'isListElementDragging', value: true });
                     addTreeElementCopyToDocumentBody(event, category);
+                    if (parentId !== 'root') {
+                        this.setChildrenLength({ id: parentId, value: -1 });
+                    }
                     this.$emit('removeItem', index);
                 } else {
-                    // const categoryId = category.getAttribute('item-id');
-                    // const item = this.dataWithoutGhostElement.find(e => e.id === categoryId);
-                    // this.$emit('expandItem', false, item);
                     this.$addAlert(this.$store, { type: 'warning', message: 'Can`t move the category which has subcategory.', duration: 1500 });
                     event.preventDefault();
                 }
@@ -183,24 +191,26 @@ export default {
         onDrop(event) {
             event.preventDefault();
             const { row, column } = this.ghostElement;
-            const { length: withoutGhostLength } = this.dataWithoutGhostElement;
             const { code: categoryCode, name: categoryName } = this.listElements[this.language]
                 .find(e => e.id === this.draggedElement);
             this.removeGhostElement();
+            const parentId = this.getParentId(row, column);
             const droppedItem = {
                 id: this.draggedElement,
                 code: categoryCode,
                 name: categoryName,
                 column,
                 row,
-                parent: this.getParentId(row, column),
+                children: 0,
+                expand: false,
+                parent: parentId,
             };
             this.addItem(droppedItem);
-            if (withoutGhostLength >= this.rows - 2) {
-                this.setRowsCount(this.rows + 1);
+            if (parentId !== 'root') {
+                this.setChildrenLength({ id: parentId, value: 1 });
             }
             this.$emit('rebuildGrid', this.draggedElement);
-            // this.$emit('expandItem', true, droppedItem);
+            this.calculateRowsCount();
         },
         removeGhostElement() {
             this.ghostElement.row = null;
