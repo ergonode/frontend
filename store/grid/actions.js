@@ -56,6 +56,8 @@ export default {
             const mappedColumns = getMappedColumns(visibleColumns);
             const mappedConfiguration = getMappedGridConfiguration(configuration);
 
+            this.$cookies.set(COLUMN_IDS, visibleColumns.map(col => col.id).join(','));
+
             commit(types.SET_CONFIGURATION, mappedConfiguration);
             commit(types.SET_ROWS, rows);
             commit(types.SET_COUNT, count);
