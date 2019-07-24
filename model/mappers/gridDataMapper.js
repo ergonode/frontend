@@ -32,7 +32,8 @@ export function getMappedColumns(columns) {
     for (let i = 0; i < length; i += 1) {
         const { width } = unchangedColumns[i];
 
-        unchangedColumns[i].width = width || defaultColumnWidth;
+        unchangedColumns[i].width = `minmax(max-content, ${width || defaultColumnWidth}px)`;
+        unchangedColumns[i].minWidth = width || defaultColumnWidth;
         if (unchangedColumns[i].type === 'CHECK') {
             unchangedColumns[i].isLeftPinned = true;
         }

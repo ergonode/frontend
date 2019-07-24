@@ -26,7 +26,9 @@
         <template v-if="!isDraggedColumn">
             <slot />
             <div
-                class="column__resizer"
+                :class="['column__resizer', {
+                    'column__resizer--resizing': isResizing
+                }]"
                 @mousedown="initResizeDrag" />
         </template>
     </div>
@@ -75,8 +77,8 @@ export default {
         return {
             startWidth: 0,
             startX: 0,
-            minWidth: this.column.width,
-            columnWidth: null,
+            isResizing: false,
+            columnWidth: 0,
         };
     },
     computed: {
@@ -135,7 +137,8 @@ export default {
             if (!isMouseAboveColumnHeader
                 || this.isPinnedLeft
                 || this.isPinnedRight
-                || this.isExtenderColumn) {
+                || this.isExtenderColumn
+                || this.isResizing) {
                 event.preventDefault();
 
                 return false;
@@ -254,6 +257,7 @@ export default {
             return true;
         },
         initResizeDrag(event) {
+            this.isResizing = true;
             this.initMousePosition(event);
             this.initElementWidth();
             this.initElementStyleForResizeState();
@@ -263,14 +267,14 @@ export default {
             const { clientX } = event;
             const width = this.getElementWidthBasedOnMouseXPosition(clientX);
 
-            if (width > this.minWidth) {
+            if (width > this.column.minWidth) {
                 this.columnWidth = width;
                 this.updateElementWidth(width);
             }
         },
         stopResizeDrag() {
-            // this.updateColumnWidthAtIndex({ index: this.index, width: this.columnWidth });
             this.removeEventListenersForResizeState();
+            this.isResizing = false;
         },
         initMousePosition({ clientX }) {
             this.startX = clientX;
@@ -448,10 +452,14 @@ export default {
         &__resizer {
             position: absolute;
             top: 0;
-            right: 1px;
-            width: 5px;
+            right: 0;
+            width: 2.5px;
             height: 100%;
             cursor: col-resize;
+
+            &--resizing {
+                background-color: $darkGraphite;
+            }
         }
 
         &__ghost {

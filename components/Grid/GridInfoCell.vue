@@ -32,7 +32,6 @@ export default {
         user-select: none;
         text-overflow: ellipsis;
         overflow: hidden;
-        word-break: break-all;
         white-space: nowrap;
     }
 </style>
