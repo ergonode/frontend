@@ -13,7 +13,7 @@
         :dragged="isDragged"
         :disabled="isElementDisabled(draggableListID, languageCode)">
         <ListElementDescription
-            :title="item.code"
+            :title="item.name || item.code"
             :subtitle="productsCount"
             title-typo="typo-subtitle"
             title-color="txt--dark-graphite"
