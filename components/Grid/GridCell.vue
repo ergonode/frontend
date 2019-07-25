@@ -154,6 +154,9 @@ export default {
         outline: none;
         box-sizing: border-box;
         border-bottom: 1px solid $grey;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
 
         &:not(&--selected):not(&--draft):not(&--error) {
             &:nth-child(even) {

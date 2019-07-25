@@ -10,4 +10,5 @@ export default () => ({
     bounds: null,
     ghostIndex: -1,
     draggedElIndex: -1,
+    ghostElTransform: 0,
 });

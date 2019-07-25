@@ -3,10 +3,9 @@
  * See LICENSE for license details.
  */
 export function isMouseOutOfBoundsElement(element, xPos, yPos) {
-    const gridBounds = element.getBoundingClientRect();
     const {
         top, right, width, height,
-    } = gridBounds;
+    } = element.getBoundingClientRect();
     const leftAtTheLeft = xPos <= right - width;
     const leftAtTheRight = xPos >= right;
     const leftAtTheTop = yPos <= top;

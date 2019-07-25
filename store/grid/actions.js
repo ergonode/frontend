@@ -105,9 +105,13 @@ export default {
         }) => {
             this.$cookies.set(COLUMN_IDS, parsedColumnsID);
 
-            const columnToInsert = columns.find(col => col.id === columnId);
+            const columnToUpdate = columns.find(col => col.id === columnId);
+            if (!columnToUpdate.width) {
+                columnToUpdate.width = 150;
+                columnToUpdate.minWidth = 150;
+            }
 
-            commit(types.INSERT_COLUMN_AT_INDEX, { column: columnToInsert, index });
+            commit(types.UPDATE_COLUMN_AT_INDEX, { column: columnToUpdate, index });
             commit(types.SET_ROWS, rows);
         }).catch(err => console.log(err));
     },
@@ -164,6 +168,8 @@ export default {
         const newOrderedColumns = [
             ...swapItemPosition(columns, from, to),
         ];
+        const columnsWithoutExtender = newOrderedColumns.filter(column => column.id !== 'extender');
+        this.$cookies.set(COLUMN_IDS, columnsWithoutExtender.map(column => column.id).join(','));
 
         commit(types.SET_COLUMNS, newOrderedColumns);
     },

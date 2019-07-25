@@ -14,6 +14,7 @@ export function insertExtendingColumn(columns) {
             type: '',
             editable: false,
             width: 'auto',
+            minWidth: 'auto',
         },
         ...columns.slice(length - 1),
     ];
@@ -26,13 +27,14 @@ export function getSortedColumnsByIDs(columns, columnsID) {
 export function getMappedColumns(columns) {
     const unchangedColumns = columns;
     const { length } = unchangedColumns;
-    const defaultColumnWidth = 200;
+    const defaultColumnWidth = 150;
+    const actionColumnWidth = 40;
     let actionColumnIndex = length - 1;
 
     for (let i = 0; i < length; i += 1) {
         const { width } = unchangedColumns[i];
 
-        unchangedColumns[i].width = `minmax(max-content, ${width || defaultColumnWidth}px)`;
+        unchangedColumns[i].width = width || defaultColumnWidth;
         unchangedColumns[i].minWidth = width || defaultColumnWidth;
         if (unchangedColumns[i].type === 'CHECK') {
             unchangedColumns[i].isLeftPinned = true;
@@ -40,6 +42,8 @@ export function getMappedColumns(columns) {
 
         if (unchangedColumns[i].type === 'ACTION') {
             unchangedColumns[i].isRightPinned = true;
+            unchangedColumns[i].width = actionColumnWidth;
+            unchangedColumns[i].minWidth = actionColumnWidth;
             actionColumnIndex = i;
         }
     }

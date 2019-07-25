@@ -14,6 +14,7 @@ export const types = {
     SET_CURRENT_PAGE: 'SET_CURRENT_PAGE',
     SET_SORTING_STATE: 'SET_SORTING_STATE',
     INSERT_COLUMN_AT_INDEX: 'INSERT_COLUMN_AT_INDEX',
+    UPDATE_COLUMN_AT_INDEX: 'UPDATE_COLUMN_AT_INDEX',
     REMOVE_COLUMN_AT_INDEX: 'REMOVE_COLUMN_AT_INDEX',
     SET_SELECTION_FOR_ALL_ROWS: 'SET_SELECTION_FOR_ALL_ROWS',
     SET_SELECTED_ROWS: 'SET_SELECTED_ROWS',
@@ -57,6 +58,10 @@ export default {
     },
     [types.SET_SORTING_STATE](state, sortedColumn = {}) {
         state.sortedByColumn = sortedColumn;
+    },
+    [types.UPDATE_COLUMN_AT_INDEX](state, { index, column }) {
+        state.columns[index] = column;
+        state.columns = [...state.columns];
     },
     [types.INSERT_COLUMN_AT_INDEX](state, { column, index }) {
         state.columns = [

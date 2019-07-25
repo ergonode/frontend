@@ -5,11 +5,11 @@
 import { types } from './mutations';
 
 export default {
-    updateXBound({ commit }, x) {
-        commit(types.SET_X_BOUNDS, x);
-    },
     setDraggableState({ commit }, { propName, value }) {
         commit(types.SET_DRAGGABLE_STATE, { propName, value });
+    },
+    setGhostElTransform({ commit }, transform) {
+        commit(types.SET_GHOST_ELEMENT_TRANSFORM, transform);
     },
     setDraggedElIndex({ commit }, index) {
         commit(types.SET_DRAGGED_EL_INDEX, index);

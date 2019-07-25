@@ -28,5 +28,6 @@ export function getGhostColumnElementModel() {
         label: '',
         type: '',
         width: 100,
+        minWidth: 100,
     };
 }
