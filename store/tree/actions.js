@@ -27,8 +27,14 @@ export default {
             commit(types.SET_TREE_ID, treeId);
             return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({ categories: treeData }) => {
                 commit(types.SET_TREE, getParsedTreeData(treeData, categories));
-            }).catch(e => onError(e.data));
-        }).catch(e => onError(e.data));
+            }).catch((e) => {
+                console.log(e);
+                onError(e);
+            });
+        }).catch((e) => {
+            console.log(e);
+            onError(e);
+        });
     },
     addTreeItem: ({ commit, state }, item) => {
         const findIndex = state.treeData.findIndex(el => el.id === item.id);
