@@ -12,6 +12,7 @@
         :on-edit="onEdit">
         <Component
             :is="infoComponent"
+            v-if="!isExtenderColumn"
             v-bind="infoComponentProps"
             @sort="() => getData({ path })" />
     </GridCell>
@@ -60,6 +61,9 @@ export default {
             if (id === 'id') return () => import('~/components/Grid/GridCheckCell');
 
             return () => import('~/components/Grid/GridHeaderCell');
+        },
+        isExtenderColumn() {
+            return this.column.id === 'extender';
         },
         infoComponentProps() {
             const { id } = this.column;

@@ -30,6 +30,7 @@ export default {
             language: state => state.language,
             password: state => state.password,
             passwordRepeat: state => state.passwordRepeat,
+            status: state => state.status,
         }),
     },
     created() {
@@ -65,6 +66,7 @@ export default {
                 password: this.password,
                 passwordRepeat: this.passwordRepeat,
                 language: this.language,
+                // status: this.status, TODO: Uncomment when BE is ready
             };
             this.createUser({
                 data: user,

@@ -4,15 +4,15 @@
  */
 <template>
     <div class="month">
-        <div
+        <DatePickerCalendarNode
             v-for="date in dates"
             :key="`${date.year}|${date.month}|${date.day}`"
-            :class="dayStateClasses(date.disabled, isSelectedDate(date, date.disabled))"
-            @click="() => onSelectDate(date)">
-            <span
-                class="day-title typo-btn--xs"
-                v-text="date.day" />
-        </div>
+            :selected="isSelectedDate(date)"
+            :hovered="false"
+            :disabled="date.disabled"
+            :current="isToday(date)"
+            :title="date.day"
+            @click.native="() => onSelectDate(date)" />
     </div>
 </template>
 
@@ -20,9 +20,13 @@
 import {
     isSameDay,
 } from '~/model/calendar/calendar';
+import DatePickerCalendarNode from '~/components/Inputs/Date/DatePickerCalendarNode';
 
 export default {
     name: 'DatePickerMonthDays',
+    components: {
+        DatePickerCalendarNode,
+    },
     props: {
         dates: {
             type: Array,
@@ -34,24 +38,20 @@ export default {
             default: () => [],
         },
     },
+    data() {
+        return {
+            currentDate: new Date(),
+        };
+    },
     methods: {
-        dayStateClasses(disabled, selected) {
-            return [
-                'month__day',
-                {
-                    'month__day--selected': selected,
-                    'month__day--disabled': disabled,
-                },
-            ];
-        },
         onSelectDate(date) {
             this.$emit('select', { ...date });
         },
-        isSelectedDate(date, disabled) {
+        isSelectedDate(date) {
             const { length } = this.selectedDates;
             const parsedDate = new Date(date.year, date.month - 1, date.day);
 
-            if (!length || disabled) return null;
+            if (!length || date.disabled) return null;
             const { 0: firstDate } = this.selectedDates;
 
             if (length === 1) {
@@ -62,6 +62,11 @@ export default {
 
             return +parsedDate >= firstDate && +parsedDate <= lastDate;
         },
+        isToday(date) {
+            const parsedDate = new Date(date.year, date.month - 1, date.day);
+
+            return isSameDay(parsedDate, this.currentDate);
+        },
     },
 };
 </script>
@@ -70,37 +75,8 @@ export default {
     .month {
         display: grid;
         grid-template-columns: repeat(7, 32px);
-        grid-template-rows: repeat(6, 32px);
+        grid-template-rows: repeat(5, 32px);
         justify-items: center;
         align-items: center;
-
-        &__day {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-
-            &:not(&--selected) &:not(&--disabled) {
-                .day-title {
-                    color: $darkGraphite;
-                }
-            }
-
-            &--selected {
-                background-color: $success;
-
-                .day-title {
-                    color: $white;
-                }
-            }
-
-            &--disabled {
-                .day-title {
-                    color: $lightGraphite;
-                }
-            }
-        }
     }
 </style>

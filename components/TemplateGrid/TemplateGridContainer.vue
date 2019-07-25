@@ -378,6 +378,6 @@ export default {
         position: relative;
         height: 100%;
         overflow: auto;
-        scrollbar-width: none;
+        scrollbar-width: 4px;
     }
 </style>

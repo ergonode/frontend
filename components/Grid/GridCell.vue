@@ -6,8 +6,7 @@
     <div
         :tabindex="0"
         :class="gridCellClasses"
-        @keydown="onKeyDown"
-        @dblclick="onDblcClick">
+        @keydown="onKeyDown">
         <slot />
     </div>
 </template>
@@ -57,6 +56,16 @@ export default {
             type: Function,
             required: true,
         },
+    },
+    mounted() {
+        if (this.editingAllowed) {
+            this.$el.addEventListener('dblclick', this.onDblcClick);
+        }
+    },
+    destroyed() {
+        if (this.editingAllowed) {
+            this.$el.removeEventListener('dblclick', this.onDblcClick);
+        }
     },
     computed: {
         gridCellClasses() {

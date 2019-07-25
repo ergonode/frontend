@@ -28,6 +28,7 @@ export default {
             language = '',
             password = '',
             password_repeat = '',
+            status = '',
         }) => {
             commit('setState', { key: 'id', value: id });
             commit('setState', { key: 'avatarId', value: avatar_id });
@@ -37,6 +38,7 @@ export default {
             commit('setState', { key: 'language', value: language });
             commit('setState', { key: 'password', value: password });
             commit('setState', { key: 'passwordRepeat', value: password_repeat });
+            commit('setState', { key: 'status', value: status });
         }).catch(e => onError(e.data));
     },
     createUser(

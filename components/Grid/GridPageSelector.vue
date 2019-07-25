@@ -35,7 +35,7 @@ export default {
         },
     },
     data: () => ({
-        rowIntervals: ['25', '50', '100', '200', '400', '800'],
+        rowIntervals: ['25', '50', '100', '200'],
     }),
     computed: {
         infoText() {
