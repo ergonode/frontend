@@ -50,6 +50,7 @@ export default {
         border: 1px solid $grey;
         border-left: none;
         background-color: $background;
+        padding-right: 4px;
 
         &__title {
             display: flex;
