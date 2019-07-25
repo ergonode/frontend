@@ -7,13 +7,13 @@
 
 <p align="center">
   <a href="https://ergonode.com">
-    <img src="https://img.shields.io/badge/version-0.1.0-4c9aff.svg" alt="Version">
+    <img src="https://img.shields.io/badge/version-0.2.0-4c9aff.svg" alt="Version">
   </a>
   <a href="https://ergonode.com">
     <img src="https://img.shields.io/badge/version%20code-Vegas-00bc87.svg" alt="Code Version">
   </a>
-  <a href="https://discord.gg/NntXFa4">
-    <img src="https://img.shields.io/badge/chat-on%20discord-e51670.svg" alt="Chat">
+  <a href="https://join.slack.com/t/ergonode/shared_invite/enQtNjI5NzU3NzM2MzU2LTY0ZGM4MGMyNGZjOGEyNDY5OGI1NzM5ZDNiMTY3YjA2YmRhMzY1OWE1MjJjZWEzM2YwOThkZDBjODZlZjY0ZmI">
+    <img src="https://img.shields.io/badge/chat-on%20slack-e51670.svg" alt="Chat">
   </a>
   <a href="https://docs.ergonode.com">
     <img src="https://img.shields.io/badge/docs-read-ffc108.svg" alt="Docs">
@@ -32,7 +32,7 @@ It is a system that can be easily integrated with many popular e-commerce platfo
 
 Ergonode will be always full open-source project. Currently, the system is in the phase of product catalog stabilization and import. We invite all developers who want to develop a new quality of shopping experience with us, we are open to contributors and support, because the project is not developed by large team (we are small but  extraordinary team of designers, programmers and product managers).  
 
-If you are a new developer and need help, feel-free to ask questions our core team on our [discord][discord] channel.
+If you are a new developer and need help, feel-free to ask questions our core team on our [slack][slack] channel.
 
 `@Marcin Piwowarczyk` (product vision and strategy)
 
@@ -46,7 +46,7 @@ If you are a new developer and need help, feel-free to ask questions our core te
 
 `@Marcin Warzynski` (product requirements management)
 
-**We are looking for core team members who willing to support us and help Ergonode awesome software.** Interested? Contact to @Marcin Piwowarczyk on discord.
+**We are looking for core team members who willing to support us and help Ergonode awesome software.** Interested? Contact to @Marcin Piwowarczyk on [slack][slack].
 
 At the moment we prepare full list contribution rules, to support devs before making any pull request. Pull request that doesn't meet these rules will not be merged and included to core functions. 
 
@@ -156,9 +156,9 @@ npm run start
 ```
 
 
-## Build with us community on Discord
+## Build with us community on Slack
 
-If you have any questions or ideas feel free to join our   [discord][discord].
+If you have any questions or ideas feel free to join our   [slack][slack].
 
 
 ## Is it production ready?
@@ -182,7 +182,7 @@ At the moment we finalize development of Milestone 1 of the project.
 
 ## Build Ergonode with us!
 
-We are looking for Contributors: Back-end Dev, JS Devs, Tech Writers and Designers. Please read our [contribution rules][contribut] before making any pull request. If you have any questions or ideas feel free to join our [discord][discord] or send us an email: contributors@ergonode.com
+We are looking for Contributors: Back-end Dev, JS Devs, Tech Writers and Designers. Please read our [contribution rules][contribut] before making any pull request. If you have any questions or ideas feel free to join our [slack][slack] or send us an email: contributors@ergonode.com
 
 
 ## Partners
@@ -194,7 +194,7 @@ Ergonode is open-source, and it can be brought to you only by great community an
 
 Ergonode source code is released under the [OSL 3.0 License][license].
 
-[discord]: https://discord.gg/NntXFa4
+[slack]: https://join.slack.com/t/ergonode/shared_invite/enQtNjI5NzU3NzM2MzU2LTY0ZGM4MGMyNGZjOGEyNDY5OGI1NzM5ZDNiMTY3YjA2YmRhMzY1OWE1MjJjZWEzM2YwOThkZDBjODZlZjY0ZmI
 [contribut]: ./.github/CONTRIBUTING.md
 [license]: ./LICENSE.txt
 [roadmap]: https://ergonode.com/features/#roadmap
