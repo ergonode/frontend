@@ -68,6 +68,7 @@ export default {
     computed: {
         ...mapState('tree', {
             fullTreeData: state => state.fullTreeData,
+            hiddenItems: state => state.hiddenItems,
         }),
         ...mapState('authentication', {
             language: state => state.user.language,
@@ -126,10 +127,14 @@ export default {
                 elementBounds: initializeRowBounds(categories),
             }, ({ index, category }) => {
                 const hasChildren = category.querySelector('.grid-item__categories-length');
-                if (category && !hasChildren) {
+                if (category) {
                     const categoryId = category.getAttribute('item-id');
-                    const { row, column } = this.dataWithoutGhostElement[index];
+                    const categoryItem = this.dataWithoutGhostElement[index];
+                    const { row, column } = categoryItem;
                     const parentId = this.getParentId(row, column);
+                    if (hasChildren) {
+                        this.$emit('toggleItem', categoryItem);
+                    }
                     this.setDraggedElement(categoryId);
                     this.setDraggableState({ propName: 'isListElementDragging', value: true });
                     addTreeElementCopyToDocumentBody(event, category);
@@ -138,7 +143,7 @@ export default {
                     }
                     this.$emit('removeItem', index);
                 } else {
-                    this.$addAlert(this.$store, { type: 'warning', message: 'Can`t move the category which has subcategory.', duration: 1500 });
+                    // this.$addAlert(this.$store, { type: 'warning', message: 'Can`t move the category which has subcategory.', duration: 1500 });
                     event.preventDefault();
                 }
             });
@@ -195,17 +200,21 @@ export default {
                 .find(e => e.id === this.draggedElement);
             this.removeGhostElement();
             const parentId = this.getParentId(row, column);
+            const childrenLength = this.hiddenItems[this.draggedElement]
+                ? this.hiddenItems[this.draggedElement].length
+                : 0;
             const droppedItem = {
                 id: this.draggedElement,
                 code: categoryCode,
                 name: categoryName,
                 column,
                 row,
-                children: 0,
-                expand: false,
+                children: childrenLength,
+                expand: childrenLength > 0,
                 parent: parentId,
             };
             this.addItem(droppedItem);
+            if (childrenLength > 0) this.$emit('toggleItem', droppedItem);
             if (parentId !== 'root') {
                 this.setChildrenLength({ id: parentId, value: 1 });
             }

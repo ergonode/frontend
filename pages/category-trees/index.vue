@@ -80,6 +80,7 @@ export default {
                 if (err.response && err.response.status === 404) {
                     return error({ statusCode: 404, message: err.message });
                 }
+                console.log(err);
                 return error();
             },
         });

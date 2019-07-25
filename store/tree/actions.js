@@ -35,6 +35,20 @@ export default {
             }).catch(e => onError(e.data));
         }).catch(e => onError(e.data));
     },
+    updateTree(
+        { rootState },
+        {
+            id,
+            data,
+            onSuccess,
+            onError,
+        },
+    ) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$put(`${userLanguageCode}/trees/${id}`, data).then(() => {
+            onSuccess();
+        }).catch(e => onError(e.data));
+    },
     addTreeItem: ({ commit, getters }, item) => {
         const findIndex = getters.getIndexById(item.id);
         if (findIndex >= 0) {
@@ -85,20 +99,6 @@ export default {
     },
     removeHiddenItem: ({ commit }, key) => {
         commit(types.REMOVE_HIDDEN_ITEM, key);
-    },
-    updateTree(
-        { rootState },
-        {
-            id,
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/trees/${id}`, data).then(() => {
-            onSuccess();
-        }).catch(e => onError(e.data));
     },
     clearStorage: ({ commit }) => commit(types.CLEAR_STORAGE),
 };

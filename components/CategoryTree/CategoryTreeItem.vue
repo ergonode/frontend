@@ -65,7 +65,7 @@ export default {
     },
     methods: {
         toggleItemExpand() {
-            this.$emit('expandItem');
+            this.$emit('toggleItem');
         },
     },
 };

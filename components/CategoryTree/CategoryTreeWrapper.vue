@@ -16,7 +16,7 @@
             @removeItem="removeTreeItem"
             @rebuildGrid="rebuildTree"
             @setRowsCount="setRowsCount"
-            @expandItem="(i) => expandItem(i)">
+            @toggleItem="(i) => toggleItem(i)">
             <TemplateGridPresentationLayer
                 :style="gridStyles"
                 :columns="columns"
@@ -35,7 +35,7 @@
                         :number-of-children="getChildrenLengthById(item.id)"
                         :is-expand="getExpandStateById(item.id)"
                         :item-name="item.name || item.code"
-                        @expandItem="expandItem(item)" />
+                        @toggleItem="toggleItem(item)" />
                 </TemplateGridItemArea>
             </TemplateGridItemsContainer>
         </TemplateGridContainer>
@@ -73,8 +73,6 @@ export default {
             rowsHeight: state => state.rowsHeight,
             rowsCount: state => state.rowsCount,
             treeData: state => state.treeData,
-            fullTreeData: state => state.fullTreeData,
-            hiddenItems: state => state.hiddenItems,
         }),
         ...mapGetters('tree', [
             'getChildrenByParentId',
@@ -105,7 +103,7 @@ export default {
             'removeHiddenItem',
             'setExpandItem',
         ]),
-        expandItem({
+        toggleItem({
             id, row, column, expand,
         }) {
             const minChildRow = getMinChildRow(this.getChildrenByParentId(id));
