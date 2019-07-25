@@ -28,12 +28,12 @@ export default {
             return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({ categories: treeData }) => {
                 commit(types.SET_TREE, getParsedTreeData(treeData, categories));
             }).catch((e) => {
-                console.log(e.data);
-                onError(e.data);
+                console.log(e);
+                onError(e);
             });
         }).catch((e) => {
-            console.log(e.data);
-            onError(e.data);
+            console.log(e);
+            onError(e);
         });
     },
     addTreeItem: ({ commit, state }, item) => {
