@@ -5,7 +5,6 @@
 <template>
     <GridProductPage
         :title="title"
-        :action-paths="actionPaths"
         :buttons="buttons"
         icon="sprite-menu menu-paper--selected" />
 </template>
@@ -36,12 +35,6 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        actionPaths() {
-            return {
-                getData: `${this.userLanguageCode}/products`,
-                routerEdit: 'products-edit-id',
-            };
-        },
     },
     created() {
         this.setConfigurationForList({

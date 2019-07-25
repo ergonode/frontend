@@ -4,24 +4,13 @@
  */
 <template>
     <div class="tab">
-        <div class="horizontal-wrapper">
-            <div class="tab__options">
-                <VerticalTabBar :items="verticalTabs" />
+        <div class="tab__grid">
+            <div class="filters-panel-wrapper">
+                <GridLayoutConfigurator v-model="rowsHeight" />
             </div>
-            <div class="tab__grid">
-                <!-- NOTE: Uncomment when filters are implemented -->
-                <!--<GridGlobalFilters v-show="isGlobalFiltersVisible" />-->
-                <div class="filters-panel-wrapper">
-                    <GridFilterActions
-                        v-model="filtersExpanded"
-                        :filters-number="filtersNumber" />
-                    <GridLayoutConfigurator v-model="rowsHeight" />
-                </div>
-                <GridWrapper
-                    :rows-height="rowsHeight"
-                    :action-paths="actionPaths" />
-                <TrashCan v-show="isColumnDragging" />
-            </div>
+            <GridWrapper
+                :rows-height="rowsHeight"
+                :action-paths="actionPaths" />
         </div>
         <GridFooter :is-pagination-visible="Boolean(numberOfPages)">
             <template slot="pagination">
@@ -40,27 +29,15 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
 
 export default {
-    name: 'ProductGridTab',
+    name: 'UsersGridTab',
     components: {
         GridWrapper: () => import('~/components/Grid/Wrappers/GridWrapper'),
-        GridFilterActions: () => import('~/components/Grid/GridFilterActions'),
         GridLayoutConfigurator: () => import('~/components/Grid/GridLayoutConfigurator'),
         GridFooter: () => import('~/components/Grid/GridFooter'),
         GridPageSelector: () => import('~/components/Grid/GridPageSelector'),
         GridPagination: () => import('~/components/Grid/GridPagination'),
-        // GridGlobalFilters: () => import('~/components/Grid/GridGlobalFilters'),
-        VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
-        TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
     },
     data: () => ({
-        verticalTabs: [
-            {
-                title: 'Attributes',
-                component: () => import('~/components/Card/AttributesListTab'),
-                icon: 'sprite-sidebar sidebar-attributes',
-                active: true,
-            },
-        ],
         gridConfiguration: {
             rows: {
                 height: 32,
@@ -70,10 +47,6 @@ export default {
         filtersExpanded: true,
     }),
     computed: {
-        ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
-            isColumnDragging: state => state.isColumnDragging,
-        }),
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
@@ -87,8 +60,8 @@ export default {
         }),
         actionPaths() {
             return {
-                getData: `${this.userLanguageCode}/products`,
-                routerEdit: 'products-edit-id',
+                getData: `${this.userLanguageCode}/accounts`,
+                routerEdit: 'users-edit-id',
             };
         },
         rowsHeight: {
@@ -100,10 +73,6 @@ export default {
             set(value) {
                 this.gridConfiguration.rows.height = value;
             },
-        },
-        isGlobalFiltersVisible() {
-            return this.isListElementDragging
-                || (this.filtersNumber !== 0 && this.filtersExpanded);
         },
         visibleRowsInPageCount: {
             get() {
@@ -162,27 +131,16 @@ export default {
         flex-direction: column;
         background-color: $white;
 
-        .horizontal-wrapper {
-            display: flex;
-            flex: 1;
-        }
-
-        &__options {
-            display: flex;
-            margin: 24px 12px 0 24px;
-        }
-
         &__grid {
             display: flex;
             flex: 1;
             flex-direction: column;
-            width: 0;
-            margin: 12px 12px 0 0;
+            margin: 12px 12px 0;
             overflow: hidden;
 
             .filters-panel-wrapper {
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-end;
                 padding: 12px 12px 0;
             }
         }
