@@ -127,14 +127,14 @@ export default {
                 elementBounds: initializeRowBounds(categories),
             }, ({ index, category }) => {
                 const hasChildren = category.querySelector('.grid-item__categories-length');
-                if (category) {
+                if (category && !hasChildren) {
                     const categoryId = category.getAttribute('item-id');
                     const categoryItem = this.dataWithoutGhostElement[index];
                     const { row, column } = categoryItem;
                     const parentId = this.getParentId(row, column);
-                    if (hasChildren) {
-                        this.$emit('toggleItem', categoryItem);
-                    }
+                    // if (hasChildren) {
+                    //     this.$emit('toggleItem', categoryItem);
+                    // }
                     this.setDraggedElement(categoryId);
                     this.setDraggableState({ propName: 'isListElementDragging', value: true });
                     addTreeElementCopyToDocumentBody(event, category);
@@ -143,7 +143,7 @@ export default {
                     }
                     this.$emit('removeItem', index);
                 } else {
-                    // this.$addAlert(this.$store, { type: 'warning', message: 'Can`t move the category which has subcategory.', duration: 1500 });
+                    this.$addAlert(this.$store, { type: 'warning', message: 'Can`t move the category which has subcategory.', duration: 1500 });
                     event.preventDefault();
                 }
             });
@@ -214,7 +214,7 @@ export default {
                 parent: parentId,
             };
             this.addItem(droppedItem);
-            if (childrenLength > 0) this.$emit('toggleItem', droppedItem);
+            // if (childrenLength > 0) this.$emit('toggleItem', droppedItem);
             if (parentId !== 'root') {
                 this.setChildrenLength({ id: parentId, value: 1 });
             }
