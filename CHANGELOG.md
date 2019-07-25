@@ -1,7 +1,7 @@
 # CHANGELOG
 This changelog references the relevant changes.
 
-## CHANGELOG FOR v0.1.2
+## CHANGELOG FOR v0.2.0
 
 - bugfix [#14](https://github.com/ergonode/frontend/issues/14) User image doesn't display well
 - bugfix [#15](https://github.com/ergonode/frontend/issues/15) Multiselect - product template
