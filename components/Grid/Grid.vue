@@ -23,14 +23,6 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            ghostColumnIndex: -1,
-            draggedColumnIndex: -1,
-            draggedColumn: null,
-            columnBounds: [],
-        };
-    },
     computed: {
         templateColumns() {
             return {

@@ -53,6 +53,15 @@
                 value: passwordRepeat
             })" />
         <Select
+            :value="parsedStatus"
+            solid
+            required
+            regular
+            label="Activity status"
+            :options="statusValues"
+            :error-messages="errorStatusMessage"
+            @input="onStatusChange" />
+        <Select
             :value="parsedLanguage"
             solid
             required
@@ -78,6 +87,14 @@ export default {
         Select: () => import('~/components/Inputs/Select/Select'),
     },
     mixins: [errorValidationMixin],
+    data() {
+        return {
+            activityStatuses: {
+                ACTIVE: 'Active',
+                INACTIVE: 'Inactive',
+            },
+        };
+    },
     computed: {
         ...mapState('data', {
             languages: state => state.languages,
@@ -90,12 +107,19 @@ export default {
             password: state => state.password,
             passwordRepeat: state => state.passwordRepeat,
             language: state => state.language,
+            status: state => state.status,
         }),
         parsedLanguage() {
             return getValueByKey(this.languages, this.language);
         },
+        parsedStatus() {
+            return getValueByKey(this.activityStatuses, this.status);
+        },
         isDisabled() {
             return Boolean(this.userID);
+        },
+        statusValues() {
+            return Object.values(this.activityStatuses);
         },
         languageValues() {
             return Object.values(this.languages);
@@ -124,6 +148,10 @@ export default {
             const languageIndex = 'language';
             return this.elementIsValidate(languageIndex);
         },
+        errorStatusMessage() {
+            const statusIndex = 'status';
+            return this.elementIsValidate(statusIndex);
+        },
     },
     methods: {
         ...mapActions('users', [
@@ -131,6 +159,9 @@ export default {
         ]),
         onLanguageChange(language) {
             this.setAction({ key: 'language', value: getKeyByValue(this.languages, language) });
+        },
+        onStatusChange(status) {
+            this.setAction({ key: 'status', value: getKeyByValue(this.activityStatuses, status) });
         },
     },
 };

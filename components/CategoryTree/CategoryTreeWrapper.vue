@@ -34,7 +34,7 @@
                     <CategoryTreeItem
                         v-else
                         :number-of-children="getChildren(item.id).length"
-                        :item-name="item.code"
+                        :item-name="item.name || item.code"
                         @expandItem="e => expandItem(e, item)" />
                 </TemplateGridItemArea>
             </TemplateGridItemsContainer>

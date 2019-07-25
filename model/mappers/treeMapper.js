@@ -7,17 +7,21 @@ export function getParsedTreeData(tree, categories) {
     let rowCounter = 0;
     const buildTree = (treeArray, parent, column) => {
         for (let i = 0; i < treeArray.length; i += 1) {
-            const categoruId = treeArray[i].category_id;
-            const categoryCode = categories.find(e => e.id === categoruId).code;
-            newTree.push({
-                id: categoruId,
+            const categoryId = treeArray[i].category_id;
+            const {
                 code: categoryCode,
+                name: categoryName,
+            } = categories.find(e => e.id === categoryId);
+            newTree.push({
+                id: categoryId,
+                code: categoryCode,
+                name: categoryName,
                 row: rowCounter,
                 column,
                 parent,
             });
             rowCounter += 1;
-            buildTree(treeArray[i].childrens, categoruId, column + 1);
+            buildTree(treeArray[i].childrens, categoryId, column + 1);
         }
     };
     buildTree(tree, 'root', 0);
@@ -28,18 +32,18 @@ export function getMappedTreeData(treeArray) {
     const newTree = [];
     for (let i = 0; i < treeArray.length; i += 1) {
         const { parent, id } = treeArray[i];
-        const childrenElemeent = { category_id: id, childrens: [] };
+        const childrenElement = { category_id: id, childrens: [] };
         const setChild = (childArray) => {
             for (let j = 0; j < childArray.length; j += 1) {
                 if (childArray[j].category_id === parent) {
-                    childArray[j].childrens.push(childrenElemeent);
+                    childArray[j].childrens.push(childrenElement);
                 } else {
                     setChild(childArray[j].childrens);
                 }
             }
         };
         if (parent === 'root') {
-            newTree.push(childrenElemeent);
+            newTree.push(childrenElement);
         } else {
             setChild(newTree);
         }

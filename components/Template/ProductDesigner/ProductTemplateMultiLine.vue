@@ -9,14 +9,15 @@
         :label="label"
         :placeholder="placeholder"
         :required="required"
-        :error-messages="errorMessages"
+        :error-messages="isError ? [' '] : null"
         resize="none"
         @input="onValueChange">
-        <ProductTemplateDetailsContent
-            slot="appendIcon"
-            :hint="hint"
-            :error-messages="errorMessages"
-            :is-error="isError" />
+        <template v-slot:appendIcon>
+            <ProductTemplateDetailsContent
+                :hint="hint"
+                :error-messages="errorMessages"
+                :is-error="isError" />
+        </template>
     </TextArea>
 </template>
 

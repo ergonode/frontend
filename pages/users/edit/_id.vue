@@ -32,6 +32,7 @@ export default {
             language: state => state.language,
             password: state => state.password,
             passwordRepeat: state => state.passwordRepeat,
+            status: state => state.status,
         }),
         title() {
             return `${this.firstName} ${this.lastName}`;
@@ -64,6 +65,7 @@ export default {
                 password: this.password,
                 passwordRepeat: this.passwordRepeat,
                 language: this.language,
+                // status: this.status, TODO: Uncomment when BE is ready
             };
             this.updateUser({
                 id: this.id,

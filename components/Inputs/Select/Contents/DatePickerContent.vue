@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import DatePicker from '~/components/Inputs/DatePicker/DatePicker';
+import DatePicker from '~/components/Inputs/Date/DatePicker';
 import Button from '~/components/Buttons/Button';
 
 export default {

@@ -11,11 +11,12 @@
         :error-messages="isError ? [' '] : null"
         :required="required"
         @input="onValueChange">
-        <ProductTemplateDetailsContent
-            slot="appendIcon"
-            :hint="hint"
-            :error-messages="errorMessages"
-            :is-error="isError" />
+        <template v-slot:appendIcon>
+            <ProductTemplateDetailsContent
+                :hint="hint"
+                :error-messages="errorMessages"
+                :is-error="isError" />
+        </template>
     </TextField>
 </template>
 

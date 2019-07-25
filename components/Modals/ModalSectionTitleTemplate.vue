@@ -77,14 +77,15 @@ export default {
         onTitleChange(value) {
             this.title = value;
 
-            if (this.title === '') this.setError();
+            if (this.title === '') this.setTitleError();
+            else if (this.title.length > 255) this.setLengthError();
             else this.error = null;
         },
         onClose() {
             this.$emit('input', false);
         },
         onSave() {
-            if (this.title !== '') {
+            if (this.title !== '' && this.title.length <= 255) {
                 if (!this.sectionTitle) {
                     this.addSectionElementToLayout({ ...this.sectionPosition, title: this.title });
                 } else {
@@ -92,12 +93,17 @@ export default {
                 }
                 this.title = '';
                 this.$emit('input', false);
+            } else if (this.title === '') {
+                this.setTitleError();
             } else {
-                this.setError();
+                this.setLengthError();
             }
         },
-        setError() {
-            this.error = 'Title is required!';
+        setTitleError() {
+            this.error = 'Title is required.';
+        },
+        setLengthError() {
+            this.error = 'Title exceeded 255 characters.';
         },
     },
 };

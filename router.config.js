@@ -30,6 +30,8 @@ const AttributeTranslationsTab = () => import('~/components/Card/AttributeTransl
 const TemplateDesignerBaseTab = () => import('~/components/Card/TemplateDesignerBaseTab').then(m => m.default || m);
 const TemplateDesignerTab = () => import('~/components/Card/TemplateDesignerTab').then(m => m.default || m);
 const UserBaseTab = () => import('~/components/Card/UserBaseTab').then(m => m.default || m);
+const UsersGridTab = () => import('~/components/Card/UsersGridTab').then(m => m.default || m);
+const RolesGridTab = () => import('~/components/Card/RolesGridTab').then(m => m.default || m);
 const UserAvatarTab = () => import('~/components/Card/UserAvatarTab').then(m => m.default || m);
 const CategoryBaseTab = () => import('~/components/Card/CategoryBaseTab').then(m => m.default || m);
 const CategoryTranslationsTab = () => import('~/components/Card/CategoryTranslationsTab').then(m => m.default || m);
@@ -200,7 +202,19 @@ export const pages = [ // eslint-disable-line import/prefer-default-export
         ],
     },
     {
-        name: 'users', path: '/users', component: Users,
+        name: 'users',
+        path: '/users',
+        component: Users,
+        children: [
+            {
+                path: 'grid',
+                component: UsersGridTab,
+            },
+            {
+                path: 'roles',
+                component: RolesGridTab,
+            },
+        ],
     },
     {
         name: 'users-new',

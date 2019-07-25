@@ -20,7 +20,7 @@
                     slot="next"
                     class="expander" />
             </DatePickerNavigationHeader>
-            <DatePickerWeekDays :days="weekDays" />
+            <DatePickerContentHeader :headers="weekDays" />
             <DatePickerMonthDays
                 :dates="lowerBoundCalendarDates"
                 :selected-dates="parsedRange"
@@ -33,7 +33,7 @@
                 )">
                 <div
                     slot="previous"
-                    lass="expander" />
+                    class="expander" />
                 <Button
                     slot="next"
                     icon="arrow-dart trans-three-fourth"
@@ -42,7 +42,7 @@
                     ripple-color="rgba(235, 235, 236, 1)"
                     @click.native="nextMonth" />
             </DatePickerNavigationHeader>
-            <DatePickerWeekDays :days="weekDays" />
+            <DatePickerContentHeader :headers="weekDays" />
             <DatePickerMonthDays
                 :dates="upperBoundCalendarDates"
                 :selected-dates="parsedRange"
@@ -54,9 +54,9 @@
 <script>
 
 import Button from '~/components/Buttons/Button';
-import DatePickerMonthDays from '~/components/Inputs/DatePicker/DatePickerMonthDays';
-import DatePickerWeekDays from '~/components/Inputs/DatePicker/DatePickerWeekDays';
-import DatePickerNavigationHeader from '~/components/Inputs/DatePicker/DatePickerNavigationHeader';
+import DatePickerMonthDays from '~/components/Inputs/Date/DatePickerMonthDays';
+import DatePickerContentHeader from '~/components/Inputs/Date/DatePickerContentHeader';
+import DatePickerNavigationHeader from '~/components/Inputs/Date/DatePickerNavigationHeader';
 import calendar, {
     getNextMonth,
     getPreviousMonth,
@@ -69,7 +69,7 @@ export default {
     components: {
         Button,
         DatePickerMonthDays,
-        DatePickerWeekDays,
+        DatePickerContentHeader,
         DatePickerNavigationHeader,
     },
     props: {
@@ -119,10 +119,12 @@ export default {
             return Object.keys(CALENDAR_MONTHS)[Math.max(0, Math.min(month - 1, 11))];
         },
         previousMonth() {
-            const { month, year } = getPreviousMonth(this.lowerBoundMonth, this.lowerBoundYear);
+            const {
+                month: previousMonth, year: previousYear,
+            } = getPreviousMonth(this.lowerBoundMonth, this.lowerBoundYear);
 
-            this.lowerBoundMonth = month;
-            this.lowerBoundYear = year;
+            this.lowerBoundMonth = previousMonth;
+            this.lowerBoundYear = previousYear;
             this.upperBoundMonth = this.upperBoundMonth > 1
                 ? this.upperBoundMonth - 1
                 : 12;
@@ -131,10 +133,12 @@ export default {
                 : this.upperBoundYear;
         },
         nextMonth() {
-            const { month, year } = getNextMonth(this.upperBoundMonth, this.upperBoundYear);
+            const {
+                month: nextMonth, year: nextYear,
+            } = getNextMonth(this.upperBoundMonth, this.upperBoundYear);
 
-            this.upperBoundMonth = month;
-            this.upperBoundYear = year;
+            this.upperBoundMonth = nextMonth;
+            this.upperBoundYear = nextYear;
             this.lowerBoundMonth = this.lowerBoundMonth < 12
                 ? this.lowerBoundMonth + 1
                 : 1;

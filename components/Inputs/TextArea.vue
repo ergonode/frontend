@@ -31,6 +31,9 @@
             :aria-label="label || 'no description'"
             :style="textareaStyle"
             @input="emitValue" />
+        <template v-slot:appendIcon>
+            <slot name="appendIcon" />
+        </template>
     </InputBase>
 </template>
 
