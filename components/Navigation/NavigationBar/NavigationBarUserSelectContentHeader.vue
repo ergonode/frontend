@@ -1,3 +1,7 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
 <template>
     <div class="header">
         <div class="header__image">
@@ -55,11 +59,12 @@ export default {
 
         &__image {
             display: flex;
+            flex-direction: column;
             grid-column: 1;
             grid-row: 1 / 3;
 
             & > img {
-                height: 72px;
+                height: 64px;
                 object-fit: contain;
             }
         }

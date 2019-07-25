@@ -116,7 +116,6 @@ export default {
         display: flex;
         flex: 0 0 auto;
         width: 165px;
-        padding: 12px;
         box-sizing: border-box;
         background-color: $white;
         cursor: pointer;
@@ -132,6 +131,7 @@ export default {
         &__button {
             position: relative;
             border: none;
+            padding: 8px 12px;
             background-color: transparent;
             text-overflow: ellipsis;
             overflow: hidden;
@@ -195,9 +195,10 @@ export default {
         &:after {
             position: absolute;
             top: -1px;
-            left: 0;
+            left: -1px;
+            right: -1px;
             z-index: 1;
-            width: 100%;
+            width: calc(100% + 2px);
             height: 3px;
             background-color: $primary;
             opacity: 0;

@@ -13,7 +13,7 @@
             required
             :error-messages="errorSkuMessage"
             :disabled="isDisabled"
-            @input="(sku) => setProductSku({ sku })" />
+            @input="(sku) => setProductSku(sku)" />
         <Select
             :value="template"
             solid
@@ -23,7 +23,7 @@
             :error-messages="errorTemplateMessage"
             :options="templateValues"
             :disabled="isDisabled"
-            @input="(template) => setProductTemplate({ template })" />
+            @input="(template) => setProductTemplate(template)" />
         <Select
             :value="selectedCategories"
             solid
@@ -44,9 +44,9 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 import BaseCard from '~/components/Card/BaseCard';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
-import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'ProductBaseCard',
@@ -91,14 +91,10 @@ export default {
             'setProductCategories',
         ]),
         onCategoriesChange(categories) {
-            this.setProductCategories({
-                selectedCategories: categories,
-            });
+            this.setProductCategories(categories);
         },
         clearContent() {
-            this.setProductCategories({
-                selectedCategories: [],
-            });
+            this.setProductCategories();
         },
     },
 };

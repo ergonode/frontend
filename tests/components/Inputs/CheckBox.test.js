@@ -20,11 +20,11 @@ describe('Inputs/CheckBox', () => {
         },
       });
     });
-    it("Component rendered correctly", () => {
+    it("Component is rendered", () => {
       expect(wrapper.is(CheckBox)).toBe(true);
     });
 
-    it('Check if component is named correctly', () => {
+    it('Component is named well', () => {
       expect(typeof CheckBox.name).toBe('string');
       expect(CheckBox.name).toEqual('CheckBox');
     });

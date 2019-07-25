@@ -15,11 +15,11 @@ describe('CategoryTree/CategoryTreeItem', () => {
         },
       });
     });
-    it("Component rendered correctly", () => {
+    it("Component is rendered", () => {
       expect(wrapper.is(CategoryTreeItem)).toBe(true);
     });
 
-    it('Check if component is named correctly', () => {
+    it('Component is named well', () => {
       expect(typeof CategoryTreeItem.name).toBe('string');
       expect(CategoryTreeItem.name).toEqual('CategoryTreeItem');
     });

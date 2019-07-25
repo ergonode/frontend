@@ -4,34 +4,40 @@
  */
 <template>
     <div class="centering-wrapper">
-        <div class="products-template-grid">
-            <Component
-                :is="getComponentViaName(element.component)"
-                v-for="(element, index) in templateLayout"
-                :key="index"
-                v-bind="getComponentProps(element)"
-                :style="{
-                    gridColumn: `${element.x} / span ${element.width}`,
-                    gridRow: `${element.y} / span ${element.height}`,
-                    height: getElementHeight(element)
-                }" />
-        </div>
+        <TemplateGridDesigner
+            :row-height="48"
+            @rowsCount="onRowsCountChange">
+            <div
+                class="products-template-grid"
+                :style="gridStyle">
+                <Component
+                    :is="getComponentViaType(element.type)"
+                    v-for="(element, index) in layoutElements"
+                    :key="index"
+                    :style="getItemPosition(element)"
+                    :value="getElementValueByCode(element.code, element.type)"
+                    :multiselect="element.type === 'MULTI_SELECT'"
+                    v-bind="element" />
+            </div>
+        </TemplateGridDesigner>
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import ProductTemplateSection from '~/components/Template/Product/ProductTemplateSection';
-import ProductTemplateDate from '~/components/Template/Product/ProductTemplateDate';
-import ProductTemplateImage from '~/components/Template/Product/ProductTemplateImage';
-import ProductTemplateMultiLine from '~/components/Template/Product/ProductTemplateMultiLine';
-import ProductTemplateOptions from '~/components/Template/Product/ProductTemplateOptions';
-import ProductTemplateSingleLine from '~/components/Template/Product/ProductTemplateSingleLine';
+import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
+import TemplateGridDesigner from '~/components/TemplateGrid/TemplateDesigner/TemplateGridDesigner';
+import ProductTemplateSection from '~/components/Template/ProductDesigner/ProductTemplateSection';
+import ProductTemplateDate from '~/components/Template/ProductDesigner/ProductTemplateDate';
+import ProductTemplateImage from '~/components/Template/ProductDesigner/ProductTemplateImage';
+import ProductTemplateMultiLine from '~/components/Template/ProductDesigner/ProductTemplateMultiLine';
+import ProductTemplateOptions from '~/components/Template/ProductDesigner/ProductTemplateOptions';
+import ProductTemplateSingleLine from '~/components/Template/ProductDesigner/ProductTemplateSingleLine';
 
 export default {
     name: 'ProductTemplateCard',
     components: {
-        ComponentWrapper: () => import('~/components/Dynamic/ComponentWrapper'),
+        TemplateGridDesigner,
     },
     props: {
         languageCode: {
@@ -39,90 +45,75 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            columnsNumber: 4,
+            maxRows: 0,
+        };
+    },
     computed: {
         ...mapState('productsDraft', {
-            templateLayout: state => state.templateLayout,
+            layoutElements: state => state.layoutElements,
+            draft: state => state.draft,
         }),
+        maxRowOfLayoutElements() {
+            const maxVisibleRows = this.columnsNumber * this.maxRows;
+            const layoutElement = getObjectWithMaxValueInArrayByObjectKey(this.layoutElements, 'row');
+
+            if (layoutElement) {
+                const { row, height } = layoutElement;
+                const maxElementRow = row + height;
+
+                return Math.min(maxElementRow, maxVisibleRows);
+            }
+
+            return maxVisibleRows;
+        },
+        gridStyle() {
+            return {
+                gridTemplateRows: `repeat(${this.maxRowOfLayoutElements}, 48px)`,
+            };
+        },
     },
     methods: {
-        getComponentViaName(name) {
-            switch (name) {
-            case 'ProductTemplateDate':
+        onRowsCountChange({ value }) {
+            this.maxRows = value;
+        },
+        getItemPosition({
+            row, column, width, height,
+        }) {
+            return { gridArea: `${row} / ${column} / ${row + height} / ${column + width}` };
+        },
+        getComponentViaType(type) {
+            switch (type) {
+            case 'DATE':
                 return ProductTemplateDate;
-            case 'ProductTemplateImage':
+            case 'IMAGE':
                 return ProductTemplateImage;
-            case 'ProductTemplateMultiLine':
+            case 'TEXTAREA':
                 return ProductTemplateMultiLine;
-            case 'ProductTemplateOptions':
+            case 'SELECT':
+            case 'MULTI_SELECT':
                 return ProductTemplateOptions;
-            case 'ProductTemplateSingleLine':
+            case 'NUMERIC':
+            case 'TEXT':
+            case 'UNIT':
+            case 'PRICE':
                 return ProductTemplateSingleLine;
-            case 'ProductTemplateSection':
+            case 'SECTION TITLE':
                 return ProductTemplateSection;
             default:
                 return null;
             }
         },
-        getComponentProps(element) {
-            const {
-                component,
-                name,
-                placeholder,
-                errorMessages,
-                required,
-                value,
-                attributeId,
-                hint,
-                parameters,
-                options,
-            } = element;
+        getElementValueByCode(code, type) {
+            if (!this.draft.attributes[code]) return '';
 
-            switch (component) {
-            case 'ProductTemplateImage':
-                return {
-                    attributeId,
-                    required,
-                    name,
-                    value: value || '',
-                    hint,
-                };
-            case 'ProductTemplateOptions':
-                return {
-                    options,
-                    placeholder,
-                    name,
-                    errorMessages,
-                    required,
-                    value: value || '',
-                    attributeId,
-                    hint,
-                    parameters,
-                };
-            case 'ProductTemplateDate':
-            case 'ProductTemplateMultiLine':
-            case 'ProductTemplateSingleLine':
-                return {
-                    placeholder,
-                    name,
-                    errorMessages,
-                    required,
-                    value: value || '',
-                    attributeId,
-                    hint,
-                    parameters,
-                };
-            case 'ProductTemplateSection':
-                return {
-                    title: element.title,
-                };
-            default:
-                return null;
+            if (type === 'SELECT' || type === 'MULTI_SELECT') {
+                return this.draft.attributes[code].value;
             }
-        },
-        getElementHeight({ component, height }) {
-            return component === 'ProductTemplateSection'
-                ? '20px'
-                : `${(50 * height) + ((height - 1) * 24)}px`;
+
+            return this.draft.attributes[code].value[this.languageCode] || '';
         },
     },
 };
@@ -133,15 +124,14 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
-        align-items: center;
-        padding: 48px;
         overflow: auto;
 
         .products-template-grid {
             display: grid;
             grid-gap: 24px;
-            grid-template-columns: repeat(4, minmax(150px, 250px));
+            grid-template-columns: repeat(4, 1fr);
             height: 0;
+            margin: 0 200px;
         }
     }
 </style>

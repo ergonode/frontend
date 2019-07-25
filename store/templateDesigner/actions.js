@@ -2,8 +2,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { generateLayout } from '~/model/template_designer/layout/LayoutGenerator';
-import { getObstaclePointsForBaseCoordinates } from '~/model/template_designer/layout/LayoutProvider';
+import { types } from './mutations';
+import {
+    getMappedLayoutElements,
+    getMappedLayoutElement,
+    getMappedLayoutSectionElement,
+} from '~/model/mappers/templateMapper';
 
 export default {
     getTemplateByID(
@@ -13,37 +17,17 @@ export default {
         return this.app.$axios.$get(path).then(({
             name,
             image_id: imageID,
-            sections,
             elements,
         }) => {
-            const numberOfColumns = 4;
-            const numberOfItems = 100;
-            const templateLayout = generateLayout(numberOfColumns, numberOfItems, 'TemplateGridItem', elements, sections);
-            commit('setTemplateDesignerTitle', { title: name });
-            commit('setTemplateDesignerImage', { image: imageID });
-            commit('setTemplateDesignerLayout', templateLayout);
-
-            const obstaclesBaseCoordinates = templateLayout.filter(
-                e => e.component === 'AttributeElement',
-            ).map(
-                e => e.coordinates,
+            const { elementDataByType } = getters;
+            const layoutElements = getMappedLayoutElements(
+                elements,
+                elementDataByType,
             );
-            obstaclesBaseCoordinates.forEach((coordinates) => {
-                const points = getObstaclePointsForBaseCoordinates(
-                    coordinates,
-                );
 
-                points.forEach((point) => {
-                    const index = getters.layoutElementIndex(
-                        point.x,
-                        point.y,
-                    );
-                    commit('updateObstacleStageOfElement', {
-                        index,
-                        isObstacle: true,
-                    });
-                });
-            });
+            commit(types.INITIALIZE_LAYOUT_ELEMENTS, layoutElements);
+            commit(types.SET_TEMPLATE_DESIGNER_TITLE, name);
+            commit(types.SET_TEMPLATE_DESIGNER_IMAGE, imageID);
         }).catch(e => onError(e.data));
     },
     updateTemplateDesigner(
@@ -74,80 +58,58 @@ export default {
     getTypes({ commit }, {
         path, params, onSuccess, onError,
     }) {
-        return this.app.$axios.$get(path, { params }).then(({ collection: types }) => {
-            commit('setTypes', { types });
+        return this.app.$axios.$get(path, { params }).then(({ collection }) => {
+            commit(types.SET_TYPES, collection);
             onSuccess();
         }).catch(e => onError(e.data));
     },
-    addElementToLayoutAtCoordinates: ({ commit, getters }, { elementToAdd }) => {
-        const index = getters.layoutElementIndex(
-            elementToAdd.coordinates.xPos.start,
-            elementToAdd.coordinates.yPos.start,
+    addListElementToLayout: ({
+        commit, rootState, rootGetters, getters,
+    }, position) => {
+        const { draggedElement } = rootState.draggable;
+        const { 'list/elementByCode': elementByCode } = rootGetters;
+        const { elementDataByType } = getters;
+        const element = elementByCode(draggedElement.split(':')[0]);
+        const layoutElement = getMappedLayoutElement(
+            element.id,
+            elementDataByType(element.type),
+            position,
         );
 
-        commit('addElementToLayoutAtCoordinates', {
-            index,
-            element: elementToAdd,
-        });
+        commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
     },
-    updateLayoutElementCoordinates: ({ commit, getters }, payload) => {
-        const index = getters.layoutElementIndex(
-            payload.xPos.start,
-            payload.yPos.start,
-        );
-
-        commit('updateLayoutElementCoordinates', {
-            index,
-            coordinates: payload,
-        });
-    },
-    updateObstaclesAtPoints: ({ commit, getters }, { points, isObstacle }) => {
-        points.forEach((point) => {
-            const index = getters.layoutElementIndex(
-                point.x,
-                point.y,
-            );
-            commit('updateObstacleStageOfElement', {
-                index,
-                isObstacle,
-            });
-        });
-    },
-    initializeDraggedElementCollision: ({ commit }, payload) => commit('initializeDraggedElementCollision', payload),
-    initializeHighlightingHintPoints: ({ commit }, payload) => commit('initializeHighlightingHintPoints', payload),
-    initializeHighlightingHoverPoints: ({ commit, state }, payload) => {
-        if (payload && state.highlightingHoverPoints.length !== payload.length) {
-            commit('initializeHighlightingHoverPoints', payload);
-        }
-
-        if (!payload) {
-            commit('initializeHighlightingHoverPoints');
-        }
-    },
-    setTemplateDesignerSectionTitle: ({ commit, getters }, { row, column, title }) => {
-        const index = getters.layoutElementIndex(
-            column,
-            row,
-        );
-
-        commit('setTemplateDesignerSectionTitle', {
-            index,
+    addSectionElementToLayout: ({
+        commit, getters,
+    }, { row, column, title }) => {
+        const { elementDataByType } = getters;
+        const layoutElement = getMappedLayoutSectionElement(
             title,
-        });
-    },
-    setTemplateDesignerTitle: ({ commit }, { title }) => commit('setTemplateDesignerTitle', { title }),
-    setTemplateDesignerImage: ({ commit }, { image }) => commit('setTemplateDesignerImage', { image }),
-    insertElementToLayout: ({ commit }, payload) => commit('insertElementToLayout', payload),
-    setElementRequirement: ({ commit, state }, { id, required }) => {
-        const elementIndex = state.templateLayout.findIndex(
-            element => element.data && element.data.id === id,
+            elementDataByType('SECTION'),
+            { row, column },
         );
 
-        commit('setElementRequirement', {
-            required,
-            index: elementIndex,
-        });
+        commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
     },
-    setTemplateDesignerLayout: ({ commit }, payload) => commit('setTemplateDesignerLayout', payload),
-    clearStorage: ({ commit }) => commit('clearStorage'),
+    updateLayoutElementBounds: ({ commit }, bounds) => {
+        commit(types.UPDATE_LAYOUT_ELEMENT_BOUNDS, bounds);
+    },
+    updateLayoutElementPosition: ({ commit }, position) => {
+        commit(types.UPDATE_LAYOUT_ELEMENT_POSITION, position);
+    },
+    updateSectionElementTitle: ({ commit }, title) => {
+        commit(types.UPDATE_SECTION_ELEMENT_TITLE, title);
+    },
+    removeLayoutElementAtIndex: ({ commit }, index) => {
+        commit(types.REMOVE_LAYOUT_ELEMENT_AT_INDEX, index);
+    },
+    setTemplateDesignerTitle: ({ commit }, title) => {
+        commit(types.SET_TEMPLATE_DESIGNER_TITLE, title);
+    },
+    setTemplateDesignerImage: ({ commit }, image) => {
+        commit(types.SET_TEMPLATE_DESIGNER_IMAGE, image);
+    },
+    setLayoutElementRequirement: ({ commit }, payload) => {
+        commit(types.SET_LAYOUT_ELEMENT_REQUIREMENT, payload);
+    },
+    clearStorage: ({ commit }) => commit(types.CLEAR_STATE),
 };

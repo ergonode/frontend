@@ -2,39 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { toCapitalize } from '~/model/stringOperations';
-
-// From whole rows in grid we have to find only those from whose we did fetch draft value
-const getRowsBasedOnDrafts = ({ drafts, rows }) => {
-    const rowsBasedOnDrafts = [];
-
-    Object.keys(drafts).forEach((key) => {
-        const rowByDraftId = rows.find(row => row.id === key);
-        if (rowByDraftId) {
-            rowsBasedOnDrafts.push(rowByDraftId);
-        }
-    });
-
-    return rowsBasedOnDrafts;
-};
-
-const isDraftValueEqualRowValue = (
-    { drafts, rows, draftValue },
-) => {
-    const draftRows = getRowsBasedOnDrafts({ drafts, rows });
-
-    return Object.keys(draftValue).some(
-        draftKey => draftRows.some(row => row[draftKey] === draftValue[draftKey]),
-    );
-};
-
-export function areAnyDraftsInGrid({ drafts, rows }) {
-    const draftsEntries = Object.entries(drafts);
-
-    return draftsEntries.some((
-        [, draftValue],
-    ) => !isDraftValueEqualRowValue({ drafts, rows, draftValue }));
-}
+import { toCapitalize } from '~/model/stringWrapper';
 
 export function insertExtendingColumn(columns) {
     const { length } = columns;

@@ -44,7 +44,7 @@ export default {
 <style lang="scss" scoped>
     .flash-messages {
         position: fixed;
-        bottom: 12px;
+        bottom: 88px;
         right: 12px;
         z-index: 999999;
     }

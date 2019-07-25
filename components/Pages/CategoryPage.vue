@@ -26,6 +26,7 @@ export default {
                 {
                     title: 'Categories',
                     icon: 'sprite-menu menu-puzzel--deactive',
+                    path: '/categories',
                 },
             ],
             buttons: [],

@@ -33,7 +33,7 @@ module.exports = {
             },
         ],
     },
-    loading: {color: '#FFFFFF'},
+    loading: {color: '#00bc87', height: '3px'},
     css: [
         '~assets/scss/plugins-config.scss',
         '~assets/scss/font-inter-ui.scss',
@@ -42,7 +42,6 @@ module.exports = {
         '~assets/scss/icons.scss',
     ],
     plugins: [
-        '~plugins/inputAutoWidth',
         '~plugins/directives',
         '~plugins/axios',
         {mode: 'client', src: '~plugins/alerts'},

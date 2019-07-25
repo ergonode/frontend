@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export default () => ({
+const state = () => ({
     groups: {},
     elements: {},
-    elementsAreMultiDraggable: true,
-    isListMultilingual: true,
     draggedElementsStore: {},
 });
+
+export default state;

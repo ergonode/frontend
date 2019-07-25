@@ -31,11 +31,11 @@ describe('Alerts/FlashMessage', () => {
     });
   });
 
-  it("Component rendered correctly", () => {
+  it("Component is rendered", () => {
     expect(wrapper.is(FlashMessage)).toBe(true);
   });
 
-  it('Check if component is named correctly', () => {
+  it('Component is named well', () => {
     expect(typeof FlashMessage.name).toBe('string');
     expect(FlashMessage.name).toEqual('FlashMessage');
   });

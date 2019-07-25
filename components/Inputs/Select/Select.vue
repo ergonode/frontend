@@ -30,9 +30,9 @@
             :aria-label="label || 'no description'"
             type="text"
             readonly>
-        <slot
-            slot="appendIcon"
-            name="appendIcon" />
+        <template v-slot:appendIcon>
+            <slot name="appendIcon" />
+        </template>
         <FadeTransition
             v-if="isFocused"
             slot="select"
@@ -188,6 +188,12 @@ export default {
             focused: false,
             selectBoundingBox: {},
         };
+    },
+    mounted() {
+        if (this.autofocus) {
+            this.selectBoundingBox = this.getSelectBoundingBox();
+            this.focused = true;
+        }
     },
     computed: {
         appendStateIcon() {

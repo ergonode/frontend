@@ -17,7 +17,7 @@ export default [
         title: 'MANAGE',
         menu: [
             {
-                title: 'Product catalog',
+                title: 'Products catalog',
                 routing: '/products',
                 icon: 'paper',
             },
@@ -33,7 +33,7 @@ export default [
             },
             {
                 title: 'Category trees',
-                routing: '/placeholder/category-trees',
+                routing: '/category-trees',
                 icon: 'tree',
             },
             {
@@ -42,7 +42,7 @@ export default [
                 icon: 'puzzel',
             },
             {
-                title: 'Medias',
+                title: 'Media',
                 routing: '/placeholder/media',
                 icon: 'img',
             },

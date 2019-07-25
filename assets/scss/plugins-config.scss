@@ -20,7 +20,3 @@ input:-webkit-autofill:active {
 html, body {
     @include scrollbars(4px, $darkGraphite);
 }
-
-.grid-scroll {
-    @include scrollbars(0, $grey);
-}

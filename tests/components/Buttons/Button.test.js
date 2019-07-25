@@ -18,11 +18,11 @@ describe('Buttons/Button', () => {
     afterEach(() => {
       wrapper.destroy();
     });
-    it("Component rendered correctly", () => {
+    it("Component is rendered", () => {
       expect(wrapper.is(Button)).toBe(true);
     });
 
-    it('Check if component is named correctly', () => {
+    it('Component is named well', () => {
       expect(typeof Button.name).toBe('string');
       expect(Button.name).toEqual('Button');
     });

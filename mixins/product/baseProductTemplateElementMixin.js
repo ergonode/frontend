@@ -2,23 +2,20 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
-import debounce from 'debounce';
 import { mapActions } from 'vuex';
+import debounce from 'debounce';
+import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
+import ProductTemplateDetailsContent from '~/components/Template/ProductDesigner/ProductTemplateDetailsContent';
 
 export default {
     mixins: [errorValidationMixin],
-    components: {
-        InfoHint: () => import('~/components/Inputs/Hint/InfoHint'),
-        ErrorHint: () => import('~/components/Inputs/Hint/ErrorHint'),
-    },
+    components: { ProductTemplateDetailsContent },
     props: {
         placeholder: {
             type: String,
-            required: false,
             default: '',
         },
-        name: {
+        label: {
             type: String,
             required: true,
         },
@@ -30,13 +27,13 @@ export default {
             type: [Array, Object, Number, String],
             required: true,
         },
-        attributeId: {
+        id: {
             type: String,
             required: true,
         },
         hint: {
             type: String,
-            required: true,
+            default: '',
         },
         parameters: {
             type: [Array, Object],
@@ -50,14 +47,9 @@ export default {
             debounceFunc: null,
         };
     },
-    watch: {
-        value() {
-            this.localValue = this.value;
-        },
-    },
     computed: {
         errorMessages() {
-            return this.elementIsValidate(this.name);
+            return this.elementIsValidate(this.label);
         },
         isError() {
             return this.errorMessages !== null && this.errorMessages.length > 0;
@@ -68,11 +60,12 @@ export default {
             'onError',
             'removeValidationError',
         ]),
+        ...mapActions('productsDraft', [
+            'setProductTemplateElementValue',
+        ]),
         onValueChange(value) {
-            const tmpValue = value.key ? value.key : value;
-
-            this.localValue = tmpValue;
-            this.debounceFunc(tmpValue);
+            this.localValue = value;
+            this.debounceFunc(value);
         },
         onSuccess(name) {
             this.removeValidationError(name);
@@ -80,11 +73,11 @@ export default {
     },
     created() {
         this.debounceFunc = debounce((value) => {
-            this.$store.dispatch('productsDraft/setProductTemplateElementValue', {
+            this.setProductTemplateElementValue({
                 value,
-                attributeId: this.attributeId,
+                attributeId: this.id,
                 required: this.required,
-                name: this.name,
+                name: this.label,
                 onSuccess: this.onSuccess,
                 onError: this.onError,
             });

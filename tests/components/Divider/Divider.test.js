@@ -12,11 +12,11 @@ describe('Dividers/Divider', () => {
     wrapper = mount(Divider);
   });
 
-  it("Component rendered correctly", () => {
+  it("Component is rendered", () => {
     expect(wrapper.is(Divider)).toBe(true);
   });
 
-  it('Check if component is named correctly', () => {
+  it('Component is named well', () => {
     expect(typeof Divider.name).toBe('string');
     expect(Divider.name).toEqual('Divider');
   });

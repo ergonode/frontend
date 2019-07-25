@@ -24,15 +24,16 @@
         @focus="onFocus">
         <textarea
             slot="input"
-            slot-scope="{ onFocusLost }"
             :value="value"
             :placeholder="placeholder"
             :autofocus="autofocus"
             :disabled="disabled"
             :aria-label="label || 'no description'"
             :style="textareaStyle"
-            @input="emitValue"
-            @focusout="onFocusLost" />
+            @input="emitValue" />
+        <template v-slot:appendIcon>
+            <slot name="appendIcon" />
+        </template>
     </InputBase>
 </template>
 
@@ -53,87 +54,70 @@ export default {
         },
         value: {
             type: [String, Number],
-            required: false,
             default: null,
         },
         appendIcon: {
             type: String,
-            required: false,
             default: null,
         },
         prependIcon: {
             type: String,
-            required: false,
             default: null,
         },
         solid: {
             type: Boolean,
-            required: false,
             default: false,
         },
         underline: {
             type: Boolean,
-            required: false,
             default: false,
         },
         leftAlignment: {
             type: Boolean,
-            required: false,
             default: false,
         },
         centerAlignment: {
             type: Boolean,
-            required: false,
             default: false,
         },
         label: {
             type: String,
-            required: false,
             default: null,
         },
         placeholder: {
             type: String,
-            required: false,
             default: null,
         },
         errorMessages: {
             type: [String, Array],
-            required: false,
             default: '',
         },
         hint: {
             type: String,
-            required: false,
             default: '',
         },
         required: {
             type: Boolean,
-            required: false,
             default: false,
         },
         autofocus: {
             type: Boolean,
-            required: false,
             default: false,
         },
         disabled: {
             type: Boolean,
-            required: false,
             default: false,
         },
         small: {
             type: Boolean,
-            required: false,
             default: false,
         },
         regular: {
             type: Boolean,
-            required: false,
             default: false,
         },
         resize: {
             type: String,
-            required: false,
             default: 'auto',
         },
     },

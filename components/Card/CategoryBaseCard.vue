@@ -13,13 +13,14 @@
             :disabled="isDisabled"
             label="Code"
             hint="Category code must be unique"
-            @input="(code) => setAction({ key: 'code', value: code })" />
+            @input="setCategoryCode($event)"
+        />
     </BaseCard>
 </template>
 
 <script>
-import BaseCard from '~/components/Card/BaseCard';
 import { mapState, mapActions } from 'vuex';
+import BaseCard from '~/components/Card/BaseCard';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
@@ -43,9 +44,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('categories', [
-            'setAction',
-        ]),
+        ...mapActions('categories', ['setCategoryCode']),
     },
 };
 </script>

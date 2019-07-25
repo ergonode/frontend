@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { types } from './mutations';
 import { getMappedFilter } from '~/model/mappers/gridDataMapper';
 
 export default {
@@ -9,39 +10,15 @@ export default {
         languageCode,
     }) {
         const groupsPath = `${languageCode}/attributes/groups`;
-        const notAssignedElementsPath = `${languageCode}/attributes`;
-        const notAssignedElementsParams = {
-            limit: 9999,
-            offset: 0,
-            filter: { groups: null },
-        };
-        let parsedGroups = {};
 
-        return Promise.all([
-            this.app.$axios.$get(groupsPath).then(({ collection: groups }) => {
-                // eslint-disable-next-line camelcase
-                const tmpGroups = groups.map(({ id, label, elements_count }) => ({
-                    id, label, elementsCount: elements_count,
-                }));
-                parsedGroups = { ...parsedGroups, ...tmpGroups };
-            }).catch(e => console.log(e)),
-            this.app.$axios.$get(notAssignedElementsPath,
-                { params: notAssignedElementsParams }).then(({ filtered }) => {
-                // TODO: We need to get the number of not assigned elements in group,
-                //  the best option would be to call get elements and get count of them,
-                //  subtraction all groups count with all elements count will be the correct number
-                //  of elements not signed to any of the group. - Waiting for BE - it is workaround.
-
-                const defaultGroup = { id: null, label: 'Unassigned attributes', elementsCount: filtered };
-
-                parsedGroups = {
-                    ...parsedGroups,
-                    [Object.keys(parsedGroups).length]: defaultGroup,
-                };
-            }).then(() => {
-                commit('setGroupsForLanguage', { languageCode, groups: parsedGroups });
-            }).catch(e => console.log(e)),
-        ]);
+        return this.app.$axios.$get(groupsPath).then(({ collection: groups }) => {
+            commit(types.SET_GROUPS_FOR_LANGUAGE, {
+                languageCode,
+                groups: groups.map(({ id, label, elements_count: elementsCount }) => ({
+                    id, label, elementsCount,
+                })),
+            });
+        }).catch(e => console.log(e));
     },
     getElementsForGroup({ commit, state }, {
         listType, groupId, elementsCount, languageCode,
@@ -51,13 +28,13 @@ export default {
         const params = {
             limit: elementsCount,
             offset: 0,
-            filter: groupId ? getMappedFilter({ groups: groupId }) : null,
+            filter: groupId ? getMappedFilter({ groups: groupId }) : 'groups=',
         };
 
         return this.app.$axios.$get(path, { params }).then(({ collection: elements }) => {
             if (!stateElements[languageCode]) {
-                commit('initializeElementsForLanguage', { languageCode });
-                commit('setElementsForLanguage', { languageCode, elements });
+                commit(types.INITIALIZE_ELEMENTS_FOR_LANGUAGE, { languageCode });
+                commit(types.SET_ELEMENTS_FOR_LANGUAGE, { languageCode, elements });
             } else {
                 const elementsToAdd = elements.filter(
                     element => !stateElements[languageCode].some(
@@ -65,14 +42,14 @@ export default {
                     ),
                 );
 
-                commit('setElementsForLanguage', { languageCode, elements: elementsToAdd });
+                commit(types.SET_ELEMENTS_FOR_LANGUAGE, { languageCode, elements: elementsToAdd });
             }
         }).catch(e => console.log(e));
     },
     setConfigurationForList: ({ commit }, configurations) => {
         Object.entries(configurations).forEach((configuration) => {
-            commit('setConfigurationForList', configuration);
+            commit(types.SET_CONFIGURATION_FOR_LIST, configuration);
         });
     },
-    clearStorage: ({ commit }) => commit('clearStorage'),
+    clearStorage: ({ commit }) => commit(types.CLEAR_STATE),
 };

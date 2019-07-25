@@ -26,6 +26,7 @@ export default {
                 {
                     title: 'Users',
                     icon: 'sprite-menu menu-user--deactive',
+                    path: '/users',
                 },
             ],
             buttons: [],

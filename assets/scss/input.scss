@@ -9,7 +9,6 @@
 
     position: relative;
     display: flex;
-    display: -webkit-box;
     flex: 1;
     flex-direction: column;
 
@@ -20,24 +19,26 @@
         align-items: center;
 
         &--small {
-            height: 32px;
+            flex-basis: 32px;
         }
 
         &--regular {
-            height: 40px;
+            flex-basis: 40px;
         }
 
         input, textarea {
             @include setFont(medium, regular, regular, $darkGraphite);
 
             flex: 1;
-            width: 100%;
-            height: 100%;
             outline: none;
+            width: 100%;
             max-width: 100%;
             min-width: 0;
-            min-height: 16px;
             border: none;
+        }
+
+        textarea {
+            height: 100%;
         }
     }
 
@@ -53,9 +54,10 @@
             top: calc(50% - 8px);
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             color: $lightGraphite;
+            padding-left: 2px;
 
             &--required {
-                padding: 0 8px 0 2px;
+                padding-right: 8px;
             }
 
             &--required::after {
@@ -69,13 +71,12 @@
     &.solid {
         #{$input}__content {
             border: 1px solid $darkGrey;
-            padding: 6px 12px;
+            padding: 6px 10px;
             box-sizing: border-box;
         }
 
         #{$input}__label {
             position: absolute;
-            left: 12px;
             color: $lightGraphite;
         }
 
@@ -142,7 +143,7 @@
             }
         }
 
-        &.center-alignment {
+        &.center-alignment, &:not(&.solid) {
             #{$input}__content::after {
                 transform: scaleX(1);
             }
@@ -164,7 +165,7 @@
             &.solid {
                 #{$input}__content {
                     border: 2px solid $success;
-                    padding: 5px 11px;
+                    padding: 5px 9px;
                 }
             }
         }
@@ -173,7 +174,7 @@
             &.solid {
                 #{$input}__content {
                     border: 2px solid $error;
-                    padding: 5px 11px;
+                    padding: 5px 9px;
                 }
             }
 

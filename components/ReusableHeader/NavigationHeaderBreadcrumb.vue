@@ -11,7 +11,7 @@
         <Icon
             :icon="icon"
             size="small" />
-        <span class="typo-subtitle txt--graphite">{{ breadcrumb.title }}</span>
+        <span class="breadcrumb__title typo-subtitle txt--graphite">{{ breadcrumb.title }}</span>
     </div>
 </template>
 
@@ -43,7 +43,7 @@ export default {
             this.isMouseOver = false;
         },
         onClick() {
-            this.$router.back();
+            this.$router.push(this.breadcrumb.path);
         },
     },
 };
@@ -52,6 +52,11 @@ export default {
 <style lang="scss" scoped>
     .breadcrumb {
         display: flex;
+        align-items: center;
+
+        &__title {
+            margin-left: 6px;
+        }
 
         &--hover {
             cursor: pointer;

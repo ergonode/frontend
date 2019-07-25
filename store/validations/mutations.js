@@ -14,6 +14,7 @@ export default {
     },
     removeValidationError: (state, errorKey) => {
         delete state.validationErrors[errorKey];
+        state.validationErrors = { ...state.validationErrors };
     },
     clearStorage: (state) => {
         state.validationErrors = {};

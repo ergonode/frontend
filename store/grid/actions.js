@@ -10,6 +10,8 @@ import {
     getMappedFilter,
 } from '~/model/mappers/gridDataMapper';
 import { swapItemPosition } from '~/model/arrayWrapper';
+import { COLUMN_IDS } from '~/defaults/grid/cookies';
+import { types } from './mutations';
 
 export default {
     getData({ commit, state }, { path }) {
@@ -20,14 +22,22 @@ export default {
             numberOfDisplayedElements,
             filter,
         } = state;
+
         const parsedFilter = getMappedFilter(filter);
-        const params = {};
         const isProductGrid = path.includes('products');
         const columnsID = isProductGrid
-            ? this.$cookies.get('columnsID') || stateColumns.map(col => col.id).join(',')
+            ? this.$cookies.get(COLUMN_IDS) || stateColumns.map(col => col.id).join(',')
             : null;
 
-        if (Object.keys(sortedByColumn).length) {
+        const params = {
+            limit: numberOfDisplayedElements,
+            offset: (displayedPage - 1) * numberOfDisplayedElements,
+            columns: columnsID,
+        };
+
+        const isSorted = Object.keys(sortedByColumn).length;
+
+        if (isSorted) {
             const { index, orderState } = sortedByColumn;
 
             params.field = index;
@@ -38,32 +48,21 @@ export default {
             params.filter = parsedFilter;
         }
 
-        params.limit = numberOfDisplayedElements;
-        params.offset = (displayedPage - 1) * numberOfDisplayedElements;
-        params.columns = columnsID;
-
         return this.app.$axios.$get(path, { params }).then(({
-            configuration, collection: rows, columns, count, filtered,
+            configuration, collection: rows, columns, info,
         }) => {
-            let mappedColumns = [];
-            if (columnsID) {
-                const sortedColumns = getSortedColumnsByIDs(columns, columnsID);
-                mappedColumns = getMappedColumns(
-                    sortedColumns.filter(col => col.visible),
-                );
-            } else {
-                mappedColumns = getMappedColumns(
-                    columns.filter(col => col.visible),
-                );
-            }
+            const { count, filtered } = info;
+            const columnsToMap = columnsID ? getSortedColumnsByIDs(columns, columnsID) : columns;
+            const visibleColumns = columnsToMap.filter(col => col.visible);
+            const mappedColumns = getMappedColumns(visibleColumns);
             const mappedConfiguration = getMappedGridConfiguration(configuration);
 
-            commit('setConfiguration', mappedConfiguration);
-            commit('setRows', rows);
-            commit('setCount', count);
-            commit('setFiltered', filtered);
-            commit('setColumns', { columns: mappedColumns });
-        }).catch(e => console.log(e));
+            commit(types.SET_CONFIGURATION, mappedConfiguration);
+            commit(types.SET_ROWS, rows);
+            commit(types.SET_COUNT, count);
+            commit(types.SET_FILTERED, filtered);
+            commit(types.SET_COLUMNS, mappedColumns);
+        }).catch(err => console.log(err));
     },
     getColumnData({ commit, state }, {
         index,
@@ -73,12 +72,14 @@ export default {
         const {
             columns: stateColumns, displayedPage, numberOfDisplayedElements, sortedByColumn, filter,
         } = state;
-        const stateColumnsID = stateColumns.map(col => col.id).filter(id => !(id.includes('extender') || id.includes('ghost')));
+
+        const stateColumnsID = stateColumns.filter(col => !(col.id.includes('extender') || col.id.includes('ghost'))).map(col => col.id);
         const parsedColumnsID = [
             ...stateColumnsID.slice(0, index),
             columnId,
             ...stateColumnsID.slice(index),
         ].join(',');
+
         const parsedFilter = getMappedFilter(filter);
 
         const params = {
@@ -99,79 +100,90 @@ export default {
         }
 
         return this.app.$axios.$get(path, { params }).then(({
-            collection, columns,
+            collection: rows, columns,
         }) => {
-            const [columnToInsert] = columns.filter(col => col.id === columnId);
+            this.$cookies.set(COLUMN_IDS, parsedColumnsID);
 
-            this.$cookies.set('columnsID', parsedColumnsID);
-
+            const columnToInsert = columns.find(col => col.id === columnId);
             columnToInsert.width = getMappedColumnWidth(columnToInsert);
 
-            commit('insertColumnAtIndex', { column: columnToInsert, index });
-            commit('setRows', collection);
-        }).catch(e => console.log(e));
+            commit(types.INSERT_COLUMN_AT_INDEX, { column: columnToInsert, index });
+            commit(types.SET_ROWS, rows);
+        }).catch(err => console.log(err));
     },
-    setFilter: ({ commit, state }, { filter, id }) => {
+    setFilter({ commit, state }, { filter: filterToSet, id }) {
         // Remove selection on filter action
-        commit('removeSelectedRows');
-        commit('setSelectionForAllRows', { isSelected: false });
+        commit(types.REMOVE_SELECTED_ROWS);
+        commit(types.SET_SELECTION_FOR_ALL_ROWS, false);
 
-        if (!state.filter[id] && !filter) {
+        const isFilterExist = state.filter[id];
+
+        if (!isFilterExist && !filterToSet) {
             return;
         }
 
-        if ((filter === '' && state.filter[id])
-            || (filter.length === 0)) {
-            commit('deleteFilter', { filter, id });
+        const isFilterToSetEmpty = filterToSet.length === 0;
+        const removeFilterCondition = isFilterExist && isFilterToSetEmpty;
+
+        if (removeFilterCondition) {
+            commit(types.REMOVE_FILTER, id);
         } else {
-            commit('setFilter', { filter, id });
+            commit(types.SET_FILTER, { id, filter: filterToSet });
         }
     },
-    setSortingState: ({ commit }, sortedColumn = {}) => {
-        commit('setSortingState', sortedColumn);
+    setSortingState({ commit }, sortedColumn = {}) {
+        commit(types.SET_SORTING_STATE, sortedColumn);
     },
-    changeNumberOfDisplayingElements: ({ commit, state }, { number }) => {
-        commit('setNumberOfDisplayingElements', { number });
+    changeNumberOfDisplayingElements({ commit, state }, { number }) {
+        commit(types.SET_NUMBER_OF_ELEMENTS_TO_DISPLAY, number);
+
         const { numberOfDisplayedElements, filtered, displayedPage } = state;
 
         if (numberOfDisplayedElements > filtered) {
             // We have only 1 page!
-            commit('setDisplayingPage', 1);
+            commit(types.SET_CURRENT_PAGE, 1);
         } else {
             const page = Math.floor(filtered / numberOfDisplayedElements);
-            commit('setDisplayingPage', Math.min(page, displayedPage));
+            commit(types.SET_CURRENT_PAGE, Math.min(page, displayedPage));
         }
     },
-    changeDisplayingPage: ({ commit }, { number }) => commit('setDisplayingPage', number),
-    insertColumnAtIndex: ({ commit }, { column, index }) => {
-        commit('insertColumnAtIndex', { column, index });
+    changeDisplayingPage({ commit }, { number }) {
+        commit(types.SET_CURRENT_PAGE, number);
     },
-    removeColumnAtIndex: ({ commit }, { index }) => {
-        commit('removeColumnAtIndex', { index });
+    insertColumnAtIndex({ commit }, { column, index }) {
+        commit(types.INSERT_COLUMN_AT_INDEX, { column, index });
     },
-    changeColumnPosition: ({ commit, state }, { from, to }) => {
+    removeColumnAtIndex({ commit }, { index }) {
+        commit(types.REMOVE_COLUMN_AT_INDEX, index);
+    },
+    changeColumnPosition({ commit, state }, { from, to }) {
         const { columns } = state;
-        const newOrderedColumns = [...swapItemPosition(columns, from, to)];
+        const newOrderedColumns = [
+            ...swapItemPosition(columns, from, to),
+        ];
 
-        commit('setColumns', { columns: newOrderedColumns });
+        commit(types.SET_COLUMNS, newOrderedColumns);
     },
-    setEditingCellCoordinates: ({ commit }, editingCellCoordinates = {}) => commit('setEditingCellCoordinates', editingCellCoordinates),
-    setSelectionForAllRows: ({ commit, state }, { isSelected }) => {
+    setEditingCellCoordinates({ commit }, editingCellCoordinates = {}) {
+        commit(types.SET_EDITING_CELL_COORDINATES, editingCellCoordinates);
+    },
+    setSelectionForAllRows({ commit, state }, { isSelected }) {
         const { selectedRows } = state;
+        const areSelectedRowsExist = Object.entries(selectedRows).length;
 
-        if (Object.entries(selectedRows).length) {
-            commit('removeSelectedRows');
+        if (areSelectedRowsExist) {
+            commit(types.REMOVE_SELECTED_ROWS);
         } else {
-            commit('setSelectionForAllRows', { isSelected });
+            commit(types.SET_SELECTION_FOR_ALL_ROWS, isSelected);
         }
     },
-    setSelectedRow: ({ commit, state }, { row, value }) => {
+    setSelectedRow({ commit, state }, { row, value }) {
         if (value) {
-            commit('setSelectedRow', { row });
+            commit(types.SET_SELECTED_ROW, row);
         } else {
             const { isSelectedAllRows, filtered } = state;
 
-            commit('removeSelectedRow', { row });
+            commit(types.REMOVE_SELECTED_ROW, row);
 
             if (isSelectedAllRows) {
                 // If we had chosen option with selected all of the options, we need to remove it
@@ -186,25 +198,25 @@ export default {
                     }
                 }
 
-                commit('setSelectedRows', { rows: rowsToSelect });
-                commit('setSelectionForAllRows', { isSelected: false });
+                commit(types.SET_SELECTED_ROWS, rowsToSelect);
+                commit(types.SET_SELECTION_FOR_ALL_ROWS, false);
             }
         }
     },
-    addDraftToProduct: ({ commit, state }, { draft, productId }) => {
+    addDraftToProduct({ commit, state }, { columnId, productId, value }) {
         const { rows } = state;
-        const draftKeys = Object.keys(draft);
         const productIndex = rows.findIndex(row => row.id === productId);
 
         if (productIndex !== -1) {
-            draftKeys.forEach((key) => {
-                if (rows[productIndex][key] !== undefined) {
-                    const productToAdd = { ...rows[productIndex], [key]: draft[key] };
+            const productToAdd = { ...rows[productIndex], [columnId]: value };
 
-                    commit('addDraftToProductAtIndex', { index: productIndex, product: productToAdd });
-                }
+            commit(types.ADD_DRAFT_TO_PRODUCT_AT_INDEX, {
+                index: productIndex,
+                product: productToAdd,
             });
         }
     },
-    clearStorage: ({ commit }) => commit('clearStorage'),
+    clearStorage({ commit }) {
+        commit(types.CLEAR_STATE);
+    },
 };

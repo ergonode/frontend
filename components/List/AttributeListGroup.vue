@@ -106,11 +106,11 @@ export default {
 
         .group {
             &__title {
-                @include setFont(medium, regular, regular, $graphite);
+                @include setFont(medium, regular, semiRegular, $darkGraphite);
             }
 
             &__subtitle {
-                @include setFont(medium, tiny, regular, $lightGraphite);
+                @include setFont(semiBold, tiny, regular, $graphite);
             }
 
             &__title, &__subtitle {

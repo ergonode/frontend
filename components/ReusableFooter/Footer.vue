@@ -33,7 +33,7 @@ export default {
 
 <style lang="scss" scoped>
     .footer {
-        z-index: 1;
+        z-index: 99;
         display: flex;
         flex: 0 0 auto;
         justify-content: flex-end;

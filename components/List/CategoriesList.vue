@@ -3,12 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <List group>
-        <CategoryListElement
-            v-for="element in elements[languageCode]"
-            :key="element.id"
-            :item="element"
-            :language-code="languageCode" />
+    <List>
+        <div class="elements-wrapper">
+            <CategoryListElement
+                v-for="element in elementsByLanguageCode"
+                :key="element.id"
+                :item="element"
+                :language-code="languageCode" />
+        </div>
     </List>
 </template>
 
@@ -31,6 +33,18 @@ export default {
         ...mapState('list', {
             elements: state => state.elements,
         }),
+        elementsByLanguageCode() {
+            const { [this.languageCode]: language } = this.elements;
+            if (!language || language.length === 0) return [];
+
+            return language;
+        },
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .elements-wrapper {
+        height: 0;
+    }
+</style>

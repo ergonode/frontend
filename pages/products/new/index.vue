@@ -77,9 +77,8 @@ export default {
     },
     async fetch({ store }) {
         await store.dispatch('productsDraft/clearStorage');
-
-        return store.dispatch('productsDraft/getTemplates', { onError: () => {} })
-            && store.dispatch('productsDraft/getCategories', { onError: () => {} });
+        await store.dispatch('productsDraft/getTemplates', { onError: () => {} });
+        await store.dispatch('productsDraft/getCategories', { onError: () => {} });
     },
 };
 </script>

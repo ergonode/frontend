@@ -78,16 +78,19 @@ export default {
     }) {
         const { language: languageCode } = store.state.authentication.user;
         const { id } = params;
-        return store.dispatch('productsDraft/getProductDraft', {
-            languageCode,
-            id,
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return error();
-            },
-        });
+        const onError = (err) => {
+            if (err.response && err.response.status === 404) {
+                return error({ statusCode: 404, message: err.message });
+            }
+            return error();
+        };
+
+        await Promise.all([
+            store.dispatch('productsDraft/getCategories', onError),
+            store.dispatch('productsDraft/getTemplates', onError),
+            store.dispatch('productsDraft/getProductDraft', { languageCode, id, onError }),
+        ]);
+        await store.dispatch('productsDraft/getProduct', { languageCode, id, onError });
     },
 };
 </script>

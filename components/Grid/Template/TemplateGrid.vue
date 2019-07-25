@@ -6,17 +6,22 @@
     <div class="template-designer">
         <div class="horizontal-wrapper">
             <VerticalTabBar :items="verticalTabs" />
-            <div class="grid-wrapper">
-                <div class="template-designer__grid">
-                    <template
-                        v-for="(layoutElement, index) in layout">
-                        <Component
-                            :is="getComponentViaName(layoutElement.component)"
-                            :key="index"
-                            v-bind="{ layoutElement }" />
-                    </template>
-                </div>
-            </div>
+            <TemplateGridDesigner @rowsCount="onRowsCountChange">
+                <TemplateGridDraggableLayer
+                    :style="gridStyles"
+                    :rows-number="maxLayoutRow"
+                    :columns-number="columnsNumber"
+                    :layout-elements="layoutElements"
+                    @addListElementToLayout="updateLayoutElement"
+                    @editSectionTitle="onEditSectionTitle"
+                    @resizingElMaxRow="onResizingElMaxRow" />
+                <ModalSectionTitleTemplate
+                    :value="isSectionAdded"
+                    :section-position="sectionPosition"
+                    :section-title="sectionTitle"
+                    :section-index="sectionIndex"
+                    @input="onCloseSectionModal" />
+            </TemplateGridDesigner>
         </div>
         <Footer :buttons="buttons" />
     </div>
@@ -24,15 +29,16 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import TemplateGridItem from './TemplateGridItem';
-import TemplateGridSection from './TemplateGridSection';
-import AttributeElement from '~/components/Template/AttributeElement';
+import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
 
 export default {
     name: 'TemplateGrid',
     components: {
+        TemplateGridDesigner: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridDesigner'),
+        TemplateGridDraggableLayer: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer'),
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
         Footer: () => import('~/components/ReusableFooter/Footer'),
+        ModalSectionTitleTemplate: () => import('~/components/Modals/ModalSectionTitleTemplate'),
     },
     props: {
         updateButton: {
@@ -42,6 +48,12 @@ export default {
     },
     data() {
         return {
+            isSectionAdded: false,
+            sectionPosition: null,
+            sectionIndex: null,
+            sectionTitle: '',
+            columnsNumber: 4,
+            maxRow: 0,
             buttons: [
                 // TODO: Uncomment when we will have this feature
                 // {
@@ -57,10 +69,19 @@ export default {
             ],
             verticalTabs: [
                 {
-                    title: 'Filters & Columns',
+                    title: 'Attributes',
                     component: () => import('~/components/Card/AttributesListTab'),
-                    icon: 'sprite-sidebar sidebar-filter',
+                    props: {
+                        isSelectLanguage: false,
+                    },
+                    icon: 'sprite-sidebar sidebar-attributes',
                     active: true,
+                },
+                {
+                    title: 'Widgets',
+                    component: () => import('~/components/Card/WidgetsListTab'),
+                    icon: 'sprite-sidebar sidebar-widgets',
+                    active: false,
                 },
             ],
         };
@@ -68,37 +89,80 @@ export default {
     computed: {
         ...mapState('templateDesigner', {
             templateGroups: state => state.templateGroups,
-            layout: state => state.templateLayout,
+            layoutElements: state => state.layoutElements,
             titleValidationError: state => state.titleValidationError,
             title: state => state.title,
+        }),
+        ...mapState('draggable', {
+            draggedElement: state => state.draggedElement,
         }),
         vmTitle: {
             get() {
                 return this.title;
             },
             set(value) {
-                this.setTemplateDesignerTitle({ title: value });
+                this.setTemplateDesignerTitle(value);
             },
         },
         errorMessages() {
             return this.titleValidationError ? [this.titleValidationError] : null;
         },
+        gridStyles() {
+            return {
+                gridTemplateColumns: `repeat(${this.columnsNumber}, 1fr)`,
+                gridAutoRows: '62px',
+            };
+        },
+        maxLayoutRow() {
+            const layoutElement = getObjectWithMaxValueInArrayByObjectKey(this.layoutElements, 'row');
+
+            if (layoutElement) {
+                const { row, height } = layoutElement;
+
+                return Math.max(this.maxRow, row + height);
+            }
+
+            return this.maxRow;
+        },
     },
     methods: {
         ...mapActions('templateDesigner', [
             'setTemplateDesignerTitle',
+            'addListElementToLayout',
+            'updateLayoutElementPosition',
         ]),
-        getComponentViaName(name) {
-            switch (name) {
-            case 'TemplateGridItem':
-                return TemplateGridItem;
-            case 'TemplateGridSection':
-                return TemplateGridSection;
-            case 'AttributeElement':
-                return AttributeElement;
-            default:
-                return null;
+        onResizingElMaxRow(row) {
+            if (row > this.maxRow) {
+                this.maxRow = row;
             }
+        },
+        onRowsCountChange({ value }) {
+            this.maxRow = value;
+        },
+        updateLayoutElement(position) {
+            if (typeof this.draggedElement === 'object') {
+                const { row, column } = position;
+                const index = this.layoutElements.findIndex(el => el.id === this.draggedElement.id);
+
+                this.updateLayoutElementPosition({ index, row, column });
+            } else if (this.draggedElement === 'SECTION') {
+                this.sectionPosition = position;
+                this.isSectionAdded = true;
+            } else {
+                this.addListElementToLayout(position);
+            }
+        },
+        onEditSectionTitle(index) {
+            const { [index]: layoutElement } = this.layoutElements;
+            this.sectionTitle = layoutElement.label;
+            this.sectionIndex = index;
+            this.isSectionAdded = true;
+        },
+        onCloseSectionModal() {
+            this.sectionPosition = null;
+            this.isSectionAdded = false;
+            this.sectionTitle = '';
+            this.sectionIndex = null;
         },
         onPreview() {
 
@@ -115,15 +179,11 @@ export default {
         flex-grow: 1;
 
         .horizontal-wrapper {
-            display: flex;
+            display: grid;
+            grid-template-columns: max-content auto;
             flex: 1;
+            grid-column-gap: 24px;
             margin: 24px 24px 0;
-
-            .grid-wrapper {
-                flex: 1;
-                width: 0;
-                overflow: auto;
-            }
         }
 
         &__grid {

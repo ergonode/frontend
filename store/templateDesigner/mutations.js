@@ -2,73 +2,63 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import defaultState from './state';
+
+export const types = {
+    INITIALIZE_LAYOUT_ELEMENTS: 'INITIALIZE_LAYOUT_ELEMENTS',
+    UPDATE_LAYOUT_ELEMENT_BOUNDS: 'UPDATE_LAYOUT_ELEMENT_BOUNDS',
+    UPDATE_LAYOUT_ELEMENT_POSITION: 'UPDATE_LAYOUT_ELEMENT_POSITION',
+    ADD_ELEMENT_TO_LAYOUT: 'ADD_ELEMENT_TO_LAYOUT',
+    SET_TYPES: 'SET_TYPES',
+    SET_LAYOUT_ELEMENT_REQUIREMENT: 'SET_LAYOUT_ELEMENT_REQUIREMENT',
+    REMOVE_LAYOUT_ELEMENT_AT_INDEX: 'REMOVE_LAYOUT_ELEMENT_AT_INDEX',
+    SET_TEMPLATE_DESIGNER_TITLE: 'SET_TEMPLATE_DESIGNER_TITLE',
+    SET_TEMPLATE_DESIGNER_IMAGE: 'SET_TEMPLATE_DESIGNER_IMAGE',
+    UPDATE_SECTION_ELEMENT_TITLE: 'UPDATE_SECTION_ELEMENT_TITLE',
+    CLEAR_STATE: 'CLEAR_STATE',
+};
+
 export default {
-    initializeDraggedElementCollision: (state, payload) => {
-        state.isDraggedElementColliding = payload;
+    [types.INITIALIZE_LAYOUT_ELEMENTS](state, elements) {
+        state.layoutElements = elements;
     },
-    updateObstacleStageOfElement: (state, payload) => {
-        const { index, isObstacle } = payload;
-        const element = state.templateLayout[index];
+    [types.UPDATE_LAYOUT_ELEMENT_BOUNDS](state, { index, width, height }) {
+        state.layoutElements[index] = { ...state.layoutElements[index], width, height };
+        state.layoutElements = [...state.layoutElements];
+    },
+    [types.UPDATE_LAYOUT_ELEMENT_POSITION](state, { index, row, column }) {
+        state.layoutElements[index] = { ...state.layoutElements[index], row, column };
+        state.layoutElements = [...state.layoutElements];
+    },
+    [types.ADD_ELEMENT_TO_LAYOUT](state, layoutElement) {
+        state.layoutElements.push(layoutElement);
+    },
+    [types.SET_TYPES](state, attrTypes) {
+        state.types = attrTypes;
+    },
+    [types.SET_LAYOUT_ELEMENT_REQUIREMENT](state, { required, index }) {
+        const element = state.layoutElements[index];
 
-        state.templateLayout[index] = { ...element, isObstacle };
-        state.templateLayout = [...state.templateLayout];
+        state.layoutElements[index] = { ...element, required };
+        state.layoutElements = [...state.layoutElements];
     },
-    initializeHighlightingHintPoints: (state, payload = []) => {
-        state.highlightingHintPoints = [...payload];
+    [types.REMOVE_LAYOUT_ELEMENT_AT_INDEX](state, index) {
+        state.layoutElements.splice(index, 1);
     },
-    initializeHighlightingHoverPoints: (state, payload = []) => {
-        state.highlightingHoverPoints = [...payload];
-    },
-    setTemplateDesignerLayout: (state, payload) => {
-        state.templateLayout = payload;
-    },
-    addElementToLayoutAtCoordinates: (state, payload) => {
-        const { index, element } = payload;
-
-        state.templateLayout[index] = element;
-        state.templateLayout = [...state.templateLayout];
-    },
-    insertElementToLayout: (state, payload) => {
-        const { index, element } = payload;
-        state.templateLayout.splice(index, 0, element);
-    },
-    setTypes: (state, { types }) => {
-        state.types = types;
-    },
-    setElementRequirement: (state, payload) => {
-        const { required, index } = payload;
-        const element = state.templateLayout[index];
-
-        state.templateLayout[index] = { ...element, required };
-        state.templateLayout = [...state.templateLayout];
-    },
-    updateLayoutElementCoordinates: (state, payload) => {
-        const { index, coordinates } = payload;
-        const element = state.templateLayout[index];
-
-        state.templateLayout[index] = { ...element, coordinates };
-        state.templateLayout = [...state.templateLayout];
-    },
-    setTemplateDesignerTitle: (state, { title }) => {
+    [types.SET_TEMPLATE_DESIGNER_TITLE](state, title) {
         state.title = title;
     },
-    setTemplateDesignerImage: (state, { image }) => {
+    [types.SET_TEMPLATE_DESIGNER_IMAGE](state, image) {
         state.image = image;
     },
-    setTemplateDesignerSectionTitle: (state, payload) => {
-        const { index, title } = payload;
-        const element = state.templateLayout[index];
-
-        state.templateLayout[index] = { ...element, label: title };
-        state.templateLayout = [...state.templateLayout];
+    [types.UPDATE_SECTION_ELEMENT_TITLE](state, { index, title }) {
+        state.layoutElements[index].label = title;
+        state.layoutElements = [...state.layoutElements];
     },
-    clearStorage: (state) => {
-        state.templateLayout = [];
-        state.highlightingHintPoints = [];
-        state.highlightingHoverPoints = [];
-        state.isDraggedElementColliding = false;
-        state.title = '';
-        state.image = null;
-        state.types = [];
+    [types.CLEAR_STATE](state) {
+        const states = defaultState();
+        Object.keys(states).forEach((key) => {
+            state[key] = states[key];
+        });
     },
 };

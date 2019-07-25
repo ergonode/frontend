@@ -3,40 +3,34 @@
  * See LICENSE for license details.
  */
 <template>
-    <TreePage
+    <CategoryTreesPage
         :title="title"
-        :buttons="buttons"
-        icon="sprite-menu menu-tree--selected" />
+        @save="onSave" />
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
+import { getMappedTreeData } from '~/model/mappers/treeMapper';
 
 export default {
     name: 'NewCategoryTree',
     middleware: ['tab/redirectToCategoryTree'],
     components: {
-        TreePage: () => import('~/components/Pages/TreePage'),
+        CategoryTreesPage: () => import('~/components/Pages/CategoryTreesPage'),
     },
     data() {
         return {
             title: 'Category tree',
-            buttons: [
-                // uncomment when we create removal options
-                // {
-                //     title: 'REMOVE TREE',
-                //     color: 'transparent',
-                //     theme: 'dark',
-                //     icon: 'sprite-system system-trash--deactive',
-                //     action: this.onCancel,
-                // },
-            ],
         };
+    },
+    computed: {
+        ...mapState('tree', {
+            treeData: state => state.treeData,
+            treeId: state => state.treeId,
+        }),
     },
     created() {
         this.setConfigurationForList({
-            elementsAreMultiDraggable: false,
-            isListMultilingual: false,
             draggedElementsStore: {
                 storeName: 'tree',
                 stateName: 'treeData',
@@ -45,20 +39,43 @@ export default {
         });
     },
     methods: {
+        ...mapActions('tree', [
+            'updateTree',
+        ]),
         ...mapActions('list', {
             setConfigurationForList: 'setConfigurationForList',
-            clearStorageList: 'clearStorage',
         }),
-        onCancel() {
-            this.$router.back();
+        onUpdateTreeSuccess() {
+            this.$addAlert(this.$store, { type: 'success', message: 'Tree updated' });
         },
-        onCreate() {
-            // TODO: Adding a function body when the tree designer is ready
+        onSave() {
+            const categoryTree = {
+                name: 'default',
+                categories: getMappedTreeData(this.treeData),
+            };
+            this.updateTree({
+                id: this.treeId,
+                data: categoryTree,
+                onSuccess: this.onUpdateTreeSuccess,
+                onError: () => {},
+            });
         },
     },
     async fetch({ store, error }) {
-        const treeRequest = store.dispatch('tree/getTreeById', {
-            treeId: 'c5500df0-4861-47ec-aaaa-6716fcf356d4',
+        const {
+            user: { language: userLanguageCode },
+        } = store.state.authentication;
+
+        await store.dispatch('list/clearStorage');
+        await store.dispatch('list/getElementsForGroup', {
+            listType: 'categories',
+            groupId: null,
+            elementsCount: 9999,
+            languageCode: userLanguageCode,
+        });
+        await store.dispatch('tree/clearStorage');
+        await store.dispatch('tree/getTreeById', {
+            treeName: 'default',
             onError: (err) => {
                 if (err.response && err.response.status === 404) {
                     return error({ statusCode: 404, message: err.message });
@@ -66,21 +83,6 @@ export default {
                 return error();
             },
         });
-        const listElementsRequest = store.dispatch('list/getElementsForGroup', {
-            listType: 'categories',
-            groupId: null,
-            elementsCount: 9999,
-            languageCode: store.state.authentication.user.language,
-            onSuccess: () => {},
-            onError: () => {},
-        });
-
-        await store.dispatch('list/clearStorage');
-
-        return Promise.all([
-            treeRequest,
-            listElementsRequest,
-        ]);
     },
 };
 </script>

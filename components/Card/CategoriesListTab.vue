@@ -39,12 +39,6 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
-
-        .add-btn-wrapper {
-            position: absolute;
-            bottom: 16px;
-            right: 16px;
-            z-index: 3;
-        }
+        width: 275px;
     }
 </style>

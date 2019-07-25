@@ -19,13 +19,14 @@
 import { mapState, mapActions } from 'vuex';
 import BaseTab from '~/components/Card/BaseTab';
 import Footer from '~/components/ReusableFooter/Footer';
+import OptionsHeader from '~/components/ReusableHeader/OptionsHeader';
 
 export default {
     name: 'TranslationsTab',
     components: {
         BaseTab,
         Footer,
-        OptionsHeader: () => import('~/components/ReusableHeader/OptionsHeader'),
+        OptionsHeader,
     },
     props: {
         updateButton: {
@@ -56,7 +57,6 @@ export default {
     methods: {
         ...mapActions('translations', [
             'addCardLanguageCode',
-            'clearTranslations',
         ]),
     },
 };

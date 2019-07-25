@@ -13,7 +13,7 @@
             regular
             label="Code"
             hint="Attribute code must be unique"
-            @input="(code) => setAttributeCode({ code })" />
+            @input="(code) => setAttributeCode(code)" />
         <Select
             :value="groups"
             solid
@@ -24,12 +24,13 @@
             multiselect
             clearable
             :error-messages="errorGroupsMessage"
-            @input="(groups) => setAttributeGroups({ groups })" />
+            @input="(groups) => setAttributeGroups(groups)" />
         <Divider />
         <div class="horizontal-wrapper">
             <Toggler
                 :value="isMultilingual"
-                @input="(isMultilingual) => setMultilingualAttribute({ isMultilingual })" />
+                :disabled="isDisabled"
+                @input="(isMultilingual) => setMultilingualAttribute(isMultilingual)" />
             <Label
                 text="Multilingual attribute"
                 class="txt--dark-graphite typo-btn--xs"
@@ -57,7 +58,7 @@
             :label="paramsLabel"
             :options="attrParamValues"
             :error-messages="errorParamsMessage"
-            @input="(parameter) => setAttributeParameter({ parameter })" />
+            @input="(parameter) => setAttributeParameter(parameter)" />
         <AttributeOptionKeyValues v-show="hasOptions" />
         <slot />
     </BaseCard>
@@ -65,7 +66,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { toCapitalize } from '~/model/stringOperations';
+import { toCapitalize } from '~/model/stringWrapper';
 import { hasParams, hasOptions, getParamsOptionsForType } from '~/model/attributes/AttributeTypes';
 import { getMappedParameterKey } from '~/model/mappers/attributeMapper';
 import { getKeyByValue } from '~/model/objectWrapper';
@@ -136,7 +137,7 @@ export default {
             return Object.values(this.attrTypes);
         },
         attrGroupValues() {
-            return this.attrGroups.map(group => group.label);
+            return this.attrGroups.filter(group => group.id !== null).map(group => group.label);
         },
         attrParamValues() {
             return Array.isArray(this.params)
@@ -171,11 +172,11 @@ export default {
             'clearStorage',
         ]),
         onTypeChange(type) {
-            this.setAttributeType({ type });
+            this.setAttributeType(type);
 
             // Clear chosen params
             if (this.hasParams) {
-                this.setAttributeParameter({ parameter: '' });
+                this.setAttributeParameter('');
             }
 
             if (!this.hasOptions) {

@@ -4,27 +4,20 @@
  */
 <template>
     <div
-        :class="['grid-scroll-wrapper', topGradient, bottomGradient]">
-        <div
-            class="grid-scroll"
-            @scroll="onScroll">
-            <slot />
-        </div>
+        class="grid-scroll"
+        @scroll="onScroll">
+        <slot />
     </div>
 </template>
 
 <script>
-import { topBound, bottomBound } from '~/model/scroll/boundaryScroll';
+
 import debounce from 'debounce';
+import { topBound, bottomBound } from '~/model/scroll/boundaryScroll';
 
 export default {
     name: 'TemplateGridScroll',
     props: {
-        isGradientOnScroll: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
         dataRowLength: {
             type: Number,
             required: true,
@@ -38,14 +31,6 @@ export default {
         isBottomBoundReached: false,
         isTopBoundReached: true,
     }),
-    computed: {
-        topGradient() {
-            return this.isGradientOnScroll && !this.isTopBoundReached ? 'grid-scroll-wrapper--top-gradient' : null;
-        },
-        bottomGradient() {
-            return this.isGradientOnScroll && !this.isBottomBoundReached ? 'grid-scroll-wrapper--bottom-gradient' : null;
-        },
-    },
     mounted() {
         this.calculateRowsCount(0);
         window.addEventListener('resize', this.calculateRowsCount);
@@ -59,7 +44,7 @@ export default {
                 const { clientHeight } = document.querySelector('.grid-scroll-wrapper');
                 const visibleRows = Math.ceil(clientHeight / this.rowsHeight);
                 const totalRows = Math.max(this.dataRowLength, visibleRows) + 1;
-                this.$emit('setRowsCount', { key: 'rowsCount', value: totalRows });
+                this.$emit('setRowsCount', totalRows);
             }, time)();
         },
         onScroll(event) {

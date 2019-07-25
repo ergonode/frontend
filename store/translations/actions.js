@@ -51,7 +51,8 @@ export default {
             });
         }
     },
-    clearTranslations: ({ commit }) => {
+    addOptionTranslation: ({ commit }, payload) => commit('addOptionTranslation', payload),
+    clearStorage: ({ commit }) => {
         commit('clearStorage');
     },
 };

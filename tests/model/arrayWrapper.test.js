@@ -3,45 +3,11 @@
  * See LICENSE for license details.
  */
 import {
-  arrayToObject,
-  sumArray,
   swapItemPosition,
+  getObjectWithMaxValueInArrayByObjectKey,
+  getMinObjectValueInArrayByObjectKey,
+  isArrayEqualToArray,
 } from '~/model/arrayWrapper';
-
-describe('arrayWrapper/sumArray', () => {
-  it('Sum number array correct', () => {
-    const array = [6, 6];
-    const sum = sumArray(array);
-    expect(sum).toBe(12);
-  });
-
-  it('Sum type mix array correct', () => {
-    const array = [6, 'test'];
-    const sum = sumArray(array);
-    expect(sum).toBe('6test');
-  });
-
-  it('Sum if empty array', () => {
-    const array = [];
-    const sum = sumArray(array);
-    expect(sum).toBe(0);
-  });
-});
-
-describe('arrayWrapper/arrayToObject', () => {
-  it('Convert to object', () => {
-    const array = [6, 6];
-    const obj = arrayToObject(array);
-    expect(obj).toEqual({"0": {"id": 6}, "1": {"id": 6}});
-  });
-
-  it('Convert to object with key', () => {
-    const array = [6, 6];
-    const obj = arrayToObject(array, 'key');
-    expect(obj).toEqual({"0": {"key": 6}, "1": {"key": 6}});
-  });
-});
-
 
 describe('arrayWrapper/swapItemPosition', () => {
   it('Chage array items position. Pos1 bigger then pos2', () => {
@@ -60,5 +26,65 @@ describe('arrayWrapper/swapItemPosition', () => {
     const array = [6, 6, 5, 2];
     const obj = swapItemPosition(array, 6, 3);
     expect(obj).toEqual([6, 6, 5, 2]);
+  });
+});
+
+describe('arrayWrapper/maxObjectValueInArrayByObjectKeyByObjectKey', () => {
+  it('Getting max value of object property in array', () => {
+    const array = [{ a: 1 }, null, { a: 2 }, { a: 6}, { a: 2 }, null ];
+
+    const maxObject = getObjectWithMaxValueInArrayByObjectKey(array, 'a');
+
+    expect(maxObject.a).toEqual(6);
+  });
+
+  it('Array has no elements', () => {
+    const maxObject = getObjectWithMaxValueInArrayByObjectKey([], 'a');
+
+    expect(maxObject).toEqual(null);
+  });
+});
+
+describe('arrayWrapper/maxObjectValueInArrayByObjectKeyByObjectKey', () => {
+  it('Getting min value of object property in array', () => {
+    const array = [{ a: 1 }, { a: 2 }, null, { a: 6}, { a: 2 }, null ];
+
+    const minValue = getMinObjectValueInArrayByObjectKey(array, 'a');
+
+    expect(minValue).toEqual(1);
+  });
+});
+
+describe('arrayWrapper/isArrayEqualToArray', () => {
+  it('Arrays are equal', () => {
+    const arr1 = [1, 2, 3, 4];
+    const arr2 = [1, 2, 3, 4];
+
+    const areEqual = isArrayEqualToArray(arr1, arr2);
+
+    expect(areEqual).toEqual(true);
+  });
+
+  it('Arrays are not equal', () => {
+    let arr1 = [1, 2, 3];
+    let arr2 = [1, 2, 3, 4];
+
+    let areEqual = isArrayEqualToArray(arr1, arr2);
+
+    expect(areEqual).toEqual(false);
+
+    arr1 = [1];
+    arr2 = [2, 3];
+
+    areEqual = isArrayEqualToArray(arr1, arr2);
+
+    expect(areEqual).toEqual(false);
+
+    arr1 = [];
+    arr2 = [];
+
+    areEqual = isArrayEqualToArray(arr1, arr2);
+
+    expect(areEqual).toEqual(false);
   });
 });

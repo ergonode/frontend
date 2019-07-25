@@ -2,62 +2,73 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import treeData from '~/model/tree/treeData';
+import { types } from './mutations';
+import {
+    rebuildTreeWhenElementRemoved,
+    rebuildTreeWhenGhostElementRemoved,
+} from '~/model/tree/TreeCalculations';
+import { getParsedTreeData } from '~/model/mappers/treeMapper';
 
 export default {
-    setAction: ({ commit }, payload) => {
-        commit('setState', payload);
+    setRowsCount: ({ commit }, value) => {
+        commit(types.SET_ROWS_COUNT, value);
+    },
+    setTree: ({ commit }, tree) => {
+        commit(types.SET_TREE, tree);
     },
     getTreeById(
         { commit, rootState },
-        { treeId, onError },
+        { treeName, onError },
     ) {
-        const sortedData = treeData.sort((a, b) => a.row - b.row);
-        commit('setState', {
-            key: 'treeData',
-            value: sortedData,
-        });
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(() => {
-            // TODO: uncomment when we have date from API
-            // commit('setState', {
-            //     key: 'treeData',
-            //     value: response.data,
-            // });
+        const { [userLanguageCode]: categories } = rootState.list.elements;
+        return this.app.$axios.$get(`${userLanguageCode}/trees`).then(({ collection }) => {
+            const treeId = collection.find(e => e.name.toLowerCase() === treeName.toLowerCase()).id;
+            commit(types.SET_TREE_ID, treeId);
+            return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({ categories: treeData }) => {
+                commit(types.SET_TREE, getParsedTreeData(treeData, categories));
+            }).catch(e => onError(e.data));
         }).catch(e => onError(e.data));
     },
-    addTreeItem: ({ commit, state }, { item }) => {
+    addTreeItem: ({ commit, state }, item) => {
         const findIndex = state.treeData.findIndex(el => el.id === item.id);
         if (findIndex >= 0) {
-            commit('setTreeItem', { index: findIndex, item });
+            commit(types.SET_TREE_ITEM, { index: findIndex, item });
         } else {
-            commit('addTreeItem', { item });
+            commit(types.ADD_TREE_ITEM, item);
         }
     },
-    removeTreeItem: ({ commit }, { index }) => {
-        commit('removeTreeItem', { index });
+    removeTreeItem: ({ commit, state }, id) => {
+        commit(types.REMOVE_TREE_ITEM, id);
+        if (Number.isInteger(id)) {
+            const newTree = rebuildTreeWhenElementRemoved(state.treeData, id);
+            commit(types.REBUILD_TREE, { tree: newTree });
+        }
     },
-    rebuildTree: ({ commit, state }, { id }) => {
+    rebuildTree: ({ commit, state }, id) => {
         const findIndex = state.treeData.findIndex(el => el.id === id);
-        const newTree = state.treeData.reduce((accumulator, current, i) => {
-            if (i === findIndex) {
-                accumulator.push({ ...current, row: current.row + 0.5 });
-            } else if (i > findIndex) {
-                accumulator.push({ ...current, row: current.row + 1 });
-            } else {
-                accumulator.push(current);
-            }
-            return accumulator;
-        }, []);
-        commit('rebuildTree', { tree: newTree });
+        const newTree = rebuildTreeWhenGhostElementRemoved(state.treeData, findIndex);
+        commit(types.REBUILD_TREE, { tree: newTree });
     },
     setHiddenItem: ({ commit }, { key, value }) => {
-        commit('setHiddenItem', { key, value });
+        commit(types.SET_HIDDEN_ITEM, { key, value });
     },
     removeHiddenItem: ({ commit }, key) => {
-        commit('removeHiddenItem', key);
+        commit(types.REMOVE_HIDDEN_ITEM, key);
     },
-    clearStorage: ({ commit }) => {
-        commit('clearStorage');
+    updateTree(
+        { rootState },
+        {
+            id,
+            data,
+            onSuccess,
+            onError,
+        },
+    ) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$put(`${userLanguageCode}/trees/${id}`, data).then(() => {
+            onSuccess();
+        }).catch(e => onError(e.data));
     },
+    clearStorage: ({ commit }) => commit(types.CLEAR_STORAGE),
 };

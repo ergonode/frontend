@@ -5,12 +5,16 @@
 <template>
     <ListElement
         :key="item.id"
-        v-draggable-element="{ id: item.code, draggedElementStyle, onDraggedState }"
+        v-draggable-element="{
+            id: draggableListID,
+            draggedElementStyle,
+            onDraggedState,
+        }"
         :dragged="isDragged"
-        :disabled="isElementDisabled(item.code, languageCode)">
+        :disabled="isElementDisabled(draggableListID, languageCode)">
         <ListElementDescription
-            :title="item.code"
-            subtitle="127 Products"
+            :title="item.name || item.code"
+            :subtitle="productsCount"
             title-typo="typo-subtitle"
             title-color="txt--dark-graphite"
             subtitle-typo="typo-hint"
@@ -42,12 +46,16 @@ export default {
         return {
             isDragged: false,
             draggedElementStyle: { width: 246, height: 32, backgroundColor: '#fff' },
+            draggableListID: this.item.id,
         };
     },
     computed: {
         ...mapGetters('list', [
             'isElementDisabled',
         ]),
+        productsCount() {
+            return `${this.item.elements_count || 0} Product${this.item.elements_count === 1 ? '' : 's'}`;
+        },
     },
     methods: {
         ...mapActions('draggable', [
@@ -72,7 +80,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-
-</style>

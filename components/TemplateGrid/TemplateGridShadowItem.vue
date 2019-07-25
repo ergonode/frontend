@@ -5,7 +5,7 @@
 <template>
     <div
         :class="['shadow-grid-item', {'shadow-grid-item--last-row': lastRow}]"
-        :shadow-id="itemId" />
+        :shadow-id="itemId - 1" />
 </template>
 <script>
 

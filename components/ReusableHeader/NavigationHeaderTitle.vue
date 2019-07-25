@@ -11,6 +11,7 @@
             size="medium" />
         <Button
             v-if="isBreadcrumb"
+            class="back-btn"
             fab
             icon="arrow-dart-white trans-quarter"
             @click.native="onClick" />
@@ -60,6 +61,10 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+
+        .back-btn {
+            margin-right: 8px;
+        }
 
         .vertical-wrapper {
             display: flex;
