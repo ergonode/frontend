@@ -17,7 +17,7 @@
                 }
             ]"
         :style="colRowsTemplate"
-        draggable
+        :draggable="isColumnMoveable"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
         @dragover="onDragOver"
@@ -99,6 +99,7 @@ export default {
         }),
         ...mapState('grid', {
             isColumnResizeable: state => state.configuration.isColumnResizeable,
+            isColumnMoveable: state => state.configuration.isColumnMoveable,
         }),
         colRowsTemplate() {
             return {
