@@ -274,7 +274,7 @@ export default {
             this.isResizing = true;
             this.initMousePosition(event);
             this.initElementWidth();
-            this.initElementStyleForResizeState();
+            this.updateElementWidth(this.startWidth);
             this.addEventListenersForResizeState();
         },
         doResizeDrag(event) {
@@ -302,9 +302,6 @@ export default {
             } = this.$el.getBoundingClientRect();
 
             this.startWidth = parseInt(elementWidth, 10);
-        },
-        initElementStyleForResizeState() {
-            this.$el.style.width = `${this.startWidth}px`;
         },
         getElementWidthBasedOnMouseXPosition(xPos) {
             return this.startWidth + xPos - this.startX;
