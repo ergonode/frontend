@@ -14,10 +14,12 @@ export const types = {
     SET_CURRENT_PAGE: 'SET_CURRENT_PAGE',
     SET_SORTING_STATE: 'SET_SORTING_STATE',
     INSERT_COLUMN_AT_INDEX: 'INSERT_COLUMN_AT_INDEX',
+    UPDATE_COLUMN_AT_INDEX: 'UPDATE_COLUMN_AT_INDEX',
     REMOVE_COLUMN_AT_INDEX: 'REMOVE_COLUMN_AT_INDEX',
     SET_SELECTION_FOR_ALL_ROWS: 'SET_SELECTION_FOR_ALL_ROWS',
     SET_SELECTED_ROWS: 'SET_SELECTED_ROWS',
     SET_SELECTED_ROW: 'SET_SELECTED_ROW',
+    SET_COLUMN_WIDTH_AT_INDEX: 'SET_COLUMN_WIDTH_AT_INDEX',
     REMOVE_SELECTED_ROW: 'REMOVE_SELECTED_ROW',
     REMOVE_SELECTED_ROWS: 'REMOVE_SELECTED_ROWS',
     ADD_DRAFT_TO_PRODUCT_AT_INDEX: 'ADD_DRAFT_TO_PRODUCT_AT_INDEX',
@@ -57,6 +59,10 @@ export default {
     [types.SET_SORTING_STATE](state, sortedColumn = {}) {
         state.sortedByColumn = sortedColumn;
     },
+    [types.UPDATE_COLUMN_AT_INDEX](state, { index, column }) {
+        state.columns[index] = column;
+        state.columns = [...state.columns];
+    },
     [types.INSERT_COLUMN_AT_INDEX](state, { column, index }) {
         state.columns = [
             ...state.columns.slice(0, index),
@@ -72,6 +78,9 @@ export default {
     },
     [types.SET_SELECTED_ROWS](state, rows) {
         state.selectedRows = rows;
+    },
+    [types.SET_COLUMN_WIDTH_AT_INDEX](state, { index, width }) {
+        state.columns[index].width = width;
     },
     [types.SET_SELECTED_ROW](state, row) {
         state.selectedRows = { ...state.selectedRows, [row]: true };

@@ -61,14 +61,12 @@ export default {
     },
     computed: {
         selectContentPosition() {
-            const { $el } = this;
-            const boundingRect = $el.getBoundingClientRect();
             const {
                 top,
                 left,
                 width,
                 height,
-            } = boundingRect;
+            } = this.$el.getBoundingClientRect();
             const { innerHeight } = window;
             const maxHeight = 200;
 

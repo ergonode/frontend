@@ -27,6 +27,9 @@ import {
     getRowBellowMouse,
 } from '~/model/tree/TreeCalculations';
 import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
+import {
+    isMouseOutOfBoundsElement,
+} from '~/model/drag_and_drop/helpers';
 
 export default {
     name: 'TemplateGridContainer',
@@ -159,19 +162,10 @@ export default {
             return true;
         },
         onDragLeave(event) {
-            const { clientX, clientY } = event;
+            const { pageX, pageY } = event;
             const itemsContainer = document.querySelector('.grid-container');
-            const {
-                top, right, width, height,
-            } = itemsContainer.getBoundingClientRect();
-            const leftAtTheLeft = clientX <= right - width;
-            const leftAtTheRight = clientX >= right;
-            const leftAtTheTop = clientY <= top;
-            const leftAtTheBottom = clientY >= (top + height);
-            const isOutOfBounds = (leftAtTheTop
-                || leftAtTheBottom
-                || leftAtTheLeft
-                || leftAtTheRight);
+            const isOutOfBounds = isMouseOutOfBoundsElement(itemsContainer, pageX, pageY);
+
             if (isOutOfBounds) {
                 this.removeGhostElement();
             }

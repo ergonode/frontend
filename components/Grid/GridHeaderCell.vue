@@ -21,7 +21,7 @@
                 @click.native="onClickSort" />
             <ButtonSelect
                 v-if="isColumnEditable"
-                v-show="isContextualMenuActive || !isSorted || isMouseOver"
+                v-visible="isContextualMenuActive || isSorted || isMouseOver"
                 :icon="contextualMenuStateIcon"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
@@ -32,6 +32,9 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import {
+    removeColumnCookieByID,
+} from '~/model/grid/cookies/GridLayoutConfiguration';
 
 export default {
     name: 'GridHeaderCell',
@@ -175,14 +178,7 @@ export default {
                 // We are hovering element while removing it
                 this.borderColumnAction('add', columnElement);
                 this.removeColumnAtIndex({ index: this.columnIndex });
-                this.removeIDFromColumnsIDCookie({ index: this.columnIndex });
-            }
-        },
-        removeIDFromColumnsIDCookie({ index }) {
-            const columnsIDCookie = this.$cookies.get('columnsID');
-            if (columnsIDCookie) {
-                const parsedColumnsID = columnsIDCookie.split(',').splice(index, 0).join(',');
-                this.$cookies.set('columnsID', parsedColumnsID);
+                removeColumnCookieByID(this.$cookies, this.column.id);
             }
         },
         getColumnAtIndex(index) {
@@ -242,6 +238,7 @@ export default {
         align-items: center;
         padding: 8px;
         user-select: none;
+        pointer-events: auto;
 
         &__title {
             @include setFont(bold, small, regular, $graphite);

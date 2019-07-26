@@ -14,15 +14,10 @@ export function insertExtendingColumn(columns) {
             type: '',
             editable: false,
             width: 'auto',
+            minWidth: 'auto',
         },
         ...columns.slice(length - 1),
     ];
-}
-
-export function getMappedColumnWidth({ width }) {
-    return width
-        ? `minmax(max-content, ${width}px)`
-        : 'minmax(auto, 200px)';
 }
 
 export function getSortedColumnsByIDs(columns, columnsID) {
@@ -32,16 +27,23 @@ export function getSortedColumnsByIDs(columns, columnsID) {
 export function getMappedColumns(columns) {
     const unchangedColumns = columns;
     const { length } = unchangedColumns;
+    const defaultColumnWidth = 150;
+    const actionColumnWidth = 40;
     let actionColumnIndex = length - 1;
 
     for (let i = 0; i < length; i += 1) {
-        unchangedColumns[i].width = getMappedColumnWidth(unchangedColumns[i]);
+        const { width } = unchangedColumns[i];
+
+        unchangedColumns[i].width = width || defaultColumnWidth;
+        unchangedColumns[i].minWidth = width || defaultColumnWidth;
         if (unchangedColumns[i].type === 'CHECK') {
             unchangedColumns[i].isLeftPinned = true;
         }
 
         if (unchangedColumns[i].type === 'ACTION') {
             unchangedColumns[i].isRightPinned = true;
+            unchangedColumns[i].width = actionColumnWidth;
+            unchangedColumns[i].minWidth = actionColumnWidth;
             actionColumnIndex = i;
         }
     }
