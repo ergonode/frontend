@@ -131,17 +131,20 @@ export default {
             'setGhostIndex',
         ]),
         onDragStart(event) {
-            const { clientY } = event;
+            const { clientX, clientY } = event;
             const [header] = this.$el.children;
             const {
-                y: headerYPos, height: headerHeight,
+                x: headerXPos, y: headerYPos, height: headerHeight,
             } = header.getBoundingClientRect();
+            const xOffset = 2.5;
             const grid = document.documentElement.querySelector('.grid');
             const isMouseAboveColumnHeader = headerYPos <= clientY
                 && headerYPos + headerHeight >= clientY;
+            const isMouseAboveLeftBorderLimit = clientX - headerXPos < xOffset;
             const neighbourIndex = this.index === 0 ? this.index : this.index - 1;
 
             if (!isMouseAboveColumnHeader
+                || isMouseAboveLeftBorderLimit
                 || this.isPinnedLeft
                 || this.isPinnedRight
                 || this.isExtenderColumn
@@ -471,6 +474,7 @@ export default {
             position: absolute;
             top: 0;
             right: 0;
+            z-index: 5;
             width: 2.5px;
             height: 100%;
             cursor: col-resize;
