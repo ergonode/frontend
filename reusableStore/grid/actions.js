@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+
 import {
     getMappedGridConfiguration,
     getMappedColumns,
-    getMappedColumnWidth,
     getSortedColumnsByIDs,
     getMappedFilter,
 } from '~/model/mappers/gridDataMapper';
@@ -105,7 +105,7 @@ export default {
             this.$cookies.set(COLUMN_IDS, parsedColumnsID);
 
             const columnToInsert = columns.find(col => col.id === columnId);
-            columnToInsert.width = getMappedColumnWidth(columnToInsert);
+            // columnToInsert.width = getMappedColumnWidth(columnToInsert);
 
             commit(types.INSERT_COLUMN_AT_INDEX, { column: columnToInsert, index });
             commit(types.SET_ROWS, rows);

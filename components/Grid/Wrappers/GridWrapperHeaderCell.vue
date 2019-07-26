@@ -4,6 +4,7 @@
  */
 <template>
     <GridCell
+        class="fixed-header"
         editing-allowed
         :row="rowIndex"
         :column="columnIndex"
@@ -90,3 +91,11 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .fixed-header {
+        position: sticky !important;
+        top: 0;
+        z-index: 5;
+    }
+</style>
