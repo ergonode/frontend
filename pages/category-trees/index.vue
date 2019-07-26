@@ -25,7 +25,7 @@ export default {
     },
     computed: {
         ...mapState('tree', {
-            treeData: state => state.treeData,
+            fullTreeData: state => state.fullTreeData,
             treeId: state => state.treeId,
         }),
     },
@@ -33,7 +33,7 @@ export default {
         this.setConfigurationForList({
             draggedElementsStore: {
                 storeName: 'tree',
-                stateName: 'treeData',
+                stateName: 'fullTreeData',
                 idName: ['id'],
             },
         });
@@ -51,7 +51,7 @@ export default {
         onSave() {
             const categoryTree = {
                 name: 'default',
-                categories: getMappedTreeData(this.treeData),
+                categories: getMappedTreeData(this.fullTreeData),
             };
             this.updateTree({
                 id: this.treeId,

@@ -7,7 +7,6 @@
         class="grid-item"
         :title="itemName">
         <Icon
-            v-show="false"
             v-if="hasChildren"
             class="grid-item__icon"
             :icon="btnExpanderIcon"
@@ -20,7 +19,7 @@
         </span>
         <span
             v-if="hasChildren"
-            class="grid-item__categoies-length txt-fixed typo-hint txt--dark-graphite"
+            class="grid-item__categories-length txt-fixed typo-hint txt--dark-graphite"
             :title="getNumberOfCategoriesLabel">
             {{ getNumberOfCategoriesLabel }}
         </span>
@@ -35,19 +34,19 @@ export default {
         Icon,
     },
     props: {
+        isExpanded: {
+            type: Boolean,
+            default: false,
+        },
         itemName: {
             type: String,
             required: true,
         },
         numberOfChildren: {
             type: Number,
-            required: false,
             default: 0,
         },
     },
-    data: () => ({
-        isExpanded: true,
-    }),
     computed: {
         hasChildren() {
             return this.numberOfChildren > 0;
@@ -66,8 +65,7 @@ export default {
     },
     methods: {
         toggleItemExpand() {
-            this.isExpanded = !this.isExpanded;
-            this.$emit('expandItem', this.isExpanded);
+            this.$emit('toggleItem');
         },
     },
 };
@@ -95,22 +93,11 @@ export default {
             margin: 0 8px;
         }
 
-        &__categoies-length {
+        &__categories-length {
             flex: 0 1 auto;
             border: 1px solid $grey;
             padding: 2px 8px;
             border-radius: 12px;
-        }
-
-        &__outside-tree {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            cursor: help;
-
-            &::after {
-                content: "→";
-            }
         }
     }
 </style>

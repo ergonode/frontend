@@ -8,6 +8,7 @@ const state = () => ({
     rowsHeight: 50,
     rowsCount: 0,
     treeData: [],
+    fullTreeData: [],
     hiddenItems: {},
 });
 

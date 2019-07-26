@@ -6,6 +6,9 @@ import { types } from './mutations';
 import {
     rebuildTreeWhenElementRemoved,
     rebuildTreeWhenGhostElementRemoved,
+    rebuildTreeWhenElementCollapse,
+    rebuildTreeWhenElementExpand,
+    rebuildFullTree,
 } from '~/model/tree/TreeCalculations';
 import { getParsedTreeData } from '~/model/mappers/treeMapper';
 
@@ -26,35 +29,11 @@ export default {
             const treeId = collection.find(e => e.name.toLowerCase() === treeName.toLowerCase()).id;
             commit(types.SET_TREE_ID, treeId);
             return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({ categories: treeData }) => {
-                commit(types.SET_TREE, getParsedTreeData(treeData, categories));
+                const treeToSet = getParsedTreeData(treeData, categories);
+                commit(types.SET_TREE, treeToSet);
+                commit(types.SET_FULL_TREE, treeToSet);
             }).catch(e => onError(e.data));
         }).catch(e => onError(e.data));
-    },
-    addTreeItem: ({ commit, state }, item) => {
-        const findIndex = state.treeData.findIndex(el => el.id === item.id);
-        if (findIndex >= 0) {
-            commit(types.SET_TREE_ITEM, { index: findIndex, item });
-        } else {
-            commit(types.ADD_TREE_ITEM, item);
-        }
-    },
-    removeTreeItem: ({ commit, state }, id) => {
-        commit(types.REMOVE_TREE_ITEM, id);
-        if (Number.isInteger(id)) {
-            const newTree = rebuildTreeWhenElementRemoved(state.treeData, id);
-            commit(types.REBUILD_TREE, { tree: newTree });
-        }
-    },
-    rebuildTree: ({ commit, state }, id) => {
-        const findIndex = state.treeData.findIndex(el => el.id === id);
-        const newTree = rebuildTreeWhenGhostElementRemoved(state.treeData, findIndex);
-        commit(types.REBUILD_TREE, { tree: newTree });
-    },
-    setHiddenItem: ({ commit }, { key, value }) => {
-        commit(types.SET_HIDDEN_ITEM, { key, value });
-    },
-    removeHiddenItem: ({ commit }, key) => {
-        commit(types.REMOVE_HIDDEN_ITEM, key);
     },
     updateTree(
         { rootState },
@@ -69,6 +48,57 @@ export default {
         return this.app.$axios.$put(`${userLanguageCode}/trees/${id}`, data).then(() => {
             onSuccess();
         }).catch(e => onError(e.data));
+    },
+    addTreeItem: ({ commit, getters }, item) => {
+        const findIndex = getters.getIndexById(item.id);
+        if (findIndex >= 0) {
+            commit(types.SET_TREE_ITEM, { index: findIndex, item });
+        } else {
+            commit(types.ADD_TREE_ITEM, item);
+        }
+    },
+    removeTreeItem: ({ commit, state }, id) => {
+        let newTree = [];
+        if (Number.isInteger(id)) {
+            newTree = rebuildTreeWhenElementRemoved(state.treeData, id);
+            const newFullTree = rebuildFullTree(state.hiddenItems, newTree);
+            commit(types.SET_FULL_TREE, newFullTree);
+        } else {
+            newTree = state.treeData.filter(el => el.id !== id);
+        }
+        commit(types.SET_TREE, newTree);
+    },
+    setTreeWhenCollapse: ({ commit, getters }, { tree, id }) => {
+        const index = getters.getIndexById(id);
+        const newTree = rebuildTreeWhenElementCollapse(tree, index);
+        commit(types.SET_TREE, newTree);
+    },
+    setTreeWhenExpand: ({ commit, state, getters }, id) => {
+        const index = getters.getIndexById(id);
+        const newTree = rebuildTreeWhenElementExpand(state.hiddenItems[id], state.treeData, index);
+        commit(types.SET_TREE, newTree);
+    },
+    rebuildTree: ({ commit, state, getters }, id) => {
+        const index = getters.getIndexById(id);
+        const newTree = rebuildTreeWhenGhostElementRemoved(state.treeData, index);
+        const newFullTree = rebuildFullTree(state.hiddenItems, newTree);
+        commit(types.SET_TREE, newTree);
+        commit(types.SET_FULL_TREE, newFullTree);
+    },
+    setExpandItem: ({ commit, getters }, { id, value }) => {
+        const index = getters.getIndexById(id);
+        commit(types.SET_EXPAND_ITEM, { index, value });
+    },
+    setChildrenLength: ({ commit, state, getters }, { id, value }) => {
+        const index = getters.getIndexById(id);
+        const { children } = state.treeData[index];
+        commit(types.SET_CHILDREN_LENGTH, { index, value: children + value });
+    },
+    setHiddenItem: ({ commit }, { key, value }) => {
+        commit(types.SET_HIDDEN_ITEM, { key, value });
+    },
+    removeHiddenItem: ({ commit }, key) => {
+        commit(types.REMOVE_HIDDEN_ITEM, key);
     },
     clearStorage: ({ commit }) => commit(types.CLEAR_STORAGE),
 };
