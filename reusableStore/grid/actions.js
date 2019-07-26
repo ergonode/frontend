@@ -2,7 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-
 import {
     getMappedGridConfiguration,
     getMappedColumns,
@@ -57,6 +56,8 @@ export default {
             const mappedColumns = getMappedColumns(visibleColumns);
             const mappedConfiguration = getMappedGridConfiguration(configuration);
 
+            this.$cookies.set(COLUMN_IDS, visibleColumns.map(col => col.id).join(','));
+
             commit(types.SET_CONFIGURATION, mappedConfiguration);
             commit(types.SET_ROWS, rows);
             commit(types.SET_COUNT, count);
@@ -104,10 +105,13 @@ export default {
         }) => {
             this.$cookies.set(COLUMN_IDS, parsedColumnsID);
 
-            const columnToInsert = columns.find(col => col.id === columnId);
-            // columnToInsert.width = getMappedColumnWidth(columnToInsert);
+            const columnToUpdate = columns.find(col => col.id === columnId);
+            if (!columnToUpdate.width) {
+                columnToUpdate.width = 150;
+                columnToUpdate.minWidth = 150;
+            }
 
-            commit(types.INSERT_COLUMN_AT_INDEX, { column: columnToInsert, index });
+            commit(types.UPDATE_COLUMN_AT_INDEX, { column: columnToUpdate, index });
             commit(types.SET_ROWS, rows);
         }).catch(err => console.log(err));
     },
@@ -147,6 +151,9 @@ export default {
             commit(types.SET_CURRENT_PAGE, Math.min(page, displayedPage));
         }
     },
+    updateColumnWidthAtIndex({ commit }, payload) {
+        commit(types.SET_COLUMN_WIDTH_AT_INDEX, payload);
+    },
     changeDisplayingPage({ commit }, { number }) {
         commit(types.SET_CURRENT_PAGE, number);
     },
@@ -161,6 +168,8 @@ export default {
         const newOrderedColumns = [
             ...swapItemPosition(columns, from, to),
         ];
+        const columnsWithoutExtender = newOrderedColumns.filter(column => column.id !== 'extender');
+        this.$cookies.set(COLUMN_IDS, columnsWithoutExtender.map(column => column.id).join(','));
 
         commit(types.SET_COLUMNS, newOrderedColumns);
     },
