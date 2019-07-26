@@ -22,7 +22,6 @@ export const types = {
 export default {
     [types.ADD_TREE_ITEM](state, item) {
         state.treeData.push(item);
-        state.treeData.sort((a, b) => a.row - b.row);
     },
     [types.SET_ROWS_COUNT](state, value) {
         state.rowsCount = value;
@@ -44,7 +43,7 @@ export default {
         state.hiddenItems = { ...state.hiddenItems, [key]: value };
     },
     [types.SET_EXPAND_ITEM](state, { index, value }) {
-        state.treeData[index] = { ...state.treeData[index], expand: value };
+        state.treeData[index] = { ...state.treeData[index], expanded: value };
     },
     [types.SET_CHILDREN_LENGTH](state, { index, value }) {
         state.treeData[index] = { ...state.treeData[index], children: value };

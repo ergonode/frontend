@@ -45,7 +45,7 @@ describe('CategoryTree/CategoryTreeItem', () => {
 
     it('Check icon image', () => {
       wrapper.setData({
-        isExpand: true,
+        isExpanded: true,
       });
       expect(wrapper.vm.btnExpanderIcon).toBe('arrow-double trans-none');
     });
@@ -55,11 +55,11 @@ describe('CategoryTree/CategoryTreeItem', () => {
         numberOfChildren: 3,
       });
       wrapper.setData({
-        isExpand: true,
+        isExpanded: true,
       });
       const icon = wrapper.find('.grid-item__icon')
       icon.trigger('click')
-      expect(wrapper.vm.isExpand).toBe(true);
+      expect(wrapper.vm.isExpanded).toBe(true);
     });
 
     it('Check number of categories label', () => {

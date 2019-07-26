@@ -33,7 +33,7 @@
                     <CategoryTreeItem
                         v-else
                         :number-of-children="getChildrenLengthById(item.id)"
-                        :is-expand="getExpandStateById(item.id)"
+                        :is-expanded="getExpandStateById(item.id)"
                         :item-name="item.name || item.code"
                         @toggleItem="toggleItem(item)" />
                 </TemplateGridItemArea>
@@ -104,7 +104,7 @@ export default {
             'setExpandItem',
         ]),
         toggleItem({
-            id, row, column, expand,
+            id, row, column, expanded,
         }) {
             const minChildRow = getMinChildRow(this.getChildrenByParentId(id));
             const maxChildRow = getMaxChildRow(this.treeData, column, row);
@@ -116,7 +116,7 @@ export default {
                 }
                 return acc;
             }, { hidden: [], visible: [] });
-            if (!expand) {
+            if (!expanded) {
                 this.setHiddenItem({ key: id, value: treeCategories.hidden });
                 this.setTreeWhenCollapse({ tree: treeCategories.visible, id });
                 this.setExpandItem({ id, value: true });

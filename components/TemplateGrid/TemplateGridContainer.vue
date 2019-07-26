@@ -120,6 +120,7 @@ export default {
             } = itemsContainer.getBoundingClientRect();
             if (clientY > containerHeight + containerTop) {
                 event.preventDefault();
+                return false;
             }
             getRowBellowMouse({
                 clientY,
@@ -147,6 +148,7 @@ export default {
                     event.preventDefault();
                 }
             });
+            return true;
         },
         onDragEnd(event) {
             event.preventDefault();
@@ -210,7 +212,7 @@ export default {
                 column,
                 row,
                 children: childrenLength,
-                expand: childrenLength > 0,
+                expanded: childrenLength > 0,
                 parent: parentId,
             };
             this.addItem(droppedItem);

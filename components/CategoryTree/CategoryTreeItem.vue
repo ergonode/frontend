@@ -34,7 +34,7 @@ export default {
         Icon,
     },
     props: {
-        isExpand: {
+        isExpanded: {
             type: Boolean,
             default: false,
         },
@@ -52,7 +52,7 @@ export default {
             return this.numberOfChildren > 0;
         },
         btnExpanderIcon() {
-            return this.isExpand
+            return this.isExpanded
                 ? 'arrow-double trans-none'
                 : 'arrow-double trans-half';
         },
