@@ -23,6 +23,8 @@ export default {
 
 <style lang="scss">
     .info-cell {
+        flex: 1;
+        width: 0;
         padding: 8px;
         user-select: none;
         text-overflow: ellipsis;

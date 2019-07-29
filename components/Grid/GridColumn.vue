@@ -131,17 +131,20 @@ export default {
             'setGhostIndex',
         ]),
         onDragStart(event) {
-            const { clientY } = event;
+            const { clientX, clientY } = event;
             const [header] = this.$el.children;
             const {
-                y: headerYPos, height: headerHeight,
+                x: headerXPos, y: headerYPos, height: headerHeight,
             } = header.getBoundingClientRect();
+            const xOffset = 2.5;
             const grid = document.documentElement.querySelector('.grid');
             const isMouseAboveColumnHeader = headerYPos <= clientY
                 && headerYPos + headerHeight >= clientY;
+            const isMouseAboveLeftBorderLimit = clientX - headerXPos < xOffset;
             const neighbourIndex = this.index === 0 ? this.index : this.index - 1;
 
             if (!isMouseAboveColumnHeader
+                || isMouseAboveLeftBorderLimit
                 || this.isPinnedLeft
                 || this.isPinnedRight
                 || this.isExtenderColumn
@@ -378,25 +381,27 @@ export default {
         },
         updateColumnsTransition(isBefore) {
             const grid = document.documentElement.querySelector('.grid');
-            const { offsetWidth, offsetLeft } = this.$el;
-            const { x: colXPos } = this.$el.getBoundingClientRect();
+            const { offsetWidth } = this.$el;
             const { width: ghostElWidth } = this.bounds;
 
             let ghostElTransform = 0;
             let columnElTransform = 0;
+            let columnElCurrentTransform = 0;
 
-            const distanceBetweenColumns = colXPos - offsetLeft;
+            if (this.$el.style.transform) {
+                columnElCurrentTransform = +this.$el.style.transform.replace(/[^0-9\-.,]/g, '');
+            }
 
             if (isBefore) {
                 ghostElTransform = this.ghostElTransform - offsetWidth;
                 columnElTransform = 0;
-                if (distanceBetweenColumns === 0) {
+                if (columnElCurrentTransform === 0) {
                     columnElTransform = ghostElWidth;
                 }
             } else {
                 ghostElTransform = this.ghostElTransform + offsetWidth;
                 columnElTransform = -ghostElWidth;
-                if (distanceBetweenColumns > 0) {
+                if (columnElCurrentTransform > 0) {
                     columnElTransform = 0;
                 }
             }
@@ -469,6 +474,7 @@ export default {
             position: absolute;
             top: 0;
             right: 0;
+            z-index: 5;
             width: 2.5px;
             height: 100%;
             cursor: col-resize;
