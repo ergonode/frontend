@@ -4,6 +4,7 @@
  */
 <template>
     <div
+        ref="grid"
         :class="['grid', {'grid--placeholder': isPlaceholder}]"
         :style="templateColumns">
         <slot />
