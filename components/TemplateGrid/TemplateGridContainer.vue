@@ -131,14 +131,14 @@ export default {
                 elementBounds: initializeRowBounds(categories),
             }, ({ index, category }) => {
                 const hasChildren = category.querySelector('.grid-item__categories-length');
-                if (category && !hasChildren) {
+                if (category) {
                     const categoryId = category.getAttribute('item-id');
                     const categoryItem = this.dataWithoutGhostElement[index];
                     const { row, column } = categoryItem;
                     const parentId = this.getParentId(row, column);
-                    // if (hasChildren) {
-                    //     this.$emit('toggleItem', categoryItem);
-                    // }
+                    if (hasChildren) {
+                        this.$emit('toggleItem', categoryItem);
+                    }
                     this.setDraggedElement(categoryId);
                     this.setDraggableState({ propName: 'isListElementDragging', value: true });
                     addTreeElementCopyToDocumentBody(event, category);
@@ -210,11 +210,11 @@ export default {
                 parent: parentId,
             };
             this.addItem(droppedItem);
-            // if (childrenLength > 0) this.$emit('toggleItem', droppedItem);
             if (parentId !== 'root') {
                 this.setChildrenLength({ id: parentId, value: 1 });
             }
             this.$emit('rebuildGrid', this.draggedElement);
+            if (childrenLength > 0) this.$emit('toggleItem', { ...droppedItem, row: row + this.positionBetweenRows });
             this.calculateRowsCount();
         },
         removeGhostElement() {

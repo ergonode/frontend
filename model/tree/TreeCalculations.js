@@ -4,11 +4,6 @@
  */
 const positionBetweenRows = 0.5;
 
-export function getMinChildRow(parentChildren) {
-    const childrenRows = parentChildren.map(e => e.row);
-    return Math.min(...childrenRows);
-}
-
 export function getMaxChildRow(tree, column, row) {
     const [neighbor] = tree.filter(
         e => e.column <= column && e.row > row,
@@ -52,10 +47,21 @@ export function rebuildTreeWhenElementCollapse(treeData, index) {
 }
 
 export function rebuildTreeWhenElementExpand(hiddenChildren, treeData, index) {
+    let hiddenElement = hiddenChildren;
     return treeData.reduce((accumulator, current, i) => {
         let expandedTree = accumulator;
-        if (i === index) {
-            expandedTree = [...expandedTree, current, ...hiddenChildren];
+        if (i === index && hiddenChildren.length) {
+            const oldParent = hiddenChildren[0].column - 1;
+            let newRow = current.row;
+            hiddenElement = hiddenChildren.map((ele) => {
+                const item = {
+                    ...ele,
+                    row: hiddenChildren[0].row <= index ? newRow += 1 : ele.row,
+                    column: ele.column - (oldParent - current.column),
+                };
+                return item;
+            });
+            expandedTree = [...expandedTree, current, ...hiddenElement];
         } else if (i > index) {
             expandedTree.push({ ...current, row: current.row + hiddenChildren.length });
         } else {
