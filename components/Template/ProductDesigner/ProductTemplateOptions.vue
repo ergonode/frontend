@@ -13,13 +13,13 @@
         :error-messages="isError ? [' '] : null"
         :required="required"
         @focus="onFocusChange">
-        <template v-slot:appendIcon>
+        <template v-slot:append>
             <ProductTemplateDetailsContent
                 :hint="hint"
                 :error-messages="errorMessages"
                 :is-error="isError">
                 <template v-slot:append>
-                    <Icon :icon="appendStateIcon" />
+                    <IconArrowDropDown :state="dropDownState" />
                 </template>
             </ProductTemplateDetailsContent>
         </template>
@@ -39,8 +39,10 @@
 </template>
 
 <script>
+import { Arrow } from '~/model/icons/Arrow';
 import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
 import { getValuesByKeys, getValueByKey } from '~/model/objectWrapper';
+import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
 
 export default {
     name: 'ProductTemplateOptions',
@@ -49,7 +51,7 @@ export default {
         Select: () => import('~/components/Inputs/Select/Select'),
         TranslationSelectListContent: () => import('~/components/Inputs/Select/Contents/TranslationSelectListContent'),
         TranslationMultiselectListContent: () => import('~/components/Inputs/Select/Contents/TranslationMultiselectListContent'),
-        Icon: () => import('~/components/Icon/Icon'),
+        IconArrowDropDown,
     },
     props: {
         options: {
@@ -77,10 +79,10 @@ export default {
         this.initializeValues(this.value);
     },
     computed: {
-        appendStateIcon() {
+        dropDownState() {
             return this.isFocused
-                ? 'arrow-triangle trans-half'
-                : 'arrow-triangle';
+                ? Arrow.UP
+                : Arrow.DOWN;
         },
         parsedOptions() {
             const optionKeys = Object.keys(this.options);

@@ -11,9 +11,9 @@
             class="title"
             v-text="title" />
         <div class="icon-wrapper">
-            <Icon
-                :icon="arrowIcon"
-                size="medium" />
+            <IconArrowDropDown
+                fill-color="#fff"
+                :state="arrowIconState" />
         </div>
         <div
             v-if="isSelected"
@@ -25,12 +25,13 @@
 </template>
 
 <script>
+import { Arrow } from '~/model/icons/Arrow';
 
 export default {
     name: 'NavigationBarSelectButton',
     components: {
         NavigationBarButton: () => import('~/components/Navigation/NavigationBar/NavigationBarButton'),
-        Icon: () => import('~/components/Icon/Icon'),
+        IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
     },
     props: {
         title: {
@@ -49,10 +50,8 @@ export default {
         window.removeEventListener('click', this.onClickOutside);
     },
     computed: {
-        arrowIcon() {
-            const icon = !this.isSelected ? 'navbar-arrow' : 'navbar-arrow trans-half';
-
-            return `sprite-navbar ${icon}`;
+        arrowIconState() {
+            return this.isSelected ? Arrow.UP : Arrow.DOWN;
         },
     },
     methods: {

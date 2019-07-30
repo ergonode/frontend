@@ -13,9 +13,9 @@
                 }
             ]"
         @click="onClick">
-        <Icon
-            :icon="tabIcon"
-            size="medium" />
+        <Component
+            :is="tabIconComponent"
+            :fill-color="tabIconFillColor" />
         <span
             class="tab-bar-item__title"
             v-text="item.title" />
@@ -27,19 +27,19 @@ import tabBarItemMixin from '~/mixins/tabBar/tabBarItemMixin';
 
 export default {
     name: 'VerticalTabBarItem',
-    components: {
-        Icon: () => import('~/components/Icon/Icon'),
-    },
     mixins: [tabBarItemMixin],
     computed: {
-        tabIcon() {
+        tabIconComponent() {
+            return () => import(`~/components/Icon/${this.item.icon}`);
+        },
+        tabIconFillColor() {
             if (!this.item.icon) {
                 return null;
             }
 
             return this.isSelected && this.isContentExpanded
-                ? `${this.item.icon}--selected`
-                : `${this.item.icon}--deactive`;
+                ? '#00bc87'
+                : '#5c5f65';
         },
     },
     methods: {

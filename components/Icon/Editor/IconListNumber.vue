@@ -1,0 +1,30 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <IconBase
+        :width="size"
+        :height="size"
+        :icon-color="fillColor">
+        <path :d="drawingCommands" />
+    </IconBase>
+</template>
+
+<script>
+import IconBase from '~/components/Icon/IconBase';
+
+export default {
+    name: 'IconListNumber',
+    components: {
+        IconBase,
+    },
+    data() {
+        return {
+            drawingCommands: 'M3,16.9746433 L3,15.9766082 L6.04563621,15.9766082 L6.04563621,19.9687953 L3,19.9687953 L3,18.9707602 L5.03044,18.9707602 L5.03044,18.4717193 L4.01519621,18.4717193 L4.01519621,17.4736842 L5.03044,17.4736842 L5.03044,16.9746433 L3,16.9746433 Z M4.01519621,7.99218713 L4.01519621,4.99803509 L3,4.99803509 L3,4 L5.03044,4 L5.03044,7.99218713 L4.01519621,7.99218713 Z M3,10.9863392 L3,9.98830409 L6.04563621,9.98830409 L6.04563621,10.8865497 L4.21825448,12.9824561 L6.04563621,12.9824561 L6.04563621,13.9804912 L3,13.9804912 L3,13.0822456 L4.82738173,10.9863392 L3,10.9863392 Z M8,17 L21,17 L21,19 L8,19 L8,17 Z M8,5 L21,5 L21,7 L8,7 L8,5 Z M8,11 L21,11 L21,13 L8,13 L8,11 Z',
+            size: 24,
+            fillColor: '#5C5F65',
+        };
+    },
+};
+</script>

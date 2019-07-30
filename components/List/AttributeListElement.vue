@@ -12,7 +12,7 @@
         }"
         :dragged="isDragged"
         :disabled="isElementDisabled(item.id, languageCode)">
-        <ListElementIcon :icon="iconByType" />
+        <ListElementIcon :icon-path="iconByType" />
         <ListElementDescription
             :title="item.type"
             :subtitle="item.label || item.code" />
@@ -22,6 +22,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import DraggableStates from '~/model/draggableStates';
+import { capitalizeAndConcatenationArray } from '~/model/stringWrapper';
 
 export default {
     name: 'AttributeListElement',
@@ -54,9 +55,10 @@ export default {
         iconByType() {
             if (!this.item.type) return '';
 
-            const convertedType = this.item.type.toLowerCase().replace('_', '-');
+            const types = this.item.type.split('_');
+            const attributeName = capitalizeAndConcatenationArray(types);
 
-            return `attribute-${convertedType}`;
+            return `Attributes/Icon${attributeName}`;
         },
     },
     methods: {

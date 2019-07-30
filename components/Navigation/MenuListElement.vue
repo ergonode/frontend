@@ -10,10 +10,10 @@
         <NuxtLink
             class="list-element__link"
             :to="{ path: item.routing }">
-            <Icon
+            <Component
+                :is="iconComponent"
                 class="link-icon"
-                :icon="`sprite-menu ${elementIcon}`"
-                size="medium" />
+                :fill-color="iconFillColor" />
             <span
                 class="link-text"
                 v-text="item.title" />
@@ -24,9 +24,6 @@
 <script>
 export default {
     name: 'MenuListElement',
-    components: {
-        Icon: () => import('~/components/Icon/Icon'),
-    },
     props: {
         item: {
             type: Object,
@@ -39,11 +36,15 @@ export default {
         };
     },
     computed: {
-        elementIcon() {
-            let iconColor = 'deactive';
-            if (this.isHover) iconColor = 'selected';
-            if (this.isSelected) iconColor = 'active';
-            return `menu-${this.item.icon}--${iconColor}`;
+        iconFillColor() {
+            let iconColor = '#5c5f65';
+            if (this.isHover) iconColor = '#00bc87';
+            if (this.isSelected) iconColor = '#fff';
+
+            return iconColor;
+        },
+        iconComponent() {
+            return () => import(`~/components/Icon/Menu/Icon${this.item.icon}`);
         },
         isSelected() {
             return this.$route.path.includes(this.item.routing);

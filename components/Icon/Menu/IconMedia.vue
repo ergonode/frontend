@@ -1,0 +1,38 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <IconBase
+        :width="size"
+        :height="size"
+        :icon-color="fillColor">
+        <path :d="drawingCommands" />
+    </IconBase>
+</template>
+
+<script>
+import IconBase from '~/components/Icon/IconBase';
+
+export default {
+    name: 'IconMedia',
+    components: {
+        IconBase,
+    },
+    props: {
+        fillColor: {
+            type: String,
+            default: '#5C5F65',
+        },
+        size: {
+            type: [String, Number],
+            default: 24,
+        },
+    },
+    data() {
+        return {
+            drawingCommands: 'M21,19 L21,5 C21,3.9 20.1,3 19,3 L5,3 C3.9,3 3,3.9 3,5 L3,19 C3,20.1 3.9,21 5,21 L19,21 C20.1,21 21,20.1 21,19 Z M8.5,13.5 L11,16.5 L14.5,12 L19,18 L5,18 L8.5,13.5 Z',
+        };
+    },
+};
+</script>

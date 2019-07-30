@@ -7,7 +7,7 @@
         <NavigationHeader
             :title="title"
             :buttons="buttons"
-            icon="sprite-menu menu-boxes--selected" />
+            icon="Templates" />
         <div class="templates">
             <div
                 v-for="section in templatesSection"
@@ -48,7 +48,6 @@ export default {
                     title: 'CREATE TEMPLATE',
                     color: 'success',
                     action: this.onCreate,
-                    icon: 'sprite-button button-add-light',
                 },
             ],
         };

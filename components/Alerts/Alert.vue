@@ -4,9 +4,7 @@
  */
 <template>
     <div :class="['alert', typeClass]">
-        <Icon
-            :icon="feedbackIcon"
-            size="medium" />
+        <Component :is="feedbackIconComponent" />
         <span
             class="alert__title typo-subtitle txt--dark-graphite txt-fixed"
             v-text="message" />
@@ -14,20 +12,24 @@
             fab
             color="transparent"
             ripple-color="rgba(235, 235, 236, 1)"
-            icon="window-close"
-            @click.native="onDismiss" />
+            @click.native="onDismiss">
+            <template v-slot:prepend>
+                <IconClose />
+            </template>
+        </Button>
     </div>
 </template>
 
 <script>
+import { toCapitalize } from '~/model/stringWrapper';
 import Button from '~/components/Buttons/Button';
-import Icon from '~/components/Icon/Icon';
+import IconClose from '~/components/Icon/Window/IconClose';
 
 export default {
     name: 'Alert',
     components: {
         Button,
-        Icon,
+        IconClose,
     },
     props: {
         type: {
@@ -44,8 +46,9 @@ export default {
         typeClass() {
             return `alert--${this.type}`;
         },
-        feedbackIcon() {
-            return `sprite-feedback feedback-${this.type}`;
+        feedbackIconComponent() {
+            const capitalizedType = toCapitalize(this.type);
+            return () => import(`~/components/Icon/Feedback/Icon${capitalizedType}`);
         },
     },
     methods: {
@@ -79,7 +82,7 @@ export default {
             border: solid 2px $warning;
         }
 
-        &--information {
+        &--info {
             border: solid 2px $information;
         }
 

@@ -4,9 +4,7 @@
  */
 <template>
     <NavigationBarButton>
-        <Icon
-            icon="sprite-navbar navbar-bell"
-            size="medium" />
+        <IconBell fill-color="#fff" />
     </NavigationBarButton>
 </template>
 
@@ -15,7 +13,7 @@ export default {
     name: 'NavigationBarNotificationButton',
     components: {
         NavigationBarButton: () => import('~/components/Navigation/NavigationBar/NavigationBarButton'),
-        Icon: () => import('~/components/Icon/Icon'),
+        IconBell: () => import('~/components/Icon/Menu/IconBell'),
     },
 };
 </script>

@@ -74,13 +74,13 @@ export default {
                     props: {
                         isSelectLanguage: false,
                     },
-                    icon: 'sprite-sidebar sidebar-attributes',
+                    icon: 'Menu/IconAttributes',
                     active: true,
                 },
                 {
                     title: 'Widgets',
                     component: () => import('~/components/Card/WidgetsListTab'),
-                    icon: 'sprite-sidebar sidebar-widgets',
+                    icon: 'Widgets/IconWidget',
                     active: false,
                 },
             ],

@@ -12,7 +12,7 @@
         :error-messages="isError ? [' '] : null"
         resize="none"
         @input="onValueChange">
-        <template v-slot:appendIcon>
+        <template v-slot:append>
             <ProductTemplateDetailsContent
                 :hint="hint"
                 :error-messages="errorMessages"

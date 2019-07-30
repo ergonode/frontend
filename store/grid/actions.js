@@ -66,19 +66,19 @@ export default {
         }).catch(err => console.log(err));
     },
     getColumnData({ commit, state }, {
-        index,
+        ghostIndex,
+        draggedElIndex,
         columnId,
         path,
     }) {
         const {
             columns: stateColumns, displayedPage, numberOfDisplayedElements, sortedByColumn, filter,
         } = state;
-
         const stateColumnsID = stateColumns.filter(col => !(col.id.includes('extender') || col.id.includes('ghost'))).map(col => col.id);
         const parsedColumnsID = [
-            ...stateColumnsID.slice(0, index),
+            ...stateColumnsID.slice(0, ghostIndex),
             columnId,
-            ...stateColumnsID.slice(index),
+            ...stateColumnsID.slice(ghostIndex),
         ].join(',');
 
         const parsedFilter = getMappedFilter(filter);
@@ -105,13 +105,14 @@ export default {
         }) => {
             this.$cookies.set(COLUMN_IDS, parsedColumnsID);
 
-            const columnToUpdate = columns.find(col => col.id === columnId);
-            if (!columnToUpdate.width) {
-                columnToUpdate.width = 150;
-                columnToUpdate.minWidth = 150;
+            const draggedColumn = columns.find(col => col.id === columnId);
+            if (!draggedColumn.width) {
+                draggedColumn.width = 150;
+                draggedColumn.minWidth = 150;
             }
 
-            commit(types.UPDATE_COLUMN_AT_INDEX, { column: columnToUpdate, index });
+            commit(types.REMOVE_COLUMN_AT_INDEX, draggedElIndex);
+            commit(types.INSERT_COLUMN_AT_INDEX, { column: draggedColumn, index: ghostIndex });
             commit(types.SET_ROWS, rows);
         }).catch(err => console.log(err));
     },
@@ -154,8 +155,8 @@ export default {
     updateColumnWidthAtIndex({ commit }, payload) {
         commit(types.SET_COLUMN_WIDTH_AT_INDEX, payload);
     },
-    changeDisplayingPage({ commit }, { number }) {
-        commit(types.SET_CURRENT_PAGE, number);
+    changeDisplayingPage({ commit }, page) {
+        commit(types.SET_CURRENT_PAGE, page);
     },
     insertColumnAtIndex({ commit }, { column, index }) {
         commit(types.INSERT_COLUMN_AT_INDEX, { column, index });

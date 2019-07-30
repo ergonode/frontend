@@ -8,7 +8,7 @@
             :title="title"
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
-            icon="sprite-menu menu-puzzel--selected"
+            icon="Templates"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -26,7 +26,7 @@ export default {
             breadcrumbs: [
                 {
                     title: 'Templates',
-                    icon: 'sprite-menu menu-puzzel--deactive',
+                    icon: 'Templates',
                     path: '/templates',
                 },
             ],

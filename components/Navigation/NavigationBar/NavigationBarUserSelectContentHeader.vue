@@ -9,11 +9,9 @@
                 v-if="avatarId"
                 fab
                 :image-id="avatarId" />
-            <Icon
+            <IconUser
                 v-else
-                class="user-img"
-                icon="sprite-navbar navbar-user"
-                size="hugh" />
+                size="72" />
         </div>
         <span
             class="header__initials"
@@ -44,7 +42,7 @@ export default {
     },
     components: {
         Picture: () => import('~/components/Inputs/Image/Picture'),
-        Icon: () => import('~/components/Icon/Icon'),
+        IconUser: () => import('~/components/Icon/Menu/IconUser'),
     },
 };
 </script>

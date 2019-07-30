@@ -44,7 +44,7 @@
         height: 40px;
     }
 
-    &__icon {
+    &:not(&--fab) svg {
         z-index: 2;
         margin-right: 8px;
     }

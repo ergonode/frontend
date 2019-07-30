@@ -8,10 +8,7 @@
             <div class="modal__header">
                 <slot name="header">
                     <div class="horizontal-wrapper">
-                        <Icon
-                            v-if="icon"
-                            :icon="icon"
-                            size="medium" />
+                        <Component :is="headerIconComponent" />
                         <span
                             class="title"
                             v-text="title" />
@@ -19,8 +16,11 @@
                     <Button
                         fab
                         color="transparent"
-                        icon="window-close"
-                        @click.native="onClose" />
+                        @click.native="onClose">
+                        <template v-slot:prepend>
+                            <IconClose />
+                        </template>
+                    </Button>
                 </slot>
             </div>
             <Divider />
@@ -37,14 +37,14 @@
 <script>
 
 import ModalBase from '~/components/Modals/ModalBase';
-import Icon from '~/components/Icon/Icon';
 import Button from '~/components/Buttons/Button';
 import Divider from '~/components/Dividers/Divider';
+import IconClose from '~/components/Icon/Window/IconClose';
 
 export default {
     name: 'ModalActionBase',
     components: {
-        Divider, Icon, ModalBase, Button,
+        Divider, ModalBase, Button, IconClose,
     },
     props: {
         value: {
@@ -55,9 +55,14 @@ export default {
             type: String,
             default: 'Default header',
         },
-        icon: {
+        iconPath: {
             type: String,
             default: '',
+        },
+    },
+    computed: {
+        headerIconComponent() {
+            return () => import(`~/components/Icon/${this.iconPath}`);
         },
     },
     methods: {

@@ -9,22 +9,22 @@ export default [
             {
                 title: 'My profile',
                 routing: '/placeholder/profil',
-                icon: 'user',
+                icon: 'User',
             },
             {
                 title: 'Work schedule',
                 routing: '/placeholder/schedule',
-                icon: 'workflow',
+                icon: 'Flow',
             },
             {
                 title: 'Activity log',
                 routing: '/placeholder/log',
-                icon: 'circles',
+                icon: 'Activity',
             },
             {
                 title: 'Settings',
                 routing: '/placeholder/settings',
-                icon: 'settings',
+                icon: 'Settings',
             },
         ],
     },
