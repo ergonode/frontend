@@ -24,11 +24,14 @@ export default {
             type: String,
             default: '#5C5F65',
         },
+        size: {
+            type: [String, Number],
+            default: '24',
+        },
     },
     data() {
         return {
             points: '11 5 11 11 5 11 5 13 11 13 11 19 13 19 13 13 19 13 19 11 13 11 13 5',
-            size: 24,
         };
     },
 };

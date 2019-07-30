@@ -50,7 +50,7 @@ export default {
             {
                 title: 'Attributes',
                 component: () => import('~/components/Card/AttributesListTab'),
-                icon: 'Menu/IconAttributes',
+                iconPath: 'Menu/IconAttributes',
                 active: true,
             },
         ],

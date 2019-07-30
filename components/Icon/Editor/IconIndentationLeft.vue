@@ -19,11 +19,19 @@ export default {
     components: {
         IconBase,
     },
+    props: {
+        fillColor: {
+            type: String,
+            default: '#5C5F65',
+        },
+        size: {
+            type: [String, Number],
+            default: '24',
+        },
+    },
     data() {
         return {
             drawingCommands: 'M5,12 L8,9 L8,15 L5,12 Z M5,17 L19,17 L19,19 L5,19 L5,17 Z M11,14 L19,14 L19,16 L11,16 L11,14 Z M11,11 L19,11 L19,13 L11,13 L11,11 Z M5,5 L19,5 L19,7 L5,7 L5,5 Z M11,8 L19,8 L19,10 L11,10 L11,8 Z',
-            size: 24,
-            fillColor: '#5C5F65',
         };
     },
 };

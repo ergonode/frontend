@@ -25,12 +25,18 @@ export default {
             type: String,
             default: Align.LEFT,
         },
+        fillColor: {
+            type: String,
+            default: '#5C5F65',
+        },
+        size: {
+            type: [String, Number],
+            default: '24',
+        },
     },
     data() {
         return {
             drawingCommands: 'M3,17 L21,17 L21,19 L3,19 L3,17 Z M3,14 L15,14 L15,16 L3,16 L3,14 Z M3,8 L15,8 L15,10 L3,10 L3,8 Z M3,11 L21,11 L21,13 L3,13 L3,11 Z M3,5 L21,5 L21,7 L3,7 L3,5 Z',
-            size: 24,
-            fillColor: '#5C5F65',
         };
     },
     computed: {

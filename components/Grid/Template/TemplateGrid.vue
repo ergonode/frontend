@@ -74,13 +74,13 @@ export default {
                     props: {
                         isSelectLanguage: false,
                     },
-                    icon: 'Menu/IconAttributes',
+                    iconPath: 'Menu/IconAttributes',
                     active: true,
                 },
                 {
                     title: 'Widgets',
                     component: () => import('~/components/Card/WidgetsListTab'),
-                    icon: 'Widgets/IconWidget',
+                    iconPath: 'Widgets/IconWidget',
                     active: false,
                 },
             ],

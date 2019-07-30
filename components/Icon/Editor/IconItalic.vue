@@ -19,11 +19,19 @@ export default {
     components: {
         IconBase,
     },
+    props: {
+        fillColor: {
+            type: String,
+            default: '#5C5F65',
+        },
+        size: {
+            type: [String, Number],
+            default: '24',
+        },
+    },
     data() {
         return {
             points: '9.96061929 5 9.96061929 7.99999665 12.1537796 7.99999665 8.75759058 16.0000033 6 16.0000033 6 19 13.9211922 19 13.9211922 16.0000033 11.7280318 16.0000033 15.1242209 7.99999665 17.881765 7.99999665 17.881765 5',
-            size: 24,
-            fillColor: '#5C5F65',
         };
     },
 };
