@@ -16,7 +16,7 @@
             @removeItem="removeTreeItem"
             @rebuildGrid="rebuildTree"
             @setRowsCount="setRowsCount"
-            @toggleItem="(i) => toggleItem(i)">
+            @toggleItem="(item) => toggleItem(item)">
             <TemplateGridPresentationLayer
                 :style="gridStyles"
                 :columns="columns"
