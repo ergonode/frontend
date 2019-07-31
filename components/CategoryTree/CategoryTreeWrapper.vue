@@ -12,10 +12,6 @@
             :rows="rowsCount"
             :rows-height="rowsHeight"
             :tree-data="filteredTreeData"
-            @addItem="addTreeItem"
-            @removeItem="removeTreeItem"
-            @rebuildGrid="rebuildTree"
-            @setRowsCount="setRowsCount"
             @toggleItem="(item) => toggleItem(item)">
             <TemplateGridPresentationLayer
                 :style="gridStyles"
@@ -93,10 +89,6 @@ export default {
         ...mapActions('tree', [
             'setTreeWhenCollapse',
             'setTreeWhenExpand',
-            'setRowsCount',
-            'addTreeItem',
-            'removeTreeItem',
-            'rebuildTree',
             'setHiddenItem',
             'removeHiddenItem',
             'setExpandItem',
@@ -115,12 +107,12 @@ export default {
                     return acc;
                 }, { hiddenCategories: [], visibleCategories: [] });
                 this.setHiddenItem({ key: id, value: hiddenCategories });
-                this.setTreeWhenCollapse({ tree: visibleCategories, id });
-                this.setExpandItem({ id, value: true });
+                this.setTreeWhenCollapse({ tree: visibleCategories, index: row });
+                this.setExpandItem({ index: row, value: true });
             } else {
-                this.setTreeWhenExpand(id);
+                this.setTreeWhenExpand({ id, index: row });
                 this.removeHiddenItem(id);
-                this.setExpandItem({ id, value: false });
+                this.setExpandItem({ index: row, value: false });
             }
         },
     },

@@ -23,7 +23,7 @@ import {
     removeTreeElementCopyFromDocumentBody,
 } from '~/model/tree/TreeElementCopy';
 import {
-    initializeRowBounds,
+    getRowBounds,
     getRowBellowMouse,
 } from '~/model/tree/TreeCalculations';
 import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
@@ -106,6 +106,10 @@ export default {
         ]),
         ...mapActions('tree', [
             'setChildrenLength',
+            'setRowsCount',
+            'addTreeItem',
+            'removeTreeItem',
+            'rebuildTree',
         ]),
         calculateRowsCount() {
             const { clientHeight } = document.querySelector('.grid-container');
@@ -128,7 +132,7 @@ export default {
             getRowBellowMouse({
                 clientY,
                 elements: categories,
-                elementBounds: initializeRowBounds(categories),
+                elementBounds: getRowBounds(categories),
             }, ({ index, category }) => {
                 const hasChildren = category.querySelector('.grid-item__categories-length');
                 if (category) {
@@ -145,9 +149,8 @@ export default {
                     if (parentId !== 'root') {
                         this.setChildrenLength({ id: parentId, value: -1 });
                     }
-                    this.$emit('removeItem', index);
+                    this.removeTreeItem(index);
                 } else {
-                    this.$addAlert(this.$store, { type: 'warning', message: 'Can`t move the category which has subcategory.', duration: 1500 });
                     event.preventDefault();
                 }
             });
@@ -209,24 +212,18 @@ export default {
                 expanded: childrenLength > 0,
                 parent: parentId,
             };
-            this.addItem(droppedItem);
+            this.addTreeItem(droppedItem);
             if (parentId !== 'root') {
                 this.setChildrenLength({ id: parentId, value: 1 });
             }
-            this.$emit('rebuildGrid', this.draggedElement);
+            this.rebuildTree(this.draggedElement);
             if (childrenLength > 0) this.$emit('toggleItem', { ...droppedItem, row: row + this.positionBetweenRows });
             this.calculateRowsCount();
         },
         removeGhostElement() {
             this.ghostElement.row = null;
             this.ghostElement.column = null;
-            this.$emit('removeItem', this.ghostElement.id);
-        },
-        addItem(item) {
-            this.$emit('addItem', item);
-        },
-        setRowsCount(number) {
-            this.$emit('setRowsCount', number);
+            this.removeTreeItem(this.ghostElement.id);
         },
         getBottomCollidingColumn({ neighborElColumn, collidingElColumn }) {
             const { overColumn } = this.mousePosition;
@@ -320,7 +317,7 @@ export default {
             if (isPositionNotDuplicated) {
                 this.ghostElement.row = row;
                 this.ghostElement.column = column;
-                this.addItem({ ...this.ghostElement });
+                this.addTreeItem({ ...this.ghostElement });
             }
         },
         getMouseOverProps(clientX, clientY) {
