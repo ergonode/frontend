@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="grid-item"
-        :title="itemName">
+    <div class="grid-item">
         <Icon
             v-if="hasChildren"
             class="grid-item__icon"
@@ -13,14 +11,12 @@
             @click.native="toggleItemExpand" />
         <span
             class="grid-item__title txt-fixed typo-subtitle txt--dark-graphite"
-            :style="getLabelStyle"
-            :title="itemName">
+            :style="getLabelStyle">
             {{ itemName }}
         </span>
         <span
             v-if="hasChildren"
-            class="grid-item__categories-length txt-fixed typo-hint txt--dark-graphite"
-            :title="getNumberOfCategoriesLabel">
+            class="grid-item__categories-length txt-fixed typo-hint txt--dark-graphite">
             {{ getNumberOfCategoriesLabel }}
         </span>
     </div>

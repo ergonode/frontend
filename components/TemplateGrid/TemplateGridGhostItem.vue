@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="grid__ghost-item"
-        title="Drop here" />
+    <div class="grid__ghost-item" />
 </template>
 <script>
 

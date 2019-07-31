@@ -37,10 +37,10 @@ describe('CategoryTree/CategoryTreeItem', () => {
         numberOfChildren: 3,
       });
       const icon = wrapper.find('.grid-item__icon');
-      const categoiesLength = wrapper.find('.grid-item__categories-length');
+      const categoriesLength = wrapper.find('.grid-item__categories-length');
       expect(wrapper.vm.hasChildren).toBeTruthy();
       expect(icon).toBeTruthy();
-      expect(categoiesLength).toBeTruthy();
+      expect(categoriesLength).toBeTruthy();
     });
 
     it('Check icon image', () => {
