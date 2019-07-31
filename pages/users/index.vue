@@ -5,7 +5,7 @@
 <template>
     <GridUsersPage
         :title="title"
-        :buttons="buttons"
+        :buttons="getButtons"
         icon="User" />
 </template>
 <script>
@@ -20,23 +20,29 @@ export default {
     data() {
         return {
             title: 'Users',
-            buttons: [
-                {
-                    title: 'CREATE USER',
-                    color: 'success',
-                    action: this.addNewUser,
-                },
-            ],
         };
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
+        getButtons() {
+            const isRolePath = /roles/.test(this.$route.path);
+            return [
+                {
+                    title: isRolePath ? 'CREATE ROLE' : 'CREATE USER',
+                    color: 'success',
+                    action: isRolePath ? this.addNewRole : this.addNewUser,
+                },
+            ];
+        },
     },
     methods: {
         addNewUser() {
             this.$router.push('/users/new');
+        },
+        addNewRole() {
+            this.$router.push('/users/roles/new');
         },
     },
 };
