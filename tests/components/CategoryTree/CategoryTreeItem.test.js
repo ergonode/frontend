@@ -36,9 +36,10 @@ describe('CategoryTree/CategoryTreeItem', () => {
       wrapper.setProps({
         numberOfChildren: 3,
       });
-      const categoiesLength = wrapper.find('.grid-item__categories-length');
+
+      const categoriesLength = wrapper.find('.grid-item__categories-length');
       expect(wrapper.vm.hasChildren).toBeTruthy();
-      expect(categoiesLength).toBeTruthy();
+      expect(categoriesLength).toBeTruthy();
     });
 
     it('Check click method', () => {
