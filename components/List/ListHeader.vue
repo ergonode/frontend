@@ -25,6 +25,7 @@ export default {
 
 <style lang="scss" scoped>
     .grid-wrapper {
+        position: relative;
         display: grid;
         row-gap: 8px;
         column-gap: 16px;

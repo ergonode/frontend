@@ -5,35 +5,41 @@
 <template>
     <div :class="gridWrapperClasses">
         <Grid
-            :columns="columns"
+            :columns="gridState.columns"
             :is-placeholder="isEmptyGrid">
             <GridColumn
-                v-for="(column, colIndex) in columns"
+                v-for="(column, colIndex) in gridState.columns"
                 :key="column.id"
+                :store-namespace="storeNamespace"
                 :index="colIndex"
                 :column="column"
                 :rows-height="rowsHeight"
                 :is-pinned-right="column.isRightPinned"
-                :is-pinned-left="column.isLeftPinned">
+                :is-pinned-left="column.isLeftPinned"
+                :is-column-resizeable="gridState.configuration.isColumnResizeable"
+                :is-column-moveable="gridState.configuration.isColumnMoveable">
                 <GridWrapperHeaderCell
+                    :store-namespace="storeNamespace"
                     :column-index="colIndex"
                     :column="column"
                     :path="actionPaths.getData" />
                 <GridWrapperHeaderActionCell
+                    :store-namespace="storeNamespace"
                     :column-index="colIndex"
                     :column="column"
                     :path="actionPaths.getData" />
                 <GridWrapperCell
-                    v-for="(row, rowIndex) in rows"
+                    v-for="(row, rowIndex) in gridState.rows"
                     :key="`row[${rowIndex + 2}, ${column.id}]`"
+                    :store-namespace="storeNamespace"
                     :column-index="colIndex"
-                    :row-index="(rowIndex + 2) * displayedPage"
+                    :row-index="(rowIndex + 2) * gridState.displayedPage"
                     :column="column"
                     :row="row"
-                    :draft="drafts[rows[rowIndex].id]"
+                    :draft="drafts[gridState.rows[rowIndex].id]"
                     :edit-routing-path="actionPaths.routerEdit"
-                    :is-selected="isSelectedAllRows
-                        || selectedRows[(rowIndex + 2) * displayedPage]" />
+                    :is-selected="gridState.isSelectedAllRows
+                        || gridState.selectedRows[(rowIndex + 2) * gridState.displayedPage]" />
             </GridColumn>
         </Grid>
         <GridPlaceholder v-if="isEmptyGrid" />
@@ -41,7 +47,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'GridWrapper',
@@ -54,6 +60,10 @@ export default {
         GridPlaceholder: () => import('~/components/Grid/GridPlaceholder'),
     },
     props: {
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
         rowsHeight: {
             type: Number,
             required: true,
@@ -63,23 +73,22 @@ export default {
             required: true,
         },
     },
+    destroyed() {
+        this.removeValidationErrors();
+    },
     computed: {
         ...mapState('gridDraft', {
             drafts: state => state.drafts,
         }),
-        ...mapState('grid', {
-            columns: state => state.columns,
-            rows: state => state.rows,
-            isSelectedAllRows: state => state.isSelectedAllRows,
-            selectedRows: state => state.selectedRows,
-            displayedPage: state => state.displayedPage,
-        }),
+        gridState() {
+            return this.$store.state[this.storeNamespace];
+        },
+        numberOfPages() {
+            return this.$store.getters[`${this.storeNamespace}/numberOfPages`];
+        },
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,
             isColumnDragging: state => state.isColumnDragging,
-        }),
-        ...mapGetters('grid', {
-            numberOfPages: 'numberOfPages',
         }),
         gridWrapperClasses() {
             return [
@@ -91,16 +100,10 @@ export default {
             ];
         },
         isEmptyGrid() {
-            return !this.rows.length;
+            return !this.gridState.rows.length;
         },
     },
-    destroyed() {
-        this.removeValidationErrors();
-    },
     methods: {
-        ...mapActions('grid', [
-            'getData',
-        ]),
         ...mapActions('validations', [
             'removeValidationErrors',
         ]),

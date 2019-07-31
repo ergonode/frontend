@@ -17,6 +17,7 @@
                 v-bind="infoComponentProps" />
             <GridEditActivatorCell
                 v-else
+                :store-namespace="storeNamespace"
                 :is-select-kind="isSelectKind"
                 :is-multi-select="isMultiSelect"
                 :value="filterValue"
@@ -27,7 +28,6 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'GridWrapperHeaderActionCell',
@@ -36,6 +36,10 @@ export default {
         GridEditActivatorCell: () => import('~/components/Grid/EditCells/GridEditActivatorCell'),
     },
     props: {
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
         columnIndex: {
             type: Number,
             required: true,
@@ -55,16 +59,14 @@ export default {
         };
     },
     computed: {
-        ...mapState('grid', {
-            gridFilter: state => state.filter,
-            isSelectedAllRows: state => state.isSelectedAllRows,
-            editingCellCoordinates: state => state.editingCellCoordinates,
-        }),
+        gridState() {
+            return this.$store.state[this.storeNamespace];
+        },
         isExtenderColumn() {
             return this.column.id === 'extender';
         },
         isEditingCell() {
-            const { row, column } = this.editingCellCoordinates;
+            const { row, column } = this.gridState.editingCellCoordinates;
 
             return this.rowIndex === row && this.columnIndex === column;
         },
@@ -93,7 +95,7 @@ export default {
             return type === 'MULTI_SELECT';
         },
         filterValue() {
-            const { [this.column.id]: filter } = this.gridFilter;
+            const { [this.column.id]: filter } = this.gridState.filter;
 
             if (!filter) {
                 if (this.isMultiSelect) return [];
@@ -106,7 +108,7 @@ export default {
         filterParsedValue() {
             if (!this.column.filter) return '';
 
-            const { [this.column.id]: filter } = this.gridFilter;
+            const { [this.column.id]: filter } = this.gridState.filter;
 
             if (filter) {
                 if (Array.isArray(filter)) {
@@ -167,15 +169,9 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditingCellCoordinates',
-            'getData',
-            'setFilter',
-            'changeDisplayingPage',
-        ]),
         onEdit(isEditing) {
             if (this.column.type !== 'CHECK') {
-                this.setEditingCellCoordinates(isEditing
+                this.$store.dispatch(`${this.storeNamespace}/setEditingCellCoordinates`, isEditing
                     ? { column: this.columnIndex, row: this.rowIndex }
                     : {});
             }
@@ -183,10 +179,10 @@ export default {
         onUpdateFilter(value) {
             const { id } = this.column;
 
-            if (this.gridFilter[id] !== value) {
-                this.setFilter({ id, filter: value });
-                this.getData({ path: this.path });
-                this.changeDisplayingPage({ number: 1 });
+            if (this.gridState.filter[id] !== value) {
+                this.$store.dispatch(`${this.storeNamespace}/setFilter`, { id, filter: value });
+                this.$store.dispatch(`${this.storeNamespace}/getData`, { path: this.path });
+                this.$store.dispatch(`${this.storeNamespace}/changeDisplayingPage`, 1);
             }
         },
     },

@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import {
     removeColumnCookieByID,
 } from '~/model/grid/cookies/GridLayoutConfiguration';
@@ -43,6 +43,10 @@ export default {
         Icon: () => import('~/components/Icon/Icon'),
     },
     props: {
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
         column: {
             type: Object,
             required: true,
@@ -80,22 +84,22 @@ export default {
         ...mapState('draggable', {
             isColumnDragging: state => state.isColumnDragging,
         }),
-        ...mapState('grid', {
-            sortedByColumn: state => state.sortedByColumn,
-        }),
+        gridState() {
+            return this.$store.state[this.storeNamespace];
+        },
         isPinnedColumn() {
             const { isLeftPinned, isRightPinned } = this.column;
             return isLeftPinned || isRightPinned;
         },
         isSorted() {
-            return this.sortedByColumn.index === this.column.id;
+            return this.gridState.sortedByColumn.index === this.column.id;
         },
         sortingIcon() {
             if (this.isSorted) {
-                if (this.sortedByColumn.orderState === 'ASC') {
+                if (this.gridState.sortedByColumn.orderState === 'ASC') {
                     return 'arrow-sort-active';
                 }
-                if (this.sortedByColumn.orderState === 'DESC') {
+                if (this.gridState.sortedByColumn.orderState === 'DESC') {
                     return 'arrow-sort-active trans-half';
                 }
             }
@@ -141,21 +145,17 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'removeColumnAtIndex',
-            'setSortingState',
-        ]),
         onClickSort() {
             let orderState = 'ASC';
             if (this.isSorted) {
-                if (this.sortedByColumn.orderState === 'ASC') {
+                if (this.gridState.sortedByColumn.orderState === 'ASC') {
                     orderState = 'DESC';
                 }
-                if (this.sortedByColumn.orderState === 'DESC') {
+                if (this.gridState.sortedByColumn.orderState === 'DESC') {
                     orderState = 'ASC';
                 }
             }
-            this.setSortingState({ index: this.column.id, orderState });
+            this.$store.dispatch(`${this.storeNamespace}/setSortingState`, { index: this.column.id, orderState });
 
             this.$emit('sort');
         },
@@ -172,7 +172,7 @@ export default {
 
                 // We are hovering element while removing it
                 this.borderColumnAction('add', columnElement);
-                this.removeColumnAtIndex({ index: this.columnIndex });
+                this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index: this.columnIndex });
                 removeColumnCookieByID(this.$cookies, this.column.id);
             }
         },

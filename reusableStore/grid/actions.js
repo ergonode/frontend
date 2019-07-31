@@ -8,7 +8,7 @@ import {
     getSortedColumnsByIDs,
     getMappedFilter,
 } from '~/model/mappers/gridDataMapper';
-import { swapItemPosition } from '~/model/arrayWrapper';
+import { swapItemPosition, insertValueAtIndex } from '~/model/arrayWrapper';
 import { COLUMN_IDS } from '~/defaults/grid/cookies';
 import { types } from './mutations';
 
@@ -66,23 +66,16 @@ export default {
         }).catch(err => console.log(err));
     },
     getColumnData({ commit, state }, {
-        index,
+        ghostIndex,
         columnId,
         path,
     }) {
         const {
             columns: stateColumns, displayedPage, numberOfDisplayedElements, sortedByColumn, filter,
         } = state;
-
         const stateColumnsID = stateColumns.filter(col => !(col.id.includes('extender') || col.id.includes('ghost'))).map(col => col.id);
-        const parsedColumnsID = [
-            ...stateColumnsID.slice(0, index),
-            columnId,
-            ...stateColumnsID.slice(index),
-        ].join(',');
-
+        const parsedColumnsID = insertValueAtIndex(stateColumnsID, columnId, ghostIndex).join(',');
         const parsedFilter = getMappedFilter(filter);
-
         const params = {
             columns: parsedColumnsID,
             offset: (displayedPage - 1) * numberOfDisplayedElements,
@@ -105,13 +98,20 @@ export default {
         }) => {
             this.$cookies.set(COLUMN_IDS, parsedColumnsID);
 
-            const columnToUpdate = columns.find(col => col.id === columnId);
-            if (!columnToUpdate.width) {
-                columnToUpdate.width = 150;
-                columnToUpdate.minWidth = 150;
+            const draggedColumn = columns.find(col => col.id === columnId);
+            if (!draggedColumn.width) {
+                draggedColumn.width = 150;
+                draggedColumn.minWidth = 150;
+            } else {
+                draggedColumn.minWidth = draggedColumn.width;
             }
 
-            commit(types.UPDATE_COLUMN_AT_INDEX, { column: columnToUpdate, index });
+            let columnsWithoutGhost = stateColumns.filter(column => column.id !== 'ghost');
+            columnsWithoutGhost = insertValueAtIndex(
+                columnsWithoutGhost, draggedColumn, ghostIndex,
+            );
+
+            commit(types.SET_COLUMNS, columnsWithoutGhost);
             commit(types.SET_ROWS, rows);
         }).catch(err => console.log(err));
     },

@@ -39,16 +39,5 @@ export default {
             this.$router.push('/users/new');
         },
     },
-    async fetch(parameters) {
-        const { store } = parameters;
-        const {
-            user: { language: userLanguageCode },
-        } = store.state.authentication;
-
-        const gridPath = `${userLanguageCode}/accounts`;
-
-        await store.dispatch('grid/clearStorage');
-        await store.dispatch('grid/getData', { path: gridPath });
-    },
 };
 </script>

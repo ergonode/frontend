@@ -10,6 +10,7 @@
             :icon="icon" />
         <div class="vertical-wrapper">
             <GridWrapper
+                store-namespace="grid"
                 :rows-height="rowsHeight"
                 :action-paths="actionPaths" />
         </div>
@@ -29,16 +30,23 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
+import gridModule from '~/reusableStore/grid/state';
+import NavigationHeader from '~/components/ReusableHeader/NavigationHeader';
+import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
+import GridFooter from '~/components/Grid/GridFooter';
+import GridPageSelector from '~/components/Grid/GridPageSelector';
+import GridPagination from '~/components/Grid/GridPagination';
+import PageWrapper from '~/components/Layout/PageWrapper';
 
 export default {
     name: 'GridPage',
     components: {
-        NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
-        GridWrapper: () => import('~/components/Grid/Wrappers/GridWrapper'),
-        GridFooter: () => import('~/components/Grid/GridFooter'),
-        GridPageSelector: () => import('~/components/Grid/GridPageSelector'),
-        GridPagination: () => import('~/components/Grid/GridPagination'),
-        PageWrapper: () => import('~/components/Layout/PageWrapper'),
+        NavigationHeader,
+        GridWrapper,
+        GridFooter,
+        GridPageSelector,
+        GridPagination,
+        PageWrapper,
     },
     props: {
         actionPaths: {
@@ -58,13 +66,24 @@ export default {
             default: null,
         },
     },
-    data: () => ({
-        gridConfiguration: {
-            rows: {
-                height: 32,
+    data() {
+        return {
+            gridConfiguration: {
+                rows: {
+                    height: 32,
+                },
             },
-        },
-    }),
+        };
+    },
+    async beforeCreate() {
+        const { getData: path } = this.$options.propsData.actionPaths;
+
+        this.$store.registerModule('grid', gridModule);
+        await this.$store.dispatch('grid/getData', { path });
+    },
+    beforeDestroy() {
+        this.$store.unregisterModule('grid');
+    },
     computed: {
         ...mapState('grid', {
             numberOfDataElements: state => state.count,

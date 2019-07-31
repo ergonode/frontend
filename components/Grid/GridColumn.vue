@@ -53,6 +53,10 @@ import {
 export default {
     name: 'GridColumn',
     props: {
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
         index: {
             type: Number,
             required: true,
@@ -70,6 +74,14 @@ export default {
             default: false,
         },
         isPinnedLeft: {
+            type: Boolean,
+            default: false,
+        },
+        isColumnResizeable: {
+            type: Boolean,
+            default: false,
+        },
+        isColumnMoveable: {
             type: Boolean,
             default: false,
         },
@@ -97,10 +109,6 @@ export default {
             ghostElTransform: state => state.ghostElTransform,
             draggedElIndex: state => state.draggedElIndex,
         }),
-        ...mapState('grid', {
-            isColumnResizeable: state => state.configuration.isColumnResizeable,
-            isColumnMoveable: state => state.configuration.isColumnMoveable,
-        }),
         colRowsTemplate() {
             return {
                 gridAutoRows: `${this.rowsHeight}px`,
@@ -114,13 +122,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'updateColumnWidthAtIndex',
-            'removeColumnAtIndex',
-            'insertColumnAtIndex',
-            'changeColumnPosition',
-            'getColumnData',
-        ]),
         ...mapActions('draggable', [
             'setDraggableState',
             'setDraggedElement',
@@ -180,13 +181,13 @@ export default {
                 }
 
                 if (this.ghostIndex !== index) {
-                    this.changeColumnPosition({
+                    this.$store.dispatch(`${this.storeNamespace}/changeColumnPosition`, {
                         from: index,
                         to: this.ghostIndex,
                     });
                 }
             } else if (!isTrashBelowMouse) {
-                this.insertColumnAtIndex({
+                this.$store.dispatch(`${this.storeNamespace}/insertColumnAtIndex`, {
                     column: this.draggedElement, index,
                 });
                 insertColumnAtIndexToCookie(this.$cookies, index, this.column.id);
@@ -209,9 +210,8 @@ export default {
                     grid.children[i].style.transform = 'translateX(0)';
                 }
 
-                this.getColumnData({
+                this.$store.dispatch(`${this.storeNamespace}/getColumnData`, {
                     ghostIndex: this.ghostIndex,
-                    draggedElIndex: this.draggedElIndex,
                     columnId,
                     path: `${this.languageCode}/products`,
                 });
@@ -266,7 +266,8 @@ export default {
                 for (let i = 0; i < grid.children.length; i += 1) {
                     grid.children[i].style.transform = 'translateX(0)';
                 }
-                this.removeColumnAtIndex({ index: this.draggedElIndex });
+
+                this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index: this.draggedElIndex });
                 this.setGhostIndex();
                 this.setDraggedElIndex();
                 this.setGhostElTransform();
@@ -291,7 +292,7 @@ export default {
             }
         },
         stopResizeDrag() {
-            this.updateColumnWidthAtIndex({
+            this.$store.dispatch(`${this.storeNamespace}/updateColumnWidthAtIndex`, {
                 index: this.index, width: this.columnWidth,
             });
             this.removeEventListenersForResizeState();
@@ -362,9 +363,9 @@ export default {
             }
 
             if (typeof this.draggedElement === 'object') {
-                this.insertColumnAtIndex({ column: this.draggedElement, index: ghostColIndex });
+                this.$store.dispatch(`${this.storeNamespace}/insertColumnAtIndex`, { column: this.draggedElement, index: ghostColIndex });
             } else {
-                this.insertColumnAtIndex({
+                this.$store.dispatch(`${this.storeNamespace}/insertColumnAtIndex`, {
                     column: getGhostColumnElementModel(), index: ghostColIndex,
                 });
                 this.setBounds({ x: xPos, width: 100 });
@@ -429,7 +430,6 @@ export default {
         position: relative;
         display: grid;
         padding-right: 1px;
-        transform: translateX(0);
 
         &::before {
             position: absolute;
@@ -464,7 +464,7 @@ export default {
         }
 
         &.hover {
-            z-index: 3;
+            z-index: 999;
 
             &::after {
                 opacity: 1;

@@ -6,6 +6,7 @@
     <div class="tab">
         <div class="tab__grid">
             <GridWrapper
+                store-namespace="usersGrid"
                 :rows-height="rowsHeight"
                 :action-paths="actionPaths" />
         </div>
@@ -25,34 +26,50 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
+import gridModule from '~/reusableStore/grid/state';
+import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
+import GridFooter from '~/components/Grid/GridFooter';
+import GridPageSelector from '~/components/Grid/GridPageSelector';
+import GridPagination from '~/components/Grid/GridPagination';
 
 export default {
     name: 'UsersGridTab',
     components: {
-        GridWrapper: () => import('~/components/Grid/Wrappers/GridWrapper'),
-        GridFooter: () => import('~/components/Grid/GridFooter'),
-        GridPageSelector: () => import('~/components/Grid/GridPageSelector'),
-        GridPagination: () => import('~/components/Grid/GridPagination'),
+        GridWrapper,
+        GridFooter,
+        GridPageSelector,
+        GridPagination,
     },
-    data: () => ({
-        gridConfiguration: {
-            rows: {
-                height: 32,
+    data() {
+        return {
+            gridConfiguration: {
+                rows: {
+                    height: 32,
+                },
             },
-        },
-        filtersNumber: 0,
-        filtersExpanded: true,
-    }),
+            filtersNumber: 0,
+            filtersExpanded: true,
+        };
+    },
+    async beforeCreate() {
+        const gridPath = `${this.$store.state.authentication.user.language}/accounts`;
+
+        this.$store.registerModule('usersGrid', gridModule);
+        await this.$store.dispatch('usersGrid/getData', { path: gridPath });
+    },
+    beforeDestroy() {
+        this.$store.unregisterModule('usersGrid');
+    },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('grid', {
+        ...mapState('usersGrid', {
             numberOfDataElements: state => state.count,
             displayedPage: state => state.displayedPage,
             numberOfDisplayedElements: state => state.numberOfDisplayedElements,
         }),
-        ...mapGetters('grid', {
+        ...mapGetters('usersGrid', {
             numberOfPages: 'numberOfPages',
         }),
         actionPaths() {
@@ -86,7 +103,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
+        ...mapActions('usersGrid', [
             'getData',
             'changeDisplayingPage',
             'changeNumberOfDisplayingElements',

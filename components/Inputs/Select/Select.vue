@@ -214,30 +214,28 @@ export default {
             this.$emit('input', this.multiselect ? [] : '');
         },
         getSelectBoundingBox() {
-            const { $el } = this;
-            const boundingRect = $el.getBoundingClientRect();
             const {
-                top,
-                left,
+                x,
+                y,
                 height,
                 width,
-            } = boundingRect;
+            } = this.$el.getBoundingClientRect();
             const { innerHeight } = window;
             const maxHeight = 200;
 
-            if (innerHeight - top < maxHeight) {
-                const offsetBottom = innerHeight - top;
+            if (innerHeight - y < maxHeight) {
+                const offsetBottom = innerHeight - y;
 
                 return {
-                    left: `${left}px`,
+                    left: `${x}px`,
                     bottom: `${offsetBottom + 1}px`,
                     width: `${width}px`,
                 };
             }
 
             return {
-                left: `${left}px`,
-                top: `${top + height + 2}px`,
+                left: `${x}px`,
+                top: `${y + height + 2}px`,
                 width: `${width}px`,
             };
         },
