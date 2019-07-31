@@ -30,11 +30,14 @@
             </div>
             <Button
                 v-if="isAddingNewTabEnabled"
-                icon="sprite-button button-add-grey"
                 fab
                 color="transparent"
                 ripple-color="rgba(235, 235, 236, 1)"
-                @click.native="addTab" />
+                @click.native="addTab">
+                <template v-slot:prepend>
+                    <IconAdd fill-color="#5c5f65" />
+                </template>
+            </Button>
             <Button
                 v-if="isScrollingEnabled"
                 icon="arrow-dart trans-three-fourth"
@@ -59,6 +62,7 @@ export default {
         HorizontalTabContent: () => import('~/components/Tab/HorizontalTabContent'),
         HorizontalTabBarItem: () => import('~/components/Tab/HorizontalTabBarItem'),
         Button: () => import('~/components/Buttons/Button'),
+        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
     },
     mixins: [tabBarMixin],
     data() {

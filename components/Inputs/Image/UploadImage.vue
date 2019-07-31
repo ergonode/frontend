@@ -29,7 +29,11 @@
                     fab
                     icon="sprite-system system-trash--deactive"
                     color="transparent"
-                    @click.native="onRemove" />
+                    @click.native="onRemove">
+                    <template v-slot:prepend>
+                        <IconDelete />
+                    </template>
+                </Button>
             </div>
             <Picture :image-id="selectedFileID" />
         </div>
@@ -55,6 +59,7 @@ export default {
     },
     components: {
         Button: () => import('~/components/Buttons/Button'),
+        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
         Picture: () => import('~/components/Inputs/Image/Picture'),
     },
     data() {

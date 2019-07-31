@@ -6,11 +6,14 @@
     <div class="date-picker-header">
         <slot name="previous">
             <Button
-                icon="arrow-single trans-quarter"
                 fab
                 color="transparent"
                 ripple-color="rgba(235, 235, 236, 1)"
-                @click.native="onPrevious" />
+                @click.native="onPrevious">
+                <template v-slot:prepend>
+                    <IconArrowSingle :state="leftArrow" />
+                </template>
+            </Button>
         </slot>
         <span
             class="header"
@@ -18,28 +21,40 @@
             v-text="header" />
         <slot name="next">
             <Button
-                icon="arrow-single trans-three-fourth"
                 fab
                 color="transparent"
                 ripple-color="rgba(235, 235, 236, 1)"
-                @click.native="onNext" />
+                @click.native="onNext">
+                <template v-slot:prepend>
+                    <IconArrowSingle :state="rightArrow" />
+                </template>
+            </Button>
         </slot>
     </div>
 </template>
 
 <script>
+import { Arrow } from '~/model/icons/Arrow';
 import Button from '~/components/Buttons/Button';
+import IconArrowSingle from '~/components/Icon/Arrows/IconArrowSingle';
 
 export default {
     name: 'DatePickerNavigationHeader',
     components: {
         Button,
+        IconArrowSingle,
     },
     props: {
         header: {
             type: [String, Number],
             required: true,
         },
+    },
+    data() {
+        return {
+            leftArrow: Arrow.LEFT,
+            rightArrow: Arrow.RIGHT,
+        };
     },
     methods: {
         onClick() {

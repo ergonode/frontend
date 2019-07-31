@@ -36,8 +36,8 @@
                         'tab-bar-item__contextual-menu',
                         {'tab-bar-item__contextual-menu--active': menuActive}
                     ]">
-                <Select
-                    :append-icon="contextualMenuStateIcon"
+                <ButtonSelect
+                    icon-path="Others/IconDots"
                     :options="options"
                     @input="onSelectValue"
                     @focus="onMenuActive" />
@@ -53,7 +53,7 @@ export default {
     name: 'HorizontalTabContent',
     components: {
         TextField: () => import('~/components/Inputs/TextField'),
-        Select: () => import('~/components/Inputs/Select/Select'),
+        ButtonSelect: () => import('~/components/Inputs/Select/ButtonSelect'),
     },
     mixins: [tabBarItemMixin],
     data() {
@@ -62,13 +62,6 @@ export default {
             menuActive: false,
             editableMode: false,
         };
-    },
-    computed: {
-        contextualMenuStateIcon() {
-            return this.menuActive
-                ? 'sprite-system system-dots--selected'
-                : 'sprite-system system-dots--deactive';
-        },
     },
     methods: {
         onLinkSelect() {

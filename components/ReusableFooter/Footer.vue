@@ -10,7 +10,6 @@
             :title="button.title"
             :color="button.color"
             :theme="button.theme"
-            :icon="button.icon"
             large
             @click.native="button.action" />
     </div>

@@ -7,9 +7,7 @@
         @mouseover.native="onMouseOver"
         @mouseout.native="onMouseOut">
         <div class="element-content__icon">
-            <Icon
-                size="medium"
-                :icon="iconByType" />
+            <Component :is="attributeIconComponent" />
         </div>
         <div class="vertical-wrapper">
             <span
@@ -21,7 +19,7 @@
         </div>
         <div :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
             <ButtonSelect
-                :icon="contextualMenuStateIcon"
+                icon-path="Others/IconDots"
                 :options="contextualMenuItems"
                 @focus="onSelectFocus">
                 <template v-slot:content>
@@ -48,7 +46,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import Icon from '~/components/Icon/Icon';
+import { capitalizeAndConcatenationArray } from '~/model/stringWrapper';
 import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
 import CheckBox from '~/components/Inputs/CheckBox';
 import ElementContentBase from '~/components/Template/TemplateDesigner/ElementContentBase';
@@ -59,7 +57,6 @@ import ListElementDescription from '~/components/List/ListElementDescription';
 export default {
     name: 'AttributeElementContent',
     components: {
-        Icon,
         ButtonSelect,
         ElementContentBase,
         List,
@@ -96,19 +93,16 @@ export default {
                 'l-spacing--half',
             ];
         },
-        iconByType() {
-            const { type } = this.element;
-            const convertedType = type.toLowerCase().replace('_', '-');
+        attributeIconComponent() {
+            if (!this.element.type) return '';
 
-            return `attribute-${convertedType}`;
+            const types = this.element.type.split('_');
+            const attributeName = capitalizeAndConcatenationArray(types);
+
+            return () => import(`~/components/Icon/Attributes/Icon${attributeName}`);
         },
         contextualMenuHoveStateClasses() {
             return { 'element-content__contextual-menu--hovered': this.isHovered };
-        },
-        contextualMenuStateIcon() {
-            return this.isContextualMenuActive
-                ? 'sprite-system system-dots--selected'
-                : 'sprite-system system-dots--deactive';
         },
     },
     methods: {

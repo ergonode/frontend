@@ -8,7 +8,7 @@
             :title="title"
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
-            icon="sprite-menu menu-puzzel--selected"
+            icon="Category"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -25,7 +25,7 @@ export default {
             breadcrumbs: [
                 {
                     title: 'Categories',
-                    icon: 'sprite-menu menu-puzzel--deactive',
+                    icon: 'Category',
                     path: '/categories',
                 },
             ],

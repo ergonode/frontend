@@ -8,7 +8,7 @@ import Alert from '~/components/Alerts/Alert.vue';
 const localVue = createLocalVue();
 localVue.directive('ripple', {});
 
-describe('Alerts/Alert', () => {
+describe('Alerts/Feedback', () => {
   let wrapper;
   beforeEach(() => {
     wrapper = mount(Alert, {
@@ -47,7 +47,6 @@ describe('Alerts/Alert', () => {
       type: 'success',
     });
     expect(wrapper.vm.typeClass).toBe("alert--success");
-    expect(wrapper.vm.feedbackIcon).toBe("sprite-feedback feedback-success");
   });
 
 });

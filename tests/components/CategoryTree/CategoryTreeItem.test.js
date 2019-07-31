@@ -36,18 +36,10 @@ describe('CategoryTree/CategoryTreeItem', () => {
       wrapper.setProps({
         numberOfChildren: 3,
       });
-      const icon = wrapper.find('.grid-item__icon');
+
       const categoriesLength = wrapper.find('.grid-item__categories-length');
       expect(wrapper.vm.hasChildren).toBeTruthy();
-      expect(icon).toBeTruthy();
       expect(categoriesLength).toBeTruthy();
-    });
-
-    it('Check icon image', () => {
-      wrapper.setData({
-        isExpanded: true,
-      });
-      expect(wrapper.vm.btnExpanderIcon).toBe('arrow-double trans-none');
     });
 
     it('Check click method', () => {

@@ -11,11 +11,14 @@
                 )">
                 <Button
                     slot="previous"
-                    icon="arrow-dart trans-quarter"
                     fab
                     color="transparent"
                     ripple-color="rgba(235, 235, 236, 1)"
-                    @click.native="previousMonth" />
+                    @click.native="previousMonth">
+                    <template v-slot:prepend>
+                        <IconArrowSingle :state="leftArrow" />
+                    </template>
+                </Button>
                 <div
                     slot="next"
                     class="expander" />
@@ -36,11 +39,14 @@
                     class="expander" />
                 <Button
                     slot="next"
-                    icon="arrow-dart trans-three-fourth"
                     fab
                     color="transparent"
                     ripple-color="rgba(235, 235, 236, 1)"
-                    @click.native="nextMonth" />
+                    @click.native="nextMonth">
+                    <template v-slot:prepend>
+                        <IconArrowSingle :state="rightArrow" />
+                    </template>
+                </Button>
             </DatePickerNavigationHeader>
             <DatePickerContentHeader :headers="weekDays" />
             <DatePickerMonthDays
@@ -52,8 +58,9 @@
 </template>
 
 <script>
-
+import { Arrow } from '~/model/icons/Arrow';
 import Button from '~/components/Buttons/Button';
+import IconArrowSingle from '~/components/Icon/Arrows/IconArrowSingle';
 import DatePickerMonthDays from '~/components/Inputs/Date/DatePickerMonthDays';
 import DatePickerContentHeader from '~/components/Inputs/Date/DatePickerContentHeader';
 import DatePickerNavigationHeader from '~/components/Inputs/Date/DatePickerNavigationHeader';
@@ -71,6 +78,7 @@ export default {
         DatePickerMonthDays,
         DatePickerContentHeader,
         DatePickerNavigationHeader,
+        IconArrowSingle,
     },
     props: {
         value: {
@@ -89,6 +97,8 @@ export default {
             lowerBoundYear: year,
             upperBoundMonth: month === 12 ? 1 : month + 1,
             upperBoundYear: month === 12 ? year + 1 : year,
+            leftArrow: Arrow.LEFT,
+            rightArrow: Arrow.RIGHT,
         };
     },
     computed: {

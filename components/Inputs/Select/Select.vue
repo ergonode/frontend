@@ -5,8 +5,6 @@
 <template>
     <InputBase
         :value="parsedInputValue"
-        :append-icon="appendStateIcon"
-        :prepend-icon="prependIcon"
         :solid="solid"
         :underline="underline"
         :left-alignment="leftAlignment"
@@ -30,8 +28,8 @@
             :aria-label="label || 'no description'"
             type="text"
             readonly>
-        <template v-slot:appendIcon>
-            <slot name="appendIcon" />
+        <template v-slot:append>
+            <IconArrowDropDown :state="dropDownState" />
         </template>
         <FadeTransition
             v-if="isFocused"
@@ -68,9 +66,11 @@
 </template>
 
 <script>
+import { Arrow } from '~/model/icons/Arrow';
 import InputBase from '~/components/Inputs/InputBase';
 import SelectContent from '~/components/Inputs/Select/Contents/SelectContent';
 import FadeTransition from '~/components/Transitions/FadeTransition';
+import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
 
 export default {
     name: 'Select',
@@ -78,6 +78,7 @@ export default {
         InputBase,
         SelectContent,
         FadeTransition,
+        IconArrowDropDown,
         MultiselectListContent: () => import('~/components/Inputs/Select/Contents/MultiselectListContent'),
         SelectListContent: () => import('~/components/Inputs/Select/Contents/SelectListContent'),
     },
@@ -91,16 +92,6 @@ export default {
             type: Array,
             required: false,
             default: () => [],
-        },
-        appendIcon: {
-            type: String,
-            required: false,
-            default: 'arrow-triangle',
-        },
-        prependIcon: {
-            type: String,
-            required: false,
-            default: null,
         },
         solid: {
             type: Boolean,
@@ -196,10 +187,10 @@ export default {
         }
     },
     computed: {
-        appendStateIcon() {
+        dropDownState() {
             return this.focused
-                ? `${this.appendIcon} trans-half`
-                : this.appendIcon;
+                ? Arrow.UP
+                : Arrow.DOWN;
         },
         selectedOptions() {
             return this.value === '' ? [] : this.value;

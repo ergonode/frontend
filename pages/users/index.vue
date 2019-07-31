@@ -6,7 +6,7 @@
     <GridUsersPage
         :title="title"
         :buttons="buttons"
-        icon="sprite-menu menu-user--selected" />
+        icon="User" />
 </template>
 <script>
 import { mapState } from 'vuex';
@@ -25,7 +25,6 @@ export default {
                     title: 'CREATE USER',
                     color: 'success',
                     action: this.addNewUser,
-                    icon: 'sprite-button button-add-light',
                 },
             ],
         };

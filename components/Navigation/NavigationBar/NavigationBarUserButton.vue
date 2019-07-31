@@ -9,14 +9,11 @@
             class="user-image">
             <Picture
                 v-if="user.avatar_id"
-                class="user-button__avatar"
                 fab
                 :image-id="user.avatar_id" />
-            <Icon
+            <IconUser
                 v-else
-                class="user-button__avatar"
-                icon="sprite-navbar navbar-user"
-                size="medium" />
+                fill-color="#fff" />
         </div>
         <NavigationBarUserSelectContent
             slot="selectContent"
@@ -36,7 +33,7 @@ export default {
         NavigationBarSelectButton: () => import('~/components/Navigation/NavigationBar/NavigationBarSelectButton'),
         NavigationBarUserSelectContent: () => import('~/components/Navigation/NavigationBar/NavigationBarUserSelectContent'),
         Picture: () => import('~/components/Inputs/Image/Picture'),
-        Icon: () => import('~/components/Icon/Icon'),
+        IconUser: () => import('~/components/Icon/Menu/IconUser'),
     },
     computed: {
         ...mapState('authentication', {

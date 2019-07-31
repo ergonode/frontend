@@ -11,22 +11,14 @@
             ref="inputContent"
             :class="inputContentStyle"
             @click="onFocusInput">
+            <slot name="prepend" />
             <label
                 v-if="label"
                 :class="floatingLabelClasses"
                 :style="floatingLabelPosition"
                 v-text="label" />
-            <slot name="prependIcon">
-                <Icon
-                    v-if="prependIcon"
-                    :icon="prependIcon" />
-            </slot>
             <slot name="input" />
-            <slot name="appendIcon">
-                <Icon
-                    v-if="appendIcon"
-                    :icon="appendIcon" />
-            </slot>
+            <slot name="append" />
         </div>
         <slot
             name="select"
@@ -40,24 +32,12 @@
 </template>
 
 <script>
-import Icon from '~/components/Icon/Icon';
 
 export default {
     name: 'InputBase',
-    components: {
-        Icon,
-    },
     props: {
         value: {
             type: [Array, String, Number],
-            default: null,
-        },
-        appendIcon: {
-            type: String,
-            default: null,
-        },
-        prependIcon: {
-            type: String,
             default: null,
         },
         solid: {
