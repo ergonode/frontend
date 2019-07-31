@@ -134,9 +134,9 @@ export default {
                 if (category) {
                     const categoryId = category.getAttribute('item-id');
                     const categoryItem = this.dataWithoutGhostElement[index];
-                    const { row, column } = categoryItem;
+                    const { row, column, expanded } = categoryItem;
                     const parentId = this.getParentId(row, column);
-                    if (hasChildren) {
+                    if (hasChildren && !expanded) {
                         this.$emit('toggleItem', categoryItem);
                     }
                     this.setDraggedElement(categoryId);
