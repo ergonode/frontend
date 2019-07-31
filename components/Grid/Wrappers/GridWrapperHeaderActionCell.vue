@@ -62,20 +62,11 @@ export default {
         gridState() {
             return this.$store.state[this.storeNamespace];
         },
-        gridFilter() {
-            return this.gridState.filter;
-        },
-        isSelectedAllRows() {
-            return this.gridState.isSelectedAllRows;
-        },
-        editingCellCoordinates() {
-            return this.gridState.editingCellCoordinates;
-        },
         isExtenderColumn() {
             return this.column.id === 'extender';
         },
         isEditingCell() {
-            const { row, column } = this.editingCellCoordinates;
+            const { row, column } = this.gridState.editingCellCoordinates;
 
             return this.rowIndex === row && this.columnIndex === column;
         },
@@ -104,7 +95,7 @@ export default {
             return type === 'MULTI_SELECT';
         },
         filterValue() {
-            const { [this.column.id]: filter } = this.gridFilter;
+            const { [this.column.id]: filter } = this.gridState.filter;
 
             if (!filter) {
                 if (this.isMultiSelect) return [];
@@ -117,7 +108,7 @@ export default {
         filterParsedValue() {
             if (!this.column.filter) return '';
 
-            const { [this.column.id]: filter } = this.gridFilter;
+            const { [this.column.id]: filter } = this.gridState.filter;
 
             if (filter) {
                 if (Array.isArray(filter)) {
@@ -188,7 +179,7 @@ export default {
         onUpdateFilter(value) {
             const { id } = this.column;
 
-            if (this.gridFilter[id] !== value) {
+            if (this.gridState.filter[id] !== value) {
                 this.$store.dispatch(`${this.storeNamespace}/setFilter`, { id, filter: value });
                 this.$store.dispatch(`${this.storeNamespace}/getData`, { path: this.path });
                 this.$store.dispatch(`${this.storeNamespace}/changeDisplayingPage`, 1);

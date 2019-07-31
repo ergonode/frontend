@@ -464,7 +464,7 @@ export default {
         }
 
         &.hover {
-            z-index: 3;
+            z-index: 999;
 
             &::after {
                 opacity: 1;

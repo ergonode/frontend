@@ -91,14 +91,11 @@ export default {
         gridState() {
             return this.$store.state[this.storeNamespace];
         },
-        editingCellCoordinates() {
-            return this.gridState.editingCellCoordinates;
-        },
         isExtenderColumn() {
             return this.column.id === 'extender';
         },
         isEditingCell() {
-            const { row, column } = this.editingCellCoordinates;
+            const { row, column } = this.gridState.editingCellCoordinates;
 
             return this.rowIndex === row && this.columnIndex === column;
         },

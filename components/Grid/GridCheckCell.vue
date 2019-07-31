@@ -36,23 +36,17 @@ export default {
         gridState() {
             return this.$store.state[this.storeNamespace];
         },
-        isSelectedAllRows() {
-            return this.gridState.isSelectedAllRows;
-        },
-        selectedRows() {
-            return this.gridState.selectedRows;
-        },
         selectionState() {
             if (this.isHeader) {
-                const rowsAreSelected = Boolean(Object.entries(this.selectedRows).length);
+                const rowsAreSelected = Boolean(Object.entries(this.gridState.selectedRows).length);
 
                 if (!rowsAreSelected) {
-                    return +this.isSelectedAllRows;
+                    return +this.gridState.isSelectedAllRows;
                 }
 
                 return rowsAreSelected ? 2 : 0;
             }
-            return this.selectedRows[this.row] || this.isSelectedAllRows;
+            return this.gridState.selectedRows[this.row] || this.gridState.isSelectedAllRows;
         },
     },
     methods: {

@@ -87,22 +87,19 @@ export default {
         gridState() {
             return this.$store.state[this.storeNamespace];
         },
-        sortedByColumn() {
-            return this.gridState.sortedByColumn;
-        },
         isPinnedColumn() {
             const { isLeftPinned, isRightPinned } = this.column;
             return isLeftPinned || isRightPinned;
         },
         isSorted() {
-            return this.sortedByColumn.index === this.column.id;
+            return this.gridState.sortedByColumn.index === this.column.id;
         },
         sortingIcon() {
             if (this.isSorted) {
-                if (this.sortedByColumn.orderState === 'ASC') {
+                if (this.gridState.sortedByColumn.orderState === 'ASC') {
                     return 'arrow-sort-active';
                 }
-                if (this.sortedByColumn.orderState === 'DESC') {
+                if (this.gridState.sortedByColumn.orderState === 'DESC') {
                     return 'arrow-sort-active trans-half';
                 }
             }
@@ -151,10 +148,10 @@ export default {
         onClickSort() {
             let orderState = 'ASC';
             if (this.isSorted) {
-                if (this.sortedByColumn.orderState === 'ASC') {
+                if (this.gridState.sortedByColumn.orderState === 'ASC') {
                     orderState = 'DESC';
                 }
-                if (this.sortedByColumn.orderState === 'DESC') {
+                if (this.gridState.sortedByColumn.orderState === 'DESC') {
                     orderState = 'ASC';
                 }
             }

@@ -54,12 +54,6 @@ export default {
         gridState() {
             return this.$store.state[this.storeNamespace];
         },
-        isColumnEditable() {
-            return this.gridState.configuration.isColumnEditable;
-        },
-        isSelectedAllRows() {
-            return this.gridState.isSelectedAllRows;
-        },
         isActionCell() {
             const { type } = this.column;
 
@@ -83,7 +77,7 @@ export default {
             return {
                 columnIndex: this.columnIndex,
                 column: this.column,
-                isColumnEditable: this.isColumnEditable,
+                isColumnEditable: this.gridState.configuration.isColumnEditable,
             };
         },
     },
@@ -93,7 +87,7 @@ export default {
         },
         onEdit() {
             if (this.column.type === 'CHECK') {
-                this.$store.dispatch(`${this.storeNamespace}/setSelectionForAllRows`, { isSelected: !this.isSelectedAllRows });
+                this.$store.dispatch(`${this.storeNamespace}/setSelectionForAllRows`, { isSelected: !this.gridState.isSelectedAllRows });
             }
         },
     },
