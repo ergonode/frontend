@@ -10,16 +10,22 @@
             class="search-text-field"
             solid
             placeholder="Search..."
-            :append-icon="searchStateIcon"
             @input="onSearch"
-            @focus="onSearchFocus" />
+            @focus="onSearchFocus">
+            <template v-slot:append>
+                <IconSearch :fill-color="searchIconFillColor" />
+            </template>
+        </TextField>
         <!--TODO: show button when search logic will exist -->
         <Button
             v-show="false"
             class="search-btn"
-            :icon="searchBtnIcon"
             fab
-            @click.native="onSearchBtnClick" />
+            @click.native="onSearchBtnClick">
+            <template v-slot:prepend>
+                <IconSearch fill-color="#fff" />
+            </template>
+        </Button>
     </ListHeader>
 </template>
 
@@ -28,6 +34,7 @@ import debounce from 'debounce';
 import ListHeader from '~/components/List/ListHeader';
 import Button from '~/components/Buttons/Button';
 import TextField from '~/components/Inputs/TextField';
+import IconSearch from '~/components/Icon/Actions/IconSearch';
 
 export default {
     name: 'ListSearchHeader',
@@ -35,6 +42,7 @@ export default {
         ListHeader,
         TextField,
         Button,
+        IconSearch,
     },
     props: {
         header: {
@@ -61,15 +69,10 @@ export default {
         },
     },
     computed: {
-        searchBtnIcon() {
-            return this.isSearchBtnClicked
-                ? 'sprite-system system-remove--active'
-                : 'sprite-system system-search--active';
-        },
-        searchStateIcon() {
+        searchIconFillColor() {
             return this.isSearchFocused
-                ? 'sprite-system system-search--selected'
-                : 'sprite-system system-search--deactive';
+                ? '#00bc87'
+                : '#5c5f65';
         },
     },
     methods: {

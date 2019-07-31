@@ -6,7 +6,4 @@ export default {
     getIndexById: state => id => state.treeData.findIndex(el => el.id === id),
     getChildrenLengthById: state => id => state.treeData.find(el => el.id === id).children,
     getExpandStateById: state => id => state.treeData.find(el => el.id === id).expanded,
-    getChildrenByParentId: state => parentId => state.treeData.filter(
-        ({ parent }) => parent === parentId,
-    ),
 };

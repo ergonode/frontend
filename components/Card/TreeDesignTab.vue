@@ -37,7 +37,7 @@ export default {
             {
                 title: 'Categories',
                 component: () => import('~/components/Card/CategoriesListTab'),
-                icon: 'sprite-menu menu-folder',
+                iconPath: 'Menu/IconCategory',
                 active: true,
             },
         ],

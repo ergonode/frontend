@@ -5,9 +5,6 @@
 <template>
     <div class="tab">
         <div class="tab__grid">
-            <div class="filters-panel-wrapper">
-                <GridLayoutConfigurator v-model="rowsHeight" />
-            </div>
             <GridWrapper
                 :rows-height="rowsHeight"
                 :action-paths="actionPaths" />
@@ -18,8 +15,9 @@
                     v-model="visibleRowsInPageCount"
                     :rows-number="numberOfDataElements" />
                 <GridPagination
-                    v-model="currentPage"
-                    :max-page-number="numberOfPages" />
+                    :value="displayedPage"
+                    :max-page="numberOfPages"
+                    @input="onPageChanged" />
             </template>
         </GridFooter>
     </div>
@@ -32,7 +30,6 @@ export default {
     name: 'UsersGridTab',
     components: {
         GridWrapper: () => import('~/components/Grid/Wrappers/GridWrapper'),
-        GridLayoutConfigurator: () => import('~/components/Grid/GridLayoutConfigurator'),
         GridFooter: () => import('~/components/Grid/GridFooter'),
         GridPageSelector: () => import('~/components/Grid/GridPageSelector'),
         GridPagination: () => import('~/components/Grid/GridPagination'),
@@ -87,24 +84,6 @@ export default {
                 }
             },
         },
-        currentPage: {
-            get() {
-                return this.displayedPage;
-            },
-            set(value) {
-                let number = Math.trunc(value);
-
-                if (number < 1) {
-                    return;
-                }
-                if (number > this.numberOfPages) {
-                    number = this.numberOfPages;
-                }
-
-                this.changeDisplayingPage({ number });
-                this.getDataWrapper();
-            },
-        },
     },
     methods: {
         ...mapActions('grid', [
@@ -112,6 +91,10 @@ export default {
             'changeDisplayingPage',
             'changeNumberOfDisplayingElements',
         ]),
+        onPageChanged(page) {
+            this.changeDisplayingPage(page);
+            this.getDataWrapper();
+        },
         getDataWrapper() {
             const { getData: path } = this.actionPaths;
             this.getData(
@@ -137,12 +120,6 @@ export default {
             flex-direction: column;
             margin: 12px 12px 0;
             overflow: hidden;
-
-            .filters-panel-wrapper {
-                display: flex;
-                justify-content: flex-end;
-                padding: 12px 12px 0;
-            }
         }
     }
 </style>

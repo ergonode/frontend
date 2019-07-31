@@ -4,23 +4,22 @@
  */
 <template>
     <div class="icon-wrapper">
-        <Icon
-            :icon="icon"
-            size="medium" />
+        <Component :is="iconComponent" />
     </div>
 </template>
 
 <script>
 export default {
     name: 'ListElementIcon',
-    components: {
-        Icon: () => import('~/components/Icon/Icon'),
-    },
     props: {
-        icon: {
+        iconPath: {
             type: String,
-            required: false,
             default: null,
+        },
+    },
+    computed: {
+        iconComponent() {
+            return () => import(`~/components/Icon/${this.iconPath}`);
         },
     },
 };

@@ -7,80 +7,106 @@
         <Transition
             name="fade"
             mode="out-in">
-            <div v-visible="!isLowestPage">
+            <div v-visible="value > 1">
                 <Button
-                    icon="arrow-dart trans-quarter"
                     fab
                     color="transparent"
                     ripple-color="rgba(235, 235, 236, 1)"
-                    @click.native="decrementPage" />
+                    @click.native="decrementPage">
+                    <template v-slot:prepend>
+                        <IconArrowPointer />
+                    </template>
+                </Button>
             </div>
         </Transition>
         <span class="pagination__text">
             Page
         </span>
         <TextField
-            v-model="internalValue"
+            :value="value"
             style="width: 64px;"
             solid
             center-alignment
-            :input="inputNumberType" />
+            :input="inputNumberType"
+            @input="onValueChange" />
         <span class="pagination__text">
             of
         </span>
-        <span class="pagination__number">
-            {{ maxPageNumber }}
-        </span>
+        <span
+            class="pagination__number"
+            v-text="maxPage" />
         <Transition name="fade">
-            <div v-visible="!isHighestPage">
+            <div v-visible="value < maxPage">
                 <Button
-                    icon="arrow-dart trans-three-fourth"
                     fab
                     color="transparent"
                     ripple-color="rgba(235, 235, 236, 1)"
-                    @click.native="incrementPage" />
+                    @click.native="incrementPage">
+                    <template v-slot:prepend>
+                        <IconArrowPointer :state="rightArrow" />
+                    </template>
+                </Button>
             </div>
         </Transition>
     </div>
 </template>
 
 <script>
-import nestedVModelMixin from '~/mixins/nestedVModelMixin';
+import { Arrow } from '~/model/icons/Arrow';
 
 export default {
     name: 'GridPagination',
     components: {
         TextField: () => import('~/components/Inputs/TextField'),
         Button: () => import('~/components/Buttons/Button'),
+        IconArrowPointer: () => import('~/components/Icon/Arrows/IconArrowPointer'),
     },
-    mixins: [nestedVModelMixin],
     props: {
-        maxPageNumber: {
+        value: {
+            type: Number,
+            required: true,
+        },
+        maxPage: {
             type: Number,
             required: true,
         },
     },
+    data() {
+        return {
+            rightArrow: Arrow.RIGHT,
+        };
+    },
     computed: {
-        isLowestPage() {
-            return this.internalValue === 1;
-        },
-        isHighestPage() {
-            return this.internalValue === this.maxPageNumber;
-        },
         inputNumberType() {
             return {
                 type: 'number',
-                min: 0,
-                max: this.maxPageNumber,
+                min: 1,
+                max: this.maxPage,
             };
         },
     },
     methods: {
+        onValueChange(value) {
+            this.validateValueOnChange(value);
+        },
         incrementPage() {
-            this.internalValue += 1;
+            this.validateValueOnChange(this.value + 1);
         },
         decrementPage() {
-            this.internalValue -= 1;
+            this.validateValueOnChange(this.value - 1);
+        },
+        validateValueOnChange(value) {
+            const number = Math.trunc(value);
+
+            if (number < 1) {
+                this.$emit('input', 1);
+                return;
+            } if (number > this.maxPage) {
+                this.$emit('input', this.maxPage);
+                return;
+            }
+
+            this.$emit('input', number);
         },
     },
 };

@@ -8,9 +8,10 @@
         @dragover="dragOver"
         @drop="drop">
         <div class="vertical-wrapper">
-            <Icon
-                icon="sprite-system system-trash--active"
-                size="large" />
+            <IconDelete
+                fill-color="#fff"
+                size="48"
+                @click.native="removeOptionKey(index)" />
             <Label
                 class="typo-btn txt--white txt--upper l-spacing--half"
                 text="drop here to remove" />
@@ -25,7 +26,7 @@ export default {
     name: 'TrashCan',
     components: {
         Label: () => import('~/components/Label/Label'),
-        Icon: () => import('~/components/Icon/Icon'),
+        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
     computed: {
         ...mapState('draggable', {

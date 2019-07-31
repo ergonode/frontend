@@ -7,9 +7,7 @@
         @mouseover.native="onMouseOver"
         @mouseout.native="onMouseOut">
         <div class="element-content__icon">
-            <Icon
-                size="medium"
-                icon="editor-font-size-24" />
+            <IconFontSize />
         </div>
         <div class="vertical-wrapper">
             <span
@@ -21,7 +19,7 @@
         </div>
         <div :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
             <ButtonSelect
-                :icon="contextualMenuStateIcon"
+                icon-path="Others/IconDots"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
                 @focus="onSelectFocus" />
@@ -32,13 +30,13 @@
 <script>
 import { mapActions } from 'vuex';
 import ElementContentBase from '~/components/Template/TemplateDesigner/ElementContentBase';
-import Icon from '~/components/Icon/Icon';
+import IconFontSize from '~/components/Icon/Editor/IconFontSize';
 import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
 
 export default {
     name: 'SectionElementContent',
     components: {
-        Icon,
+        IconFontSize,
         ButtonSelect,
         ElementContentBase,
     },
@@ -62,11 +60,6 @@ export default {
     computed: {
         contextualMenuHoveStateClasses() {
             return { 'element-content__contextual-menu--hovered': this.isHovered };
-        },
-        contextualMenuStateIcon() {
-            return this.isContextualMenuActive
-                ? 'sprite-system system-dots--selected'
-                : 'sprite-system system-dots--deactive';
         },
         typeLabelClasses() {
             return [

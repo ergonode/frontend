@@ -8,10 +8,7 @@
             v-for="(key, index) in optionKeys"
             :key="index"
             class="option-wrapper">
-            <Icon
-                icon="sprite-system system-trash--deactive"
-                size="medium"
-                @click.native="removeOptionKey(index)" />
+            <IconDelete @click.native="removeOptionKey(index)" />
             <TextField
                 :value="key"
                 solid
@@ -23,9 +20,7 @@
         <div
             class="add-option-wrapper"
             @click="addOptionKey">
-            <Icon
-                icon="sprite-button button-add-grey"
-                size="medium" />
+            <IconAdd />
             <label class="txt--graphite typo-btn--xs">Add option</label>
         </div>
     </div>
@@ -38,7 +33,8 @@ export default {
     name: 'AttributeOptionKeyValues',
     components: {
         TextField: () => import('~/components/Inputs/TextField'),
-        Icon: () => import('~/components/Icon/Icon'),
+        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
+        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
     },
     computed: {
         ...mapState('attribute', {

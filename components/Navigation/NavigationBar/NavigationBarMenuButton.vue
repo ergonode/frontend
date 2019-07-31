@@ -4,13 +4,19 @@
  */
 <template>
     <NavigationBarButton @click.native="onClick">
-        <Icon
-            :icon="menuIcon"
-            size="medium" />
+        <Component
+            :is="menuIconComponent"
+            fill-color="#fff"
+            :state="leftDoubleArrow" />
     </NavigationBarButton>
 </template>
 
 <script>
+import { Arrow } from '~/model/icons/Arrow';
+import IconHamburgerList from '~/components/Icon/Menu/IconHamburgerList';
+import IconArrowDouble from '~/components/Icon/Arrows/IconArrowDouble';
+import IconHamburger from '~/components/Icon/Menu/IconHamburger';
+
 export default {
     name: 'NavigationBarMenuButton',
     components: {
@@ -23,15 +29,20 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            leftDoubleArrow: Arrow.LEFT,
+        };
+    },
     computed: {
-        menuIcon() {
+        menuIconComponent() {
             switch (this.value) {
             case 2:
-                return 'sprite-navbar navbar-menu-icons';
+                return IconHamburgerList;
             case 1:
-                return 'sprite-navbar navbar-menu-hidden';
+                return IconArrowDouble;
             default:
-                return 'sprite-navbar navbar-menu-full';
+                return IconHamburger;
             }
         },
     },

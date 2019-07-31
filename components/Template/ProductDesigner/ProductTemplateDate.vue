@@ -18,7 +18,7 @@
             :error-messages="errorMessages"
             :is-error="isError">
             <template v-slot:append>
-                <Icon :icon="appendStateIcon" />
+                <IconArrowDropDown :state="dropDownState" />
             </template>
         </ProductTemplateDetailsContent>
         <DatePickerContent
@@ -33,10 +33,11 @@
 
 <script>
 import moment from 'moment';
+import { Arrow } from '~/model/icons/Arrow';
 import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
 import Select from '~/components/Inputs/Select/Select';
 import DatePickerContent from '~/components/Inputs/Select/Contents/DatePickerContent';
-import Icon from '~/components/Icon/Icon';
+import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
 
 export default {
     name: 'ProductTemplateDate',
@@ -44,7 +45,7 @@ export default {
     components: {
         Select,
         DatePickerContent,
-        Icon,
+        IconArrowDropDown,
     },
     data() {
         return {
@@ -53,10 +54,10 @@ export default {
         };
     },
     computed: {
-        appendStateIcon() {
+        dropDownState() {
             return this.isFocused
-                ? 'arrow-triangle trans-half'
-                : 'arrow-triangle';
+                ? Arrow.UP
+                : Arrow.DOWN;
         },
         parsedDate() {
             return moment(this.value, this.parameters.format).toDate();

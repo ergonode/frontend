@@ -6,10 +6,10 @@
     <div
         class="grid-item"
         :title="itemName">
-        <Icon
+        <IconArrowDouble
             v-if="hasChildren"
             class="grid-item__icon"
-            :icon="btnExpanderIcon"
+            :state="btnExpanderIconState"
             @click.native="toggleItemExpand" />
         <span
             class="grid-item__title txt-fixed typo-subtitle txt--dark-graphite"
@@ -26,12 +26,13 @@
     </div>
 </template>
 <script>
-import Icon from '~/components/Icon/Icon';
+import { Arrow } from '~/model/icons/Arrow';
+import IconArrowDouble from '~/components/Icon/Arrows/IconArrowDouble';
 
 export default {
     name: 'CategoryTreeItem',
     components: {
-        Icon,
+        IconArrowDouble,
     },
     props: {
         isExpanded: {
@@ -51,10 +52,10 @@ export default {
         hasChildren() {
             return this.numberOfChildren > 0;
         },
-        btnExpanderIcon() {
+        btnExpanderIconState() {
             return this.isExpanded
-                ? 'arrow-double trans-none'
-                : 'arrow-double trans-half';
+                ? Arrow.DOWN
+                : Arrow.UP;
         },
         getLabelStyle() {
             return !this.hasChildren ? { marginLeft: '12px' } : null;

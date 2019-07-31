@@ -24,11 +24,14 @@
             </div>
             <div class="tab-bar__items__expand-btn">
                 <Button
-                    :icon="btnExpanderImage"
                     fab
                     color="transparent"
                     ripple-color="rgba(235, 235, 236, 1)"
-                    @click.native="expandTabContent" />
+                    @click.native="expandTabContent">
+                    <template v-slot:prepend>
+                        <IconArrowDouble :state="expendStateTabIcon" />
+                    </template>
+                </Button>
             </div>
         </div>
         <div
@@ -41,6 +44,7 @@
 
 <script>
 import tabBarMixin from '~/mixins/tabBar/tabBarMixin';
+import { Arrow } from '~/model/icons/Arrow';
 
 export default {
     name: 'VerticalTabBar',
@@ -48,6 +52,7 @@ export default {
         VerticalTabContent: () => import('~/components/Tab/VerticalTabContent'),
         VerticalTabBarItem: () => import('~/components/Tab/VerticalTabBarItem'),
         Button: () => import('~/components/Buttons/Button'),
+        IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),
     },
     mixins: [tabBarMixin],
     data: () => ({
@@ -55,10 +60,10 @@ export default {
         isExpanded: true,
     }),
     computed: {
-        btnExpanderImage() {
+        expendStateTabIcon() {
             return this.isExpanded
-                ? 'arrow-double trans-quarter'
-                : 'arrow-double trans-three-fourth';
+                ? Arrow.LEFT
+                : Arrow.RIGHT;
         },
     },
     methods: {

@@ -5,8 +5,6 @@
 <template>
     <InputBase
         :value="value"
-        :append-icon="appendIcon"
-        :prepend-icon="prependIcon"
         :solid="solid"
         :underline="underline"
         :left-alignment="leftAlignment"
@@ -33,8 +31,8 @@
             :disabled="disabled"
             :aria-label="label || 'no description'"
             @input="emitValue">
-        <template v-slot:appendIcon>
-            <slot name="appendIcon" />
+        <template v-slot:append>
+            <slot name="append" />
         </template>
     </InputBase>
 </template>
@@ -57,16 +55,6 @@ export default {
         },
         value: {
             type: [String, Number],
-            required: false,
-            default: null,
-        },
-        appendIcon: {
-            type: String,
-            required: false,
-            default: null,
-        },
-        prependIcon: {
-            type: String,
             required: false,
             default: null,
         },

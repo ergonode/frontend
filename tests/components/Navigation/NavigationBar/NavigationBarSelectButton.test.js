@@ -28,22 +28,6 @@ describe('Navigation/NavigationBar/NavigationBarSelectButton', () => {
         expect(NavigationBarSelectButton.name).toEqual('NavigationBarSelectButton');
     });
 
-    it('Check selected arrow icon', () => {
-        wrapper.setData({
-            isSelected: true,
-        });
-
-        expect(wrapper.vm.arrowIcon).toBe('sprite-navbar navbar-arrow trans-half');
-    });
-
-    it('Check deselected arrow icon', () => {
-        wrapper.setData({
-            isSelected: false,
-        });
-
-        expect(wrapper.vm.arrowIcon).toBe('sprite-navbar navbar-arrow');
-    });
-
     it('Check no title exception', () => {
         expect(wrapper.vm.title).toBeFalsy();
     });

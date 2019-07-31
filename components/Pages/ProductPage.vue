@@ -8,7 +8,7 @@
             :title="title"
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
-            icon="sprite-menu menu-paper--selected"
+            icon="Document"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -25,7 +25,7 @@ export default {
             breadcrumbs: [
                 {
                     title: 'Products',
-                    icon: 'sprite-menu menu-paper--selected',
+                    icon: 'Document',
                     path: '/products',
                 },
             ],
@@ -43,7 +43,7 @@ export default {
                     },
                 },
                 {
-                    title: 'Product template',
+                    title: 'Template',
                     path: `/products/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/template`,
                     active: this.isEdit,
                     props: {

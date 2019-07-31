@@ -4,9 +4,7 @@
  */
 <template>
     <NavigationBarButton>
-        <Icon
-            icon="sprite-navbar navbar-refresh"
-            size="medium" />
+        <IconProcessing fill-color="#fff" />
     </NavigationBarButton>
 </template>
 
@@ -15,7 +13,7 @@ export default {
     name: 'NavigationBarSynchronizationButton',
     components: {
         NavigationBarButton: () => import('~/components/Navigation/NavigationBar/NavigationBarButton'),
-        Icon: () => import('~/components/Icon/Icon'),
+        IconProcessing: () => import('~/components/Icon/Others/IconProcessing'),
     },
 };
 </script>
