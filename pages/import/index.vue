@@ -36,7 +36,7 @@ export default {
         }),
         actionPaths() {
             return {
-                getData: 'imports/',
+                getData: `${this.userLanguageCode}/imports`,
                 routerEdit: 'imports-edit-id',
             };
         },
