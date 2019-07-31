@@ -6,13 +6,13 @@ const positionBetweenRows = 0.5;
 
 function getCoordinatesForHiddenCategories(hiddenElements, { row, column }) {
     const [{ row: firstRow, column: firstColumn }] = hiddenElements;
-    const newRow = oldRow => oldRow - ((firstRow - 1) - row);
-    const newColumn = oldColumn => oldColumn - ((firstColumn - 1) - column);
+    const getFixedRow = oldRow => oldRow - ((firstRow - 1) - row);
+    const getFixedColumn = oldColumn => oldColumn - ((firstColumn - 1) - column);
     return hiddenElements.map((ele) => {
         const item = {
             ...ele,
-            row: newRow(ele.row),
-            column: newColumn(ele.column),
+            row: getFixedRow(ele.row),
+            column: getFixedColumn(ele.column),
         };
         return item;
     });
