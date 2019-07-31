@@ -13,7 +13,9 @@
             :append-icon="searchStateIcon"
             @input="onSearch"
             @focus="onSearchFocus" />
+        <!--TODO: show button when search logic will exist -->
         <Button
+            v-show="false"
             class="search-btn"
             :icon="searchBtnIcon"
             fab
