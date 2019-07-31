@@ -23,7 +23,9 @@
                 <IconSearch :fill-color="searchIconFillColor" />
             </template>
         </TextField>
+        <!--TODO: show button when search logic will exist -->
         <Button
+            v-show="false"
             class="search-btn"
             fab
             @click.native="onSearchBtnClick">
