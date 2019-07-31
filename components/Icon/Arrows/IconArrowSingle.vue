@@ -31,11 +31,14 @@ export default {
             type: String,
             default: '#5C5F65',
         },
+        size: {
+            type: [String, Number],
+            default: '24',
+        },
     },
     data() {
         return {
             points: '16.59 8.3 12 12.88 7.41 8.3 6 9.71 12 15.71 18 9.71',
-            size: 24,
         };
     },
     computed: {

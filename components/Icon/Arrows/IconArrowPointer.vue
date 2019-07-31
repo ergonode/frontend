@@ -22,12 +22,6 @@ export default {
     components: {
         IconBase,
     },
-    data() {
-        return {
-            points: '20 11 7.8 11 13.4 5.4 12 4 4 12 12 20 13.4 18.6 7.8 13 20 13',
-            size: 24,
-        };
-    },
     props: {
         state: {
             type: String,
@@ -37,6 +31,15 @@ export default {
             type: String,
             default: '#5C5F65',
         },
+        size: {
+            type: [String, Number],
+            default: '24',
+        },
+    },
+    data() {
+        return {
+            points: '20 11 7.8 11 13.4 5.4 12 4 4 12 12 20 13.4 18.6 7.8 13 20 13',
+        };
     },
     computed: {
         iconTransform() {
