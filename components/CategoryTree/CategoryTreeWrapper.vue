@@ -12,11 +12,7 @@
             :rows="rowsCount"
             :rows-height="rowsHeight"
             :tree-data="filteredTreeData"
-            @addItem="addTreeItem"
-            @removeItem="removeTreeItem"
-            @rebuildGrid="rebuildTree"
-            @setRowsCount="setRowsCount"
-            @toggleItem="(i) => toggleItem(i)">
+            @toggleItem="(item) => toggleItem(item)">
             <TemplateGridPresentationLayer
                 :style="gridStyles"
                 :columns="columns"
@@ -45,7 +41,6 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import {
-    getMinChildRow,
     getMaxChildRow,
 } from '~/model/tree/TreeCalculations';
 import TemplateGridPresentationLayer from '~/components/TemplateGrid/TemplateGridPresentationLayer';
@@ -75,7 +70,6 @@ export default {
             treeData: state => state.treeData,
         }),
         ...mapGetters('tree', [
-            'getChildrenByParentId',
             'getChildrenLengthById',
             'getExpandStateById',
         ]),
@@ -95,10 +89,6 @@ export default {
         ...mapActions('tree', [
             'setTreeWhenCollapse',
             'setTreeWhenExpand',
-            'setRowsCount',
-            'addTreeItem',
-            'removeTreeItem',
-            'rebuildTree',
             'setHiddenItem',
             'removeHiddenItem',
             'setExpandItem',
@@ -106,24 +96,23 @@ export default {
         toggleItem({
             id, row, column, expanded,
         }) {
-            const minChildRow = getMinChildRow(this.getChildrenByParentId(id));
-            const maxChildRow = getMaxChildRow(this.treeData, column, row);
-            const treeCategories = this.treeData.reduce((acc, e) => {
-                if (e.row >= minChildRow && e.row < maxChildRow) {
-                    acc.hidden.push(e);
-                } else {
-                    acc.visible.push(e);
-                }
-                return acc;
-            }, { hidden: [], visible: [] });
             if (!expanded) {
-                this.setHiddenItem({ key: id, value: treeCategories.hidden });
-                this.setTreeWhenCollapse({ tree: treeCategories.visible, id });
-                this.setExpandItem({ id, value: true });
+                const maxChildRow = getMaxChildRow(this.treeData, column, row);
+                const { hiddenCategories, visibleCategories } = this.treeData.reduce((acc, e) => {
+                    if (e.row > row && e.row < maxChildRow) {
+                        acc.hiddenCategories.push(e);
+                    } else {
+                        acc.visibleCategories.push(e);
+                    }
+                    return acc;
+                }, { hiddenCategories: [], visibleCategories: [] });
+                this.setHiddenItem({ key: id, value: hiddenCategories });
+                this.setTreeWhenCollapse({ tree: visibleCategories, index: row });
+                this.setExpandItem({ index: row, value: true });
             } else {
-                this.setTreeWhenExpand(id);
+                this.setTreeWhenExpand({ id, index: row });
                 this.removeHiddenItem(id);
-                this.setExpandItem({ id, value: false });
+                this.setExpandItem({ index: row, value: false });
             }
         },
     },

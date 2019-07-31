@@ -4,9 +4,18 @@
  */
 const positionBetweenRows = 0.5;
 
-export function getMinChildRow(parentChildren) {
-    const childrenRows = parentChildren.map(e => e.row);
-    return Math.min(...childrenRows);
+function getCoordinatesForHiddenCategories(hiddenElements, { row, column }) {
+    const [{ row: firstRow, column: firstColumn }] = hiddenElements;
+    const getFixedRow = oldRow => oldRow - ((firstRow - 1) - row);
+    const getFixedColumn = oldColumn => oldColumn - ((firstColumn - 1) - column);
+    return hiddenElements.map((ele) => {
+        const item = {
+            ...ele,
+            row: getFixedRow(ele.row),
+            column: getFixedColumn(ele.column),
+        };
+        return item;
+    });
 }
 
 export function getMaxChildRow(tree, column, row) {
@@ -16,56 +25,57 @@ export function getMaxChildRow(tree, column, row) {
     return neighbor ? neighbor.row : tree.length;
 }
 
-export function rebuildTreeWhenElementRemoved(treeData, index) {
-    return treeData.filter((el, idx) => idx !== index).reduce((accumulator, current, i) => {
+export function getTreeWhenElementRemoved(oldTree, index) {
+    const newTree = [];
+    const filteredTree = oldTree.filter((el, idx) => idx !== index);
+    for (let i = 0; i < filteredTree.length; i += 1) {
+        const currentElement = filteredTree[i];
+        newTree.push(i >= index
+            ? { ...currentElement, row: currentElement.row - 1 }
+            : currentElement);
+    }
+    return newTree;
+}
+
+export function getTreeWhenGhostElementRemoved(oldTree, index) {
+    const newTree = [];
+    for (let i = 0; i < oldTree.length; i += 1) {
+        const currentElement = oldTree[i];
         if (i >= index) {
-            accumulator.push({ ...current, row: current.row - 1 });
+            const newRow = currentElement.row + (i === index ? positionBetweenRows : 1);
+            newTree.push({ ...currentElement, row: newRow });
         } else {
-            accumulator.push(current);
+            newTree.push(currentElement);
         }
-        return accumulator;
-    }, []);
+    }
+    return newTree;
 }
 
-export function rebuildTreeWhenGhostElementRemoved(treeData, index) {
-    return treeData.reduce((accumulator, current, i) => {
-        if (i === index && current.row !== 0) {
-            accumulator.push({ ...current, row: current.row + positionBetweenRows });
+export function getTreeWhenElementCollapse(oldTree, index) {
+    const newTree = [];
+    for (let i = 0; i < oldTree.length; i += 1) {
+        newTree.push(i > index ? { ...oldTree[i], row: i } : oldTree[i]);
+    }
+    return newTree;
+}
+
+export function getTreeWhenElementExpand(hiddenChildren, oldTree, index) {
+    let newTree = [];
+    for (let i = 0; i < oldTree.length; i += 1) {
+        const current = oldTree[i];
+        if (i === index && hiddenChildren.length) {
+            const hiddenElement = getCoordinatesForHiddenCategories(hiddenChildren, current);
+            newTree = [...newTree, current, ...hiddenElement];
         } else if (i > index) {
-            accumulator.push({ ...current, row: current.row + 1 });
+            newTree.push({ ...current, row: current.row + hiddenChildren.length });
         } else {
-            accumulator.push(current);
+            newTree.push(current);
         }
-        return accumulator;
-    }, []);
+    }
+    return newTree;
 }
 
-export function rebuildTreeWhenElementCollapse(treeData, index) {
-    return treeData.reduce((accumulator, current, i) => {
-        if (i > index) {
-            accumulator.push({ ...current, row: i });
-        } else {
-            accumulator.push(current);
-        }
-        return accumulator;
-    }, []);
-}
-
-export function rebuildTreeWhenElementExpand(hiddenChildren, treeData, index) {
-    return treeData.reduce((accumulator, current, i) => {
-        let expandedTree = accumulator;
-        if (i === index) {
-            expandedTree = [...expandedTree, current, ...hiddenChildren];
-        } else if (i > index) {
-            expandedTree.push({ ...current, row: current.row + hiddenChildren.length });
-        } else {
-            expandedTree.push(current);
-        }
-        return expandedTree;
-    }, []);
-}
-
-export function initializeRowBounds(elements) {
+export function getRowBounds(elements) {
     const { length } = elements;
     const elementBounds = [];
     for (let i = 0; i < length; i += 1) {
@@ -86,11 +96,13 @@ export function getRowBellowMouse({ clientY, elements, elementBounds }, completi
     return null;
 }
 
-export function rebuildFullTree(hiddenChildren, treeData) {
-    let fullTree = treeData;
-    Object.keys(hiddenChildren).reverse().forEach((key) => {
-        const index = fullTree.findIndex(el => el.id === key);
-        fullTree = rebuildTreeWhenElementExpand(hiddenChildren[key], fullTree, index);
-    });
-    return fullTree;
+export function getFullTree(hiddenChildren, oldTree) {
+    let newTree = oldTree;
+    const arr = Object.keys(hiddenChildren);
+    for (let i = arr.length - 1; i >= 0; i -= 1) {
+        const key = arr[i];
+        const index = newTree.findIndex(el => el.id === key);
+        newTree = getTreeWhenElementExpand(hiddenChildren[key], newTree, index);
+    }
+    return newTree;
 }
