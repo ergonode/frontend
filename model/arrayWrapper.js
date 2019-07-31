@@ -74,3 +74,11 @@ export function isArrayEqualToArray(arr1, arr2) {
 
     return false;
 }
+
+export function insertValueAtIndex(array, value, index) {
+    return [
+        ...array.slice(0, index),
+        value,
+        ...array.slice(index),
+    ];
+}

@@ -17,6 +17,7 @@
                 v-bind="infoComponentProps" />
             <GridEditActivatorCell
                 v-else
+                :store-namespace="storeNamespace"
                 :is-select-kind="isSelectKind"
                 :is-multi-select="isMultiSelect"
                 :value="filterValue"
@@ -27,7 +28,6 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'GridWrapperHeaderActionCell',
@@ -36,6 +36,10 @@ export default {
         GridEditActivatorCell: () => import('~/components/Grid/EditCells/GridEditActivatorCell'),
     },
     props: {
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
         columnIndex: {
             type: Number,
             required: true,
@@ -55,11 +59,18 @@ export default {
         };
     },
     computed: {
-        ...mapState('grid', {
-            gridFilter: state => state.filter,
-            isSelectedAllRows: state => state.isSelectedAllRows,
-            editingCellCoordinates: state => state.editingCellCoordinates,
-        }),
+        gridState() {
+            return this.$store.state[this.storeNamespace];
+        },
+        gridFilter() {
+            return this.gridState.filter;
+        },
+        isSelectedAllRows() {
+            return this.gridState.isSelectedAllRows;
+        },
+        editingCellCoordinates() {
+            return this.gridState.editingCellCoordinates;
+        },
         isExtenderColumn() {
             return this.column.id === 'extender';
         },
@@ -167,15 +178,9 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditingCellCoordinates',
-            'getData',
-            'setFilter',
-            'changeDisplayingPage',
-        ]),
         onEdit(isEditing) {
             if (this.column.type !== 'CHECK') {
-                this.setEditingCellCoordinates(isEditing
+                this.$store.dispatch(`${this.storeNamespace}/setEditingCellCoordinates`, isEditing
                     ? { column: this.columnIndex, row: this.rowIndex }
                     : {});
             }
@@ -184,9 +189,9 @@ export default {
             const { id } = this.column;
 
             if (this.gridFilter[id] !== value) {
-                this.setFilter({ id, filter: value });
-                this.getData({ path: this.path });
-                this.changeDisplayingPage({ number: 1 });
+                this.$store.dispatch(`${this.storeNamespace}/setFilter`, { id, filter: value });
+                this.$store.dispatch(`${this.storeNamespace}/getData`, { path: this.path });
+                this.$store.dispatch(`${this.storeNamespace}/changeDisplayingPage`, 1);
             }
         },
     },

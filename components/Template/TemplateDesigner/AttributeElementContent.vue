@@ -33,7 +33,7 @@
                                 :subtitle="option"
                                 subtitle-color="txt--graphite" />
                             <CheckBox
-                                v-if="option === 'Require'"
+                                v-if="option === 'Required'"
                                 ref="checkbox"
                                 :value="element.required" />
                         </ListElement>
@@ -77,7 +77,7 @@ export default {
     data() {
         return {
             isContextualMenuActive: false,
-            contextualMenuItems: ['Require', 'Remove'],
+            contextualMenuItems: ['Required', 'Remove'],
             isHovered: false,
         };
     },
@@ -117,7 +117,7 @@ export default {
         },
         onSelectValue(index) {
             switch (this.contextualMenuItems[index]) {
-            case 'Require':
+            case 'Required':
                 this.setLayoutElementRequirement({
                     index: this.index,
                     required: !this.element.required,

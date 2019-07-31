@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import {
     removeColumnCookieByID,
 } from '~/model/grid/cookies/GridLayoutConfiguration';
@@ -43,6 +43,10 @@ export default {
         Icon: () => import('~/components/Icon/Icon'),
     },
     props: {
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
         column: {
             type: Object,
             required: true,
@@ -80,9 +84,12 @@ export default {
         ...mapState('draggable', {
             isColumnDragging: state => state.isColumnDragging,
         }),
-        ...mapState('grid', {
-            sortedByColumn: state => state.sortedByColumn,
-        }),
+        gridState() {
+            return this.$store.state[this.storeNamespace];
+        },
+        sortedByColumn() {
+            return this.gridState.sortedByColumn;
+        },
         isPinnedColumn() {
             const { isLeftPinned, isRightPinned } = this.column;
             return isLeftPinned || isRightPinned;
@@ -141,10 +148,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'removeColumnAtIndex',
-            'setSortingState',
-        ]),
         onClickSort() {
             let orderState = 'ASC';
             if (this.isSorted) {
@@ -155,7 +158,7 @@ export default {
                     orderState = 'ASC';
                 }
             }
-            this.setSortingState({ index: this.column.id, orderState });
+            this.$store.dispatch(`${this.storeNamespace}/setSortingState`, { index: this.column.id, orderState });
 
             this.$emit('sort');
         },
@@ -172,7 +175,7 @@ export default {
 
                 // We are hovering element while removing it
                 this.borderColumnAction('add', columnElement);
-                this.removeColumnAtIndex({ index: this.columnIndex });
+                this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index: this.columnIndex });
                 removeColumnCookieByID(this.$cookies, this.column.id);
             }
         },

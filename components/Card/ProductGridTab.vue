@@ -12,6 +12,7 @@
                 <!-- NOTE: Uncomment when filters are implemented -->
                 <!--<GridGlobalFilters v-show="isGlobalFiltersVisible" />-->
                 <GridWrapper
+                    store-namespace="productsGrid"
                     :rows-height="rowsHeight"
                     :action-paths="actionPaths" />
                 <TrashCan v-show="isColumnDragging" />
@@ -33,35 +34,53 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
+import gridModule from '~/reusableStore/grid/state';
+import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
+import GridFooter from '~/components/Grid/GridFooter';
+import GridPageSelector from '~/components/Grid/GridPageSelector';
+import GridPagination from '~/components/Grid/GridPagination';
+import VerticalTabBar from '~/components/Tab/VerticalTabBar';
+import TrashCan from '~/components/DragAndDrop/TrashCan';
 
 export default {
     name: 'ProductGridTab',
     components: {
-        GridWrapper: () => import('~/components/Grid/Wrappers/GridWrapper'),
-        GridFooter: () => import('~/components/Grid/GridFooter'),
-        GridPageSelector: () => import('~/components/Grid/GridPageSelector'),
-        GridPagination: () => import('~/components/Grid/GridPagination'),
+        GridWrapper,
+        GridFooter,
+        GridPageSelector,
+        GridPagination,
         // GridGlobalFilters: () => import('~/components/Grid/GridGlobalFilters'),
-        VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
-        TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
+        VerticalTabBar,
+        TrashCan,
     },
-    data: () => ({
-        verticalTabs: [
-            {
-                title: 'Attributes',
-                component: () => import('~/components/Card/AttributesListTab'),
-                icon: 'Menu/IconAttributes',
-                active: true,
+    data() {
+        return {
+            verticalTabs: [
+                {
+                    title: 'Attributes',
+                    component: () => import('~/components/Card/AttributesListTab'),
+                    icon: 'Menu/IconAttributes',
+                    active: true,
+                },
+            ],
+            gridConfiguration: {
+                rows: {
+                    height: 32,
+                },
             },
-        ],
-        gridConfiguration: {
-            rows: {
-                height: 32,
-            },
-        },
-        filtersNumber: 0,
-        filtersExpanded: true,
-    }),
+            filtersNumber: 0,
+            filtersExpanded: true,
+        };
+    },
+    async beforeCreate() {
+        const gridPath = `${this.$store.state.authentication.user.language}/products`;
+
+        this.$store.registerModule('productsGrid', gridModule);
+        await this.$store.dispatch('productsGrid/getData', { path: gridPath });
+    },
+    beforeDestroy() {
+        this.$store.unregisterModule('productsGrid');
+    },
     computed: {
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,
@@ -70,12 +89,12 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('grid', {
+        ...mapState('productsGrid', {
             numberOfDataElements: state => state.count,
             displayedPage: state => state.displayedPage,
             numberOfDisplayedElements: state => state.numberOfDisplayedElements,
         }),
-        ...mapGetters('grid', {
+        ...mapGetters('productsGrid', {
             numberOfPages: 'numberOfPages',
         }),
         actionPaths() {
@@ -113,7 +132,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
+        ...mapActions('productsGrid', [
             'getData',
             'changeDisplayingPage',
             'changeNumberOfDisplayingElements',

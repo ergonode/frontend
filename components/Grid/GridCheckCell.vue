@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'GridCheckCell',
@@ -19,6 +18,10 @@ export default {
         CheckBox: () => import('~/components/Inputs/CheckBox'),
     },
     props: {
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
         row: {
             type: Number,
             required: true,
@@ -30,10 +33,15 @@ export default {
         },
     },
     computed: {
-        ...mapState('grid', {
-            isSelectedAllRows: state => state.isSelectedAllRows,
-            selectedRows: state => state.selectedRows,
-        }),
+        gridState() {
+            return this.$store.state[this.storeNamespace];
+        },
+        isSelectedAllRows() {
+            return this.gridState.isSelectedAllRows;
+        },
+        selectedRows() {
+            return this.gridState.selectedRows;
+        },
         selectionState() {
             if (this.isHeader) {
                 const rowsAreSelected = Boolean(Object.entries(this.selectedRows).length);
@@ -48,16 +56,11 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setSelectedRow',
-            'setSelectionForAllRows',
-            'setEditingCellCoordinates',
-        ]),
         onSelect(value) {
             if (this.isHeader) {
-                this.setSelectionForAllRows({ isSelected: Boolean(value) });
+                this.$store.dispatch(`${this.storeNamespace}/setSelectionForAllRows`, { isSelected: Boolean(value) });
             } else {
-                this.setSelectedRow({ row: this.row, value });
+                this.$store.dispatch(`${this.storeNamespace}/setSelectedRow`, { row: this.row, value });
             }
         },
     },

@@ -15,12 +15,12 @@
             :is="infoComponent"
             v-if="!isExtenderColumn"
             v-bind="infoComponentProps"
+            :store-namespace="storeNamespace"
             @sort="() => getData({ path })" />
     </GridCell>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'GridWrapperHeaderCell',
@@ -28,6 +28,10 @@ export default {
         GridCell: () => import('~/components/Grid/GridCell'),
     },
     props: {
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
         columnIndex: {
             type: Number,
             required: true,
@@ -47,10 +51,15 @@ export default {
         };
     },
     computed: {
-        ...mapState('grid', {
-            isSelectedAllRows: state => state.isSelectedAllRows,
-            isColumnEditable: state => state.configuration.isColumnEditable,
-        }),
+        gridState() {
+            return this.$store.state[this.storeNamespace];
+        },
+        isColumnEditable() {
+            return this.gridState.configuration.isColumnEditable;
+        },
+        isSelectedAllRows() {
+            return this.gridState.isSelectedAllRows;
+        },
         isActionCell() {
             const { type } = this.column;
 
@@ -79,13 +88,12 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setSelectionForAllRows',
-            'getData',
-        ]),
+        getData({ path }) {
+            this.$store.dispatch(`${this.storeNamespace}/getData`, { path });
+        },
         onEdit() {
             if (this.column.type === 'CHECK') {
-                this.setSelectionForAllRows({ isSelected: !this.isSelectedAllRows });
+                this.$store.dispatch(`${this.storeNamespace}/setSelectionForAllRows`, { isSelected: !this.isSelectedAllRows });
             }
         },
     },

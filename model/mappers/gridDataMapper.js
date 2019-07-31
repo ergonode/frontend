@@ -3,11 +3,12 @@
  * See LICENSE for license details.
  */
 import { toCapitalize } from '~/model/stringWrapper';
+import { insertValueAtIndex } from '~/model/arrayWrapper';
 
 export function insertExtendingColumn(columns) {
     const { length } = columns;
-    return [
-        ...columns.slice(0, length - 1),
+    return insertValueAtIndex(
+        columns,
         {
             id: 'extender',
             label: '',
@@ -15,9 +16,8 @@ export function insertExtendingColumn(columns) {
             editable: false,
             width: 'auto',
             minWidth: 'auto',
-        },
-        ...columns.slice(length - 1),
-    ];
+        }, length - 1,
+    );
 }
 
 export function getSortedColumnsByIDs(columns, columnsID) {

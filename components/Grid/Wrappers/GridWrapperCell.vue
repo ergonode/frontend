@@ -20,6 +20,7 @@
                 v-bind="infoComponentProps" />
             <GridEditActivatorCell
                 v-else
+                :store-namespace="storeNamespace"
                 :is-select-kind="isSelectKind"
                 :is-multi-select="isMultiSelect"
                 :type="column.type"
@@ -44,6 +45,10 @@ export default {
         GridEditActivatorCell: () => import('~/components/Grid/EditCells/GridEditActivatorCell'),
     },
     props: {
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
         rowIndex: {
             type: Number,
             required: true,
@@ -80,12 +85,15 @@ export default {
         ...mapState('validations', {
             validationErrors: state => state.validationErrors,
         }),
-        ...mapState('grid', {
-            editingCellCoordinates: state => state.editingCellCoordinates,
-        }),
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
+        gridState() {
+            return this.$store.state[this.storeNamespace];
+        },
+        editingCellCoordinates() {
+            return this.gridState.editingCellCoordinates;
+        },
         isExtenderColumn() {
             return this.column.id === 'extender';
         },
@@ -151,6 +159,7 @@ export default {
                 };
             case 'CHECK':
                 return {
+                    storeNamespace: this.storeNamespace,
                     row: this.rowIndex,
                 };
             default:
@@ -236,18 +245,14 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditingCellCoordinates',
-            'setSelectedRow',
-        ]),
         ...mapActions('gridDraft', [
             'updateDraftValue',
         ]),
         onEdit(isEditing) {
             if (this.column.type === 'CHECK') {
-                this.setSelectedRow({ row: this.rowIndex, value: isEditing });
+                this.$store.dispatch(`${this.storeNamespace}/setSelectedRow`, { row: this.rowIndex, value: isEditing });
             } else {
-                this.setEditingCellCoordinates(isEditing
+                this.$store.dispatch(`${this.storeNamespace}/setEditingCellCoordinates`, isEditing
                     ? { column: this.columnIndex, row: this.rowIndex }
                     : {});
             }

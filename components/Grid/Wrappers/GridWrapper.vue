@@ -10,22 +10,28 @@
             <GridColumn
                 v-for="(column, colIndex) in columns"
                 :key="column.id"
+                :store-namespace="storeNamespace"
                 :index="colIndex"
                 :column="column"
                 :rows-height="rowsHeight"
                 :is-pinned-right="column.isRightPinned"
-                :is-pinned-left="column.isLeftPinned">
+                :is-pinned-left="column.isLeftPinned"
+                :is-column-resizeable="configuration.isColumnResizeable"
+                :is-column-moveable="configuration.isColumnMoveable">
                 <GridWrapperHeaderCell
+                    :store-namespace="storeNamespace"
                     :column-index="colIndex"
                     :column="column"
                     :path="actionPaths.getData" />
                 <GridWrapperHeaderActionCell
+                    :store-namespace="storeNamespace"
                     :column-index="colIndex"
                     :column="column"
                     :path="actionPaths.getData" />
                 <GridWrapperCell
                     v-for="(row, rowIndex) in rows"
                     :key="`row[${rowIndex + 2}, ${column.id}]`"
+                    :store-namespace="storeNamespace"
                     :column-index="colIndex"
                     :row-index="(rowIndex + 2) * displayedPage"
                     :column="column"
@@ -41,7 +47,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'GridWrapper',
@@ -54,6 +60,10 @@ export default {
         GridPlaceholder: () => import('~/components/Grid/GridPlaceholder'),
     },
     props: {
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
         rowsHeight: {
             type: Number,
             required: true,
@@ -63,23 +73,40 @@ export default {
             required: true,
         },
     },
+    destroyed() {
+        this.removeValidationErrors();
+    },
     computed: {
         ...mapState('gridDraft', {
             drafts: state => state.drafts,
         }),
-        ...mapState('grid', {
-            columns: state => state.columns,
-            rows: state => state.rows,
-            isSelectedAllRows: state => state.isSelectedAllRows,
-            selectedRows: state => state.selectedRows,
-            displayedPage: state => state.displayedPage,
-        }),
+        gridState() {
+            return this.$store.state[this.storeNamespace];
+        },
+        columns() {
+            return this.gridState.columns;
+        },
+        configuration() {
+            return this.gridState.configuration;
+        },
+        rows() {
+            return this.gridState.rows;
+        },
+        isSelectedAllRows() {
+            return this.gridState.isSelectedAllRows;
+        },
+        selectedRows() {
+            return this.gridState.selectedRows;
+        },
+        displayedPage() {
+            return this.gridState.displayedPage;
+        },
+        numberOfPages() {
+            return this.$store.getters[`${this.storeNamespace}/numberOfPages`];
+        },
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,
             isColumnDragging: state => state.isColumnDragging,
-        }),
-        ...mapGetters('grid', {
-            numberOfPages: 'numberOfPages',
         }),
         gridWrapperClasses() {
             return [
@@ -94,13 +121,7 @@ export default {
             return !this.rows.length;
         },
     },
-    destroyed() {
-        this.removeValidationErrors();
-    },
     methods: {
-        ...mapActions('grid', [
-            'getData',
-        ]),
         ...mapActions('validations', [
             'removeValidationErrors',
         ]),

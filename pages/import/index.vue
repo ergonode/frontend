@@ -47,16 +47,5 @@ export default {
             // this.$router.push('/imports/new');
         },
     },
-    async fetch(parameters) {
-        const { store } = parameters;
-        const {
-            user: { language: userLanguageCode },
-        } = store.state.authentication;
-
-        const gridPath = `${userLanguageCode}/imports`;
-
-        await store.dispatch('grid/clearStorage');
-        await store.dispatch('grid/getData', { path: gridPath });
-    },
 };
 </script>

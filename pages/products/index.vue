@@ -38,7 +38,7 @@ export default {
     created() {
         this.setConfigurationForList({
             draggedElementsStore: {
-                storeName: 'grid',
+                storeName: 'productsGrid',
                 stateName: 'columns',
                 idName: ['element_id'],
             },
@@ -57,7 +57,6 @@ export default {
         const {
             user: { language: userLanguageCode },
         } = store.state.authentication;
-        const gridPath = `${userLanguageCode}/products`;
 
         await store.dispatch('list/clearStorage');
         await store.dispatch('list/getGroups', {
@@ -65,9 +64,6 @@ export default {
             onSuccess: () => {},
             onError: () => {},
         });
-
-        await store.dispatch('grid/clearStorage');
-        await store.dispatch('grid/getData', { path: gridPath });
     },
 };
 </script>
