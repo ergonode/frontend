@@ -7,7 +7,7 @@
         :title="title"
         :action-paths="actionPaths"
         :buttons="buttons"
-        icon="sprite-menu menu-puzzel--selected" />
+        icon="Attributes" />
 </template>
 <script>
 import { mapState } from 'vuex';
@@ -25,7 +25,6 @@ export default {
                     title: 'CREATE ATTRIBUTE',
                     color: 'success',
                     action: this.addNewAttribute,
-                    icon: 'sprite-button button-add-light',
                 },
             ],
         };

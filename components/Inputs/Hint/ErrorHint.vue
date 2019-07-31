@@ -3,19 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <Icon
-        size="medium"
-        icon="sprite-cell cell-error"
-        :title="hint" />
+    <label :title="hint">
+        <IconError />
+    </label>
 </template>
 
 <script>
-import Icon from '~/components/Icon/Icon';
+import IconError from '~/components/Icon/Feedback/IconError';
 
 export default {
     name: 'ErrorHint',
     components: {
-        Icon,
+        IconError,
     },
     props: {
         hint: {
@@ -25,7 +24,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-
-</style>

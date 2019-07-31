@@ -7,7 +7,7 @@
         :title="title"
         :action-paths="actionPaths"
         :buttons="buttons"
-        icon="sprite-menu menu-folder--selected" />
+        icon="Category" />
 </template>
 <script>
 import { mapState } from 'vuex';
@@ -25,7 +25,6 @@ export default {
                     title: 'CREATE CATEGORY',
                     color: 'success',
                     action: this.addNewCategory,
-                    icon: 'sprite-button button-add-light',
                 },
             ],
         };

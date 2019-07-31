@@ -20,9 +20,7 @@
             <span
                 class="template-element__title typo-btn--xs txt--dark-graphite"
                 v-text="title" />
-            <Icon
-                size="medium"
-                icon="sprite-system system-edit--deactive" />
+            <IconEdit />
         </div>
     </div>
 </template>
@@ -31,7 +29,7 @@
 export default {
     name: 'TemplateElement',
     components: {
-        Icon: () => import('~/components/Icon/Icon'),
+        IconEdit: () => import('~/components/Icon/Actions/IconEdit'),
         Picture: () => import('~/components/Inputs/Image/Picture'),
     },
     props: {

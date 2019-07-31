@@ -6,7 +6,8 @@
     <GridPage
         :title="title"
         :action-paths="actionPaths"
-        :buttons="buttons" />
+        :buttons="buttons"
+        icon="Import" />
 </template>
 
 <script>
@@ -25,7 +26,6 @@ export default {
                     title: 'CREATE IMPORT',
                     color: 'success',
                     action: this.addNewImport,
-                    icon: 'sprite-button button-add-light',
                 },
             ],
         };

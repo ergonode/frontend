@@ -22,7 +22,7 @@
             <ButtonSelect
                 v-if="isColumnEditable"
                 v-visible="isContextualMenuActive || isSorted || isMouseOver"
-                :icon="contextualMenuStateIcon"
+                icon-path="Others/IconDots"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
                 @focus="onSelectFocus" />
@@ -86,11 +86,6 @@ export default {
         isPinnedColumn() {
             const { isLeftPinned, isRightPinned } = this.column;
             return isLeftPinned || isRightPinned;
-        },
-        contextualMenuStateIcon() {
-            return this.isContextualMenuActive
-                ? 'sprite-system system-dots--selected'
-                : 'sprite-system system-dots--deactive';
         },
         isSorted() {
             return this.sortedByColumn.index === this.column.id;
@@ -242,6 +237,9 @@ export default {
 
         &__title {
             @include setFont(bold, small, regular, $graphite);
+
+            flex: 1 1 auto;
+            width: 0;
         }
 
         .draggable {

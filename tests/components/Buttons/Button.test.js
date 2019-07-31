@@ -37,10 +37,8 @@ describe('Buttons/Button', () => {
     it('Check if button has children', () => {
       wrapper.setProps({
         title: 'paper',
-        icon: 'test',
       });
       expect(wrapper.vm.title).toBe("paper");
-      expect(wrapper.vm.icon).toBe("test");
     });
 
     it('Check title classes', () => {

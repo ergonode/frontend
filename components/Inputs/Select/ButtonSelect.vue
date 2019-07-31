@@ -6,9 +6,9 @@
     <div
         class="btn"
         @click="onClick">
-        <Icon
-            :icon="icon"
-            size="medium" />
+        <Component
+            :is="buttonIconComponent"
+            :fill-color="buttonIconFillColor" />
         <Transition
             v-if="isFocused"
             name="fade">
@@ -45,7 +45,7 @@ export default {
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
     },
     props: {
-        icon: {
+        iconPath: {
             type: String,
             required: true,
         },
@@ -60,6 +60,14 @@ export default {
         };
     },
     computed: {
+        buttonIconComponent() {
+            return () => import(`~/components/Icon/${this.iconPath}`);
+        },
+        buttonIconFillColor() {
+            return this.isFocused
+                ? '#00bc87'
+                : '#5c5f65';
+        },
         selectContentPosition() {
             const {
                 top,

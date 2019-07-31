@@ -10,7 +10,7 @@
             onDraggedState,
         }"
         :dragged="isDragged">
-        <ListElementIcon icon="editor-font-size-24" />
+        <ListElementIcon icon-path="Editor/IconFontSize" />
         <ListElementDescription
             :title="item.type"
             :subtitle="item.label" />

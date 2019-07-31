@@ -8,7 +8,7 @@
             :title="title"
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
-            icon="sprite-menu menu-user--selected"
+            icon="User"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -25,7 +25,7 @@ export default {
             breadcrumbs: [
                 {
                     title: 'Users',
-                    icon: 'sprite-menu menu-user--deactive',
+                    icon: 'User',
                     path: '/users',
                 },
             ],

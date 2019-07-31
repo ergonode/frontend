@@ -210,7 +210,8 @@ export default {
                 }
 
                 this.getColumnData({
-                    index: this.ghostIndex,
+                    ghostIndex: this.ghostIndex,
+                    draggedElIndex: this.draggedElIndex,
                     columnId,
                     path: `${this.languageCode}/products`,
                 });

@@ -9,9 +9,6 @@
             :buttons="buttons"
             :icon="icon" />
         <div class="vertical-wrapper">
-            <div class="layout-configuration">
-                <GridLayoutConfigurator v-model="rowsHeight" />
-            </div>
             <GridWrapper
                 :rows-height="rowsHeight"
                 :action-paths="actionPaths" />
@@ -22,8 +19,9 @@
                     v-model="visibleRowsInPageCount"
                     :rows-number="numberOfDataElements" />
                 <GridPagination
-                    v-model="currentPage"
-                    :max-page-number="numberOfPages" />
+                    :value="displayedPage"
+                    :max-page="numberOfPages"
+                    @input="onPageChanged" />
             </template>
         </GridFooter>
     </PageWrapper>
@@ -40,7 +38,6 @@ export default {
         GridFooter: () => import('~/components/Grid/GridFooter'),
         GridPageSelector: () => import('~/components/Grid/GridPageSelector'),
         GridPagination: () => import('~/components/Grid/GridPagination'),
-        GridLayoutConfigurator: () => import('~/components/Grid/GridLayoutConfigurator'),
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
     },
     props: {
@@ -58,7 +55,6 @@ export default {
         },
         icon: {
             type: String,
-            required: false,
             default: null,
         },
     },
@@ -91,24 +87,6 @@ export default {
                 }
             },
         },
-        currentPage: {
-            get() {
-                return this.displayedPage;
-            },
-            set(value) {
-                let number = Math.trunc(value);
-
-                if (number < 1) {
-                    return;
-                }
-                if (number > this.numberOfPages) {
-                    number = this.numberOfPages;
-                }
-
-                this.changeDisplayingPage({ number });
-                this.getDataWrapper();
-            },
-        },
         rowsHeight: {
             get() {
                 const { height } = this.gridConfiguration.rows;
@@ -126,6 +104,10 @@ export default {
             'changeDisplayingPage',
             'changeNumberOfDisplayingElements',
         ]),
+        onPageChanged(page) {
+            this.changeDisplayingPage(page);
+            this.getDataWrapper();
+        },
         getDataWrapper() {
             const { getData: path } = this.actionPaths;
             this.getData(

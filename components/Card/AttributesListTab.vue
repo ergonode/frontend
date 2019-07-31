@@ -18,9 +18,12 @@
         <AttributesList :language-code="languageCode" />
         <div class="add-btn-wrapper">
             <Button
-                icon="sprite-button button-add-light"
                 fab
-                @click.native="addNewAttribute" />
+                @click.native="addNewAttribute">
+                <template v-slot:prepend>
+                    <IconAdd fill-color="#fff" />
+                </template>
+            </Button>
         </div>
     </div>
 </template>
@@ -36,6 +39,7 @@ export default {
         ListSearchSelectHeader: () => import('~/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('~/components/List/ListSearchHeader'),
         Button: () => import('~/components/Buttons/Button'),
+        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
     },
     props: {
         isSelectLanguage: {

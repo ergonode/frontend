@@ -6,7 +6,7 @@
     <ModalActionBase
         :value="value"
         title="Section title settings"
-        icon="editor-font-size-24"
+        icon-path="Editor/IconFontSize"
         @input="onClose">
         <template v-slot:body>
             <TextField

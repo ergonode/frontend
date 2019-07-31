@@ -6,7 +6,7 @@
     <GridProductPage
         :title="title"
         :buttons="buttons"
-        icon="sprite-menu menu-paper--selected" />
+        icon="Document" />
 </template>
 
 <script>
@@ -26,7 +26,6 @@ export default {
                     title: 'CREATE PRODUCT',
                     color: 'success',
                     action: this.addNewProduct,
-                    icon: 'sprite-button button-add-light',
                 },
             ],
         };

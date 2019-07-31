@@ -8,7 +8,7 @@
             :title="title"
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
-            icon="sprite-menu menu-tree--selected" />
+            icon="Tree" />
         <HorizontalTabBar :items="tabs" />
         <Blur
             v-show="isBlurVisible"

@@ -22,9 +22,12 @@
                 :title="button.title"
                 :color="button.color"
                 :theme="button.theme"
-                :icon="button.icon"
                 large
-                @click.native="button.action" />
+                @click.native="button.action">
+                <template v-slot:prepend>
+                    <IconAdd fill-color="#fff" />
+                </template>
+            </Button>
         </div>
     </div>
 </template>
@@ -36,6 +39,7 @@ export default {
         NavigationHeaderTitle: () => import('~/components/ReusableHeader/NavigationHeaderTitle'),
         NavigationHeaderBreadcrumb: () => import('~/components/ReusableHeader/NavigationHeaderBreadcrumb'),
         Button: () => import('~/components/Buttons/Button'),
+        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
     },
     props: {
         title: {
@@ -44,17 +48,14 @@ export default {
         },
         buttons: {
             type: Array,
-            required: false,
             default: () => [],
         },
         icon: {
             type: String,
-            required: false,
             default: null,
         },
         breadcrumbs: {
             type: Array,
-            required: false,
             default: () => [],
         },
     },

@@ -11,12 +11,6 @@
             <div class="tab__grid">
                 <!-- NOTE: Uncomment when filters are implemented -->
                 <!--<GridGlobalFilters v-show="isGlobalFiltersVisible" />-->
-                <div class="filters-panel-wrapper">
-                    <GridFilterActions
-                        v-model="filtersExpanded"
-                        :filters-number="filtersNumber" />
-                    <GridLayoutConfigurator v-model="rowsHeight" />
-                </div>
                 <GridWrapper
                     :rows-height="rowsHeight"
                     :action-paths="actionPaths" />
@@ -29,8 +23,9 @@
                     v-model="visibleRowsInPageCount"
                     :rows-number="numberOfDataElements" />
                 <GridPagination
-                    v-model="currentPage"
-                    :max-page-number="numberOfPages" />
+                    :value="displayedPage"
+                    :max-page="numberOfPages"
+                    @input="onPageChanged" />
             </template>
         </GridFooter>
     </div>
@@ -43,8 +38,6 @@ export default {
     name: 'ProductGridTab',
     components: {
         GridWrapper: () => import('~/components/Grid/Wrappers/GridWrapper'),
-        GridFilterActions: () => import('~/components/Grid/GridFilterActions'),
-        GridLayoutConfigurator: () => import('~/components/Grid/GridLayoutConfigurator'),
         GridFooter: () => import('~/components/Grid/GridFooter'),
         GridPageSelector: () => import('~/components/Grid/GridPageSelector'),
         GridPagination: () => import('~/components/Grid/GridPagination'),
@@ -57,7 +50,7 @@ export default {
             {
                 title: 'Attributes',
                 component: () => import('~/components/Card/AttributesListTab'),
-                icon: 'sprite-sidebar sidebar-attributes',
+                iconPath: 'Menu/IconAttributes',
                 active: true,
             },
         ],
@@ -118,24 +111,6 @@ export default {
                 }
             },
         },
-        currentPage: {
-            get() {
-                return this.displayedPage;
-            },
-            set(value) {
-                let number = Math.trunc(value);
-
-                if (number < 1) {
-                    return;
-                }
-                if (number > this.numberOfPages) {
-                    number = this.numberOfPages;
-                }
-
-                this.changeDisplayingPage({ number });
-                this.getDataWrapper();
-            },
-        },
     },
     methods: {
         ...mapActions('grid', [
@@ -143,6 +118,10 @@ export default {
             'changeDisplayingPage',
             'changeNumberOfDisplayingElements',
         ]),
+        onPageChanged(page) {
+            this.changeDisplayingPage(page);
+            this.getDataWrapper();
+        },
         getDataWrapper() {
             const { getData: path } = this.actionPaths;
             this.getData(

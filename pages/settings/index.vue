@@ -14,14 +14,5 @@ export default {
     components: {
         PageWrapper,
     },
-    data() {
-        return {
-            date: null,
-            rangeDate: {
-                from: null,
-                to: null,
-            },
-        };
-    },
 };
 </script>

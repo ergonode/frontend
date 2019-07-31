@@ -154,8 +154,8 @@ export default {
     updateColumnWidthAtIndex({ commit }, payload) {
         commit(types.SET_COLUMN_WIDTH_AT_INDEX, payload);
     },
-    changeDisplayingPage({ commit }, { number }) {
-        commit(types.SET_CURRENT_PAGE, number);
+    changeDisplayingPage({ commit }, page) {
+        commit(types.SET_CURRENT_PAGE, page);
     },
     insertColumnAtIndex({ commit }, { column, index }) {
         commit(types.INSERT_COLUMN_AT_INDEX, { column, index });
