@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="select-content">
+    <div :class="['select-content', {'select-content--fixed': fixedContent}]">
         <slot />
         <div
             v-if="clearable"
@@ -33,13 +33,15 @@ export default {
     props: {
         multiselect: {
             type: Boolean,
-            required: false,
             default: false,
         },
         clearable: {
             type: Boolean,
-            required: false,
             default: true,
+        },
+        fixedContent: {
+            type: Boolean,
+            required: true,
         },
     },
     computed: {
@@ -69,8 +71,11 @@ export default {
             0 2px 2px 0 rgba(0, 0, 0, 0.14),
             0 3px 1px -2px rgba(0, 0, 0, 0.12),
             0 1px 5px 0 rgba(0, 0, 0, 0.2);
-        max-height: 200px;
         min-width: 130px;
+
+        &--fixed {
+            max-height: 200px;
+        }
 
         .horizontal-wrapper {
             display: flex;

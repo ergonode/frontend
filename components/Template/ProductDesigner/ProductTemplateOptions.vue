@@ -6,13 +6,14 @@
     <Select
         :value="parsedValue"
         solid
+        clearable
         :label="label"
         :placeholder="placeholder"
         :multiselect="multiselect"
-        :dismissible="!multiselect"
         :error-messages="isError ? [' '] : null"
         :required="required"
-        @focus="onFocusChange">
+        @focus="onFocusChange"
+        @input="onValueChange">
         <template v-slot:append>
             <ProductTemplateDetailsContent
                 :hint="hint"

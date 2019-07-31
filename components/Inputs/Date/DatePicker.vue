@@ -3,201 +3,147 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="date-picker">
-        <slot name="header">
-            <DatePickerHeader :header="header" />
-        </slot>
-        <DatePickerNavigationHeader
-            :header="calendarHeader"
-            @changeCalendarType="onChangeCalendarType"
-            @previousDate="onPreviousDate"
-            @nextDate="onNextDate" />
-        <DatePickerCalendarContent
-            :date="value"
-            :month="month"
-            :current-month="currentMonth"
-            :year="year"
-            :years="years"
-            :current-year="currentYear"
-            :calendar-type="selectedCalendarType"
-            @input="onDateChange"
-            @month="onMonthChange"
-            @year="onYearChange"
-            @calendarType="onCalendarTypeChange"
-            @calendarHeader="onCalendarHeaderChange" />
-    </div>
+    <InputSelectBase
+        :value="value"
+        :solid="solid"
+        :underline="underline"
+        :left-alignment="leftAlignment"
+        :center-alignment="centerAlignment"
+        :label="label"
+        :placeholder="placeholder"
+        :error-messages="errorMessages"
+        :hint="hint"
+        :required="required"
+        :autofocus="autofocus"
+        :disabled="disabled"
+        :dismissible="dismissible"
+        :small="small"
+        :regular="regular"
+        :fixed-select-content="false"
+        multiselect
+        clearable
+        @focus="onFocus"
+        @clear="emitValue">
+        <template v-slot:prepend>
+            <slot name="prepend" />
+        </template>
+        <input
+            slot="input"
+            :value="parsedDate"
+            :placeholder="placeholder"
+            :disabled="disabled"
+            :aria-label="label || 'no description'"
+            type="text"
+            readonly>
+        <template v-slot:append>
+            <slot name="append" />
+        </template>
+        <template v-slot:selectContent>
+            <slot name="selectContent">
+                <DatePickerContent
+                    :value="value"
+                    @input="emitValue" />
+            </slot>
+        </template>
+    </InputSelectBase>
 </template>
 
 <script>
-import DatePickerHeader from '~/components/Inputs/Date/DatePickerHeader';
-import DatePickerNavigationHeader from '~/components/Inputs/Date/DatePickerNavigationHeader';
-import DatePickerCalendarContent from '~/components/Inputs/Date/DatePickerCalendarContent';
-import {
-    getNextYear,
-    getPreviousYear,
-    getNextMonth,
-    getPreviousMonth,
-    getNextYearsRange,
-    getPreviousYearsRange,
-    getYearsWithinRange,
-    getHeaderForCalendarDaysType,
-    getHeaderForCalendarYearsType,
-    zeroPad,
-    CALENDAR_MONTHS,
-} from '~/model/calendar/calendar';
-import { CalendarType } from '~/model/calendar/CalendarType';
+import moment from 'moment';
+import InputSelectBase from '~/components/Inputs/InputSelectBase';
 
 export default {
     name: 'DatePicker',
     components: {
-        DatePickerHeader,
-        DatePickerNavigationHeader,
-        DatePickerCalendarContent,
+        InputSelectBase,
+        DatePickerContent: () => import('~/components/Inputs/Date/DatePickerContent'),
     },
     props: {
         value: {
             type: Date,
             default: null,
         },
-        calendarDate: {
-            type: Date,
-            default() {
-                return new Date();
-            },
+        format: {
+            type: String,
+            default: 'YY-MM-DD',
+        },
+        solid: {
+            type: Boolean,
+            default: false,
+        },
+        underline: {
+            type: Boolean,
+            default: false,
+        },
+        leftAlignment: {
+            type: Boolean,
+            default: false,
+        },
+        centerAlignment: {
+            type: Boolean,
+            default: false,
+        },
+        dismissible: {
+            type: Boolean,
+            default: true,
+        },
+        label: {
+            type: String,
+            default: null,
+        },
+        placeholder: {
+            type: String,
+            default: null,
+        },
+        errorMessages: {
+            type: [String, Array],
+            default: '',
+        },
+        hint: {
+            type: String,
+            default: '',
+        },
+        required: {
+            type: Boolean,
+            default: false,
+        },
+        autofocus: {
+            type: Boolean,
+            default: false,
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        small: {
+            type: Boolean,
+            default: false,
+        },
+        regular: {
+            type: Boolean,
+            default: false,
         },
     },
-    data() {
-        const today = new Date();
-        const year = this.calendarDate.getFullYear();
-        const month = this.calendarDate.getMonth() + 1;
-
-        return {
-            years: getYearsWithinRange([], year),
-            currentYear: today.getFullYear(),
-            currentMonth: today.getMonth() + 1,
-            month,
-            year,
-            selectedCalendarType: CalendarType.DAY,
-            calendarHeader: getHeaderForCalendarDaysType(month, year),
-        };
-    },
     computed: {
-        header() {
-            if (!this.value) return 'Pick a date';
+        parsedDate() {
+            if (!this.value) return null;
 
-            const day = this.value.getDate();
-            const month = this.value.getMonth();
-            const year = this.value.getFullYear();
-
-            switch (this.selectedCalendarType) {
-            case CalendarType.DAY:
-                return `${day}.${zeroPad(month, 2)}.${year}`;
-            case CalendarType.MONTH: {
-                const monthDesc = Object.values(CALENDAR_MONTHS)[month];
-                return `${monthDesc} ${year}`;
-            }
-            case CalendarType.YEAR:
-                return year;
-            default:
-                return '';
-            }
+            return this.formatDate(this.value);
         },
     },
     methods: {
-        onDateChange(value) {
-            this.$emit('input', value);
+        emitValue(value) {
+            if (Array.isArray(value)) this.$emit('input', null);
+            else this.$emit('input', value);
         },
-        onMonthChange(month) {
-            this.month = month;
+        onFocus(isFocused) {
+            this.$emit('focus', isFocused);
         },
-        onYearChange(year) {
-            this.year = year;
-        },
-        onCalendarTypeChange(type) {
-            this.selectedCalendarType = type;
-        },
-        onCalendarHeaderChange(header) {
-            this.calendarHeader = header;
-        },
-        onPreviousDate() {
-            switch (this.selectedCalendarType) {
-            case CalendarType.DAY: {
-                const {
-                    month: previousMonth, year: previousYear,
-                } = getPreviousMonth(this.month, this.year);
+        formatDate(date) {
+            if (!date) return null;
 
-                this.month = previousMonth;
-                this.year = previousYear;
-                this.calendarHeader = getHeaderForCalendarDaysType(previousMonth, previousYear);
-
-                break;
-            }
-            case CalendarType.MONTH:
-                this.year = getPreviousYear(this.year);
-                this.calendarHeader = this.year;
-
-                break;
-            case CalendarType.YEAR:
-                this.years = getPreviousYearsRange(this.years);
-                this.calendarHeader = getHeaderForCalendarYearsType(this.years);
-
-                break;
-            default:
-                break;
-            }
-        },
-        onNextDate() {
-            switch (this.selectedCalendarType) {
-            case CalendarType.DAY: {
-                const {
-                    month: nextMonth, year: nextYear,
-                } = getNextMonth(this.month, this.year);
-
-                this.month = nextMonth;
-                this.year = nextYear;
-                this.calendarHeader = getHeaderForCalendarDaysType(nextMonth, nextYear);
-
-                break;
-            }
-            case CalendarType.MONTH: {
-                this.year = getNextYear(this.year);
-                this.calendarHeader = this.year;
-
-                break;
-            }
-            case CalendarType.YEAR:
-                this.years = getNextYearsRange(this.years);
-                this.calendarHeader = getHeaderForCalendarYearsType(this.years);
-
-                break;
-            default:
-                break;
-            }
-        },
-        onChangeCalendarType() {
-            switch (this.selectedCalendarType) {
-            case CalendarType.DAY:
-                this.selectedCalendarType = CalendarType.MONTH;
-                this.calendarHeader = this.year;
-                break;
-            case CalendarType.MONTH:
-                this.selectedCalendarType = CalendarType.YEAR;
-                this.calendarHeader = getHeaderForCalendarYearsType(this.years);
-                break;
-            case CalendarType.YEAR:
-                this.selectedCalendarType = CalendarType.DAY;
-                this.calendarHeader = getHeaderForCalendarDaysType(this.month, this.year);
-                break;
-            default: break;
-            }
+            return moment(date).format(this.format);
         },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .date-picker {
-        width: 224px;
-        padding: 16px;
-    }
-</style>

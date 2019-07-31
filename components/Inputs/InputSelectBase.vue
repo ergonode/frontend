@@ -18,8 +18,21 @@
                 :style="floatingLabelPosition"
                 v-text="label" />
             <slot name="input" />
-            <slot name="append" />
+            <slot name="append">
+                <IconArrowDropDown :state="dropDownState" />
+            </slot>
         </div>
+        <FadeTransition v-if="isFocused">
+            <SelectContent
+                :style="selectBoundingBox"
+                :multiselect="multiselect"
+                :clearable="clearable"
+                :fixed-content="fixedSelectContent"
+                @clear="onClear"
+                @apply="dismissSelect">
+                <slot name="selectContent" />
+            </SelectContent>
+        </FadeTransition>
         <label
             v-if="informationLabel"
             :class="informationLabelClasses"
@@ -28,12 +41,21 @@
 </template>
 
 <script>
+import { Arrow } from '~/model/icons/Arrow';
+import FadeTransition from '~/components/Transitions/FadeTransition';
+import SelectContent from '~/components/Inputs/Select/Contents/SelectContent';
+import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
 
 export default {
-    name: 'InputBase',
+    name: 'InputSelectBase',
+    components: {
+        FadeTransition,
+        SelectContent,
+        IconArrowDropDown,
+    },
     props: {
         value: {
-            type: [Array, String, Number],
+            type: [Array, String, Number, Date],
             default: null,
         },
         solid: {
@@ -41,6 +63,10 @@ export default {
             default: false,
         },
         underline: {
+            type: Boolean,
+            default: false,
+        },
+        clearable: {
             type: Boolean,
             default: false,
         },
@@ -52,9 +78,13 @@ export default {
             type: Boolean,
             default: false,
         },
+        multiselect: {
+            type: Boolean,
+            default: false,
+        },
         dismissible: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         label: {
             type: String,
@@ -84,6 +114,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        fixedSelectContent: {
+            type: Boolean,
+            default: true,
+        },
         small: {
             type: Boolean,
             default: false,
@@ -97,9 +131,15 @@ export default {
         return {
             isFocused: false,
             isMounted: false,
+            selectBoundingBox: null,
         };
     },
     computed: {
+        dropDownState() {
+            return this.isFocused
+                ? Arrow.UP
+                : Arrow.DOWN;
+        },
         isEmpty() {
             return this.value === '' || this.value === null;
         },
@@ -190,6 +230,7 @@ export default {
             this.focusInput();
 
             this.isFocused = true;
+            this.selectBoundingBox = this.getSelectBoundingBox();
         }
 
         this.isMounted = true;
@@ -199,14 +240,17 @@ export default {
     },
     methods: {
         focusInput() {
-            const input = this.$el.querySelector('input') || this.$el.querySelector('textarea');
+            const input = this.$el.querySelector('input');
             window.addEventListener('click', this.onClickOutside);
             input.focus();
         },
         blurInput() {
-            const input = this.$el.querySelector('input') || this.$el.querySelector('textarea');
+            const input = this.$el.querySelector('input');
             window.removeEventListener('click', this.onClickOutside);
             input.blur();
+        },
+        onClear() {
+            this.$emit('clear', this.multiselect ? [] : '');
         },
         onKeyUp(event) {
             const { keyCode } = event;
@@ -238,10 +282,16 @@ export default {
 
             return true;
         },
+        dismissSelect() {
+            this.isFocused = false;
+            this.blurInput();
+
+            this.$emit('focus', false);
+        },
         onClickOutside(event) {
             const isDoubleClicked = event.detail > 1;
 
-            if (isDoubleClicked && this.dismissible) return false;
+            if (isDoubleClicked) return false;
 
             const { clientX, clientY } = event;
             const inputActivator = this.$el.querySelector('.input__content');
@@ -259,11 +309,30 @@ export default {
                     this.isFocused = !this.isFocused;
                 } else {
                     this.isFocused = true;
-                    const input = this.$el.querySelector('input') || this.$el.querySelector('textarea');
+                    const input = this.$el.querySelector('input');
                     input.focus();
                 }
             } else {
-                this.isFocused = false;
+                const selectContentEl = this.$el.querySelector('.select-content');
+
+                if (selectContentEl) {
+                    const {
+                        top: contentTop,
+                        left: contentLeft,
+                        width: contentWidth,
+                        height: contentHeight,
+                    } = selectContentEl.getBoundingClientRect();
+                    const isClickedInsideSelectContent = clientX > left
+                        && clientX < contentLeft + contentWidth
+                        && clientY > contentTop
+                        && clientY < contentTop + contentHeight;
+
+                    if (!isClickedInsideSelectContent || !this.multiselect) this.isFocused = false;
+                }
+            }
+
+            if (this.isFocused) {
+                this.selectBoundingBox = this.getSelectBoundingBox();
             }
 
             if (!this.isFocused) {
@@ -274,6 +343,35 @@ export default {
 
             return true;
         },
+        getSelectBoundingBox() {
+            const {
+                x,
+                y,
+                height,
+                width,
+            } = this.$el.getBoundingClientRect();
+            const { innerHeight } = window;
+            const maxHeight = 200;
+
+            const position = { left: `${x}px` };
+
+            if (this.fixedSelectContent) {
+                position.width = `${width}px`;
+            }
+
+            if (innerHeight - y < maxHeight) {
+                const offsetBottom = innerHeight - y;
+
+                position.bottom = `${offsetBottom + 1}px`;
+
+                return position;
+            }
+
+            position.top = `${y + height + 2}px`;
+
+            return position;
+        },
+
     },
 };
 </script>

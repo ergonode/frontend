@@ -29,7 +29,6 @@
             solid
             regular
             multiselect
-            :dismissible="false"
             label="Category"
             clearable
             @input="clearContent">

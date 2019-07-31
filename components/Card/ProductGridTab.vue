@@ -18,8 +18,10 @@
                 <TrashCan v-show="isColumnDragging" />
             </div>
         </div>
-        <GridFooter :is-pagination-visible="Boolean(numberOfPages)">
-            <template slot="pagination">
+        <GridFooter
+            store-namespace="productsGrid"
+            :is-pagination-visible="Boolean(numberOfPages)">
+            <template v-slot:pagination>
                 <GridPageSelector
                     v-model="visibleRowsInPageCount"
                     :rows-number="numberOfDataElements" />

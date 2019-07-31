@@ -14,11 +14,6 @@ export default {
             required: false,
             default: null,
         },
-        appendIcon: {
-            type: String,
-            required: false,
-            default: null,
-        },
         title: {
             type: String,
             required: false,

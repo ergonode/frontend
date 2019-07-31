@@ -14,8 +14,10 @@
                 :rows-height="rowsHeight"
                 :action-paths="actionPaths" />
         </div>
-        <GridFooter :is-pagination-visible="Boolean(numberOfPages)">
-            <template slot="pagination">
+        <GridFooter
+            store-namespace="grid"
+            :is-pagination-visible="Boolean(numberOfPages)">
+            <template v-slot:pagination>
                 <GridPageSelector
                     v-model="visibleRowsInPageCount"
                     :rows-number="numberOfDataElements" />

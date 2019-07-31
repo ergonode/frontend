@@ -18,7 +18,7 @@
         :disabled="disabled"
         :small="small"
         :regular="regular"
-        dismissible
+        :dismissible="dismissible"
         @focus="onFocus">
         <input
             slot="input"
@@ -48,79 +48,68 @@ export default {
     props: {
         input: {
             type: Object,
-            required: false,
             default: () => ({
                 type: 'text',
             }),
         },
         value: {
             type: [String, Number],
-            required: false,
             default: null,
         },
         solid: {
             type: Boolean,
-            required: false,
+            default: false,
+        },
+        dismissible: {
+            type: Boolean,
             default: false,
         },
         underline: {
             type: Boolean,
-            required: false,
             default: false,
         },
         leftAlignment: {
             type: Boolean,
-            required: false,
             default: false,
         },
         centerAlignment: {
             type: Boolean,
-            required: false,
             default: false,
         },
         label: {
             type: String,
-            required: false,
             default: null,
         },
         placeholder: {
             type: String,
-            required: false,
             default: null,
         },
         errorMessages: {
             type: [String, Array],
-            required: false,
             default: '',
         },
         hint: {
             type: String,
-            required: false,
             default: '',
         },
         required: {
             type: Boolean,
-            required: false,
             default: false,
         },
         autofocus: {
             type: Boolean,
-            required: false,
             default: false,
         },
         disabled: {
             type: Boolean,
-            required: false,
             default: false,
         },
         small: {
             type: Boolean,
-            required: false,
             default: false,
         },
         regular: {
             type: Boolean,
-            required: false,
             default: false,
         },
     },

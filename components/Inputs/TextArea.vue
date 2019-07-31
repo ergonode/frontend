@@ -18,7 +18,7 @@
         :disabled="disabled"
         :small="small"
         :regular="regular"
-        dismissible
+        :dismissible="dismissible"
         @focus="onFocus">
         <textarea
             slot="input"
@@ -54,9 +54,9 @@ export default {
             type: [String, Number],
             default: null,
         },
-        appendIcon: {
-            type: Function,
-            default: null,
+        dismissible: {
+            type: Boolean,
+            default: true,
         },
         solid: {
             type: Boolean,
