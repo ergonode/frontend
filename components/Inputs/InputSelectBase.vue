@@ -9,7 +9,7 @@
         @keydown="onKeyDown">
         <div
             ref="inputContent"
-            :class="inputContentStyle"
+            :class="inputContentClasses"
             @click="onFocusInput">
             <slot name="prepend" />
             <label
@@ -164,7 +164,7 @@ export default {
                 },
             ];
         },
-        inputContentStyle() {
+        inputContentClasses() {
             return [
                 'input__content',
                 {
