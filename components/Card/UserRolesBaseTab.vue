@@ -5,7 +5,7 @@
 <template>
     <BaseTab :update-button="updateButton">
         <template v-slot:content>
-            <UserBaseCard />
+            <UserRolesBaseCard />
         </template>
         <template v-slot:footer>
             <Footer
@@ -15,15 +15,15 @@
 </template>
 
 <script>
-import UserBaseCard from '~/components/Card/UserBaseCard';
+import UserRolesBaseCard from '~/components/Card/UserRolesBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
 
 export default {
-    name: 'UserBaseTab',
+    name: 'UserRolesBaseTab',
     components: {
         Footer: () => import('~/components/ReusableFooter/Footer'),
         BaseTab,
-        UserBaseCard,
+        UserRolesBaseCard,
     },
     props: {
         updateButton: {
