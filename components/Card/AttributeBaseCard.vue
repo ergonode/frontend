@@ -19,7 +19,6 @@
             solid
             :options="attrGroupValues"
             label="Group"
-            :dismissible="false"
             regular
             multiselect
             clearable
@@ -53,7 +52,6 @@
             solid
             required
             regular
-            :dismissible="!hasParamsWithMultiChoice"
             :multiselect="hasParamsWithMultiChoice"
             :label="paramsLabel"
             :options="attrParamValues"

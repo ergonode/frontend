@@ -3,34 +3,27 @@
  * See LICENSE for license details.
  */
 <template>
-    <Select
-        :value="value"
+    <DatePicker
+        :value="parsedDate"
         solid
         :placeholder="parameters.format"
+        :format="parameters.format"
         :error-messages="errorMessages"
         :dismissible="false"
         autofocus
-        @focus="onFocus">
-        <DatePickerContent
-            slot="select"
-            slot-scope="{ dismissSelect }"
-            :style="selectBoundingBox"
-            :selected-date="parsedDate"
-            @apply="e => onApply(e, dismissSelect)"
-            @clear="onClear" />
-    </Select>
+        multiselect
+        @focus="onFocusChange"
+        @input="onValueChange" />
 </template>
 
 <script>
 import moment from 'moment';
-import Select from '~/components/Inputs/Select/Select';
-import DatePickerContent from '~/components/Inputs/Select/Contents/DatePickerContent';
+import DatePicker from '~/components/Inputs/Date/DatePicker';
 
 export default {
     name: 'GridEditDateCell',
     components: {
-        Select,
-        DatePickerContent,
+        DatePicker,
     },
     props: {
         value: {
@@ -49,70 +42,34 @@ export default {
     },
     data() {
         return {
-            selectBoundingBox: {},
-            isFocused: false,
+            localValue: null,
         };
     },
+    created() {
+        if (this.value) {
+            this.localValue = moment(this.value, this.parameters.format).toDate();
+        }
+    },
     computed: {
-        appendStateIcon() {
-            return this.isFocused
-                ? 'arrow-triangle trans-half'
-                : 'arrow-triangle';
-        },
         parsedDate() {
+            if (!this.value) return null;
+
             return moment(this.value, this.parameters.format).toDate();
         },
     },
     methods: {
-        onFocus(isFocused) {
-            if (isFocused) {
-                this.selectBoundingBox = this.getSelectBoundingBox();
-            }
-
+        onFocusChange(isFocused) {
             this.$emit('focus', isFocused);
         },
-        onApply(date, dismissSelect) {
-            dismissSelect();
-
-            this.$emit('input', this.formatDate(date));
-            this.$emit('focus', false);
-        },
-        onClear() {
-            this.$emit('input', '');
+        onValueChange(date) {
+            if (date) this.$emit('input', this.formatDate(date));
+            else this.$emit('input', '');
         },
         formatDate(date) {
             if (!date) return null;
             const { format } = this.parameters;
 
             return moment(date).format(format);
-        },
-        getSelectBoundingBox() {
-            const { $el } = this;
-            const boundingRect = $el.getBoundingClientRect();
-            const {
-                top,
-                left,
-                height,
-            } = boundingRect;
-            const { innerHeight } = window;
-            const maxHeight = 300;
-
-            if (innerHeight - top < maxHeight) {
-                const offsetBottom = innerHeight - top;
-                const marginBottom = 1;
-
-                return {
-                    left: `${left}px`,
-                    bottom: `${offsetBottom + marginBottom}px`,
-                };
-            }
-
-            const marginTop = 2;
-
-            return {
-                left: `${left}px`,
-                top: `${top + height + marginTop}px`,
-            };
         },
     },
 };

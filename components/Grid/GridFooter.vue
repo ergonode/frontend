@@ -23,6 +23,10 @@ export default {
         Button: () => import('~/components/Buttons/Button'),
     },
     props: {
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
         isPaginationVisible: {
             type: Boolean,
             required: true,
@@ -31,9 +35,6 @@ export default {
     computed: {
         ...mapState('gridDraft', {
             drafts: state => state.drafts,
-        }),
-        ...mapState('grid', {
-            rows: state => state.rows,
         }),
         footerClasses() {
             return [
@@ -52,9 +53,6 @@ export default {
         ...mapActions('productsDraft', [
             'applyDraft',
         ]),
-        ...mapActions('grid', [
-            'addDraftToProduct',
-        ]),
         saveDrafts() {
             const promises = [];
 
@@ -65,7 +63,7 @@ export default {
                     promises.push(this.applyDraft({
                         id: productId,
                         onSuccess: () => {
-                            this.addDraftToProduct({ columnId, productId, value });
+                            this.$store.dispatch(`${this.storeNamespace}/addDraftToProduct`, { columnId, productId, value });
                             this.removeDraft(productId);
                         },
                         onError: () => {},

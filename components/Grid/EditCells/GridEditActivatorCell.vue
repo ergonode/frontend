@@ -103,6 +103,7 @@ export default {
             }
 
             return {
+                dismissible: false,
                 autofocus: true,
                 errorMessages: this.errorMessages,
                 leftAlignment: true,

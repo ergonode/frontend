@@ -15,7 +15,7 @@
                     left-alignment
                     regular
                     underline
-                    label="User name" />
+                    label="Username" />
                 <TextField
                     v-model="userAuthData.password"
                     :input="{ type: 'password' }"
