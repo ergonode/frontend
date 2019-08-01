@@ -11,7 +11,7 @@
             regular
             label="Role name"
             :error-messages="errorNameMessage"
-            @input="(name) => setName(name)" />
+            @input="setName" />
         <TextArea
             :value="description"
             solid
@@ -21,7 +21,7 @@
             resize="none"
             :style="{height: '150px'}"
             :error-messages="errorDescMessage"
-            @input="(description) => setDescription(description)" />
+            @input="setDescription" />
     </BaseCard>
 </template>
 
