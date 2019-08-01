@@ -25,7 +25,12 @@
                 large
                 @click.native="button.action">
                 <template v-slot:prepend>
-                    <IconAdd fill-color="#fff" />
+                    <IconDelete
+                        v-if="isRemoveButton(button.icon)"
+                        fill-color="#adafb2" />
+                    <IconAdd
+                        v-else
+                        fill-color="#fff" />
                 </template>
             </Button>
         </div>
@@ -40,6 +45,7 @@ export default {
         NavigationHeaderBreadcrumb: () => import('~/components/ReusableHeader/NavigationHeaderBreadcrumb'),
         Button: () => import('~/components/Buttons/Button'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
+        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
     props: {
         title: {
@@ -67,6 +73,10 @@ export default {
     methods: {
         onClick() {
             this.$emit('navigateback');
+        },
+        isRemoveButton(title) {
+            if (!title) return false;
+            return /trash/.test(title.toLowerCase());
         },
     },
 };

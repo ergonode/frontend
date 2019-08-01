@@ -77,7 +77,7 @@ export default {
     async beforeCreate() {
         const gridPath = `${this.$store.state.authentication.user.language}/products`;
 
-        this.$store.registerModule('productsGrid', gridModule);
+        await this.$store.registerModule('productsGrid', gridModule);
         await this.$store.dispatch('productsGrid/getData', { path: gridPath });
     },
     beforeDestroy() {
