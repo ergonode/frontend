@@ -21,6 +21,8 @@ const AttributeEdit = () => import('~/pages/attributes/edit/_id').then(m => m.de
 const Users = () => import('~/pages/users/index').then(m => m.default || m);
 const UserNew = () => import('~/pages/users/new/index').then(m => m.default || m);
 const UserEdit = () => import('~/pages/users/edit/_id').then(m => m.default || m);
+const UsersRolesNew = () => import('~/pages/users/new/roles/index').then(m => m.default || m);
+const UsersRolesEdit = () => import('~/pages/users/edit/roles/_id').then(m => m.default || m);
 const Settings = () => import('~/pages/settings/index').then(m => m.default || m);
 const Channels = () => import('~/pages/channels/index').then(m => m.default || m);
 const Placeholder = () => import('~/pages/placeholder/index').then(m => m.default || m);
@@ -30,6 +32,7 @@ const AttributeTranslationsTab = () => import('~/components/Card/AttributeTransl
 const TemplateDesignerBaseTab = () => import('~/components/Card/TemplateDesignerBaseTab').then(m => m.default || m);
 const TemplateDesignerTab = () => import('~/components/Card/TemplateDesignerTab').then(m => m.default || m);
 const UserBaseTab = () => import('~/components/Card/UserBaseTab').then(m => m.default || m);
+const UserRolesBaseTab = () => import('~/components/Card/UserRolesBaseTab').then(m => m.default || m);
 const UsersGridTab = () => import('~/components/Card/UsersGridTab').then(m => m.default || m);
 const RolesGridTab = () => import('~/components/Card/RolesGridTab').then(m => m.default || m);
 const UserAvatarTab = () => import('~/components/Card/UserAvatarTab').then(m => m.default || m);
@@ -243,6 +246,28 @@ export const pages = [ // eslint-disable-line import/prefer-default-export
             {
                 path: 'avatar',
                 component: UserAvatarTab,
+            },
+        ],
+    },
+    {
+        name: 'users-roles-new',
+        path: '/users/roles/new',
+        component: UsersRolesNew,
+        children: [
+            {
+                path: 'general',
+                component: UserRolesBaseTab,
+            },
+        ],
+    },
+    {
+        name: 'users-roles-edit-id',
+        path: '/users/roles/edit/:id?',
+        component: UsersRolesEdit,
+        children: [
+            {
+                path: 'general',
+                component: UserRolesBaseTab,
             },
         ],
     },

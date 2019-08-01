@@ -21,6 +21,7 @@ export const actions = {
         dispatch('productsDraft/clearStorage');
         dispatch('templateDesigner/clearStorage');
         dispatch('list/clearStorage');
+        dispatch('roles/clearStorage');
         commit('gridDraft/clearStorage');
         commit('translations/clearStorage');
         commit('users/clearStorage');

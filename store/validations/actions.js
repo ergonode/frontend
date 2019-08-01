@@ -5,6 +5,7 @@
 export default {
     onError: ({ commit }, { errors, name = null }) => {
         if (errors) {
+            commit('clearStorage');
             Object.keys(errors).forEach((errorMessage) => {
                 if (!Array.isArray(errors[errorMessage])) {
                     Object.keys(errors[errorMessage]).forEach((errorNameDetailed) => {

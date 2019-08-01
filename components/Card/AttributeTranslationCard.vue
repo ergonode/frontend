@@ -26,6 +26,7 @@
                 solid
                 label="Placeholder"
                 resize="vertical"
+                :style="{height: '150px'}"
                 :error-messages="errorPlaceholderMessage"
                 :disabled="!isTranslationChosen" />
             <TextArea
@@ -33,6 +34,7 @@
                 solid
                 label="Tooltip for writers"
                 resize="vertical"
+                :style="{height: '150px'}"
                 :error-messages="errorHintMessage"
                 :disabled="!isTranslationChosen" />
             <Divider />

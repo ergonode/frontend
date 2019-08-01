@@ -54,7 +54,7 @@ export default {
         };
     },
     async beforeCreate() {
-        const gridPath = `${this.$store.state.authentication.user.language}/accounts/roles`;
+        const gridPath = `${this.$store.state.authentication.user.language}/roles`;
 
         await this.$store.registerModule('rolesGrid', gridModule);
         await this.$store.dispatch('rolesGrid/getData', { path: gridPath });
@@ -76,8 +76,8 @@ export default {
         }),
         actionPaths() {
             return {
-                getData: `${this.userLanguageCode}/accounts/roles`,
-                routerEdit: 'roles-edit-id',
+                getData: `${this.userLanguageCode}/roles`,
+                routerEdit: 'users-roles-edit-id',
             };
         },
         rowsHeight: {
