@@ -62,7 +62,7 @@ export default {
         },
         dismissible: {
             type: Boolean,
-            default: false,
+            default: true,
         },
         underline: {
             type: Boolean,
