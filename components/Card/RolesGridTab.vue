@@ -56,7 +56,7 @@ export default {
     async beforeCreate() {
         const gridPath = `${this.$store.state.authentication.user.language}/accounts/roles`;
 
-        this.$store.registerModule('rolesGrid', gridModule);
+        await this.$store.registerModule('rolesGrid', gridModule);
         await this.$store.dispatch('rolesGrid/getData', { path: gridPath });
     },
     beforeDestroy() {

@@ -3,16 +3,25 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper />
+    <PageWrapper>
+        <CheckBox v-model="check" />
+    </PageWrapper>
 </template>
 
 <script>
 import PageWrapper from '~/components/Layout/PageWrapper';
+import CheckBox from '~/components/Inputs/CheckBox';
 
 export default {
     name: 'Settings',
     components: {
         PageWrapper,
+        CheckBox,
+    },
+    data() {
+        return {
+            check: false,
+        };
     },
 };
 </script>

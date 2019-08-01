@@ -2,26 +2,32 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+
 <template>
-    <Icon
-        :icon="iconClass"
-        size="medium"
-        @click.native="onClick" />
+    <div class="checkbox">
+        <input
+            id="checkbox_1"
+            type="checkbox"
+            @input="onValueChange">
+        <label for="checkbox_1">TEST</label>
+    </div>
 </template>
 
 <script>
-import nestedVModelMixin from '~/mixins/nestedVModelMixin';
 
 export default {
     name: 'CheckBox',
-    components: {
-        Icon: () => import('~/components/Icon/Icon'),
-    },
-    mixins: [nestedVModelMixin],
     props: {
+        value: {
+            type: [Boolean, Number],
+            default: false,
+        },
         isDisabled: {
             type: Boolean,
-            required: false,
+            default: false,
+        },
+        multiple: {
+            type: Boolean,
             default: false,
         },
     },
@@ -52,6 +58,9 @@ export default {
         },
     },
     methods: {
+        onValueChange() {
+            console.log('value changed');
+        },
         onClick() {
             if (!this.isDisabled) {
                 if (Number.isInteger(this.value)) {
@@ -68,3 +77,82 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .checkbox {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        & input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        & label {
+            position: relative;
+            padding-left: 22px;
+
+            &::before, &::after {
+                position: absolute;
+                content: "";
+            }
+
+            &::before {
+                top: 0;
+                left: 0;
+                width: 16px;
+                height: 16px;
+                border: 1px solid $grey;
+            }
+        }
+    }
+
+    /*.checkbox label::before,*/
+    /*.checkbox label::after {*/
+    /*    position: absolute;*/
+    /*    content: "";*/
+
+    /*    !*Needed for the line-height to take effect*!*/
+    /*    display: inline-block;*/
+    /*}*/
+
+    /*Outer box of the fake checkbox*/
+    /*.checkbox label::before{*/
+    /*    height: 16px;*/
+    /*    width: 16px;*/
+
+    /*    border: 1px solid;*/
+    /*    left: 0px;*/
+
+    /*    top: 3px;*/
+    /*}*/
+
+    /*Checkmark of the fake checkbox*/
+    /*.checkbox label::after {*/
+    /*    height: 5px;*/
+    /*    width: 9px;*/
+    /*    border-left: 2px solid;*/
+    /*    border-bottom: 2px solid;*/
+
+    /*    transform: rotate(-45deg);*/
+
+    /*    left: 4px;*/
+    /*    top: 7px;*/
+    /*}*/
+
+    /*Hide the checkmark by default*/
+    /*.checkbox input[type="checkbox"] + label::after {*/
+    /*    content: none;*/
+    /*}*/
+
+    /*Unhide on the checked state*/
+    /*.checkbox input[type="checkbox"]:checked + label::after {*/
+    /*    content: "";*/
+    /*}*/
+
+    /*Adding focus styles on the outer-box of the fake checkbox*/
+    /*.checkbox input[type="checkbox"]:focus + label::before {*/
+    /*    outline: rgb(59, 153, 252) auto 5px;*/
+    /*}*/
+</style>
