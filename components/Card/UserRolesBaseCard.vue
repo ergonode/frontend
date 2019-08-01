@@ -11,7 +11,6 @@
             regular
             label="Role name"
             :error-messages="errorNameMessage"
-            :disabled="isDisabled"
             @input="(name) => setName(name)" />
         <TextArea
             :value="description"

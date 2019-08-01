@@ -23,55 +23,46 @@ export default {
         UserRolesPage: () => import('~/components/Pages/UserRolesPage'),
     },
     computed: {
-        ...mapState('users', {
-            id: state => state.id,
-            avatarId: state => state.avatarId,
-            email: state => state.email,
-            firstName: state => state.firstName,
-            lastName: state => state.lastName,
-            language: state => state.language,
-            password: state => state.password,
-            passwordRepeat: state => state.passwordRepeat,
-            status: state => state.status,
+        ...mapState('roles', {
+            roleID: state => state.id,
+            name: state => state.name,
+            description: state => state.description,
+            privileges: state => state.privileges,
         }),
         title() {
-            return `${this.firstName} ${this.lastName}`;
+            return `Role: ${this.name}`;
         },
     },
     destroyed() {
         this.clearStorage();
     },
     methods: {
-        ...mapActions('users', [
+        ...mapActions('roles', [
             'clearStorage',
-            'updateUser',
+            'updateRole',
         ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
         ]),
         onDismiss() {
-            this.$router.push('/users');
+            this.$router.push('/users/roles');
         },
-        onUpdateUserSuccess() {
+        onUpdateRoleSuccess() {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'User updated' });
-            this.$router.push('/users');
+            this.$addAlert(this.$store, { type: 'success', message: 'Role updated' });
+            this.$router.push('/users/roles');
         },
         onSave() {
-            const user = {
-                firstName: this.firstName,
-                lastName: this.lastName,
-                password: this.password,
-                passwordRepeat: this.passwordRepeat,
-                language: this.language,
-                // status: this.status, TODO: Uncomment when BE is ready
+            const role = {
+                name: this.name,
+                description: this.description,
+                privileges: this.privileges,
             };
-            this.updateUser({
-                id: this.id,
-                data: user,
-                avatarId: this.avatarId,
-                onSuccess: this.onUpdateUserSuccess,
+            this.updateRole({
+                id: this.roleID,
+                data: role,
+                onSuccess: this.onUpdateRoleSuccess,
                 onError: this.onError,
             });
         },
@@ -81,8 +72,8 @@ export default {
         params,
         error,
     }) {
-        await store.dispatch('users/getUserById', {
-            userId: params.id,
+        await store.dispatch('roles/getRoleById', {
+            roleId: params.id,
             onError: (err) => {
                 if (err.response && err.response.status === 404) {
                     return error({ statusCode: 404, message: err.message });

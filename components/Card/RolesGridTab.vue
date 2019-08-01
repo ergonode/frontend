@@ -75,7 +75,7 @@ export default {
         actionPaths() {
             return {
                 getData: `${this.userLanguageCode}/roles`,
-                routerEdit: 'roles-edit-id',
+                routerEdit: 'users-roles-edit-id',
             };
         },
         rowsHeight: {
