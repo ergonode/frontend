@@ -6,11 +6,10 @@
 <template>
     <div :class="['checkbox', checkboxStateClasses]">
         <input
-            id="checkbox_1"
+            :id="associatedLabel"
             type="checkbox"
             @input="onValueChange">
-        <label
-            for="checkbox_1" />
+        <label :for="associatedLabel" />
     </div>
 </template>
 
@@ -27,6 +26,15 @@ export default {
             type: Boolean,
             default: false,
         },
+    },
+    data() {
+        return {
+            associatedLabel: '',
+        };
+    },
+    mounted() {
+        // eslint-disable-next-line no-underscore-dangle
+        this.associatedLabel = `checkbox-${this._uid}`;
     },
     computed: {
         checkboxStateClasses() {
@@ -63,68 +71,70 @@ export default {
         position: relative;
 
         & input[type="checkbox"] {
-            position: absolute;
-            opacity: 0;
+            visibility: hidden;
         }
 
         & label {
-            position: relative;
-            padding-left: 22px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 16px;
+            height: 16px;
+            border: 1px solid $grey;
+            margin: 1px;
+            box-sizing: border-box;
+            border-radius: 2px;
 
-            &::before, &::after {
+            &::after {
                 position: absolute;
-                content: "";
-            }
-
-            &::before {
-                top: 0;
-                left: 0;
-                width: 16px;
-                height: 16px;
-                border: 1px solid $grey;
-                box-sizing: border-box;
-                border-radius: 2px;
-            }
-        }
-
-        &--checked {
-            label::after {
-                top: 4px;
-                left: 3px;
+                top: 3px;
+                left: 2px;
                 width: 8px;
                 height: 4px;
                 border-left: 2px solid $white;
                 border-bottom: 2px solid $white;
                 transform: rotate(-45deg);
                 opacity: 0;
+                content: "";
+            }
+        }
+
+        &--checked {
+            label::after {
+                opacity: 1;
             }
         }
 
         &--checked-any {
             label::after {
-                top: 4px;
-                left: 4px;
-                width: 10px;
-                height: 1px;
-                background-color: $white;
-                opacity: 0;
+                top: 3px;
+                left: 2px;
+                height: 0.5px;
+                border-left: none;
+                transform: translate(1px, 2px);
+                border-bottom: 2px solid $white;
             }
         }
 
         &--disabled {
             pointer-events: none;
+
+            label, label::after {
+                background-color: $lightGrey;
+                border-color: $darkGrey;
+            }
         }
 
         &--checked, &--checked-any {
-            & label {
-                &::before {
+            &:not(#{$checkbox}--disabled) {
+                & label {
                     border-color: $success;
                     background-color: $success;
                 }
+            }
 
-                &::after {
-                    opacity: 1;
-                }
+            & label::after {
+                opacity: 1;
             }
         }
     }

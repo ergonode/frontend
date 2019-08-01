@@ -28,7 +28,6 @@ export default {
         },
         isHeader: {
             type: Boolean,
-            required: false,
             default: false,
         },
     },
