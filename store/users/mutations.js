@@ -2,18 +2,20 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import defaultState from './state';
+
+export const types = {
+    SET_STATE: 'SET_STATE',
+    CLEAR_STORAGE: 'CLEAR_STORAGE',
+};
 export default {
-    setState: (state, { key, value }) => {
+    [types.SET_STATE](state, { key, value }) {
         state[key] = value;
     },
-    clearStorage: (state) => {
-        state.id = null;
-        state.avatarId = null;
-        state.email = '';
-        state.firstName = '';
-        state.lastName = '';
-        state.language = '';
-        state.password = '';
-        state.passwordRepeat = '';
+    [types.CLEAR_STORAGE](state) {
+        const states = defaultState();
+        Object.keys(states).forEach((key) => {
+            state[key] = states[key];
+        });
     },
 };

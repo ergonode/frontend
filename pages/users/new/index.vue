@@ -31,6 +31,7 @@ export default {
             password: state => state.password,
             passwordRepeat: state => state.passwordRepeat,
             status: state => state.status,
+            roleId: state => state.roleId,
         }),
     },
     created() {
@@ -66,6 +67,7 @@ export default {
                 password: this.password,
                 passwordRepeat: this.passwordRepeat,
                 language: this.language,
+                roleId: this.roleId,
                 // status: this.status, TODO: Uncomment when BE is ready
             };
             this.createUser({

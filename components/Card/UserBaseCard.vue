@@ -70,6 +70,15 @@
             :options="languageValues"
             :error-messages="errorLanguageMessage"
             @input="onLanguageChange" />
+        <Select
+            :value="parsedRole"
+            solid
+            required
+            regular
+            label="Role"
+            :options="roleValues"
+            :error-messages="errorRoleMessage"
+            @input="onRoleChange" />
     </BaseCard>
 </template>
 
@@ -112,6 +121,9 @@ export default {
         parsedLanguage() {
             return getValueByKey(this.languages, this.language);
         },
+        parsedRole() {
+            return getValueByKey(this.languages, this.language);
+        },
         parsedStatus() {
             return getValueByKey(this.activityStatuses, this.status);
         },
@@ -122,6 +134,9 @@ export default {
             return Object.values(this.activityStatuses);
         },
         languageValues() {
+            return Object.values(this.languages);
+        },
+        roleValues() {
             return Object.values(this.languages);
         },
         errorEmailMessage() {
@@ -148,6 +163,10 @@ export default {
             const languageIndex = 'language';
             return this.elementIsValidate(languageIndex);
         },
+        errorRoleMessage() {
+            const roleIndex = 'roleId';
+            return this.elementIsValidate(roleIndex);
+        },
         errorStatusMessage() {
             const statusIndex = 'status';
             return this.elementIsValidate(statusIndex);
@@ -159,6 +178,9 @@ export default {
         ]),
         onLanguageChange(language) {
             this.setAction({ key: 'language', value: getKeyByValue(this.languages, language) });
+        },
+        onRoleChange(role) {
+            this.setAction({ key: 'roleId', value: getKeyByValue(this.languages, role) });
         },
         onStatusChange(status) {
             this.setAction({ key: 'status', value: getKeyByValue(this.activityStatuses, status) });
