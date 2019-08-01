@@ -80,7 +80,12 @@ export default {
     async beforeCreate() {
         const { getData: path } = this.$options.propsData.actionPaths;
 
-        await this.$store.registerModule('grid', gridModule);
+        this.$registerStore({
+            module: gridModule,
+            moduleName: 'grid',
+            store: this.$store,
+        });
+
         await this.$store.dispatch('grid/getData', { path });
     },
     beforeDestroy() {

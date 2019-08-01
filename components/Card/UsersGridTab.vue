@@ -53,11 +53,12 @@ export default {
             filtersExpanded: true,
         };
     },
-    async beforeCreate() {
-        const gridPath = `${this.$store.state.authentication.user.language}/accounts`;
-
-        this.$store.registerModule('usersGrid', gridModule);
-        await this.$store.dispatch('usersGrid/getData', { path: gridPath });
+    beforeCreate() {
+        this.$registerStore({
+            module: gridModule,
+            moduleName: 'usersGrid',
+            store: this.$store,
+        });
     },
     beforeDestroy() {
         this.$store.unregisterModule('usersGrid');
@@ -122,6 +123,15 @@ export default {
                 },
             );
         },
+    },
+    async fetch({ app, store }) {
+        app.$registerStore({
+            module: gridModule,
+            moduleName: 'usersGrid',
+            store,
+        });
+        const gridPath = `${store.state.authentication.user.language}/accounts`;
+        await store.dispatch('usersGrid/getData', { path: gridPath });
     },
 };
 </script>

@@ -20,7 +20,7 @@ export default {
     },
     data() {
         return {
-            check: false,
+            check: 0,
         };
     },
 };

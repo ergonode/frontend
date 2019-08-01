@@ -44,6 +44,7 @@ module.exports = {
     plugins: [
         '~plugins/directives',
         '~plugins/axios',
+        '~/plugins/register-store',
         {mode: 'client', src: '~plugins/alerts'},
     ],
     modules: [
