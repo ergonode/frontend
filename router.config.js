@@ -43,7 +43,7 @@ const ProductBaseTab = () => import('~/components/Card/ProductBaseTab').then(m =
 const ProductTemplateTab = () => import('~/components/Card/ProductTemplateTab').then(m => m.default || m);
 const TreeDesignTab = () => import('~/components/Card/TreeDesignTab').then(m => m.default || m);
 
-export const pages = [ // eslint-disable-line import/prefer-default-export
+export const pages = [
     {
         name: 'index', path: '/', component: Login,
     },

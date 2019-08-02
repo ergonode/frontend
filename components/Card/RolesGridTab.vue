@@ -53,11 +53,12 @@ export default {
             filtersExpanded: true,
         };
     },
-    async beforeCreate() {
-        const gridPath = `${this.$store.state.authentication.user.language}/roles`;
-
-        await this.$store.registerModule('rolesGrid', gridModule);
-        await this.$store.dispatch('rolesGrid/getData', { path: gridPath });
+    beforeCreate() {
+        this.$registerStore({
+            module: gridModule,
+            moduleName: 'rolesGrid',
+            store: this.$store,
+        });
     },
     beforeDestroy() {
         this.$store.unregisterModule('rolesGrid');
@@ -140,6 +141,15 @@ export default {
                 },
             );
         },
+    },
+    async fetch({ app, store }) {
+        app.$registerStore({
+            module: gridModule,
+            moduleName: 'rolesGrid',
+            store,
+        });
+        const gridPath = `${store.state.authentication.user.language}/roles`;
+        await store.dispatch('rolesGrid/getData', { path: gridPath });
     },
 };
 </script>

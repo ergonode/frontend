@@ -7,7 +7,7 @@
         <Transition
             name="fade"
             mode="out-in">
-            <div v-visible="value > 1">
+            <div v-visible="isLeftArrowVisible">
                 <Button
                     fab
                     color="transparent"
@@ -36,7 +36,7 @@
             class="pagination__number"
             v-text="maxPage" />
         <Transition name="fade">
-            <div v-visible="value < maxPage">
+            <div v-visible="isRightArrowVisible">
                 <Button
                     fab
                     color="transparent"
@@ -77,6 +77,12 @@ export default {
         };
     },
     computed: {
+        isLeftArrowVisible() {
+            return this.value > 1;
+        },
+        isRightArrowVisible() {
+            return this.value < this.maxPage;
+        },
         inputNumberType() {
             return {
                 type: 'number',

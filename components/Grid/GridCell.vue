@@ -104,6 +104,15 @@ export default {
                     }
                 }
                 break;
+            case 32:
+                if (this.editingAllowed && this.actionCell) {
+                    if (event.target.classList.contains('grid-cell--selected')) {
+                        this.onEdit(false);
+                    } else {
+                        this.onEdit(true);
+                    }
+                }
+                break;
             case 37:
                 // Key: LEFT
                 element = document.querySelector(`.coordinates-${this.column - 1}-${this.row}`);
