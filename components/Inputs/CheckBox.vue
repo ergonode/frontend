@@ -42,7 +42,7 @@ export default {
                 {
                     'checkbox--disabled': this.disabled,
                     'checkbox--checked': this.value,
-                    'checkbox--checked-any': Number.isInteger(this.value) && this.value === 2,
+                    'checkbox--checked-any': this.value === 2,
                 },
             ];
         },
