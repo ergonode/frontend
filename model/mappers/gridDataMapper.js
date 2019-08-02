@@ -40,6 +40,10 @@ export function getMappedColumns(columns) {
             unchangedColumns[i].isLeftPinned = true;
         }
 
+        if (unchangedColumns[i].id === 'sku') {
+            unchangedColumns[i].isRightPinned = true;
+        }
+
         if (unchangedColumns[i].type === 'ACTION') {
             unchangedColumns[i].isRightPinned = true;
             unchangedColumns[i].width = actionColumnWidth;

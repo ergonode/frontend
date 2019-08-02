@@ -7,13 +7,13 @@
         :class="
             [
                 'column',
-                `column-${column.id}`,
                 'column--border-right',
                 {
                     'column__left-pinned': column.isLeftPinned,
                     'column__right-pinned': column.isRightPinned,
                     'column__extender': isExtenderColumn,
                     'column__ghost': isDraggedColumn,
+                    'stuck': isStuck,
                 }
             ]"
         :style="colRowsTemplate"
@@ -92,11 +92,17 @@ export default {
             startX: 0,
             isResizing: false,
             columnWidth: 0,
+            isStuck: false,
         };
     },
     mounted() {
         const { width } = this.column;
         this.$el.style.width = width ? `${width}px` : 'auto';
+
+        this.$el.addEventListener('sticky-change', this.onStickyChange);
+    },
+    destroyed() {
+        this.$el.removeEventListener('sticky-change', this.onStickyChange);
     },
     computed: {
         ...mapState('authentication', {
@@ -131,6 +137,11 @@ export default {
             'setGhostElTransform',
             'setGhostIndex',
         ]),
+        onStickyChange(event) {
+            const { stuck } = event.detail;
+
+            this.isStuck = stuck;
+        },
         onDragStart(event) {
             const { clientX, clientY } = event;
             const [header] = this.$el.children;
@@ -464,7 +475,7 @@ export default {
         }
 
         &.hover {
-            z-index: 5;
+            z-index: 999;
 
             &::after {
                 opacity: 1;
@@ -496,15 +507,16 @@ export default {
 
         &__left-pinned, &__right-pinned {
             position: sticky;
-            z-index: 6;
+            z-index: 9999;
         }
 
         &__right-pinned {
-            right: 0;
-        }
-
-        &__left-pinned {
-            left: 0;
+            &.stuck {
+                box-shadow:
+                    0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                    0 3px 1px -2px rgba(0, 0, 0, 0.12),
+                    0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            }
         }
     }
 </style>
