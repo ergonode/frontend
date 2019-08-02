@@ -464,7 +464,7 @@ export default {
         }
 
         &.hover {
-            z-index: 999;
+            z-index: 5;
 
             &::after {
                 opacity: 1;
@@ -494,10 +494,13 @@ export default {
                 inset 0 1px 5px 0 rgba(0, 0, 0, 0.2);
         }
 
-        &__right-pinned {
+        &__left-pinned, &__right-pinned {
             position: sticky;
+            z-index: 6;
+        }
+
+        &__right-pinned {
             right: 0;
-            z-index: 3;
         }
 
         &__left-pinned {
