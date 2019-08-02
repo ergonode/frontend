@@ -8,7 +8,7 @@
             class="header-cell__title txt-fixed"
             v-text="title" />
         <div
-            v-if="!isPinnedColumn"
+            v-if="column.id !== 'edit'"
             :class="[
                 'horizontal-wrapper',
                 {
@@ -16,8 +16,9 @@
                     'horizontal-wrapper--sorted': isSorted,
                 }
             ]">
-            <Icon
-                :icon="sortingIcon"
+            <IconArrowSort
+                :sorting-order="sortingOrder"
+                fill-color="#85878B"
                 @click.native="onClickSort" />
             <ButtonSelect
                 v-if="isColumnEditable"
@@ -35,12 +36,13 @@ import { mapState } from 'vuex';
 import {
     removeColumnCookieByID,
 } from '~/model/grid/cookies/GridLayoutConfiguration';
+import { SortingOrder } from '~/model/icons/SortingOrder';
 
 export default {
     name: 'GridHeaderCell',
     components: {
         ButtonSelect: () => import('~/components/Inputs/Select/ButtonSelect'),
-        Icon: () => import('~/components/Icon/Icon'),
+        IconArrowSort: () => import('~/components/Icon/Arrows/IconArrowSort'),
     },
     props: {
         storeNamespace: {
@@ -94,17 +96,10 @@ export default {
         isSorted() {
             return this.gridState.sortedByColumn.index === this.column.id;
         },
-        sortingIcon() {
-            if (this.isSorted) {
-                if (this.gridState.sortedByColumn.orderState === 'ASC') {
-                    return 'arrow-sort-active';
-                }
-                if (this.gridState.sortedByColumn.orderState === 'DESC') {
-                    return 'arrow-sort-active trans-half';
-                }
-            }
+        sortingOrder() {
+            if (!this.isSorted) return null;
 
-            return 'arrow-sort';
+            return this.gridState.sortedByColumn.orderState;
         },
         title() {
             const {
@@ -146,13 +141,13 @@ export default {
     },
     methods: {
         onClickSort() {
-            let orderState = 'ASC';
+            let orderState = SortingOrder.ASC;
             if (this.isSorted) {
-                if (this.gridState.sortedByColumn.orderState === 'ASC') {
-                    orderState = 'DESC';
+                if (this.gridState.sortedByColumn.orderState === SortingOrder.ASC) {
+                    orderState = SortingOrder.DESC;
                 }
-                if (this.gridState.sortedByColumn.orderState === 'DESC') {
-                    orderState = 'ASC';
+                if (this.gridState.sortedByColumn.orderState === SortingOrder.DESC) {
+                    orderState = SortingOrder.ASC;
                 }
             }
             this.$store.dispatch(`${this.storeNamespace}/setSortingState`, { index: this.column.id, orderState });

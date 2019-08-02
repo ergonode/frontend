@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-@import "_variables/icons";
-@import "_mixins/icons";
-
-@include generateIconClasses();
+export const SortingOrder = {
+    ASC: 'ASC',
+    DESC: 'DESC',
+};

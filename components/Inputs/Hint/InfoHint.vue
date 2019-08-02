@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <label :title="hint">
+    <label
+        class="info-hint"
+        :title="hint">
         <IconTooltip />
     </label>
 </template>
@@ -24,3 +26,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .info-hint {
+        display: flex;
+    }
+</style>
