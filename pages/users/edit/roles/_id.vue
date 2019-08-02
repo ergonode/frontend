@@ -7,6 +7,7 @@
         :title="title"
         is-edit
         @dismiss="onDismiss"
+        @remove="onRemove"
         @save="onSave" />
 </template>
 
@@ -40,6 +41,7 @@ export default {
         ...mapActions('roles', [
             'clearStorage',
             'updateRole',
+            'removeRole',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -53,6 +55,13 @@ export default {
             this.$addAlert(this.$store, { type: 'success', message: 'Role updated' });
             this.$router.push('/users/roles');
         },
+        onRemoveRoleSuccess() {
+            this.$addAlert(this.$store, { type: 'success', message: 'Role removed' });
+            this.$router.push('/users/roles');
+        },
+        onRemoveRoleError({ message }) {
+            this.$addAlert(this.$store, { type: 'error', message });
+        },
         onSave() {
             const role = {
                 name: this.name,
@@ -65,6 +74,16 @@ export default {
                 onSuccess: this.onUpdateRoleSuccess,
                 onError: this.onError,
             });
+        },
+        onRemove() {
+            const isConfirm = confirm('Are you sure you want to delete this role?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirm) {
+                this.removeRole({
+                    id: this.roleID,
+                    onSuccess: this.onRemoveRoleSuccess,
+                    onError: this.onRemoveRoleError,
+                });
+            }
         },
     },
     async fetch({
