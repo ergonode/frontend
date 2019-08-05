@@ -64,13 +64,11 @@ export default {
                 firstName: this.firstName,
                 lastName: this.lastName,
                 language: this.language,
+                password: this.password,
+                passwordRepeat: this.passwordRepeat,
                 roleId: this.roleId,
                 // status: this.status, TODO: Uncomment when BE is ready
             };
-            if (this.password !== '') {
-                user.password = this.password;
-                user.passwordRepeat = this.passwordRepeat;
-            }
             this.updateUser({
                 id: this.id,
                 data: user,
