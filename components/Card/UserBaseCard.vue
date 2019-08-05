@@ -70,6 +70,15 @@
             :options="languageValues"
             :error-messages="errorLanguageMessage"
             @input="onLanguageChange" />
+        <Select
+            :value="parsedRole"
+            solid
+            required
+            regular
+            label="Role"
+            :options="roleValues"
+            :error-messages="errorRoleMessage"
+            @input="onRoleChange" />
     </BaseCard>
 </template>
 
@@ -99,6 +108,9 @@ export default {
         ...mapState('data', {
             languages: state => state.languages,
         }),
+        ...mapState('roles', {
+            roles: state => state.roles,
+        }),
         ...mapState('users', {
             userID: state => state.id,
             email: state => state.email,
@@ -108,9 +120,13 @@ export default {
             passwordRepeat: state => state.passwordRepeat,
             language: state => state.language,
             status: state => state.status,
+            roleId: state => state.roleId,
         }),
         parsedLanguage() {
             return getValueByKey(this.languages, this.language);
+        },
+        parsedRole() {
+            return getValueByKey(this.roles, this.roleId);
         },
         parsedStatus() {
             return getValueByKey(this.activityStatuses, this.status);
@@ -123,6 +139,9 @@ export default {
         },
         languageValues() {
             return Object.values(this.languages);
+        },
+        roleValues() {
+            return Object.values(this.roles);
         },
         errorEmailMessage() {
             const emailIndex = 'email';
@@ -148,6 +167,10 @@ export default {
             const languageIndex = 'language';
             return this.elementIsValidate(languageIndex);
         },
+        errorRoleMessage() {
+            const roleIndex = 'roleId';
+            return this.elementIsValidate(roleIndex);
+        },
         errorStatusMessage() {
             const statusIndex = 'status';
             return this.elementIsValidate(statusIndex);
@@ -159,6 +182,9 @@ export default {
         ]),
         onLanguageChange(language) {
             this.setAction({ key: 'language', value: getKeyByValue(this.languages, language) });
+        },
+        onRoleChange(role) {
+            this.setAction({ key: 'roleId', value: getKeyByValue(this.roles, role) });
         },
         onStatusChange(status) {
             this.setAction({ key: 'status', value: getKeyByValue(this.activityStatuses, status) });

@@ -82,3 +82,11 @@ export function insertValueAtIndex(array, value, index) {
         ...array.slice(index),
     ];
 }
+
+export function arrayToObject(array, keyField, value = null) {
+    return array.reduce((prev, current) => {
+        const newObject = prev;
+        newObject[current[keyField]] = value ? current[value] : current;
+        return newObject;
+    }, {});
+}

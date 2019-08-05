@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-const state = () => ({
+export default () => ({
     draft: {},
     id: null,
     sku: '',
@@ -14,5 +14,3 @@ const state = () => ({
     templates: [],
     categories: [],
 });
-
-export default state;

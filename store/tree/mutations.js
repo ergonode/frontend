@@ -16,7 +16,7 @@ export const types = {
     SET_EXPAND_ITEM: 'SET_EXPAND_ITEM',
     SET_CHILDREN_LENGTH: 'SET_CHILDREN_LENGTH',
     REMOVE_HIDDEN_ITEM: 'REMOVE_HIDDEN_ITEM',
-    CLEAR_STORAGE: 'CLEAR_STORAGE',
+    CLEAR_STATE: 'CLEAR_STATE',
 };
 
 export default {
@@ -52,7 +52,7 @@ export default {
     [types.REMOVE_HIDDEN_ITEM](state, key) {
         state.hiddenItems = removeFromObjectByKey(state.hiddenItems, key);
     },
-    [types.CLEAR_STORAGE](state) {
+    [types.CLEAR_STATE](state) {
         const states = defaultState();
         Object.keys(states).forEach((key) => {
             state[key] = states[key];

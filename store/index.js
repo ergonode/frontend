@@ -22,9 +22,9 @@ export const actions = {
         dispatch('templateDesigner/clearStorage');
         dispatch('list/clearStorage');
         dispatch('roles/clearStorage');
+        dispatch('users/clearStorage');
         commit('gridDraft/clearStorage');
         commit('translations/clearStorage');
-        commit('users/clearStorage');
         commit('validations/clearStorage');
     },
 };
