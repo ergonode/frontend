@@ -24,12 +24,6 @@
                     underline
                     label="Password"
                     @keyup.13="onSubmit" />
-                <div class="content__checkbox">
-                    <CheckBox v-model="rememberCredentials" />
-                    <span class="checkbox-description txt--graphite">
-                        Remember me
-                    </span>
-                </div>
                 <Button
                     large
                     color="success"
@@ -56,7 +50,6 @@ export default {
     name: 'Login',
     components: {
         TextField: () => import('~/components/Inputs/TextField'),
-        CheckBox: () => import('~/components/Inputs/CheckBox'),
         Button: () => import('~/components/Buttons/Button'),
         Typer: () => import('~/components/Inputs/Typer'),
     },
@@ -66,7 +59,6 @@ export default {
             password: '',
         },
         loginError: false,
-        rememberCredentials: false,
     }),
     methods: {
         ...mapActions('authentication', [

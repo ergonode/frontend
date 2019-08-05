@@ -51,7 +51,6 @@
 
         #{$input}__label {
             position: absolute;
-            top: calc(50% - 8px);
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             color: $lightGraphite;
             padding-left: 2px;

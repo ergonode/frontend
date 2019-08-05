@@ -74,11 +74,12 @@ export default {
             filtersExpanded: true,
         };
     },
-    async beforeCreate() {
-        const gridPath = `${this.$store.state.authentication.user.language}/products`;
-
-        await this.$store.registerModule('productsGrid', gridModule);
-        await this.$store.dispatch('productsGrid/getData', { path: gridPath });
+    beforeCreate() {
+        this.$registerStore({
+            module: gridModule,
+            moduleName: 'productsGrid',
+            store: this.$store,
+        });
     },
     beforeDestroy() {
         this.$store.unregisterModule('productsGrid');
@@ -151,6 +152,16 @@ export default {
                 },
             );
         },
+    },
+    async fetch({ app, store }) {
+        app.$registerStore({
+            module: gridModule,
+            moduleName: 'productsGrid',
+            store,
+        });
+
+        const gridPath = `${store.state.authentication.user.language}/products`;
+        await store.dispatch('productsGrid/getData', { path: gridPath });
     },
 };
 </script>
