@@ -60,7 +60,6 @@ export default {
             this.$router.push('/users');
         },
         onSave() {
-            console.log('yyyy');
             const user = {
                 firstName: this.firstName,
                 lastName: this.lastName,
