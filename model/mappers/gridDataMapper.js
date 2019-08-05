@@ -3,59 +3,68 @@
  * See LICENSE for license details.
  */
 import { toCapitalize } from '~/model/stringWrapper';
-import { insertValueAtIndex } from '~/model/arrayWrapper';
-
-export function insertExtendingColumn(columns) {
-    const { length } = columns;
-    return insertValueAtIndex(
-        columns,
-        {
-            id: 'extender',
-            label: '',
-            type: '',
-            editable: false,
-            width: 'auto',
-            minWidth: 'auto',
-        }, length - 1,
-    );
-}
 
 export function getSortedColumnsByIDs(columns, columnsID) {
     return columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id));
 }
 
 export function getMappedColumns(columns) {
-    const unchangedColumns = columns;
-    const { length } = unchangedColumns;
+    const mappedColumns = [];
+    const pinnedColumns = {};
+    const { length } = columns;
     const defaultColumnWidth = 150;
     const actionColumnWidth = 40;
-    let actionColumnIndex = length - 1;
+    const fixedColumnsLength = length + 1;
+    let isExtenderColumnAdded = false;
 
-    for (let i = 0; i < length; i += 1) {
-        const { width } = unchangedColumns[i];
+    for (let i = 0; i < fixedColumnsLength; i += 1) {
+        const fixedIndex = isExtenderColumnAdded ? i - 1 : i;
+        const gridColumnPosition = `${i + 1} / ${i + 2}`;
+        let width = columns[fixedIndex].width || defaultColumnWidth;
 
-        unchangedColumns[i].width = width || defaultColumnWidth;
-        unchangedColumns[i].minWidth = width || defaultColumnWidth;
-        if (unchangedColumns[i].type === 'CHECK') {
-            unchangedColumns[i].isLeftPinned = true;
+        if (i === length - 1) {
+            mappedColumns.push({
+                id: 'extender',
+                label: '',
+                type: '',
+                editable: false,
+                width: 'auto',
+                minWidth: 'auto',
+            });
+
+            isExtenderColumnAdded = true;
+        } else {
+            if (columns[fixedIndex].type === 'ACTION') {
+                width = actionColumnWidth;
+            }
+            mappedColumns.push({
+                ...columns[fixedIndex],
+                width,
+                minWidth: width,
+            });
         }
 
-        if (unchangedColumns[i].id === 'sku') {
-            unchangedColumns[i].isRightPinned = true;
+        const { id, type } = mappedColumns[i];
+
+        if (type === 'CHECK') {
+            pinnedColumns[id] = {
+                pinned: 'LEFT',
+                position: gridColumnPosition,
+            };
         }
 
-        if (unchangedColumns[i].type === 'ACTION') {
-            unchangedColumns[i].isRightPinned = true;
-            unchangedColumns[i].width = actionColumnWidth;
-            unchangedColumns[i].minWidth = actionColumnWidth;
-            actionColumnIndex = i;
+        if (type === 'ACTION') {
+            pinnedColumns[id] = {
+                pinned: 'RIGHT',
+                position: gridColumnPosition,
+            };
         }
     }
-    if (actionColumnIndex !== length - 1) {
-        unchangedColumns.push(unchangedColumns.splice(actionColumnIndex, 1)[0]);
-    }
 
-    return insertExtendingColumn(unchangedColumns);
+    return {
+        mappedColumns,
+        pinnedColumns,
+    };
 }
 
 export function getMappedGridConfiguration(configuration) {

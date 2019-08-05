@@ -9,15 +9,13 @@
                 'column',
                 'column--border-right',
                 {
-                    'column__left-pinned': column.isLeftPinned,
-                    'column__right-pinned': column.isRightPinned,
                     'column__extender': isExtenderColumn,
                     'column__ghost': isDraggedColumn,
-                    'stuck': isStuck,
+                    'column--last': isLast,
                 }
             ]"
-        :style="colRowsTemplate"
-        :draggable="isColumnMoveable"
+        :style="colGridTemplate"
+        :draggable="isColumnDraggable"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
         @dragover="onDragOver"
@@ -26,7 +24,7 @@
         <template v-if="!isDraggedColumn">
             <slot />
             <div
-                v-if="isColumnResizeable"
+                v-if="!isExtenderColumn && isColumnResizeable"
                 :class="['column__resizer', {
                     'column__resizer--resizing': isResizing
                 }]"
@@ -69,19 +67,19 @@ export default {
             type: Number,
             default: 40,
         },
-        isPinnedRight: {
+        isPinned: {
             type: Boolean,
             default: false,
         },
-        isPinnedLeft: {
+        isLast: {
             type: Boolean,
             default: false,
         },
-        isColumnResizeable: {
+        isLastRightPinnedColumn: {
             type: Boolean,
             default: false,
         },
-        isColumnMoveable: {
+        isLastLeftPinnedColumn: {
             type: Boolean,
             default: false,
         },
@@ -92,17 +90,11 @@ export default {
             startX: 0,
             isResizing: false,
             columnWidth: 0,
-            isStuck: false,
         };
     },
     mounted() {
         const { width } = this.column;
         this.$el.style.width = width ? `${width}px` : 'auto';
-
-        this.$el.addEventListener('sticky-change', this.onStickyChange);
-    },
-    destroyed() {
-        this.$el.removeEventListener('sticky-change', this.onStickyChange);
     },
     computed: {
         ...mapState('authentication', {
@@ -115,10 +107,22 @@ export default {
             ghostElTransform: state => state.ghostElTransform,
             draggedElIndex: state => state.draggedElIndex,
         }),
-        colRowsTemplate() {
+        colGridTemplate() {
             return {
                 gridAutoRows: `${this.rowsHeight}px`,
             };
+        },
+        gridState() {
+            return this.$store.state[this.storeNamespace];
+        },
+        isPinnedColumn() {
+            return typeof this.gridState.pinnedColumns[this.column.id] !== 'undefined';
+        },
+        isColumnDraggable() {
+            return this.gridState.configuration.isColumnMoveable;
+        },
+        isColumnResizeable() {
+            return this.gridState.configuration.isColumnResizeable;
         },
         isExtenderColumn() {
             return this.column.id === 'extender';
@@ -137,11 +141,6 @@ export default {
             'setGhostElTransform',
             'setGhostIndex',
         ]),
-        onStickyChange(event) {
-            const { stuck } = event.detail;
-
-            this.isStuck = stuck;
-        },
         onDragStart(event) {
             const { clientX, clientY } = event;
             const [header] = this.$el.children;
@@ -157,8 +156,7 @@ export default {
 
             if (!isMouseAboveColumnHeader
                 || isMouseAboveLeftBorderLimit
-                || this.isPinnedLeft
-                || this.isPinnedRight
+                || this.isPinnedColumn
                 || this.isExtenderColumn
                 || this.isResizing) {
                 event.preventDefault();
@@ -248,8 +246,7 @@ export default {
                 || (isBefore && this.ghostIndex === fixedIndex - 1)
                 || (!isBefore && this.ghostIndex === fixedIndex + 1)
                 || (this.isExtenderColumn && !isBefore)
-                || this.isPinnedLeft
-                || this.isPinnedRight) {
+                || this.isPinnedColumn) {
                 return false;
             }
 
@@ -440,12 +437,12 @@ export default {
     .column {
         position: relative;
         display: grid;
-        padding-right: 1px;
 
         &::before {
             position: absolute;
             top: 0;
             right: 0;
+            z-index: 6;
             width: 1px;
             height: 100%;
             background-color: $grey;
@@ -468,7 +465,7 @@ export default {
             content: "";
         }
 
-        &--border-right {
+        &--border-right:not(&--last) {
             &::before {
                 opacity: 1;
             }
@@ -478,6 +475,37 @@ export default {
             z-index: 999;
 
             &::after {
+                opacity: 1;
+            }
+        }
+
+        &.sticky {
+            position: sticky;
+            z-index: 9999;
+        }
+
+        &.drop-shadow-right-pinned {
+            &::before {
+                left: 0;
+                right: unset;
+                z-index: unset;
+                background-color: unset;
+                box-shadow:
+                    0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                    0 3px 1px -2px rgba(0, 0, 0, 0.12),
+                    0 1px 5px 0 rgba(0, 0, 0, 0.2);
+                opacity: 1;
+            }
+        }
+
+        &.drop-shadow-left-pinned {
+            &::before {
+                z-index: unset;
+                background-color: unset;
+                box-shadow:
+                    0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                    0 3px 1px -2px rgba(0, 0, 0, 0.12),
+                    0 1px 5px 0 rgba(0, 0, 0, 0.2);
                 opacity: 1;
             }
         }
@@ -503,20 +531,6 @@ export default {
                 inset 0 2px 2px 0 rgba(0, 0, 0, 0.14),
                 inset 0 3px 1px 0 rgba(0, 0, 0, 0.12),
                 inset 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-        }
-
-        &__left-pinned, &__right-pinned {
-            position: sticky;
-            z-index: 9999;
-        }
-
-        &__right-pinned {
-            &.stuck {
-                box-shadow:
-                    0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                    0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                    0 1px 5px 0 rgba(0, 0, 0, 0.2);
-            }
         }
     }
 </style>

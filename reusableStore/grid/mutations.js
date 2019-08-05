@@ -8,6 +8,7 @@ export const types = {
     SET_EDITING_CELL_COORDINATES: 'SET_EDITING_CELL_COORDINATES',
     SET_CONFIGURATION: 'SET_CONFIGURATION',
     SET_COLUMNS: 'SET_COLUMNS',
+    SET_PINNED_COLUMNS: 'SET_PINNED_COLUMNS',
     SET_ROWS: 'SET_ROWS',
     SET_COUNT: 'SET_COUNT',
     SET_FILTERED: 'SET_FILTERED',
@@ -38,6 +39,9 @@ export default {
     },
     [types.SET_COLUMNS](state, columns) {
         state.columns = columns;
+    },
+    [types.SET_PINNED_COLUMNS](state, columns) {
+        state.pinnedColumns = columns;
     },
     [types.SET_ROWS](state, payload) {
         state.rows = payload;

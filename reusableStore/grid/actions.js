@@ -53,7 +53,7 @@ export default {
             const { count, filtered } = info;
             const columnsToMap = columnsID ? getSortedColumnsByIDs(columns, columnsID) : columns;
             const visibleColumns = columnsToMap.filter(col => col.visible);
-            const mappedColumns = getMappedColumns(visibleColumns);
+            const { mappedColumns, pinnedColumns } = getMappedColumns(visibleColumns);
             const mappedConfiguration = getMappedGridConfiguration(configuration);
 
             this.$cookies.set(COLUMN_IDS, visibleColumns.map(col => col.id).join(','));
@@ -63,6 +63,7 @@ export default {
             commit(types.SET_COUNT, count);
             commit(types.SET_FILTERED, filtered);
             commit(types.SET_COLUMNS, mappedColumns);
+            commit(types.SET_PINNED_COLUMNS, pinnedColumns);
         }).catch(err => console.log(err));
     },
     getColumnData({ commit, state }, {

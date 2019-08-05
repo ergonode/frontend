@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['header-cell', { 'draggable': !isPinnedColumn && isColumnEditable }]">
+    <div :class="['header-cell', { 'draggable': !pinnedColumn && isColumnEditable }]">
         <span
             class="header-cell__title txt-fixed"
             v-text="title" />
@@ -25,8 +25,25 @@
                 v-visible="isContextualMenuActive || isSorted || isMouseOver"
                 icon-path="Others/IconDots"
                 :options="contextualMenuItems"
-                @input="onSelectValue"
-                @focus="onSelectFocus" />
+                @focus="onSelectFocus">
+                <template v-slot:content>
+                    <List>
+                        <ListElement
+                            v-for="(option, optIndex) in contextualMenuItems"
+                            :key="option"
+                            regular
+                            @click.native="() => onSelectValue(optIndex)">
+                            <ListElementDescription
+                                :subtitle="option"
+                                subtitle-color="txt--graphite" />
+                            <CheckBox
+                                v-if="option !== 'Remove'"
+                                ref="checkbox"
+                                :value="pinnedColumn" />
+                        </ListElement>
+                    </List>
+                </template>
+            </ButtonSelect>
         </div>
     </div>
 </template>
@@ -43,6 +60,10 @@ export default {
     components: {
         ButtonSelect: () => import('~/components/Inputs/Select/ButtonSelect'),
         IconArrowSort: () => import('~/components/Icon/Arrows/IconArrowSort'),
+        List: () => import('~/components/List/List'),
+        ListElement: () => import('~/components/List/ListElement'),
+        ListElementDescription: () => import('~/components/List/ListElementDescription'),
+        CheckBox: () => import('~/components/Inputs/CheckBox'),
     },
     props: {
         storeNamespace: {
@@ -65,19 +86,19 @@ export default {
     },
     data() {
         return {
-            contextualMenuItems: ['Remove'],
+            contextualMenuItems: ['Remove', 'Pin to left', 'Pin to right'],
             isContextualMenuActive: false,
             isMouseOver: false,
         };
     },
     mounted() {
-        if (!this.isPinnedColumn) {
+        if (!this.pinnedColumn) {
             this.$el.addEventListener('mouseenter', this.onMouseEnter);
             this.$el.addEventListener('mouseleave', this.onMouseLeave);
         }
     },
     destroyed() {
-        if (!this.isPinnedColumn) {
+        if (!this.pinnedColumn) {
             this.$el.removeEventListener('mouseenter', this.onMouseEnter);
             this.$el.removeEventListener('mouseleave', this.onMouseLeave);
         }
@@ -89,9 +110,12 @@ export default {
         gridState() {
             return this.$store.state[this.storeNamespace];
         },
-        isPinnedColumn() {
-            const { isLeftPinned, isRightPinned } = this.column;
-            return isLeftPinned || isRightPinned;
+        pinnedColumn() {
+            const pinnedColumn = this.gridState.pinnedColumns[this.column.id];
+
+            if (!pinnedColumn) return null;
+
+            return pinnedColumn;
         },
         isSorted() {
             return this.gridState.sortedByColumn.index === this.column.id;
@@ -161,14 +185,19 @@ export default {
             }
         },
         onSelectValue(value) {
-            // TODO: It is going to be populated in next tasks, when we will assign actions for selected items
-            if (value === 'Remove') {
+            switch (value) {
+            case 'Remove': {
                 const columnElement = this.getColumnAtIndex(this.columnIndex);
 
                 // We are hovering element while removing it
                 this.borderColumnAction('add', columnElement);
                 this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index: this.columnIndex });
                 removeColumnCookieByID(this.$cookies, this.column.id);
+                break;
+            }
+            case 'Pin to left': break;
+            case 'Pin to right': break;
+            default: break;
             }
         },
         getColumnAtIndex(index) {
@@ -200,7 +229,7 @@ export default {
             }
         },
         setHorizontalWrapperOpacityIfNeeded(opacity) {
-            if (!this.isSorted && !this.isPinnedColumn) {
+            if (!this.isSorted && !this.pinnedColumn) {
                 const horizontalWrapperElement = this.$el.querySelector('.horizontal-wrapper');
                 horizontalWrapperElement.style.opacity = opacity;
             }
