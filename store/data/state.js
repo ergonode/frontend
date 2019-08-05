@@ -10,4 +10,5 @@ export default () => ({
     attrGroups: [],
     dateFormats: {},
     imageFormats: {},
+    privileges: {},
 });

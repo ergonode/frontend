@@ -108,6 +108,9 @@ export default {
         ...mapState('data', {
             languages: state => state.languages,
         }),
+        ...mapState('roles', {
+            roles: state => state.roles,
+        }),
         ...mapState('users', {
             userID: state => state.id,
             email: state => state.email,
@@ -117,12 +120,13 @@ export default {
             passwordRepeat: state => state.passwordRepeat,
             language: state => state.language,
             status: state => state.status,
+            roleId: state => state.roleId,
         }),
         parsedLanguage() {
             return getValueByKey(this.languages, this.language);
         },
         parsedRole() {
-            return getValueByKey(this.languages, this.language);
+            return getValueByKey(this.roles, this.roleId);
         },
         parsedStatus() {
             return getValueByKey(this.activityStatuses, this.status);
@@ -137,7 +141,7 @@ export default {
             return Object.values(this.languages);
         },
         roleValues() {
-            return Object.values(this.languages);
+            return Object.values(this.roles);
         },
         errorEmailMessage() {
             const emailIndex = 'email';
@@ -180,7 +184,7 @@ export default {
             this.setAction({ key: 'language', value: getKeyByValue(this.languages, language) });
         },
         onRoleChange(role) {
-            this.setAction({ key: 'roleId', value: getKeyByValue(this.languages, role) });
+            this.setAction({ key: 'roleId', value: getKeyByValue(this.roles, role) });
         },
         onStatusChange(status) {
             this.setAction({ key: 'status', value: getKeyByValue(this.activityStatuses, status) });

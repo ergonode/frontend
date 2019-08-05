@@ -41,7 +41,7 @@ export default {
             commit(types.SET_STATE, { key: 'password', value: password });
             commit(types.SET_STATE, { key: 'passwordRepeat', value: password_repeat });
             commit(types.SET_STATE, { key: 'status', value: status });
-            commit(types.SET_STATE, { key: 'role_id', value: role_id });
+            commit(types.SET_STATE, { key: 'roleId', value: role_id });
         }).catch(e => onError(e.data));
     },
     createUser(
@@ -71,11 +71,11 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
 
         return Promise.all([
-            this.app.$axios.$put(`${userLanguageCode}/accounts/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data)),
-            this.app.$axios.$put(`${userLanguageCode}/accounts/${id}/avatar`, { multimedia: avatarId }).then(() => onSuccess()).catch(e => onError(e.data)),
-        ]);
+            this.app.$axios.$put(`${userLanguageCode}/accounts/${id}`, data),
+            this.app.$axios.$put(`${userLanguageCode}/accounts/${id}/avatar`, { multimedia: avatarId }),
+        ]).then(() => onSuccess()).catch(e => onError(e.data));
     },
     clearStorage({ commit }) {
-        commit(types.CLEAR_STORAGE);
+        commit(types.CLEAR_STATE);
     },
 };

@@ -60,15 +60,18 @@ export default {
             this.$router.push('/users');
         },
         onSave() {
+            console.log('yyyy');
             const user = {
                 firstName: this.firstName,
                 lastName: this.lastName,
-                password: this.password,
-                passwordRepeat: this.passwordRepeat,
                 language: this.language,
                 roleId: this.roleId,
                 // status: this.status, TODO: Uncomment when BE is ready
             };
+            if (this.password !== '') {
+                user.password = this.password;
+                user.passwordRepeat = this.passwordRepeat;
+            }
             this.updateUser({
                 id: this.id,
                 data: user,

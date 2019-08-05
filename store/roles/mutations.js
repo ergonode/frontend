@@ -9,7 +9,8 @@ export const types = {
     SET_ROLE_NAME: 'SET_ROLE_NAME',
     SET_ROLE_DESCRIPTION: 'SET_ROLE_DESCRIPTION',
     SET_ROLE_PRIVILEGES: 'SET_ROLE_PRIVILEGES',
-    CLEAR_STORAGE: 'CLEAR_STORAGE',
+    SET_ROLES: 'SET_ROLES',
+    CLEAR_STATE: 'CLEAR_STATE',
 };
 
 export default {
@@ -25,7 +26,10 @@ export default {
     [types.SET_ROLE_PRIVILEGES](state, value) {
         state.privileges = value;
     },
-    [types.CLEAR_STORAGE](state) {
+    [types.SET_ROLES](state, value) {
+        state.roles = value;
+    },
+    [types.CLEAR_STATE](state) {
         const states = defaultState();
         Object.keys(states).forEach((key) => {
             state[key] = states[key];

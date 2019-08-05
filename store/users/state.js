@@ -12,5 +12,5 @@ export default () => ({
     password: '',
     passwordRepeat: '',
     status: '',
-    role: '',
+    roleId: null,
 });

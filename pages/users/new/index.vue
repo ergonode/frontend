@@ -77,5 +77,13 @@ export default {
             });
         },
     },
+    async fetch({
+        store,
+    }) {
+        await store.dispatch('roles/getRoles', {
+            limit: 9999,
+            offset: 0,
+        });
+    },
 };
 </script>
