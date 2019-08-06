@@ -7,15 +7,17 @@
 </template>
 
 <script>
+import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
+
 export default {
     name: 'GridColumnSentinel',
     props: {
-        columnId: {
-            type: String,
+        index: {
+            type: Number,
             required: true,
         },
-        pinnedState: {
-            type: String,
+        column: {
+            type: Object,
             required: true,
         },
     },
@@ -35,8 +37,8 @@ export default {
     computed: {
         pinnedStateClasses() {
             return {
-                'column-sentinel--left': this.pinnedState === 'LEFT',
-                'column-sentinel--right': this.pinnedState === 'RIGHT',
+                'column-sentinel--left': this.column.state === PinnedColumnState.LEFT,
+                'column-sentinel--right': this.column.state === PinnedColumnState.RIGHT,
             };
         },
     },
@@ -48,8 +50,9 @@ export default {
                     const entry = entries[i];
                     this.$emit('sticky', {
                         sticky: !entry.isIntersecting,
-                        columnId: this.columnId,
-                        state: this.pinnedState,
+                        columnId: this.column.id,
+                        index: this.index,
+                        state: this.column.state,
                     });
                 }
             }), {

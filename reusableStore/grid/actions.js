@@ -226,7 +226,26 @@ export default {
             });
         }
     },
-    clearStorage({ commit }) {
-        commit(types.CLEAR_STATE);
+    addPinnedColumn({ commit, state }, column) {
+        const { pinnedColumns } = state;
+        const { length } = pinnedColumns;
+        const [gridColumnToInsert] = column.position.split(' / ');
+
+        for (let i = 0; i < length; i += 1) {
+            const [gridColumn] = pinnedColumns[i].position.split(' / ');
+
+            if (gridColumnToInsert < gridColumn) {
+                commit(types.INSERT_PINNED_COLUMN_AT_INDEX, { index: i, column });
+                break;
+            }
+        }
+    },
+    removePinnedColumn({ commit, state }, id) {
+        const { pinnedColumns } = state;
+        const index = pinnedColumns.findIndex(col => col.id === id);
+
+        console.log(index);
+
+        commit(types.REMOVE_PINNED_COLUMN_AT_INDEX, index);
     },
 };

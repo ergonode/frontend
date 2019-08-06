@@ -9,6 +9,8 @@ export const types = {
     SET_CONFIGURATION: 'SET_CONFIGURATION',
     SET_COLUMNS: 'SET_COLUMNS',
     SET_PINNED_COLUMNS: 'SET_PINNED_COLUMNS',
+    INSERT_PINNED_COLUMN_AT_INDEX: 'INSERT_PINNED_COLUMN_AT_INDEX',
+    REMOVE_PINNED_COLUMN_AT_INDEX: 'REMOVE_PINNED_COLUMN_AT_INDEX',
     SET_ROWS: 'SET_ROWS',
     SET_COUNT: 'SET_COUNT',
     SET_FILTERED: 'SET_FILTERED',
@@ -27,7 +29,6 @@ export const types = {
     REMOVE_SELECTED_ROWS: 'REMOVE_SELECTED_ROWS',
     ADD_DRAFT_TO_PRODUCT_AT_INDEX: 'ADD_DRAFT_TO_PRODUCT_AT_INDEX',
     SET_NUMBER_OF_ELEMENTS_TO_DISPLAY: 'SET_NUMBER_OF_ELEMENTS_TO_DISPLAY',
-    CLEAR_STATE: 'CLEAR_STATE',
 };
 
 export default {
@@ -42,6 +43,12 @@ export default {
     },
     [types.SET_PINNED_COLUMNS](state, columns) {
         state.pinnedColumns = columns;
+    },
+    [types.INSERT_PINNED_COLUMN_AT_INDEX](state, { index, column }) {
+        state.pinnedColumns = insertValueAtIndex(state.pinnedColumns, column, index);
+    },
+    [types.REMOVE_PINNED_COLUMN_AT_INDEX](state, index) {
+        state.pinnedColumns.splice(index, 1);
     },
     [types.SET_ROWS](state, payload) {
         state.rows = payload;
@@ -100,20 +107,5 @@ export default {
     },
     [types.SET_NUMBER_OF_ELEMENTS_TO_DISPLAY](state, number) {
         state.numberOfDisplayedElements = Number(number);
-    },
-    [types.CLEAR_STATE](state) {
-        state.numberOfDisplayedElements = 25;
-        state.columns = [];
-        state.rows = [];
-        state.count = 0;
-        state.filtered = 0;
-        state.filter = {};
-        state.globalFilters = [];
-        state.displayedPage = 1;
-        state.configuration = {};
-        state.sortedByColumn = {};
-        state.isSelectedAllRows = false;
-        state.selectedRows = {};
-        state.editingCellCoordinates = {};
     },
 };

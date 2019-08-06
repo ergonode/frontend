@@ -4,11 +4,8 @@
  */
 <template>
     <div :class="['header-cell', { 'draggable': !pinnedColumn && isColumnEditable }]">
-        <span
-            class="header-cell__title txt-fixed"
-            v-text="title" />
+        <GridHeaderTitle :header="title" />
         <div
-            v-if="column.id !== 'edit'"
             :class="[
                 'horizontal-wrapper',
                 {
@@ -29,17 +26,17 @@
                 <template v-slot:content>
                     <List>
                         <ListElement
-                            v-for="(option, optIndex) in contextualMenuItems"
-                            :key="option"
+                            v-for="option in contextualMenuItems"
+                            :key="option.text"
                             regular
-                            @click.native="() => onSelectValue(optIndex)">
+                            @click.native="() => onSelectOption(option)">
                             <ListElementDescription
-                                :subtitle="option"
+                                :subtitle="option.text"
                                 subtitle-color="txt--graphite" />
                             <CheckBox
-                                v-if="option !== 'Remove'"
+                                v-if="option.text !== 'Remove'"
                                 ref="checkbox"
-                                :value="pinnedColumn" />
+                                :value="option.value" />
                         </ListElement>
                     </List>
                 </template>
@@ -54,6 +51,7 @@ import {
     removeColumnCookieByID,
 } from '~/model/grid/cookies/GridLayoutConfiguration';
 import { SortingOrder } from '~/model/icons/SortingOrder';
+import { PinnedColumnState } from '../../model/grid/layout/PinnedColumnState';
 
 export default {
     name: 'GridHeaderCell',
@@ -64,6 +62,7 @@ export default {
         ListElement: () => import('~/components/List/ListElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         CheckBox: () => import('~/components/Inputs/CheckBox'),
+        GridHeaderTitle: () => import('~/components/Grid/GridHeaderTitle'),
     },
     props: {
         storeNamespace: {
@@ -86,10 +85,23 @@ export default {
     },
     data() {
         return {
-            contextualMenuItems: ['Remove', 'Pin to left', 'Pin to right'],
+            contextualMenuItems: [
+                { text: 'Remove' },
+                // TODO: Add it whenever we finish dynamic pinning columns
+                // { text: 'Pin to left', value: false },
+                // { text: 'Pin to right', value: false },
+            ],
             isContextualMenuActive: false,
             isMouseOver: false,
         };
+    },
+    created() {
+        if (this.pinnedColumn) {
+            const { state } = this.pinnedColumn;
+
+            if (state === PinnedColumnState.LEFT) this.contextualMenuItems[1].value = true;
+            else this.contextualMenuItems[2].value = true;
+        }
     },
     mounted() {
         if (!this.pinnedColumn) {
@@ -111,6 +123,7 @@ export default {
             return this.$store.state[this.storeNamespace];
         },
         pinnedColumn() {
+            if (!this.gridState) return null;
             const pinnedColumn = this.gridState.pinnedColumns[this.column.id];
 
             if (!pinnedColumn) return null;
@@ -138,9 +151,6 @@ export default {
 
             if (type === 'PRICE') {
                 suffix = parameter.currency;
-            }
-            if (type === 'ACTION' && label === null) {
-                return 'Edit';
             }
 
             if (!language) {
@@ -181,11 +191,11 @@ export default {
         onSelectFocus(isFocused) {
             this.isContextualMenuActive = isFocused;
             if (!this.isContextualMenuActive) {
-                this.setHorizontalWrapperOpacityIfNeeded(0);
+                this.onMouseLeave();
             }
         },
-        onSelectValue(value) {
-            switch (value) {
+        onSelectOption(option) {
+            switch (option.text) {
             case 'Remove': {
                 const columnElement = this.getColumnAtIndex(this.columnIndex);
 
@@ -195,10 +205,22 @@ export default {
                 removeColumnCookieByID(this.$cookies, this.column.id);
                 break;
             }
-            case 'Pin to left': break;
-            case 'Pin to right': break;
+            case 'Pin to left':
+                this.pinOrRemovePinnedColumn(!option.value, PinnedColumnState.LEFT);
+                this.contextualMenuItems[1].value = !option.value;
+                break;
+            case 'Pin to right':
+                this.pinOrRemovePinnedColumn(!option.value, PinnedColumnState.RIGHT);
+                this.contextualMenuItems[2].value = !option.value;
+                break;
             default: break;
             }
+        },
+        pinOrRemovePinnedColumn(pinned, state) {
+            const columnPosition = `${this.columnIndex + 1} / ${this.columnIndex + 2}`;
+
+            if (pinned) this.$store.dispatch(`${this.storeNamespace}/addPinnedColumn`, { id: this.column.id, state, position: columnPosition });
+            else this.$store.dispatch(`${this.storeNamespace}/removePinnedColumn`, this.column.id);
         },
         getColumnAtIndex(index) {
             const gridElement = document.querySelector('.grid');
@@ -207,7 +229,7 @@ export default {
             return columnElement;
         },
         onMouseEnter() {
-            if (this.title === '' || this.isColumnDragging) return;
+            if (this.isColumnDragging) return;
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
@@ -217,16 +239,14 @@ export default {
             this.setHorizontalWrapperOpacityIfNeeded(1);
         },
         onMouseLeave() {
-            if (this.title === '' || this.isColumnDragging) return;
+            if (this.isColumnDragging || this.isContextualMenuActive) return;
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
             columnElement.classList.remove('hover');
             this.isMouseOver = false;
             this.borderColumnAction('add', columnElement);
-            if (!this.isContextualMenuActive) {
-                this.setHorizontalWrapperOpacityIfNeeded(0);
-            }
+            this.setHorizontalWrapperOpacityIfNeeded(0);
         },
         setHorizontalWrapperOpacityIfNeeded(opacity) {
             if (!this.isSorted && !this.pinnedColumn) {
@@ -241,7 +261,8 @@ export default {
             const indexOfThisElement = [...columns].indexOf(columnElement);
 
             if (indexOfThisElement - 1 > -1) {
-                columns[indexOfThisElement - 1].classList[action]('column--border-right');
+                columns[indexOfThisElement - 1].classList[action]('border-right');
+                columns[indexOfThisElement].classList[action]('border-right');
             }
         },
     },
@@ -255,16 +276,8 @@ export default {
         flex: 1;
         justify-content: space-between;
         align-items: center;
-        padding: 8px;
         user-select: none;
         pointer-events: auto;
-
-        &__title {
-            @include setFont(bold, small, regular, $graphite);
-
-            flex: 1 1 auto;
-            width: 0;
-        }
 
         .draggable {
             cursor: grab;
@@ -273,7 +286,6 @@ export default {
         .horizontal-wrapper {
             display: flex;
             align-items: center;
-            margin: 0 -8px 0 8px;
 
             & > i {
                 cursor: pointer;

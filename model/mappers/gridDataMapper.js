@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { toCapitalize } from '~/model/stringWrapper';
+import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
 
 export function getSortedColumnsByIDs(columns, columnsID) {
     return columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id));
@@ -10,7 +11,7 @@ export function getSortedColumnsByIDs(columns, columnsID) {
 
 export function getMappedColumns(columns) {
     const mappedColumns = [];
-    const pinnedColumns = {};
+    const pinnedColumns = [];
     const { length } = columns;
     const defaultColumnWidth = 150;
     const actionColumnWidth = 40;
@@ -47,17 +48,19 @@ export function getMappedColumns(columns) {
         const { id, type } = mappedColumns[i];
 
         if (type === 'CHECK') {
-            pinnedColumns[id] = {
-                pinned: 'LEFT',
+            pinnedColumns.push({
+                id,
+                state: PinnedColumnState.LEFT,
                 position: gridColumnPosition,
-            };
+            });
         }
 
         if (type === 'ACTION') {
-            pinnedColumns[id] = {
-                pinned: 'RIGHT',
+            pinnedColumns.push({
+                id,
+                state: PinnedColumnState.RIGHT,
                 position: gridColumnPosition,
-            };
+            });
         }
     }
 

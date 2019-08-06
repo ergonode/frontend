@@ -38,19 +38,21 @@
                 :is-selected="gridState.isSelectedAllRows
                     || gridState.selectedRows[(rowIndex + 2) * gridState.displayedPage]" />
         </GridColumn>
-        <GridColumnSentinel
-            v-for="(value, columnId, index) in gridState.pinnedColumns"
-            :key="index"
-            :style="{gridColumn: value.position}"
-            :column-id="columnId"
-            :pinned-state="value.pinned"
-            @sticky="onStickyChange" />
+        <template v-for="(column, index) in gridState.pinnedColumns">
+            <GridColumnSentinel
+                :key="index"
+                :style="{gridColumn: column.position}"
+                :index="gridState.columns.length + index"
+                :column="column"
+                @sticky="onStickyChange" />
+        </template>
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import { sum } from '~/model/arrayWrapper';
+import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
 
 export default {
     name: 'Grid',
@@ -105,28 +107,26 @@ export default {
         },
     },
     methods: {
-        onStickyChange({ sticky, columnId, state }) {
+        onStickyChange({
+            sticky, columnId, state,
+        }) {
             const columnIndex = this.gridState.columns.findIndex(col => col.id === columnId);
             const { children: columnEls } = this.$el;
             const columnEl = columnEls[columnIndex];
 
             if (sticky) {
-                if (state === 'RIGHT') {
-                    columnEl.style.right = `${sum(this.rightPinnedColumns.map(col => col.width))}px`;
-                    this.rightPinnedColumns.push({
-                        index: columnIndex, width: columnEl.offsetWidth,
-                    });
+                if (state === PinnedColumnState.RIGHT) {
+                    columnEl.style.right = `${sum(this.rightPinnedColumns)}px`;
+                    this.rightPinnedColumns.push(columnEl.offsetWidth);
                     columnEl.classList.add('drop-shadow-right-pinned');
                 } else {
-                    columnEl.style.left = `${sum(this.leftPinnedColumns.map(col => col.width))}px`;
-                    this.leftPinnedColumns.push({
-                        index: columnIndex, width: columnEl.offsetWidth,
-                    });
+                    columnEl.style.left = `${sum(this.leftPinnedColumns)}px`;
+                    this.leftPinnedColumns.push(columnEl.offsetWidth);
                     columnEl.classList.add('drop-shadow-left-pinned');
                 }
                 columnEl.classList.add('sticky');
             } else {
-                if (state === 'RIGHT') {
+                if (state === PinnedColumnState.RIGHT) {
                     const indexToRemove = this.rightPinnedColumns.length - 1;
 
                     columnEl.classList.remove('drop-shadow-right-pinned');

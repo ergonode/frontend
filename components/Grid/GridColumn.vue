@@ -7,7 +7,7 @@
         :class="
             [
                 'column',
-                'column--border-right',
+                'border-right',
                 {
                     'column__extender': isExtenderColumn,
                     'column__ghost': isDraggedColumn,
@@ -116,7 +116,7 @@ export default {
             return this.$store.state[this.storeNamespace];
         },
         isPinnedColumn() {
-            return typeof this.gridState.pinnedColumns[this.column.id] !== 'undefined';
+            return this.gridState.pinnedColumns.find(col => col.id === this.column.id);
         },
         isColumnDraggable() {
             return this.gridState.configuration.isColumnMoveable;
@@ -186,7 +186,7 @@ export default {
                 const grid = document.documentElement.querySelector('.grid');
 
                 for (let i = 0; i < grid.children.length; i += 1) {
-                    grid.children[i].style.transform = 'translateX(0)';
+                    grid.children[i].style.transform = null;
                 }
 
                 if (this.ghostIndex !== index) {
@@ -216,7 +216,7 @@ export default {
                 const grid = document.documentElement.querySelector('.grid');
 
                 for (let i = 0; i < grid.children.length; i += 1) {
-                    grid.children[i].style.transform = 'translateX(0)';
+                    grid.children[i].style.transform = null;
                 }
 
                 this.$store.dispatch(`${this.storeNamespace}/getColumnData`, {
@@ -272,7 +272,7 @@ export default {
 
             if ((isOutOfBounds || isTrashBelowMouse) && ghostColumnExists) {
                 for (let i = 0; i < grid.children.length; i += 1) {
-                    grid.children[i].style.transform = 'translateX(0)';
+                    grid.children[i].style.transform = null;
                 }
 
                 this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index: this.draggedElIndex });
@@ -347,7 +347,7 @@ export default {
             );
         },
         addBorderToRightNeighbour(neighbour) {
-            neighbour.classList.add('column--border-right');
+            neighbour.classList.add('border-right');
         },
         getColumnFixedIndex() {
             if (this.$el.style.transform) {
@@ -465,7 +465,7 @@ export default {
             content: "";
         }
 
-        &--border-right:not(&--last) {
+        &.border-right:not(&--last) {
             &::before {
                 opacity: 1;
             }
