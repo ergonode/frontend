@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
+import { arrayToObject } from '~/model/arrayWrapper';
 
 export default {
     setRoleId({ commit }, value) {
@@ -16,6 +17,12 @@ export default {
     },
     setPrivileges({ commit }, value) {
         commit(types.SET_ROLE_PRIVILEGES, value);
+    },
+    getRoles({ commit, rootState }, params) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$get(`${userLanguageCode}/roles`, { params }).then(({ collection: roles }) => {
+            commit(types.SET_ROLES, arrayToObject(roles, 'id', 'name'));
+        }).catch(e => console.log(e));
     },
     getRoleById(
         { commit, rootState },
@@ -72,6 +79,6 @@ export default {
         return this.app.$axios.$delete(`${userLanguageCode}/roles/${id}`).then(() => onSuccess()).catch(e => onError(e.data));
     },
     clearStorage({ commit }) {
-        commit(types.CLEAR_STORAGE);
+        commit(types.CLEAR_STATE);
     },
 };
