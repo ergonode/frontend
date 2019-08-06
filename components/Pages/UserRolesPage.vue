@@ -42,6 +42,17 @@ export default {
                         },
                     },
                 },
+                {
+                    title: 'Privileges',
+                    path: `/users/roles/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/privileges`,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: 'SAVE PRIVILEGES',
+                            action: this.onSave,
+                        },
+                    },
+                },
             ],
         };
     },
