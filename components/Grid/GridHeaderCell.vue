@@ -51,7 +51,7 @@ import {
     removeColumnCookieByID,
 } from '~/model/grid/cookies/GridLayoutConfiguration';
 import { SortingOrder } from '~/model/icons/SortingOrder';
-import { PinnedColumnState } from '../../model/grid/layout/PinnedColumnState';
+import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
 
 export default {
     name: 'GridHeaderCell',

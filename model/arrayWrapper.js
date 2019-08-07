@@ -83,7 +83,7 @@ export function insertValueAtIndex(array, value, index) {
     ];
 }
 
-export function sum(arr) {
+export function sumIntegers(arr) {
     if (!Array.isArray(arr)) return 0;
 
     const { length } = arr;
