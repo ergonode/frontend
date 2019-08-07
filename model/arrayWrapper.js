@@ -83,6 +83,19 @@ export function insertValueAtIndex(array, value, index) {
     ];
 }
 
+export function sumIntegers(arr) {
+    if (!Array.isArray(arr)) return 0;
+
+    const { length } = arr;
+    let value = 0;
+
+    for (let i = 0; i < length; i += 1) {
+        value += arr[i];
+    }
+
+    return value;
+}
+
 export function arrayToObject(array, keyField, value = null) {
     return array.reduce((prev, current) => {
         const newObject = prev;

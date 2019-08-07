@@ -64,7 +64,6 @@ export default {
                     color: 'transparent',
                     action: this.onRemove,
                     theme: 'dark',
-                    icon: 'sprite-system system-trash--deactive',
                 },
             ];
         }

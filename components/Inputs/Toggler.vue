@@ -6,22 +6,14 @@
     <div
         :class="['toggler', togglerStateClasses]"
         @click="onClick">
-        <div class="toggler__state-wrapper">
-            <Icon
-                v-if="value"
-                icon="switch-positive" />
-        </div>
+        <div class="toggler__state-wrapper" />
     </div>
 </template>
 
 <script>
-import Icon from '~/components/Icon/Icon';
 
 export default {
     name: 'Toggler',
-    components: {
-        Icon,
-    },
     props: {
         value: {
             type: Boolean,
@@ -55,6 +47,7 @@ export default {
         position: relative;
         display: flex;
         justify-content: flex-start;
+        align-items: center;
         width: 30px;
 
         &::before {
@@ -73,6 +66,7 @@ export default {
         }
 
         &__state-wrapper {
+            position: relative;
             z-index: 1;
             display: flex;
             width: 16px;
@@ -83,6 +77,19 @@ export default {
                 0 2px 2px 0 rgba(0, 0, 0, 0.14),
                 0 3px 1px -2px rgba(0, 0, 0, 0.12),
                 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+
+            &::after {
+                position: absolute;
+                top: 5px;
+                left: 4px;
+                width: 6px;
+                height: 3px;
+                border-left: 2px solid $white;
+                border-bottom: 2px solid $white;
+                transform: rotate(-45deg);
+                opacity: 0;
+                content: "";
+            }
         }
 
         &--selected {
@@ -90,6 +97,10 @@ export default {
 
             #{$toogler}__state-wrapper {
                 background-color: $success;
+            }
+
+            #{$toogler}__state-wrapper::after {
+                opacity: 1;
             }
         }
 

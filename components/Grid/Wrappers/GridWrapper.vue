@@ -5,43 +5,10 @@
 <template>
     <div :class="gridWrapperClasses">
         <Grid
-            :columns="gridState.columns"
-            :is-placeholder="isEmptyGrid">
-            <GridColumn
-                v-for="(column, colIndex) in gridState.columns"
-                :key="column.id"
-                :store-namespace="storeNamespace"
-                :index="colIndex"
-                :column="column"
-                :rows-height="rowsHeight"
-                :is-pinned-right="column.isRightPinned"
-                :is-pinned-left="column.isLeftPinned"
-                :is-column-resizeable="gridState.configuration.isColumnResizeable"
-                :is-column-moveable="gridState.configuration.isColumnMoveable">
-                <GridWrapperHeaderCell
-                    :store-namespace="storeNamespace"
-                    :column-index="colIndex"
-                    :column="column"
-                    :path="actionPaths.getData" />
-                <GridWrapperHeaderActionCell
-                    :store-namespace="storeNamespace"
-                    :column-index="colIndex"
-                    :column="column"
-                    :path="actionPaths.getData" />
-                <GridWrapperCell
-                    v-for="(row, rowIndex) in gridState.rows"
-                    :key="`row[${rowIndex + 2}, ${column.id}]`"
-                    :store-namespace="storeNamespace"
-                    :column-index="colIndex"
-                    :row-index="(rowIndex + 2) * gridState.displayedPage"
-                    :column="column"
-                    :row="row"
-                    :draft="drafts[gridState.rows[rowIndex].id]"
-                    :edit-routing-path="actionPaths.routerEdit"
-                    :is-selected="gridState.isSelectedAllRows
-                        || gridState.selectedRows[(rowIndex + 2) * gridState.displayedPage]" />
-            </GridColumn>
-        </Grid>
+            :store-namespace="storeNamespace"
+            :is-placeholder="isEmptyGrid"
+            :action-paths="actionPaths"
+            :rows-height="rowsHeight" />
         <GridPlaceholder v-if="isEmptyGrid" />
     </div>
 </template>
@@ -53,10 +20,6 @@ export default {
     name: 'GridWrapper',
     components: {
         Grid: () => import('~/components/Grid/Grid'),
-        GridColumn: () => import('~/components/Grid/GridColumn'),
-        GridWrapperCell: () => import('~/components/Grid/Wrappers/GridWrapperCell'),
-        GridWrapperHeaderActionCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderActionCell'),
-        GridWrapperHeaderCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderCell'),
         GridPlaceholder: () => import('~/components/Grid/GridPlaceholder'),
     },
     props: {
@@ -77,19 +40,13 @@ export default {
         this.removeValidationErrors();
     },
     computed: {
-        ...mapState('gridDraft', {
-            drafts: state => state.drafts,
-        }),
-        gridState() {
-            return this.$store.state[this.storeNamespace];
-        },
-        numberOfPages() {
-            return this.$store.getters[`${this.storeNamespace}/numberOfPages`];
-        },
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,
             isColumnDragging: state => state.isColumnDragging,
         }),
+        gridState() {
+            return this.$store.state[this.storeNamespace];
+        },
         gridWrapperClasses() {
             return [
                 'grid-wrapper',

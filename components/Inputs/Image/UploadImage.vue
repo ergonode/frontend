@@ -27,7 +27,6 @@
             <div class="btn-wrapper">
                 <Button
                     fab
-                    icon="sprite-system system-trash--deactive"
                     color="transparent"
                     @click.native="onRemove">
                     <template v-slot:prepend>
