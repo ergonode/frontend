@@ -34,7 +34,9 @@ const TemplateDesignerTab = () => import('~/components/Card/TemplateDesignerTab'
 const UserBaseTab = () => import('~/components/Card/UserBaseTab').then(m => m.default || m);
 const UserRolesBaseTab = () => import('~/components/Card/UserRolesBaseTab').then(m => m.default || m);
 const UsersGridTab = () => import('~/components/Card/UsersGridTab').then(m => m.default || m);
+const UserActivityLogsGridTab = () => import('~/components/Card/UserActivityLogsGridTab').then(m => m.default || m);
 const RolesGridTab = () => import('~/components/Card/RolesGridTab').then(m => m.default || m);
+const UsersActivityLogsGridTab = () => import('~/components/Card/UsersActivityLogsGridTab').then(m => m.default || m);
 const UserAvatarTab = () => import('~/components/Card/UserAvatarTab').then(m => m.default || m);
 const CategoryBaseTab = () => import('~/components/Card/CategoryBaseTab').then(m => m.default || m);
 const CategoryTranslationsTab = () => import('~/components/Card/CategoryTranslationsTab').then(m => m.default || m);
@@ -217,6 +219,10 @@ export const pages = [
                 path: 'roles',
                 component: RolesGridTab,
             },
+            {
+                path: 'logs',
+                component: UsersActivityLogsGridTab,
+            },
         ],
     },
     {
@@ -232,6 +238,10 @@ export const pages = [
                 path: 'avatar',
                 component: UserAvatarTab,
             },
+            {
+                path: 'logs',
+                component: UserActivityLogsGridTab,
+            },
         ],
     },
     {
@@ -246,6 +256,10 @@ export const pages = [
             {
                 path: 'avatar',
                 component: UserAvatarTab,
+            },
+            {
+                path: 'logs',
+                component: UserActivityLogsGridTab,
             },
         ],
     },

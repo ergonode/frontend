@@ -52,6 +52,12 @@ export default {
                     active: true,
                     isContextualMenu: false,
                 },
+                {
+                    title: 'Users activity logs',
+                    path: '/users/logs',
+                    active: true,
+                    isContextualMenu: false,
+                },
             ],
         };
     },
