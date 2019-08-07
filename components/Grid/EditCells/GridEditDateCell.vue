@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import moment from 'moment';
+import { format as formatDate, parse as parseDate } from 'date-fns';
 import DatePicker from '~/components/Inputs/Date/DatePicker';
 
 export default {
@@ -47,14 +47,14 @@ export default {
     },
     created() {
         if (this.value) {
-            this.localValue = moment(this.value, this.parameters.format).toDate();
+            this.localValue = parseDate(this.value, this.parameters.format);
         }
     },
     computed: {
         parsedDate() {
             if (!this.value) return null;
 
-            return moment(this.value, this.parameters.format).toDate();
+            return parseDate(this.value, this.parameters.format);
         },
     },
     methods: {
@@ -69,7 +69,7 @@ export default {
             if (!date) return null;
             const { format } = this.parameters;
 
-            return moment(date).format(format);
+            return formatDate(date, format);
         },
     },
 };

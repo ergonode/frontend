@@ -19,7 +19,6 @@
                 @click.native="onClickSort" />
             <ButtonSelect
                 v-if="isColumnEditable"
-                v-visible="isContextualMenuActive || isSorted || isMouseOver"
                 icon-path="Others/IconDots"
                 :options="contextualMenuItems"
                 @focus="onSelectFocus">
@@ -190,8 +189,8 @@ export default {
         },
         onSelectFocus(isFocused) {
             this.isContextualMenuActive = isFocused;
-            if (!this.isContextualMenuActive) {
-                this.onMouseLeave();
+            if (!this.isContextualMenuActive && !this.isMouseOver) {
+                this.resetColumnHoveringState();
             }
         },
         onSelectOption(option) {
@@ -229,7 +228,7 @@ export default {
             return columnElement;
         },
         onMouseEnter() {
-            if (this.isColumnDragging) return;
+            if (this.isColumnDragging || this.isMenuSelected()) return;
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
@@ -239,14 +238,11 @@ export default {
             this.setHorizontalWrapperOpacityIfNeeded(1);
         },
         onMouseLeave() {
-            if (this.isColumnDragging || this.isContextualMenuActive) return;
-
-            const columnElement = this.getColumnAtIndex(this.columnIndex);
-
-            columnElement.classList.remove('hover');
             this.isMouseOver = false;
-            this.borderColumnAction('add', columnElement);
-            this.setHorizontalWrapperOpacityIfNeeded(0);
+
+            if (this.isColumnDragging || this.isMenuSelected()) return;
+
+            this.resetColumnHoveringState();
         },
         setHorizontalWrapperOpacityIfNeeded(opacity) {
             if (!this.isSorted && !this.pinnedColumn) {
@@ -265,6 +261,19 @@ export default {
                 columns[indexOfThisElement].classList[action]('border-right');
             }
         },
+        isMenuSelected() {
+            const gridElement = document.querySelector('.grid');
+            const headerEls = gridElement.querySelectorAll('.horizontal-wrapper--active');
+
+            return headerEls.length;
+        },
+        resetColumnHoveringState() {
+            const columnElement = this.getColumnAtIndex(this.columnIndex);
+
+            columnElement.classList.remove('hover');
+            this.borderColumnAction('add', columnElement);
+            this.setHorizontalWrapperOpacityIfNeeded(0);
+        },
     },
 };
 </script>
@@ -279,7 +288,7 @@ export default {
         user-select: none;
         pointer-events: auto;
 
-        .draggable {
+        &.draggable {
             cursor: grab;
         }
 
@@ -287,7 +296,7 @@ export default {
             display: flex;
             align-items: center;
 
-            & > i {
+            & > i, & > svg {
                 cursor: pointer;
             }
 
