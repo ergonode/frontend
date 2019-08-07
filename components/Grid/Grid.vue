@@ -51,7 +51,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { sum } from '~/model/arrayWrapper';
+import { sumIntegers } from '~/model/arrayWrapper';
 import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
 
 export default {
@@ -116,11 +116,11 @@ export default {
 
             if (sticky) {
                 if (state === PinnedColumnState.RIGHT) {
-                    columnEl.style.right = `${sum(this.rightPinnedColumns)}px`;
+                    columnEl.style.right = `${sumIntegers(this.rightPinnedColumns)}px`;
                     this.rightPinnedColumns.push(columnEl.offsetWidth);
                     columnEl.classList.add('drop-shadow-right-pinned');
                 } else {
-                    columnEl.style.left = `${sum(this.leftPinnedColumns)}px`;
+                    columnEl.style.left = `${sumIntegers(this.leftPinnedColumns)}px`;
                     this.leftPinnedColumns.push(columnEl.offsetWidth);
                     columnEl.classList.add('drop-shadow-left-pinned');
                 }
