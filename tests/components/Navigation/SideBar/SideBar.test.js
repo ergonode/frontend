@@ -12,6 +12,9 @@ const mocks = {
   $route: {
     path: '/products',
     params: { placeholder: '2' }
+  },
+  $modulesConfiguration: {
+    menu: []
   }
 };
 describe('Navigation/SideBar/SideBar', () => {
