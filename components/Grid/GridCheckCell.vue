@@ -43,7 +43,7 @@ export default {
                     return +this.gridState.isSelectedAllRows;
                 }
 
-                return rowsAreSelected ? 2 : 0;
+                return 2;
             }
             return this.gridState.selectedRows[this.row] || this.gridState.isSelectedAllRows;
         },

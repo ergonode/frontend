@@ -106,13 +106,11 @@ export default {
 
             if (number < 1) {
                 this.$emit('input', 1);
-                return;
-            } if (number > this.maxPage) {
+            } else if (number > this.maxPage) {
                 this.$emit('input', this.maxPage);
-                return;
+            } else {
+                this.$emit('input', number);
             }
-
-            this.$emit('input', number);
         },
     },
 };

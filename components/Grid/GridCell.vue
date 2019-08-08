@@ -195,5 +195,9 @@ export default {
         &--locked:focus {
             box-shadow: inset 0 0 0 2px $lightGraphite;
         }
+
+        &:focus {
+            z-index: 7;
+        }
     }
 </style>

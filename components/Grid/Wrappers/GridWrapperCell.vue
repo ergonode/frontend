@@ -167,7 +167,8 @@ export default {
         cellValue() {
             const value = this.row[this.column.id];
             const { filter } = this.column;
-            if (value == null) return '';
+            
+            if (typeof value === 'undefined' || value === null) return '';
             if (filter && filter.options) {
                 const { options } = filter;
 
