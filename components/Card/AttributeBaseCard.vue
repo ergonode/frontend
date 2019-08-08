@@ -188,6 +188,7 @@ export default {
 <style lang="scss" scoped>
     .horizontal-wrapper {
         display: flex;
+        align-items: center;
 
         & > label {
             margin-left: 8px;

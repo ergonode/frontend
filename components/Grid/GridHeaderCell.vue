@@ -3,12 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['header-cell', { 'draggable': !isPinnedColumn && isColumnEditable }]">
-        <span
-            class="header-cell__title txt-fixed"
-            v-text="title" />
+    <div :class="['header-cell', { 'draggable': !pinnedColumn && isColumnEditable }]">
+        <GridHeaderTitle :header="title" />
         <div
-            v-if="!isPinnedColumn"
             :class="[
                 'horizontal-wrapper',
                 {
@@ -16,16 +13,34 @@
                     'horizontal-wrapper--sorted': isSorted,
                 }
             ]">
-            <Icon
-                :icon="sortingIcon"
+            <IconArrowSort
+                :sorting-order="sortingOrder"
+                fill-color="#85878B"
                 @click.native="onClickSort" />
             <ButtonSelect
                 v-if="isColumnEditable"
                 v-visible="isContextualMenuActive || isSorted || isMouseOver"
                 icon-path="Others/IconDots"
                 :options="contextualMenuItems"
-                @input="onSelectValue"
-                @focus="onSelectFocus" />
+                @focus="onSelectFocus">
+                <template v-slot:content>
+                    <List>
+                        <ListElement
+                            v-for="option in contextualMenuItems"
+                            :key="option.text"
+                            regular
+                            @click.native="() => onSelectOption(option)">
+                            <ListElementDescription
+                                :subtitle="option.text"
+                                subtitle-color="txt--graphite" />
+                            <CheckBox
+                                v-if="option.text !== 'Remove'"
+                                ref="checkbox"
+                                :value="option.value" />
+                        </ListElement>
+                    </List>
+                </template>
+            </ButtonSelect>
         </div>
     </div>
 </template>
@@ -35,12 +50,19 @@ import { mapState } from 'vuex';
 import {
     removeColumnCookieByID,
 } from '~/model/grid/cookies/GridLayoutConfiguration';
+import { SortingOrder } from '~/model/icons/SortingOrder';
+import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
 
 export default {
     name: 'GridHeaderCell',
     components: {
         ButtonSelect: () => import('~/components/Inputs/Select/ButtonSelect'),
-        Icon: () => import('~/components/Icon/Icon'),
+        IconArrowSort: () => import('~/components/Icon/Arrows/IconArrowSort'),
+        List: () => import('~/components/List/List'),
+        ListElement: () => import('~/components/List/ListElement'),
+        ListElementDescription: () => import('~/components/List/ListElementDescription'),
+        CheckBox: () => import('~/components/Inputs/CheckBox'),
+        GridHeaderTitle: () => import('~/components/Grid/GridHeaderTitle'),
     },
     props: {
         storeNamespace: {
@@ -63,19 +85,32 @@ export default {
     },
     data() {
         return {
-            contextualMenuItems: ['Remove'],
+            contextualMenuItems: [
+                { text: 'Remove' },
+                // TODO: Add it whenever we finish dynamic pinning columns
+                // { text: 'Pin to left', value: false },
+                // { text: 'Pin to right', value: false },
+            ],
             isContextualMenuActive: false,
             isMouseOver: false,
         };
     },
+    created() {
+        if (this.pinnedColumn) {
+            const { state } = this.pinnedColumn;
+
+            if (state === PinnedColumnState.LEFT) this.contextualMenuItems[1].value = true;
+            else this.contextualMenuItems[2].value = true;
+        }
+    },
     mounted() {
-        if (!this.isPinnedColumn) {
+        if (!this.pinnedColumn) {
             this.$el.addEventListener('mouseenter', this.onMouseEnter);
             this.$el.addEventListener('mouseleave', this.onMouseLeave);
         }
     },
     destroyed() {
-        if (!this.isPinnedColumn) {
+        if (!this.pinnedColumn) {
             this.$el.removeEventListener('mouseenter', this.onMouseEnter);
             this.$el.removeEventListener('mouseleave', this.onMouseLeave);
         }
@@ -87,24 +122,21 @@ export default {
         gridState() {
             return this.$store.state[this.storeNamespace];
         },
-        isPinnedColumn() {
-            const { isLeftPinned, isRightPinned } = this.column;
-            return isLeftPinned || isRightPinned;
+        pinnedColumn() {
+            if (!this.gridState) return null;
+            const pinnedColumn = this.gridState.pinnedColumns[this.column.id];
+
+            if (!pinnedColumn) return null;
+
+            return pinnedColumn;
         },
         isSorted() {
             return this.gridState.sortedByColumn.index === this.column.id;
         },
-        sortingIcon() {
-            if (this.isSorted) {
-                if (this.gridState.sortedByColumn.orderState === 'ASC') {
-                    return 'arrow-sort-active';
-                }
-                if (this.gridState.sortedByColumn.orderState === 'DESC') {
-                    return 'arrow-sort-active trans-half';
-                }
-            }
+        sortingOrder() {
+            if (!this.isSorted) return null;
 
-            return 'arrow-sort';
+            return this.gridState.sortedByColumn.orderState;
         },
         title() {
             const {
@@ -119,9 +151,6 @@ export default {
 
             if (type === 'PRICE') {
                 suffix = parameter.currency;
-            }
-            if (type === 'ACTION' && label === null) {
-                return 'Edit';
             }
 
             if (!language) {
@@ -146,13 +175,13 @@ export default {
     },
     methods: {
         onClickSort() {
-            let orderState = 'ASC';
+            let orderState = SortingOrder.ASC;
             if (this.isSorted) {
-                if (this.gridState.sortedByColumn.orderState === 'ASC') {
-                    orderState = 'DESC';
+                if (this.gridState.sortedByColumn.orderState === SortingOrder.ASC) {
+                    orderState = SortingOrder.DESC;
                 }
-                if (this.gridState.sortedByColumn.orderState === 'DESC') {
-                    orderState = 'ASC';
+                if (this.gridState.sortedByColumn.orderState === SortingOrder.DESC) {
+                    orderState = SortingOrder.ASC;
                 }
             }
             this.$store.dispatch(`${this.storeNamespace}/setSortingState`, { index: this.column.id, orderState });
@@ -162,19 +191,36 @@ export default {
         onSelectFocus(isFocused) {
             this.isContextualMenuActive = isFocused;
             if (!this.isContextualMenuActive) {
-                this.setHorizontalWrapperOpacityIfNeeded(0);
+                this.onMouseLeave();
             }
         },
-        onSelectValue(value) {
-            // TODO: It is going to be populated in next tasks, when we will assign actions for selected items
-            if (value === 'Remove') {
+        onSelectOption(option) {
+            switch (option.text) {
+            case 'Remove': {
                 const columnElement = this.getColumnAtIndex(this.columnIndex);
 
                 // We are hovering element while removing it
                 this.borderColumnAction('add', columnElement);
                 this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index: this.columnIndex });
                 removeColumnCookieByID(this.$cookies, this.column.id);
+                break;
             }
+            case 'Pin to left':
+                this.pinOrRemovePinnedColumn(!option.value, PinnedColumnState.LEFT);
+                this.contextualMenuItems[1].value = !option.value;
+                break;
+            case 'Pin to right':
+                this.pinOrRemovePinnedColumn(!option.value, PinnedColumnState.RIGHT);
+                this.contextualMenuItems[2].value = !option.value;
+                break;
+            default: break;
+            }
+        },
+        pinOrRemovePinnedColumn(pinned, state) {
+            const columnPosition = `${this.columnIndex + 1} / ${this.columnIndex + 2}`;
+
+            if (pinned) this.$store.dispatch(`${this.storeNamespace}/addPinnedColumn`, { id: this.column.id, state, position: columnPosition });
+            else this.$store.dispatch(`${this.storeNamespace}/removePinnedColumn`, this.column.id);
         },
         getColumnAtIndex(index) {
             const gridElement = document.querySelector('.grid');
@@ -183,7 +229,7 @@ export default {
             return columnElement;
         },
         onMouseEnter() {
-            if (this.title === '' || this.isColumnDragging) return;
+            if (this.isColumnDragging) return;
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
@@ -193,19 +239,17 @@ export default {
             this.setHorizontalWrapperOpacityIfNeeded(1);
         },
         onMouseLeave() {
-            if (this.title === '' || this.isColumnDragging) return;
+            if (this.isColumnDragging || this.isContextualMenuActive) return;
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
             columnElement.classList.remove('hover');
             this.isMouseOver = false;
             this.borderColumnAction('add', columnElement);
-            if (!this.isContextualMenuActive) {
-                this.setHorizontalWrapperOpacityIfNeeded(0);
-            }
+            this.setHorizontalWrapperOpacityIfNeeded(0);
         },
         setHorizontalWrapperOpacityIfNeeded(opacity) {
-            if (!this.isSorted && !this.isPinnedColumn) {
+            if (!this.isSorted && !this.pinnedColumn) {
                 const horizontalWrapperElement = this.$el.querySelector('.horizontal-wrapper');
                 horizontalWrapperElement.style.opacity = opacity;
             }
@@ -217,7 +261,8 @@ export default {
             const indexOfThisElement = [...columns].indexOf(columnElement);
 
             if (indexOfThisElement - 1 > -1) {
-                columns[indexOfThisElement - 1].classList[action]('column--border-right');
+                columns[indexOfThisElement - 1].classList[action]('border-right');
+                columns[indexOfThisElement].classList[action]('border-right');
             }
         },
     },
@@ -231,16 +276,8 @@ export default {
         flex: 1;
         justify-content: space-between;
         align-items: center;
-        padding: 8px;
         user-select: none;
         pointer-events: auto;
-
-        &__title {
-            @include setFont(bold, small, regular, $graphite);
-
-            flex: 1 1 auto;
-            width: 0;
-        }
 
         .draggable {
             cursor: grab;
@@ -249,7 +286,6 @@ export default {
         .horizontal-wrapper {
             display: flex;
             align-items: center;
-            margin: 0 -8px 0 8px;
 
             & > i {
                 cursor: pointer;

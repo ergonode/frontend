@@ -48,7 +48,18 @@ export default {
                     active: this.isEdit,
                     props: {
                         updateButton: {
-                            title: 'SAVE AVATAR',
+                            title: 'SAVE USER',
+                            action: this.onSave,
+                        },
+                    },
+                },
+                {
+                    title: 'Activity logs',
+                    path: `/users/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/logs`,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: 'SAVE USER',
                             action: this.onSave,
                         },
                     },
@@ -64,7 +75,6 @@ export default {
                     color: 'transparent',
                     action: this.onRemove,
                     theme: 'dark',
-                    icon: 'sprite-system system-trash--deactive',
                 },
             ];
         }

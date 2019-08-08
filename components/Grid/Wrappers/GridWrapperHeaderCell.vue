@@ -63,6 +63,7 @@ export default {
             const { id } = this.column;
 
             if (id === 'id') return () => import('~/components/Grid/GridCheckCell');
+            if (id === 'edit') return () => import('~/components/Grid/GridHeaderTitle');
 
             return () => import('~/components/Grid/GridHeaderCell');
         },
@@ -74,10 +75,16 @@ export default {
 
             if (id === 'id') return { row: this.rowIndex, isHeader: true };
 
+            if (id !== 'edit') {
+                return {
+                    columnIndex: this.columnIndex,
+                    column: this.column,
+                    isColumnEditable: this.gridState.configuration.isColumnEditable,
+                };
+            }
+
             return {
-                columnIndex: this.columnIndex,
-                column: this.column,
-                isColumnEditable: this.gridState.configuration.isColumnEditable,
+                header: 'Edit',
             };
         },
     },
