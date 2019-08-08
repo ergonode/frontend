@@ -169,7 +169,7 @@ export default {
             const value = this.row[this.column.id];
             const { filter } = this.column;
 
-            if (!value) return '';
+            if (typeof value === 'undefined' || value === null) return '';
             if (filter && filter.options) {
                 const { options } = filter;
 

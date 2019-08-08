@@ -85,6 +85,6 @@ describe('arrayWrapper/isArrayEqualToArray', () => {
 
     areEqual = isArrayEqualToArray(arr1, arr2);
 
-    expect(areEqual).toEqual(false);
+    expect(areEqual).toEqual(true);
   });
 });

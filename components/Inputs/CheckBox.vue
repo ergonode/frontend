@@ -107,7 +107,7 @@ export default {
 
         &--checked-any {
             label::after {
-                top: 3px;
+                top: 4px;
                 left: 2px;
                 height: 0.5px;
                 border-left: none;

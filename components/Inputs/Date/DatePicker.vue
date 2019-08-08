@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import moment from 'moment';
+import { format as formatDate } from 'date-fns';
 import InputSelectBase from '~/components/Inputs/InputSelectBase';
 
 export default {
@@ -142,7 +142,7 @@ export default {
         formatDate(date) {
             if (!date) return null;
 
-            return moment(date).format(this.format);
+            return formatDate(date, this.format);
         },
     },
 };
