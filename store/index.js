@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import modulesStoreConfiguration from '@Root/modulesStore.config';
 import { JWT_KEY, USER_KEY } from '~/defaults/authenticate/cookies';
 
 export const actions = {
@@ -28,3 +29,18 @@ export const actions = {
         commit('validations/clearStorage');
     },
 };
+
+// async function getModulesStore() {
+//     const { store: modulesStore } = await ModuleLoader.getPagesConfiguration();
+//     const newStore = {};
+//     for (let i = 0; i < modulesStore.length; i += 1) {
+//         const { moduleName, store } = modulesStore[i];
+//         for (let j = 0; j < store.length; j += 1) {
+//             const { dirName, storeName } = store[i];
+//             newStore[`${storeName}<module>`] = await import(`@Modules/${moduleName}/store/${dirName}`).then(m => m.default || m); // eslint-disable-line no-await-in-loop
+//         }
+//     }
+//     return newStore;
+// }
+
+export const modules = modulesStoreConfiguration;

@@ -57,11 +57,6 @@ export default [
         title: 'COLLECT & DISTRIBUTE',
         menu: [
             {
-                title: 'Import',
-                routing: '/import',
-                icon: 'Import',
-            },
-            {
                 title: 'Export',
                 routing: '/placeholder/export',
                 icon: 'Export',

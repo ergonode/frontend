@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+// pages
 const Login = () => import('~/pages/index').then(m => m.default || m);
 const Dashboard = () => import('~/pages/dashboard/index').then(m => m.default || m);
 const Import = () => import('~/pages/import/index').then(m => m.default || m);
@@ -26,7 +27,7 @@ const UsersRolesEdit = () => import('~/pages/users/edit/roles/_id').then(m => m.
 const Settings = () => import('~/pages/settings/index').then(m => m.default || m);
 const Channels = () => import('~/pages/channels/index').then(m => m.default || m);
 const Placeholder = () => import('~/pages/placeholder/index').then(m => m.default || m);
-
+// components
 const AttributeBaseTab = () => import('~/components/Card/AttributeBaseTab').then(m => m.default || m);
 const AttributeTranslationsTab = () => import('~/components/Card/AttributeTranslationsTab').then(m => m.default || m);
 const TemplateDesignerBaseTab = () => import('~/components/Card/TemplateDesignerBaseTab').then(m => m.default || m);

@@ -8,7 +8,7 @@ export default [
         menu: [
             {
                 title: 'My profile',
-                routing: '/placeholder/profil',
+                routing: '/placeholder/profile',
                 icon: 'User',
             },
             {

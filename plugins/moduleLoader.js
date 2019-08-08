@@ -3,51 +3,54 @@
  * See LICENSE for license details.
  */
 import Vue from 'vue'; // eslint-disable-line import/no-extraneous-dependencies
-// import { modules } from '@Root/modules.config';
-
-const modules = [];
+import modules from '@Root/modules.config';
 
 const ModuleLoader = {
-    install() {
-        this.getData().then((components) => {
-            components.forEach((component) => {
-                this.getComponent(component.path, component.module);
-            });
-        });
+    async install() {
+        const { router, menu, store } = await this.getPagesConfiguration();
+        Vue.prototype.$modulesConfiguration = {
+            router,
+            menu,
+            store,
+        };
     },
-    getRouterConfigs() {
-        return modules.reduce((previousObject, currentObject) => {
+    async getPagesConfiguration() {
+        const { pages } = modules;
+        const pagesConfiguration = { router: [], menu: [], store: [] };
+        for (let i = 0; i < pages.length; i += 1) {
             let config = null;
-            switch (currentObject.moduleSource) {
-            // TODO: commented because when there is no directory for an alias, nuxt returns an error.
-            // TODO: uncomment if  we have modules to load
-            // case 'vendor':
-            //     config = require(`@Vendors/${currentObject.name}/config`); // eslint-disable-line global-require, import/no-dynamic-require
-            //     break;
-            // case 'module':
-            //     config = require(`@Modules/${currentObject.name}/config`); // eslint-disable-line global-require, import/no-dynamic-require
+            const { isActive, name, source } = pages[i];
+            if (!isActive) continue; // eslint-disable-line no-continue
+            switch (source) {
+            case 'local':
+                config = await import(`@Modules/${name}/config`).then(m => m.default || m); // eslint-disable-line no-await-in-loop
+                break;
+            // case 'npm':
+            //     config = await import(`@NodeModules/${name}/config`).then(m => m.default || m); // eslint-disable-line no-await-in-loop
             //     break;
             default:
                 config = null;
             }
             if (config) {
-                const { router } = config;
-                previousObject.push(...router);
+                if (config.router) pagesConfiguration.router.push(...config.router);
+                if (config.menu) pagesConfiguration.menu.push(...config.menu);
+                if (config.store) {
+                    pagesConfiguration.store.push({
+                        moduleName: name,
+                        store: [...config.store],
+                    });
+                }
             }
-            return previousObject;
-        }, []);
+        }
+        return pagesConfiguration;
     },
-
     getData() {
-        // async load data
-        // for auto components loading
         return new Promise(((resolve) => {
             // Example output: data = [{ module: 'Categories', path: 'CategoriesTest' }]
             const data = [];
             resolve(data);
         }));
     },
-
     getComponent(componentPath, module = null) { // eslint-disable-line
         const name = componentPath.split('/').pop();
         if (Vue.options.components[name]) {
@@ -55,32 +58,14 @@ const ModuleLoader = {
         }
         // TODO: commented because when there is no directory for an alias, nuxt returns an error.
         // TODO: uncomment if  we have modules to load
-        // if (module) {
-        //    return Vue.component(name, () => import(`@Modules/${module}/${componentPath}`));
-        // }
+        if (module) {
+            return Vue.component(name, () => import(`@Modules/${module}/${componentPath}`));
+        }
         return Vue.component(
             name,
             () => import(`~/components/${componentPath}`),
         );
     },
-
-    getPage(pagePath, module = false, source) {
-        if (module) {
-            switch (source) {
-            // TODO: commented because when there is no directory for an alias,
-            // nuxt returns an error.
-            // TODO: uncomment if  we have modules to load
-            // case 'vendor':
-            //     return () => import(`@Vendors/${module}/${pagePath}` /* webpackChunkName: "module_pages" */).then(m => m.default || m);
-            // case 'module':
-            //     return () => import(`@Modules/${module}/${pagePath}` /* webpackChunkName: "module_pages" */).then(m => m.default || m);
-            default:
-                return null;
-            }
-        }
-        return () => import(`@/pages/${pagePath}`).then(m => m.default || m);
-    },
-
     removeComponent(name) {
         delete Vue.options.components[name];
     },
