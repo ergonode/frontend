@@ -116,6 +116,11 @@ export default {
             commit(types.SET_ROWS, rows);
         }).catch(err => console.log(err));
     },
+    setGridData({ commit }, { columns, rows }) {
+        const { mappedColumns } = getMappedColumns(columns);
+        commit(types.SET_ROWS, rows);
+        commit(types.SET_COLUMNS, mappedColumns);
+    },
     setFilter({ commit, state }, { filter: filterToSet, id }) {
         // Remove selection on filter action
         commit(types.REMOVE_SELECTED_ROWS);
@@ -243,9 +248,6 @@ export default {
     removePinnedColumn({ commit, state }, id) {
         const { pinnedColumns } = state;
         const index = pinnedColumns.findIndex(col => col.id === id);
-
-        console.log(index);
-
         commit(types.REMOVE_PINNED_COLUMN_AT_INDEX, index);
     },
 };

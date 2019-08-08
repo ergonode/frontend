@@ -7,7 +7,7 @@
         <div class="tab__grid">
             <GridWrapper
                 store-namespace="privilegesGrid"
-                :rows-height="rowsHeight"
+                :rows-height="32"
                 :action-paths="actionPaths" />
         </div>
         <Footer
@@ -29,10 +29,9 @@ export default {
     },
     data() {
         return {
-            gridConfiguration: {
-                rows: {
-                    height: 32,
-                },
+            actionPaths: {
+                getData: '',
+                routerEdit: '',
             },
         };
     },
@@ -52,37 +51,68 @@ export default {
     beforeDestroy() {
         this.$store.unregisterModule('privilegesGrid');
     },
-    computed: {
-        actionPaths() {
-            return {
-                getData: `${this.userLanguageCode}/accounts`,
-                routerEdit: 'users-edit-id',
-            };
-        },
-        rowsHeight: {
-            get() {
-                const { height } = this.gridConfiguration.rows;
-                return height;
-            },
-            set(value) {
-                this.gridConfiguration.rows.height = value;
-            },
-        },
-    },
-    methods: {
-        // ...mapActions('privilegesGrid', [
-        //     'getData',
-        // ]),
-    },
     async fetch({ app, store }) {
         app.$registerStore({
             module: gridModule,
             moduleName: 'privilegesGrid',
             store,
         });
-        // const { privileges } = store.state.data;
-        const gridPath = `${store.state.authentication.user.language}/accounts`;
-        await store.dispatch('privilegesGrid/getData', { path: gridPath });
+        // const { privileges: privilegesDictionary } = store.state.data;
+        // const { privileges } = store.state.roles;
+        const columns = [
+            {
+                editable: true,
+                id: 'name',
+                label: '',
+                type: 'TEXT',
+                filterable: true,
+            },
+            {
+                editable: true,
+                id: 'create',
+                label: 'Create',
+                type: 'CHECK',
+                filterable: true,
+            },
+            {
+                editable: false,
+                id: 'read',
+                label: 'Read',
+                type: 'CHECK',
+                filterable: true,
+            },
+            {
+                editable: false,
+                id: 'update',
+                label: 'Update',
+                type: 'CHECK',
+                filterable: true,
+            },
+            {
+                editable: false,
+                id: 'delete',
+                label: 'Delete',
+                type: 'CHECK',
+                filterable: true,
+            },
+        ];
+        const rows = [
+            {
+                name: 'User',
+                create: false,
+                read: true,
+                update: true,
+                delete: true,
+            },
+            {
+                name: 'Role',
+                create: false,
+                read: true,
+                update: false,
+                delete: true,
+            },
+        ];
+        await store.dispatch('privilegesGrid/setGridData', { columns, rows });
     },
 };
 </script>
