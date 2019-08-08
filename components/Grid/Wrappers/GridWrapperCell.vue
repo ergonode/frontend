@@ -161,14 +161,13 @@ export default {
                 };
             default:
                 if (this.parsedDraftValue === null) return { value: this.cellValue };
-
                 return { value: this.parsedDraftValue };
             }
         },
         cellValue() {
             const value = this.row[this.column.id];
             const { filter } = this.column;
-
+            
             if (typeof value === 'undefined' || value === null) return '';
             if (filter && filter.options) {
                 const { options } = filter;
