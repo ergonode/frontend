@@ -4,9 +4,10 @@
  */
 <template>
     <div class="grid-item">
-        <IconArrowDouble
+        <IconPlusMinus
             v-if="hasChildren"
             class="grid-item__icon"
+            size="20"
             :state="btnExpanderIconState"
             @click.native="toggleItemExpand" />
         <span
@@ -22,13 +23,13 @@
     </div>
 </template>
 <script>
-import { Arrow } from '~/model/icons/Arrow';
-import IconArrowDouble from '~/components/Icon/Arrows/IconArrowDouble';
+import { Action } from '~/model/icons/Action';
+import IconPlusMinus from '~/components/Icon/Actions/IconPlusMinus';
 
 export default {
     name: 'CategoryTreeItem',
     components: {
-        IconArrowDouble,
+        IconPlusMinus,
     },
     props: {
         isExpanded: {
@@ -50,14 +51,17 @@ export default {
         },
         btnExpanderIconState() {
             return this.isExpanded
-                ? Arrow.DOWN
-                : Arrow.UP;
+                ? Action.PLUS
+                : Action.MINUS;
         },
         getLabelStyle() {
             return !this.hasChildren ? { marginLeft: '12px' } : null;
         },
         getNumberOfCategoriesLabel() {
-            return `${this.numberOfChildren} ${this.numberOfChildren === 1 ? 'category' : 'categories'}`;
+            return `${this.numberOfChildren}`;
+        },
+        getItemName() {
+            return this.item.name || this.item.code;
         },
     },
     methods: {
@@ -70,11 +74,11 @@ export default {
 
 <style lang="scss" scoped>
     .grid-item {
+        z-index: 5;
         display: flex;
-        flex: 1;
         justify-content: flex-start;
         align-items: center;
-        width: 0;
+        grid-column: 1 / 3;
         height: 100%;
         border: 1px solid $grey;
         background-color: $background;
@@ -82,7 +86,7 @@ export default {
 
         &__icon {
             flex: 0 0 auto;
-            margin-left: 8px;
+            margin-left: 12px;
         }
 
         &__title {

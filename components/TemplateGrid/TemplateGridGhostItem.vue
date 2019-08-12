@@ -14,12 +14,10 @@ export default {
 
 <style lang="scss" scoped>
     .grid__ghost-item {
-        position: relative;
         display: flex;
-        flex: 1;
+        grid-column: 1 / 3;
         justify-content: flex-start;
         align-items: center;
-        width: 0;
         height: 100%;
         background-color: $primary;
         box-shadow:

@@ -1,0 +1,44 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <IconBase
+        :width="size"
+        :height="size"
+        :icon-color="fillColor">
+        <polygon :points="setPoints" />
+    </IconBase>
+</template>
+
+<script>
+import { Action } from '~/model/icons/Action';
+import IconBase from '~/components/Icon/IconBase';
+
+export default {
+    name: 'IconPlusMinus',
+    components: {
+        IconBase,
+    },
+    props: {
+        fillColor: {
+            type: String,
+            default: '#5C5F65',
+        },
+        size: {
+            type: [String, Number],
+            default: '24',
+        },
+        state: {
+            type: String,
+            default: Action.PLUS,
+        },
+    },
+    computed: {
+        setPoints() {
+            if (this.state === Action.MINUS) return '5 11 19 11 19 13 5 13 5 11';
+            return '11 5 11 11 5 11 5 13 11 13 11 19 13 19 13 13 19 13 19 11 13 11 13 5';
+        },
+    },
+};
+</script>

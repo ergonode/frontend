@@ -317,6 +317,7 @@ export default {
             if (isPositionNotDuplicated) {
                 this.ghostElement.row = row;
                 this.ghostElement.column = column;
+                this.ghostElement.parent = this.getParentId(row, column);
                 this.addTreeItem({ ...this.ghostElement });
             }
         },

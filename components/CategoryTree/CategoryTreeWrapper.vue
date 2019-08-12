@@ -23,7 +23,9 @@
                     v-for="item in filteredTreeData"
                     :key="item.id"
                     :item="item"
-                    :columns="columns">
+                    :columns="columns"
+                    :rows-height="rowsHeight"
+                    :column-width="columnWidth">
                     <TemplateGridGhostItem
                         v-if="item.ghost" />
                     <CategoryTreeItem
@@ -39,6 +41,7 @@
 </template>
 
 <script>
+import { debounce } from 'debounce';
 import { mapState, mapActions, mapGetters } from 'vuex';
 import {
     getMaxChildRow,
@@ -62,6 +65,19 @@ export default {
         TemplateGridHeader,
         CategoryTreeItem,
     },
+    created() {
+        this.debounceFunc = debounce(this.calculateColumnWidth, 20);
+    },
+    mounted() {
+        this.calculateColumnWidth();
+        window.addEventListener('resize', this.debounceFunc);
+    },
+    destroyed() {
+        window.removeEventListener('resize', this.debounceFunc);
+    },
+    data: () => ({
+        columnWidth: 100,
+    }),
     computed: {
         ...mapState('tree', {
             columns: state => state.treeLevels,
@@ -114,6 +130,10 @@ export default {
                 this.removeHiddenItem(id);
                 this.setExpandItem({ index: row, value: false });
             }
+        },
+        calculateColumnWidth() {
+            const column = document.querySelectorAll('.grid-header__title')[0];
+            this.columnWidth = column.offsetWidth;
         },
     },
 };
