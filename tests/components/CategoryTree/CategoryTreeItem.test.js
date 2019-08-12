@@ -58,12 +58,12 @@ describe('CategoryTree/CategoryTreeItem', () => {
       wrapper.setProps({
         numberOfChildren: 3,
       });
-      expect(wrapper.vm.getNumberOfCategoriesLabel).toBe('3 categories');
+      expect(wrapper.vm.getNumberOfCategoriesLabel).toBe('3');
       wrapper.setProps({
         numberOfChildren: 1,
       });
       wrapper.vm.$nextTick(() => {
-        expect(wrapper.vm.getNumberOfCategoriesLabel).toBe('1 category');
+        expect(wrapper.vm.getNumberOfCategoriesLabel).toBe('1');
       });
     });
 });
