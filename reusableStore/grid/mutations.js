@@ -16,7 +16,7 @@ export const types = {
     SET_COUNT: 'SET_COUNT',
     SET_FILTERED: 'SET_FILTERED',
     SET_FILTER: 'SET_FILTER',
-    UPDATE_CELL_VALUE: 'UPDATE_CELL_VALUE',
+    UPDATE_ROW_VALUE: 'UPDATE_ROW_VALUE',
     REMOVE_FILTER: 'REMOVE_FILTER',
     SET_CURRENT_PAGE: 'SET_CURRENT_PAGE',
     SET_SORTING_STATE: 'SET_SORTING_STATE',
@@ -106,8 +106,8 @@ export default {
     [types.REMOVE_SELECTED_ROWS](state) {
         state.selectedRows = {};
     },
-    [types.UPDATE_CELL_VALUE](state, { rowId, columnId, value }) {
-        state.cellValues[rowId][columnId] = value;
+    [types.UPDATE_ROW_VALUE](state, { rowId, value }) {
+        state.cellValues[rowId] = value;
         state.cellValues = { ...state.cellValues };
     },
     [types.ADD_PRODUCT_VALUE](state, { productId, columnId, value }) {

@@ -47,7 +47,7 @@ import GridInfoCell from '~/components/Grid/GridInfoCell';
 import GridCheckCell from '~/components/Grid/GridCheckCell';
 
 export default {
-    name: 'UsersRolesPrivilegeTab',
+    name: 'UserRolesPrivilegeTab',
     props: {
         updateButton: {
             type: Object,
@@ -90,21 +90,24 @@ export default {
     },
     methods: {
         ...mapActions('privilegesGrid', [
-            'updateCellValue',
+            'updateRowValue',
         ]),
         onValueChange(rowId, columnId) {
-            // if (columnId !== 'update') {
-            //     this.updateCellValue({ rowId, columnId: 'read', value: true });
-            // }
-            //
-            // if (columnId === 'edit') {
-            //     this.updateCellValue({ rowId, columnId: 'create', value: true });
-            //     this.updateCellValue({ rowId, columnId: 'edit', value: true });
-            //     this.updateCellValue({ rowId, columnId: 'delete', value: true });
-            //
-            // }
+            const rolePrivileges = { ...this.cellValues[rowId] };
 
-            this.updateCellValue({ rowId, columnId, value: !this.cellValues[rowId][columnId] });
+            if (columnId !== 'read' && !rolePrivileges[columnId]) {
+                rolePrivileges.read = true;
+            }
+
+            if (columnId === 'read') {
+                rolePrivileges.create = false;
+                rolePrivileges.update = false;
+                rolePrivileges.delete = false;
+            }
+
+            rolePrivileges[columnId] = !rolePrivileges[columnId];
+
+            this.updateRowValue({ rowId, value: rolePrivileges });
         },
         getComponentByColumnType({ type }) {
             if (type === 'TEXT') return GridInfoCell;

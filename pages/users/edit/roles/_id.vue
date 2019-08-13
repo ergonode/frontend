@@ -13,6 +13,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { getMappedPrivilegesBasedOnGridData } from '~/model/mappers/privilegesMapper';
 
 export default {
     validate({ params }) {
@@ -29,6 +30,9 @@ export default {
             name: state => state.name,
             description: state => state.description,
             privileges: state => state.privileges,
+        }),
+        ...mapState('privilegesGrid', {
+            cellValues: state => state.cellValues,
         }),
         title() {
             return `${this.name}`;
@@ -66,8 +70,9 @@ export default {
             const role = {
                 name: this.name,
                 description: this.description,
-                privileges: this.privileges,
+                privileges: getMappedPrivilegesBasedOnGridData(this.privileges, this.cellValues),
             };
+
             this.updateRole({
                 id: this.roleID,
                 data: role,

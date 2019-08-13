@@ -19,12 +19,12 @@ export function getMappedGridData(privileges, rolePrivileges) {
     const { length: rolePrivilegesNumber } = rolePrivileges;
     const systemPrivilegesEntries = Object.entries(privileges);
     const { length: systemPrivilegesLength } = systemPrivilegesEntries;
-
     let rowIndex = 0;
 
     for (let i = 0; i < rolePrivilegesNumber; i += 1) {
         const rolePrivilege = rolePrivileges[i];
         const rolePrivilegeName = rolePrivilege.split('_');
+        console.log(rolePrivilege);
         const rolePrivilegeType = rolePrivilegeName[rolePrivilegeName.length - 1].toLowerCase();
 
         if (!tmpColumnKeys[rolePrivilegeType]) {
@@ -48,6 +48,7 @@ export function getMappedGridData(privileges, rolePrivileges) {
 
             for (let k = 0; k < valuesNumber; k += 1) {
                 if (values[k] === rolePrivilege) {
+                    console.log(name, rolePrivilege);
                     if (!tmpRowKeys[name]) {
                         tmpRowKeys[name] = '+';
                         rows.push({
@@ -67,4 +68,28 @@ export function getMappedGridData(privileges, rolePrivileges) {
         rows,
         columns,
     };
+}
+
+export function getMappedPrivilegesBasedOnGridData(privileges, gridData) {
+    const rows = Object.entries(gridData);
+    const { length: rowsNumber } = rows;
+    const mappedPrivileges = [];
+
+    for (let i = 0; i < rowsNumber; i += 1) {
+        const [, role] = rows[i];
+        const privilegeKeys = Object.keys(role);
+        const { length: privilegesKeysNumber } = privilegeKeys;
+
+        for (let j = 0; j < privilegesKeysNumber; j += 1) {
+            if (privilegeKeys[j] !== 'name') {
+                const privilegeName = `${role.name.replace(' ', '_').toUpperCase()}_${privilegeKeys[j].toUpperCase()}`;
+
+                if (role[privilegeKeys[j]]) {
+                    mappedPrivileges.push(privilegeName);
+                }
+            }
+        }
+    }
+
+    return mappedPrivileges;
 }

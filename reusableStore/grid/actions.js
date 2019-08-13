@@ -267,7 +267,7 @@ export default {
         const index = pinnedColumns.findIndex(col => col.id === id);
         commit(types.REMOVE_PINNED_COLUMN_AT_INDEX, index);
     },
-    updateCellValue({ commit }, payload) {
-        commit(types.UPDATE_CELL_VALUE, payload);
+    updateRowValue({ commit }, payload) {
+        commit(types.UPDATE_ROW_VALUE, payload);
     },
 };
