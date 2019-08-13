@@ -3,16 +3,17 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="options-wrapper">
+    <div class="options">
         <div
             v-for="(key, index) in optionKeys"
             :key="index"
-            class="option-wrapper">
+            class="option">
             <IconDelete @click.native="removeOptionKey(index)" />
             <TextField
                 :value="key"
                 solid
                 required
+                small
                 label="Option code"
                 @input="e => updateOptionKey(index, e)"
                 @click:append-outer="removeOptionKey(index)" />
@@ -68,24 +69,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .options-wrapper {
+    .options {
         display: grid;
         grid-gap: 8px;
 
-        .option-wrapper {
-            display: flex;
+        .option {
+            display: grid;
+            grid-template-columns: 32px auto;
             align-items: center;
-
-            & > i {
-                margin-left: 8px;
-                margin-right: 12px;
-            }
         }
 
         .add-option-wrapper {
             display: flex;
             align-items: center;
-            margin-left: 40px;
+            margin-left: 28px;
             cursor: pointer;
 
             & > label {

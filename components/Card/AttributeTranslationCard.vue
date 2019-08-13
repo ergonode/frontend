@@ -37,10 +37,10 @@
                 :style="{height: '150px'}"
                 :error-messages="errorHintMessage"
                 :disabled="!isTranslationChosen" />
-            <Divider />
-            <AttributeOptionValues
-                v-if="hasOptions"
-                :language-code="languageCode" />
+            <template v-if="hasOptions">
+                <Divider />
+                <AttributeOptionValues :language-code="languageCode" />
+            </template>
         </div>
     </BaseCard>
 </template>

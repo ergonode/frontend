@@ -10,7 +10,7 @@
 
 <script>
 export default {
-    name: 'GridHeaderTitle',
+    name: 'GridBaseHeaderCell',
     props: {
         header: {
             type: String,

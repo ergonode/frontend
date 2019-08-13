@@ -37,7 +37,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
-import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
+// import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
 import GridFooter from '~/components/Grid/GridFooter';
 import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
@@ -47,7 +47,7 @@ import TrashCan from '~/components/DragAndDrop/TrashCan';
 export default {
     name: 'ProductGridTab',
     components: {
-        GridWrapper,
+        GridWrapper: () => import('~/components/Grid/Wrappers/GridWrapper'),
         GridFooter,
         GridPageSelector,
         GridPagination,

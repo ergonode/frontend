@@ -31,7 +31,7 @@ export default {
             privileges: state => state.privileges,
         }),
         title() {
-            return `Role: ${this.name}`;
+            return `${this.name}`;
         },
     },
     destroyed() {

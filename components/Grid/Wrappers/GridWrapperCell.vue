@@ -12,7 +12,7 @@
         :draft="isDraftCell"
         :action-cell="isActionCell"
         :selected="isSelected"
-        :on-edit="onEdit">
+        @edit="onEdit">
         <template v-if="!isExtenderColumn">
             <Component
                 :is="infoComponent"
@@ -24,7 +24,7 @@
                 :is-select-kind="isSelectKind"
                 :is-multi-select="isMultiSelect"
                 :type="column.type"
-                :value="draftValue || row[column.id] || ''"
+                :value="draftValue || value"
                 :options="options"
                 :parameters="parameters"
                 :error-messages="errorValue"
@@ -61,23 +61,24 @@ export default {
             type: Object,
             required: true,
         },
-        row: {
-            type: Object,
+        rowId: {
+            type: [String, Number],
+            required: true,
+        },
+        value: {
+            type: [String, Number, Boolean],
             required: true,
         },
         isSelected: {
             type: Boolean,
-            required: false,
             default: false,
         },
         draft: {
             type: Object,
-            required: false,
             default: null,
         },
         editRoutingPath: {
             type: String,
-            required: false,
             default: '',
         },
     },
@@ -134,7 +135,7 @@ export default {
             case 'IMAGE':
                 return () => import('~/components/Grid/GridImageCell');
             case 'CHECK':
-                return () => import('~/components/Grid/GridCheckCell');
+                return () => import('~/components/Grid/EditCells/GridEditSelectRowCell');
             case 'SELECT':
             case 'MULTI_SELECT':
                 return () => import('~/components/Grid/GridSelectInfoCell');
@@ -144,12 +145,11 @@ export default {
         },
         infoComponentProps() {
             const { type } = this.column;
-            const { id } = this.row;
 
             switch (type) {
             case 'ACTION':
                 return {
-                    params: { id },
+                    params: { id: this.rowId },
                     actionPath: this.editRoutingPath,
                     isSelected: this.isEditingCell,
                     row: this.rowIndex,
@@ -160,29 +160,9 @@ export default {
                     row: this.rowIndex,
                 };
             default:
-                if (this.parsedDraftValue === null) return { value: this.cellValue };
+                if (this.parsedDraftValue === null) return { value: this.value };
                 return { value: this.parsedDraftValue };
             }
-        },
-        cellValue() {
-            const value = this.row[this.column.id];
-            const { filter } = this.column;
-            
-            if (typeof value === 'undefined' || value === null) return '';
-            if (filter && filter.options) {
-                const { options } = filter;
-
-                if (Array.isArray(value)) {
-                    return value.map(key => options[key] || 'No translation').join(', ');
-                }
-                if (typeof options[value] !== 'undefined') {
-                    return options[value] || 'No translation';
-                }
-            }
-
-            if (typeof value === 'boolean') return value ? 'Yes' : 'No';
-
-            return value;
         },
         draftValue() {
             if (this.draft && typeof this.draft[this.column.id] !== 'undefined') {
@@ -217,9 +197,8 @@ export default {
             return null;
         },
         errorValue() {
-            const { id } = this.row;
             const { element_id: elementId } = this.column;
-            const { [`${id}/${elementId}`]: errors } = this.validationErrors;
+            const { [`${this.rowId}/${elementId}`]: errors } = this.validationErrors;
 
             return errors;
         },
@@ -243,6 +222,7 @@ export default {
     methods: {
         ...mapActions('gridDraft', [
             'updateDraftValue',
+            'addDraftValue',
         ]),
         onEdit(isEditing) {
             if (this.column.type === 'CHECK') {
@@ -254,13 +234,11 @@ export default {
             }
         },
         onUpdateDraft(value) {
-            const cellValue = this.row[this.column.id] || '';
-
-            if (cellValue === value
-                || (Array.isArray(value) && isArrayEqualToArray(value, cellValue))) return;
+            if (this.value === value
+                || (Array.isArray(value) && isArrayEqualToArray(value, this.value))) return;
 
             this.updateDraftValue({
-                productId: this.row.id,
+                productId: this.rowId,
                 columnId: this.column.id,
                 elementId: this.column.element_id,
                 value,

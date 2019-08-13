@@ -4,7 +4,6 @@
  */
 <template>
     <div
-        ref="grid"
         :class="['grid', {'grid--placeholder': isPlaceholder}]"
         :style="templateColumns">
         <GridColumn
@@ -21,22 +20,30 @@
                 :column="column"
                 :path="actionPaths.getData" />
             <GridWrapperHeaderActionCell
+                v-if="filterable"
                 :store-namespace="storeNamespace"
                 :column-index="colIndex"
                 :column="column"
                 :path="actionPaths.getData" />
-            <GridWrapperCell
-                v-for="(row, rowIndex) in gridState.rows"
-                :key="`row[${rowIndex + 2}, ${column.id}]`"
-                :store-namespace="storeNamespace"
-                :column-index="colIndex"
-                :row-index="(rowIndex + 2) * gridState.displayedPage"
+            <slot
+                name="cell"
                 :column="column"
-                :row="row"
-                :draft="drafts[gridState.rows[rowIndex].id]"
-                :edit-routing-path="actionPaths.routerEdit"
-                :is-selected="gridState.isSelectedAllRows
-                    || gridState.selectedRows[(rowIndex + 2) * gridState.displayedPage]" />
+                :column-index="colIndex">
+                <GridWrapperCell
+                    v-for="(id, rowIndex) in gridState.rowIds"
+                    :key="`row[${rowIndex + fixedRowOffset}, ${column.id}]`"
+                    :store-namespace="storeNamespace"
+                    :column-index="colIndex"
+                    :row-index="(rowIndex + fixedRowOffset) * gridState.displayedPage"
+                    :row-id="id"
+                    :value="gridState.cellValues[id][column.id] || ''"
+                    :column="column"
+                    :draft="drafts[id]"
+                    :edit-routing-path="actionPaths.routerEdit"
+                    :is-selected="gridState.isSelectedAllRows
+                        || gridState.selectedRows[(rowIndex + fixedRowOffset)
+                            * gridState.displayedPage]" />
+            </slot>
         </GridColumn>
         <template v-for="(column, index) in gridState.pinnedColumns">
             <GridColumnSentinel
@@ -72,20 +79,23 @@ export default {
             type: Number,
             required: true,
         },
-        isPlaceholder: {
-            type: Boolean,
-            required: true,
-        },
         actionPaths: {
             type: Object,
             required: true,
         },
+        filterable: {
+            type: Boolean,
+            default: true,
+        },
     },
-    data() {
-        return {
-            rightPinnedColumns: [],
-            leftPinnedColumns: [],
-        };
+    beforeCreate() {
+        this.fixedRowOffset = this.$options.propsData.filterable ? 2 : 1;
+        this.rightPinnedColumns = [];
+        this.leftPinnedColumns = [];
+    },
+    beforeDestroy() {
+        delete this.rightPinnedColumns;
+        delete this.leftPinnedColumns;
     },
     computed: {
         ...mapState('gridDraft', {
@@ -104,6 +114,9 @@ export default {
         },
         columnWidths() {
             return this.gridState.columns.map(column => (+column.minWidth ? `minmax(max-content, ${column.minWidth}px)` : column.minWidth));
+        },
+        isPlaceholder() {
+            return !this.gridState.rowIds.length;
         },
     },
     methods: {

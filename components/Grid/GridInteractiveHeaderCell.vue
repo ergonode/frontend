@@ -4,7 +4,7 @@
  */
 <template>
     <div :class="['header-cell', { 'draggable': !pinnedColumn && isColumnEditable }]">
-        <GridHeaderTitle :header="title" />
+        <GridBaseHeaderCell :header="column.header.title" />
         <div
             :class="[
                 'horizontal-wrapper',
@@ -53,7 +53,7 @@ import { SortingOrder } from '~/model/icons/SortingOrder';
 import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
 
 export default {
-    name: 'GridHeaderCell',
+    name: 'GridInteractiveHeaderCell',
     components: {
         ButtonSelect: () => import('~/components/Inputs/Select/ButtonSelect'),
         IconArrowSort: () => import('~/components/Icon/Arrows/IconArrowSort'),
@@ -61,7 +61,7 @@ export default {
         ListElement: () => import('~/components/List/ListElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         CheckBox: () => import('~/components/Inputs/CheckBox'),
-        GridHeaderTitle: () => import('~/components/Grid/GridHeaderTitle'),
+        GridBaseHeaderCell: () => import('~/components/Grid/GridBaseHeaderCell'),
     },
     props: {
         storeNamespace: {
@@ -136,33 +136,6 @@ export default {
             if (!this.isSorted) return null;
 
             return this.gridState.sortedByColumn.orderState;
-        },
-        title() {
-            const {
-                id,
-                type,
-                label,
-                language,
-                parameter,
-            } = this.column;
-            let suffix = '';
-            const columnIDs = id.split(':');
-
-            if (type === 'PRICE') {
-                suffix = parameter.currency;
-            }
-
-            if (!language) {
-                return `${label} ${suffix}`;
-            }
-
-            if (columnIDs.length > 1) {
-                return `${label || id} ${suffix}`;
-            }
-
-            return label
-                ? `${label} ${language} ${suffix}`
-                : `${id} ${language} ${suffix}`;
         },
     },
     watch: {

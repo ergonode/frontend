@@ -11,10 +11,12 @@ export const types = {
     SET_PINNED_COLUMNS: 'SET_PINNED_COLUMNS',
     INSERT_PINNED_COLUMN_AT_INDEX: 'INSERT_PINNED_COLUMN_AT_INDEX',
     REMOVE_PINNED_COLUMN_AT_INDEX: 'REMOVE_PINNED_COLUMN_AT_INDEX',
-    SET_ROWS: 'SET_ROWS',
+    SET_CELL_VALUES: 'SET_CELL_VALUES',
+    SET_ROW_IDS: 'SET_ROW_IDS',
     SET_COUNT: 'SET_COUNT',
     SET_FILTERED: 'SET_FILTERED',
     SET_FILTER: 'SET_FILTER',
+    UPDATE_CELL_VALUE: 'UPDATE_CELL_VALUE',
     REMOVE_FILTER: 'REMOVE_FILTER',
     SET_CURRENT_PAGE: 'SET_CURRENT_PAGE',
     SET_SORTING_STATE: 'SET_SORTING_STATE',
@@ -27,7 +29,7 @@ export const types = {
     SET_COLUMN_WIDTH_AT_INDEX: 'SET_COLUMN_WIDTH_AT_INDEX',
     REMOVE_SELECTED_ROW: 'REMOVE_SELECTED_ROW',
     REMOVE_SELECTED_ROWS: 'REMOVE_SELECTED_ROWS',
-    ADD_DRAFT_TO_PRODUCT_AT_INDEX: 'ADD_DRAFT_TO_PRODUCT_AT_INDEX',
+    ADD_PRODUCT_VALUE: 'ADD_PRODUCT_VALUE',
     SET_NUMBER_OF_ELEMENTS_TO_DISPLAY: 'SET_NUMBER_OF_ELEMENTS_TO_DISPLAY',
 };
 
@@ -50,8 +52,11 @@ export default {
     [types.REMOVE_PINNED_COLUMN_AT_INDEX](state, index) {
         state.pinnedColumns.splice(index, 1);
     },
-    [types.SET_ROWS](state, payload) {
-        state.rows = payload;
+    [types.SET_CELL_VALUES](state, values) {
+        state.cellValues = values;
+    },
+    [types.SET_ROW_IDS](state, ids) {
+        state.rowIds = ids;
     },
     [types.SET_COUNT](state, payload) {
         state.count = payload;
@@ -101,9 +106,13 @@ export default {
     [types.REMOVE_SELECTED_ROWS](state) {
         state.selectedRows = {};
     },
-    [types.ADD_DRAFT_TO_PRODUCT_AT_INDEX](state, { index, product }) {
-        state.rows[index] = product;
-        state.rows = [...state.rows];
+    [types.UPDATE_CELL_VALUE](state, { rowId, columnId, value }) {
+        state.cellValues[rowId][columnId] = value;
+        state.cellValues = { ...state.cellValues };
+    },
+    [types.ADD_PRODUCT_VALUE](state, { productId, columnId, value }) {
+        state.cellValues[productId][columnId] = value;
+        state.cellValues = { ...state.cellValues };
     },
     [types.SET_NUMBER_OF_ELEMENTS_TO_DISPLAY](state, number) {
         state.numberOfDisplayedElements = Number(number);

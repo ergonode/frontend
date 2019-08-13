@@ -31,12 +31,12 @@ export default {
         };
     },
     watch: {
-        imageId() {
-            this.getImageById();
+        imageId: {
+            immediate: true,
+            handler() {
+                this.getImageById();
+            },
         },
-    },
-    created() {
-        this.getImageById();
     },
     methods: {
         ...mapActions('validations', [

@@ -8,7 +8,28 @@
             <GridWrapper
                 store-namespace="privilegesGrid"
                 :rows-height="32"
-                :action-paths="actionPaths" />
+                :is-draft="false"
+                :action-paths="actionPaths"
+                :filterable="false">
+                <template v-slot:cell="{column, columnIndex}">
+                    <GridCell
+                        v-for="(rowId, rowIndex) in rowIds"
+                        :key="rowId"
+                        :row="rowIndex + 1"
+                        :column="columnIndex"
+                        :locked="isColumnTypeText(column)"
+                        :action-cell="!isColumnTypeText(column)"
+                        :editing-allowed="!isColumnTypeText(column)"
+                        :is-selected="cellValues[rowId][column.id]"
+                        @edit="onValueChange(rowId, column.id)">
+                        <Component
+                            :is="getComponentByColumnType(column)"
+                            :row="rowIndex + 1"
+                            :value="cellValues[rowId][column.id]"
+                            @input="onValueChange(rowId, column.id)" />
+                    </GridCell>
+                </template>
+            </GridWrapper>
         </div>
         <Footer
             slot="footer"
@@ -17,13 +38,25 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
 import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
-
+import { getMappedGridData } from '~/model/mappers/privilegesMapper';
+import GridCell from '~/components/Grid/GridCell';
+import GridInfoCell from '~/components/Grid/GridInfoCell';
+import GridCheckCell from '~/components/Grid/GridCheckCell';
 
 export default {
     name: 'UsersRolesPrivilegeTab',
+    props: {
+        updateButton: {
+            type: Object,
+            required: true,
+        },
+    },
     components: {
+        GridCell,
+        GridInfoCell,
         GridWrapper,
         Footer: () => import('~/components/ReusableFooter/Footer'),
     },
@@ -35,18 +68,52 @@ export default {
             },
         };
     },
-    props: {
-        updateButton: {
-            type: Object,
-            required: true,
-        },
-    },
-    beforeCreate() {
+    async beforeCreate() {
         this.$registerStore({
             module: gridModule,
             moduleName: 'privilegesGrid',
             store: this.$store,
         });
+
+        const { privileges: privilegesDictionary } = this.$store.state.data;
+        const { privileges } = this.$store.state.roles;
+
+        const { rows, columns } = getMappedGridData(privilegesDictionary, privileges);
+
+        await this.$store.dispatch('privilegesGrid/setGridData', { columns, rows });
+    },
+    computed: {
+        ...mapState('privilegesGrid', {
+            rowIds: state => state.rowIds,
+            cellValues: state => state.cellValues,
+        }),
+    },
+    methods: {
+        ...mapActions('privilegesGrid', [
+            'updateCellValue',
+        ]),
+        onValueChange(rowId, columnId) {
+            // if (columnId !== 'update') {
+            //     this.updateCellValue({ rowId, columnId: 'read', value: true });
+            // }
+            //
+            // if (columnId === 'edit') {
+            //     this.updateCellValue({ rowId, columnId: 'create', value: true });
+            //     this.updateCellValue({ rowId, columnId: 'edit', value: true });
+            //     this.updateCellValue({ rowId, columnId: 'delete', value: true });
+            //
+            // }
+
+            this.updateCellValue({ rowId, columnId, value: !this.cellValues[rowId][columnId] });
+        },
+        getComponentByColumnType({ type }) {
+            if (type === 'TEXT') return GridInfoCell;
+
+            return GridCheckCell;
+        },
+        isColumnTypeText({ type }) {
+            return type === 'TEXT';
+        },
     },
     beforeDestroy() {
         this.$store.unregisterModule('privilegesGrid');
@@ -57,62 +124,6 @@ export default {
             moduleName: 'privilegesGrid',
             store,
         });
-        // const { privileges: privilegesDictionary } = store.state.data;
-        // const { privileges } = store.state.roles;
-        const columns = [
-            {
-                editable: true,
-                id: 'name',
-                label: '',
-                type: 'TEXT',
-                filterable: true,
-            },
-            {
-                editable: true,
-                id: 'create',
-                label: 'Create',
-                type: 'CHECK',
-                filterable: true,
-            },
-            {
-                editable: false,
-                id: 'read',
-                label: 'Read',
-                type: 'CHECK',
-                filterable: true,
-            },
-            {
-                editable: false,
-                id: 'update',
-                label: 'Update',
-                type: 'CHECK',
-                filterable: true,
-            },
-            {
-                editable: false,
-                id: 'delete',
-                label: 'Delete',
-                type: 'CHECK',
-                filterable: true,
-            },
-        ];
-        const rows = [
-            {
-                name: 'User',
-                create: false,
-                read: true,
-                update: true,
-                delete: true,
-            },
-            {
-                name: 'Role',
-                create: false,
-                read: true,
-                update: false,
-                delete: true,
-            },
-        ];
-        await store.dispatch('privilegesGrid/setGridData', { columns, rows });
     },
 };
 </script>

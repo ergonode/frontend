@@ -6,10 +6,17 @@
     <div :class="gridWrapperClasses">
         <Grid
             :store-namespace="storeNamespace"
-            :is-placeholder="isEmptyGrid"
             :action-paths="actionPaths"
-            :rows-height="rowsHeight" />
-        <GridPlaceholder v-if="isEmptyGrid" />
+            :rows-height="rowsHeight"
+            :filterable="filterable">
+            <template v-slot:cell="{column, columnIndex}">
+                <slot
+                    name="cell"
+                    :column="column"
+                    :column-index="columnIndex" />
+            </template>
+        </Grid>
+        <GridPlaceholder v-if="isPlaceholder" />
     </div>
 </template>
 
@@ -35,6 +42,10 @@ export default {
             type: Object,
             required: true,
         },
+        filterable: {
+            type: Boolean,
+            default: true,
+        },
     },
     destroyed() {
         this.removeValidationErrors();
@@ -56,8 +67,8 @@ export default {
                 },
             ];
         },
-        isEmptyGrid() {
-            return !this.gridState.rows.length;
+        isPlaceholder() {
+            return !this.gridState.rowIds.length;
         },
     },
     methods: {
