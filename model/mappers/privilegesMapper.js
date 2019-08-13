@@ -24,7 +24,6 @@ export function getMappedGridData(privileges, rolePrivileges) {
     for (let i = 0; i < rolePrivilegesNumber; i += 1) {
         const rolePrivilege = rolePrivileges[i];
         const rolePrivilegeName = rolePrivilege.split('_');
-        console.log(rolePrivilege);
         const rolePrivilegeType = rolePrivilegeName[rolePrivilegeName.length - 1].toLowerCase();
 
         if (!tmpColumnKeys[rolePrivilegeType]) {
@@ -48,7 +47,6 @@ export function getMappedGridData(privileges, rolePrivileges) {
 
             for (let k = 0; k < valuesNumber; k += 1) {
                 if (values[k] === rolePrivilege) {
-                    console.log(name, rolePrivilege);
                     if (!tmpRowKeys[name]) {
                         tmpRowKeys[name] = '+';
                         rows.push({
