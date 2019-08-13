@@ -5,6 +5,14 @@
 
 import { toCapitalize } from '~/model/stringWrapper';
 
+const getCheckColumn = privilegeType => ({
+    id: privilegeType,
+    label: toCapitalize(privilegeType),
+    type: 'CHECK_CELL',
+    width: '1fr',
+    editable: true,
+});
+
 export function getMappedGridData(privileges, rolePrivileges) {
     const rows = [];
     const columns = [
@@ -27,15 +35,7 @@ export function getMappedGridData(privileges, rolePrivileges) {
         const rolePrivilegeType = rolePrivilegeName[rolePrivilegeName.length - 1].toLowerCase();
 
         if (!tmpColumnKeys[rolePrivilegeType]) {
-            columns.push(
-                {
-                    id: rolePrivilegeType,
-                    label: toCapitalize(rolePrivilegeType),
-                    type: 'CHECK_CELL',
-                    width: '1fr',
-                    editable: true,
-                },
-            );
+            columns.push(getCheckColumn(rolePrivilegeType));
             tmpColumnKeys[rolePrivilegeType] = '+';
         }
 
@@ -79,12 +79,10 @@ export function getMappedPrivilegesBasedOnGridData(privileges, gridData) {
         const { length: privilegesKeysNumber } = privilegeKeys;
 
         for (let j = 0; j < privilegesKeysNumber; j += 1) {
-            if (privilegeKeys[j] !== 'name') {
+            if (privilegeKeys[j] !== 'name' && role[privilegeKeys[j]]) {
                 const privilegeName = `${role.name.replace(' ', '_').toUpperCase()}_${privilegeKeys[j].toUpperCase()}`;
 
-                if (role[privilegeKeys[j]]) {
-                    mappedPrivileges.push(privilegeName);
-                }
+                mappedPrivileges.push(privilegeName);
             }
         }
     }
