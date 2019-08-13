@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <img
-        :class="['image', { 'image--fab': fab }]"
-        :src="image">
+    <img :class="['image', { 'image--fab': fab }]">
 </template>
 
 <script>
@@ -25,11 +23,6 @@ export default {
             default: false,
         },
     },
-    data() {
-        return {
-            image: null,
-        };
-    },
     watch: {
         imageId: {
             immediate: true,
@@ -48,7 +41,7 @@ export default {
             }).then(response => this.onSuccess(response)).catch(e => this.onError(e.data));
         },
         onSuccess(response) {
-            this.image = getImageData(response);
+            this.$el.src = getImageData(response);
         },
     },
 };

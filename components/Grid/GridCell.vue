@@ -83,8 +83,6 @@ export default {
                 return false;
             }
 
-            console.log(this.selected);
-
             switch (keyCode) {
             case 13:
                 // Key: ENTER
