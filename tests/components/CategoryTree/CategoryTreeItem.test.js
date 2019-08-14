@@ -53,17 +53,4 @@ describe('CategoryTree/CategoryTreeItem', () => {
       icon.trigger('click')
       expect(wrapper.vm.isExpanded).toBe(true);
     });
-
-    it('Check number of categories label', () => {
-      wrapper.setProps({
-        numberOfChildren: 3,
-      });
-      expect(wrapper.vm.getNumberOfCategoriesLabel).toBe('3');
-      wrapper.setProps({
-        numberOfChildren: 1,
-      });
-      wrapper.vm.$nextTick(() => {
-        expect(wrapper.vm.getNumberOfCategoriesLabel).toBe('1');
-      });
-    });
 });

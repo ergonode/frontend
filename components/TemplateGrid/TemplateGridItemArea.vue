@@ -10,7 +10,7 @@
         <slot />
         <div
             class="item-area__line"
-            :style="setConnectionStyle" />
+            :style="connectionLineStyle" />
     </div>
 </template>
 <script>
@@ -31,10 +31,6 @@ export default {
             type: Number,
             required: true,
         },
-        columnWidth: {
-            type: Number,
-            required: true,
-        },
     },
     data: () => ({
         gridGap: 10,
@@ -52,17 +48,16 @@ export default {
                 gridGap: `${this.gridGap}px`,
             };
         },
-        setConnectionStyle() {
+        connectionLineStyle() {
             const { id, row, parent } = this.item;
             const children = this.treeData.filter(e => e.parent === parent);
             const connectionHeight = this.rowsHeight * (row - children[0].row + 1);
-            const connectionWidth = this.columnWidth - 21;
             const borderStyle = id === 'ghost_item' ? 'dashed' : 'solid';
             return {
                 borderBottomStyle: borderStyle,
                 borderLeftStyle: borderStyle,
-                left: parent === 'root' ? '0' : `-${connectionWidth - this.gridGap}px`,
-                width: parent === 'root' ? `${this.gridGap}px` : `${connectionWidth}px`,
+                left: parent === 'root' ? `-${this.gridGap}px` : '-90%',
+                width: parent === 'root' ? `${this.gridGap}px` : '90%',
                 height: `${connectionHeight + (this.rowsHeight / 2) - this.gridGap}px`,
                 bottom: `${this.rowsHeight / 2}px`,
             };
@@ -81,6 +76,9 @@ export default {
         .item-area__line {
             position: absolute;
             z-index: -1;
+            display: flex;
+            width: 100%;
+            grid-column: 1 / 1;
             border-left: 2px solid $primary;
             border-bottom: 2px solid $primary;
             transition: width 0.3s;

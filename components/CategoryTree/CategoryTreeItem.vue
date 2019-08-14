@@ -12,13 +12,13 @@
             @click.native="toggleItemExpand" />
         <span
             class="grid-item__title txt-fixed typo-subtitle txt--dark-graphite"
-            :style="getLabelStyle">
+            :style="labelStyle">
             {{ itemName }}
         </span>
         <span
             v-if="hasChildren"
             class="grid-item__categories-length txt-fixed typo-hint txt--dark-graphite">
-            {{ getNumberOfCategoriesLabel }}
+            {{ numberOfChildren }}
         </span>
     </div>
 </template>
@@ -54,14 +54,8 @@ export default {
                 ? Action.PLUS
                 : Action.MINUS;
         },
-        getLabelStyle() {
+        labelStyle() {
             return !this.hasChildren ? { marginLeft: '12px' } : null;
-        },
-        getNumberOfCategoriesLabel() {
-            return `${this.numberOfChildren}`;
-        },
-        getItemName() {
-            return this.item.name || this.item.code;
         },
     },
     methods: {

@@ -7,7 +7,7 @@
         :width="size"
         :height="size"
         :icon-color="fillColor">
-        <polygon :points="setPoints" />
+        <polygon :points="iconPoints" />
     </IconBase>
 </template>
 
@@ -35,7 +35,7 @@ export default {
         },
     },
     computed: {
-        setPoints() {
+        iconPoints() {
             if (this.state === Action.MINUS) return '5 11 19 11 19 13 5 13 5 11';
             return '11 5 11 11 5 11 5 13 11 13 11 19 13 19 13 13 19 13 19 11 13 11 13 5';
         },
