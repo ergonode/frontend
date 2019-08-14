@@ -3,8 +3,10 @@ node_modules
 package-lock.json
 report
 
-# jest test
+# tests
 /coverage
+/screenshotsFolder
+/videosFolder
 
 # logs
 npm-debug.log

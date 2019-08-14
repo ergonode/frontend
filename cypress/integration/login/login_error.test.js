@@ -5,17 +5,16 @@
 /* eslint-disable no-undef */
 /* eslint-disable spaced-comment */
 /// <reference types="Cypress" />
-const URL = 'http://localhost:3000';
 
 context('Login ', () => {
     beforeEach(() => {
-        cy.visit(URL);
+        cy.visit('');
     });
 
     it('Login error - without data', () => {
         cy.server();
         cy.route('POST', '/api/v1/login').as('login');
-        cy.get('.btn').click();
+        cy.contains('Log in').click();
         cy.get('.alert.alert--error').should('contain', 'Internal Server Error');
         cy.wait('@login').its('status').should('eq', 500);
     });

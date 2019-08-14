@@ -5,11 +5,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable spaced-comment */
 /// <reference types="Cypress" />
-const URL = 'http://localhost:3000';
 
 context('Login ', () => {
     beforeEach(() => {
-        cy.visit(URL);
+        cy.visit('');
     });
     it('Login success', () => {
         cy.server();
