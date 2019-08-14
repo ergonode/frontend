@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <img :class="['image', { 'image--fab': fab }]">
+    <img
+        :class="['image', { 'image--fab': fab }]"
+        alt="picture">
 </template>
 
 <script>
