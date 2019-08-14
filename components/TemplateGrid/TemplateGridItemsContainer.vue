@@ -19,6 +19,7 @@ export default {
     .grid-items-container {
         position: absolute;
         top: 0;
+        z-index: 10;
         display: grid;
         width: 100%;
         height: auto;

@@ -23,7 +23,8 @@
                     v-for="item in filteredTreeData"
                     :key="item.id"
                     :item="item"
-                    :columns="columns">
+                    :columns="columns"
+                    :rows-height="rowsHeight">
                     <TemplateGridGhostItem
                         v-if="item.ghost" />
                     <CategoryTreeItem
