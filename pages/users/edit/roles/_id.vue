@@ -29,6 +29,8 @@ export default {
             roleID: state => state.id,
             name: state => state.name,
             description: state => state.description,
+        }),
+        ...mapState('data', {
             privileges: state => state.privileges,
         }),
         ...mapState('privilegesGrid', {

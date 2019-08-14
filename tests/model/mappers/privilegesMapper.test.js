@@ -121,6 +121,26 @@ describe('privilegesMapper/getMappedGridData', () => {
                     delete: true
             },
         };
+        const privilegesDic = [
+            {
+                name: 'User role',
+                privileges: {
+                    create: 'USER_ROLE_CREATE',
+                    read: 'USER_ROLE_READ',
+                    update :'USER_ROLE_UPDATE',
+                    delete :'USER_ROLE_DELETE',
+                },
+            },
+            {
+                name: 'User',
+                privileges: {
+                    create: 'USER_CREATE',
+                    read: 'USER_READ',
+                    update: 'USER_UPDATE',
+                    delete: 'USER_DELETE',
+                }
+            },
+        ];
         const userRolePrivileges = [
             'USER_CREATE',
             'USER_READ',
@@ -132,7 +152,7 @@ describe('privilegesMapper/getMappedGridData', () => {
             'USER_ROLE_DELETE',
         ];
 
-        const mappedPrivileges = getMappedPrivilegesBasedOnGridData(userRolePrivileges, gridData);
+        const mappedPrivileges = getMappedPrivilegesBasedOnGridData(privilegesDic, gridData);
 
         expect(mappedPrivileges.length).toBe(8);
         expect(mappedPrivileges).toStrictEqual(userRolePrivileges);

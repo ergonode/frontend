@@ -68,7 +68,8 @@ export function getMappedGridData(privileges, rolePrivileges) {
     };
 }
 
-export function getMappedPrivilegesBasedOnGridData(privileges, gridData) {
+export function getMappedPrivilegesBasedOnGridData(privilegesDic, gridData) {
+    const tmpPrivilegesDic = [...privilegesDic];
     const rows = Object.entries(gridData);
     const { length: rowsNumber } = rows;
     const mappedPrivileges = [];
@@ -77,14 +78,20 @@ export function getMappedPrivilegesBasedOnGridData(privileges, gridData) {
         const [, role] = rows[i];
         const privilegeKeys = Object.keys(role);
         const { length: privilegesKeysNumber } = privilegeKeys;
+        const privilegeIndex = tmpPrivilegesDic.findIndex(
+            privilege => privilege.name === role.name,
+        );
 
         for (let j = 0; j < privilegesKeysNumber; j += 1) {
             if (privilegeKeys[j] !== 'name' && role[privilegeKeys[j]]) {
-                const privilegeName = `${role.name.replace(' ', '_').toUpperCase()}_${privilegeKeys[j].toUpperCase()}`;
+                console.log(privilegeIndex, tmpPrivilegesDic[privilegeIndex], privilegeKeys[j]);
+                const privilegeName = tmpPrivilegesDic[privilegeIndex].privileges[privilegeKeys[j]];
 
                 mappedPrivileges.push(privilegeName);
             }
         }
+
+        tmpPrivilegesDic.splice(privilegeIndex, 1);
     }
 
     return mappedPrivileges;
