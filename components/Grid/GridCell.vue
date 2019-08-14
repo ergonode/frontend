@@ -34,27 +34,19 @@ export default {
         },
         selected: {
             type: Boolean,
-            required: false,
             default: false,
         },
         error: {
             type: Boolean,
-            required: false,
             default: false,
         },
         locked: {
             type: Boolean,
-            required: false,
             default: false,
         },
         draft: {
             type: Boolean,
-            required: false,
             default: false,
-        },
-        onEdit: {
-            type: Function,
-            required: true,
         },
     },
     mounted() {
@@ -96,20 +88,20 @@ export default {
                 // Key: ENTER
                 if (this.editingAllowed) {
                     element = this.$el;
-                    if (!event.target.classList.contains('grid-cell') || event.target.classList.contains('grid-cell--selected')) {
+                    if (this.selected) {
                         element.focus();
-                        this.onEdit(false);
+                        this.$emit('edit', false);
                     } else {
-                        this.onEdit(true);
+                        this.$emit('edit', true);
                     }
                 }
                 break;
             case 32:
                 if (this.editingAllowed && this.actionCell) {
-                    if (event.target.classList.contains('grid-cell--selected')) {
-                        this.onEdit(false);
+                    if (this.selected) {
+                        this.$emit('edit', false);
                     } else {
-                        this.onEdit(true);
+                        this.$emit('edit', true);
                     }
                 }
                 break;
@@ -148,8 +140,8 @@ export default {
             return true;
         },
         onDblcClick() {
-            if (this.editingAllowed) {
-                this.onEdit(true);
+            if (this.editingAllowed && !this.isActionCell) {
+                this.$emit('edit', true);
             }
         },
     },

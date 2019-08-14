@@ -12,7 +12,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getMappedLayoutElementsForAPIUpdate } from '~/model/mappers/templateMapper';
 
 export default {
     validate({ params }) {
@@ -56,16 +55,18 @@ export default {
             this.$router.push('/templates');
         },
         onCreate() {
-            const { id } = this.$route.params;
-            this.updateTemplateDesigner({
-                id,
-                data: {
-                    name: this.templateTitle,
-                    image: this.templateImage,
-                    elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
-                },
-                onSuccess: this.onUpdateTemplateDesignerSuccess,
-                onError: this.onError,
+            import('~/model/mappers/templateMapper').then(({ getMappedLayoutElementsForAPIUpdate }) => {
+                const { id } = this.$route.params;
+                this.updateTemplateDesigner({
+                    id,
+                    data: {
+                        name: this.templateTitle,
+                        image: this.templateImage,
+                        elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
+                    },
+                    onSuccess: this.onUpdateTemplateDesignerSuccess,
+                    onError: this.onError,
+                });
             });
         },
     },

@@ -10,17 +10,19 @@
         :column="columnIndex"
         :locked="!isActionCell"
         :action-cell="isActionCell"
-        :on-edit="onEdit">
+        @edit="onEdit">
         <Component
-            :is="infoComponent"
+            :is="headerComponent"
             v-if="!isExtenderColumn"
-            v-bind="infoComponentProps"
+            v-bind="headerComponentProps"
             :store-namespace="storeNamespace"
-            @sort="() => getData({ path })" />
+            @sort="() => getData({ path })"
+            @input="onCheck" />
     </GridCell>
 </template>
 
 <script>
+import { GridHeaderType } from '~/model/grid/layout/GridHeaderType';
 
 export default {
     name: 'GridWrapperHeaderCell',
@@ -59,23 +61,22 @@ export default {
 
             return type === 'CHECK' || type === 'ACTION';
         },
-        infoComponent() {
-            const { id } = this.column;
+        headerComponent() {
+            const { type } = this.column.header;
 
-            if (id === 'id') return () => import('~/components/Grid/GridCheckCell');
-            if (id === 'edit') return () => import('~/components/Grid/GridHeaderTitle');
+            if (type === GridHeaderType.CHECK) return () => import('~/components/Grid/EditCells/GridEditSelectRowCell');
+            if (type === GridHeaderType.PLAIN) return () => import('~/components/Grid/GridBaseHeaderCell');
 
-            return () => import('~/components/Grid/GridHeaderCell');
+            return () => import('~/components/Grid/GridInteractiveHeaderCell');
         },
         isExtenderColumn() {
             return this.column.id === 'extender';
         },
-        infoComponentProps() {
-            const { id } = this.column;
+        headerComponentProps() {
+            const { type, title } = this.column.header;
 
-            if (id === 'id') return { row: this.rowIndex, isHeader: true };
-
-            if (id !== 'edit') {
+            if (type === GridHeaderType.CHECK) return { row: this.rowIndex, multicheck: true };
+            if (type === GridHeaderType.INTERACTIVE) {
                 return {
                     columnIndex: this.columnIndex,
                     column: this.column,
@@ -84,13 +85,16 @@ export default {
             }
 
             return {
-                header: 'Edit',
+                header: title,
             };
         },
     },
     methods: {
         getData({ path }) {
             this.$store.dispatch(`${this.storeNamespace}/getData`, { path });
+        },
+        onCheck(value) {
+            this.$store.dispatch(`${this.storeNamespace}/setSelectionForAllRows`, { isSelected: Boolean(value) });
         },
         onEdit() {
             if (this.column.type === 'CHECK') {
@@ -105,6 +109,6 @@ export default {
     .fixed-header {
         position: sticky !important;
         top: 0;
-        z-index: 5;
+        z-index: 8;
     }
 </style>

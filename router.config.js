@@ -31,13 +31,14 @@ const AttributeBaseTab = () => import('~/components/Card/AttributeBaseTab').then
 const AttributeTranslationsTab = () => import('~/components/Card/AttributeTranslationsTab').then(m => m.default || m);
 const TemplateDesignerBaseTab = () => import('~/components/Card/TemplateDesignerBaseTab').then(m => m.default || m);
 const TemplateDesignerTab = () => import('~/components/Card/TemplateDesignerTab').then(m => m.default || m);
-const UserBaseTab = () => import('~/components/Card/UserBaseTab').then(m => m.default || m);
-const UserRolesBaseTab = () => import('~/components/Card/UserRolesBaseTab').then(m => m.default || m);
 const UsersGridTab = () => import('~/components/Card/UsersGridTab').then(m => m.default || m);
 const UserActivityLogsGridTab = () => import('~/components/Card/UserActivityLogsGridTab').then(m => m.default || m);
 const RolesGridTab = () => import('~/components/Card/RolesGridTab').then(m => m.default || m);
+const UserBaseTab = () => import('~/components/Card/UserBaseTab').then(m => m.default || m);
 const UsersActivityLogsGridTab = () => import('~/components/Card/UsersActivityLogsGridTab').then(m => m.default || m);
 const UserAvatarTab = () => import('~/components/Card/UserAvatarTab').then(m => m.default || m);
+const UserRolesBaseTab = () => import('~/components/Card/UserRolesBaseTab').then(m => m.default || m);
+const UserRolesPrivilegeTab = () => import('~/components/Card/UserRolesPrivilegeTab').then(m => m.default || m);
 const CategoryBaseTab = () => import('~/components/Card/CategoryBaseTab').then(m => m.default || m);
 const CategoryTranslationsTab = () => import('~/components/Card/CategoryTranslationsTab').then(m => m.default || m);
 const ProductGridTab = () => import('~/components/Card/ProductGridTab').then(m => m.default || m);
@@ -272,6 +273,10 @@ export const pages = [
                 path: 'general',
                 component: UserRolesBaseTab,
             },
+            {
+                path: 'privileges',
+                component: UserRolesPrivilegeTab,
+            },
         ],
     },
     {
@@ -282,6 +287,10 @@ export const pages = [
             {
                 path: 'general',
                 component: UserRolesBaseTab,
+            },
+            {
+                path: 'privileges',
+                component: UserRolesPrivilegeTab,
             },
         ],
     },

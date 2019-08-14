@@ -4,6 +4,9 @@
  */
 import {
     getMappedGridConfiguration,
+    getMappedCellValues,
+    getMappedRowIds,
+    getMappedColumn,
     getMappedColumns,
     getSortedColumnsByIDs,
     getMappedFilter,
@@ -21,7 +24,6 @@ export default {
             numberOfDisplayedElements,
             filter,
         } = state;
-
         const parsedFilter = getMappedFilter(filter);
         const isProductGrid = path.includes('products');
         const columnsID = isProductGrid
@@ -58,8 +60,12 @@ export default {
 
             this.$cookies.set(COLUMN_IDS, visibleColumns.map(col => col.id).join(','));
 
+            const cellValues = getMappedCellValues(columns, rows);
+            const rowIds = getMappedRowIds(rows);
+
             commit(types.SET_CONFIGURATION, mappedConfiguration);
-            commit(types.SET_ROWS, rows);
+            commit(types.SET_CELL_VALUES, cellValues);
+            commit(types.SET_ROW_IDS, rowIds);
             commit(types.SET_COUNT, count);
             commit(types.SET_FILTERED, filtered);
             commit(types.SET_COLUMNS, mappedColumns);
@@ -100,21 +106,28 @@ export default {
             this.$cookies.set(COLUMN_IDS, parsedColumnsID);
 
             const draggedColumn = columns.find(col => col.id === columnId);
-            if (!draggedColumn.width) {
-                draggedColumn.width = 150;
-                draggedColumn.minWidth = 150;
-            } else {
-                draggedColumn.minWidth = draggedColumn.width;
-            }
-
             let columnsWithoutGhost = stateColumns.filter(column => column.id !== 'ghost');
+
             columnsWithoutGhost = insertValueAtIndex(
-                columnsWithoutGhost, draggedColumn, ghostIndex,
+                columnsWithoutGhost, getMappedColumn(draggedColumn), ghostIndex,
             );
 
+            const cellValues = getMappedCellValues(columns, rows);
+            const rowIds = getMappedRowIds(rows);
+
             commit(types.SET_COLUMNS, columnsWithoutGhost);
-            commit(types.SET_ROWS, rows);
+            commit(types.SET_CELL_VALUES, cellValues);
+            commit(types.SET_ROW_IDS, rowIds);
         }).catch(err => console.log(err));
+    },
+    setGridData({ commit }, { columns, rows }) {
+        const { mappedColumns } = getMappedColumns(columns, false);
+        const cellValues = getMappedCellValues(columns, rows);
+        const rowIds = getMappedRowIds(rows);
+
+        commit(types.SET_COLUMNS, mappedColumns);
+        commit(types.SET_CELL_VALUES, cellValues);
+        commit(types.SET_ROW_IDS, rowIds);
     },
     setFilter({ commit, state }, { filter: filterToSet, id }) {
         // Remove selection on filter action
@@ -214,17 +227,26 @@ export default {
         }
     },
     addDraftToProduct({ commit, state }, { columnId, productId, value }) {
-        const { rows } = state;
-        const productIndex = rows.findIndex(row => row.id === productId);
+        const { columns } = state;
+        const column = columns.find(col => col.id === columnId);
+        let parsedValue = value;
 
-        if (productIndex !== -1) {
-            const productToAdd = { ...rows[productIndex], [columnId]: value };
+        if (column.filter && column.filter.options) {
+            const { options } = column.filter;
 
-            commit(types.ADD_DRAFT_TO_PRODUCT_AT_INDEX, {
-                index: productIndex,
-                product: productToAdd,
-            });
+            if (Array.isArray(value)) {
+                parsedValue = value.map(key => options[key] || 'No translation').join(', ');
+            }
+            if (typeof options[value] !== 'undefined') {
+                parsedValue = options[value] || 'No translation';
+            }
         }
+
+        commit(types.ADD_PRODUCT_VALUE, {
+            productId,
+            columnId,
+            value: parsedValue,
+        });
     },
     addPinnedColumn({ commit, state }, column) {
         const { pinnedColumns } = state;
@@ -243,9 +265,9 @@ export default {
     removePinnedColumn({ commit, state }, id) {
         const { pinnedColumns } = state;
         const index = pinnedColumns.findIndex(col => col.id === id);
-
-        console.log(index);
-
         commit(types.REMOVE_PINNED_COLUMN_AT_INDEX, index);
+    },
+    updateRowValue({ commit }, payload) {
+        commit(types.UPDATE_ROW_VALUE, payload);
     },
 };

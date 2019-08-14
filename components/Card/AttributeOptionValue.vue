@@ -7,6 +7,7 @@
         :value="translationOptionValue"
         :label="label"
         solid
+        small
         @input="value => setOptionValueForLanguageCode({ languageCode, index, value })" />
 </template>
 

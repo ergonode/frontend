@@ -72,12 +72,12 @@ export default {
         };
     },
     watch: {
-        parsedOptions() {
-            this.initializeValues(this.value);
+        parsedOptions: {
+            immediate: true,
+            handler() {
+                this.initializeValues(this.value);
+            },
         },
-    },
-    created() {
-        this.initializeValues(this.value);
     },
     computed: {
         dropDownState() {

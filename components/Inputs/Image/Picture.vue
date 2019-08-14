@@ -5,7 +5,7 @@
 <template>
     <img
         :class="['image', { 'image--fab': fab }]"
-        :src="image">
+        alt="picture">
 </template>
 
 <script>
@@ -25,18 +25,13 @@ export default {
             default: false,
         },
     },
-    data() {
-        return {
-            image: null,
-        };
-    },
     watch: {
-        imageId() {
-            this.getImageById();
+        imageId: {
+            immediate: true,
+            handler() {
+                this.getImageById();
+            },
         },
-    },
-    created() {
-        this.getImageById();
     },
     methods: {
         ...mapActions('validations', [
@@ -48,7 +43,7 @@ export default {
             }).then(response => this.onSuccess(response)).catch(e => this.onError(e.data));
         },
         onSuccess(response) {
-            this.image = getImageData(response);
+            this.$el.src = getImageData(response);
         },
     },
 };

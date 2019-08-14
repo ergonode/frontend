@@ -21,7 +21,6 @@ export default {
         flex-wrap: wrap;
         justify-content: center;
         height: 0;
-        margin-top: 24px;
         overflow: auto;
     }
 </style>

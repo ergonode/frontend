@@ -21,7 +21,7 @@
         @dragover="onDragOver"
         @dragleave="onDragLeave"
         @drop="onDrop">
-        <template v-if="!isDraggedColumn">
+        <template v-if="!isDraggedColumn && column.id !== 'ghost'">
             <slot />
             <div
                 v-if="!isExtenderColumn && isColumnResizeable"
@@ -86,11 +86,18 @@ export default {
     },
     data() {
         return {
-            startWidth: 0,
-            startX: 0,
             isResizing: false,
-            columnWidth: 0,
         };
+    },
+    beforeCreate() {
+        this.startWidth = 0;
+        this.startX = 0;
+        this.columnWidth = 0;
+    },
+    beforeDestroy() {
+        delete this.startWidth;
+        delete this.startX;
+        delete this.columnWidth;
     },
     mounted() {
         const { width } = this.column;
@@ -442,7 +449,7 @@ export default {
             position: absolute;
             top: 0;
             right: 0;
-            z-index: 6;
+            z-index: 10;
             width: 1px;
             height: 100%;
             background-color: $grey;
@@ -514,7 +521,7 @@ export default {
             position: absolute;
             top: 0;
             right: 0;
-            z-index: 5;
+            z-index: 9;
             width: 2.5px;
             height: 100%;
             cursor: col-resize;

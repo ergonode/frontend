@@ -36,6 +36,22 @@ export default {
             }
         });
     },
+    addDraftValue({ commit, state, rootState }, { columnId, rowId, value }) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+        const { drafts } = state;
+
+        if (!drafts[rowId]) {
+            commit('initializeProductDraft', rowId);
+        }
+
+        if (!drafts[rowId][columnId]) {
+            commit('initializeColumnProductDraft', { productId: rowId, columnId });
+        }
+
+        commit('addDraftValueForLanguageCode', {
+            productId: rowId, columnId, languageCode: userLanguageCode, value,
+        });
+    },
     removeDraft: ({ commit }, productId) => commit('removeDraft', productId),
     forceDraftsMutation: ({ commit }) => commit('forceDraftsMutation'),
 };
