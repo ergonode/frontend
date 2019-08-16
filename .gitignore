@@ -40,3 +40,4 @@ npm-debug.log
 yarn-error.log
 /**/npm-debug.log
 .env
+cypress.env.json

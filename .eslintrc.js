@@ -8,7 +8,8 @@ module.exports = {
         browser: true,
         es6: true,
         node: true,
-        jest: true
+        jest: true,
+        "cypress/globals": true
     },
     parserOptions: {
         parser: 'babel-eslint'
@@ -18,13 +19,15 @@ module.exports = {
         // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
         'airbnb-base',
         'plugin:vue/recommended',
-        'plugin:jest/recommended'
+        'plugin:jest/recommended',
+        'plugin:cypress/recommended'
     ],
     // required to lint *.vue files
     plugins: [
         'vue',
         'jest',
-        'notice'
+        'notice',
+        'cypress'
     ],
     // add your custom rules here
     rules: {
