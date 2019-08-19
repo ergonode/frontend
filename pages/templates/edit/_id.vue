@@ -51,7 +51,7 @@ export default {
         },
         onUpdateTemplateDesignerSuccess() {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'Template updated' });
+            this.$addAlert({ type: 'success', message: 'Template updated' });
             this.$router.push('/templates');
         },
         onCreate() {

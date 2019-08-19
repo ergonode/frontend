@@ -37,6 +37,6 @@ describe('multimedia/getImageData', () => {
   it('Get image data when correct data and no header', () => {
     const obj = [73, 32, 194, 189, 32, 226, 153, 165, 32, 240, 159, 146, 169];
     const result = getImageData(obj);
-    expect(result).toBe("data:'image/png'};base64,SSDCvSDimaUg8J+SqQ==");
+    expect(result).toBe("data:image/png;base64,SSDCvSDimaUg8J+SqQ==");
   });
 });

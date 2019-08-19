@@ -18,7 +18,7 @@ describe('Buttons/Button', () => {
     afterEach(() => {
       wrapper.destroy();
     });
-    it("Component is rendered", () => {
+    it('Component is rendered', () => {
       expect(wrapper.is(Button)).toBe(true);
     });
 

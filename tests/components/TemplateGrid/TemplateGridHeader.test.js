@@ -18,7 +18,7 @@ describe('TemplateGrid/TemplateGridHeader', () => {
         },
       });
     });
-    it("Component is rendered", () => {
+    it('Component is rendered', () => {
       expect(wrapper.is(TemplateGridHeader)).toBe(true);
     });
 

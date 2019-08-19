@@ -17,35 +17,29 @@ const mocks = {
 describe('Navigation/MenuList', () => {
     let wrapper;
     beforeEach(() => {
-      wrapper = shallowMount(MenuList, {
-          localVue,
-          router,
-          mocks,
-          propsData: {
-          sectionMenu: [{
-            title: 'Products',
-            routing: '/products',
-            icon: 'paper',
-          }],
-        },
-        stubs: ['NuxtLink'],
-      });
+        wrapper = shallowMount(MenuList, {
+            localVue,
+            router,
+            mocks,
+            propsData: {
+                sectionMenu: [
+                    {
+                        title: 'Products catalog',
+                        routing: '/products',
+                        icon: 'Document',
+                    },
+                ],
+            },
+            stubs: ['NuxtLink'],
+        });
     });
 
-    it("component renders correctly", () => {
+    it('Component is rendered', () => {
       expect(wrapper.is(MenuList)).toBe(true);
     });
 
-    it('check name MenuList component', () => {
+    it('Component is named well', () => {
       expect(typeof MenuList.name).toBe('string');
       expect(MenuList.name).toEqual('MenuList');
-    });
-
-    it('check if the props are set correct', () => {
-      let SectionContainer = wrapper.find('.menu-section');
-      expect(wrapper.vm.sectionTitle).toBeNull();
-      expect(wrapper.vm.sectionMenu).toBeTruthy();
-      expect(SectionContainer.contains('h3.menu-section__title')).toBeFalsy();
-      expect(SectionContainer.contains('h3.list-element--selected')).toBeFalsy();
     });
 });

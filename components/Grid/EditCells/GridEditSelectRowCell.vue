@@ -7,6 +7,7 @@
         :value="selectionState"
         :row="row"
         :store-namespace="storeNamespace"
+        :disabled="false"
         @input="onCheck" />
 </template>
 
@@ -51,7 +52,8 @@ export default {
     },
     methods: {
         onCheck(value) {
-            this.$store.dispatch(`${this.storeNamespace}/setSelectedRow`, { row: this.row, value });
+            if (this.multicheck) this.$store.dispatch(`${this.storeNamespace}/setSelectionForAllRows`, { isSelected: Boolean(value) });
+            else this.$store.dispatch(`${this.storeNamespace}/setSelectedRow`, { row: this.row, value });
         },
     },
 };

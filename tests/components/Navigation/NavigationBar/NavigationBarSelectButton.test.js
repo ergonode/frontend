@@ -19,7 +19,7 @@ describe('Navigation/NavigationBar/NavigationBarSelectButton', () => {
         });
     });
 
-    it("Component renders correctly", () => {
+    it('Component is rendered', () => {
         expect(wrapper.is(NavigationBarSelectButton)).toBe(true);
     });
 

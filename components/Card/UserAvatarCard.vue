@@ -8,6 +8,7 @@
             :value="avatarId"
             style="height: 180px;"
             title="Profile picture"
+            :disabled="!isUserAllowedToUpdate"
             @upload="uploadValue"
             @remove="uploadValue" />
     </BaseCard>
@@ -28,6 +29,9 @@ export default {
         ...mapState('users', {
             avatarId: state => state.avatarId,
         }),
+        isUserAllowedToUpdate() {
+            return this.$canIUse('USER_UPDATE');
+        },
     },
     methods: {
         ...mapActions('users', [

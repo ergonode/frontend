@@ -47,7 +47,7 @@ export default {
         },
         onCreateRoleSuccess(id) {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'Role created' });
+            this.$addAlert({ type: 'success', message: 'Role created' });
             this.$router.push({
                 name: 'users-roles-edit-id',
                 params: {

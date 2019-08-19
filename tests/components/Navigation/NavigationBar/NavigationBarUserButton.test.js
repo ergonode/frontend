@@ -34,7 +34,7 @@ describe('Navigation/NavigationBar/NavigationBarUserButton', () => {
       });
   });
 
-  it("Component renders correctly", () => {
+  it('Component is rendered', () => {
     expect(wrapper.is(NavigationBarUserButton)).toBe(true);
   });
 

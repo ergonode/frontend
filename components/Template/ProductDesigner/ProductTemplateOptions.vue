@@ -10,6 +10,7 @@
         :label="label"
         :placeholder="placeholder"
         :multiselect="multiselect"
+        :disabled="disabled"
         :error-messages="isError ? [' '] : null"
         :required="required"
         @focus="onFocusChange"

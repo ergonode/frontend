@@ -70,6 +70,7 @@ export default {
         commit(types.SET_HIDDEN_ITEM, { key, value });
     },
     addTreeItem: ({ commit, getters }, item) => {
+        // TODO: Method is not clear, too many dependencies, I need to dispatch list/setDisabledElement, not sure if that place is good
         const findIndex = getters.getIndexById(item.id);
         if (findIndex >= 0) {
             commit(types.SET_TREE_ITEM, { index: findIndex, item });
@@ -86,6 +87,7 @@ export default {
         commit(types.SET_TREE, newTree);
     },
     removeTreeItem: ({ commit, state, dispatch }, id) => {
+        // TODO: Method is not clear, too many dependencies, I need to dispatch list/removeDisabledElement, not sure if that place is good
         let newTree = [];
         if (Number.isInteger(id)) {
             newTree = getTreeWhenElementRemoved(state.treeData, id);

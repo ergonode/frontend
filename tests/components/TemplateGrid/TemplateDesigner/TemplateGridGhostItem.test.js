@@ -31,7 +31,7 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridGhostItem', () => {
         });
     });
 
-    it("Component is rendered", () => {
+    it('Component is rendered', () => {
         expect(wrapper.is(TemplateGridGhostItem)).toBe(true);
     });
 

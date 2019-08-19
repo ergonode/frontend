@@ -10,7 +10,7 @@ describe('TemplateGrid/TemplateGridGhostItem', () => {
     beforeEach(() => {
       wrapper = mount(TemplateGridGhostItem);
     });
-    it("Component is rendered", () => {
+    it('Component is rendered', () => {
       expect(wrapper.is(TemplateGridGhostItem)).toBe(true);
     });
 

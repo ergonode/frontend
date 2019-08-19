@@ -6,12 +6,13 @@
     <ListElement
         :key="item.id"
         v-draggable-element="{
-            id: draggableListID,
+            id: item.id,
             draggedElementStyle,
             onDraggedState,
+            draggable: $canIUse('CATEGORY_TREE_UPDATE'),
         }"
         :dragged="isDragged"
-        :disabled="isElementDisabled(draggableListID, languageCode)">
+        :disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]">
         <ListElementDescription
             :title="item.name || item.code"
             :subtitle="productsCount"
@@ -23,7 +24,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import DraggableStates from '~/model/draggableStates';
 
 export default {
@@ -46,13 +47,12 @@ export default {
         return {
             isDragged: false,
             draggedElementStyle: { width: 246, height: 32, backgroundColor: '#fff' },
-            draggableListID: this.item.id,
         };
     },
     computed: {
-        ...mapGetters('list', [
-            'isElementDisabled',
-        ]),
+        ...mapState('list', {
+            disabledElements: state => state.disabledElements,
+        }),
         productsCount() {
             return `${this.item.elements_count || 0} Product${this.item.elements_count === 1 ? '' : 's'}`;
         },

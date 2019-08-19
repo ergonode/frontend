@@ -31,7 +31,7 @@ describe('Alerts/FlashMessage', () => {
     });
   });
 
-  it("Component is rendered", () => {
+  it('Component is rendered', () => {
     expect(wrapper.is(FlashMessage)).toBe(true);
   });
 

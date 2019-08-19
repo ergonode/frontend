@@ -12,7 +12,7 @@ describe('Dividers/Divider', () => {
     wrapper = mount(Divider);
   });
 
-  it("Component is rendered", () => {
+  it('Component is rendered', () => {
     expect(wrapper.is(Divider)).toBe(true);
   });
 

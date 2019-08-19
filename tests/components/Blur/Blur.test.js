@@ -12,7 +12,7 @@ describe('Blur/Blur', () => {
     wrapper = mount(Blur);
   });
 
-  it("Component is rendered", () => {
+  it('Component is rendered', () => {
     expect(wrapper.is(Blur)).toBe(true);
   });
 

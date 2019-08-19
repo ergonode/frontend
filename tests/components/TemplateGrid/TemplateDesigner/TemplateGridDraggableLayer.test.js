@@ -32,7 +32,7 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer', () => {
         });
     });
 
-    it("Component is rendered", () => {
+    it('Component is rendered', () => {
         expect(wrapper.is(TemplateGridDraggableLayer)).toBe(true);
     });
 

@@ -23,9 +23,6 @@ export default {
         selectedLanguage() {
             return getValueByKey(this.languages, this.languageCode);
         },
-        isTranslationChosen() {
-            return this.languageCode !== '';
-        },
     },
     methods: {
         ...mapActions('translations', [

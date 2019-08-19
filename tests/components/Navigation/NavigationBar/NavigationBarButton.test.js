@@ -15,7 +15,7 @@ describe('Navigation/NavigationBar/NavigationBarButton', () => {
     });
   });
 
-  it("Component renders correctly", () => {
+  it('Component is rendered', () => {
     expect(wrapper.is(NavigationBarButton)).toBe(true);
   });
 

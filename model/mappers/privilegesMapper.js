@@ -24,41 +24,36 @@ export function getMappedGridData(privileges, rolePrivileges) {
     ];
     const tmpRowKeys = {};
     const tmpColumnKeys = {};
-    const { length: rolePrivilegesNumber } = rolePrivileges;
     const systemPrivilegesEntries = Object.entries(privileges);
     const { length: systemPrivilegesLength } = systemPrivilegesEntries;
     let rowIndex = 0;
 
-    for (let i = 0; i < rolePrivilegesNumber; i += 1) {
-        const rolePrivilege = rolePrivileges[i];
-        const rolePrivilegeName = rolePrivilege.split('_');
-        const rolePrivilegeType = rolePrivilegeName[rolePrivilegeName.length - 1].toLowerCase();
+    for (let i = 0; i < systemPrivilegesLength; i += 1) {
+        const [, entry] = systemPrivilegesEntries[i];
+        const { name, privileges: systemPrivileges } = entry;
+        const privilegeNames = Object.values(systemPrivileges);
+        const { length: privilegeNamesNumber } = privilegeNames;
 
-        if (!tmpColumnKeys[rolePrivilegeType]) {
-            columns.push(getCheckColumn(rolePrivilegeType));
-            tmpColumnKeys[rolePrivilegeType] = '+';
+        if (!tmpRowKeys[name]) {
+            tmpRowKeys[name] = '+';
+            rows.push({
+                id: rowIndex,
+                name,
+            });
+            rowIndex += 1;
         }
 
-        for (let j = 0; j < systemPrivilegesLength; j += 1) {
-            const [, entry] = systemPrivilegesEntries[j];
-            const { name, privileges: systemPrivileges } = entry;
-            const values = Object.values(systemPrivileges);
-            const { length: valuesNumber } = values;
+        for (let j = 0; j < privilegeNamesNumber; j += 1) {
+            const rolePrivilege = privilegeNames[j];
+            const rolePrivilegeName = rolePrivilege.split('_');
+            const rolePrivilegeType = rolePrivilegeName[rolePrivilegeName.length - 1].toLowerCase();
 
-            for (let k = 0; k < valuesNumber; k += 1) {
-                if (values[k] === rolePrivilege) {
-                    if (!tmpRowKeys[name]) {
-                        tmpRowKeys[name] = '+';
-                        rows.push({
-                            id: rowIndex,
-                            name,
-                        });
-                        rowIndex += 1;
-                    }
-
-                    rows[rowIndex - 1][rolePrivilegeType] = true;
-                }
+            if (!tmpColumnKeys[rolePrivilegeType]) {
+                columns.push(getCheckColumn(rolePrivilegeType));
+                tmpColumnKeys[rolePrivilegeType] = '+';
             }
+
+            rows[rowIndex - 1][rolePrivilegeType] = rolePrivileges.includes(rolePrivilege);
         }
     }
 

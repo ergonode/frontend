@@ -15,7 +15,7 @@ describe('CategoryTree/CategoryTreeItem', () => {
         },
       });
     });
-    it("Component is rendered", () => {
+    it('Component is rendered', () => {
       expect(wrapper.is(CategoryTreeItem)).toBe(true);
     });
 

@@ -19,7 +19,7 @@ describe('Alerts/Feedback', () => {
     });
   });
 
-  it("Component is rendered", () => {
+  it('Component is rendered', () => {
     expect(wrapper.is(Alert)).toBe(true);
   });
 

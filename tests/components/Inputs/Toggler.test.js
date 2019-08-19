@@ -10,7 +10,7 @@ describe('Inputs/Toggler', () => {
     beforeEach(() => {
         wrapper = mount(Toggler);
     });
-    it("Component is rendered", () => {
+    it('Component is rendered', () => {
         expect(wrapper.is(Toggler)).toBe(true);
     });
 

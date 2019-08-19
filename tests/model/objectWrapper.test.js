@@ -4,7 +4,7 @@
  */
 import {
   getKeyByValue,
-  getObjectByKey,
+  getNestedObjectByKeyWithValue,
   objectToArray,
   getValueByKey,
   getKeysByValues,
@@ -30,27 +30,10 @@ describe('objectWrapper/getKeyByValue', () => {
   });
 });
 
-describe('objectWrapper/getObjectByKey', () => {
-  it('Get object by key if the key does exist', () => {
-    const fun = getObjectByKey(obj, 'test');
-    expect(fun).toEqual({"title": 1, "value": "test"});
-  });
-
-  it('Get empty object if the key does not exist', () => {
-    const fun = getObjectByKey(obj, 'test1');
-    expect(fun).toEqual({});
-  });
-});
-
 describe('objectWrapper/objectToArray', () => {
   it('Prepare array from the object', () => {
     const fun = objectToArray(obj);
     expect(fun).toEqual( [{"title": 1, "value": "test"}, {"title": 2, "value": "jest"}]);
-  });
-
-  it('Prepare array from the empty object', () => {
-    const fun = getObjectByKey({});
-    expect(fun).toEqual({});
   });
 });
 

@@ -15,7 +15,7 @@ describe('TemplateGrid/TemplateGridShadowItem', () => {
         },
       });
     });
-    it("Component is rendered", () => {
+    it('Component is rendered', () => {
       expect(wrapper.is(TemplateGridShadowItem)).toBe(true);
     });
 

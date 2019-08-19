@@ -39,6 +39,7 @@ export default {
                         updateButton: {
                             title: this.isEdit ? 'SAVE ATTRIBUTE' : 'CREATE ATTRIBUTE',
                             action: this.isEdit ? this.onSave : this.onCreate,
+                            disabled: this.isEdit ? !this.$canIUse('ATTRIBUTE_UPDATE') : false,
                         },
                     },
                 },
@@ -50,6 +51,7 @@ export default {
                         updateButton: {
                             title: 'SAVE ATTRIBUTE',
                             action: this.onSave,
+                            disabled: !this.$canIUse('ATTRIBUTE_UPDATE'),
                         },
                     },
                 },

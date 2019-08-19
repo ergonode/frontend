@@ -22,6 +22,7 @@
             regular
             multiselect
             clearable
+            :disabled="!isUserAllowedToUpdate"
             :error-messages="errorGroupsMessage"
             @input="(groups) => setAttributeGroups(groups)" />
         <Divider />
@@ -56,8 +57,11 @@
             :label="paramsLabel"
             :options="attrParamValues"
             :error-messages="errorParamsMessage"
+            :disabled="!isUserAllowedToUpdate"
             @input="(parameter) => setAttributeParameter(parameter)" />
-        <AttributeOptionKeyValues v-show="hasOptions" />
+        <AttributeOptionKeyValues
+            v-show="hasOptions"
+            :disabled="!isUserAllowedToUpdate" />
         <slot />
     </BaseCard>
 </template>
@@ -112,6 +116,9 @@ export default {
         },
         isDisabled() {
             return Boolean(this.attrID);
+        },
+        isUserAllowedToUpdate() {
+            return this.$canIUse('ATTRIBUTE_UPDATE');
         },
         currentTypeKey() {
             return getKeyByValue(this.attrTypes, this.type);

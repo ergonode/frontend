@@ -29,15 +29,6 @@ export default {
             treeId: state => state.treeId,
         }),
     },
-    created() {
-        this.setConfigurationForList({
-            draggedElementsStore: {
-                storeName: 'tree',
-                stateName: 'fullTreeData',
-                idName: ['id'],
-            },
-        });
-    },
     methods: {
         ...mapActions('tree', [
             'updateTree',
@@ -46,7 +37,7 @@ export default {
             setConfigurationForList: 'setConfigurationForList',
         }),
         onUpdateTreeSuccess() {
-            this.$addAlert(this.$store, { type: 'success', message: 'Tree updated' });
+            this.$addAlert({ type: 'success', message: 'Tree updated' });
         },
         onSave() {
             const categoryTree = {

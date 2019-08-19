@@ -40,7 +40,7 @@ describe('Template/TemplateDesigner/LayoutElement', () => {
         });
     });
 
-    it("Component is rendered", () => {
+    it('Component is rendered', () => {
         expect(wrapper.is(LayoutElement)).toBe(true);
     });
 

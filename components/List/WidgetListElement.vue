@@ -5,9 +5,10 @@
 <template>
     <ListElement
         v-draggable-element="{
-            id: draggableListID,
+            id: item.type,
             draggedElementStyle,
             onDraggedState,
+            draggable: $canIUse('TEMPLATE_DESIGNER_UPDATE'),
         }"
         :dragged="isDragged">
         <ListElementIcon icon-path="Editor/IconFontSize" />
@@ -18,7 +19,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import DraggableStates from '~/model/draggableStates';
 
 export default {
@@ -38,13 +39,7 @@ export default {
         return {
             isDragged: false,
             draggedElementStyle: { width: 246, height: 32, backgroundColor: '#fff' },
-            draggableListID: this.item.type,
         };
-    },
-    computed: {
-        ...mapGetters('list', [
-            'isElementDisabled',
-        ]),
     },
     methods: {
         ...mapActions('draggable', [

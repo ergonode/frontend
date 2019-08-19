@@ -48,6 +48,7 @@ export default {
                     title: 'CREATE TEMPLATE',
                     color: 'success',
                     action: this.onCreate,
+                    disabled: !this.$canIUse('TEMPLATE_DESIGNER_CREATE'),
                 },
             ],
         };

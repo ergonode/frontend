@@ -6,7 +6,8 @@ import { mount } from "@vue/test-utils";
 import UserPage from '~/components/Pages/UserPage';
 
 const mocks = {
-  $route: {
+    $canIUse: jest.fn(),
+    $route: {
     params: {
       id: '12345',
     },

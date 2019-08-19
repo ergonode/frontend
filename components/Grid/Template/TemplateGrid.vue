@@ -73,6 +73,7 @@ export default {
                     component: () => import('~/components/Card/AttributesListTab'),
                     props: {
                         isSelectLanguage: false,
+                        disabled: !this.$canIUse('TEMPLATE_DESIGNER_UPDATE'),
                     },
                     iconPath: 'Menu/IconAttributes',
                     active: true,

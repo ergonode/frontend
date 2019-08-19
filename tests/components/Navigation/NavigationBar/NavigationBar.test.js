@@ -15,7 +15,7 @@ describe('Navigation/NavigationBar/NavigationBar', () => {
     });
   });
 
-  it("Component is rendered", () => {
+  it('Component is rendered', () => {
     expect(wrapper.is(NavigationBar)).toBe(true);
   });
 

@@ -36,13 +36,14 @@
                     :column-index="colIndex"
                     :row-index="(rowIndex + fixedRowOffset) * gridState.displayedPage"
                     :row-id="id"
-                    :value="gridState.cellValues[id][column.id] || ''"
+                    :cell-data="gridState.cellValues[id][column.id] || {}"
                     :column="column"
                     :draft="drafts[id]"
                     :edit-routing-path="actionPaths.routerEdit"
                     :is-selected="gridState.isSelectedAllRows
                         || gridState.selectedRows[(rowIndex + fixedRowOffset)
-                            * gridState.displayedPage]" />
+                            * gridState.displayedPage]"
+                    :editing-privilege-allowed="editingPrivilegeAllowed" />
             </slot>
         </GridColumn>
         <template v-for="(column, index) in gridState.pinnedColumns">
@@ -74,6 +75,10 @@ export default {
         storeNamespace: {
             type: String,
             required: true,
+        },
+        editingPrivilegeAllowed: {
+            type: Boolean,
+            default: true,
         },
         rowsHeight: {
             type: Number,

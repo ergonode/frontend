@@ -16,7 +16,7 @@ describe('Label/Label', () => {
     });
   });
 
-  it("Component is rendered", () => {
+  it('Component is rendered', () => {
     expect(wrapper.is(Label)).toBe(true);
   });
 

@@ -11,11 +11,13 @@
             regular
             :error-messages="errorNameMessage"
             label="Template name"
+            :disabled="!isUserAllowedToUpdate"
             @input="(title) => setTemplateDesignerTitle(title)" />
         <UploadImage
             :value="templateImage"
             style="height: 180px;"
             title="Template cover image"
+            :disabled="!isUserAllowedToUpdate"
             @upload="uploadValue"
             @remove="uploadValue" />
     </BaseCard>
@@ -39,6 +41,9 @@ export default {
             templateTitle: state => state.title,
             templateImage: state => state.image,
         }),
+        isUserAllowedToUpdate() {
+            return this.$canIUse('TEMPLATE_DESIGNER_UPDATE');
+        },
         errorNameMessage() {
             const typeIndex = 'name';
             return this.elementIsValidate(typeIndex);

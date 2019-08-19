@@ -16,8 +16,7 @@
             v-if="!isExtenderColumn"
             v-bind="headerComponentProps"
             :store-namespace="storeNamespace"
-            @sort="() => getData({ path })"
-            @input="onCheck" />
+            @sort="() => getData({ path })" />
     </GridCell>
 </template>
 
@@ -92,9 +91,6 @@ export default {
     methods: {
         getData({ path }) {
             this.$store.dispatch(`${this.storeNamespace}/getData`, { path });
-        },
-        onCheck(value) {
-            this.$store.dispatch(`${this.storeNamespace}/setSelectionForAllRows`, { isSelected: Boolean(value) });
         },
         onEdit() {
             if (this.column.type === 'CHECK') {

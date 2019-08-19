@@ -39,6 +39,7 @@ export default {
                         updateButton: {
                             title: this.isEdit ? 'SAVE CATEGORY' : 'CREATE CATEGORY',
                             action: this.isEdit ? this.onSave : this.onCreate,
+                            disabled: this.isEdit ? !this.$canIUse('CATEGORY_UPDATE') : false,
                         },
                     },
                 },
@@ -50,6 +51,7 @@ export default {
                         updateButton: {
                             title: 'SAVE CATEGORY',
                             action: this.onSave,
+                            disabled: !this.$canIUse('CATEGORY_UPDATE'),
                         },
                     },
                 },

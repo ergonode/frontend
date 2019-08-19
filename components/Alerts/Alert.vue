@@ -11,7 +11,6 @@
         <Button
             fab
             color="transparent"
-            ripple-color="rgba(235, 235, 236, 1)"
             @click.native="onDismiss">
             <template v-slot:prepend>
                 <IconClose />

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="upload-image">
+    <div :class="['upload-image', {'upload-image--disabled': disabled}]">
         <span
             v-if="title"
             class="upload-image__title">{{ title }}</span>
@@ -47,13 +47,15 @@ export default {
     props: {
         title: {
             type: String,
-            required: false,
             default: '',
         },
         value: {
             type: String,
-            required: false,
             default: '',
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     components: {
@@ -87,7 +89,7 @@ export default {
                 this.selectedFileID = id;
                 this.$emit('upload', id);
 
-                this.$addAlert(this.$store, { type: 'success', message: 'File uploaded' });
+                this.$addAlert({ type: 'success', message: 'File uploaded' });
             }).catch(e => this.onError(e.data));
         },
     },
@@ -99,6 +101,18 @@ export default {
         position: relative;
         display: flex;
         flex-direction: column;
+
+        &--disabled::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: $background;
+            opacity: 0.5;
+            content: "";
+            cursor: not-allowed;
+        }
 
         &__wrapper {
             position: relative;

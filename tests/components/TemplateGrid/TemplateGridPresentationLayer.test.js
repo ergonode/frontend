@@ -21,7 +21,7 @@ describe('TemplateGrid/TemplateGridPresentationLayer', () => {
       });
     });
 
-    it("Component is rendered", () => {
+    it('Component is rendered', () => {
       expect(wrapper.is(TemplateGridPresentationLayer)).toBe(true);
     });
 

@@ -39,6 +39,7 @@ export default {
                         updateButton: {
                             title: this.isEdit ? 'SAVE PRODUCT' : 'CREATE PRODUCT',
                             action: this.isEdit ? this.onSave : this.onCreate,
+                            disabled: this.isEdit ? !this.$canIUse('PRODUCT_UPDATE') : false,
                         },
                     },
                 },
@@ -50,6 +51,7 @@ export default {
                         updateButton: {
                             title: 'SAVE PRODUCT',
                             action: this.onSave,
+                            disabled: !this.$canIUse('PRODUCT_UPDATE'),
                         },
                     },
                 },

@@ -8,18 +8,22 @@ import AttributePage from '~/components/Pages/AttributePage';
 const localVue = createLocalVue();
 localVue.directive('ripple', {});
 
+const mocks = {
+    $canIUse: jest.fn(),
+};
 describe('Pages/AttributePage', () => {
     let wrapper;
     beforeEach(() => {
-      wrapper = mount(AttributePage, {
-        localVue,
-        propsData: {
-          title: '',
-        },
-        stubs: {
-          HorizontalTabBar: true,
-        }
-      });
+        wrapper = mount(AttributePage, {
+            localVue,
+            mocks,
+            propsData: {
+                title: '',
+            },
+            stubs: {
+                HorizontalTabBar: true,
+            }
+        });
     });
     it("Component rendered correctly", () => {
       expect(wrapper.is(AttributePage)).toBe(true);

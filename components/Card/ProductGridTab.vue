@@ -14,22 +14,24 @@
                 <GridWrapper
                     store-namespace="productsGrid"
                     :rows-height="rowsHeight"
-                    :action-paths="actionPaths" />
+                    :action-paths="actionPaths"
+                    :editing-privilege-allowed="isUserAllowedToUpdate" />
                 <TrashCan v-show="isColumnDragging" />
             </div>
         </div>
-        <GridFooter
-            store-namespace="productsGrid"
-            :is-pagination-visible="Boolean(numberOfPages)">
-            <template v-slot:pagination>
-                <GridPageSelector
-                    v-model="visibleRowsInPageCount"
-                    :rows-number="numberOfDataElements" />
-                <GridPagination
-                    :value="displayedPage"
-                    :max-page="numberOfPages"
-                    @input="onPageChanged" />
-            </template>
+        <GridFooter>
+            <GridPageSelector
+                v-model="visibleRowsInPageCount"
+                :rows-number="numberOfDataElements" />
+            <GridPagination
+                :value="displayedPage"
+                :max-page="numberOfPages"
+                @input="onPageChanged" />
+            <Button
+                large
+                title="SAVE CHANGES"
+                :disabled="!isUserAllowedToUpdate"
+                @click.native="saveDrafts" />
         </GridFooter>
     </div>
 </template>
@@ -43,6 +45,7 @@ import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
 import VerticalTabBar from '~/components/Tab/VerticalTabBar';
 import TrashCan from '~/components/DragAndDrop/TrashCan';
+import Button from '~/components/Buttons/Button';
 
 export default {
     name: 'ProductGridTab',
@@ -54,6 +57,7 @@ export default {
         // GridGlobalFilters: () => import('~/components/Grid/GridGlobalFilters'),
         VerticalTabBar,
         TrashCan,
+        Button,
     },
     data() {
         return {
@@ -61,6 +65,9 @@ export default {
                 {
                     title: 'Attributes',
                     component: () => import('~/components/Card/AttributesListTab'),
+                    props: {
+                        disabled: !this.$canIUse('PRODUCT_UPDATE'),
+                    },
                     iconPath: 'Menu/IconAttributes',
                     active: true,
                 },
@@ -97,9 +104,15 @@ export default {
             displayedPage: state => state.displayedPage,
             numberOfDisplayedElements: state => state.numberOfDisplayedElements,
         }),
+        ...mapState('gridDraft', {
+            drafts: state => state.drafts,
+        }),
         ...mapGetters('productsGrid', {
             numberOfPages: 'numberOfPages',
         }),
+        isUserAllowedToUpdate() {
+            return this.$canIUse('PRODUCT_UPDATE');
+        },
         actionPaths() {
             return {
                 getData: `${this.userLanguageCode}/products`,
@@ -137,8 +150,16 @@ export default {
     methods: {
         ...mapActions('productsGrid', [
             'getData',
+            'addDraftToProduct',
             'changeDisplayingPage',
             'changeNumberOfDisplayingElements',
+        ]),
+        ...mapActions('productsDraft', [
+            'applyDraft',
+        ]),
+        ...mapActions('gridDraft', [
+            'removeDraft',
+            'forceDraftsMutation',
         ]),
         onPageChanged(page) {
             this.changeDisplayingPage(page);
@@ -151,6 +172,28 @@ export default {
                     path,
                 },
             );
+        },
+        saveDrafts() {
+            const promises = [];
+
+            Object.entries(this.drafts).forEach(([productId, column]) => {
+                Object.entries(column).forEach(([columnId, languageCode]) => {
+                    const [value] = Object.values(languageCode);
+
+                    promises.push(this.applyDraft({
+                        id: productId,
+                        onSuccess: () => {
+                            this.addDraftToProduct({ columnId, productId, value });
+                            this.removeDraft(productId);
+                        },
+                        onError: () => {},
+                    }));
+                });
+            });
+
+            Promise.all(promises).then(() => {
+                this.forceDraftsMutation();
+            });
         },
     },
     async fetch({ app, store }) {

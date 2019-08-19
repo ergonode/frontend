@@ -15,7 +15,8 @@ const store = new Store({
   }
 });
 const mocks = {
-  $store: store,
+    $canIUse: jest.fn(),
+    $store: store,
 };
 afterEach(() => store.reset());
 describe('Pages/CategoryTreesPage', () => {

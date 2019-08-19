@@ -6,13 +6,18 @@ export function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }
 
-export function getObjectByKey(object, value) {
-    return Object.keys(object).reduce((response, property) => {
-        if (property === value) {
-            return { value: property, title: object[property] };
+export function getNestedObjectByKeyWithValue(object, key, value) {
+    let lookingNestedObject = null;
+
+    Object.values(object).some(values => values.some((nestedObject) => {
+        if (nestedObject[key] === value) {
+            lookingNestedObject = { ...nestedObject };
+            return true;
         }
-        return { ...response };
-    }, {});
+        return false;
+    }));
+
+    return lookingNestedObject;
 }
 
 export function objectToArray(object) {

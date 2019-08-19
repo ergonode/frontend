@@ -18,7 +18,7 @@ describe('Icon/Icon', () => {
             },
         });
     });
-    it("Component is rendered", () => {
+    it('Component is rendered', () => {
         expect(wrapper.is(Icon)).toBe(true);
     });
     it('Component is named well', () => {
