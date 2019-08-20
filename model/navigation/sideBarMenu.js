@@ -85,8 +85,8 @@ const systemSectionItems = [
         privilege: null,
     },
     {
-        title: 'Workflows',
-        routing: '/placeholder/workflow',
+        title: 'Workflow',
+        routing: '/workflow',
         icon: 'Flow',
         privilege: null,
     },

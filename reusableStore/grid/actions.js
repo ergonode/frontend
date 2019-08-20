@@ -55,8 +55,8 @@ export default {
             const visibleColumns = columnsToMap.filter(col => col.visible);
             const { mappedColumns, pinnedColumns } = getMappedColumns(visibleColumns);
             const mappedConfiguration = getMappedGridConfiguration(configuration);
-            const cellValues = getMappedCellValues(columns, rows);
             const rowIds = getMappedRowIds(rows);
+            const cellValues = getMappedCellValues(columns, rows, rowIds);
 
             if (isProductGrid) {
                 this.$cookies.set(COLUMN_IDS, visibleColumns.map(col => col.id).join(','));
@@ -117,8 +117,8 @@ export default {
                 columnsWithoutGhost, getMappedColumn(draggedColumn), ghostIndex,
             );
 
-            const cellValues = getMappedCellValues(columns, rows);
             const rowIds = getMappedRowIds(rows);
+            const cellValues = getMappedCellValues(columns, rows, rowIds);
 
             dispatch('list/setDisabledElement', { languageCode: draggedColumn.language, elementId: draggedColumn.element_id }, { root: true });
 
@@ -129,8 +129,8 @@ export default {
     },
     setGridData({ commit }, { columns, rows }) {
         const { mappedColumns } = getMappedColumns(columns, false);
-        const cellValues = getMappedCellValues(columns, rows);
         const rowIds = getMappedRowIds(rows);
+        const cellValues = getMappedCellValues(columns, rows, rowIds);
 
         commit(types.SET_COLUMNS, mappedColumns);
         commit(types.SET_CELL_VALUES, cellValues);

@@ -26,6 +26,9 @@ const UsersRolesEdit = () => import('~/pages/users/edit/roles/_id').then(m => m.
 const Settings = () => import('~/pages/settings/index').then(m => m.default || m);
 const Channels = () => import('~/pages/channels/index').then(m => m.default || m);
 const Placeholder = () => import('~/pages/placeholder/index').then(m => m.default || m);
+const Workflow = () => import('~/pages/workflow/index').then(m => m.default || m);
+const ProductStatusNew = () => import('~/pages/workflow/statuses/new/index').then(m => m.default || m);
+const ProductStatusEdit = () => import('~/pages/workflow/statuses/edit/_id').then(m => m.default || m);
 
 const AttributeBaseTab = () => import('~/components/Card/AttributeBaseTab').then(m => m.default || m);
 const AttributeTranslationsTab = () => import('~/components/Card/AttributeTranslationsTab').then(m => m.default || m);
@@ -45,6 +48,7 @@ const ProductGridTab = () => import('~/components/Card/ProductGridTab').then(m =
 const ProductBaseTab = () => import('~/components/Card/ProductBaseTab').then(m => m.default || m);
 const ProductTemplateTab = () => import('~/components/Card/ProductTemplateTab').then(m => m.default || m);
 const TreeDesignTab = () => import('~/components/Card/TreeDesignTab').then(m => m.default || m);
+const ProductStatusGridTab = () => import('~/components/Card/ProductStatusGridTab').then(m => m.default || m);
 
 export const pages = [
     {
@@ -293,6 +297,29 @@ export const pages = [
                 component: UserRolesPrivilegeTab,
             },
         ],
+    },
+    {
+        name: 'workflow',
+        path: '/workflow',
+        component: Workflow,
+        children: [
+            {
+                path: 'statuses',
+                component: ProductStatusGridTab,
+            },
+        ],
+    },
+    {
+        name: 'workflow-statuses-new',
+        path: '/workflow/statuses/new',
+        component: ProductStatusNew,
+        children: [],
+    },
+    {
+        name: 'workflow-statuses-edit-id',
+        path: '/workflow/statuses/edit/:id?',
+        component: ProductStatusEdit,
+        children: [],
     },
     {
         name: 'settings', path: '/settings', component: Settings,
