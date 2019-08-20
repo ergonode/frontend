@@ -50,8 +50,6 @@ export default {
     created() {
         if (!this.value) this.localValue = null;
         else this.localValue = parseDate(this.value, this.parameters.format);
-
-        console.log(parseDate(this.value, this.parameters.format), parseDate(this.value, 'YYYY-MM-DD'));
     },
     computed: {
         dropDownState() {
