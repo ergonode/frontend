@@ -17,6 +17,7 @@ const getMappedColumnHeaderTitle = ({
     const columnIDs = id.split(':');
 
     if (type === 'PRICE') suffix = parameter.currency;
+    if (type === 'ACTION') return 'Edit';
     if (!language) return `${label} ${suffix}`;
     if (columnIDs.length > 1) return `${label || id} ${suffix}`;
 
@@ -122,7 +123,7 @@ export function getMappedColumns(columns, isExtenderNeeded = true) {
     };
 }
 
-export function getMappedCellValues(columns, rows) {
+export function getMappedCellValues(columns, rows, rowIds) {
     const { length: columnsNumber } = columns;
     const { length: rowsNumber } = rows;
     const values = {};
@@ -133,7 +134,7 @@ export function getMappedCellValues(columns, rows) {
 
         for (let j = 0; j < rowsNumber; j += 1) {
             const row = rows[j];
-            const { id: rowId } = row;
+            const rowId = rowIds[j];
             const value = row[column.id];
 
             if (!values[rowId]) values[rowId] = {};
@@ -161,7 +162,16 @@ export function getMappedCellValues(columns, rows) {
 }
 
 export function getMappedRowIds(rows) {
-    return rows.map(row => row.id);
+    const rowIds = [];
+    const { length } = rows;
+
+    for (let i = 0; i < length; i += 1) {
+        const { id } = rows[i];
+        if (!id) rowIds.push(i + 1);
+        else rowIds.push(id);
+    }
+
+    return rowIds;
 }
 
 export function getMappedGridConfiguration(configuration) {
