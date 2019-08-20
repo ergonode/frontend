@@ -51,7 +51,12 @@ export const pages = [
         name: 'index', path: '/', component: Login,
     },
     {
-        name: 'dashboard', path: '/dashboard', component: Dashboard,
+        name: 'dashboard',
+        path: '/dashboard',
+        component: Dashboard,
+        meta: {
+            permission: 'user',
+        },
     },
     {
         name: 'import', path: '/import', component: Import,
