@@ -55,7 +55,7 @@ export const pages = [
         path: '/dashboard',
         component: Dashboard,
         meta: {
-            permission: 'user',
+            permission: 'DASHBOAR_READ',
         },
     },
     {

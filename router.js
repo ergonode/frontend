@@ -3,13 +3,11 @@
  * See LICENSE for license details.
  */
 import Vue from 'vue';
-import Vuex from 'vuex';
 import Router from 'vue-router';
 import ModuleLoader from '~/plugins/moduleLoader';
 import { pages } from '~/router.config';
 
 Vue.use(Router);
-Vue.use(Vuex);
 
 const modulesRouter = ModuleLoader.getRouterConfigs();
 const expandedRouter = pages.concat(modulesRouter);
@@ -63,7 +61,7 @@ const scrollBehavior = (to, from, savedPosition) => {
 };
 
 export function createRouter() {
-    const router = new Router({
+    return new Router({
         mode: 'history',
         base: '/',
         linkActiveClass: 'nuxt-link-active',
@@ -72,24 +70,4 @@ export function createRouter() {
         routes: pages,
         fallback: false,
     });
-    router.beforeEach((to, from, next) => {
-      // const { user } = app.store.state.authentication;
-      // this.$store.dispatch
-      // return user.privileges.findIndex(userPrivilege => userPrivilege === privilege) > -1;
-      if (to.path === '/dashboard') {
-        if(process.client) {
-            // const { user } = router.app.$store.state.authentication;
-            console.log(Vuex);
-          }
-          // router.push('/something')
-        // next(new Error('asasaasasa'));
-      }
-      // next({ path: '/dashboard' })
-      // next(new Error('Mamy problem'));
-      next();
-    });
-    router.onError(err => {
-      console.error("Handling router error", err);
-    });
-    return router;
 }
