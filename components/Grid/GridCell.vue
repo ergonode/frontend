@@ -36,6 +36,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        editing: {
+            type: Boolean,
+            default: false,
+        },
         error: {
             type: Boolean,
             default: false,
@@ -88,7 +92,7 @@ export default {
                 // Key: ENTER
                 if (this.editingAllowed) {
                     element = this.$el;
-                    if (this.selected) {
+                    if (this.selected || this.editing) {
                         element.focus();
                         this.$emit('edit', false);
                     } else {
@@ -168,7 +172,7 @@ export default {
 
         &:not(&--error):not(&--locked) {
             &:focus {
-                box-shadow: inset 0 0 0 2px $primary;
+                box-shadow: inset -0.5px 0 0 2px $primary;
             }
         }
 
@@ -180,12 +184,12 @@ export default {
             background-color: $lightRed;
 
             &:focus {
-                box-shadow: inset 0 0 0 2px $error;
+                box-shadow: inset -0.5px 0 0 2px $error;
             }
         }
 
         &--locked:focus {
-            box-shadow: inset 0 0 0 2px $lightGraphite;
+            box-shadow: inset -0.5px 0 0 2px $lightGraphite;
         }
 
         &:focus {

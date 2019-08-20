@@ -51,7 +51,7 @@ export default {
         },
         onCreateUserSuccess(id) {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'User created' });
+            this.$addAlert({ type: 'success', message: 'User created' });
             this.$router.push({
                 name: 'users-edit-id',
                 params: {

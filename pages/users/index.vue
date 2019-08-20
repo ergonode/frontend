@@ -33,6 +33,7 @@ export default {
                     title: isRolePath ? 'CREATE ROLE' : 'CREATE USER',
                     color: 'success',
                     action: isRolePath ? this.addNewRole : this.addNewUser,
+                    disabled: isRolePath ? !this.$canIUse('USER_ROLE_CREATE') : !this.$canIUse('USER_CREATE'),
                 },
             ];
         },

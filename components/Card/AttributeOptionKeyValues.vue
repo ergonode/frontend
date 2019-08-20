@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="options">
+    <div :class="['options', {'options--disabled': disabled}]">
         <div
             v-for="(key, index) in optionKeys"
             :key="index"
@@ -14,6 +14,7 @@
                 solid
                 required
                 small
+                :disabled="disabled"
                 label="Option code"
                 @input="e => updateOptionKey(index, e)"
                 @click:append-outer="removeOptionKey(index)" />
@@ -36,6 +37,12 @@ export default {
         TextField: () => import('~/components/Inputs/TextField'),
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
+    },
+    props: {
+        disabled: {
+            type: Boolean,
+            required: true,
+        },
     },
     computed: {
         ...mapState('attribute', {
@@ -72,6 +79,10 @@ export default {
     .options {
         display: grid;
         grid-gap: 8px;
+
+        &--disabled {
+            pointer-events: none;
+        }
 
         .option {
             display: grid;

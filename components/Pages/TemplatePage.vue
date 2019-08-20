@@ -40,17 +40,19 @@ export default {
                         updateButton: {
                             title: this.isEdit ? 'SAVE TEMPLATE' : 'CREATE TEMPLATE',
                             action: this.isEdit ? this.onSave : this.onCreate,
+                            disabled: this.isEdit ? !this.$canIUse('TEMPLATE_DESIGNER_UPDATE') : false,
                         },
                     },
                 },
                 {
-                    title: 'Template design',
+                    title: 'Template designer',
                     path: `/templates/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/template`,
                     active: this.isEdit,
                     props: {
                         updateButton: {
                             title: 'SAVE TEMPLATE',
                             action: this.onSave,
+                            disabled: !this.$canIUse('TEMPLATE_DESIGNER_UPDATE'),
                         },
                     },
                 },
@@ -70,13 +72,6 @@ export default {
             //     },
             // ];
         }
-        this.setConfigurationForList({
-            draggedElementsStore: {
-                storeName: 'templateDesigner',
-                stateName: 'layoutElements',
-                idName: ['data', 'id'],
-            },
-        });
     },
     methods: {
         ...mapActions('list', {

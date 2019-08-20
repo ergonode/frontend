@@ -42,7 +42,7 @@ export default {
         },
         onCreateTemplateDesignerSuccess(id) {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'Template created' });
+            this.$addAlert({ type: 'success', message: 'Template created' });
             this.$router.push({
                 name: 'templates-edit-id',
                 params: {

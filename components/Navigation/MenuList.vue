@@ -26,7 +26,6 @@ export default {
     props: {
         sectionTitle: {
             type: String,
-            required: false,
             default: null,
         },
         sectionMenu: {

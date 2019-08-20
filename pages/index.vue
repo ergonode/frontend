@@ -28,7 +28,7 @@
                     large
                     color="success"
                     title="Log in"
-                    @click.native="onSubmit" />
+                    @click.stop.prevent.native="onSubmit" />
             </form>
         </section>
         <section class="login__background">

@@ -10,7 +10,6 @@
                 icon="arrow-dart trans-quarter"
                 fab
                 color="transparent"
-                ripple-color="rgba(235, 235, 236, 1)"
                 @click.native="scrollTo('back')" />
             <div
                 :class="
@@ -32,7 +31,6 @@
                 v-if="isAddingNewTabEnabled"
                 fab
                 color="transparent"
-                ripple-color="rgba(235, 235, 236, 1)"
                 @click.native="addTab">
                 <template v-slot:prepend>
                     <IconAdd fill-color="#5c5f65" />
@@ -43,7 +41,6 @@
                 icon="arrow-dart trans-three-fourth"
                 fab
                 color="transparent"
-                ripple-color="rgba(235, 235, 236, 1)"
                 @click.native="scrollTo('forward')" />
         </div>
         <HorizontalTabContent :item="items[selectedTabIndex]" />

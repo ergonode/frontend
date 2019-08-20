@@ -4,14 +4,15 @@
  */
 <template>
     <GridCell
-        :editing-allowed="column.editable || isActionCell"
+        :editing-allowed="isEditingAllowed"
         :row="rowIndex"
         :column="columnIndex"
-        :locked="isLockedCell"
+        :locked="!isEditingAllowed"
         :error="isErrorCell"
         :draft="isDraftCell"
         :action-cell="isActionCell"
         :selected="isSelected"
+        :editing="isEditingCell"
         @edit="onEdit">
         <template v-if="!isExtenderColumn">
             <Component
@@ -24,7 +25,7 @@
                 :is-select-kind="isSelectKind"
                 :is-multi-select="isMultiSelect"
                 :type="column.type"
-                :value="draftValue || value"
+                :value="draftValue || (isSelectKind ? cellData.key : cellData.value)"
                 :options="options"
                 :parameters="parameters"
                 :error-messages="errorValue"
@@ -49,6 +50,10 @@ export default {
             type: String,
             required: true,
         },
+        editingPrivilegeAllowed: {
+            type: Boolean,
+            default: true,
+        },
         rowIndex: {
             type: Number,
             required: true,
@@ -65,8 +70,8 @@ export default {
             type: [String, Number],
             required: true,
         },
-        value: {
-            type: [String, Number, Boolean],
+        cellData: {
+            type: Object,
             required: true,
         },
         isSelected: {
@@ -82,6 +87,23 @@ export default {
             default: '',
         },
     },
+    beforeCreate() {
+        const { type, editable, id } = this.$options.propsData.column;
+
+        this.isActionCell = type === 'CHECK' || type === 'ACTION';
+        this.isExtenderColumn = id === 'extender';
+        this.isSelectKind = type === 'SELECT' || type === 'MULTI_SELECT';
+        this.isMultiSelect = type === 'MULTI_SELECT';
+        this.isEditingAllowed = (editable && this.$options.propsData.editingPrivilegeAllowed)
+            || this.isActionCell;
+    },
+    beforeDestroy() {
+        delete this.isActionCell;
+        delete this.isExtenderColumn;
+        delete this.isSelectKind;
+        delete this.isMultiSelect;
+        delete this.isEditingAllowed;
+    },
     computed: {
         ...mapState('validations', {
             validationErrors: state => state.validationErrors,
@@ -92,39 +114,16 @@ export default {
         gridState() {
             return this.$store.state[this.storeNamespace];
         },
-        isExtenderColumn() {
-            return this.column.id === 'extender';
-        },
         isEditingCell() {
             const { row, column } = this.gridState.editingCellCoordinates;
 
             return this.rowIndex === row && this.columnIndex === column;
-        },
-        isActionCell() {
-            const { type } = this.column;
-
-            return type === 'CHECK' || type === 'ACTION';
-        },
-        isLockedCell() {
-            const { editable } = this.column;
-
-            return !editable && !this.isActionCell;
         },
         isErrorCell() {
             return typeof this.errorValue !== 'undefined';
         },
         isDraftCell() {
             return this.draftValue !== null;
-        },
-        isSelectKind() {
-            const { type } = this.column;
-
-            return type === 'SELECT' || type === 'MULTI_SELECT';
-        },
-        isMultiSelect() {
-            const { type } = this.column;
-
-            return type === 'MULTI_SELECT';
         },
         infoComponent() {
             const { type } = this.column;
@@ -160,7 +159,7 @@ export default {
                     row: this.rowIndex,
                 };
             default:
-                if (this.parsedDraftValue === null) return { value: this.value };
+                if (this.parsedDraftValue === null) return { value: this.cellData.value };
                 return { value: this.parsedDraftValue };
             }
         },
@@ -234,8 +233,10 @@ export default {
             }
         },
         onUpdateDraft(value) {
-            if (this.value === value
-                || (Array.isArray(value) && isArrayEqualToArray(value, this.value))) return;
+            if ((Array.isArray(value)
+                && isArrayEqualToArray(value, this.cellData.key))
+                || this.cellData.value === value
+            ) return;
 
             this.updateDraftValue({
                 productId: this.rowId,

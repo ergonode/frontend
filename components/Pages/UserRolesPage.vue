@@ -39,6 +39,7 @@ export default {
                         updateButton: {
                             title: this.isEdit ? 'SAVE ROLE' : 'CREATE ROLE',
                             action: this.isEdit ? this.onSave : this.onCreate,
+                            disabled: this.isEdit ? !this.$canIUse('USER_ROLE_UPDATE') : false,
                         },
                     },
                 },
@@ -50,6 +51,7 @@ export default {
                         updateButton: {
                             title: 'SAVE PRIVILEGES',
                             action: this.onSave,
+                            disabled: !this.$canIUse('USER_ROLE_UPDATE'),
                         },
                     },
                 },
@@ -64,6 +66,8 @@ export default {
                     color: 'transparent',
                     action: this.onRemove,
                     theme: 'dark',
+                    icon: 'remove',
+                    disabled: !this.$canIUse('USER_ROLE_DELETE'),
                 },
             ];
         }

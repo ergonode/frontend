@@ -196,9 +196,9 @@ export default {
                     grid.children[i].style.transform = null;
                 }
 
-                if (this.ghostIndex !== index) {
+                if (this.ghostIndex !== this.draggedElIndex) {
                     this.$store.dispatch(`${this.storeNamespace}/changeColumnPosition`, {
-                        from: index,
+                        from: this.draggedElIndex,
                         to: this.ghostIndex,
                     });
                 }

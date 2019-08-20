@@ -16,7 +16,8 @@ export const types = {
     SET_COUNT: 'SET_COUNT',
     SET_FILTERED: 'SET_FILTERED',
     SET_FILTER: 'SET_FILTER',
-    UPDATE_ROW_VALUE: 'UPDATE_ROW_VALUE',
+    RELOAD_GRID_DATA: 'RELOAD_GRID_DATA',
+    UPDATE_DATA_CELL_VALUE: 'UPDATE_DATA_CELL_VALUE',
     REMOVE_FILTER: 'REMOVE_FILTER',
     SET_CURRENT_PAGE: 'SET_CURRENT_PAGE',
     SET_SORTING_STATE: 'SET_SORTING_STATE',
@@ -106,13 +107,14 @@ export default {
     [types.REMOVE_SELECTED_ROWS](state) {
         state.selectedRows = {};
     },
-    [types.UPDATE_ROW_VALUE](state, { rowId, value }) {
-        state.cellValues[rowId] = value;
+    [types.RELOAD_GRID_DATA](state) {
         state.cellValues = { ...state.cellValues };
+    },
+    [types.UPDATE_DATA_CELL_VALUE](state, { rowId, columnId, value }) {
+        state.cellValues[rowId][columnId] = { value };
     },
     [types.ADD_PRODUCT_VALUE](state, { productId, columnId, value }) {
         state.cellValues[productId][columnId] = value;
-        state.cellValues = { ...state.cellValues };
     },
     [types.SET_NUMBER_OF_ELEMENTS_TO_DISPLAY](state, number) {
         state.numberOfDisplayedElements = Number(number);

@@ -39,6 +39,7 @@ export default {
                         updateButton: {
                             title: 'SAVE CHANGES',
                             action: this.onSave,
+                            disabled: !this.$canIUse('CATEGORY_TREE_UPDATE'),
                         },
                     },
                 },

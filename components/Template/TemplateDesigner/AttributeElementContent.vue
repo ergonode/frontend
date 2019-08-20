@@ -4,6 +4,7 @@
  */
 <template>
     <ElementContentBase
+        :disabled="disabled"
         @mouseover.native="onMouseOver"
         @mouseout.native="onMouseOut">
         <div class="element-content__icon">
@@ -17,7 +18,9 @@
                 class="element-content__subheader txt--dark-graphite typo-subtitle"
                 v-text="element.label || 'No translation'" />
         </div>
-        <div :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
+        <div
+            v-if="!disabled"
+            :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
             <ButtonSelect
                 icon-path="Others/IconDots"
                 :options="contextualMenuItems"
@@ -71,6 +74,10 @@ export default {
         },
         element: {
             type: Object,
+            required: true,
+        },
+        disabled: {
+            type: Boolean,
             required: true,
         },
     },

@@ -67,6 +67,7 @@
     &:disabled {
         background: $grey !important;
         color: $white !important;
+        cursor: not-allowed;
 
         &:hover {
             box-shadow: none;

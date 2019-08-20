@@ -139,20 +139,20 @@ export function getMappedCellValues(columns, rows) {
             if (!values[rowId]) values[rowId] = {};
 
             if (typeof value === 'undefined' || value === null) {
-                values[rowId][columnId] = '';
+                values[rowId][columnId] = { value: '' };
             } else if (filter && filter.options) {
                 const { options } = filter;
 
                 if (Array.isArray(value)) {
-                    values[rowId][columnId] = value.map(key => options[key] || 'No translation').join(', ');
+                    values[rowId][columnId] = { key: value, value: value.map(key => options[key] || 'No translation').join(', ') };
                 }
                 if (typeof options[value] !== 'undefined') {
-                    values[rowId][columnId] = options[value] || 'No translation';
+                    values[rowId][columnId] = { key: value, value: options[value] || 'No translation' };
                 }
             } else if (typeof value === 'boolean' && column.type !== 'CHECK_CELL') {
-                values[rowId][columnId] = value ? 'Yes' : 'No';
+                values[rowId][columnId] = { value: value ? 'Yes' : 'No' };
             } else {
-                values[rowId][columnId] = value;
+                values[rowId][columnId] = { value };
             }
         }
     }

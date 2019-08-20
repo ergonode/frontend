@@ -7,17 +7,15 @@
         <Transition
             name="fade"
             mode="out-in">
-            <div v-visible="isLeftArrowVisible">
-                <Button
-                    fab
-                    color="transparent"
-                    ripple-color="rgba(235, 235, 236, 1)"
-                    @click.native="decrementPage">
-                    <template v-slot:prepend>
-                        <IconArrowPointer />
-                    </template>
-                </Button>
-            </div>
+            <Button
+                :class="{'non-visible': !isLeftArrowVisible}"
+                fab
+                color="transparent"
+                @click.native="decrementPage">
+                <template v-slot:prepend>
+                    <IconArrowPointer />
+                </template>
+            </Button>
         </Transition>
         <span class="pagination__text">
             Page
@@ -26,6 +24,7 @@
             :value="value"
             style="width: 64px;"
             solid
+            small
             center-alignment
             :input="inputNumberType"
             @input="onValueChange" />
@@ -36,17 +35,15 @@
             class="pagination__number"
             v-text="maxPage" />
         <Transition name="fade">
-            <div v-visible="isRightArrowVisible">
-                <Button
-                    fab
-                    color="transparent"
-                    ripple-color="rgba(235, 235, 236, 1)"
-                    @click.native="incrementPage">
-                    <template v-slot:prepend>
-                        <IconArrowPointer :state="rightArrow" />
-                    </template>
-                </Button>
-            </div>
+            <Button
+                :class="{'non-visible': !isRightArrowVisible}"
+                fab
+                color="transparent"
+                @click.native="incrementPage">
+                <template v-slot:prepend>
+                    <IconArrowPointer :state="rightArrow" />
+                </template>
+            </Button>
         </Transition>
     </div>
 </template>

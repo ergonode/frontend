@@ -39,6 +39,7 @@ export default {
                 {
                     title: 'SAVE CHANGES',
                     action: this.updateButton.action,
+                    disabled: !this.$canIUse('PRODUCT_UPDATE'),
                 },
             ],
         };

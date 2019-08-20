@@ -17,15 +17,16 @@
                         :key="rowId"
                         :row="rowIndex + 1"
                         :column="columnIndex"
-                        :locked="isColumnTypeText(column)"
+                        :locked="isColumnTypeText(column) || !isEditingAllowed"
                         :action-cell="!isColumnTypeText(column)"
-                        :editing-allowed="!isColumnTypeText(column)"
+                        :editing-allowed="!isColumnTypeText(column) && isEditingAllowed"
                         :is-selected="cellValues[rowId][column.id]"
                         @edit="onValueChange(rowId, column.id)">
                         <Component
                             :is="getComponentByColumnType(column)"
                             :row="rowIndex + 1"
-                            :value="cellValues[rowId][column.id]"
+                            :value="cellValues[rowId][column.id].value"
+                            :disabled="!isEditingAllowed"
                             @input="onValueChange(rowId, column.id)" />
                     </GridCell>
                 </template>
@@ -60,15 +61,12 @@ export default {
         GridWrapper,
         Footer: () => import('~/components/ReusableFooter/Footer'),
     },
-    data() {
-        return {
-            actionPaths: {
-                getData: '',
-                routerEdit: '',
-            },
-        };
-    },
     async beforeCreate() {
+        this.actionPaths = {
+            getData: '',
+            routerEdit: '',
+        };
+        this.isEditingAllowed = this.$canIUse('USER_ROLE_UPDATE');
         this.$registerStore({
             module: gridModule,
             moduleName: 'privilegesGrid',
@@ -82,6 +80,12 @@ export default {
 
         await this.$store.dispatch('privilegesGrid/setGridData', { columns, rows });
     },
+    beforeDestroy() {
+        this.$store.unregisterModule('privilegesGrid');
+
+        delete this.actionPaths;
+        delete this.isEditingAllowed;
+    },
     computed: {
         ...mapState('privilegesGrid', {
             rowIds: state => state.rowIds,
@@ -90,24 +94,25 @@ export default {
     },
     methods: {
         ...mapActions('privilegesGrid', [
-            'updateRowValue',
+            'updateDataCellValue',
+            'reloadGridData',
         ]),
         onValueChange(rowId, columnId) {
-            const rolePrivileges = { ...this.cellValues[rowId] };
+            const value = !this.cellValues[rowId][columnId].value;
 
-            if (columnId !== 'read' && !rolePrivileges[columnId]) {
-                rolePrivileges.read = true;
+            if (columnId !== 'read' && value) {
+                this.updateDataCellValue({ rowId, columnId, value: true });
             }
 
             if (columnId === 'read') {
-                rolePrivileges.create = false;
-                rolePrivileges.update = false;
-                rolePrivileges.delete = false;
+                this.updateDataCellValue({ rowId, columnId: 'create', value: false });
+                this.updateDataCellValue({ rowId, columnId: 'update', value: false });
+                this.updateDataCellValue({ rowId, columnId: 'delete', value: false });
             }
 
-            rolePrivileges[columnId] = !rolePrivileges[columnId];
+            this.updateDataCellValue({ rowId, columnId, value });
 
-            this.updateRowValue({ rowId, value: rolePrivileges });
+            this.reloadGridData();
         },
         getComponentByColumnType({ type }) {
             if (type === 'TEXT') return GridInfoCell;
@@ -117,9 +122,6 @@ export default {
         isColumnTypeText({ type }) {
             return type === 'TEXT';
         },
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('privilegesGrid');
     },
     async fetch({ app, store }) {
         app.$registerStore({

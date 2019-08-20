@@ -43,7 +43,8 @@ module.exports = {
     plugins: [
         '~plugins/directives',
         '~plugins/axios',
-        '~/plugins/register-store',
+        '~plugins/register-store',
+        '~plugins/privilege',
         {mode: 'client', src: '~plugins/alerts'},
     ],
     modules: [
@@ -77,7 +78,6 @@ module.exports = {
             },
         },
         optimizeCSS: true,
-        analyze: true,
     },
     vue: {
         config: {

@@ -13,7 +13,6 @@
                     slot="previous"
                     fab
                     color="transparent"
-                    ripple-color="rgba(235, 235, 236, 1)"
                     @click.native="previousMonth">
                     <template v-slot:prepend>
                         <IconArrowSingle :state="leftArrow" />
@@ -41,7 +40,6 @@
                     slot="next"
                     fab
                     color="transparent"
-                    ripple-color="rgba(235, 235, 236, 1)"
                     @click.native="nextMonth">
                     <template v-slot:prepend>
                         <IconArrowSingle :state="rightArrow" />

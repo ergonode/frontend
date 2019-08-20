@@ -31,6 +31,7 @@
             multiselect
             label="Category"
             clearable
+            :disabled="!$canIUse('PRODUCT_UPDATE')"
             @input="clearContent">
             <TranslationMultiselectListContent
                 slot="selectContent"

@@ -58,15 +58,15 @@ export default {
         },
         onUpdateRoleSuccess() {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'Role updated' });
+            this.$addAlert({ type: 'success', message: 'Role updated' });
             this.$router.push('/users/roles');
         },
         onRemoveRoleSuccess() {
-            this.$addAlert(this.$store, { type: 'success', message: 'Role removed' });
+            this.$addAlert({ type: 'success', message: 'Role removed' });
             this.$router.push('/users/roles');
         },
         onRemoveRoleError({ message }) {
-            this.$addAlert(this.$store, { type: 'error', message });
+            this.$addAlert({ type: 'error', message });
         },
         onSave() {
             const role = {

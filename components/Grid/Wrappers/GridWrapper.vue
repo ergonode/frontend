@@ -8,7 +8,8 @@
             :store-namespace="storeNamespace"
             :action-paths="actionPaths"
             :rows-height="rowsHeight"
-            :filterable="filterable">
+            :filterable="filterable"
+            :editing-privilege-allowed="editingPrivilegeAllowed">
             <template v-slot:cell="{column, columnIndex}">
                 <slot
                     name="cell"
@@ -33,6 +34,10 @@ export default {
         storeNamespace: {
             type: String,
             required: true,
+        },
+        editingPrivilegeAllowed: {
+            type: Boolean,
+            default: true,
         },
         rowsHeight: {
             type: Number,

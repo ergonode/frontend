@@ -8,7 +8,7 @@
         :width="width"
         :height="height"
         viewBox="0 0 24 24"
-        :aria-labelledby="iconName"
+        :aria-label="iconName"
         role="presentation">
         <g :fill="iconColor">
             <slot />

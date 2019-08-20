@@ -13,8 +13,8 @@ describe('privilegesMapper/getMappedGridData', () => {
                 privileges: {
                     create: 'USER_ROLE_CREATE',
                     read: 'USER_ROLE_READ',
-                    update :'USER_ROLE_UPDATE',
-                    delete :'USER_ROLE_DELETE',
+                    update: 'USER_ROLE_UPDATE',
+                    delete: 'USER_ROLE_DELETE',
                 },
             },
             {
@@ -24,7 +24,7 @@ describe('privilegesMapper/getMappedGridData', () => {
                     read: 'USER_READ',
                     update: 'USER_UPDATE',
                     delete: 'USER_DELETE',
-                }
+                },
             },
         ];
         const userRolePrivileges = [
@@ -90,14 +90,22 @@ describe('privilegesMapper/getMappedGridData', () => {
                 create: true,
                 update: true,
                 delete: true,
-            }
+            },
         ];
         const expectedColumns = [
-            {id:'name',label:'',type:'TEXT'},
-            {id:'create',label:'Create',type:'CHECK_CELL',width:'1fr','editable':true},
-            {id:'read',label:'Read',type:'CHECK_CELL',width:'1fr','editable':true},
-            {id:'update',label:'Update',type:'CHECK_CELL',width:'1fr','editable':true},
-            {id:'delete',label:'Delete',type:'CHECK_CELL',width:'1fr','editable':true},
+            { id: 'name', label: '', type: 'TEXT' },
+            {
+                id: 'create', label: 'Create', type: 'CHECK_CELL', width: '1fr', editable: true,
+            },
+            {
+                id: 'read', label: 'Read', type: 'CHECK_CELL', width: '1fr', editable: true,
+            },
+            {
+                id: 'update', label: 'Update', type: 'CHECK_CELL', width: '1fr', editable: true,
+            },
+            {
+                id: 'delete', label: 'Delete', type: 'CHECK_CELL', width: '1fr', editable: true,
+            },
         ];
 
         expect(rows).toStrictEqual(expectedRows);
@@ -107,18 +115,18 @@ describe('privilegesMapper/getMappedGridData', () => {
     it('Based on Grid data, data is mapped into API structure', () => {
         const gridData = {
             0: {
-                    name: 'User',
-                    create: true,
-                    read: true,
-                    update: true,
-                    delete: true
+                name: 'User',
+                create: true,
+                read: true,
+                update: true,
+                delete: true,
             },
             1: {
-                    name: 'User role',
-                    create: true,
-                    read: true,
-                    update: true,
-                    delete: true
+                name: 'User role',
+                create: true,
+                read: true,
+                update: true,
+                delete: true,
             },
         };
         const privilegesDic = [
@@ -127,8 +135,8 @@ describe('privilegesMapper/getMappedGridData', () => {
                 privileges: {
                     create: 'USER_ROLE_CREATE',
                     read: 'USER_ROLE_READ',
-                    update :'USER_ROLE_UPDATE',
-                    delete :'USER_ROLE_DELETE',
+                    update: 'USER_ROLE_UPDATE',
+                    delete: 'USER_ROLE_DELETE',
                 },
             },
             {
@@ -138,7 +146,7 @@ describe('privilegesMapper/getMappedGridData', () => {
                     read: 'USER_READ',
                     update: 'USER_UPDATE',
                     delete: 'USER_DELETE',
-                }
+                },
             },
         ];
         const userRolePrivileges = [

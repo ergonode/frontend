@@ -20,6 +20,7 @@
             regular
             label="First name"
             :error-messages="errorFirstNameMessage"
+            :disabled="!isUserAllowedToUpdate"
             @input="(firstName) => setAction({ key: 'firstName', value: firstName })" />
         <TextField
             :value="lastName"
@@ -28,6 +29,7 @@
             regular
             label="Last name"
             :error-messages="errorLastNameMessage"
+            :disabled="!isUserAllowedToUpdate"
             @input="(lastName) => setAction({ key: 'lastName', value: lastName })" />
         <TextField
             :value="password"
@@ -38,6 +40,7 @@
             label="Password"
             :input="{ type: 'password' }"
             :error-messages="errorPasswordMessage"
+            :disabled="!isUserAllowedToUpdate"
             @input="(password) => setAction({ key: 'password', value: password })" />
         <TextField
             :value="passwordRepeat"
@@ -48,6 +51,7 @@
             label="Password repeat"
             :input="{ type: 'password' }"
             :error-messages="errorPasswordRepeatMessage"
+            :disabled="!isUserAllowedToUpdate"
             @input="(passwordRepeat) => setAction({
                 key: 'passwordRepeat',
                 value: passwordRepeat
@@ -60,6 +64,7 @@
             label="Activity status"
             :options="statusValues"
             :error-messages="errorStatusMessage"
+            :disabled="!isUserAllowedToUpdate"
             @input="onStatusChange" />
         <Select
             :value="parsedLanguage"
@@ -68,6 +73,7 @@
             regular
             label="Language"
             :options="languageValues"
+            :disabled="!isUserAllowedToUpdate"
             :error-messages="errorLanguageMessage"
             @input="onLanguageChange" />
         <Select
@@ -77,6 +83,7 @@
             regular
             label="Role"
             :options="roleValues"
+            :disabled="!isUserAllowedToUpdate"
             :error-messages="errorRoleMessage"
             @input="onRoleChange" />
     </BaseCard>
@@ -122,6 +129,9 @@ export default {
             status: state => state.status,
             roleId: state => state.roleId,
         }),
+        isUserAllowedToUpdate() {
+            return this.$canIUse('USER_UPDATE');
+        },
         parsedLanguage() {
             return getValueByKey(this.languages, this.language);
         },

@@ -10,6 +10,7 @@
             :key="index"
             :index="index"
             :label="key"
+            :disabled="disabled"
             :language-code="languageCode" />
     </div>
 </template>
@@ -25,6 +26,10 @@ export default {
     props: {
         languageCode: {
             type: String,
+            required: true,
+        },
+        disabled: {
+            type: Boolean,
             required: true,
         },
     },

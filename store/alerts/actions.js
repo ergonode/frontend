@@ -16,14 +16,16 @@ export default {
         } = alert;
 
         const timeOut = setTimeout(() => {
-            dispatch('removeAlert', id);
+            dispatch('removeAlert', { id });
         }, duration);
 
-        commit(types.APPEND_ALERT, { AlertData: { id, type, message }, timeOut });
+        commit(types.APPEND_ALERT, {
+            id, type, message, timeOut,
+        });
     },
-    removeAlert({ commit, state }, index) {
+    removeAlert({ commit, state }, { id }) {
         const indexToRemove = state.alerts.findIndex(
-            alert => alert.AlertData.id === index,
+            alert => alert.id === id,
         );
 
         clearTimeout(state.alerts[indexToRemove].timeOut);
