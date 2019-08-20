@@ -53,17 +53,6 @@ export default {
                         },
                     },
                 },
-                {
-                    title: 'Activity logs',
-                    path: `/users/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/logs`,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE USER',
-                            action: this.onSave,
-                        },
-                    },
-                },
             ],
         };
     },
@@ -75,6 +64,7 @@ export default {
                     color: 'transparent',
                     action: this.onRemove,
                     theme: 'dark',
+                    disabled: !this.$canIUse('USER_DELETE'),
                 },
             ];
         }

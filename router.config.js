@@ -26,6 +26,7 @@ const UsersRolesEdit = () => import('~/pages/users/edit/roles/_id').then(m => m.
 const Settings = () => import('~/pages/settings/index').then(m => m.default || m);
 const Channels = () => import('~/pages/channels/index').then(m => m.default || m);
 const Placeholder = () => import('~/pages/placeholder/index').then(m => m.default || m);
+const Profile = () => import('~/pages/profile/index').then(m => m.default || m);
 
 const AttributeBaseTab = () => import('~/components/Card/AttributeBaseTab').then(m => m.default || m);
 const AttributeTranslationsTab = () => import('~/components/Card/AttributeTranslationsTab').then(m => m.default || m);
@@ -49,6 +50,17 @@ const TreeDesignTab = () => import('~/components/Card/TreeDesignTab').then(m => 
 export const pages = [
     {
         name: 'index', path: '/', component: Login,
+    },
+    {
+        name: 'profile',
+        path: '/profile',
+        component: Profile,
+        children: [
+            {
+                path: 'activity-log',
+                component: UserActivityLogsGridTab,
+            },
+        ],
     },
     {
         name: 'dashboard', path: '/dashboard', component: Dashboard,
@@ -239,10 +251,6 @@ export const pages = [
                 path: 'avatar',
                 component: UserAvatarTab,
             },
-            {
-                path: 'logs',
-                component: UserActivityLogsGridTab,
-            },
         ],
     },
     {
@@ -257,10 +265,6 @@ export const pages = [
             {
                 path: 'avatar',
                 component: UserAvatarTab,
-            },
-            {
-                path: 'logs',
-                component: UserActivityLogsGridTab,
             },
         ],
     },
