@@ -9,7 +9,7 @@ import {
 
 describe('Color contrast conversion', () => {
     it('Hex is converted to RGB', () => {
-        const hex = "#32a852";
+        const hex = '#32a852';
         const rgb = {
             r: 50,
             g: 168,

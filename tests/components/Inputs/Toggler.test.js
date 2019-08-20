@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount } from "@vue/test-utils"
+import { mount } from '@vue/test-utils';
 import Toggler from '~/components/Inputs/Toggler';
 
 describe('Inputs/Toggler', () => {
@@ -50,5 +50,5 @@ describe('Inputs/Toggler', () => {
         it('Is not selected', () => {
             expect(!wrapper.vm.$el.classList.contains('toggler--selected'));
         });
-    })
+    });
 });

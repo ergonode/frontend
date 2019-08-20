@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import VueRouter from 'vue-router'
-import { mount, createLocalVue } from "@vue/test-utils"
+import VueRouter from 'vue-router';
+import { mount, createLocalVue } from '@vue/test-utils';
 import SideBar from '~/components/Navigation/SideBar/SideBar';
 
 const localVue = createLocalVue();
@@ -12,8 +12,8 @@ const mocks = {
     $canIUse: jest.fn(),
     $route: {
         path: '/products',
-        params: { placeholder: '2' }
-    }
+        params: { placeholder: '2' },
+    },
 };
 describe('Navigation/SideBar/SideBar', () => {
     let wrapper;

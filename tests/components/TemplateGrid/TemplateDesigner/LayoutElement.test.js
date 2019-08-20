@@ -2,16 +2,16 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount, createLocalVue } from "@vue/test-utils";
-import LayoutElement from '~/components/Template/TemplateDesigner/LayoutElement';
+import { mount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
+import LayoutElement from '~/components/Template/TemplateDesigner/LayoutElement';
 
 const localVue = createLocalVue();
 const store = new Store({
     state: {
         draggable: {
             draggedElement: {},
-        }
+        },
     },
     mutations: {
 
@@ -33,7 +33,9 @@ describe('Template/TemplateDesigner/LayoutElement', () => {
             mocks,
             propsData: {
                 index: 1,
-                element: { id: 'testId', width: 1, height: 1, row: 1, column: 1 },
+                element: {
+                    id: 'testId', width: 1, height: 1, row: 1, column: 1,
+                },
                 columnsNumber: 4,
                 rowsNumber: 10,
             },

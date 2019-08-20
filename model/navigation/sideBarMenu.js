@@ -100,35 +100,39 @@ const systemSectionItems = [
 
 const sections = [
     {
+        key: null,
         items: unassignedToSectionItems,
     },
     {
+        key: 'MANAGE',
         items: manageSectionItems,
     },
     {
+        key: 'COLLECT & DISTRIBUTE',
         items: collectAndDistributeSectionItems,
     },
     {
+        key: 'SYSTEM',
         items: systemSectionItems,
     },
 ];
 
 export function getValidatedMenuData(canIUse) {
     const menu = [];
-    const sectionKeys = [null, 'MANAGE', 'COLLECT & DISTRIBUTE', 'SYSTEM'];
-    const { length: sectionsNumber } = sectionKeys;
+    const { length: sectionsNumber } = sections;
 
     for (let i = 0; i < sectionsNumber; i += 1) {
-        const sectionKey = sectionKeys[i];
+        const { key } = sections[i];
         menu.push({
-            title: sectionKey,
+            title: key,
             section: [],
         });
 
-        const { length: itemsNumber } = sections[i].items;
+        const { items } = sections[i];
+        const { length: itemsNumber } = items;
 
         for (let j = 0; j < itemsNumber; j += 1) {
-            const item = sections[i].items[j];
+            const item = items[j];
             if (item.privilege === null || canIUse(item.privilege)) {
                 menu[i].section.push({
                     title: item.title,

@@ -2,17 +2,17 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount, createLocalVue } from "@vue/test-utils";
-import TemplateGridDraggableLayer from '~/components/TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer';
+import { mount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
+import TemplateGridDraggableLayer from '~/components/TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer';
 
 const localVue = createLocalVue();
 const store = new Store({
     state: {
         draggable: {
             draggedElement: {},
-        }
-    }
+        },
+    },
 });
 const mocks = {
     $store: store,
@@ -112,7 +112,7 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer', () => {
         expect(wrapper.vm.gridLayerPositions).toEqual(positions);
     });
 
-    it('Get layout element position in draggable grid layer', function () {
+    it('Get layout element position in draggable grid layer', () => {
         const bounds = {
             row: 1,
             column: 1,
