@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseTab :update-button="updateButton">
+    <BaseTab>
         <ProductTemplateHeaderCard slot="header" />
         <ProductTemplateCard
             slot="content"

@@ -73,7 +73,7 @@ export default {
         }),
         actionPaths() {
             return {
-                getData: `${this.userLanguageCode}/profile/log`,
+                getData: '/profile/log',
                 routerEdit: 'users-logs-edit-id',
             };
         },

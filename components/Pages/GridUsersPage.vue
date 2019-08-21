@@ -33,33 +33,39 @@ export default {
         },
         icon: {
             type: String,
-            required: false,
             default: null,
         },
     },
-    data() {
-        return {
-            tabs: [
-                {
-                    title: 'Users',
-                    path: '/users/grid',
-                    active: true,
-                    isContextualMenu: false,
-                },
-                {
-                    title: 'Roles',
-                    path: '/users/roles',
-                    active: true,
-                    isContextualMenu: false,
-                },
-                {
-                    title: 'Users activity logs',
-                    path: '/users/logs',
-                    active: true,
-                    isContextualMenu: false,
-                },
-            ],
-        };
+    beforeCreate() {
+        this.tabs = [];
+        if (this.$canIUse('USER_READ')) {
+            this.tabs.push({
+                title: 'Users',
+                path: '/users/grid',
+                active: true,
+                isContextualMenu: false,
+            });
+        }
+        if (this.$canIUse('USER_ROLE_READ')) {
+            this.tabs.push({
+                title: 'Roles',
+                path: '/users/roles',
+                active: true,
+                isContextualMenu: false,
+            });
+        }
+        // TODO: BE need to decide if the new privilege is needed - fill the condition with correct equation
+        if (true) {
+            this.tabs.push({
+                title: 'Users activity logs',
+                path: '/users/logs',
+                active: true,
+                isContextualMenu: false,
+            });
+        }
+    },
+    beforeDestroy() {
+        delete this.tabs;
     },
 };
 </script>
