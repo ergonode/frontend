@@ -97,7 +97,7 @@ export function getRowBellowMouse({ clientY, elements, elementBounds }, completi
 }
 
 export function getFullTree(hiddenChildren, oldTree) {
-    let newTree = oldTree;
+    let newTree = oldTree.filter(el => el.id !== 'ghost_item');
     const arr = Object.keys(hiddenChildren);
     for (let i = arr.length - 1; i >= 0; i -= 1) {
         const key = arr[i];
