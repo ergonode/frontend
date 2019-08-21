@@ -131,6 +131,8 @@ export default {
             switch (type) {
             case 'ACTION':
                 return () => import('~/components/Grid/EditCells/GridEditRowCell');
+            case 'LABEL':
+                return () => import('~/components/Grid/GridStatusInfoCell');
             case 'IMAGE':
                 return () => import('~/components/Grid/GridImageCell');
             case 'CHECK':

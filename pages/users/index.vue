@@ -4,8 +4,8 @@
  */
 <template>
     <GridUsersPage
-        :title="title"
-        :buttons="getButtons"
+        title="Users"
+        :buttons="getButtons()"
         icon="User" />
 </template>
 <script>
@@ -17,17 +17,21 @@ export default {
     components: {
         GridUsersPage: () => import('~/components/Pages/GridUsersPage'),
     },
-    data() {
-        return {
-            title: 'Users',
-        };
-    },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
+    },
+    methods: {
+        addNewUser() {
+            this.$router.push('/users/new');
+        },
+        addNewRole() {
+            this.$router.push('/users/roles/new');
+        },
         getButtons() {
             const isRolePath = /roles/.test(this.$route.path);
+
             return [
                 {
                     title: isRolePath ? 'CREATE ROLE' : 'CREATE USER',
@@ -36,14 +40,6 @@ export default {
                     disabled: isRolePath ? !this.$canIUse('USER_ROLE_CREATE') : !this.$canIUse('USER_CREATE'),
                 },
             ];
-        },
-    },
-    methods: {
-        addNewUser() {
-            this.$router.push('/users/new');
-        },
-        addNewRole() {
-            this.$router.push('/users/roles/new');
         },
     },
 };
