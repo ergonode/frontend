@@ -40,6 +40,9 @@ module.exports = {
         '~assets/scss/theme.scss',
         '~assets/scss/typography.scss',
     ],
+    router: {
+        middleware: "checkBeforeMove"
+    },
     plugins: [
         '~plugins/directives',
         '~plugins/axios',
