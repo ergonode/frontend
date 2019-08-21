@@ -7,7 +7,7 @@
         <SimpleGrid
             class="grid"
             :title="title"
-            :items="filteredItems" />
+            :items="filteredItems()" />
     </div>
 </template>
 
@@ -25,7 +25,7 @@ export default {
             title: 'Take an action',
         };
     },
-    computed: {
+    methods: {
         filteredItems() {
             return GridItems.filter(e => this.$canIUse(e.permission));
         },
