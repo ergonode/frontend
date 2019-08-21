@@ -53,30 +53,21 @@ export default {
                         },
                     },
                 },
-                {
-                    title: 'Activity logs',
-                    path: `/users/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/logs`,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE USER',
-                            action: this.onSave,
-                        },
-                    },
-                },
             ],
         };
     },
     created() {
         if (this.isEdit) {
-            this.buttons = [
-                {
-                    title: 'REMOVE USER',
-                    color: 'transparent',
-                    action: this.onRemove,
-                    theme: 'dark',
-                },
-            ];
+            // TODO: Add when it's implemented on BE
+            // this.buttons = [
+            //     {
+            //         title: 'REMOVE USER',
+            //         color: 'transparent',
+            //         action: this.onRemove,
+            //         theme: 'dark',
+            //         disabled: !this.$canIUse('USER_DELETE'),
+            //     },
+            // ];
         }
     },
 };

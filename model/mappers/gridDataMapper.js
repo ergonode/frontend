@@ -17,6 +17,7 @@ const getMappedColumnHeaderTitle = ({
     const columnIDs = id.split(':');
 
     if (type === 'PRICE') suffix = parameter.currency;
+    if (type === 'ACTION') return 'Edit';
     if (!language) return `${label} ${suffix}`;
     if (columnIDs.length > 1) return `${label || id} ${suffix}`;
 
@@ -66,25 +67,28 @@ export function getMappedColumns(columns, isExtenderNeeded = true) {
     const defaultColumnWidth = 150;
     const actionColumnWidth = 40;
     const fixedColumnsLength = isExtenderNeeded ? length + 1 : length;
+    const extenderColumn = {
+        id: 'extender',
+        label: '',
+        type: '',
+        editable: false,
+        width: 'auto',
+        minWidth: 'auto',
+    };
     let isExtenderColumnAdded = false;
 
     for (let i = 0; i < fixedColumnsLength; i += 1) {
         const fixedIndex = isExtenderColumnAdded ? i - 1 : i;
         const gridColumnPosition = `${i + 1} / ${i + 2}`;
-        let width = columns[fixedIndex].width || defaultColumnWidth;
 
-        if (i === length - 1 && isExtenderNeeded) {
-            mappedColumns.push({
-                id: 'extender',
-                label: '',
-                type: '',
-                editable: false,
-                width: 'auto',
-                minWidth: 'auto',
-            });
+        if ((i + 1 === length && columns[i].type === 'ACTION' && isExtenderNeeded)
+            || (i === length && !isExtenderColumnAdded)) {
+            mappedColumns.push(extenderColumn);
 
             isExtenderColumnAdded = true;
         } else {
+            let width = columns[fixedIndex].width || defaultColumnWidth;
+
             if (columns[fixedIndex].type === 'ACTION') {
                 width = actionColumnWidth;
             }
@@ -122,7 +126,7 @@ export function getMappedColumns(columns, isExtenderNeeded = true) {
     };
 }
 
-export function getMappedCellValues(columns, rows) {
+export function getMappedCellValues(columns, rows, rowIds) {
     const { length: columnsNumber } = columns;
     const { length: rowsNumber } = rows;
     const values = {};
@@ -133,7 +137,7 @@ export function getMappedCellValues(columns, rows) {
 
         for (let j = 0; j < rowsNumber; j += 1) {
             const row = rows[j];
-            const { id: rowId } = row;
+            const rowId = rowIds[j];
             const value = row[column.id];
 
             if (!values[rowId]) values[rowId] = {};
@@ -161,7 +165,17 @@ export function getMappedCellValues(columns, rows) {
 }
 
 export function getMappedRowIds(rows) {
-    return rows.map(row => row.id);
+    const rowIds = [];
+    const { length } = rows;
+
+    for (let i = 0; i < length; i += 1) {
+        const { id } = rows[i];
+
+        if (typeof id === 'undefined') rowIds.push(i + 1);
+        else rowIds.push(id);
+    }
+
+    return rowIds;
 }
 
 export function getMappedGridConfiguration(configuration) {
