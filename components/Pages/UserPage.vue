@@ -58,15 +58,16 @@ export default {
     },
     created() {
         if (this.isEdit) {
-            this.buttons = [
-                {
-                    title: 'REMOVE USER',
-                    color: 'transparent',
-                    action: this.onRemove,
-                    theme: 'dark',
-                    disabled: !this.$canIUse('USER_DELETE'),
-                },
-            ];
+            // TODO: Add when it's implemented on BE
+            // this.buttons = [
+            //     {
+            //         title: 'REMOVE USER',
+            //         color: 'transparent',
+            //         action: this.onRemove,
+            //         theme: 'dark',
+            //         disabled: !this.$canIUse('USER_DELETE'),
+            //     },
+            // ];
         }
     },
 };
