@@ -4,7 +4,7 @@
  */
 <template>
     <PageWrapper>
-        <component
+        <Component
             :is="errorPage"
             :error="error" />
     </PageWrapper>
