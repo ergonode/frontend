@@ -33,8 +33,8 @@ export default {
         ...mapState('data', {
             privileges: state => state.privileges,
         }),
-        ...mapState('privilegesGrid', {
-            cellValues: state => state.cellValues,
+        ...mapState('authentication', {
+            userPrivileges: state => state.user.privileges,
         }),
         title() {
             return `${this.name}`;
@@ -69,10 +69,14 @@ export default {
             this.$addAlert({ type: 'error', message });
         },
         onSave() {
+            const { privilegesGrid } = this.$store.state;
+            const privileges = privilegesGrid
+                ? getMappedPrivilegesBasedOnGridData(this.privileges, privilegesGrid.cellValues)
+                : this.userPrivileges;
             const role = {
                 name: this.name,
                 description: this.description,
-                privileges: getMappedPrivilegesBasedOnGridData(this.privileges, this.cellValues),
+                privileges,
             };
 
             this.updateRole({

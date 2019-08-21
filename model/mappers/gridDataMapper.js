@@ -67,25 +67,28 @@ export function getMappedColumns(columns, isExtenderNeeded = true) {
     const defaultColumnWidth = 150;
     const actionColumnWidth = 40;
     const fixedColumnsLength = isExtenderNeeded ? length + 1 : length;
+    const extenderColumn = {
+        id: 'extender',
+        label: '',
+        type: '',
+        editable: false,
+        width: 'auto',
+        minWidth: 'auto',
+    };
     let isExtenderColumnAdded = false;
 
     for (let i = 0; i < fixedColumnsLength; i += 1) {
         const fixedIndex = isExtenderColumnAdded ? i - 1 : i;
         const gridColumnPosition = `${i + 1} / ${i + 2}`;
-        let width = columns[fixedIndex].width || defaultColumnWidth;
 
-        if (i === length - 1 && isExtenderNeeded) {
-            mappedColumns.push({
-                id: 'extender',
-                label: '',
-                type: '',
-                editable: false,
-                width: 'auto',
-                minWidth: 'auto',
-            });
+        if ((i + 1 === length && columns[i].type === 'ACTION' && isExtenderNeeded)
+            || (i === length && !isExtenderColumnAdded)) {
+            mappedColumns.push(extenderColumn);
 
             isExtenderColumnAdded = true;
         } else {
+            let width = columns[fixedIndex].width || defaultColumnWidth;
+
             if (columns[fixedIndex].type === 'ACTION') {
                 width = actionColumnWidth;
             }
@@ -167,7 +170,8 @@ export function getMappedRowIds(rows) {
 
     for (let i = 0; i < length; i += 1) {
         const { id } = rows[i];
-        if (!id) rowIds.push(i + 1);
+
+        if (typeof id === 'undefined') rowIds.push(i + 1);
         else rowIds.push(id);
     }
 
