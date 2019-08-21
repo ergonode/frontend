@@ -51,13 +51,25 @@ export const pages = [
         name: 'index', path: '/', component: Login,
     },
     {
-        name: 'dashboard', path: '/dashboard', component: Dashboard,
+        name: 'dashboard',
+        path: '/dashboard',
+        component: Dashboard,
     },
     {
-        name: 'import', path: '/import', component: Import,
+        name: 'import',
+        path: '/import',
+        component: Import,
+        meta: {
+            permission: 'IMPORT_READ',
+        },
     },
     {
-        name: 'categories', path: '/categories', component: Categories,
+        name: 'categories',
+        path: '/categories',
+        component: Categories,
+        meta: {
+            permission: 'CATEGORY_READ',
+        },
     },
     {
         name: 'categories-new',
@@ -73,6 +85,9 @@ export const pages = [
                 component: CategoryTranslationsTab,
             },
         ],
+        meta: {
+            permission: 'CATEGORY_READ',
+        },
     },
     {
         name: 'categories-edit-id',
@@ -88,6 +103,9 @@ export const pages = [
                 component: CategoryTranslationsTab,
             },
         ],
+        meta: {
+            permission: 'CATEGORY_READ',
+        },
     },
     {
         name: 'category-trees',
@@ -99,6 +117,9 @@ export const pages = [
                 component: TreeDesignTab,
             },
         ],
+        meta: {
+            permission: 'CATEGORY_TREE_READ',
+        },
     },
     {
         name: 'products',
@@ -110,6 +131,9 @@ export const pages = [
                 component: ProductGridTab,
             },
         ],
+        meta: {
+            permission: 'PRODUCT_READ',
+        },
     },
     {
         name: 'products-new',
@@ -125,6 +149,9 @@ export const pages = [
                 component: ProductTemplateTab,
             },
         ],
+        meta: {
+            permission: 'PRODUCT_READ',
+        },
     },
     {
         name: 'products-edit-id',
@@ -140,6 +167,9 @@ export const pages = [
                 component: ProductTemplateTab,
             },
         ],
+        meta: {
+            permission: 'PRODUCT_READ',
+        },
     },
     {
         name: 'templates', path: '/templates', component: Templates,
@@ -158,6 +188,9 @@ export const pages = [
                 component: TemplateDesignerTab,
             },
         ],
+        meta: {
+            permission: 'TEMPLATE_DESIGNER_READ',
+        },
     },
     {
         name: 'templates-edit-id',
@@ -173,9 +206,17 @@ export const pages = [
                 component: TemplateDesignerTab,
             },
         ],
+        meta: {
+            permission: 'TEMPLATE_DESIGNER_READ',
+        },
     },
     {
-        name: 'attributes', path: '/attributes', component: Attributes,
+        name: 'attributes',
+        path: '/attributes',
+        component: Attributes,
+        meta: {
+            permission: 'ATTRIBUTE_READ',
+        },
     },
     {
         name: 'attributes-new',
@@ -191,6 +232,9 @@ export const pages = [
                 component: AttributeTranslationsTab,
             },
         ],
+        meta: {
+            permission: 'ATTRIBUTE_READ',
+        },
     },
     {
         name: 'attributes-edit-id',
@@ -206,6 +250,9 @@ export const pages = [
                 component: AttributeTranslationsTab,
             },
         ],
+        meta: {
+            permission: 'ATTRIBUTE_READ',
+        },
     },
     {
         name: 'users',
@@ -215,16 +262,25 @@ export const pages = [
             {
                 path: 'grid',
                 component: UsersGridTab,
+                meta: {
+                    permission: 'USER_READ',
+                },
             },
             {
                 path: 'roles',
                 component: RolesGridTab,
+                meta: {
+                    permission: 'USER_ROLE_READ',
+                },
             },
             {
                 path: 'logs',
                 component: UsersActivityLogsGridTab,
             },
         ],
+        meta: {
+            permission: 'USER_READ',
+        },
     },
     {
         name: 'users-new',
@@ -244,6 +300,9 @@ export const pages = [
                 component: UserActivityLogsGridTab,
             },
         ],
+        meta: {
+            permission: 'USER_READ',
+        },
     },
     {
         name: 'users-edit-id',
@@ -263,6 +322,9 @@ export const pages = [
                 component: UserActivityLogsGridTab,
             },
         ],
+        meta: {
+            permission: 'USER_READ',
+        },
     },
     {
         name: 'users-roles-new',
@@ -278,6 +340,9 @@ export const pages = [
                 component: UserRolesPrivilegeTab,
             },
         ],
+        meta: {
+            permission: 'USER_ROLE_READ',
+        },
     },
     {
         name: 'users-roles-edit-id',
@@ -293,6 +358,9 @@ export const pages = [
                 component: UserRolesPrivilegeTab,
             },
         ],
+        meta: {
+            permission: 'USER_ROLE_READ',
+        },
     },
     {
         name: 'settings', path: '/settings', component: Settings,
