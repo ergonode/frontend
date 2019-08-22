@@ -24,14 +24,14 @@ export default {
         },
     },
     beforeCreate() {
-        const blackColorRelativeLuminance = 0;
-        const colorRgb = hexToRGB(this.$options.propsData.value.color);
-        const relativeLuminance = calculateRelativeLuminance(colorRgb);
-        const contrastRatioWithBlackText = calculateContrastRatio(
-            relativeLuminance, blackColorRelativeLuminance,
+        const whiteColorRelativeLuminance = 0.9982138681756572;
+        const badgeRGB = hexToRGB(this.$options.propsData.value.color);
+        const relativeLuminance = calculateRelativeLuminance(badgeRGB);
+        const contrastRatio = calculateContrastRatio(
+            whiteColorRelativeLuminance, relativeLuminance,
         );
 
-        this.color = contrastRatioWithBlackText >= 4.5 ? '#000' : '#fff';
+        this.color = contrastRatio > 4.5 ? '#fff' : '#000';
     },
     beforeDestroy() {
         delete this.color;

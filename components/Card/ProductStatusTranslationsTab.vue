@@ -5,7 +5,7 @@
 <template>
     <TranslationsTab
         :update-button="updateButton">
-        <AttributeTranslationCard
+        <ProductStatusTranslationCard
             v-for="(languageCode, index) in cardsLanguageCodes"
             :key="index"
             :language-code="languageCode" />
@@ -16,10 +16,10 @@
 import { mapState } from 'vuex';
 
 export default {
-    name: 'AttributeTranslationsTab',
+    name: 'ProductStatusTranslationsTab',
     components: {
         TranslationsTab: () => import('~/components/Card/TranslationsTab'),
-        AttributeTranslationCard: () => import('~/components/Card/AttributeTranslationCard'),
+        ProductStatusTranslationCard: () => import('~/components/Card/ProductStatusTranslationCard'),
     },
     props: {
         updateButton: {

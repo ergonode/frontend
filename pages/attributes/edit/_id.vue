@@ -14,7 +14,7 @@
 
 import { mapState, mapActions } from 'vuex';
 import { getMappedGroupIDs, getMappedOptions, getMappedParameterKeys } from '~/model/mappers/attributeMapper';
-import { isThereAnyTranslation, clearEmptyTranslations } from '~/model/mappers/translationMapper';
+import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 
 export default {
     validate({ params }) {
@@ -94,15 +94,15 @@ export default {
             }
 
             if (isThereAnyTranslation(label)) {
-                propertiesToUpdate.label = clearEmptyTranslations(label);
+                propertiesToUpdate.label = getParsedTranslations(label);
             }
 
             if (isThereAnyTranslation(hint)) {
-                propertiesToUpdate.hint = clearEmptyTranslations(hint);
+                propertiesToUpdate.hint = getParsedTranslations(hint);
             }
 
             if (isThereAnyTranslation(placeholder)) {
-                propertiesToUpdate.placeholder = clearEmptyTranslations(placeholder);
+                propertiesToUpdate.placeholder = getParsedTranslations(placeholder);
             }
 
             this.updateAttribute({

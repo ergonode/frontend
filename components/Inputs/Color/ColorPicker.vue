@@ -4,7 +4,6 @@
  */
 <template>
     <InputSelectBase
-        :style="{width: '60px'}"
         :value="value"
         :solid="solid"
         :underline="underline"
