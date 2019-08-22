@@ -56,6 +56,7 @@
                 key: 'passwordRepeat',
                 value: passwordRepeat
             })" />
+        <!-- TODO: uncomment when we have statuses
         <Select
             :value="parsedStatus"
             solid
@@ -65,7 +66,7 @@
             :options="statusValues"
             :error-messages="errorStatusMessage"
             :disabled="!isUserAllowedToUpdate"
-            @input="onStatusChange" />
+            @input="onStatusChange" /> -->
         <Select
             :value="parsedLanguage"
             solid
