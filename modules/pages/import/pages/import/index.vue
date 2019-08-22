@@ -20,7 +20,6 @@ export default {
     },
     data() {
         return {
-            title: 'Imports',
             buttons: [
                 {
                     title: 'CREATE IMPORT',
@@ -33,6 +32,9 @@ export default {
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
+        }),
+        ...mapState('module<import>', {
+            title: state => state.title,
         }),
         actionPaths() {
             return {

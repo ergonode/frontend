@@ -1,8 +1,10 @@
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import modulesStoreConfiguration from '@Root/modulesStore.config';
+import { getPagesConfiguration } from '~/plugins/moduleLoader';
 import { JWT_KEY, USER_KEY } from '~/defaults/authenticate/cookies';
 
 export const actions = {
@@ -30,17 +32,17 @@ export const actions = {
     },
 };
 
-// async function getModulesStore() {
-//     const { store: modulesStore } = await ModuleLoader.getPagesConfiguration();
-//     const newStore = {};
-//     for (let i = 0; i < modulesStore.length; i += 1) {
-//         const { moduleName, store } = modulesStore[i];
-//         for (let j = 0; j < store.length; j += 1) {
-//             const { dirName, storeName } = store[i];
-//             newStore[`${storeName}<module>`] = await import(`@Modules/${moduleName}/store/${dirName}`).then(m => m.default || m); // eslint-disable-line no-await-in-loop
-//         }
-//     }
-//     return newStore;
-// }
+function getModulesStore() {
+    const { store: modulesStore } = getPagesConfiguration();
+    const newStore = {};
+    for (let i = 0; i < modulesStore.length; i += 1) {
+        const { moduleName, store } = modulesStore[i];
+        for (let j = 0; j < store.length; j += 1) {
+            const { directoryStoreName, storeName } = store[j];
+            newStore[`module<${storeName}>`] = require(`@Modules/${moduleName}/store/${directoryStoreName}`).default;
+        }
+    }
+    return newStore;
+}
 
-export const modules = modulesStoreConfiguration;
+export const modules = getModulesStore();

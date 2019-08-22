@@ -4,7 +4,7 @@
  */
 import Vue from 'vue';
 import Router from 'vue-router';
-import ModuleLoader from '~/plugins/moduleLoader';
+import { getPagesConfiguration } from '~/plugins/moduleLoader';
 import { pages } from '~/router.config';
 
 Vue.use(Router);
@@ -39,8 +39,8 @@ const scrollBehavior = (to, from, savedPosition) => {
     });
 };
 
-async function getRouters() {
-  const { router } = await ModuleLoader.getPagesConfiguration();
+function getRouters() {
+  const { router } = getPagesConfiguration();
   let filteredPages = pages;
   for (let i = 0; i < router.length; i += 1) {
       filteredPages = filteredPages.filter(e => e.name !== router[i].name);
@@ -48,14 +48,14 @@ async function getRouters() {
   return filteredPages.concat(router);
 }
 
-export async function createRouter() {
+export function createRouter() {
     return new Router({
         mode: 'history',
         base: '/',
         linkActiveClass: 'nuxt-link-active',
         linkExactActiveClass: 'nuxt-link-exact-active',
         scrollBehavior,
-        routes: await getRouters(),
+        routes: getRouters(),
         fallback: false,
     });
 }

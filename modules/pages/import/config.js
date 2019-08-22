@@ -10,6 +10,9 @@ export default {
             name: 'import',
             path: '/import',
             component: Import,
+            meta: {
+                privileges: ['IMPORT_READ'],
+            },
             // children: [
             //     {
             //         path: 'general',
@@ -24,20 +27,21 @@ export default {
     ],
     menu: [
         {
-            title: 'COLLECT & DISTRIBUTE',
-            menu: [
+            key: 'COLLECT & DISTRIBUTE',
+            items: [
                 {
                     title: 'Import',
                     routing: '/import',
                     icon: 'Import',
+                    privileges: ['IMPORT_READ'],
                 },
             ],
         },
     ],
     store: [
         {
-            dirName: 'import',
-            storeName: 'importy',
+            directoryStoreName: 'import',
+            storeName: 'import',
         },
     ],
 };

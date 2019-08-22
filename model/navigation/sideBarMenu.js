@@ -58,12 +58,6 @@ const manageSectionItems = [
 
 const collectAndDistributeSectionItems = [
     {
-        title: 'Import',
-        routing: '/import',
-        icon: 'Import',
-        privileges: ['CATEGORY_TREE_READ'],
-    },
-    {
         title: 'Export',
         routing: '/placeholder/export',
         icon: 'Export',
@@ -117,31 +111,32 @@ const sections = [
     },
 ];
 
-export function getValidatedMenuData(canIUse) {
-    const menu = [];
-    const { length: sectionsNumber } = sections;
-
-    for (let i = 0; i < sectionsNumber; i += 1) {
-        const { key } = sections[i];
-        menu.push({
-            title: key,
-            section: [],
-        });
-
-        const { items } = sections[i];
-        const { length: itemsNumber } = items;
-
-        for (let j = 0; j < itemsNumber; j += 1) {
-            const item = items[j];
-            if (!item.privileges.length || item.privileges.every(privilege => canIUse(privilege))) {
-                menu[i].section.push({
-                    title: item.title,
-                    routing: item.routing,
-                    icon: item.icon,
-                });
-            }
+const extendSections = (modulesMenu) => {
+    for (let i = 0; i < modulesMenu.length; i += 1) {
+        const index = sections.findIndex(e => e.key === modulesMenu[i].key);
+        if (index >= 0) {
+            sections[index].items.push(...modulesMenu[i].items);
+        } else {
+            sections.push(modulesMenu[i]);
         }
     }
+    return sections;
+};
 
+export const getValidatedMenuData = (canIUse, modulesMenu) => {
+    const menu = [];
+    const extendedSections = extendSections(modulesMenu);
+    const { length: sectionsNumber } = extendedSections;
+
+    for (let i = 0; i < sectionsNumber; i += 1) {
+        const { key, items } = extendedSections[i];
+        const filteredItems = items.filter(e => !e.privileges
+          || (e.privileges && !e.privileges.length)
+          || e.privileges.every(privilege => canIUse(privilege)));
+        menu.push({
+            key,
+            items: filteredItems,
+        });
+    }
     return menu;
-}
+};

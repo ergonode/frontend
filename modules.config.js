@@ -7,7 +7,7 @@ export default {
         {
             isActive: true, // [true, false]
             source: 'local', // types [npm, local]
-            name: 'import-page', // name that same as module directory
+            name: 'import', // name that same as module page directory name
         },
     ],
     components: [],

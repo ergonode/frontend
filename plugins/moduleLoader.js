@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
@@ -6,27 +8,27 @@ import Vue from 'vue'; // eslint-disable-line import/no-extraneous-dependencies
 import modules from '@Root/modules.config';
 
 const ModuleLoader = {
-    async install() {
-        const { router, menu, store } = await this.getPagesConfiguration();
+    install() {
+        const { router, menu } = this.getPagesConfiguration();
         Vue.prototype.$modulesConfiguration = {
             router,
             menu,
-            store,
         };
     },
-    async getPagesConfiguration() {
+    getPagesConfiguration() {
         const { pages } = modules;
         const pagesConfiguration = { router: [], menu: [], store: [] };
         for (let i = 0; i < pages.length; i += 1) {
             let config = null;
             const { isActive, name, source } = pages[i];
+            const pageName = `pages/${name}`;
             if (!isActive) continue; // eslint-disable-line no-continue
             switch (source) {
             case 'local':
-                config = await import(`@Modules/${name}/config`).then(m => m.default || m); // eslint-disable-line no-await-in-loop
+                config = require(`@Modules/${pageName}/config`).default;
                 break;
             // case 'npm':
-            //     config = await import(`@NodeModules/${name}/config`).then(m => m.default || m); // eslint-disable-line no-await-in-loop
+            //     config = require(`@NodeModules/${pageName}/config`).default;
             //     break;
             default:
                 config = null;
@@ -36,7 +38,7 @@ const ModuleLoader = {
                 if (config.menu) pagesConfiguration.menu.push(...config.menu);
                 if (config.store) {
                     pagesConfiguration.store.push({
-                        moduleName: name,
+                        moduleName: pageName,
                         store: [...config.store],
                     });
                 }
@@ -72,4 +74,6 @@ const ModuleLoader = {
 };
 
 Vue.use(ModuleLoader);
-export default ModuleLoader;
+export const {
+    getPagesConfiguration,
+} = ModuleLoader;
