@@ -14,7 +14,7 @@
             name="fade">
             <div
                 class="btn__select-content"
-                :style="selectContentPosition">
+                :style="contentPositionStyle">
                 <slot name="content">
                     <List>
                         <ListElement
@@ -57,6 +57,7 @@ export default {
     data() {
         return {
             isFocused: false,
+            contentPositionStyle: null,
         };
     },
     computed: {
@@ -68,31 +69,6 @@ export default {
                 ? '#00bc87'
                 : '#5c5f65';
         },
-        selectContentPosition() {
-            const {
-                top,
-                left,
-                width,
-                height,
-            } = this.$el.getBoundingClientRect();
-            const { innerHeight } = window;
-            const maxHeight = 200;
-
-            if (innerHeight - top < maxHeight) {
-                const offsetBottom = innerHeight - top;
-
-                return {
-                    left: `${left}px`,
-                    bottom: `${offsetBottom + 1}px`,
-                };
-            }
-
-            return {
-                left: `${left}px`,
-                top: `${top + height + 2}px`,
-                width: `${width}px`,
-            };
-        },
     },
     watch: {
         isFocused() {
@@ -100,6 +76,7 @@ export default {
                 window.removeEventListener('click', this.onClickOutside);
             } else {
                 window.addEventListener('click', this.onClickOutside);
+                this.contentPositionStyle = this.getContentPositionStyle();
             }
             this.$emit('focus', this.isFocused);
         },
@@ -126,6 +103,31 @@ export default {
         },
         onSelectedValue(index) {
             this.$emit('input', this.options[index]);
+        },
+        getContentPositionStyle() {
+            const {
+                top,
+                left,
+                width,
+                height,
+            } = this.$el.getBoundingClientRect();
+            const { innerHeight } = window;
+            const maxHeight = 200;
+
+            if (innerHeight - top < maxHeight) {
+                const offsetBottom = innerHeight - top;
+
+                return {
+                    left: `${left}px`,
+                    bottom: `${offsetBottom + 1}px`,
+                };
+            }
+
+            return {
+                left: `${left}px`,
+                top: `${top + height + 2}px`,
+                width: `${width}px`,
+            };
         },
     },
 };

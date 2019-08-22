@@ -10,15 +10,14 @@
                     v-for="(item, index) in menuList"
                     :key="index"
                     :section-title="item.title"
-                    :section-menu="item.menu"
-                />
+                    :section-menu="item.section" />
             </div>
         </aside>
     </div>
 </template>
 
 <script>
-import sideBarMenu from '~/model/navigation/sideBarMenu';
+import { getValidatedMenuData } from '~/model/navigation/sideBarMenu';
 
 export default {
     name: 'SideBar',
@@ -32,10 +31,11 @@ export default {
             default: 2,
         },
     },
-    data() {
-        return {
-            menu: sideBarMenu,
-        };
+    beforeCreate() {
+        this.menu = getValidatedMenuData(this.$canIUse);
+    },
+    beforeDestroy() {
+        delete this.menu;
     },
     computed: {
         menuStateClass() {

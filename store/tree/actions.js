@@ -14,7 +14,7 @@ import { getParsedTreeData } from '~/model/mappers/treeMapper';
 
 export default {
     getTreeById(
-        { commit, rootState },
+        { commit, dispatch, rootState },
         { treeName, onError },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
@@ -24,6 +24,7 @@ export default {
             commit(types.SET_TREE_ID, treeId);
             return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({ categories: treeData }) => {
                 const treeToSet = getParsedTreeData(treeData, categories);
+                treeToSet.forEach(e => dispatch('list/setDisabledElement', { languageCode: userLanguageCode, elementId: e.id }, { root: true }));
                 commit(types.SET_TREE, treeToSet);
                 commit(types.SET_FULL_TREE, treeToSet);
             }).catch(e => onError(e.data));

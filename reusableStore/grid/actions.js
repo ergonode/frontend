@@ -4,6 +4,9 @@
  */
 import {
     getMappedGridConfiguration,
+    getMappedCellValues,
+    getMappedRowIds,
+    getMappedColumn,
     getMappedColumns,
     getSortedColumnsByIDs,
     getMappedFilter,
@@ -13,7 +16,7 @@ import { COLUMN_IDS } from '~/defaults/grid/cookies';
 import { types } from './mutations';
 
 export default {
-    getData({ commit, state }, { path }) {
+    getData({ commit, dispatch, state }, { path }) {
         const {
             columns: stateColumns,
             sortedByColumn,
@@ -21,19 +24,16 @@ export default {
             numberOfDisplayedElements,
             filter,
         } = state;
-
         const parsedFilter = getMappedFilter(filter);
         const isProductGrid = path.includes('products');
-        const columnsID = isProductGrid
+        const columnIDs = isProductGrid
             ? this.$cookies.get(COLUMN_IDS) || stateColumns.map(col => col.id).join(',')
             : null;
-
         const params = {
             limit: numberOfDisplayedElements,
             offset: (displayedPage - 1) * numberOfDisplayedElements,
-            columns: columnsID,
+            columns: columnIDs,
         };
-
         const isSorted = Object.keys(sortedByColumn).length;
 
         if (isSorted) {
@@ -51,21 +51,33 @@ export default {
             configuration, collection: rows, columns, info,
         }) => {
             const { count, filtered } = info;
-            const columnsToMap = columnsID ? getSortedColumnsByIDs(columns, columnsID) : columns;
+            const columnsToMap = columnIDs ? getSortedColumnsByIDs(columns, columnIDs) : columns;
             const visibleColumns = columnsToMap.filter(col => col.visible);
-            const mappedColumns = getMappedColumns(visibleColumns);
+            const { mappedColumns, pinnedColumns } = getMappedColumns(visibleColumns);
             const mappedConfiguration = getMappedGridConfiguration(configuration);
+            const rowIds = getMappedRowIds(rows);
+            const cellValues = getMappedCellValues(columns, rows, rowIds);
 
-            this.$cookies.set(COLUMN_IDS, visibleColumns.map(col => col.id).join(','));
+            if (isProductGrid) {
+                this.$cookies.set(COLUMN_IDS, visibleColumns.map(col => col.id).join(','));
+                for (let i = mappedColumns.length - 1; i > -1; i -= 1) {
+                    const { element_id: elementId, language } = mappedColumns[i];
+                    if (elementId) {
+                        dispatch('list/setDisabledElement', { languageCode: language, elementId }, { root: true });
+                    }
+                }
+            }
 
             commit(types.SET_CONFIGURATION, mappedConfiguration);
-            commit(types.SET_ROWS, rows);
+            commit(types.SET_CELL_VALUES, cellValues);
+            commit(types.SET_ROW_IDS, rowIds);
             commit(types.SET_COUNT, count);
             commit(types.SET_FILTERED, filtered);
             commit(types.SET_COLUMNS, mappedColumns);
+            commit(types.SET_PINNED_COLUMNS, pinnedColumns);
         }).catch(err => console.log(err));
     },
-    getColumnData({ commit, state }, {
+    getColumnData({ commit, dispatch, state }, {
         ghostIndex,
         columnId,
         path,
@@ -99,21 +111,30 @@ export default {
             this.$cookies.set(COLUMN_IDS, parsedColumnsID);
 
             const draggedColumn = columns.find(col => col.id === columnId);
-            if (!draggedColumn.width) {
-                draggedColumn.width = 150;
-                draggedColumn.minWidth = 150;
-            } else {
-                draggedColumn.minWidth = draggedColumn.width;
-            }
-
             let columnsWithoutGhost = stateColumns.filter(column => column.id !== 'ghost');
+
             columnsWithoutGhost = insertValueAtIndex(
-                columnsWithoutGhost, draggedColumn, ghostIndex,
+                columnsWithoutGhost, getMappedColumn(draggedColumn), ghostIndex,
             );
 
+            const rowIds = getMappedRowIds(rows);
+            const cellValues = getMappedCellValues(columns, rows, rowIds);
+
+            dispatch('list/setDisabledElement', { languageCode: draggedColumn.language, elementId: draggedColumn.element_id }, { root: true });
+
             commit(types.SET_COLUMNS, columnsWithoutGhost);
-            commit(types.SET_ROWS, rows);
+            commit(types.SET_CELL_VALUES, cellValues);
+            commit(types.SET_ROW_IDS, rowIds);
         }).catch(err => console.log(err));
+    },
+    setGridData({ commit }, { columns, rows }) {
+        const { mappedColumns } = getMappedColumns(columns, false);
+        const rowIds = getMappedRowIds(rows);
+        const cellValues = getMappedCellValues(columns, rows, rowIds);
+
+        commit(types.SET_COLUMNS, mappedColumns);
+        commit(types.SET_CELL_VALUES, cellValues);
+        commit(types.SET_ROW_IDS, rowIds);
     },
     setFilter({ commit, state }, { filter: filterToSet, id }) {
         // Remove selection on filter action
@@ -160,7 +181,12 @@ export default {
     insertColumnAtIndex({ commit }, { column, index }) {
         commit(types.INSERT_COLUMN_AT_INDEX, { column, index });
     },
-    removeColumnAtIndex({ commit }, { index }) {
+    removeColumnAtIndex({ commit, dispatch, state }, { index }) {
+        const { columns } = state;
+        if (columns[index].element_id) {
+            dispatch('list/removeDisabledElement', { languageCode: columns[index].language, elementId: columns[index].element_id }, { root: true });
+        }
+
         commit(types.REMOVE_COLUMN_AT_INDEX, index);
     },
     changeColumnPosition({ commit, state }, { from, to }) {
@@ -213,19 +239,52 @@ export default {
         }
     },
     addDraftToProduct({ commit, state }, { columnId, productId, value }) {
-        const { rows } = state;
-        const productIndex = rows.findIndex(row => row.id === productId);
+        const { columns } = state;
+        const column = columns.find(col => col.id === columnId);
+        const parsedValue = { value };
 
-        if (productIndex !== -1) {
-            const productToAdd = { ...rows[productIndex], [columnId]: value };
+        if (column.filter && column.filter.options) {
+            const { options } = column.filter;
 
-            commit(types.ADD_DRAFT_TO_PRODUCT_AT_INDEX, {
-                index: productIndex,
-                product: productToAdd,
-            });
+            if (Array.isArray(value)) {
+                parsedValue.value = value.map(key => options[key] || 'No translation').join(', ');
+                parsedValue.key = value;
+            }
+            if (typeof options[value] !== 'undefined') {
+                parsedValue.value = options[value] || 'No translation';
+                parsedValue.key = value;
+            }
+        }
+
+        commit(types.ADD_PRODUCT_VALUE, {
+            productId,
+            columnId,
+            value: parsedValue,
+        });
+    },
+    addPinnedColumn({ commit, state }, column) {
+        const { pinnedColumns } = state;
+        const { length } = pinnedColumns;
+        const [gridColumnToInsert] = column.position.split(' / ');
+
+        for (let i = 0; i < length; i += 1) {
+            const [gridColumn] = pinnedColumns[i].position.split(' / ');
+
+            if (gridColumnToInsert < gridColumn) {
+                commit(types.INSERT_PINNED_COLUMN_AT_INDEX, { index: i, column });
+                break;
+            }
         }
     },
-    clearStorage({ commit }) {
-        commit(types.CLEAR_STATE);
+    removePinnedColumn({ commit, state }, id) {
+        const { pinnedColumns } = state;
+        const index = pinnedColumns.findIndex(col => col.id === id);
+        commit(types.REMOVE_PINNED_COLUMN_AT_INDEX, index);
+    },
+    reloadGridData({ commit }) {
+        commit(types.RELOAD_GRID_DATA);
+    },
+    updateDataCellValue({ commit }, payload) {
+        commit(types.UPDATE_DATA_CELL_VALUE, payload);
     },
 };

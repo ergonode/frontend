@@ -10,17 +10,18 @@
         :column="columnIndex"
         :locked="!isActionCell"
         :action-cell="isActionCell"
-        :on-edit="onEdit">
+        @edit="onEdit">
         <Component
-            :is="infoComponent"
+            :is="headerComponent"
             v-if="!isExtenderColumn"
-            v-bind="infoComponentProps"
+            v-bind="headerComponentProps"
             :store-namespace="storeNamespace"
             @sort="() => getData({ path })" />
     </GridCell>
 </template>
 
 <script>
+import { GridHeaderType } from '~/model/grid/layout/GridHeaderType';
 
 export default {
     name: 'GridWrapperHeaderCell',
@@ -59,25 +60,31 @@ export default {
 
             return type === 'CHECK' || type === 'ACTION';
         },
-        infoComponent() {
-            const { id } = this.column;
+        headerComponent() {
+            const { type } = this.column.header;
 
-            if (id === 'id') return () => import('~/components/Grid/GridCheckCell');
+            if (type === GridHeaderType.CHECK) return () => import('~/components/Grid/EditCells/GridEditSelectRowCell');
+            if (type === GridHeaderType.PLAIN) return () => import('~/components/Grid/GridBaseHeaderCell');
 
-            return () => import('~/components/Grid/GridHeaderCell');
+            return () => import('~/components/Grid/GridInteractiveHeaderCell');
         },
         isExtenderColumn() {
             return this.column.id === 'extender';
         },
-        infoComponentProps() {
-            const { id } = this.column;
+        headerComponentProps() {
+            const { type, title } = this.column.header;
 
-            if (id === 'id') return { row: this.rowIndex, isHeader: true };
+            if (type === GridHeaderType.CHECK) return { row: this.rowIndex, multicheck: true };
+            if (type === GridHeaderType.INTERACTIVE) {
+                return {
+                    columnIndex: this.columnIndex,
+                    column: this.column,
+                    isColumnEditable: this.gridState.configuration.isColumnEditable,
+                };
+            }
 
             return {
-                columnIndex: this.columnIndex,
-                column: this.column,
-                isColumnEditable: this.gridState.configuration.isColumnEditable,
+                header: title,
             };
         },
     },
@@ -98,6 +105,6 @@ export default {
     .fixed-header {
         position: sticky !important;
         top: 0;
-        z-index: 5;
+        z-index: 8;
     }
 </style>

@@ -69,7 +69,7 @@
 
     &.solid {
         #{$input}__content {
-            border: 1px solid $darkGrey;
+            border: 1px solid $grey;
             padding: 4px;
             box-sizing: border-box;
 
@@ -97,7 +97,7 @@
         #{$input}__content::before {
             bottom: 0;
             width: 100%;
-            border: solid $darkGrey;
+            border: solid $grey;
             border-width: thin 0 0;
             @extend %defaultLine;
         }
@@ -133,7 +133,7 @@
         #{$input}__content::after {
             bottom: -1px;
             width: 100%;
-            border: solid $darkGrey;
+            border: solid $grey;
             border-width: thin 0;
             transform: scaleX(0);
             @extend %defaultLine;

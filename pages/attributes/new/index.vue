@@ -60,7 +60,7 @@ export default {
         },
         onCreateAttributeSuccess(id) {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'Attribute created' });
+            this.$addAlert({ type: 'success', message: 'Attribute created' });
             this.$router.push({
                 name: 'attributes-edit-id',
                 params: {

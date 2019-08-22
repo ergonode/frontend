@@ -8,10 +8,13 @@ import {
     getMappedLayoutElement,
     getMappedLayoutSectionElement,
 } from '~/model/mappers/templateMapper';
+import { getNestedObjectByKeyWithValue } from '~/model/objectWrapper';
 
 export default {
     getTemplateByID(
-        { commit, getters },
+        {
+            commit, dispatch, getters, rootState,
+        },
         { path, onError },
     ) {
         return this.app.$axios.$get(path).then(({
@@ -20,10 +23,16 @@ export default {
             elements,
         }) => {
             const { elementDataByType } = getters;
+            const { language: languageCode } = rootState.authentication.user;
             const layoutElements = getMappedLayoutElements(
                 elements,
                 elementDataByType,
             );
+
+            for (let i = layoutElements.length - 1; i > -1; i -= 1) {
+                const { id } = layoutElements[i];
+                dispatch('list/setDisabledElement', { languageCode, elementId: id }, { root: true });
+            }
 
             commit(types.INITIALIZE_LAYOUT_ELEMENTS, layoutElements);
             commit(types.SET_TEMPLATE_DESIGNER_TITLE, name);
@@ -64,18 +73,20 @@ export default {
         }).catch(e => onError(e.data));
     },
     addListElementToLayout: ({
-        commit, rootState, rootGetters, getters,
+        commit, dispatch, rootState, getters,
     }, position) => {
         const { draggedElement } = rootState.draggable;
-        const { 'list/elementByCode': elementByCode } = rootGetters;
+        const { elements } = rootState.list;
         const { elementDataByType } = getters;
-        const element = elementByCode(draggedElement.split(':')[0]);
+        const [value, languageCode] = draggedElement.split(':');
+        const element = getNestedObjectByKeyWithValue(elements, 'code', value);
         const layoutElement = getMappedLayoutElement(
             element.id,
             elementDataByType(element.type),
             position,
         );
 
+        dispatch('list/setDisabledElement', { languageCode, elementId: element.id }, { root: true });
         commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
     },
     addSectionElementToLayout: ({
@@ -99,7 +110,12 @@ export default {
     updateSectionElementTitle: ({ commit }, title) => {
         commit(types.UPDATE_SECTION_ELEMENT_TITLE, title);
     },
-    removeLayoutElementAtIndex: ({ commit }, index) => {
+    removeLayoutElementAtIndex: ({
+        commit, dispatch, state, rootState,
+    }, index) => {
+        const { layoutElements } = state;
+        const { user } = rootState.authentication;
+        dispatch('list/removeDisabledElement', { languageCode: user.language, elementId: layoutElements[index].id }, { root: true });
         commit(types.REMOVE_LAYOUT_ELEMENT_AT_INDEX, index);
     },
     setTemplateDesignerTitle: ({ commit }, title) => {

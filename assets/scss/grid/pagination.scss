@@ -5,6 +5,8 @@
 .pagination {
     display: flex;
     align-items: center;
+    margin: auto;
+    align-self: center;
 
     & > * {
         margin: $flexItemsMargin;
@@ -20,5 +22,9 @@
 
     &__icon {
         color: $lightGraphite;
+    }
+
+    .non-visible {
+        visibility: hidden;
     }
 }

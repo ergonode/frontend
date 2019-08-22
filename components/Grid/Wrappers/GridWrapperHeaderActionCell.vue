@@ -9,7 +9,8 @@
         :column="columnIndex"
         :locked="isLockedCell"
         :action-cell="isActionCell"
-        :on-edit="onEdit">
+        :editing="isEditingCell"
+        @edit="onEdit">
         <template v-if="!isExtenderColumn">
             <Component
                 :is="infoComponent"

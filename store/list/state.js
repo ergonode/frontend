@@ -5,5 +5,5 @@
 export default () => ({
     groups: {},
     elements: {},
-    draggedElementsStore: {},
+    disabledElements: {},
 });

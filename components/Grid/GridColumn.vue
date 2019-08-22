@@ -7,26 +7,24 @@
         :class="
             [
                 'column',
-                `column-${column.id}`,
-                'column--border-right',
+                'border-right',
                 {
-                    'column__left-pinned': column.isLeftPinned,
-                    'column__right-pinned': column.isRightPinned,
                     'column__extender': isExtenderColumn,
                     'column__ghost': isDraggedColumn,
+                    'column--last': isLast,
                 }
             ]"
-        :style="colRowsTemplate"
-        :draggable="isColumnMoveable"
+        :style="colGridTemplate"
+        :draggable="isColumnDraggable"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
         @dragover="onDragOver"
         @dragleave="onDragLeave"
         @drop="onDrop">
-        <template v-if="!isDraggedColumn">
+        <template v-if="!isDraggedColumn && column.id !== 'ghost'">
             <slot />
             <div
-                v-if="isColumnResizeable"
+                v-if="!isExtenderColumn && isColumnResizeable"
                 :class="['column__resizer', {
                     'column__resizer--resizing': isResizing
                 }]"
@@ -69,30 +67,37 @@ export default {
             type: Number,
             default: 40,
         },
-        isPinnedRight: {
+        isPinned: {
             type: Boolean,
             default: false,
         },
-        isPinnedLeft: {
+        isLast: {
             type: Boolean,
             default: false,
         },
-        isColumnResizeable: {
+        isLastRightPinnedColumn: {
             type: Boolean,
             default: false,
         },
-        isColumnMoveable: {
+        isLastLeftPinnedColumn: {
             type: Boolean,
             default: false,
         },
     },
     data() {
         return {
-            startWidth: 0,
-            startX: 0,
             isResizing: false,
-            columnWidth: 0,
         };
+    },
+    beforeCreate() {
+        this.startWidth = 0;
+        this.startX = 0;
+        this.columnWidth = 0;
+    },
+    beforeDestroy() {
+        delete this.startWidth;
+        delete this.startX;
+        delete this.columnWidth;
     },
     mounted() {
         const { width } = this.column;
@@ -109,10 +114,22 @@ export default {
             ghostElTransform: state => state.ghostElTransform,
             draggedElIndex: state => state.draggedElIndex,
         }),
-        colRowsTemplate() {
+        colGridTemplate() {
             return {
                 gridAutoRows: `${this.rowsHeight}px`,
             };
+        },
+        gridState() {
+            return this.$store.state[this.storeNamespace];
+        },
+        isPinnedColumn() {
+            return this.gridState.pinnedColumns.find(col => col.id === this.column.id);
+        },
+        isColumnDraggable() {
+            return this.gridState.configuration.isColumnMoveable;
+        },
+        isColumnResizeable() {
+            return this.gridState.configuration.isColumnResizeable;
         },
         isExtenderColumn() {
             return this.column.id === 'extender';
@@ -146,8 +163,7 @@ export default {
 
             if (!isMouseAboveColumnHeader
                 || isMouseAboveLeftBorderLimit
-                || this.isPinnedLeft
-                || this.isPinnedRight
+                || this.isPinnedColumn
                 || this.isExtenderColumn
                 || this.isResizing) {
                 event.preventDefault();
@@ -177,12 +193,12 @@ export default {
                 const grid = document.documentElement.querySelector('.grid');
 
                 for (let i = 0; i < grid.children.length; i += 1) {
-                    grid.children[i].style.transform = 'translateX(0)';
+                    grid.children[i].style.transform = null;
                 }
 
-                if (this.ghostIndex !== index) {
+                if (this.ghostIndex !== this.draggedElIndex) {
                     this.$store.dispatch(`${this.storeNamespace}/changeColumnPosition`, {
-                        from: index,
+                        from: this.draggedElIndex,
                         to: this.ghostIndex,
                     });
                 }
@@ -207,7 +223,7 @@ export default {
                 const grid = document.documentElement.querySelector('.grid');
 
                 for (let i = 0; i < grid.children.length; i += 1) {
-                    grid.children[i].style.transform = 'translateX(0)';
+                    grid.children[i].style.transform = null;
                 }
 
                 this.$store.dispatch(`${this.storeNamespace}/getColumnData`, {
@@ -237,8 +253,7 @@ export default {
                 || (isBefore && this.ghostIndex === fixedIndex - 1)
                 || (!isBefore && this.ghostIndex === fixedIndex + 1)
                 || (this.isExtenderColumn && !isBefore)
-                || this.isPinnedLeft
-                || this.isPinnedRight) {
+                || this.isPinnedColumn) {
                 return false;
             }
 
@@ -264,7 +279,7 @@ export default {
 
             if ((isOutOfBounds || isTrashBelowMouse) && ghostColumnExists) {
                 for (let i = 0; i < grid.children.length; i += 1) {
-                    grid.children[i].style.transform = 'translateX(0)';
+                    grid.children[i].style.transform = null;
                 }
 
                 this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index: this.draggedElIndex });
@@ -339,7 +354,7 @@ export default {
             );
         },
         addBorderToRightNeighbour(neighbour) {
-            neighbour.classList.add('column--border-right');
+            neighbour.classList.add('border-right');
         },
         getColumnFixedIndex() {
             if (this.$el.style.transform) {
@@ -429,12 +444,12 @@ export default {
     .column {
         position: relative;
         display: grid;
-        padding-right: 1px;
 
         &::before {
             position: absolute;
             top: 0;
             right: 0;
+            z-index: 10;
             width: 1px;
             height: 100%;
             background-color: $grey;
@@ -457,7 +472,7 @@ export default {
             content: "";
         }
 
-        &--border-right {
+        &.border-right:not(&--last) {
             &::before {
                 opacity: 1;
             }
@@ -471,11 +486,42 @@ export default {
             }
         }
 
+        &.sticky {
+            position: sticky;
+            z-index: 9999;
+        }
+
+        &.drop-shadow-right-pinned {
+            &::before {
+                left: 0;
+                right: unset;
+                z-index: unset;
+                background-color: unset;
+                box-shadow:
+                    0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                    0 3px 1px -2px rgba(0, 0, 0, 0.12),
+                    0 1px 5px 0 rgba(0, 0, 0, 0.2);
+                opacity: 1;
+            }
+        }
+
+        &.drop-shadow-left-pinned {
+            &::before {
+                z-index: unset;
+                background-color: unset;
+                box-shadow:
+                    0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                    0 3px 1px -2px rgba(0, 0, 0, 0.12),
+                    0 1px 5px 0 rgba(0, 0, 0, 0.2);
+                opacity: 1;
+            }
+        }
+
         &__resizer {
             position: absolute;
             top: 0;
             right: 0;
-            z-index: 5;
+            z-index: 9;
             width: 2.5px;
             height: 100%;
             cursor: col-resize;
@@ -492,16 +538,6 @@ export default {
                 inset 0 2px 2px 0 rgba(0, 0, 0, 0.14),
                 inset 0 3px 1px 0 rgba(0, 0, 0, 0.12),
                 inset 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-        }
-
-        &__right-pinned {
-            position: sticky;
-            right: 0;
-            z-index: 3;
-        }
-
-        &__left-pinned {
-            left: 0;
         }
     }
 </style>

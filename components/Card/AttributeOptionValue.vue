@@ -7,6 +7,8 @@
         :value="translationOptionValue"
         :label="label"
         solid
+        small
+        :disabled="disabled"
         @input="value => setOptionValueForLanguageCode({ languageCode, index, value })" />
 </template>
 
@@ -29,6 +31,10 @@ export default {
         },
         label: {
             type: String,
+            required: true,
+        },
+        disabled: {
+            type: Boolean,
             required: true,
         },
     },

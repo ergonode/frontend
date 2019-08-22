@@ -1,6 +1,29 @@
 # CHANGELOG
 This changelog references the relevant changes.
 
+
+## CHANGELOG FOR v0.3.0
+
+- feature [#76](https://github.com/ergonode/frontend/issues/76) Resizable horizontal line for grid columns
+- feature [#81](https://github.com/ergonode/frontend/issues/81) User activity flag
+- feature [#83](https://github.com/ergonode/frontend/issues/83) User roles
+- feature [#92](https://github.com/ergonode/frontend/issues/92) Floating grid headers
+- feature [#94](https://github.com/ergonode/frontend/issues/94) Generating icons - mechanism
+- feature [#97](https://github.com/ergonode/frontend/issues/97) Reusable Vuex store for each grid
+- feature [#105](https://github.com/ergonode/frontend/issues/105) Base role tab
+- feature [#108](https://github.com/ergonode/frontend/issues/108) Native Checkbox
+- feature [#109](https://github.com/ergonode/frontend/issues/109) Deleting role action
+- feature [#111](https://github.com/ergonode/frontend/issues/111) User page - add select field with roles
+- feature [#115](https://github.com/ergonode/frontend/issues/115) Privilege roles table
+- feature [#117](https://github.com/ergonode/frontend/issues/117) User/s activity logs
+- feature [#124](https://github.com/ergonode/frontend/issues/124) Color picker
+- feature [#126](https://github.com/ergonode/frontend/issues/126) User Privileges
+- bugfix [#98](https://github.com/ergonode/frontend/issues/98) Hide search for lists
+- bugfix [#100](https://github.com/ergonode/frontend/issues/100) Label appears while dragging
+- perf [#104](https://github.com/ergonode/frontend/issues/104) Inputs improvement
+- perf [#121](https://github.com/ergonode/frontend/issues/121) New category tree view
+
+
 ## CHANGELOG FOR v0.2.0
 
 - bugfix [#14](https://github.com/ergonode/frontend/issues/14) User image doesn't display well

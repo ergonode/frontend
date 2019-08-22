@@ -12,6 +12,7 @@
         :error-messages="errorMessages"
         multiselect
         :required="required"
+        :disabled="disabled"
         @focus="onFocusChange"
         @input="onValueChange">
         <template v-slot:append>
@@ -28,7 +29,7 @@
 </template>
 
 <script>
-import moment from 'moment';
+import { format as formatDate, parse as parseDate } from 'date-fns';
 import { Arrow } from '~/model/icons/Arrow';
 import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
 import DatePicker from '~/components/Inputs/Date/DatePicker';
@@ -48,7 +49,7 @@ export default {
     },
     created() {
         if (!this.value) this.localValue = null;
-        else this.localValue = moment(this.value, this.parameters.format).toDate();
+        else this.localValue = parseDate(this.value, this.parameters.format);
     },
     computed: {
         dropDownState() {
@@ -70,7 +71,7 @@ export default {
             if (!date) return null;
             const { format } = this.parameters;
 
-            return moment(date).format(format);
+            return formatDate(date, format);
         },
     },
 };

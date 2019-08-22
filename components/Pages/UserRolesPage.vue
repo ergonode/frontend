@@ -39,6 +39,19 @@ export default {
                         updateButton: {
                             title: this.isEdit ? 'SAVE ROLE' : 'CREATE ROLE',
                             action: this.isEdit ? this.onSave : this.onCreate,
+                            disabled: this.isEdit ? !this.$canIUse('USER_ROLE_UPDATE') : false,
+                        },
+                    },
+                },
+                {
+                    title: 'Privileges',
+                    path: `/users/roles/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/privileges`,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: 'SAVE PRIVILEGES',
+                            action: this.onSave,
+                            disabled: !this.$canIUse('USER_ROLE_UPDATE'),
                         },
                     },
                 },
@@ -53,7 +66,8 @@ export default {
                     color: 'transparent',
                     action: this.onRemove,
                     theme: 'dark',
-                    icon: 'sprite-system system-trash--deactive',
+                    icon: 'remove',
+                    disabled: !this.$canIUse('USER_ROLE_DELETE'),
                 },
             ];
         }

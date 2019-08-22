@@ -8,20 +8,17 @@
             <GridWrapper
                 store-namespace="usersGrid"
                 :rows-height="rowsHeight"
-                :action-paths="actionPaths" />
+                :action-paths="actionPaths"
+                :editing-privilege-allowed="$canIUse('USER_UPDATE')" />
         </div>
-        <GridFooter
-            store-namespace="usersGrid"
-            :is-pagination-visible="Boolean(numberOfPages)">
-            <template v-slot:pagination>
-                <GridPageSelector
-                    v-model="visibleRowsInPageCount"
-                    :rows-number="numberOfDataElements" />
-                <GridPagination
-                    :value="displayedPage"
-                    :max-page="numberOfPages"
-                    @input="onPageChanged" />
-            </template>
+        <GridFooter>
+            <GridPageSelector
+                v-model="visibleRowsInPageCount"
+                :rows-number="numberOfDataElements" />
+            <GridPagination
+                :value="displayedPage"
+                :max-page="numberOfPages"
+                @input="onPageChanged" />
         </GridFooter>
     </div>
 </template>

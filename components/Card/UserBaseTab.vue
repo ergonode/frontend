@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseTab :update-button="updateButton">
+    <BaseTab>
         <template v-slot:content>
             <UserBaseCard />
         </template>

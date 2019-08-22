@@ -22,12 +22,11 @@
                 :title="button.title"
                 :color="button.color"
                 :theme="button.theme"
+                :disabled="button.disabled"
                 large
                 @click.native="button.action">
                 <template v-slot:prepend>
-                    <IconDelete
-                        v-if="isRemoveButton(button.icon)"
-                        fill-color="#adafb2" />
+                    <IconDelete v-if="isRemoveButton(button.icon)" />
                     <IconAdd
                         v-else
                         fill-color="#fff" />
@@ -75,8 +74,7 @@ export default {
             this.$emit('navigateback');
         },
         isRemoveButton(title) {
-            if (!title) return false;
-            return /trash/.test(title.toLowerCase());
+            return !!(title && title === 'remove');
         },
     },
 };

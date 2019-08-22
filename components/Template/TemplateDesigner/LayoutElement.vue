@@ -5,11 +5,12 @@
 <template>
     <div
         :class="['layout-element', draggableClasses]"
-        :draggable="isDraggingEnabled"
+        :draggable="isDraggingEnabled && !disabled"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
         <slot name="content" />
         <div
+            v-if="!disabled"
             class="layout-element__resizer"
             @mousedown="initResizeDrag" />
     </div>
@@ -41,6 +42,10 @@ export default {
     props: {
         index: {
             type: Number,
+            required: true,
+        },
+        disabled: {
+            type: Boolean,
             required: true,
         },
         element: {
@@ -87,6 +92,7 @@ export default {
             return {
                 'layout-element--dragged': this.isDragged,
                 'layout-element--resized': !this.isDraggingEnabled,
+                'layout-element--disabled': this.disabled,
             };
         },
     },
@@ -329,7 +335,7 @@ export default {
         user-select: none;
         cursor: grab;
 
-        &:hover:not(&--resized) {
+        &:hover:not(&--resized):not(&--disabled) {
             border: unset;
             box-shadow:
                 0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -354,6 +360,10 @@ export default {
             position: absolute;
             z-index: 5;
             border: 2px solid $success;
+        }
+
+        &--disabled {
+            cursor: not-allowed;
         }
     }
 </style>

@@ -8,7 +8,6 @@
             <Button
                 fab
                 color="transparent"
-                ripple-color="rgba(235, 235, 236, 1)"
                 @click.native="onPrevious">
                 <template v-slot:prepend>
                     <IconArrowSingle :state="leftArrow" />
@@ -23,7 +22,6 @@
             <Button
                 fab
                 color="transparent"
-                ripple-color="rgba(235, 235, 236, 1)"
                 @click.native="onNext">
                 <template v-slot:prepend>
                     <IconArrowSingle :state="rightArrow" />

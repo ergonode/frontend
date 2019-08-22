@@ -1,9 +1,13 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
 import {
     addGhostElementToDraggableLayer,
     updateGhostElementWidth,
     updateGhostElementHeight,
     removeGhostElementFromDraggableLayer,
-} from "~/model/template_designer/layout/GhostElement";
+} from '~/model/template_designer/layout/GhostElement';
 
 beforeEach(() => {
     const draggableLayerElement = document.createElement('div');

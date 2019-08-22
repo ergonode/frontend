@@ -26,6 +26,7 @@ export default {
                     title: 'CREATE PRODUCT',
                     color: 'success',
                     action: this.addNewProduct,
+                    disabled: !this.$canIUse('PRODUCT_CREATE'),
                 },
             ],
         };
@@ -34,15 +35,6 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-    },
-    created() {
-        this.setConfigurationForList({
-            draggedElementsStore: {
-                storeName: 'productsGrid',
-                stateName: 'columns',
-                idName: ['element_id'],
-            },
-        });
     },
     methods: {
         ...mapActions('list', {

@@ -48,7 +48,7 @@ export default {
                     active: this.isEdit,
                     props: {
                         updateButton: {
-                            title: 'SAVE AVATAR',
+                            title: 'SAVE USER',
                             action: this.onSave,
                         },
                     },
@@ -58,15 +58,16 @@ export default {
     },
     created() {
         if (this.isEdit) {
-            this.buttons = [
-                {
-                    title: 'REMOVE USER',
-                    color: 'transparent',
-                    action: this.onRemove,
-                    theme: 'dark',
-                    icon: 'sprite-system system-trash--deactive',
-                },
-            ];
+            // TODO: Add when it's implemented on BE
+            // this.buttons = [
+            //     {
+            //         title: 'REMOVE USER',
+            //         color: 'transparent',
+            //         action: this.onRemove,
+            //         theme: 'dark',
+            //         disabled: !this.$canIUse('USER_DELETE'),
+            //     },
+            // ];
         }
     },
 };

@@ -25,6 +25,7 @@ export default {
                     title: 'CREATE CATEGORY',
                     color: 'success',
                     action: this.addNewCategory,
+                    disabled: !this.$canIUse('CATEGORY_CREATE'),
                 },
             ],
         };

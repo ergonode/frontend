@@ -56,7 +56,7 @@ export default {
         },
         onUpdateUserSuccess() {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'User updated' });
+            this.$addAlert({ type: 'success', message: 'User updated' });
             this.$router.push('/users');
         },
         onSave() {

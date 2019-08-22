@@ -19,7 +19,7 @@
                 label="Attribute name"
                 regular
                 :error-messages="errorLabelMessage"
-                :disabled="!isTranslationChosen" />
+                :disabled="!isUserAllowedToUpdate" />
             <TextArea
                 v-if="hasPlaceholder"
                 v-model="placeholderValue"
@@ -28,7 +28,7 @@
                 resize="vertical"
                 :style="{height: '150px'}"
                 :error-messages="errorPlaceholderMessage"
-                :disabled="!isTranslationChosen" />
+                :disabled="!isUserAllowedToUpdate" />
             <TextArea
                 v-model="tooltipValue"
                 solid
@@ -36,11 +36,13 @@
                 resize="vertical"
                 :style="{height: '150px'}"
                 :error-messages="errorHintMessage"
-                :disabled="!isTranslationChosen" />
-            <Divider />
-            <AttributeOptionValues
-                v-if="hasOptions"
-                :language-code="languageCode" />
+                :disabled="!isUserAllowedToUpdate" />
+            <template v-if="hasOptions">
+                <Divider />
+                <AttributeOptionValues
+                    :language-code="languageCode"
+                    :disabled="!isUserAllowedToUpdate" />
+            </template>
         </div>
     </BaseCard>
 </template>
@@ -125,6 +127,9 @@ export default {
                     this.type,
                 ),
             );
+        },
+        isUserAllowedToUpdate() {
+            return this.$canIUse('ATTRIBUTE_UPDATE');
         },
         errorLabelMessage() {
             const labelIndex = `label_${this.languageCode}`;

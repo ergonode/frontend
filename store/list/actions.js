@@ -46,10 +46,11 @@ export default {
             }
         }).catch(e => console.log(e));
     },
-    setConfigurationForList: ({ commit }, configurations) => {
-        Object.entries(configurations).forEach((configuration) => {
-            commit(types.SET_CONFIGURATION_FOR_LIST, configuration);
-        });
+    setDisabledElement: ({ commit }, payload) => {
+        commit(types.SET_DISABLED_ELEMENT, payload);
+    },
+    removeDisabledElement: ({ commit }, payload) => {
+        commit(types.REMOVE_DISABLED_ELEMENT, payload);
     },
     clearStorage: ({ commit }) => commit(types.CLEAR_STATE),
 };

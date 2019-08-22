@@ -5,44 +5,19 @@
 <template>
     <div :class="gridWrapperClasses">
         <Grid
-            :columns="gridState.columns"
-            :is-placeholder="isEmptyGrid">
-            <GridColumn
-                v-for="(column, colIndex) in gridState.columns"
-                :key="column.id"
-                :store-namespace="storeNamespace"
-                :index="colIndex"
-                :column="column"
-                :rows-height="rowsHeight"
-                :is-pinned-right="column.isRightPinned"
-                :is-pinned-left="column.isLeftPinned"
-                :is-column-resizeable="gridState.configuration.isColumnResizeable"
-                :is-column-moveable="gridState.configuration.isColumnMoveable">
-                <GridWrapperHeaderCell
-                    :store-namespace="storeNamespace"
-                    :column-index="colIndex"
+            :store-namespace="storeNamespace"
+            :action-paths="actionPaths"
+            :rows-height="rowsHeight"
+            :filterable="filterable"
+            :editing-privilege-allowed="editingPrivilegeAllowed">
+            <template v-slot:cell="{column, columnIndex}">
+                <slot
+                    name="cell"
                     :column="column"
-                    :path="actionPaths.getData" />
-                <GridWrapperHeaderActionCell
-                    :store-namespace="storeNamespace"
-                    :column-index="colIndex"
-                    :column="column"
-                    :path="actionPaths.getData" />
-                <GridWrapperCell
-                    v-for="(row, rowIndex) in gridState.rows"
-                    :key="`row[${rowIndex + 2}, ${column.id}]`"
-                    :store-namespace="storeNamespace"
-                    :column-index="colIndex"
-                    :row-index="(rowIndex + 2) * gridState.displayedPage"
-                    :column="column"
-                    :row="row"
-                    :draft="drafts[gridState.rows[rowIndex].id]"
-                    :edit-routing-path="actionPaths.routerEdit"
-                    :is-selected="gridState.isSelectedAllRows
-                        || gridState.selectedRows[(rowIndex + 2) * gridState.displayedPage]" />
-            </GridColumn>
+                    :column-index="columnIndex" />
+            </template>
         </Grid>
-        <GridPlaceholder v-if="isEmptyGrid" />
+        <GridPlaceholder v-if="isPlaceholder" />
     </div>
 </template>
 
@@ -53,16 +28,16 @@ export default {
     name: 'GridWrapper',
     components: {
         Grid: () => import('~/components/Grid/Grid'),
-        GridColumn: () => import('~/components/Grid/GridColumn'),
-        GridWrapperCell: () => import('~/components/Grid/Wrappers/GridWrapperCell'),
-        GridWrapperHeaderActionCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderActionCell'),
-        GridWrapperHeaderCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderCell'),
         GridPlaceholder: () => import('~/components/Grid/GridPlaceholder'),
     },
     props: {
         storeNamespace: {
             type: String,
             required: true,
+        },
+        editingPrivilegeAllowed: {
+            type: Boolean,
+            default: true,
         },
         rowsHeight: {
             type: Number,
@@ -72,24 +47,22 @@ export default {
             type: Object,
             required: true,
         },
+        filterable: {
+            type: Boolean,
+            default: true,
+        },
     },
     destroyed() {
         this.removeValidationErrors();
     },
     computed: {
-        ...mapState('gridDraft', {
-            drafts: state => state.drafts,
-        }),
-        gridState() {
-            return this.$store.state[this.storeNamespace];
-        },
-        numberOfPages() {
-            return this.$store.getters[`${this.storeNamespace}/numberOfPages`];
-        },
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,
             isColumnDragging: state => state.isColumnDragging,
         }),
+        gridState() {
+            return this.$store.state[this.storeNamespace];
+        },
         gridWrapperClasses() {
             return [
                 'grid-wrapper',
@@ -99,8 +72,8 @@ export default {
                 },
             ];
         },
-        isEmptyGrid() {
-            return !this.gridState.rows.length;
+        isPlaceholder() {
+            return !this.gridState.rowIds.length;
         },
     },
     methods: {

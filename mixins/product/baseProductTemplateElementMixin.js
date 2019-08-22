@@ -23,6 +23,10 @@ export default {
             type: Boolean,
             required: true,
         },
+        disabled: {
+            type: Boolean,
+            required: true,
+        },
         value: {
             type: [Array, Object, Number, String],
             required: true,

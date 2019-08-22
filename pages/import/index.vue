@@ -26,6 +26,7 @@ export default {
                     title: 'CREATE IMPORT',
                     color: 'success',
                     action: this.addNewImport,
+                    disabled: !this.$canIUse('IMPORT_CREATE'),
                 },
             ],
         };

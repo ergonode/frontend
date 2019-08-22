@@ -11,6 +11,7 @@
             regular
             label="Role name"
             :error-messages="errorNameMessage"
+            :disabled="!isUserAllowedToUpdate"
             @input="setName" />
         <TextArea
             :value="description"
@@ -21,6 +22,7 @@
             resize="none"
             :style="{height: '150px'}"
             :error-messages="errorDescMessage"
+            :disabled="!isUserAllowedToUpdate"
             @input="setDescription" />
     </BaseCard>
 </template>
@@ -46,6 +48,9 @@ export default {
         }),
         isDisabled() {
             return Boolean(this.roleID);
+        },
+        isUserAllowedToUpdate() {
+            return this.$canIUse('USER_ROLE_UPDATE');
         },
         errorNameMessage() {
             const nameIndex = 'name';

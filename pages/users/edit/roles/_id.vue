@@ -13,6 +13,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { getMappedPrivilegesBasedOnGridData } from '~/model/mappers/privilegesMapper';
 
 export default {
     validate({ params }) {
@@ -28,10 +29,15 @@ export default {
             roleID: state => state.id,
             name: state => state.name,
             description: state => state.description,
+        }),
+        ...mapState('data', {
             privileges: state => state.privileges,
         }),
+        ...mapState('authentication', {
+            userPrivileges: state => state.user.privileges,
+        }),
         title() {
-            return `Role: ${this.name}`;
+            return `${this.name}`;
         },
     },
     destroyed() {
@@ -52,22 +58,27 @@ export default {
         },
         onUpdateRoleSuccess() {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'Role updated' });
+            this.$addAlert({ type: 'success', message: 'Role updated' });
             this.$router.push('/users/roles');
         },
         onRemoveRoleSuccess() {
-            this.$addAlert(this.$store, { type: 'success', message: 'Role removed' });
+            this.$addAlert({ type: 'success', message: 'Role removed' });
             this.$router.push('/users/roles');
         },
         onRemoveRoleError({ message }) {
-            this.$addAlert(this.$store, { type: 'error', message });
+            this.$addAlert({ type: 'error', message });
         },
         onSave() {
+            const { privilegesGrid } = this.$store.state;
+            const privileges = privilegesGrid
+                ? getMappedPrivilegesBasedOnGridData(this.privileges, privilegesGrid.cellValues)
+                : this.userPrivileges;
             const role = {
                 name: this.name,
                 description: this.description,
-                privileges: this.privileges,
+                privileges,
             };
+
             this.updateRole({
                 id: this.roleID,
                 data: role,

@@ -10,6 +10,7 @@
         :placeholder="placeholder"
         :required="required"
         :error-messages="isError ? [' '] : null"
+        :disabled="disabled"
         resize="none"
         @input="onValueChange">
         <template v-slot:append>

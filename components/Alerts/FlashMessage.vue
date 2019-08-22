@@ -12,13 +12,13 @@
                 :key="alert.id"
                 :message="alert.message"
                 :type="alert.type"
-                @dismiss="updateAlertStatus(alert.id)" />
+                @dismiss="removeAlert(alert)" />
         </TransitionGroup>
     </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'FlashMessage',
@@ -26,17 +26,14 @@ export default {
         Alert: () => import('~/components/Alerts/Alert'),
     },
     computed: {
-        ...mapGetters('alerts', {
-            alerts: 'alerts',
+        ...mapState('alerts', {
+            alerts: state => state.alerts,
         }),
     },
     methods: {
         ...mapActions('alerts', [
             'removeAlert',
         ]),
-        updateAlertStatus(id) {
-            this.removeAlert(id);
-        },
     },
 };
 </script>
