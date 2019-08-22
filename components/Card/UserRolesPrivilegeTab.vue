@@ -102,6 +102,7 @@ export default {
 
             if (columnId !== 'read' && value) {
                 this.updateDataCellValue({ rowId, columnId, value: true });
+                this.updateDataCellValue({ rowId, columnId: 'read', value: true });
             }
 
             if (columnId === 'read') {

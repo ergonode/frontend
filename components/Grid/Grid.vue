@@ -36,7 +36,7 @@
                     :column-index="colIndex"
                     :row-index="(rowIndex + fixedRowOffset) * gridState.displayedPage"
                     :row-id="id"
-                    :cell-data="gridState.cellValues[id][column.id] || {}"
+                    :cell-data="gridState.cellValues[id][column.id] || { value: ''}"
                     :column="column"
                     :draft="drafts[id]"
                     :edit-routing-path="actionPaths.routerEdit"
