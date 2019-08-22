@@ -6,7 +6,7 @@
     <PageWrapper>
         <NavigationHeader
             :title="title"
-            :buttons="buttons"
+            :buttons="[]"
             :breadcrumbs="breadcrumbs"
             icon="User"
             :is-read-only="!isUserAllowedToUpdateRole"
