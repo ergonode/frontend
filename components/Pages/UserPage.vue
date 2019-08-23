@@ -9,6 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="User"
+            :is-read-only="!isUserAllowedToUpdateUser"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -20,44 +21,29 @@ import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPag
 export default {
     name: 'UserPage',
     mixins: [categoryManagementPageBaseMixin],
-    data() {
-        return {
-            breadcrumbs: [
-                {
-                    title: 'Users',
-                    icon: 'User',
-                    path: '/users',
-                },
-            ],
-            buttons: [],
-            tabs: [
-                {
-                    title: 'General options',
-                    path: `/users/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/general`,
-                    active: true,
-                    props: {
-                        updateButton: {
-                            title: this.isEdit ? 'SAVE USER' : 'CREATE USER',
-                            action: this.isEdit ? this.onSave : this.onCreate,
-                        },
-                    },
-                },
-                {
-                    title: 'Avatar',
-                    path: `/users/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/avatar`,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE USER',
-                            action: this.onSave,
-                        },
-                    },
-                },
-            ],
-        };
-    },
     created() {
+        this.breadcrumbs = [
+            {
+                title: 'Users',
+                icon: 'User',
+                path: '/users',
+            },
+        ];
+
+        this.buttons = [];
+
+        this.isUserAllowedToUpdateUser = this.$canIUse('USER_UPDATE');
+        let generalOptTabPath = '/users/new/general';
+        let avatarTabPath = '/users/new/avatar';
+        let tabAction = this.onCreate;
+        let buttonPrefix = 'CREATE';
+
         if (this.isEdit) {
+            generalOptTabPath = `/users/edit/${this.$route.params.id}/general`;
+            avatarTabPath = `/users/edit/${this.$route.params.id}/avatar`;
+            tabAction = this.onSave;
+            buttonPrefix = 'SAVE';
+
             // TODO: Add when it's implemented on BE
             // this.buttons = [
             //     {
@@ -69,6 +55,38 @@ export default {
             //     },
             // ];
         }
+
+        this.tabs = [
+            {
+                title: 'General options',
+                path: generalOptTabPath,
+                active: true,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} USER`,
+                        action: tabAction,
+                        disabled: this.isEdit ? this.isUserAllowedToUpdateUser : false,
+                    },
+                },
+            },
+            {
+                title: 'Avatar',
+                path: avatarTabPath,
+                active: this.isEdit,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} USER`,
+                        action: tabAction,
+                        disabled: !this.isUserAllowedToUpdateUser,
+                    },
+                },
+            },
+        ];
+    },
+    beforeDestroy() {
+        delete this.breadcrumbs;
+        delete this.isUserAllowedToUpdateUser;
+        delete this.buttons;
     },
 };
 </script>

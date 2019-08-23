@@ -7,7 +7,8 @@
         <NavigationHeader
             :title="title"
             :buttons="buttons"
-            :icon="icon" />
+            :icon="icon"
+            :is-read-only="!$canIUse('USER_UPDATE')" />
         <HorizontalTabBar
             :items="tabs" />
     </PageWrapper>

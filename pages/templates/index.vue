@@ -5,7 +5,7 @@
 <template>
     <PageWrapper>
         <NavigationHeader
-            :title="title"
+            title="Templates"
             :buttons="buttons"
             icon="Templates" />
         <div class="templates">
@@ -40,18 +40,18 @@ export default {
         TemplateElement: () => import('~/components/Template/TemplateElement'),
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
     },
-    data() {
-        return {
-            title: 'Templates',
-            buttons: [
-                {
-                    title: 'CREATE TEMPLATE',
-                    color: 'success',
-                    action: this.onCreate,
-                    disabled: !this.$canIUse('TEMPLATE_DESIGNER_CREATE'),
-                },
-            ],
-        };
+    created() {
+        this.buttons = [
+            {
+                title: 'CREATE TEMPLATE',
+                color: 'success',
+                action: this.onCreate,
+                disabled: !this.$canIUse('TEMPLATE_DESIGNER_CREATE'),
+            },
+        ];
+    },
+    beforeDestroy() {
+        delete this.buttons;
     },
     computed: {
         ...mapState('templateLists', {

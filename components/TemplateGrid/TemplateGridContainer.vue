@@ -139,8 +139,8 @@ export default {
                 elements: categories,
                 elementBounds: getRowBounds(categories),
             }, ({ index, category }) => {
-                const hasChildren = category.querySelector('.grid-item__categories-length');
                 if (category) {
+                    const hasChildren = category.querySelector('.grid-item__categories-length');
                     const categoryId = category.getAttribute('item-id');
                     const categoryItem = this.dataWithoutGhostElement[index];
                     const {
@@ -354,7 +354,7 @@ export default {
                 this.mousePosition.directionOfCollision = directionOfCollision;
             }
             if (shadowItem !== this.mousePosition.shadowItem) {
-                const shadowItemId = shadowItem ? shadowItem.getAttribute('shadow-id') : null;
+                const shadowItemId = shadowItem.getAttribute('shadow-id');
                 this.mousePosition = {
                     overColumn: shadowItemId % this.columns,
                     overRow: Math.floor(shadowItemId / this.columns),

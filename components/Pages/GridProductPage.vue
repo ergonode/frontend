@@ -7,7 +7,8 @@
         <NavigationHeader
             :title="title"
             :buttons="buttons"
-            :icon="icon" />
+            :icon="icon"
+            :is-read-only="!$canIUse('PRODUCT_UPDATE')" />
         <HorizontalTabBar
             :items="tabs" />
         <!--
@@ -46,16 +47,19 @@ export default {
             default: null,
         },
     },
-    data: () => ({
-        tabs: [
+    created() {
+        this.tabs = [
             {
-                title: 'My amazing grid',
+                title: 'Products',
                 path: '/products/grid',
                 active: true,
                 isContextualMenu: false,
             },
-        ],
-    }),
+        ];
+    },
+    beforeDestroy() {
+        delete this.tabs;
+    },
     computed: {
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,
