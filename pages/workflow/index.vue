@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridWorkflowPage
-        title="Product statuses"
+    <WorkflowPage
+        title="Workflow"
         :buttons="getButtons()"
         icon="Flow" />
 </template>
@@ -14,7 +14,7 @@ export default {
     name: 'Index',
     middleware: ['tab/redirectToStatusesGrid'],
     components: {
-        GridWorkflowPage: () => import('~/components/Pages/GridWorkflowPage'),
+        WorkflowPage: () => import('~/components/Pages/WorkflowPage'),
     },
     methods: {
         addNewStatus() {

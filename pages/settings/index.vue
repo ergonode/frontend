@@ -3,16 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper />
+    <SettingsPage
+        title="Settings"
+        icon="Settings" />
 </template>
 
 <script>
-import PageWrapper from '~/components/Layout/PageWrapper';
 
 export default {
     name: 'Settings',
+    middleware: ['tab/redirectToLanguageSettings'],
     components: {
-        PageWrapper,
+        SettingsPage: () => import('~/components/Pages/SettingsPage'),
     },
 };
 </script>

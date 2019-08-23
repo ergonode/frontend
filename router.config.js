@@ -49,6 +49,7 @@ const ProductBaseTab = () => import('~/components/Card/ProductBaseTab').then(m =
 const ProductTemplateTab = () => import('~/components/Card/ProductTemplateTab').then(m => m.default || m);
 const TreeDesignTab = () => import('~/components/Card/TreeDesignTab').then(m => m.default || m);
 const ProductStatusGridTab = () => import('~/components/Card/ProductStatusGridTab').then(m => m.default || m);
+const LanguageSettingsTab = () => import('~/components/Card/LanguageSettingsTab').then(m => m.default || m);
 
 export const pages = [
     {
@@ -322,7 +323,15 @@ export const pages = [
         children: [],
     },
     {
-        name: 'settings', path: '/settings', component: Settings,
+        name: 'settings',
+        path: '/settings',
+        component: Settings,
+        children: [
+            {
+                path: '/settings/language',
+                component: LanguageSettingsTab,
+            },
+        ],
     },
     {
         name: 'channels', path: '/channels', component: Channels,

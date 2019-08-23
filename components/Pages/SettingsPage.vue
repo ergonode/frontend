@@ -14,9 +14,11 @@
 </template>
 
 <script>
+import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
-    name: 'GridWorkflowPage',
+    name: 'SettingsPage',
+    mixins: [categoryManagementPageBaseMixin],
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
@@ -29,7 +31,7 @@ export default {
         },
         buttons: {
             type: Array,
-            required: true,
+            default: () => [],
         },
         icon: {
             type: String,
@@ -41,10 +43,16 @@ export default {
         return {
             tabs: [
                 {
-                    title: 'Statuses',
-                    path: '/workflow/statuses',
+                    title: 'Language',
+                    path: '/settings/language',
                     active: true,
                     isContextualMenu: false,
+                    props: {
+                        updateButton: {
+                            title: 'SAVE SETTINGS',
+                            action: this.onSave,
+                        },
+                    },
                 },
             ],
         };
