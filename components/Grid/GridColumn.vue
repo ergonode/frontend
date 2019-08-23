@@ -236,6 +236,8 @@ export default {
             }
         },
         onDragOver(event) {
+            if (!this.draggedElement) return false;
+
             event.preventDefault();
 
             const { clientX } = event;
