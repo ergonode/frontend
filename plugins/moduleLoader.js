@@ -5,7 +5,8 @@
  * See LICENSE for license details.
  */
 import Vue from 'vue'; // eslint-disable-line import/no-extraneous-dependencies
-import modules from '@Root/modules.config';
+import modules from '@Root/config/.modules';
+import additionalModules from '@Root/modules.config';
 
 const ModuleLoader = {
     install() {
@@ -15,8 +16,24 @@ const ModuleLoader = {
             menu,
         };
     },
+    getModulesConfiguration() {
+        const { pages: modulePages, components: moduleComponents } = modules;
+        const {
+            pages: additionalModulePages,
+            components: additionalModuleComponents,
+        } = additionalModules;
+        return {
+            pages: [
+                ...modulePages, ...additionalModulePages,
+            ],
+            components: [
+                ...moduleComponents,
+                ...additionalModuleComponents,
+            ],
+        };
+    },
     getPagesConfiguration() {
-        const { pages } = modules;
+        const { pages } = ModuleLoader.getModulesConfiguration();
         const pagesConfiguration = { router: [], menu: [], store: [] };
         for (let i = 0; i < pages.length; i += 1) {
             let config = null;

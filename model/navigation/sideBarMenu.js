@@ -112,15 +112,16 @@ const sections = [
 ];
 
 const extendSections = (modulesMenu) => {
+    const newSections = JSON.parse(JSON.stringify(sections)); // deep array clone hack
     for (let i = 0; i < modulesMenu.length; i += 1) {
-        const index = sections.findIndex(e => e.key === modulesMenu[i].key);
+        const index = newSections.findIndex(e => e.key === modulesMenu[i].key);
         if (index >= 0) {
-            sections[index].items.push(...modulesMenu[i].items);
+            newSections[index].items.push(...modulesMenu[i].items);
         } else {
-            sections.push(modulesMenu[i]);
+            newSections.push(modulesMenu[i]);
         }
     }
-    return sections;
+    return newSections;
 };
 
 export const getValidatedMenuData = (canIUse, modulesMenu) => {
