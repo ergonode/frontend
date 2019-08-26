@@ -34,7 +34,7 @@ const manageSectionItems = [
         title: 'Category trees',
         routing: '/category-trees',
         icon: 'Tree',
-        privileges: ['CATEGORY_TREE_READ'],
+        privileges: ['ATTRIBUTE_READ'],
     },
     {
         title: 'Attributes',
@@ -46,7 +46,7 @@ const manageSectionItems = [
         title: 'Media',
         routing: '/placeholder/media',
         icon: 'Media',
-        privileges: ['CATEGORY_TREE_READ'],
+        privileges: ['MULTIMEDIA_READ'],
     },
     {
         title: 'Segments',
@@ -61,7 +61,7 @@ const collectAndDistributeSectionItems = [
         title: 'Import',
         routing: '/import',
         icon: 'Import',
-        privileges: ['CATEGORY_TREE_READ'],
+        privileges: ['IMPORT_READ'],
     },
     {
         title: 'Export',

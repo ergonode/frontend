@@ -30,6 +30,7 @@ const Profile = () => import('~/pages/profile/index').then(m => m.default || m);
 
 const AttributeBaseTab = () => import('~/components/Card/AttributeBaseTab').then(m => m.default || m);
 const AttributeTranslationsTab = () => import('~/components/Card/AttributeTranslationsTab').then(m => m.default || m);
+const AttributeGridTab = () => import('~/components/Card/AttributeGridTab').then(m => m.default || m);
 const TemplateDesignerBaseTab = () => import('~/components/Card/TemplateDesignerBaseTab').then(m => m.default || m);
 const TemplateDesignerTab = () => import('~/components/Card/TemplateDesignerTab').then(m => m.default || m);
 const UsersGridTab = () => import('~/components/Card/UsersGridTab').then(m => m.default || m);
@@ -227,6 +228,15 @@ export const pages = [
         meta: {
             permission: 'ATTRIBUTE_READ',
         },
+        children: [
+            {
+                path: 'grid',
+                component: AttributeGridTab,
+                meta: {
+                    permission: 'ATTRIBUTE_READ',
+                },
+            },
+        ],
     },
     {
         name: 'attributes-new',
