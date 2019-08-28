@@ -11,7 +11,7 @@
             regular
             label="Email"
             :error-messages="errorEmailMessage"
-            :disabled="isDisabled"
+            :disabled="isDisabled || isDisabledByPrivileges"
             @input="(email) => setAction({ key: 'email', value: email })" />
         <TextField
             :value="firstName"
@@ -20,7 +20,7 @@
             regular
             label="First name"
             :error-messages="errorFirstNameMessage"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             @input="(firstName) => setAction({ key: 'firstName', value: firstName })" />
         <TextField
             :value="lastName"
@@ -29,7 +29,7 @@
             regular
             label="Last name"
             :error-messages="errorLastNameMessage"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             @input="(lastName) => setAction({ key: 'lastName', value: lastName })" />
         <TextField
             :value="password"
@@ -40,7 +40,7 @@
             label="Password"
             :input="{ type: 'password' }"
             :error-messages="errorPasswordMessage"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             @input="(password) => setAction({ key: 'password', value: password })" />
         <TextField
             :value="passwordRepeat"
@@ -51,7 +51,7 @@
             label="Password repeat"
             :input="{ type: 'password' }"
             :error-messages="errorPasswordRepeatMessage"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             @input="(passwordRepeat) => setAction({
                 key: 'passwordRepeat',
                 value: passwordRepeat
@@ -65,7 +65,7 @@
             label="Activity status"
             :options="statusValues"
             :error-messages="errorStatusMessage"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             @input="onStatusChange" /> -->
         <Select
             :value="parsedLanguage"
@@ -74,7 +74,7 @@
             regular
             label="Language"
             :options="languageValues"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             :error-messages="errorLanguageMessage"
             @input="onLanguageChange" />
         <Select
@@ -84,7 +84,7 @@
             regular
             label="Role"
             :options="roleValues"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             :error-messages="errorRoleMessage"
             @input="onRoleChange" />
     </BaseCard>
@@ -131,7 +131,7 @@ export default {
             roleId: state => state.roleId,
         }),
         isUserAllowedToUpdate() {
-            return this.$canIUse('USER_UPDATE');
+            return this.$hasAccess('USER_UPDATE');
         },
         parsedLanguage() {
             return getValueByKey(this.languages, this.language);
@@ -144,6 +144,10 @@ export default {
         },
         isDisabled() {
             return Boolean(this.userID);
+        },
+        isDisabledByPrivileges() {
+            return (this.isDisabled && !this.$hasAccess('USER_UPDATE'))
+            || (!this.isDisabled && !this.$hasAccess('USER_CREATE'));
         },
         statusValues() {
             return Object.values(this.activityStatuses);

@@ -4,7 +4,7 @@
  */
 export default ({ app, error }) => {
     app.router.beforeEach((to, from, next) => {
-        if (to.meta.permission && !app.$canIUse(to.meta.permission)) {
+        if (to.meta.permission && !app.$hasAccess(to.meta.permission)) {
             next(error({ statusCode: 403 }));
         }
         next();

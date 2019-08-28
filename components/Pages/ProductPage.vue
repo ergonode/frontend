@@ -9,7 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="Document"
-            :is-read-only="!isUserAllowedToUpdateProduct"
+            :is-read-only="!isUserAllowedToUpdateProduct && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -22,6 +22,12 @@ export default {
     name: 'ProductPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
+        let generalOptTabPath = '/products/new/general';
+        let templateTabPath = '/products/new/template';
+        let tabAction = this.onCreate;
+        let buttonPrefix = 'CREATE';
+
+        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Products',
@@ -30,13 +36,8 @@ export default {
             },
         ];
 
-        this.buttons = [];
 
-        this.isUserAllowedToUpdateProduct = this.$canIUse('PRODUCT_UPDATE');
-        let generalOptTabPath = '/products/new/general';
-        let templateTabPath = '/products/new/template';
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
+        this.isUserAllowedToUpdateProduct = this.$hasAccess('PRODUCT_UPDATE');
 
         if (this.isEdit) {
             generalOptTabPath = `/products/edit/${this.$route.params.id}/general`;
@@ -65,7 +66,7 @@ export default {
                     updateButton: {
                         title: `${buttonPrefix} PRODUCT`,
                         action: tabAction,
-                        disabled: this.isEdit ? this.isUserAllowedToUpdateProduct : false,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateProduct : false,
                     },
                 },
             },
@@ -77,7 +78,7 @@ export default {
                     updateButton: {
                         title: `${buttonPrefix} PRODUCT`,
                         action: tabAction,
-                        disabled: !this.isUserAllowedToUpdateProduct,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateProduct : false,
                     },
                 },
             },

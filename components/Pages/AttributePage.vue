@@ -9,7 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="Attributes"
-            :is-read-only="!isUserAllowedToUpdateAttribute"
+            :is-read-only="!isUserAllowedToUpdateAttribute && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -31,7 +31,7 @@ export default {
         ];
         this.buttons = [];
 
-        this.isUserAllowedToUpdateAttribute = this.$canIUse('ATTRIBUTE_UPDATE');
+        this.isUserAllowedToUpdateAttribute = this.$hasAccess('ATTRIBUTE_UPDATE');
         let generalOptTabPath = '/attributes/new/general';
         let translationsTabPath = '/attributes/new/translation';
         let tabAction = this.onCreate;
@@ -64,7 +64,7 @@ export default {
                     updateButton: {
                         title: `${buttonPrefix} ATTRIBUTE`,
                         action: tabAction,
-                        disabled: this.isEdit ? this.isUserAllowedToUpdateAttribute : false,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateAttribute : false,
                     },
                 },
             },
@@ -76,7 +76,7 @@ export default {
                     updateButton: {
                         title: `${buttonPrefix} ATTRIBUTE`,
                         action: tabAction,
-                        disabled: !this.isUserAllowedToUpdateAttribute,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateAttribute : false,
                     },
                 },
             },

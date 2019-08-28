@@ -3,42 +3,36 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridPage
+    <GridCategoryPage
         :title="title"
-        :action-paths="actionPaths"
-        :buttons="buttons"
+        :buttons="getButtons"
         icon="Category" />
 </template>
 <script>
-import { mapState } from 'vuex';
-
 export default {
     name: 'Categories',
+    middleware: ['tab/redirectToCategoryGrid'],
     components: {
-        GridPage: () => import('~/components/Pages/GridPage'),
+        GridCategoryPage: () => import('~/components/Pages/GridCategoryPage'),
     },
     data() {
         return {
             title: 'Categories',
-            buttons: [
+        };
+    },
+    computed: {
+        getButtons() {
+            const isCategoryPath = /grid/.test(this.$route.path);
+
+            if (!isCategoryPath) return [];
+            return [
                 {
                     title: 'CREATE CATEGORY',
                     color: 'success',
                     action: this.addNewCategory,
-                    disabled: !this.$canIUse('CATEGORY_CREATE'),
+                    disabled: !this.$hasAccess('CATEGORY_CREATE'),
                 },
-            ],
-        };
-    },
-    computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
-        actionPaths() {
-            return {
-                getData: `${this.userLanguageCode}/categories`,
-                routerEdit: 'categories-edit-id',
-            };
+            ];
         },
     },
     methods: {

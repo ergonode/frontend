@@ -8,7 +8,7 @@
             id: item.type,
             draggedElementStyle,
             onDraggedState,
-            draggable: $canIUse('TEMPLATE_DESIGNER_UPDATE'),
+            draggable: $hasAccess('TEMPLATE_DESIGNER_UPDATE'),
         }"
         :dragged="isDragged">
         <ListElementIcon icon-path="Editor/IconFontSize" />

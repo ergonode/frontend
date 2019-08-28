@@ -30,7 +30,7 @@ export default {
     created() {
         this.breadcrumbs = [];
         this.buttons = [];
-        this.isUserAllowedToUpdateCategoryTree = this.$canIUse('CATEGORY_TREE_UPDATE');
+        this.isUserAllowedToUpdateCategoryTree = this.$hasAccess('CATEGORY_TREE_UPDATE');
         this.tabs = [
             {
                 title: 'Tree design',

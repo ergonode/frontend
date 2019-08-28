@@ -8,7 +8,7 @@
             :title="title"
             :buttons="buttons"
             :icon="icon"
-            :is-read-only="isReadOnly" />
+            :is-read-only="Privilege.isReadOnly" />
         <HorizontalTabBar
             :items="tabs" />
     </PageWrapper>
@@ -18,7 +18,7 @@
 import Privilege from '~/model/privilege';
 
 export default {
-    name: 'GridUsersPage',
+    name: 'GridCategoryPage',
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
@@ -39,45 +39,20 @@ export default {
         },
     },
     beforeCreate() {
+        this.Privilege = new Privilege(this.$hasAccess, 'CATEGORY');
         this.tabs = [];
-        if (this.$hasAccess('USER_READ')) {
+        if (this.$hasAccess('CATEGORY_READ')) {
             this.tabs.push({
-                title: 'Users',
-                path: '/users/grid',
+                title: 'Categories',
+                path: '/categories/grid',
                 active: true,
                 isContextualMenu: false,
             });
         }
-        if (this.$hasAccess('USER_ROLE_READ')) {
-            this.tabs.push({
-                title: 'Roles',
-                path: '/users/roles',
-                active: true,
-                isContextualMenu: false,
-            });
-        }
-        // TODO: BE need to decide if the new privilege is needed - fill the condition with correct equation
-        if (true) {
-            this.tabs.push({
-                title: 'Users activity logs',
-                path: '/users/logs',
-                active: true,
-                isContextualMenu: false,
-            });
-        }
-    },
-    computed: {
-        isReadOnly() {
-            const isRolesPage = /roles/.test(this.$route.path);
-            let PrivilegeInstance = new Privilege(this.$hasAccess, 'USER');
-            if (isRolesPage) {
-                PrivilegeInstance = new Privilege(this.$hasAccess, 'USER_ROLE');
-            }
-            return PrivilegeInstance.isReadOnly;
-        },
     },
     beforeDestroy() {
         delete this.tabs;
+        delete this.Privilege;
     },
 };
 </script>

@@ -9,7 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="User"
-            :is-read-only="!isUserAllowedToUpdateRole"
+            :is-read-only="!isUserAllowedToUpdateRole && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -22,6 +22,12 @@ export default {
     name: 'UserRolesPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
+        let generalOptTabPath = '/users/roles/new/general';
+        let privilegesTabPath = '/users/roles/new/privileges';
+        let tabAction = this.onCreate;
+        let buttonPrefix = 'CREATE';
+
+        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Users/Roles',
@@ -29,14 +35,7 @@ export default {
                 path: '/users/roles',
             },
         ];
-
-        this.buttons = [];
-
-        this.isUserAllowedToUpdateRole = this.$canIUse('USER_ROLE_UPDATE');
-        let generalOptTabPath = '/users/roles/new/general';
-        let privilegesTabPath = '/users/roles/new/privileges';
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
+        this.isUserAllowedToUpdateRole = this.$hasAccess('USER_ROLE_UPDATE');
 
         if (this.isEdit) {
             generalOptTabPath = `/users/roles/edit/${this.$route.params.id}/general`;
@@ -51,7 +50,7 @@ export default {
                     action: this.onRemove,
                     theme: 'dark',
                     icon: 'remove',
-                    disabled: !this.$canIUse('USER_ROLE_DELETE'),
+                    disabled: !this.$hasAccess('USER_ROLE_DELETE'),
                 },
             ];
         }
@@ -65,7 +64,7 @@ export default {
                     updateButton: {
                         title: `${buttonPrefix} ROLE`,
                         action: tabAction,
-                        disabled: this.isEdit ? this.isUserAllowedToUpdateRole : false,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateRole : false,
                     },
                 },
             },
@@ -77,7 +76,7 @@ export default {
                     updateButton: {
                         title: `${buttonPrefix} PRIVILEGES`,
                         action: tabAction,
-                        disabled: !this.isUserAllowedToUpdateRole,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateRole : false,
                     },
                 },
             },

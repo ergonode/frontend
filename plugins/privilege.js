@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 export default ({ app }, inject) => {
-    inject('canIUse', (privilege) => {
+    inject('hasAccess', (privileges) => {
+        const privilegesArray = Array.isArray(privileges) ? privileges : [privileges];
         const { user } = app.store.state.authentication;
-
-        return user.privileges.findIndex(userPrivilege => userPrivilege === privilege) > -1;
+        return privilegesArray.every(privilege => user.privileges.includes(privilege));
     });
 };

@@ -34,7 +34,7 @@ const manageSectionItems = [
         title: 'Category trees',
         routing: '/category-trees',
         icon: 'Tree',
-        privileges: ['CATEGORY_TREE_READ'],
+        privileges: ['ATTRIBUTE_READ'],
     },
     {
         title: 'Attributes',
@@ -46,7 +46,7 @@ const manageSectionItems = [
         title: 'Media',
         routing: '/placeholder/media',
         icon: 'Media',
-        privileges: ['CATEGORY_TREE_READ'],
+        privileges: ['MULTIMEDIA_READ'],
     },
     {
         title: 'Segments',
@@ -61,7 +61,7 @@ const collectAndDistributeSectionItems = [
         title: 'Import',
         routing: '/import',
         icon: 'Import',
-        privileges: ['CATEGORY_TREE_READ'],
+        privileges: ['IMPORT_READ'],
     },
     {
         title: 'Export',
@@ -117,7 +117,7 @@ const sections = [
     },
 ];
 
-export function getValidatedMenuData(canIUse) {
+export function getValidatedMenuData(hasAccess) {
     const menu = [];
     const { length: sectionsNumber } = sections;
 
@@ -133,7 +133,7 @@ export function getValidatedMenuData(canIUse) {
 
         for (let j = 0; j < itemsNumber; j += 1) {
             const item = items[j];
-            if (!item.privileges.length || item.privileges.every(privilege => canIUse(privilege))) {
+            if (hasAccess(item.privileges)) {
                 menu[i].section.push({
                     title: item.title,
                     routing: item.routing,

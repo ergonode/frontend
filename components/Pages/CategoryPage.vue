@@ -9,7 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="Category"
-            :is-read-only="!isUserAllowedToUpdateCategory"
+            :is-read-only="!isUserAllowedToUpdateCategory && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -22,6 +22,12 @@ export default {
     name: 'CategoryPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
+        let generalOptTabPath = '/categories/new/general';
+        let privilegesTabPath = '/categories/new/translations';
+        let tabAction = this.onCreate;
+        let buttonPrefix = 'CREATE';
+
+        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Categories',
@@ -29,14 +35,7 @@ export default {
                 path: '/categories',
             },
         ];
-
-        this.buttons = [];
-
-        this.isUserAllowedToUpdateCategory = this.$canIUse('CATEGORY_UPDATE');
-        let generalOptTabPath = '/categories/new/general';
-        let privilegesTabPath = '/categories/new/translations';
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
+        this.isUserAllowedToUpdateCategory = this.$hasAccess('CATEGORY_UPDATE');
 
         if (this.isEdit) {
             generalOptTabPath = `/categories/edit/${this.$route.params.id}/general`;

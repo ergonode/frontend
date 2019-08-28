@@ -6,10 +6,10 @@
     <div class="tab">
         <div class="tab__grid">
             <GridWrapper
-                store-namespace="usersGrid"
+                store-namespace="rolesGrid"
                 :rows-height="rowsHeight"
                 :action-paths="actionPaths"
-                :editing-privilege-allowed="$canIUse('USER_UPDATE')" />
+                :editing-privilege-allowed="$hasAccess('USER_ROLE_UPDATE')" />
         </div>
         <GridFooter>
             <GridPageSelector
@@ -32,7 +32,7 @@ import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
 
 export default {
-    name: 'UsersGridTab',
+    name: 'RolesGridTab',
     components: {
         GridWrapper,
         GridFooter,
@@ -53,29 +53,29 @@ export default {
     beforeCreate() {
         this.$registerStore({
             module: gridModule,
-            moduleName: 'usersGrid',
+            moduleName: 'rolesGrid',
             store: this.$store,
         });
     },
     beforeDestroy() {
-        this.$store.unregisterModule('usersGrid');
+        this.$store.unregisterModule('rolesGrid');
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('usersGrid', {
+        ...mapState('rolesGrid', {
             numberOfDataElements: state => state.count,
             displayedPage: state => state.displayedPage,
             numberOfDisplayedElements: state => state.numberOfDisplayedElements,
         }),
-        ...mapGetters('usersGrid', {
+        ...mapGetters('rolesGrid', {
             numberOfPages: 'numberOfPages',
         }),
         actionPaths() {
             return {
-                getData: `${this.userLanguageCode}/accounts`,
-                routerEdit: 'users-edit-id',
+                getData: `${this.userLanguageCode}/roles`,
+                routerEdit: 'users-roles-edit-id',
             };
         },
         rowsHeight: {
@@ -101,9 +101,27 @@ export default {
                 }
             },
         },
+        currentPage: {
+            get() {
+                return this.displayedPage;
+            },
+            set(value) {
+                let number = Math.trunc(value);
+
+                if (number < 1) {
+                    return;
+                }
+                if (number > this.numberOfPages) {
+                    number = this.numberOfPages;
+                }
+
+                this.changeDisplayingPage({ number });
+                this.getDataWrapper();
+            },
+        },
     },
     methods: {
-        ...mapActions('usersGrid', [
+        ...mapActions('rolesGrid', [
             'getData',
             'changeDisplayingPage',
             'changeNumberOfDisplayingElements',
@@ -124,11 +142,11 @@ export default {
     async fetch({ app, store }) {
         app.$registerStore({
             module: gridModule,
-            moduleName: 'usersGrid',
+            moduleName: 'rolesGrid',
             store,
         });
-        const gridPath = `${store.state.authentication.user.language}/accounts`;
-        await store.dispatch('usersGrid/getData', { path: gridPath });
+        const gridPath = `${store.state.authentication.user.language}/roles`;
+        await store.dispatch('rolesGrid/getData', { path: gridPath });
     },
 };
 </script>

@@ -31,6 +31,10 @@ export default {
         padding: 4px 8px;
         background-color: $information;
 
+        & > svg {
+            margin: -4px 0 0 -7px;
+        }
+
         &__title {
             @include setFont(semiBold, tiny, regular, $white);
         }
