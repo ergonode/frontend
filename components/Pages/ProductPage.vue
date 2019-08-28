@@ -9,7 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="Document"
-            :is-read-only="!isUserAllowedToUpdateProduct"
+            :is-read-only="!isUserAllowedToUpdateProduct && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -32,7 +32,7 @@ export default {
 
         this.buttons = [];
 
-        this.isUserAllowedToUpdateProduct = this.$canIUse('PRODUCT_UPDATE');
+        this.isUserAllowedToUpdateProduct = this.$hasAccess('PRODUCT_UPDATE');
         let generalOptTabPath = '/products/new/general';
         let templateTabPath = '/products/new/template';
         let tabAction = this.onCreate;
@@ -65,7 +65,7 @@ export default {
                     updateButton: {
                         title: `${buttonPrefix} PRODUCT`,
                         action: tabAction,
-                        disabled: this.isEdit ? this.isUserAllowedToUpdateProduct : false,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateProduct : false,
                     },
                 },
             },
@@ -77,7 +77,7 @@ export default {
                     updateButton: {
                         title: `${buttonPrefix} PRODUCT`,
                         action: tabAction,
-                        disabled: !this.isUserAllowedToUpdateProduct,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateProduct : false,
                     },
                 },
             },

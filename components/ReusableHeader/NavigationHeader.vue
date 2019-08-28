@@ -22,7 +22,7 @@
                     title="READ ONLY">
                     <template v-slot:prepend>
                         <IconLock
-                            size="16"
+                            size="24"
                             fill-color="#fff" />
                     </template>
                 </InformationBadge>

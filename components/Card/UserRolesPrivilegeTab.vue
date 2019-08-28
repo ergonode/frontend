@@ -66,7 +66,7 @@ export default {
             getData: '',
             routerEdit: '',
         };
-        this.isEditingAllowed = this.$canIUse('USER_ROLE_UPDATE');
+        this.isEditingAllowed = this.$hasAccess('USER_ROLE_UPDATE');
         this.$registerStore({
             module: gridModule,
             moduleName: 'privilegesGrid',

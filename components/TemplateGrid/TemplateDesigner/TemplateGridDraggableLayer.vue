@@ -97,7 +97,7 @@ export default {
             isListElementDragging: state => state.isListElementDragging,
         }),
         isUserAllowedToUpdate() {
-            return this.$canIUse('TEMPLATE_DESIGNER_UPDATE');
+            return this.$hasAccess('TEMPLATE_DESIGNER_UPDATE');
         },
         gridLayerPositions() {
             const length = this.rowsNumber * this.columnsNumber;

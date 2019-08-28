@@ -9,7 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="User"
-            :is-read-only="!isUserAllowedToUpdateRole"
+            :is-read-only="!isUserAllowedToUpdateRole && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -32,7 +32,7 @@ export default {
 
         this.buttons = [];
 
-        this.isUserAllowedToUpdateRole = this.$canIUse('USER_ROLE_UPDATE');
+        this.isUserAllowedToUpdateRole = this.$hasAccess('USER_ROLE_UPDATE');
         let generalOptTabPath = '/users/roles/new/general';
         let privilegesTabPath = '/users/roles/new/privileges';
         let tabAction = this.onCreate;
@@ -51,7 +51,7 @@ export default {
                     action: this.onRemove,
                     theme: 'dark',
                     icon: 'remove',
-                    disabled: !this.$canIUse('USER_ROLE_DELETE'),
+                    disabled: !this.$hasAccess('USER_ROLE_DELETE'),
                 },
             ];
         }
@@ -65,7 +65,7 @@ export default {
                     updateButton: {
                         title: `${buttonPrefix} ROLE`,
                         action: tabAction,
-                        disabled: this.isEdit ? this.isUserAllowedToUpdateRole : false,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateRole : false,
                     },
                 },
             },
@@ -77,7 +77,7 @@ export default {
                     updateButton: {
                         title: `${buttonPrefix} PRIVILEGES`,
                         action: tabAction,
-                        disabled: !this.isUserAllowedToUpdateRole,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateRole : false,
                     },
                 },
             },

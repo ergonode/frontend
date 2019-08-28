@@ -9,7 +9,7 @@
                 store-namespace="usersGrid"
                 :rows-height="rowsHeight"
                 :action-paths="actionPaths"
-                :editing-privilege-allowed="$canIUse('USER_UPDATE')" />
+                :editing-privilege-allowed="$hasAccess('USER_UPDATE')" />
         </div>
         <GridFooter>
             <GridPageSelector

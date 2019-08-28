@@ -6,10 +6,10 @@
     <div class="tab">
         <div class="tab__grid">
             <GridWrapper
-                store-namespace="attributeGrid"
+                store-namespace="rolesGrid"
                 :rows-height="rowsHeight"
                 :action-paths="actionPaths"
-                :editing-privilege-allowed="$canIUse('ATTRIBUTE_UPDATE')" />
+                :editing-privilege-allowed="$hasAccess('USER_ROLE_UPDATE')" />
         </div>
         <GridFooter>
             <GridPageSelector
@@ -32,7 +32,7 @@ import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
 
 export default {
-    name: 'AttributeGridTab',
+    name: 'RolesGridTab',
     components: {
         GridWrapper,
         GridFooter,
@@ -53,29 +53,29 @@ export default {
     beforeCreate() {
         this.$registerStore({
             module: gridModule,
-            moduleName: 'attributeGrid',
+            moduleName: 'rolesGrid',
             store: this.$store,
         });
     },
     beforeDestroy() {
-        this.$store.unregisterModule('attributeGrid');
+        this.$store.unregisterModule('rolesGrid');
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('attributeGrid', {
+        ...mapState('rolesGrid', {
             numberOfDataElements: state => state.count,
             displayedPage: state => state.displayedPage,
             numberOfDisplayedElements: state => state.numberOfDisplayedElements,
         }),
-        ...mapGetters('attributeGrid', {
+        ...mapGetters('rolesGrid', {
             numberOfPages: 'numberOfPages',
         }),
         actionPaths() {
             return {
-                getData: `${this.userLanguageCode}/attributes`,
-                routerEdit: 'attributes-edit-id',
+                getData: `${this.userLanguageCode}/roles`,
+                routerEdit: 'users-roles-edit-id',
             };
         },
         rowsHeight: {
@@ -101,9 +101,27 @@ export default {
                 }
             },
         },
+        currentPage: {
+            get() {
+                return this.displayedPage;
+            },
+            set(value) {
+                let number = Math.trunc(value);
+
+                if (number < 1) {
+                    return;
+                }
+                if (number > this.numberOfPages) {
+                    number = this.numberOfPages;
+                }
+
+                this.changeDisplayingPage({ number });
+                this.getDataWrapper();
+            },
+        },
     },
     methods: {
-        ...mapActions('attributeGrid', [
+        ...mapActions('rolesGrid', [
             'getData',
             'changeDisplayingPage',
             'changeNumberOfDisplayingElements',
@@ -124,11 +142,11 @@ export default {
     async fetch({ app, store }) {
         app.$registerStore({
             module: gridModule,
-            moduleName: 'attributeGrid',
+            moduleName: 'rolesGrid',
             store,
         });
-        const gridPath = `${store.state.authentication.user.language}/attributes`;
-        await store.dispatch('attributeGrid/getData', { path: gridPath });
+        const gridPath = `${store.state.authentication.user.language}/roles`;
+        await store.dispatch('rolesGrid/getData', { path: gridPath });
     },
 };
 </script>

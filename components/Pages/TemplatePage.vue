@@ -9,6 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="Templates"
+            :is-read-only="!isUserAllowedToUpdateTemplate && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -40,7 +41,7 @@ export default {
                         updateButton: {
                             title: this.isEdit ? 'SAVE TEMPLATE' : 'CREATE TEMPLATE',
                             action: this.isEdit ? this.onSave : this.onCreate,
-                            disabled: this.isEdit ? !this.$canIUse('TEMPLATE_DESIGNER_UPDATE') : false,
+                            disabled: this.isEdit ? !this.isUserAllowedToUpdateTemplate : false,
                         },
                     },
                 },
@@ -52,7 +53,7 @@ export default {
                         updateButton: {
                             title: 'SAVE TEMPLATE',
                             action: this.onSave,
-                            disabled: !this.$canIUse('TEMPLATE_DESIGNER_UPDATE'),
+                            disabled: this.isEdit ? !this.isUserAllowedToUpdateTemplate : false,
                         },
                     },
                 },
@@ -60,6 +61,7 @@ export default {
         };
     },
     created() {
+        this.isUserAllowedToUpdateTemplate = this.$hasAccess('TEMPLATE_DESIGNER_UPDATE');
         if (this.isEdit) {
             // uncomment when we create removal options
             // this.buttons = [
@@ -77,6 +79,9 @@ export default {
         ...mapActions('list', {
             setConfigurationForList: 'setConfigurationForList',
         }),
+    },
+    beforeDestroy() {
+        delete this.isUserAllowedToUpdateTemplate;
     },
 };
 </script>

@@ -32,7 +32,7 @@ export default {
         },
     },
     beforeCreate() {
-        this.menu = getValidatedMenuData(this.$canIUse);
+        this.menu = getValidatedMenuData(this.$hasAccess);
     },
     beforeDestroy() {
         delete this.menu;

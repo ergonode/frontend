@@ -5,7 +5,7 @@
 <template>
     <div
         class="grid-container"
-        :draggable="isDraggingEnabled && $canIUse('CATEGORY_TREE_UPDATE')"
+        :draggable="isDraggingEnabled && $hasAccess('CATEGORY_TREE_UPDATE')"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
         @dragover="onDragOver"

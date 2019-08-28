@@ -28,25 +28,30 @@ const Channels = () => import('~/pages/channels/index').then(m => m.default || m
 const Placeholder = () => import('~/pages/placeholder/index').then(m => m.default || m);
 const Profile = () => import('~/pages/profile/index').then(m => m.default || m);
 
+// Tabs
 const AttributeBaseTab = () => import('~/components/Card/AttributeBaseTab').then(m => m.default || m);
 const AttributeTranslationsTab = () => import('~/components/Card/AttributeTranslationsTab').then(m => m.default || m);
-const AttributeGridTab = () => import('~/components/Card/AttributeGridTab').then(m => m.default || m);
 const TemplateDesignerBaseTab = () => import('~/components/Card/TemplateDesignerBaseTab').then(m => m.default || m);
 const TemplateDesignerTab = () => import('~/components/Card/TemplateDesignerTab').then(m => m.default || m);
-const UsersGridTab = () => import('~/components/Card/UsersGridTab').then(m => m.default || m);
-const UserActivityLogsGridTab = () => import('~/components/Card/UserActivityLogsGridTab').then(m => m.default || m);
-const RolesGridTab = () => import('~/components/Card/RolesGridTab').then(m => m.default || m);
 const UserBaseTab = () => import('~/components/Card/UserBaseTab').then(m => m.default || m);
-const UsersActivityLogsGridTab = () => import('~/components/Card/UsersActivityLogsGridTab').then(m => m.default || m);
 const UserAvatarTab = () => import('~/components/Card/UserAvatarTab').then(m => m.default || m);
 const UserRolesBaseTab = () => import('~/components/Card/UserRolesBaseTab').then(m => m.default || m);
 const UserRolesPrivilegeTab = () => import('~/components/Card/UserRolesPrivilegeTab').then(m => m.default || m);
 const CategoryBaseTab = () => import('~/components/Card/CategoryBaseTab').then(m => m.default || m);
 const CategoryTranslationsTab = () => import('~/components/Card/CategoryTranslationsTab').then(m => m.default || m);
-const ProductGridTab = () => import('~/components/Card/ProductGridTab').then(m => m.default || m);
 const ProductBaseTab = () => import('~/components/Card/ProductBaseTab').then(m => m.default || m);
 const ProductTemplateTab = () => import('~/components/Card/ProductTemplateTab').then(m => m.default || m);
 const TreeDesignTab = () => import('~/components/Card/TreeDesignTab').then(m => m.default || m);
+
+// Grid Tabs
+const ProductGridTab = () => import('~/components/Card/Grid/ProductGridTab').then(m => m.default || m);
+const CategoryGridTab = () => import('~/components/Card/Grid/CategoryGridTab').then(m => m.default || m);
+const AttributeGridTab = () => import('~/components/Card/Grid/AttributeGridTab').then(m => m.default || m);
+const RolesGridTab = () => import('~/components/Card/Grid/RolesGridTab').then(m => m.default || m);
+const UsersGridTab = () => import('~/components/Card/Grid/UsersGridTab').then(m => m.default || m);
+const UserActivityLogsGridTab = () => import('~/components/Card/Grid/UserActivityLogsGridTab').then(m => m.default || m);
+const UsersActivityLogsGridTab = () => import('~/components/Card/Grid/UsersActivityLogsGridTab').then(m => m.default || m);
+
 
 export const pages = [
     {
@@ -78,6 +83,15 @@ export const pages = [
         name: 'categories',
         path: '/categories',
         component: Categories,
+        children: [
+            {
+                path: 'grid',
+                component: CategoryGridTab,
+                meta: {
+                    permission: 'CATEGORY_READ',
+                },
+            },
+        ],
         meta: {
             permission: 'CATEGORY_READ',
         },
@@ -183,7 +197,12 @@ export const pages = [
         },
     },
     {
-        name: 'templates', path: '/templates', component: Templates,
+        name: 'templates',
+        path: '/templates',
+        component: Templates,
+        meta: {
+            permission: 'TEMPLATE_DESIGNER_READ',
+        },
     },
     {
         name: 'templates-new',

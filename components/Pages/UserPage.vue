@@ -9,7 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="User"
-            :is-read-only="!isUserAllowedToUpdateUser"
+            :is-read-only="!isUserAllowedToUpdateUser && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -32,7 +32,7 @@ export default {
 
         this.buttons = [];
 
-        this.isUserAllowedToUpdateUser = this.$canIUse('USER_UPDATE');
+        this.isUserAllowedToUpdateUser = this.$hasAccess('USER_UPDATE');
         let generalOptTabPath = '/users/new/general';
         let avatarTabPath = '/users/new/avatar';
         let tabAction = this.onCreate;
@@ -51,7 +51,7 @@ export default {
             //         color: 'transparent',
             //         action: this.onRemove,
             //         theme: 'dark',
-            //         disabled: !this.$canIUse('USER_DELETE'),
+            //         disabled: !this.$hasAccess('USER_DELETE'),
             //     },
             // ];
         }
@@ -65,7 +65,7 @@ export default {
                     updateButton: {
                         title: `${buttonPrefix} USER`,
                         action: tabAction,
-                        disabled: this.isEdit ? this.isUserAllowedToUpdateUser : false,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateUser : false,
                     },
                 },
             },
@@ -77,7 +77,7 @@ export default {
                     updateButton: {
                         title: `${buttonPrefix} USER`,
                         action: tabAction,
-                        disabled: !this.isUserAllowedToUpdateUser,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateUser : false,
                     },
                 },
             },

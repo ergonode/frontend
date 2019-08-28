@@ -38,7 +38,7 @@ export default {
                         title: 'CREATE USER',
                         color: 'success',
                         action: this.addNewUser,
-                        disabled: !this.$canIUse('USER_CREATE'),
+                        disabled: !this.$hasAccess('USER_CREATE'),
                     },
                 ];
             }
@@ -48,7 +48,7 @@ export default {
                     title: 'CREATE ROLE',
                     color: 'success',
                     action: this.addNewRole,
-                    disabled: !this.$canIUse('USER_ROLE_CREATE'),
+                    disabled: !this.$hasAccess('USER_ROLE_CREATE'),
                 },
             ];
         },

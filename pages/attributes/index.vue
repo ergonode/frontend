@@ -30,7 +30,7 @@ export default {
                     title: 'CREATE ATTRIBUTE',
                     color: 'success',
                     action: this.addNewAttribute,
-                    disabled: !this.$canIUse('ATTRIBUTE_CREATE'),
+                    disabled: !this.$hasAccess('ATTRIBUTE_CREATE'),
                 },
             ];
         },

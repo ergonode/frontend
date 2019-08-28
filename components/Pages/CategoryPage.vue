@@ -9,7 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="Category"
-            :is-read-only="!isUserAllowedToUpdateCategory"
+            :is-read-only="!isUserAllowedToUpdateCategory && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -32,7 +32,7 @@ export default {
 
         this.buttons = [];
 
-        this.isUserAllowedToUpdateCategory = this.$canIUse('CATEGORY_UPDATE');
+        this.isUserAllowedToUpdateCategory = this.$hasAccess('CATEGORY_UPDATE');
         let generalOptTabPath = '/categories/new/general';
         let privilegesTabPath = '/categories/new/translations';
         let tabAction = this.onCreate;

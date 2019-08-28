@@ -117,7 +117,7 @@ const sections = [
     },
 ];
 
-export function getValidatedMenuData(canIUse) {
+export function getValidatedMenuData(hasAccess) {
     const menu = [];
     const { length: sectionsNumber } = sections;
 
@@ -133,7 +133,7 @@ export function getValidatedMenuData(canIUse) {
 
         for (let j = 0; j < itemsNumber; j += 1) {
             const item = items[j];
-            if (!item.privileges.length || item.privileges.every(privilege => canIUse(privilege))) {
+            if (hasAccess(item.privileges)) {
                 menu[i].section.push({
                     title: item.title,
                     routing: item.routing,

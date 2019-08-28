@@ -18,7 +18,7 @@
 import Privilege from '~/model/privilege';
 
 export default {
-    name: 'GridAttributePage',
+    name: 'GridCategoryPage',
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
@@ -39,20 +39,20 @@ export default {
         },
     },
     beforeCreate() {
-        this.Privilege = new Privilege(this.$hasAccess, 'ATTRIBUTE');
+        this.Privilege = new Privilege(this.$hasAccess, 'CATEGORY');
         this.tabs = [];
-        if (this.$hasAccess('ATTRIBUTE_READ')) {
+        if (this.$hasAccess('CATEGORY_READ')) {
             this.tabs.push({
-                title: 'Attributes',
-                path: '/attributes/grid',
+                title: 'Categories',
+                path: '/categories/grid',
                 active: true,
                 isContextualMenu: false,
             });
         }
     },
     beforeDestroy() {
-        delete this.Privilege;
         delete this.tabs;
+        delete this.Privilege;
     },
 };
 </script>
