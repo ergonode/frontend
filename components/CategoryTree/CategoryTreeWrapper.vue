@@ -98,6 +98,7 @@ export default {
             id, row, column, expanded,
         }) {
             const rowValue = Math.floor(row);
+
             if (!expanded) {
                 const maxChildRow = getMaxChildRow(this.treeData, column, rowValue);
                 const {
@@ -111,6 +112,7 @@ export default {
                     }
                     return acc;
                 }, { hiddenCategories: [], visibleCategories: [] });
+
                 this.setHiddenItem({ key: id, value: hiddenCategories });
                 this.setTreeWhenCollapse({ tree: visibleCategories, index: rowValue });
                 this.setExpandItem({ index: rowValue, value: true });

@@ -22,6 +22,12 @@ export default {
     name: 'ProductPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
+        let generalOptTabPath = '/products/new/general';
+        let templateTabPath = '/products/new/template';
+        let tabAction = this.onCreate;
+        let buttonPrefix = 'CREATE';
+
+        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Products',
@@ -30,13 +36,8 @@ export default {
             },
         ];
 
-        this.buttons = [];
 
         this.isUserAllowedToUpdateProduct = this.$hasAccess('PRODUCT_UPDATE');
-        let generalOptTabPath = '/products/new/general';
-        let templateTabPath = '/products/new/template';
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
 
         if (this.isEdit) {
             generalOptTabPath = `/products/edit/${this.$route.params.id}/general`;

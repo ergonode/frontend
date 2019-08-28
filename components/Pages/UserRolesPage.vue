@@ -22,6 +22,12 @@ export default {
     name: 'UserRolesPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
+        let generalOptTabPath = '/users/roles/new/general';
+        let privilegesTabPath = '/users/roles/new/privileges';
+        let tabAction = this.onCreate;
+        let buttonPrefix = 'CREATE';
+
+        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Users/Roles',
@@ -29,14 +35,7 @@ export default {
                 path: '/users/roles',
             },
         ];
-
-        this.buttons = [];
-
         this.isUserAllowedToUpdateRole = this.$hasAccess('USER_ROLE_UPDATE');
-        let generalOptTabPath = '/users/roles/new/general';
-        let privilegesTabPath = '/users/roles/new/privileges';
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
 
         if (this.isEdit) {
             generalOptTabPath = `/users/roles/edit/${this.$route.params.id}/general`;

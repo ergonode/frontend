@@ -114,6 +114,7 @@ export default {
         },
         getDataWrapper() {
             const { getData: path } = this.actionPaths;
+
             this.getData(
                 {
                     path,
@@ -122,12 +123,13 @@ export default {
         },
     },
     async fetch({ app, store }) {
+        const gridPath = `${store.state.authentication.user.language}/categories`;
+
         app.$registerStore({
             module: gridModule,
             moduleName: 'categoryGrid',
             store,
         });
-        const gridPath = `${store.state.authentication.user.language}/categories`;
         await store.dispatch('categoryGrid/getData', { path: gridPath });
     },
 };

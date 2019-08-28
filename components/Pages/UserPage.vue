@@ -22,6 +22,12 @@ export default {
     name: 'UserPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
+        let generalOptTabPath = '/users/new/general';
+        let avatarTabPath = '/users/new/avatar';
+        let tabAction = this.onCreate;
+        let buttonPrefix = 'CREATE';
+
+        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Users',
@@ -29,14 +35,7 @@ export default {
                 path: '/users',
             },
         ];
-
-        this.buttons = [];
-
         this.isUserAllowedToUpdateUser = this.$hasAccess('USER_UPDATE');
-        let generalOptTabPath = '/users/new/general';
-        let avatarTabPath = '/users/new/avatar';
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
 
         if (this.isEdit) {
             generalOptTabPath = `/users/edit/${this.$route.params.id}/general`;

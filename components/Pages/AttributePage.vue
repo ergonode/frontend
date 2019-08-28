@@ -32,7 +32,6 @@ export default {
         this.buttons = [];
 
         this.isUserAllowedToUpdateAttribute = this.$hasAccess('ATTRIBUTE_UPDATE');
-        console.log(this.isUserAllowedToUpdateAttribute);
         let generalOptTabPath = '/attributes/new/general';
         let translationsTabPath = '/attributes/new/translation';
         let tabAction = this.onCreate;

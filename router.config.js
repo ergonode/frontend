@@ -52,7 +52,6 @@ const UsersGridTab = () => import('~/components/Card/Grid/UsersGridTab').then(m 
 const UserActivityLogsGridTab = () => import('~/components/Card/Grid/UserActivityLogsGridTab').then(m => m.default || m);
 const UsersActivityLogsGridTab = () => import('~/components/Card/Grid/UsersActivityLogsGridTab').then(m => m.default || m);
 
-
 export const pages = [
     {
         name: 'index', path: '/', component: Login,
