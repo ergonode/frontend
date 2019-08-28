@@ -64,7 +64,7 @@ export default {
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
 
-        return this.app.$axios.$get(`${userLanguageCode}/attributes/${attributeId}`).then(({
+        return this.app.$axios.$get(`${userLanguageCode}/attributess/${attributeId}`).then(({
             id,
             code,
             type,

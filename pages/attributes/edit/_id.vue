@@ -123,6 +123,7 @@ export default {
         await store.dispatch('attribute/getAttributeById', {
             attributeId: params.id,
             onError: (err) => {
+                console.log('no jest 404');
                 if (err.response && err.response.status === 404) {
                     return error({ statusCode: 404, message: err.message });
                 }
