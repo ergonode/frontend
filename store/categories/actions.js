@@ -7,7 +7,7 @@ import { types } from './mutations';
 export default {
     getCategoryById(
         { commit, rootState },
-        { categoryId, onError },
+        { categoryId, onError = () => {} },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$get(`${userLanguageCode}/categories/${categoryId}`).then(({
@@ -24,7 +24,7 @@ export default {
             commit(types.SET_NAME, name);
 
             commit('translations/setTabTranslations', { translations }, { root: true });
-        }).catch(e => onError(e.data));
+        }).catch(onError);
     },
     createCategory(
         { commit, rootState },

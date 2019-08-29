@@ -10,12 +10,14 @@ import {
 } from '~/model/mappers/templateMapper';
 import { getNestedObjectByKeyWithValue } from '~/model/objectWrapper';
 
+const onDefaultError = () => {};
+
 export default {
     getTemplateByID(
         {
             commit, dispatch, getters, rootState,
         },
-        { path, onError },
+        { path },
     ) {
         return this.app.$axios.$get(path).then(({
             name,
@@ -37,7 +39,7 @@ export default {
             commit(types.INITIALIZE_LAYOUT_ELEMENTS, layoutElements);
             commit(types.SET_TEMPLATE_DESIGNER_TITLE, name);
             commit(types.SET_TEMPLATE_DESIGNER_IMAGE, imageID);
-        }).catch(e => onError(e.data));
+        }).catch(onDefaultError);
     },
     updateTemplateDesigner(
         { rootState },
@@ -65,12 +67,11 @@ export default {
         }).catch(e => onError(e.data));
     },
     getTypes({ commit }, {
-        path, params, onSuccess, onError,
+        path, params,
     }) {
         return this.app.$axios.$get(path, { params }).then(({ collection }) => {
             commit(types.SET_TYPES, collection);
-            onSuccess();
-        }).catch(e => onError(e.data));
+        }).catch(onDefaultError);
     },
     addListElementToLayout: ({
         commit, dispatch, rootState, getters,

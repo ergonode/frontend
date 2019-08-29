@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export function asyncRequestWrapper({
-    action, path, params = null, store, error,
+    action, path, params = null, store,
 }) {
     const {
         token,
@@ -17,13 +17,6 @@ export function asyncRequestWrapper({
     }
     return store.dispatch(action, {
         ...actionParams,
-        onSuccess: () => {},
-        onError: (err) => {
-            if (err.response && err.response.status === 404) {
-                return error({ statusCode: 404, message: err.message });
-            }
-            return error();
-        },
     });
 }
 

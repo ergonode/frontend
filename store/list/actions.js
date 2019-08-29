@@ -5,6 +5,8 @@
 import { types } from './mutations';
 import { getMappedFilter } from '~/model/mappers/gridDataMapper';
 
+const onError = () => {};
+
 export default {
     getGroups({ commit }, {
         languageCode,
@@ -18,7 +20,7 @@ export default {
                     id, label, elementsCount,
                 })),
             });
-        }).catch(e => console.log(e));
+        }).catch(onError);
     },
     getElementsForGroup({ commit, state }, {
         listType, groupId, elementsCount, languageCode,
@@ -44,7 +46,7 @@ export default {
 
                 commit(types.SET_ELEMENTS_FOR_LANGUAGE, { languageCode, elements: elementsToAdd });
             }
-        }).catch(e => console.log(e));
+        }).catch(onError);
     },
     setDisabledElement: ({ commit }, payload) => {
         commit(types.SET_DISABLED_ELEMENT, payload);

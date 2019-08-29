@@ -96,16 +96,9 @@ export default {
     async fetch({
         store,
         params,
-        error,
     }) {
         await store.dispatch('roles/getRoleById', {
             roleId: params.id,
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return error();
-            },
         });
     },
 };

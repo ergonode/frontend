@@ -10,6 +10,8 @@ import {
     getMappedLayoutElements,
 } from '~/model/mappers/productMapper';
 
+const onDefaultError = () => {};
+
 export default {
     setProductSku: ({ commit }, sku) => commit(types.SET_PRODUCT_SKU, sku),
     setProductTemplate: ({ commit }, template) => commit(types.SET_PRODUCT_TEMPLATE, template),
@@ -20,8 +22,7 @@ export default {
         const { id } = state;
         commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
 
-        const data = { id, languageCode, onError: err => console.log(err) };
-
+        const data = { id, languageCode };
         const productTemplateRequest = dispatch('getProductTemplate', data);
         const completenessRequest = dispatch('getProductCompleteness', data);
         const productDraftRequest = dispatch('getProductDraft', data);
@@ -32,14 +33,14 @@ export default {
             productDraftRequest,
         ]);
     },
-    getProductDraft({ commit }, { languageCode, id, onError }) {
+    getProductDraft({ commit }, { languageCode, id }) {
         commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
 
         return this.app.$axios.$get(`${languageCode}/products/${id}/draft`).then((draft) => {
             commit(types.SET_PRODUCT_DRAFT, draft);
-        }).catch(e => onError(e.data));
+        }).catch(onDefaultError);
     },
-    getProduct({ commit, state }, { languageCode, id, onError }) {
+    getProduct({ commit, state }, { languageCode, id }) {
         commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
 
         return this.app.$axios.$get(`${languageCode}/products/${id}`).then(({
@@ -65,35 +66,34 @@ export default {
 
             commit(types.SET_PRODUCT_ID, id);
             commit(types.SET_PRODUCT_SKU, sku);
-        }).catch(e => onError(e));
+        }).catch(onDefaultError);
     },
-    getProductTemplate({ commit }, { languageCode, id, onError }) {
+    getProductTemplate({ commit }, { languageCode, id }) {
         commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
 
         return this.app.$axios.$get(`${languageCode}/products/${id}/template`).then(({ elements }) => {
             commit(types.SET_LAYOUT_ELEMENTS, getMappedLayoutElements(elements));
-        }).catch(e => onError(e.data));
+        }).catch(onDefaultError);
     },
-    getTemplates({ commit, rootState }, onError) {
+    getTemplates({ commit, rootState }) {
         const { authentication: { user: { language } } } = rootState;
         return this.app.$axios.$get(`${language}/templates?limit=5000&offset=0`).then(({ collection: templates }) => {
             commit(types.SET_TEMPLATES, templates);
-        }).catch(e => onError(e.data));
+        }).catch(onDefaultError);
     },
-    getCategories({ commit, rootState }, onError) {
+    getCategories({ commit, rootState }) {
         const { authentication: { user: { language } } } = rootState;
         return this.app.$axios.$get(`${language}/categories?limit=5000&offset=0`).then(({ collection: categories }) => {
             commit(types.SET_CATEGORIES, categories);
-        }).catch(e => onError(e.data));
+        }).catch(onDefaultError);
     },
     getProductCompleteness({ commit }, {
         id,
         languageCode,
-        onError,
     }) {
         return this.app.$axios.$get(`${languageCode}/products/${id}/draft/completeness`).then((completeness) => {
             commit(types.SET_PRODUCT_COMPLETENESS, completeness);
-        }).catch(e => onError(e.data));
+        }).catch(onDefaultError);
     },
     async setProductTemplateElementValue({ commit, state, dispatch }, {
         attributeId,
@@ -118,14 +118,10 @@ export default {
                 dispatch('getProductCompleteness', {
                     id,
                     languageCode,
-                    onError: () => {},
                 });
             }
             onSuccess(name);
         }).catch(e => onError({ errors: e.data.errors, name }));
-    },
-    clearStorage: ({ commit }) => {
-        commit(types.CLEAR_STATE);
     },
     createProduct(
         { commit, rootState },
@@ -146,22 +142,23 @@ export default {
         {
             id,
             onSuccess,
-            onError,
         },
     ) {
         const { authentication: { user: { language } } } = rootState;
-        return this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {}).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {}).then(() => onSuccess()).catch(onDefaultError);
     },
     updateProduct(
         { rootState },
         {
             id,
             data,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
         },
     ) {
         const { authentication: { user: { language } } } = rootState;
-        return this.app.$axios.$put(`${language}/products/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`${language}/products/${id}`, data).then(onSuccess).catch(onDefaultError);
+    },
+    clearStorage: ({ commit }) => {
+        commit(types.CLEAR_STATE);
     },
 };

@@ -186,7 +186,6 @@ export default {
                             this.addDraftToProduct({ columnId, productId, value });
                             this.removeDraft(productId);
                         },
-                        onError: () => {},
                     }));
                 });
             });
