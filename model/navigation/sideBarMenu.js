@@ -7,7 +7,7 @@ const unassignedToSectionItems = [
         title: 'Dashboard',
         routing: '/dashboard',
         icon: 'Dashboard',
-        privilege: null,
+        privileges: [],
     },
 ];
 
@@ -16,43 +16,43 @@ const manageSectionItems = [
         title: 'Products catalog',
         routing: '/products',
         icon: 'Document',
-        privilege: 'PRODUCT_READ',
+        privileges: ['PRODUCT_READ'],
     },
     {
         title: 'Product templates',
         routing: '/templates',
         icon: 'Templates',
-        privilege: 'TEMPLATE_DESIGNER_READ',
+        privileges: ['TEMPLATE_DESIGNER_READ'],
     },
     {
         title: 'Categories',
         routing: '/categories',
         icon: 'Category',
-        privilege: 'CATEGORY_READ',
+        privileges: ['CATEGORY_READ'],
     },
     {
         title: 'Category trees',
         routing: '/category-trees',
         icon: 'Tree',
-        privilege: 'CATEGORY_TREE_READ',
+        privileges: ['ATTRIBUTE_READ'],
     },
     {
         title: 'Attributes',
         routing: '/attributes',
         icon: 'Attributes',
-        privilege: 'ATTRIBUTE_READ',
+        privileges: ['CATEGORY_TREE_READ'],
     },
     {
         title: 'Media',
         routing: '/placeholder/media',
         icon: 'Media',
-        privilege: 'MULTIMEDIA_READ',
+        privileges: ['MULTIMEDIA_READ'],
     },
     {
         title: 'Segments',
         routing: '/placeholder/segments',
         icon: 'Templates',
-        privilege: null,
+        privileges: [],
     },
 ];
 
@@ -61,19 +61,19 @@ const collectAndDistributeSectionItems = [
         title: 'Import',
         routing: '/import',
         icon: 'Import',
-        privilege: 'IMPORT_READ',
+        privileges: ['IMPORT_READ'],
     },
     {
         title: 'Export',
         routing: '/placeholder/export',
         icon: 'Export',
-        privilege: null,
+        privileges: [],
     },
     {
         title: 'Channels',
         routing: '/placeholder/channels',
         icon: 'Channels',
-        privilege: null,
+        privileges: [],
     },
 ];
 
@@ -82,19 +82,19 @@ const systemSectionItems = [
         title: 'Users',
         routing: '/users',
         icon: 'User',
-        privilege: null,
+        privileges: ['USER_READ'],
     },
     {
         title: 'Workflow',
         routing: '/workflow',
         icon: 'Flow',
-        privilege: null,
+        privileges: [],
     },
     {
         title: 'Settings',
         routing: '/settings',
         icon: 'Settings',
-        privilege: null,
+        privileges: [],
     },
 ];
 
@@ -117,7 +117,7 @@ const sections = [
     },
 ];
 
-export function getValidatedMenuData(canIUse) {
+export function getValidatedMenuData(hasAccess) {
     const menu = [];
     const { length: sectionsNumber } = sections;
 
@@ -133,7 +133,7 @@ export function getValidatedMenuData(canIUse) {
 
         for (let j = 0; j < itemsNumber; j += 1) {
             const item = items[j];
-            if (item.privilege === null || canIUse(item.privilege)) {
+            if (hasAccess(item.privileges)) {
                 menu[i].section.push({
                     title: item.title,
                     routing: item.routing,

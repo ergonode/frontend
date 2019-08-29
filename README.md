@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="https://ergonode.com">
-    <img src="https://img.shields.io/badge/version-0.2.0-4c9aff.svg" alt="Version">
+    <img src="https://img.shields.io/badge/version-0.3.0-4c9aff.svg" alt="Version">
   </a>
   <a href="https://ergonode.com">
     <img src="https://img.shields.io/badge/version%20code-Vegas-00bc87.svg" alt="Code Version">

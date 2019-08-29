@@ -11,13 +11,13 @@
             regular
             :error-messages="errorNameMessage"
             label="Template name"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             @input="(title) => setTemplateDesignerTitle(title)" />
         <UploadImage
             :value="templateImage"
             style="height: 180px;"
             title="Template cover image"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             @upload="uploadValue"
             @remove="uploadValue" />
     </BaseCard>
@@ -41,8 +41,10 @@ export default {
             templateTitle: state => state.title,
             templateImage: state => state.image,
         }),
-        isUserAllowedToUpdate() {
-            return this.$canIUse('TEMPLATE_DESIGNER_UPDATE');
+        isDisabledByPrivileges() {
+            const isEdit = /edit/.test(this.$route.path);
+            return (isEdit && !this.$hasAccess('TEMPLATE_DESIGNER_UPDATE'))
+            || (!isEdit && !this.$hasAccess('TEMPLATE_DESIGNER_CREATE'));
         },
         errorNameMessage() {
             const typeIndex = 'name';

@@ -7,7 +7,8 @@
         <NavigationHeader
             :title="title"
             :buttons="buttons"
-            :icon="icon" />
+            :icon="icon"
+            :is-read-only="Privilege.isReadOnly" />
         <HorizontalTabBar
             :items="tabs" />
         <!--
@@ -22,6 +23,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import Privilege from '~/model/privilege';
 
 export default {
     name: 'GridProductPage',
@@ -46,16 +48,17 @@ export default {
             default: null,
         },
     },
-    data: () => ({
-        tabs: [
+    beforeCreate() {
+        this.Privilege = new Privilege(this.$hasAccess, 'PRODUCT');
+        this.tabs = [
             {
-                title: 'My amazing grid',
+                title: 'Products',
                 path: '/products/grid',
                 active: true,
                 isContextualMenu: false,
             },
-        ],
-    }),
+        ];
+    },
     computed: {
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,
@@ -82,6 +85,10 @@ export default {
 
             return null;
         },
+    },
+    beforeDestroy() {
+        delete this.tabs;
+        delete this.Privilege;
     },
 };
 </script>

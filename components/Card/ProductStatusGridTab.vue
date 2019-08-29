@@ -73,7 +73,7 @@ export default {
         }),
         actionPaths() {
             return {
-                getData: `${this.userLanguageCode}/workflow/default/status`,
+                getData: `${this.userLanguageCode}/workflow/status`,
                 routerEdit: 'workflow-statuses-edit-id',
             };
         },
@@ -144,7 +144,7 @@ export default {
             moduleName: 'statusesGrid',
             store,
         });
-        const gridPath = `${store.state.authentication.user.language}/workflow/default/status`;
+        const gridPath = `${store.state.authentication.user.language}/workflow/status`;
         await store.dispatch('statusesGrid/getData', { path: gridPath });
     },
 };

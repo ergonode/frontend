@@ -5,6 +5,8 @@
 import { types } from './mutations';
 import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 
+const onDefaultError = () => {};
+
 export default {
     setCode({ commit }, code) {
         commit(types.SET_CODE, code);
@@ -18,12 +20,12 @@ export default {
             code: state.code,
             color: state.color,
         };
-        return this.app.$axios.$post(`${userLanguageCode}/workflow/default/status`, data).then(({ id }) => {
+        return this.app.$axios.$post(`${userLanguageCode}/workflow/status`, data).then(({ id }) => {
             commit(types.SET_STATUS_ID, id);
             onSuccess(id);
         }).catch(e => onError(e.data));
     },
-    getProductStatus({ commit }, { path, onError }) {
+    getProductStatus({ commit }, { path }) {
         return this.app.$axios.$get(path).then(({
             id, code, color, name, description,
         }) => {
@@ -37,7 +39,7 @@ export default {
             commit(types.SET_COLOR, color);
 
             commit('translations/setTabTranslations', { translations }, { root: true });
-        }).catch(e => onError(e.data));
+        }).catch(onDefaultError);
     },
     updateProductStatus({ commit, state, rootState }, { onSuccess, onError }) {
         const { language: userLanguageCode } = rootState.authentication.user;
@@ -60,13 +62,13 @@ export default {
             description,
         };
 
-        return this.app.$axios.$put(`${userLanguageCode}/workflow/default/status/${state.id}`, data).then(({ id }) => {
+        return this.app.$axios.$put(`${userLanguageCode}/workflow/status/${state.id}`, data).then(({ id }) => {
             onSuccess(id);
         }).catch(e => onError(e.data));
     },
     removeProductStatus({ commit, state, rootState }, { onSuccess, onError }) {
         const { id } = state;
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/workflow/default/status/${id}`).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$delete(`${userLanguageCode}/workflow/status/${id}`).then(() => onSuccess()).catch(e => onError(e.data));
     },
 };

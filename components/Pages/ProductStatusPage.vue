@@ -39,7 +39,7 @@ export default {
                         updateButton: {
                             title: this.isEdit ? 'SAVE STATUS' : 'CREATE STATUS',
                             action: this.isEdit ? this.onSave : this.onCreate,
-                            disabled: this.isEdit ? !this.$canIUse('WORKFLOW_UPDATE') : false,
+                            disabled: this.isEdit ? !this.$hasAccess('WORKFLOW_UPDATE') : false,
                         },
                     },
                 },
@@ -51,7 +51,7 @@ export default {
                         updateButton: {
                             title: 'SAVE STATUS',
                             action: this.onSave,
-                            disabled: !this.$canIUse('WORKFLOW_UPDATE'),
+                            disabled: !this.$hasAccess('WORKFLOW_UPDATE'),
                         },
                     },
                 },
@@ -67,7 +67,7 @@ export default {
                     action: this.onRemove,
                     theme: 'dark',
                     icon: 'remove',
-                    disabled: !this.$canIUse('WORKFLOW_DELETE'),
+                    disabled: !this.$hasAccess('WORKFLOW_DELETE'),
                 },
             ];
         }

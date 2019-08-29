@@ -21,7 +21,7 @@
         <div class="add-btn-wrapper">
             <Button
                 fab
-                :disabled="!$canIUse('ATTRIBUTE_CREATE')"
+                :disabled="!$hasAccess('ATTRIBUTE_CREATE')"
                 @click.native="addNewAttribute">
                 <template v-slot:prepend>
                     <IconAdd fill-color="#fff" />

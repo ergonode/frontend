@@ -16,7 +16,7 @@ const onDefaultError = () => {};
 
 export default {
     getTreeById(
-        { commit, rootState },
+        { commit, dispatch, rootState },
         { treeName },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
@@ -26,6 +26,7 @@ export default {
             commit(types.SET_TREE_ID, treeId);
             return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({ categories: treeData }) => {
                 const treeToSet = getParsedTreeData(treeData, categories);
+                treeToSet.forEach(e => dispatch('list/setDisabledElement', { languageCode: userLanguageCode, elementId: e.id }, { root: true }));
                 commit(types.SET_TREE, treeToSet);
                 commit(types.SET_FULL_TREE, treeToSet);
             }).catch(onDefaultError);
@@ -72,7 +73,6 @@ export default {
         commit(types.SET_HIDDEN_ITEM, { key, value });
     },
     addTreeItem: ({ commit, getters }, item) => {
-        // TODO: Method is not clear, too many dependencies, I need to dispatch list/setDisabledElement, not sure if that place is good
         const findIndex = getters.getIndexById(item.id);
         if (findIndex >= 0) {
             commit(types.SET_TREE_ITEM, { index: findIndex, item });
@@ -89,7 +89,6 @@ export default {
         commit(types.SET_TREE, newTree);
     },
     removeTreeItem: ({ commit, state, dispatch }, id) => {
-        // TODO: Method is not clear, too many dependencies, I need to dispatch list/removeDisabledElement, not sure if that place is good
         let newTree = [];
         if (Number.isInteger(id)) {
             newTree = getTreeWhenElementRemoved(state.treeData, id);

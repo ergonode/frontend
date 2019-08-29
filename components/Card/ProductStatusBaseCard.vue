@@ -62,7 +62,7 @@ export default {
             color: state => state.color,
         }),
         isUserAllowedToUpdate() {
-            return this.$canIUse('WORKFLOW_UPDATE');
+            return this.$hasAccess('WORKFLOW_UPDATE');
         },
         isDisabled() {
             return Boolean(this.id);

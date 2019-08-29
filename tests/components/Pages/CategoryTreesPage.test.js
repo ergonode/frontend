@@ -15,7 +15,7 @@ const store = new Store({
     },
 });
 const mocks = {
-    $canIUse: jest.fn(),
+    $hasAccess: jest.fn(),
     $store: store,
 };
 afterEach(() => store.reset());

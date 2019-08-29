@@ -72,22 +72,16 @@ export default {
         },
     },
     async fetch({
-        app, store, params, error,
+        app, store, params,
     }) {
         app.$registerStore({
             module: productStatusModule,
             moduleName: 'productStatus',
             store,
         });
-        const path = `${store.state.authentication.user.language}/workflow/default/status/${params.id}`;
+        const path = `${store.state.authentication.user.language}/workflow/status/${params.id}`;
         await store.dispatch('productStatus/getProductStatus', {
             path,
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return error();
-            },
         });
     },
 };

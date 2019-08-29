@@ -96,7 +96,7 @@ export default {
             );
         },
         isUserAllowedToUpdate() {
-            return this.$canIUse('ATTRIBUTE_UPDATE');
+            return this.$hasAccess('ATTRIBUTE_UPDATE');
         },
         errorLabelMessage() {
             const labelIndex = `label_${this.languageCode}`;

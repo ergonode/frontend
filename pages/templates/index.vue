@@ -5,8 +5,9 @@
 <template>
     <PageWrapper>
         <NavigationHeader
-            :title="title"
+            title="Templates"
             :buttons="buttons"
+            :is-read-only="Privilege.isReadOnly"
             icon="Templates" />
         <div class="templates">
             <div
@@ -32,6 +33,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import Privilege from '~/model/privilege';
 
 export default {
     name: 'Templates',
@@ -40,18 +42,19 @@ export default {
         TemplateElement: () => import('~/components/Template/TemplateElement'),
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
     },
-    data() {
-        return {
-            title: 'Templates',
-            buttons: [
-                {
-                    title: 'CREATE TEMPLATE',
-                    color: 'success',
-                    action: this.onCreate,
-                    disabled: !this.$canIUse('TEMPLATE_DESIGNER_CREATE'),
-                },
-            ],
-        };
+    created() {
+        this.Privilege = new Privilege(this.$hasAccess, 'TEMPLATE_DESIGNER');
+        this.buttons = [
+            {
+                title: 'CREATE TEMPLATE',
+                color: 'success',
+                action: this.onCreate,
+                disabled: !this.$hasAccess('TEMPLATE_DESIGNER_CREATE'),
+            },
+        ];
+    },
+    beforeDestroy() {
+        delete this.buttons;
     },
     computed: {
         ...mapState('templateLists', {
