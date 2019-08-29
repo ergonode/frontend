@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default function ({
-    $axios, redirect, store,
+    $axios, redirect, store, error,
 }) {
     $axios.setHeader('Content-Type', 'application/json');
     $axios.setHeader('Accept', 'application/json');
@@ -37,6 +37,7 @@ export default function ({
             break;
         case regExp.notFound.test(status):
             msg = 'Page not found';
+            error({ statusCode: 404, message: msg });
             break;
         default:
             msg = message;
@@ -45,6 +46,7 @@ export default function ({
         if (process.client) {
             store.dispatch('alerts/addAlert', { type: 'error', message: dev ? message : msg });
         }
+        if (dev) console.error(errorResponse.response);
 
         return Promise.reject(errorResponse.response);
     });

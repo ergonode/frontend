@@ -81,7 +81,6 @@ export default {
     async fetch({
         store,
         params,
-        error,
     }) {
         await store.dispatch('roles/getRoles', {
             limit: 9999,
@@ -89,12 +88,6 @@ export default {
         });
         await store.dispatch('users/getUserById', {
             userId: params.id,
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return error();
-            },
         });
     },
 };

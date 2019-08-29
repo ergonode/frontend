@@ -66,7 +66,7 @@ export default {
             this.$router.push('templates/new');
         },
     },
-    async fetch({ store, error }) {
+    async fetch({ store }) {
         const params = {
             limit: 5000,
             offset: 0,
@@ -74,12 +74,6 @@ export default {
         await store.dispatch('templateLists/clearStorage');
         await store.dispatch('templateLists/getTemplatesSection', {
             params,
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return false;
-            },
         });
     },
 };

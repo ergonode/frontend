@@ -17,7 +17,7 @@ export default {
     },
     getUserById(
         { commit, rootState },
-        { userId, onError },
+        { userId, onError = () => {} },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$get(`${userLanguageCode}/accounts/${userId}`).then(({
@@ -42,7 +42,7 @@ export default {
             commit(types.SET_STATE, { key: 'passwordRepeat', value: password_repeat });
             commit(types.SET_STATE, { key: 'status', value: status });
             commit(types.SET_STATE, { key: 'roleId', value: role_id });
-        }).catch(e => onError(e.data));
+        }).catch(onError);
     },
     createUser(
         { commit, rootState },

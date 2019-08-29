@@ -48,11 +48,10 @@ export default {
                 id: this.treeId,
                 data: categoryTree,
                 onSuccess: this.onUpdateTreeSuccess,
-                onError: () => {},
             });
         },
     },
-    async fetch({ store, error }) {
+    async fetch({ store }) {
         const {
             user: { language: userLanguageCode },
         } = store.state.authentication;
@@ -67,12 +66,6 @@ export default {
         await store.dispatch('tree/clearStorage');
         await store.dispatch('tree/getTreeById', {
             treeName: 'default',
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return error();
-            },
         });
     },
 };
