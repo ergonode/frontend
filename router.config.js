@@ -49,6 +49,8 @@ const ProductBaseTab = () => import('~/components/Card/ProductBaseTab').then(m =
 const ProductTemplateTab = () => import('~/components/Card/ProductTemplateTab').then(m => m.default || m);
 const TreeDesignTab = () => import('~/components/Card/TreeDesignTab').then(m => m.default || m);
 const ProductStatusGridTab = () => import('~/components/Card/ProductStatusGridTab').then(m => m.default || m);
+const ProductStatusBaseTab = () => import('~/components/Card/ProductStatusBaseTab').then(m => m.default || m);
+const ProductStatusTranslationsTab = () => import('~/components/Card/ProductStatusTranslationsTab').then(m => m.default || m);
 
 export const pages = [
     {
@@ -313,13 +315,31 @@ export const pages = [
         name: 'workflow-statuses-new',
         path: '/workflow/statuses/new',
         component: ProductStatusNew,
-        children: [],
+        children: [
+            {
+                path: 'general',
+                component: ProductStatusBaseTab,
+            },
+            {
+                path: 'translations',
+                component: ProductStatusTranslationsTab,
+            },
+        ],
     },
     {
         name: 'workflow-statuses-edit-id',
         path: '/workflow/statuses/edit/:id?',
         component: ProductStatusEdit,
-        children: [],
+        children: [
+            {
+                path: 'general',
+                component: ProductStatusBaseTab,
+            },
+            {
+                path: 'translations',
+                component: ProductStatusTranslationsTab,
+            },
+        ],
     },
     {
         name: 'settings', path: '/settings', component: Settings,
