@@ -7,7 +7,7 @@
         <SimpleGrid
             class="grid"
             :title="title"
-            :items="items" />
+            :items="filteredItems()" />
     </div>
 </template>
 
@@ -23,8 +23,12 @@ export default {
     data() {
         return {
             title: 'Take an action',
-            items: GridItems,
         };
+    },
+    methods: {
+        filteredItems() {
+            return GridItems.filter(e => this.$hasAccess(e.permission));
+        },
     },
 };
 </script>

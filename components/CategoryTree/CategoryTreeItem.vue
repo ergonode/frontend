@@ -3,71 +3,64 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="grid-item"
-        :title="itemName">
-        <Icon
-            v-show="false"
+    <div class="grid-item">
+        <IconPlusMinus
             v-if="hasChildren"
             class="grid-item__icon"
-            :icon="btnExpanderIcon"
+            size="20"
+            :state="btnExpanderIconState"
             @click.native="toggleItemExpand" />
         <span
             class="grid-item__title txt-fixed typo-subtitle txt--dark-graphite"
-            :style="getLabelStyle"
-            :title="itemName">
+            :style="labelStyle">
             {{ itemName }}
         </span>
         <span
             v-if="hasChildren"
-            class="grid-item__categoies-length txt-fixed typo-hint txt--dark-graphite"
-            :title="getNumberOfCategoriesLabel">
-            {{ getNumberOfCategoriesLabel }}
+            class="grid-item__categories-length txt-fixed typo-hint txt--dark-graphite">
+            {{ numberOfChildren }}
         </span>
     </div>
 </template>
 <script>
-import Icon from '~/components/Icon/Icon';
+import { Action } from '~/model/icons/Action';
+import IconPlusMinus from '~/components/Icon/Actions/IconPlusMinus';
 
 export default {
     name: 'CategoryTreeItem',
     components: {
-        Icon,
+        IconPlusMinus,
     },
     props: {
+        isExpanded: {
+            type: Boolean,
+            default: false,
+        },
         itemName: {
             type: String,
             required: true,
         },
         numberOfChildren: {
             type: Number,
-            required: false,
             default: 0,
         },
     },
-    data: () => ({
-        isExpanded: true,
-    }),
     computed: {
         hasChildren() {
             return this.numberOfChildren > 0;
         },
-        btnExpanderIcon() {
+        btnExpanderIconState() {
             return this.isExpanded
-                ? 'arrow-double trans-none'
-                : 'arrow-double trans-half';
+                ? Action.PLUS
+                : Action.MINUS;
         },
-        getLabelStyle() {
+        labelStyle() {
             return !this.hasChildren ? { marginLeft: '12px' } : null;
-        },
-        getNumberOfCategoriesLabel() {
-            return `${this.numberOfChildren} ${this.numberOfChildren === 1 ? 'category' : 'categories'}`;
         },
     },
     methods: {
         toggleItemExpand() {
-            this.isExpanded = !this.isExpanded;
-            this.$emit('expandItem', this.isExpanded);
+            this.$emit('toggleItem');
         },
     },
 };
@@ -75,11 +68,11 @@ export default {
 
 <style lang="scss" scoped>
     .grid-item {
+        z-index: 5;
         display: flex;
-        flex: 1;
         justify-content: flex-start;
         align-items: center;
-        width: 0;
+        grid-column: 1 / 3;
         height: 100%;
         border: 1px solid $grey;
         background-color: $background;
@@ -87,7 +80,7 @@ export default {
 
         &__icon {
             flex: 0 0 auto;
-            margin-left: 8px;
+            margin-left: 12px;
         }
 
         &__title {
@@ -95,22 +88,11 @@ export default {
             margin: 0 8px;
         }
 
-        &__categoies-length {
+        &__categories-length {
             flex: 0 1 auto;
             border: 1px solid $grey;
             padding: 2px 8px;
             border-radius: 12px;
-        }
-
-        &__outside-tree {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            cursor: help;
-
-            &::after {
-                content: "→";
-            }
         }
     }
 </style>

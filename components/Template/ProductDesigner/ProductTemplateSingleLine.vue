@@ -10,8 +10,9 @@
         :placeholder="placeholder"
         :error-messages="isError ? [' '] : null"
         :required="required"
+        :disabled="disabled"
         @input="onValueChange">
-        <template v-slot:appendIcon>
+        <template v-slot:append>
             <ProductTemplateDetailsContent
                 :hint="hint"
                 :error-messages="errorMessages"

@@ -1,3 +1,7 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
 import {
     getObstaclePositionsForElement,
     getHighlightingPositions,
@@ -6,10 +10,10 @@ import {
     getMaxRowForGivenColumn,
     getColumnBasedOnWidth,
     getRowBasedOnHeight,
-} from "~/model/template_designer/layout/LayoutCalculations";
+} from '~/model/template_designer/layout/LayoutCalculations';
 
 test('Element has correct number of obstacle points', () => {
-    let elementBounds = {
+    const elementBounds = {
         row: 1,
         column: 1,
         width: 1,
@@ -32,11 +36,10 @@ test('Element has correct number of obstacle points', () => {
     elementBounds.height = -1;
 
     expect(getObstaclePositionsForElement(elementBounds).length).toEqual(0);
-
 });
 
 test('Element has correct values of obstacle points', () => {
-    let elementBounds = {
+    const elementBounds = {
         row: 1,
         column: 1,
         width: 1,
@@ -226,7 +229,7 @@ test('Based on non layout elements getting highlighting positions where we can d
             draggedElHeight: 2,
             layoutWidth: 4,
             layoutHeight: 5,
-            layoutElements
+            layoutElements,
         });
 
         expect(highlightingPositions.length).toEqual(20);
@@ -259,7 +262,7 @@ test('Based on non layout elements getting highlighting positions where we can d
             draggedElHeight: 2,
             layoutWidth: 4,
             layoutHeight: 5,
-            layoutElements
+            layoutElements,
         });
 
         expect(highlightingPositions.length).toEqual(12);

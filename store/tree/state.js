@@ -2,13 +2,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-const state = () => ({
+export default () => ({
     treeId: null,
     treeLevels: 10,
     rowsHeight: 50,
     rowsCount: 0,
     treeData: [],
+    fullTreeData: [],
     hiddenItems: {},
 });
-
-export default state;

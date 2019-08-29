@@ -8,38 +8,43 @@
         @mouseover="onMouseOver"
         @mouseout="onMouseOut"
         @click="onClick">
-        <Icon
-            :icon="icon"
-            size="small" />
-        <span class="breadcrumb__title typo-subtitle txt--graphite">{{ breadcrumb.title }}</span>
+        <Component
+            :is="breadcrumbIconComponent"
+            :fill-color="breadcrumbIconColor"
+            size="16" />
+        <span
+            class="breadcrumb__title"
+            v-text="breadcrumb.title" />
     </div>
 </template>
 
 <script>
 export default {
     name: 'NavigationHeaderBreadcrumb',
-    components: {
-        Icon: () => import('~/components/Icon/Icon'),
-    },
     props: {
         breadcrumb: {
             type: Object,
             required: true,
         },
     },
-    data: () => ({
-        isMouseOver: false,
-    }),
+    data() {
+        return {
+            isMouseOver: false,
+            breadcrumbIconColor: '#5C5F65',
+        };
+    },
     computed: {
-        icon() {
-            return this.isMouseOver ? this.breadcrumb.icon.replace('deactive', 'selected') : this.breadcrumb.icon;
+        breadcrumbIconComponent() {
+            return () => import(`~/components/Icon/Menu/Icon${this.breadcrumb.icon}`);
         },
     },
     methods: {
         onMouseOver() {
+            this.breadcrumbIconColor = '#00bc87';
             this.isMouseOver = true;
         },
         onMouseOut() {
+            this.breadcrumbIconColor = '#5C5F65';
             this.isMouseOver = false;
         },
         onClick() {
@@ -53,9 +58,13 @@ export default {
     .breadcrumb {
         display: flex;
         align-items: center;
+        grid-column-gap: 6px;
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
+        margin-left: 8px;
 
         &__title {
-            margin-left: 6px;
+            @include setFont(medium, regular, semiRegular, $darkGraphite);
         }
 
         &--hover {

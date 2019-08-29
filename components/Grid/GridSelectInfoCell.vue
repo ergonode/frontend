@@ -5,19 +5,19 @@
 <template>
     <div class="info-select-cell">
         <GridInfoCell :value="value" />
-        <Icon icon="arrow-triangle" />
+        <IconArrowDropDown />
     </div>
 </template>
 
 <script>
 import GridInfoCell from '~/components/Grid/GridInfoCell';
-import Icon from '~/components/Icon/Icon';
+import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
 
 export default {
     name: 'GridSelectInfoCell',
     components: {
         GridInfoCell,
-        Icon,
+        IconArrowDropDown,
     },
     props: {
         value: {
@@ -34,6 +34,6 @@ export default {
         flex: 1;
         justify-content: space-between;
         align-items: center;
-        padding-right: 13px;
+        padding-right: 5px;
     }
 </style>

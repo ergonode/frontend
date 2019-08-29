@@ -14,11 +14,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-
 export default {
     name: 'GridEditActivatorCell',
     props: {
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
         value: {
             type: [String, Number, Array, Boolean],
             required: true,
@@ -101,6 +103,7 @@ export default {
             }
 
             return {
+                dismissible: false,
                 autofocus: true,
                 errorMessages: this.errorMessages,
                 leftAlignment: true,
@@ -108,15 +111,12 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditingCellCoordinates',
-        ]),
         onImageIDChange(id) {
             this.localValue = id;
         },
         onFocus(isFocused) {
             if (!isFocused) {
-                this.setEditingCellCoordinates();
+                this.$store.dispatch(`${this.storeNamespace}/setEditingCellCoordinates`);
             }
         },
     },

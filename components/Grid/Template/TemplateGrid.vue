@@ -65,6 +65,7 @@ export default {
                 {
                     title: 'SAVE TEMPLATE',
                     action: this.updateButton.action,
+                    disabled: !this.$hasAccess('TEMPLATE_DESIGNER_UPDATE'),
                 },
             ],
             verticalTabs: [
@@ -73,14 +74,15 @@ export default {
                     component: () => import('~/components/Card/AttributesListTab'),
                     props: {
                         isSelectLanguage: false,
+                        disabled: !this.$hasAccess('TEMPLATE_DESIGNER_UPDATE'),
                     },
-                    icon: 'sprite-sidebar sidebar-attributes',
+                    iconPath: 'Menu/IconAttributes',
                     active: true,
                 },
                 {
                     title: 'Widgets',
                     component: () => import('~/components/Card/WidgetsListTab'),
-                    icon: 'sprite-sidebar sidebar-widgets',
+                    iconPath: 'Widgets/IconWidget',
                     active: false,
                 },
             ],

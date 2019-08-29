@@ -5,13 +5,13 @@
 <template>
     <div class="check-cell">
         <CheckBox
-            :value="selectionState"
+            :value="value"
+            :disabled="disabled"
             @input="onSelect" />
     </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'GridCheckCell',
@@ -19,46 +19,22 @@ export default {
         CheckBox: () => import('~/components/Inputs/CheckBox'),
     },
     props: {
+        value: {
+            type: [Boolean, Number],
+            default: false,
+        },
         row: {
             type: Number,
             required: true,
         },
-        isHeader: {
+        disabled: {
             type: Boolean,
-            required: false,
-            default: false,
-        },
-    },
-    computed: {
-        ...mapState('grid', {
-            isSelectedAllRows: state => state.isSelectedAllRows,
-            selectedRows: state => state.selectedRows,
-        }),
-        selectionState() {
-            if (this.isHeader) {
-                const rowsAreSelected = Boolean(Object.entries(this.selectedRows).length);
-
-                if (!rowsAreSelected) {
-                    return +this.isSelectedAllRows;
-                }
-
-                return rowsAreSelected ? 2 : 0;
-            }
-            return this.selectedRows[this.row] || this.isSelectedAllRows;
+            required: true,
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setSelectedRow',
-            'setSelectionForAllRows',
-            'setEditingCellCoordinates',
-        ]),
         onSelect(value) {
-            if (this.isHeader) {
-                this.setSelectionForAllRows({ isSelected: Boolean(value) });
-            } else {
-                this.setSelectedRow({ row: this.row, value });
-            }
+            this.$emit('input', value);
         },
     },
 };

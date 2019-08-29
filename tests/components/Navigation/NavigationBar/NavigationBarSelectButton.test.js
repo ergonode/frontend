@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import NavigationBarSelectButton from '~/components/Navigation/NavigationBar/NavigationBarSelectButton';
 
 const localVue = createLocalVue();
@@ -15,33 +15,17 @@ describe('Navigation/NavigationBar/NavigationBarSelectButton', () => {
             localVue,
             propsData: {
                 title: null,
-            }
+            },
         });
     });
 
-    it("Component renders correctly", () => {
+    it('Component is rendered', () => {
         expect(wrapper.is(NavigationBarSelectButton)).toBe(true);
     });
 
     it('Component is named well', () => {
         expect(typeof NavigationBarSelectButton.name).toBe('string');
         expect(NavigationBarSelectButton.name).toEqual('NavigationBarSelectButton');
-    });
-
-    it('Check selected arrow icon', () => {
-        wrapper.setData({
-            isSelected: true,
-        });
-
-        expect(wrapper.vm.arrowIcon).toBe('sprite-navbar navbar-arrow trans-half');
-    });
-
-    it('Check deselected arrow icon', () => {
-        wrapper.setData({
-            isSelected: false,
-        });
-
-        expect(wrapper.vm.arrowIcon).toBe('sprite-navbar navbar-arrow');
     });
 
     it('Check no title exception', () => {
@@ -60,6 +44,6 @@ describe('Navigation/NavigationBar/NavigationBarSelectButton', () => {
         const onClickStub = jest.fn();
         wrapper.setMethods({ onClick: onClickStub });
         wrapper.find('.bar-button').trigger('click');
-        expect(onClickStub).toBeCalled();
+        expect(onClickStub).toHaveBeenCalled();
     });
 });

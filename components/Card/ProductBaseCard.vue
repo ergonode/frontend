@@ -12,7 +12,7 @@
             label="Sku"
             required
             :error-messages="errorSkuMessage"
-            :disabled="isDisabled"
+            :disabled="isDisabled || isDisabledByPrivileges"
             @input="(sku) => setProductSku(sku)" />
         <Select
             :value="template"
@@ -22,16 +22,16 @@
             label="Template"
             :error-messages="errorTemplateMessage"
             :options="templateValues"
-            :disabled="isDisabled"
+            :disabled="isDisabled || isDisabledByPrivileges"
             @input="(template) => setProductTemplate(template)" />
         <Select
             :value="selectedCategories"
             solid
             regular
             multiselect
-            :dismissible="false"
             label="Category"
             clearable
+            :disabled="isDisabledByPrivileges"
             @input="clearContent">
             <TranslationMultiselectListContent
                 slot="selectContent"
@@ -74,6 +74,10 @@ export default {
         },
         isDisabled() {
             return Boolean(this.productID);
+        },
+        isDisabledByPrivileges() {
+            return (this.isDisabled && !this.$hasAccess('PRODUCT_UPDATE'))
+            || (!this.isDisabled && !this.$hasAccess('PRODUCT_CREATE'));
         },
         errorSkuMessage() {
             const skuIndex = 'sku';

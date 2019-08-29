@@ -3,59 +3,42 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridPage
+    <GridCategoryPage
         :title="title"
-        :action-paths="actionPaths"
-        :buttons="buttons"
-        icon="sprite-menu menu-folder--selected" />
+        :buttons="getButtons"
+        icon="Category" />
 </template>
 <script>
-import { mapState } from 'vuex';
-
 export default {
     name: 'Categories',
+    middleware: ['tab/redirectToCategoryGrid'],
     components: {
-        GridPage: () => import('~/components/Pages/GridPage'),
+        GridCategoryPage: () => import('~/components/Pages/GridCategoryPage'),
     },
     data() {
         return {
             title: 'Categories',
-            buttons: [
+        };
+    },
+    computed: {
+        getButtons() {
+            const isCategoryPath = /grid/.test(this.$route.path);
+
+            if (!isCategoryPath) return [];
+            return [
                 {
                     title: 'CREATE CATEGORY',
                     color: 'success',
                     action: this.addNewCategory,
-                    icon: 'sprite-button button-add-light',
+                    disabled: !this.$hasAccess('CATEGORY_CREATE'),
                 },
-            ],
-        };
-    },
-    computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
-        actionPaths() {
-            return {
-                getData: `${this.userLanguageCode}/categories`,
-                routerEdit: 'categories-edit-id',
-            };
+            ];
         },
     },
     methods: {
         addNewCategory() {
             this.$router.push('/categories/new');
         },
-    },
-    async fetch(parameters) {
-        const { store } = parameters;
-        const {
-            user: { language: userLanguageCode },
-        } = store.state.authentication;
-
-        const gridPath = `${userLanguageCode}/categories`;
-
-        await store.dispatch('grid/clearStorage');
-        await store.dispatch('grid/getData', { path: gridPath });
     },
 };
 </script>

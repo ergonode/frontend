@@ -3,17 +3,30 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['navigation-header', { 'navigation-header__breadcrumbs': hasBreadcrumbs }]">
+    <div class="navigation-header">
         <NavigationHeaderTitle
             :title="title"
             :icon="icon"
             :is-breadcrumb="breadcrumbs.length !== 0"
             @navigateback="onClick">
-            <NavigationHeaderBreadcrumb
-                v-for="(breadcrumb, index) in breadcrumbs"
-                :key="index"
-                slot="breadcrumb"
-                :breadcrumb="breadcrumb" />
+            <template v-slot:breadcrumb>
+                <NavigationHeaderBreadcrumb
+                    v-for="(breadcrumb, index) in breadcrumbs"
+                    :key="index"
+                    slot="breadcrumb"
+                    :breadcrumb="breadcrumb" />
+            </template>
+            <template v-slot:badge>
+                <InformationBadge
+                    v-if="isReadOnly"
+                    title="READ ONLY">
+                    <template v-slot:prepend>
+                        <IconLock
+                            size="24"
+                            fill-color="#fff" />
+                    </template>
+                </InformationBadge>
+            </template>
         </NavigationHeaderTitle>
         <div class="header-buttons-wrapper">
             <Button
@@ -22,9 +35,16 @@
                 :title="button.title"
                 :color="button.color"
                 :theme="button.theme"
-                :icon="button.icon"
+                :disabled="button.disabled"
                 large
-                @click.native="button.action" />
+                @click.native="button.action">
+                <template v-slot:prepend>
+                    <IconDelete v-if="isRemoveButton(button.icon)" />
+                    <IconAdd
+                        v-else
+                        fill-color="#fff" />
+                </template>
+            </Button>
         </div>
     </div>
 </template>
@@ -36,6 +56,10 @@ export default {
         NavigationHeaderTitle: () => import('~/components/ReusableHeader/NavigationHeaderTitle'),
         NavigationHeaderBreadcrumb: () => import('~/components/ReusableHeader/NavigationHeaderBreadcrumb'),
         Button: () => import('~/components/Buttons/Button'),
+        InformationBadge: () => import('~/components/Badges/InformationBadge'),
+        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
+        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
+        IconLock: () => import('~/components/Icon/Feedback/IconLock'),
     },
     props: {
         title: {
@@ -44,28 +68,27 @@ export default {
         },
         buttons: {
             type: Array,
-            required: false,
             default: () => [],
         },
         icon: {
             type: String,
-            required: false,
             default: null,
         },
         breadcrumbs: {
             type: Array,
-            required: false,
             default: () => [],
         },
-    },
-    computed: {
-        hasBreadcrumbs() {
-            return this.breadcrumbs.length > 0;
+        isReadOnly: {
+            type: Boolean,
+            default: false,
         },
     },
     methods: {
         onClick() {
             this.$emit('navigateback');
+        },
+        isRemoveButton(title) {
+            return !!(title && title === 'remove');
         },
     },
 };
@@ -77,12 +100,7 @@ export default {
         flex: 0 0 auto;
         justify-content: space-between;
         align-items: center;
-        height: 80px;
-        padding: 0 24px;
-
-        &__breadcrumbs {
-            height: 100px;
-        }
+        padding: 24px;
 
         .header-buttons-wrapper {
             display: flex;

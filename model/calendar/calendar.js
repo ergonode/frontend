@@ -62,6 +62,12 @@ export const isDate = (date) => {
     return isDateObject && isValidDate;
 };
 
+export const getMonthIndex = (monthDesc) => {
+    const monthDescriptions = Object.values(CALENDAR_MONTHS);
+
+    return monthDescriptions.findIndex(desc => desc === monthDesc);
+};
+
 export const isSameDay = (date, basedate = new Date()) => {
     if (!(isDate(date) && isDate(basedate))) return false;
 
@@ -90,6 +96,54 @@ export const getNextMonth = (month, year) => {
     const nextMonthYear = (month < 12) ? year : year + 1;
 
     return { month: nextMonth, year: nextMonthYear };
+};
+
+export const getPreviousYear = year => year - 1;
+
+export const getNextYear = year => year + 1;
+
+export const getPreviousYearsRange = (years) => {
+    const offset = 20;
+    const newYears = [];
+    const [firstYear] = years;
+
+    for (let i = firstYear - offset; i < firstYear; i += 1) newYears.push(i);
+
+    return newYears;
+};
+
+export const getNextYearsRange = (years) => {
+    const { length } = years;
+    const offset = 20;
+    const newYears = [];
+    const lastYear = years[length - 1];
+
+    for (let i = lastYear + 1; i < lastYear + offset + 1; i += 1) newYears.push(i);
+
+    return newYears;
+};
+
+export const getYearsWithinRange = (years, currentYear) => {
+    const newYears = [];
+    const offset = 10;
+
+    for (let i = currentYear - offset + 1; i <= currentYear + offset; i += 1) newYears.push(i);
+
+    return newYears;
+};
+
+export const getHeaderForCalendarDaysType = (month, year) => {
+    const monthKeys = Object.keys(CALENDAR_MONTHS);
+    const displayingMonth = monthKeys[Math.max(0, Math.min(month - 1, 11))];
+
+    return `${displayingMonth} ${year}`;
+};
+
+export const getHeaderForCalendarYearsType = (years) => {
+    const { length } = years;
+    const { 0: firstYear, [length - 1]: lastYear } = years;
+
+    return `${firstYear} - ${lastYear}`;
 };
 
 export default (month = THIS_MONTH, year = THIS_YEAR) => {

@@ -2,17 +2,17 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount, createLocalVue } from "@vue/test-utils";
-import TemplateGridGhostItem from '~/components/TemplateGrid/TemplateDesigner/TemplateGridGhostItem';
+import { mount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
+import TemplateGridGhostItem from '~/components/TemplateGrid/TemplateDesigner/TemplateGridGhostItem';
 
 const localVue = createLocalVue();
 const store = new Store({
     state: {
         draggable: {
             draggedElement: {},
-        }
-    }
+        },
+    },
 });
 const mocks = {
     $store: store,
@@ -31,7 +31,7 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridGhostItem', () => {
         });
     });
 
-    it("Component is rendered", () => {
+    it('Component is rendered', () => {
         expect(wrapper.is(TemplateGridGhostItem)).toBe(true);
     });
 

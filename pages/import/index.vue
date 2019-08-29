@@ -6,7 +6,8 @@
     <GridPage
         :title="title"
         :action-paths="actionPaths"
-        :buttons="buttons" />
+        :buttons="buttons"
+        icon="Import" />
 </template>
 
 <script>
@@ -21,12 +22,13 @@ export default {
         return {
             title: 'Imports',
             buttons: [
-                {
-                    title: 'CREATE IMPORT',
-                    color: 'success',
-                    action: this.addNewImport,
-                    icon: 'sprite-button button-add-light',
-                },
+                // TODO: uncomment when we have create action
+                // {
+                //     title: 'CREATE IMPORT',
+                //     color: 'success',
+                //     action: this.addNewImport,
+                //     disabled: !this.$hasAccess('IMPORT_CREATE'),
+                // },
             ],
         };
     },
@@ -36,7 +38,7 @@ export default {
         }),
         actionPaths() {
             return {
-                getData: 'imports/',
+                getData: `${this.userLanguageCode}/imports`,
                 routerEdit: 'imports-edit-id',
             };
         },
@@ -46,17 +48,6 @@ export default {
             // TODO: Imports will have add / edit
             // this.$router.push('/imports/new');
         },
-    },
-    async fetch(parameters) {
-        const { store } = parameters;
-        const {
-            user: { language: userLanguageCode },
-        } = store.state.authentication;
-
-        const gridPath = `${userLanguageCode}/imports`;
-
-        await store.dispatch('grid/clearStorage');
-        await store.dispatch('grid/getData', { path: gridPath });
     },
 };
 </script>

@@ -7,9 +7,7 @@
         class="action-link"
         :to="actionLink"
         aria-label="edit">
-        <Icon
-            icon="sprite-system system-edit--deactive"
-            size="medium" />
+        <IconEdit />
     </nuxt-link>
 </template>
 
@@ -17,7 +15,7 @@
 export default {
     name: 'GridEditRowCell',
     components: {
-        Icon: () => import('~/components/Icon/Icon'),
+        IconEdit: () => import('~/components/Icon/Actions/IconEdit'),
     },
     props: {
         actionPath: {
@@ -33,6 +31,10 @@ export default {
             required: true,
         },
         isSelected: {
+            type: Boolean,
+            default: false,
+        },
+        isDisabled: {
             type: Boolean,
             default: false,
         },

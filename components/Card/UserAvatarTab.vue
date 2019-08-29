@@ -3,11 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseTab :update-button="updateButton">
-        <UserAvatarCard slot="content" />
-        <Footer
-            slot="footer"
-            :buttons="[...updateButton]" />
+    <BaseTab>
+        <template v-slot:content>
+            <UserAvatarCard />
+        </template>
+        <template v-slot:footer>
+            <Footer
+                :buttons="[...updateButton]" />
+        </template>
     </BaseTab>
 </template>
 

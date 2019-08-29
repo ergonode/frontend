@@ -17,8 +17,6 @@ export default {
 
 <style lang="scss" scoped>
     .list {
-        $list: &;
-
         position: relative;
         flex: 1;
         overflow: auto;

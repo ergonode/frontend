@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
+<template functional>
     <h3
         class="menu-section__title"
-        v-text="title" />
+        v-text="props.title" />
 </template>
 
 <script>
@@ -14,7 +14,6 @@ export default {
     props: {
         title: {
             type: String,
-            required: false,
             default: '',
         },
     },

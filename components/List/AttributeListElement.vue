@@ -9,10 +9,11 @@
             id: draggableListID,
             draggedElementStyle,
             onDraggedState,
+            draggable: !draggingDisabled,
         }"
         :dragged="isDragged"
-        :disabled="isElementDisabled(item.id, languageCode)">
-        <ListElementIcon :icon="iconByType" />
+        :disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]">
+        <ListElementIcon :icon-path="iconByType" />
         <ListElementDescription
             :title="item.type"
             :subtitle="item.label || item.code" />
@@ -20,8 +21,9 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import DraggableStates from '~/model/draggableStates';
+import { capitalizeAndConcatenationArray } from '~/model/stringWrapper';
 
 export default {
     name: 'AttributeListElement',
@@ -33,6 +35,10 @@ export default {
     props: {
         item: {
             type: Object,
+            required: true,
+        },
+        draggingDisabled: {
+            type: Boolean,
             required: true,
         },
         languageCode: {
@@ -48,15 +54,16 @@ export default {
         };
     },
     computed: {
-        ...mapGetters('list', [
-            'isElementDisabled',
-        ]),
+        ...mapState('list', {
+            disabledElements: state => state.disabledElements,
+        }),
         iconByType() {
             if (!this.item.type) return '';
 
-            const convertedType = this.item.type.toLowerCase().replace('_', '-');
+            const types = this.item.type.split('_');
+            const attributeName = capitalizeAndConcatenationArray(types);
 
-            return `attribute-${convertedType}`;
+            return `Attributes/Icon${attributeName}`;
         },
     },
     methods: {

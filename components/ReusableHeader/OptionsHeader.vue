@@ -11,7 +11,6 @@
                 solid
                 regular
                 label="Translations"
-                :dismissible="false"
                 multiselect
                 @input="onLanguageCardSelected" />
         </div>

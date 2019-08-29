@@ -3,59 +3,42 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridPage
+    <GridAttributePage
         :title="title"
-        :action-paths="actionPaths"
-        :buttons="buttons"
-        icon="sprite-menu menu-puzzel--selected" />
+        :buttons="getButtons"
+        icon="Attributes" />
 </template>
 <script>
-import { mapState } from 'vuex';
-
 export default {
     name: 'Attributes',
+    middleware: ['tab/redirectToAttributeGrid'],
     components: {
-        GridPage: () => import('~/components/Pages/GridPage'),
+        GridAttributePage: () => import('~/components/Pages/GridAttributePage'),
     },
     data() {
         return {
             title: 'Attributes',
-            buttons: [
+        };
+    },
+    computed: {
+        getButtons() {
+            const isAttributePath = /grid/.test(this.$route.path);
+
+            if (!isAttributePath) return [];
+            return [
                 {
                     title: 'CREATE ATTRIBUTE',
                     color: 'success',
                     action: this.addNewAttribute,
-                    icon: 'sprite-button button-add-light',
+                    disabled: !this.$hasAccess('ATTRIBUTE_CREATE'),
                 },
-            ],
-        };
-    },
-    computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
-        actionPaths() {
-            return {
-                getData: `${this.userLanguageCode}/attributes`,
-                routerEdit: 'attributes-edit-id',
-            };
+            ];
         },
     },
     methods: {
         addNewAttribute() {
             this.$router.push('/attributes/new');
         },
-    },
-    async fetch(parameters) {
-        const { store } = parameters;
-        const {
-            user: { language: userLanguageCode },
-        } = store.state.authentication;
-
-        const gridPath = `${userLanguageCode}/attributes`;
-
-        await store.dispatch('grid/clearStorage');
-        await store.dispatch('grid/getData', { path: gridPath });
     },
 };
 </script>

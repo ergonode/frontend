@@ -5,7 +5,8 @@
 <template>
     <img
         :class="['image', { 'image--fab': fab }]"
-        :src="image">
+        :src="image"
+        alt="picture">
 </template>
 
 <script>
@@ -25,18 +26,18 @@ export default {
             default: false,
         },
     },
+    watch: {
+        imageId: {
+            immediate: true,
+            handler() {
+                this.getImageById();
+            },
+        },
+    },
     data() {
         return {
             image: null,
         };
-    },
-    watch: {
-        imageId() {
-            this.getImageById();
-        },
-    },
-    created() {
-        this.getImageById();
     },
     methods: {
         ...mapActions('validations', [
@@ -45,7 +46,7 @@ export default {
         async getImageById() {
             await this.$axios.$get(`multimedia/${this.imageId}`, {
                 responseType: 'arraybuffer',
-            }).then(response => this.onSuccess(response)).catch(e => this.onError(e.data));
+            }).then(response => this.onSuccess(response)).catch(e => console.log(e));
         },
         onSuccess(response) {
             this.image = getImageData(response);

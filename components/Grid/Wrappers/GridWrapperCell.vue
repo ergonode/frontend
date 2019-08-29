@@ -4,29 +4,33 @@
  */
 <template>
     <GridCell
-        :editing-allowed="column.editable || isActionCell"
+        :editing-allowed="isEditingAllowed"
         :row="rowIndex"
         :column="columnIndex"
-        :locked="isLockedCell"
+        :locked="!isEditingAllowed"
         :error="isErrorCell"
         :draft="isDraftCell"
         :action-cell="isActionCell"
         :selected="isSelected"
-        :on-edit="onEdit">
-        <Component
-            :is="infoComponent"
-            v-if="!isEditingCell || isActionCell"
-            v-bind="infoComponentProps" />
-        <GridEditActivatorCell
-            v-else
-            :is-select-kind="isSelectKind"
-            :is-multi-select="isMultiSelect"
-            :type="column.type"
-            :value="draftValue || row[column.id] || ''"
-            :options="options"
-            :parameters="parameters"
-            :error-messages="errorValue"
-            @updateValue="onUpdateDraft" />
+        :editing="isEditingCell"
+        @edit="onEdit">
+        <template v-if="!isExtenderColumn">
+            <Component
+                :is="infoComponent"
+                v-if="!isEditingCell || isActionCell"
+                v-bind="infoComponentProps" />
+            <GridEditActivatorCell
+                v-else
+                :store-namespace="storeNamespace"
+                :is-select-kind="isSelectKind"
+                :is-multi-select="isMultiSelect"
+                :type="column.type"
+                :value="draftValue || (isSelectKind ? cellData.key : cellData.value)"
+                :options="options"
+                :parameters="parameters"
+                :error-messages="errorValue"
+                @updateValue="onUpdateDraft" />
+        </template>
     </GridCell>
 </template>
 
@@ -42,6 +46,14 @@ export default {
         GridEditActivatorCell: () => import('~/components/Grid/EditCells/GridEditActivatorCell'),
     },
     props: {
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
+        editingPrivilegeAllowed: {
+            type: Boolean,
+            default: true,
+        },
         rowIndex: {
             type: Number,
             required: true,
@@ -54,66 +66,64 @@ export default {
             type: Object,
             required: true,
         },
-        row: {
+        rowId: {
+            type: [String, Number],
+            required: true,
+        },
+        cellData: {
             type: Object,
             required: true,
         },
         isSelected: {
             type: Boolean,
-            required: false,
             default: false,
         },
         draft: {
             type: Object,
-            required: false,
             default: null,
         },
         editRoutingPath: {
             type: String,
-            required: false,
             default: '',
         },
+    },
+    beforeCreate() {
+        const { type, editable, id } = this.$options.propsData.column;
+
+        this.isActionCell = type === 'CHECK' || type === 'ACTION';
+        this.isExtenderColumn = id === 'extender';
+        this.isSelectKind = type === 'SELECT' || type === 'MULTI_SELECT';
+        this.isMultiSelect = type === 'MULTI_SELECT';
+        this.isEditingAllowed = (editable && this.$options.propsData.editingPrivilegeAllowed)
+            || this.isActionCell;
+    },
+    beforeDestroy() {
+        delete this.isActionCell;
+        delete this.isExtenderColumn;
+        delete this.isSelectKind;
+        delete this.isMultiSelect;
+        delete this.isEditingAllowed;
     },
     computed: {
         ...mapState('validations', {
             validationErrors: state => state.validationErrors,
         }),
-        ...mapState('grid', {
-            editingCellCoordinates: state => state.editingCellCoordinates,
-        }),
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
+        gridState() {
+            return this.$store.state[this.storeNamespace];
+        },
         isEditingCell() {
-            const { row, column } = this.editingCellCoordinates;
+            const { row, column } = this.gridState.editingCellCoordinates;
 
             return this.rowIndex === row && this.columnIndex === column;
-        },
-        isActionCell() {
-            const { type } = this.column;
-
-            return type === 'CHECK' || type === 'ACTION';
-        },
-        isLockedCell() {
-            const { editable } = this.column;
-
-            return !editable && !this.isActionCell;
         },
         isErrorCell() {
             return typeof this.errorValue !== 'undefined';
         },
         isDraftCell() {
             return this.draftValue !== null;
-        },
-        isSelectKind() {
-            const { type } = this.column;
-
-            return type === 'SELECT' || type === 'MULTI_SELECT';
-        },
-        isMultiSelect() {
-            const { type } = this.column;
-
-            return type === 'MULTI_SELECT';
         },
         infoComponent() {
             const { type } = this.column;
@@ -124,7 +134,7 @@ export default {
             case 'IMAGE':
                 return () => import('~/components/Grid/GridImageCell');
             case 'CHECK':
-                return () => import('~/components/Grid/GridCheckCell');
+                return () => import('~/components/Grid/EditCells/GridEditSelectRowCell');
             case 'SELECT':
             case 'MULTI_SELECT':
                 return () => import('~/components/Grid/GridSelectInfoCell');
@@ -134,45 +144,24 @@ export default {
         },
         infoComponentProps() {
             const { type } = this.column;
-            const { id } = this.row;
 
             switch (type) {
             case 'ACTION':
                 return {
-                    params: { id },
+                    params: { id: this.rowId },
                     actionPath: this.editRoutingPath,
                     isSelected: this.isEditingCell,
                     row: this.rowIndex,
                 };
             case 'CHECK':
                 return {
+                    storeNamespace: this.storeNamespace,
                     row: this.rowIndex,
                 };
             default:
-                if (this.parsedDraftValue === null) return { value: this.cellValue };
-
+                if (this.parsedDraftValue === null) return { value: this.cellData.value };
                 return { value: this.parsedDraftValue };
             }
-        },
-        cellValue() {
-            const value = this.row[this.column.id];
-            const { filter } = this.column;
-
-            if (!value) return '';
-            if (filter && filter.options) {
-                const { options } = filter;
-
-                if (Array.isArray(value)) {
-                    return value.map(key => options[key] || 'No translation').join(', ');
-                }
-                if (typeof options[value] !== 'undefined') {
-                    return options[value] || 'No translation';
-                }
-            }
-
-            if (typeof value === 'boolean') return value ? 'Yes' : 'No';
-
-            return value;
         },
         draftValue() {
             if (this.draft && typeof this.draft[this.column.id] !== 'undefined') {
@@ -207,9 +196,8 @@ export default {
             return null;
         },
         errorValue() {
-            const { id } = this.row;
             const { element_id: elementId } = this.column;
-            const { [`${id}/${elementId}`]: errors } = this.validationErrors;
+            const { [`${this.rowId}/${elementId}`]: errors } = this.validationErrors;
 
             return errors;
         },
@@ -231,30 +219,27 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setEditingCellCoordinates',
-            'setSelectedRow',
-        ]),
         ...mapActions('gridDraft', [
             'updateDraftValue',
+            'addDraftValue',
         ]),
         onEdit(isEditing) {
             if (this.column.type === 'CHECK') {
-                this.setSelectedRow({ row: this.rowIndex, value: isEditing });
+                this.$store.dispatch(`${this.storeNamespace}/setSelectedRow`, { row: this.rowIndex, value: isEditing });
             } else {
-                this.setEditingCellCoordinates(isEditing
+                this.$store.dispatch(`${this.storeNamespace}/setEditingCellCoordinates`, isEditing
                     ? { column: this.columnIndex, row: this.rowIndex }
                     : {});
             }
         },
         onUpdateDraft(value) {
-            const cellValue = this.row[this.column.id] || '';
-
-            if (cellValue === value
-                || (Array.isArray(value) && isArrayEqualToArray(value, cellValue))) return;
+            if ((Array.isArray(value)
+                && isArrayEqualToArray(value, this.cellData.key))
+                || this.cellData.value === value
+            ) return;
 
             this.updateDraftValue({
-                productId: this.row.id,
+                productId: this.rowId,
                 columnId: this.column.id,
                 elementId: this.column.element_id,
                 value,

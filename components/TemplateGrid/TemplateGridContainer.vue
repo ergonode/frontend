@@ -5,7 +5,7 @@
 <template>
     <div
         class="grid-container"
-        :draggable="isDraggingEnabled"
+        :draggable="isDraggingEnabled && $hasAccess('CATEGORY_TREE_UPDATE')"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
         @dragover="onDragOver"
@@ -23,15 +23,18 @@ import {
     removeTreeElementCopyFromDocumentBody,
 } from '~/model/tree/TreeElementCopy';
 import {
-    initializeRowBounds,
+    getRowBounds,
     getRowBellowMouse,
 } from '~/model/tree/TreeCalculations';
 import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
+import {
+    isMouseOutOfBoundsElement,
+} from '~/model/drag_and_drop/helpers';
 
 export default {
     name: 'TemplateGridContainer',
     props: {
-        gridData: {
+        treeData: {
             type: Array,
             required: true,
         },
@@ -50,7 +53,7 @@ export default {
     },
     data: () => ({
         isDraggingEnabled: true,
-        positionBeetwenRows: 0.5,
+        positionBetweenRows: 0.5,
         ghostElement: {
             id: 'ghost_item',
             column: null,
@@ -66,6 +69,10 @@ export default {
         debounceFunc: null,
     }),
     computed: {
+        ...mapState('tree', {
+            fullTreeData: state => state.fullTreeData,
+            hiddenItems: state => state.hiddenItems,
+        }),
         ...mapState('authentication', {
             language: state => state.user.language,
         }),
@@ -76,7 +83,7 @@ export default {
             listElements: state => state.elements,
         }),
         dataWithoutGhostElement() {
-            return this.gridData.filter(element => element.id !== this.ghostElement.id);
+            return this.treeData.filter(element => element.id !== this.ghostElement.id);
         },
         maxRow() {
             return getObjectWithMaxValueInArrayByObjectKey(this.dataWithoutGhostElement, 'row').row;
@@ -97,10 +104,22 @@ export default {
             'setDraggedElement',
             'setDraggableState',
         ]),
+        ...mapActions('list', [
+            'removeDisabledElement',
+            'setDisabledElement',
+        ]),
+        ...mapActions('tree', [
+            'setChildrenLength',
+            'setRowsCount',
+            'addTreeItem',
+            'removeTreeItem',
+            'rebuildTree',
+            'removeHiddenItem',
+        ]),
         calculateRowsCount() {
             const { clientHeight } = document.querySelector('.grid-container');
             const visibleRows = Math.ceil(clientHeight / this.rowsHeight);
-            const totalRows = Math.max(this.gridData.length, visibleRows) + 1;
+            const totalRows = Math.max(this.fullTreeData.length, visibleRows) + 1;
             this.setRowsCount(totalRows);
         },
         onDragStart(event) {
@@ -113,28 +132,44 @@ export default {
             } = itemsContainer.getBoundingClientRect();
             if (clientY > containerHeight + containerTop) {
                 event.preventDefault();
+                return false;
             }
             getRowBellowMouse({
                 clientY,
                 elements: categories,
-                elementBounds: initializeRowBounds(categories),
+                elementBounds: getRowBounds(categories),
             }, ({ index, category }) => {
-                const hasChildren = category.querySelector('.grid-item__categoies-length');
-                if (category && !hasChildren) {
+                if (category) {
+                    const hasChildren = category.querySelector('.grid-item__categories-length');
                     const categoryId = category.getAttribute('item-id');
+                    const categoryItem = this.dataWithoutGhostElement[index];
+                    const {
+                        id, row, column, expanded,
+                    } = categoryItem;
+                    const parentId = this.getParentId(row, column);
+                    if (hasChildren && !expanded) {
+                        this.$emit('toggleItem', categoryItem);
+                    }
                     this.setDraggedElement(categoryId);
                     this.setDraggableState({ propName: 'isListElementDragging', value: true });
                     addTreeElementCopyToDocumentBody(event, category);
-                    this.$emit('removeItem', index);
+                    if (parentId !== 'root') {
+                        this.setChildrenLength({ id: parentId, value: -1 });
+                    }
+                    this.removeTreeItem(index);
+                    this.removeDisabledElement({
+                        languageCode: this.language,
+                        elementId: id,
+                    });
                 } else {
-                    this.$addAlert(this.$store, { type: 'warning', message: 'Can`t move the category which has subcategory.', duration: 1500 });
                     event.preventDefault();
                 }
             });
+            return true;
         },
         onDragEnd(event) {
-            event.preventDefault();
             removeTreeElementCopyFromDocumentBody(event);
+            this.setDraggedElement();
             this.setDraggableState({ propName: 'isListElementDragging', value: false });
         },
         onDragOver(event) {
@@ -153,88 +188,92 @@ export default {
             } else if (isElementBeyondCollision) {
                 this.setGhostItemPosition({
                     column: this.getAllowedColumn(),
-                    row: this.maxRow + this.positionBeetwenRows,
+                    row: this.maxRow + this.positionBetweenRows,
                 });
             }
             return true;
         },
         onDragLeave(event) {
-            const { clientX, clientY } = event;
+            const { pageX, pageY } = event;
             const itemsContainer = document.querySelector('.grid-container');
-            const {
-                top, right, width, height,
-            } = itemsContainer.getBoundingClientRect();
-            const leftAtTheLeft = clientX <= right - width;
-            const leftAtTheRight = clientX >= right;
-            const leftAtTheTop = clientY <= top;
-            const leftAtTheBottom = clientY >= (top + height);
-            const isOutOfBounds = (leftAtTheTop
-                || leftAtTheBottom
-                || leftAtTheLeft
-                || leftAtTheRight);
+            const isOutOfBounds = isMouseOutOfBoundsElement(itemsContainer, pageX, pageY);
+
             if (isOutOfBounds) {
                 this.removeGhostElement();
+                if (this.hiddenItems[this.draggedElement]) {
+                    const childrenForHiddenItem = this.hiddenItems[this.draggedElement];
+                    for (let i = 0; i < childrenForHiddenItem.length; i += 1) {
+                        this.removeDisabledElement({
+                            languageCode: this.language,
+                            elementId: childrenForHiddenItem[i].id,
+                        });
+                    }
+                }
+                this.removeHiddenItem(this.draggedElement);
             }
         },
-        onDrop(event) {
-            event.preventDefault();
+        onDrop() {
             const { row, column } = this.ghostElement;
-            const { length: withoutGhostLength } = this.dataWithoutGhostElement;
             const { code: categoryCode, name: categoryName } = this.listElements[this.language]
                 .find(e => e.id === this.draggedElement);
             this.removeGhostElement();
-            this.addItem({
+            const parentId = this.getParentId(row, column);
+            const childrenLength = this.hiddenItems[this.draggedElement]
+                ? this.hiddenItems[this.draggedElement].length
+                : 0;
+            const droppedItem = {
                 id: this.draggedElement,
                 code: categoryCode,
                 name: categoryName,
                 column,
                 row,
-                parent: this.getParentId(row, column),
+                children: childrenLength,
+                expanded: childrenLength > 0,
+                parent: parentId,
+            };
+            this.addTreeItem(droppedItem);
+            this.setDisabledElement({
+                languageCode: this.language,
+                elementId: this.draggedElement,
             });
-            if (withoutGhostLength >= this.rows - 2) {
-                this.setRowsCount(this.rows + 1);
+            if (parentId !== 'root') {
+                this.setChildrenLength({ id: parentId, value: 1 });
             }
-            this.$emit('rebuildGrid', this.draggedElement);
-            this.setDraggedElement();
-            this.setDraggableState({ propName: 'isListElementDragging', value: false });
+            this.rebuildTree(this.draggedElement);
+            if (childrenLength > 0) this.$emit('toggleItem', { ...droppedItem, row: row + this.positionBetweenRows });
+            this.calculateRowsCount();
         },
         removeGhostElement() {
             this.ghostElement.row = null;
             this.ghostElement.column = null;
-            this.$emit('removeItem', this.ghostElement.id);
+            this.removeTreeItem(this.ghostElement.id);
         },
-        addItem(item) {
-            this.$emit('addItem', item);
-        },
-        setRowsCount(number) {
-            this.$emit('setRowsCount', number);
-        },
-        getBottomCollidingColumn({ neighbourElColumn, collidingElColumn }) {
+        getBottomCollidingColumn({ neighborElColumn, collidingElColumn }) {
             const { overColumn } = this.mousePosition;
-            if (neighbourElColumn !== null && collidingElColumn < neighbourElColumn) {
-                return neighbourElColumn;
+            if (neighborElColumn !== null && collidingElColumn < neighborElColumn) {
+                return neighborElColumn;
             }
             return overColumn > collidingElColumn ? collidingElColumn + 1 : collidingElColumn;
         },
-        getTopCollidingColumn({ neighbourElColumn, collidingElColumn }) {
+        getTopCollidingColumn({ neighborElColumn, collidingElColumn }) {
             const { overColumn } = this.mousePosition;
-            if (overColumn >= collidingElColumn && overColumn <= neighbourElColumn + 1) {
+            if (overColumn >= collidingElColumn && overColumn <= neighborElColumn + 1) {
                 return overColumn;
             }
             return collidingElColumn;
         },
-        getGhostCollidingColumn(topNeighbourColumn, bottomNeighbourColumn) {
+        getGhostCollidingColumn(topNeighborColumn, bottomNeighborColumn) {
             const { overColumn } = this.mousePosition;
-            const isTopNeighbourLowerThenBottom = topNeighbourColumn < bottomNeighbourColumn;
-            const maxColumn = Math.max(topNeighbourColumn, bottomNeighbourColumn);
-            const minColumn = Math.min(topNeighbourColumn, bottomNeighbourColumn);
-            const isNeighbourInTopRange = overColumn <= maxColumn
+            const isTopNeighborLowerThenBottom = topNeighborColumn < bottomNeighborColumn;
+            const maxColumn = Math.max(topNeighborColumn, bottomNeighborColumn);
+            const minColumn = Math.min(topNeighborColumn, bottomNeighborColumn);
+            const isNeighborInTopRange = overColumn <= maxColumn
                 && overColumn > minColumn;
-            const isNeighbourinTopRange = overColumn <= maxColumn + 1
+            const isNeighborInBottomRange = overColumn <= maxColumn + 1
                 && overColumn >= minColumn;
 
-            if ((isTopNeighbourLowerThenBottom && isNeighbourInTopRange)
-                || (!isTopNeighbourLowerThenBottom && isNeighbourinTopRange)) {
+            if ((isTopNeighborLowerThenBottom && isNeighborInTopRange)
+                || (!isTopNeighborLowerThenBottom && isNeighborInBottomRange)) {
                 return overColumn;
             }
             return null;
@@ -242,38 +281,38 @@ export default {
         getCollidingPosition(collidingEl) {
             const { row: collidingElRow, column: collidingElColumn } = collidingEl;
             if (collidingEl.ghost) {
-                const topNeighbour = this.dataWithoutGhostElement[
-                    collidingElRow - this.positionBeetwenRows
+                const topNeighbor = this.dataWithoutGhostElement[
+                    collidingElRow - this.positionBetweenRows
                 ];
-                const bottomNeighbour = this.dataWithoutGhostElement[
-                    collidingElRow + this.positionBeetwenRows
+                const bottomNeighbor = this.dataWithoutGhostElement[
+                    collidingElRow + this.positionBetweenRows
                 ];
-                const columnForLastRow = !bottomNeighbour ? this.getAllowedColumn() : 0;
+                const columnForLastRow = !bottomNeighbor ? this.getAllowedColumn() : 0;
                 return {
-                    column: bottomNeighbour && topNeighbour
-                        ? this.getGhostCollidingColumn(topNeighbour.column, bottomNeighbour.column)
+                    column: bottomNeighbor && topNeighbor
+                        ? this.getGhostCollidingColumn(topNeighbor.column, bottomNeighbor.column)
                         : columnForLastRow,
                     row: collidingElRow,
                 };
             }
             const { directionOfCollision } = this.mousePosition;
             const isTop = directionOfCollision === 'top';
-            const [neighbourEl] = this.dataWithoutGhostElement.filter(
+            const [neighborEl] = this.dataWithoutGhostElement.filter(
                 el => el.row === (isTop ? collidingElRow - 1 : collidingElRow + 1),
             );
-            const isFirstElement = (!neighbourEl || collidingElRow === 0) && isTop;
+            const isFirstElement = (!neighborEl || collidingElRow === 0) && isTop;
             if (isFirstElement) {
-                return { column: 0, row: -this.positionBeetwenRows };
+                return { column: 0, row: -this.positionBetweenRows };
             }
             const collidingData = {
-                neighbourElColumn: neighbourEl ? neighbourEl.column : null,
+                neighborElColumn: neighborEl ? neighborEl.column : null,
                 collidingElColumn,
             };
             return {
                 column: isTop
                     ? this.getTopCollidingColumn(collidingData)
                     : this.getBottomCollidingColumn(collidingData),
-                row: (isTop ? collidingElRow - 1 : collidingElRow) + this.positionBeetwenRows,
+                row: (isTop ? collidingElRow - 1 : collidingElRow) + this.positionBetweenRows,
             };
         },
         onDragFirstItem() {
@@ -301,7 +340,8 @@ export default {
             if (isPositionNotDuplicated) {
                 this.ghostElement.row = row;
                 this.ghostElement.column = column;
-                this.addItem({ ...this.ghostElement });
+                this.ghostElement.parent = this.getParentId(row, column);
+                this.addTreeItem({ ...this.ghostElement });
             }
         },
         getMouseOverProps(clientX, clientY) {
@@ -314,7 +354,7 @@ export default {
                 this.mousePosition.directionOfCollision = directionOfCollision;
             }
             if (shadowItem !== this.mousePosition.shadowItem) {
-                const shadowItemId = shadowItem ? shadowItem.getAttribute('shadow-id') : null;
+                const shadowItemId = shadowItem.getAttribute('shadow-id');
                 this.mousePosition = {
                     overColumn: shadowItemId % this.columns,
                     overRow: Math.floor(shadowItemId / this.columns),
@@ -328,12 +368,12 @@ export default {
             return layerPositionY > centerPosition ? 'bottom' : 'top';
         },
         isRowGet(row) {
-            const [item] = this.gridData.filter(element => element.row === row);
+            const [item] = this.treeData.filter(element => element.row === row);
             return item || null;
         },
         getCollidingItemAtRow(row) {
             const { row: ghostRow } = this.ghostElement;
-            if (ghostRow !== null && row === ghostRow + this.positionBeetwenRows) {
+            if (ghostRow !== null && row === ghostRow + this.positionBetweenRows) {
                 return this.isRowGet(ghostRow);
             }
             const newRow = ghostRow !== null && row > ghostRow

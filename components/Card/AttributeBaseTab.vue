@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseTab :update-button="updateButton">
+    <BaseTab>
         <AttributeBaseCard slot="content" />
         <Footer
             slot="footer"

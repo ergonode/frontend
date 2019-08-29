@@ -8,24 +8,24 @@
         solid
         clearable
         :multiselect="multiselect"
-        :dismissible="!multiselect"
+        :dismissible="false"
         :error-messages="errorMessages"
         autofocus
         @focus="onFocus"
         @input="onValueChange"
         @apply="onApply">
-        <TranslationMultiselectListContent
-            v-if="multiselect"
-            slot="selectContent"
-            :options="options"
-            :selected-options="value || []"
-            @values="onValueChange" />
-        <TranslationSelectListContent
-            v-else
-            slot="selectContent"
-            :options="options"
-            :selected-option="value"
-            @value="onValueChange" />
+        <template v-slot:selectContent>
+            <TranslationMultiselectListContent
+                v-if="multiselect"
+                :options="options"
+                :selected-options="value || []"
+                @values="onValueChange" />
+            <TranslationSelectListContent
+                v-else
+                :options="options"
+                :selected-option="value"
+                @value="onValueChange" />
+        </template>
     </Select>
 </template>
 

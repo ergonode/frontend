@@ -19,17 +19,20 @@
             :element="element"
             :columns-number="columnsNumber"
             :rows-number="rowsNumber"
+            :disabled="!isUserAllowedToUpdate"
             @highlightedPositionChange="onHighlightedPositionsChange"
             @resizingElMaxRow="onResizingElMaxRow">
             <template v-slot:content>
                 <AttributeElementContent
                     v-if="element.type !== 'SECTION TITLE'"
                     :element="element"
+                    :disabled="!isUserAllowedToUpdate"
                     :index="index" />
                 <SectionElementContent
                     v-else
                     :element="element"
                     :index="index"
+                    :disabled="!isUserAllowedToUpdate"
                     @editTitle="onEditSectionTitle" />
             </template>
         </LayoutElement>
@@ -93,6 +96,9 @@ export default {
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,
         }),
+        isUserAllowedToUpdate() {
+            return this.$hasAccess('TEMPLATE_DESIGNER_UPDATE');
+        },
         gridLayerPositions() {
             const length = this.rowsNumber * this.columnsNumber;
             const positions = [];

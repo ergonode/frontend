@@ -11,7 +11,7 @@
             regular
             label="Email"
             :error-messages="errorEmailMessage"
-            :disabled="isDisabled"
+            :disabled="isDisabled || isDisabledByPrivileges"
             @input="(email) => setAction({ key: 'email', value: email })" />
         <TextField
             :value="firstName"
@@ -20,6 +20,7 @@
             regular
             label="First name"
             :error-messages="errorFirstNameMessage"
+            :disabled="isDisabledByPrivileges"
             @input="(firstName) => setAction({ key: 'firstName', value: firstName })" />
         <TextField
             :value="lastName"
@@ -28,6 +29,7 @@
             regular
             label="Last name"
             :error-messages="errorLastNameMessage"
+            :disabled="isDisabledByPrivileges"
             @input="(lastName) => setAction({ key: 'lastName', value: lastName })" />
         <TextField
             :value="password"
@@ -38,6 +40,7 @@
             label="Password"
             :input="{ type: 'password' }"
             :error-messages="errorPasswordMessage"
+            :disabled="isDisabledByPrivileges"
             @input="(password) => setAction({ key: 'password', value: password })" />
         <TextField
             :value="passwordRepeat"
@@ -48,10 +51,22 @@
             label="Password repeat"
             :input="{ type: 'password' }"
             :error-messages="errorPasswordRepeatMessage"
+            :disabled="isDisabledByPrivileges"
             @input="(passwordRepeat) => setAction({
                 key: 'passwordRepeat',
                 value: passwordRepeat
             })" />
+        <!-- TODO: uncomment when we have statuses
+        <Select
+            :value="parsedStatus"
+            solid
+            required
+            regular
+            label="Activity status"
+            :options="statusValues"
+            :error-messages="errorStatusMessage"
+            :disabled="isDisabledByPrivileges"
+            @input="onStatusChange" /> -->
         <Select
             :value="parsedLanguage"
             solid
@@ -59,8 +74,19 @@
             regular
             label="Language"
             :options="languageValues"
+            :disabled="isDisabledByPrivileges"
             :error-messages="errorLanguageMessage"
             @input="onLanguageChange" />
+        <Select
+            :value="parsedRole"
+            solid
+            required
+            regular
+            label="Role"
+            :options="roleValues"
+            :disabled="isDisabledByPrivileges"
+            :error-messages="errorRoleMessage"
+            @input="onRoleChange" />
     </BaseCard>
 </template>
 
@@ -78,9 +104,20 @@ export default {
         Select: () => import('~/components/Inputs/Select/Select'),
     },
     mixins: [errorValidationMixin],
+    data() {
+        return {
+            activityStatuses: {
+                ACTIVE: 'Active',
+                INACTIVE: 'Inactive',
+            },
+        };
+    },
     computed: {
         ...mapState('data', {
             languages: state => state.languages,
+        }),
+        ...mapState('roles', {
+            roles: state => state.roles,
         }),
         ...mapState('users', {
             userID: state => state.id,
@@ -90,15 +127,36 @@ export default {
             password: state => state.password,
             passwordRepeat: state => state.passwordRepeat,
             language: state => state.language,
+            status: state => state.status,
+            roleId: state => state.roleId,
         }),
+        isUserAllowedToUpdate() {
+            return this.$hasAccess('USER_UPDATE');
+        },
         parsedLanguage() {
             return getValueByKey(this.languages, this.language);
+        },
+        parsedRole() {
+            return getValueByKey(this.roles, this.roleId);
+        },
+        parsedStatus() {
+            return getValueByKey(this.activityStatuses, this.status);
         },
         isDisabled() {
             return Boolean(this.userID);
         },
+        isDisabledByPrivileges() {
+            return (this.isDisabled && !this.$hasAccess('USER_UPDATE'))
+            || (!this.isDisabled && !this.$hasAccess('USER_CREATE'));
+        },
+        statusValues() {
+            return Object.values(this.activityStatuses);
+        },
         languageValues() {
             return Object.values(this.languages);
+        },
+        roleValues() {
+            return Object.values(this.roles);
         },
         errorEmailMessage() {
             const emailIndex = 'email';
@@ -124,6 +182,14 @@ export default {
             const languageIndex = 'language';
             return this.elementIsValidate(languageIndex);
         },
+        errorRoleMessage() {
+            const roleIndex = 'roleId';
+            return this.elementIsValidate(roleIndex);
+        },
+        errorStatusMessage() {
+            const statusIndex = 'status';
+            return this.elementIsValidate(statusIndex);
+        },
     },
     methods: {
         ...mapActions('users', [
@@ -131,6 +197,12 @@ export default {
         ]),
         onLanguageChange(language) {
             this.setAction({ key: 'language', value: getKeyByValue(this.languages, language) });
+        },
+        onRoleChange(role) {
+            this.setAction({ key: 'roleId', value: getKeyByValue(this.roles, role) });
+        },
+        onStatusChange(status) {
+            this.setAction({ key: 'status', value: getKeyByValue(this.activityStatuses, status) });
         },
     },
 };

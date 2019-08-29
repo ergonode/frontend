@@ -4,12 +4,11 @@
  */
 <template>
     <ElementContentBase
+        :disabled="disabled"
         @mouseover.native="onMouseOver"
         @mouseout.native="onMouseOut">
         <div class="element-content__icon">
-            <Icon
-                size="medium"
-                :icon="iconByType" />
+            <Component :is="attributeIconComponent" />
         </div>
         <div class="vertical-wrapper">
             <span
@@ -19,9 +18,11 @@
                 class="element-content__subheader txt--dark-graphite typo-subtitle"
                 v-text="element.label || 'No translation'" />
         </div>
-        <div :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
+        <div
+            v-if="!disabled"
+            :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
             <ButtonSelect
-                :icon="contextualMenuStateIcon"
+                icon-path="Others/IconDots"
                 :options="contextualMenuItems"
                 @focus="onSelectFocus">
                 <template v-slot:content>
@@ -35,7 +36,7 @@
                                 :subtitle="option"
                                 subtitle-color="txt--graphite" />
                             <CheckBox
-                                v-if="option === 'Require'"
+                                v-if="option === 'Required'"
                                 ref="checkbox"
                                 :value="element.required" />
                         </ListElement>
@@ -48,7 +49,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import Icon from '~/components/Icon/Icon';
+import { capitalizeAndConcatenationArray } from '~/model/stringWrapper';
 import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
 import CheckBox from '~/components/Inputs/CheckBox';
 import ElementContentBase from '~/components/Template/TemplateDesigner/ElementContentBase';
@@ -59,7 +60,6 @@ import ListElementDescription from '~/components/List/ListElementDescription';
 export default {
     name: 'AttributeElementContent',
     components: {
-        Icon,
         ButtonSelect,
         ElementContentBase,
         List,
@@ -76,11 +76,15 @@ export default {
             type: Object,
             required: true,
         },
+        disabled: {
+            type: Boolean,
+            required: true,
+        },
     },
     data() {
         return {
             isContextualMenuActive: false,
-            contextualMenuItems: ['Require', 'Remove'],
+            contextualMenuItems: ['Required', 'Remove'],
             isHovered: false,
         };
     },
@@ -96,19 +100,16 @@ export default {
                 'l-spacing--half',
             ];
         },
-        iconByType() {
-            const { type } = this.element;
-            const convertedType = type.toLowerCase().replace('_', '-');
+        attributeIconComponent() {
+            if (!this.element.type) return '';
 
-            return `attribute-${convertedType}`;
+            const types = this.element.type.split('_');
+            const attributeName = capitalizeAndConcatenationArray(types);
+
+            return () => import(`~/components/Icon/Attributes/Icon${attributeName}`);
         },
         contextualMenuHoveStateClasses() {
             return { 'element-content__contextual-menu--hovered': this.isHovered };
-        },
-        contextualMenuStateIcon() {
-            return this.isContextualMenuActive
-                ? 'sprite-system system-dots--selected'
-                : 'sprite-system system-dots--deactive';
         },
     },
     methods: {
@@ -123,7 +124,7 @@ export default {
         },
         onSelectValue(index) {
             switch (this.contextualMenuItems[index]) {
-            case 'Require':
+            case 'Required':
                 this.setLayoutElementRequirement({
                     index: this.index,
                     required: !this.element.required,

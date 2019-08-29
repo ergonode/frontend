@@ -16,15 +16,15 @@ export const actions = {
         dispatch('attribute/clearStorage');
         dispatch('authentication/clearStorage');
         dispatch('data/clearStorage');
-        dispatch('grid/clearStorage');
         dispatch('draggable/clearStorage');
         dispatch('tree/clearStorage');
         dispatch('productsDraft/clearStorage');
         dispatch('templateDesigner/clearStorage');
         dispatch('list/clearStorage');
+        dispatch('roles/clearStorage');
+        dispatch('users/clearStorage');
         commit('gridDraft/clearStorage');
         commit('translations/clearStorage');
-        commit('users/clearStorage');
         commit('validations/clearStorage');
     },
 };

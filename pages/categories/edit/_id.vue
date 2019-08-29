@@ -48,7 +48,7 @@ export default {
         },
         onUpdateCategorySuccess() {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'Category updated' });
+            this.$addAlert({ type: 'success', message: 'Category updated' });
             this.$router.push('/categories');
         },
         onSave() {

@@ -9,7 +9,7 @@
             solid
             required
             :error-messages="errorCodeMessage"
-            :disabled="isDisabled"
+            :disabled="isDisabled || isDisabledByPrivileges"
             regular
             label="Code"
             hint="Attribute code must be unique"
@@ -19,22 +19,22 @@
             solid
             :options="attrGroupValues"
             label="Group"
-            :dismissible="false"
             regular
             multiselect
             clearable
+            :disabled="isDisabledByPrivileges"
             :error-messages="errorGroupsMessage"
             @input="(groups) => setAttributeGroups(groups)" />
         <Divider />
         <div class="horizontal-wrapper">
             <Toggler
                 :value="isMultilingual"
-                :disabled="isDisabled"
+                :disabled="isDisabled || isDisabledByPrivileges"
                 @input="(isMultilingual) => setMultilingualAttribute(isMultilingual)" />
             <Label
                 text="Multilingual attribute"
                 class="txt--dark-graphite typo-btn--xs"
-                :is-disabled="isDisabled" />
+                :is-disabled="isDisabled || isDisabledByPrivileges" />
             <InfoHint :hint="multilingualHint" />
         </div>
         <Select
@@ -43,7 +43,7 @@
             required
             label="Type"
             regular
-            :disabled="isDisabled"
+            :disabled="isDisabledByPrivileges"
             :options="attrTypeValues"
             :error-messages="errorTypeMessage"
             @input="onTypeChange" />
@@ -53,13 +53,15 @@
             solid
             required
             regular
-            :dismissible="!hasParamsWithMultiChoice"
             :multiselect="hasParamsWithMultiChoice"
             :label="paramsLabel"
             :options="attrParamValues"
             :error-messages="errorParamsMessage"
+            :disabled="isDisabledByPrivileges"
             @input="(parameter) => setAttributeParameter(parameter)" />
-        <AttributeOptionKeyValues v-show="hasOptions" />
+        <AttributeOptionKeyValues
+            v-show="hasOptions"
+            :disabled="isDisabledByPrivileges" />
         <slot />
     </BaseCard>
 </template>
@@ -114,6 +116,10 @@ export default {
         },
         isDisabled() {
             return Boolean(this.attrID);
+        },
+        isDisabledByPrivileges() {
+            return (this.isDisabled && !this.$hasAccess('ATTRIBUTE_UPDATE'))
+            || (!this.isDisabled && !this.$hasAccess('ATTRIBUTE_CREATE'));
         },
         currentTypeKey() {
             return getKeyByValue(this.attrTypes, this.type);
@@ -190,6 +196,7 @@ export default {
 <style lang="scss" scoped>
     .horizontal-wrapper {
         display: flex;
+        align-items: center;
 
         & > label {
             margin-left: 8px;

@@ -3,114 +3,75 @@
  * See LICENSE for license details.
  */
 <template>
-    <Select
+    <DatePicker
         :value="localValue"
         solid
         :label="label"
         :placeholder="parameters.format"
+        :format="parameters.format"
         :error-messages="errorMessages"
-        :dismissible="false"
+        multiselect
         :required="required"
-        @focus="onSelectFocus">
-        <ProductTemplateDetailsContent
-            slot="appendIcon"
-            :hint="hint"
-            :error-messages="errorMessages"
-            :is-error="isError">
-            <template v-slot:append>
-                <Icon :icon="appendStateIcon" />
-            </template>
-        </ProductTemplateDetailsContent>
-        <DatePickerContent
-            slot="select"
-            slot-scope="{ dismissSelect }"
-            :style="selectBoundingBox"
-            :selected-date="parsedDate"
-            @apply="e => onApplyDate(e, dismissSelect)"
-            @clear="onClearDate" />
-    </Select>
+        :disabled="disabled"
+        @focus="onFocusChange"
+        @input="onValueChange">
+        <template v-slot:append>
+            <ProductTemplateDetailsContent
+                :hint="hint"
+                :error-messages="errorMessages"
+                :is-error="isError">
+                <template v-slot:append>
+                    <IconArrowDropDown :state="dropDownState" />
+                </template>
+            </ProductTemplateDetailsContent>
+        </template>
+    </DatePicker>
 </template>
 
 <script>
-import moment from 'moment';
+import { format as formatDate, parse as parseDate } from 'date-fns';
+import { Arrow } from '~/model/icons/Arrow';
 import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
-import Select from '~/components/Inputs/Select/Select';
-import DatePickerContent from '~/components/Inputs/Select/Contents/DatePickerContent';
-import Icon from '~/components/Icon/Icon';
+import DatePicker from '~/components/Inputs/Date/DatePicker';
+import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
 
 export default {
     name: 'ProductTemplateDate',
     mixins: [baseProductTemplateElementMixin],
     components: {
-        Select,
-        DatePickerContent,
-        Icon,
+        DatePicker,
+        IconArrowDropDown,
     },
     data() {
         return {
-            selectBoundingBox: {},
             isFocused: false,
         };
     },
+    created() {
+        if (!this.value) this.localValue = null;
+        else this.localValue = parseDate(this.value, this.parameters.format);
+    },
     computed: {
-        appendStateIcon() {
+        dropDownState() {
             return this.isFocused
-                ? 'arrow-triangle trans-half'
-                : 'arrow-triangle';
-        },
-        parsedDate() {
-            return moment(this.value, this.parameters.format).toDate();
+                ? Arrow.UP
+                : Arrow.DOWN;
         },
     },
     methods: {
         onFocusChange(isFocused) {
             this.isFocused = isFocused;
         },
-        onApplyDate(date, dismissSelect) {
-            dismissSelect();
+        onValueChange(date) {
+            this.localValue = date;
 
-            this.localValue = this.formatDate(date);
-
-            this.debounceFunc(this.localValue);
-        },
-        onClearDate() {
-            this.debounceFunc('');
+            this.debounceFunc(this.formatDate(date));
         },
         formatDate(date) {
             if (!date) return null;
             const { format } = this.parameters;
 
-            return moment(date).format(format);
-        },
-        onSelectFocus(isFocused) {
-            if (isFocused) {
-                this.selectBoundingBox = this.getSelectBoundingBox();
-            }
-        },
-        getSelectBoundingBox() {
-            const { $el } = this;
-            const boundingRect = $el.getBoundingClientRect();
-            const {
-                top,
-                left,
-                height,
-            } = boundingRect;
-            const { innerHeight } = window;
-            const maxHeight = 300;
-
-            if (innerHeight - top < maxHeight) {
-                const offsetBottom = innerHeight - top;
-
-                return {
-                    left: `${left}px`,
-                    bottom: `${offsetBottom + 1}px`,
-                };
-            }
-
-            return {
-                left: `${left}px`,
-                top: `${top + height + 2}px`,
-            };
+            return formatDate(date, format);
         },
     },
 };

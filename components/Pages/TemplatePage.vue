@@ -8,7 +8,8 @@
             :title="title"
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
-            icon="sprite-menu menu-puzzel--selected"
+            icon="Templates"
+            :is-read-only="!isUserAllowedToUpdateTemplate && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -26,7 +27,7 @@ export default {
             breadcrumbs: [
                 {
                     title: 'Templates',
-                    icon: 'sprite-menu menu-puzzel--deactive',
+                    icon: 'Templates',
                     path: '/templates',
                 },
             ],
@@ -40,17 +41,19 @@ export default {
                         updateButton: {
                             title: this.isEdit ? 'SAVE TEMPLATE' : 'CREATE TEMPLATE',
                             action: this.isEdit ? this.onSave : this.onCreate,
+                            disabled: this.isEdit ? !this.isUserAllowedToUpdateTemplate : false,
                         },
                     },
                 },
                 {
-                    title: 'Template design',
+                    title: 'Template designer',
                     path: `/templates/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/template`,
                     active: this.isEdit,
                     props: {
                         updateButton: {
                             title: 'SAVE TEMPLATE',
                             action: this.onSave,
+                            disabled: this.isEdit ? !this.isUserAllowedToUpdateTemplate : false,
                         },
                     },
                 },
@@ -58,6 +61,7 @@ export default {
         };
     },
     created() {
+        this.isUserAllowedToUpdateTemplate = this.$hasAccess('TEMPLATE_DESIGNER_UPDATE');
         if (this.isEdit) {
             // uncomment when we create removal options
             // this.buttons = [
@@ -70,18 +74,14 @@ export default {
             //     },
             // ];
         }
-        this.setConfigurationForList({
-            draggedElementsStore: {
-                storeName: 'templateDesigner',
-                stateName: 'layoutElements',
-                idName: ['data', 'id'],
-            },
-        });
     },
     methods: {
         ...mapActions('list', {
             setConfigurationForList: 'setConfigurationForList',
         }),
+    },
+    beforeDestroy() {
+        delete this.isUserAllowedToUpdateTemplate;
     },
 };
 </script>

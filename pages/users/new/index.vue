@@ -30,6 +30,8 @@ export default {
             language: state => state.language,
             password: state => state.password,
             passwordRepeat: state => state.passwordRepeat,
+            status: state => state.status,
+            roleId: state => state.roleId,
         }),
     },
     created() {
@@ -49,7 +51,7 @@ export default {
         },
         onCreateUserSuccess(id) {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'User created' });
+            this.$addAlert({ type: 'success', message: 'User created' });
             this.$router.push({
                 name: 'users-edit-id',
                 params: {
@@ -65,6 +67,8 @@ export default {
                 password: this.password,
                 passwordRepeat: this.passwordRepeat,
                 language: this.language,
+                roleId: this.roleId,
+                // status: this.status, TODO: Uncomment when BE is ready
             };
             this.createUser({
                 data: user,
@@ -72,6 +76,14 @@ export default {
                 onError: this.onError,
             });
         },
+    },
+    async fetch({
+        store,
+    }) {
+        await store.dispatch('roles/getRoles', {
+            limit: 9999,
+            offset: 0,
+        });
     },
 };
 </script>

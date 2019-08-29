@@ -16,6 +16,10 @@ export function getMappedLayoutElement({
     } = properties;
     const { width, height } = size;
 
+    // TODO:
+    // BE needs to unify options for select / multiselect - when those attrs does not have options they are returning [], but whenever they do - returning { key: value }
+    const parsedOptions = Array.isArray(options) ? {} : options;
+
     return {
         id,
         code,
@@ -29,7 +33,7 @@ export function getMappedLayoutElement({
         placeholder,
         required,
         parameters,
-        options,
+        options: parsedOptions,
     };
 }
 

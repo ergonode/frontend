@@ -5,9 +5,8 @@
 <template>
     <GridProductPage
         :title="title"
-        :action-paths="actionPaths"
         :buttons="buttons"
-        icon="sprite-menu menu-paper--selected" />
+        icon="Document" />
 </template>
 
 <script>
@@ -27,7 +26,7 @@ export default {
                     title: 'CREATE PRODUCT',
                     color: 'success',
                     action: this.addNewProduct,
-                    icon: 'sprite-button button-add-light',
+                    disabled: !this.$hasAccess('PRODUCT_CREATE'),
                 },
             ],
         };
@@ -36,21 +35,6 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        actionPaths() {
-            return {
-                getData: `${this.userLanguageCode}/products`,
-                routerEdit: 'products-edit-id',
-            };
-        },
-    },
-    created() {
-        this.setConfigurationForList({
-            draggedElementsStore: {
-                storeName: 'grid',
-                stateName: 'columns',
-                idName: ['element_id'],
-            },
-        });
     },
     methods: {
         ...mapActions('list', {
@@ -65,7 +49,6 @@ export default {
         const {
             user: { language: userLanguageCode },
         } = store.state.authentication;
-        const gridPath = `${userLanguageCode}/products`;
 
         await store.dispatch('list/clearStorage');
         await store.dispatch('list/getGroups', {
@@ -73,9 +56,6 @@ export default {
             onSuccess: () => {},
             onError: () => {},
         });
-
-        await store.dispatch('grid/clearStorage');
-        await store.dispatch('grid/getData', { path: gridPath });
     },
 };
 </script>

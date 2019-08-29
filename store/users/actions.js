@@ -3,16 +3,17 @@
  * See LICENSE for license details.
  */
 /* eslint-disable camelcase */
+import { types } from './mutations';
 import { getKeyByValue } from '~/model/objectWrapper';
 
 export default {
     setAction: ({ commit }, payload) => {
-        commit('setState', payload);
+        commit(types.SET_STATE, payload);
     },
     setUserLanguage: ({ commit, rootState }, { language }) => {
         const { languages } = rootState.data;
         const lang = getKeyByValue(languages, language);
-        commit('setState', { key: 'language', value: lang });
+        commit(types.SET_STATE, { key: 'language', value: lang });
     },
     getUserById(
         { commit, rootState },
@@ -28,15 +29,19 @@ export default {
             language = '',
             password = '',
             password_repeat = '',
+            status = '',
+            role_id = '',
         }) => {
-            commit('setState', { key: 'id', value: id });
-            commit('setState', { key: 'avatarId', value: avatar_id });
-            commit('setState', { key: 'email', value: email });
-            commit('setState', { key: 'firstName', value: first_name });
-            commit('setState', { key: 'lastName', value: last_name });
-            commit('setState', { key: 'language', value: language });
-            commit('setState', { key: 'password', value: password });
-            commit('setState', { key: 'passwordRepeat', value: password_repeat });
+            commit(types.SET_STATE, { key: 'id', value: id });
+            commit(types.SET_STATE, { key: 'avatarId', value: avatar_id });
+            commit(types.SET_STATE, { key: 'email', value: email });
+            commit(types.SET_STATE, { key: 'firstName', value: first_name });
+            commit(types.SET_STATE, { key: 'lastName', value: last_name });
+            commit(types.SET_STATE, { key: 'language', value: language });
+            commit(types.SET_STATE, { key: 'password', value: password });
+            commit(types.SET_STATE, { key: 'passwordRepeat', value: password_repeat });
+            commit(types.SET_STATE, { key: 'status', value: status });
+            commit(types.SET_STATE, { key: 'roleId', value: role_id });
         }).catch(e => onError(e.data));
     },
     createUser(
@@ -49,7 +54,7 @@ export default {
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$post(`${userLanguageCode}/accounts`, data).then(({ id }) => {
-            commit('setState', { key: 'id', value: id });
+            commit(types.SET_STATE, { key: 'id', value: id });
             onSuccess(id);
         }).catch(e => onError(e.data));
     },
@@ -66,11 +71,11 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
 
         return Promise.all([
-            this.app.$axios.$put(`${userLanguageCode}/accounts/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data)),
-            this.app.$axios.$put(`${userLanguageCode}/accounts/${id}/avatar`, { multimedia: avatarId }).then(() => onSuccess()).catch(e => onError(e.data)),
-        ]);
+            this.app.$axios.$put(`${userLanguageCode}/accounts/${id}`, data),
+            this.app.$axios.$put(`${userLanguageCode}/accounts/${id}/avatar`, { multimedia: avatarId }),
+        ]).then(() => onSuccess()).catch(e => onError(e.data));
     },
-    clearStorage: ({ commit }) => {
-        commit('clearStorage');
+    clearStorage({ commit }) {
+        commit(types.CLEAR_STATE);
     },
 };

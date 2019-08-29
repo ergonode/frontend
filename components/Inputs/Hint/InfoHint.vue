@@ -4,13 +4,20 @@
  */
 <template>
     <label
-        class="hint"
-        :title="hint">?</label>
+        class="info-hint"
+        :title="hint">
+        <IconTooltip />
+    </label>
 </template>
 
 <script>
+import IconTooltip from '~/components/Icon/Feedback/IconTooltip';
+
 export default {
     name: 'InfoHint',
+    components: {
+        IconTooltip,
+    },
     props: {
         hint: {
             type: String,
@@ -21,15 +28,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .hint {
+    .info-hint {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 8px;
-        width: 16px;
-        height: 16px;
-        background-color: $lightGraphite;
-        color: $white;
-        font: bold 13px/16px "Inter UI";
     }
 </style>

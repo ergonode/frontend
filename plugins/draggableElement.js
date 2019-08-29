@@ -43,8 +43,10 @@ const onDragEnd = (event) => {
 
 export default {
     bind(el, binding) {
-        const { id, draggedElementStyle, onDraggedState } = binding.value;
-        el.setAttribute('draggable', true);
+        const {
+            id, draggedElementStyle, onDraggedState, draggable = true,
+        } = binding.value;
+        el.setAttribute('draggable', draggable);
         el.id = id;
 
         el.addEventListener('dragstart', onDragStart.bind(null, draggedElementStyle), false);

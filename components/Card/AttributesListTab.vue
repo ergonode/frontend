@@ -15,12 +15,18 @@
             v-else
             header="Attributes"
             @searchResult="onSearch" />
-        <AttributesList :language-code="languageCode" />
+        <AttributesList
+            :language-code="languageCode"
+            :dragging-disabled="disabled" />
         <div class="add-btn-wrapper">
             <Button
-                icon="sprite-button button-add-light"
                 fab
-                @click.native="addNewAttribute" />
+                :disabled="!$hasAccess('ATTRIBUTE_CREATE')"
+                @click.native="addNewAttribute">
+                <template v-slot:prepend>
+                    <IconAdd fill-color="#fff" />
+                </template>
+            </Button>
         </div>
     </div>
 </template>
@@ -36,11 +42,16 @@ export default {
         ListSearchSelectHeader: () => import('~/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('~/components/List/ListSearchHeader'),
         Button: () => import('~/components/Buttons/Button'),
+        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
     },
     props: {
         isSelectLanguage: {
             type: Boolean,
             default: true,
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {

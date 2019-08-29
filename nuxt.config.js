@@ -39,11 +39,15 @@ module.exports = {
         '~assets/scss/font-inter-ui.scss',
         '~assets/scss/theme.scss',
         '~assets/scss/typography.scss',
-        '~assets/scss/icons.scss',
     ],
+    router: {
+        middleware: "checkBeforeMove"
+    },
     plugins: [
         '~plugins/directives',
         '~plugins/axios',
+        '~plugins/register-store',
+        '~plugins/privilege',
         {mode: 'client', src: '~plugins/alerts'},
     ],
     modules: [
@@ -77,6 +81,11 @@ module.exports = {
             },
         },
         optimizeCSS: true,
+    },
+    vue: {
+        config: {
+            performance: true,
+        },
     },
     env: {
         baseURL: `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_PREFIX}`,

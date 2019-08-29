@@ -8,7 +8,8 @@
             :title="title"
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
-            icon="sprite-menu menu-tree--selected" />
+            :is-read-only="!isUserAllowedToUpdateCategoryTree"
+            icon="Tree" />
         <HorizontalTabBar :items="tabs" />
         <Blur
             v-show="isBlurVisible"
@@ -26,24 +27,29 @@ export default {
     components: {
         Blur: () => import('~/components/Blur/Blur'),
     },
-    data() {
-        return {
-            breadcrumbs: [],
-            buttons: [],
-            tabs: [
-                {
-                    title: 'Tree design',
-                    path: '/category-trees/tree',
-                    active: true,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE CHANGES',
-                            action: this.onSave,
-                        },
+    created() {
+        this.breadcrumbs = [];
+        this.buttons = [];
+        this.isUserAllowedToUpdateCategoryTree = this.$hasAccess('CATEGORY_TREE_UPDATE');
+        this.tabs = [
+            {
+                title: 'Tree design',
+                path: '/category-trees/tree',
+                active: true,
+                props: {
+                    updateButton: {
+                        title: 'SAVE CHANGES',
+                        action: this.onSave,
+                        disabled: !this.isUserAllowedToUpdateCategoryTree,
                     },
                 },
-            ],
-        };
+            },
+        ];
+    },
+    beforeDestroy() {
+        delete this.breadcrumbs;
+        delete this.isUserAllowedToUpdateCategoryTree;
+        delete this.buttons;
     },
     computed: {
         ...mapState('draggable', {

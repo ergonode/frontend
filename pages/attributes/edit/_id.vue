@@ -57,7 +57,7 @@ export default {
         },
         onUpdateAttributeSuccess() {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'Attribute updated' });
+            this.$addAlert({ type: 'success', message: 'Attribute updated' });
             this.$router.push('/attributes');
         },
         onSave() {

@@ -6,15 +6,15 @@
     <div
         class="btn"
         @click="onClick">
-        <Icon
-            :icon="icon"
-            size="medium" />
+        <Component
+            :is="buttonIconComponent"
+            :fill-color="buttonIconFillColor" />
         <Transition
             v-if="isFocused"
             name="fade">
             <div
                 class="btn__select-content"
-                :style="selectContentPosition">
+                :style="contentPositionStyle">
                 <slot name="content">
                     <List>
                         <ListElement
@@ -45,7 +45,7 @@ export default {
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
     },
     props: {
-        icon: {
+        iconPath: {
             type: String,
             required: true,
         },
@@ -57,35 +57,17 @@ export default {
     data() {
         return {
             isFocused: false,
+            contentPositionStyle: null,
         };
     },
     computed: {
-        selectContentPosition() {
-            const { $el } = this;
-            const boundingRect = $el.getBoundingClientRect();
-            const {
-                top,
-                left,
-                width,
-                height,
-            } = boundingRect;
-            const { innerHeight } = window;
-            const maxHeight = 200;
-
-            if (innerHeight - top < maxHeight) {
-                const offsetBottom = innerHeight - top;
-
-                return {
-                    left: `${left}px`,
-                    bottom: `${offsetBottom + 1}px`,
-                };
-            }
-
-            return {
-                left: `${left}px`,
-                top: `${top + height + 2}px`,
-                width: `${width}px`,
-            };
+        buttonIconComponent() {
+            return () => import(`~/components/Icon/${this.iconPath}`);
+        },
+        buttonIconFillColor() {
+            return this.isFocused
+                ? '#00bc87'
+                : '#5c5f65';
         },
     },
     watch: {
@@ -94,6 +76,7 @@ export default {
                 window.removeEventListener('click', this.onClickOutside);
             } else {
                 window.addEventListener('click', this.onClickOutside);
+                this.contentPositionStyle = this.getContentPositionStyle();
             }
             this.$emit('focus', this.isFocused);
         },
@@ -120,6 +103,31 @@ export default {
         },
         onSelectedValue(index) {
             this.$emit('input', this.options[index]);
+        },
+        getContentPositionStyle() {
+            const {
+                top,
+                left,
+                width,
+                height,
+            } = this.$el.getBoundingClientRect();
+            const { innerHeight } = window;
+            const maxHeight = 200;
+
+            if (innerHeight - top < maxHeight) {
+                const offsetBottom = innerHeight - top;
+
+                return {
+                    left: `${left}px`,
+                    bottom: `${offsetBottom + 1}px`,
+                };
+            }
+
+            return {
+                left: `${left}px`,
+                top: `${top + height + 2}px`,
+                width: `${width}px`,
+            };
         },
     },
 };

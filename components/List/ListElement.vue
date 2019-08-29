@@ -60,6 +60,7 @@ export default {
         &--disabled {
             position: relative;
             pointer-events: none;
+            cursor: not-allowed;
 
             &:before {
                 position: absolute;

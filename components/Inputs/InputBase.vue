@@ -9,29 +9,17 @@
         @keydown="onKeyDown">
         <div
             ref="inputContent"
-            :class="inputContentStyle"
+            :class="inputContentClasses"
             @click="onFocusInput">
+            <slot name="prepend" />
             <label
                 v-if="label"
                 :class="floatingLabelClasses"
                 :style="floatingLabelPosition"
                 v-text="label" />
-            <slot name="prependIcon">
-                <Icon
-                    v-if="prependIcon"
-                    :icon="prependIcon" />
-            </slot>
             <slot name="input" />
-            <slot name="appendIcon">
-                <Icon
-                    v-if="appendIcon"
-                    :icon="appendIcon" />
-            </slot>
+            <slot name="append" />
         </div>
-        <slot
-            name="select"
-            :dismiss-select="dismissSelect"
-            :is-focused="isFocused" />
         <label
             v-if="informationLabel"
             :class="informationLabelClasses"
@@ -40,24 +28,12 @@
 </template>
 
 <script>
-import Icon from '~/components/Icon/Icon';
 
 export default {
     name: 'InputBase',
-    components: {
-        Icon,
-    },
     props: {
         value: {
             type: [Array, String, Number],
-            default: null,
-        },
-        appendIcon: {
-            type: String,
-            default: null,
-        },
-        prependIcon: {
-            type: String,
             default: null,
         },
         solid: {
@@ -78,7 +54,7 @@ export default {
         },
         dismissible: {
             type: Boolean,
-            default: false,
+            default: true,
         },
         label: {
             type: String,
@@ -148,7 +124,7 @@ export default {
                 },
             ];
         },
-        inputContentStyle() {
+        inputContentClasses() {
             return [
                 'input__content',
                 {
@@ -262,13 +238,11 @@ export default {
 
             return true;
         },
-        dismissSelect() {
-            this.isFocused = false;
-            this.blurInput();
-
-            this.$emit('focus', false);
-        },
         onClickOutside(event) {
+            const isDoubleClicked = event.detail > 1;
+
+            if (isDoubleClicked && this.dismissible) return false;
+
             const { clientX, clientY } = event;
             const inputActivator = this.$el.querySelector('.input__content');
             const {
@@ -281,25 +255,15 @@ export default {
                 && clientY < top + height;
 
             if (isClickedInsideInput) {
-                this.isFocused = !this.isFocused;
-            } else if (this.dismissible) {
-                this.isFocused = false;
-            } else {
-                const selectContentEl = this.$el.querySelector('.select-content');
-
-                if (selectContentEl) {
-                    const {
-                        top: contentTop,
-                        left: contentLeft,
-                        width: contentWidth,
-                        height: contentHeight,
-                    } = selectContentEl.getBoundingClientRect();
-                    const isClickedInsideSelectContent = clientX > left
-                        && clientX < contentLeft + contentWidth
-                        && clientY > contentTop
-                        && clientY < contentTop + contentHeight;
-                    if (!isClickedInsideSelectContent) this.isFocused = false;
+                if (this.dismissible) {
+                    this.isFocused = !this.isFocused;
+                } else {
+                    this.isFocused = true;
+                    const input = this.$el.querySelector('input') || this.$el.querySelector('textarea');
+                    input.focus();
                 }
+            } else {
+                this.isFocused = false;
             }
 
             if (!this.isFocused) {
@@ -307,6 +271,8 @@ export default {
 
                 this.$emit('focus', false);
             }
+
+            return true;
         },
     },
 };

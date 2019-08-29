@@ -32,6 +32,8 @@ export default {
             language: state => state.language,
             password: state => state.password,
             passwordRepeat: state => state.passwordRepeat,
+            status: state => state.status,
+            roleId: state => state.roleId,
         }),
         title() {
             return `${this.firstName} ${this.lastName}`;
@@ -54,16 +56,18 @@ export default {
         },
         onUpdateUserSuccess() {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'User updated' });
+            this.$addAlert({ type: 'success', message: 'User updated' });
             this.$router.push('/users');
         },
         onSave() {
             const user = {
                 firstName: this.firstName,
                 lastName: this.lastName,
+                language: this.language,
                 password: this.password,
                 passwordRepeat: this.passwordRepeat,
-                language: this.language,
+                roleId: this.roleId,
+                // status: this.status, TODO: Uncomment when BE is ready
             };
             this.updateUser({
                 id: this.id,
@@ -79,6 +83,10 @@ export default {
         params,
         error,
     }) {
+        await store.dispatch('roles/getRoles', {
+            limit: 9999,
+            offset: 0,
+        });
         await store.dispatch('users/getUserById', {
             userId: params.id,
             onError: (err) => {

@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="https://ergonode.com">
-    <img src="https://img.shields.io/badge/version-0.2.0-4c9aff.svg" alt="Version">
+    <img src="https://img.shields.io/badge/version-0.3.0-4c9aff.svg" alt="Version">
   </a>
   <a href="https://ergonode.com">
     <img src="https://img.shields.io/badge/version%20code-Vegas-00bc87.svg" alt="Code Version">
@@ -194,7 +194,7 @@ Ergonode is open-source, and it can be brought to you only by great community an
 
 Ergonode source code is released under the [OSL 3.0 License][license].
 
-[slack]: https://join.slack.com/t/ergonode/shared_invite/enQtNjI5NzU3NzM2MzU2LTY0ZGM4MGMyNGZjOGEyNDY5OGI1NzM5ZDNiMTY3YjA2YmRhMzY1OWE1MjJjZWEzM2YwOThkZDBjODZlZjY0ZmI
+[slack]: https://join.slack.com/t/ergonode/shared_invite/enQtNzEwMjkwOTQwOTM0LWQ4YWYwMWJmZGExYzQxMGMwZTFjMjg4MjQyNmU3NjY1MWU1OTE1MjA2N2ExMzA1MGQ1ZDJjMzkxMTQzNTBmMGM
 [contribut]: ./.github/CONTRIBUTING.md
 [license]: ./LICENSE.txt
 [roadmap]: https://ergonode.com/features/#roadmap

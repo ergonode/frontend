@@ -2,9 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-const state = () => ({
-    showAlerts: false,
+export default () => ({
     alerts: [],
 });
-
-export default state;

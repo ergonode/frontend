@@ -5,8 +5,6 @@
 <template>
     <InputBase
         :value="value"
-        :append-icon="appendIcon"
-        :prepend-icon="prependIcon"
         :solid="solid"
         :underline="underline"
         :left-alignment="leftAlignment"
@@ -20,7 +18,7 @@
         :disabled="disabled"
         :small="small"
         :regular="regular"
-        dismissible
+        :dismissible="dismissible"
         @focus="onFocus">
         <textarea
             slot="input"
@@ -31,8 +29,8 @@
             :aria-label="label || 'no description'"
             :style="textareaStyle"
             @input="emitValue" />
-        <template v-slot:appendIcon>
-            <slot name="appendIcon" />
+        <template v-slot:append>
+            <slot name="append" />
         </template>
     </InputBase>
 </template>
@@ -56,13 +54,9 @@ export default {
             type: [String, Number],
             default: null,
         },
-        appendIcon: {
-            type: String,
-            default: null,
-        },
-        prependIcon: {
-            type: String,
-            default: null,
+        dismissible: {
+            type: Boolean,
+            default: true,
         },
         solid: {
             type: Boolean,

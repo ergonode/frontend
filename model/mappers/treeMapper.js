@@ -8,6 +8,7 @@ export function getParsedTreeData(tree, categories) {
     const buildTree = (treeArray, parent, column) => {
         for (let i = 0; i < treeArray.length; i += 1) {
             const categoryId = treeArray[i].category_id;
+            const { length: childrenLength } = treeArray[i].childrens;
             const {
                 code: categoryCode,
                 name: categoryName,
@@ -19,6 +20,8 @@ export function getParsedTreeData(tree, categories) {
                 row: rowCounter,
                 column,
                 parent,
+                children: childrenLength,
+                expanded: false,
             });
             rowCounter += 1;
             buildTree(treeArray[i].childrens, categoryId, column + 1);

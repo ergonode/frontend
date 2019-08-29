@@ -11,31 +11,28 @@
             :columns="columns"
             :rows="rowsCount"
             :rows-height="rowsHeight"
-            :grid-data="filteredGridData"
-            @addItem="addTreeItem"
-            @removeItem="removeTreeItem"
-            @rebuildGrid="rebuildTree"
-            @setRowsCount="setRowsCount">
+            :tree-data="filteredTreeData"
+            @toggleItem="(item) => toggleItem(item)">
             <TemplateGridPresentationLayer
                 :style="gridStyles"
                 :columns="columns"
                 :rows="rowsCount" />
             <TemplateGridItemsContainer
-                :style="gridStyles"
-                @removeItem="removeTreeItem">
+                :style="gridStyles">
                 <TemplateGridItemArea
-                    v-for="item in filteredGridData"
-                    v-show="!isHidden(item.id)"
+                    v-for="item in filteredTreeData"
                     :key="item.id"
                     :item="item"
-                    :columns="columns">
+                    :columns="columns"
+                    :rows-height="rowsHeight">
                     <TemplateGridGhostItem
                         v-if="item.ghost" />
                     <CategoryTreeItem
                         v-else
-                        :number-of-children="getChildren(item.id).length"
+                        :number-of-children="getChildrenLengthById(item.id)"
+                        :is-expanded="getExpandStateById(item.id)"
                         :item-name="item.name || item.code"
-                        @expandItem="e => expandItem(e, item)" />
+                        @toggleItem="toggleItem(item)" />
                 </TemplateGridItemArea>
             </TemplateGridItemsContainer>
         </TemplateGridContainer>
@@ -43,7 +40,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
+import {
+    getMaxChildRow,
+} from '~/model/tree/TreeCalculations';
 import TemplateGridPresentationLayer from '~/components/TemplateGrid/TemplateGridPresentationLayer';
 import TemplateGridItemsContainer from '~/components/TemplateGrid/TemplateGridItemsContainer';
 import TemplateGridContainer from '~/components/TemplateGrid/TemplateGridContainer';
@@ -68,64 +68,58 @@ export default {
             columns: state => state.treeLevels,
             rowsHeight: state => state.rowsHeight,
             rowsCount: state => state.rowsCount,
-            gridData: state => state.treeData,
-            hiddenItems: state => state.hiddenItems,
+            treeData: state => state.treeData,
         }),
+        ...mapGetters('tree', [
+            'getChildrenLengthById',
+            'getExpandStateById',
+        ]),
         gridStyles() {
             return {
                 gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
                 gridAutoRows: `${this.rowsHeight}px`,
             };
         },
-        filteredGridData() {
-            return this.gridData.filter(
+        filteredTreeData() {
+            return this.treeData.filter(
                 item => item.column < this.columns,
             );
         },
     },
     methods: {
         ...mapActions('tree', [
-            'setTree',
-            'setRowsCount',
-            'addTreeItem',
-            'removeTreeItem',
-            'rebuildTree',
+            'setTreeWhenCollapse',
+            'setTreeWhenExpand',
             'setHiddenItem',
             'removeHiddenItem',
+            'setExpandItem',
         ]),
-        isHidden(id) {
-            const hiddenItems = Object.keys(this.hiddenItems).reduce((acc, el) => {
-                acc.push(...this.hiddenItems[el]);
-                return acc;
-            }, []);
-            return hiddenItems.some(e => e.id === id);
-        },
-        getChildren(parentId) {
-            const visibleChildren = this.gridData.filter(({ parent }) => parent === parentId);
-            const hiddenChilden = this.hiddenItems[parentId] || [];
-            return visibleChildren.length > 0 ? visibleChildren : hiddenChilden;
-        },
-        expandItem(isExpanded, { id, row, column }) {
-            const children = this.getChildren(id);
-            const childrenRows = children.map(e => e.row);
-            const [neighbor] = this.gridData.filter(
-                e => e.column <= column && e.row > row,
-            );
-            const minChildRow = Math.min(...childrenRows);
-            const maxChildRow = neighbor ? neighbor.row : this.gridData.length;
-            const newGrdData = this.gridData.reduce((acc, e) => {
-                if (e.row >= minChildRow && e.row <= maxChildRow - 1) {
-                    acc.hidden.push(e);
-                } else {
-                    acc.visible.push(e);
-                }
-                return acc;
-            }, { hidden: [], visible: [] });
-            if (!isExpanded) {
-                this.setHiddenItem({ key: id, value: newGrdData.hidden });
-                // this.setTree(newGrdData.visible); // TODO: rebuild indexes in array
+        toggleItem({
+            id, row, column, expanded,
+        }) {
+            const rowValue = Math.floor(row);
+
+            if (!expanded) {
+                const maxChildRow = getMaxChildRow(this.treeData, column, rowValue);
+                const {
+                    hiddenCategories,
+                    visibleCategories,
+                } = this.treeData.reduce((acc, e, idx) => {
+                    if (idx > rowValue && idx < maxChildRow) {
+                        acc.hiddenCategories.push(e);
+                    } else {
+                        acc.visibleCategories.push(e);
+                    }
+                    return acc;
+                }, { hiddenCategories: [], visibleCategories: [] });
+
+                this.setHiddenItem({ key: id, value: hiddenCategories });
+                this.setTreeWhenCollapse({ tree: visibleCategories, index: rowValue });
+                this.setExpandItem({ index: rowValue, value: true });
             } else {
+                this.setTreeWhenExpand({ id, index: rowValue });
                 this.removeHiddenItem(id);
+                this.setExpandItem({ index: rowValue, value: false });
             }
         },
     },

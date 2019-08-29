@@ -18,30 +18,36 @@
                     class="group__subtitle"
                     v-text="`${group.elementsCount} Attributes`" />
             </div>
-            <Icon :icon="iconByState" />
+            <IconArrowSingle :state="iconState" />
         </div>
         <AttributeListElement
             v-for="item in elementsByGroupInLanguage"
             slot="item"
             :key="item.id"
             :item="item"
-            :language-code="languageCode" />
+            :language-code="languageCode"
+            :dragging-disabled="draggingDisabled" />
     </ListGroupElement>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { Arrow } from '~/model/icons/Arrow';
 
 export default {
     name: 'AttributeListGroup',
     components: {
         ListGroupElement: () => import('~/components/List/ListGroupElement'),
         AttributeListElement: () => import('~/components/List/AttributeListElement'),
-        Icon: () => import('~/components/Icon/Icon'),
+        IconArrowSingle: () => import('~/components/Icon/Arrows/IconArrowSingle'),
     },
     props: {
         group: {
             type: Object,
+            required: true,
+        },
+        draggingDisabled: {
+            type: Boolean,
             required: true,
         },
         languageCode: {
@@ -68,10 +74,10 @@ export default {
                     || element.groups.some(group => group === this.group.id),
             );
         },
-        iconByState() {
+        iconState() {
             return this.isExpanded
-                ? 'arrow-single trans-half'
-                : 'arrow-single';
+                ? Arrow.UP
+                : Arrow.DOWN;
         },
     },
     methods: {

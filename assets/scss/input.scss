@@ -51,7 +51,6 @@
 
         #{$input}__label {
             position: absolute;
-            top: calc(50% - 8px);
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             color: $lightGraphite;
             padding-left: 2px;
@@ -70,14 +69,19 @@
 
     &.solid {
         #{$input}__content {
-            border: 1px solid $darkGrey;
-            padding: 6px 10px;
+            border: 1px solid $grey;
+            padding: 4px;
             box-sizing: border-box;
+
+            input, textarea {
+                margin-left: 8px;
+            }
         }
 
         #{$input}__label {
             position: absolute;
             color: $lightGraphite;
+            margin-left: 6px;
         }
 
         #{$input}__information-label {
@@ -93,7 +97,7 @@
         #{$input}__content::before {
             bottom: 0;
             width: 100%;
-            border: solid $darkGrey;
+            border: solid $grey;
             border-width: thin 0 0;
             @extend %defaultLine;
         }
@@ -129,7 +133,7 @@
         #{$input}__content::after {
             bottom: -1px;
             width: 100%;
-            border: solid $darkGrey;
+            border: solid $grey;
             border-width: thin 0;
             transform: scaleX(0);
             @extend %defaultLine;
@@ -165,7 +169,7 @@
             &.solid {
                 #{$input}__content {
                     border: 2px solid $success;
-                    padding: 5px 9px;
+                    padding: 3px;
                 }
             }
         }
@@ -174,7 +178,7 @@
             &.solid {
                 #{$input}__content {
                     border: 2px solid $error;
-                    padding: 5px 9px;
+                    padding: 3px;
                 }
             }
 
