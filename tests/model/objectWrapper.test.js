@@ -4,7 +4,6 @@
  */
 import {
     getKeyByValue,
-    getNestedObjectByKeyWithValue,
     objectToArray,
     getValueByKey,
     getKeysByValues,

@@ -10,20 +10,20 @@
             fill-color="#00bc87" />
         <Button
             v-if="isBreadcrumb"
-            class="back-btn"
+            class="header-title__back-btn"
             fab
             @click.native="onClick">
             <template v-slot:prepend>
                 <IconArrowPointer fill-color="#fff" />
             </template>
         </Button>
-        <div
-            class="vertical-wrapper">
-            <span class="typo-title txt--dark-graphite">
-                {{ title }}
-            </span>
-            <slot name="breadcrumb" />
+        <div class="vertical-wrapper">
+            <span
+                class="header-title__title"
+                v-text="title" />
+            <slot name="badge" />
         </div>
+        <slot name="breadcrumb" />
     </div>
 </template>
 
@@ -63,18 +63,26 @@ export default {
 
 <style lang="scss" scoped>
     .header-title {
-        display: flex;
-        justify-content: center;
+        display: grid;
         align-items: center;
+        grid-gap: 0 8px;
 
-        .back-btn {
+        &__back-btn {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
+        }
+
+        &__title {
+            @include setFont(medium, huge, large, $darkGraphite);
             margin-right: 8px;
         }
 
         .vertical-wrapper {
             display: flex;
-            flex-direction: column;
-            padding-left: 8px;
+            align-items: center;
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            margin-left: 8px;
         }
     }
 </style>

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseTab :update-button="updateButton">
+    <BaseTab>
         <ProductTemplateHeaderCard slot="header" />
         <ProductTemplateCard
             slot="content"
@@ -39,7 +39,7 @@ export default {
                 {
                     title: 'SAVE CHANGES',
                     action: this.updateButton.action,
-                    disabled: !this.$canIUse('PRODUCT_UPDATE'),
+                    disabled: !this.$hasAccess('PRODUCT_UPDATE'),
                 },
             ],
         };

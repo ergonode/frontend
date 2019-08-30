@@ -9,6 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="User"
+            :is-read-only="!isUserAllowedToUpdateUser && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -20,64 +21,71 @@ import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPag
 export default {
     name: 'UserPage',
     mixins: [categoryManagementPageBaseMixin],
-    data() {
-        return {
-            breadcrumbs: [
-                {
-                    title: 'Users',
-                    icon: 'User',
-                    path: '/users',
-                },
-            ],
-            buttons: [],
-            tabs: [
-                {
-                    title: 'General options',
-                    path: `/users/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/general`,
-                    active: true,
-                    props: {
-                        updateButton: {
-                            title: this.isEdit ? 'SAVE USER' : 'CREATE USER',
-                            action: this.isEdit ? this.onSave : this.onCreate,
-                        },
-                    },
-                },
-                {
-                    title: 'Avatar',
-                    path: `/users/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/avatar`,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE USER',
-                            action: this.onSave,
-                        },
-                    },
-                },
-                {
-                    title: 'Activity logs',
-                    path: `/users/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/logs`,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE USER',
-                            action: this.onSave,
-                        },
-                    },
-                },
-            ],
-        };
-    },
     created() {
+        let generalOptTabPath = '/users/new/general';
+        let avatarTabPath = '/users/new/avatar';
+        let tabAction = this.onCreate;
+        let buttonPrefix = 'CREATE';
+
+        this.buttons = [];
+        this.breadcrumbs = [
+            {
+                title: 'Users',
+                icon: 'User',
+                path: '/users',
+            },
+        ];
+        this.isUserAllowedToUpdateUser = this.$hasAccess('USER_UPDATE');
+
         if (this.isEdit) {
-            this.buttons = [
-                {
-                    title: 'REMOVE USER',
-                    color: 'transparent',
-                    action: this.onRemove,
-                    theme: 'dark',
-                },
-            ];
+            generalOptTabPath = `/users/edit/${this.$route.params.id}/general`;
+            avatarTabPath = `/users/edit/${this.$route.params.id}/avatar`;
+            tabAction = this.onSave;
+            buttonPrefix = 'SAVE';
+
+            // TODO: Add when it's implemented on BE
+            // this.buttons = [
+            //     {
+            //         title: 'REMOVE USER',
+            //         color: 'transparent',
+            //         action: this.onRemove,
+            //         theme: 'dark',
+            //         disabled: !this.$hasAccess('USER_DELETE'),
+            //     },
+            // ];
         }
+
+        this.tabs = [
+            {
+                title: 'General options',
+                path: generalOptTabPath,
+                active: true,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} USER`,
+                        action: tabAction,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateUser : false,
+                    },
+                },
+            },
+            {
+                title: 'Avatar',
+                path: avatarTabPath,
+                active: this.isEdit,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} USER`,
+                        action: tabAction,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateUser : false,
+                    },
+                },
+            },
+        ];
+    },
+    beforeDestroy() {
+        delete this.breadcrumbs;
+        delete this.isUserAllowedToUpdateUser;
+        delete this.buttons;
     },
 };
 </script>

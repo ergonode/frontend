@@ -9,7 +9,7 @@ const localVue = createLocalVue();
 localVue.directive('ripple', {});
 
 const mocks = {
-    $canIUse: jest.fn(),
+    $hasAccess: jest.fn(),
 };
 describe('Pages/AttributePage', () => {
     let wrapper;

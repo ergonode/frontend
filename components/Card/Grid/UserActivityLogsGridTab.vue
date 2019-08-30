@@ -6,7 +6,7 @@
     <div class="tab">
         <div class="tab__grid">
             <GridWrapper
-                store-namespace="rolesGrid"
+                store-namespace="userActivityLogsGrid"
                 :rows-height="rowsHeight"
                 :action-paths="actionPaths" />
         </div>
@@ -31,7 +31,7 @@ import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
 
 export default {
-    name: 'RolesGridTab',
+    name: 'UserActivityLogsGridTab',
     components: {
         GridWrapper,
         GridFooter,
@@ -52,29 +52,29 @@ export default {
     beforeCreate() {
         this.$registerStore({
             module: gridModule,
-            moduleName: 'rolesGrid',
+            moduleName: 'userActivityLogsGrid',
             store: this.$store,
         });
     },
     beforeDestroy() {
-        this.$store.unregisterModule('rolesGrid');
+        this.$store.unregisterModule('userActivityLogsGrid');
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('rolesGrid', {
+        ...mapState('userActivityLogsGrid', {
             numberOfDataElements: state => state.count,
             displayedPage: state => state.displayedPage,
             numberOfDisplayedElements: state => state.numberOfDisplayedElements,
         }),
-        ...mapGetters('rolesGrid', {
+        ...mapGetters('userActivityLogsGrid', {
             numberOfPages: 'numberOfPages',
         }),
         actionPaths() {
             return {
-                getData: `${this.userLanguageCode}/roles`,
-                routerEdit: 'users-roles-edit-id',
+                getData: '/profile/log',
+                routerEdit: 'users-logs-edit-id',
             };
         },
         rowsHeight: {
@@ -120,7 +120,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('rolesGrid', [
+        ...mapActions('userActivityLogsGrid', [
             'getData',
             'changeDisplayingPage',
             'changeNumberOfDisplayingElements',
@@ -141,11 +141,11 @@ export default {
     async fetch({ app, store }) {
         app.$registerStore({
             module: gridModule,
-            moduleName: 'rolesGrid',
+            moduleName: 'userActivityLogsGrid',
             store,
         });
-        const gridPath = `${store.state.authentication.user.language}/roles`;
-        await store.dispatch('rolesGrid/getData', { path: gridPath });
+        const gridPath = '/profile/log';
+        await store.dispatch('userActivityLogsGrid/getData', { path: gridPath });
     },
 };
 </script>

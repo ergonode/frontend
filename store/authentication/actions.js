@@ -4,6 +4,7 @@
  */
 import { types } from './mutations';
 import { JWT_KEY, USER_KEY } from '~/defaults/authenticate/cookies';
+import { COLUMN_IDS } from '~/defaults/grid/cookies';
 
 const onError = () => {};
 
@@ -36,6 +37,7 @@ export default {
     logout({ commit }) {
         this.$cookies.remove(JWT_KEY);
         this.$cookies.remove(USER_KEY);
+        this.$cookies.remove(COLUMN_IDS);
 
         commit(types.SET_JWT_TOKEN, null);
     },

@@ -34,6 +34,7 @@ export default function ({
             break;
         case regExp.access.test(status):
             msg = 'Access denied';
+            error({ statusCode: 403, message: msg });
             break;
         case regExp.notFound.test(status):
             msg = 'Page not found';

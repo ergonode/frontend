@@ -9,6 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="Document"
+            :is-read-only="!isUserAllowedToUpdateProduct && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -20,47 +21,31 @@ import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPag
 export default {
     name: 'ProductPage',
     mixins: [categoryManagementPageBaseMixin],
-    data() {
-        return {
-            breadcrumbs: [
-                {
-                    title: 'Products',
-                    icon: 'Document',
-                    path: '/products',
-                },
-            ],
-            buttons: [],
-            tabs: [
-                {
-                    title: 'General options',
-                    path: `/products/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/general`,
-                    active: true,
-                    props: {
-                        updateButton: {
-                            title: this.isEdit ? 'SAVE PRODUCT' : 'CREATE PRODUCT',
-                            action: this.isEdit ? this.onSave : this.onCreate,
-                            disabled: this.isEdit ? !this.$canIUse('PRODUCT_UPDATE') : false,
-                        },
-                    },
-                },
-                {
-                    title: 'Template',
-                    path: `/products/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/template`,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE PRODUCT',
-                            action: this.onSave,
-                            disabled: !this.$canIUse('PRODUCT_UPDATE'),
-                        },
-                    },
-                },
-            ],
-        };
-    },
     created() {
+        let generalOptTabPath = '/products/new/general';
+        let templateTabPath = '/products/new/template';
+        let tabAction = this.onCreate;
+        let buttonPrefix = 'CREATE';
+
+        this.buttons = [];
+        this.breadcrumbs = [
+            {
+                title: 'Products',
+                icon: 'Document',
+                path: '/products',
+            },
+        ];
+
+
+        this.isUserAllowedToUpdateProduct = this.$hasAccess('PRODUCT_UPDATE');
+
         if (this.isEdit) {
-            // uncomment when we create removal options
+            generalOptTabPath = `/products/edit/${this.$route.params.id}/general`;
+            templateTabPath = `/products/edit/${this.$route.params.id}/template`;
+            tabAction = this.onSave;
+            buttonPrefix = 'SAVE';
+
+            // TODO: uncomment when we create removal options
             // this.buttons = [
             //     {
             //         title: 'REMOVE PRODUCT',
@@ -71,6 +56,38 @@ export default {
             //     },
             // ];
         }
+
+        this.tabs = [
+            {
+                title: 'General options',
+                path: generalOptTabPath,
+                active: true,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} PRODUCT`,
+                        action: tabAction,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateProduct : false,
+                    },
+                },
+            },
+            {
+                title: 'Product template',
+                path: templateTabPath,
+                active: this.isEdit,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} PRODUCT`,
+                        action: tabAction,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateProduct : false,
+                    },
+                },
+            },
+        ];
+    },
+    beforeDestroy() {
+        delete this.breadcrumbs;
+        delete this.isUserAllowedToUpdateProduct;
+        delete this.buttons;
     },
 };
 </script>

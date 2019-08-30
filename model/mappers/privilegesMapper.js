@@ -74,11 +74,11 @@ export function getMappedPrivilegesBasedOnGridData(privilegesDic, gridData) {
         const privilegeKeys = Object.keys(role);
         const { length: privilegesKeysNumber } = privilegeKeys;
         const privilegeIndex = tmpPrivilegesDic.findIndex(
-            privilege => privilege.name === role.name,
+            privilege => privilege.name === role.name.value,
         );
 
         for (let j = 0; j < privilegesKeysNumber; j += 1) {
-            if (privilegeKeys[j] !== 'name' && role[privilegeKeys[j]]) {
+            if (privilegeKeys[j] !== 'name' && role[privilegeKeys[j]].value) {
                 const privilegeName = tmpPrivilegesDic[privilegeIndex].privileges[privilegeKeys[j]];
 
                 mappedPrivileges.push(privilegeName);

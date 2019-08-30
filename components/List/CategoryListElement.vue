@@ -9,7 +9,7 @@
             id: item.id,
             draggedElementStyle,
             onDraggedState,
-            draggable: $canIUse('CATEGORY_TREE_UPDATE'),
+            draggable: $hasAccess('CATEGORY_TREE_UPDATE'),
         }"
         :dragged="isDragged"
         :disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]">

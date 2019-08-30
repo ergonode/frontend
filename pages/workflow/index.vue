@@ -4,7 +4,7 @@
  */
 <template>
     <GridWorkflowPage
-        title="Product statuses"
+        title="Workflow"
         :buttons="getButtons()"
         icon="Flow" />
 </template>
@@ -26,7 +26,7 @@ export default {
                     title: 'CREATE STATUS',
                     color: 'success',
                     action: this.addNewStatus,
-                    disabled: !this.$canIUse('WORKFLOW_CREATE'),
+                    disabled: !this.$hasAccess('WORKFLOW_CREATE'),
                 },
             ];
         },
