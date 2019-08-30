@@ -56,7 +56,6 @@
                 key: 'passwordRepeat',
                 value: passwordRepeat
             })" />
-        <!-- TODO: uncomment when we have statuses
         <Select
             :value="parsedStatus"
             solid
@@ -66,7 +65,7 @@
             :options="statusValues"
             :error-messages="errorStatusMessage"
             :disabled="isDisabledByPrivileges"
-            @input="onStatusChange" /> -->
+            @input="onStatusChange" />
         <Select
             :value="parsedLanguage"
             solid
@@ -107,8 +106,8 @@ export default {
     data() {
         return {
             activityStatuses: {
-                ACTIVE: 'Active',
-                INACTIVE: 'Inactive',
+                Active: true,
+                Inactive: false,
             },
         };
     },
@@ -127,7 +126,7 @@ export default {
             password: state => state.password,
             passwordRepeat: state => state.passwordRepeat,
             language: state => state.language,
-            status: state => state.status,
+            isActive: state => state.isActive,
             roleId: state => state.roleId,
         }),
         isUserAllowedToUpdate() {
@@ -140,7 +139,7 @@ export default {
             return getValueByKey(this.roles, this.roleId);
         },
         parsedStatus() {
-            return getValueByKey(this.activityStatuses, this.status);
+            return getKeyByValue(this.activityStatuses, this.isActive);
         },
         isDisabled() {
             return Boolean(this.userID);
@@ -150,7 +149,7 @@ export default {
             || (!this.isDisabled && !this.$hasAccess('USER_CREATE'));
         },
         statusValues() {
-            return Object.values(this.activityStatuses);
+            return Object.keys(this.activityStatuses);
         },
         languageValues() {
             return Object.values(this.languages);
@@ -187,8 +186,8 @@ export default {
             return this.elementIsValidate(roleIndex);
         },
         errorStatusMessage() {
-            const statusIndex = 'status';
-            return this.elementIsValidate(statusIndex);
+            const isActiveIndex = 'isActive';
+            return this.elementIsValidate(isActiveIndex);
         },
     },
     methods: {
@@ -201,8 +200,8 @@ export default {
         onRoleChange(role) {
             this.setAction({ key: 'roleId', value: getKeyByValue(this.roles, role) });
         },
-        onStatusChange(status) {
-            this.setAction({ key: 'status', value: getKeyByValue(this.activityStatuses, status) });
+        onStatusChange(isActive) {
+            this.setAction({ key: 'isActive', value: getValueByKey(this.activityStatuses, isActive) });
         },
     },
 };

@@ -8,7 +8,8 @@
             <GridWrapper
                 store-namespace="statusesGrid"
                 :rows-height="rowsHeight"
-                :action-paths="actionPaths" />
+                :action-paths="actionPaths"
+                :editing-privilege-allowed="$hasAccess('WORKFLOW_UPDATE')" />
         </div>
         <GridFooter>
             <GridPageSelector
@@ -73,7 +74,7 @@ export default {
         }),
         actionPaths() {
             return {
-                getData: `${this.userLanguageCode}/workflow/status`,
+                getData: `${this.userLanguageCode}/status`,
                 routerEdit: 'workflow-statuses-edit-id',
             };
         },
@@ -144,7 +145,7 @@ export default {
             moduleName: 'statusesGrid',
             store,
         });
-        const gridPath = `${store.state.authentication.user.language}/workflow/status`;
+        const gridPath = `${store.state.authentication.user.language}/status`;
         await store.dispatch('statusesGrid/getData', { path: gridPath });
     },
 };

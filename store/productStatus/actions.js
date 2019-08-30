@@ -20,7 +20,7 @@ export default {
             code: state.code,
             color: state.color,
         };
-        return this.app.$axios.$post(`${userLanguageCode}/workflow/status`, data).then(({ id }) => {
+        return this.app.$axios.$post(`${userLanguageCode}/status`, data).then(({ id }) => {
             commit(types.SET_STATUS_ID, id);
             onSuccess(id);
         }).catch(e => onError(e.data));
@@ -62,13 +62,16 @@ export default {
             description,
         };
 
-        return this.app.$axios.$put(`${userLanguageCode}/workflow/status/${state.id}`, data).then(({ id }) => {
-            onSuccess(id);
+        return this.app.$axios.$put(`${userLanguageCode}/status/${state.id}`, data).then(() => {
+            onSuccess();
         }).catch(e => onError(e.data));
     },
-    removeProductStatus({ commit, state, rootState }, { onSuccess, onError }) {
+    removeProductStatus({ commit, state, rootState }, { onSuccess }) {
         const { id } = state;
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/workflow/status/${id}`).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$delete(`${userLanguageCode}/status/${id}`).then(() => onSuccess()).catch(onDefaultError);
+    },
+    clearStorage: ({ commit }) => {
+        commit(types.CLEAR_STATE);
     },
 };

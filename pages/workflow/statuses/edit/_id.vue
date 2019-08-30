@@ -7,13 +7,13 @@
         title="New attribute"
         is-edit
         @dismiss="onDismiss"
+        @remove="onRemove"
         @save="onSave" />
 </template>
 
 <script>
 
 import { mapActions } from 'vuex';
-import productStatusModule from '~/reusableStore/productStatus/state';
 
 export default {
     validate({ params }) {
@@ -23,16 +23,6 @@ export default {
     middleware: ['tab/redirectToProductStatusGeneral'],
     components: {
         ProductStatusPage: () => import('~/components/Pages/ProductStatusPage'),
-    },
-    async beforeCreate() {
-        this.$registerStore({
-            module: productStatusModule,
-            moduleName: 'productStatus',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('productStatus');
     },
     methods: {
         ...mapActions('productStatus', [
@@ -57,7 +47,6 @@ export default {
             if (isConfirm) {
                 this.removeProductStatus({
                     onSuccess: this.onRemoveProductStatusSuccess,
-                    onError: message => this.$addAlert({ type: 'error', message }),
                 });
             }
         },
@@ -72,14 +61,9 @@ export default {
         },
     },
     async fetch({
-        app, store, params,
+        store, params,
     }) {
-        app.$registerStore({
-            module: productStatusModule,
-            moduleName: 'productStatus',
-            store,
-        });
-        const path = `${store.state.authentication.user.language}/workflow/status/${params.id}`;
+        const path = `${store.state.authentication.user.language}/status/${params.id}`;
         await store.dispatch('productStatus/getProductStatus', {
             path,
         });

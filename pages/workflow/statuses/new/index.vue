@@ -4,14 +4,13 @@
  */
 <template>
     <ProductStatusPage
-        title="New attribute"
+        title="New status"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import productStatusModule from '~/reusableStore/productStatus/state';
 
 export default {
     name: 'NewAttribute',
@@ -19,19 +18,13 @@ export default {
     components: {
         ProductStatusPage: () => import('~/components/Pages/ProductStatusPage'),
     },
-    async beforeCreate() {
-        this.$registerStore({
-            module: productStatusModule,
-            moduleName: 'productStatus',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('productStatus');
+    created() {
+        this.clearStorage();
     },
     methods: {
         ...mapActions('productStatus', [
             'createProductStatus',
+            'clearStorage',
         ]),
         ...mapActions('validations', [
             'onError',

@@ -29,7 +29,7 @@ export default {
             language = '',
             password = '',
             password_repeat = '',
-            status = '',
+            is_active = false,
             role_id = '',
         }) => {
             commit(types.SET_STATE, { key: 'id', value: id });
@@ -40,7 +40,7 @@ export default {
             commit(types.SET_STATE, { key: 'language', value: language });
             commit(types.SET_STATE, { key: 'password', value: password });
             commit(types.SET_STATE, { key: 'passwordRepeat', value: password_repeat });
-            commit(types.SET_STATE, { key: 'status', value: status });
+            commit(types.SET_STATE, { key: 'isActive', value: is_active });
             commit(types.SET_STATE, { key: 'roleId', value: role_id });
         }).catch(onError);
     },

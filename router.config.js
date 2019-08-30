@@ -45,11 +45,11 @@ const CategoryTranslationsTab = () => import('~/components/Card/CategoryTranslat
 const ProductBaseTab = () => import('~/components/Card/ProductBaseTab').then(m => m.default || m);
 const ProductTemplateTab = () => import('~/components/Card/ProductTemplateTab').then(m => m.default || m);
 const TreeDesignTab = () => import('~/components/Card/TreeDesignTab').then(m => m.default || m);
-const ProductStatusGridTab = () => import('~/components/Card/ProductStatusGridTab').then(m => m.default || m);
 const ProductStatusBaseTab = () => import('~/components/Card/ProductStatusBaseTab').then(m => m.default || m);
 const ProductStatusTranslationsTab = () => import('~/components/Card/ProductStatusTranslationsTab').then(m => m.default || m);
 
 // Grid Tabs
+const ProductStatusGridTab = () => import('~/components/Card/Grid/ProductStatusGridTab').then(m => m.default || m);
 const ProductGridTab = () => import('~/components/Card/Grid/ProductGridTab').then(m => m.default || m);
 const CategoryGridTab = () => import('~/components/Card/Grid/CategoryGridTab').then(m => m.default || m);
 const AttributeGridTab = () => import('~/components/Card/Grid/AttributeGridTab').then(m => m.default || m);
@@ -408,6 +408,9 @@ export const pages = [
                 component: ProductStatusGridTab,
             },
         ],
+        meta: {
+            permission: 'WORKFLOW_READ',
+        },
     },
     {
         name: 'workflow-statuses-new',
@@ -423,6 +426,9 @@ export const pages = [
                 component: ProductStatusTranslationsTab,
             },
         ],
+        meta: {
+            permission: 'WORKFLOW_READ',
+        },
     },
     {
         name: 'workflow-statuses-edit-id',
@@ -438,6 +444,9 @@ export const pages = [
                 component: ProductStatusTranslationsTab,
             },
         ],
+        meta: {
+            permission: 'WORKFLOW_READ',
+        },
     },
     {
         name: 'settings', path: '/settings', component: Settings,

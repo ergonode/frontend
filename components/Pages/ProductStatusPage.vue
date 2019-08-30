@@ -9,6 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="Flow"
+            :is-read-only="!isUserAllowedToUpdateStatus && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -20,46 +21,28 @@ import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPag
 export default {
     name: 'ProductStatusPage',
     mixins: [categoryManagementPageBaseMixin],
-    data() {
-        return {
-            breadcrumbs: [
-                {
-                    title: 'Product statuses',
-                    icon: 'Flow',
-                    path: '/workflow/statuses',
-                },
-            ],
-            buttons: [],
-            tabs: [
-                {
-                    title: 'General options',
-                    path: `/workflow/statuses/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/general`,
-                    active: true,
-                    props: {
-                        updateButton: {
-                            title: this.isEdit ? 'SAVE STATUS' : 'CREATE STATUS',
-                            action: this.isEdit ? this.onSave : this.onCreate,
-                            disabled: this.isEdit ? !this.$hasAccess('WORKFLOW_UPDATE') : false,
-                        },
-                    },
-                },
-                {
-                    title: 'Translations',
-                    path: `/workflow/statuses/${this.isEdit ? `edit/${this.$route.params.id}` : 'add'}/translations`,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE STATUS',
-                            action: this.onSave,
-                            disabled: !this.$hasAccess('WORKFLOW_UPDATE'),
-                        },
-                    },
-                },
-            ],
-        };
-    },
     created() {
+        let generalOptTabPath = '/workflow/statuses/new/general';
+        let translationsTabPath = '/workflow/statuses/new/translation';
+        let tabAction = this.onCreate;
+        let buttonPrefix = 'CREATE';
+
+        this.buttons = [];
+        this.isUserAllowedToUpdateStatus = this.$hasAccess('WORKFLOW_UPDATE');
+        this.breadcrumbs = [
+            {
+                title: 'Workflow',
+                icon: 'Flow',
+                path: '/workflow/statuses',
+            },
+        ];
+
         if (this.isEdit) {
+            generalOptTabPath = `/workflow/statuses/edit/${this.$route.params.id}/general`;
+            translationsTabPath = `/workflow/statuses/edit/${this.$route.params.id}/translations`;
+            tabAction = this.onSave;
+            buttonPrefix = 'SAVE';
+
             this.buttons = [
                 {
                     title: 'REMOVE STATUS',
@@ -71,6 +54,38 @@ export default {
                 },
             ];
         }
+
+        this.tabs = [
+            {
+                title: 'General options',
+                path: generalOptTabPath,
+                active: true,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} STATUS`,
+                        action: tabAction,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateStatus : false,
+                    },
+                },
+            },
+            {
+                title: 'Translations',
+                path: translationsTabPath,
+                active: this.isEdit,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} STATUS`,
+                        action: tabAction,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateStatus : false,
+                    },
+                },
+            },
+        ];
+    },
+    beforeDestroy() {
+        delete this.breadcrumbs;
+        delete this.isUserAllowedToUpdateStatus;
+        delete this.buttons;
     },
 };
 </script>

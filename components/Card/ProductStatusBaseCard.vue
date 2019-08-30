@@ -9,7 +9,7 @@
             solid
             required
             :error-messages="errorCodeMessage"
-            :disabled="isDisabled"
+            :disabled="isDisabled || isDisabledByPrivileges"
             regular
             label="Code"
             hint="Status code must be unique"
@@ -22,7 +22,7 @@
             regular
             label="Badge color"
             hint="Badge color is needed for presentation purpose"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             @input="setColor" />
         <div
             v-if="color"
@@ -61,8 +61,9 @@ export default {
             code: state => state.code,
             color: state => state.color,
         }),
-        isUserAllowedToUpdate() {
-            return this.$hasAccess('WORKFLOW_UPDATE');
+        isDisabledByPrivileges() {
+            return (this.isDisabled && !this.$hasAccess('WORKFLOW_UPDATE'))
+            || (!this.isDisabled && !this.$hasAccess('WORKFLOW_CREATE'));
         },
         isDisabled() {
             return Boolean(this.id);

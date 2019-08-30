@@ -4,7 +4,7 @@
  */
 <template>
     <GridWorkflowPage
-        title="Product statuses"
+        title="Workflow"
         :buttons="getButtons()"
         icon="Flow" />
 </template>
