@@ -106,10 +106,11 @@ export default {
         }
 
         &__badge {
+            border-radius: 7px;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 40px;
+            height: 30px;
         }
     }
 </style>
