@@ -37,10 +37,17 @@ function getModulesStore() {
     const { store: modulesStore } = getPagesConfiguration();
     const newStore = {};
     for (let i = 0; i < modulesStore.length; i += 1) {
-        const { moduleName, store } = modulesStore[i];
+        const { moduleName, store, source } = modulesStore[i];
         for (let j = 0; j < store.length; j += 1) {
-            const { directoryStoreName, storeName } = store[j];
-            newStore[`module<${storeName}>`] = require(`@Modules/${moduleName}/store/${directoryStoreName}`).default;
+            const { directory, name } = store[j];
+            switch (source) {
+            // case 'npm':
+            //     newStore[`module<${name}>`] = require(`@NodeModules/${moduleName}/store/${directory}`).default;
+            //     break;
+            default:
+                newStore[`module<${name}>`] = require(`@Modules/${moduleName}/store/${directory}`).default;
+                break;
+            }
         }
     }
     return newStore;

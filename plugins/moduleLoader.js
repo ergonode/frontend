@@ -55,6 +55,7 @@ const ModuleLoader = {
                 if (config.menu) pagesConfiguration.menu.push(...config.menu);
                 if (config.store) {
                     pagesConfiguration.store.push({
+                        source,
                         moduleName: pageName,
                         store: [...config.store],
                     });

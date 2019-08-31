@@ -3,6 +3,9 @@
  * See LICENSE for license details.
  */
 const Import = () => import('./pages/import/index').then(m => m.default || m);
+const privileges = {
+    IMPORT: ['IMPORT_READ'],
+};
 
 export default {
     router: [
@@ -11,7 +14,7 @@ export default {
             path: '/import',
             component: Import,
             meta: {
-                privileges: ['IMPORT_READ'],
+                privileges: privileges.IMPORT,
             },
             // children: [
             //     {
@@ -33,15 +36,15 @@ export default {
                     title: 'Import',
                     routing: '/import',
                     icon: 'Import',
-                    privileges: ['IMPORT_READ'],
+                    privileges: privileges.IMPORT,
                 },
             ],
         },
     ],
     store: [
         {
-            directoryStoreName: 'import',
-            storeName: 'import',
+            directory: 'import',
+            name: 'import',
         },
     ],
 };
