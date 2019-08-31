@@ -26,7 +26,7 @@ export default {
                     title: 'CREATE PRODUCT',
                     color: 'success',
                     action: this.addNewProduct,
-                    disabled: !this.$canIUse('PRODUCT_CREATE'),
+                    disabled: !this.$hasAccess('PRODUCT_CREATE'),
                 },
             ],
         };
@@ -53,8 +53,6 @@ export default {
         await store.dispatch('list/clearStorage');
         await store.dispatch('list/getGroups', {
             languageCode: userLanguageCode,
-            onSuccess: () => {},
-            onError: () => {},
         });
     },
 };

@@ -7,13 +7,15 @@
         <NavigationHeader
             :title="title"
             :buttons="buttons"
-            :icon="icon" />
+            :icon="icon"
+            :is-read-only="isReadOnly" />
         <HorizontalTabBar
             :items="tabs" />
     </PageWrapper>
 </template>
 
 <script>
+import Privilege from '~/model/privilege';
 
 export default {
     name: 'GridUsersPage',
@@ -38,7 +40,7 @@ export default {
     },
     beforeCreate() {
         this.tabs = [];
-        if (this.$canIUse('USER_READ')) {
+        if (this.$hasAccess('USER_READ')) {
             this.tabs.push({
                 title: 'Users',
                 path: '/users/grid',
@@ -46,7 +48,7 @@ export default {
                 isContextualMenu: false,
             });
         }
-        if (this.$canIUse('USER_ROLE_READ')) {
+        if (this.$hasAccess('USER_ROLE_READ')) {
             this.tabs.push({
                 title: 'Roles',
                 path: '/users/roles',
@@ -63,6 +65,16 @@ export default {
                 isContextualMenu: false,
             });
         }
+    },
+    computed: {
+        isReadOnly() {
+            const isRolesPage = /roles/.test(this.$route.path);
+            let PrivilegeInstance = new Privilege(this.$hasAccess, 'USER');
+            if (isRolesPage) {
+                PrivilegeInstance = new Privilege(this.$hasAccess, 'USER_ROLE');
+            }
+            return PrivilegeInstance.isReadOnly;
+        },
     },
     beforeDestroy() {
         delete this.tabs;

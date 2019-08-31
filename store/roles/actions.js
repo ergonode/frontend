@@ -5,6 +5,8 @@
 import { types } from './mutations';
 import { arrayToObject } from '~/model/arrayWrapper';
 
+const onDefaultError = () => {};
+
 export default {
     setRoleId({ commit }, value) {
         commit(types.SET_ROLE_ID, value);
@@ -22,11 +24,11 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$get(`${userLanguageCode}/roles`, { params }).then(({ collection: roles }) => {
             commit(types.SET_ROLES, arrayToObject(roles, 'id', 'name'));
-        }).catch(e => console.log(e));
+        }).catch(onDefaultError);
     },
     getRoleById(
         { commit, rootState },
-        { roleId, onError },
+        { roleId },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$get(`${userLanguageCode}/roles/${roleId}`).then(({
@@ -39,7 +41,7 @@ export default {
             commit(types.SET_ROLE_NAME, name);
             commit(types.SET_ROLE_DESCRIPTION, description);
             commit(types.SET_ROLE_PRIVILEGES, privileges);
-        }).catch(e => onError(e.data));
+        }).catch(onDefaultError);
     },
     createRole(
         { commit, rootState },

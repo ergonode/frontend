@@ -66,7 +66,7 @@ export default {
                     title: 'Attributes',
                     component: () => import('~/components/Card/AttributesListTab'),
                     props: {
-                        disabled: !this.$canIUse('PRODUCT_UPDATE'),
+                        disabled: !this.$hasAccess('PRODUCT_READ'),
                     },
                     iconPath: 'Menu/IconAttributes',
                     active: true,
@@ -111,7 +111,7 @@ export default {
             numberOfPages: 'numberOfPages',
         }),
         isUserAllowedToUpdate() {
-            return this.$canIUse('PRODUCT_UPDATE');
+            return this.$hasAccess('PRODUCT_UPDATE');
         },
         actionPaths() {
             return {
@@ -186,7 +186,6 @@ export default {
                             this.addDraftToProduct({ columnId, productId, value });
                             this.removeDraft(productId);
                         },
-                        onError: () => {},
                     }));
                 });
             });

@@ -34,7 +34,7 @@ const manageSectionItems = [
         title: 'Category trees',
         routing: '/category-trees',
         icon: 'Tree',
-        privileges: ['CATEGORY_TREE_READ'],
+        privileges: ['ATTRIBUTE_READ'],
     },
     {
         title: 'Attributes',
@@ -46,7 +46,7 @@ const manageSectionItems = [
         title: 'Media',
         routing: '/placeholder/media',
         icon: 'Media',
-        privileges: ['CATEGORY_TREE_READ'],
+        privileges: ['MULTIMEDIA_READ'],
     },
     {
         title: 'Segments',
@@ -79,8 +79,8 @@ const systemSectionItems = [
         privileges: ['USER_READ'],
     },
     {
-        title: 'Workflows',
-        routing: '/placeholder/workflow',
+        title: 'Workflow',
+        routing: '/workflow',
         icon: 'Flow',
         privileges: [],
     },
@@ -124,7 +124,7 @@ const extendSections = (modulesMenu) => {
     return newSections;
 };
 
-export const getValidatedMenuData = (canIUse, modulesMenu) => {
+export const getValidatedMenuData = (hasAccess, modulesMenu) => {
     const menu = [];
     const extendedSections = extendSections(modulesMenu);
     const { length: sectionsNumber } = extendedSections;
@@ -133,7 +133,7 @@ export const getValidatedMenuData = (canIUse, modulesMenu) => {
         const { key, items } = extendedSections[i];
         const filteredItems = items.filter(e => !e.privileges
           || (e.privileges && !e.privileges.length)
-          || e.privileges.every(privilege => canIUse(privilege)));
+          || e.privileges.every(privilege => hasAccess(privilege)));
         menu.push({
             key,
             items: filteredItems,

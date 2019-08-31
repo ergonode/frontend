@@ -20,21 +20,21 @@ export default {
     },
     data() {
         return {
+            title: 'Imports',
             buttons: [
-                {
-                    title: 'CREATE IMPORT',
-                    color: 'success',
-                    action: this.addNewImport,
-                },
+                // TODO: uncomment when we have create action
+                // {
+                //     title: 'CREATE IMPORT',
+                //     color: 'success',
+                //     action: this.addNewImport,
+                //     disabled: !this.$hasAccess('IMPORT_CREATE'),
+                // },
             ],
         };
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
-        }),
-        ...mapState('module<import>', {
-            title: state => state.title,
         }),
         actionPaths() {
             return {

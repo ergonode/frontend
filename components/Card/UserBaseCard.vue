@@ -11,7 +11,7 @@
             regular
             label="Email"
             :error-messages="errorEmailMessage"
-            :disabled="isDisabled"
+            :disabled="isDisabled || isDisabledByPrivileges"
             @input="(email) => setAction({ key: 'email', value: email })" />
         <TextField
             :value="firstName"
@@ -20,7 +20,7 @@
             regular
             label="First name"
             :error-messages="errorFirstNameMessage"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             @input="(firstName) => setAction({ key: 'firstName', value: firstName })" />
         <TextField
             :value="lastName"
@@ -29,7 +29,7 @@
             regular
             label="Last name"
             :error-messages="errorLastNameMessage"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             @input="(lastName) => setAction({ key: 'lastName', value: lastName })" />
         <TextField
             :value="password"
@@ -40,7 +40,7 @@
             label="Password"
             :input="{ type: 'password' }"
             :error-messages="errorPasswordMessage"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             @input="(password) => setAction({ key: 'password', value: password })" />
         <TextField
             :value="passwordRepeat"
@@ -51,12 +51,11 @@
             label="Password repeat"
             :input="{ type: 'password' }"
             :error-messages="errorPasswordRepeatMessage"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             @input="(passwordRepeat) => setAction({
                 key: 'passwordRepeat',
                 value: passwordRepeat
             })" />
-        <!-- TODO: uncomment when we have statuses
         <Select
             :value="parsedStatus"
             solid
@@ -65,8 +64,8 @@
             label="Activity status"
             :options="statusValues"
             :error-messages="errorStatusMessage"
-            :disabled="!isUserAllowedToUpdate"
-            @input="onStatusChange" /> -->
+            :disabled="isDisabledByPrivileges"
+            @input="onStatusChange" />
         <Select
             :value="parsedLanguage"
             solid
@@ -74,7 +73,7 @@
             regular
             label="Language"
             :options="languageValues"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             :error-messages="errorLanguageMessage"
             @input="onLanguageChange" />
         <Select
@@ -84,7 +83,7 @@
             regular
             label="Role"
             :options="roleValues"
-            :disabled="!isUserAllowedToUpdate"
+            :disabled="isDisabledByPrivileges"
             :error-messages="errorRoleMessage"
             @input="onRoleChange" />
     </BaseCard>
@@ -107,8 +106,8 @@ export default {
     data() {
         return {
             activityStatuses: {
-                ACTIVE: 'Active',
-                INACTIVE: 'Inactive',
+                Active: true,
+                Inactive: false,
             },
         };
     },
@@ -127,11 +126,11 @@ export default {
             password: state => state.password,
             passwordRepeat: state => state.passwordRepeat,
             language: state => state.language,
-            status: state => state.status,
+            isActive: state => state.isActive,
             roleId: state => state.roleId,
         }),
         isUserAllowedToUpdate() {
-            return this.$canIUse('USER_UPDATE');
+            return this.$hasAccess('USER_UPDATE');
         },
         parsedLanguage() {
             return getValueByKey(this.languages, this.language);
@@ -140,13 +139,17 @@ export default {
             return getValueByKey(this.roles, this.roleId);
         },
         parsedStatus() {
-            return getValueByKey(this.activityStatuses, this.status);
+            return getKeyByValue(this.activityStatuses, this.isActive);
         },
         isDisabled() {
             return Boolean(this.userID);
         },
+        isDisabledByPrivileges() {
+            return (this.isDisabled && !this.$hasAccess('USER_UPDATE'))
+            || (!this.isDisabled && !this.$hasAccess('USER_CREATE'));
+        },
         statusValues() {
-            return Object.values(this.activityStatuses);
+            return Object.keys(this.activityStatuses);
         },
         languageValues() {
             return Object.values(this.languages);
@@ -183,8 +186,8 @@ export default {
             return this.elementIsValidate(roleIndex);
         },
         errorStatusMessage() {
-            const statusIndex = 'status';
-            return this.elementIsValidate(statusIndex);
+            const isActiveIndex = 'isActive';
+            return this.elementIsValidate(isActiveIndex);
         },
     },
     methods: {
@@ -197,8 +200,8 @@ export default {
         onRoleChange(role) {
             this.setAction({ key: 'roleId', value: getKeyByValue(this.roles, role) });
         },
-        onStatusChange(status) {
-            this.setAction({ key: 'status', value: getKeyByValue(this.activityStatuses, status) });
+        onStatusChange(isActive) {
+            this.setAction({ key: 'isActive', value: getValueByKey(this.activityStatuses, isActive) });
         },
     },
 };

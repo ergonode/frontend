@@ -6,7 +6,7 @@ export default ({ app, error }) => {
     app.router.beforeEach((to, from, next) => {
         if (to.meta
             && to.meta.privileges && to.meta.privileges.length
-            && !to.meta.privileges.every(privilege => app.$canIUse(privilege))) {
+            && !to.meta.privileges.every(privilege => app.$hasAccess(privilege))) {
             next(error({ statusCode: 403 }));
         }
         next();

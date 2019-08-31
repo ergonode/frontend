@@ -33,7 +33,7 @@ export default {
     },
     beforeCreate() {
         const { menu: modulesMenu } = this.$modulesConfiguration;
-        this.menu = getValidatedMenuData(this.$canIUse, modulesMenu);
+        this.menu = getValidatedMenuData(this.$hasAccess, modulesMenu);
     },
     beforeDestroy() {
         delete this.menu;

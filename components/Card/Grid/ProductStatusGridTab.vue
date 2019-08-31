@@ -6,9 +6,10 @@
     <div class="tab">
         <div class="tab__grid">
             <GridWrapper
-                store-namespace="rolesGrid"
+                store-namespace="statusesGrid"
                 :rows-height="rowsHeight"
-                :action-paths="actionPaths" />
+                :action-paths="actionPaths"
+                :editing-privilege-allowed="$hasAccess('WORKFLOW_UPDATE')" />
         </div>
         <GridFooter>
             <GridPageSelector
@@ -31,7 +32,7 @@ import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
 
 export default {
-    name: 'RolesGridTab',
+    name: 'ProductStatusGridTab',
     components: {
         GridWrapper,
         GridFooter,
@@ -52,29 +53,29 @@ export default {
     beforeCreate() {
         this.$registerStore({
             module: gridModule,
-            moduleName: 'rolesGrid',
+            moduleName: 'statusesGrid',
             store: this.$store,
         });
     },
     beforeDestroy() {
-        this.$store.unregisterModule('rolesGrid');
+        this.$store.unregisterModule('statusesGrid');
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('rolesGrid', {
+        ...mapState('statusesGrid', {
             numberOfDataElements: state => state.count,
             displayedPage: state => state.displayedPage,
             numberOfDisplayedElements: state => state.numberOfDisplayedElements,
         }),
-        ...mapGetters('rolesGrid', {
+        ...mapGetters('statusesGrid', {
             numberOfPages: 'numberOfPages',
         }),
         actionPaths() {
             return {
-                getData: `${this.userLanguageCode}/roles`,
-                routerEdit: 'users-roles-edit-id',
+                getData: `${this.userLanguageCode}/status`,
+                routerEdit: 'workflow-statuses-edit-id',
             };
         },
         rowsHeight: {
@@ -120,7 +121,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('rolesGrid', [
+        ...mapActions('statusesGrid', [
             'getData',
             'changeDisplayingPage',
             'changeNumberOfDisplayingElements',
@@ -141,11 +142,11 @@ export default {
     async fetch({ app, store }) {
         app.$registerStore({
             module: gridModule,
-            moduleName: 'rolesGrid',
+            moduleName: 'statusesGrid',
             store,
         });
-        const gridPath = `${store.state.authentication.user.language}/roles`;
-        await store.dispatch('rolesGrid/getData', { path: gridPath });
+        const gridPath = `${store.state.authentication.user.language}/status`;
+        await store.dispatch('statusesGrid/getData', { path: gridPath });
     },
 };
 </script>

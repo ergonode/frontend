@@ -14,7 +14,7 @@
 
 import { mapState, mapActions } from 'vuex';
 import { getMappedGroupIDs, getMappedOptions, getMappedParameterKeys } from '~/model/mappers/attributeMapper';
-import { isThereAnyTranslation, clearEmptyTranslations } from '~/model/mappers/translationMapper';
+import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 
 export default {
     validate({ params }) {
@@ -94,15 +94,15 @@ export default {
             }
 
             if (isThereAnyTranslation(label)) {
-                propertiesToUpdate.label = clearEmptyTranslations(label);
+                propertiesToUpdate.label = getParsedTranslations(label);
             }
 
             if (isThereAnyTranslation(hint)) {
-                propertiesToUpdate.hint = clearEmptyTranslations(hint);
+                propertiesToUpdate.hint = getParsedTranslations(hint);
             }
 
             if (isThereAnyTranslation(placeholder)) {
-                propertiesToUpdate.placeholder = clearEmptyTranslations(placeholder);
+                propertiesToUpdate.placeholder = getParsedTranslations(placeholder);
             }
 
             this.updateAttribute({
@@ -116,18 +116,11 @@ export default {
     async fetch({
         store,
         params,
-        error,
     }) {
         await store.dispatch('translations/clearStorage');
         await store.dispatch('attribute/clearStorage');
         await store.dispatch('attribute/getAttributeById', {
             attributeId: params.id,
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return error();
-            },
         });
     },
 };

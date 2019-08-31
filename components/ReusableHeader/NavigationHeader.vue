@@ -3,17 +3,30 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['navigation-header', { 'navigation-header__breadcrumbs': hasBreadcrumbs }]">
+    <div class="navigation-header">
         <NavigationHeaderTitle
             :title="title"
             :icon="icon"
             :is-breadcrumb="breadcrumbs.length !== 0"
             @navigateback="onClick">
-            <NavigationHeaderBreadcrumb
-                v-for="(breadcrumb, index) in breadcrumbs"
-                :key="index"
-                slot="breadcrumb"
-                :breadcrumb="breadcrumb" />
+            <template v-slot:breadcrumb>
+                <NavigationHeaderBreadcrumb
+                    v-for="(breadcrumb, index) in breadcrumbs"
+                    :key="index"
+                    slot="breadcrumb"
+                    :breadcrumb="breadcrumb" />
+            </template>
+            <template v-slot:badge>
+                <InformationBadge
+                    v-if="isReadOnly"
+                    title="READ ONLY">
+                    <template v-slot:prepend>
+                        <IconLock
+                            size="24"
+                            fill-color="#fff" />
+                    </template>
+                </InformationBadge>
+            </template>
         </NavigationHeaderTitle>
         <div class="header-buttons-wrapper">
             <Button
@@ -43,8 +56,10 @@ export default {
         NavigationHeaderTitle: () => import('~/components/ReusableHeader/NavigationHeaderTitle'),
         NavigationHeaderBreadcrumb: () => import('~/components/ReusableHeader/NavigationHeaderBreadcrumb'),
         Button: () => import('~/components/Buttons/Button'),
+        InformationBadge: () => import('~/components/Badges/InformationBadge'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
+        IconLock: () => import('~/components/Icon/Feedback/IconLock'),
     },
     props: {
         title: {
@@ -63,10 +78,9 @@ export default {
             type: Array,
             default: () => [],
         },
-    },
-    computed: {
-        hasBreadcrumbs() {
-            return this.breadcrumbs.length > 0;
+        isReadOnly: {
+            type: Boolean,
+            default: false,
         },
     },
     methods: {
@@ -86,12 +100,7 @@ export default {
         flex: 0 0 auto;
         justify-content: space-between;
         align-items: center;
-        height: 80px;
-        padding: 0 24px;
-
-        &__breadcrumbs {
-            height: 100px;
-        }
+        padding: 24px;
 
         .header-buttons-wrapper {
             display: flex;

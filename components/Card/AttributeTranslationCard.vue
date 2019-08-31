@@ -14,29 +14,32 @@
         <Divider />
         <div class="modal-container">
             <TextField
-                v-model="nameValue"
+                :value="translations.label[languageCode]"
                 solid
                 label="Attribute name"
                 regular
                 :error-messages="errorLabelMessage"
-                :disabled="!isUserAllowedToUpdate" />
+                :disabled="!isUserAllowedToUpdate"
+                @input="(value) => setTranslationPropertyValue(value, 'label')" />
             <TextArea
                 v-if="hasPlaceholder"
-                v-model="placeholderValue"
+                :value="translations.placeholder[languageCode]"
                 solid
                 label="Placeholder"
                 resize="vertical"
                 :style="{height: '150px'}"
                 :error-messages="errorPlaceholderMessage"
-                :disabled="!isUserAllowedToUpdate" />
+                :disabled="!isUserAllowedToUpdate"
+                @input="(value) => setTranslationPropertyValue(value, 'placeholder')" />
             <TextArea
-                v-model="tooltipValue"
+                :value="translations.hint[languageCode]"
                 solid
                 label="Tooltip for writers"
-                resize="vertical"
+                resize="none"
                 :style="{height: '150px'}"
                 :error-messages="errorHintMessage"
-                :disabled="!isUserAllowedToUpdate" />
+                :disabled="!isUserAllowedToUpdate"
+                @input="(value) => setTranslationPropertyValue(value, 'hint')" />
             <template v-if="hasOptions">
                 <Divider />
                 <AttributeOptionValues
@@ -76,42 +79,6 @@ export default {
         ...mapState('attribute', {
             type: state => state.type,
         }),
-        nameValue: {
-            get() {
-                return this.translations.label[this.languageCode];
-            },
-            set(newName) {
-                const labelIndex = 'label';
-                this.setTranslationPropertyValue(
-                    newName,
-                    labelIndex,
-                );
-            },
-        },
-        placeholderValue: {
-            get() {
-                return this.translations.placeholder[this.languageCode];
-            },
-            set(newPlaceholder) {
-                const placeholderIndex = 'placeholder';
-                this.setTranslationPropertyValue(
-                    newPlaceholder,
-                    placeholderIndex,
-                );
-            },
-        },
-        tooltipValue: {
-            get() {
-                return this.translations.hint[this.languageCode];
-            },
-            set(newTooltip) {
-                const hintIndex = 'hint';
-                this.setTranslationPropertyValue(
-                    newTooltip,
-                    hintIndex,
-                );
-            },
-        },
         hasPlaceholder() {
             return hasPlaceholder(
                 getMappedType(
@@ -129,7 +96,7 @@ export default {
             );
         },
         isUserAllowedToUpdate() {
-            return this.$canIUse('ATTRIBUTE_UPDATE');
+            return this.$hasAccess('ATTRIBUTE_UPDATE');
         },
         errorLabelMessage() {
             const labelIndex = `label_${this.languageCode}`;

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'TrashCan',
@@ -32,9 +32,6 @@ export default {
         ...mapState('draggable', {
             isColumnDragging: state => state.isColumnDragging,
         }),
-        ...mapGetters('grid', [
-            'columnIndexByID',
-        ]),
     },
     methods: {
         ...mapActions('draggable', [

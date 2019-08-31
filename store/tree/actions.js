@@ -12,10 +12,12 @@ import {
 } from '~/model/tree/TreeCalculations';
 import { getParsedTreeData } from '~/model/mappers/treeMapper';
 
+const onDefaultError = () => {};
+
 export default {
     getTreeById(
         { commit, dispatch, rootState },
-        { treeName, onError },
+        { treeName },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { [userLanguageCode]: categories } = rootState.list.elements;
@@ -27,19 +29,19 @@ export default {
                 treeToSet.forEach(e => dispatch('list/setDisabledElement', { languageCode: userLanguageCode, elementId: e.id }, { root: true }));
                 commit(types.SET_TREE, treeToSet);
                 commit(types.SET_FULL_TREE, treeToSet);
-            }).catch(e => onError(e.data));
-        }).catch(e => onError(e.data));
+            }).catch(onDefaultError);
+        }).catch(onDefaultError);
     },
     updateTree(
         { rootState },
         {
-            id, data, onSuccess, onError,
+            id, data, onSuccess,
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$put(`${userLanguageCode}/trees/${id}`, data).then(() => {
             onSuccess();
-        }).catch(e => onError(e.data));
+        }).catch(onDefaultError);
     },
     setRowsCount: ({ commit }, value) => {
         commit(types.SET_ROWS_COUNT, value);

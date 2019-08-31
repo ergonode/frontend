@@ -4,7 +4,7 @@
  */
 <template>
     <AttributePage
-        :title="title"
+        title="New attribute"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>
@@ -25,9 +25,6 @@ export default {
     components: {
         AttributePage: () => import('~/components/Pages/AttributePage'),
     },
-    data: () => ({
-        title: 'New attribute',
-    }),
     computed: {
         ...mapState('attribute', {
             code: state => state.code,
@@ -58,7 +55,7 @@ export default {
         onDismiss() {
             this.$router.push('/attributes');
         },
-        onCreateAttributeSuccess(id) {
+        onAttributeCreated(id) {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Attribute created' });
             this.$router.push({
@@ -103,7 +100,7 @@ export default {
 
             this.createAttribute({
                 data: attribute,
-                onSuccess: this.onCreateAttributeSuccess,
+                onSuccess: this.onAttributeCreated,
                 onError: this.onError,
             });
         },
