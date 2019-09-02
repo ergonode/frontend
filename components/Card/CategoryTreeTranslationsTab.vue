@@ -22,7 +22,6 @@ export default {
         TranslationsTab: () => import('~/components/Card/TranslationsTab'),
         CategoryTreeTranslationCard: () => import('~/components/Card/CategoryTreeTranslationCard'),
     },
-
     props: {
         updateButton: {
             type: Object,
