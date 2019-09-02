@@ -64,7 +64,7 @@ export default {
                     updateButton: {
                         title: `${buttonPrefix} CATEGORY`,
                         action: tabAction,
-                        disabled: this.isEdit ? this.isUserAllowedToUpdateCategory : false,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateCategory : false,
                     },
                 },
             },
@@ -76,7 +76,7 @@ export default {
                     updateButton: {
                         title: `${buttonPrefix} CATEGORY`,
                         action: tabAction,
-                        disabled: !this.isUserAllowedToUpdateCategory,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateCategory : false,
                     },
                 },
             },

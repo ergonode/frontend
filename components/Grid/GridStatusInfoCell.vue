@@ -45,9 +45,10 @@ export default {
         flex: 1;
         flex-direction: column;
         padding: 4px;
-        font: 500 12px/16px "Inter UI";
+        @include setFont(medium, small, regular);
 
         &__block {
+            border-radius: 7px;
             display: flex;
             flex: 1;
             justify-content: center;

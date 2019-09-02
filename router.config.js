@@ -9,6 +9,8 @@ const Categories = () => import('~/pages/categories/index').then(m => m.default 
 const CategoryNew = () => import('~/pages/categories/new/index').then(m => m.default || m);
 const CategoryEdit = () => import('~/pages/categories/edit/_id').then(m => m.default || m);
 const CategoryTrees = () => import('~/pages/category-trees/index').then(m => m.default || m);
+const CategoryTreesNew = () => import('~/pages/category-trees/new/index').then(m => m.default || m);
+const CategoryTreesEdit = () => import('~/pages/category-trees/edit/_id').then(m => m.default || m);
 const Products = () => import('~/pages/products/index').then(m => m.default || m);
 const ProductNew = () => import('~/pages/products/new/index').then(m => m.default || m);
 const ProductEdit = () => import('~/pages/products/edit/_id').then(m => m.default || m);
@@ -42,9 +44,11 @@ const UserRolesBaseTab = () => import('~/components/Card/UserRolesBaseTab').then
 const UserRolesPrivilegeTab = () => import('~/components/Card/UserRolesPrivilegeTab').then(m => m.default || m);
 const CategoryBaseTab = () => import('~/components/Card/CategoryBaseTab').then(m => m.default || m);
 const CategoryTranslationsTab = () => import('~/components/Card/CategoryTranslationsTab').then(m => m.default || m);
+const CategoryTreeBaseTab = () => import('~/components/Card/CategoryTreeBaseTab').then(m => m.default || m);
+const CategoryTreeTranslationsTab = () => import('~/components/Card/CategoryTreeTranslationsTab').then(m => m.default || m);
+const CategoryTreeDesignTab = () => import('~/components/Card/CategoryTreeDesignTab').then(m => m.default || m);
 const ProductBaseTab = () => import('~/components/Card/ProductBaseTab').then(m => m.default || m);
 const ProductTemplateTab = () => import('~/components/Card/ProductTemplateTab').then(m => m.default || m);
-const TreeDesignTab = () => import('~/components/Card/TreeDesignTab').then(m => m.default || m);
 const ProductStatusBaseTab = () => import('~/components/Card/ProductStatusBaseTab').then(m => m.default || m);
 const ProductStatusTranslationsTab = () => import('~/components/Card/ProductStatusTranslationsTab').then(m => m.default || m);
 
@@ -52,6 +56,7 @@ const ProductStatusTranslationsTab = () => import('~/components/Card/ProductStat
 const ProductStatusGridTab = () => import('~/components/Card/Grid/ProductStatusGridTab').then(m => m.default || m);
 const ProductGridTab = () => import('~/components/Card/Grid/ProductGridTab').then(m => m.default || m);
 const CategoryGridTab = () => import('~/components/Card/Grid/CategoryGridTab').then(m => m.default || m);
+const CategoryTreesGridTab = () => import('~/components/Card/Grid/CategoryTreesGridTab').then(m => m.default || m);
 const AttributeGridTab = () => import('~/components/Card/Grid/AttributeGridTab').then(m => m.default || m);
 const RolesGridTab = () => import('~/components/Card/Grid/RolesGridTab').then(m => m.default || m);
 const UsersGridTab = () => import('~/components/Card/Grid/UsersGridTab').then(m => m.default || m);
@@ -143,8 +148,52 @@ export const pages = [
         component: CategoryTrees,
         children: [
             {
-                path: 'tree',
-                component: TreeDesignTab,
+                path: 'grid',
+                component: CategoryTreesGridTab,
+            },
+        ],
+        meta: {
+            permission: 'CATEGORY_TREE_READ',
+        },
+    },
+    {
+        name: 'category-trees-new',
+        path: '/category-trees/new',
+        component: CategoryTreesNew,
+        children: [
+            {
+                path: 'general',
+                component: CategoryTreeBaseTab,
+            },
+            {
+                path: 'translations',
+                component: CategoryTreeTranslationsTab,
+            },
+            {
+                path: 'designer',
+                component: CategoryTreeDesignTab,
+            },
+        ],
+        meta: {
+            permission: 'CATEGORY_TREE_CREATE',
+        },
+    },
+    {
+        name: 'category-trees-edit-id',
+        path: '/category-trees/edit/:id/:tab?',
+        component: CategoryTreesEdit,
+        children: [
+            {
+                path: 'general',
+                component: CategoryTreeBaseTab,
+            },
+            {
+                path: 'translations',
+                component: CategoryTreeTranslationsTab,
+            },
+            {
+                path: 'designer',
+                component: CategoryTreeDesignTab,
             },
         ],
         meta: {

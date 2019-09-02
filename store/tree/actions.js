@@ -17,20 +17,42 @@ const onDefaultError = () => {};
 export default {
     getTreeById(
         { commit, dispatch, rootState },
-        { treeName },
+        { treeId },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { [userLanguageCode]: categories } = rootState.list.elements;
-        return this.app.$axios.$get(`${userLanguageCode}/trees`).then(({ collection }) => {
-            const treeId = collection.find(e => e.name.toLowerCase() === treeName.toLowerCase()).id;
+
+        return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({
+            code,
+            name = '',
+            categories: treeData,
+        }) => {
+            const treeToSet = getParsedTreeData(treeData, categories);
+            const translations = {
+                name,
+            };
+
+            treeToSet.forEach(e => dispatch('list/setDisabledElement', { languageCode: userLanguageCode, elementId: e.id }, { root: true }));
+            commit(types.SET_TREE, treeToSet);
+            commit(types.SET_FULL_TREE, treeToSet);
             commit(types.SET_TREE_ID, treeId);
-            return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({ categories: treeData }) => {
-                const treeToSet = getParsedTreeData(treeData, categories);
-                treeToSet.forEach(e => dispatch('list/setDisabledElement', { languageCode: userLanguageCode, elementId: e.id }, { root: true }));
-                commit(types.SET_TREE, treeToSet);
-                commit(types.SET_FULL_TREE, treeToSet);
-            }).catch(onDefaultError);
+            commit(types.SET_CODE, code);
+            commit('translations/setTabTranslations', { translations }, { root: true });
         }).catch(onDefaultError);
+    },
+    createTree(
+        { commit, rootState },
+        {
+            data,
+            onSuccess,
+            onError,
+        },
+    ) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$post(`${userLanguageCode}/trees`, data).then(({ id }) => {
+            commit(types.SET_TREE_ID, id);
+            onSuccess(id);
+        }).catch(e => onError(e.data));
     },
     updateTree(
         { rootState },
@@ -45,6 +67,9 @@ export default {
     },
     setRowsCount: ({ commit }, value) => {
         commit(types.SET_ROWS_COUNT, value);
+    },
+    setTreeCode({ commit }, code) {
+        commit(types.SET_CODE, code);
     },
     setTree: ({ commit }, tree) => {
         commit(types.SET_TREE, tree);
