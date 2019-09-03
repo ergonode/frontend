@@ -11,22 +11,20 @@ context('Login ', () => {
         cy.visit('');
         cy.server();
         cy.route('POST', '/api/v1/login').as('loginRoute');
-        cy.get('div.btn').contains('span', 'Log in').as('loginBtn');
+        cy.get('button').contains('span', 'Log in').as('loginBtn');
     });
 
     describe('Login faild', () => {
         it('Without data', () => {
             cy.get('@loginBtn').click({ force: true });
-            cy.get('.alert.alert--error').should('contain', 'Internal Server Error');
-            cy.wait('@loginRoute').its('status').should('eq', 500);
+            cy.wait('@loginRoute').its('status').should('eq', 401);
         });
 
         it('Incorrect data', () => {
-            cy.get(':nth-child(1) > .input__content > input').type('test').should('have.value', 'test');
-            cy.get(':nth-child(2) > .input__content > input').type('123').should('have.value', '123');
+            cy.get('input[aria-label="Username"]').type('test').should('have.value', 'test');
+            cy.get('input[aria-label="Password"]').type('123').should('have.value', '123');
             cy.get('@loginBtn').click({ force: true });
-            cy.wait('@loginRoute').its('status').should('eq', 500);
-            cy.get('.alert.alert--error').should('contain', 'Internal Server Error');
+            cy.wait('@loginRoute').its('status').should('eq', 401);
         });
     });
 });
