@@ -189,8 +189,7 @@ export default {
         }
 
         &__error-label {
-            color: $error;
-            font: 500 10px/12px "Inter UI";
+            @include setFont(regular, tiny, tiny, $error);
         }
     }
 </style>

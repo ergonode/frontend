@@ -20,7 +20,7 @@
 
 <script>
 export default {
-    name: 'TreeDesignTab',
+    name: 'CategoryTreeDesignTab',
     components: {
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
         CategoryTreeWrapper: () => import('~/components/CategoryTree/CategoryTreeWrapper'),
