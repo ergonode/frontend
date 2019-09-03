@@ -8,7 +8,8 @@ export const types = {
     INITIALIZE_ELEMENTS_FOR_LANGUAGE: 'INITIALIZE_ELEMENTS_FOR_LANGUAGE',
     SET_GROUPS_FOR_LANGUAGE: 'SET_GROUPS_FOR_LANGUAGE',
     SET_ELEMENTS_FOR_LANGUAGE: 'SET_ELEMENTS_FOR_LANGUAGE',
-    SET_CONFIGURATION_FOR_LIST: 'SET_CONFIGURATION_FOR_LIST',
+    SET_DISABLED_ELEMENT: 'SET_DISABLED_ELEMENT',
+    REMOVE_DISABLED_ELEMENT: 'REMOVE_DISABLED_ELEMENT',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 
@@ -24,8 +25,15 @@ export default {
         state.elements[languageCode] = [...state.elements[languageCode], ...elements];
         state.elements = { ...state.elements };
     },
-    [types.SET_CONFIGURATION_FOR_LIST](state, [stateName, stateValue]) {
-        state[stateName] = stateValue;
+    [types.SET_DISABLED_ELEMENT](state, { languageCode, elementId }) {
+        state.disabledElements[languageCode] = {
+            ...state.disabledElements[languageCode], [elementId]: true,
+        };
+        state.disabledElements = { ...state.disabledElements };
+    },
+    [types.REMOVE_DISABLED_ELEMENT](state, { languageCode, elementId }) {
+        delete state.disabledElements[languageCode][elementId];
+        state.disabledElements[languageCode] = { ...state.disabledElements[languageCode] };
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

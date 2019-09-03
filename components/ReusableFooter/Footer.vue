@@ -10,6 +10,7 @@
             :title="button.title"
             :color="button.color"
             :theme="button.theme"
+            :disabled="button.disabled"
             large
             @click.native="button.action" />
     </div>
@@ -34,10 +35,10 @@ export default {
     .footer {
         z-index: 99;
         display: flex;
-        flex: 0 0 auto;
         justify-content: flex-end;
         align-items: center;
         padding: 12px 24px;
+        background-color: $white;
         box-shadow:
             0 6px 10px 0 rgba(0, 0, 0, 0.14),
             0 1px 18px 0 rgba(0, 0, 0, 0.12),

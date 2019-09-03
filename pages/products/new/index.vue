@@ -45,7 +45,7 @@ export default {
         },
         onCreateProductSuccess(id) {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'Product created' });
+            this.$addAlert({ type: 'success', message: 'Product created' });
             this.$router.push({
                 name: 'products-edit-id',
                 params: {
@@ -77,8 +77,8 @@ export default {
     },
     async fetch({ store }) {
         await store.dispatch('productsDraft/clearStorage');
-        await store.dispatch('productsDraft/getTemplates', { onError: () => {} });
-        await store.dispatch('productsDraft/getCategories', { onError: () => {} });
+        await store.dispatch('productsDraft/getTemplates');
+        await store.dispatch('productsDraft/getCategories');
     },
 };
 </script>

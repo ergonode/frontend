@@ -17,8 +17,8 @@
                 v-model="nameValue"
                 solid
                 label="Category name"
-                :error-messages="errorNameMessage"
-                :disabled="!isTranslationChosen" />
+                :disabled="!isUserAllowedToUpdate"
+                :error-messages="errorNameMessage" />
         </div>
     </BaseCard>
 </template>
@@ -47,6 +47,9 @@ export default {
                 const nameIndex = 'name';
                 this.setTranslationPropertyValue(newName, nameIndex);
             },
+        },
+        isUserAllowedToUpdate() {
+            return this.$hasAccess('CATEGORY_UPDATE');
         },
         errorNameMessage() {
             const nameIndex = `name_${this.languageCode}`;

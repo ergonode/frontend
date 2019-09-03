@@ -4,6 +4,7 @@
  */
 export default () => ({
     treeId: null,
+    code: '',
     treeLevels: 10,
     rowsHeight: 50,
     rowsCount: 0,

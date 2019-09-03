@@ -5,6 +5,7 @@
 <template>
     <UploadImage
         :value="value"
+        :disabled="disabled"
         @upload="updateValue"
         @remove="updateValue" />
 </template>

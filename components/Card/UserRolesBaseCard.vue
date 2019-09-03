@@ -11,6 +11,7 @@
             regular
             label="Role name"
             :error-messages="errorNameMessage"
+            :disabled="isDisabledByPrivileges"
             @input="setName" />
         <TextArea
             :value="description"
@@ -21,6 +22,7 @@
             resize="none"
             :style="{height: '150px'}"
             :error-messages="errorDescMessage"
+            :disabled="isDisabledByPrivileges"
             @input="setDescription" />
     </BaseCard>
 </template>
@@ -46,6 +48,10 @@ export default {
         }),
         isDisabled() {
             return Boolean(this.roleID);
+        },
+        isDisabledByPrivileges() {
+            return (this.isDisabled && !this.$hasAccess('USER_ROLE_UPDATE'))
+            || (!this.isDisabled && !this.$hasAccess('USER_ROLE_CREATE'));
         },
         errorNameMessage() {
             const nameIndex = 'name';

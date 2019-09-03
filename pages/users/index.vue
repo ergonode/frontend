@@ -4,8 +4,8 @@
  */
 <template>
     <GridUsersPage
-        :title="title"
-        :buttons="getButtons"
+        title="Users"
+        :buttons="getButtons()"
         icon="User" />
 </template>
 <script>
@@ -17,25 +17,10 @@ export default {
     components: {
         GridUsersPage: () => import('~/components/Pages/GridUsersPage'),
     },
-    data() {
-        return {
-            title: 'Users',
-        };
-    },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        getButtons() {
-            const isRolePath = /roles/.test(this.$route.path);
-            return [
-                {
-                    title: isRolePath ? 'CREATE ROLE' : 'CREATE USER',
-                    color: 'success',
-                    action: isRolePath ? this.addNewRole : this.addNewUser,
-                },
-            ];
-        },
     },
     methods: {
         addNewUser() {
@@ -43,6 +28,32 @@ export default {
         },
         addNewRole() {
             this.$router.push('/users/roles/new');
+        },
+        getButtons() {
+            const isRolesPath = /roles/.test(this.$route.path);
+            const isUsersPath = /grid/.test(this.$route.path);
+
+            if (!isRolesPath && !isUsersPath) return [];
+
+            if (isUsersPath) {
+                return [
+                    {
+                        title: 'CREATE USER',
+                        color: 'success',
+                        action: this.addNewUser,
+                        disabled: !this.$hasAccess('USER_CREATE'),
+                    },
+                ];
+            }
+
+            return [
+                {
+                    title: 'CREATE ROLE',
+                    color: 'success',
+                    action: this.addNewRole,
+                    disabled: !this.$hasAccess('USER_ROLE_CREATE'),
+                },
+            ];
         },
     },
 };

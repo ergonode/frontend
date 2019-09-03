@@ -25,7 +25,8 @@
             slot="item"
             :key="item.id"
             :item="item"
-            :language-code="languageCode" />
+            :language-code="languageCode"
+            :dragging-disabled="draggingDisabled" />
     </ListGroupElement>
 </template>
 
@@ -43,6 +44,10 @@ export default {
     props: {
         group: {
             type: Object,
+            required: true,
+        },
+        draggingDisabled: {
+            type: Boolean,
             required: true,
         },
         languageCode: {

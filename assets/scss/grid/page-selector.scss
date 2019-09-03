@@ -5,6 +5,7 @@
 .page-selector {
     display: flex;
     align-items: center;
+    justify-self: flex-start;
 
     &__text {
         @include setFont(medium, small, regular, $darkGraphite);

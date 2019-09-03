@@ -12,6 +12,7 @@
         :error-messages="errorMessages"
         multiselect
         :required="required"
+        :disabled="disabled"
         @focus="onFocusChange"
         @input="onValueChange">
         <template v-slot:append>

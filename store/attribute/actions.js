@@ -60,7 +60,7 @@ export default {
     },
     getAttributeById(
         { dispatch, commit, rootState },
-        { attributeId, onError },
+        { attributeId, onError = () => {} },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
 
@@ -108,7 +108,7 @@ export default {
                 commit(types.INITIALIZE_OPTION_KEYS, optionKeys);
                 commit(types.INITIALIZE_OPTION_VALUES, optionValues);
             }
-        }).catch(e => onError(e));
+        }).catch(e => onError(e.data));
     },
     setMultilingualAttribute({ commit }, isMultilingual) {
         commit(types.SET_MULTILINGUAL_ATTRIBUTE, isMultilingual);

@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import NavigationBarSelectButton from '~/components/Navigation/NavigationBar/NavigationBarSelectButton';
 
 const localVue = createLocalVue();
@@ -15,11 +15,11 @@ describe('Navigation/NavigationBar/NavigationBarSelectButton', () => {
             localVue,
             propsData: {
                 title: null,
-            }
+            },
         });
     });
 
-    it("Component renders correctly", () => {
+    it('Component is rendered', () => {
         expect(wrapper.is(NavigationBarSelectButton)).toBe(true);
     });
 
@@ -44,6 +44,6 @@ describe('Navigation/NavigationBar/NavigationBarSelectButton', () => {
         const onClickStub = jest.fn();
         wrapper.setMethods({ onClick: onClickStub });
         wrapper.find('.bar-button').trigger('click');
-        expect(onClickStub).toBeCalled();
+        expect(onClickStub).toHaveBeenCalled();
     });
 });

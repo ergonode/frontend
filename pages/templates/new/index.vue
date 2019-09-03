@@ -11,7 +11,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getMappedLayoutElementsForAPIUpdate } from '~/model/mappers/templateMapper';
 import { asyncRequestWrapper } from '~/model/wrappers/asyncRequestWrapper';
 
 export default {
@@ -43,7 +42,7 @@ export default {
         },
         onCreateTemplateDesignerSuccess(id) {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'Template created' });
+            this.$addAlert({ type: 'success', message: 'Template created' });
             this.$router.push({
                 name: 'templates-edit-id',
                 params: {
@@ -52,18 +51,20 @@ export default {
             });
         },
         onCreate() {
-            this.createTemplateDesigner({
-                data: {
-                    name: this.templateTitle,
-                    image: this.templateImage,
-                    elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
-                },
-                onSuccess: this.onCreateTemplateDesignerSuccess,
-                onError: this.onError,
+            import('~/model/mappers/templateMapper').then(({ getMappedLayoutElementsForAPIUpdate }) => {
+                this.createTemplateDesigner({
+                    data: {
+                        name: this.templateTitle,
+                        image: this.templateImage,
+                        elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
+                    },
+                    onSuccess: this.onCreateTemplateDesignerSuccess,
+                    onError: this.onError,
+                });
             });
         },
     },
-    async fetch({ store, error }) {
+    async fetch({ store }) {
         const {
             user: { language: userLanguageCode },
         } = store.state.authentication;
@@ -75,13 +76,10 @@ export default {
             path: `${userLanguageCode}/templates/types`,
             params: {},
             store,
-            error,
         });
 
         const groupsRequest = store.dispatch('list/getGroups', {
             languageCode: userLanguageCode,
-            onSuccess: () => {},
-            onError: () => {},
         });
 
         return Promise.all([groupsRequest, getTypesRequest]);

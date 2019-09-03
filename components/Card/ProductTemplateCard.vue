@@ -17,6 +17,7 @@
                     :style="getItemPosition(element)"
                     :value="getElementValueByCode(element.code, element.type)"
                     :multiselect="element.type === 'MULTI_SELECT'"
+                    :disabled="!isUserAllowedToUpdate"
                     v-bind="element" />
             </div>
         </TemplateGridDesigner>
@@ -68,6 +69,9 @@ export default {
             }
 
             return maxVisibleRows;
+        },
+        isUserAllowedToUpdate() {
+            return this.$hasAccess('PRODUCT_UPDATE');
         },
         gridStyle() {
             return {

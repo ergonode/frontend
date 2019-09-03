@@ -9,6 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="Attributes"
+            :is-read-only="!isUserAllowedToUpdateAttribute && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -20,44 +21,28 @@ import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPag
 export default {
     name: 'AttributePage',
     mixins: [categoryManagementPageBaseMixin],
-    data() {
-        return {
-            breadcrumbs: [
-                {
-                    title: 'Attributes',
-                    icon: 'Attributes',
-                    path: '/attributes',
-                },
-            ],
-            buttons: [],
-            tabs: [
-                {
-                    title: 'General options',
-                    path: `/attributes/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/general`,
-                    active: true,
-                    props: {
-                        updateButton: {
-                            title: this.isEdit ? 'SAVE ATTRIBUTE' : 'CREATE ATTRIBUTE',
-                            action: this.isEdit ? this.onSave : this.onCreate,
-                        },
-                    },
-                },
-                {
-                    title: 'Translations',
-                    path: `/attributes/${this.isEdit ? `edit/${this.$route.params.id}` : 'add'}/translations`,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE ATTRIBUTE',
-                            action: this.onSave,
-                        },
-                    },
-                },
-            ],
-        };
-    },
     created() {
+        this.breadcrumbs = [
+            {
+                title: 'Attributes',
+                icon: 'Attributes',
+                path: '/attributes',
+            },
+        ];
+        this.buttons = [];
+
+        this.isUserAllowedToUpdateAttribute = this.$hasAccess('ATTRIBUTE_UPDATE');
+        let generalOptTabPath = '/attributes/new/general';
+        let translationsTabPath = '/attributes/new/translation';
+        let tabAction = this.onCreate;
+        let buttonPrefix = 'CREATE';
+
         if (this.isEdit) {
+            generalOptTabPath = `/attributes/edit/${this.$route.params.id}/general`;
+            translationsTabPath = `/attributes/edit/${this.$route.params.id}/translations`;
+            tabAction = this.onSave;
+            buttonPrefix = 'SAVE';
+
             this.buttons = [
                 // uncomment when we create removal options
                 // {
@@ -69,6 +54,38 @@ export default {
                 // },
             ];
         }
+
+        this.tabs = [
+            {
+                title: 'General options',
+                path: generalOptTabPath,
+                active: true,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} ATTRIBUTE`,
+                        action: tabAction,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateAttribute : false,
+                    },
+                },
+            },
+            {
+                title: 'Translations',
+                path: translationsTabPath,
+                active: this.isEdit,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} ATTRIBUTE`,
+                        action: tabAction,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateAttribute : false,
+                    },
+                },
+            },
+        ];
+    },
+    beforeDestroy() {
+        delete this.breadcrumbs;
+        delete this.isUserAllowedToUpdateAttribute;
+        delete this.buttons;
     },
 };
 </script>

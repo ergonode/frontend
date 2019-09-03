@@ -32,10 +32,6 @@ export default {
             type: Array,
             required: true,
         },
-        defaultTranslation: {
-            type: Object,
-            required: true,
-        },
     },
     computed: {
         ...mapState('data', {
@@ -63,7 +59,6 @@ export default {
 
             this.setVisibleCardTranslations({
                 languages: languageCodes,
-                defaultTranslation: this.defaultTranslation,
             });
         },
     },

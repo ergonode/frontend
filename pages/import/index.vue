@@ -22,11 +22,13 @@ export default {
         return {
             title: 'Imports',
             buttons: [
-                {
-                    title: 'CREATE IMPORT',
-                    color: 'success',
-                    action: this.addNewImport,
-                },
+                // TODO: uncomment when we have create action
+                // {
+                //     title: 'CREATE IMPORT',
+                //     color: 'success',
+                //     action: this.addNewImport,
+                //     disabled: !this.$hasAccess('IMPORT_CREATE'),
+                // },
             ],
         };
     },

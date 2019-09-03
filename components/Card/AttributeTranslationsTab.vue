@@ -4,8 +4,7 @@
  */
 <template>
     <TranslationsTab
-        :update-button="updateButton"
-        :default-translation="defaultTranslation">
+        :update-button="updateButton">
         <AttributeTranslationCard
             v-for="(languageCode, index) in cardsLanguageCodes"
             :key="index"
@@ -27,11 +26,6 @@ export default {
             type: Object,
             required: true,
         },
-    },
-    data() {
-        return {
-            defaultTranslation: { hint: '', label: '', placeholder: '' },
-        };
     },
     computed: {
         ...mapState('translations', {

@@ -5,8 +5,9 @@
 <template>
     <PageWrapper>
         <NavigationHeader
-            :title="title"
+            title="Templates"
             :buttons="buttons"
+            :is-read-only="Privilege.isReadOnly"
             icon="Templates" />
         <div class="templates">
             <div
@@ -32,6 +33,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import Privilege from '~/model/privilege';
 
 export default {
     name: 'Templates',
@@ -40,17 +42,19 @@ export default {
         TemplateElement: () => import('~/components/Template/TemplateElement'),
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
     },
-    data() {
-        return {
-            title: 'Templates',
-            buttons: [
-                {
-                    title: 'CREATE TEMPLATE',
-                    color: 'success',
-                    action: this.onCreate,
-                },
-            ],
-        };
+    created() {
+        this.Privilege = new Privilege(this.$hasAccess, 'TEMPLATE_DESIGNER');
+        this.buttons = [
+            {
+                title: 'CREATE TEMPLATE',
+                color: 'success',
+                action: this.onCreate,
+                disabled: !this.$hasAccess('TEMPLATE_DESIGNER_CREATE'),
+            },
+        ];
+    },
+    beforeDestroy() {
+        delete this.buttons;
     },
     computed: {
         ...mapState('templateLists', {
@@ -65,7 +69,7 @@ export default {
             this.$router.push('templates/new');
         },
     },
-    async fetch({ store, error }) {
+    async fetch({ store }) {
         const params = {
             limit: 5000,
             offset: 0,
@@ -73,12 +77,6 @@ export default {
         await store.dispatch('templateLists/clearStorage');
         await store.dispatch('templateLists/getTemplatesSection', {
             params,
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return false;
-            },
         });
     },
 };

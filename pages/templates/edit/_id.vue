@@ -12,7 +12,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getMappedLayoutElementsForAPIUpdate } from '~/model/mappers/templateMapper';
 
 export default {
     validate({ params }) {
@@ -52,24 +51,26 @@ export default {
         },
         onUpdateTemplateDesignerSuccess() {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'Template updated' });
+            this.$addAlert({ type: 'success', message: 'Template updated' });
             this.$router.push('/templates');
         },
         onCreate() {
-            const { id } = this.$route.params;
-            this.updateTemplateDesigner({
-                id,
-                data: {
-                    name: this.templateTitle,
-                    image: this.templateImage,
-                    elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
-                },
-                onSuccess: this.onUpdateTemplateDesignerSuccess,
-                onError: this.onError,
+            import('~/model/mappers/templateMapper').then(({ getMappedLayoutElementsForAPIUpdate }) => {
+                const { id } = this.$route.params;
+                this.updateTemplateDesigner({
+                    id,
+                    data: {
+                        name: this.templateTitle,
+                        image: this.templateImage,
+                        elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
+                    },
+                    onSuccess: this.onUpdateTemplateDesignerSuccess,
+                    onError: this.onError,
+                });
             });
         },
     },
-    async fetch({ store, error, params }) {
+    async fetch({ store, params }) {
         const {
             user: { language: userLanguageCode },
         } = store.state.authentication;
@@ -78,22 +79,12 @@ export default {
         await store.dispatch('list/clearStorage');
         await store.dispatch('templateDesigner/getTypes', {
             path: `${userLanguageCode}/templates/types`,
-            onSuccess: () => {},
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return error();
-            },
         });
         await store.dispatch('list/getGroups', {
             languageCode: userLanguageCode,
-            onSuccess: () => {},
-            onError: () => {},
         });
         await store.dispatch('templateDesigner/getTemplateByID', {
             path: `${userLanguageCode}/templates/${id}`,
-            onError: () => {},
         });
     },
 };

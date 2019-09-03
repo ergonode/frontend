@@ -5,7 +5,7 @@
 <template>
     <div
         class="grid-container"
-        :draggable="isDraggingEnabled"
+        :draggable="isDraggingEnabled && $hasAccess('CATEGORY_TREE_UPDATE')"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
         @dragover="onDragOver"
@@ -104,12 +104,17 @@ export default {
             'setDraggedElement',
             'setDraggableState',
         ]),
+        ...mapActions('list', [
+            'removeDisabledElement',
+            'setDisabledElement',
+        ]),
         ...mapActions('tree', [
             'setChildrenLength',
             'setRowsCount',
             'addTreeItem',
             'removeTreeItem',
             'rebuildTree',
+            'removeHiddenItem',
         ]),
         calculateRowsCount() {
             const { clientHeight } = document.querySelector('.grid-container');
@@ -134,11 +139,13 @@ export default {
                 elements: categories,
                 elementBounds: getRowBounds(categories),
             }, ({ index, category }) => {
-                const hasChildren = category.querySelector('.grid-item__categories-length');
                 if (category) {
+                    const hasChildren = category.querySelector('.grid-item__categories-length');
                     const categoryId = category.getAttribute('item-id');
                     const categoryItem = this.dataWithoutGhostElement[index];
-                    const { row, column, expanded } = categoryItem;
+                    const {
+                        id, row, column, expanded,
+                    } = categoryItem;
                     const parentId = this.getParentId(row, column);
                     if (hasChildren && !expanded) {
                         this.$emit('toggleItem', categoryItem);
@@ -150,6 +157,10 @@ export default {
                         this.setChildrenLength({ id: parentId, value: -1 });
                     }
                     this.removeTreeItem(index);
+                    this.removeDisabledElement({
+                        languageCode: this.language,
+                        elementId: id,
+                    });
                 } else {
                     event.preventDefault();
                 }
@@ -157,7 +168,6 @@ export default {
             return true;
         },
         onDragEnd(event) {
-            event.preventDefault();
             removeTreeElementCopyFromDocumentBody(event);
             this.setDraggedElement();
             this.setDraggableState({ propName: 'isListElementDragging', value: false });
@@ -190,10 +200,19 @@ export default {
 
             if (isOutOfBounds) {
                 this.removeGhostElement();
+                if (this.hiddenItems[this.draggedElement]) {
+                    const childrenForHiddenItem = this.hiddenItems[this.draggedElement];
+                    for (let i = 0; i < childrenForHiddenItem.length; i += 1) {
+                        this.removeDisabledElement({
+                            languageCode: this.language,
+                            elementId: childrenForHiddenItem[i].id,
+                        });
+                    }
+                }
+                this.removeHiddenItem(this.draggedElement);
             }
         },
-        onDrop(event) {
-            event.preventDefault();
+        onDrop() {
             const { row, column } = this.ghostElement;
             const { code: categoryCode, name: categoryName } = this.listElements[this.language]
                 .find(e => e.id === this.draggedElement);
@@ -213,6 +232,10 @@ export default {
                 parent: parentId,
             };
             this.addTreeItem(droppedItem);
+            this.setDisabledElement({
+                languageCode: this.language,
+                elementId: this.draggedElement,
+            });
             if (parentId !== 'root') {
                 this.setChildrenLength({ id: parentId, value: 1 });
             }
@@ -317,6 +340,7 @@ export default {
             if (isPositionNotDuplicated) {
                 this.ghostElement.row = row;
                 this.ghostElement.column = column;
+                this.ghostElement.parent = this.getParentId(row, column);
                 this.addTreeItem({ ...this.ghostElement });
             }
         },
@@ -330,7 +354,7 @@ export default {
                 this.mousePosition.directionOfCollision = directionOfCollision;
             }
             if (shadowItem !== this.mousePosition.shadowItem) {
-                const shadowItemId = shadowItem ? shadowItem.getAttribute('shadow-id') : null;
+                const shadowItemId = shadowItem.getAttribute('shadow-id');
                 this.mousePosition = {
                     overColumn: shadowItemId % this.columns,
                     overRow: Math.floor(shadowItemId / this.columns),

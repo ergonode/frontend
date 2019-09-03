@@ -3,10 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="upload-image">
+    <div :class="['upload-image', {'upload-image--disabled': disabled}]">
         <span
             v-if="title"
-            class="upload-image__title">{{ title }}</span>
+            class="upload-image__title"
+            v-text="title" />
         <div
             v-if="!selectedFileID"
             class="upload-image__wrapper">
@@ -36,24 +37,30 @@
             </div>
             <Picture :image-id="selectedFileID" />
         </div>
+        <span
+            v-if="uploadError"
+            class="upload-image__error-label"
+            v-text="uploadError.join(', ')" />
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'UploadImage',
     props: {
         title: {
             type: String,
-            required: false,
             default: '',
         },
         value: {
             type: String,
-            required: false,
             default: '',
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     components: {
@@ -67,9 +74,15 @@ export default {
             localImage: null,
         };
     },
+    computed: {
+        ...mapState('validations', {
+            uploadError: state => state.validationErrors.upload,
+        }),
+    },
     methods: {
         ...mapActions('validations', [
             'onError',
+            'removeValidationError',
         ]),
         onRemove() {
             this.selectedFileID = '';
@@ -87,7 +100,8 @@ export default {
                 this.selectedFileID = id;
                 this.$emit('upload', id);
 
-                this.$addAlert(this.$store, { type: 'success', message: 'File uploaded' });
+                this.$addAlert({ type: 'success', message: 'File uploaded' });
+                this.removeValidationError('upload');
             }).catch(e => this.onError(e.data));
         },
     },
@@ -97,8 +111,21 @@ export default {
 <style lang="scss" scoped>
     .upload-image {
         position: relative;
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-rows: max-content 150px max-content;
+        row-gap: 8px;
+
+        &--disabled::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: $background;
+            opacity: 0.5;
+            content: "";
+            cursor: not-allowed;
+        }
 
         &__wrapper {
             position: relative;
@@ -157,12 +184,12 @@ export default {
             text-align: center;
         }
 
-        &__title {
-            margin-bottom: 8px;
-        }
-
         &__description, &__title {
             @include setFont(medium, small, regular, $graphite);
+        }
+
+        &__error-label {
+            @include setFont(regular, tiny, tiny, $error);
         }
     }
 </style>

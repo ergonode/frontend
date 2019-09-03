@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount } from "@vue/test-utils"
+import { mount } from '@vue/test-utils';
 import TemplateGridDesigner from '~/components/TemplateGrid/TemplateDesigner/TemplateGridDesigner';
 import TemplateGridPresentationLayer from '~/components/TemplateGrid/TemplateGridPresentationLayer';
 
@@ -32,20 +32,20 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridDesigner', () => {
                                 columns: columnsNumber,
                                 rows: maxRows,
                                 isHeader: false,
-                            }
+                            },
                         });
                     },
                 },
             },
             data() {
                 return {
-                    rowHeight: rowHeight,
+                    rowHeight,
                 };
             },
         });
     });
 
-    it("Component is rendered", () => {
+    it('Component is rendered', () => {
         expect(wrapper.is(TemplateGridDesigner)).toBe(true);
     });
 

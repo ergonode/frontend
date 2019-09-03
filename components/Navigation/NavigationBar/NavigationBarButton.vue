@@ -14,7 +14,6 @@ export default {
     props: {
         isSelected: {
             type: Boolean,
-            required: false,
             default: false,
         },
     },

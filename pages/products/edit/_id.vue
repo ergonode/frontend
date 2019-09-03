@@ -42,10 +42,8 @@ export default {
             'clearStorage',
         ]),
         onDraftAppliedSuccess() {
-            this.$addAlert(this.$store, { type: 'success', message: 'Product updated' });
+            this.$addAlert({ type: 'success', message: 'Product updated' });
             this.$router.push('/products');
-        },
-        onDraftAppliedError() {
         },
         onDismiss() {
             this.$router.push('/products');
@@ -61,36 +59,26 @@ export default {
                 data: {
                     categoryIds,
                 },
-                onSuccess: () => {},
-                onError: () => {},
             });
             this.applyDraft({
                 id: this.id,
                 onSuccess: this.onDraftAppliedSuccess,
-                onError: this.onDraftAppliedError,
             });
         },
     },
     async fetch({
         store,
         params,
-        error,
     }) {
         const { language: languageCode } = store.state.authentication.user;
         const { id } = params;
-        const onError = (err) => {
-            if (err.response && err.response.status === 404) {
-                return error({ statusCode: 404, message: err.message });
-            }
-            return error();
-        };
 
         await Promise.all([
-            store.dispatch('productsDraft/getCategories', onError),
-            store.dispatch('productsDraft/getTemplates', onError),
-            store.dispatch('productsDraft/getProductDraft', { languageCode, id, onError }),
+            store.dispatch('productsDraft/getCategories'),
+            store.dispatch('productsDraft/getTemplates'),
+            store.dispatch('productsDraft/getProductDraft', { languageCode, id }),
         ]);
-        await store.dispatch('productsDraft/getProduct', { languageCode, id, onError });
+        await store.dispatch('productsDraft/getProduct', { languageCode, id });
     },
 };
 </script>

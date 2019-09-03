@@ -10,7 +10,6 @@
                 icon="arrow-dart trans-quarter"
                 fab
                 color="transparent"
-                ripple-color="rgba(235, 235, 236, 1)"
                 @click.native="scrollTo('back')" />
             <div
                 :class="
@@ -32,7 +31,6 @@
                 v-if="isAddingNewTabEnabled"
                 fab
                 color="transparent"
-                ripple-color="rgba(235, 235, 236, 1)"
                 @click.native="addTab">
                 <template v-slot:prepend>
                     <IconAdd fill-color="#5c5f65" />
@@ -43,12 +41,9 @@
                 icon="arrow-dart trans-three-fourth"
                 fab
                 color="transparent"
-                ripple-color="rgba(235, 235, 236, 1)"
                 @click.native="scrollTo('forward')" />
         </div>
-        <div class="tab-bar__item-content">
-            <HorizontalTabContent :item="items[selectedTabIndex]" />
-        </div>
+        <HorizontalTabContent :item="items[selectedTabIndex]" />
     </div>
 </template>
 
@@ -80,13 +75,8 @@ export default {
             };
         },
     },
-    mounted() {
+    created() {
         this.selectedTabIndex = this.items.findIndex(item => item.path === this.$route.path);
-
-        window.addEventListener('onresize', this.determinateScrollingState);
-    },
-    destroyed() {
-        window.removeEventListener('onresize', this.determinateScrollingState);
     },
     methods: {
         onSelectTabBarItem(index) {
@@ -190,20 +180,6 @@ export default {
             &--left-gradient:before, &--right-gradient:after {
                 z-index: 1;
                 opacity: 1;
-            }
-        }
-
-        &__item-content {
-            display: flex;
-            flex: 1;
-            background-color: $white;
-            border-top: 1px solid $grey;
-
-            .item-content__preloader {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
             }
         }
     }

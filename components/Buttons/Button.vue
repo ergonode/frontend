@@ -3,16 +3,16 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        v-ripple.mousedown.400="rippleColor"
+    <button
         :disabled="disabled"
-        :class="buttonTypeClasses">
+        :class="buttonTypeClasses"
+        :aria-label="title">
         <slot name="prepend" />
         <span
             v-if="title"
             :class="titleTypo"
             v-text="title" />
-    </div>
+    </button>
 </template>
 
 <script>
@@ -23,10 +23,6 @@ export default {
     name: 'Button',
     mixins: [borderMixin, sizeMixin],
     props: {
-        rippleColor: {
-            type: String,
-            default: 'rgba(255, 255, 255, 0.35)',
-        },
         title: {
             type: String,
             default: null,

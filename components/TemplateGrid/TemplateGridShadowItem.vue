@@ -26,8 +26,7 @@ export default {
 
 <style lang="scss" scoped>
     .shadow-grid-item {
-        border-left: 1px dashed $grey;
-        border-bottom: 1px dashed $grey;
+        border-bottom: 1px dashed $lightGrey;
 
         &--last-row {
             border-bottom: none;

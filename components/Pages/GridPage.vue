@@ -14,18 +14,14 @@
                 :rows-height="rowsHeight"
                 :action-paths="actionPaths" />
         </div>
-        <GridFooter
-            store-namespace="grid"
-            :is-pagination-visible="Boolean(numberOfPages)">
-            <template v-slot:pagination>
-                <GridPageSelector
-                    v-model="visibleRowsInPageCount"
-                    :rows-number="numberOfDataElements" />
-                <GridPagination
-                    :value="displayedPage"
-                    :max-page="numberOfPages"
-                    @input="onPageChanged" />
-            </template>
+        <GridFooter>
+            <GridPageSelector
+                v-model="visibleRowsInPageCount"
+                :rows-number="numberOfDataElements" />
+            <GridPagination
+                :value="displayedPage"
+                :max-page="numberOfPages"
+                @input="onPageChanged" />
         </GridFooter>
     </PageWrapper>
 </template>

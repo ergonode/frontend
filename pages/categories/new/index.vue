@@ -43,7 +43,7 @@ export default {
         },
         onCreateCategorySuccess(id) {
             this.removeValidationErrors();
-            this.$addAlert(this.$store, { type: 'success', message: 'Category created' });
+            this.$addAlert({ type: 'success', message: 'Category created' });
             this.$router.push({
                 name: 'categories-edit-id',
                 params: {

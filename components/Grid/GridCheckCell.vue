@@ -5,7 +5,8 @@
 <template>
     <div class="check-cell">
         <CheckBox
-            :value="selectionState"
+            :value="value"
+            :disabled="disabled"
             @input="onSelect" />
     </div>
 </template>
@@ -18,43 +19,22 @@ export default {
         CheckBox: () => import('~/components/Inputs/CheckBox'),
     },
     props: {
-        storeNamespace: {
-            type: String,
-            required: true,
+        value: {
+            type: [Boolean, Number],
+            default: false,
         },
         row: {
             type: Number,
             required: true,
         },
-        isHeader: {
+        disabled: {
             type: Boolean,
-            default: false,
-        },
-    },
-    computed: {
-        gridState() {
-            return this.$store.state[this.storeNamespace];
-        },
-        selectionState() {
-            if (this.isHeader) {
-                const rowsAreSelected = Boolean(Object.entries(this.gridState.selectedRows).length);
-
-                if (!rowsAreSelected) {
-                    return +this.gridState.isSelectedAllRows;
-                }
-
-                return 2;
-            }
-            return this.gridState.selectedRows[this.row] || this.gridState.isSelectedAllRows;
+            required: true,
         },
     },
     methods: {
         onSelect(value) {
-            if (this.isHeader) {
-                this.$store.dispatch(`${this.storeNamespace}/setSelectionForAllRows`, { isSelected: Boolean(value) });
-            } else {
-                this.$store.dispatch(`${this.storeNamespace}/setSelectedRow`, { row: this.row, value });
-            }
+            this.$emit('input', value);
         },
     },
 };

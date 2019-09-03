@@ -65,6 +65,7 @@ export default {
                 {
                     title: 'SAVE TEMPLATE',
                     action: this.updateButton.action,
+                    disabled: !this.$hasAccess('TEMPLATE_DESIGNER_UPDATE'),
                 },
             ],
             verticalTabs: [
@@ -73,6 +74,7 @@ export default {
                     component: () => import('~/components/Card/AttributesListTab'),
                     props: {
                         isSelectLanguage: false,
+                        disabled: !this.$hasAccess('TEMPLATE_DESIGNER_UPDATE'),
                     },
                     iconPath: 'Menu/IconAttributes',
                     active: true,

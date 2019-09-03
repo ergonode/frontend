@@ -23,7 +23,8 @@
                     v-for="item in filteredTreeData"
                     :key="item.id"
                     :item="item"
-                    :columns="columns">
+                    :columns="columns"
+                    :rows-height="rowsHeight">
                     <TemplateGridGhostItem
                         v-if="item.ghost" />
                     <CategoryTreeItem
@@ -96,23 +97,29 @@ export default {
         toggleItem({
             id, row, column, expanded,
         }) {
+            const rowValue = Math.floor(row);
+
             if (!expanded) {
-                const maxChildRow = getMaxChildRow(this.treeData, column, row);
-                const { hiddenCategories, visibleCategories } = this.treeData.reduce((acc, e) => {
-                    if (e.row > row && e.row < maxChildRow) {
+                const maxChildRow = getMaxChildRow(this.treeData, column, rowValue);
+                const {
+                    hiddenCategories,
+                    visibleCategories,
+                } = this.treeData.reduce((acc, e, idx) => {
+                    if (idx > rowValue && idx < maxChildRow) {
                         acc.hiddenCategories.push(e);
                     } else {
                         acc.visibleCategories.push(e);
                     }
                     return acc;
                 }, { hiddenCategories: [], visibleCategories: [] });
+
                 this.setHiddenItem({ key: id, value: hiddenCategories });
-                this.setTreeWhenCollapse({ tree: visibleCategories, index: row });
-                this.setExpandItem({ index: row, value: true });
+                this.setTreeWhenCollapse({ tree: visibleCategories, index: rowValue });
+                this.setExpandItem({ index: rowValue, value: true });
             } else {
-                this.setTreeWhenExpand({ id, index: row });
+                this.setTreeWhenExpand({ id, index: rowValue });
                 this.removeHiddenItem(id);
-                this.setExpandItem({ index: row, value: false });
+                this.setExpandItem({ index: rowValue, value: false });
             }
         },
     },

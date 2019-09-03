@@ -9,9 +9,10 @@
             id: draggableListID,
             draggedElementStyle,
             onDraggedState,
+            draggable: !draggingDisabled,
         }"
         :dragged="isDragged"
-        :disabled="isElementDisabled(item.id, languageCode)">
+        :disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]">
         <ListElementIcon :icon-path="iconByType" />
         <ListElementDescription
             :title="item.type"
@@ -20,7 +21,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import DraggableStates from '~/model/draggableStates';
 import { capitalizeAndConcatenationArray } from '~/model/stringWrapper';
 
@@ -36,6 +37,10 @@ export default {
             type: Object,
             required: true,
         },
+        draggingDisabled: {
+            type: Boolean,
+            required: true,
+        },
         languageCode: {
             type: String,
             required: true,
@@ -49,9 +54,9 @@ export default {
         };
     },
     computed: {
-        ...mapGetters('list', [
-            'isElementDisabled',
-        ]),
+        ...mapState('list', {
+            disabledElements: state => state.disabledElements,
+        }),
         iconByType() {
             if (!this.item.type) return '';
 
