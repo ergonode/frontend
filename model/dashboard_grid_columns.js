@@ -8,20 +8,20 @@ export default [
         actionTitle: 'Create categories',
         icon: 'add_category.svg',
         action: '/categories',
-        permission: 'CATEGORY_READ',
+        privileges: 'CATEGORY_READ',
     },
     {
         title: 'Template designer',
         actionTitle: 'Create template',
         icon: 'add_template.svg',
         action: '/templates',
-        permission: 'TEMPLATE_DESIGNER_READ',
+        privileges: 'TEMPLATE_DESIGNER_READ',
     },
     {
         title: 'ProductDesigner',
         actionTitle: 'Create product',
         icon: 'add_template.svg',
         action: '/products',
-        permission: 'PRODUCT_READ',
+        privileges: 'PRODUCT_READ',
     },
 ];
