@@ -145,7 +145,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'CATEGORY_TREE_READ',
+            privileges: ['CATEGORY_TREE_READ'],
         },
     },
     {
@@ -167,7 +167,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'CATEGORY_TREE_CREATE',
+            privileges: ['CATEGORY_TREE_CREATE'],
         },
     },
     {

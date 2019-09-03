@@ -4,7 +4,7 @@
  */
 import Vue from 'vue';
 import Router from 'vue-router';
-import { getPagesConfiguration } from '~/plugins/moduleLoader';
+import { getPagesConfig } from '~/plugins/moduleLoader';
 import { pages } from '~/router.config';
 
 Vue.use(Router);
@@ -40,7 +40,7 @@ const scrollBehavior = (to, from, savedPosition) => {
 };
 
 function getRouters() {
-  const { router } = getPagesConfiguration();
+  const { router } = getPagesConfig;
   let filteredPages = pages;
   for (let i = 0; i < router.length; i += 1) {
       filteredPages = filteredPages.filter(e => e.name !== router[i].name);

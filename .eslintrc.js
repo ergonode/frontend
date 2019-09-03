@@ -30,7 +30,7 @@ module.exports = {
     rules: {
         'notice/notice':[
           "error", {
-            "templateFile":"./config/copyright.js",
+            "templateFile":"./config/.copyright",
             "messages":{
               "whenFailedToMatch":"Couldn't find 'License Header', are you sure you added it?"
             }
