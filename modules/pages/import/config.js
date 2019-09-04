@@ -16,6 +16,7 @@ export default {
             meta: {
                 privileges: privileges.IMPORT,
             },
+            // Example how use children tabs
             // children: [
             //     {
             //         path: 'general',
