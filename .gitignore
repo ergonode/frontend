@@ -3,8 +3,9 @@ node_modules
 package-lock.json
 report
 
-# jest test
+# tests
 /coverage
+cypress.env.json
 
 # logs
 npm-debug.log
@@ -14,6 +15,11 @@ npm-debug.log
 
 # Nuxt generate
 dist
+/build
+!/build/.gitkeep
+/tmp
+/foto
+/ftp
 
 # ESLint generate
 .eslintcache
@@ -24,12 +30,6 @@ dist
 .vscode
 .awcache
 
-###> symfony/framework-bundle ###
-/build
-!/build/.gitkeep
-/tmp
-/foto
-/ftp
 
 # misc
 .DS_Store
@@ -38,4 +38,9 @@ npm-debug.log
 yarn-error.log
 /**/npm-debug.log
 .env
-cypress.env.json
+
+# configurations
+# exclude everything
+config/*
+# exception to the rule
+!config/.copyright

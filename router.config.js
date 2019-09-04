@@ -2,9 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+// pages
 const Login = () => import('~/pages/index').then(m => m.default || m);
 const Dashboard = () => import('~/pages/dashboard/index').then(m => m.default || m);
-const Import = () => import('~/pages/import/index').then(m => m.default || m);
 const Categories = () => import('~/pages/categories/index').then(m => m.default || m);
 const CategoryNew = () => import('~/pages/categories/new/index').then(m => m.default || m);
 const CategoryEdit = () => import('~/pages/categories/edit/_id').then(m => m.default || m);
@@ -82,14 +82,6 @@ export const pages = [
         name: 'dashboard', path: '/dashboard', component: Dashboard,
     },
     {
-        name: 'import',
-        path: '/import',
-        component: Import,
-        meta: {
-            permission: 'IMPORT_READ',
-        },
-    },
-    {
         name: 'categories',
         path: '/categories',
         component: Categories,
@@ -98,12 +90,12 @@ export const pages = [
                 path: 'grid',
                 component: CategoryGridTab,
                 meta: {
-                    permission: 'CATEGORY_READ',
+                    privileges: ['CATEGORY_READ'],
                 },
             },
         ],
         meta: {
-            permission: 'CATEGORY_READ',
+            privileges: ['CATEGORY_READ'],
         },
     },
     {
@@ -121,7 +113,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'CATEGORY_READ',
+            privileges: ['CATEGORY_READ'],
         },
     },
     {
@@ -139,7 +131,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'CATEGORY_READ',
+            privileges: ['CATEGORY_READ'],
         },
     },
     {
@@ -153,7 +145,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'CATEGORY_TREE_READ',
+            privileges: ['CATEGORY_TREE_READ'],
         },
     },
     {
@@ -175,7 +167,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'CATEGORY_TREE_CREATE',
+            privileges: ['CATEGORY_TREE_CREATE'],
         },
     },
     {
@@ -197,7 +189,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'CATEGORY_TREE_READ',
+            privileges: ['CATEGORY_TREE_READ'],
         },
     },
     {
@@ -211,7 +203,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'PRODUCT_READ',
+            privileges: ['PRODUCT_READ'],
         },
     },
     {
@@ -229,7 +221,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'PRODUCT_READ',
+            privileges: ['PRODUCT_READ'],
         },
     },
     {
@@ -247,7 +239,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'PRODUCT_READ',
+            privileges: ['PRODUCT_READ'],
         },
     },
     {
@@ -255,7 +247,7 @@ export const pages = [
         path: '/templates',
         component: Templates,
         meta: {
-            permission: 'TEMPLATE_DESIGNER_READ',
+            privileges: ['TEMPLATE_DESIGNER_READ'],
         },
     },
     {
@@ -273,7 +265,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'TEMPLATE_DESIGNER_READ',
+            privileges: ['TEMPLATE_DESIGNER_READ'],
         },
     },
     {
@@ -291,7 +283,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'TEMPLATE_DESIGNER_READ',
+            privileges: ['TEMPLATE_DESIGNER_READ'],
         },
     },
     {
@@ -299,14 +291,14 @@ export const pages = [
         path: '/attributes',
         component: Attributes,
         meta: {
-            permission: 'ATTRIBUTE_READ',
+            privileges: ['ATTRIBUTE_READ'],
         },
         children: [
             {
                 path: 'grid',
                 component: AttributeGridTab,
                 meta: {
-                    permission: 'ATTRIBUTE_READ',
+                    privileges: ['ATTRIBUTE_READ'],
                 },
             },
         ],
@@ -326,7 +318,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'ATTRIBUTE_READ',
+            privileges: ['ATTRIBUTE_READ'],
         },
     },
     {
@@ -344,7 +336,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'ATTRIBUTE_READ',
+            privileges: ['ATTRIBUTE_READ'],
         },
     },
     {
@@ -356,14 +348,14 @@ export const pages = [
                 path: 'grid',
                 component: UsersGridTab,
                 meta: {
-                    permission: 'USER_READ',
+                    privileges: ['USER_READ'],
                 },
             },
             {
                 path: 'roles',
                 component: RolesGridTab,
                 meta: {
-                    permission: 'USER_ROLE_READ',
+                    privileges: ['USER_ROLE_READ'],
                 },
             },
             {
@@ -372,7 +364,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'USER_READ',
+            privileges: ['USER_READ'],
         },
     },
     {
@@ -390,7 +382,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'USER_READ',
+            privileges: ['USER_READ'],
         },
     },
     {
@@ -408,7 +400,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'USER_READ',
+            privileges: ['USER_READ'],
         },
     },
     {
@@ -426,7 +418,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'USER_ROLE_READ',
+            privileges: ['USER_ROLE_READ'],
         },
     },
     {
@@ -444,7 +436,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'USER_ROLE_READ',
+            privileges: ['USER_ROLE_READ'],
         },
     },
     {
@@ -458,7 +450,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'WORKFLOW_READ',
+            privileges: ['WORKFLOW_READ'],
         },
     },
     {
@@ -476,7 +468,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'WORKFLOW_READ',
+            privileges: ['WORKFLOW_READ'],
         },
     },
     {
@@ -494,7 +486,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'WORKFLOW_READ',
+            privileges: ['WORKFLOW_READ'],
         },
     },
     {

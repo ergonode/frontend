@@ -14,6 +14,9 @@ const mocks = {
         path: '/products',
         params: { placeholder: '2' },
     },
+    $modulesConfiguration: {
+      menu: []
+    },
 };
 describe('Navigation/SideBar/SideBar', () => {
     let wrapper;
