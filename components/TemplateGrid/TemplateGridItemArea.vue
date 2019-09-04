@@ -9,13 +9,12 @@
         class="grid__item-area">
         <slot />
         <div
+            v-if="isConnectionsVisible"
             class="item-area__line"
             :style="connectionLineStyle" />
     </div>
 </template>
 <script>
-import { mapState } from 'vuex';
-
 export default {
     name: 'TemplateGridItemArea',
     props: {
@@ -31,14 +30,19 @@ export default {
             type: Number,
             required: true,
         },
+        firstChildRow: {
+            type: Number,
+            default: 0,
+        },
+        isConnectionsVisible: {
+            type: Boolean,
+            default: true,
+        },
     },
     data: () => ({
         gridGap: 10,
     }),
     computed: {
-        ...mapState('tree', {
-            treeData: state => state.treeData,
-        }),
         gridItemStyles() {
             const { column } = this.item;
             return {
@@ -50,8 +54,7 @@ export default {
         },
         connectionLineStyle() {
             const { id, row, parent } = this.item;
-            const children = this.treeData.filter(e => e.parent === parent);
-            const connectionHeight = this.rowsHeight * (row - children[0].row + 1);
+            const connectionHeight = this.rowsHeight * (row - this.firstChildRow + 1);
             const borderStyle = id === 'ghost_item' ? 'dashed' : 'solid';
             return {
                 borderBottomStyle: borderStyle,

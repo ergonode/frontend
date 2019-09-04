@@ -9,7 +9,7 @@
                 <VerticalTabBar :items="verticalTabs" />
             </div>
             <div class="tab__grid">
-                empty
+                <SegmentsWrapper />
             </div>
         </div>
         <Footer
@@ -23,6 +23,7 @@ export default {
     name: 'SegmentsDesignTab',
     components: {
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
+        SegmentsWrapper: () => import('~/components/SegmentDesigner/SegmentsWrapper'),
         Footer: () => import('~/components/ReusableFooter/Footer'),
     },
     props: {
