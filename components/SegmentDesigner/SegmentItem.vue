@@ -4,7 +4,7 @@
  */
 <template>
     <div class="grid-item">
-      yyyy
+        segment
         <!-- <IconPlusMinus
             v-if="hasChildren"
             class="grid-item__icon"
@@ -25,13 +25,9 @@
 </template>
 <script>
 import { Action } from '~/model/icons/Action';
-import IconPlusMinus from '~/components/Icon/Actions/IconPlusMinus';
 
 export default {
     name: 'SegmentItem',
-    components: {
-        IconPlusMinus,
-    },
     props: {
         isExpanded: {
             type: Boolean,
