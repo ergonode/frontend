@@ -50,9 +50,9 @@ const manageSectionItems = [
     },
     {
         title: 'Segments',
-        routing: '/placeholder/segments',
+        routing: '/segments',
         icon: 'Templates',
-        privileges: [],
+        privileges: ['SEGMENT_READ'],
     },
 ];
 

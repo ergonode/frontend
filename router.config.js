@@ -32,6 +32,9 @@ const Workflow = () => import('~/pages/workflow/index').then(m => m.default || m
 const ProductStatusNew = () => import('~/pages/workflow/statuses/new/index').then(m => m.default || m);
 const ProductStatusEdit = () => import('~/pages/workflow/statuses/edit/_id').then(m => m.default || m);
 const Profile = () => import('~/pages/profile/index').then(m => m.default || m);
+const Segments = () => import('~/pages/segments/index').then(m => m.default || m);
+const SegmentsNew = () => import('~/pages/segments/new/index').then(m => m.default || m);
+const SegmentsEdit = () => import('~/pages/segments/edit/_id').then(m => m.default || m);
 
 // Tabs
 const AttributeBaseTab = () => import('~/components/Card/AttributeBaseTab').then(m => m.default || m);
@@ -51,6 +54,9 @@ const ProductBaseTab = () => import('~/components/Card/ProductBaseTab').then(m =
 const ProductTemplateTab = () => import('~/components/Card/ProductTemplateTab').then(m => m.default || m);
 const ProductStatusBaseTab = () => import('~/components/Card/ProductStatusBaseTab').then(m => m.default || m);
 const ProductStatusTranslationsTab = () => import('~/components/Card/ProductStatusTranslationsTab').then(m => m.default || m);
+const SegmentsBaseTab = () => import('~/components/Card/SegmentsBaseTab').then(m => m.default || m);
+const SegmentsTranslationsTab = () => import('~/components/Card/SegmentsTranslationsTab').then(m => m.default || m);
+const SegmentsDesignTab = () => import('~/components/Card/SegmentsDesignTab').then(m => m.default || m);
 
 // Grid Tabs
 const ProductStatusGridTab = () => import('~/components/Card/Grid/ProductStatusGridTab').then(m => m.default || m);
@@ -62,6 +68,7 @@ const RolesGridTab = () => import('~/components/Card/Grid/RolesGridTab').then(m 
 const UsersGridTab = () => import('~/components/Card/Grid/UsersGridTab').then(m => m.default || m);
 const UserActivityLogsGridTab = () => import('~/components/Card/Grid/UserActivityLogsGridTab').then(m => m.default || m);
 const UsersActivityLogsGridTab = () => import('~/components/Card/Grid/UsersActivityLogsGridTab').then(m => m.default || m);
+const SegmentsGridTab = () => import('~/components/Card/Grid/SegmentsGridTab').then(m => m.default || m);
 
 export const pages = [
     {
@@ -487,6 +494,60 @@ export const pages = [
         ],
         meta: {
             privileges: ['WORKFLOW_READ'],
+        },
+    },
+    {
+        name: 'segments',
+        path: '/segments',
+        component: Segments,
+        children: [
+            {
+                path: 'grid',
+                component: SegmentsGridTab,
+            },
+        ],
+        meta: {
+            privileges: ['SEGMENT_READ'],
+        },
+    },
+    {
+        name: 'segments-new',
+        path: '/segments/new',
+        component: SegmentsNew,
+        children: [
+            {
+                path: 'general',
+                component: SegmentsBaseTab,
+            },
+            {
+                path: 'translations',
+                component: SegmentsTranslationsTab,
+            },
+        ],
+        meta: {
+            privileges: ['SEGMENT_READ'],
+        },
+    },
+    {
+        name: 'segments-edit-id',
+        path: '/segments/edit/:id/:tab?',
+        component: SegmentsEdit,
+        children: [
+            {
+                path: 'general',
+                component: SegmentsBaseTab,
+            },
+            {
+                path: 'translations',
+                component: SegmentsTranslationsTab,
+            },
+            {
+                path: 'designer',
+                component: SegmentsDesignTab,
+            },
+        ],
+        meta: {
+            privileges: ['SEGMENT_READ'],
         },
     },
     {

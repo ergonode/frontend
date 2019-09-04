@@ -4,7 +4,7 @@
  */
 <template>
     <BaseTab>
-        <CategoryTreeBaseCard slot="content" />
+        <SegmentsBaseCard slot="content" />
         <Footer
             slot="footer"
             :buttons="[...updateButton]" />
@@ -12,14 +12,14 @@
 </template>
 
 <script>
-import CategoryTreeBaseCard from '~/components/Card/CategoryTreeBaseCard';
+import SegmentsBaseCard from '~/components/Card/SegmentsBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
 
 export default {
-    name: 'CategoryTreeBaseTab',
+    name: 'SegmentsBaseTab',
     components: {
         Footer: () => import('~/components/ReusableFooter/Footer'),
-        CategoryTreeBaseCard,
+        SegmentsBaseCard,
         BaseTab,
     },
     props: {
