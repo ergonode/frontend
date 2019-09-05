@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 import { mount } from '@vue/test-utils';
-import CategoryTreeItem from '~/components/CategoryTree/CategoryTreeItem';
+import CategoryTreeItem from '~/components/CategoryTreeDesigner/CategoryTreeItem';
 
-describe('CategoryTree/CategoryTreeItem', () => {
+describe('CategoryTreeDesigner/CategoryTreeItem', () => {
     let wrapper;
     beforeEach(() => {
         wrapper = mount(CategoryTreeItem, {

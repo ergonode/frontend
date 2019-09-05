@@ -30,7 +30,9 @@ export default {
     computed: {
         ...mapState('tree', {
             treeId: state => state.treeId,
-            fullTreeData: state => state.fullTreeData,
+        }),
+        ...mapState('gridDesigner', {
+            fullGridData: state => state.fullGridData,
         }),
         ...mapState('translations', {
             translations: state => state.translations,
@@ -60,7 +62,7 @@ export default {
                 id: this.treeId,
                 data: {
                     name,
-                    categories: getMappedTreeData(this.fullTreeData),
+                    categories: getMappedTreeData(this.fullGridData),
                 },
                 onSuccess: this.onUpdateTreeSuccess,
                 onError: this.onError,
@@ -72,15 +74,16 @@ export default {
             user: { language: userLanguageCode },
         } = store.state.authentication;
 
-        await store.dispatch('translations/clearStorage');
+        await store.dispatch('gridDesigner/clearStorage');
         await store.dispatch('list/clearStorage');
+        await store.dispatch('tree/clearStorage');
+        await store.dispatch('translations/clearStorage');
         await store.dispatch('list/getElementsForGroup', {
             listType: 'categories',
             groupId: null,
             elementsCount: 9999,
             languageCode: userLanguageCode,
         });
-        await store.dispatch('tree/clearStorage');
         await store.dispatch('tree/getTreeById', {
             treeId: params.id,
         });

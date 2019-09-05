@@ -9,7 +9,7 @@
                 <VerticalTabBar :items="verticalTabs" />
             </div>
             <div class="tab__grid">
-                <SegmentsWrapper />
+                <ConditionSetWrapper />
             </div>
         </div>
         <Footer
@@ -20,10 +20,10 @@
 
 <script>
 export default {
-    name: 'SegmentsDesignTab',
+    name: 'ConditionSetDesignTab',
     components: {
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
-        SegmentsWrapper: () => import('~/components/SegmentDesigner/SegmentsWrapper'),
+        ConditionSetWrapper: () => import('~/components/ConditionSetDesigner/ConditionSetWrapper'),
         Footer: () => import('~/components/ReusableFooter/Footer'),
     },
     props: {

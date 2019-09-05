@@ -34,7 +34,7 @@ import {
 export default {
     name: 'TemplateGridContainer',
     props: {
-        treeData: {
+        gridData: {
             type: Array,
             required: true,
         },
@@ -69,8 +69,8 @@ export default {
         debounceFunc: null,
     }),
     computed: {
-        ...mapState('tree', {
-            fullTreeData: state => state.fullTreeData,
+        ...mapState('gridDesigner', {
+            fullGridData: state => state.fullGridData,
             hiddenItems: state => state.hiddenItems,
         }),
         ...mapState('authentication', {
@@ -83,7 +83,7 @@ export default {
             listElements: state => state.elements,
         }),
         dataWithoutGhostElement() {
-            return this.treeData.filter(element => element.id !== this.ghostElement.id);
+            return this.gridData.filter(element => element.id !== this.ghostElement.id);
         },
         maxRow() {
             return getObjectWithMaxValueInArrayByObjectKey(this.dataWithoutGhostElement, 'row').row;
@@ -108,18 +108,18 @@ export default {
             'removeDisabledElement',
             'setDisabledElement',
         ]),
-        ...mapActions('tree', [
-            'setChildrenLength',
+        ...mapActions('gridDesigner', [
             'setRowsCount',
-            'addTreeItem',
-            'removeTreeItem',
-            'rebuildTree',
+            'setChildrenLength',
+            'addGridItem',
+            'removeGridItem',
+            'rebuildGrid',
             'removeHiddenItem',
         ]),
         calculateRowsCount() {
             const { clientHeight } = document.querySelector('.grid-container');
             const visibleRows = Math.ceil(clientHeight / this.rowsHeight);
-            const totalRows = Math.max(this.fullTreeData.length, visibleRows) + 1;
+            const totalRows = Math.max(this.fullGridData.length, visibleRows) + 1;
             this.setRowsCount(totalRows);
         },
         onDragStart(event) {
@@ -156,7 +156,7 @@ export default {
                     if (parentId !== 'root') {
                         this.setChildrenLength({ id: parentId, value: -1 });
                     }
-                    this.removeTreeItem(index);
+                    this.removeGridItem(index);
                     this.removeDisabledElement({
                         languageCode: this.language,
                         elementId: id,
@@ -231,7 +231,7 @@ export default {
                 expanded: childrenLength > 0,
                 parent: parentId,
             };
-            this.addTreeItem(droppedItem);
+            this.addGridItem(droppedItem);
             this.setDisabledElement({
                 languageCode: this.language,
                 elementId: this.draggedElement,
@@ -239,14 +239,14 @@ export default {
             if (parentId !== 'root') {
                 this.setChildrenLength({ id: parentId, value: 1 });
             }
-            this.rebuildTree(this.draggedElement);
+            this.rebuildGrid(this.draggedElement);
             if (childrenLength > 0) this.$emit('toggleItem', { ...droppedItem, row: row + this.positionBetweenRows });
             this.calculateRowsCount();
         },
         removeGhostElement() {
             this.ghostElement.row = null;
             this.ghostElement.column = null;
-            this.removeTreeItem(this.ghostElement.id);
+            this.removeGridItem(this.ghostElement.id);
         },
         getBottomCollidingColumn({ neighborElColumn, collidingElColumn }) {
             const { overColumn } = this.mousePosition;
@@ -341,7 +341,7 @@ export default {
                 this.ghostElement.row = row;
                 this.ghostElement.column = column;
                 this.ghostElement.parent = this.getParentId(row, column);
-                this.addTreeItem({ ...this.ghostElement });
+                this.addGridItem({ ...this.ghostElement });
             }
         },
         getMouseOverProps(clientX, clientY) {
@@ -368,7 +368,7 @@ export default {
             return layerPositionY > centerPosition ? 'bottom' : 'top';
         },
         isRowGet(row) {
-            const [item] = this.treeData.filter(element => element.row === row);
+            const [item] = this.gridData.filter(element => element.row === row);
             return item || null;
         },
         getCollidingItemAtRow(row) {

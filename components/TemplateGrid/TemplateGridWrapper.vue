@@ -3,37 +3,44 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="category-tree-wrapper">
-        <TemplateGridHeader
-            :style="gridStyles"
-            :columns="columns" />
+    <div class="template-grid-wrapper">
+        <slot name="gridHeader" />
         <TemplateGridContainer
             :columns="columns"
-            :rows="rowsCount"
+            :rows="rows"
             :rows-height="rowsHeight"
-            :tree-data="filteredTreeData"
+            :grid-data="filteredGridData"
             @toggleItem="(item) => toggleItem(item)">
             <TemplateGridPresentationLayer
                 :style="gridStyles"
                 :columns="columns"
-                :rows="rowsCount" />
+                :rows="rows" />
             <TemplateGridItemsContainer
                 :style="gridStyles">
                 <TemplateGridItemArea
-                    v-for="item in filteredTreeData"
+                    v-for="item in filteredGridData"
                     :key="item.id"
                     :item="item"
                     :columns="columns"
                     :rows-height="rowsHeight"
-                    :first-child-row="firstChildRow(item.parent)">
+                    :grid-gap="gridGap">
                     <TemplateGridGhostItem
                         v-if="item.ghost" />
-                    <CategoryTreeItem
+                    <slot
                         v-else
-                        :number-of-children="getChildrenLengthById(item.id)"
-                        :is-expanded="getExpandStateById(item.id)"
-                        :item-name="item.name || item.code"
-                        @toggleItem="toggleItem(item)" />
+                        name="item"
+                        :item="item"
+                        :toggle-item-method="toggleItem"
+                        :get-children-length-method="getChildrenLengthById"
+                        :get-expand-state-method="getExpandStateById"
+                    />
+                    <template
+                        v-if="isConnectionsVisible"
+                        slot="connection">
+                        <div
+                            class="item-area__line"
+                            :style="connectionLineStyle(item)" />
+                    </template>
                 </TemplateGridItemArea>
             </TemplateGridItemsContainer>
         </TemplateGridContainer>
@@ -42,74 +49,78 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
-import {
-    getMaxChildRow,
-} from '~/model/tree/TreeCalculations';
+import { getMaxChildRow } from '~/model/tree/TreeCalculations';
 import TemplateGridPresentationLayer from '~/components/TemplateGrid/TemplateGridPresentationLayer';
 import TemplateGridItemsContainer from '~/components/TemplateGrid/TemplateGridItemsContainer';
 import TemplateGridContainer from '~/components/TemplateGrid/TemplateGridContainer';
 import TemplateGridGhostItem from '~/components/TemplateGrid/TemplateGridGhostItem';
 import TemplateGridItemArea from '~/components/TemplateGrid/TemplateGridItemArea';
-import TemplateGridHeader from '~/components/TemplateGrid/TemplateGridHeader';
-import CategoryTreeItem from '~/components/CategoryTree/CategoryTreeItem';
 
 export default {
-    name: 'CategoryTreeWrapper',
+    name: 'TemplateGridWrapper',
     components: {
         TemplateGridPresentationLayer,
         TemplateGridItemsContainer,
         TemplateGridContainer,
         TemplateGridGhostItem,
         TemplateGridItemArea,
-        TemplateGridHeader,
-        CategoryTreeItem,
+    },
+    props: {
+        gridStyles: {
+            type: Object,
+            required: true,
+        },
+        gridGap: {
+            type: Number,
+            default: 10,
+        },
+        isConnectionsVisible: {
+            type: Boolean,
+            default: true,
+        },
+        columns: {
+            type: Number,
+            required: true,
+        },
+        rowsHeight: {
+            type: Number,
+            required: true,
+        },
     },
     computed: {
-        ...mapState('tree', {
-            columns: state => state.treeLevels,
-            rowsHeight: state => state.rowsHeight,
-            rowsCount: state => state.rowsCount,
-            treeData: state => state.treeData,
+        ...mapState('gridDesigner', {
+            rows: state => state.rows,
+            gridData: state => state.gridData,
         }),
-        ...mapGetters('tree', [
+        ...mapGetters('gridDesigner', [
             'getChildrenLengthById',
             'getExpandStateById',
         ]),
-        gridStyles() {
-            return {
-                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                gridAutoRows: `${this.rowsHeight}px`,
-            };
-        },
-        filteredTreeData() {
-            return this.treeData.filter(
+        filteredGridData() {
+            return this.gridData.filter(
                 item => item.column < this.columns,
             );
         },
     },
     methods: {
-        ...mapActions('tree', [
-            'setTreeWhenCollapse',
-            'setTreeWhenExpand',
+        ...mapActions('gridDesigner', [
+            'setGridWhenCollapse',
+            'setGridWhenExpand',
             'setHiddenItem',
             'removeHiddenItem',
             'setExpandItem',
         ]),
-        firstChildRow(parent) {
-            const children = this.filteredTreeData.filter(e => e.parent === parent);
-            return children.length ? children[0].row : 0;
-        },
         toggleItem({
             id, row, column, expanded,
         }) {
             const rowValue = Math.floor(row);
 
             if (!expanded) {
-                const maxChildRow = getMaxChildRow(this.treeData, column, rowValue);
+                const maxChildRow = getMaxChildRow(this.filteredGridData, column, rowValue);
                 const {
                     hiddenCategories,
                     visibleCategories,
-                } = this.treeData.reduce((acc, e, idx) => {
+                } = this.filteredGridData.reduce((acc, e, idx) => {
                     if (idx > rowValue && idx < maxChildRow) {
                         acc.hiddenCategories.push(e);
                     } else {
@@ -119,20 +130,40 @@ export default {
                 }, { hiddenCategories: [], visibleCategories: [] });
 
                 this.setHiddenItem({ key: id, value: hiddenCategories });
-                this.setTreeWhenCollapse({ tree: visibleCategories, index: rowValue });
+                this.setGridWhenCollapse({ data: visibleCategories, index: rowValue });
                 this.setExpandItem({ index: rowValue, value: true });
             } else {
-                this.setTreeWhenExpand({ id, index: rowValue });
+                this.setGridWhenExpand({ id, index: rowValue });
                 this.removeHiddenItem(id);
                 this.setExpandItem({ index: rowValue, value: false });
             }
+        },
+        connectionLineStyle({ id, row, parent }) {
+            const children = this.filteredGridData.filter(e => e.parent === parent);
+            const connectionHeight = this.rowsHeight * (
+                row - (children.length ? children[0].row : 0) + 1
+            );
+            const borderStyle = id === 'ghost_item' ? 'dashed' : 'solid';
+            const lineCoordinates = {
+                left: parent === 'root' ? `-${this.gridGap}px` : `-${100 - this.gridGap}%`,
+                width: parent === 'root' ? `${this.gridGap}px` : `${100 - this.gridGap}%`,
+            };
+
+            return {
+                borderBottomStyle: borderStyle,
+                borderLeftStyle: borderStyle,
+                left: lineCoordinates.left,
+                width: lineCoordinates.width,
+                height: `${connectionHeight}px`,
+                bottom: `${this.rowsHeight / 2}px`,
+            };
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .category-tree-wrapper {
+    .template-grid-wrapper {
         z-index: 20;
         display: flex;
         flex: 1 1 auto;

@@ -28,8 +28,12 @@ export default {
     },
     created() {
         this.clearStorage();
+        this.clearDesignerStorage();
     },
     methods: {
+        ...mapActions('gridDesigner', {
+            clearDesignerStorage: 'clearStorage',
+        }),
         ...mapActions('segments', [
             'createSegment',
             'clearStorage',

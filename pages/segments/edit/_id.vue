@@ -71,6 +71,7 @@ export default {
         store,
         params,
     }) {
+        await store.dispatch('gridDesigner/clearStorage');
         await store.dispatch('translations/clearStorage');
         await store.dispatch('segments/clearStorage');
         await store.dispatch('segments/getSegmentById', {

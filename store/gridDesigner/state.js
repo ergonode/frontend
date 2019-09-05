@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    treeId: null,
-    code: '',
-    treeLevels: 10,
-    rowsHeight: 50,
+    rows: 0,
+    gridData: [],
+    fullGridData: [],
+    hiddenItems: {},
 });

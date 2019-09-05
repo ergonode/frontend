@@ -23,7 +23,7 @@ export default {
     name: 'CategoryTreeDesignTab',
     components: {
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
-        CategoryTreeWrapper: () => import('~/components/CategoryTree/CategoryTreeWrapper'),
+        CategoryTreeWrapper: () => import('~/components/CategoryTreeDesigner/CategoryTreeWrapper'),
         Footer: () => import('~/components/ReusableFooter/Footer'),
     },
     props: {

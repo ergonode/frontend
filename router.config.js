@@ -56,7 +56,7 @@ const ProductStatusBaseTab = () => import('~/components/Card/ProductStatusBaseTa
 const ProductStatusTranslationsTab = () => import('~/components/Card/ProductStatusTranslationsTab').then(m => m.default || m);
 const SegmentsBaseTab = () => import('~/components/Card/SegmentsBaseTab').then(m => m.default || m);
 const SegmentsTranslationsTab = () => import('~/components/Card/SegmentsTranslationsTab').then(m => m.default || m);
-const SegmentsDesignTab = () => import('~/components/Card/SegmentsDesignTab').then(m => m.default || m);
+const ConditionSetDesignTab = () => import('~/components/Card/ConditionSetDesignTab').then(m => m.default || m);
 
 // Grid Tabs
 const ProductStatusGridTab = () => import('~/components/Card/Grid/ProductStatusGridTab').then(m => m.default || m);
@@ -543,7 +543,7 @@ export const pages = [
             },
             {
                 path: 'designer',
-                component: SegmentsDesignTab,
+                component: ConditionSetDesignTab,
             },
         ],
         meta: {
