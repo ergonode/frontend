@@ -3,8 +3,7 @@ This changelog references the relevant changes.
 
 ## CHANGELOG FOR v0.4.0
 
-- feature [#78](https://github.com/ergonode/frontend/issues/78) Modularity
-- feature [#124](https://github.com/ergonode/frontend/issues/124) Color picker
+- feature [#78](https://github.com/ergonode/frontend/issues/78) Modularity - pages
 - feature [#128](https://github.com/ergonode/frontend/issues/128) Product statuses
 - feature [#130](https://github.com/ergonode/frontend/issues/130) Access denied view
 - feature [#143](https://github.com/ergonode/frontend/issues/143) Category trees
