@@ -10,7 +10,8 @@
             :rows="rows"
             :rows-height="rowsHeight"
             :grid-data="filteredGridData"
-            @toggleItem="(item) => toggleItem(item)">
+            @toggleItem="(item) => toggleItem(item)"
+            @methodAfterDrop="(data) => methodAfterDrop(data)">
             <TemplateGridPresentationLayer
                 :style="gridStyles"
                 :columns="columns"
@@ -85,6 +86,10 @@ export default {
         rowsHeight: {
             type: Number,
             required: true,
+        },
+        methodAfterDrop: {
+            type: Function,
+            default: () => {},
         },
     },
     computed: {

@@ -48,6 +48,10 @@ export default {
             }
         }).catch(onError);
     },
+    setElementsForLanguage: ({ commit, rootState }, elements) => {
+        const { language: languageCode } = rootState.authentication.user;
+        commit(types.SET_ELEMENTS, { languageCode, elements });
+    },
     setDisabledElement: ({ commit }, payload) => {
         commit(types.SET_DISABLED_ELEMENT, payload);
     },

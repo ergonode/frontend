@@ -3,13 +3,7 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    languages: {},
-    currencies: {},
-    units: {},
-    attrTypes: {},
-    attrGroups: [],
-    dateFormats: {},
-    imageFormats: {},
-    privileges: {},
+    columns: 1,
+    rowsHeight: 80,
     conditions: {},
 });

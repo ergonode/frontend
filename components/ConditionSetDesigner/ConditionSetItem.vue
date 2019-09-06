@@ -4,17 +4,31 @@
  */
 <template>
     <div class="grid-item">
-        segment {{ itemName }}
+        <span v-if="conditionById">
+            {{ conditionById.name }}
+        </span>
+        <span v-else>
+            loader
+        </span>
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 
 export default {
     name: 'ConditionSetItem',
     props: {
-        itemName: {
+        itemId: {
             type: String,
             required: true,
+        },
+    },
+    computed: {
+        ...mapState('conditions', {
+            conditions: state => state.conditions,
+        }),
+        conditionById() {
+            return this.conditions[this.itemId];
         },
     },
 };

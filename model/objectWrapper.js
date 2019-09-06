@@ -27,6 +27,16 @@ export function objectToArray(object) {
     }, []);
 }
 
+export function objectToArrayWithPropsName(object, valueName = 'name', indexName = 'id') {
+    return Object.keys(object).reduce((previous, current) => {
+        const insertObject = {};
+        insertObject[indexName] = current;
+        insertObject[valueName] = object[current];
+        previous.push(insertObject);
+        return previous;
+    }, []);
+}
+
 export function getValueByKey(object, value) {
     return Object.keys(object).reduce((response, property) => {
         if (property === value) {

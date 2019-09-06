@@ -12,6 +12,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { objectToArrayWithPropsName } from '~/model/objectWrapper';
 import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 
 export default {
@@ -71,9 +72,14 @@ export default {
         store,
         params,
     }) {
+        const { conditions } = store.state.data;
+        const conditionsList = objectToArrayWithPropsName(conditions);
+
         await store.dispatch('gridDesigner/clearStorage');
         await store.dispatch('translations/clearStorage');
+        await store.dispatch('list/clearStorage');
         await store.dispatch('segments/clearStorage');
+        await store.dispatch('list/setElementsForLanguage', conditionsList);
         await store.dispatch('segments/getSegmentById', {
             segmentId: params.id,
         });

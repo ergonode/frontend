@@ -7,8 +7,9 @@
         :grid-styles="gridStyles"
         :columns="columns"
         :rows-height="rowsHeight"
-        :grid-gap="4"
+        :grid-gap="0"
         :is-connections-visible="false"
+        :method-after-drop="getConditionConfiguration"
     >
         <template slot="gridHeader">
             <TemplateGridHeader
@@ -20,28 +21,28 @@
             slot="item"
             slot-scope="{item}">
             <ConditionSetItem
-                :item-name="item.name || item.code" />
+                :item-id="item.id" />
         </template>
     </TemplateGridWrapper>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import TemplateGridWrapper from '~/components/TemplateGrid/TemplateGridWrapper';
 import TemplateGridHeader from '~/components/TemplateGrid/TemplateGridHeader';
-import ConditionSetItem from '~/components/ConditionSetDesigner/ConditionSetItem';
 
 export default {
     name: 'ConditionSetWrapper',
     components: {
         TemplateGridWrapper,
         TemplateGridHeader,
-        ConditionSetItem,
+        ConditionSetItem: () => import('~/components/ConditionSetDesigner/ConditionSetItem'),
     },
     computed: {
-        ...mapState('segments', {
+        ...mapState('conditions', {
             columns: state => state.columns,
             rowsHeight: state => state.rowsHeight,
+            conditions: state => state.conditions,
         }),
         gridStyles() {
             return {
@@ -54,6 +55,16 @@ export default {
                 gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
                 gridAutoRows: '50px',
             };
+        },
+    },
+    methods: {
+        ...mapActions('conditions', [
+            'getConditionById',
+        ]),
+        getConditionConfiguration({ id }) {
+            if (!this.conditions[id]) {
+                this.getConditionById({ conditionId: id });
+            }
         },
     },
 };
