@@ -16,6 +16,12 @@ export default {
             commit(types.SET_CONDITIONS, { key: conditionId, value: data });
         }).catch(onDefaultError);
     },
+    setConditionValues(
+        { commit },
+        { condition, values },
+    ) {
+        commit(types.SET_CONDITIONS_VALUES, { condition, values });
+    },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);
     },

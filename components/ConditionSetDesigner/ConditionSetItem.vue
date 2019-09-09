@@ -13,12 +13,11 @@
                     :is="getComponentViaType(element.type)"
                     v-for="(element, index) in setParameters()"
                     :key="index"
-                    hint="yyyyy mleczko"
                     solid
-                    regular
-                    label="label"
+                    :label="element.name"
                     required
-                    :value="getElementValueByCode(element.name, element.type)"
+                    :options="hasOptions(element.type, element.options)"
+                    :value="getElementValueByName(element.name, element.type)"
                     :multiselect="element.type === 'MULTI_SELECT'"
                     @input="(value) => setValue(value)"
                 />
@@ -30,10 +29,8 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import { isEmpty } from '~/model/objectWrapper';
-// import ProductTemplateDate from '~/components/Template/ProductDesigner/ProductTemplateDate';
-// import ProductTemplateMultiLine from '~/components/Template/ProductDesigner/ProductTemplateMultiLine';
-// import ProductTemplateOptions from '~/components/Template/ProductDesigner/ProductTemplateOptions';
 import TextField from '~/components/Inputs/TextField';
 import Select from '~/components/Inputs/Select/Select';
 
@@ -44,6 +41,10 @@ export default {
             type: Object,
             required: true,
         },
+        itemId: {
+            type: String,
+            required: true,
+        },
     },
     data: () => ({
         placeholders: {
@@ -51,6 +52,9 @@ export default {
         },
     }),
     computed: {
+        ...mapState('conditions', {
+            conditionsValues: state => state.conditionsValues,
+        }),
         isCondition() {
             return !isEmpty(this.condition);
         },
@@ -65,20 +69,25 @@ export default {
     },
     methods: {
         setParameters() {
-            const params = [{
-                name: 'cos',
-                value: '',
-                type: 'TEXT',
-            },
-            {
-                name: 'attribute',
-                type: 'SELECT',
-                options: {
-                    xx: 'xx',
-                    yy: 'yy',
-
+            const params = [
+                {
+                    name: 'cos',
+                    value: '',
+                    type: 'TEXT',
                 },
-            },
+                {
+                    name: 'cos3',
+                    value: '',
+                    type: 'TEXT',
+                },
+                {
+                    name: 'attribute',
+                    type: 'SELECT',
+                    options: {
+                        xx: 'xx',
+                        yy: 'yy',
+                    },
+                },
             ];
             return params;
         },
@@ -100,13 +109,18 @@ export default {
                 return null;
             }
         },
+        hasOptions(type, options = {}) {
+            return type === 'SELECT' || type === 'MULTI_SELECT'
+                ? Object.values(options)
+                : [];
+        },
         setValue(value) {
             console.log(value);
         },
-        getElementValueByCode(name, type) {
+        getElementValueByName(name, type) {
             console.log(name, type);
-            return 'dd';
-            // if (!this.draft.attributes[code]) return '';
+            return '';
+            // if (!this.conditionsValues[this.itemId]) return '';
 
             // if (type === 'SELECT' || type === 'MULTI_SELECT') {
             //     return this.draft.attributes[code].value;
@@ -134,17 +148,21 @@ export default {
         }
 
         &__name {
-            padding: 2px;
+            padding: 4px;
+            border-bottom: 1px dashed $lightGrey;
         }
 
         &__parameters {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             grid-template-rows: 1fr;
-            grid-gap: 20px;
             flex: 1 1 auto;
-            padding: 2px 20px;
+            padding: 10px;
             background-color: $white;
+
+            & > div {
+                padding: 0 15%;
+            }
         }
 
         &__phrase {

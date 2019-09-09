@@ -21,7 +21,8 @@
             slot="gridItem"
             slot-scope="{item}">
             <ConditionSetItem
-                :condition="conditions[item.id] || {}" />
+                :condition="conditions[item.id] || {}"
+                :item-id="item.id" />
         </template>
     </TemplateGridWrapper>
 </template>
