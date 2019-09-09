@@ -5,7 +5,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable spaced-comment */
 /// <reference types="Cypress" />
-import promisify from 'cypress-promise'
 
 context('Attribute add', () => {
     const timestamp = Date.now();
@@ -71,6 +70,7 @@ context('Attribute add', () => {
         });
 
     });
+
     describe('Confirm attribute', () => {
         it('Create attribute', () => {
             cy.server();

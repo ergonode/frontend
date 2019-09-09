@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+/* eslint-disable no-param-reassign */
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 import Vue from 'vue'; // eslint-disable-line import/no-extraneous-dependencies
-import additionalConfig from '@Root/modules.config'; // User modules configuration file
 
 class ModuleLoader {
     constructor() {
@@ -22,17 +22,17 @@ class ModuleLoader {
         return this.componentsConfig;
     }
 
-    install() {
+    install(_Vue) {
         const { router, menu } = this.pagesConfig;
-        Vue.prototype.$modulesConfiguration = {
+        _Vue.prototype.$modulesConfiguration = {
             router,
             menu,
         };
     }
 
-    requireForce(modulePath) { // force require
+    getDefaultModuleConfig() {
         try {
-            return require(`${modulePath}`);
+            return require('@Root/config/modules');
         } catch (e) {
             return false;
         }
@@ -40,33 +40,39 @@ class ModuleLoader {
 
     setModulesConfiguration() {
         let summaryConfig = { pages: [], components: [] };
-        const {
-            pages: additionalConfigPages,
-            components: additionalConfigComponents,
-        } = additionalConfig;
+        const modulesConfig = this.getDefaultModuleConfig();
+        const additionalConfig = require('@Root/modules.config');
 
-        const modulesConfig = this.requireForce('@Root/config/modules'); // File may not exist, build from CLI
         if (modulesConfig) {
             const { pages: modulePages, components: moduleComponents } = modulesConfig.default;
+
             summaryConfig = {
                 pages: [...modulePages],
                 components: [...moduleComponents],
             };
         }
-        summaryConfig.pages.push(...additionalConfigPages);
-        summaryConfig.components.push(...additionalConfigComponents);
+
+        if (additionalConfig) {
+            const {
+                pages: additionalConfigPages,
+                components: additionalConfigComponents,
+            } = additionalConfig.default;
+
+            summaryConfig.pages.push(...additionalConfigPages);
+            summaryConfig.components.push(...additionalConfigComponents);
+        }
         return summaryConfig;
     }
 
     setPagesConfiguration({ pages }) {
         const pagesConfiguration = { router: [], menu: [], store: [] };
+        const filteredPages = pages.filter(page => page.isActive);
 
-        for (let i = 0; i < pages.length; i += 1) {
+        for (let i = 0; i < filteredPages.length; i += 1) {
             let config = null;
-            const { isActive, name, source } = pages[i];
+            const { name, source } = filteredPages[i];
             const pageName = `pages/${name}`;
 
-            if (!isActive) continue; // eslint-disable-line no-continue
             switch (source) {
             case 'local':
                 config = require(`@Modules/${pageName}/config`).default;
