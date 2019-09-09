@@ -17,10 +17,12 @@
 </template>
 
 <script>
+import Button from '~/components/Buttons/Button';
+
 export default {
     name: 'Footer',
     components: {
-        Button: () => import('~/components/Buttons/Button'),
+        Button,
     },
     props: {
         buttons: {

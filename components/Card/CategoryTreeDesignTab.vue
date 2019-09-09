@@ -19,12 +19,14 @@
 </template>
 
 <script>
+import Footer from '~/components/ReusableFooter/Footer';
+
 export default {
     name: 'CategoryTreeDesignTab',
     components: {
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
         CategoryTreeWrapper: () => import('~/components/CategoryTree/CategoryTreeWrapper'),
-        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Footer,
     },
     props: {
         updateButton: {

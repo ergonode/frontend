@@ -446,6 +446,7 @@ export default {
     .column {
         position: relative;
         display: grid;
+        will-change: transform;
 
         &::before {
             position: absolute;

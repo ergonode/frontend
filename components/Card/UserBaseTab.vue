@@ -17,11 +17,12 @@
 <script>
 import UserBaseCard from '~/components/Card/UserBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
+import Footer from '~/components/ReusableFooter/Footer';
 
 export default {
     name: 'UserBaseTab',
     components: {
-        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Footer,
         BaseTab,
         UserBaseCard,
     },

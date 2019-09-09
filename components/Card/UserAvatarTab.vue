@@ -17,11 +17,12 @@
 <script>
 import BaseTab from '~/components/Card/BaseTab';
 import UserAvatarCard from '~/components/Card/UserAvatarCard';
+import Footer from '~/components/ReusableFooter/Footer';
 
 export default {
     name: 'UserAvatarTab',
     components: {
-        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Footer,
         UserAvatarCard,
         BaseTab,
     },

@@ -103,4 +103,9 @@ export default {
         color: $graphite;
         cursor: default;
     }
+
+    .icon-wrapper {
+        display: flex;
+        margin-right: -8px;
+    }
 </style>

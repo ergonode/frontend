@@ -4,7 +4,7 @@
  */
 <template>
     <App>
-        <Content login>
+        <Content>
             <nuxt />
             <FlashMessage />
         </Content>
