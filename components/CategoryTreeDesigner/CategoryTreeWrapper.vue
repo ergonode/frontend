@@ -14,7 +14,7 @@
                 :columns="columns" />
         </template>
         <template
-            slot="item"
+            slot="gridItem"
             slot-scope="{item, toggleItemMethod, getChildrenLengthMethod, getExpandStateMethod }">
             <CategoryTreeItem
                 :number-of-children="getChildrenLengthMethod(item.id)"

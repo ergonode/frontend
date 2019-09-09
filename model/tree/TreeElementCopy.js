@@ -4,7 +4,7 @@
  */
 export function addTreeElementCopyToDocumentBody(event, element) {
     const elementId = element.getAttribute('item-id');
-    const clonedDOMElement = element.querySelector('.grid-item').cloneNode(true);
+    const clonedDOMElement = element.childNodes[0].cloneNode(true);
     const clonedDOMElementStyle = `
         position: absolute;
         background-color: '#fff';

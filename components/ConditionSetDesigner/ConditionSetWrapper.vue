@@ -4,7 +4,7 @@
  */
 <template>
     <TemplateGridWrapper
-        :grid-styles="gridStyles"
+        :grid-styles="gridStyles()"
         :columns="columns"
         :rows-height="rowsHeight"
         :grid-gap="0"
@@ -13,15 +13,15 @@
     >
         <template slot="gridHeader">
             <TemplateGridHeader
-                :style="gridHeaderStyles"
+                :style="gridStyles(50)"
                 header-name="condition level"
                 :columns="columns" />
         </template>
         <template
-            slot="item"
+            slot="gridItem"
             slot-scope="{item}">
             <ConditionSetItem
-                :item-id="item.id" />
+                :condition="conditions[item.id] || {}" />
         </template>
     </TemplateGridWrapper>
 </template>
@@ -44,18 +44,6 @@ export default {
             rowsHeight: state => state.rowsHeight,
             conditions: state => state.conditions,
         }),
-        gridStyles() {
-            return {
-                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                gridAutoRows: `${this.rowsHeight}px`,
-            };
-        },
-        gridHeaderStyles() {
-            return {
-                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                gridAutoRows: '50px',
-            };
-        },
     },
     methods: {
         ...mapActions('conditions', [
@@ -65,6 +53,12 @@ export default {
             if (!this.conditions[id]) {
                 this.getConditionById({ conditionId: id });
             }
+        },
+        gridStyles(rowHeight) {
+            return {
+                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
+                gridAutoRows: `${rowHeight || this.rowsHeight}px`,
+            };
         },
     },
 };

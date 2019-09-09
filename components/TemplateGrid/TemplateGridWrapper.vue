@@ -29,7 +29,7 @@
                         v-if="item.ghost" />
                     <slot
                         v-else
-                        name="item"
+                        name="gridItem"
                         :item="item"
                         :toggle-item-method="toggleItem"
                         :get-children-length-method="getChildrenLengthById"
