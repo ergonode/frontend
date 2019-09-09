@@ -5,6 +5,8 @@ report
 
 # tests
 /coverage
+/screenshotsFolder
+/videosFolder
 cypress.env.json
 
 # logs
