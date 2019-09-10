@@ -61,7 +61,7 @@ const collectAndDistributeSectionItems = [
         title: 'Export',
         routing: '/placeholder/export',
         icon: 'Export',
-        privileges: [],
+        privileges: [''],
     },
     {
         title: 'Channels',
@@ -82,7 +82,7 @@ const systemSectionItems = [
         title: 'Workflow',
         routing: '/workflow',
         icon: 'Flow',
-        privileges: [],
+        privileges: ['WORKFLOW_READ'],
     },
     {
         title: 'Settings',

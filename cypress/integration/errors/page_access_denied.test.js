@@ -2,10 +2,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getUUID } from "../../../model/stringWrapper";
+import { getUUID } from '../../../model/stringWrapper';
 
-context('Add User', () => {
+context('Page access denied', () => {
     const uuid = getUUID();
+    const dataInputerEmail = `${uuid}@gmail.com`;
+    const dataInputerPassword = `password${uuid}`;
 
     before(() => {
         cy.login(Cypress.env('adminEmail'), Cypress.env('adminPass'));
@@ -24,23 +26,11 @@ context('Add User', () => {
         });
     });
 
-    describe('Insert User values - invalid', () => {
-        before(() => {
-            cy.server();
-            cy.route('POST', '/api/v1/EN/accounts').as('addUser');
-        });
-
-        it('Invalid User data', () => {
-            cy.get('button').contains('CREATE USER').click();
-            cy.wait('@addUser').its('status').should('eq', 400);
-        });
-    });
-
-    describe('Insert User values - valid', () => {
+    describe('Add User', () => {
         it('Insert email', () => {
             cy.get('input[aria-label="Email"]')
-                .type(`${uuid}@gmail.com`)
-                .should('have.value', `${uuid}@gmail.com`);
+                .type(dataInputerEmail)
+                .should('have.value', dataInputerEmail);
         });
 
         it('Insert first name', () => {
@@ -57,14 +47,14 @@ context('Add User', () => {
 
         it('Insert password', () => {
             cy.get('input[aria-label="Password"]')
-                .type(`password${uuid}`)
-                .should('have.value', `password${uuid}`);
+                .type(dataInputerPassword)
+                .should('have.value', dataInputerPassword);
         });
 
         it('Insert password repeat', () => {
             cy.get('input[aria-label="Password repeat"]')
-                .type(`password${uuid}`)
-                .should('have.value', `password${uuid}`);
+                .type(dataInputerPassword)
+                .should('have.value', dataInputerPassword);
         });
 
         it('Select language', () => {
@@ -76,13 +66,21 @@ context('Add User', () => {
             cy.get('input[aria-label="Language"]').should('have.value', 'English');
         });
 
+        it('Select activity status', () => {
+            cy.get('input[aria-label="Activity status"]')
+                .click({ force: true })
+                .should('be.visible');
+            cy.get('.list').contains('Active').click();
+            cy.get('input[aria-label="Activity status"]').should('have.value', 'Active');
+        });
+
         it('Select role', () => {
             cy.get('label')
                 .contains('Role')
                 .click()
                 .should('be.visible');
-            cy.get('.list').contains('Admin').click();
-            cy.get('input[aria-label="Role"]').should('have.value', 'Admin');
+            cy.get('.list').contains('Data inputer').click();
+            cy.get('input[aria-label="Role"]').should('have.value', 'Data inputer');
         });
 
         it('Create User', () => {
@@ -91,6 +89,20 @@ context('Add User', () => {
             cy.get('button').contains('CREATE USER').click();
             cy.wait('@addUser').its('status').should('eq', 201);
             cy.url().should('include', '/users/edit');
+        });
+    });
+
+    describe('Logout from application', () => {
+        it('Logout', () => {
+            cy.logout();
+        });
+    });
+
+    describe('Login to Data inputer and navigate to denied link', () => {
+        it('Login', () => {
+            cy.login(dataInputerEmail, dataInputerPassword);
+            cy.visit('/workflow', { failOnStatusCode: false });
+            cy.get('h1').invoke('text').should('include', 'Access denied');
         });
     });
 });

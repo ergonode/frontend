@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 
-Cypress.Commands.add('login', (userType) => {
-    const email = Cypress.env(`${userType}Email`);
-    const pass = Cypress.env(`${userType}Pass`);
+Cypress.Commands.add('login', (email, pass) => {
     cy.visit('');
     cy.server();
     cy.route('POST', '/api/v1/login').as('postLogin');
@@ -14,6 +12,11 @@ Cypress.Commands.add('login', (userType) => {
     cy.get('button').contains('span', 'Log in').click();
     cy.wait('@postLogin').its('status').should('eq', 200);
     cy.url().should('include', '/dashboard');
+});
+
+Cypress.Commands.add('logout', () => {
+    cy.get('button').contains('Johnny').click();
+    cy.get('button').contains('LOG OUT').click();
 });
 
 Cypress.Commands.add('menu', () => {

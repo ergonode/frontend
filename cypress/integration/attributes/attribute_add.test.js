@@ -8,7 +8,7 @@ context('Add Attribute', () => {
     const uuid = getUUID();
 
     before(() => {
-        cy.login('admin');
+        cy.login(Cypress.env('adminEmail'), Cypress.env('adminPass'));
         cy.visit('/attributes');
         cy.menu();
     });

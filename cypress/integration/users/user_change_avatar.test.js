@@ -4,7 +4,7 @@
  */
 context('Change User Avatar', () => {
     before(() => {
-        cy.login('admin');
+        cy.login(Cypress.env('adminEmail'), Cypress.env('adminPass'));
         cy.visit('/users');
     });
 
