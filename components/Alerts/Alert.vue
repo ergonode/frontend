@@ -7,11 +7,11 @@
         <Component :is="feedbackIconComponent" />
         <span
             class="alert__title typo-subtitle txt--dark-graphite txt-fixed"
-            v-text="message" />
+            v-text="alert.message" />
         <Button
             fab
             color="transparent"
-            @click.native="onDismiss">
+            @click.native="() => removeAlert(alert)">
             <template v-slot:prepend>
                 <IconClose />
             </template>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { toCapitalize } from '~/model/stringWrapper';
 import Button from '~/components/Buttons/Button';
 import IconClose from '~/components/Icon/Window/IconClose';
@@ -31,29 +32,27 @@ export default {
         IconClose,
     },
     props: {
-        type: {
-            type: String,
+        alert: {
+            type: Object,
             required: true,
-        },
-        message: {
-            type: String,
-            required: false,
-            default: '',
+            validator: value => ['success', 'info', 'warning', 'error'].indexOf(value.type) !== -1,
         },
     },
     computed: {
         typeClass() {
-            return `alert--${this.type}`;
+            return `alert--${this.alert.type}`;
+        },
+        capitalizedAlertType() {
+            return toCapitalize(this.alert.type);
         },
         feedbackIconComponent() {
-            const capitalizedType = toCapitalize(this.type);
-            return () => import(`~/components/Icon/Feedback/Icon${capitalizedType}`);
+            return () => import(`~/components/Icon/Feedback/Icon${this.capitalizedAlertType}`);
         },
     },
     methods: {
-        onDismiss() {
-            this.$emit('dismiss');
-        },
+        ...mapActions('alerts', [
+            'removeAlert',
+        ]),
     },
 };
 </script>

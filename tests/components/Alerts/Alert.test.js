@@ -6,15 +6,19 @@ import { mount, createLocalVue } from '@vue/test-utils';
 import Alert from '~/components/Alerts/Alert.vue';
 
 const localVue = createLocalVue();
-localVue.directive('ripple', {});
 
-describe('Alerts/Feedback', () => {
+describe('Alert', () => {
     let wrapper;
+
     beforeEach(() => {
         wrapper = mount(Alert, {
             localVue,
             propsData: {
-                type: '',
+                alert: {
+                    id: 1,
+                    type: 'info',
+                    message: 'Ya, know...',
+                },
             },
         });
     });
@@ -28,24 +32,83 @@ describe('Alerts/Feedback', () => {
         expect(Alert.name).toEqual('Alert');
     });
 
-    it('Check alerts', () => {
-        const alerts = wrapper.findAll('.alert');
-        expect(alerts.length).toBe(1);
-        expect(wrapper.vm.type).toBe('');
-    });
-    it('Check alert props', () => {
-        wrapper.setProps({
-            type: 'error',
-            message: 'test',
+    describe('Info Alert', () => {
+        beforeEach(() => {
+            wrapper.setProps({
+                alert: {
+                    id: 1,
+                    type: 'info',
+                    message: 'Ya, know...',
+                },
+            });
         });
-        expect(wrapper.vm.type).toBe('error');
-        expect(wrapper.vm.message).toBe('test');
+
+        it('Alert has proper class', () => {
+            expect(wrapper.vm.typeClass).toBe('alert--info');
+        });
+
+        it('Alert has capitalized type', () => {
+            expect(wrapper.vm.capitalizedAlertType).toBe('Info');
+        });
     });
 
-    it('Check alert classes', () => {
-        wrapper.setProps({
-            type: 'success',
+    describe('Warning Alert', () => {
+        beforeEach(() => {
+            wrapper.setProps({
+                alert: {
+                    id: 1,
+                    type: 'success',
+                    message: 'Success!!!',
+                },
+            });
         });
-        expect(wrapper.vm.typeClass).toBe('alert--success');
+
+        it('Alert has proper class', () => {
+            expect(wrapper.vm.typeClass).toBe('alert--success');
+        });
+
+        it('Alert has capitalized type', () => {
+            expect(wrapper.vm.capitalizedAlertType).toBe('Success');
+        });
+    });
+
+    describe('Error Alert', () => {
+        beforeEach(() => {
+            wrapper.setProps({
+                alert: {
+                    id: 1,
+                    type: 'error',
+                    message: 'You did wrong!!!',
+                },
+            });
+        });
+
+        it('Alert has proper class', () => {
+            expect(wrapper.vm.typeClass).toBe('alert--error');
+        });
+
+        it('Alert has capitalized type', () => {
+            expect(wrapper.vm.capitalizedAlertType).toBe('Error');
+        });
+    });
+
+    describe('Warning Alert', () => {
+        beforeEach(() => {
+            wrapper.setProps({
+                alert: {
+                    id: 1,
+                    type: 'warning',
+                    message: 'You better watch out!!!',
+                },
+            });
+        });
+
+        it('Alert has proper class', () => {
+            expect(wrapper.vm.typeClass).toBe('alert--warning');
+        });
+
+        it('Alert has capitalized type', () => {
+            expect(wrapper.vm.capitalizedAlertType).toBe('Warning');
+        });
     });
 });

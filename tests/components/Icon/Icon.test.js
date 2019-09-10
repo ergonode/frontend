@@ -6,7 +6,6 @@ import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Icon from '~/components/Icon/Icon';
 
 const localVue = createLocalVue();
-localVue.directive('ripple', {});
 
 describe('Icon/Icon', () => {
     let wrapper;
