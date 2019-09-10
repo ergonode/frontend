@@ -2,7 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-
 context('Change User password', () => {
     before(() => {
         cy.login('admin');
@@ -43,7 +42,7 @@ context('Change User password', () => {
                 .type('Qwerty123!')
                 .should('have.value', 'Qwerty123!');
 
-            cy.url().then(url => {
+            cy.url().then((url) => {
                 const urlElements = url.split('/');
                 const { length } = urlElements;
                 const userId = urlElements[length - 2];
