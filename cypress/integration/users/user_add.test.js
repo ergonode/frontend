@@ -25,7 +25,7 @@ context('Add User', () => {
     });
 
     describe('Insert User values - invalid', () => {
-        beforeEach(() => {
+        before(() => {
             cy.server();
             cy.route('POST', '/api/v1/EN/accounts').as('addUser');
         });
