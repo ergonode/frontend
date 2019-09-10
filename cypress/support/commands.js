@@ -23,3 +23,11 @@ Cypress.Commands.add('menu', () => {
     cy.get('.left > :nth-child(1) > svg').click();
     cy.get('.side-bar-wrapper').should('have.attr', 'class', 'side-bar-wrapper menu--hidden');
 });
+
+Cypress.Commands.add('selectRandomUser', () => {
+    cy.get('.action-link').then((links) => {
+        const { length } = links;
+        links[length - 1].click();
+    });
+    cy.url().should('include', 'users/edit');
+});

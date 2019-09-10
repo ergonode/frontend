@@ -11,11 +11,7 @@ context('Change User password', () => {
 
     describe('Navigate to User edition page', () => {
         it('Select random User by clicking edit in users grid', () => {
-            cy.get('.action-link').then((links) => {
-                const { length } = links;
-                links[length - 1].click();
-            });
-            cy.url().should('include', 'users/edit');
+            cy.selectRandomUser();
         });
     });
 
@@ -55,7 +51,7 @@ context('Change User password', () => {
                 cy.server();
                 cy.route('PUT', `/api/v1/EN/accounts/${userId}`).as('updateUser');
                 cy.get('button').contains('SAVE USER').click();
-                cy.wait('@updateUser').its('status').should('eq', 201);
+                cy.wait('@updateUser').its('status').should('eq', 204);
             });
         });
     });
