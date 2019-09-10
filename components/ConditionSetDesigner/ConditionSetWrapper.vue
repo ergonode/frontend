@@ -7,7 +7,6 @@
         :grid-styles="gridStyles()"
         :columns="columns"
         :rows-height="rowsHeight"
-        :grid-gap="0"
         :is-connections-visible="false"
         :method-after-drop="getConditionConfiguration"
     >

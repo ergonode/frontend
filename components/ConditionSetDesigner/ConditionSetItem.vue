@@ -5,21 +5,23 @@
 <template>
     <div :class="['condition', {'condition--loader': !isCondition}]">
         <template v-if="isCondition">
-            <span
-                class="condition__name typo-hint txt-fixed txt--graphite"
-                v-text="condition.name" />
-            <div class="condition__parameters">
+            <div
+                class="condition__parameters"
+                :style="setParametersStyle">
                 <Component
                     :is="getComponentViaType(element.type)"
-                    v-for="(element, index) in setParameters()"
+                    v-for="(element, index) in condition.parameters"
                     :key="index"
                     solid
-                    :label="element.name"
                     required
+                    clearable
+                    :label="element.name"
                     :options="hasOptions(element.type, element.options)"
-                    :value="getElementValueByName(element.name, element.type)"
+                    :value="getConditionValue(element)"
                     :multiselect="element.type === 'MULTI_SELECT'"
-                    @input="(value) => setValue(value)"
+                    :disabled="!$hasAccess('SEGMENT_UPDATE')"
+                    :error-messages="errorParamsMessage(element.name) || null"
+                    @input="(value) => setConditionValue({ ...element, value })"
                 />
             </div>
             <span
@@ -29,13 +31,21 @@
     </div>
 </template>
 <script>
-import { mapState } from 'vuex';
-import { isEmpty } from '~/model/objectWrapper';
+import { mapState, mapActions } from 'vuex';
+import {
+    isEmpty,
+    getKeyByValue,
+    getValueByKey,
+    getKeysByValues,
+    getValuesByKeys,
+} from '~/model/objectWrapper';
+import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import TextField from '~/components/Inputs/TextField';
 import Select from '~/components/Inputs/Select/Select';
 
 export default {
     name: 'ConditionSetItem',
+    mixins: [errorValidationMixin],
     props: {
         condition: {
             type: Object,
@@ -46,57 +56,36 @@ export default {
             required: true,
         },
     },
-    data: () => ({
-        placeholders: {
-            '[attribute]': 'yyyy tets',
-        },
-    }),
     computed: {
         ...mapState('conditions', {
             conditionsValues: state => state.conditionsValues,
         }),
+        setParametersStyle() {
+            const { parameters } = this.condition;
+            return {
+                gridTemplateColumns: `repeat(${parameters.length}, 1fr)`,
+            };
+        },
         isCondition() {
             return !isEmpty(this.condition);
         },
         conditionPhrase() {
             const { phrase } = this.condition;
+            const placeholders = this.conditionsValues[this.itemId];
 
-            return phrase.replace(/\[\w+\]/g, placeholder => this.placeholders[placeholder] || '_____');
+            if (!placeholders) return phrase;
+            return phrase.replace(/\[\w+\]/g, (placeholder) => {
+                const clearedKey = placeholder.slice(1).slice(0, -1);
+                return placeholders[clearedKey] || placeholder;
+            });
         },
-        // parsedLanguage() {
-        //     return getValueByKey(this.languages, this.language);
-        // },
     },
     methods: {
-        setParameters() {
-            const params = [
-                {
-                    name: 'cos',
-                    value: '',
-                    type: 'TEXT',
-                },
-                {
-                    name: 'cos3',
-                    value: '',
-                    type: 'TEXT',
-                },
-                {
-                    name: 'attribute',
-                    type: 'SELECT',
-                    options: {
-                        xx: 'xx',
-                        yy: 'yy',
-                    },
-                },
-            ];
-            return params;
-        },
+        ...mapActions('conditions', [
+            'setCondition',
+        ]),
         getComponentViaType(type) {
             switch (type) {
-            // case 'DATE':
-            //     return ProductTemplateDate;
-            // case 'TEXTAREA':
-            //     return ProductTemplateMultiLine;
             case 'SELECT':
             case 'MULTI_SELECT':
                 return Select;
@@ -114,19 +103,35 @@ export default {
                 ? Object.values(options)
                 : [];
         },
-        setValue(value) {
-            console.log(value);
+        setConditionValue({
+            value, name, type, options,
+        }) {
+            let tmpValue = value;
+            if (type === 'SELECT' || type === 'MULTI_SELECT') {
+                tmpValue = Array.isArray(value)
+                    ? getKeysByValues(options, value)
+                    : getKeyByValue(options, value) || null;
+            }
+            this.setCondition({
+                conditionId: this.itemId,
+                parameterName: name,
+                parameterValue: tmpValue,
+            });
         },
-        getElementValueByName(name, type) {
-            console.log(name, type);
-            return '';
-            // if (!this.conditionsValues[this.itemId]) return '';
+        getConditionValue({ name, type, options }) {
+            const condition = this.conditionsValues[this.itemId];
 
-            // if (type === 'SELECT' || type === 'MULTI_SELECT') {
-            //     return this.draft.attributes[code].value;
-            // }
-
-            // return this.draft.attributes[code].value[this.languageCode] || '';
+            if (!condition) return '';
+            if (type === 'SELECT' || type === 'MULTI_SELECT') {
+                return Array.isArray(condition[name])
+                    ? getValuesByKeys(options, condition[name])
+                    : getValueByKey(options, condition[name]);
+            }
+            return condition[name] || '';
+        },
+        errorParamsMessage(name) {
+            const parametersIndex = `${this.itemId}_${name}`;
+            return this.elementIsValidate(parametersIndex);
         },
     },
 };
@@ -134,7 +139,6 @@ export default {
 
 <style lang="scss" scoped>
     .condition {
-        z-index: 5;
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -142,22 +146,26 @@ export default {
         background-color: $background;
         overflow: hidden;
 
+        &::after {
+            position: absolute;
+            left: 10px;
+            bottom: -8px;
+            padding: 0 6px;
+            background-color: $white;
+            color: $information;
+            content: "&&";
+        }
+
         &--loader {
             border: 1px dashed $primary;
             background-color: $lightGreen;
         }
 
-        &__name {
-            padding: 4px;
-            border-bottom: 1px dashed $lightGrey;
-        }
-
         &__parameters {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
             grid-template-rows: 1fr;
-            flex: 1 1 auto;
-            padding: 10px;
+            flex: 1 0 auto;
+            padding-top: 4px;
             background-color: $white;
 
             & > div {
@@ -166,8 +174,10 @@ export default {
         }
 
         &__phrase {
-            padding: 2px;
+            padding: 4px;
             border-top: 1px dashed $lightGrey;
+            letter-spacing: 1px;
+            color: $graphite;
         }
     }
 </style>
