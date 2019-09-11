@@ -157,7 +157,7 @@
         &:not(#{$input}--error) {
             &.floating-label {
                 #{$input}__label {
-                    //color: $success;
+                    color: $success;
                 }
             }
 
