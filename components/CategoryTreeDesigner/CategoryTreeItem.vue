@@ -76,6 +76,7 @@ export default {
         height: 100%;
         border: 1px solid $grey;
         background-color: $background;
+        cursor: move;
         overflow: hidden;
 
         &__icon {

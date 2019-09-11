@@ -25,7 +25,7 @@
                 />
             </div>
             <span
-                class="condition__phrase typo-label txt--graphite txt--centered"
+                class="condition__phrase typo-label txt--graphite"
                 v-text="conditionPhrase" />
         </template>
     </div>
@@ -145,16 +145,18 @@ export default {
         height: 100%;
         border: 1px solid $grey;
         background-color: $background;
+        cursor: move;
         overflow: hidden;
 
         &::after {
             position: absolute;
-            left: 10px;
+            left: 50%;
             bottom: -8px;
-            padding: 0 6px;
+            padding: 0 8px;
+            transform: translateX(-50%);
             background-color: $white;
-            color: $information;
-            content: "&&";
+            color: $lightGraphite;
+            content: "AND";
         }
 
         &--loader {
@@ -165,8 +167,8 @@ export default {
         &__parameters {
             display: grid;
             grid-template-rows: 1fr;
-            flex: 1 0 auto;
-            padding-top: 4px;
+            flex: 0 1 100%;
+            padding: 4px 0 8px;
             background-color: $white;
 
             & > div {
@@ -175,10 +177,10 @@ export default {
         }
 
         &__phrase {
-            padding: 4px;
+            padding: 6px 8px;
             border-top: 1px dashed $lightGrey;
             letter-spacing: 1px;
-            color: $graphite;
+            color: $lightGraphite;
         }
     }
 </style>

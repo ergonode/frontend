@@ -9,6 +9,7 @@
         :is-connections-visible="false"
         :method-after-drop="getConditionConfiguration"
         :method-after-remove="removeConditionFromSet"
+        :grid-gap="15"
         :is-dragging-enabled="$hasAccess('SEGMENT_UPDATE')">
         <template #gridHeader>
             <TemplateGridHeader
@@ -49,8 +50,9 @@ export default {
             'removeCondition',
         ]),
         getConditionConfiguration({ id }) {
-            if (!this.conditions[id]) {
-                this.getConditionById({ conditionId: id });
+            const [validId] = id.split('--');
+            if (!this.conditions[validId]) {
+                this.getConditionById({ conditionId: validId });
             }
         },
         removeConditionFromSet({ id }) {

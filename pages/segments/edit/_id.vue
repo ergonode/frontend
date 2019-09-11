@@ -72,11 +72,7 @@ export default {
         store,
         params,
     }) {
-        // const { conditions } = store.state.data;
-        const conditions = {
-            ATTRIBUTE_EXISTS_CONDITION: 'Attribute exists',
-            ATTRIBUTE_NOT_EXISTS_CONDITION: 'Attribute Not exists',
-        };
+        const { conditions } = store.state.data;
         const conditionsList = objectToArrayWithPropsName(conditions);
 
         await store.dispatch('gridDesigner/clearStorage');

@@ -219,7 +219,7 @@ export default {
         onDrop() {
             const { row, column } = this.ghostElement;
             const { code: categoryCode, name: categoryName } = this.listElements[this.language]
-                .find(e => e.id === this.draggedElement);
+                .find(e => e.id === this.draggedElement.split('--')[0]);
             this.$emit('methodAfterDrop', { id: this.draggedElement });
             this.removeGhostElement();
             const parentId = this.getParentId(row, column);

@@ -24,6 +24,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { getUUID } from '~/model/stringWrapper';
 import DraggableStates from '~/model/draggableStates';
 
 export default {
@@ -50,10 +51,11 @@ export default {
             'setDraggableState',
         ]),
         onDraggedState(event) {
+            const uniqId = `${event.target.id}--${getUUID()}`;
             switch (event.detail.state) {
             case DraggableStates.START:
                 this.isDragged = true;
-                this.setDraggedElement(event.target.id);
+                this.setDraggedElement(uniqId);
                 break;
             case DraggableStates.END:
                 this.isDragged = false;

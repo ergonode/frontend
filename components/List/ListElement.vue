@@ -47,6 +47,7 @@ export default {
         padding: 8px 12px;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         user-select: none;
+        cursor: move;
 
         &::before {
             position: absolute;

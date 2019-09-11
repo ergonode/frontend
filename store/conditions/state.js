@@ -4,7 +4,7 @@
  */
 export default () => ({
     columns: 1,
-    rowsHeight: 100,
+    rowsHeight: 120,
     conditions: {},
     conditionsValues: {},
 });
