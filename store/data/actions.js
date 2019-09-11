@@ -19,7 +19,7 @@ export default {
             { stateProp: 'dateFormats', requestPath: `${userLanguageCode}/dictionary/date_format` },
             { stateProp: 'imageFormats', requestPath: `${userLanguageCode}/dictionary/image_format` },
             { stateProp: 'privileges', requestPath: `${userLanguageCode}/dictionary/privileges` },
-            { stateProp: 'conditions', requestPath: `${userLanguageCode}/dictionary/condition` },
+            { stateProp: 'conditions', requestPath: `${userLanguageCode}/dictionary/conditions` },
         ];
 
         const promises = requestConfigs.map(({ stateProp, requestPath }) => {

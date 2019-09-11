@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridSegmentsPage
-        :title="title"
+    <SegmentsTabs
+        title="Segments"
         :buttons="getButtons"
         icon="Templates" />
 </template>
@@ -13,18 +13,24 @@ export default {
     name: 'Segments',
     middleware: ['tab/redirectToSegmentsGrid'],
     components: {
-        GridSegmentsPage: () => import('~/components/Pages/GridSegmentsPage'),
-    },
-    data() {
-        return {
-            title: 'Segments',
-        };
+        SegmentsTabs: () => import('~/components/Pages/Tabs/SegmentsTabs'),
     },
     computed: {
         getButtons() {
             const isGridPath = /grid/.test(this.$route.path);
+            const isConditionSetPath = /condition-set/.test(this.$route.path);
 
-            if (!isGridPath) return [];
+            if (!isGridPath && !isConditionSetPath) return [];
+            if (isConditionSetPath) {
+                return [
+                    {
+                        title: 'CREATE CONDITION SET',
+                        color: 'success',
+                        action: this.addNewConditionSet,
+                        disabled: !this.$hasAccess('CONDITION_CREATE'),
+                    },
+                ];
+            }
             return [
                 {
                     title: 'CREATE SEGMENT',
@@ -37,7 +43,10 @@ export default {
     },
     methods: {
         addNewSegment() {
-            this.$router.push('/segments/new');
+            this.$router.push('/segments/segment/new');
+        },
+        addNewConditionSet() {
+            this.$router.push('/condition-set/new');
         },
     },
 };

@@ -33,8 +33,10 @@ const ProductStatusNew = () => import('~/pages/workflow/statuses/new/index').the
 const ProductStatusEdit = () => import('~/pages/workflow/statuses/edit/_id').then(m => m.default || m);
 const Profile = () => import('~/pages/profile/index').then(m => m.default || m);
 const Segments = () => import('~/pages/segments/index').then(m => m.default || m);
-const SegmentsNew = () => import('~/pages/segments/new/index').then(m => m.default || m);
-const SegmentsEdit = () => import('~/pages/segments/edit/_id').then(m => m.default || m);
+const SegmentNew = () => import('~/pages/segments/_segment/index').then(m => m.default || m);
+const SegmentEdit = () => import('~/pages/segments/_segment/_id').then(m => m.default || m);
+// const ConditionSetNew = () => import('~/pages/segments/_condition-set/index').then(m => m.default || m);
+// const ConditionSetEdit = () => import('~/pages/segments/_condition-set/_id').then(m => m.default || m);
 
 // Tabs
 const AttributeBaseTab = () => import('~/components/Card/AttributeBaseTab').then(m => m.default || m);
@@ -512,8 +514,8 @@ export const pages = [
     },
     {
         name: 'segments-new',
-        path: '/segments/new',
-        component: SegmentsNew,
+        path: '/segments/segment/new',
+        component: SegmentNew,
         children: [
             {
                 path: 'general',
@@ -530,8 +532,8 @@ export const pages = [
     },
     {
         name: 'segments-edit-id',
-        path: '/segments/edit/:id/:tab?',
-        component: SegmentsEdit,
+        path: '/segments/segment/edit/:id/:tab?',
+        component: SegmentEdit,
         children: [
             {
                 path: 'general',

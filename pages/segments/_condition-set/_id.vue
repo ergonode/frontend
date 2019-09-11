@@ -19,8 +19,8 @@ export default {
     validate({ params }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
-    name: 'EditSegment',
-    middleware: ['tab/redirectToSegmentsGeneral'],
+    name: 'ConditionSetEdit',
+    middleware: ['tab/redirectToConditionSetGeneral'],
     components: {
         SegmentPage: () => import('~/components/Pages/SegmentPage'),
     },

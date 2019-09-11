@@ -29,9 +29,9 @@ export default {
         Blur: () => import('~/components/Blur/Blur'),
     },
     created() {
-        let generalOptTabPath = '/segments/new/general';
-        let translationTabPath = '/segments/new/translations';
-        let designerPath = '/segments/new/designer';
+        let generalOptTabPath = '/segments/segment/new/general';
+        let translationTabPath = '/segments/segment/new/translations';
+        let designerPath = '/segments/segment/new/designer';
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -45,9 +45,9 @@ export default {
         ];
         this.isUserAllowedToUpdateSegments = this.$hasAccess('SEGMENT_UPDATE');
         if (this.isEdit) {
-            generalOptTabPath = `/segments/edit/${this.$route.params.id}/general`;
-            translationTabPath = `/segments/edit/${this.$route.params.id}/translations`;
-            designerPath = `/segments/edit/${this.$route.params.id}/designer`;
+            generalOptTabPath = `/segments/segment/edit/${this.$route.params.id}/general`;
+            translationTabPath = `/segments/segment/edit/${this.$route.params.id}/translations`;
+            designerPath = `/segments/segment/edit/${this.$route.params.id}/designer`;
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 

@@ -13,8 +13,8 @@
 import { mapState, mapActions } from 'vuex';
 
 export default {
-    name: 'NewSegment',
-    middleware: ['tab/redirectToSegmentsGeneral'],
+    name: 'ConditionSetNew',
+    middleware: ['tab/redirectToConditionSetGeneral'],
     components: {
         SegmentPage: () => import('~/components/Pages/SegmentPage'),
     },
