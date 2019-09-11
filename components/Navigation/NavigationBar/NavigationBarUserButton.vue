@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <NavigationBarSelectButton :title="capitalizedUserFirstName || capitalizedUserLastName">
+    <NavigationBarSelectButton
+        :title="capitalizedUserFirstName || capitalizedUserLastName"
+        data-cy="user-select">
         <div
             slot="prependIcon"
             class="user-image">

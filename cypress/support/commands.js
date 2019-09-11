@@ -15,7 +15,7 @@ Cypress.Commands.add('login', (email, pass) => {
 });
 
 Cypress.Commands.add('logout', () => {
-    cy.get('button').contains('Johnny').click();
+    cy.get('[data-cy=user-select]').click();
     cy.get('button').contains('LOG OUT').click();
 });
 
