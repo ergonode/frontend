@@ -10,8 +10,10 @@
             :rows="rows"
             :rows-height="rowsHeight"
             :grid-data="filteredGridData"
+            :is-dragging-enabled="isDraggingEnabled"
             @toggleItem="(item) => toggleItem(item)"
-            @methodAfterDrop="(data) => methodAfterDrop(data)">
+            @methodAfterDrop="(data) => methodAfterDrop(data)"
+            @methodAfterRemove="(data) => methodAfterRemove(data)">
             <TemplateGridPresentationLayer
                 :style="gridStyles"
                 :columns="columns"
@@ -32,12 +34,10 @@
                         name="gridItem"
                         :item="item"
                         :toggle-item-method="toggleItem"
-                        :get-children-length-method="getChildrenLengthById"
-                        :get-expand-state-method="getExpandStateById"
                     />
                     <template
                         v-if="isConnectionsVisible"
-                        slot="connection">
+                        #connection>
                         <div
                             class="item-area__line"
                             :style="connectionLineStyle(item)" />
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { getMaxChildRow } from '~/model/tree/TreeCalculations';
 import TemplateGridPresentationLayer from '~/components/TemplateGrid/TemplateGridPresentationLayer';
 import TemplateGridItemsContainer from '~/components/TemplateGrid/TemplateGridItemsContainer';
@@ -67,9 +67,9 @@ export default {
         TemplateGridItemArea,
     },
     props: {
-        gridStyles: {
-            type: Object,
-            required: true,
+        isDraggingEnabled: {
+            type: Boolean,
+            default: false,
         },
         gridGap: {
             type: Number,
@@ -91,20 +91,26 @@ export default {
             type: Function,
             default: () => {},
         },
+        methodAfterRemove: {
+            type: Function,
+            default: () => {},
+        },
     },
     computed: {
         ...mapState('gridDesigner', {
             rows: state => state.rows,
             gridData: state => state.gridData,
         }),
-        ...mapGetters('gridDesigner', [
-            'getChildrenLengthById',
-            'getExpandStateById',
-        ]),
         filteredGridData() {
             return this.gridData.filter(
                 item => item.column < this.columns,
             );
+        },
+        gridStyles() {
+            return {
+                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
+                gridAutoRows: `${this.rowsHeight}px`,
+            };
         },
     },
     methods: {

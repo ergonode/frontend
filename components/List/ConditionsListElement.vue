@@ -14,6 +14,7 @@
         :dragged="isDragged">
         <ListElementDescription
             :title="item.name"
+            subtitle="Short description"
             title-typo="typo-subtitle"
             title-color="txt--dark-graphite"
             subtitle-typo="typo-hint"

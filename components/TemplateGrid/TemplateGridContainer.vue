@@ -5,7 +5,7 @@
 <template>
     <div
         class="grid-container"
-        :draggable="isDraggingEnabled && $hasAccess('CATEGORY_TREE_UPDATE')"
+        :draggable="isDraggingEnabled"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
         @dragover="onDragOver"
@@ -50,9 +50,12 @@ export default {
             type: Number,
             required: true,
         },
+        isDraggingEnabled: {
+            type: Boolean,
+            default: false,
+        },
     },
     data: () => ({
-        isDraggingEnabled: true,
         positionBetweenRows: 0.5,
         ghostElement: {
             id: 'ghost_item',
@@ -210,6 +213,7 @@ export default {
                     }
                 }
                 this.removeHiddenItem(this.draggedElement);
+                this.$emit('methodAfterRemove', { id: this.draggedElement });
             }
         },
         onDrop() {
@@ -348,21 +352,25 @@ export default {
         getMouseOverProps(clientX, clientY) {
             const elements = document.elementsFromPoint(clientX, clientY);
             const shadowItem = elements.find(e => e.classList.contains('shadow-grid-item'));
-            const positionOverRow = clientY - shadowItem.getBoundingClientRect().top;
-            const directionOfCollision = this.checkCollidingRelation(positionOverRow);
 
-            if (directionOfCollision !== this.mousePosition.directionOfCollision) {
-                this.mousePosition.directionOfCollision = directionOfCollision;
+            if (shadowItem) {
+                const positionOverRow = clientY - shadowItem.getBoundingClientRect().top;
+                const directionOfCollision = this.checkCollidingRelation(positionOverRow);
+
+                if (directionOfCollision !== this.mousePosition.directionOfCollision) {
+                    this.mousePosition.directionOfCollision = directionOfCollision;
+                }
+                if (shadowItem !== this.mousePosition.shadowItem) {
+                    const shadowItemId = shadowItem.getAttribute('shadow-id');
+                    this.mousePosition = {
+                        overColumn: shadowItemId % this.columns,
+                        overRow: Math.floor(shadowItemId / this.columns),
+                        shadowItem,
+                    };
+                }
+                return directionOfCollision;
             }
-            if (shadowItem !== this.mousePosition.shadowItem) {
-                const shadowItemId = shadowItem.getAttribute('shadow-id');
-                this.mousePosition = {
-                    overColumn: shadowItemId % this.columns,
-                    overRow: Math.floor(shadowItemId / this.columns),
-                    shadowItem,
-                };
-            }
-            return directionOfCollision;
+            return null;
         },
         checkCollidingRelation(layerPositionY) {
             const centerPosition = Math.floor(this.rowsHeight / 2);

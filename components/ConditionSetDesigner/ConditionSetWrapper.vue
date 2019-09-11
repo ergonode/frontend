@@ -4,21 +4,19 @@
  */
 <template>
     <TemplateGridWrapper
-        :grid-styles="gridStyles()"
         :columns="columns"
         :rows-height="rowsHeight"
         :is-connections-visible="false"
         :method-after-drop="getConditionConfiguration"
-    >
-        <template slot="gridHeader">
+        :method-after-remove="removeConditionFromSet"
+        :is-dragging-enabled="$hasAccess('SEGMENT_UPDATE')">
+        <template #gridHeader>
             <TemplateGridHeader
-                :style="gridStyles(50)"
+                :style="gridStyles()"
                 header-name="condition level"
                 :columns="columns" />
         </template>
-        <template
-            slot="gridItem"
-            slot-scope="{item}">
+        <template #gridItem="{item}">
             <ConditionSetItem
                 :condition="conditions[item.id] || {}"
                 :item-id="item.id" />
@@ -48,16 +46,20 @@ export default {
     methods: {
         ...mapActions('conditions', [
             'getConditionById',
+            'removeCondition',
         ]),
         getConditionConfiguration({ id }) {
             if (!this.conditions[id]) {
                 this.getConditionById({ conditionId: id });
             }
         },
-        gridStyles(rowHeight) {
+        removeConditionFromSet({ id }) {
+            this.removeCondition(id);
+        },
+        gridStyles() {
             return {
                 gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                gridAutoRows: `${rowHeight || this.rowsHeight}px`,
+                gridAutoRows: '50px',
             };
         },
     },

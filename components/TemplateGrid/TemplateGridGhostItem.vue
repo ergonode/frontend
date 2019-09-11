@@ -2,11 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
+<template functional>
     <div class="grid__ghost-item" />
 </template>
 <script>
-
 export default {
     name: 'TemplateGridGhostItem',
 };

@@ -55,12 +55,17 @@ export default {
     ) {
         commit(types.SET_CONDITIONS_VALUES, { condition, values });
     },
-    setCondition({ commit, state },
+    setConditionValue({ commit, state },
         { conditionId, parameterName, parameterValue }) {
         if (!state.conditionsValues[conditionId]) {
-            commit(types.ADD_CONDITION, { conditionId, parameterName, parameterValue });
+            commit(types.ADD_CONDITION_VALUE, { conditionId, parameterName, parameterValue });
         }
-        commit(types.SET_CONDITION, { conditionId, parameterName, parameterValue });
+        commit(types.SET_CONDITION_VALUE, { conditionId, parameterName, parameterValue });
+    },
+    removeCondition({ commit, state }, conditionId) {
+        if (state.conditionsValues[conditionId]) {
+            commit(types.REMOVE_CONDITION_FROM_SET, conditionId);
+        }
     },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);

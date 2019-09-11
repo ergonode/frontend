@@ -7,8 +7,8 @@ import { removeFromObjectByKey } from '~/model/objectWrapper';
 
 export const types = {
     SET_CONDITIONS: 'SET_CONDITIONS',
-    ADD_CONDITION: 'ADD_CONDITION',
-    SET_CONDITION: 'SET_CONDITION',
+    ADD_CONDITION_VALUE: 'ADD_CONDITION_VALUE',
+    SET_CONDITION_VALUE: 'SET_CONDITION_VALUE',
     SET_CONDITIONS_VALUES: 'SET_CONDITIONS_VALUES',
     REMOVE_CONDITION_FROM_SET: 'REMOVE_CONDITION_FROM_SET',
     CLEAR_STATE: 'CLEAR_STATE',
@@ -18,7 +18,7 @@ export default {
     [types.SET_CONDITIONS](state, { key, value }) {
         state.conditions = { ...state.conditions, [key]: value };
     },
-    [types.ADD_CONDITION](state, { conditionId, parameterName, parameterValue }) {
+    [types.ADD_CONDITION_VALUE](state, { conditionId, parameterName, parameterValue }) {
         state.conditionsValues = {
             ...state.conditionsValues,
             [conditionId]: {
@@ -26,7 +26,7 @@ export default {
             },
         };
     },
-    [types.SET_CONDITION](state, { conditionId, parameterName, parameterValue }) {
+    [types.SET_CONDITION_VALUE](state, { conditionId, parameterName, parameterValue }) {
         state.conditionsValues[conditionId] = {
             ...state.conditionsValues[conditionId],
             [parameterName]: parameterValue,
@@ -41,7 +41,9 @@ export default {
     [types.CLEAR_STATE](state) {
         const states = defaultState();
         Object.keys(states).forEach((key) => {
-            state[key] = states[key];
+            if (key !== 'conditions') {
+                state[key] = states[key];
+            }
         });
     },
 };

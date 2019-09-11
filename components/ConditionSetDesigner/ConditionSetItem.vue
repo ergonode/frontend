@@ -21,7 +21,7 @@
                     :multiselect="element.type === 'MULTI_SELECT'"
                     :disabled="!$hasAccess('SEGMENT_UPDATE')"
                     :error-messages="errorParamsMessage(element.name) || null"
-                    @input="(value) => setConditionValue({ ...element, value })"
+                    @input="(value) => setConditionValueByType({ ...element, value })"
                 />
             </div>
             <span
@@ -82,7 +82,7 @@ export default {
     },
     methods: {
         ...mapActions('conditions', [
-            'setCondition',
+            'setConditionValue',
         ]),
         getComponentViaType(type) {
             switch (type) {
@@ -103,7 +103,7 @@ export default {
                 ? Object.values(options)
                 : [];
         },
-        setConditionValue({
+        setConditionValueByType({
             value, name, type, options,
         }) {
             let tmpValue = value;
@@ -112,7 +112,7 @@ export default {
                     ? getKeysByValues(options, value)
                     : getKeyByValue(options, value) || null;
             }
-            this.setCondition({
+            this.setConditionValue({
                 conditionId: this.itemId,
                 parameterName: name,
                 parameterValue: tmpValue,
@@ -129,6 +129,7 @@ export default {
             }
             return condition[name] || '';
         },
+        // TODO: waiting for BE validation
         errorParamsMessage(name) {
             const parametersIndex = `${this.itemId}_${name}`;
             return this.elementIsValidate(parametersIndex);
