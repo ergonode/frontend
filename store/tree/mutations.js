@@ -9,6 +9,7 @@ export const types = {
     ADD_TREE_ITEM: 'ADD_TREE_ITEM',
     SET_ROWS_COUNT: 'SET_ROWS_COUNT',
     SET_TREE_ID: 'SET_TREE_ID',
+    SET_CODE: 'SET_CODE',
     SET_TREE: 'SET_TREE',
     SET_FULL_TREE: 'SET_FULL_TREE',
     SET_TREE_ITEM: 'SET_TREE_ITEM',
@@ -35,6 +36,9 @@ export default {
     },
     [types.SET_TREE_ID](state, value) {
         state.treeId = value;
+    },
+    [types.SET_CODE](state, value) {
+        state.code = value;
     },
     [types.SET_TREE_ITEM](state, { index, item }) {
         state.treeData[index] = item;

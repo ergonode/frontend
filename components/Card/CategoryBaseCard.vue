@@ -10,7 +10,7 @@
             regular
             required
             :error-messages="errorCodeMessage"
-            :disabled="isDisabled"
+            :disabled="isDisabled || isDisabledByPrivileges"
             label="Code"
             hint="Category code must be unique"
             @input="setCategoryCode($event)"
@@ -37,6 +37,10 @@ export default {
         }),
         isDisabled() {
             return Boolean(this.categoryID);
+        },
+        isDisabledByPrivileges() {
+            return (this.isDisabled && !this.$hasAccess('CATEGORY_UPDATE'))
+            || (!this.isDisabled && !this.$hasAccess('CATEGORY_CREATE'));
         },
         errorCodeMessage() {
             const codeIndex = 'code';

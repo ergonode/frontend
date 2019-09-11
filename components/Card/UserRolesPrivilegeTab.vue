@@ -46,6 +46,7 @@ import { getMappedGridData } from '~/model/mappers/privilegesMapper';
 import GridCell from '~/components/Grid/GridCell';
 import GridInfoCell from '~/components/Grid/GridInfoCell';
 import GridCheckCell from '~/components/Grid/GridCheckCell';
+import Footer from '~/components/ReusableFooter/Footer';
 
 export default {
     name: 'UserRolesPrivilegeTab',
@@ -59,14 +60,14 @@ export default {
         GridCell,
         GridInfoCell,
         GridWrapper,
-        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Footer,
     },
     async beforeCreate() {
         this.actionPaths = {
             getData: '',
             routerEdit: '',
         };
-        this.isEditingAllowed = this.$canIUse('USER_ROLE_UPDATE');
+        this.isEditingAllowed = this.$hasAccess('USER_ROLE_UPDATE');
         this.$registerStore({
             module: gridModule,
             moduleName: 'privilegesGrid',
@@ -102,6 +103,7 @@ export default {
 
             if (columnId !== 'read' && value) {
                 this.updateDataCellValue({ rowId, columnId, value: true });
+                this.updateDataCellValue({ rowId, columnId: 'read', value: true });
             }
 
             if (columnId === 'read') {

@@ -41,12 +41,13 @@ export function getTreeWhenGhostElementRemoved(oldTree, index) {
     const newTree = [];
     for (let i = 0; i < oldTree.length; i += 1) {
         const currentElement = oldTree[i];
-        if (i >= index) {
-            const newRow = currentElement.row + (i === index ? positionBetweenRows : 1);
-            newTree.push({ ...currentElement, row: newRow });
+        let newRow = null;
+        if (i >= index && (index !== 0 || (index === 0 && currentElement.row < 0))) {
+            newRow = currentElement.row + (i === index ? positionBetweenRows : 1);
         } else {
-            newTree.push(currentElement);
+            newRow = currentElement.row + (oldTree[0].row < 0 ? 1 : 0);
         }
+        newTree.push({ ...currentElement, row: newRow });
     }
     return newTree;
 }
@@ -97,7 +98,7 @@ export function getRowBellowMouse({ clientY, elements, elementBounds }, completi
 }
 
 export function getFullTree(hiddenChildren, oldTree) {
-    let newTree = oldTree;
+    let newTree = oldTree.filter(el => el.id !== 'ghost_item');
     const arr = Object.keys(hiddenChildren);
     for (let i = arr.length - 1; i >= 0; i -= 1) {
         const key = arr[i];

@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import languageSettingsModule from '~/reusableStore/languageSettings/state';
 import LanguageSettingsCard from '~/components/Card/LanguageSettingsCard';
 import BaseTab from '~/components/Card/BaseTab';
 
@@ -27,6 +28,24 @@ export default {
             type: Object,
             required: true,
         },
+    },
+    beforeCreate() {
+        this.$registerStore({
+            module: languageSettingsModule,
+            moduleName: 'languageSettings',
+            store: this.$store,
+        });
+    },
+    beforeDestroy() {
+        this.$store.unregisterModule('languageSettings');
+    },
+    async fetch({ app, store }) {
+        app.$registerStore({
+            module: languageSettingsModule,
+            moduleName: 'languageSettings',
+            store,
+        });
+        await store.dispatch('languageSettings/getData');
     },
 };
 </script>

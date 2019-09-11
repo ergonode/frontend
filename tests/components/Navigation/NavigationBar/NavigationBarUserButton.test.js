@@ -7,7 +7,6 @@ import { Store } from 'vuex-mock-store';
 import NavigationBarUserButton from '~/components/Navigation/NavigationBar/NavigationBarUserButton';
 
 const localVue = createLocalVue();
-localVue.directive('ripple', {});
 const store = new Store({
     state: {
         authentication: {

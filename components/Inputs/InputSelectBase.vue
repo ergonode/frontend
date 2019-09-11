@@ -15,7 +15,7 @@
             <label
                 v-if="label"
                 :class="floatingLabelClasses"
-                :style="floatingLabelPosition"
+                :style="floatingLabelTransforms"
                 v-text="label" />
             <slot name="input" />
             <slot name="append">
@@ -185,12 +185,13 @@ export default {
                 colorClass,
             ];
         },
-        floatingLabelPosition() {
+        floatingLabelTransforms() {
             if (!this.isMounted) return null;
 
             if (this.isFocused || !this.isEmpty || this.isPlaceholder) {
                 const { inputContent } = this.$refs;
-                const transform = `translateY(-${inputContent.offsetHeight / 2}px)`;
+                const translateX = this.solid ? '-4px' : '-5px';
+                const transform = `translate(${translateX}, -${inputContent.offsetHeight / 2}px) scale(0.9)`;
 
                 return {
                     transform,
@@ -201,13 +202,8 @@ export default {
             return null;
         },
         floatingLabelClasses() {
-            const typoClass = this.isFocused || !this.isEmpty || this.isPlaceholder
-                ? 'typo-btn--xs'
-                : 'typo-subtitle';
-
             return [
                 'input__label',
-                typoClass,
                 { 'input__label--required': this.required },
             ];
         },

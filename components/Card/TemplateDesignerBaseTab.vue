@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseTab :update-button="updateButton">
+    <BaseTab>
         <TemplateDesignerBaseCard slot="content" />
         <Footer
             slot="footer"
@@ -14,11 +14,12 @@
 <script>
 import TemplateDesignerBaseCard from '~/components/Card/TemplateDesignerBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
+import Footer from '~/components/ReusableFooter/Footer';
 
 export default {
     name: 'TemplateDesignerBaseTab',
     components: {
-        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Footer,
         TemplateDesignerBaseCard,
         BaseTab,
     },

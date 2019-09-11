@@ -9,6 +9,7 @@
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="Category"
+            :is-read-only="!isUserAllowedToUpdateCategory && isEdit"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -20,47 +21,29 @@ import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPag
 export default {
     name: 'CategoryPage',
     mixins: [categoryManagementPageBaseMixin],
-    data() {
-        return {
-            breadcrumbs: [
-                {
-                    title: 'Categories',
-                    icon: 'Category',
-                    path: '/categories',
-                },
-            ],
-            buttons: [],
-            tabs: [
-                {
-                    title: 'General options',
-                    path: `/categories/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/general`,
-                    active: true,
-                    props: {
-                        updateButton: {
-                            title: this.isEdit ? 'SAVE CATEGORY' : 'CREATE CATEGORY',
-                            action: this.isEdit ? this.onSave : this.onCreate,
-                            disabled: this.isEdit ? !this.$canIUse('CATEGORY_UPDATE') : false,
-                        },
-                    },
-                },
-                {
-                    title: 'Translations',
-                    path: `/categories/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/translations`,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE CATEGORY',
-                            action: this.onSave,
-                            disabled: !this.$canIUse('CATEGORY_UPDATE'),
-                        },
-                    },
-                },
-            ],
-        };
-    },
     created() {
+        let generalOptTabPath = '/categories/new/general';
+        let privilegesTabPath = '/categories/new/translations';
+        let tabAction = this.onCreate;
+        let buttonPrefix = 'CREATE';
+
+        this.buttons = [];
+        this.breadcrumbs = [
+            {
+                title: 'Categories',
+                icon: 'Category',
+                path: '/categories',
+            },
+        ];
+        this.isUserAllowedToUpdateCategory = this.$hasAccess('CATEGORY_UPDATE');
+
         if (this.isEdit) {
-            // uncomment when we create removal options
+            generalOptTabPath = `/categories/edit/${this.$route.params.id}/general`;
+            privilegesTabPath = `/categories/edit/${this.$route.params.id}/translations`;
+            tabAction = this.onSave;
+            buttonPrefix = 'SAVE';
+
+            // TODO: uncomment when we create removal options
             // this.buttons = [
             //     {
             //         title: 'REMOVE CATEGORY',
@@ -71,6 +54,38 @@ export default {
             //     },
             // ];
         }
+
+        this.tabs = [
+            {
+                title: 'General options',
+                path: generalOptTabPath,
+                active: true,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} CATEGORY`,
+                        action: tabAction,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateCategory : false,
+                    },
+                },
+            },
+            {
+                title: 'Translations',
+                path: privilegesTabPath,
+                active: this.isEdit,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} CATEGORY`,
+                        action: tabAction,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateCategory : false,
+                    },
+                },
+            },
+        ];
+    },
+    beforeDestroy() {
+        delete this.breadcrumbs;
+        delete this.isUserAllowedToUpdateCategory;
+        delete this.buttons;
     },
 };
 </script>

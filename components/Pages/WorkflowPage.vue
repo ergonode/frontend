@@ -7,13 +7,15 @@
         <NavigationHeader
             :title="title"
             :buttons="buttons"
-            :icon="icon" />
+            :icon="icon"
+            :is-read-only="Privilege.isReadOnly" />
         <HorizontalTabBar
             :items="tabs" />
     </PageWrapper>
 </template>
 
 <script>
+import Privilege from '~/model/privilege';
 
 export default {
     name: 'WorkflowPage',
@@ -37,17 +39,21 @@ export default {
             default: null,
         },
     },
-    data() {
-        return {
-            tabs: [
-                {
-                    title: 'Product statuses',
-                    path: '/workflow/statuses',
-                    active: true,
-                    isContextualMenu: false,
-                },
-            ],
-        };
+    beforeCreate() {
+        this.Privilege = new Privilege(this.$hasAccess, 'WORKFLOW');
+        this.tabs = [];
+        if (this.$hasAccess('WORKFLOW_READ')) {
+            this.tabs.push({
+                title: 'Product statuses',
+                path: '/workflow/statuses',
+                active: true,
+                isContextualMenu: false,
+            });
+        }
+    },
+    beforeDestroy() {
+        delete this.Privilege;
+        delete this.tabs;
     },
 };
 </script>

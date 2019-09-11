@@ -30,14 +30,28 @@ export default {
             this.$router.push('/users/roles/new');
         },
         getButtons() {
-            const isRolePath = /roles/.test(this.$route.path);
+            const isRolesPath = /roles/.test(this.$route.path);
+            const isUsersPath = /grid/.test(this.$route.path);
+
+            if (!isRolesPath && !isUsersPath) return [];
+
+            if (isUsersPath) {
+                return [
+                    {
+                        title: 'CREATE USER',
+                        color: 'success',
+                        action: this.addNewUser,
+                        disabled: !this.$hasAccess('USER_CREATE'),
+                    },
+                ];
+            }
 
             return [
                 {
-                    title: isRolePath ? 'CREATE ROLE' : 'CREATE USER',
+                    title: 'CREATE ROLE',
                     color: 'success',
-                    action: isRolePath ? this.addNewRole : this.addNewUser,
-                    disabled: isRolePath ? !this.$canIUse('USER_ROLE_CREATE') : !this.$canIUse('USER_CREATE'),
+                    action: this.addNewRole,
+                    disabled: !this.$hasAccess('USER_ROLE_CREATE'),
                 },
             ];
         },

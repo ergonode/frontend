@@ -2,89 +2,131 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+/* eslint-disable no-param-reassign */
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 import Vue from 'vue'; // eslint-disable-line import/no-extraneous-dependencies
-// import { modules } from '@Root/modules.config';
 
-const modules = [];
+class ModuleLoader {
+    constructor() {
+        this.config = this.setModulesConfiguration();
+        this.pagesConfig = this.setPagesConfiguration(this.config);
+        this.componentsConfig = this.setComponentsConfiguration(this.config);
+    }
 
-const ModuleLoader = {
-    install() {
-        this.getData().then((components) => {
-            components.forEach((component) => {
-                this.getComponent(component.path, component.module);
-            });
-        });
-    },
-    getRouterConfigs() {
-        return modules.reduce((previousObject, currentObject) => {
+    get getPagesConfig() {
+        return this.pagesConfig;
+    }
+
+    get getComponentsConfig() {
+        return this.componentsConfig;
+    }
+
+    install(_Vue) {
+        const { router, menu } = this.pagesConfig;
+        _Vue.prototype.$modulesConfiguration = {
+            router,
+            menu,
+        };
+    }
+
+    getDefaultModuleConfig() {
+        try {
+            return require('@Root/config/modules');
+        } catch (e) {
+            return false;
+        }
+    }
+
+    setModulesConfiguration() {
+        let summaryConfig = { pages: [], components: [] };
+        const modulesConfig = this.getDefaultModuleConfig();
+        const additionalConfig = require('@Root/modules.config');
+
+        if (modulesConfig) {
+            const { pages: modulePages, components: moduleComponents } = modulesConfig.default;
+
+            summaryConfig = {
+                pages: [...modulePages],
+                components: [...moduleComponents],
+            };
+        }
+
+        if (additionalConfig) {
+            const {
+                pages: additionalConfigPages,
+                components: additionalConfigComponents,
+            } = additionalConfig.default;
+
+            summaryConfig.pages.push(...additionalConfigPages);
+            summaryConfig.components.push(...additionalConfigComponents);
+        }
+        return summaryConfig;
+    }
+
+    setPagesConfiguration({ pages }) {
+        const pagesConfiguration = { router: [], menu: [], store: [] };
+        const filteredPages = pages.filter(page => page.isActive);
+
+        for (let i = 0; i < filteredPages.length; i += 1) {
             let config = null;
-            switch (currentObject.moduleSource) {
-            // TODO: commented because when there is no directory for an alias, nuxt returns an error.
-            // TODO: uncomment if  we have modules to load
-            // case 'vendor':
-            //     config = require(`@Vendors/${currentObject.name}/config`); // eslint-disable-line global-require, import/no-dynamic-require
-            //     break;
-            // case 'module':
-            //     config = require(`@Modules/${currentObject.name}/config`); // eslint-disable-line global-require, import/no-dynamic-require
+            const { name, source } = filteredPages[i];
+            const pageName = `pages/${name}`;
+
+            switch (source) {
+            case 'local':
+                config = require(`@Modules/${pageName}/config`).default;
+                break;
+            // TODO: uncomment when npm modules ready
+            // case 'npm':
+            //     config = require(`@NodeModules/${pageName}/config`).default;
             //     break;
             default:
                 config = null;
             }
             if (config) {
-                const { router } = config;
-                previousObject.push(...router);
-            }
-            return previousObject;
-        }, []);
-    },
-
-    getData() {
-        // async load data
-        // for auto components loading
-        return new Promise(((resolve) => {
-            // Example output: data = [{ module: 'Categories', path: 'CategoriesTest' }]
-            const data = [];
-            resolve(data);
-        }));
-    },
-
-    getComponent(componentPath, module = null) { // eslint-disable-line
-        const name = componentPath.split('/').pop();
-        if (Vue.options.components[name]) {
-            return Vue.options.components[name];
-        }
-        // TODO: commented because when there is no directory for an alias, nuxt returns an error.
-        // TODO: uncomment if  we have modules to load
-        // if (module) {
-        //    return Vue.component(name, () => import(`@Modules/${module}/${componentPath}`));
-        // }
-        return Vue.component(
-            name,
-            () => import(`~/components/${componentPath}`),
-        );
-    },
-
-    getPage(pagePath, module = false, source) {
-        if (module) {
-            switch (source) {
-            // TODO: commented because when there is no directory for an alias,
-            // nuxt returns an error.
-            // TODO: uncomment if  we have modules to load
-            // case 'vendor':
-            //     return () => import(`@Vendors/${module}/${pagePath}` /* webpackChunkName: "module_pages" */).then(m => m.default || m);
-            // case 'module':
-            //     return () => import(`@Modules/${module}/${pagePath}` /* webpackChunkName: "module_pages" */).then(m => m.default || m);
-            default:
-                return null;
+                if (config.router) pagesConfiguration.router.push(...config.router);
+                if (config.menu) pagesConfiguration.menu.push(...config.menu);
+                if (config.store) {
+                    pagesConfiguration.store.push({
+                        source,
+                        moduleName: pageName,
+                        store: [...config.store],
+                    });
+                }
             }
         }
-        return () => import(`@/pages/${pagePath}`).then(m => m.default || m);
-    },
+        return pagesConfiguration;
+    }
 
-    removeComponent(name) {
-        delete Vue.options.components[name];
-    },
-};
+    // TODO: complete when components modules ready
+    setComponentsConfiguration({ components }) {
+        return components;
+    }
+    // TODO: old methods to refactor, don't remove
+    // getComponent(componentPath, module = null) {
+    //     const name = componentPath.split('/').pop();
 
-Vue.use(ModuleLoader);
-export default ModuleLoader;
+    //     if (Vue.options.components[name]) {
+    //         return Vue.options.components[name];
+    //     }
+    //     if (module) {
+    //         return Vue.component(name, () => import(`@Modules/${module}/${componentPath}`));
+    //     }
+    //     return Vue.component(
+    //         name,
+    //         () => import(`~/components/${componentPath}`),
+    //     );
+    // }
+
+    // removeComponent(name) {
+    //     delete Vue.options.components[name];
+    // }
+}
+
+const Modules = new ModuleLoader();
+Vue.use(Modules);
+export const {
+    getPagesConfig,
+    getComponentsConfig,
+} = Modules;

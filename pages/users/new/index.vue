@@ -30,7 +30,7 @@ export default {
             language: state => state.language,
             password: state => state.password,
             passwordRepeat: state => state.passwordRepeat,
-            status: state => state.status,
+            isActive: state => state.isActive,
             roleId: state => state.roleId,
         }),
     },
@@ -68,7 +68,7 @@ export default {
                 passwordRepeat: this.passwordRepeat,
                 language: this.language,
                 roleId: this.roleId,
-                // status: this.status, TODO: Uncomment when BE is ready
+                isActive: this.isActive,
             };
             this.createUser({
                 data: user,

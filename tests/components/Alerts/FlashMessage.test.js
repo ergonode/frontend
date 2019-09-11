@@ -7,14 +7,16 @@ import { Store } from 'vuex-mock-store';
 import FlashMessage from '~/components/Alerts/FlashMessage.vue';
 
 const localVue = createLocalVue();
-localVue.directive('ripple', {});
 
 const store = new Store({
     state: {
-        alerts: [],
-    },
-    getters: {
-        'alerts/alerts': [],
+        alerts: [
+            {
+                id: 1,
+                type: 'warning',
+                message: 'You better watch out!!!',
+            }
+        ],
     },
 });
 const mocks = {
@@ -23,6 +25,7 @@ const mocks = {
 afterEach(() => store.reset());
 describe('Alerts/FlashMessage', () => {
     let wrapper;
+
     beforeEach(() => {
         wrapper = mount(FlashMessage, {
             localVue,
@@ -38,10 +41,5 @@ describe('Alerts/FlashMessage', () => {
     it('Component is named well', () => {
         expect(typeof FlashMessage.name).toBe('string');
         expect(FlashMessage.name).toEqual('FlashMessage');
-    });
-
-    it('Check if no alerts', () => {
-        const alerts = wrapper.findAll('.alert');
-        expect(alerts.length).toBe(0);
     });
 });

@@ -32,7 +32,7 @@ export default {
             language: state => state.language,
             password: state => state.password,
             passwordRepeat: state => state.passwordRepeat,
-            status: state => state.status,
+            isActive: state => state.isActive,
             roleId: state => state.roleId,
         }),
         title() {
@@ -67,7 +67,7 @@ export default {
                 password: this.password,
                 passwordRepeat: this.passwordRepeat,
                 roleId: this.roleId,
-                // status: this.status, TODO: Uncomment when BE is ready
+                isActive: this.isActive,
             };
             this.updateUser({
                 id: this.id,
@@ -81,7 +81,6 @@ export default {
     async fetch({
         store,
         params,
-        error,
     }) {
         await store.dispatch('roles/getRoles', {
             limit: 9999,
@@ -89,12 +88,6 @@ export default {
         });
         await store.dispatch('users/getUserById', {
             userId: params.id,
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return error();
-            },
         });
     },
 };

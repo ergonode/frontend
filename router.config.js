@@ -2,13 +2,15 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+// pages
 const Login = () => import('~/pages/index').then(m => m.default || m);
 const Dashboard = () => import('~/pages/dashboard/index').then(m => m.default || m);
-const Import = () => import('~/pages/import/index').then(m => m.default || m);
 const Categories = () => import('~/pages/categories/index').then(m => m.default || m);
 const CategoryNew = () => import('~/pages/categories/new/index').then(m => m.default || m);
 const CategoryEdit = () => import('~/pages/categories/edit/_id').then(m => m.default || m);
 const CategoryTrees = () => import('~/pages/category-trees/index').then(m => m.default || m);
+const CategoryTreesNew = () => import('~/pages/category-trees/new/index').then(m => m.default || m);
+const CategoryTreesEdit = () => import('~/pages/category-trees/edit/_id').then(m => m.default || m);
 const Products = () => import('~/pages/products/index').then(m => m.default || m);
 const ProductNew = () => import('~/pages/products/new/index').then(m => m.default || m);
 const ProductEdit = () => import('~/pages/products/edit/_id').then(m => m.default || m);
@@ -29,40 +31,73 @@ const Placeholder = () => import('~/pages/placeholder/index').then(m => m.defaul
 const Workflow = () => import('~/pages/workflow/index').then(m => m.default || m);
 const ProductStatusNew = () => import('~/pages/workflow/statuses/new/index').then(m => m.default || m);
 const ProductStatusEdit = () => import('~/pages/workflow/statuses/edit/_id').then(m => m.default || m);
+const Profile = () => import('~/pages/profile/index').then(m => m.default || m);
 
+// Tabs
 const AttributeBaseTab = () => import('~/components/Card/AttributeBaseTab').then(m => m.default || m);
 const AttributeTranslationsTab = () => import('~/components/Card/AttributeTranslationsTab').then(m => m.default || m);
 const TemplateDesignerBaseTab = () => import('~/components/Card/TemplateDesignerBaseTab').then(m => m.default || m);
 const TemplateDesignerTab = () => import('~/components/Card/TemplateDesignerTab').then(m => m.default || m);
-const UsersGridTab = () => import('~/components/Card/UsersGridTab').then(m => m.default || m);
-const UserActivityLogsGridTab = () => import('~/components/Card/UserActivityLogsGridTab').then(m => m.default || m);
-const RolesGridTab = () => import('~/components/Card/RolesGridTab').then(m => m.default || m);
 const UserBaseTab = () => import('~/components/Card/UserBaseTab').then(m => m.default || m);
-const UsersActivityLogsGridTab = () => import('~/components/Card/UsersActivityLogsGridTab').then(m => m.default || m);
 const UserAvatarTab = () => import('~/components/Card/UserAvatarTab').then(m => m.default || m);
 const UserRolesBaseTab = () => import('~/components/Card/UserRolesBaseTab').then(m => m.default || m);
 const UserRolesPrivilegeTab = () => import('~/components/Card/UserRolesPrivilegeTab').then(m => m.default || m);
 const CategoryBaseTab = () => import('~/components/Card/CategoryBaseTab').then(m => m.default || m);
 const CategoryTranslationsTab = () => import('~/components/Card/CategoryTranslationsTab').then(m => m.default || m);
-const ProductGridTab = () => import('~/components/Card/ProductGridTab').then(m => m.default || m);
+const CategoryTreeBaseTab = () => import('~/components/Card/CategoryTreeBaseTab').then(m => m.default || m);
+const CategoryTreeTranslationsTab = () => import('~/components/Card/CategoryTreeTranslationsTab').then(m => m.default || m);
+const CategoryTreeDesignTab = () => import('~/components/Card/CategoryTreeDesignTab').then(m => m.default || m);
 const ProductBaseTab = () => import('~/components/Card/ProductBaseTab').then(m => m.default || m);
 const ProductTemplateTab = () => import('~/components/Card/ProductTemplateTab').then(m => m.default || m);
-const TreeDesignTab = () => import('~/components/Card/TreeDesignTab').then(m => m.default || m);
-const ProductStatusGridTab = () => import('~/components/Card/ProductStatusGridTab').then(m => m.default || m);
+const ProductStatusBaseTab = () => import('~/components/Card/ProductStatusBaseTab').then(m => m.default || m);
+const ProductStatusTranslationsTab = () => import('~/components/Card/ProductStatusTranslationsTab').then(m => m.default || m);
 const LanguageSettingsTab = () => import('~/components/Card/LanguageSettingsTab').then(m => m.default || m);
+
+// Grid Tabs
+const ProductStatusGridTab = () => import('~/components/Card/Grid/ProductStatusGridTab').then(m => m.default || m);
+const ProductGridTab = () => import('~/components/Card/Grid/ProductGridTab').then(m => m.default || m);
+const CategoryGridTab = () => import('~/components/Card/Grid/CategoryGridTab').then(m => m.default || m);
+const CategoryTreesGridTab = () => import('~/components/Card/Grid/CategoryTreesGridTab').then(m => m.default || m);
+const AttributeGridTab = () => import('~/components/Card/Grid/AttributeGridTab').then(m => m.default || m);
+const RolesGridTab = () => import('~/components/Card/Grid/RolesGridTab').then(m => m.default || m);
+const UsersGridTab = () => import('~/components/Card/Grid/UsersGridTab').then(m => m.default || m);
+const UserActivityLogsGridTab = () => import('~/components/Card/Grid/UserActivityLogsGridTab').then(m => m.default || m);
+const UsersActivityLogsGridTab = () => import('~/components/Card/Grid/UsersActivityLogsGridTab').then(m => m.default || m);
 
 export const pages = [
     {
         name: 'index', path: '/', component: Login,
     },
     {
+        name: 'profile',
+        path: '/profile',
+        component: Profile,
+        children: [
+            {
+                path: 'activity-log',
+                component: UserActivityLogsGridTab,
+            },
+        ],
+    },
+    {
         name: 'dashboard', path: '/dashboard', component: Dashboard,
     },
     {
-        name: 'import', path: '/import', component: Import,
-    },
-    {
-        name: 'categories', path: '/categories', component: Categories,
+        name: 'categories',
+        path: '/categories',
+        component: Categories,
+        children: [
+            {
+                path: 'grid',
+                component: CategoryGridTab,
+                meta: {
+                    privileges: ['CATEGORY_READ'],
+                },
+            },
+        ],
+        meta: {
+            privileges: ['CATEGORY_READ'],
+        },
     },
     {
         name: 'categories-new',
@@ -78,6 +113,9 @@ export const pages = [
                 component: CategoryTranslationsTab,
             },
         ],
+        meta: {
+            privileges: ['CATEGORY_READ'],
+        },
     },
     {
         name: 'categories-edit-id',
@@ -93,6 +131,9 @@ export const pages = [
                 component: CategoryTranslationsTab,
             },
         ],
+        meta: {
+            privileges: ['CATEGORY_READ'],
+        },
     },
     {
         name: 'category-trees',
@@ -100,10 +141,57 @@ export const pages = [
         component: CategoryTrees,
         children: [
             {
-                path: 'tree',
-                component: TreeDesignTab,
+                path: 'grid',
+                component: CategoryTreesGridTab,
             },
         ],
+        meta: {
+            privileges: ['CATEGORY_TREE_READ'],
+        },
+    },
+    {
+        name: 'category-trees-new',
+        path: '/category-trees/new',
+        component: CategoryTreesNew,
+        children: [
+            {
+                path: 'general',
+                component: CategoryTreeBaseTab,
+            },
+            {
+                path: 'translations',
+                component: CategoryTreeTranslationsTab,
+            },
+            {
+                path: 'designer',
+                component: CategoryTreeDesignTab,
+            },
+        ],
+        meta: {
+            privileges: ['CATEGORY_TREE_CREATE'],
+        },
+    },
+    {
+        name: 'category-trees-edit-id',
+        path: '/category-trees/edit/:id/:tab?',
+        component: CategoryTreesEdit,
+        children: [
+            {
+                path: 'general',
+                component: CategoryTreeBaseTab,
+            },
+            {
+                path: 'translations',
+                component: CategoryTreeTranslationsTab,
+            },
+            {
+                path: 'designer',
+                component: CategoryTreeDesignTab,
+            },
+        ],
+        meta: {
+            privileges: ['CATEGORY_TREE_READ'],
+        },
     },
     {
         name: 'products',
@@ -115,6 +203,9 @@ export const pages = [
                 component: ProductGridTab,
             },
         ],
+        meta: {
+            privileges: ['PRODUCT_READ'],
+        },
     },
     {
         name: 'products-new',
@@ -130,6 +221,9 @@ export const pages = [
                 component: ProductTemplateTab,
             },
         ],
+        meta: {
+            privileges: ['PRODUCT_READ'],
+        },
     },
     {
         name: 'products-edit-id',
@@ -145,9 +239,17 @@ export const pages = [
                 component: ProductTemplateTab,
             },
         ],
+        meta: {
+            privileges: ['PRODUCT_READ'],
+        },
     },
     {
-        name: 'templates', path: '/templates', component: Templates,
+        name: 'templates',
+        path: '/templates',
+        component: Templates,
+        meta: {
+            privileges: ['TEMPLATE_DESIGNER_READ'],
+        },
     },
     {
         name: 'templates-new',
@@ -163,6 +265,9 @@ export const pages = [
                 component: TemplateDesignerTab,
             },
         ],
+        meta: {
+            privileges: ['TEMPLATE_DESIGNER_READ'],
+        },
     },
     {
         name: 'templates-edit-id',
@@ -178,9 +283,26 @@ export const pages = [
                 component: TemplateDesignerTab,
             },
         ],
+        meta: {
+            privileges: ['TEMPLATE_DESIGNER_READ'],
+        },
     },
     {
-        name: 'attributes', path: '/attributes', component: Attributes,
+        name: 'attributes',
+        path: '/attributes',
+        component: Attributes,
+        meta: {
+            privileges: ['ATTRIBUTE_READ'],
+        },
+        children: [
+            {
+                path: 'grid',
+                component: AttributeGridTab,
+                meta: {
+                    privileges: ['ATTRIBUTE_READ'],
+                },
+            },
+        ],
     },
     {
         name: 'attributes-new',
@@ -196,6 +318,9 @@ export const pages = [
                 component: AttributeTranslationsTab,
             },
         ],
+        meta: {
+            privileges: ['ATTRIBUTE_READ'],
+        },
     },
     {
         name: 'attributes-edit-id',
@@ -211,6 +336,9 @@ export const pages = [
                 component: AttributeTranslationsTab,
             },
         ],
+        meta: {
+            privileges: ['ATTRIBUTE_READ'],
+        },
     },
     {
         name: 'users',
@@ -220,16 +348,25 @@ export const pages = [
             {
                 path: 'grid',
                 component: UsersGridTab,
+                meta: {
+                    privileges: ['USER_READ'],
+                },
             },
             {
                 path: 'roles',
                 component: RolesGridTab,
+                meta: {
+                    privileges: ['USER_ROLE_READ'],
+                },
             },
             {
                 path: 'logs',
                 component: UsersActivityLogsGridTab,
             },
         ],
+        meta: {
+            privileges: ['USER_READ'],
+        },
     },
     {
         name: 'users-new',
@@ -244,11 +381,10 @@ export const pages = [
                 path: 'avatar',
                 component: UserAvatarTab,
             },
-            {
-                path: 'logs',
-                component: UserActivityLogsGridTab,
-            },
         ],
+        meta: {
+            privileges: ['USER_READ'],
+        },
     },
     {
         name: 'users-edit-id',
@@ -263,11 +399,10 @@ export const pages = [
                 path: 'avatar',
                 component: UserAvatarTab,
             },
-            {
-                path: 'logs',
-                component: UserActivityLogsGridTab,
-            },
         ],
+        meta: {
+            privileges: ['USER_READ'],
+        },
     },
     {
         name: 'users-roles-new',
@@ -283,6 +418,9 @@ export const pages = [
                 component: UserRolesPrivilegeTab,
             },
         ],
+        meta: {
+            privileges: ['USER_ROLE_READ'],
+        },
     },
     {
         name: 'users-roles-edit-id',
@@ -298,6 +436,9 @@ export const pages = [
                 component: UserRolesPrivilegeTab,
             },
         ],
+        meta: {
+            privileges: ['USER_ROLE_READ'],
+        },
     },
     {
         name: 'workflow',
@@ -309,18 +450,45 @@ export const pages = [
                 component: ProductStatusGridTab,
             },
         ],
+        meta: {
+            privileges: ['WORKFLOW_READ'],
+        },
     },
     {
         name: 'workflow-statuses-new',
         path: '/workflow/statuses/new',
         component: ProductStatusNew,
-        children: [],
+        children: [
+            {
+                path: 'general',
+                component: ProductStatusBaseTab,
+            },
+            {
+                path: 'translations',
+                component: ProductStatusTranslationsTab,
+            },
+        ],
+        meta: {
+            privileges: ['WORKFLOW_READ'],
+        },
     },
     {
         name: 'workflow-statuses-edit-id',
         path: '/workflow/statuses/edit/:id?',
         component: ProductStatusEdit,
-        children: [],
+        children: [
+            {
+                path: 'general',
+                component: ProductStatusBaseTab,
+            },
+            {
+                path: 'translations',
+                component: ProductStatusTranslationsTab,
+            },
+        ],
+        meta: {
+            privileges: ['WORKFLOW_READ'],
+        },
     },
     {
         name: 'settings',

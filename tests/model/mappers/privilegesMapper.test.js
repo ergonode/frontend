@@ -115,18 +115,18 @@ describe('privilegesMapper/getMappedGridData', () => {
     it('Based on Grid data, data is mapped into API structure', () => {
         const gridData = {
             0: {
-                name: 'User',
-                create: true,
-                read: true,
-                update: true,
-                delete: true,
+                name: { value: 'User' },
+                create: { value: true },
+                read: { value: true },
+                update: { value: true },
+                delete: { value: true },
             },
             1: {
-                name: 'User role',
-                create: true,
-                read: true,
-                update: true,
-                delete: true,
+                name: { value: 'User role' },
+                create: { value: true },
+                read: { value: true },
+                update: { value: true },
+                delete: { value: true },
             },
         };
         const privilegesDic = [

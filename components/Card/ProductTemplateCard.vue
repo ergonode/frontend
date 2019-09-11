@@ -71,7 +71,7 @@ export default {
             return maxVisibleRows;
         },
         isUserAllowedToUpdate() {
-            return this.$canIUse('PRODUCT_UPDATE');
+            return this.$hasAccess('PRODUCT_UPDATE');
         },
         gridStyle() {
             return {

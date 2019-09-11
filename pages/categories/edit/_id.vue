@@ -12,7 +12,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { isThereAnyTranslation, clearEmptyTranslations } from '~/model/mappers/translationMapper';
+import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 
 export default {
     validate({ params }) {
@@ -55,7 +55,7 @@ export default {
             this.removeValidationErrors();
             let { name } = this.translations;
             if (isThereAnyTranslation(name)) {
-                name = clearEmptyTranslations(name);
+                name = getParsedTranslations(name);
             }
             this.updateCategory({
                 id: this.id,
@@ -68,18 +68,11 @@ export default {
     async fetch({
         store,
         params,
-        error,
     }) {
         await store.dispatch('translations/clearStorage');
         await store.dispatch('categories/clearStorage');
         await store.dispatch('categories/getCategoryById', {
             categoryId: params.id,
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return error();
-            },
         });
     },
 };

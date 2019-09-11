@@ -10,16 +10,19 @@
             :title="button.title"
             :color="button.color"
             :theme="button.theme"
+            :disabled="button.disabled"
             large
             @click.native="button.action" />
     </div>
 </template>
 
 <script>
+import Button from '~/components/Buttons/Button';
+
 export default {
     name: 'Footer',
     components: {
-        Button: () => import('~/components/Buttons/Button'),
+        Button,
     },
     props: {
         buttons: {

@@ -49,7 +49,7 @@ export default {
             },
         },
         isUserAllowedToUpdate() {
-            return this.$canIUse('CATEGORY_UPDATE');
+            return this.$hasAccess('CATEGORY_UPDATE');
         },
         errorNameMessage() {
             const nameIndex = `name_${this.languageCode}`;

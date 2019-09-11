@@ -7,7 +7,7 @@ const unassignedToSectionItems = [
         title: 'Dashboard',
         routing: '/dashboard',
         icon: 'Dashboard',
-        privilege: null,
+        privileges: [],
     },
 ];
 
@@ -16,64 +16,58 @@ const manageSectionItems = [
         title: 'Products catalog',
         routing: '/products',
         icon: 'Document',
-        privilege: 'PRODUCT_READ',
+        privileges: ['PRODUCT_READ'],
     },
     {
         title: 'Product templates',
         routing: '/templates',
         icon: 'Templates',
-        privilege: 'TEMPLATE_DESIGNER_READ',
+        privileges: ['TEMPLATE_DESIGNER_READ'],
     },
     {
         title: 'Categories',
         routing: '/categories',
         icon: 'Category',
-        privilege: 'CATEGORY_READ',
+        privileges: ['CATEGORY_READ'],
     },
     {
         title: 'Category trees',
         routing: '/category-trees',
         icon: 'Tree',
-        privilege: 'CATEGORY_TREE_READ',
+        privileges: ['ATTRIBUTE_READ'],
     },
     {
         title: 'Attributes',
         routing: '/attributes',
         icon: 'Attributes',
-        privilege: 'ATTRIBUTE_READ',
+        privileges: ['CATEGORY_TREE_READ'],
     },
     {
         title: 'Media',
         routing: '/placeholder/media',
         icon: 'Media',
-        privilege: 'MULTIMEDIA_READ',
+        privileges: ['MULTIMEDIA_READ'],
     },
     {
         title: 'Segments',
         routing: '/placeholder/segments',
         icon: 'Templates',
-        privilege: null,
+        privileges: [],
     },
 ];
 
 const collectAndDistributeSectionItems = [
     {
-        title: 'Import',
-        routing: '/import',
-        icon: 'Import',
-        privilege: 'IMPORT_READ',
-    },
-    {
         title: 'Export',
         routing: '/placeholder/export',
         icon: 'Export',
-        privilege: null,
+        privileges: [''],
     },
     {
         title: 'Channels',
         routing: '/placeholder/channels',
         icon: 'Channels',
-        privilege: null,
+        privileges: [],
     },
 ];
 
@@ -82,19 +76,19 @@ const systemSectionItems = [
         title: 'Users',
         routing: '/users',
         icon: 'User',
-        privilege: null,
+        privileges: ['USER_READ'],
     },
     {
         title: 'Workflow',
         routing: '/workflow',
         icon: 'Flow',
-        privilege: null,
+        privileges: ['WORKFLOW_READ'],
     },
     {
         title: 'Settings',
         routing: '/settings',
         icon: 'Settings',
-        privilege: null,
+        privileges: [],
     },
 ];
 
@@ -117,31 +111,33 @@ const sections = [
     },
 ];
 
-export function getValidatedMenuData(canIUse) {
-    const menu = [];
-    const { length: sectionsNumber } = sections;
-
-    for (let i = 0; i < sectionsNumber; i += 1) {
-        const { key } = sections[i];
-        menu.push({
-            title: key,
-            section: [],
-        });
-
-        const { items } = sections[i];
-        const { length: itemsNumber } = items;
-
-        for (let j = 0; j < itemsNumber; j += 1) {
-            const item = items[j];
-            if (item.privilege === null || canIUse(item.privilege)) {
-                menu[i].section.push({
-                    title: item.title,
-                    routing: item.routing,
-                    icon: item.icon,
-                });
-            }
+const extendSections = (modulesMenu) => {
+    const newSections = JSON.parse(JSON.stringify(sections)); // deep array clone hack
+    for (let i = 0; i < modulesMenu.length; i += 1) {
+        const index = newSections.findIndex(e => e.key === modulesMenu[i].key);
+        if (index >= 0) {
+            newSections[index].items.push(...modulesMenu[i].items);
+        } else {
+            newSections.push(modulesMenu[i]);
         }
     }
+    return newSections;
+};
 
+export const getValidatedMenuData = (hasAccess, modulesMenu) => {
+    const menu = [];
+    const extendedSections = extendSections(modulesMenu);
+    const { length: sectionsNumber } = extendedSections;
+
+    for (let i = 0; i < sectionsNumber; i += 1) {
+        const { key, items } = extendedSections[i];
+        const filteredItems = items.filter(e => !e.privileges
+          || (e.privileges && !e.privileges.length)
+          || e.privileges.every(privilege => hasAccess(privilege)));
+        menu.push({
+            key,
+            items: filteredItems,
+        });
+    }
     return menu;
-}
+};

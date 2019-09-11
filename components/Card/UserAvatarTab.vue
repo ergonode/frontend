@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseTab :update-button="updateButton">
+    <BaseTab>
         <template v-slot:content>
             <UserAvatarCard />
         </template>
@@ -17,11 +17,12 @@
 <script>
 import BaseTab from '~/components/Card/BaseTab';
 import UserAvatarCard from '~/components/Card/UserAvatarCard';
+import Footer from '~/components/ReusableFooter/Footer';
 
 export default {
     name: 'UserAvatarTab',
     components: {
-        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Footer,
         UserAvatarCard,
         BaseTab,
     },

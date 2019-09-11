@@ -3,15 +3,12 @@
  * See LICENSE for license details.
  */
 <template>
-    <NavigationBarButton>
-        <NuxtLink
-            :to="{ path: '/dashboard' }">
-            <img
-                class="part__element"
-                src="~assets/images/logo.svg"
-                alt="ergonode"
-                title="ergonode">
-        </NuxtLink>
+    <NavigationBarButton @click.native="onClick">
+        <img
+            class="part__element"
+            src="~assets/images/logo.svg"
+            alt="ergonode"
+            title="ergonode">
     </NavigationBarButton>
 </template>
 
@@ -20,6 +17,11 @@ export default {
     name: 'NavigationBarDashboardButton',
     components: {
         NavigationBarButton: () => import('~/components/Navigation/NavigationBar/NavigationBarButton'),
+    },
+    methods: {
+        onClick() {
+            this.$router.push('/dashboard');
+        },
     },
 };
 </script>

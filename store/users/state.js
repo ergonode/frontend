@@ -11,6 +11,6 @@ export default () => ({
     language: '',
     password: '',
     passwordRepeat: '',
-    status: '',
+    isActive: false,
     roleId: null,
 });

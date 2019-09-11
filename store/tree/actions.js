@@ -12,36 +12,64 @@ import {
 } from '~/model/tree/TreeCalculations';
 import { getParsedTreeData } from '~/model/mappers/treeMapper';
 
+const onDefaultError = () => {};
+
 export default {
     getTreeById(
-        { commit, rootState },
-        { treeName, onError },
+        { commit, dispatch, rootState },
+        { treeId },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { [userLanguageCode]: categories } = rootState.list.elements;
-        return this.app.$axios.$get(`${userLanguageCode}/trees`).then(({ collection }) => {
-            const treeId = collection.find(e => e.name.toLowerCase() === treeName.toLowerCase()).id;
+
+        return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({
+            code,
+            name = '',
+            categories: treeData,
+        }) => {
+            const treeToSet = getParsedTreeData(treeData, categories);
+            const translations = {
+                name,
+            };
+
+            treeToSet.forEach(e => dispatch('list/setDisabledElement', { languageCode: userLanguageCode, elementId: e.id }, { root: true }));
+            commit(types.SET_TREE, treeToSet);
+            commit(types.SET_FULL_TREE, treeToSet);
             commit(types.SET_TREE_ID, treeId);
-            return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({ categories: treeData }) => {
-                const treeToSet = getParsedTreeData(treeData, categories);
-                commit(types.SET_TREE, treeToSet);
-                commit(types.SET_FULL_TREE, treeToSet);
-            }).catch(e => onError(e.data));
+            commit(types.SET_CODE, code);
+            commit('translations/setTabTranslations', { translations }, { root: true });
+        }).catch(onDefaultError);
+    },
+    createTree(
+        { commit, rootState },
+        {
+            data,
+            onSuccess,
+            onError,
+        },
+    ) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$post(`${userLanguageCode}/trees`, data).then(({ id }) => {
+            commit(types.SET_TREE_ID, id);
+            onSuccess(id);
         }).catch(e => onError(e.data));
     },
     updateTree(
         { rootState },
         {
-            id, data, onSuccess, onError,
+            id, data, onSuccess,
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$put(`${userLanguageCode}/trees/${id}`, data).then(() => {
             onSuccess();
-        }).catch(e => onError(e.data));
+        }).catch(onDefaultError);
     },
     setRowsCount: ({ commit }, value) => {
         commit(types.SET_ROWS_COUNT, value);
+    },
+    setTreeCode({ commit }, code) {
+        commit(types.SET_CODE, code);
     },
     setTree: ({ commit }, tree) => {
         commit(types.SET_TREE, tree);
@@ -70,7 +98,6 @@ export default {
         commit(types.SET_HIDDEN_ITEM, { key, value });
     },
     addTreeItem: ({ commit, getters }, item) => {
-        // TODO: Method is not clear, too many dependencies, I need to dispatch list/setDisabledElement, not sure if that place is good
         const findIndex = getters.getIndexById(item.id);
         if (findIndex >= 0) {
             commit(types.SET_TREE_ITEM, { index: findIndex, item });
@@ -87,7 +114,6 @@ export default {
         commit(types.SET_TREE, newTree);
     },
     removeTreeItem: ({ commit, state, dispatch }, id) => {
-        // TODO: Method is not clear, too many dependencies, I need to dispatch list/removeDisabledElement, not sure if that place is good
         let newTree = [];
         if (Number.isInteger(id)) {
             newTree = getTreeWhenElementRemoved(state.treeData, id);

@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['bar-button', {'bar-button--selected': isSelected}]">
+    <button :class="['bar-button', {'bar-button--selected': isSelected}]">
         <slot />
-    </div>
+    </button>
 </template>
 
 <script>
@@ -26,9 +26,11 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        border: none;
         padding: 0 24px;
+        background-color: transparent;
         cursor: pointer;
-        outline: 0;
+        outline: none;
 
         &:hover, &--selected {
             background-color: rgba($graphite, 0.5);
@@ -37,11 +39,6 @@ export default {
         .title {
             @include setFont(semiBold, regular, medium, $white);
             margin-left: 8px;
-        }
-
-        .icon-wrapper {
-            display: flex;
-            margin-right: -8px;
         }
     }
 </style>

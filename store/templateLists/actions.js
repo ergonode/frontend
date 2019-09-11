@@ -5,15 +5,15 @@
 export default {
     getTemplatesSection({ commit, rootState }, {
         params,
-        onError,
+        onError = () => {},
     }) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$get(`${userLanguageCode}/templates/groups`).then(({ collection: section }) => {
             commit('setTemplatesSection', section);
             return this.app.$axios.$get(`${userLanguageCode}/templates`, { params }).then(({ collection: elements }) => {
                 commit('setTemplatesSectionElements', elements);
-            }).catch(e => onError(e.data));
-        }).catch(e => onError(e.data));
+            }).catch(onError);
+        }).catch(onError);
     },
     clearStorage: ({ commit }) => commit('clearStorage'),
 };

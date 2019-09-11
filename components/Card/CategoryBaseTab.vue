@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseTab :update-button="updateButton">
+    <BaseTab>
         <CategoryBaseCard slot="content" />
         <Footer
             slot="footer"
@@ -14,11 +14,12 @@
 <script>
 import CategoryBaseCard from '~/components/Card/CategoryBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
+import Footer from '~/components/ReusableFooter/Footer';
 
 export default {
     name: 'CategoryBaseTab',
     components: {
-        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Footer,
         CategoryBaseCard,
         BaseTab,
     },

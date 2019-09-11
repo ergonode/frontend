@@ -3,77 +3,43 @@
  * See LICENSE for license details.
  */
 <template>
-    <CategoryTreesPage
+    <GridCategoryTreesPage
         :title="title"
-        @save="onSave" />
+        :buttons="getButtons"
+        icon="Tree" />
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import { getMappedTreeData } from '~/model/mappers/treeMapper';
-
 export default {
-    name: 'NewCategoryTree',
-    middleware: ['tab/redirectToCategoryTree'],
+    name: 'CategoryTrees',
+    middleware: ['tab/redirectToCategoryTrees'],
     components: {
-        CategoryTreesPage: () => import('~/components/Pages/CategoryTreesPage'),
+        GridCategoryTreesPage: () => import('~/components/Pages/GridCategoryTreesPage'),
     },
     data() {
         return {
-            title: 'Category tree',
+            title: 'Category trees',
         };
     },
     computed: {
-        ...mapState('tree', {
-            fullTreeData: state => state.fullTreeData,
-            treeId: state => state.treeId,
-        }),
+        getButtons() {
+            const isCategoryTreesPath = /grid/.test(this.$route.path);
+
+            if (!isCategoryTreesPath) return [];
+            return [
+                {
+                    title: 'CREATE TREE',
+                    color: 'success',
+                    action: this.addNewTree,
+                    disabled: !this.$hasAccess('CATEGORY_TREE_CREATE'),
+                },
+            ];
+        },
     },
     methods: {
-        ...mapActions('tree', [
-            'updateTree',
-        ]),
-        ...mapActions('list', {
-            setConfigurationForList: 'setConfigurationForList',
-        }),
-        onUpdateTreeSuccess() {
-            this.$addAlert({ type: 'success', message: 'Tree updated' });
+        addNewTree() {
+            this.$router.push('/category-trees/new');
         },
-        onSave() {
-            const categoryTree = {
-                name: 'default',
-                categories: getMappedTreeData(this.fullTreeData),
-            };
-            this.updateTree({
-                id: this.treeId,
-                data: categoryTree,
-                onSuccess: this.onUpdateTreeSuccess,
-                onError: () => {},
-            });
-        },
-    },
-    async fetch({ store, error }) {
-        const {
-            user: { language: userLanguageCode },
-        } = store.state.authentication;
-
-        await store.dispatch('list/clearStorage');
-        await store.dispatch('list/getElementsForGroup', {
-            listType: 'categories',
-            groupId: null,
-            elementsCount: 9999,
-            languageCode: userLanguageCode,
-        });
-        await store.dispatch('tree/clearStorage');
-        await store.dispatch('tree/getTreeById', {
-            treeName: 'default',
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return error();
-            },
-        });
     },
 };
 </script>

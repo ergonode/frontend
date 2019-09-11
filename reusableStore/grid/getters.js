@@ -4,5 +4,4 @@
  */
 export default {
     numberOfPages: state => Math.ceil(state.filtered / state.numberOfDisplayedElements),
-    columnIndexByID: state => id => state.columns.findIndex(col => col.id === id),
 };

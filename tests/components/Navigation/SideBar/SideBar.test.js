@@ -9,10 +9,13 @@ import SideBar from '~/components/Navigation/SideBar/SideBar';
 const localVue = createLocalVue();
 const router = new VueRouter();
 const mocks = {
-    $canIUse: jest.fn(),
+    $hasAccess: jest.fn(),
     $route: {
         path: '/products',
         params: { placeholder: '2' },
+    },
+    $modulesConfiguration: {
+      menu: []
     },
 };
 describe('Navigation/SideBar/SideBar', () => {

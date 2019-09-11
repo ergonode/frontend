@@ -30,7 +30,7 @@ export default {
             avatarId: state => state.avatarId,
         }),
         isUserAllowedToUpdate() {
-            return this.$canIUse('USER_UPDATE');
+            return this.$hasAccess('USER_UPDATE');
         },
     },
     methods: {
