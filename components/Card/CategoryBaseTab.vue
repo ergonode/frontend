@@ -14,11 +14,12 @@
 <script>
 import CategoryBaseCard from '~/components/Card/CategoryBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
+import Footer from '~/components/ReusableFooter/Footer';
 
 export default {
     name: 'CategoryBaseTab',
     components: {
-        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Footer,
         CategoryBaseCard,
         BaseTab,
     },

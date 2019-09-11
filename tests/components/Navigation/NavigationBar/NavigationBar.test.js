@@ -6,7 +6,6 @@ import { shallowMount, createLocalVue } from '@vue/test-utils';
 import NavigationBar from '~/components/Navigation/NavigationBar/NavigationBar';
 
 const localVue = createLocalVue();
-localVue.directive('ripple', {});
 describe('Navigation/NavigationBar/NavigationBar', () => {
     let wrapper;
     beforeEach(() => {
