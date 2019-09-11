@@ -4,7 +4,7 @@
  */
 <template>
     <CategoryTreePage
-        :title="title"
+        title="New tree"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>
@@ -18,9 +18,6 @@ export default {
     components: {
         CategoryTreePage: () => import('~/components/Pages/CategoryTreePage'),
     },
-    data: () => ({
-        title: 'New Tree',
-    }),
     computed: {
         ...mapState('tree', {
             code: state => state.code,
