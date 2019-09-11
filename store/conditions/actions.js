@@ -12,7 +12,7 @@ export default {
         { conditionId },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/conditon/${conditionId}`).then((data) => {
+        return this.app.$axios.$get(`${userLanguageCode}/conditions/${conditionId}`).then((data) => {
             commit(types.SET_CONDITIONS, { key: conditionId, value: data });
         }).catch(onDefaultError);
     },

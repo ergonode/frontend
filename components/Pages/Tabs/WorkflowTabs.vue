@@ -18,7 +18,7 @@
 import Privilege from '~/model/privilege';
 
 export default {
-    name: 'GridWorkflowPage',
+    name: 'WorkflowTabs',
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),

@@ -8,7 +8,7 @@
             :title="title"
             :buttons="buttons"
             :icon="icon"
-            :is-read-only="Privilege.isReadOnly" />
+            :is-read-only="isReadOnly" />
         <HorizontalTabBar
             :items="tabs" />
     </PageWrapper>
@@ -49,10 +49,27 @@ export default {
                 isContextualMenu: false,
             });
         }
+        if (this.$hasAccess('CONDITION_READ')) {
+            this.tabs.push({
+                title: 'Condition sets',
+                path: '/segments/condition-sets',
+                active: true,
+                isContextualMenu: false,
+            });
+        }
+    },
+    computed: {
+        isReadOnly() {
+            const isConditionPage = /condition-sets/.test(this.$route.path);
+            let PrivilegeInstance = new Privilege(this.$hasAccess, 'SEGMENT');
+            if (isConditionPage) {
+                PrivilegeInstance = new Privilege(this.$hasAccess, 'CONDITION');
+            }
+            return PrivilegeInstance.isReadOnly;
+        },
     },
     beforeDestroy() {
         delete this.tabs;
-        delete this.Privilege;
     },
 };
 </script>

@@ -75,7 +75,7 @@ export default {
         actionPaths() {
             return {
                 getData: `${this.userLanguageCode}/status`,
-                routerEdit: 'workflow-statuses-edit-id',
+                routerEdit: 'workflow-status-edit-id',
             };
         },
         rowsHeight: {

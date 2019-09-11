@@ -13,7 +13,7 @@
 import { mapActions } from 'vuex';
 
 export default {
-    name: 'NewAttribute',
+    name: 'StatusNew',
     middleware: ['tab/redirectToProductStatusGeneral'],
     components: {
         ProductStatusPage: () => import('~/components/Pages/ProductStatusPage'),
@@ -43,7 +43,7 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Product status created' });
             this.$router.push({
-                name: 'workflow-statuses-edit-id',
+                name: 'workflow-status-edit-id',
                 params: {
                     id,
                 },

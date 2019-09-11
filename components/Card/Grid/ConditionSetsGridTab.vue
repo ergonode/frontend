@@ -6,10 +6,10 @@
     <div class="tab">
         <div class="tab__grid">
             <GridWrapper
-                store-namespace="segmentsGrid"
+                store-namespace="conditionSetsGrid"
                 :rows-height="rowsHeight"
                 :action-paths="actionPaths"
-                :editing-privilege-allowed="$hasAccess('SEGMENT_UPDATE')" />
+                :editing-privilege-allowed="$hasAccess('CONDITION_UPDATE')" />
         </div>
         <GridFooter>
             <GridPageSelector
@@ -32,7 +32,7 @@ import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
 
 export default {
-    name: 'SegmentsGridTab',
+    name: 'ConditionSetsGridTab',
     components: {
         GridWrapper,
         GridFooter,
@@ -53,29 +53,29 @@ export default {
     beforeCreate() {
         this.$registerStore({
             module: gridModule,
-            moduleName: 'segmentsGrid',
+            moduleName: 'conditionSetsGrid',
             store: this.$store,
         });
     },
     beforeDestroy() {
-        this.$store.unregisterModule('segmentsGrid');
+        this.$store.unregisterModule('conditionSetsGrid');
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('segmentsGrid', {
+        ...mapState('conditionSetsGrid', {
             numberOfDataElements: state => state.count,
             displayedPage: state => state.displayedPage,
             numberOfDisplayedElements: state => state.numberOfDisplayedElements,
         }),
-        ...mapGetters('segmentsGrid', {
+        ...mapGetters('conditionSetsGrid', {
             numberOfPages: 'numberOfPages',
         }),
         actionPaths() {
             return {
-                getData: `${this.userLanguageCode}/segments`,
-                routerEdit: 'segment-edit-id',
+                getData: `${this.userLanguageCode}/conditionsets`,
+                routerEdit: 'condition-set-edit-id',
             };
         },
         rowsHeight: {
@@ -103,7 +103,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('segmentsGrid', [
+        ...mapActions('conditionSetsGrid', [
             'getData',
             'changeDisplayingPage',
             'changeNumberOfDisplayingElements',
@@ -123,14 +123,14 @@ export default {
         },
     },
     async fetch({ app, store }) {
-        const gridPath = `${store.state.authentication.user.language}/segments`;
+        const gridPath = `${store.state.authentication.user.language}/conditionsets`;
 
         app.$registerStore({
             module: gridModule,
-            moduleName: 'segmentsGrid',
+            moduleName: 'conditionSetsGrid',
             store,
         });
-        await store.dispatch('segmentsGrid/getData', { path: gridPath });
+        await store.dispatch('conditionSetsGrid/getData', { path: gridPath });
     },
 };
 </script>

@@ -30,8 +30,8 @@ export default {
     },
     created() {
         let generalOptTabPath = '/segments/segment/new/general';
-        let translationTabPath = '/segments/segment/new/translations';
-        let designerPath = '/segments/segment/new/designer';
+        let translationTabPath = '';
+        let designerPath = '';
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 

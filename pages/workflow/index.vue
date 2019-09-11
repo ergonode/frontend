@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridWorkflowPage
+    <WorkflowTabs
         title="Workflow"
         :buttons="getButtons()"
         icon="Flow" />
@@ -14,11 +14,11 @@ export default {
     name: 'Index',
     middleware: ['tab/redirectToStatusesGrid'],
     components: {
-        GridWorkflowPage: () => import('~/components/Pages/GridWorkflowPage'),
+        WorkflowTabs: () => import('~/components/Pages/Tabs/WorkflowTabs'),
     },
     methods: {
         addNewStatus() {
-            this.$router.push('/workflow/statuses/new');
+            this.$router.push('/workflow/status/new');
         },
         getButtons() {
             return [

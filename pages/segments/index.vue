@@ -46,7 +46,7 @@ export default {
             this.$router.push('/segments/segment/new');
         },
         addNewConditionSet() {
-            this.$router.push('/condition-set/new');
+            this.$router.push('/segments/condition-set/new');
         },
     },
 };

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import TemplateGrid from '../Grid/Template/TemplateGrid';
+import TemplateGrid from '~/components/Grid/Template/TemplateGrid';
 
 export default {
     name: 'TemplateDesignerTab',

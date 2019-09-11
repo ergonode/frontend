@@ -46,7 +46,7 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Segment created' });
             this.$router.push({
-                name: 'segments-edit-id',
+                name: 'segment-edit-id',
                 params: {
                     id,
                 },

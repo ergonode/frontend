@@ -4,7 +4,7 @@
  */
 <template>
     <ProductStatusPage
-        title="New attribute"
+        title="New status"
         is-edit
         @dismiss="onDismiss"
         @remove="onRemove"
@@ -19,7 +19,7 @@ export default {
     validate({ params }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
-    name: 'Id',
+    name: 'StatusEdit',
     middleware: ['tab/redirectToProductStatusGeneral'],
     components: {
         ProductStatusPage: () => import('~/components/Pages/ProductStatusPage'),
