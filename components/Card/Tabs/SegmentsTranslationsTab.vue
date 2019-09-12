@@ -20,7 +20,7 @@ export default {
     name: 'SegmentsTranslationsTab',
     components: {
         TranslationsTab: () => import('~/components/Card/TranslationsTab'),
-        SegmentsTranslationCard: () => import('~/components/Card/SegmentsTranslationCard'),
+        SegmentsTranslationCard: () => import('~/components/Card/Cards/SegmentsTranslationCard'),
     },
     props: {
         updateButton: {

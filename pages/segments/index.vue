@@ -18,7 +18,7 @@ export default {
     computed: {
         getButtons() {
             const isGridPath = /grid/.test(this.$route.path);
-            const isConditionSetPath = /condition-set/.test(this.$route.path);
+            const isConditionSetPath = /condition-sets/.test(this.$route.path);
 
             if (!isGridPath && !isConditionSetPath) return [];
             if (isConditionSetPath) {

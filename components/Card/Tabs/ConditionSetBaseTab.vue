@@ -4,7 +4,7 @@
  */
 <template>
     <BaseTab>
-        <SegmentsBaseCard slot="content" />
+        <ConditionSetBaseCard slot="content" />
         <Footer
             slot="footer"
             :buttons="[...updateButton]" />
@@ -12,14 +12,14 @@
 </template>
 
 <script>
-import SegmentsBaseCard from '~/components/Card/SegmentsBaseCard';
+import ConditionSetBaseCard from '~/components/Card/Cards/ConditionSetBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
 
 export default {
     name: 'ConditionSetBaseTab',
     components: {
         Footer: () => import('~/components/ReusableFooter/Footer'),
-        SegmentsBaseCard,
+        ConditionSetBaseCard,
         BaseTab,
     },
     props: {

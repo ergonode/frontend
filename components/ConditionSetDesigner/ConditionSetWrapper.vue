@@ -19,7 +19,7 @@
         </template>
         <template #gridItem="{item}">
             <ConditionSetItem
-                :condition="conditions[item.id] || {}"
+                :condition="getCondition(item.id)"
                 :item-id="item.id" />
         </template>
     </TemplateGridWrapper>
@@ -49,6 +49,10 @@ export default {
             'getConditionById',
             'removeCondition',
         ]),
+        getCondition(id) {
+            const [validId] = id.split('--');
+            return this.conditions[validId] || {};
+        },
         getConditionConfiguration({ id }) {
             const [validId] = id.split('--');
             if (!this.conditions[validId]) {

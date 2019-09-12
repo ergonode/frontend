@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <SegmentPage
-        :title="title"
+    <ConditionSetPage
+        :title="code || 'New Condition Set'"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>
@@ -16,13 +16,10 @@ export default {
     name: 'ConditionSetNew',
     middleware: ['tab/redirectToConditionSetGeneral'],
     components: {
-        SegmentPage: () => import('~/components/Pages/SegmentPage'),
+        ConditionSetPage: () => import('~/components/Pages/ConditionSetPage'),
     },
-    data: () => ({
-        title: 'New Segment',
-    }),
     computed: {
-        ...mapState('segments', {
+        ...mapState('conditions', {
             code: state => state.code,
         }),
     },
@@ -34,8 +31,8 @@ export default {
         ...mapActions('gridDesigner', {
             clearDesignerStorage: 'clearStorage',
         }),
-        ...mapActions('segments', [
-            'createSegment',
+        ...mapActions('conditions', [
+            'createConditionSet',
             'clearStorage',
         ]),
         ...mapActions('validations', [
@@ -43,13 +40,13 @@ export default {
             'removeValidationErrors',
         ]),
         onDismiss() {
-            this.$router.push('/segments');
+            this.$router.push('/segments/condition-sets');
         },
-        onCreateSegmentSuccess(id) {
+        onCreateConditionSetSuccess(id) {
             this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Segment created' });
+            this.$addAlert({ type: 'success', message: 'Condition set created' });
             this.$router.push({
-                name: 'segment-edit-id',
+                name: 'condition-set-edit-id',
                 params: {
                     id,
                 },
@@ -60,9 +57,9 @@ export default {
             const segment = {
                 code: this.code,
             };
-            this.createSegment({
+            this.createConditionSet({
                 data: segment,
-                onSuccess: this.onCreateSegmentSuccess,
+                onSuccess: this.onCreateConditionSetSuccess,
                 onError: this.onError,
             });
         },

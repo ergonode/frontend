@@ -8,7 +8,7 @@
             :title="title"
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
-            :is-read-only="!isUserAllowedToUpdateSegments && isEdit"
+            :is-read-only="!isUserAllowedToUpdateConditionSet && isEdit"
             icon="Templates"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
@@ -23,41 +23,42 @@ import { mapState } from 'vuex';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
-    name: 'SegmentPage',
+    name: 'ConditionSetPage',
     mixins: [categoryManagementPageBaseMixin],
     components: {
         Blur: () => import('~/components/Blur/Blur'),
     },
     created() {
-        let generalOptTabPath = '/segments/segment/new/general';
+        let generalOptTabPath = '/segments/condition-set/new/general';
         let translationTabPath = '';
+        let designerPath = '';
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
         this.buttons = [];
         this.breadcrumbs = [
             {
-                title: 'Segments',
+                title: 'Condition Sets',
                 icon: 'Templates',
-                path: '/segments',
+                path: '/segments/condition-sets',
             },
         ];
-        this.isUserAllowedToUpdateSegments = this.$hasAccess('SEGMENT_UPDATE');
+        this.isUserAllowedToUpdateConditionSet = this.$hasAccess('CONDITION_UPDATE');
         if (this.isEdit) {
-            generalOptTabPath = `/segments/segment/edit/${this.$route.params.id}/general`;
-            translationTabPath = `/segments/segment/edit/${this.$route.params.id}/translations`;
+            generalOptTabPath = `/segments/condition-set/edit/${this.$route.params.id}/general`;
+            translationTabPath = `/segments/condition-set/edit/${this.$route.params.id}/translations`;
+            designerPath = `/segments/condition-set/edit/${this.$route.params.id}/designer`;
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
-
             this.buttons = [
                 {
-                    title: 'REMOVE SEGMENT',
+                    title: 'REMOVE CONDITION SET',
                     color: 'transparent',
                     action: this.onRemove,
                     theme: 'dark',
                     icon: 'remove',
-                    disabled: !this.$hasAccess('SEGMENT_DELETE'),
+                    disabled: !this.$hasAccess('CONDITION_DELETE'),
                 },
             ];
         }
@@ -68,9 +69,9 @@ export default {
                 active: true,
                 props: {
                     updateButton: {
-                        title: `${buttonPrefix} SEGMENT`,
+                        title: `${buttonPrefix} CONDITION SET`,
                         action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateSegments : false,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateConditionSet : false,
                     },
                 },
             },
@@ -80,9 +81,21 @@ export default {
                 active: this.isEdit,
                 props: {
                     updateButton: {
-                        title: `${buttonPrefix} SEGMENT`,
+                        title: `${buttonPrefix} CONDITION SET`,
                         action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateSegments : false,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateConditionSet : false,
+                    },
+                },
+            },
+            {
+                title: 'Designer',
+                path: designerPath,
+                active: this.isEdit,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} CONDITION SET`,
+                        action: tabAction,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateConditionSet : false,
                     },
                 },
             },
@@ -90,7 +103,7 @@ export default {
     },
     beforeDestroy() {
         delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateSegments;
+        delete this.isUserAllowedToUpdateConditionSet;
         delete this.buttons;
     },
     computed: {

@@ -12,7 +12,7 @@
             :error-messages="errorCodeMessage"
             :disabled="isDisabled || isDisabledByPrivileges"
             label="Code"
-            hint="Tree code must be unique"
+            hint="Code must be unique"
             @input="setCode($event)"
         />
     </BaseCard>

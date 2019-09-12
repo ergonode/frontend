@@ -18,7 +18,7 @@
 import Privilege from '~/model/privilege';
 
 export default {
-    name: 'GridUsersPage',
+    name: 'UsersTabs',
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),

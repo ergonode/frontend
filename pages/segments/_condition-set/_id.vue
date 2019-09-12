@@ -3,10 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <SegmentPage
+    <ConditionSetPage
         :title="code"
         is-edit
         @dismiss="onDismiss"
+        @remove="onRemove"
         @save="onSave" />
 </template>
 
@@ -22,10 +23,10 @@ export default {
     name: 'ConditionSetEdit',
     middleware: ['tab/redirectToConditionSetGeneral'],
     components: {
-        SegmentPage: () => import('~/components/Pages/SegmentPage'),
+        ConditionSetPage: () => import('~/components/Pages/ConditionSetPage'),
     },
     computed: {
-        ...mapState('segments', {
+        ...mapState('conditions', {
             id: state => state.id,
             code: state => state.code,
         }),
@@ -34,24 +35,39 @@ export default {
         }),
     },
     methods: {
-        ...mapActions('segments', [
-            'updateSegment',
+        ...mapActions('conditions', [
+            'updateConditionSet',
+            'removeConditionSet',
         ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
         ]),
-        onDismiss() {
-            this.$router.push('/segments');
+        onRemove() {
+            const isConfirm = confirm('Are you sure you want to delete this condition set?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirm) {
+                this.removeConditionSet({
+                    onSuccess: this.onRemoveConditionSetSuccess,
+                });
+            }
         },
-        onUpdateSegmentsSuccess() {
+        onDismiss() {
+            this.$router.push('/segments/condition-sets');
+        },
+        onRemoveConditionSetSuccess() {
+            this.$addAlert({ type: 'success', message: 'Condition set removed' });
+            this.$router.push('/segments/condition-sets');
+        },
+        onUpdateConditionSetSuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Segment updated' });
-            this.$router.push('/segments');
+            this.$addAlert({ type: 'success', message: 'Condition Set updated' });
+            this.$router.push('/segments/condition-sets');
         },
         onSave() {
             this.removeValidationErrors();
-            const propertiesToUpdate = {};
+            const propertiesToUpdate = {
+                conditions: [],
+            };
             const { name, description } = this.translations;
 
             if (isThereAnyTranslation(name)) {
@@ -60,10 +76,10 @@ export default {
             if (isThereAnyTranslation(description)) {
                 propertiesToUpdate.description = getParsedTranslations(description);
             }
-            this.updateSegment({
+            this.updateConditionSet({
                 id: this.id,
                 data: propertiesToUpdate,
-                onSuccess: this.onUpdateSegmentsSuccess,
+                onSuccess: this.onUpdateConditionSetSuccess,
                 onError: this.onError,
             });
         },
@@ -78,10 +94,10 @@ export default {
         await store.dispatch('gridDesigner/clearStorage');
         await store.dispatch('translations/clearStorage');
         await store.dispatch('list/clearStorage');
-        await store.dispatch('segments/clearStorage');
+        await store.dispatch('conditions/clearStorage');
         await store.dispatch('list/setElementsForLanguage', conditionsList);
-        await store.dispatch('segments/getSegmentById', {
-            segmentId: params.id,
+        await store.dispatch('conditions/getConditionSetById', {
+            conditionSetId: params.id,
         });
     },
 };

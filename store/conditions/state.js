@@ -3,6 +3,8 @@
  * See LICENSE for license details.
  */
 export default () => ({
+    id: null,
+    code: '',
     columns: 1,
     rowsHeight: 120,
     conditions: {},

@@ -25,10 +25,10 @@ export const Pages = {
     AttributeNew: () => import('~/pages/attributes/new/index').then(m => m.default || m),
     AttributeEdit: () => import('~/pages/attributes/edit/_id').then(m => m.default || m),
     Users: () => import('~/pages/users/index').then(m => m.default || m),
-    UserNew: () => import('~/pages/users/new/index').then(m => m.default || m),
-    UserEdit: () => import('~/pages/users/edit/_id').then(m => m.default || m),
-    UsersRolesNew: () => import('~/pages/users/new/roles/index').then(m => m.default || m),
-    UsersRolesEdit: () => import('~/pages/users/edit/roles/_id').then(m => m.default || m),
+    UserNew: () => import('~/pages/users/_user/index').then(m => m.default || m),
+    UserEdit: () => import('~/pages/users/_user/_id').then(m => m.default || m),
+    UsersRolesNew: () => import('~/pages/users/_role/index').then(m => m.default || m),
+    UsersRolesEdit: () => import('~/pages/users/_role/_id').then(m => m.default || m),
     Workflow: () => import('~/pages/workflow/index').then(m => m.default || m),
     ProductStatusNew: () => import('~/pages/workflow/_status/index').then(m => m.default || m),
     ProductStatusEdit: () => import('~/pages/workflow/_status/_id').then(m => m.default || m),
@@ -64,7 +64,7 @@ export const Tabs = {
     ConditionSetDesignTab: () => import('~/components/Card/Tabs/ConditionSetDesignTab').then(m => m.default || m),
 };
 
-export const Grids = {
+export const GridTabs = {
     ProductStatusGridTab: () => import('~/components/Card/Grid/ProductStatusGridTab').then(m => m.default || m),
     ProductGridTab: () => import('~/components/Card/Grid/ProductGridTab').then(m => m.default || m),
     CategoryGridTab: () => import('~/components/Card/Grid/CategoryGridTab').then(m => m.default || m),

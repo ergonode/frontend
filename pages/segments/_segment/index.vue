@@ -4,7 +4,7 @@
  */
 <template>
     <SegmentPage
-        title="New Segment"
+        :title="code || 'New Segment'"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>

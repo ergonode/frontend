@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import SegmentsBaseCard from '~/components/Card/SegmentsBaseCard';
+import SegmentsBaseCard from '~/components/Card/Cards/SegmentsBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
 
 export default {

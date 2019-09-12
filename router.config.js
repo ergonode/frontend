@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Grids, Tabs, Pages } from './router.imports';
+import { GridTabs, Tabs, Pages } from './router.imports';
 
 export const pages = [
     {
@@ -15,7 +15,7 @@ export const pages = [
         children: [
             {
                 path: 'activity-log',
-                component: Grids.UserActivityLogsGridTab,
+                component: GridTabs.UserActivityLogsGridTab,
             },
         ],
     },
@@ -29,7 +29,7 @@ export const pages = [
         children: [
             {
                 path: 'grid',
-                component: Grids.CategoryGridTab,
+                component: GridTabs.CategoryGridTab,
                 meta: {
                     privileges: ['CATEGORY_READ'],
                 },
@@ -82,7 +82,7 @@ export const pages = [
         children: [
             {
                 path: 'grid',
-                component: Grids.CategoryTreesGridTab,
+                component: GridTabs.CategoryTreesGridTab,
             },
         ],
         meta: {
@@ -140,7 +140,7 @@ export const pages = [
         children: [
             {
                 path: 'grid',
-                component: Grids.ProductGridTab,
+                component: GridTabs.ProductGridTab,
             },
         ],
         meta: {
@@ -237,7 +237,7 @@ export const pages = [
         children: [
             {
                 path: 'grid',
-                component: Grids.AttributeGridTab,
+                component: GridTabs.AttributeGridTab,
                 meta: {
                     privileges: ['ATTRIBUTE_READ'],
                 },
@@ -287,21 +287,21 @@ export const pages = [
         children: [
             {
                 path: 'grid',
-                component: Grids.UsersGridTab,
+                component: GridTabs.UsersGridTab,
                 meta: {
                     privileges: ['USER_READ'],
                 },
             },
             {
                 path: 'roles',
-                component: Grids.RolesGridTab,
+                component: GridTabs.RolesGridTab,
                 meta: {
                     privileges: ['USER_ROLE_READ'],
                 },
             },
             {
                 path: 'logs',
-                component: Grids.UsersActivityLogsGridTab,
+                component: GridTabs.UsersActivityLogsGridTab,
             },
         ],
         meta: {
@@ -309,26 +309,22 @@ export const pages = [
         },
     },
     {
-        name: 'users-new',
-        path: '/users/new',
+        name: 'user-new',
+        path: '/users/user/new',
         component: Pages.UserNew,
         children: [
             {
                 path: 'general',
                 component: Tabs.UserBaseTab,
             },
-            {
-                path: 'avatar',
-                component: Tabs.UserAvatarTab,
-            },
         ],
         meta: {
-            privileges: ['USER_READ'],
+            privileges: ['USER_READ', 'USER_CREATE'],
         },
     },
     {
-        name: 'users-edit-id',
-        path: '/users/edit/:id?',
+        name: 'user-edit-id',
+        path: '/users/user/edit/:id?',
         component: Pages.UserEdit,
         children: [
             {
@@ -345,26 +341,22 @@ export const pages = [
         },
     },
     {
-        name: 'users-roles-new',
-        path: '/users/roles/new',
+        name: 'users-role-new',
+        path: '/users/role/new',
         component: Pages.UsersRolesNew,
         children: [
             {
                 path: 'general',
                 component: Tabs.UserRolesBaseTab,
             },
-            {
-                path: 'privileges',
-                component: Tabs.UserRolesPrivilegeTab,
-            },
         ],
         meta: {
-            privileges: ['USER_ROLE_READ'],
+            privileges: ['USER_ROLE_READ', 'USER_ROLE_CREATE'],
         },
     },
     {
-        name: 'users-roles-edit-id',
-        path: '/users/roles/edit/:id?',
+        name: 'users-role-edit-id',
+        path: '/users/role/edit/:id?',
         component: Pages.UsersRolesEdit,
         children: [
             {
@@ -387,7 +379,7 @@ export const pages = [
         children: [
             {
                 path: 'statuses',
-                component: Grids.ProductStatusGridTab,
+                component: GridTabs.ProductStatusGridTab,
             },
         ],
         meta: {
@@ -433,14 +425,14 @@ export const pages = [
         children: [
             {
                 path: 'grid',
-                component: Grids.SegmentsGridTab,
+                component: GridTabs.SegmentsGridTab,
                 meta: {
                     privileges: ['SEGMENT_READ'],
                 },
             },
             {
                 path: 'condition-sets',
-                component: Grids.ConditionSetsGridTab,
+                component: GridTabs.ConditionSetsGridTab,
                 meta: {
                     privileges: ['CONDITION_READ'],
                 },
@@ -476,10 +468,6 @@ export const pages = [
             {
                 path: 'translations',
                 component: Tabs.SegmentsTranslationsTab,
-            },
-            {
-                path: 'designer',
-                component: Tabs.ConditionSetDesignTab,
             },
         ],
         meta: {

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridUsersPage
+    <UsersTabs
         title="Users"
         :buttons="getButtons()"
         icon="User" />
@@ -15,7 +15,7 @@ export default {
     name: 'Users',
     middleware: ['tab/redirectToUsersGrid'],
     components: {
-        GridUsersPage: () => import('~/components/Pages/GridUsersPage'),
+        UsersTabs: () => import('~/components/Pages/Tabs/UsersTabs'),
     },
     computed: {
         ...mapState('authentication', {
@@ -24,10 +24,10 @@ export default {
     },
     methods: {
         addNewUser() {
-            this.$router.push('/users/new');
+            this.$router.push('/users/user/new');
         },
         addNewRole() {
-            this.$router.push('/users/roles/new');
+            this.$router.push('/users/role/new');
         },
         getButtons() {
             const isRolesPath = /roles/.test(this.$route.path);

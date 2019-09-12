@@ -65,16 +65,10 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$put(`${userLanguageCode}/segments/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
     },
-    removeRole(
-        { rootState },
-        {
-            id,
-            onSuccess,
-            onError,
-        },
-    ) {
+    removeSegment({ state, rootState }, { onSuccess }) {
+        const { id } = state;
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/segments/${id}`).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$delete(`${userLanguageCode}/segments/${id}`).then(() => onSuccess()).catch(onDefaultError);
     },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);

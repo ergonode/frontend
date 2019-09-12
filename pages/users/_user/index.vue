@@ -53,7 +53,7 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'User created' });
             this.$router.push({
-                name: 'users-edit-id',
+                name: 'user-edit-id',
                 params: {
                     id,
                 },

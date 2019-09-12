@@ -7,12 +7,12 @@
         :title="code"
         is-edit
         @dismiss="onDismiss"
+        @remove="onRemove"
         @save="onSave" />
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { objectToArrayWithPropsName } from '~/model/objectWrapper';
 import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 
 export default {
@@ -36,6 +36,7 @@ export default {
     methods: {
         ...mapActions('segments', [
             'updateSegment',
+            'removeSegment',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -44,10 +45,13 @@ export default {
         onDismiss() {
             this.$router.push('/segments');
         },
-        onUpdateSegmentsSuccess() {
-            this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Segment updated' });
-            this.$router.push('/segments');
+        onRemove() {
+            const isConfirm = confirm('Are you sure you want to delete this segment?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirm) {
+                this.removeSegment({
+                    onSuccess: this.onRemoveSegmentSuccess,
+                });
+            }
         },
         onSave() {
             this.removeValidationErrors();
@@ -67,19 +71,22 @@ export default {
                 onError: this.onError,
             });
         },
+        onUpdateSegmentsSuccess() {
+            this.removeValidationErrors();
+            this.$addAlert({ type: 'success', message: 'Segment updated' });
+            this.$router.push('/segments/grid');
+        },
+        onRemoveSegmentSuccess() {
+            this.$addAlert({ type: 'success', message: 'Segment removed' });
+            this.$router.push('/segments/grid');
+        },
     },
     async fetch({
         store,
         params,
     }) {
-        const { conditions } = store.state.data;
-        const conditionsList = objectToArrayWithPropsName(conditions);
-
-        await store.dispatch('gridDesigner/clearStorage');
         await store.dispatch('translations/clearStorage');
-        await store.dispatch('list/clearStorage');
         await store.dispatch('segments/clearStorage');
-        await store.dispatch('list/setElementsForLanguage', conditionsList);
         await store.dispatch('segments/getSegmentById', {
             segmentId: params.id,
         });

@@ -22,8 +22,8 @@ export default {
     name: 'UserPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
-        let generalOptTabPath = '/users/new/general';
-        let avatarTabPath = '/users/new/avatar';
+        let generalOptTabPath = '/users/user/new/general';
+        let avatarTabPath = '/users/user/new/avatar';
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -38,8 +38,8 @@ export default {
         this.isUserAllowedToUpdateUser = this.$hasAccess('USER_UPDATE');
 
         if (this.isEdit) {
-            generalOptTabPath = `/users/edit/${this.$route.params.id}/general`;
-            avatarTabPath = `/users/edit/${this.$route.params.id}/avatar`;
+            generalOptTabPath = `/users/user/edit/${this.$route.params.id}/general`;
+            avatarTabPath = `/users/user/edit/${this.$route.params.id}/avatar`;
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 

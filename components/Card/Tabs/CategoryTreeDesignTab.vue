@@ -36,7 +36,7 @@ export default {
         verticalTabs: [
             {
                 title: 'Categories',
-                component: () => import('~/components/Card/CategoriesListTab'),
+                component: () => import('~/components/Card/Lists/CategoriesListTab'),
                 iconPath: 'Menu/IconCategory',
                 active: true,
             },

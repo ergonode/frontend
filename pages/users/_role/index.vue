@@ -49,7 +49,7 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Role created' });
             this.$router.push({
-                name: 'users-roles-edit-id',
+                name: 'users-role-edit-id',
                 params: {
                     id,
                 },
