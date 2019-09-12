@@ -4,7 +4,7 @@
  */
 <template>
     <ProductPage
-        :title="title"
+        title="New product"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>
@@ -20,9 +20,6 @@ export default {
     components: {
         ProductPage: () => import('~/components/Pages/ProductPage'),
     },
-    data: () => ({
-        title: 'New product',
-    }),
     computed: {
         ...mapState('productsDraft', {
             sku: state => state.sku,
