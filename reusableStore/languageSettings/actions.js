@@ -15,7 +15,7 @@ export default {
         );
         const data = getParsedData(activeLanguages, selectedLanguageCodes);
 
-        return this.app.$axios.$put(`${userLanguageCode}/languages`, data).catch(e => console.log(e));
+        return this.app.$axios.$put(`${userLanguageCode}/languages`, data);
     },
     getData({ commit, rootState }) {
         const { language: userLanguageCode } = rootState.authentication.user;
@@ -44,7 +44,7 @@ export default {
             commit(types.SET_SELECTED_LANGUAGE_NAMES, collection
                 .filter(getActiveLanguage)
                 .map(getLanguageName));
-        }).catch(err => console.log(err));
+        });
     },
     setSelectedLanguages({ commit }, selectedLanguageNames) {
         commit(types.SET_SELECTED_LANGUAGE_NAMES, selectedLanguageNames);
