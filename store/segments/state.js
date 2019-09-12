@@ -5,6 +5,5 @@
 export default () => ({
     id: null,
     code: '',
-    columns: 1,
-    rowsHeight: 80,
+    conditionSetId: null,
 });

@@ -8,6 +8,7 @@ import { removeFromObjectByKey } from '~/model/objectWrapper';
 export const types = {
     SET_CONDITION_SET_ID: 'SET_CONDITION_SET_ID',
     SET_CONDITION_SET_CODE: 'SET_CONDITION_SET_CODE',
+    SET_CONDITION_SETS: 'SET_CONDITION_SETS',
     SET_CONDITIONS: 'SET_CONDITIONS',
     ADD_CONDITION_VALUE: 'ADD_CONDITION_VALUE',
     SET_CONDITION_VALUE: 'SET_CONDITION_VALUE',
@@ -22,6 +23,9 @@ export default {
     },
     [types.SET_CONDITION_SET_CODE](state, value) {
         state.code = value;
+    },
+    [types.SET_CONDITION_SETS](state, value) {
+        state.conditionSets = value;
     },
     [types.SET_CONDITIONS](state, { key, value }) {
         state.conditions = { ...state.conditions, [key]: value };

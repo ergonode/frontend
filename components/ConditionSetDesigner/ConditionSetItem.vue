@@ -70,12 +70,19 @@ export default {
             return !isEmpty(this.condition);
         },
         conditionPhrase() {
-            const { phrase } = this.condition;
+            const { phrase, parameters } = this.condition;
             const placeholders = this.conditionsValues[this.itemId];
 
             if (!placeholders) return phrase;
             return phrase.replace(/\[\w+\]/g, (placeholder) => {
                 const clearedKey = placeholder.slice(1).slice(0, -1);
+                const x = parameters.findIndex(p => p.name === clearedKey
+                    && (p.type === 'SELECT' || p.type === 'MULTI_SELECT'));
+                if (x !== -1) {
+                    return Array.isArray(placeholders[clearedKey])
+                        ? getValuesByKeys(parameters[x].options, placeholders[clearedKey])
+                        : getValueByKey(parameters[x].options, placeholders[clearedKey]);
+                }
                 return placeholders[clearedKey] || placeholder;
             });
         },

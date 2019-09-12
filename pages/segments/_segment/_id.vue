@@ -28,6 +28,8 @@ export default {
         ...mapState('segments', {
             id: state => state.id,
             code: state => state.code,
+            conditionSetId: state => state.conditionSetId,
+
         }),
         ...mapState('translations', {
             translations: state => state.translations,
@@ -55,7 +57,9 @@ export default {
         },
         onSave() {
             this.removeValidationErrors();
-            const propertiesToUpdate = {};
+            const propertiesToUpdate = {
+                condition_set_id: this.conditionSetId,
+            };
             const { name, description } = this.translations;
 
             if (isThereAnyTranslation(name)) {
@@ -87,6 +91,10 @@ export default {
     }) {
         await store.dispatch('translations/clearStorage');
         await store.dispatch('segments/clearStorage');
+        await store.dispatch('conditions/getConditionSets', {
+            limit: 9999,
+            offset: 0,
+        });
         await store.dispatch('segments/getSegmentById', {
             segmentId: params.id,
         });

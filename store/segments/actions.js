@@ -13,11 +13,8 @@ export default {
     setCode({ commit }, value) {
         commit(types.SET_SEGMENT_CODE, value);
     },
-    setName({ commit }, value) {
-        commit(types.SET_SEGMENT_NAME, value);
-    },
-    setDescription({ commit }, value) {
-        commit(types.SET_SEGMENT_DESCRIPTION, value);
+    setConditionSetId({ commit }, value) {
+        commit(types.SET_CONDITION_SET_ID, value);
     },
     getSegmentById(
         { commit, dispatch, rootState },
@@ -27,6 +24,7 @@ export default {
         return this.app.$axios.$get(`${userLanguageCode}/segments/${segmentId}`).then(({
             id,
             code,
+            condition_set_id: conditionSetId,
             name = '',
             description = '',
         }) => {
@@ -36,6 +34,7 @@ export default {
             };
             commit(types.SET_SEGMENT_ID, id);
             commit(types.SET_SEGMENT_CODE, code);
+            commit(types.SET_CONDITION_SET_ID, conditionSetId);
             dispatch('translations/setTabTranslations', { translations }, { root: true });
         }).catch(onDefaultError);
     },

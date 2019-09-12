@@ -5,6 +5,7 @@
 export default () => ({
     id: null,
     code: '',
+    conditionSets: {},
     columns: 1,
     rowsHeight: 120,
     conditions: {},

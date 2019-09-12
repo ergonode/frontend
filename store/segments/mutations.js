@@ -7,8 +7,7 @@ import defaultState from './state';
 export const types = {
     SET_SEGMENT_ID: 'SET_SEGMENT_ID',
     SET_SEGMENT_CODE: 'SET_SEGMENT_CODE',
-    SET_SEGMENT_NAME: 'SET_SEGMENT_NAME',
-    SET_SEGMENT_DESCRIPTION: 'SET_SEGMENT_DESCRIPTION',
+    SET_CONDITION_SET_ID: 'SET_CONDITION_SET_ID',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 
@@ -19,11 +18,8 @@ export default {
     [types.SET_SEGMENT_CODE](state, value) {
         state.code = value;
     },
-    [types.SET_SEGMENT_NAME](state, value) {
-        state.name = value;
-    },
-    [types.SET_SEGMENT_DESCRIPTION](state, value) {
-        state.description = value;
+    [types.SET_CONDITION_SET_ID](state, value) {
+        state.conditionSetId = value;
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

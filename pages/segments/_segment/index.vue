@@ -21,6 +21,7 @@ export default {
     computed: {
         ...mapState('segments', {
             code: state => state.code,
+            conditionSetId: state => state.conditionSetId,
         }),
     },
     created() {
@@ -56,6 +57,7 @@ export default {
             this.removeValidationErrors();
             const segment = {
                 code: this.code,
+                condition_set_id: this.conditionSetId,
             };
             this.createSegment({
                 data: segment,
@@ -63,6 +65,14 @@ export default {
                 onError: this.onError,
             });
         },
+    },
+    async fetch({
+        store,
+    }) {
+        await store.dispatch('conditions/getConditionSets', {
+            limit: 9999,
+            offset: 0,
+        });
     },
 };
 </script>

@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
+import { arrayToObject } from '~/model/arrayWrapper';
 
 const onDefaultError = () => {};
 
@@ -12,6 +13,12 @@ export default {
     },
     setCode({ commit }, value) {
         commit(types.SET_CONDITION_SET_CODE, value);
+    },
+    getConditionSets({ commit, rootState }, params) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$get(`${userLanguageCode}/conditionsets`, { params }).then(({ collection: conditonSets }) => {
+            commit(types.SET_CONDITION_SETS, arrayToObject(conditonSets, 'id', 'code'));
+        }).catch(onDefaultError);
     },
     getConditionSetById(
         { commit, dispatch, rootState },
