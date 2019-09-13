@@ -4,16 +4,11 @@
  */
 import { mount, createLocalVue } from '@vue/test-utils';
 import CheckBox from '~/components/Inputs/CheckBox';
-import nestedVModelMixin from '~/mixins/nestedVModelMixin';
-
-const localVue = createLocalVue();
-localVue.mixin(nestedVModelMixin);
 
 describe('Inputs/CheckBox', () => {
     let wrapper;
     beforeEach(() => {
         wrapper = mount(CheckBox, {
-            localVue,
             propsData: {
                 isDisabled: false,
                 value: 0,

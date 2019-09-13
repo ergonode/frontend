@@ -25,7 +25,7 @@ export default {
         @include setFont(bold, small, regular, $graphite);
 
         flex: 1 1 auto;
-        width: 0;
+        width: min-content;
         padding: 8px;
         user-select: none;
         text-overflow: ellipsis;

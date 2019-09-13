@@ -101,6 +101,7 @@ export default {
     beforeDestroy() {
         delete this.rightPinnedColumns;
         delete this.leftPinnedColumns;
+        delete this.fixedRowOffset;
     },
     computed: {
         ...mapState('gridDraft', {
@@ -114,11 +115,8 @@ export default {
         },
         templateColumns() {
             return {
-                gridTemplateColumns: this.columnWidths.join(' '),
+                gridTemplateColumns: this.gridState.columnWidths.join(' '),
             };
-        },
-        columnWidths() {
-            return this.gridState.columns.map(column => (+column.minWidth ? `minmax(max-content, ${column.minWidth}px)` : column.minWidth));
         },
         isPlaceholder() {
             return !this.gridState.rowIds.length;

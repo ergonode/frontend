@@ -99,10 +99,6 @@ export default {
         delete this.startX;
         delete this.columnWidth;
     },
-    mounted() {
-        const { width } = this.column;
-        this.$el.style.width = width ? `${width}px` : 'auto';
-    },
     computed: {
         ...mapState('authentication', {
             languageCode: state => state.user.language,
@@ -152,7 +148,7 @@ export default {
             const { clientX, clientY } = event;
             const [header] = this.$el.children;
             const {
-                x: headerXPos, y: headerYPos, height: headerHeight,
+                x: headerXPos, y: headerYPos, height: headerHeight, width: headerWidth,
             } = header.getBoundingClientRect();
             const xOffset = 2.5;
             const grid = document.documentElement.querySelector('.grid');
@@ -171,13 +167,14 @@ export default {
                 return false;
             }
 
-            addGridColumnCopyToDocumentBody(event, this.column.width);
+            addGridColumnCopyToDocumentBody(event, headerWidth);
             this.addBorderToRightNeighbour(grid.children[neighbourIndex]);
-            this.setBounds({ width: this.column.width });
+            this.setBounds({ width: headerWidth });
             this.setGhostIndex(this.index);
             this.setDraggedElIndex(this.index);
             this.setDraggedElement({ ...this.column, index: this.index });
             this.setDraggableState({ propName: 'isColumnDragging', value: true });
+            this.$el.style.width = `${headerWidth}px`;
 
             return true;
         },
@@ -197,15 +194,10 @@ export default {
                 }
 
                 if (this.ghostIndex !== this.draggedElIndex) {
-                    this.$store.dispatch(`${this.storeNamespace}/changeColumnPosition`, {
-                        from: this.draggedElIndex,
-                        to: this.ghostIndex,
-                    });
+                    this.changeColumnPositionWrapper();
                 }
             } else if (!isTrashBelowMouse) {
-                this.$store.dispatch(`${this.storeNamespace}/insertColumnAtIndex`, {
-                    column: this.draggedElement, index,
-                });
+                this.insertColumnWrapper(this.draggedElement, `${this.bounds.width}px`, index);
                 insertColumnAtIndexToCookie(this.$cookies, index, this.column.id);
             } else {
                 removeColumnCookieByID(this.$cookies, this.draggedElement.id);
@@ -283,8 +275,7 @@ export default {
                 for (let i = 0; i < grid.children.length; i += 1) {
                     grid.children[i].style.transform = null;
                 }
-
-                this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index: this.draggedElIndex });
+                this.removeColumnWrapper(this.draggedElIndex);
                 this.setGhostIndex();
                 this.setDraggedElIndex();
                 this.setGhostElTransform();
@@ -303,15 +294,14 @@ export default {
             const { clientX } = event;
             const width = this.getElementWidthBasedOnMouseXPosition(clientX);
 
-            if (width > this.column.minWidth) {
-                this.columnWidth = width;
+            if (width > 40) {
                 this.updateElementWidth(width);
+                this.$store.dispatch(`${this.storeNamespace}/updateColumnWidthAtIndex`, {
+                    index: this.index, width: `${width}px`,
+                });
             }
         },
         stopResizeDrag() {
-            this.$store.dispatch(`${this.storeNamespace}/updateColumnWidthAtIndex`, {
-                index: this.index, width: this.columnWidth,
-            });
             this.removeEventListenersForResizeState();
             this.isResizing = false;
         },
@@ -380,16 +370,32 @@ export default {
             }
 
             if (typeof this.draggedElement === 'object') {
-                this.$store.dispatch(`${this.storeNamespace}/insertColumnAtIndex`, { column: this.draggedElement, index: ghostColIndex });
+                this.insertColumnWrapper(this.draggedElement, `${this.bounds.width}px`, ghostColIndex);
             } else {
-                this.$store.dispatch(`${this.storeNamespace}/insertColumnAtIndex`, {
-                    column: getGhostColumnElementModel(), index: ghostColIndex,
-                });
+                this.insertColumnWrapper(getGhostColumnElementModel(), '100px', ghostColIndex);
                 this.setBounds({ x: xPos, width: 100 });
             }
 
             this.setGhostIndex(ghostColIndex);
             this.setDraggedElIndex(ghostColIndex);
+        },
+        insertColumnWrapper(column, width, index) {
+            this.$store.dispatch(`${this.storeNamespace}/insertColumnAtIndex`, { column, index });
+            this.$store.dispatch(`${this.storeNamespace}/insertColumnWidthAtIndex`, { width, index });
+        },
+        removeColumnWrapper(index) {
+            this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index });
+            this.$store.dispatch(`${this.storeNamespace}/removeColumnWidthAtIndex`, { index });
+        },
+        changeColumnPositionWrapper() {
+            this.$store.dispatch(`${this.storeNamespace}/changeColumnPosition`, {
+                from: this.draggedElIndex,
+                to: this.ghostIndex,
+            });
+            this.$store.dispatch(`${this.storeNamespace}/changeColumnWidthPosition`, {
+                from: this.draggedElIndex,
+                to: this.ghostIndex,
+            });
         },
         updateGhostIndex(isBefore) {
             if (this.index < this.draggedElIndex) {
@@ -436,6 +442,8 @@ export default {
             this.setDraggedElIndex();
             this.setDraggedElement();
             this.setGhostElTransform();
+
+            this.$el.style.width = null;
         },
     },
 };

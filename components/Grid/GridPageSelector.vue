@@ -4,34 +4,35 @@
  */
 <template>
     <div class="page-selector">
-        <Label
-            text="Show"
-            class="page-selector__text" />
+        <span class="page-selector__text">
+            Show
+        </span>
         <Select
-            v-model="internalValue"
+            :value="value"
             style="width: 72px;"
             :options="rowIntervals"
-            solid />
-        <Label
-            :text="infoText"
-            class="page-selector__text" />
+            solid
+            @input="onValueChange" />
+        <span
+            class="page-selector__text"
+            v-text="infoText" />
     </div>
 </template>
 
 <script>
-import nestedVModelMixin from '~/mixins/nestedVModelMixin';
-
 export default {
     name: 'GridPageSelector',
     components: {
         Select: () => import('~/components/Inputs/Select/Select'),
-        Label: () => import('~/components/Label/Label'),
     },
-    mixins: [nestedVModelMixin],
     props: {
         rowsNumber: {
             type: Number,
             required: true,
+        },
+        value: {
+            type: Number,
+            default: null,
         },
     },
     data: () => ({
@@ -40,6 +41,11 @@ export default {
     computed: {
         infoText() {
             return `of ${this.rowsNumber}`;
+        },
+    },
+    methods: {
+        onValueChange(value) {
+            this.$emit('input', value);
         },
     },
 };

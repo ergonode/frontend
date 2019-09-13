@@ -53,7 +53,7 @@ export default {
             const { count, filtered } = info;
             const columnsToMap = columnIDs ? getSortedColumnsByIDs(columns, columnIDs) : columns;
             const visibleColumns = columnsToMap.filter(col => col.visible);
-            const { mappedColumns, pinnedColumns } = getMappedColumns(visibleColumns);
+            const { mappedColumns, pinnedColumns, columnWidths } = getMappedColumns(visibleColumns);
             const mappedConfiguration = getMappedGridConfiguration(configuration);
             const rowIds = getMappedRowIds(rows);
             const cellValues = getMappedCellValues(columns, rows, rowIds);
@@ -74,6 +74,7 @@ export default {
             commit(types.SET_COUNT, count);
             commit(types.SET_FILTERED, filtered);
             commit(types.SET_COLUMNS, mappedColumns);
+            commit(types.SET_COLUMN_WIDTHS, columnWidths);
             commit(types.SET_PINNED_COLUMNS, pinnedColumns);
         }).catch(err => console.log(err));
     },
@@ -175,6 +176,9 @@ export default {
     updateColumnWidthAtIndex({ commit }, payload) {
         commit(types.SET_COLUMN_WIDTH_AT_INDEX, payload);
     },
+    insertColumnWidthAtIndex({ commit }, payload) {
+        commit(types.INSERT_COLUMN_WIDTH_AT_INDEX, payload);
+    },
     changeDisplayingPage({ commit }, page) {
         commit(types.SET_CURRENT_PAGE, page);
     },
@@ -189,6 +193,9 @@ export default {
 
         commit(types.REMOVE_COLUMN_AT_INDEX, index);
     },
+    removeColumnWidthAtIndex({ commit }, { index }) {
+        commit(types.REMOVE_COLUMN_WIDTH_AT_INDEX, index);
+    },
     changeColumnPosition({ commit, state }, { from, to }) {
         const { columns } = state;
         const newOrderedColumns = [
@@ -198,6 +205,14 @@ export default {
         this.$cookies.set(COLUMN_IDS, columnsWithoutExtender.map(column => column.id).join(','));
 
         commit(types.SET_COLUMNS, newOrderedColumns);
+    },
+    changeColumnWidthPosition({ commit, state }, { from, to }) {
+        const { columnWidths } = state;
+        const newOrderedColumnWidths = [
+            ...swapItemPosition(columnWidths, from, to),
+        ];
+
+        commit(types.SET_COLUMN_WIDTHS, newOrderedColumnWidths);
     },
     setEditingCellCoordinates({ commit }, editingCellCoordinates = {}) {
         commit(types.SET_EDITING_CELL_COORDINATES, editingCellCoordinates);
