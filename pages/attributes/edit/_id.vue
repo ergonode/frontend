@@ -7,6 +7,7 @@
         :title="code"
         is-edit
         @dismiss="onDismiss"
+        @remove="onRemove"
         @save="onSave" />
 </template>
 
@@ -47,18 +48,31 @@ export default {
     methods: {
         ...mapActions('attribute', [
             'updateAttribute',
+            'removeAttribute',
         ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
         ]),
         onDismiss() {
-            this.$router.push('/attributes');
+            this.$router.push('/attributes/grid');
         },
         onUpdateAttributeSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Attribute updated' });
-            this.$router.push('/attributes');
+            this.$router.push('/attributes/grid');
+        },
+        onRemoveSuccess() {
+            this.$addAlert({ type: 'success', message: 'Attribute removed' });
+            this.$router.push('/attributes/grid');
+        },
+        onRemove() {
+            const isConfirm = confirm('Are you sure you want to delete this attribute?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirm) {
+                this.removeAttribute({
+                    onSuccess: this.onRemoveSuccess,
+                });
+            }
         },
         onSave() {
             this.removeValidationErrors();

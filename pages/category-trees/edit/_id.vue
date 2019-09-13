@@ -7,6 +7,7 @@
         :title="title"
         is-edit
         @dismiss="onDismiss"
+        @remove="onRemove"
         @save="onSave" />
 </template>
 
@@ -39,7 +40,10 @@ export default {
         }),
     },
     methods: {
-        ...mapActions('tree', ['updateTree']),
+        ...mapActions('tree', [
+            'updateTree',
+            'removeCategoryTree',
+        ]),
         ...mapActions('list', ['setConfigurationForList']),
         ...mapActions('validations', [
             'onError',
@@ -48,10 +52,13 @@ export default {
         onDismiss() {
             this.$router.push('/category-trees');
         },
-        onUpdateTreeSuccess() {
-            this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Tree updated' });
-            this.$router.push('/category-trees');
+        onRemove() {
+            const isConfirm = confirm('Are you sure you want to delete this category tree?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirm) {
+                this.removeCategoryTree({
+                    onSuccess: this.onRemoveSuccess,
+                });
+            }
         },
         onSave() {
             let { name } = this.translations;
@@ -64,9 +71,18 @@ export default {
                     name,
                     categories: getMappedTreeData(this.fullGridData),
                 },
-                onSuccess: this.onUpdateTreeSuccess,
+                onSuccess: this.onUpdateSuccess,
                 onError: this.onError,
             });
+        },
+        onUpdateSuccess() {
+            this.removeValidationErrors();
+            this.$addAlert({ type: 'success', message: 'Tree updated' });
+            this.$router.push('/category-trees/grid');
+        },
+        onRemoveSuccess() {
+            this.$addAlert({ type: 'success', message: 'Category tree removed' });
+            this.$router.push('/category-trees/grid');
         },
     },
     async fetch({ store, params }) {

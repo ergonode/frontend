@@ -49,7 +49,7 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Category tree created' });
             this.$router.push({
-                name: 'category-tree-edit-id',
+                name: 'category-trees-edit-id',
                 params: {
                     id,
                 },

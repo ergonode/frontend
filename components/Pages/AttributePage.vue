@@ -50,7 +50,8 @@ export default {
                 //     color: 'transparent',
                 //     action: this.onRemove,
                 //     theme: 'dark',
-                //     icon: 'sprite-system system-trash--deactive',
+                //     icon: 'remove',
+                //     disabled: !this.$hasAccess('ATTRIBUTE_DELETE'),
                 // },
             ];
         }

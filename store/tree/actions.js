@@ -61,5 +61,10 @@ export default {
     setTreeCode({ commit }, code) {
         commit(types.SET_CODE, code);
     },
+    removeCategoryTree({ state, rootState }, { onSuccess }) {
+        const { treeId } = state;
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$delete(`${userLanguageCode}/trees/${treeId}`).then(() => onSuccess()).catch(onDefaultError);
+    },
     clearStorage: ({ commit }) => commit(types.CLEAR_STATE),
 };
