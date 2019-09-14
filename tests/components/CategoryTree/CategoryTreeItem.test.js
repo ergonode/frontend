@@ -4,6 +4,7 @@
  */
 import { mount } from '@vue/test-utils';
 import CategoryTreeItem from '~/components/CategoryTree/CategoryTreeItem';
+import { Action } from '~/model/icons/Action';
 
 describe('CategoryTree/CategoryTreeItem', () => {
     let wrapper;
@@ -24,33 +25,44 @@ describe('CategoryTree/CategoryTreeItem', () => {
         expect(CategoryTreeItem.name).toEqual('CategoryTreeItem');
     });
 
-
-    it('Check if item has no children', () => {
+    it('Item has no children', () => {
         expect(wrapper.vm.numberOfChildren).toEqual(0);
         expect(wrapper.vm.hasChildren).toBeFalsy();
         expect(wrapper.find('.grid-item__icon').exists()).toBe(false);
         expect(wrapper.find('.grid-item__categories-length').exists()).toBe(false);
     });
 
-    it('Check if item has children', () => {
+    it('Item has children', () => {
         wrapper.setProps({
-            numberOfChildren: 3,
+            numberOfChildren: 10,
         });
-
-        const categoriesLength = wrapper.find('.grid-item__categories-length');
+        expect(wrapper.vm.numberOfChildren).toEqual(10);
         expect(wrapper.vm.hasChildren).toBeTruthy();
-        expect(categoriesLength).toBeTruthy();
+        expect(wrapper.find('.grid-item__icon').exists()).toBe(true);
+        expect(wrapper.find('.grid-item__categories-length').exists()).toBe(true);
     });
 
-    it('Check click method', () => {
+    it('Expanded state is emitted', () => {
         wrapper.setProps({
-            numberOfChildren: 3,
-        });
-        wrapper.setData({
-            isExpanded: true,
+            numberOfChildren: 10,
         });
         const icon = wrapper.find('.grid-item__icon');
         icon.trigger('click');
-        expect(wrapper.vm.isExpanded).toBe(true);
+        expect(wrapper.emitted().toggleItem).toBeTruthy();
     });
+
+    it('Expanded is icon', () => {
+        wrapper.setProps({
+            isExpanded: true,
+        });
+        expect(wrapper.vm.btnExpanderIconState).toBe(Action.PLUS);
+    });
+
+    it('Expanded is not icon', () => {
+        wrapper.setProps({
+            isExpanded: false,
+        });
+        expect(wrapper.vm.btnExpanderIconState).toBe(Action.MINUS);
+    });
+
 });
