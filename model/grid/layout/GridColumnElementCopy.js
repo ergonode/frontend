@@ -27,7 +27,5 @@ export function getGhostColumnElementModel() {
         editable: false,
         label: '',
         type: '',
-        width: 100,
-        minWidth: 100,
     };
 }
