@@ -22,6 +22,7 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridDesigner', () => {
             attachToDocument: true,
             propsData: {
                 maxRow: maxRows,
+                rowHeight: rowHeight,
             },
             slots: {
                 default: {
@@ -36,11 +37,6 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridDesigner', () => {
                         });
                     },
                 },
-            },
-            data() {
-                return {
-                    rowHeight,
-                };
             },
         });
     });

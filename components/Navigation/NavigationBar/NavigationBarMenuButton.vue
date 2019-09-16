@@ -21,7 +21,6 @@ export default {
     name: 'NavigationBarMenuButton',
     components: {
         NavigationBarButton: () => import('~/components/Navigation/NavigationBar/NavigationBarButton'),
-        Icon: () => import('~/components/Icon/Icon'),
     },
     props: {
         value: {

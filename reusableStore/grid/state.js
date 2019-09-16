@@ -9,6 +9,7 @@ import getters from './getters';
 const state = () => ({
     numberOfDisplayedElements: 25,
     columns: [],
+    columnWidths: [],
     pinnedColumns: [],
     rowIds: [],
     cellValues: {},

@@ -22,7 +22,6 @@ export default {
         },
         fab: {
             type: Boolean,
-            required: false,
             default: false,
         },
     },
@@ -46,7 +45,7 @@ export default {
         async getImageById() {
             await this.$axios.$get(`multimedia/${this.imageId}`, {
                 responseType: 'arraybuffer',
-            }).then(response => this.onSuccess(response)).catch(e => console.log(e));
+            }).then(response => this.onSuccess(response));
         },
         onSuccess(response) {
             this.image = getImageData(response);

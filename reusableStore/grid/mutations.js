@@ -22,9 +22,12 @@ export const types = {
     SET_CURRENT_PAGE: 'SET_CURRENT_PAGE',
     SET_SORTING_STATE: 'SET_SORTING_STATE',
     INSERT_COLUMN_AT_INDEX: 'INSERT_COLUMN_AT_INDEX',
+    INSERT_COLUMN_WIDTH_AT_INDEX: 'INSERT_COLUMN_WIDTH_AT_INDEX',
     UPDATE_COLUMN_AT_INDEX: 'UPDATE_COLUMN_AT_INDEX',
     REMOVE_COLUMN_AT_INDEX: 'REMOVE_COLUMN_AT_INDEX',
+    REMOVE_COLUMN_WIDTH_AT_INDEX: 'REMOVE_COLUMN_WIDTH_AT_INDEX',
     SET_SELECTION_FOR_ALL_ROWS: 'SET_SELECTION_FOR_ALL_ROWS',
+    SET_COLUMN_WIDTHS: 'SET_COLUMN_WIDTHS',
     SET_SELECTED_ROWS: 'SET_SELECTED_ROWS',
     SET_SELECTED_ROW: 'SET_SELECTED_ROW',
     SET_COLUMN_WIDTH_AT_INDEX: 'SET_COLUMN_WIDTH_AT_INDEX',
@@ -83,7 +86,7 @@ export default {
         state.columns = [...state.columns];
     },
     [types.INSERT_COLUMN_AT_INDEX](state, { column, index }) {
-        state.columns = insertValueAtIndex(state.columns, column, index);
+        state.columns = insertValueAtIndex([...state.columns], column, index);
     },
     [types.REMOVE_COLUMN_AT_INDEX](state, index) {
         state.columns.splice(index, 1);
@@ -95,7 +98,17 @@ export default {
         state.selectedRows = rows;
     },
     [types.SET_COLUMN_WIDTH_AT_INDEX](state, { index, width }) {
-        state.columns[index].width = width;
+        state.columnWidths[index] = width;
+        state.columnWidths = [...state.columnWidths];
+    },
+    [types.INSERT_COLUMN_WIDTH_AT_INDEX](state, { index, width }) {
+        state.columnWidths = insertValueAtIndex([...state.columnWidths], width, index);
+    },
+    [types.SET_COLUMN_WIDTHS](state, columnWidths) {
+        state.columnWidths = columnWidths;
+    },
+    [types.REMOVE_COLUMN_WIDTH_AT_INDEX](state, index) {
+        state.columnWidths.splice(index, 1);
     },
     [types.SET_SELECTED_ROW](state, row) {
         state.selectedRows = { ...state.selectedRows, [row]: true };
