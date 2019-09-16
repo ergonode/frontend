@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
+import { getParsedConditionSetData } from '~/model/mappers/conditionSetMapper';
 import { arrayToObject } from '~/model/arrayWrapper';
 
 const onDefaultError = () => {};
@@ -16,8 +17,8 @@ export default {
     },
     getConditionSets({ commit, rootState }, params) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/conditionsets`, { params }).then(({ collection: conditonSets }) => {
-            commit(types.SET_CONDITION_SETS, arrayToObject(conditonSets, 'id', 'code'));
+        return this.app.$axios.$get(`${userLanguageCode}/conditionsets`, { params }).then(({ collection: conditionSets }) => {
+            commit(types.SET_CONDITION_SETS, arrayToObject(conditionSets, 'id', 'code'));
         }).catch(onDefaultError);
     },
     getConditionSetById(
@@ -30,13 +31,22 @@ export default {
             code,
             name = '',
             description = '',
+            conditions = [],
         }) => {
             const translations = {
                 name,
                 description,
             };
+            const { conditionsData, conditionsTree } = getParsedConditionSetData(conditions);
+            for (let i = 0; i < conditions.length; i += 1) {
+                const { type } = conditions[i];
+                dispatch('getConditionById', { conditionId: type });
+            }
             commit(types.SET_CONDITION_SET_ID, id);
             commit(types.SET_CONDITION_SET_CODE, code);
+            commit(types.SET_CONDITIONS_DATA, conditionsData);
+            dispatch('gridDesigner/setGridData', conditionsTree, { root: true });
+            dispatch('gridDesigner/setFullGridData', conditionsTree, { root: true });
             dispatch('translations/setTabTranslations', { translations }, { root: true });
         }).catch(onDefaultError);
     },

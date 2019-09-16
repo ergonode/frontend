@@ -20,7 +20,8 @@
         <template #gridItem="{item}">
             <ConditionSetItem
                 :condition="getCondition(item.id)"
-                :item-id="item.id" />
+                :item-id="item.id"
+                :item-row="item.row" />
         </template>
     </TemplateGridWrapper>
 </template>
@@ -50,13 +51,13 @@ export default {
             'removeCondition',
         ]),
         getCondition(id) {
-            const [validId] = id.split('--');
-            return this.conditions[validId] || {};
+            const [correctId] = id.split('--');
+            return this.conditions[correctId] || {};
         },
         getConditionConfiguration({ id }) {
-            const [validId] = id.split('--');
-            if (!this.conditions[validId]) {
-                this.getConditionById({ conditionId: validId });
+            const [correctId] = id.split('--');
+            if (!this.conditions[correctId]) {
+                this.getConditionById({ conditionId: correctId });
             }
         },
         removeConditionFromSet({ id }) {

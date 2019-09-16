@@ -13,6 +13,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { getMappedConditionSetData } from '~/model/mappers/conditionSetMapper';
 import { objectToArrayWithPropsName } from '~/model/objectWrapper';
 import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 
@@ -29,6 +30,10 @@ export default {
         ...mapState('conditions', {
             id: state => state.id,
             code: state => state.code,
+            conditionsValues: state => state.conditionsValues,
+        }),
+        ...mapState('gridDesigner', {
+            fullGridData: state => state.fullGridData,
         }),
         ...mapState('translations', {
             translations: state => state.translations,
@@ -60,13 +65,13 @@ export default {
         },
         onUpdateConditionSetSuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Condition Set updated' });
+            this.$addAlert({ type: 'success', message: 'Condition set updated' });
             this.$router.push('/segments/condition-sets');
         },
         onSave() {
             this.removeValidationErrors();
             const propertiesToUpdate = {
-                conditions: [],
+                conditions: getMappedConditionSetData(this.fullGridData, this.conditionsValues),
             };
             const { name, description } = this.translations;
 

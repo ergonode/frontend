@@ -55,6 +55,10 @@ export default {
             type: String,
             required: true,
         },
+        itemRow: {
+            type: Number,
+            required: true,
+        },
     },
     computed: {
         ...mapState('conditions', {
@@ -136,10 +140,15 @@ export default {
             }
             return condition[name] || '';
         },
-        // TODO: waiting for BE validation
-        errorParamsMessage(name) {
-            const parametersIndex = `${this.itemId}_${name}`;
-            return this.elementIsValidate(parametersIndex);
+        conditionParametersAreValidate(index, key) {
+            return this.validationErrorsAreNotNull
+            && this.validationErrorsHasProperty(index)
+            && this.validationErrors[index][key]
+                ? this.validationErrors[index][key].join(', ') : null;
+        },
+        errorParamsMessage(key) {
+            const parametersIndex = `conditions_element-${this.itemRow}`;
+            return this.conditionParametersAreValidate(parametersIndex, key);
         },
     },
 };
