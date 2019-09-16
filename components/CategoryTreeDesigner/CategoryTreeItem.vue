@@ -63,8 +63,6 @@ export default {
 
 <style lang="scss" scoped>
     .grid-item {
-        $item: &;
-
         z-index: 5;
         display: flex;
         justify-content: flex-start;
