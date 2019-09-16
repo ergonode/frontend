@@ -100,6 +100,7 @@ export default {
         flex: 0 0 auto;
         justify-content: space-between;
         align-items: center;
+        min-height: 40px;
         padding: 24px;
 
         .header-buttons-wrapper {

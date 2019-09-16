@@ -28,7 +28,7 @@ const getMappedColumnHeaderTitle = ({
 
 const getMappedColumnHeaderType = ({ filter, type }) => {
     if (type === 'CHECK') return GridHeaderType.CHECK;
-    if (filter) return GridHeaderType.INTERACTIVE;
+    if (filter || type === 'IMAGE') return GridHeaderType.INTERACTIVE;
 
     return GridHeaderType.PLAIN;
 };
@@ -43,60 +43,43 @@ export function getSortedColumnsByIDs(columns, columnsID) {
 }
 
 export function getMappedColumn(column) {
-    const defaultColumnWidth = 150;
     const mappedColumn = {
         ...column,
         header: getMappedColumnHeader(column),
     };
     mappedColumn.header = getMappedColumnHeader(column);
-
-    if (mappedColumn.width) {
-        mappedColumn.minWidth = mappedColumn.width;
-    } else {
-        mappedColumn.width = defaultColumnWidth;
-        mappedColumn.minWidth = defaultColumnWidth;
-    }
+    mappedColumn.width = 'min-content';
 
     return mappedColumn;
 }
 
 export function getMappedColumns(columns, isExtenderNeeded = true) {
     const mappedColumns = [];
+    const columnWidths = [];
     const pinnedColumns = [];
     const { length } = columns;
-    const defaultColumnWidth = 150;
-    const actionColumnWidth = 40;
     const fixedColumnsLength = isExtenderNeeded ? length + 1 : length;
     const extenderColumn = {
         id: 'extender',
         label: '',
         type: '',
         editable: false,
-        width: 'auto',
-        minWidth: 'auto',
     };
     let isExtenderColumnAdded = false;
 
     for (let i = 0; i < fixedColumnsLength; i += 1) {
         const fixedIndex = isExtenderColumnAdded ? i - 1 : i;
         const gridColumnPosition = `${i + 1} / ${i + 2}`;
+        const columnWidth = columns[fixedIndex].type === 'ACTION' || columns[fixedIndex].type === 'CHECK' ? '40px' : 'min-content';
 
         if ((i + 1 === length && columns[i].type === 'ACTION' && isExtenderNeeded)
             || (i === length && !isExtenderColumnAdded)) {
             mappedColumns.push(extenderColumn);
-
+            columnWidths.push('auto');
             isExtenderColumnAdded = true;
         } else {
-            let width = columns[fixedIndex].width || defaultColumnWidth;
-
-            if (columns[fixedIndex].type === 'ACTION') {
-                width = actionColumnWidth;
-            }
-            mappedColumns.push({
-                ...columns[fixedIndex],
-                width,
-                minWidth: width,
-            });
+            columnWidths.push(columnWidth);
+            mappedColumns.push(columns[fixedIndex]);
         }
 
         mappedColumns[i].header = getMappedColumnHeader(mappedColumns[i]);
@@ -123,6 +106,7 @@ export function getMappedColumns(columns, isExtenderNeeded = true) {
     return {
         mappedColumns,
         pinnedColumns,
+        columnWidths,
     };
 }
 

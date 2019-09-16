@@ -36,7 +36,6 @@ export default {
     props: {
         title: {
             type: String,
-            required: false,
             default: 'Unknown',
         },
     },
@@ -102,5 +101,10 @@ export default {
         transition: all 0.4s ease;
         color: $graphite;
         cursor: default;
+    }
+
+    .icon-wrapper {
+        display: flex;
+        margin-right: -8px;
     }
 </style>

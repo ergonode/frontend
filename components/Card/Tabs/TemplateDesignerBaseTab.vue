@@ -14,11 +14,12 @@
 <script>
 import TemplateDesignerBaseCard from '~/components/Card/TemplateDesignerBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
+import Footer from '~/components/ReusableFooter/Footer';
 
 export default {
     name: 'TemplateDesignerBaseTab',
     components: {
-        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Footer,
         TemplateDesignerBaseCard,
         BaseTab,
     },

@@ -46,6 +46,7 @@ import { getMappedGridData } from '~/model/mappers/privilegesMapper';
 import GridCell from '~/components/Grid/GridCell';
 import GridInfoCell from '~/components/Grid/GridInfoCell';
 import GridCheckCell from '~/components/Grid/GridCheckCell';
+import Footer from '~/components/ReusableFooter/Footer';
 
 export default {
     name: 'UserRolesPrivilegeTab',
@@ -59,7 +60,7 @@ export default {
         GridCell,
         GridInfoCell,
         GridWrapper,
-        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Footer,
     },
     async beforeCreate() {
         this.actionPaths = {

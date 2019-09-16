@@ -33,6 +33,7 @@ describe('Template/TemplateDesigner/LayoutElement', () => {
             mocks,
             propsData: {
                 index: 1,
+                disabled: false,
                 element: {
                     id: 'testId', width: 1, height: 1, row: 1, column: 1,
                 },

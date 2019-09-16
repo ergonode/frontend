@@ -62,6 +62,7 @@ export const Tabs = {
     ConditionSetBaseTab: () => import('~/components/Card/Tabs/ConditionSetBaseTab').then(m => m.default || m),
     ConditionSetTranslationsTab: () => import('~/components/Card/Tabs/ConditionSetTranslationsTab').then(m => m.default || m),
     ConditionSetDesignTab: () => import('~/components/Card/Tabs/ConditionSetDesignTab').then(m => m.default || m),
+    LanguageSettingsTab: () => import('~/components/Card/Tabs/LanguageSettingsTab').then(m => m.default || m),
 };
 
 export const GridTabs = {

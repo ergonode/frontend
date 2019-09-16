@@ -19,7 +19,7 @@
         </NavigationBar>
         <Content>
             <SideBar :value="sideBarState" />
-            <nuxt class="nuxt-container" />
+            <nuxt />
             <FlashMessage />
         </Content>
     </App>
@@ -53,8 +53,8 @@ export default {
     },
 };
 </script>
-<style lang="scss">
-    .nuxt-container {
-        flex: 1;
+<style lang="scss" scoped>
+    .content {
+        margin-top: $toolBarHeight;
     }
 </style>

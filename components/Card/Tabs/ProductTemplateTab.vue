@@ -18,13 +18,14 @@
 import { mapState } from 'vuex';
 import { objectToArray } from '~/model/objectWrapper';
 import BaseTab from '~/components/Card/BaseTab';
+import Footer from '~/components/ReusableFooter/Footer';
 
 export default {
     name: 'ProductTemplateTab',
     components: {
         ProductTemplateCard: () => import('~/components/Card/ProductTemplateCard'),
         ProductTemplateHeaderCard: () => import('~/components/Card/ProductTemplateHeaderCard'),
-        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Footer,
         BaseTab,
     },
     props: {

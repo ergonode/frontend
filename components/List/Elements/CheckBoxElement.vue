@@ -18,13 +18,18 @@
 </template>
 
 <script>
+import ListElement from '~/components/List/ListElement';
+import ListElementDescription from '~/components/List/ListElementDescription';
+import ListElementAction from '~/components/List/ListElementAction';
+import CheckBox from '~/components/Inputs/CheckBox';
+
 export default {
     name: 'CheckBoxElement',
     components: {
-        ListElement: () => import('~/components/List/ListElement'),
-        ListElementDescription: () => import('~/components/List/ListElementDescription'),
-        ListElementAction: () => import('~/components/List/ListElementAction'),
-        CheckBox: () => import('~/components/Inputs/CheckBox'),
+        ListElement,
+        ListElementDescription,
+        ListElementAction,
+        CheckBox,
     },
     props: {
         description: {

@@ -10,9 +10,7 @@
             size="20"
             :state="btnExpanderIconState"
             @click.native="toggleItemExpand" />
-        <span
-            class="grid-item__title txt-fixed typo-subtitle txt--dark-graphite"
-            :style="labelStyle">
+        <span class="grid-item__title txt-fixed typo-subtitle txt--dark-graphite">
             {{ itemName }}
         </span>
         <span
@@ -54,9 +52,6 @@ export default {
                 ? Action.PLUS
                 : Action.MINUS;
         },
-        labelStyle() {
-            return !this.hasChildren ? { marginLeft: '12px' } : null;
-        },
     },
     methods: {
         toggleItemExpand() {
@@ -68,6 +63,8 @@ export default {
 
 <style lang="scss" scoped>
     .grid-item {
+        $item: &;
+
         z-index: 5;
         display: flex;
         justify-content: flex-start;
@@ -75,18 +72,22 @@ export default {
         grid-column: 1 / 3;
         height: 100%;
         border: 1px solid $grey;
+        padding: 0 12px;
         background-color: $background;
         cursor: move;
         overflow: hidden;
 
-        &__icon {
+        &__icon, &__title {
             flex: 0 0 auto;
-            margin-left: 12px;
+        }
+
+        &__icon {
+            margin-right: 8px;
+            cursor: pointer;
         }
 
         &__title {
-            flex: 0 0 auto;
-            margin: 0 8px;
+            margin-right: 8px;
         }
 
         &__categories-length {

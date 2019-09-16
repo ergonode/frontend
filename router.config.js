@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+
 import { GridTabs, Tabs, Pages } from './router.imports';
 
 export const pages = [
@@ -511,7 +512,15 @@ export const pages = [
         },
     },
     {
-        name: 'settings', path: '/settings', component: Pages.Settings,
+        name: 'settings',
+        path: '/settings',
+        component: Pages.Settings,
+        children: [
+            {
+                path: '/settings/language',
+                component: Tabs.LanguageSettingsTab,
+            },
+        ],
     },
     {
         name: 'channels', path: '/channels', component: Pages.Channels,

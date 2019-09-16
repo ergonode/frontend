@@ -6,7 +6,6 @@ import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Button from '~/components/Buttons/Button';
 
 const localVue = createLocalVue();
-localVue.directive('ripple', {});
 
 describe('Buttons/Button', () => {
     let wrapper;
