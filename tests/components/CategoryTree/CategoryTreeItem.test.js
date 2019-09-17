@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { mount } from '@vue/test-utils';
+
 import CategoryTreeItem from '~/components/CategoryTreeDesigner/CategoryTreeItem';
 import { Action } from '~/model/icons/Action';
 

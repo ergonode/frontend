@@ -14,12 +14,13 @@
 <script>
 import SegmentsBaseCard from '~/components/Card/Cards/SegmentsBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
+import Footer from '~/components/ReusableFooter/Footer';
 
 export default {
     name: 'SegmentsBaseTab',
     components: {
-        Footer: () => import('~/components/ReusableFooter/Footer'),
         SegmentsBaseCard,
+        Footer,
         BaseTab,
     },
     props: {

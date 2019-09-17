@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 
+
 import { GridTabs, Tabs, Pages } from './router.imports';
 
 export const pages = [
@@ -519,6 +520,7 @@ export const pages = [
             {
                 path: '/settings/language',
                 component: Tabs.LanguageSettingsTab,
+
             },
         ],
     },
