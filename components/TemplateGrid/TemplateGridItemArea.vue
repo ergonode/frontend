@@ -23,10 +23,6 @@ export default {
             type: Number,
             required: true,
         },
-        rowsHeight: {
-            type: Number,
-            required: true,
-        },
         gridGap: {
             type: Number,
             default: 0,

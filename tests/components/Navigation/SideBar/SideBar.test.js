@@ -15,7 +15,7 @@ const mocks = {
         params: { placeholder: '2' },
     },
     $modulesConfiguration: {
-      menu: []
+        menu: [],
     },
 };
 describe('Navigation/SideBar/SideBar', () => {

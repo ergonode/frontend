@@ -11,10 +11,6 @@ describe('TemplateGrid/TemplateGridHeader', () => {
         wrapper = mount(TemplateGridHeader, {
             propsData: {
                 columns: 1,
-                gridStyles: {
-                    gridTemplateColumns: 'repeat(1, 1fr)',
-                    gridAutoRows: '50px',
-                },
             },
         });
     });
@@ -26,7 +22,7 @@ describe('TemplateGrid/TemplateGridHeader', () => {
         expect(typeof TemplateGridHeader.name).toBe('string');
         expect(TemplateGridHeader.name).toEqual('TemplateGridHeader');
     });
-    it('Check lebels length', () => {
+    it('Check lebels length with default name', () => {
         wrapper.setProps({
             columns: 6,
         });
@@ -36,5 +32,16 @@ describe('TemplateGrid/TemplateGridHeader', () => {
         expect(labels.at(1).text()).toMatch('2nd level');
         expect(labels.at(2).text()).toMatch('3rd level');
         expect(labels.at(5).text()).toMatch('6th level');
+    });
+    it('Check lebels length with other name', () => {
+        wrapper.setProps({
+            columns: 3,
+            headerName: 'name',
+        });
+        const labels = wrapper.findAll('.grid-header__title');
+        expect(labels.length).toEqual(3);
+        expect(labels.at(0).text()).toMatch('1st name');
+        expect(labels.at(1).text()).toMatch('2nd name');
+        expect(labels.at(2).text()).toMatch('3rd name');
     });
 });

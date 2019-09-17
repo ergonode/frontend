@@ -25,7 +25,6 @@
                     :key="item.id"
                     :item="item"
                     :columns="columns"
-                    :rows-height="rowsHeight"
                     :grid-gap="gridGap">
                     <TemplateGridGhostItem
                         v-if="item.ghost" />
