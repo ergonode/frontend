@@ -11,9 +11,9 @@
             :rows-height="rowsHeight"
             :grid-data="filteredGridData"
             :is-dragging-enabled="isDraggingEnabled"
-            @toggleItem="(item) => toggleItem(item)"
-            @methodAfterDrop="(data) => methodAfterDrop(data)"
-            @methodAfterRemove="(data) => methodAfterRemove(data)">
+            @toggleItem="toggleItem"
+            @drop="id => $emit('afterDrop', id)"
+            @afterRemove="id => $emit('afterRemove', id)">
             <TemplateGridPresentationLayer
                 :style="gridStyles"
                 :columns="columns"
@@ -87,14 +87,6 @@ export default {
             type: Number,
             required: true,
         },
-        methodAfterDrop: {
-            type: Function,
-            default: () => {},
-        },
-        methodAfterRemove: {
-            type: Function,
-            default: () => {},
-        },
     },
     computed: {
         ...mapState('gridDesigner', {
@@ -121,6 +113,10 @@ export default {
             'removeHiddenItem',
             'setExpandItem',
         ]),
+        afterDrop({ id }) {
+            console.log(id);
+            this.$emit('afterDrop', id);
+        },
         toggleItem({
             id, row, column, expanded,
         }) {
@@ -155,16 +151,21 @@ export default {
                 row - (children.length ? children[0].row : 0) + 1
             );
             const borderStyle = id === 'ghost_item' ? 'dashed' : 'solid';
-            const lineCoordinates = {
-                left: parent === 'root' ? `-${this.gridGap}px` : `-${100 - this.gridGap}%`,
-                width: parent === 'root' ? `${this.gridGap}px` : `${100 - this.gridGap}%`,
+            const linePosition = {
+                left: `-${100 - this.gridGap}%`,
+                width: `${100 - this.gridGap}%`,
             };
+
+            if (parent === 'root') {
+                linePosition.left = `-${this.gridGap}px`;
+                linePosition.width = `${this.gridGap}px`;
+            }
 
             return {
                 borderBottomStyle: borderStyle,
                 borderLeftStyle: borderStyle,
-                left: lineCoordinates.left,
-                width: lineCoordinates.width,
+                left: linePosition.left,
+                width: linePosition.width,
                 height: `${connectionHeight}px`,
                 bottom: `${this.rowsHeight / 2}px`,
             };

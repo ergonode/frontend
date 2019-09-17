@@ -4,15 +4,15 @@
  */
 <template>
     <BaseCard modal>
-        <div
-            slot="header"
-            class="card-header">
-            <span
-                class="typo-title txt--dark-graphite"
-                v-text="selectedLanguage" />
-        </div>
+        <template #header>
+            <div class="card-header">
+                <span
+                    class="typo-title txt--dark-graphite"
+                    v-text="selectedLanguage" />
+            </div>
+        </template>
         <Divider />
-        <div class="modal-container">
+        <template #modal>
             <TextField
                 :value="translations.label[languageCode]"
                 solid
@@ -46,7 +46,7 @@
                     :language-code="languageCode"
                     :disabled="!isUserAllowedToUpdate" />
             </template>
-        </div>
+        </template>
     </BaseCard>
 </template>
 
@@ -113,15 +113,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .card-header {
-        padding: 16px 24px;
-    }
-
-    .modal-container {
-        display: grid;
-        grid-row-gap: 16px;
-        margin: 0 24px 16px;
-    }
-</style>

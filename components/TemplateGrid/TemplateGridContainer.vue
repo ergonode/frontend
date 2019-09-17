@@ -213,14 +213,14 @@ export default {
                     }
                 }
                 this.removeHiddenItem(this.draggedElement);
-                this.$emit('methodAfterRemove', { id: this.draggedElement });
+                this.$emit('afterRemove', this.draggedElement);
             }
         },
         onDrop() {
             const { row, column } = this.ghostElement;
             const { code: categoryCode, name: categoryName } = this.listElements[this.language]
                 .find(e => e.id === this.draggedElement.split('--')[0]);
-            this.$emit('methodAfterDrop', { id: this.draggedElement });
+            this.$emit('drop', this.draggedElement);
             this.removeGhostElement();
             const parentId = this.getParentId(row, column);
             const childrenLength = this.hiddenItems[this.draggedElement]

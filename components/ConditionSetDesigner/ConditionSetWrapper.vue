@@ -7,13 +7,13 @@
         :columns="columns"
         :rows-height="rowsHeight"
         :is-connections-visible="false"
-        :method-after-drop="getConditionConfiguration"
-        :method-after-remove="removeConditionFromSet"
         :grid-gap="15"
-        :is-dragging-enabled="$hasAccess('SEGMENT_UPDATE')">
+        :is-dragging-enabled="$hasAccess('SEGMENT_UPDATE')"
+        @afterDrop="getConditionConfiguration"
+        @afterRemove="removeConditionFromSet">
         <template #gridHeader>
             <TemplateGridHeader
-                :style="gridStyles()"
+                :style="gridStyles"
                 header-name="condition level"
                 :columns="columns" />
         </template>
@@ -44,6 +44,12 @@ export default {
             rowsHeight: state => state.rowsHeight,
             conditions: state => state.conditions,
         }),
+        gridStyles() {
+            return {
+                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
+                gridAutoRows: '50px',
+            };
+        },
     },
     methods: {
         ...mapActions('conditions', [
@@ -54,20 +60,14 @@ export default {
             const [correctId] = id.split('--');
             return this.conditions[correctId] || {};
         },
-        getConditionConfiguration({ id }) {
+        getConditionConfiguration(id) {
             const [correctId] = id.split('--');
             if (!this.conditions[correctId]) {
                 this.getConditionById({ conditionId: correctId });
             }
         },
-        removeConditionFromSet({ id }) {
+        removeConditionFromSet(id) {
             this.removeCondition(id);
-        },
-        gridStyles() {
-            return {
-                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                gridAutoRows: '50px',
-            };
         },
     },
 };
