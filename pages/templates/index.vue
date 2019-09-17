@@ -7,7 +7,7 @@
         <NavigationHeader
             title="Templates"
             :buttons="buttons"
-            :is-read-only="Privilege.isReadOnly"
+            :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')"
             icon="Templates" />
         <div class="templates">
             <div
@@ -33,7 +33,6 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import Privilege from '~/model/privilege';
 
 export default {
     name: 'Templates',
@@ -43,7 +42,6 @@ export default {
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
     },
     created() {
-        this.Privilege = new Privilege(this.$hasAccess, 'TEMPLATE_DESIGNER');
         this.buttons = [
             {
                 title: 'CREATE TEMPLATE',

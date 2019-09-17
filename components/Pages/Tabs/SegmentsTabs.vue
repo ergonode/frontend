@@ -15,8 +15,6 @@
 </template>
 
 <script>
-import Privilege from '~/model/privilege';
-
 export default {
     name: 'GridSegmentsPage',
     components: {
@@ -39,7 +37,6 @@ export default {
         },
     },
     beforeCreate() {
-        this.Privilege = new Privilege(this.$hasAccess, 'SEGMENT');
         this.tabs = [];
         if (this.$hasAccess('SEGMENT_READ')) {
             this.tabs.push({
@@ -61,11 +58,10 @@ export default {
     computed: {
         isReadOnly() {
             const isConditionPage = /condition-sets/.test(this.$route.path);
-            let PrivilegeInstance = new Privilege(this.$hasAccess, 'SEGMENT');
             if (isConditionPage) {
-                PrivilegeInstance = new Privilege(this.$hasAccess, 'CONDITION');
+                return this.$isReadOnly('CONDITION');
             }
-            return PrivilegeInstance.isReadOnly;
+            return this.$isReadOnly('SEGMENT');
         },
     },
     beforeDestroy() {

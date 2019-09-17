@@ -8,15 +8,13 @@
             :title="title"
             :buttons="buttons"
             :icon="icon"
-            :is-read-only="Privilege.isReadOnly" />
+            :is-read-only="$isReadOnly('WORKFLOW')" />
         <HorizontalTabBar
             :items="tabs" />
     </PageWrapper>
 </template>
 
 <script>
-import Privilege from '~/model/privilege';
-
 export default {
     name: 'WorkflowTabs',
     components: {
@@ -40,7 +38,6 @@ export default {
         },
     },
     beforeCreate() {
-        this.Privilege = new Privilege(this.$hasAccess, 'WORKFLOW');
         this.tabs = [];
         if (this.$hasAccess('WORKFLOW_READ')) {
             this.tabs.push({
@@ -52,7 +49,6 @@ export default {
         }
     },
     beforeDestroy() {
-        delete this.Privilege;
         delete this.tabs;
     },
 };

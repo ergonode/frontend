@@ -12,7 +12,7 @@
             :grid-data="filteredGridData"
             :is-dragging-enabled="isDraggingEnabled"
             @toggleItem="toggleItem"
-            @drop="id => $emit('afterDrop', id)"
+            @afterDrop="id => $emit('afterDrop', id)"
             @afterRemove="id => $emit('afterRemove', id)">
             <TemplateGridPresentationLayer
                 :style="gridStyles"
@@ -113,10 +113,6 @@ export default {
             'removeHiddenItem',
             'setExpandItem',
         ]),
-        afterDrop({ id }) {
-            console.log(id);
-            this.$emit('afterDrop', id);
-        },
         toggleItem({
             id, row, column, expanded,
         }) {

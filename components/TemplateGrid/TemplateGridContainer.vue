@@ -220,7 +220,7 @@ export default {
             const { row, column } = this.ghostElement;
             const { code: categoryCode, name: categoryName } = this.listElements[this.language]
                 .find(e => e.id === this.draggedElement.split('--')[0]);
-            this.$emit('drop', this.draggedElement);
+            this.$emit('afterDrop', this.draggedElement);
             this.removeGhostElement();
             const parentId = this.getParentId(row, column);
             const childrenLength = this.hiddenItems[this.draggedElement]

@@ -11,7 +11,7 @@
 
 <script>
 export default {
-    name: 'Index',
+    name: 'Workflow',
     middleware: ['tab/redirectToStatusesGrid'],
     components: {
         WorkflowTabs: () => import('~/components/Pages/Tabs/WorkflowTabs'),

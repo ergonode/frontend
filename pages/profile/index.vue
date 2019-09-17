@@ -3,17 +3,17 @@
  * See LICENSE for license details.
  */
 <template>
-    <UserProfilePage
+    <UserProfileTabs
         title="Profile"
         icon="User" />
 </template>
 
 <script>
 export default {
-    name: 'Index',
+    name: 'Profile',
     middleware: ['tab/redirectToUserActivityLogGrid'],
     components: {
-        UserProfilePage: () => import('~/components/Pages/UserProfilePage'),
+        UserProfileTabs: () => import('~/components/Pages/Tabs/UserProfileTabs'),
     },
 };
 </script>

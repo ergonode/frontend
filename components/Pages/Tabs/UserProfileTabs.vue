@@ -14,11 +14,8 @@
 </template>
 
 <script>
-import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
-
 export default {
-    name: 'SettingsPage',
-    mixins: [categoryManagementPageBaseMixin],
+    name: 'UserProfileTabs',
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
@@ -35,7 +32,6 @@ export default {
         },
         icon: {
             type: String,
-            required: false,
             default: null,
         },
     },
@@ -43,16 +39,10 @@ export default {
         return {
             tabs: [
                 {
-                    title: 'Language',
-                    path: '/settings/language',
+                    title: 'Activity log',
+                    path: '/profile/activity-log',
                     active: true,
                     isContextualMenu: false,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE SETTINGS',
-                            action: this.onSave,
-                        },
-                    },
                 },
             ],
         };

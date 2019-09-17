@@ -15,8 +15,6 @@
 </template>
 
 <script>
-import Privilege from '~/model/privilege';
-
 export default {
     name: 'UsersTabs',
     components: {
@@ -67,11 +65,10 @@ export default {
     computed: {
         isReadOnly() {
             const isRolesPage = /roles/.test(this.$route.path);
-            let PrivilegeInstance = new Privilege(this.$hasAccess, 'USER');
             if (isRolesPage) {
-                PrivilegeInstance = new Privilege(this.$hasAccess, 'USER_ROLE');
+                return this.$isReadOnly('USER_ROLE');
             }
-            return PrivilegeInstance.isReadOnly;
+            return this.$isReadOnly('USER');
         },
     },
     beforeDestroy() {
