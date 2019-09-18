@@ -28,7 +28,7 @@ export default {
         { conditionSetId },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        await this.app.$axios.$get(`${userLanguageCode}/conditionsets/${conditionSetId}`).then(({
+        await this.app.$axios.$get(`${userLanguageCode}/conditionsets/${conditionSetId}`).then(async ({
             id,
             code,
             name = '',
@@ -40,12 +40,13 @@ export default {
                 description,
             };
             const { conditionsData, conditionsTree } = getParsedConditionSetData(conditions);
-            for (let i = 0; i < conditions.length; i += 1) {
-                const { type } = conditions[i];
+
+            await Promise.all(conditions.map(async (condition) => {
+                const { type } = condition;
                 if (!state.conditions[type]) {
-                    dispatch('getConditionConfigurationById', { conditionId: type });
+                    await dispatch('getConditionConfigurationById', { conditionId: type });
                 }
-            }
+            }));
             commit(types.SET_CONDITION_SET_ID, id);
             commit(types.SET_CONDITION_SET_CODE, code);
             commit(types.SET_CONDITIONS_DATA, conditionsData);
@@ -80,12 +81,12 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$put(`${userLanguageCode}/conditionsets/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
     },
-    getConditionConfigurationById(
+    async getConditionConfigurationById(
         { commit, rootState },
         { conditionId },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        this.app.$axios.$get(`${userLanguageCode}/conditions/${conditionId}`).then((data) => {
+        await this.app.$axios.$get(`${userLanguageCode}/conditions/${conditionId}`).then((data) => {
             commit(types.SET_CONDITIONS, { key: conditionId, value: data });
         }).catch(onDefaultError);
     },
