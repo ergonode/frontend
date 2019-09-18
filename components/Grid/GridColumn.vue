@@ -122,7 +122,8 @@ export default {
             return this.gridState.pinnedColumns.find(col => col.id === this.column.id);
         },
         isColumnDraggable() {
-            return this.gridState.configuration.isColumnMoveable;
+            return this.gridState.configuration.isColumnMoveable
+                && Object.keys(this.gridState.editingCellCoordinates).length === 0;
         },
         isColumnResizeable() {
             return this.gridState.configuration.isColumnResizeable;
