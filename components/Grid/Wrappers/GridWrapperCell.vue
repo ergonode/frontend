@@ -92,7 +92,7 @@ export default {
 
         this.isActionCell = type === 'CHECK' || type === 'ACTION';
         this.isExtenderColumn = id === 'extender';
-        this.isSelectKind = type === 'SELECT' || type === 'MULTI_SELECT';
+        this.isSelectKind = type === 'SELECT' || type === 'MULTI_SELECT' || type === 'LABEL';
         this.isMultiSelect = type === 'MULTI_SELECT';
         this.isEditingAllowed = (editable && this.$options.propsData.editingPrivilegeAllowed)
             || this.isActionCell;
@@ -240,11 +240,16 @@ export default {
                 || this.cellData.value === value
             ) return;
 
+            const parsedValue = this.column.colors
+                ? { label: value, color: this.column.colors[value] }
+                : value;
+
             this.updateDraftValue({
                 productId: this.rowId,
                 columnId: this.column.id,
-                elementId: this.column.element_id,
-                value,
+                // FIXME: BE - two different values!!!
+                elementId: this.column.element_id || this.column.attributeId,
+                value: parsedValue,
                 languageCode: this.column.language || this.userLanguageCode,
             });
         },

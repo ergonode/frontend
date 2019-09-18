@@ -5,6 +5,7 @@
 import { toCapitalize } from '~/model/stringWrapper';
 import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
 import { GridHeaderType } from '~/model/grid/layout/GridHeaderType';
+import { getKeyByValue } from '~/model/objectWrapper';
 
 const getMappedColumnHeaderTitle = ({
     id,
@@ -149,9 +150,10 @@ export function getMappedCellValues(columns, rows, rowIds) {
 
                 if (Array.isArray(value)) {
                     values[rowId][columnId] = { key: value, value: value.map(key => options[key] || 'No translation').join(', ') };
-                }
-                if (typeof options[value] !== 'undefined') {
+                } else if (typeof options[value] !== 'undefined') {
                     values[rowId][columnId] = { key: value, value: options[value] || 'No translation' };
+                } else {
+                    values[rowId][columnId] = { key: getKeyByValue(options, value.label), value };
                 }
             } else if (typeof value === 'boolean' && column.type !== 'CHECK_CELL') {
                 values[rowId][columnId] = { value: value ? 'Yes' : 'No' };
