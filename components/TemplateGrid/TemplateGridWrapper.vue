@@ -50,7 +50,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getMaxChildRow } from '~/model/tree/TreeCalculations';
+import { getNearestNeighborRowId } from '~/model/tree/TreeCalculations';
 import TemplateGridPresentationLayer from '~/components/TemplateGrid/TemplateGridPresentationLayer';
 import TemplateGridItemsContainer from '~/components/TemplateGrid/TemplateGridItemsContainer';
 import TemplateGridContainer from '~/components/TemplateGrid/TemplateGridContainer';
@@ -123,7 +123,11 @@ export default {
             const rowValue = Math.floor(row);
 
             if (!expanded) {
-                const maxChildRow = getMaxChildRow(this.filteredGridData, column, rowValue);
+                const maxChildRow = getNearestNeighborRowId(
+                    this.filteredGridData,
+                    column,
+                    rowValue,
+                );
                 const {
                     hiddenCategories,
                     visibleCategories,

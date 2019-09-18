@@ -18,7 +18,7 @@ function getCoordinatesForHiddenCategories(hiddenElements, { row, column }) {
     });
 }
 
-export function getMaxChildRow(tree, column, row) {
+export function getNearestNeighborRowId(tree, column, row) {
     const [neighbor] = tree.filter(
         e => e.column <= column && e.row > row,
     );

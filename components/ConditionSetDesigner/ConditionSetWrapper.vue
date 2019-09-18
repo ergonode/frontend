@@ -68,7 +68,6 @@ export default {
             }
         },
         removeConditionFromSet(id) {
-            console.log(id);
             this.removeCondition(id);
         },
     },
