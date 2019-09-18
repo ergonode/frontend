@@ -4,7 +4,7 @@
  */
 <template>
     <UserRolesPage
-        :title="title"
+        :title="name"
         is-edit
         @dismiss="onDismiss"
         @remove="onRemove"
@@ -36,9 +36,6 @@ export default {
         ...mapState('authentication', {
             userPrivileges: state => state.user.privileges,
         }),
-        title() {
-            return `${this.name}`;
-        },
     },
     destroyed() {
         this.clearStorage();

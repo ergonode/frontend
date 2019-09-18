@@ -4,7 +4,7 @@
  */
 <template>
     <UserPage
-        :title="title"
+        title="New user"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>
@@ -19,9 +19,6 @@ export default {
     components: {
         UserPage: () => import('~/components/Pages/UserPage'),
     },
-    data: () => ({
-        title: 'New User',
-    }),
     computed: {
         ...mapState('users', {
             email: state => state.email,
