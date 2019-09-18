@@ -54,6 +54,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        isMultiDraggable: {
+            type: Boolean,
+            default: false,
+        },
     },
     data: () => ({
         positionBetweenRows: 0.5,
@@ -160,10 +164,13 @@ export default {
                         this.setChildrenLength({ id: parentId, value: -1 });
                     }
                     this.removeGridItem(index);
-                    this.removeDisabledElement({
-                        languageCode: this.language,
-                        elementId: id,
-                    });
+                    if (!this.isMultiDraggable) {
+                        this.removeDisabledElement({
+                            languageCode: this.language,
+                            elementId: id,
+                        });
+                    }
+                    this.$emit('afterRemove', id);
                 } else {
                     event.preventDefault();
                 }
@@ -203,7 +210,7 @@ export default {
 
             if (isOutOfBounds) {
                 this.removeGhostElement();
-                if (this.hiddenItems[this.draggedElement]) {
+                if (!this.isMultiDraggable && this.hiddenItems[this.draggedElement]) {
                     const childrenForHiddenItem = this.hiddenItems[this.draggedElement];
                     for (let i = 0; i < childrenForHiddenItem.length; i += 1) {
                         this.removeDisabledElement({
@@ -220,7 +227,6 @@ export default {
             const { row, column } = this.ghostElement;
             const { code: categoryCode, name: categoryName } = this.listElements[this.language]
                 .find(e => e.id === this.draggedElement.split('--')[0]);
-            this.$emit('afterDrop', this.draggedElement);
             this.removeGhostElement();
             const parentId = this.getParentId(row, column);
             const childrenLength = this.hiddenItems[this.draggedElement]
@@ -237,16 +243,19 @@ export default {
                 parent: parentId,
             };
             this.addGridItem(droppedItem);
-            this.setDisabledElement({
-                languageCode: this.language,
-                elementId: this.draggedElement,
-            });
+            if (!this.isMultiDraggable) {
+                this.setDisabledElement({
+                    languageCode: this.language,
+                    elementId: this.draggedElement,
+                });
+            }
             if (parentId !== 'root') {
                 this.setChildrenLength({ id: parentId, value: 1 });
             }
             this.rebuildGrid(this.draggedElement);
             if (childrenLength > 0) this.$emit('toggleItem', { ...droppedItem, row: row + this.positionBetweenRows });
             this.calculateRowsCount();
+            this.$emit('afterDrop', this.draggedElement);
         },
         removeGhostElement() {
             this.ghostElement.row = null;

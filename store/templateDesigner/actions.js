@@ -128,5 +128,9 @@ export default {
     setLayoutElementRequirement: ({ commit }, payload) => {
         commit(types.SET_LAYOUT_ELEMENT_REQUIREMENT, payload);
     },
+    removeTemplate({ rootState }, { id, onSuccess }) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$delete(`${userLanguageCode}/templates/${id}`).then(() => onSuccess()).catch(onDefaultError);
+    },
     clearStorage: ({ commit }) => commit(types.CLEAR_STATE),
 };

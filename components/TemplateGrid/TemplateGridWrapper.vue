@@ -11,6 +11,7 @@
             :rows-height="rowsHeight"
             :grid-data="filteredGridData"
             :is-dragging-enabled="isDraggingEnabled"
+            :is-multi-draggable="isMultiDraggable"
             @toggleItem="toggleItem"
             @afterDrop="id => $emit('afterDrop', id)"
             @afterRemove="id => $emit('afterRemove', id)">
@@ -67,6 +68,10 @@ export default {
     },
     props: {
         isDraggingEnabled: {
+            type: Boolean,
+            default: false,
+        },
+        isMultiDraggable: {
             type: Boolean,
             default: false,
         },

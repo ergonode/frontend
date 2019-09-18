@@ -81,6 +81,7 @@ export default {
                 const foundKey = findKeyWhenSelect(clearedKey);
 
                 if (foundKey !== -1) {
+                    if (!placeholders[clearedKey]) return placeholder;
                     return Array.isArray(placeholders[clearedKey])
                         ? getValuesByKeys(parameters[foundKey].options, placeholders[clearedKey])
                         : getValueByKey(parameters[foundKey].options, placeholders[clearedKey]);

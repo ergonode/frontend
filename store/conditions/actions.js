@@ -43,7 +43,7 @@ export default {
             for (let i = 0; i < conditions.length; i += 1) {
                 const { type } = conditions[i];
                 if (!state.conditions[type]) {
-                    dispatch('getConditionById', { conditionId: type });
+                    dispatch('getConditionConfigurationById', { conditionId: type });
                 }
             }
             commit(types.SET_CONDITION_SET_ID, id);
@@ -80,12 +80,12 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$put(`${userLanguageCode}/conditionsets/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
     },
-    async getConditionById(
+    getConditionConfigurationById(
         { commit, rootState },
         { conditionId },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        await this.app.$axios.$get(`${userLanguageCode}/conditions/${conditionId}`).then((data) => {
+        this.app.$axios.$get(`${userLanguageCode}/conditions/${conditionId}`).then((data) => {
             commit(types.SET_CONDITIONS, { key: conditionId, value: data });
         }).catch(onDefaultError);
     },

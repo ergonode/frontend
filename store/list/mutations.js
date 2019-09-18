@@ -36,6 +36,7 @@ export default {
         state.disabledElements = { ...state.disabledElements };
     },
     [types.REMOVE_DISABLED_ELEMENT](state, { languageCode, elementId }) {
+        console.log(languageCode, elementId);
         delete state.disabledElements[languageCode][elementId];
         state.disabledElements[languageCode] = { ...state.disabledElements[languageCode] };
     },
