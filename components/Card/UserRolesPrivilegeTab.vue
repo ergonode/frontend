@@ -76,10 +76,10 @@ export default {
 
         const { privileges: privilegesDictionary } = this.$store.state.data;
         const { privileges } = this.$store.state.roles;
-
-        const { rows, columns } = getMappedGridData(privilegesDictionary, privileges);
+        const { rows, columns, columnWidths } = getMappedGridData(privilegesDictionary, privileges);
 
         await this.$store.dispatch('privilegesGrid/setGridData', { columns, rows });
+        await this.$store.dispatch('privilegesGrid/setColumnWidths', columnWidths);
     },
     beforeDestroy() {
         this.$store.unregisterModule('privilegesGrid');

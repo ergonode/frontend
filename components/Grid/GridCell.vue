@@ -83,7 +83,7 @@ export default {
 
             let element;
 
-            if (!event.target.classList.contains('grid-cell') && !this.actionCell && keyCode !== 13 && keyCode !== 9) {
+            if (!event.target.classList.contains('grid-cell') && !this.actionCell && keyCode !== 13) {
                 return false;
             }
 
@@ -101,6 +101,7 @@ export default {
                 }
                 break;
             case 32:
+                // Key: SPACE BAR
                 if (this.editingAllowed && this.actionCell) {
                     if (this.selected) {
                         this.$emit('edit', false);

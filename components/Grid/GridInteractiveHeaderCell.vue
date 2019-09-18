@@ -174,6 +174,7 @@ export default {
                 // We are hovering element while removing it
                 this.borderColumnAction('add', columnElement);
                 this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index: this.columnIndex });
+                this.$store.dispatch(`${this.storeNamespace}/removeColumnWidthAtIndex`, { index: this.columnIndex });
                 removeColumnCookieByID(this.$cookies, this.column.id);
                 break;
             }

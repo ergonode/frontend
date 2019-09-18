@@ -126,17 +126,18 @@ export function getMappedCellValues(columns, rows, rowIds) {
 
             if (!values[rowId]) values[rowId] = {};
 
-            if (typeof value === 'undefined' || value === null) {
-                values[rowId][columnId] = { value: '' };
-            } else if (filter && filter.options) {
+            if (filter && filter.options) {
                 const { options } = filter;
 
                 if (Array.isArray(value)) {
                     values[rowId][columnId] = { key: value, value: value.map(key => options[key] || 'No translation').join(', ') };
-                }
-                if (typeof options[value] !== 'undefined') {
+                } else if (typeof options[value] !== 'undefined') {
                     values[rowId][columnId] = { key: value, value: options[value] || 'No translation' };
+                } else {
+                    values[rowId][columnId] = { key: '', value: '' };
                 }
+            } else if (typeof value === 'undefined' || value === null) {
+                values[rowId][columnId] = { value: '' };
             } else if (typeof value === 'boolean' && column.type !== 'CHECK_CELL') {
                 values[rowId][columnId] = { value: value ? 'Yes' : 'No' };
             } else {

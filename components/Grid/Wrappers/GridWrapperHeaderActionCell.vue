@@ -23,6 +23,7 @@
                 :is-multi-select="isMultiSelect"
                 :value="filterValue"
                 :options="options"
+                :fixed-width="$el.offsetWidth"
                 @updateValue="onUpdateFilter" />
         </template>
     </GridCell>

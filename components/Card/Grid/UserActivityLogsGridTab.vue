@@ -100,24 +100,6 @@ export default {
                 }
             },
         },
-        currentPage: {
-            get() {
-                return this.displayedPage;
-            },
-            set(value) {
-                let number = Math.trunc(value);
-
-                if (number < 1) {
-                    return;
-                }
-                if (number > this.numberOfPages) {
-                    number = this.numberOfPages;
-                }
-
-                this.changeDisplayingPage({ number });
-                this.getDataWrapper();
-            },
-        },
     },
     methods: {
         ...mapActions('userActivityLogsGrid', [

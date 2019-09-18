@@ -51,7 +51,7 @@ export default {
             configuration, collection: rows, columns, info,
         }) => {
             const { count, filtered } = info;
-            const columnsToMap = columnIDs ? getSortedColumnsByIDs(columns, columnIDs) : columns;
+            const columnsToMap = columnIDs ? getSortedColumnsByIDs([...columns], columnIDs, 'id') : columns;
             const visibleColumns = columnsToMap.filter(col => col.visible);
             const { mappedColumns, pinnedColumns, columnWidths } = getMappedColumns(visibleColumns);
             const mappedConfiguration = getMappedGridConfiguration(configuration);
@@ -84,7 +84,11 @@ export default {
         path,
     }) {
         const {
-            columns: stateColumns, displayedPage, numberOfDisplayedElements, sortedByColumn, filter,
+            columns: stateColumns,
+            displayedPage,
+            numberOfDisplayedElements,
+            sortedByColumn,
+            filter,
         } = state;
         const stateColumnsID = stateColumns.filter(col => !(col.id.includes('extender') || col.id.includes('ghost'))).map(col => col.id);
         const parsedColumnsID = insertValueAtIndex(stateColumnsID, columnId, ghostIndex).join(',');
@@ -124,6 +128,7 @@ export default {
             dispatch('list/setDisabledElement', { languageCode: draggedColumn.language, elementId: draggedColumn.element_id }, { root: true });
 
             commit(types.SET_COLUMNS, columnsWithoutGhost);
+            commit(types.SET_COLUMN_WIDTH_AT_INDEX, { index: ghostIndex, width: 'min-content' });
             commit(types.SET_CELL_VALUES, cellValues);
             commit(types.SET_ROW_IDS, rowIds);
         }).catch(err => console.log(err));
@@ -144,7 +149,7 @@ export default {
 
         const isFilterExist = state.filter[id];
 
-        if (!isFilterExist && !filterToSet) {
+        if (!isFilterExist && (Array.isArray(filterToSet) ? !filterToSet.length : !filterToSet)) {
             return;
         }
 
@@ -156,6 +161,9 @@ export default {
         } else {
             commit(types.SET_FILTER, { id, filter: filterToSet });
         }
+    },
+    setColumnWidths({ commit }, columnWidths) {
+        commit(types.SET_COLUMN_WIDTHS, columnWidths);
     },
     setSortingState({ commit }, sortedColumn = {}) {
         commit(types.SET_SORTING_STATE, sortedColumn);

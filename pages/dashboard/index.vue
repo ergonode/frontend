@@ -12,7 +12,6 @@
 </template>
 
 <script>
-
 import GridItems from '~/model/dashboard_grid_columns';
 
 export default {

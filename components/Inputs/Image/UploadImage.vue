@@ -112,7 +112,8 @@ export default {
     .upload-image {
         position: relative;
         display: grid;
-        grid-template-rows: max-content 150px max-content;
+        grid-auto-flow: row;
+        grid-template-rows: max-content;
         row-gap: 8px;
 
         &--disabled::after {
@@ -134,7 +135,7 @@ export default {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 24px;
+            height: 150px;
             background-color: $white;
             box-shadow:
                 0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -153,7 +154,7 @@ export default {
         &__container {
             position: relative;
             display: flex;
-            flex: 1;
+            height: 150px;
             background-color: $white;
             box-shadow:
                 0 2px 2px 0 rgba(0, 0, 0, 0.14),
