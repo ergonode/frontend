@@ -4,7 +4,7 @@
  */
 <template>
     <CategoryTreePage
-        :title="title"
+        title="New tree"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>
@@ -18,9 +18,6 @@ export default {
     components: {
         CategoryTreePage: () => import('~/components/Pages/CategoryTreePage'),
     },
-    data: () => ({
-        title: 'New Tree',
-    }),
     computed: {
         ...mapState('tree', {
             code: state => state.code,
@@ -45,7 +42,7 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Category tree created' });
             this.$router.push({
-                name: 'category-tree-edit-id',
+                name: 'category-trees-edit-id',
                 params: {
                     id,
                 },
