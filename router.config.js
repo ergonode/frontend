@@ -51,6 +51,7 @@ const ProductBaseTab = () => import('~/components/Card/ProductBaseTab').then(m =
 const ProductTemplateTab = () => import('~/components/Card/ProductTemplateTab').then(m => m.default || m);
 const ProductStatusBaseTab = () => import('~/components/Card/ProductStatusBaseTab').then(m => m.default || m);
 const ProductStatusTranslationsTab = () => import('~/components/Card/ProductStatusTranslationsTab').then(m => m.default || m);
+const LanguageSettingsTab = () => import('~/components/Card/LanguageSettingsTab').then(m => m.default || m);
 
 // Grid Tabs
 const ProductStatusGridTab = () => import('~/components/Card/Grid/ProductStatusGridTab').then(m => m.default || m);
@@ -490,7 +491,15 @@ export const pages = [
         },
     },
     {
-        name: 'settings', path: '/settings', component: Settings,
+        name: 'settings',
+        path: '/settings',
+        component: Settings,
+        children: [
+            {
+                path: '/settings/language',
+                component: LanguageSettingsTab,
+            },
+        ],
     },
     {
         name: 'channels', path: '/channels', component: Channels,

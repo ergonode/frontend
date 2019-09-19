@@ -7,18 +7,18 @@
         <NavigationHeader
             :title="title"
             :buttons="buttons"
-            :icon="icon"
-            :is-read-only="Privilege.isReadOnly" />
+            :icon="icon" />
         <HorizontalTabBar
             :items="tabs" />
     </PageWrapper>
 </template>
 
 <script>
-import Privilege from '~/model/privilege';
+import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
-    name: 'GridWorkflowPage',
+    name: 'SettingsPage',
+    mixins: [categoryManagementPageBaseMixin],
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
@@ -31,7 +31,7 @@ export default {
         },
         buttons: {
             type: Array,
-            required: true,
+            default: () => [],
         },
         icon: {
             type: String,
@@ -39,21 +39,23 @@ export default {
             default: null,
         },
     },
-    beforeCreate() {
-        this.Privilege = new Privilege(this.$hasAccess, 'WORKFLOW');
-        this.tabs = [];
-        if (this.$hasAccess('WORKFLOW_READ')) {
-            this.tabs.push({
-                title: 'Product statuses',
-                path: '/workflow/statuses',
-                active: true,
-                isContextualMenu: false,
-            });
-        }
-    },
-    beforeDestroy() {
-        delete this.Privilege;
-        delete this.tabs;
+    data() {
+        return {
+            tabs: [
+                {
+                    title: 'Language',
+                    path: '/settings/language',
+                    active: true,
+                    isContextualMenu: false,
+                    props: {
+                        updateButton: {
+                            title: 'SAVE SETTINGS',
+                            action: this.onSave,
+                        },
+                    },
+                },
+            ],
+        };
     },
 };
 </script>
