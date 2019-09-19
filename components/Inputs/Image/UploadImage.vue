@@ -25,16 +25,13 @@
         <div
             v-else
             class="upload-image__container">
-            <div class="btn-wrapper">
-                <Button
-                    fab
-                    color="transparent"
-                    @click.native="onRemove">
-                    <template v-slot:prepend>
-                        <IconDelete />
-                    </template>
-                </Button>
-            </div>
+            <button
+                class="upload-image__remove-btn"
+                @click="onRemove"
+                @mouseenter="onMouseEnter"
+                @mouseleave="onMouseLeave">
+                <IconDelete :fill-color="deleteIconFillColor" />
+            </button>
             <Picture :image-id="selectedFileID" />
         </div>
         <span
@@ -64,7 +61,6 @@ export default {
         },
     },
     components: {
-        Button: () => import('~/components/Buttons/Button'),
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
         Picture: () => import('~/components/Inputs/Image/Picture'),
     },
@@ -72,6 +68,7 @@ export default {
         return {
             selectedFileID: this.value,
             localImage: null,
+            deleteIconFillColor: '#5c5f65',
         };
     },
     computed: {
@@ -84,6 +81,12 @@ export default {
             'onError',
             'removeValidationError',
         ]),
+        onMouseEnter() {
+            this.deleteIconFillColor = '#00bc87';
+        },
+        onMouseLeave() {
+            this.deleteIconFillColor = '#5c5f65';
+        },
         onRemove() {
             this.selectedFileID = '';
             this.localImage = null;
@@ -160,14 +163,6 @@ export default {
                 0 2px 2px 0 rgba(0, 0, 0, 0.14),
                 0 3px 1px -2px rgba(0, 0, 0, 0.12),
                 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-
-            .btn-wrapper {
-                position: absolute;
-                top: 16px;
-                right: 16px;
-                background-color: $white;
-                border-radius: 999px;
-            }
         }
 
         &__activator {
@@ -178,6 +173,25 @@ export default {
             margin: 0;
             outline: none;
             opacity: 0;
+        }
+
+        &__remove-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            background-color: $white;
+            border-radius: 50%;
+            box-shadow:
+                0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                0 3px 1px -2px rgba(0, 0, 0, 0.12),
+                0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            cursor: pointer;
         }
 
         &__description {

@@ -171,6 +171,8 @@ export default {
             if (!this.isContextualMenuActive && !this.isMouseOver) {
                 this.resetColumnHoveringState();
             }
+
+            this.$emit('focus', isFocused);
         },
         onSelectOption(option) {
             switch (option.text) {
@@ -182,6 +184,7 @@ export default {
                 this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index: this.columnIndex });
                 this.$store.dispatch(`${this.storeNamespace}/removeColumnWidthAtIndex`, { index: this.columnIndex });
                 removeColumnCookieByID(this.$cookies, this.column.id);
+                this.$emit('focus', false);
                 break;
             }
             case 'Pin to left':

@@ -24,7 +24,7 @@
         <template v-if="!isDraggedColumn && column.id !== 'ghost'">
             <slot />
             <div
-                v-if="!isExtenderColumn && isColumnResizeable"
+                v-if="!isExtenderColumn && isColumnResizeable && !isHeaderFocused"
                 :class="['column__resizer', {
                     'column__resizer--resizing': isResizing
                 }]"
@@ -67,19 +67,11 @@ export default {
             type: Number,
             default: 40,
         },
-        isPinned: {
-            type: Boolean,
-            default: false,
-        },
         isLast: {
             type: Boolean,
             default: false,
         },
-        isLastRightPinnedColumn: {
-            type: Boolean,
-            default: false,
-        },
-        isLastLeftPinnedColumn: {
+        isHeaderFocused: {
             type: Boolean,
             default: false,
         },
@@ -123,7 +115,8 @@ export default {
         },
         isColumnDraggable() {
             return this.gridState.configuration.isColumnMoveable
-                && Object.keys(this.gridState.editingCellCoordinates).length === 0;
+                && Object.keys(this.gridState.editingCellCoordinates).length === 0
+                && !this.isHeaderFocused;
         },
         isColumnResizeable() {
             return this.gridState.configuration.isColumnResizeable;

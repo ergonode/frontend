@@ -13,12 +13,14 @@
             :index="colIndex"
             :column="column"
             :is-last="gridState.columns.length - 1 === colIndex"
-            :rows-height="rowsHeight">
+            :rows-height="rowsHeight"
+            :is-header-focused="isHeaderFocused">
             <GridWrapperHeaderCell
                 :store-namespace="storeNamespace"
                 :column-index="colIndex"
                 :column="column"
-                :path="actionPaths.getData" />
+                :path="actionPaths.getData"
+                @focus="onHeaderFocus" />
             <GridWrapperHeaderActionCell
                 v-if="filterable"
                 :store-namespace="storeNamespace"
@@ -93,6 +95,11 @@ export default {
             default: true,
         },
     },
+    data() {
+        return {
+            isHeaderFocused: false,
+        };
+    },
     beforeCreate() {
         this.fixedRowOffset = this.$options.propsData.filterable ? 2 : 1;
         this.rightPinnedColumns = [];
@@ -123,6 +130,9 @@ export default {
         },
     },
     methods: {
+        onHeaderFocus(isFocused) {
+            this.isHeaderFocused = isFocused;
+        },
         onStickyChange({
             sticky, columnId, state,
         }) {

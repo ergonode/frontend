@@ -4,7 +4,7 @@
  */
 <template functional>
     <span
-        class="typo-btn--xs txt--dark-graphite info-cell"
+        class="info-cell"
         v-text="props.value" />
 </template>
 
@@ -23,6 +23,8 @@ export default {
 
 <style lang="scss">
     .info-cell {
+        @include setFont(medium, small, regular, $darkGraphite);
+
         flex: 1;
         width: 0;
         padding: 8px;

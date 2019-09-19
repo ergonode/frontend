@@ -160,16 +160,7 @@ export default {
         outline: none;
         box-sizing: border-box;
         border-bottom: 1px solid $grey;
-
-        &:not(&--selected):not(&--draft):not(&--error) {
-            &:nth-child(even) {
-                background-color: $white;
-            }
-
-            &:nth-child(odd) {
-                background-color: $background;
-            }
-        }
+        background-color: $white;
 
         &:not(&--error):not(&--locked) {
             &:focus {
