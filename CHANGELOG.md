@@ -7,6 +7,7 @@ This changelog references the relevant changes.
 - feature [#128](https://github.com/ergonode/frontend/issues/128) Product statuses
 - feature [#130](https://github.com/ergonode/frontend/issues/130) Access denied view
 - feature [#143](https://github.com/ergonode/frontend/issues/143) Category trees
+- feature [#158](https://github.com/ergonode/frontend/issues/158) Product statuses - product grid
 - bugfix [#134](https://github.com/ergonode/frontend/issues/134) Categories not hide on list
 - bugfix [#136](https://github.com/ergonode/frontend/issues/136) Dashboard boxes without privileges
 - bugfix [#138](https://github.com/ergonode/frontend/issues/138) Users - no validation on activity status
