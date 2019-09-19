@@ -288,7 +288,6 @@ export default {
 
             if (width > minWidth) {
                 this.updateElementWidth(`${width}px`);
-                this.updateElementWidth(width);
                 this.$store.dispatch(`${this.storeNamespace}/updateColumnWidthAtIndex`, {
                     index: this.index, width: `${width}px`,
                 });
@@ -345,8 +344,8 @@ export default {
             if (this.$el.style.transform) {
                 const xTransform = this.getElementTransform();
 
-                if (+xTransform) {
-                    if (+xTransform > 0) return this.index + 1;
+                if (xTransform) {
+                    if (xTransform > 0) return this.index + 1;
 
                     return this.index - 1;
                 }
@@ -365,15 +364,17 @@ export default {
             if (typeof this.draggedElement === 'object') {
                 this.insertColumnWrapper(this.draggedElement, `${this.bounds.width}px`, ghostColIndex);
             } else {
-                this.insertColumnWrapper(getGhostColumnElementModel(), '100px', ghostColIndex);
-                this.setBounds({ x: xPos, width: 100 });
+                const ghostWidth = 100;
+
+                this.insertColumnWrapper(getGhostColumnElementModel(), `${ghostWidth}px`, ghostColIndex);
+                this.setBounds({ x: xPos, width: ghostWidth });
             }
 
             this.setGhostIndex(ghostColIndex);
             this.setDraggedElIndex(ghostColIndex);
         },
         getElementTransform() {
-            return this.$el.style.transform.replace(/[^0-9\-.,]/g, '');
+            return +this.$el.style.transform.replace(/[^0-9\-.,]/g, '');
         },
         getGridElement() {
             return document.documentElement.querySelector('.grid');
@@ -416,7 +417,7 @@ export default {
             let columnElCurrentTransform = 0;
 
             if (this.$el.style.transform) {
-                columnElCurrentTransform = +this.getElementTransform();
+                columnElCurrentTransform = this.getElementTransform();
             }
 
             if (isBefore) {
