@@ -5,6 +5,7 @@
 export function getParsedTreeData(tree, categories) {
     const newTree = [];
     let rowCounter = 0;
+    if (!Array.isArray(categories) || categories.length <= 0) return [];
     const buildTree = (treeArray, parent, column) => {
         for (let i = 0; i < treeArray.length; i += 1) {
             const categoryId = treeArray[i].category_id;

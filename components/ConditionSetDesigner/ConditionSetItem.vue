@@ -121,14 +121,11 @@ export default {
 
         &__parameters {
             display: grid;
+            grid-gap: 6%;
             grid-template-rows: 1fr;
             flex: 0 1 100%;
-            padding: 4px 0 8px;
+            padding: 4px 6% 6px;
             background-color: $white;
-
-            & > div {
-                padding: 0 15%;
-            }
         }
 
         &__phrase {
