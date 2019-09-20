@@ -6,8 +6,8 @@
     <div class="status-info-cell">
         <div
             class="status-info-cell__block"
-            :style="{backgroundColor: value.color, color: color}">
-            {{ value.label }}
+            :style="{backgroundColor: color, color: txtColor}">
+            {{ cellData.value }}
         </div>
     </div>
 </template>
@@ -18,23 +18,29 @@ import { hexToRGB, calculateRelativeLuminance, calculateContrastRatio } from '~/
 export default {
     name: 'GridStatusInfoCell',
     props: {
-        value: {
+        cellData: {
+            type: Object,
+            required: true,
+        },
+        colors: {
             type: Object,
             required: true,
         },
     },
-    beforeCreate() {
-        const whiteColorRelativeLuminance = 0.9982138681756572;
-        const badgeRGB = hexToRGB(this.$options.propsData.value.color);
-        const relativeLuminance = calculateRelativeLuminance(badgeRGB);
-        const contrastRatio = calculateContrastRatio(
-            whiteColorRelativeLuminance, relativeLuminance,
-        );
+    computed: {
+        color() {
+            return this.colors[this.cellData.key];
+        },
+        txtColor() {
+            const whiteColorRelativeLuminance = 0.9982138681756572;
+            const badgeRGB = hexToRGB(this.color);
+            const relativeLuminance = calculateRelativeLuminance(badgeRGB);
+            const contrastRatio = calculateContrastRatio(
+                whiteColorRelativeLuminance, relativeLuminance,
+            );
 
-        this.color = contrastRatio > 4.5 ? '#fff' : '#000';
-    },
-    beforeDestroy() {
-        delete this.color;
+            return contrastRatio > 4.5 ? '#fff' : '#000';
+        },
     },
 };
 </script>
