@@ -16,7 +16,8 @@
             v-if="!isExtenderColumn"
             v-bind="headerComponentProps"
             :store-namespace="storeNamespace"
-            @sort="() => getData({ path })" />
+            @sort="() => getData({ path })"
+            @focus="onFocus" />
     </GridCell>
 </template>
 
@@ -97,6 +98,9 @@ export default {
                 this.$store.dispatch(`${this.storeNamespace}/setSelectionForAllRows`, { isSelected: !this.gridState.isSelectedAllRows });
             }
         },
+        onFocus(isFocused) {
+            this.$emit('focus', isFocused);
+        },
     },
 };
 </script>
@@ -106,5 +110,6 @@ export default {
         position: sticky !important;
         top: 0;
         z-index: 8;
+        background-color: $background !important;
     }
 </style>

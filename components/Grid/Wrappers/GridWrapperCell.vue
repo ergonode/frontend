@@ -25,10 +25,11 @@
                 :is-select-kind="isSelectKind"
                 :is-multi-select="isMultiSelect"
                 :type="column.type"
-                :value="draftValue || (isSelectKind ? cellData.key : cellData.value)"
+                :value="editValue"
                 :options="options"
                 :parameters="parameters"
                 :error-messages="errorValue"
+                :fixed-width="$el.offsetWidth"
                 @updateValue="onUpdateDraft" />
         </template>
     </GridCell>
@@ -38,6 +39,7 @@
 import { mapState, mapActions } from 'vuex';
 import { isArrayEqualToArray } from '~/model/arrayWrapper';
 import { hasParams } from '~/model/attributes/AttributeTypes';
+import { getKeyByValue } from '~/model/objectWrapper';
 
 export default {
     name: 'GridWrapperCell',
@@ -92,7 +94,7 @@ export default {
 
         this.isActionCell = type === 'CHECK' || type === 'ACTION';
         this.isExtenderColumn = id === 'extender';
-        this.isSelectKind = type === 'SELECT' || type === 'MULTI_SELECT';
+        this.isSelectKind = type === 'SELECT' || type === 'MULTI_SELECT' || type === 'LABEL';
         this.isMultiSelect = type === 'MULTI_SELECT';
         this.isEditingAllowed = (editable && this.$options.propsData.editingPrivilegeAllowed)
             || this.isActionCell;
@@ -160,6 +162,21 @@ export default {
                     storeNamespace: this.storeNamespace,
                     row: this.rowIndex,
                 };
+            case 'LABEL':
+                if (this.parsedDraftValue === null) {
+                    return {
+                        cellData: this.cellData,
+                        colors: this.column.colors,
+                    };
+                }
+
+                return {
+                    cellData: {
+                        key: getKeyByValue(this.column.filter.options, this.parsedDraftValue),
+                        value: this.parsedDraftValue,
+                    },
+                    colors: this.column.colors,
+                };
             default:
                 if (this.parsedDraftValue === null) return { value: this.cellData.value };
                 return { value: this.parsedDraftValue };
@@ -197,6 +214,9 @@ export default {
 
             return null;
         },
+        editValue() {
+            return this.draftValue || (this.isSelectKind ? this.cellData.key : this.cellData.value);
+        },
         errorValue() {
             const { element_id: elementId } = this.column;
             const { [`${this.rowId}/${elementId}`]: errors } = this.validationErrors;
@@ -222,6 +242,7 @@ export default {
     },
     methods: {
         ...mapActions('gridDraft', [
+            'removeDraftValue',
             'updateDraftValue',
             'addDraftValue',
         ]),
@@ -235,15 +256,22 @@ export default {
             }
         },
         onUpdateDraft(value) {
-            if ((Array.isArray(value)
-                && isArrayEqualToArray(value, this.cellData.key))
+            const isValueArray = Array.isArray(value);
+            if ((value === '' || (isValueArray && value.length === 0)) && this.draft) {
+                this.removeDraftValue({ productId: this.rowId, attributeId: this.column.id });
+            }
+
+            if ((this.isSelectKind
+                && ((isValueArray && isArrayEqualToArray(value, this.cellData.key))
+                    || this.cellData.key === value))
                 || this.cellData.value === value
             ) return;
 
             this.updateDraftValue({
                 productId: this.rowId,
                 columnId: this.column.id,
-                elementId: this.column.element_id,
+                // FIXME: BE - two different values!!!
+                elementId: this.column.element_id || this.column.attribute_id,
                 value,
                 languageCode: this.column.language || this.userLanguageCode,
             });

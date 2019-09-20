@@ -53,5 +53,6 @@ export default {
         });
     },
     removeDraft: ({ commit }, productId) => commit('removeDraft', productId),
+    removeDraftValue: ({ commit }, payload) => commit('removeDraftValue', payload),
     forceDraftsMutation: ({ commit }) => commit('forceDraftsMutation'),
 };

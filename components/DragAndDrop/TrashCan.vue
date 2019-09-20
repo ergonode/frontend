@@ -10,8 +10,7 @@
         <div class="vertical-wrapper">
             <IconDelete
                 fill-color="#fff"
-                size="48"
-                @click.native="removeOptionKey(index)" />
+                size="48" />
             <Label
                 class="typo-btn txt--white txt--upper l-spacing--half"
                 text="drop here to remove" />
@@ -52,7 +51,7 @@ export default {
         position: absolute;
         left: 50%;
         bottom: -324px;
-        z-index: 30;
+        z-index: 9999;
         width: 480px;
         height: 480px;
         transform: translate(-50%, 0);

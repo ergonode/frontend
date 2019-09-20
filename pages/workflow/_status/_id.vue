@@ -4,7 +4,7 @@
  */
 <template>
     <ProductStatusPage
-        title="New status"
+        :title="code"
         is-edit
         @dismiss="onDismiss"
         @remove="onRemove"
@@ -13,7 +13,7 @@
 
 <script>
 
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     validate({ params }) {
@@ -23,6 +23,11 @@ export default {
     middleware: ['tab/redirectToProductStatusGeneral'],
     components: {
         ProductStatusPage: () => import('~/components/Pages/ProductStatusPage'),
+    },
+    computed: {
+        ...mapState('productStatus', {
+            code: state => state.code,
+        }),
     },
     methods: {
         ...mapActions('productStatus', [

@@ -22,6 +22,7 @@ export function getMappedGridData(privileges, rolePrivileges) {
             type: 'TEXT',
         },
     ];
+    const columnWidths = ['0.5fr'];
     const tmpRowKeys = {};
     const tmpColumnKeys = {};
     const systemPrivilegesEntries = Object.entries(privileges);
@@ -50,6 +51,7 @@ export function getMappedGridData(privileges, rolePrivileges) {
 
             if (!tmpColumnKeys[rolePrivilegeType]) {
                 columns.push(getCheckColumn(rolePrivilegeType));
+                columnWidths.push('1fr');
                 tmpColumnKeys[rolePrivilegeType] = '+';
             }
 
@@ -60,6 +62,7 @@ export function getMappedGridData(privileges, rolePrivileges) {
     return {
         rows,
         columns,
+        columnWidths,
     };
 }
 

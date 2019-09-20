@@ -40,7 +40,6 @@ export default {
     props: {
         avatarId: {
             type: String,
-            required: false,
             default: '',
         },
         initials: {

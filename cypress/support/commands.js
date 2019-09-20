@@ -34,3 +34,4 @@ Cypress.Commands.add('selectRandomUser', () => {
     });
     cy.url().should('include', 'users/edit');
 });
+

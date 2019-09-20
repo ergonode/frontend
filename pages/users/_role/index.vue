@@ -4,7 +4,7 @@
  */
 <template>
     <UserRolesPage
-        :title="title"
+        title="New role"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>
@@ -19,9 +19,6 @@ export default {
     components: {
         UserRolesPage: () => import('~/components/Pages/UserRolesPage'),
     },
-    data: () => ({
-        title: 'New user role',
-    }),
     computed: {
         ...mapState('roles', {
             roleID: state => state.id,

@@ -24,7 +24,7 @@
         <template v-if="!isDraggedColumn && column.id !== 'ghost'">
             <slot />
             <div
-                v-if="!isExtenderColumn && isColumnResizeable"
+                v-if="!isExtenderColumn && isColumnResizeable && !isHeaderFocused"
                 :class="['column__resizer', {
                     'column__resizer--resizing': isResizing
                 }]"
@@ -67,19 +67,11 @@ export default {
             type: Number,
             default: 40,
         },
-        isPinned: {
-            type: Boolean,
-            default: false,
-        },
         isLast: {
             type: Boolean,
             default: false,
         },
-        isLastRightPinnedColumn: {
-            type: Boolean,
-            default: false,
-        },
-        isLastLeftPinnedColumn: {
+        isHeaderFocused: {
             type: Boolean,
             default: false,
         },
@@ -122,7 +114,9 @@ export default {
             return this.gridState.pinnedColumns.find(col => col.id === this.column.id);
         },
         isColumnDraggable() {
-            return this.gridState.configuration.isColumnMoveable;
+            return this.gridState.configuration.isColumnMoveable
+                && Object.keys(this.gridState.editingCellCoordinates).length === 0
+                && !this.isHeaderFocused;
         },
         isColumnResizeable() {
             return this.gridState.configuration.isColumnResizeable;
@@ -287,7 +281,6 @@ export default {
 
             if (width > minWidth) {
                 this.updateElementWidth(`${width}px`);
-                this.updateElementWidth(width);
                 this.$store.dispatch(`${this.storeNamespace}/updateColumnWidthAtIndex`, {
                     index: this.index, width: `${width}px`,
                 });
@@ -344,8 +337,8 @@ export default {
             if (this.$el.style.transform) {
                 const xTransform = this.getElementTransform();
 
-                if (+xTransform) {
-                    if (+xTransform > 0) return this.index + 1;
+                if (xTransform) {
+                    if (xTransform > 0) return this.index + 1;
 
                     return this.index - 1;
                 }
@@ -364,15 +357,17 @@ export default {
             if (typeof this.draggedElement === 'object') {
                 this.insertColumnWrapper(this.draggedElement, `${this.bounds.width}px`, ghostColIndex);
             } else {
-                this.insertColumnWrapper(getGhostColumnElementModel(), '100px', ghostColIndex);
-                this.setBounds({ x: xPos, width: 100 });
+                const ghostWidth = 100;
+
+                this.insertColumnWrapper(getGhostColumnElementModel(), `${ghostWidth}px`, ghostColIndex);
+                this.setBounds({ x: xPos, width: ghostWidth });
             }
 
             this.setGhostIndex(ghostColIndex);
             this.setDraggedElIndex(ghostColIndex);
         },
         getElementTransform() {
-            return this.$el.style.transform.replace(/[^0-9\-.,]/g, '');
+            return +this.$el.style.transform.replace(/[^0-9\-.,]/g, '');
         },
         getGridElement() {
             return document.documentElement.querySelector('.grid');
@@ -415,7 +410,7 @@ export default {
             let columnElCurrentTransform = 0;
 
             if (this.$el.style.transform) {
-                columnElCurrentTransform = +this.getElementTransform();
+                columnElCurrentTransform = this.getElementTransform();
             }
 
             if (isBefore) {

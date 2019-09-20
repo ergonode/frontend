@@ -4,7 +4,7 @@
  */
 <template>
     <CategoryTreePage
-        :title="title"
+        :title="code"
         is-edit
         @dismiss="onDismiss"
         @remove="onRemove"
@@ -25,15 +25,13 @@ export default {
     components: {
         CategoryTreePage: () => import('~/components/Pages/CategoryTreePage'),
     },
-    data: () => ({
-        title: 'Edit tree',
-    }),
     computed: {
         ...mapState('tree', {
             treeId: state => state.treeId,
         }),
         ...mapState('gridDesigner', {
             fullGridData: state => state.fullGridData,
+            code: state => state.code,
         }),
         ...mapState('translations', {
             translations: state => state.translations,
