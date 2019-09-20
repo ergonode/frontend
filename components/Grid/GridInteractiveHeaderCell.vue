@@ -3,7 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['header-cell', { 'draggable': !pinnedColumn && isColumnEditable }]">
+    <div
+        :class="['header-cell',
+                 { 'draggable': !pinnedColumn && isColumnEditable && !isCellEditing }
+        ]">
         <GridBaseHeaderCell :header="column.header.title" />
         <div
             :class="[
@@ -129,6 +132,9 @@ export default {
 
             return pinnedColumn;
         },
+        isCellEditing() {
+            return Object.keys(this.gridState.editingCellCoordinates).length;
+        },
         isSorted() {
             return this.gridState.sortedByColumn.index === this.column.id;
         },
@@ -165,6 +171,8 @@ export default {
             if (!this.isContextualMenuActive && !this.isMouseOver) {
                 this.resetColumnHoveringState();
             }
+
+            this.$emit('focus', isFocused);
         },
         onSelectOption(option) {
             switch (option.text) {
@@ -174,7 +182,9 @@ export default {
                 // We are hovering element while removing it
                 this.borderColumnAction('add', columnElement);
                 this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index: this.columnIndex });
+                this.$store.dispatch(`${this.storeNamespace}/removeColumnWidthAtIndex`, { index: this.columnIndex });
                 removeColumnCookieByID(this.$cookies, this.column.id);
+                this.$emit('focus', false);
                 break;
             }
             case 'Pin to left':
@@ -201,7 +211,7 @@ export default {
             return columnElement;
         },
         onMouseEnter() {
-            if (this.isColumnDragging || this.isMenuSelected()) return;
+            if (this.isColumnDragging || this.isMenuSelected() || this.isCellEditing) return;
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
@@ -213,7 +223,7 @@ export default {
         onMouseLeave() {
             this.isMouseOver = false;
 
-            if (this.isColumnDragging || this.isMenuSelected()) return;
+            if (this.isColumnDragging || this.isMenuSelected() || this.isCellEditing) return;
 
             this.resetColumnHoveringState();
         },
@@ -253,6 +263,8 @@ export default {
 
 <style lang="scss" scoped>
     .header-cell {
+        $cell: &;
+
         position: relative;
         display: flex;
         flex: 1;

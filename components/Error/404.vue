@@ -20,7 +20,7 @@
                     large
                     color="success"
                     title="Go to dashboard"
-                    @click.native="$router.push('/dashboard');" />
+                    @click.native="$router.push('/dashboard')" />
             </div>
         </div>
         <span

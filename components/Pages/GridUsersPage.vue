@@ -57,14 +57,12 @@ export default {
             });
         }
         // TODO: BE need to decide if the new privilege is needed - fill the condition with correct equation
-        if (true) {
-            this.tabs.push({
-                title: 'Users activity logs',
-                path: '/users/logs',
-                active: true,
-                isContextualMenu: false,
-            });
-        }
+        this.tabs.push({
+            title: 'Users activity logs',
+            path: '/users/logs',
+            active: true,
+            isContextualMenu: false,
+        });
     },
     computed: {
         isReadOnly() {

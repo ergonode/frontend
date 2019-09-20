@@ -3,5 +3,9 @@
  * See LICENSE for license details.
  */
 export default {
-    numberOfPages: state => Math.ceil(state.filtered / state.numberOfDisplayedElements),
+    numberOfPages: (state) => {
+        const result = Math.ceil(state.filtered / state.numberOfDisplayedElements);
+
+        return result > 0 ? result : 1;
+    },
 };

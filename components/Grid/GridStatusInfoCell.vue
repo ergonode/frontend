@@ -47,11 +47,12 @@ export default {
 
 <style lang="scss" scoped>
     .status-info-cell {
+        @include setFont(medium, small, regular);
+
         display: flex;
         flex: 1;
         flex-direction: column;
         padding: 4px;
-        @include setFont(medium, small, regular);
 
         &__block {
             border-radius: 7px;
@@ -59,6 +60,10 @@ export default {
             flex: 1;
             justify-content: center;
             align-items: center;
+            padding: 8px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
     }
 </style>

@@ -12,7 +12,6 @@
 </template>
 
 <script>
-
 import GridItems from '~/model/dashboard_grid_columns';
 
 export default {
@@ -36,6 +35,7 @@ export default {
 <style lang="scss" scoped>
     .grid-wrapper {
         display: flex;
+        flex: 1;
         flex-direction: column;
         justify-content: center;
         align-items: center;

@@ -6,11 +6,13 @@
     <Select
         :value="value"
         solid
+        small
         clearable
         :multiselect="multiselect"
         :dismissible="false"
         :error-messages="errorMessages"
         autofocus
+        :style="{width: `${fixedWidth}px`}"
         @focus="onFocus"
         @input="onValueChange"
         @apply="onApply">
@@ -52,11 +54,14 @@ export default {
         },
         errorMessages: {
             type: [String, Array],
-            required: false,
             default: '',
         },
         options: {
             type: Array,
+            required: true,
+        },
+        fixedWidth: {
+            type: Number,
             required: true,
         },
     },

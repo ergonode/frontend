@@ -5,8 +5,10 @@
 import {
     swapItemPosition,
     getObjectWithMaxValueInArrayByObjectKey,
-    getMinObjectValueInArrayByObjectKey,
     isArrayEqualToArray,
+    arrayToObject,
+    sumIntegers,
+    insertValueAtIndex,
 } from '~/model/arrayWrapper';
 
 describe('arrayWrapper/swapItemPosition', () => {
@@ -45,22 +47,19 @@ describe('arrayWrapper/maxObjectValueInArrayByObjectKeyByObjectKey', () => {
     });
 });
 
-describe('arrayWrapper/maxObjectValueInArrayByObjectKeyByObjectKey', () => {
-    it('Getting min value of object property in array', () => {
-        const array = [{ a: 1 }, { a: 2 }, null, { a: 6 }, { a: 2 }, null];
-
-        const minValue = getMinObjectValueInArrayByObjectKey(array, 'a');
-
-        expect(minValue).toEqual(1);
-    });
-});
-
 describe('arrayWrapper/isArrayEqualToArray', () => {
     it('Arrays are equal', () => {
-        const arr1 = [1, 2, 3, 4];
-        const arr2 = [1, 2, 3, 4];
+        let arr1 = [1, 2, 3, 4];
+        let arr2 = [1, 2, 3, 4];
 
-        const areEqual = isArrayEqualToArray(arr1, arr2);
+        let areEqual = isArrayEqualToArray(arr1, arr2);
+
+        expect(areEqual).toEqual(true);
+
+        arr1 = [];
+        arr2 = [];
+
+        areEqual = isArrayEqualToArray(arr1, arr2);
 
         expect(areEqual).toEqual(true);
     });
@@ -80,11 +79,67 @@ describe('arrayWrapper/isArrayEqualToArray', () => {
 
         expect(areEqual).toEqual(false);
 
-        arr1 = [];
-        arr2 = [];
+        arr1 = [1, 2];
+        arr2 = [2, 3];
 
         areEqual = isArrayEqualToArray(arr1, arr2);
 
-        expect(areEqual).toEqual(true);
+        expect(areEqual).toEqual(false);
     });
 });
+
+describe('arrayToObject/arrayWrapper', () => {
+    it('Mapping array with objects into object with key values', () => {
+        const array = [
+            {
+                id: '1',
+                name: 'Maciek',
+                age: 12,
+            },
+            {
+                id: '2',
+                name: 'Adam',
+                age: 13,
+            },
+            {
+                id: '3',
+                name: 'Piotrek',
+                age: 21,
+            },
+        ];
+        const keyField = 'id';
+        const value = 'name';
+        const result = arrayToObject(array, keyField, value);
+
+        expect(result).toStrictEqual({
+            1: 'Maciek',
+            2: 'Adam',
+            3: 'Piotrek',
+        })
+    });
+});
+
+describe('sumIntegers/arrayWrapper', () => {
+    it('Summing array integers values', () => {
+        const array = [1, 2, 3, -3, '3'];
+        const result = sumIntegers(array);
+
+        expect(result).toEqual(3);
+    });
+
+    it('Passed value is not an array', () => {
+        const result = sumIntegers(null);
+
+        expect(result).toEqual(0);
+    })
+});
+
+describe('insertValueAtIndex/arrayWrapper', () => {
+    it('Inserting value at given index', function () {
+        const array = [1, 2, 3, 0, -2, {}, 'ads'];
+        const result = insertValueAtIndex(array, 5, 3);
+
+        expect(result).toStrictEqual([1, 2, 3, 5, 0, -2, {}, 'ads']);
+    });
+});
+

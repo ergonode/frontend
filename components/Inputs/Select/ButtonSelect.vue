@@ -34,12 +34,10 @@
 </template>
 
 <script>
-import Icon from '~/components/Icon/Icon';
 
 export default {
     name: 'ButtonSelect',
     components: {
-        Icon,
         List: () => import('~/components/List/List'),
         ListElement: () => import('~/components/List/ListElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),

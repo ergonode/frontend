@@ -3,16 +3,32 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper />
+    <SettingsPage
+        title="Settings"
+        icon="Settings"
+        @save="onSave" />
 </template>
 
 <script>
-import PageWrapper from '~/components/Layout/PageWrapper';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'Settings',
+    middleware: ['tab/redirectToLanguageSettings'],
     components: {
-        PageWrapper,
+        SettingsPage: () => import('~/components/Pages/SettingsPage'),
+    },
+    methods: {
+        ...mapActions('languageSettings', [
+            'updateData',
+        ]),
+        ...mapActions('data', [
+            'getLanguagesDictionary',
+        ]),
+        async onSave() {
+            await this.updateData();
+            await this.getLanguagesDictionary();
+        },
     },
 };
 </script>

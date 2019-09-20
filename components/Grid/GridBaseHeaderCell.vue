@@ -4,7 +4,7 @@
  */
 <template>
     <span
-        class="header"
+        class="header-cell"
         v-text="header" />
 </template>
 
@@ -21,11 +21,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .header {
-        @include setFont(bold, small, regular, $graphite);
+    .header-cell {
+        @include setFont(bold, small, regular, $darkGraphite);
 
         flex: 1 1 auto;
-        width: 0;
+        width: min-content;
         padding: 8px;
         user-select: none;
         text-overflow: ellipsis;

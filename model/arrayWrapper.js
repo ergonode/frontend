@@ -13,17 +13,6 @@ export function getObjectWithMaxValueInArrayByObjectKey(array, propName) {
     );
 }
 
-export function getMinObjectValueInArrayByObjectKey(array, propName) {
-    if (!array.length) return 0;
-
-    return array.reduce(
-        (prev, current) => {
-            if (!current || !current[propName]) return prev;
-            return (prev[propName] < current[propName] ? prev : current);
-        },
-    )[propName];
-}
-
 export function swapItemPosition(array, pos1, pos2) {
     const tmpArray = array;
     // local variables
@@ -63,7 +52,7 @@ export function isArrayEqualToArray(arr1, arr2) {
     let isEqual = true;
 
     for (let i = 0; i < arr1Length; i += 1) {
-        if (!arr2.includes(arr1[i])) {
+        if (arr2.indexOf(arr1[i]) === -1) {
             isEqual = false;
         }
     }
@@ -86,16 +75,16 @@ export function sumIntegers(arr) {
     let value = 0;
 
     for (let i = 0; i < length; i += 1) {
-        value += arr[i];
+        if (Number.isInteger(arr[i])) value += arr[i];
     }
 
     return value;
 }
 
-export function arrayToObject(array, keyField, value = null) {
+export function arrayToObject(array, keyField, value) {
     return array.reduce((prev, current) => {
         const newObject = prev;
-        newObject[current[keyField]] = value ? current[value] : current;
+        newObject[current[keyField]] = current[value];
         return newObject;
     }, {});
 }

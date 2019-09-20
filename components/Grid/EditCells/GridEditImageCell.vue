@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="editable-image-cell">
+    <div class="image-cell">
         <UploadImage
             :value="value"
             @upload="updateValue"
@@ -20,7 +20,6 @@ export default {
     props: {
         value: {
             type: String,
-            required: false,
             default: '',
         },
     },
@@ -31,6 +30,7 @@ export default {
         if (this.imageID !== this.value) {
             this.$emit('imageid', this.imageID);
         }
+        delete this.imageID;
     },
     methods: {
         updateValue(value) {
@@ -41,9 +41,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .editable-image-cell {
-        display: flex;
-        width: 200px;
-        height: 200px;
+    .image-cell {
+        width: 280px;
+        background-color: $white;
     }
 </style>

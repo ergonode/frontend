@@ -6,7 +6,6 @@ import { mount, createLocalVue } from '@vue/test-utils';
 import AttributePage from '~/components/Pages/AttributePage';
 
 const localVue = createLocalVue();
-localVue.directive('ripple', {});
 
 const mocks = {
     $hasAccess: jest.fn(),

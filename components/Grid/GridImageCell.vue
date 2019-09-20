@@ -18,7 +18,6 @@ export default {
     props: {
         value: {
             type: String,
-            required: false,
             default: '',
         },
     },
@@ -29,6 +28,5 @@ export default {
     .image-cell {
         flex: 1;
         margin: 8px;
-        max-width: 120px;
     }
 </style>

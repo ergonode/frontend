@@ -19,6 +19,10 @@ export default {
     removeDraft: (state, productId) => {
         delete state.drafts[productId];
     },
+    removeDraftValue: (state, { productId, attributeId }) => {
+        delete state.drafts[productId][attributeId];
+        state.drafts[productId] = { ...state.drafts[productId] };
+    },
     forceDraftsMutation: (state) => {
         state.drafts = { ...state.drafts };
     },

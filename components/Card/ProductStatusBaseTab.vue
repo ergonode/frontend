@@ -16,11 +16,12 @@
 <script>
 import ProductStatusBaseCard from '~/components/Card/ProductStatusBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
+import Footer from '~/components/ReusableFooter/Footer';
 
 export default {
     name: 'ProductStatusBaseTab',
     components: {
-        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Footer,
         ProductStatusBaseCard,
         BaseTab,
     },

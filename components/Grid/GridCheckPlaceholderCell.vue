@@ -4,7 +4,7 @@
  */
 <template>
     <div class="check-placeholder-cell">
-        <Icon icon="arrow-triangle" />
+        <IconArrowDropDown />
     </div>
 </template>
 
@@ -12,7 +12,7 @@
 export default {
     name: 'GridCheckPlaceholderCell',
     components: {
-        Icon: () => import('~/components/Icon/Icon'),
+        IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
     },
 };
 </script>

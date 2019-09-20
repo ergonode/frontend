@@ -25,10 +25,11 @@
                 :is-select-kind="isSelectKind"
                 :is-multi-select="isMultiSelect"
                 :type="column.type"
-                :value="draftValue || (isSelectKind ? cellData.key : cellData.value)"
+                :value="editValue"
                 :options="options"
                 :parameters="parameters"
                 :error-messages="errorValue"
+                :fixed-width="$el.offsetWidth"
                 @updateValue="onUpdateDraft" />
         </template>
     </GridCell>
@@ -213,6 +214,9 @@ export default {
 
             return null;
         },
+        editValue() {
+            return this.draftValue || (this.isSelectKind ? this.cellData.key : this.cellData.value);
+        },
         errorValue() {
             const { element_id: elementId } = this.column;
             const { [`${this.rowId}/${elementId}`]: errors } = this.validationErrors;
@@ -238,6 +242,7 @@ export default {
     },
     methods: {
         ...mapActions('gridDraft', [
+            'removeDraftValue',
             'updateDraftValue',
             'addDraftValue',
         ]),
@@ -251,8 +256,14 @@ export default {
             }
         },
         onUpdateDraft(value) {
-            if ((Array.isArray(value)
-                && isArrayEqualToArray(value, this.cellData.key))
+            const isValueArray = Array.isArray(value);
+            if ((value === '' || (isValueArray && value.length === 0)) && this.draft) {
+                this.removeDraftValue({ productId: this.rowId, attributeId: this.column.id });
+            }
+
+            if ((this.isSelectKind
+                && ((isValueArray && isArrayEqualToArray(value, this.cellData.key))
+                    || this.cellData.key === value))
                 || this.cellData.value === value
             ) return;
 

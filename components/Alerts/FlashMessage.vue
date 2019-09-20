@@ -10,15 +10,13 @@
             <Alert
                 v-for="alert in alerts"
                 :key="alert.id"
-                :message="alert.message"
-                :type="alert.type"
-                @dismiss="removeAlert(alert)" />
+                :alert="alert" />
         </TransitionGroup>
     </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
     name: 'FlashMessage',
@@ -29,11 +27,6 @@ export default {
         ...mapState('alerts', {
             alerts: state => state.alerts,
         }),
-    },
-    methods: {
-        ...mapActions('alerts', [
-            'removeAlert',
-        ]),
     },
 };
 </script>
@@ -56,11 +49,11 @@ export default {
     @keyframes slide-in {
         from {
             visibility: visible;
-            transform: translate3d(100%, 0, 0);
+            transform: translateX(100%);
         }
 
         to {
-            transform: translate3d(0, 0, 0);
+            transform: translateX(0);
         }
     }
 </style>

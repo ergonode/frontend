@@ -16,11 +16,6 @@
     outline: none;
     border-radius: 4px;
 
-    & > * {
-        cursor: pointer;
-        pointer-events: none;
-    }
-
     &--fab {
         width: 32px;
         padding: 0;
