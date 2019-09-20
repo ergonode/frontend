@@ -49,7 +49,7 @@ export default {
     },
     created() {
         if (!this.value) this.localValue = null;
-        else this.localValue = parseDate(this.value, this.parameters.format);
+        else this.localValue = parseDate(this.value, this.parameters.format, new Date());
     },
     computed: {
         dropDownState() {

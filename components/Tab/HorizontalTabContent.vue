@@ -24,8 +24,6 @@ export default {
 
 <style lang="scss" scoped>
     .tab-content {
-        display: flex;
-        flex: 1;
         background-color: $white;
         border-top: 1px solid $grey;
     }
