@@ -21,6 +21,9 @@ export const actions = {
         dispatch('data/clearStorage');
         dispatch('draggable/clearStorage');
         dispatch('tree/clearStorage');
+        dispatch('segments/clearStorage');
+        dispatch('conditions/clearStorage');
+        dispatch('gridDesigner/clearStorage');
         dispatch('productsDraft/clearStorage');
         dispatch('productStatus/clearStorage');
         dispatch('templateDesigner/clearStorage');

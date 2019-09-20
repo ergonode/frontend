@@ -8,14 +8,10 @@
         :style="gridItemStyles"
         class="grid__item-area">
         <slot />
-        <div
-            class="item-area__line"
-            :style="connectionLineStyle" />
+        <slot name="connection" />
     </div>
 </template>
 <script>
-import { mapState } from 'vuex';
-
 export default {
     name: 'TemplateGridItemArea',
     props: {
@@ -27,39 +23,19 @@ export default {
             type: Number,
             required: true,
         },
-        rowsHeight: {
+        gridGap: {
             type: Number,
-            required: true,
+            default: 0,
         },
     },
-    data: () => ({
-        gridGap: 10,
-    }),
     computed: {
-        ...mapState('tree', {
-            treeData: state => state.treeData,
-        }),
         gridItemStyles() {
             const { column } = this.item;
             return {
                 gridColumn: `${column + 1} / ${this.columns + 1}`,
-                padding: `8px 0 8px ${this.gridGap}px`,
+                padding: `${this.gridGap}px`,
                 gridTemplateColumns: `repeat(${this.columns - column}, 1fr)`,
                 gridGap: `${this.gridGap}px`,
-            };
-        },
-        connectionLineStyle() {
-            const { id, row, parent } = this.item;
-            const children = this.treeData.filter(e => e.parent === parent);
-            const connectionHeight = this.rowsHeight * (row - children[0].row + 1);
-            const borderStyle = id === 'ghost_item' ? 'dashed' : 'solid';
-            return {
-                borderBottomStyle: borderStyle,
-                borderLeftStyle: borderStyle,
-                left: parent === 'root' ? `-${this.gridGap}px` : '-90%',
-                width: parent === 'root' ? `${this.gridGap}px` : '90%',
-                height: `${connectionHeight + (this.rowsHeight / 2) - this.gridGap}px`,
-                bottom: `${this.rowsHeight / 2}px`,
             };
         },
     },

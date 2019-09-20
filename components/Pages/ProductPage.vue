@@ -45,16 +45,16 @@ export default {
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
-            // TODO: uncomment when we create removal options
-            // this.buttons = [
-            //     {
-            //         title: 'REMOVE PRODUCT',
-            //         color: 'transparent',
-            //         action: this.onRemove,
-            //         theme: 'dark',
-            //         icon: 'sprite-system system-trash--deactive',
-            //     },
-            // ];
+            this.buttons = [
+                {
+                    title: 'REMOVE PRODUCT',
+                    color: 'transparent',
+                    action: this.onRemove,
+                    theme: 'dark',
+                    icon: 'remove',
+                    disabled: !this.$hasAccess('PRODUCT_DELETE'),
+                },
+            ];
         }
 
         this.tabs = [

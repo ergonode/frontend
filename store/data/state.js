@@ -11,4 +11,5 @@ export default () => ({
     dateFormats: {},
     imageFormats: {},
     privileges: {},
+    conditions: {},
 });

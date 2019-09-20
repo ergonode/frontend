@@ -51,16 +51,16 @@ export default {
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
-            // TODO: uncomment when we create removal options
-            // this.buttons = [
-            //     {
-            //         title: 'REMOVE TREE',
-            //         color: 'transparent',
-            //         action: this.onRemove,
-            //         theme: 'dark',
-            //         icon: 'sprite-system system-trash--deactive',
-            //     },
-            // ];
+            this.buttons = [
+                {
+                    title: 'REMOVE CATEGORY TREE',
+                    color: 'transparent',
+                    action: this.onRemove,
+                    theme: 'dark',
+                    icon: 'remove',
+                    disabled: !this.$hasAccess('CATEGORY_TREE_DELETE'),
+                },
+            ];
         }
         this.tabs = [
             {

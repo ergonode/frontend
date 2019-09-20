@@ -12,10 +12,14 @@ describe('TemplateGrid/TemplateGridGhostItem', () => {
     });
     it('Component is rendered', () => {
         expect(wrapper.is(TemplateGridGhostItem)).toBe(true);
+        expect(wrapper.isVueInstance()).toBeFalsy();
     });
 
     it('Component is named well', () => {
         expect(typeof TemplateGridGhostItem.name).toBe('string');
         expect(TemplateGridGhostItem.name).toEqual('TemplateGridGhostItem');
+    });
+    it('Component has main class', () => {
+        expect(wrapper.contains('.grid__ghost-item')).toBeTruthy();
     });
 });

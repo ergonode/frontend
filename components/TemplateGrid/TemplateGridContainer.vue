@@ -5,7 +5,7 @@
 <template>
     <div
         class="grid-container"
-        :draggable="isDraggingEnabled && $hasAccess('CATEGORY_TREE_UPDATE')"
+        :draggable="isDraggingEnabled"
         @dragstart="onDragStart"
         @dragend="onDragEnd"
         @dragover="onDragOver"
@@ -34,7 +34,7 @@ import {
 export default {
     name: 'TemplateGridContainer',
     props: {
-        treeData: {
+        gridData: {
             type: Array,
             required: true,
         },
@@ -50,9 +50,16 @@ export default {
             type: Number,
             required: true,
         },
+        isDraggingEnabled: {
+            type: Boolean,
+            default: false,
+        },
+        isMultiDraggable: {
+            type: Boolean,
+            default: false,
+        },
     },
     data: () => ({
-        isDraggingEnabled: true,
         positionBetweenRows: 0.5,
         ghostElement: {
             id: 'ghost_item',
@@ -69,8 +76,8 @@ export default {
         debounceFunc: null,
     }),
     computed: {
-        ...mapState('tree', {
-            fullTreeData: state => state.fullTreeData,
+        ...mapState('gridDesigner', {
+            fullGridData: state => state.fullGridData,
             hiddenItems: state => state.hiddenItems,
         }),
         ...mapState('authentication', {
@@ -83,7 +90,7 @@ export default {
             listElements: state => state.elements,
         }),
         dataWithoutGhostElement() {
-            return this.treeData.filter(element => element.id !== this.ghostElement.id);
+            return this.gridData.filter(element => element.id !== this.ghostElement.id);
         },
         maxRow() {
             return getObjectWithMaxValueInArrayByObjectKey(this.dataWithoutGhostElement, 'row').row;
@@ -108,18 +115,18 @@ export default {
             'removeDisabledElement',
             'setDisabledElement',
         ]),
-        ...mapActions('tree', [
-            'setChildrenLength',
+        ...mapActions('gridDesigner', [
             'setRowsCount',
-            'addTreeItem',
-            'removeTreeItem',
-            'rebuildTree',
+            'setChildrenLength',
+            'addGridItem',
+            'removeGridItem',
+            'rebuildGrid',
             'removeHiddenItem',
         ]),
         calculateRowsCount() {
             const { clientHeight } = document.querySelector('.grid-container');
             const visibleRows = Math.ceil(clientHeight / this.rowsHeight);
-            const totalRows = Math.max(this.fullTreeData.length, visibleRows) + 1;
+            const totalRows = Math.max(this.fullGridData.length, visibleRows) + 1;
             this.setRowsCount(totalRows);
         },
         onDragStart(event) {
@@ -156,11 +163,14 @@ export default {
                     if (parentId !== 'root') {
                         this.setChildrenLength({ id: parentId, value: -1 });
                     }
-                    this.removeTreeItem(index);
-                    this.removeDisabledElement({
-                        languageCode: this.language,
-                        elementId: id,
-                    });
+                    this.removeGridItem(index);
+                    if (!this.isMultiDraggable) {
+                        this.removeDisabledElement({
+                            languageCode: this.language,
+                            elementId: id,
+                        });
+                    }
+                    this.$emit('afterRemove', id);
                 } else {
                     event.preventDefault();
                 }
@@ -200,7 +210,7 @@ export default {
 
             if (isOutOfBounds) {
                 this.removeGhostElement();
-                if (this.hiddenItems[this.draggedElement]) {
+                if (!this.isMultiDraggable && this.hiddenItems[this.draggedElement]) {
                     const childrenForHiddenItem = this.hiddenItems[this.draggedElement];
                     for (let i = 0; i < childrenForHiddenItem.length; i += 1) {
                         this.removeDisabledElement({
@@ -210,12 +220,13 @@ export default {
                     }
                 }
                 this.removeHiddenItem(this.draggedElement);
+                this.$emit('afterRemove', this.draggedElement);
             }
         },
         onDrop() {
             const { row, column } = this.ghostElement;
             const { code: categoryCode, name: categoryName } = this.listElements[this.language]
-                .find(e => e.id === this.draggedElement);
+                .find(e => e.id === this.draggedElement.split('--')[0]);
             this.removeGhostElement();
             const parentId = this.getParentId(row, column);
             const childrenLength = this.hiddenItems[this.draggedElement]
@@ -231,22 +242,25 @@ export default {
                 expanded: childrenLength > 0,
                 parent: parentId,
             };
-            this.addTreeItem(droppedItem);
-            this.setDisabledElement({
-                languageCode: this.language,
-                elementId: this.draggedElement,
-            });
+            this.addGridItem(droppedItem);
+            if (!this.isMultiDraggable) {
+                this.setDisabledElement({
+                    languageCode: this.language,
+                    elementId: this.draggedElement,
+                });
+            }
             if (parentId !== 'root') {
                 this.setChildrenLength({ id: parentId, value: 1 });
             }
-            this.rebuildTree(this.draggedElement);
+            this.rebuildGrid(this.draggedElement);
             if (childrenLength > 0) this.$emit('toggleItem', { ...droppedItem, row: row + this.positionBetweenRows });
             this.calculateRowsCount();
+            this.$emit('afterDrop', this.draggedElement);
         },
         removeGhostElement() {
             this.ghostElement.row = null;
             this.ghostElement.column = null;
-            this.removeTreeItem(this.ghostElement.id);
+            this.removeGridItem(this.ghostElement.id);
         },
         getBottomCollidingColumn({ neighborElColumn, collidingElColumn }) {
             const { overColumn } = this.mousePosition;
@@ -341,34 +355,38 @@ export default {
                 this.ghostElement.row = row;
                 this.ghostElement.column = column;
                 this.ghostElement.parent = this.getParentId(row, column);
-                this.addTreeItem({ ...this.ghostElement });
+                this.addGridItem({ ...this.ghostElement });
             }
         },
         getMouseOverProps(clientX, clientY) {
             const elements = document.elementsFromPoint(clientX, clientY);
             const shadowItem = elements.find(e => e.classList.contains('shadow-grid-item'));
-            const positionOverRow = clientY - shadowItem.getBoundingClientRect().top;
-            const directionOfCollision = this.checkCollidingRelation(positionOverRow);
 
-            if (directionOfCollision !== this.mousePosition.directionOfCollision) {
-                this.mousePosition.directionOfCollision = directionOfCollision;
+            if (shadowItem) {
+                const positionOverRow = clientY - shadowItem.getBoundingClientRect().top;
+                const directionOfCollision = this.checkCollidingRelation(positionOverRow);
+
+                if (directionOfCollision !== this.mousePosition.directionOfCollision) {
+                    this.mousePosition.directionOfCollision = directionOfCollision;
+                }
+                if (shadowItem !== this.mousePosition.shadowItem) {
+                    const shadowItemId = shadowItem.getAttribute('shadow-id');
+                    this.mousePosition = {
+                        overColumn: shadowItemId % this.columns,
+                        overRow: Math.floor(shadowItemId / this.columns),
+                        shadowItem,
+                    };
+                }
+                return directionOfCollision;
             }
-            if (shadowItem !== this.mousePosition.shadowItem) {
-                const shadowItemId = shadowItem.getAttribute('shadow-id');
-                this.mousePosition = {
-                    overColumn: shadowItemId % this.columns,
-                    overRow: Math.floor(shadowItemId / this.columns),
-                    shadowItem,
-                };
-            }
-            return directionOfCollision;
+            return null;
         },
         checkCollidingRelation(layerPositionY) {
             const centerPosition = Math.floor(this.rowsHeight / 2);
             return layerPositionY > centerPosition ? 'bottom' : 'top';
         },
         isRowGet(row) {
-            const [item] = this.treeData.filter(element => element.row === row);
+            const [item] = this.gridData.filter(element => element.row === row);
             return item || null;
         },
         getCollidingItemAtRow(row) {

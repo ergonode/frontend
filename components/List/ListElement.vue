@@ -47,6 +47,17 @@ export default {
         padding: 8px 12px;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         user-select: none;
+        cursor: move;
+
+        &::before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            content: "";
+        }
 
         &--dragged {
             z-index: 11;

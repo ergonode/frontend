@@ -7,8 +7,4 @@ export default () => ({
     code: '',
     treeLevels: 10,
     rowsHeight: 50,
-    rowsCount: 0,
-    treeData: [],
-    fullTreeData: [],
-    hiddenItems: {},
 });
