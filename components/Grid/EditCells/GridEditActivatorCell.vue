@@ -90,7 +90,6 @@ export default {
             if (this.isImageType) return () => import('~/components/Grid/EditCells/GridEditImageCell');
             if (this.isDateType) return () => import('~/components/Grid/EditCells/GridEditDateCell');
             if (this.isStatusType) return () => import('~/components/Grid/EditCells/GridEditStatusSelectCell');
-            
             return () => import('~/components/Grid/EditCells/GridEditShortTextCell');
         },
     },
