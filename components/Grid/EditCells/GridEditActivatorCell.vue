@@ -74,11 +74,15 @@ export default {
         isDateType() {
             return this.type === 'DATE';
         },
+        isStatusType() {
+            return this.type === 'LABEL';
+        },
         editableComponent() {
             if (this.isSelectKind) return () => import('~/components/Grid/EditCells/GridEditSelectCell');
             if (this.isTextAreaType) return () => import('~/components/Inputs/TextArea');
             if (this.isImageType) return () => import('~/components/Grid/EditCells/GridEditImageCell');
             if (this.isDateType) return () => import('~/components/Grid/EditCells/GridEditDateCell');
+            if (this.isStatusType) return () => import('~/components/Grid/EditCells/GridEditStatusSelectCell');
 
             return () => import('~/components/Inputs/TextField');
         },
@@ -94,7 +98,7 @@ export default {
                 };
             }
 
-            if (this.isSelectKind) {
+            if (this.isSelectKind || this.isStatusType) {
                 return {
                     errorMessages: this.errorMessages,
                     multiselect: this.isMultiSelect,

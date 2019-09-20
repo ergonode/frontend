@@ -68,10 +68,8 @@ module.exports = {
         parallel: true,
         cssSourceMap: false,
         extend(config, ctx) {
-            // const localConfig = config;
             const alias = config.resolve.alias || {};
-            alias['@Root'] = path.join(__dirname, '../');
-            alias['@Vendors'] = path.join(__dirname, '../modules');
+            alias['@Root'] = path.join(__dirname, './');
             alias['@Modules'] = path.join(__dirname, '/modules');
             alias['@NodeModules'] = path.join(__dirname, '/node_modules');
         },

@@ -13,7 +13,7 @@
             regular
             label="Code"
             hint="Attribute code must be unique"
-            @input="(code) => setAttributeCode(code)" />
+            @input="setAttributeCode" />
         <Select
             :value="groups"
             solid
@@ -24,13 +24,13 @@
             clearable
             :disabled="isDisabledByPrivileges"
             :error-messages="errorGroupsMessage"
-            @input="(groups) => setAttributeGroups(groups)" />
+            @input="setAttributeGroups" />
         <Divider />
         <div class="horizontal-wrapper">
             <Toggler
                 :value="isMultilingual"
                 :disabled="isDisabled || isDisabledByPrivileges"
-                @input="(isMultilingual) => setMultilingualAttribute(isMultilingual)" />
+                @input="setMultilingualAttribute" />
             <Label
                 text="Multilingual attribute"
                 class="txt--dark-graphite typo-btn--xs"

@@ -2,13 +2,15 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+// pages
 const Login = () => import('~/pages/index').then(m => m.default || m);
 const Dashboard = () => import('~/pages/dashboard/index').then(m => m.default || m);
-const Import = () => import('~/pages/import/index').then(m => m.default || m);
 const Categories = () => import('~/pages/categories/index').then(m => m.default || m);
 const CategoryNew = () => import('~/pages/categories/new/index').then(m => m.default || m);
 const CategoryEdit = () => import('~/pages/categories/edit/_id').then(m => m.default || m);
 const CategoryTrees = () => import('~/pages/category-trees/index').then(m => m.default || m);
+const CategoryTreesNew = () => import('~/pages/category-trees/new/index').then(m => m.default || m);
+const CategoryTreesEdit = () => import('~/pages/category-trees/edit/_id').then(m => m.default || m);
 const Products = () => import('~/pages/products/index').then(m => m.default || m);
 const ProductNew = () => import('~/pages/products/new/index').then(m => m.default || m);
 const ProductEdit = () => import('~/pages/products/edit/_id').then(m => m.default || m);
@@ -26,6 +28,9 @@ const UsersRolesEdit = () => import('~/pages/users/edit/roles/_id').then(m => m.
 const Settings = () => import('~/pages/settings/index').then(m => m.default || m);
 const Channels = () => import('~/pages/channels/index').then(m => m.default || m);
 const Placeholder = () => import('~/pages/placeholder/index').then(m => m.default || m);
+const Workflow = () => import('~/pages/workflow/index').then(m => m.default || m);
+const ProductStatusNew = () => import('~/pages/workflow/statuses/new/index').then(m => m.default || m);
+const ProductStatusEdit = () => import('~/pages/workflow/statuses/edit/_id').then(m => m.default || m);
 const Profile = () => import('~/pages/profile/index').then(m => m.default || m);
 
 // Tabs
@@ -39,13 +44,19 @@ const UserRolesBaseTab = () => import('~/components/Card/UserRolesBaseTab').then
 const UserRolesPrivilegeTab = () => import('~/components/Card/UserRolesPrivilegeTab').then(m => m.default || m);
 const CategoryBaseTab = () => import('~/components/Card/CategoryBaseTab').then(m => m.default || m);
 const CategoryTranslationsTab = () => import('~/components/Card/CategoryTranslationsTab').then(m => m.default || m);
+const CategoryTreeBaseTab = () => import('~/components/Card/CategoryTreeBaseTab').then(m => m.default || m);
+const CategoryTreeTranslationsTab = () => import('~/components/Card/CategoryTreeTranslationsTab').then(m => m.default || m);
+const CategoryTreeDesignTab = () => import('~/components/Card/CategoryTreeDesignTab').then(m => m.default || m);
 const ProductBaseTab = () => import('~/components/Card/ProductBaseTab').then(m => m.default || m);
 const ProductTemplateTab = () => import('~/components/Card/ProductTemplateTab').then(m => m.default || m);
-const TreeDesignTab = () => import('~/components/Card/TreeDesignTab').then(m => m.default || m);
+const ProductStatusBaseTab = () => import('~/components/Card/ProductStatusBaseTab').then(m => m.default || m);
+const ProductStatusTranslationsTab = () => import('~/components/Card/ProductStatusTranslationsTab').then(m => m.default || m);
 
 // Grid Tabs
+const ProductStatusGridTab = () => import('~/components/Card/Grid/ProductStatusGridTab').then(m => m.default || m);
 const ProductGridTab = () => import('~/components/Card/Grid/ProductGridTab').then(m => m.default || m);
 const CategoryGridTab = () => import('~/components/Card/Grid/CategoryGridTab').then(m => m.default || m);
+const CategoryTreesGridTab = () => import('~/components/Card/Grid/CategoryTreesGridTab').then(m => m.default || m);
 const AttributeGridTab = () => import('~/components/Card/Grid/AttributeGridTab').then(m => m.default || m);
 const RolesGridTab = () => import('~/components/Card/Grid/RolesGridTab').then(m => m.default || m);
 const UsersGridTab = () => import('~/components/Card/Grid/UsersGridTab').then(m => m.default || m);
@@ -71,14 +82,6 @@ export const pages = [
         name: 'dashboard', path: '/dashboard', component: Dashboard,
     },
     {
-        name: 'import',
-        path: '/import',
-        component: Import,
-        meta: {
-            permission: 'IMPORT_READ',
-        },
-    },
-    {
         name: 'categories',
         path: '/categories',
         component: Categories,
@@ -87,12 +90,12 @@ export const pages = [
                 path: 'grid',
                 component: CategoryGridTab,
                 meta: {
-                    permission: 'CATEGORY_READ',
+                    privileges: ['CATEGORY_READ'],
                 },
             },
         ],
         meta: {
-            permission: 'CATEGORY_READ',
+            privileges: ['CATEGORY_READ'],
         },
     },
     {
@@ -110,7 +113,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'CATEGORY_READ',
+            privileges: ['CATEGORY_READ'],
         },
     },
     {
@@ -128,7 +131,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'CATEGORY_READ',
+            privileges: ['CATEGORY_READ'],
         },
     },
     {
@@ -137,12 +140,56 @@ export const pages = [
         component: CategoryTrees,
         children: [
             {
-                path: 'tree',
-                component: TreeDesignTab,
+                path: 'grid',
+                component: CategoryTreesGridTab,
             },
         ],
         meta: {
-            permission: 'CATEGORY_TREE_READ',
+            privileges: ['CATEGORY_TREE_READ'],
+        },
+    },
+    {
+        name: 'category-trees-new',
+        path: '/category-trees/new',
+        component: CategoryTreesNew,
+        children: [
+            {
+                path: 'general',
+                component: CategoryTreeBaseTab,
+            },
+            {
+                path: 'translations',
+                component: CategoryTreeTranslationsTab,
+            },
+            {
+                path: 'designer',
+                component: CategoryTreeDesignTab,
+            },
+        ],
+        meta: {
+            privileges: ['CATEGORY_TREE_CREATE'],
+        },
+    },
+    {
+        name: 'category-trees-edit-id',
+        path: '/category-trees/edit/:id/:tab?',
+        component: CategoryTreesEdit,
+        children: [
+            {
+                path: 'general',
+                component: CategoryTreeBaseTab,
+            },
+            {
+                path: 'translations',
+                component: CategoryTreeTranslationsTab,
+            },
+            {
+                path: 'designer',
+                component: CategoryTreeDesignTab,
+            },
+        ],
+        meta: {
+            privileges: ['CATEGORY_TREE_READ'],
         },
     },
     {
@@ -156,7 +203,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'PRODUCT_READ',
+            privileges: ['PRODUCT_READ'],
         },
     },
     {
@@ -174,7 +221,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'PRODUCT_READ',
+            privileges: ['PRODUCT_READ'],
         },
     },
     {
@@ -192,7 +239,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'PRODUCT_READ',
+            privileges: ['PRODUCT_READ'],
         },
     },
     {
@@ -200,7 +247,7 @@ export const pages = [
         path: '/templates',
         component: Templates,
         meta: {
-            permission: 'TEMPLATE_DESIGNER_READ',
+            privileges: ['TEMPLATE_DESIGNER_READ'],
         },
     },
     {
@@ -218,7 +265,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'TEMPLATE_DESIGNER_READ',
+            privileges: ['TEMPLATE_DESIGNER_READ'],
         },
     },
     {
@@ -236,7 +283,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'TEMPLATE_DESIGNER_READ',
+            privileges: ['TEMPLATE_DESIGNER_READ'],
         },
     },
     {
@@ -244,14 +291,14 @@ export const pages = [
         path: '/attributes',
         component: Attributes,
         meta: {
-            permission: 'ATTRIBUTE_READ',
+            privileges: ['ATTRIBUTE_READ'],
         },
         children: [
             {
                 path: 'grid',
                 component: AttributeGridTab,
                 meta: {
-                    permission: 'ATTRIBUTE_READ',
+                    privileges: ['ATTRIBUTE_READ'],
                 },
             },
         ],
@@ -271,7 +318,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'ATTRIBUTE_READ',
+            privileges: ['ATTRIBUTE_READ'],
         },
     },
     {
@@ -289,7 +336,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'ATTRIBUTE_READ',
+            privileges: ['ATTRIBUTE_READ'],
         },
     },
     {
@@ -301,14 +348,14 @@ export const pages = [
                 path: 'grid',
                 component: UsersGridTab,
                 meta: {
-                    permission: 'USER_READ',
+                    privileges: ['USER_READ'],
                 },
             },
             {
                 path: 'roles',
                 component: RolesGridTab,
                 meta: {
-                    permission: 'USER_ROLE_READ',
+                    privileges: ['USER_ROLE_READ'],
                 },
             },
             {
@@ -317,7 +364,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'USER_READ',
+            privileges: ['USER_READ'],
         },
     },
     {
@@ -335,7 +382,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'USER_READ',
+            privileges: ['USER_READ'],
         },
     },
     {
@@ -353,7 +400,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'USER_READ',
+            privileges: ['USER_READ'],
         },
     },
     {
@@ -371,7 +418,7 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'USER_ROLE_READ',
+            privileges: ['USER_ROLE_READ'],
         },
     },
     {
@@ -389,7 +436,57 @@ export const pages = [
             },
         ],
         meta: {
-            permission: 'USER_ROLE_READ',
+            privileges: ['USER_ROLE_READ'],
+        },
+    },
+    {
+        name: 'workflow',
+        path: '/workflow',
+        component: Workflow,
+        children: [
+            {
+                path: 'statuses',
+                component: ProductStatusGridTab,
+            },
+        ],
+        meta: {
+            privileges: ['WORKFLOW_READ'],
+        },
+    },
+    {
+        name: 'workflow-statuses-new',
+        path: '/workflow/statuses/new',
+        component: ProductStatusNew,
+        children: [
+            {
+                path: 'general',
+                component: ProductStatusBaseTab,
+            },
+            {
+                path: 'translations',
+                component: ProductStatusTranslationsTab,
+            },
+        ],
+        meta: {
+            privileges: ['WORKFLOW_READ'],
+        },
+    },
+    {
+        name: 'workflow-statuses-edit-id',
+        path: '/workflow/statuses/edit/:id?',
+        component: ProductStatusEdit,
+        children: [
+            {
+                path: 'general',
+                component: ProductStatusBaseTab,
+            },
+            {
+                path: 'translations',
+                component: ProductStatusTranslationsTab,
+            },
+        ],
+        meta: {
+            privileges: ['WORKFLOW_READ'],
         },
     },
     {

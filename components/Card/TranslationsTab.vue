@@ -6,8 +6,7 @@
     <BaseTab>
         <OptionsHeader
             slot="header"
-            :cards-language-codes="cardsLanguageCodes"
-            :default-translation="defaultTranslation" />
+            :cards-language-codes="cardsLanguageCodes" />
         <slot slot="content" />
         <Footer
             slot="footer"
@@ -30,10 +29,6 @@ export default {
     },
     props: {
         updateButton: {
-            type: Object,
-            required: true,
-        },
-        defaultTranslation: {
             type: Object,
             required: true,
         },

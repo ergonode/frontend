@@ -2,8 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { setTranslation } from '~/model/mappers/translationMapper';
-
 export default {
     setTabTranslations: ({ commit }, payload) => {
         commit('setTabTranslations', payload);
@@ -12,7 +10,7 @@ export default {
         commit('setMultilingualTranslationPropertyValue', payload);
     },
     addCardLanguageCode: ({ commit }, payload) => commit('addCardLanguageCode', payload),
-    setVisibleCardTranslations: ({ commit, state }, { languages, defaultTranslation }) => {
+    setVisibleCardTranslations: ({ commit, state }, { languages }) => {
         const { cardsLanguageCodes, translations } = state;
         const { length: numberOfCards } = cardsLanguageCodes;
         const { length: numberOfSelectedLanguages } = languages;
@@ -41,14 +39,10 @@ export default {
                 ),
             );
             languageCodesToAdd.forEach((languageCode) => {
-                const translation = setTranslation(
-                    translations,
-                    defaultTranslation,
-                    languageCode,
-                );
-                commit('setTabTranslations', { translations: translation });
                 commit('addCardLanguageCode', { languageCode });
             });
+
+            commit('setTabTranslations', { translations });
         }
     },
     addOptionTranslation: ({ commit }, payload) => commit('addOptionTranslation', payload),

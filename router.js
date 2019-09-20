@@ -4,31 +4,10 @@
  */
 import Vue from 'vue';
 import Router from 'vue-router';
-import ModuleLoader from '~/plugins/moduleLoader';
+import { getPagesConfig } from '~/plugins/moduleLoader';
 import { pages } from '~/router.config';
 
 Vue.use(Router);
-
-const modulesRouter = ModuleLoader.getRouterConfigs();
-const expandedRouter = pages.concat(modulesRouter);
-
-const routes = expandedRouter.reduce((previousPage, currentPage) => {
-    const {
-        name,
-        path,
-        component,
-        filePath,
-        module = null,
-        source = null,
-    } = currentPage;
-    const newRouting = {
-        name,
-        path,
-        component,
-    };
-    previousPage.push(newRouting);
-    return previousPage;
-}, []);
 
 const scrollBehavior = (to, from, savedPosition) => {
     // if the returned position is falsy or an empty object,
@@ -60,6 +39,15 @@ const scrollBehavior = (to, from, savedPosition) => {
     });
 };
 
+function getRouters() {
+  const { router } = getPagesConfig;
+  let filteredPages = pages;
+  for (let i = 0; i < router.length; i += 1) {
+      filteredPages = filteredPages.filter(e => e.name !== router[i].name);
+  }
+  return filteredPages.concat(router);
+}
+
 export function createRouter() {
     return new Router({
         mode: 'history',
@@ -67,7 +55,7 @@ export function createRouter() {
         linkActiveClass: 'nuxt-link-active',
         linkExactActiveClass: 'nuxt-link-exact-active',
         scrollBehavior,
-        routes: pages,
+        routes: getRouters(),
         fallback: false,
     });
 }

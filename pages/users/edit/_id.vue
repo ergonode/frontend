@@ -23,6 +23,9 @@ export default {
         UserPage: () => import('~/components/Pages/UserPage'),
     },
     computed: {
+        ...mapState('authentication', {
+            user: state => state.user,
+        }),
         ...mapState('users', {
             id: state => state.id,
             avatarId: state => state.avatarId,
@@ -32,7 +35,7 @@ export default {
             language: state => state.language,
             password: state => state.password,
             passwordRepeat: state => state.passwordRepeat,
-            status: state => state.status,
+            isActive: state => state.isActive,
             roleId: state => state.roleId,
         }),
         title() {
@@ -47,6 +50,9 @@ export default {
             'clearStorage',
             'updateUser',
         ]),
+        ...mapActions('authentication', [
+            'getUser',
+        ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
@@ -58,6 +64,11 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'User updated' });
             this.$router.push('/users');
+
+            // TODO: Along Notification introduce - remove it from it - this solution is preventing from relogging to see newly edited data for user if edited user is logged one
+            if (this.user.id === this.id) {
+                this.getUser();
+            }
         },
         onSave() {
             const user = {
@@ -67,7 +78,7 @@ export default {
                 password: this.password,
                 passwordRepeat: this.passwordRepeat,
                 roleId: this.roleId,
-                // status: this.status, TODO: Uncomment when BE is ready
+                isActive: this.isActive,
             };
             this.updateUser({
                 id: this.id,
@@ -81,7 +92,6 @@ export default {
     async fetch({
         store,
         params,
-        error,
     }) {
         await store.dispatch('roles/getRoles', {
             limit: 9999,
@@ -89,12 +99,6 @@ export default {
         });
         await store.dispatch('users/getUserById', {
             userId: params.id,
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return error();
-            },
         });
     },
 };

@@ -9,8 +9,8 @@
                 <MenuList
                     v-for="(item, index) in menu"
                     :key="index"
-                    :section-title="item.title"
-                    :section-menu="item.section" />
+                    :section-title="item.key"
+                    :section-menu="item.items" />
             </div>
         </aside>
     </div>
@@ -32,7 +32,8 @@ export default {
         },
     },
     beforeCreate() {
-        this.menu = getValidatedMenuData(this.$hasAccess);
+        const { menu: modulesMenu } = this.$modulesConfiguration;
+        this.menu = getValidatedMenuData(this.$hasAccess, modulesMenu);
     },
     beforeDestroy() {
         delete this.menu;

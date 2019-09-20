@@ -53,8 +53,6 @@ export default {
         await store.dispatch('list/clearStorage');
         await store.dispatch('list/getGroups', {
             languageCode: userLanguageCode,
-            onSuccess: () => {},
-            onError: () => {},
         });
     },
 };

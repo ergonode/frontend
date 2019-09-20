@@ -70,7 +70,7 @@ export default {
             });
         },
     },
-    async fetch({ store, error, params }) {
+    async fetch({ store, params }) {
         const {
             user: { language: userLanguageCode },
         } = store.state.authentication;
@@ -79,22 +79,12 @@ export default {
         await store.dispatch('list/clearStorage');
         await store.dispatch('templateDesigner/getTypes', {
             path: `${userLanguageCode}/templates/types`,
-            onSuccess: () => {},
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return error();
-            },
         });
         await store.dispatch('list/getGroups', {
             languageCode: userLanguageCode,
-            onSuccess: () => {},
-            onError: () => {},
         });
         await store.dispatch('templateDesigner/getTemplateByID', {
             path: `${userLanguageCode}/templates/${id}`,
-            onError: () => {},
         });
     },
 };

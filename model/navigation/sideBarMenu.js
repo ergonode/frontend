@@ -58,12 +58,6 @@ const manageSectionItems = [
 
 const collectAndDistributeSectionItems = [
     {
-        title: 'Import',
-        routing: '/import',
-        icon: 'Import',
-        privileges: ['IMPORT_READ'],
-    },
-    {
         title: 'Export',
         routing: '/placeholder/export',
         icon: 'Export',
@@ -85,8 +79,8 @@ const systemSectionItems = [
         privileges: ['USER_READ'],
     },
     {
-        title: 'Workflows',
-        routing: '/placeholder/workflow',
+        title: 'Workflow',
+        routing: '/workflow',
         icon: 'Flow',
         privileges: [],
     },
@@ -117,31 +111,33 @@ const sections = [
     },
 ];
 
-export function getValidatedMenuData(hasAccess) {
-    const menu = [];
-    const { length: sectionsNumber } = sections;
-
-    for (let i = 0; i < sectionsNumber; i += 1) {
-        const { key } = sections[i];
-        menu.push({
-            title: key,
-            section: [],
-        });
-
-        const { items } = sections[i];
-        const { length: itemsNumber } = items;
-
-        for (let j = 0; j < itemsNumber; j += 1) {
-            const item = items[j];
-            if (hasAccess(item.privileges)) {
-                menu[i].section.push({
-                    title: item.title,
-                    routing: item.routing,
-                    icon: item.icon,
-                });
-            }
+const extendSections = (modulesMenu) => {
+    const newSections = JSON.parse(JSON.stringify(sections)); // deep array clone hack
+    for (let i = 0; i < modulesMenu.length; i += 1) {
+        const index = newSections.findIndex(e => e.key === modulesMenu[i].key);
+        if (index >= 0) {
+            newSections[index].items.push(...modulesMenu[i].items);
+        } else {
+            newSections.push(modulesMenu[i]);
         }
     }
+    return newSections;
+};
 
+export const getValidatedMenuData = (hasAccess, modulesMenu) => {
+    const menu = [];
+    const extendedSections = extendSections(modulesMenu);
+    const { length: sectionsNumber } = extendedSections;
+
+    for (let i = 0; i < sectionsNumber; i += 1) {
+        const { key, items } = extendedSections[i];
+        const filteredItems = items.filter(e => !e.privileges
+          || (e.privileges && !e.privileges.length)
+          || e.privileges.every(privilege => hasAccess(privilege)));
+        menu.push({
+            key,
+            items: filteredItems,
+        });
+    }
     return menu;
-}
+};

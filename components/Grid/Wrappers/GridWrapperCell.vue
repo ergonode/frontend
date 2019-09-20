@@ -38,6 +38,7 @@
 import { mapState, mapActions } from 'vuex';
 import { isArrayEqualToArray } from '~/model/arrayWrapper';
 import { hasParams } from '~/model/attributes/AttributeTypes';
+import { getKeyByValue } from '~/model/objectWrapper';
 
 export default {
     name: 'GridWrapperCell',
@@ -92,7 +93,7 @@ export default {
 
         this.isActionCell = type === 'CHECK' || type === 'ACTION';
         this.isExtenderColumn = id === 'extender';
-        this.isSelectKind = type === 'SELECT' || type === 'MULTI_SELECT';
+        this.isSelectKind = type === 'SELECT' || type === 'MULTI_SELECT' || type === 'LABEL';
         this.isMultiSelect = type === 'MULTI_SELECT';
         this.isEditingAllowed = (editable && this.$options.propsData.editingPrivilegeAllowed)
             || this.isActionCell;
@@ -131,6 +132,8 @@ export default {
             switch (type) {
             case 'ACTION':
                 return () => import('~/components/Grid/EditCells/GridEditRowCell');
+            case 'LABEL':
+                return () => import('~/components/Grid/GridStatusInfoCell');
             case 'IMAGE':
                 return () => import('~/components/Grid/GridImageCell');
             case 'CHECK':
@@ -157,6 +160,21 @@ export default {
                 return {
                     storeNamespace: this.storeNamespace,
                     row: this.rowIndex,
+                };
+            case 'LABEL':
+                if (this.parsedDraftValue === null) {
+                    return {
+                        cellData: this.cellData,
+                        colors: this.column.colors,
+                    };
+                }
+
+                return {
+                    cellData: {
+                        key: getKeyByValue(this.column.filter.options, this.parsedDraftValue),
+                        value: this.parsedDraftValue,
+                    },
+                    colors: this.column.colors,
                 };
             default:
                 if (this.parsedDraftValue === null) return { value: this.cellData.value };
@@ -241,7 +259,8 @@ export default {
             this.updateDraftValue({
                 productId: this.rowId,
                 columnId: this.column.id,
-                elementId: this.column.element_id,
+                // FIXME: BE - two different values!!!
+                elementId: this.column.element_id || this.column.attribute_id,
                 value,
                 languageCode: this.column.language || this.userLanguageCode,
             });

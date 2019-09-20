@@ -64,7 +64,7 @@ export default {
             });
         },
     },
-    async fetch({ store, error }) {
+    async fetch({ store }) {
         const {
             user: { language: userLanguageCode },
         } = store.state.authentication;
@@ -76,13 +76,10 @@ export default {
             path: `${userLanguageCode}/templates/types`,
             params: {},
             store,
-            error,
         });
 
         const groupsRequest = store.dispatch('list/getGroups', {
             languageCode: userLanguageCode,
-            onSuccess: () => {},
-            onError: () => {},
         });
 
         return Promise.all([groupsRequest, getTypesRequest]);

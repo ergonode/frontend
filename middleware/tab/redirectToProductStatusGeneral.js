@@ -4,8 +4,8 @@
  */
 export default function ({ route, redirect }) {
     const { name } = route;
-    if (name === 'category-trees') {
-        return redirect(`${route.path}/tree`);
+    if (name === 'workflow-statuses-new' || name === 'workflow-statuses-edit-id') {
+        return redirect(`${route.path}/general`);
     }
 
     return null;

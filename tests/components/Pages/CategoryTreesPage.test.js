@@ -4,7 +4,7 @@
  */
 import { mount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
-import CategoryTreesPage from '~/components/Pages/CategoryTreesPage';
+import CategoryTreePage from '~/components/Pages/CategoryTreePage';
 
 const localVue = createLocalVue();
 const store = new Store({
@@ -19,10 +19,10 @@ const mocks = {
     $store: store,
 };
 afterEach(() => store.reset());
-describe('Pages/CategoryTreesPage', () => {
+describe('Pages/CategoryTreePage', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(CategoryTreesPage, {
+        wrapper = mount(CategoryTreePage, {
             localVue,
             mocks,
             propsData: {
@@ -35,12 +35,12 @@ describe('Pages/CategoryTreesPage', () => {
         });
     });
     it('Component rendered correctly', () => {
-        expect(wrapper.is(CategoryTreesPage)).toBe(true);
+        expect(wrapper.is(CategoryTreePage)).toBe(true);
     });
 
     it('Check if component is named correctly', () => {
-        expect(typeof CategoryTreesPage.name).toBe('string');
-        expect(CategoryTreesPage.name).toEqual('CategoryTreesPage');
+        expect(typeof CategoryTreePage.name).toBe('string');
+        expect(CategoryTreePage.name).toEqual('CategoryTreePage');
     });
 
     it('Check if blur is visible', () => {

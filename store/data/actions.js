@@ -4,6 +4,8 @@
  */
 import { types } from './mutations';
 
+const onError = () => {};
+
 export default {
     getDictionaries({ commit, rootState }) {
         const { language: userLanguageCode } = rootState.authentication.user;
@@ -27,7 +29,7 @@ export default {
             return requestPromise;
         });
 
-        return Promise.all(promises).catch(err => console.log(err));
+        return Promise.all(promises).catch(onError);
     },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);

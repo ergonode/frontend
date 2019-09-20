@@ -4,7 +4,7 @@
  */
 <template>
     <UserRolesPage
-        :title="title"
+        :title="name"
         is-edit
         @dismiss="onDismiss"
         @remove="onRemove"
@@ -36,9 +36,6 @@ export default {
         ...mapState('authentication', {
             userPrivileges: state => state.user.privileges,
         }),
-        title() {
-            return `${this.name}`;
-        },
     },
     destroyed() {
         this.clearStorage();
@@ -100,16 +97,9 @@ export default {
     async fetch({
         store,
         params,
-        error,
     }) {
         await store.dispatch('roles/getRoleById', {
             roleId: params.id,
-            onError: (err) => {
-                if (err.response && err.response.status === 404) {
-                    return error({ statusCode: 404, message: err.message });
-                }
-                return error();
-            },
         });
     },
 };
