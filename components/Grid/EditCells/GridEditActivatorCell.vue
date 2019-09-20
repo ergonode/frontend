@@ -81,12 +81,15 @@ export default {
         isDateType() {
             return this.type === 'DATE';
         },
+        isStatusType() {
+            return this.type === 'LABEL';
+        },
         editableComponent() {
             if (this.isSelectKind) return () => import('~/components/Grid/EditCells/GridEditSelectCell');
             if (this.isTextAreaType) return () => import('~/components/Grid/EditCells/GridEditLongTextCell');
             if (this.isImageType) return () => import('~/components/Grid/EditCells/GridEditImageCell');
             if (this.isDateType) return () => import('~/components/Grid/EditCells/GridEditDateCell');
-
+            if (this.isStatusType) return () => import('~/components/Grid/EditCells/GridEditStatusSelectCell');
             return () => import('~/components/Grid/EditCells/GridEditShortTextCell');
         },
     },

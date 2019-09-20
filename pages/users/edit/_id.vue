@@ -23,6 +23,9 @@ export default {
         UserPage: () => import('~/components/Pages/UserPage'),
     },
     computed: {
+        ...mapState('authentication', {
+            user: state => state.user,
+        }),
         ...mapState('users', {
             id: state => state.id,
             avatarId: state => state.avatarId,
@@ -47,6 +50,9 @@ export default {
             'clearStorage',
             'updateUser',
         ]),
+        ...mapActions('authentication', [
+            'getUser',
+        ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
@@ -58,6 +64,11 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'User updated' });
             this.$router.push('/users');
+
+            // TODO: Along Notification introduce - remove it from it - this solution is preventing from relogging to see newly edited data for user if edited user is logged one
+            if (this.user.id === this.id) {
+                this.getUser();
+            }
         },
         onSave() {
             const user = {
