@@ -83,7 +83,7 @@ export default {
 
             let element;
 
-            if (!event.target.classList.contains('grid-cell') && !this.actionCell && keyCode !== 13 && keyCode !== 9) {
+            if (!event.target.classList.contains('grid-cell') && !this.actionCell && keyCode !== 13) {
                 return false;
             }
 
@@ -101,6 +101,7 @@ export default {
                 }
                 break;
             case 32:
+                // Key: SPACE BAR
                 if (this.editingAllowed && this.actionCell) {
                     if (this.selected) {
                         this.$emit('edit', false);
@@ -159,16 +160,7 @@ export default {
         outline: none;
         box-sizing: border-box;
         border-bottom: 1px solid $grey;
-
-        &:not(&--selected):not(&--draft):not(&--error) {
-            &:nth-child(even) {
-                background-color: $white;
-            }
-
-            &:nth-child(odd) {
-                background-color: $background;
-            }
-        }
+        background-color: $white;
 
         &:not(&--error):not(&--locked) {
             &:focus {

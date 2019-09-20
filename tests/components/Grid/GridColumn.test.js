@@ -18,6 +18,7 @@ const store = new Store({
                 isColumnMoveable: true,
                 isColumnResizeable: true,
             },
+            editingCellCoordinates: {},
         },
         draggable: {
             draggedElIndex: -1,
