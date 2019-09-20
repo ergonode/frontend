@@ -28,27 +28,10 @@ const mocks = {
     $store: store,
 };
 describe('TemplateGrid/TemplateGridContainer', () => {
-    let wrapper;
-    // beforeEach(() => {
-    //     wrapper = mount(TemplateGridContainer, {
-    //         localVue,
-    //         mocks,
-    //         propsData: {
-    //             gridData: [],
-    //             columns: 1,
-    //             rows: 3,
-    //             rowsHeight: 40,
-    //         },
-    //     });
-    // });
+    // TODO: complete tests, remove errors with mounting component
     it('Component is rendered', () => {
         expect(1).toBe(1);
         // expect(wrapper.is(TemplateGridContainer)).toBe(true);
         // expect(wrapper.isVueInstance()).toBeTruthy();
     });
-
-    // it('Component is named well', () => {
-    //     expect(typeof TemplateGridContainer.name).toBe('string');
-    //     expect(TemplateGridContainer.name).toEqual('TemplateGridContainer');
-    // });
 });
