@@ -3,6 +3,7 @@ package.json
 router.js
 node_modules/
 tests/
+cypress/
 build/
 coverage/
 lib/

@@ -51,6 +51,7 @@ class ModuleLoader {
                 components: [...moduleComponents],
             };
         }
+
         if (additionalConfig) {
             const {
                 pages: additionalConfigPages,

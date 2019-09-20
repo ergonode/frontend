@@ -38,6 +38,7 @@
 import { mapState, mapActions } from 'vuex';
 import { isArrayEqualToArray } from '~/model/arrayWrapper';
 import { hasParams } from '~/model/attributes/AttributeTypes';
+import { getKeyByValue } from '~/model/objectWrapper';
 
 export default {
     name: 'GridWrapperCell',
@@ -160,6 +161,21 @@ export default {
                     storeNamespace: this.storeNamespace,
                     row: this.rowIndex,
                 };
+            case 'LABEL':
+                if (this.parsedDraftValue === null) {
+                    return {
+                        cellData: this.cellData,
+                        colors: this.column.colors,
+                    };
+                }
+
+                return {
+                    cellData: {
+                        key: getKeyByValue(this.column.filter.options, this.parsedDraftValue),
+                        value: this.parsedDraftValue,
+                    },
+                    colors: this.column.colors,
+                };
             default:
                 if (this.parsedDraftValue === null) return { value: this.cellData.value };
                 return { value: this.parsedDraftValue };
@@ -240,16 +256,12 @@ export default {
                 || this.cellData.value === value
             ) return;
 
-            const parsedValue = this.column.colors
-                ? { label: value, color: this.column.colors[value] }
-                : value;
-
             this.updateDraftValue({
                 productId: this.rowId,
                 columnId: this.column.id,
                 // FIXME: BE - two different values!!!
-                elementId: this.column.element_id || this.column.attributeId,
-                value: parsedValue,
+                elementId: this.column.element_id || this.column.attribute_id,
+                value,
                 languageCode: this.column.language || this.userLanguageCode,
             });
         },
