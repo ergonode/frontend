@@ -66,5 +66,7 @@ export default {
         display: grid;
         grid-auto-flow: column;
         grid-template-rows: max-content;
+        justify-content: center;
+        width: 0;
     }
 </style>

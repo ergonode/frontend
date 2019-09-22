@@ -9,7 +9,7 @@
                 Nothing to see here
             </span>
             <span class="typo-label txt--centered txt--light-graphite">
-                You have used too many filters or there are no products in the system
+                You have used too many filters or there are no records in the system
             </span>
         </div>
     </div>

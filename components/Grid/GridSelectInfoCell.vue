@@ -4,7 +4,9 @@
  */
 <template>
     <div class="info-select-cell">
-        <GridInfoCell :value="value" />
+        <GridInfoCell
+            :value="value"
+            :fixed-width="fixedWidth" />
         <IconArrowDropDown />
     </div>
 </template>
@@ -23,6 +25,10 @@ export default {
         value: {
             type: [String, Number, Array],
             required: true,
+        },
+        fixedWidth: {
+            type: Boolean,
+            default: false,
         },
     },
 };

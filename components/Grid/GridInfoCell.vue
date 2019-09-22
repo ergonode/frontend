@@ -4,7 +4,7 @@
  */
 <template functional>
     <span
-        class="info-cell"
+        :class="['info-cell', {'info-cell--fixed-width': props.fixedWidth}]"
         v-text="props.value" />
 </template>
 
@@ -17,11 +17,15 @@ export default {
             type: [String, Number],
             required: true,
         },
+        fixedWidth: {
+            type: Boolean,
+            default: false,
+        },
     },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .info-cell {
         @include setFont(medium, small, regular, $darkGraphite);
 
@@ -32,5 +36,9 @@ export default {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+
+        &--fixed-width {
+            width: min-content;
+        }
     }
 </style>

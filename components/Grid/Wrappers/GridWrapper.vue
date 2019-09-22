@@ -10,7 +10,7 @@
             :rows-height="rowsHeight"
             :filterable="filterable"
             :editing-privilege-allowed="editingPrivilegeAllowed">
-            <template v-slot:cell="{column, columnIndex}">
+            <template #cell="{column, columnIndex}">
                 <slot
                     name="cell"
                     :column="column"

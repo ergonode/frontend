@@ -23,12 +23,10 @@ export default {
     props: {
         index: {
             type: String,
-            required: false,
             default: null,
         },
         isExpanded: {
             type: Boolean,
-            required: false,
             default: false,
         },
     },

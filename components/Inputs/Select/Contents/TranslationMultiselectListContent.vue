@@ -10,11 +10,12 @@
             :description="option"
             :selected-value="getSelectedValueByOption(option)"
             @value="onSelectedValue">
-            <ListElementDescription
-                slot="checkboxDescription"
-                :title="option.key"
-                :subtitle="option.value || 'No translation'"
-                subtitle-typo="typo-label" />
+            <template #checkboxDescription>
+                <ListElementDescription
+                    :title="option.key"
+                    :subtitle="option.value || 'No translation'"
+                    subtitle-typo="typo-label" />
+            </template>
         </CheckBoxElement>
     </List>
 </template>
@@ -30,12 +31,10 @@ export default {
     props: {
         options: {
             type: Array,
-            required: false,
             default: () => [],
         },
         selectedOptions: {
             type: Array,
-            required: false,
             default: () => [],
         },
     },

@@ -11,7 +11,7 @@
                 :is-draft="false"
                 :action-paths="actionPaths"
                 :filterable="false">
-                <template v-slot:cell="{column, columnIndex}">
+                <template #cell="{column, columnIndex}">
                     <GridCell
                         v-for="(rowId, rowIndex) in rowIds"
                         :key="rowId"

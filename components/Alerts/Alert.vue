@@ -12,7 +12,7 @@
             fab
             color="transparent"
             @click.native="() => removeAlert(alert)">
-            <template v-slot:prepend>
+            <template #prepend>
                 <IconClose />
             </template>
         </Button>

@@ -5,13 +5,13 @@
 <template>
     <App>
         <NavigationBar>
-            <template v-slot:leftSectionContent>
+            <template #leftSectionContent>
                 <NavigationBarMenuButton
                     :value="sideBarState"
                     @state="onStateChange" />
                 <NavigationBarDashboardButton />
             </template>
-            <template v-slot:rightSectionContent>
+            <template #rightSectionContent>
                 <NavigationBarUserButton />
                 <NavigationBarSynchronizationButton />
                 <NavigationBarNotificationButton />

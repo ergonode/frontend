@@ -25,7 +25,7 @@
                 icon-path="Others/IconDots"
                 :options="contextualMenuItems"
                 @focus="onSelectFocus">
-                <template v-slot:content>
+                <template #content>
                     <List>
                         <ListElement
                             v-for="(option, optIndex) in contextualMenuItems"

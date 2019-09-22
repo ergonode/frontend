@@ -22,7 +22,6 @@
             <GridEditActivatorCell
                 v-else
                 :store-namespace="storeNamespace"
-                :is-select-kind="isSelectKind"
                 :is-multi-select="isMultiSelect"
                 :type="column.type"
                 :value="editValue"

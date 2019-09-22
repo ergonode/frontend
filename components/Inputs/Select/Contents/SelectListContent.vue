@@ -27,12 +27,10 @@ export default {
     props: {
         options: {
             type: Array,
-            required: false,
             default: () => [],
         },
         selectedOption: {
             type: [String, Number],
-            required: false,
             default: '',
         },
     },

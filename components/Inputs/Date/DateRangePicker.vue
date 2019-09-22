@@ -14,7 +14,7 @@
                     fab
                     color="transparent"
                     @click.native="previousMonth">
-                    <template v-slot:prepend>
+                    <template #prepend>
                         <IconArrowSingle :state="leftArrow" />
                     </template>
                 </Button>
@@ -41,7 +41,7 @@
                     fab
                     color="transparent"
                     @click.native="nextMonth">
-                    <template v-slot:prepend>
+                    <template #prepend>
                         <IconArrowSingle :state="rightArrow" />
                     </template>
                 </Button>

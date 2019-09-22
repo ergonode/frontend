@@ -58,7 +58,7 @@ module.exports = {
         ['@nuxtjs/component-cache', {maxAge: 1000 * 60 * 60}],
     ],
     styleResources: {
-        sass: '~assets/scss/main.scss'
+        scss: '~assets/scss/main.scss'
     },
     axios: {
         credentials: false,

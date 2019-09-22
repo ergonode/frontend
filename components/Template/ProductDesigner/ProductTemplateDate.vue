@@ -15,12 +15,12 @@
         :disabled="disabled"
         @focus="onFocusChange"
         @input="onValueChange">
-        <template v-slot:append>
+        <template #append>
             <ProductTemplateDetailsContent
                 :hint="hint"
                 :error-messages="errorMessages"
                 :is-error="isError">
-                <template v-slot:append>
+                <template #append>
                     <IconArrowDropDown :state="dropDownState" />
                 </template>
             </ProductTemplateDetailsContent>

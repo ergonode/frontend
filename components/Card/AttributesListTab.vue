@@ -23,7 +23,7 @@
                 fab
                 :disabled="!$hasAccess('ATTRIBUTE_CREATE')"
                 @click.native="addNewAttribute">
-                <template v-slot:prepend>
+                <template #prepend>
                     <IconAdd fill-color="#fff" />
                 </template>
             </Button>

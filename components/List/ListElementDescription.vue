@@ -2,16 +2,16 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
+<template functional>
     <div class="description-wrapper">
         <span
-            v-if="title"
-            :class="['txt-fixed', 'l-spacing--half', titleTypo, titleColor]"
-            v-text="title" />
+            v-if="props.title"
+            :class="['txt-fixed', 'l-spacing--half', props.titleTypo, props.titleColor]"
+            v-text="props.title" />
         <span
-            v-if="subtitle"
-            :class="['txt-fixed', subtitleTypo, subtitleColor]"
-            v-text="subtitle" />
+            v-if="props.subtitle"
+            :class="['txt-fixed', props.subtitleTypo, props.subtitleColor]"
+            v-text="props.subtitle" />
     </div>
 </template>
 
@@ -22,32 +22,26 @@ export default {
     props: {
         title: {
             type: String,
-            required: false,
             default: null,
         },
         subtitle: {
             type: String,
-            required: false,
             default: null,
         },
         titleTypo: {
             type: String,
-            required: false,
             default: 'typo-label',
         },
         subtitleTypo: {
             type: String,
-            required: false,
             default: 'typo-subtitle',
         },
         titleColor: {
             type: String,
-            required: false,
             default: 'txt--graphite',
         },
         subtitleColor: {
             type: String,
-            required: false,
             default: 'txt--dark-graphite',
         },
     },

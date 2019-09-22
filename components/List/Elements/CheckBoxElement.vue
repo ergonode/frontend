@@ -3,10 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <ListElement @click.native="localValue = !selectedValue">
+    <ListElement @click.native="onClick">
         <ListElementAction>
             <CheckBox
-                v-model="localValue" />
+                v-model="selectedValue" />
         </ListElementAction>
         <slot name="checkboxDescription">
             <ListElementDescription
@@ -34,12 +34,10 @@ export default {
     props: {
         description: {
             type: [Object, String, Number],
-            required: false,
             default: '',
         },
         selectedValue: {
             type: Boolean,
-            required: false,
             default: false,
         },
     },
@@ -49,13 +47,10 @@ export default {
                 ? 'txt--dark-graphite'
                 : 'txt--graphite';
         },
-        localValue: {
-            get() {
-                return this.selectedValue;
-            },
-            set(value) {
-                this.$emit('value', { value, option: this.description });
-            },
+    },
+    methods: {
+        onClick() {
+            this.$emit('value', { value: !this.selectedValue, option: this.description });
         },
     },
 };

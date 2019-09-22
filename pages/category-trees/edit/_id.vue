@@ -28,10 +28,10 @@ export default {
     computed: {
         ...mapState('tree', {
             treeId: state => state.treeId,
+            code: state => state.code,
         }),
         ...mapState('gridDesigner', {
             fullGridData: state => state.fullGridData,
-            code: state => state.code,
         }),
         ...mapState('translations', {
             translations: state => state.translations,

@@ -23,7 +23,7 @@
         clearable
         @focus="onFocus"
         @clear="emitValue">
-        <template v-slot:prepend>
+        <template #prepend>
             <slot name="prepend" />
         </template>
         <input
@@ -34,10 +34,10 @@
             :aria-label="label || 'no description'"
             type="text"
             readonly>
-        <template v-slot:append>
+        <template #append>
             <slot name="append" />
         </template>
-        <template v-slot:selectContent>
+        <template #selectContent>
             <slot name="selectContent">
                 <ColorPickerContent
                     :value="value"

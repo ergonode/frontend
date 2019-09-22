@@ -12,6 +12,7 @@ const types = {
     PRICE: 'PRICE',
     UNIT: 'UNIT',
     DATE: 'DATE',
+    LABEL: 'LABEL',
 };
 
 export function hasOptions(type) {
