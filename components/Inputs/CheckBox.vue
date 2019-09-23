@@ -84,6 +84,7 @@ export default {
             margin: 1px;
             box-sizing: border-box;
             border-radius: 2px;
+            cursor: pointer;
 
             &::after {
                 position: absolute;

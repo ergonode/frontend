@@ -8,7 +8,8 @@
         @click.native="onClick">
         <ListElementAction>
             <CheckBox
-                v-model="selectedValue" />
+                :value="selectedValue"
+                @input="onClick" />
         </ListElementAction>
         <slot name="description">
             <ListElementDescription>
@@ -64,3 +65,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .element-action {
+        margin-right: 8px;
+    }
+</style>
