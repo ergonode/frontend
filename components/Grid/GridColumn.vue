@@ -206,6 +206,7 @@ export default {
 
                 this.$store.dispatch(`${this.storeNamespace}/getColumnData`, {
                     ghostIndex: this.ghostIndex,
+                    draggedElIndex: this.draggedElIndex,
                     columnId,
                     path: `${this.languageCode}/products`,
                 });

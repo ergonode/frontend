@@ -7,7 +7,10 @@
         <slot />
         <div
             v-if="clearable"
-            :class="['horizontal-wrapper', {'horizontal-wrapper--space-between': multiselect}]">
+            :class="[
+                'select-content__footer',
+                {'select-content__footer--space-between': multiselect}
+            ]">
             <Button
                 v-if="multiselect"
                 small
@@ -76,7 +79,7 @@ export default {
             max-height: 200px;
         }
 
-        .horizontal-wrapper {
+        &__footer {
             display: flex;
             flex-shrink: 0;
             justify-content: flex-end;

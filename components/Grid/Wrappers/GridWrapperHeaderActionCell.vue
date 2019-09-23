@@ -15,8 +15,7 @@
             <Component
                 :is="infoComponent"
                 v-if="!isEditingCell || isActionCell"
-                :value="filterParsedValue"
-                :fixed-width="true" />
+                :value="filterParsedValue" />
             <GridEditActivatorCell
                 v-else
                 :store-namespace="storeNamespace"

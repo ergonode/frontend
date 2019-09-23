@@ -4,9 +4,7 @@
  */
 <template>
     <div class="info-select-cell">
-        <GridInfoCell
-            :value="value"
-            :fixed-width="fixedWidth" />
+        <GridInfoCell :value="value" />
         <IconArrowDropDown />
     </div>
 </template>

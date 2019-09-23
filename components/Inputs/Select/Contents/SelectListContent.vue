@@ -8,10 +8,11 @@
             v-for="(option, index) in options"
             :key="index"
             @click.native="onSelectedValue(index)">
-            <ListElementDescription
-                :subtitle="option"
-                subtitle-typo="typo-label"
-                :subtitle-color="getSelectedColor(option)" />
+            <ListElementDescription>
+                <ListElementTitle
+                    :title="option"
+                    :color="getSelectedColor(option)" />
+            </ListElementDescription>
         </ListElement>
     </List>
 </template>
@@ -23,6 +24,7 @@ export default {
         List: () => import('~/components/List/List'),
         ListElement: () => import('~/components/List/ListElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
+        ListElementTitle: () => import('~/components/List/ListElementTitle'),
     },
     props: {
         options: {

@@ -3,35 +3,28 @@
  * See LICENSE for license details.
  */
 <template>
-    <ListElement
-        :key="item.id"
-        v-draggable-element="{
-            id: item.id,
-            draggedElementStyle,
-            onDraggedState,
-            draggable: $hasAccess('SEGMENT_UPDATE'),
-        }"
-        :dragged="isDragged">
-        <ListElementDescription
-            :title="item.name"
-            subtitle="Short description"
-            title-typo="typo-subtitle"
-            title-color="txt--dark-graphite"
-            subtitle-typo="typo-hint"
-            subtitle-color="txt--light-graphite" />
-    </ListElement>
+    <ListDraggableElement
+        :is-draggable="$hasAccess('SEGMENT_UPDATE')"
+        :draggable-id="item.id"
+        @drag="onDrag">
+        <ListElementDescription>
+            <ListElementSubtitle subtitle="Short description" />
+            <ListElementTitle :title="item.name" />
+        </ListElementDescription>
+    </ListDraggableElement>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import { getUUID } from '~/model/stringWrapper';
-import DraggableStates from '~/model/draggableStates';
 
 export default {
     name: 'ConditionsListElement',
     components: {
-        ListElement: () => import('~/components/List/ListElement'),
+        ListDraggableElement: () => import('~/components/List/ListDraggableElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
+        ListElementTitle: () => import('~/components/List/ListElementTitle'),
+        ListElementSubtitle: () => import('~/components/List/ListElementSubtitle'),
     },
     props: {
         item: {
@@ -39,32 +32,20 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            isDragged: false,
-            draggedElementStyle: { width: 246, height: 32, backgroundColor: '#fff' },
-        };
-    },
     methods: {
         ...mapActions('draggable', [
             'setDraggedElement',
             'setDraggableState',
         ]),
-        onDraggedState(event) {
-            const uniqId = `${event.target.id}--${getUUID()}`;
-            switch (event.detail.state) {
-            case DraggableStates.START:
-                this.isDragged = true;
+        onDrag(isDragged) {
+            const uniqId = `${this.item.id}--${getUUID()}`;
+            if (isDragged) {
                 this.setDraggedElement(uniqId);
-                break;
-            case DraggableStates.END:
-                this.isDragged = false;
+            } else {
                 this.setDraggedElement();
-                break;
-            default: break;
             }
 
-            this.setDraggableState({ propName: 'isListElementDragging', value: this.isDragged });
+            this.setDraggableState({ propName: 'isListElementDragging', value: isDragged });
         },
     },
 };

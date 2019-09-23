@@ -7,14 +7,20 @@
         <CheckBoxElement
             v-for="(option, index) in options"
             :key="index"
-            :description="option"
+            small
+            :description="option.key"
             :selected-value="getSelectedValueByOption(option)"
             @value="onSelectedValue">
-            <template #checkboxDescription>
-                <ListElementDescription
-                    :title="option.key"
-                    :subtitle="option.value || 'No translation'"
-                    subtitle-typo="typo-label" />
+            <template #description>
+                <ListElementDescription>
+                    <ListElementSubtitle
+                        small
+                        :subtitle="option.value || 'No translation'" />
+                    <ListElementTitle
+                        small
+                        :title="option.key"
+                        :color="getSelectedColor(option.key)" />
+                </ListElementDescription>
             </template>
         </CheckBoxElement>
     </List>
@@ -27,6 +33,8 @@ export default {
         List: () => import('~/components/List/List'),
         CheckBoxElement: () => import('~/components/List/Elements/CheckBoxElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
+        ListElementTitle: () => import('~/components/List/ListElementTitle'),
+        ListElementSubtitle: () => import('~/components/List/ListElementSubtitle'),
     },
     props: {
         options: {
@@ -43,9 +51,9 @@ export default {
             let localSelectedOptions = [];
 
             if (value) {
-                localSelectedOptions = [...this.selectedOptions, option.key];
+                localSelectedOptions = [...this.selectedOptions, option];
             } else {
-                localSelectedOptions = this.selectedOptions.filter(opt => opt !== option.key);
+                localSelectedOptions = this.selectedOptions.filter(opt => opt !== option);
             }
 
             this.$emit('values', localSelectedOptions);
@@ -54,6 +62,11 @@ export default {
             const index = this.selectedOptions.findIndex(opt => opt === option.key);
 
             return index !== -1;
+        },
+        getSelectedColor(option) {
+            return String(this.selectedOption) === option
+                ? 'txt--dark-graphite'
+                : 'txt--graphite';
         },
     },
 };

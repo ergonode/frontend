@@ -58,23 +58,48 @@ export function getParamsOptionsForType(type, data) {
 export function getIcon(type) {
     switch (type) {
     case types.TEXT:
-        return 'text';
+        return 'Text';
     case types.TEXTAREA:
-        return 'text_area';
+        return 'Textarea';
     case types.NUMERIC:
-        return 'text';
+        return 'Numeric';
     case types.SELECT:
-        return 'select';
+        return 'Select';
     case types.MULTI_SELECT:
-        return 'select';
+        return 'MultiSelect';
     case types.IMAGE:
-        return 'image';
+        return 'Image';
     case types.PRICE:
-        return 'price';
+        return 'Price';
     case types.UNIT:
-        return 'unit';
+        return 'Unit';
     case types.DATE:
-        return 'date';
+        return 'Date';
+    default:
+        return '';
+    }
+}
+
+export function getTypeTranslation(type) {
+    switch (type) {
+    case types.TEXT:
+        return 'TEXT';
+    case types.TEXTAREA:
+        return 'TEXT AREA';
+    case types.NUMERIC:
+        return 'NUMERIC';
+    case types.SELECT:
+        return 'SELECT';
+    case types.MULTI_SELECT:
+        return 'MULTI SELECT';
+    case types.IMAGE:
+        return 'IMAGE';
+    case types.PRICE:
+        return 'PRICE';
+    case types.UNIT:
+        return 'UNIT';
+    case types.DATE:
+        return 'DATE';
     default:
         return '';
     }

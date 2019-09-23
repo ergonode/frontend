@@ -44,7 +44,6 @@ module.exports = {
         middleware: "checkBeforeMove"
     },
     plugins: [
-        '~plugins/directives',
         '~plugins/axios',
         '~plugins/register-store',
         '~plugins/privilege',

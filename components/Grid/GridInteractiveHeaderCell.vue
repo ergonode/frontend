@@ -30,11 +30,10 @@
                         <ListElement
                             v-for="option in contextualMenuItems"
                             :key="option.text"
-                            regular
                             @click.native="() => onSelectOption(option)">
-                            <ListElementDescription
-                                :subtitle="option.text"
-                                subtitle-color="txt--graphite" />
+                            <ListElementDescription>
+                                <ListElementTitle :title="option.text" />
+                            </ListElementDescription>
                             <CheckBox
                                 v-if="option.text !== 'Remove'"
                                 ref="checkbox"
@@ -63,6 +62,7 @@ export default {
         List: () => import('~/components/List/List'),
         ListElement: () => import('~/components/List/ListElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
+        ListElementTitle: () => import('~/components/List/ListElementTitle'),
         CheckBox: () => import('~/components/Inputs/CheckBox'),
         GridBaseHeaderCell: () => import('~/components/Grid/GridBaseHeaderCell'),
     },

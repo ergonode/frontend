@@ -3,16 +3,19 @@
  * See LICENSE for license details.
  */
 <template>
-    <ListElement @click.native="onClick">
+    <ListElement
+        :small="small"
+        @click.native="onClick">
         <ListElementAction>
             <CheckBox
                 v-model="selectedValue" />
         </ListElementAction>
-        <slot name="checkboxDescription">
-            <ListElementDescription
-                :subtitle="description"
-                subtitle-typo="typo-label"
-                :subtitle-color="color" />
+        <slot name="description">
+            <ListElementDescription>
+                <ListElementTitle
+                    :title="description"
+                    :color="color" />
+            </ListElementDescription>
         </slot>
     </ListElement>
 </template>
@@ -20,6 +23,7 @@
 <script>
 import ListElement from '~/components/List/ListElement';
 import ListElementDescription from '~/components/List/ListElementDescription';
+import ListElementTitle from '~/components/List/ListElementTitle';
 import ListElementAction from '~/components/List/ListElementAction';
 import CheckBox from '~/components/Inputs/CheckBox';
 
@@ -28,15 +32,20 @@ export default {
     components: {
         ListElement,
         ListElementDescription,
+        ListElementTitle,
         ListElementAction,
         CheckBox,
     },
     props: {
         description: {
-            type: [Object, String, Number],
+            type: [String, Number],
             default: '',
         },
         selectedValue: {
+            type: Boolean,
+            default: false,
+        },
+        small: {
             type: Boolean,
             default: false,
         },

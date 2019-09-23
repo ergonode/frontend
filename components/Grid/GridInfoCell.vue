@@ -4,7 +4,7 @@
  */
 <template functional>
     <span
-        :class="['info-cell', {'info-cell--fixed-width': props.fixedWidth}]"
+        class="info-cell"
         v-text="props.value" />
 </template>
 
@@ -17,10 +17,6 @@ export default {
             type: [String, Number],
             required: true,
         },
-        fixedWidth: {
-            type: Boolean,
-            default: false,
-        },
     },
 };
 </script>
@@ -30,15 +26,11 @@ export default {
         @include setFont(medium, small, regular, $darkGraphite);
 
         flex: 1;
-        width: 0;
+        width: min-content;
         padding: 8px;
         user-select: none;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-
-        &--fixed-width {
-            width: min-content;
-        }
     }
 </style>

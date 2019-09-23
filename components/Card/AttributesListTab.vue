@@ -15,9 +15,7 @@
             v-else
             header="Attributes"
             @searchResult="onSearch" />
-        <AttributesList
-            :language-code="languageCode"
-            :dragging-disabled="disabled" />
+        <AttributesList :language-code="languageCode" />
         <div class="add-btn-wrapper">
             <Button
                 fab
@@ -48,10 +46,6 @@ export default {
         isSelectLanguage: {
             type: Boolean,
             default: true,
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
         },
     },
     data() {
