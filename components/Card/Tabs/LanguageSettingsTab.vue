@@ -4,7 +4,9 @@
  */
 <template>
     <BaseTab>
-        <LanguageSettingsCard slot="content" />
+        <template #content>
+            <LanguageSettingsCard />
+        </template>
         <Footer
             slot="footer"
             :buttons="[...updateButton]" />

@@ -27,7 +27,7 @@
                     fab
                     color="transparent"
                     @click.native="expandTabContent">
-                    <template v-slot:prepend>
+                    <template #prepend>
                         <IconArrowDouble :state="expendStateTabIcon" />
                     </template>
                 </Button>

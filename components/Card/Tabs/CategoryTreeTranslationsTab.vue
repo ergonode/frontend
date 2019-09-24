@@ -8,8 +8,7 @@
         <CategoryTreeTranslationCard
             v-for="(languageCode, index) in cardsLanguageCodes"
             :key="index"
-            :language-code="languageCode"
-            :translations="translations" />
+            :language-code="languageCode" />
     </TranslationsTab>
 </template>
 

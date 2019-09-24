@@ -15,12 +15,12 @@
         :disabled="disabled"
         @focus="onFocusChange"
         @input="onValueChange">
-        <template v-slot:append>
+        <template #append>
             <ProductTemplateDetailsContent
                 :hint="hint"
                 :error-messages="errorMessages"
                 :is-error="isError">
-                <template v-slot:append>
+                <template #append>
                     <IconArrowDropDown :state="dropDownState" />
                 </template>
             </ProductTemplateDetailsContent>
@@ -49,7 +49,7 @@ export default {
     },
     created() {
         if (!this.value) this.localValue = null;
-        else this.localValue = parseDate(this.value, this.parameters.format);
+        else this.localValue = parseDate(this.value, this.parameters.format, new Date());
     },
     computed: {
         dropDownState() {

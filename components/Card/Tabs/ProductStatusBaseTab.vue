@@ -4,7 +4,7 @@
  */
 <template>
     <BaseTab>
-        <template v-slot:content>
+        <template #content>
             <ProductStatusBaseCard />
         </template>
         <Footer

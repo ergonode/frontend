@@ -22,7 +22,7 @@
             :disabled="!isUserAllowedToUpdate"
             @highlightedPositionChange="onHighlightedPositionsChange"
             @resizingElMaxRow="onResizingElMaxRow">
-            <template v-slot:content>
+            <template #content>
                 <AttributeElementContent
                     v-if="element.type !== 'SECTION TITLE'"
                     :element="element"

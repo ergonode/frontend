@@ -12,7 +12,7 @@
             placeholder="Search..."
             @input="onSearch"
             @focus="onSearchFocus">
-            <template v-slot:append>
+            <template #append>
                 <IconSearch :fill-color="searchIconFillColor" />
             </template>
         </TextField>
@@ -22,7 +22,7 @@
             class="search-btn"
             fab
             @click.native="onSearchBtnClick">
-            <template v-slot:prepend>
+            <template #prepend>
                 <IconSearch fill-color="#fff" />
             </template>
         </Button>

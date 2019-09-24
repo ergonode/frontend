@@ -11,7 +11,6 @@
                 :group="group"
                 :language-code="languageCode"
                 :is-expanded="expendedGroupId === group.id"
-                :dragging-disabled="draggingDisabled"
                 @expandedGroup="setExpandedGroupID" />
         </div>
     </List>
@@ -29,10 +28,6 @@ export default {
     props: {
         languageCode: {
             type: String,
-            required: true,
-        },
-        draggingDisabled: {
-            type: Boolean,
             required: true,
         },
     },

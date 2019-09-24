@@ -7,7 +7,11 @@
         <OptionsHeader
             slot="header"
             :cards-language-codes="cardsLanguageCodes" />
-        <slot slot="content" />
+        <template #content>
+            <div class="translation-cards">
+                <slot />
+            </div>
+        </template>
         <Footer
             slot="footer"
             :buttons="[...updateButton]" />
@@ -56,3 +60,13 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .translation-cards {
+        display: grid;
+        grid-auto-flow: column;
+        grid-template-rows: max-content;
+        justify-content: center;
+        width: 0;
+    }
+</style>

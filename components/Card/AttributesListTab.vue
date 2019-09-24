@@ -15,15 +15,13 @@
             v-else
             header="Attributes"
             @searchResult="onSearch" />
-        <AttributesList
-            :language-code="languageCode"
-            :dragging-disabled="disabled" />
+        <AttributesList :language-code="languageCode" />
         <div class="add-btn-wrapper">
             <Button
                 fab
                 :disabled="!$hasAccess('ATTRIBUTE_CREATE')"
                 @click.native="addNewAttribute">
-                <template v-slot:prepend>
+                <template #prepend>
                     <IconAdd fill-color="#fff" />
                 </template>
             </Button>
@@ -48,10 +46,6 @@ export default {
         isSelectLanguage: {
             type: Boolean,
             default: true,
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
         },
     },
     data() {

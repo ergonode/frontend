@@ -9,18 +9,18 @@
             :icon="icon"
             :is-breadcrumb="breadcrumbs.length !== 0"
             @navigateback="onClick">
-            <template v-slot:breadcrumb>
+            <template #breadcrumb>
                 <NavigationHeaderBreadcrumb
                     v-for="(breadcrumb, index) in breadcrumbs"
                     :key="index"
                     slot="breadcrumb"
                     :breadcrumb="breadcrumb" />
             </template>
-            <template v-slot:badge>
+            <template #badge>
                 <InformationBadge
                     v-if="isReadOnly"
                     title="READ ONLY">
-                    <template v-slot:prepend>
+                    <template #prepend>
                         <IconLock
                             size="24"
                             fill-color="#fff" />
@@ -38,7 +38,7 @@
                 :disabled="button.disabled"
                 large
                 @click.native="button.action">
-                <template v-slot:prepend>
+                <template #prepend>
                     <IconDelete v-if="isRemoveButton(button.icon)" />
                     <IconAdd
                         v-else

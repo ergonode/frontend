@@ -25,16 +25,15 @@
                 icon-path="Others/IconDots"
                 :options="contextualMenuItems"
                 @focus="onSelectFocus">
-                <template v-slot:content>
+                <template #content>
                     <List>
                         <ListElement
                             v-for="(option, optIndex) in contextualMenuItems"
                             :key="option"
-                            regular
                             @click.native="() => onSelectValue(optIndex)">
-                            <ListElementDescription
-                                :subtitle="option"
-                                subtitle-color="txt--graphite" />
+                            <ListElementDescription>
+                                <ListElementTitle :title="option" />
+                            </ListElementDescription>
                             <CheckBox
                                 v-if="option === 'Required'"
                                 ref="checkbox"
@@ -56,10 +55,12 @@ import ElementContentBase from '~/components/Template/TemplateDesigner/ElementCo
 import List from '~/components/List/List';
 import ListElement from '~/components/List/ListElement';
 import ListElementDescription from '~/components/List/ListElementDescription';
+import ListElementTitle from '~/components/List/ListElementTitle';
 
 export default {
     name: 'AttributeElementContent',
     components: {
+        ListElementTitle,
         ButtonSelect,
         ElementContentBase,
         List,

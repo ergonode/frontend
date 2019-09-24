@@ -16,7 +16,7 @@
         @focus="onFocus"
         @input="onValueChange"
         @apply="onApply">
-        <template v-slot:selectContent>
+        <template #selectContent>
             <TranslationMultiselectListContent
                 v-if="multiselect"
                 :options="options"

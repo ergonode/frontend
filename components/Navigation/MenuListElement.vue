@@ -12,7 +12,6 @@
             :to="{ path: item.routing }">
             <Component
                 :is="iconComponent"
-                class="link-icon"
                 :fill-color="iconFillColor" />
             <span
                 class="link-text"

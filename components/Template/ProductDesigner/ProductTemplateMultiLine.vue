@@ -13,7 +13,7 @@
         :disabled="disabled"
         resize="none"
         @input="onValueChange">
-        <template v-slot:append>
+        <template #append>
             <ProductTemplateDetailsContent
                 :hint="hint"
                 :error-messages="errorMessages"

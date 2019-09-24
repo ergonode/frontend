@@ -4,7 +4,7 @@
  */
 <template>
     <ModalBase :value="value">
-        <template v-slot:content>
+        <template #content>
             <div class="modal__header">
                 <slot name="header">
                     <div class="horizontal-wrapper">
@@ -17,7 +17,7 @@
                         fab
                         color="transparent"
                         @click.native="onClose">
-                        <template v-slot:prepend>
+                        <template #prepend>
                             <IconClose />
                         </template>
                     </Button>

@@ -19,6 +19,7 @@ export default {
     getData({ commit, dispatch, state }, { path }) {
         const {
             columns: stateColumns,
+            columnWidths: stateColumnWidths,
             sortedByColumn,
             displayedPage,
             numberOfDisplayedElements,
@@ -68,23 +69,26 @@ export default {
                 }
             }
 
+            if (!stateColumnWidths.length) commit(types.SET_COLUMN_WIDTHS, columnWidths);
+
             commit(types.SET_CONFIGURATION, mappedConfiguration);
             commit(types.SET_CELL_VALUES, cellValues);
             commit(types.SET_ROW_IDS, rowIds);
             commit(types.SET_COUNT, count);
             commit(types.SET_FILTERED, filtered);
             commit(types.SET_COLUMNS, mappedColumns);
-            commit(types.SET_COLUMN_WIDTHS, columnWidths);
             commit(types.SET_PINNED_COLUMNS, pinnedColumns);
-        }).catch(err => console.log(err));
+        });
     },
     getColumnData({ commit, dispatch, state }, {
         ghostIndex,
+        draggedElIndex,
         columnId,
         path,
     }) {
         const {
             columns: stateColumns,
+            columnWidths: stateColumnWidths,
             displayedPage,
             numberOfDisplayedElements,
             sortedByColumn,
@@ -116,22 +120,28 @@ export default {
             this.$cookies.set(COLUMN_IDS, parsedColumnsID);
 
             const draggedColumn = columns.find(col => col.id === columnId);
-            let columnsWithoutGhost = stateColumns.filter(column => column.id !== 'ghost');
-
-            columnsWithoutGhost = insertValueAtIndex(
-                columnsWithoutGhost, getMappedColumn(draggedColumn), ghostIndex,
-            );
-
+            const { mappedColumn, columnWidth } = getMappedColumn(draggedColumn);
             const rowIds = getMappedRowIds(rows);
             const cellValues = getMappedCellValues(columns, rows, rowIds);
+
+            let columnWidthsCopy = [...stateColumnWidths];
+            let columnsWithoutGhost = stateColumns.filter(column => column.id !== 'ghost');
+
+            columnWidthsCopy.splice(draggedElIndex, 1);
+            columnsWithoutGhost = insertValueAtIndex(
+                columnsWithoutGhost, mappedColumn, ghostIndex,
+            );
+            columnWidthsCopy = insertValueAtIndex(
+                columnWidthsCopy, columnWidth, ghostIndex,
+            );
 
             dispatch('list/setDisabledElement', { languageCode: draggedColumn.language, elementId: draggedColumn.element_id }, { root: true });
 
             commit(types.SET_COLUMNS, columnsWithoutGhost);
-            commit(types.SET_COLUMN_WIDTH_AT_INDEX, { index: ghostIndex, width: 'min-content' });
+            commit(types.SET_COLUMN_WIDTHS, columnWidthsCopy);
             commit(types.SET_CELL_VALUES, cellValues);
             commit(types.SET_ROW_IDS, rowIds);
-        }).catch(err => console.log(err));
+        });
     },
     setGridData({ commit }, { columns, rows }) {
         const { mappedColumns } = getMappedColumns(columns, false);
