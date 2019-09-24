@@ -28,7 +28,7 @@ export default {
             debounceFunc: null,
         };
     },
-    created() {
+    beforeCreate() {
         this.debounceFunc = debounce(this.emitRowsNumber, 100);
     },
     mounted() {

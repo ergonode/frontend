@@ -44,18 +44,14 @@ import { mapState } from 'vuex';
 import {
     getHighlightingLayoutDropPositions,
 } from '~/model/template_designer/layout/LayoutCalculations';
-import TemplateGridGhostItem from '~/components/TemplateGrid/TemplateDesigner/TemplateGridGhostItem';
-import LayoutElement from '~/components/Template/TemplateDesigner/LayoutElement';
-import AttributeElementContent from '~/components/Template/TemplateDesigner/AttributeElementContent';
-import SectionElementContent from '~/components/Template/TemplateDesigner/SectionElementContent';
 
 export default {
     name: 'TemplateGridDraggableLayer',
     components: {
-        TemplateGridGhostItem,
-        LayoutElement,
-        AttributeElementContent,
-        SectionElementContent,
+        TemplateGridGhostItem: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridGhostItem'),
+        LayoutElement: () => import('~/components/Template/TemplateDesigner/LayoutElement'),
+        AttributeElementContent: () => import('~/components/Template/TemplateDesigner/AttributeElementContent'),
+        SectionElementContent: () => import('~/components/Template/TemplateDesigner/SectionElementContent'),
     },
     props: {
         columnsNumber: {

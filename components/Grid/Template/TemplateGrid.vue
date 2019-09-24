@@ -30,12 +30,14 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
+import TemplateGridDesigner from '~/components/TemplateGrid/TemplateDesigner/TemplateGridDesigner';
+import TemplateGridDraggableLayer from '~/components/TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer';
 
 export default {
     name: 'TemplateGrid',
     components: {
-        TemplateGridDesigner: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridDesigner'),
-        TemplateGridDraggableLayer: () => import('~/components/TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer'),
+        TemplateGridDesigner,
+        TemplateGridDraggableLayer,
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
         Footer: () => import('~/components/ReusableFooter/Footer'),
         ModalSectionTitleTemplate: () => import('~/components/Modals/ModalSectionTitleTemplate'),
