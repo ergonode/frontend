@@ -18,7 +18,7 @@ import { mapState } from 'vuex';
 export default {
     name: 'AttributeTranslationsTab',
     components: {
-        TranslationsTab: () => import('~/components/Card/TranslationsTab'),
+        TranslationsTab: () => import('~/components/Card/Tabs/TranslationsTab'),
         AttributeTranslationCard: () => import('~/components/Card/AttributeTranslationCard'),
     },
     props: {

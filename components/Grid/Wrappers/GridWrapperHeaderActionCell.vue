@@ -20,9 +20,10 @@
                 v-else
                 :store-namespace="storeNamespace"
                 :is-multi-select="isMultiSelect"
-                :type="column.filter.type"
+                :type="filterType"
                 :value="filterValue"
                 :options="options"
+                :colors="column.colors || null"
                 :fixed-width="$el.offsetWidth"
                 @updateValue="onUpdateFilter" />
         </template>
@@ -95,6 +96,11 @@ export default {
             const { filter: { type } } = this.column;
 
             return type === 'MULTI_SELECT';
+        },
+        filterType() {
+            if (this.column.colors) return this.column.type;
+
+            return this.column.filter.type;
         },
         filterValue() {
             const { [this.column.id]: filter } = this.gridState.filter;

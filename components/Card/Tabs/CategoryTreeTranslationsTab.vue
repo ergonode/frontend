@@ -18,7 +18,7 @@ import { mapState } from 'vuex';
 export default {
     name: 'CategoryTreeTranslationsTab',
     components: {
-        TranslationsTab: () => import('~/components/Card/TranslationsTab'),
+        TranslationsTab: () => import('~/components/Card/Tabs/TranslationsTab'),
         CategoryTreeTranslationCard: () => import('~/components/Card/CategoryTreeTranslationCard'),
     },
     props: {
