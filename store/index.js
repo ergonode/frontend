@@ -12,7 +12,10 @@ export const actions = {
         const token = this.$cookies.get(JWT_KEY) || null;
 
         await dispatch('authentication/setAuth', token);
-        await dispatch('authentication/getUser');
+
+        if (token) {
+            await dispatch('authentication/getUser');
+        }
     },
     resetState({ dispatch, commit }) {
         dispatch('categories/clearStorage');
