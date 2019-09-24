@@ -4,6 +4,7 @@
  */
 <template>
     <Select
+        :style="{width: `${fixedWidth}px`}"
         :value="value"
         solid
         small
@@ -12,7 +13,6 @@
         :dismissible="false"
         :error-messages="errorMessages"
         autofocus
-        :style="{width: `${fixedWidth}px`}"
         @focus="onFocus"
         @input="onValueChange"
         @apply="onApply">

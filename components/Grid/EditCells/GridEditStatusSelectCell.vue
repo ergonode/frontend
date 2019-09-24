@@ -4,12 +4,14 @@
  */
 <template>
     <Select
+        :style="{width: `${fixedWidth}px`}"
         :value="value"
         solid
         clearable
         :dismissible="false"
         :error-messages="errorMessages"
         autofocus
+        :options="options"
         @focus="onFocus"
         @input="onValueChange"
         @apply="onApply" />
@@ -34,6 +36,10 @@ export default {
         },
         options: {
             type: Array,
+            required: true,
+        },
+        fixedWidth: {
+            type: Number,
             required: true,
         },
     },

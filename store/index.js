@@ -5,14 +5,14 @@
  * See LICENSE for license details.
  */
 import { getPagesConfig } from '~/plugins/moduleLoader';
-import { JWT_KEY, USER_KEY } from '~/defaults/authenticate/cookies';
+import { JWT_KEY } from '~/defaults/authenticate/cookies';
 
 export const actions = {
     async nuxtServerInit({ dispatch }) {
         const token = this.$cookies.get(JWT_KEY) || null;
-        const user = this.$cookies.get(USER_KEY) || null;
 
-        dispatch('authentication/setAuth', { user, token });
+        await dispatch('authentication/setAuth', token);
+        await dispatch('authentication/getUser');
     },
     resetState({ dispatch, commit }) {
         dispatch('categories/clearStorage');
