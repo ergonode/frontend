@@ -41,7 +41,8 @@ export default function ({
             error({ statusCode: 404, message: msg });
             break;
         default:
-            msg = message;
+            if (message) msg = message;
+            else msg = 'Unsupported message, please contact with support with reproduction steps';
         }
 
         if (process.client) {
