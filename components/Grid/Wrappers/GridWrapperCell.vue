@@ -26,6 +26,7 @@
                 :type="column.type"
                 :value="editValue"
                 :options="options"
+                :colors="column.colors || null"
                 :parameters="parameters"
                 :error-messages="errorValue"
                 :fixed-width="$el.offsetWidth"

@@ -12,6 +12,7 @@
             :parameters="parameters"
             :multiselect="isMultiSelect"
             :fixed-width="fixedWidth"
+            :colors="colors"
             @imageid="onImageIDChange"
             @focus="onFocus" />
     </div>
@@ -42,6 +43,10 @@ export default {
         options: {
             type: Array,
             default: () => [],
+        },
+        colors: {
+            type: Object,
+            default: null,
         },
         parameters: {
             type: Object,

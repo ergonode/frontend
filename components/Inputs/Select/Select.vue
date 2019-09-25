@@ -140,7 +140,7 @@ export default {
     },
     computed: {
         selectedOptions() {
-            return this.value === '' ? [] : this.value;
+            return this.value ? this.value : [];
         },
         parsedInputValue() {
             return Array.isArray(this.value) ? this.value.join(', ') : this.value;

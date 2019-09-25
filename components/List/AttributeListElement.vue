@@ -4,9 +4,9 @@
  */
 <template>
     <ListDraggableElement
-        :is-draggable="$hasAccess('ATTRIBUTE_UPDATE')"
         :draggable-id="`${item.code}:${languageCode}`"
-        :disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
+        :is-draggable="$hasAccess('ATTRIBUTE_UPDATE')"
+        :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
         @drag="onDrag">
         <ListElementIcon :icon-path="typeIcon" />
         <ListElementDescription>

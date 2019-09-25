@@ -18,7 +18,7 @@ import { mapState } from 'vuex';
 export default {
     name: 'ConditionSetTranslationsTab',
     components: {
-        TranslationsTab: () => import('~/components/Card/TranslationsTab'),
+        TranslationsTab: () => import('~/components/Card/Tabs/TranslationsTab'),
         ConditionSetTranslationCard: () => import('~/components/Card/Cards/ConditionSetTranslationCard'),
     },
     props: {

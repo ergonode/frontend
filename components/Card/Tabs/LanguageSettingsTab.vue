@@ -19,7 +19,7 @@ import LanguageSettingsCard from '~/components/Card/LanguageSettingsCard';
 import BaseTab from '~/components/Card/BaseTab';
 
 export default {
-    name: 'AttributeBaseTab',
+    name: 'LanguageSettingsTab',
     components: {
         Footer: () => import('~/components/ReusableFooter/Footer'),
         LanguageSettingsCard,

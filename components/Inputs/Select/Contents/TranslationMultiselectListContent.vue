@@ -15,10 +15,10 @@
                 <ListElementDescription>
                     <ListElementSubtitle
                         small
-                        :subtitle="option.value || 'No translation'" />
+                        :subtitle="option.key" />
                     <ListElementTitle
                         small
-                        :title="option.key"
+                        :title="option.value || 'No translation'"
                         :color="getSelectedColor(option.key)" />
                 </ListElementDescription>
             </template>

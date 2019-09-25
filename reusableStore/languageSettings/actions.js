@@ -15,7 +15,9 @@ export default {
         );
         const data = getParsedData(activeLanguages, selectedLanguageCodes);
 
-        return this.app.$axios.$put(`${userLanguageCode}/languages`, data);
+        return this.app.$axios.$put(`${userLanguageCode}/languages`, data).then(() => {
+            this.$addAlert({ type: 'success', message: 'Languages updated' });
+        });
     },
     getData({ commit, rootState }) {
         const { language: userLanguageCode } = rootState.authentication.user;

@@ -32,7 +32,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import ElementContentBase from '~/components/Template/TemplateDesigner/ElementContentBase';
+import ElementContentBase from '~/components/Template/ProductDesigner/ElementContentBase';
 import IconFontSize from '~/components/Icon/Editor/IconFontSize';
 import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
 

@@ -9,10 +9,10 @@
             :key="index"
             small
             @click.native="onSelectedValue(index)">
+            <ListElementAction>
+                <StatusBadge :color="colors[option.key]" />
+            </ListElementAction>
             <ListElementDescription>
-                <ListElementSubtitle
-                    small
-                    :subtitle="option.key" />
                 <ListElementTitle
                     small
                     :title="option.value || 'No translation'"
@@ -24,13 +24,14 @@
 
 <script>
 export default {
-    name: 'TranslationSelectListContent',
+    name: 'StatusSelectListContent',
     components: {
         List: () => import('~/components/List/List'),
         ListElement: () => import('~/components/List/ListElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
-        ListElementSubtitle: () => import('~/components/List/ListElementSubtitle'),
+        ListElementAction: () => import('~/components/List/ListElementAction'),
+        StatusBadge: () => import('~/components/Badges/StatusBadge'),
     },
     props: {
         options: {
@@ -40,6 +41,10 @@ export default {
         selectedOption: {
             type: [String, Number],
             default: '',
+        },
+        colors: {
+            type: Object,
+            required: true,
         },
     },
     methods: {
@@ -54,3 +59,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .status-badge {
+        margin-right: 8px;
+    }
+</style>

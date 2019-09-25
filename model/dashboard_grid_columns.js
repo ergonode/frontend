@@ -18,7 +18,7 @@ export default [
         privileges: 'TEMPLATE_DESIGNER_READ',
     },
     {
-        title: 'ProductDesigner',
+        title: 'Product',
         actionTitle: 'Create product',
         icon: 'add_template.svg',
         action: '/products',

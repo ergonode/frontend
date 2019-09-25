@@ -21,6 +21,7 @@ export default function ({
             access: /403/,
             notFound: /404/,
         };
+
         const { response: { data: { message }, status } } = errorResponse;
 
         switch (true) {
@@ -41,7 +42,7 @@ export default function ({
             error({ statusCode: 404, message: msg });
             break;
         default:
-            msg = message;
+            msg = message || 'Unsupported message, please contact with support with reproduction steps';
         }
 
         if (process.client) {

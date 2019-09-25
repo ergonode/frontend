@@ -23,12 +23,7 @@ export default {
             default: 62,
         },
     },
-    data() {
-        return {
-            debounceFunc: null,
-        };
-    },
-    created() {
+    beforeCreate() {
         this.debounceFunc = debounce(this.emitRowsNumber, 100);
     },
     mounted() {
@@ -37,6 +32,7 @@ export default {
     },
     destroyed() {
         window.removeEventListener('resize', this.debounceFunc);
+        delete this.debounceFunc;
     },
     methods: {
         emitRowsNumber() {

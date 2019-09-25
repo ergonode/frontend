@@ -34,7 +34,7 @@ export default {
             selectedLanguageNames: state => state.selectedLanguageNames,
         }),
         languageNames() {
-            return this.languages.map(language => language.name);
+            return this.$store.state.languageSettings.languages.map(language => language.name);
         },
     },
     methods: {

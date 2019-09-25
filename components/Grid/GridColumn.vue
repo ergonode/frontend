@@ -161,7 +161,7 @@ export default {
                 return false;
             }
 
-            addGridColumnCopyToDocumentBody(event, headerWidth);
+            addGridColumnCopyToDocumentBody(event, headerWidth, this.column.id);
             this.addBorderToRightNeighbour(grid.children[neighbourIndex]);
             this.setBounds({ width: headerWidth });
             this.setGhostIndex(this.index);
@@ -178,7 +178,7 @@ export default {
             const elementBelowMouse = document.elementFromPoint(clientX, clientY);
             const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
             const ghostColumnExists = this.ghostIndex !== -1;
-            removeGridColumnCopyFromDocumentBody();
+            removeGridColumnCopyFromDocumentBody(event);
 
             if (ghostColumnExists) {
                 this.resetColumnElementTransforms();
@@ -199,9 +199,10 @@ export default {
         },
         onDrop(event) {
             event.preventDefault();
-            const columnId = event.dataTransfer.getData('text/plain');
 
-            if (columnId) {
+            if (typeof this.draggedElement !== 'object') {
+                const columnId = event.dataTransfer.getData('text/plain');
+
                 this.resetColumnElementTransforms();
 
                 this.$store.dispatch(`${this.storeNamespace}/getColumnData`, {

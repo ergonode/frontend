@@ -4,7 +4,7 @@
  */
 import { mount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
-import LayoutElement from '~/components/Template/TemplateDesigner/LayoutElement';
+import LayoutElement from '~/components/Template/ProductDesigner/LayoutElement';
 
 const localVue = createLocalVue();
 const store = new Store({
@@ -24,7 +24,7 @@ const mocks = {
     $store: store,
 };
 
-describe('Template/TemplateDesigner/LayoutElement', () => {
+describe('Template/ProductDesigner/LayoutElement', () => {
     let wrapper;
 
     beforeEach(() => {

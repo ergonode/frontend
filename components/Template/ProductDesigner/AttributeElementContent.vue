@@ -51,7 +51,7 @@ import { mapActions } from 'vuex';
 import { capitalizeAndConcatenationArray } from '~/model/stringWrapper';
 import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
 import CheckBox from '~/components/Inputs/CheckBox';
-import ElementContentBase from '~/components/Template/TemplateDesigner/ElementContentBase';
+import ElementContentBase from '~/components/Template/ProductDesigner/ElementContentBase';
 import List from '~/components/List/List';
 import ListElement from '~/components/List/ListElement';
 import ListElementDescription from '~/components/List/ListElementDescription';
