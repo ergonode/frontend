@@ -8,7 +8,7 @@
         title="Section title settings"
         icon-path="Editor/IconFontSize"
         @input="onClose">
-        <template v-slot:body>
+        <template #body>
             <TextField
                 :value="title"
                 solid
@@ -18,7 +18,7 @@
                 :error-messages="error"
                 @input="onTitleChange" />
         </template>
-        <template v-slot:footer>
+        <template #footer>
             <Button
                 title="SAVE"
                 @click.native="onSave" />

@@ -12,7 +12,7 @@
         :required="required"
         :disabled="disabled"
         @input="onValueChange">
-        <template v-slot:append>
+        <template #append>
             <ProductTemplateDetailsContent
                 :hint="hint"
                 :error-messages="errorMessages"

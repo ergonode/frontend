@@ -8,8 +8,7 @@
         <ConditionSetTranslationCard
             v-for="(languageCode, index) in cardsLanguageCodes"
             :key="index"
-            :language-code="languageCode"
-            :translations="translations" />
+            :language-code="languageCode" />
     </TranslationsTab>
 </template>
 
@@ -19,7 +18,7 @@ import { mapState } from 'vuex';
 export default {
     name: 'ConditionSetTranslationsTab',
     components: {
-        TranslationsTab: () => import('~/components/Card/TranslationsTab'),
+        TranslationsTab: () => import('~/components/Card/Tabs/TranslationsTab'),
         ConditionSetTranslationCard: () => import('~/components/Card/Cards/ConditionSetTranslationCard'),
     },
     props: {

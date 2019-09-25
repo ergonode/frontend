@@ -22,11 +22,11 @@
             <GridEditActivatorCell
                 v-else
                 :store-namespace="storeNamespace"
-                :is-select-kind="isSelectKind"
                 :is-multi-select="isMultiSelect"
                 :type="column.type"
                 :value="editValue"
                 :options="options"
+                :colors="column.colors || null"
                 :parameters="parameters"
                 :error-messages="errorValue"
                 :fixed-width="$el.offsetWidth"

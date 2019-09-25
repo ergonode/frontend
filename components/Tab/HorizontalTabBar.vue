@@ -32,7 +32,7 @@
                 fab
                 color="transparent"
                 @click.native="addTab">
-                <template v-slot:prepend>
+                <template #prepend>
                     <IconAdd fill-color="#5c5f65" />
                 </template>
             </Button>

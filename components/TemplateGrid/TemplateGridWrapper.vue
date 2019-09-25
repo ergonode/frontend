@@ -33,8 +33,7 @@
                         v-else
                         name="gridItem"
                         :item="item"
-                        :toggle-item-method="toggleItem"
-                    />
+                        :toggle-item-method="toggleItem" />
                     <template
                         v-if="isConnectionsVisible"
                         #connection>

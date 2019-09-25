@@ -13,7 +13,7 @@
             class="header-title__back-btn"
             fab
             @click.native="onClick">
-            <template v-slot:prepend>
+            <template #prepend>
                 <IconArrowPointer fill-color="#fff" />
             </template>
         </Button>

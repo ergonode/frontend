@@ -4,7 +4,7 @@
  */
 <template>
     <CategoryPage
-        :title="title"
+        :title="code"
         is-edit
         @dismiss="onDismiss"
         @save="onSave" />
@@ -23,13 +23,10 @@ export default {
     components: {
         CategoryPage: () => import('~/components/Pages/CategoryPage'),
     },
-    data: () => ({
-        title: 'Edit category',
-    }),
     computed: {
         ...mapState('categories', {
             id: state => state.id,
-            name: state => state.name,
+            code: state => state.code,
         }),
         ...mapState('translations', {
             translations: state => state.translations,

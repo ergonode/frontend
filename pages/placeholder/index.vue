@@ -4,7 +4,7 @@
  */
 <template>
     <div class="placeholder-wrapper">
-        <no-ssr>
+        <client-only>
             <div class="wrapper__section">
                 <img
                     class="comet"
@@ -50,7 +50,7 @@
                 width="24"
                 src="~assets/images/preloader.gif"
                 alt="Loading...">
-        </no-ssr>
+        </client-only>
     </div>
 </template>
 

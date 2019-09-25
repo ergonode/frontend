@@ -4,6 +4,7 @@
  */
 <template>
     <Select
+        :style="{width: `${fixedWidth}px`}"
         :value="value"
         solid
         small
@@ -12,11 +13,10 @@
         :dismissible="false"
         :error-messages="errorMessages"
         autofocus
-        :style="{width: `${fixedWidth}px`}"
         @focus="onFocus"
         @input="onValueChange"
         @apply="onApply">
-        <template v-slot:selectContent>
+        <template #selectContent>
             <TranslationMultiselectListContent
                 v-if="multiselect"
                 :options="options"

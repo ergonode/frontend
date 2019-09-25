@@ -4,10 +4,10 @@
  */
 <template>
     <BaseTab>
-        <template v-slot:content>
+        <template #content>
             <UserRolesBaseCard />
         </template>
-        <template v-slot:footer>
+        <template #footer>
             <Footer
                 :buttons="[...updateButton]" />
         </template>

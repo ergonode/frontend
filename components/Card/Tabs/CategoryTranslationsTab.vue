@@ -8,8 +8,7 @@
         <CategoryTranslationCard
             v-for="(languageCode, index) in cardsLanguageCodes"
             :key="index"
-            :language-code="languageCode"
-            :translations="translations" />
+            :language-code="languageCode" />
     </TranslationsTab>
 </template>
 
@@ -19,7 +18,7 @@ import { mapState } from 'vuex';
 export default {
     name: 'CategoryTranslationsTab',
     components: {
-        TranslationsTab: () => import('~/components/Card/TranslationsTab'),
+        TranslationsTab: () => import('~/components/Card/Tabs/TranslationsTab'),
         CategoryTranslationCard: () => import('~/components/Card/CategoryTranslationCard'),
     },
 

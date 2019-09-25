@@ -9,7 +9,7 @@
                 fab
                 color="transparent"
                 @click.native="onPrevious">
-                <template v-slot:prepend>
+                <template #prepend>
                     <IconArrowSingle :state="leftArrow" />
                 </template>
             </Button>
@@ -23,7 +23,7 @@
                 fab
                 color="transparent"
                 @click.native="onNext">
-                <template v-slot:prepend>
+                <template #prepend>
                     <IconArrowSingle :state="rightArrow" />
                 </template>
             </Button>

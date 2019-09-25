@@ -20,11 +20,10 @@
                         <ListElement
                             v-for="(option, index) in options"
                             :key="index"
-                            regular
                             @click.native="onSelectedValue(index)">
-                            <ListElementDescription
-                                :subtitle="option"
-                                subtitle-color="txt--graphite" />
+                            <ListElementDescription>
+                                <ListElementTitle :title="option" />
+                            </ListElementDescription>
                         </ListElement>
                     </List>
                 </slot>
@@ -41,6 +40,7 @@ export default {
         List: () => import('~/components/List/List'),
         ListElement: () => import('~/components/List/ListElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
+        ListElementTitle: () => import('~/components/List/ListElementTitle'),
     },
     props: {
         iconPath: {

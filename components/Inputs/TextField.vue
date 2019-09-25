@@ -31,7 +31,7 @@
             :disabled="disabled"
             :aria-label="label || 'no description'"
             @input="emitValue">
-        <template v-slot:append>
+        <template #append>
             <slot name="append" />
         </template>
     </InputBase>

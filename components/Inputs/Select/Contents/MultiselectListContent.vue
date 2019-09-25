@@ -23,12 +23,10 @@ export default {
     props: {
         options: {
             type: Array,
-            required: false,
             default: () => [],
         },
         selectedOptions: {
             type: Array,
-            required: false,
             default: () => [],
         },
     },

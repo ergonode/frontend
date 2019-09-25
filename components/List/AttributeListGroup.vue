@@ -5,49 +5,31 @@
 <template>
     <ListGroupElement
         :index="group.id"
+        :group="group"
         :is-expanded="isExpanded"
         @group="getElementsForGroupWrapper">
-        <div
-            slot="headerContent"
-            class="content-wrapper">
-            <div class="horizontal-wrapper">
-                <span
-                    class="group__title"
-                    v-text="group.label" />
-                <span
-                    class="group__subtitle"
-                    v-text="`${group.elementsCount} Attributes`" />
-            </div>
-            <IconArrowSingle :state="iconState" />
-        </div>
-        <AttributeListElement
-            v-for="item in elementsByGroupInLanguage"
-            slot="item"
-            :key="item.id"
-            :item="item"
-            :language-code="languageCode"
-            :dragging-disabled="draggingDisabled" />
+        <template #item>
+            <AttributeListElement
+                v-for="item in elementsByGroupInLanguage"
+                :key="item.id"
+                :item="item"
+                :language-code="languageCode" />
+        </template>
     </ListGroupElement>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { Arrow } from '~/model/icons/Arrow';
 
 export default {
     name: 'AttributeListGroup',
     components: {
         ListGroupElement: () => import('~/components/List/ListGroupElement'),
         AttributeListElement: () => import('~/components/List/AttributeListElement'),
-        IconArrowSingle: () => import('~/components/Icon/Arrows/IconArrowSingle'),
     },
     props: {
         group: {
             type: Object,
-            required: true,
-        },
-        draggingDisabled: {
-            type: Boolean,
             required: true,
         },
         languageCode: {
@@ -56,7 +38,6 @@ export default {
         },
         isExpanded: {
             type: Boolean,
-            required: false,
             default: false,
         },
     },
@@ -73,11 +54,6 @@ export default {
                 element => (element.groups.length === 0 && this.group.id === null)
                     || element.groups.some(group => group === this.group.id),
             );
-        },
-        iconState() {
-            return this.isExpanded
-                ? Arrow.UP
-                : Arrow.DOWN;
         },
     },
     methods: {
@@ -97,33 +73,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .content-wrapper {
-        display: flex;
-        flex: 1;
-        justify-content: space-between;
-        align-items: center;
-
-        .horizontal-wrapper {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .group {
-            &__title {
-                @include setFont(medium, regular, semiRegular, $darkGraphite);
-            }
-
-            &__subtitle {
-                @include setFont(semiBold, tiny, regular, $graphite);
-            }
-
-            &__title, &__subtitle {
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
-            }
-        }
-    }
-</style>

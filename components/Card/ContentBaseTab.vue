@@ -18,7 +18,6 @@ export default {
     .content {
         display: flex;
         flex-grow: 1;
-        flex-wrap: wrap;
         justify-content: center;
         height: 0;
         overflow: auto;

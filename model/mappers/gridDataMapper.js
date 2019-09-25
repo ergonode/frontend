@@ -38,6 +38,14 @@ const getMappedColumnHeader = column => ({
     type: getMappedColumnHeaderType(column),
 });
 
+const getMappedColumnWidth = (column) => {
+    const isSelectKind = column.filter && (column.filter.type === 'SELECT' || column.filter.type === 'MULTI_SELECT');
+    const isActionKind = column.type === 'ACTION' || column.type === 'CHECK';
+    if (isSelectKind) return '150px';
+    if (isActionKind) return '40px';
+    return 'min-content';
+};
+
 export function getSortedColumnsByIDs(columns, columnsID) {
     return columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id));
 }
@@ -47,10 +55,9 @@ export function getMappedColumn(column) {
         ...column,
         header: getMappedColumnHeader(column),
     };
-    mappedColumn.header = getMappedColumnHeader(column);
-    mappedColumn.width = 'min-content';
+    const columnWidth = getMappedColumnWidth(column);
 
-    return mappedColumn;
+    return { mappedColumn, columnWidth };
 }
 
 export function getMappedColumns(columns, isExtenderNeeded = true) {
@@ -70,7 +77,6 @@ export function getMappedColumns(columns, isExtenderNeeded = true) {
     for (let i = 0; i < fixedColumnsLength; i += 1) {
         const fixedIndex = isExtenderColumnAdded ? i - 1 : i;
         const gridColumnPosition = `${i + 1} / ${i + 2}`;
-        const columnWidth = columns[fixedIndex].type === 'ACTION' || columns[fixedIndex].type === 'CHECK' ? '40px' : 'min-content';
 
         if ((i + 1 === length && columns[i].type === 'ACTION' && isExtenderNeeded)
             || (i === length && !isExtenderColumnAdded)) {
@@ -78,7 +84,7 @@ export function getMappedColumns(columns, isExtenderNeeded = true) {
             columnWidths.push('auto');
             isExtenderColumnAdded = true;
         } else {
-            columnWidths.push(columnWidth);
+            columnWidths.push(getMappedColumnWidth(columns[fixedIndex]));
             mappedColumns.push(columns[fixedIndex]);
         }
 

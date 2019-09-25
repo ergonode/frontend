@@ -4,7 +4,9 @@
  */
 <template>
     <BaseTab>
-        <LanguageSettingsCard slot="content" />
+        <template #content>
+            <LanguageSettingsCard />
+        </template>
         <Footer
             slot="footer"
             :buttons="[...updateButton]" />
@@ -17,7 +19,7 @@ import LanguageSettingsCard from '~/components/Card/LanguageSettingsCard';
 import BaseTab from '~/components/Card/BaseTab';
 
 export default {
-    name: 'AttributeBaseTab',
+    name: 'LanguageSettingsTab',
     components: {
         Footer: () => import('~/components/ReusableFooter/Footer'),
         LanguageSettingsCard,

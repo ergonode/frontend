@@ -8,15 +8,15 @@
         @mouseover.native="onMouseOver"
         @mouseout.native="onMouseOut">
         <div class="element-content__icon">
-            <IconFontSize />
+            <Component :is="attributeIconComponent" />
         </div>
         <div class="vertical-wrapper">
             <span
-                :class="typeLabelClasses"
+                :class="[typeLabelClasses, typeLabelRequireClass]"
                 v-text="element.type" />
             <span
                 class="element-content__subheader txt--dark-graphite typo-subtitle"
-                v-text="element.label" />
+                v-text="element.label || 'No translation'" />
         </div>
         <div
             v-if="!disabled"
@@ -24,49 +24,74 @@
             <ButtonSelect
                 icon-path="Others/IconDots"
                 :options="contextualMenuItems"
-                @input="onSelectValue"
-                @focus="onSelectFocus" />
+                @focus="onSelectFocus">
+                <template #content>
+                    <List>
+                        <ListElement
+                            v-for="(option, optIndex) in contextualMenuItems"
+                            :key="option"
+                            @click.native="() => onSelectValue(optIndex)">
+                            <ListElementDescription>
+                                <ListElementTitle :title="option" />
+                            </ListElementDescription>
+                            <CheckBox
+                                v-if="option === 'Required'"
+                                ref="checkbox"
+                                :value="element.required" />
+                        </ListElement>
+                    </List>
+                </template>
+            </ButtonSelect>
         </div>
     </ElementContentBase>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import ElementContentBase from '~/components/Template/TemplateDesigner/ElementContentBase';
-import IconFontSize from '~/components/Icon/Editor/IconFontSize';
+import { capitalizeAndConcatenationArray } from '~/model/stringWrapper';
 import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
+import CheckBox from '~/components/Inputs/CheckBox';
+import ElementContentBase from '~/components/Template/ProductDesigner/ElementContentBase';
+import List from '~/components/List/List';
+import ListElement from '~/components/List/ListElement';
+import ListElementDescription from '~/components/List/ListElementDescription';
+import ListElementTitle from '~/components/List/ListElementTitle';
 
 export default {
-    name: 'SectionElementContent',
+    name: 'AttributeElementContent',
     components: {
-        IconFontSize,
+        ListElementTitle,
         ButtonSelect,
         ElementContentBase,
+        List,
+        ListElement,
+        ListElementDescription,
+        CheckBox,
     },
     props: {
         index: {
             type: Number,
             required: true,
         },
-        disabled: {
-            type: Boolean,
-            required: true,
-        },
         element: {
             type: Object,
+            required: true,
+        },
+        disabled: {
+            type: Boolean,
             required: true,
         },
     },
     data() {
         return {
             isContextualMenuActive: false,
-            contextualMenuItems: ['Edit title', 'Remove'],
+            contextualMenuItems: ['Required', 'Remove'],
             isHovered: false,
         };
     },
     computed: {
-        contextualMenuHoveStateClasses() {
-            return { 'element-content__contextual-menu--hovered': this.isHovered };
+        typeLabelRequireClass() {
+            return { 'element-content--required': this.element.required };
         },
         typeLabelClasses() {
             return [
@@ -76,9 +101,21 @@ export default {
                 'l-spacing--half',
             ];
         },
+        attributeIconComponent() {
+            if (!this.element.type) return '';
+
+            const types = this.element.type.split('_');
+            const attributeName = capitalizeAndConcatenationArray(types);
+
+            return () => import(`~/components/Icon/Attributes/Icon${attributeName}`);
+        },
+        contextualMenuHoveStateClasses() {
+            return { 'element-content__contextual-menu--hovered': this.isHovered };
+        },
     },
     methods: {
         ...mapActions('templateDesigner', [
+            'setLayoutElementRequirement',
             'removeLayoutElementAtIndex',
         ]),
         onSelectFocus(isFocused) {
@@ -86,13 +123,16 @@ export default {
 
             this.isContextualMenuActive = isFocused;
         },
-        onSelectValue(value) {
-            switch (value) {
+        onSelectValue(index) {
+            switch (this.contextualMenuItems[index]) {
+            case 'Required':
+                this.setLayoutElementRequirement({
+                    index: this.index,
+                    required: !this.element.required,
+                });
+                break;
             case 'Remove':
                 this.removeLayoutElementAtIndex(this.index);
-                break;
-            case 'Edit title':
-                this.$emit('editTitle', this.index);
                 break;
             default: break;
             }
@@ -140,6 +180,12 @@ export default {
             &--hovered {
                 opacity: 1;
             }
+        }
+
+        &--required::after {
+            position: absolute;
+            color: $error;
+            content: "*";
         }
     }
 </style>

@@ -6,13 +6,13 @@
     <div :class="['alert', typeClass]">
         <Component :is="feedbackIconComponent" />
         <span
-            class="alert__title typo-subtitle txt--dark-graphite txt-fixed"
+            class="alert__title typo-subtitle txt--dark-graphite"
             v-text="alert.message" />
         <Button
             fab
             color="transparent"
             @click.native="() => removeAlert(alert)">
-            <template v-slot:prepend>
+            <template #prepend>
                 <IconClose />
             </template>
         </Button>
@@ -70,6 +70,7 @@ export default {
         &__title {
             margin-left: 16px;
             flex: 1;
+            word-break: break-all;
         }
 
         &--error {

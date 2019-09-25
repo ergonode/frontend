@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="icon-wrapper">
+    <div class="element-icon">
         <Component :is="iconComponent" />
     </div>
 </template>
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .icon-wrapper {
+    .element-icon {
         display: flex;
         flex: 0;
         justify-content: flex-start;

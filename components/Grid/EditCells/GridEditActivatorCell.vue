@@ -12,12 +12,15 @@
             :parameters="parameters"
             :multiselect="isMultiSelect"
             :fixed-width="fixedWidth"
+            :colors="colors"
             @imageid="onImageIDChange"
             @focus="onFocus" />
     </div>
 </template>
 
 <script>
+import AttributeTypes from '~/model/attributes/AttributeTypes';
+
 export default {
     name: 'GridEditActivatorCell',
     props: {
@@ -33,10 +36,6 @@ export default {
             type: String,
             default: null,
         },
-        isSelectKind: {
-            type: Boolean,
-            default: false,
-        },
         isMultiSelect: {
             type: Boolean,
             default: false,
@@ -44,6 +43,10 @@ export default {
         options: {
             type: Array,
             default: () => [],
+        },
+        colors: {
+            type: Object,
+            default: null,
         },
         parameters: {
             type: Object,
@@ -72,25 +75,21 @@ export default {
                 'edit-cell',
             ];
         },
-        isTextAreaType() {
-            return this.type === 'TEXT_AREA';
-        },
-        isImageType() {
-            return this.type === 'IMAGE';
-        },
-        isDateType() {
-            return this.type === 'DATE';
-        },
-        isStatusType() {
-            return this.type === 'LABEL';
-        },
         editableComponent() {
-            if (this.isSelectKind) return () => import('~/components/Grid/EditCells/GridEditSelectCell');
-            if (this.isTextAreaType) return () => import('~/components/Grid/EditCells/GridEditLongTextCell');
-            if (this.isImageType) return () => import('~/components/Grid/EditCells/GridEditImageCell');
-            if (this.isDateType) return () => import('~/components/Grid/EditCells/GridEditDateCell');
-            if (this.isStatusType) return () => import('~/components/Grid/EditCells/GridEditStatusSelectCell');
-            return () => import('~/components/Grid/EditCells/GridEditShortTextCell');
+            switch (this.type) {
+            case AttributeTypes.TEXTAREA:
+                return () => import('~/components/Grid/EditCells/GridEditLongTextCell');
+            case AttributeTypes.IMAGE:
+                return () => import('~/components/Grid/EditCells/GridEditImageCell');
+            case AttributeTypes.DATE:
+                return () => import('~/components/Grid/EditCells/GridEditDateCell');
+            case AttributeTypes.LABEL:
+                return () => import('~/components/Grid/EditCells/GridEditStatusSelectCell');
+            case AttributeTypes.SELECT:
+            case AttributeTypes.MULTI_SELECT:
+                return () => import('~/components/Grid/EditCells/GridEditSelectCell');
+            default: return () => import('~/components/Grid/EditCells/GridEditShortTextCell');
+            }
         },
     },
     methods: {

@@ -3,19 +3,17 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="['breadcrumb', {'breadcrumb--hover': isMouseOver}]"
-        @mouseover="onMouseOver"
-        @mouseout="onMouseOut"
-        @click="onClick">
+    <NuxtLink
+        class="breadcrumb"
+        :to="{ path: breadcrumb.path }">
         <Component
             :is="breadcrumbIconComponent"
-            :fill-color="breadcrumbIconColor"
+            fill-color="#00bc87"
             size="16" />
         <span
             class="breadcrumb__title"
             v-text="breadcrumb.title" />
-    </div>
+    </NuxtLink>
 </template>
 
 <script>
@@ -27,28 +25,9 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            isMouseOver: false,
-            breadcrumbIconColor: '#5C5F65',
-        };
-    },
     computed: {
         breadcrumbIconComponent() {
             return () => import(`~/components/Icon/Menu/Icon${this.breadcrumb.icon}`);
-        },
-    },
-    methods: {
-        onMouseOver() {
-            this.breadcrumbIconColor = '#00bc87';
-            this.isMouseOver = true;
-        },
-        onMouseOut() {
-            this.breadcrumbIconColor = '#5C5F65';
-            this.isMouseOver = false;
-        },
-        onClick() {
-            this.$router.push(this.breadcrumb.path);
         },
     },
 };
@@ -62,13 +41,16 @@ export default {
         grid-column: 2 / 3;
         grid-row: 2 / 3;
         margin-left: 8px;
+        text-decoration: none;
 
         &__title {
             @include setFont(medium, regular, semiRegular, $darkGraphite);
+
+            margin-left: 4px;
         }
 
-        &--hover {
-            cursor: pointer;
+        &:hover {
+            text-decoration: underline;
         }
     }
 </style>
