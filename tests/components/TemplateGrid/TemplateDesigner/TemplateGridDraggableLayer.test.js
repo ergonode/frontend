@@ -4,7 +4,7 @@
  */
 import { mount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
-import TemplateGridDraggableLayer from '~/components/TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer';
+import TemplateGridDraggableLayer from '~/components/Template/Base/TemplateGridDraggableLayer';
 
 const localVue = createLocalVue();
 const store = new Store({
@@ -18,7 +18,7 @@ const mocks = {
     $store: store,
 };
 
-describe('TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer', () => {
+describe('Template/Base/TemplateGridDraggableLayer', () => {
     let wrapper;
 
     beforeEach(() => {
@@ -110,18 +110,5 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridDraggableLayer', () => {
         ];
 
         expect(wrapper.vm.gridLayerPositions).toEqual(positions);
-    });
-
-    it('Get layout element position in draggable grid layer', () => {
-        const bounds = {
-            row: 1,
-            column: 1,
-            width: 2,
-            height: 2,
-        };
-
-        expect(wrapper.vm.getItemPosition(bounds)).toEqual({
-            gridArea: '1 / 1 / 3 / 3',
-        });
     });
 });

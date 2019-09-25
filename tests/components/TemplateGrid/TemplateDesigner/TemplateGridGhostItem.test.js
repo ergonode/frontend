@@ -4,7 +4,7 @@
  */
 import { mount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
-import TemplateGridGhostItem from '~/components/TemplateGrid/TemplateDesigner/TemplateGridGhostItem';
+import TemplateGridGhostItem from '~/components/Template/Base/TemplateGridGhostItem';
 
 const localVue = createLocalVue();
 const store = new Store({
@@ -18,7 +18,7 @@ const mocks = {
     $store: store,
 };
 
-describe('TemplateGrid/TemplateDesigner/TemplateGridGhostItem', () => {
+describe('Template/Base/TemplateGridGhostItem', () => {
     let wrapper;
 
     beforeEach(() => {

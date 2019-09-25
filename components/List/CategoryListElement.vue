@@ -4,9 +4,9 @@
  */
 <template>
     <ListDraggableElement
-        :is-draggable="$hasAccess('CATEGORY_TREE_UPDATE')"
         :draggable-id="item.id"
-        :disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
+        :is-draggable="$hasAccess('CATEGORY_TREE_UPDATE')"
+        :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
         @drag="onDrag">
         <ListElementDescription>
             <ListElementSubtitle :subtitle="productsCount" />

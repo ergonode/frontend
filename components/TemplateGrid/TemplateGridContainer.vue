@@ -180,7 +180,6 @@ export default {
         onDragEnd(event) {
             removeTreeElementCopyFromDocumentBody(event);
             this.setDraggedElement();
-            console.log('Reset from TGC');
             this.setDraggableState({ propName: 'isListElementDragging', value: false });
         },
         onDragOver(event) {
