@@ -37,7 +37,13 @@ export default {
             'setDraggableState',
         ]),
         drop(event) {
-            event.dataTransfer.clearData();
+            event.preventDefault();
+
+            if (navigator.userAgent.toLowerCase().indexOf('firefox') === -1) {
+                // TODO: Only Firefox Error: Modifications are not allowed for this document
+                // check why firefox does not support clearData
+                event.dataTransfer.clearData();
+            }
         },
         dragOver(event) {
             event.preventDefault();
