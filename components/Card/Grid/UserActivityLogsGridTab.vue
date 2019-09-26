@@ -5,10 +5,11 @@
 <template>
     <div class="tab">
         <div class="tab__grid">
-            <GridWrapper
+            <Grid
                 store-namespace="userActivityLogsGrid"
                 :rows-height="rowsHeight"
-                :action-paths="actionPaths" />
+                :action-paths="actionPaths"
+                title="Activity logs" />
         </div>
         <GridFooter>
             <GridPageSelector
@@ -25,7 +26,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
-import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
+import Grid from '~/components/Grid/Grid';
 import GridFooter from '~/components/Grid/GridFooter';
 import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
@@ -33,7 +34,7 @@ import GridPagination from '~/components/Grid/GridPagination';
 export default {
     name: 'UserActivityLogsGridTab',
     components: {
-        GridWrapper,
+        Grid,
         GridFooter,
         GridPageSelector,
         GridPagination,

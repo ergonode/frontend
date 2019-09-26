@@ -3,59 +3,65 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="['grid', {'grid--placeholder': isPlaceholder}]"
-        :style="templateColumns">
-        <GridColumn
-            v-for="(column, colIndex) in gridState.columns"
-            :key="column.id"
-            :store-namespace="storeNamespace"
-            :index="colIndex"
-            :column="column"
-            :is-last="gridState.columns.length - 1 === colIndex"
-            :rows-height="rowsHeight"
-            :is-header-focused="isHeaderFocused">
-            <GridWrapperHeaderCell
+    <div :class="['grid', {'grid--placeholder': isPlaceholder}]">
+        <GridAdvancedFilters v-if="advancedFilters" />
+        <GridHeader :title="title" />
+        <div
+            ref="gridContent"
+            class="grid__content"
+            :style="templateColumns">
+            <GridColumn
+                v-for="(column, colIndex) in gridState.columns"
+                :key="column.id"
                 :store-namespace="storeNamespace"
-                :column-index="colIndex"
+                :index="colIndex"
                 :column="column"
-                :path="actionPaths.getData"
-                @focus="onHeaderFocus" />
-            <GridWrapperHeaderActionCell
-                v-if="filterable"
-                :store-namespace="storeNamespace"
-                :column-index="colIndex"
-                :column="column"
-                :path="actionPaths.getData" />
-            <slot
-                name="cell"
-                :column="column"
-                :column-index="colIndex">
-                <GridWrapperCell
-                    v-for="(id, rowIndex) in gridState.rowIds"
-                    :key="`row[${rowIndex + fixedRowOffset}, ${column.id}]`"
+                :is-last="gridState.columns.length - 1 === colIndex"
+                :rows-height="rowsHeight"
+                :is-header-focused="isHeaderFocused">
+                <GridWrapperHeaderCell
                     :store-namespace="storeNamespace"
                     :column-index="colIndex"
-                    :row-index="(rowIndex + fixedRowOffset) * gridState.displayedPage"
-                    :row-id="id"
-                    :cell-data="gridState.cellValues[id][column.id] || { value: ''}"
                     :column="column"
-                    :draft="drafts[id]"
-                    :edit-routing-path="actionPaths.routerEdit"
-                    :is-selected="gridState.isSelectedAllRows
-                        || gridState.selectedRows[(rowIndex + fixedRowOffset)
-                            * gridState.displayedPage]"
-                    :editing-privilege-allowed="editingPrivilegeAllowed" />
-            </slot>
-        </GridColumn>
-        <template v-for="(column, index) in gridState.pinnedColumns">
-            <GridColumnSentinel
-                :key="index"
-                :style="{gridColumn: column.position}"
-                :index="gridState.columns.length + index"
-                :column="column"
-                @sticky="onStickyChange" />
-        </template>
+                    :path="actionPaths.getData"
+                    @focus="onHeaderFocus" />
+                <GridWrapperHeaderActionCell
+                    v-if="basicFilters"
+                    :store-namespace="storeNamespace"
+                    :column-index="colIndex"
+                    :column="column"
+                    :path="actionPaths.getData" />
+                <slot
+                    name="cell"
+                    :column="column"
+                    :column-index="colIndex">
+                    <GridWrapperCell
+                        v-for="(id, rowIndex) in gridState.rowIds"
+                        :key="`row[${rowIndex + fixedRowOffset}, ${column.id}]`"
+                        :store-namespace="storeNamespace"
+                        :column-index="colIndex"
+                        :row-index="(rowIndex + fixedRowOffset) * gridState.displayedPage"
+                        :row-id="id"
+                        :cell-data="gridState.cellValues[id][column.id] || { value: ''}"
+                        :column="column"
+                        :draft="drafts[id]"
+                        :edit-routing-path="actionPaths.routerEdit"
+                        :is-selected="gridState.isSelectedAllRows
+                            || gridState.selectedRows[(rowIndex + fixedRowOffset)
+                                * gridState.displayedPage]"
+                        :editing-privilege-allowed="editingPrivilegeAllowed" />
+                </slot>
+            </GridColumn>
+            <template v-for="(column, index) in gridState.pinnedColumns">
+                <GridColumnSentinel
+                    :key="index"
+                    :style="{gridColumn: column.position}"
+                    :index="gridState.columns.length + index"
+                    :column="column"
+                    @sticky="onStickyChange" />
+            </template>
+        </div>
+        <GridPlaceholder v-if="isPlaceholder" />
     </div>
 </template>
 
@@ -67,14 +73,21 @@ import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
 export default {
     name: 'Grid',
     components: {
+        GridAdvancedFilters: () => import('~/components/Grid/GridAdvancedFilters'),
+        GridHeader: () => import('~/components/Grid/GridHeader'),
         GridColumn: () => import('~/components/Grid/GridColumn'),
         GridColumnSentinel: () => import('~/components/Grid/GridColumnSentinel'),
         GridWrapperCell: () => import('~/components/Grid/Wrappers/GridWrapperCell'),
         GridWrapperHeaderActionCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderActionCell'),
         GridWrapperHeaderCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderCell'),
+        GridPlaceholder: () => import('~/components/Grid/GridPlaceholder'),
     },
     props: {
         storeNamespace: {
+            type: String,
+            required: true,
+        },
+        title: {
             type: String,
             required: true,
         },
@@ -90,7 +103,11 @@ export default {
             type: Object,
             required: true,
         },
-        filterable: {
+        advancedFilters: {
+            type: Boolean,
+            default: false,
+        },
+        basicFilters: {
             type: Boolean,
             default: true,
         },
@@ -101,7 +118,7 @@ export default {
         };
     },
     beforeCreate() {
-        this.fixedRowOffset = this.$options.propsData.filterable ? 2 : 1;
+        this.fixedRowOffset = this.$options.propsData.basicFilters ? 2 : 1;
         this.rightPinnedColumns = [];
         this.leftPinnedColumns = [];
     },
@@ -137,7 +154,7 @@ export default {
             sticky, columnId, state,
         }) {
             const columnIndex = this.gridState.columns.findIndex(col => col.id === columnId);
-            const { children: columnEls } = this.$el;
+            const { gridContent: { children: columnEls } } = this.$refs;
             const columnEl = columnEls[columnIndex];
 
             if (sticky) {
@@ -174,15 +191,27 @@ export default {
 
 <style lang="scss" scoped>
     .grid {
+        $grid: &;
+
         position: relative;
-        display: grid;
-        border: 1px solid $grey;
-        background-color: $background;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
         border-bottom: none;
-        overflow: auto;
+        height: 0;
 
         &--placeholder {
-            flex-shrink: 0;
+            #{$grid}__content {
+                flex-shrink: 0;
+            }
+        }
+
+        &__content {
+            display: grid;
+            border-left: 1px solid $grey;
+            border-right: 1px solid $grey;
+            background-color: $background;
+            overflow: auto;
         }
     }
 </style>

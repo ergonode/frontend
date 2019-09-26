@@ -9,13 +9,13 @@
                 <VerticalTabBar :items="verticalTabs" />
             </div>
             <div class="tab__grid">
-                <!-- NOTE: Uncomment when filters are implemented -->
-                <!--<GridGlobalFilters v-show="isGlobalFiltersVisible" />-->
-                <GridWrapper
+                <Grid
                     store-namespace="productsGrid"
                     :rows-height="rowsHeight"
                     :action-paths="actionPaths"
-                    :editing-privilege-allowed="isUserAllowedToUpdate" />
+                    :editing-privilege-allowed="isUserAllowedToUpdate"
+                    :advanced-filters="true"
+                    title="Products" />
                 <TrashCan v-show="isColumnDragging" />
             </div>
         </div>
@@ -39,7 +39,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
-import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
+import Grid from '~/components/Grid/Grid';
 import GridFooter from '~/components/Grid/GridFooter';
 import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
@@ -50,11 +50,10 @@ import Button from '~/components/Buttons/Button';
 export default {
     name: 'ProductGridTab',
     components: {
-        GridWrapper,
+        Grid,
         GridFooter,
         GridPageSelector,
         GridPagination,
-        // GridGlobalFilters: () => import('~/components/Grid/GridGlobalFilters'),
         VerticalTabBar,
         TrashCan,
         Button,
@@ -77,8 +76,6 @@ export default {
                     height: 32,
                 },
             },
-            filtersNumber: 0,
-            filtersExpanded: true,
         };
     },
     beforeCreate() {
@@ -128,10 +125,6 @@ export default {
             set(value) {
                 this.gridConfiguration.rows.height = value;
             },
-        },
-        isGlobalFiltersVisible() {
-            return this.isListElementDragging
-                || (this.filtersNumber !== 0 && this.filtersExpanded);
         },
         visibleRowsInPageCount: {
             get() {

@@ -5,11 +5,12 @@
 <template>
     <div class="tab">
         <div class="tab__grid">
-            <GridWrapper
+            <Grid
                 store-namespace="statusesGrid"
                 :rows-height="rowsHeight"
                 :action-paths="actionPaths"
-                :editing-privilege-allowed="$hasAccess('WORKFLOW_UPDATE')" />
+                :editing-privilege-allowed="$hasAccess('WORKFLOW_UPDATE')"
+                title="Product statuses" />
         </div>
         <GridFooter>
             <GridPageSelector
@@ -26,7 +27,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
-import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
+import Grid from '~/components/Grid/Grid';
 import GridFooter from '~/components/Grid/GridFooter';
 import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
@@ -34,7 +35,7 @@ import GridPagination from '~/components/Grid/GridPagination';
 export default {
     name: 'ProductStatusGridTab',
     components: {
-        GridWrapper,
+        Grid,
         GridFooter,
         GridPageSelector,
         GridPagination,

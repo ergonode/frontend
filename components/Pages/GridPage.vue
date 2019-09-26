@@ -9,10 +9,11 @@
             :buttons="buttons"
             :icon="icon" />
         <div class="vertical-wrapper">
-            <GridWrapper
+            <Grid
                 store-namespace="grid"
                 :rows-height="rowsHeight"
-                :action-paths="actionPaths" />
+                :action-paths="actionPaths"
+                title="Grid" />
         </div>
         <GridFooter>
             <GridPageSelector
@@ -30,7 +31,7 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
 import NavigationHeader from '~/components/ReusableHeader/NavigationHeader';
-import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
+import Grid from '~/components/Grid/Grid';
 import GridFooter from '~/components/Grid/GridFooter';
 import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
@@ -40,7 +41,7 @@ export default {
     name: 'GridPage',
     components: {
         NavigationHeader,
-        GridWrapper,
+        Grid,
         GridFooter,
         GridPageSelector,
         GridPagination,

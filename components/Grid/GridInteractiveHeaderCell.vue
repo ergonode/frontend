@@ -205,8 +205,8 @@ export default {
             else this.$store.dispatch(`${this.storeNamespace}/removePinnedColumn`, this.column.id);
         },
         getColumnAtIndex(index) {
-            const gridElement = document.querySelector('.grid');
-            const { children: { [index]: columnElement } } = gridElement;
+            const contentGrid = document.querySelector('.grid__content');
+            const { children: { [index]: columnElement } } = contentGrid;
 
             return columnElement;
         },
@@ -234,8 +234,8 @@ export default {
             }
         },
         borderColumnAction(action, columnElement) {
-            const gridElement = document.querySelector('.grid');
-            const { children: columns } = gridElement;
+            const contentGrid = document.querySelector('.grid__content');
+            const { children: columns } = contentGrid;
 
             const indexOfThisElement = [...columns].indexOf(columnElement);
 
@@ -245,8 +245,8 @@ export default {
             }
         },
         isMenuSelected() {
-            const gridElement = document.querySelector('.grid');
-            const headerEls = gridElement.querySelectorAll('.horizontal-wrapper--active');
+            const contentGrid = document.querySelector('.grid__content');
+            const headerEls = contentGrid.querySelectorAll('.horizontal-wrapper--active');
 
             return headerEls.length;
         },

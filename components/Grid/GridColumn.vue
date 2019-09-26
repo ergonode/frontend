@@ -145,7 +145,7 @@ export default {
                 x: headerXPos, y: headerYPos, height: headerHeight, width: headerWidth,
             } = header.getBoundingClientRect();
             const xOffset = 2.5;
-            const grid = this.getGridElement();
+            const contentGrid = this.getGridContentElement();
             const isMouseAboveColumnHeader = headerYPos <= clientY
                 && headerYPos + headerHeight >= clientY;
             const isMouseAboveLeftBorderLimit = clientX - headerXPos < xOffset;
@@ -162,7 +162,7 @@ export default {
             }
 
             addGridColumnCopyToDocumentBody(event, headerWidth, this.column.id);
-            this.addBorderToRightNeighbour(grid.children[neighbourIndex]);
+            this.addBorderToRightNeighbour(contentGrid.children[neighbourIndex]);
             this.setBounds({ width: headerWidth });
             this.setGhostIndex(this.index);
             this.setDraggedElIndex(this.index);
@@ -254,8 +254,8 @@ export default {
             if (pageX === 0 && pageY === 0) return false;
 
             const elementBelowMouse = document.elementFromPoint(pageX, pageY);
-            const grid = this.getGridElement();
-            const isOutOfBounds = isMouseOutOfBoundsElement(grid, pageX, pageY);
+            const contentGrid = this.getGridContentElement();
+            const isOutOfBounds = isMouseOutOfBoundsElement(contentGrid, pageX, pageY);
             const ghostColumnExists = this.draggedElIndex >= 0;
             const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
 
@@ -371,8 +371,8 @@ export default {
         getElementTransform() {
             return +this.$el.style.transform.replace(/[^0-9\-.,]/g, '');
         },
-        getGridElement() {
-            return document.documentElement.querySelector('.grid');
+        getGridContentElement() {
+            return document.documentElement.querySelector('.grid__content');
         },
         insertColumnWrapper(column, width, index) {
             this.$store.dispatch(`${this.storeNamespace}/insertColumnAtIndex`, { column, index });
@@ -403,7 +403,7 @@ export default {
             }
         },
         updateColumnsTransition(isBefore) {
-            const grid = this.getGridElement();
+            const contentGrid = this.getGridContentElement();
             const { offsetWidth } = this.$el;
             const { width: ghostElWidth } = this.bounds;
 
@@ -431,15 +431,15 @@ export default {
 
             this.setGhostElTransform(ghostElTransform);
 
-            grid.children[this.draggedElIndex].style.transform = `translateX(${ghostElTransform}px)`;
+            contentGrid.children[this.draggedElIndex].style.transform = `translateX(${ghostElTransform}px)`;
             this.setColumnElementTransform(columnElTransform);
         },
         resetColumnElementTransforms() {
-            const grid = this.getGridElement();
-            const { length } = grid.children;
+            const contentGrid = this.getGridContentElement();
+            const { length } = contentGrid.children;
 
             for (let i = 0; i < length; i += 1) {
-                grid.children[i].style.transform = null;
+                contentGrid.children[i].style.transform = null;
             }
         },
         resetDraggedElementCache() {
