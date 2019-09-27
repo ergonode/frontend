@@ -173,11 +173,12 @@ export default {
             return true;
         },
         onDragEnd(event) {
-            const { clientX, clientY } = event;
+            const { screenX, screenY } = event;
             const { index } = this.draggedElement;
-            const elementBelowMouse = document.elementFromPoint(clientX, clientY);
+            const elementBelowMouse = document.elementFromPoint(screenX, screenY);
             const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
             const ghostColumnExists = this.ghostIndex !== -1;
+
             removeGridColumnCopyFromDocumentBody(event);
 
             if (ghostColumnExists) {
