@@ -9,10 +9,11 @@
             {
                 'advanced-filter--editing': isEditing,
                 'advanced-filter--error': isError,
+                'advanced-filter--ghost': isGhostFilter,
             }
         ]"
         @click="onClick">
-        <template v-if="filter.id !== ghostFilterId">
+        <template v-if="!isGhostFilter">
             <span
                 class="advanced-filter__label"
                 v-text="filter.label" />
@@ -70,6 +71,9 @@ export default {
         ghostFilterId() {
             return GHOST_ID;
         },
+        isGhostFilter() {
+            return this.filter.id === this.ghostFilterId;
+        },
     },
     methods: {
         onClick() {
@@ -85,13 +89,15 @@ export default {
 
         position: relative;
         display: flex;
-        border: 1px solid $grey;
+        height: 30px;
 
         &__label {
             @include setFont(bold, small, regular, $darkGraphite);
 
+            display: flex;
+            align-items: center;
             border-right: 1px solid $grey;
-            padding: 8px;
+            padding: 0 8px;
             background-color: $background;
         }
 
@@ -107,6 +113,10 @@ export default {
 
         &__value {
             @include setFont(medium, small, regular, $lightGraphite);
+        }
+
+        &:not(&--ghost) {
+            border: 1px solid $grey;
         }
 
         &--editing {

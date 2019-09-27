@@ -18,6 +18,8 @@ export const types = {
     ADD_ADVANCED_FILTER: 'ADD_ADVANCED_FILTER',
     SET_ADVANCED_FILTER_AT_INDEX: 'SET_ADVANCED_FILTER_AT_INDEX',
     REMOVE_ADVANCED_FILTER_AT_INDEX: 'REMOVE_ADVANCED_FILTER_AT_INDEX',
+    REMOVE_ALL_ADVANCED_FILTERS: 'REMOVE_ALL_ADVANCED_FILTERS',
+    CLEAR_ALL_ADVANCED_FILTERS: 'CLEAR_ALL_ADVANCED_FILTERS',
     SET_BASIC_FILTER: 'SET_BASIC_FILTER',
     RELOAD_GRID_DATA: 'RELOAD_GRID_DATA',
     UPDATE_DATA_CELL_VALUE: 'UPDATE_DATA_CELL_VALUE',
@@ -84,6 +86,14 @@ export default {
     },
     [types.ADD_ADVANCED_FILTER](state, filter) {
         state.advancedFilters.push(filter);
+    },
+    [types.REMOVE_ALL_ADVANCED_FILTERS](state) {
+        state.advancedFilters = [];
+    },
+    [types.CLEAR_ALL_ADVANCED_FILTERS](state) {
+        state.advancedFilters = state.advancedFilters.map(
+            (filter) => ({ ...filter, value: null }),
+        );
     },
     [types.REMOVE_ADVANCED_FILTER_AT_INDEX](state, index) {
         state.advancedFilters.splice(index, 1);

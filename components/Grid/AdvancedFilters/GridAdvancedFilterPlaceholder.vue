@@ -18,7 +18,10 @@ export default {
 
 <style lang="scss" scoped>
     .advanced-filters-placeholder {
-        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        height: 32px;
+        padding: 0 12px;
         background-color: $lightGrey;
         box-shadow:
             inset 0 2px 2px 0 rgba(0, 0, 0, 0.14),

@@ -182,6 +182,12 @@ export default {
     setAdvancedFilterAtIndex({ commit }, payload) {
         commit(types.SET_ADVANCED_FILTER_AT_INDEX, payload);
     },
+    removeAllAdvancedFilters({ commit }) {
+        commit(types.REMOVE_ALL_ADVANCED_FILTERS);
+    },
+    clearAllAdvancedFilters({ commit }) {
+        commit(types.CLEAR_ALL_ADVANCED_FILTERS);
+    },
     removeAdvancedFilterAtIndex({ commit }, index) {
         commit(types.REMOVE_ADVANCED_FILTER_AT_INDEX, index);
     },

@@ -145,7 +145,7 @@ export default {
         }
 
         &__action {
-            @include setFont(medium, tiny, regular, $darkGraphite);
+            @include setFont(medium, small, regular, $darkGraphite);
 
             display: flex;
             align-items: center;

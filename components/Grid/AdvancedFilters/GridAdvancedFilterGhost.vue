@@ -24,7 +24,8 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 8px 12px;
+        height: 32px;
+        padding: 0 12px;
         background-color: $primary;
         box-shadow:
             inset 0 2px 2px 0 rgba(0, 0, 0, 0.14),

@@ -7,7 +7,9 @@
         <GridAdvancedFilters
             v-if="advancedFilters"
             :filters="gridState.advancedFilters"
-            @addFilter="onFilterDropped" />
+            @addFilter="onFilterDropped"
+            @removeAll="onRemoveAllFilters"
+            @clearAll="onClearAllFilters" />
         <GridHeader
             :title="title"
             :row-height="rowHeight"
@@ -227,6 +229,12 @@ export default {
             const index = length - 1;
 
             this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, { index, filter: { id: filter, label: 'Label' } });
+        },
+        onRemoveAllFilters() {
+            this.$store.dispatch(`${this.storeNamespace}/removeAllAdvancedFilters`);
+        },
+        onClearAllFilters() {
+            this.$store.dispatch(`${this.storeNamespace}/clearAllAdvancedFilters`);
         },
         addGhostColumn() {
             const column = GHOST_ELEMENT_MODEL;
