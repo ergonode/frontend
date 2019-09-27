@@ -3,8 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <label :title="hint">
-        <IconError />
+    <label
+        class="info-hint"
+        :title="hint">
+        <IconError size="16" />
     </label>
 </template>
 
@@ -24,3 +26,11 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .info-hint {
+        display: flex;
+        align-items: center;
+        padding: 0 6px;
+    }
+</style>

@@ -6,7 +6,7 @@
     <label
         class="info-hint"
         :title="hint">
-        <IconTooltip />
+        <IconTooltip size="16" />
     </label>
 </template>
 
@@ -30,5 +30,7 @@ export default {
 <style lang="scss" scoped>
     .info-hint {
         display: flex;
+        align-items: center;
+        padding: 0 6px;
     }
 </style>
