@@ -43,7 +43,7 @@ export default {
     },
     computed: {
         ...mapState('list', {
-            groups: state => state.groups,
+            groups: (state) => state.groups,
         }),
     },
     methods: {

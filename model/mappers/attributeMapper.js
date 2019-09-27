@@ -52,7 +52,7 @@ export function getMappedGroupIDs(groups, selectedGroups) {
     const mappedGroups = [];
 
     groups.forEach((group) => {
-        if (selectedGroups.some(grp => grp === group.label)) {
+        if (selectedGroups.some((grp) => grp === group.label)) {
             mappedGroups.push(group.id);
         }
     });
@@ -64,7 +64,7 @@ export function getMappedGroupLabels(groups, selectedGroups) {
     const mappedGroups = [];
 
     groups.forEach((group) => {
-        if (selectedGroups.some(grp => grp === group.id)) {
+        if (selectedGroups.some((grp) => grp === group.id)) {
             mappedGroups.push(group.label);
         }
     });

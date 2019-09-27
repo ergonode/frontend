@@ -25,7 +25,7 @@ export default {
     },
     removeAlert({ commit, state }, { id }) {
         const indexToRemove = state.alerts.findIndex(
-            alert => alert.id === id,
+            (alert) => alert.id === id,
         );
 
         clearTimeout(state.alerts[indexToRemove].timeOut);

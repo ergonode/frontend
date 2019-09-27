@@ -63,7 +63,7 @@ export default {
             newGrid = getTreeWhenElementRemoved(state.gridData, id);
             dispatch('setFullGridData', newGrid);
         } else {
-            newGrid = state.gridData.filter(el => el.id !== id);
+            newGrid = state.gridData.filter((el) => el.id !== id);
         }
         dispatch('setGridData', newGrid);
     },

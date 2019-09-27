@@ -25,7 +25,9 @@ export default {
     .info-cell {
         @include setFont(medium, small, regular, $darkGraphite);
 
+        display: flex;
         flex: 1;
+        align-items: center;
         width: min-content;
         padding: 8px;
         user-select: none;

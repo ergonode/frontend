@@ -27,12 +27,3 @@ export function removeGridColumnCopyFromDocumentBody(event) {
         event.dataTransfer.clearData();
     }
 }
-
-export function getGhostColumnElementModel() {
-    return {
-        id: 'ghost',
-        editable: false,
-        label: '',
-        type: '',
-    };
-}

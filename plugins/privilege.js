@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default ({ app }, inject) => {
-    const privilegesTypes = prefix => ({
+    const privilegesTypes = (prefix) => ({
         READ: `${prefix}_READ`,
         UPDATE: `${prefix}_UPDATE`,
         CREATE: `${prefix}_CREATE`,
@@ -12,7 +12,7 @@ export default ({ app }, inject) => {
     const hasAccess = (privileges) => {
         const privilegesArray = Array.isArray(privileges) ? privileges : [privileges];
         const { user } = app.store.state.authentication;
-        return user && privilegesArray.every(privilege => user.privileges.includes(privilege));
+        return user && privilegesArray.every((privilege) => user.privileges.includes(privilege));
     };
     const isReadOnly = (prefix) => {
         const types = privilegesTypes(prefix);
@@ -20,6 +20,6 @@ export default ({ app }, inject) => {
           && !hasAccess([types.UPDATE, types.CREATE, types.DELETE]);
     };
 
-    inject('hasAccess', privileges => hasAccess(privileges));
-    inject('isReadOnly', prefix => isReadOnly(prefix));
+    inject('hasAccess', (privileges) => hasAccess(privileges));
+    inject('isReadOnly', (prefix) => isReadOnly(prefix));
 };

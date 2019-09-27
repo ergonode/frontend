@@ -7,9 +7,9 @@
         <div class="tab__grid">
             <Grid
                 store-namespace="categoryTreesGrid"
-                :rows-height="rowsHeight"
                 :action-paths="actionPaths"
                 :editing-privilege-allowed="$hasAccess('CATEGORY_TREE_UPDATE')"
+                :basic-filters="true"
                 title="Category trees" />
         </div>
         <GridFooter>
@@ -42,11 +42,6 @@ export default {
     },
     data() {
         return {
-            gridConfiguration: {
-                rows: {
-                    height: 32,
-                },
-            },
             filtersNumber: 0,
             filtersExpanded: true,
         };
@@ -63,12 +58,12 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
+            userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('categoryTreesGrid', {
-            numberOfDataElements: state => state.count,
-            displayedPage: state => state.displayedPage,
-            numberOfDisplayedElements: state => state.numberOfDisplayedElements,
+            numberOfDataElements: (state) => state.count,
+            displayedPage: (state) => state.displayedPage,
+            numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
         ...mapGetters('categoryTreesGrid', {
             numberOfPages: 'numberOfPages',
@@ -78,16 +73,6 @@ export default {
                 getData: `${this.userLanguageCode}/trees`,
                 routerEdit: 'category-trees-edit-id',
             };
-        },
-        rowsHeight: {
-            get() {
-                const { height } = this.gridConfiguration.rows;
-
-                return height;
-            },
-            set(value) {
-                this.gridConfiguration.rows.height = value;
-            },
         },
         visibleRowsInPageCount: {
             get() {
@@ -147,7 +132,7 @@ export default {
             display: flex;
             flex: 1;
             flex-direction: column;
-            margin: 12px 12px 0;
+            margin: 24px 24px 0;
             overflow: hidden;
         }
     }

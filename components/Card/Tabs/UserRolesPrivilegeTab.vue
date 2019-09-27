@@ -7,7 +7,6 @@
         <div class="tab__grid">
             <Grid
                 store-namespace="privilegesGrid"
-                :rows-height="32"
                 :is-draft="false"
                 :action-paths="actionPaths"
                 :basic-filters="false"
@@ -90,8 +89,8 @@ export default {
     },
     computed: {
         ...mapState('privilegesGrid', {
-            rowIds: state => state.rowIds,
-            cellValues: state => state.cellValues,
+            rowIds: (state) => state.rowIds,
+            cellValues: (state) => state.cellValues,
         }),
     },
     methods: {
@@ -147,7 +146,7 @@ export default {
             display: flex;
             flex: 1;
             flex-direction: column;
-            margin: 12px 12px 0;
+            margin: 24px 24px 0;
             overflow: hidden;
         }
     }

@@ -32,8 +32,8 @@ export default {
     mixins: [errorValidationMixin],
     computed: {
         ...mapState('categories', {
-            categoryID: state => state.id,
-            code: state => state.code,
+            categoryID: (state) => state.id,
+            code: (state) => state.code,
         }),
         isDisabled() {
             return Boolean(this.categoryID);

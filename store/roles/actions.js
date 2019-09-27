@@ -55,7 +55,7 @@ export default {
         return this.app.$axios.$post(`${userLanguageCode}/roles`, data).then(({ id }) => {
             commit(types.SET_ROLE_ID, id);
             onSuccess(id);
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
     },
     updateRole(
         { rootState },
@@ -67,7 +67,7 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/roles/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`${userLanguageCode}/roles/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
     },
     removeRole(
         { rootState },
@@ -78,7 +78,7 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/roles/${id}`).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$delete(`${userLanguageCode}/roles/${id}`).then(() => onSuccess()).catch((e) => onError(e.data));
     },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);

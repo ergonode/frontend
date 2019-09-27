@@ -23,7 +23,7 @@ export default {
         return this.app.$axios.$post(`${userLanguageCode}/status`, data).then(({ id }) => {
             commit(types.SET_STATUS_ID, id);
             onSuccess(id);
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
     },
     getProductStatus({ commit }, { path }) {
         return this.app.$axios.$get(path).then(({
@@ -64,7 +64,7 @@ export default {
 
         return this.app.$axios.$put(`${userLanguageCode}/status/${state.id}`, data).then(() => {
             onSuccess();
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
     },
     removeProductStatus({ commit, state, rootState }, { onSuccess }) {
         const { id } = state;

@@ -67,7 +67,7 @@ export default {
             flex: 1;
             flex-direction: column;
             width: 0;
-            margin: 24px 12px 0 0;
+            margin: 24px 24px 0 0;
             overflow: hidden;
         }
     }

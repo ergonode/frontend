@@ -46,11 +46,11 @@ export default {
     },
     computed: {
         ...mapState('attribute', {
-            optionKeys: state => state.optionKeys,
-            isMultilingual: state => state.isMultilingual,
+            optionKeys: (state) => state.optionKeys,
+            isMultilingual: (state) => state.isMultilingual,
         }),
         ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
+            userLanguageCode: (state) => state.user.language,
         }),
     },
     methods: {

@@ -32,7 +32,7 @@ export default {
         theme: {
             type: String,
             default: 'primary',
-            validator: value => ButtonTheme.indexOf(value) !== -1,
+            validator: (value) => ButtonTheme.indexOf(value) !== -1,
         },
         shadow: {
             type: Boolean,
@@ -50,11 +50,13 @@ export default {
             type: Boolean,
             default: false,
         },
+        isSelected: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
-            iconFillColor: graphite,
-            isSelected: false,
             isHovered: false,
         };
     },
@@ -62,42 +64,37 @@ export default {
         iconComponent() {
             return () => import(`~/components/Icon/${this.iconPath}`);
         },
-    },
-    watch: {
-        isDisabled() {
-            if (ButtonTheme.primary) {
-                this.iconFillColor = white;
-            } else {
-                this.iconFillColor = grey;
+        iconFillColor() {
+            if (this.isDisabled) {
+                if (ButtonTheme.primary) {
+                    return white;
+                }
+                return grey;
             }
+
+            if (this.isStateable) {
+                if (this.isSelected || this.isHovered) {
+                    return primary;
+                }
+
+                return graphite;
+            }
+
+            if (this.isHovered && (!this.isStateable || !this.isSelected)) {
+                return primary;
+            }
+
+            return graphite;
         },
     },
     methods: {
         onClick() {
-            this.isSelected = !this.isSelected;
-
-            if (this.isStateable) {
-                if (this.isSelected) {
-                    this.iconFillColor = primary;
-                } else {
-                    this.iconFillColor = graphite;
-                }
-            }
-
-            this.$emit('select', this.isSelected);
+            this.$emit('select', !this.isSelected);
         },
         onMouseEnter() {
-            if (!this.isStateable) {
-                this.iconFillColor = primary;
-            }
-
             this.isHovered = true;
         },
         onMouseLeave() {
-            if (!this.isStateable) {
-                this.iconFillColor = graphite;
-            }
-
             this.isHovered = false;
         },
     },

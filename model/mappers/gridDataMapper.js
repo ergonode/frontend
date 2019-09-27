@@ -33,7 +33,7 @@ const getMappedColumnHeaderType = ({ filter, type }) => {
     return GridHeaderType.PLAIN;
 };
 
-const getMappedColumnHeader = column => ({
+const getMappedColumnHeader = (column) => ({
     title: getMappedColumnHeaderTitle(column),
     type: getMappedColumnHeaderType(column),
 });
@@ -136,7 +136,7 @@ export function getMappedCellValues(columns, rows, rowIds) {
                 const { options } = filter;
 
                 if (Array.isArray(value)) {
-                    values[rowId][columnId] = { key: value, value: value.map(key => options[key] || 'No translation').join(', ') };
+                    values[rowId][columnId] = { key: value, value: value.map((key) => options[key] || 'No translation').join(', ') };
                 } else if (typeof options[value] !== 'undefined') {
                     values[rowId][columnId] = { key: value, value: options[value] || 'No translation' };
                 } else {

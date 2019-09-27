@@ -21,10 +21,10 @@ export default {
     },
     computed: {
         ...mapState('roles', {
-            roleID: state => state.id,
-            name: state => state.name,
-            description: state => state.description,
-            privileges: state => state.privileges,
+            roleID: (state) => state.id,
+            name: (state) => state.name,
+            description: (state) => state.description,
+            privileges: (state) => state.privileges,
         }),
     },
     created() {

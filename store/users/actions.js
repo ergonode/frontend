@@ -56,7 +56,7 @@ export default {
         return this.app.$axios.$post(`${userLanguageCode}/accounts`, data).then(({ id }) => {
             commit(types.SET_STATE, { key: 'id', value: id });
             onSuccess(id);
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
     },
     updateUser(
         { rootState },
@@ -73,7 +73,7 @@ export default {
         return Promise.all([
             this.app.$axios.$put(`${userLanguageCode}/accounts/${id}`, data),
             this.app.$axios.$put(`${userLanguageCode}/accounts/${id}/avatar`, { multimedia: avatarId }),
-        ]).then(() => onSuccess()).catch(e => onError(e.data));
+        ]).then(() => onSuccess()).catch((e) => onError(e.data));
     },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);

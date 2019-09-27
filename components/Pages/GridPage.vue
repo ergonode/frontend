@@ -11,8 +11,8 @@
         <div class="vertical-wrapper">
             <Grid
                 store-namespace="grid"
-                :rows-height="rowsHeight"
                 :action-paths="actionPaths"
+                :basic-filters="true"
                 title="Grid" />
         </div>
         <GridFooter>
@@ -65,15 +65,6 @@ export default {
             default: null,
         },
     },
-    data() {
-        return {
-            gridConfiguration: {
-                rows: {
-                    height: 32,
-                },
-            },
-        };
-    },
     async beforeCreate() {
         const { getData: path } = this.$options.propsData.actionPaths;
 
@@ -90,9 +81,9 @@ export default {
     },
     computed: {
         ...mapState('grid', {
-            numberOfDataElements: state => state.count,
-            displayedPage: state => state.displayedPage,
-            numberOfDisplayedElements: state => state.numberOfDisplayedElements,
+            numberOfDataElements: (state) => state.count,
+            displayedPage: (state) => state.displayedPage,
+            numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
         ...mapGetters('grid', {
             numberOfPages: 'numberOfPages',
@@ -108,16 +99,6 @@ export default {
                     this.changeNumberOfDisplayingElements({ number });
                     this.getDataWrapper();
                 }
-            },
-        },
-        rowsHeight: {
-            get() {
-                const { height } = this.gridConfiguration.rows;
-
-                return height;
-            },
-            set(value) {
-                this.gridConfiguration.rows.height = value;
             },
         },
     },

@@ -5,22 +5,22 @@
 
 export function getMappedCategoryValues(categories, selectedCategories) {
     return categories.filter(
-        category => selectedCategories.some(
-            selectedCategory => category.code === selectedCategory,
+        (category) => selectedCategories.some(
+            (selectedCategory) => category.code === selectedCategory,
         ),
-    ).map(category => category.code);
+    ).map((category) => category.code);
 }
 
 export function getMappedTemplateName(templates, selectedTemplate) {
-    return templates.find(tmp => tmp.id === selectedTemplate).name;
+    return templates.find((tmp) => tmp.id === selectedTemplate).name;
 }
 
 export function getMappedCategoryID(categories, selectedCategories) {
     return categories.filter(
-        category => selectedCategories.some(
-            selectedCategory => category.code === selectedCategory,
+        (category) => selectedCategories.some(
+            (selectedCategory) => category.code === selectedCategory,
         ),
-    ).map(category => category.id);
+    ).map((category) => category.id);
 }
 
 export default {

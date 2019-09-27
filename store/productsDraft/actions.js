@@ -108,7 +108,7 @@ export default {
             languageCode,
         } = state;
         const index = state.layoutElements.findIndex(
-            element => element.id === attributeId,
+            (element) => element.id === attributeId,
         );
 
         await this.app.$axios.$put(`${languageCode}/products/${id}/draft/${attributeId}/value`, { value }).then(() => {
@@ -121,7 +121,7 @@ export default {
                 });
             }
             onSuccess(name);
-        }).catch(e => onError({ errors: e.data.errors, name }));
+        }).catch((e) => onError({ errors: e.data.errors, name }));
     },
     createProduct(
         { commit, rootState },
@@ -135,7 +135,7 @@ export default {
         return this.app.$axios.$post(`${language}/products`, data).then(({ id }) => {
             commit(types.SET_PRODUCT_ID, id);
             onSuccess(id);
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
     },
     applyDraft(
         { rootState },

@@ -103,7 +103,7 @@ export default {
             return this.column.filter.type;
         },
         filterValue() {
-            const { [this.column.id]: filter } = this.gridState.filter;
+            const { [this.column.id]: filter } = this.gridState.basicFilters;
 
             if (!filter) {
                 if (this.isMultiSelect) return [];
@@ -116,11 +116,11 @@ export default {
         filterParsedValue() {
             if (!this.column.filter) return '';
 
-            const { [this.column.id]: filter } = this.gridState.filter;
+            const { [this.column.id]: filter } = this.gridState.basicFilters;
 
             if (filter) {
                 if (Array.isArray(filter)) {
-                    return filter.map(val => this.column.filter.options[val] || 'No translation').join(', ');
+                    return filter.map((val) => this.column.filter.options[val] || 'No translation').join(', ');
                 }
                 if (this.column.filter.options && typeof this.column.filter.options[filter] !== 'undefined') {
                     return this.column.filter.options[filter] || 'No translation';
@@ -140,7 +140,7 @@ export default {
             const { options } = filter;
             const optionKeys = Object.keys(options);
 
-            return optionKeys.map(key => ({ key, value: options[key] }));
+            return optionKeys.map((key) => ({ key, value: options[key] }));
         },
         infoComponent() {
             const { filter } = this.column;
@@ -168,7 +168,7 @@ export default {
         onUpdateFilter(value) {
             const { id } = this.column;
 
-            if (this.gridState.filter[id] !== value) {
+            if (this.gridState.basicFilters[id] !== value) {
                 this.$store.dispatch(`${this.storeNamespace}/setFilter`, { id, filter: value });
                 this.$store.dispatch(`${this.storeNamespace}/getData`, { path: this.path });
                 this.$store.dispatch(`${this.storeNamespace}/changeDisplayingPage`, 1);

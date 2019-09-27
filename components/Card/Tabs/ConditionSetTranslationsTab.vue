@@ -29,8 +29,8 @@ export default {
     },
     computed: {
         ...mapState('translations', {
-            translations: state => state.translations,
-            cardsLanguageCodes: state => state.cardsLanguageCodes,
+            translations: (state) => state.translations,
+            cardsLanguageCodes: (state) => state.cardsLanguageCodes,
         }),
     },
 };

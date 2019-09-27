@@ -51,7 +51,7 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/templates/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`${userLanguageCode}/templates/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
     },
     createTemplateDesigner(
         { commit, rootState },
@@ -64,7 +64,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$post(`${userLanguageCode}/templates`, data).then(({ id }) => {
             onSuccess(id);
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
     },
     getTypes({ commit }, {
         path, params,

@@ -8,7 +8,7 @@ import GridColumn from '~/components/Grid/GridColumn';
 import draggableMutations from '~/store/draggable/mutations';
 import {
     getGhostColumnElementModel,
-} from '~/model/grid/layout/GridColumnElementCopy';
+} from '~/model/grid/layout/GhostElements';
 
 const localVue = createLocalVue();
 const store = new Store({
@@ -224,7 +224,6 @@ describe('Grid/GridColumn', () => {
                     expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnWidthAtIndex', { width: '100px', index: 3 });
                     expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setGhostIndex', 3);
                     expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setDraggedElIndex', 3);
-
                 });
             });
         });

@@ -67,7 +67,7 @@ export default {
         return this.app.$axios.$post(`${userLanguageCode}/conditionsets`, data).then(({ id }) => {
             commit(types.SET_CONDITION_SET_ID, id);
             onSuccess(id);
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
     },
     updateConditionSet(
         { rootState },
@@ -79,7 +79,7 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/conditionsets/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`${userLanguageCode}/conditionsets/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
     },
     async getConditionConfigurationById(
         { commit, rootState },

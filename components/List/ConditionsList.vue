@@ -31,7 +31,7 @@ export default {
     },
     computed: {
         ...mapState('list', {
-            elements: state => state.elements,
+            elements: (state) => state.elements,
         }),
         elementsByLanguageCode() {
             const { [this.languageCode]: language } = this.elements;

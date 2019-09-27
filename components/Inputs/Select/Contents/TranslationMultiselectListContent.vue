@@ -53,13 +53,13 @@ export default {
             if (value) {
                 localSelectedOptions = [...this.selectedOptions, option];
             } else {
-                localSelectedOptions = this.selectedOptions.filter(opt => opt !== option);
+                localSelectedOptions = this.selectedOptions.filter((opt) => opt !== option);
             }
 
             this.$emit('values', localSelectedOptions);
         },
         getSelectedValueByOption(option) {
-            const index = this.selectedOptions.findIndex(opt => opt === option.key);
+            const index = this.selectedOptions.findIndex((opt) => opt === option.key);
 
             return index !== -1;
         },

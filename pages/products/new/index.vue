@@ -22,11 +22,11 @@ export default {
     },
     computed: {
         ...mapState('productsDraft', {
-            sku: state => state.sku,
-            template: state => state.template,
-            templates: state => state.templates,
-            selectedCategories: state => state.selectedCategories,
-            categories: state => state.categories,
+            sku: (state) => state.sku,
+            template: (state) => state.template,
+            templates: (state) => state.templates,
+            selectedCategories: (state) => state.selectedCategories,
+            categories: (state) => state.categories,
         }),
     },
     methods: {

@@ -77,20 +77,20 @@ export default {
     }),
     computed: {
         ...mapState('gridDesigner', {
-            fullGridData: state => state.fullGridData,
-            hiddenItems: state => state.hiddenItems,
+            fullGridData: (state) => state.fullGridData,
+            hiddenItems: (state) => state.hiddenItems,
         }),
         ...mapState('authentication', {
-            language: state => state.user.language,
+            language: (state) => state.user.language,
         }),
         ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
+            draggedElement: (state) => state.draggedElement,
         }),
         ...mapState('list', {
-            listElements: state => state.elements,
+            listElements: (state) => state.elements,
         }),
         dataWithoutGhostElement() {
-            return this.gridData.filter(element => element.id !== this.ghostElement.id);
+            return this.gridData.filter((element) => element.id !== this.ghostElement.id);
         },
         maxRow() {
             return getObjectWithMaxValueInArrayByObjectKey(this.dataWithoutGhostElement, 'row').row;
@@ -226,7 +226,7 @@ export default {
         onDrop() {
             const { row, column } = this.ghostElement;
             const { code: categoryCode, name: categoryName } = this.listElements[this.language]
-                .find(e => e.id === this.draggedElement.split('--')[0]);
+                .find((e) => e.id === this.draggedElement.split('--')[0]);
             this.removeGhostElement();
             const parentId = this.getParentId(row, column);
             const childrenLength = this.hiddenItems[this.draggedElement]
@@ -312,7 +312,7 @@ export default {
             const { directionOfCollision } = this.mousePosition;
             const isTop = directionOfCollision === 'top';
             const [neighborEl] = this.dataWithoutGhostElement.filter(
-                el => el.row === (isTop ? collidingElRow - 1 : collidingElRow + 1),
+                (el) => el.row === (isTop ? collidingElRow - 1 : collidingElRow + 1),
             );
             const isFirstElement = (!neighborEl || collidingElRow === 0) && isTop;
             if (isFirstElement) {
@@ -341,7 +341,7 @@ export default {
             let parentId = 'root';
             if (column > 0) {
                 const findElements = this.dataWithoutGhostElement.filter(
-                    e => (e.column === column - 1 && e.row < row),
+                    (e) => (e.column === column - 1 && e.row < row),
                 );
                 const parent = Math.floor(getObjectWithMaxValueInArrayByObjectKey(findElements, 'row').row);
                 parentId = this.dataWithoutGhostElement[parent].id;
@@ -360,7 +360,7 @@ export default {
         },
         getMouseOverProps(clientX, clientY) {
             const elements = document.elementsFromPoint(clientX, clientY);
-            const shadowItem = elements.find(e => e.classList.contains('shadow-grid-item'));
+            const shadowItem = elements.find((e) => e.classList.contains('shadow-grid-item'));
 
             if (shadowItem) {
                 const positionOverRow = clientY - shadowItem.getBoundingClientRect().top;
@@ -386,7 +386,7 @@ export default {
             return layerPositionY > centerPosition ? 'bottom' : 'top';
         },
         isRowGet(row) {
-            const [item] = this.gridData.filter(element => element.row === row);
+            const [item] = this.gridData.filter((element) => element.row === row);
             return item || null;
         },
         getCollidingItemAtRow(row) {

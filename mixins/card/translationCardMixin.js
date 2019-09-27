@@ -15,10 +15,10 @@ export default {
     },
     computed: {
         ...mapState('data', {
-            languages: state => state.languages,
+            languages: (state) => state.languages,
         }),
         ...mapState('translations', {
-            translations: state => state.translations,
+            translations: (state) => state.translations,
         }),
         selectedLanguage() {
             return getValueByKey(this.languages, this.languageCode);

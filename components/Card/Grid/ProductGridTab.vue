@@ -11,10 +11,10 @@
             <div class="tab__grid">
                 <Grid
                     store-namespace="productsGrid"
-                    :rows-height="rowsHeight"
                     :action-paths="actionPaths"
                     :editing-privilege-allowed="isUserAllowedToUpdate"
                     :advanced-filters="true"
+                    :basic-filters="true"
                     title="Products" />
                 <TrashCan v-show="isColumnDragging" />
             </div>
@@ -71,11 +71,6 @@ export default {
                     active: true,
                 },
             ],
-            gridConfiguration: {
-                rows: {
-                    height: 32,
-                },
-            },
         };
     },
     beforeCreate() {
@@ -90,19 +85,19 @@ export default {
     },
     computed: {
         ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
-            isColumnDragging: state => state.isColumnDragging,
+            isListElementDragging: (state) => state.isListElementDragging,
+            isColumnDragging: (state) => state.isColumnDragging,
         }),
         ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
+            userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('productsGrid', {
-            numberOfDataElements: state => state.count,
-            displayedPage: state => state.displayedPage,
-            numberOfDisplayedElements: state => state.numberOfDisplayedElements,
+            numberOfDataElements: (state) => state.count,
+            displayedPage: (state) => state.displayedPage,
+            numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
         ...mapState('gridDraft', {
-            drafts: state => state.drafts,
+            drafts: (state) => state.drafts,
         }),
         ...mapGetters('productsGrid', {
             numberOfPages: 'numberOfPages',
@@ -115,16 +110,6 @@ export default {
                 getData: `${this.userLanguageCode}/products`,
                 routerEdit: 'products-edit-id',
             };
-        },
-        rowsHeight: {
-            get() {
-                const { height } = this.gridConfiguration.rows;
-
-                return height;
-            },
-            set(value) {
-                this.gridConfiguration.rows.height = value;
-            },
         },
         visibleRowsInPageCount: {
             get() {
@@ -215,7 +200,7 @@ export default {
 
         &__options {
             display: flex;
-            margin: 24px 12px 0 24px;
+            margin: 24px 24px 0;
         }
 
         &__grid {
@@ -223,14 +208,8 @@ export default {
             flex: 1;
             flex-direction: column;
             width: 0;
-            margin: 12px 12px 0 0;
+            margin: 24px 24px 0 0;
             overflow: hidden;
-
-            .filters-panel-wrapper {
-                display: flex;
-                justify-content: space-between;
-                padding: 12px 12px 0;
-            }
         }
     }
 </style>

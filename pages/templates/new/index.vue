@@ -24,9 +24,9 @@ export default {
     }),
     computed: {
         ...mapState('templateDesigner', {
-            templateTitle: state => state.title,
-            templateImage: state => state.image,
-            layoutElements: state => state.layoutElements,
+            templateTitle: (state) => state.title,
+            templateImage: (state) => state.image,
+            layoutElements: (state) => state.layoutElements,
         }),
     },
     methods: {

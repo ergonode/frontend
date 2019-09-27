@@ -13,19 +13,27 @@
                     </span>
                     <NumericBadge :number="filters.length" />
                 </div>
-                <Divider vertical />
+                <div class="divider-container">
+                    <Divider vertical />
+                </div>
                 <span
                     class="grid-advanced-filters__action"
                     @click="onClearAll">Clear all filters</span>
-                <Divider vertical />
+                <div class="divider-container">
+                    <Divider vertical />
+                </div>
                 <span
                     class="grid-advanced-filters__action"
                     @click="onRemoveAll">Remove all filters</span>
-                <Divider vertical />
+
+                <div class="divider-container">
+                    <Divider vertical />
+                </div>
             </div>
             <IconFabButton
                 theme="secondary"
                 icon-path="Arrows/IconArrowDouble"
+                :is-selected="isExpanded"
                 @select="onExpandFilters">
                 <template #icon="{ iconFillColor }">
                     <IconArrowDouble
@@ -54,6 +62,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { Arrow } from '~/model/icons/Arrow';
 
 export default {
@@ -75,6 +84,18 @@ export default {
             isExpanded: false,
             iconExpanderState: Arrow.DOWN,
         };
+    },
+    computed: {
+        ...mapState('draggable', {
+            isListElementDragging: (state) => state.isListElementDragging,
+        }),
+    },
+    watch: {
+        isListElementDragging() {
+            if (!this.isExpanded && this.isListElementDragging) {
+                this.isExpanded = true;
+            }
+        },
     },
     methods: {
         onExpandFilters(isExpanded) {
@@ -158,5 +179,10 @@ export default {
         gap: 8px;
         grid-template-columns: max-content;
         padding-bottom: 16px;
+    }
+
+    .divider-container {
+        display: flex;
+        padding: 4px 0;
     }
 </style>

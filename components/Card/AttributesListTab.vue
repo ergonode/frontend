@@ -58,10 +58,10 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
+            userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('data', {
-            languages: state => state.languages,
+            languages: (state) => state.languages,
         }),
         languageCode() {
             return getKeyByValue(this.languages, this.attributesLanguageCode);

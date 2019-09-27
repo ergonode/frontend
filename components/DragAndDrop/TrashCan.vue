@@ -29,7 +29,7 @@ export default {
     },
     computed: {
         ...mapState('draggable', {
-            isColumnDragging: state => state.isColumnDragging,
+            isColumnDragging: (state) => state.isColumnDragging,
         }),
     },
     methods: {

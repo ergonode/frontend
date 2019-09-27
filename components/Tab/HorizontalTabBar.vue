@@ -76,7 +76,7 @@ export default {
         },
     },
     created() {
-        this.selectedTabIndex = this.items.findIndex(item => item.path === this.$route.path);
+        this.selectedTabIndex = this.items.findIndex((item) => item.path === this.$route.path);
     },
     methods: {
         onSelectTabBarItem(index) {

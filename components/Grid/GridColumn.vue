@@ -10,7 +10,6 @@
                 'border-right',
                 {
                     'column__extender': isExtenderColumn,
-                    'column__ghost': isDraggedColumn,
                     'column--last': isLast,
                 }
             ]"
@@ -21,7 +20,7 @@
         @dragover="onDragOver"
         @dragleave="onDragLeave"
         @drop="onDrop">
-        <template v-if="!isDraggedColumn && column.id !== 'ghost'">
+        <template v-if="!isDraggedColumn">
             <slot />
             <div
                 v-if="!isExtenderColumn && isColumnResizeable && !isHeaderFocused"
@@ -30,6 +29,9 @@
                 }]"
                 @mousedown="initResizeDrag" />
         </template>
+        <template v-else>
+            <GridGhostColumn />
+        </template>
     </div>
 </template>
 <script>
@@ -37,8 +39,10 @@ import { mapState, mapActions } from 'vuex';
 import {
     addGridColumnCopyToDocumentBody,
     removeGridColumnCopyFromDocumentBody,
-    getGhostColumnElementModel,
 } from '~/model/grid/layout/GridColumnElementCopy';
+import {
+    getGhostColumnElementModel,
+} from '~/model/grid/layout/GhostElements';
 import {
     insertColumnAtIndexToCookie,
     removeColumnCookieByID,
@@ -50,6 +54,9 @@ import {
 
 export default {
     name: 'GridColumn',
+    components: {
+        GridGhostColumn: () => import('~/components/Grid/GridGhostColumn'),
+    },
     props: {
         storeNamespace: {
             type: String,
@@ -93,16 +100,18 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            languageCode: state => state.user.language,
+            languageCode: (state) => state.user.language,
         }),
         ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
-            ghostIndex: state => state.ghostIndex,
-            bounds: state => state.bounds,
-            ghostElTransform: state => state.ghostElTransform,
-            draggedElIndex: state => state.draggedElIndex,
+            draggedElement: (state) => state.draggedElement,
+            ghostIndex: (state) => state.ghostIndex,
+            bounds: (state) => state.bounds,
+            ghostElTransform: (state) => state.ghostElTransform,
+            draggedElIndex: (state) => state.draggedElIndex,
         }),
         colGridTemplate() {
+            if (this.isDraggedColumn) return null;
+
             return {
                 gridAutoRows: `${this.rowsHeight}px`,
             };
@@ -111,7 +120,7 @@ export default {
             return this.$store.state[this.storeNamespace];
         },
         isPinnedColumn() {
-            return this.gridState.pinnedColumns.find(col => col.id === this.column.id);
+            return this.gridState.pinnedColumns.find((col) => col.id === this.column.id);
         },
         isColumnDraggable() {
             return this.gridState.configuration.isColumnMoveable
@@ -197,7 +206,7 @@ export default {
 
             this.setDraggableState({ propName: 'isColumnDragging', value: false });
         },
-        onDrop(event) {
+        async onDrop(event) {
             event.preventDefault();
 
             if (typeof this.draggedElement !== 'object') {
@@ -205,7 +214,7 @@ export default {
 
                 this.resetColumnElementTransforms();
 
-                this.$store.dispatch(`${this.storeNamespace}/getColumnData`, {
+                await this.$store.dispatch(`${this.storeNamespace}/getColumnData`, {
                     ghostIndex: this.ghostIndex,
                     draggedElIndex: this.draggedElIndex,
                     columnId,
@@ -544,15 +553,6 @@ export default {
             &:not(&--resizing):hover, &--resizing {
                 background-color: $darkGraphite;
             }
-        }
-
-        &__ghost {
-            height: 100%;
-            background-color: $primary;
-            box-shadow:
-                inset 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                inset 0 3px 1px 0 rgba(0, 0, 0, 0.12),
-                inset 0 1px 5px 0 rgba(0, 0, 0, 0.2);
         }
     }
 </style>

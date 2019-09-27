@@ -26,13 +26,13 @@ export default {
     },
     computed: {
         ...mapState('segments', {
-            id: state => state.id,
-            code: state => state.code,
-            conditionSetId: state => state.conditionSetId,
+            id: (state) => state.id,
+            code: (state) => state.code,
+            conditionSetId: (state) => state.conditionSetId,
 
         }),
         ...mapState('translations', {
-            translations: state => state.translations,
+            translations: (state) => state.translations,
         }),
     },
     methods: {

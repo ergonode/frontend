@@ -35,7 +35,7 @@ export default {
     },
     computed: {
         ...mapState('data', {
-            languages: state => state.languages,
+            languages: (state) => state.languages,
         }),
         languagesValues() {
             return Object.values(this.languages);
@@ -44,8 +44,8 @@ export default {
             const languageNames = getValuesByKeys(this.languages, this.cardsLanguageCodes);
 
             return this.languagesValues.filter(
-                language => languageNames.some(
-                    name => name === language,
+                (language) => languageNames.some(
+                    (name) => name === language,
                 ),
             );
         },

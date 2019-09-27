@@ -41,7 +41,7 @@ export default {
     },
     computed: {
         ...mapState('list', {
-            disabledElements: state => state.disabledElements,
+            disabledElements: (state) => state.disabledElements,
         }),
         typeIcon() {
             return `Attributes/Icon${getIcon(this.item.type)}`;

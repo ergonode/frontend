@@ -45,7 +45,7 @@ export default {
         async getImageById() {
             await this.$axios.$get(`multimedia/${this.imageId}`, {
                 responseType: 'arraybuffer',
-            }).then(response => this.onSuccess(response));
+            }).then((response) => this.onSuccess(response));
         },
         onSuccess(response) {
             this.image = getImageData(response);

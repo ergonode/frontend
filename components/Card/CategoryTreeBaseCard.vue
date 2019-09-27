@@ -32,8 +32,8 @@ export default {
     mixins: [errorValidationMixin],
     computed: {
         ...mapState('tree', {
-            treeID: state => state.treeId,
-            code: state => state.code,
+            treeID: (state) => state.treeId,
+            code: (state) => state.code,
         }),
         isDisabled() {
             return Boolean(this.treeID);

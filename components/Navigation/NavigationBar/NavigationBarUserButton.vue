@@ -39,7 +39,7 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            user: state => state.user,
+            user: (state) => state.user,
         }),
         capitalizedUserFirstName() {
             const { first_name: firstName } = this.user;

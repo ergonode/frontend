@@ -29,14 +29,14 @@ export default {
     },
     computed: {
         ...mapState('productsDraft', {
-            completeness: state => state.completeness,
+            completeness: (state) => state.completeness,
         }),
         caption() {
             return `${this.progress}% Completeness of ${this.language}`;
         },
         progress() {
             const { filled, required } = this.completeness;
-            const progress = Math.round(filled / required * 100);
+            const progress = Math.round(filled / (required * 100));
 
             if (Number.isNaN(progress)) {
                 return 100;

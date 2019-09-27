@@ -5,7 +5,12 @@
 <template>
     <div :class="['grid', {'grid--placeholder': isPlaceholder}]">
         <GridAdvancedFilters v-if="advancedFilters" />
-        <GridHeader :title="title" />
+        <GridHeader
+            :title="title"
+            :row-height="rowHeight"
+            :layout="layout"
+            @rowHeightChange="onRowHeightChange"
+            @layoutChange="onLayoutChange" />
         <div
             ref="gridContent"
             class="grid__content"
@@ -17,7 +22,7 @@
                 :index="colIndex"
                 :column="column"
                 :is-last="gridState.columns.length - 1 === colIndex"
-                :rows-height="rowsHeight"
+                :rows-height="rowHeight"
                 :is-header-focused="isHeaderFocused">
                 <GridWrapperHeaderCell
                     :store-namespace="storeNamespace"
@@ -66,9 +71,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { sumIntegers } from '~/model/arrayWrapper';
 import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
+import {
+    getGhostColumnElementModel,
+    getGhostFilterElementModel,
+} from '~/model/grid/layout/GhostElements';
+import { ROW_HEIGHTS, GRID_LAYOUT } from '~/model/grid/layout/LayoutConfiguration';
 
 export default {
     name: 'Grid',
@@ -95,10 +105,6 @@ export default {
             type: Boolean,
             default: true,
         },
-        rowsHeight: {
-            type: Number,
-            required: true,
-        },
         actionPaths: {
             type: Object,
             required: true,
@@ -109,12 +115,14 @@ export default {
         },
         basicFilters: {
             type: Boolean,
-            default: true,
+            default: false,
         },
     },
     data() {
         return {
             isHeaderFocused: false,
+            rowHeight: ROW_HEIGHTS.SMALL,
+            layout: GRID_LAYOUT.TABLE,
         };
     },
     beforeCreate() {
@@ -127,9 +135,23 @@ export default {
         delete this.leftPinnedColumns;
         delete this.fixedRowOffset;
     },
+    watch: {
+        isListElementDragging() {
+            if (this.isListElementDragging) {
+                this.addGhostColumn();
+                // this.addGhostFilter();
+            } else {
+                this.removeGhostColumn();
+                // this.removeGhostFilter();
+            }
+        },
+    },
     computed: {
+        ...mapState('draggable', {
+            isListElementDragging: (state) => state.isListElementDragging,
+        }),
         ...mapState('gridDraft', {
-            drafts: state => state.drafts,
+            drafts: (state) => state.drafts,
         }),
         gridState() {
             return this.$store.state[this.storeNamespace];
@@ -147,13 +169,28 @@ export default {
         },
     },
     methods: {
+        ...mapActions('draggable', [
+            'setDraggableState',
+            'setDraggedElement',
+            'setDraggedElIndex',
+            'setGhostElXTranslation',
+            'setBounds',
+            'setGhostElTransform',
+            'setGhostIndex',
+        ]),
+        onRowHeightChange(height) {
+            this.rowHeight = height;
+        },
+        onLayoutChange(layout) {
+            this.layout = layout;
+        },
         onHeaderFocus(isFocused) {
             this.isHeaderFocused = isFocused;
         },
         onStickyChange({
             sticky, columnId, state,
         }) {
-            const columnIndex = this.gridState.columns.findIndex(col => col.id === columnId);
+            const columnIndex = this.gridState.columns.findIndex((col) => col.id === columnId);
             const { gridContent: { children: columnEls } } = this.$refs;
             const columnEl = columnEls[columnIndex];
 
@@ -184,6 +221,40 @@ export default {
                 }
                 columnEl.classList.remove('sticky');
             }
+        },
+        addGhostColumn() {
+            const column = getGhostColumnElementModel();
+            const width = 100;
+            const ghostIndex = 1;
+            const secondColumn = document.documentElement.querySelector('.grid__content').children[ghostIndex];
+            const { x: xPos } = secondColumn.getBoundingClientRect();
+
+            this.$store.dispatch(`${this.storeNamespace}/insertColumnAtIndex`, { column, index: ghostIndex });
+            this.$store.dispatch(`${this.storeNamespace}/insertColumnWidthAtIndex`, { width: `${width}px`, index: ghostIndex });
+
+            this.setBounds({ x: xPos, width });
+            this.setGhostIndex(1);
+            this.setDraggedElIndex(1);
+        },
+        removeGhostColumn() {
+            const ghostIndex = 1;
+
+            if (this.gridState.columns[ghostIndex].id === 'ghost') {
+                this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index: ghostIndex });
+                this.$store.dispatch(`${this.storeNamespace}/removeColumnWidthAtIndex`, { index: ghostIndex });
+
+                this.setBounds();
+                this.setGhostIndex();
+                this.setDraggedElIndex();
+            }
+        },
+        addGhostFilter() {
+            const filter = getGhostFilterElementModel();
+
+            this.$store.dispatch(`${this.storeNamespace}/addAdvancedFilter`, filter);
+        },
+        removeGhostFilter() {
+
         },
     },
 };

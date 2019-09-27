@@ -5,7 +5,7 @@
 
 import { toCapitalize } from '~/model/stringWrapper';
 
-const getCheckColumn = privilegeType => ({
+const getCheckColumn = (privilegeType) => ({
     id: privilegeType,
     label: toCapitalize(privilegeType),
     type: 'CHECK_CELL',
@@ -77,7 +77,7 @@ export function getMappedPrivilegesBasedOnGridData(privilegesDic, gridData) {
         const privilegeKeys = Object.keys(role);
         const { length: privilegesKeysNumber } = privilegeKeys;
         const privilegeIndex = tmpPrivilegesDic.findIndex(
-            privilege => privilege.name === role.name.value,
+            (privilege) => privilege.name === role.name.value,
         );
 
         for (let j = 0; j < privilegesKeysNumber; j += 1) {

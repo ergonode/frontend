@@ -39,8 +39,8 @@ export default {
                 commit(types.SET_ELEMENTS_FOR_LANGUAGE, { languageCode, elements });
             } else {
                 const elementsToAdd = elements.filter(
-                    element => !stateElements[languageCode].some(
-                        stateElement => stateElement.id === element.id,
+                    (element) => !stateElements[languageCode].some(
+                        (stateElement) => stateElement.id === element.id,
                     ),
                 );
 

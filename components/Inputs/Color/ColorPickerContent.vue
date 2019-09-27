@@ -41,7 +41,7 @@ export default {
         },
     },
     created() {
-        this.colorIndex = this.options.findIndex(color => color === this.value);
+        this.colorIndex = this.options.findIndex((color) => color === this.value);
     },
     methods: {
         onSelect(color, index) {
