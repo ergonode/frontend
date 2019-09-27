@@ -7,8 +7,8 @@ import { Store } from 'vuex-mock-store';
 import GridColumn from '~/components/Grid/GridColumn';
 import draggableMutations from '~/store/draggable/mutations';
 import {
-    getGhostColumnElementModel,
-} from '~/model/grid/layout/GhostElements';
+    GHOST_ELEMENT_MODEL,
+} from '~/defaults/grid/main';
 
 const localVue = createLocalVue();
 const store = new Store({
@@ -209,7 +209,7 @@ describe('Grid/GridColumn', () => {
 
                     wrapper.vm.insertColumnOnDragOver(isBefore, xPos, width);
 
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnAtIndex', { column: getGhostColumnElementModel(), index: 2 });
+                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnAtIndex', { column: GHOST_ELEMENT_MODEL, index: 2 });
                     expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnWidthAtIndex', { width: '100px', index: 2 });
                     expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setGhostIndex', 2);
                     expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setDraggedElIndex', 2);
@@ -220,7 +220,7 @@ describe('Grid/GridColumn', () => {
 
                     wrapper.vm.insertColumnOnDragOver(isBefore, xPos, width);
 
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnAtIndex', { column: getGhostColumnElementModel(), index: 3 });
+                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnAtIndex', { column: GHOST_ELEMENT_MODEL, index: 3 });
                     expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnWidthAtIndex', { width: '100px', index: 3 });
                     expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setGhostIndex', 3);
                     expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setDraggedElIndex', 3);

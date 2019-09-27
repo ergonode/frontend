@@ -41,8 +41,8 @@ import {
     removeGridColumnCopyFromDocumentBody,
 } from '~/model/grid/layout/GridColumnElementCopy';
 import {
-    getGhostColumnElementModel,
-} from '~/model/grid/layout/GhostElements';
+    GHOST_ELEMENT_MODEL,
+} from '~/defaults/grid/main';
 import {
     insertColumnAtIndexToCookie,
     removeColumnCookieByID,
@@ -370,7 +370,7 @@ export default {
             } else {
                 const ghostWidth = 100;
 
-                this.insertColumnWrapper(getGhostColumnElementModel(), `${ghostWidth}px`, ghostColIndex);
+                this.insertColumnWrapper(GHOST_ELEMENT_MODEL, `${ghostWidth}px`, ghostColIndex);
                 this.setBounds({ x: xPos, width: ghostWidth });
             }
 

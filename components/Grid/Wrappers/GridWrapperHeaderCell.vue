@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { GridHeaderType } from '~/model/grid/layout/GridHeaderType';
+import { GRID_HEADER_TYPE } from '~/defaults/grid/main';
 
 export default {
     name: 'GridWrapperHeaderCell',
@@ -64,8 +64,8 @@ export default {
         headerComponent() {
             const { type } = this.column.header;
 
-            if (type === GridHeaderType.CHECK) return () => import('~/components/Grid/EditCells/GridEditSelectRowCell');
-            if (type === GridHeaderType.PLAIN) return () => import('~/components/Grid/GridBaseHeaderCell');
+            if (type === GRID_HEADER_TYPE.CHECK) return () => import('~/components/Grid/EditCells/GridEditSelectRowCell');
+            if (type === GRID_HEADER_TYPE.PLAIN) return () => import('~/components/Grid/GridBaseHeaderCell');
 
             return () => import('~/components/Grid/GridInteractiveHeaderCell');
         },
@@ -75,8 +75,8 @@ export default {
         headerComponentProps() {
             const { type, title } = this.column.header;
 
-            if (type === GridHeaderType.CHECK) return { row: this.rowIndex, multicheck: true };
-            if (type === GridHeaderType.INTERACTIVE) {
+            if (type === GRID_HEADER_TYPE.CHECK) return { row: this.rowIndex, multicheck: true };
+            if (type === GRID_HEADER_TYPE.INTERACTIVE) {
                 return {
                     columnIndex: this.columnIndex,
                     column: this.column,

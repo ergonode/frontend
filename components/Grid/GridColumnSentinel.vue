@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
+import { PINNED_COLUMN_STATE } from '~/defaults/grid/main';
 
 export default {
     name: 'GridColumnSentinel',
@@ -37,8 +37,8 @@ export default {
     computed: {
         pinnedStateClasses() {
             return {
-                'column-sentinel--left': this.column.state === PinnedColumnState.LEFT,
-                'column-sentinel--right': this.column.state === PinnedColumnState.RIGHT,
+                'column-sentinel--left': this.column.state === PINNED_COLUMN_STATE.LEFT,
+                'column-sentinel--right': this.column.state === PINNED_COLUMN_STATE.RIGHT,
             };
         },
     },

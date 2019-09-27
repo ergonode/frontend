@@ -3,8 +3,7 @@
  * See LICENSE for license details.
  */
 import { toCapitalize } from '~/model/stringWrapper';
-import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
-import { GridHeaderType } from '~/model/grid/layout/GridHeaderType';
+import { PINNED_COLUMN_STATE, GRID_HEADER_TYPE } from '~/defaults/grid/main';
 
 const getMappedColumnHeaderTitle = ({
     id,
@@ -27,10 +26,10 @@ const getMappedColumnHeaderTitle = ({
 };
 
 const getMappedColumnHeaderType = ({ filter, type }) => {
-    if (type === 'CHECK') return GridHeaderType.CHECK;
-    if (filter || type === 'IMAGE') return GridHeaderType.INTERACTIVE;
+    if (type === 'CHECK') return GRID_HEADER_TYPE.CHECK;
+    if (filter || type === 'IMAGE') return GRID_HEADER_TYPE.INTERACTIVE;
 
-    return GridHeaderType.PLAIN;
+    return GRID_HEADER_TYPE.PLAIN;
 };
 
 const getMappedColumnHeader = (column) => ({
@@ -95,7 +94,7 @@ export function getMappedColumns(columns, isExtenderNeeded = true) {
         if (type === 'CHECK') {
             pinnedColumns.push({
                 id,
-                state: PinnedColumnState.LEFT,
+                state: PINNED_COLUMN_STATE.LEFT,
                 position: gridColumnPosition,
             });
         }
@@ -103,7 +102,7 @@ export function getMappedColumns(columns, isExtenderNeeded = true) {
         if (type === 'ACTION') {
             pinnedColumns.push({
                 id,
-                state: PinnedColumnState.RIGHT,
+                state: PINNED_COLUMN_STATE.RIGHT,
                 position: gridColumnPosition,
             });
         }

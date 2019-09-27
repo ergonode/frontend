@@ -52,7 +52,7 @@ import {
     removeColumnCookieByID,
 } from '~/model/grid/cookies/GridLayoutConfiguration';
 import { SortingOrder } from '~/model/icons/SortingOrder';
-import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
+import { PINNED_COLUMN_STATE } from '~/defaults/grid/main';
 
 export default {
     name: 'GridInteractiveHeaderCell',
@@ -101,7 +101,7 @@ export default {
         if (this.pinnedColumn) {
             const { state } = this.pinnedColumn;
 
-            if (state === PinnedColumnState.LEFT) this.contextualMenuItems[1].value = true;
+            if (state === PINNED_COLUMN_STATE.LEFT) this.contextualMenuItems[1].value = true;
             else this.contextualMenuItems[2].value = true;
         }
     },
@@ -188,11 +188,11 @@ export default {
                 break;
             }
             case 'Pin to left':
-                this.pinOrRemovePinnedColumn(!option.value, PinnedColumnState.LEFT);
+                this.pinOrRemovePinnedColumn(!option.value, PINNED_COLUMN_STATE.LEFT);
                 this.contextualMenuItems[1].value = !option.value;
                 break;
             case 'Pin to right':
-                this.pinOrRemovePinnedColumn(!option.value, PinnedColumnState.RIGHT);
+                this.pinOrRemovePinnedColumn(!option.value, PINNED_COLUMN_STATE.RIGHT);
                 this.contextualMenuItems[2].value = !option.value;
                 break;
             default: break;

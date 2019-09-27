@@ -3,25 +3,28 @@
  * See LICENSE for license details.
  */
 <template functional>
-    <div class="ghost-column">
+    <div class="advanced-filters-ghost">
         <div class="container">
             <!-- TODO: Add Icon - Eryk -->
-            <span class="ghost-column__title">ADD COLUMN</span>
+            <span class="advanced-filters-ghost__title">
+                ADD FILTER
+            </span>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'GridGhostColumn',
+    name: 'GridAdvancedFilterGhost',
 };
 </script>
 
 <style lang="scss" scoped>
-    .ghost-column {
+    .advanced-filters-ghost {
         display: flex;
         justify-content: center;
         align-items: center;
+        padding: 8px 12px;
         background-color: $primary;
         box-shadow:
             inset 0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -35,6 +38,5 @@ export default {
 
     .container {
         display: flex;
-        flex-direction: column;
     }
 </style>

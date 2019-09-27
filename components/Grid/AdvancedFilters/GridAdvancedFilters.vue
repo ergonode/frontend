@@ -11,7 +11,7 @@
                         class="grid-advanced-filters__title">
                         Filters
                     </span>
-                    <NumericBadge :number="filters.length" />
+                    <NumericBadge :number="filtersNumber" />
                 </div>
                 <div class="divider-container">
                     <Divider vertical />
@@ -25,7 +25,6 @@
                 <span
                     class="grid-advanced-filters__action"
                     @click="onRemoveAll">Remove all filters</span>
-
                 <div class="divider-container">
                     <Divider vertical />
                 </div>
@@ -42,28 +41,24 @@
                 </template>
             </IconFabButton>
         </div>
-        <div
+        <GridAdvancedFiltersDroppableArea
             v-if="isExpanded"
-            class="filters-container">
-            <template v-if="filters.length === 0">
-                <div class="grid-advanced-filters__placeholder">
-                    <span class="placeholder-title">
-                        Create a filter by dragging an attribute here
-                    </span>
-                </div>
-            </template>
-            <template v-else>
-                <div
-                    v-for="filter in filters"
-                    :key="filter.id" />
-            </template>
-        </div>
+            @addFilter="onFilterDropped">
+            <GridAdvancedFilterPlaceholder v-if="filters.length === 0" />
+            <GridAdvancedFilter
+                v-for="filter in filters"
+                :key="filter.id"
+                :filter="filter">
+                <template v-slot="{ isEditing }" />
+            </GridAdvancedFilter>
+        </GridAdvancedFiltersDroppableArea>
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import { Arrow } from '~/model/icons/Arrow';
+import { GHOST_ID } from '~/defaults/grid/main';
 
 export default {
     name: 'GridAdvancedFilters',
@@ -72,6 +67,9 @@ export default {
         NumericBadge: () => import('~/components/Badges/NumericBadge'),
         IconFabButton: () => import('~/components/Buttons/IconFabButton'),
         IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),
+        GridAdvancedFiltersDroppableArea: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFiltersDroppableArea'),
+        GridAdvancedFilter: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilter'),
+        GridAdvancedFilterPlaceholder: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder'),
     },
     props: {
         filters: {
@@ -89,6 +87,12 @@ export default {
         ...mapState('draggable', {
             isListElementDragging: (state) => state.isListElementDragging,
         }),
+        ghostFilterId() {
+            return GHOST_ID;
+        },
+        filtersNumber() {
+            return this.filters.filter((f) => f.id !== this.ghostFilterId).length;
+        },
     },
     watch: {
         isListElementDragging() {
@@ -106,6 +110,9 @@ export default {
             } else {
                 this.iconExpanderState = Arrow.DOWN;
             }
+        },
+        onFilterDropped(filter) {
+            this.$emit('addFilter', filter);
         },
         onClearAll() {
             this.$emit('clearAll');
@@ -145,19 +152,6 @@ export default {
             text-decoration: underline;
             cursor: pointer;
         }
-
-        &__placeholder {
-            padding: 8px 12px;
-            background-color: $lightGrey;
-            box-shadow:
-                inset 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                inset 0 3px 1px 0 rgba(0, 0, 0, 0.12),
-                inset 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-
-            .placeholder-title {
-                @include setFont(medium, small, regular, $darkGraphite);
-            }
-        }
     }
 
     .container {
@@ -172,13 +166,6 @@ export default {
         grid-auto-flow: column;
         column-gap: 8px;
         align-items: center;
-    }
-
-    .filters-container {
-        display: grid;
-        gap: 8px;
-        grid-template-columns: max-content;
-        padding-bottom: 16px;
     }
 
     .divider-container {

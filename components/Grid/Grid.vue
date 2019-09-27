@@ -4,7 +4,10 @@
  */
 <template>
     <div :class="['grid', {'grid--placeholder': isPlaceholder}]">
-        <GridAdvancedFilters v-if="advancedFilters" />
+        <GridAdvancedFilters
+            v-if="advancedFilters"
+            :filters="gridState.advancedFilters"
+            @addFilter="onFilterDropped" />
         <GridHeader
             :title="title"
             :row-height="rowHeight"
@@ -73,17 +76,14 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { sumIntegers } from '~/model/arrayWrapper';
-import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
 import {
-    getGhostColumnElementModel,
-    getGhostFilterElementModel,
-} from '~/model/grid/layout/GhostElements';
-import { ROW_HEIGHTS, GRID_LAYOUT } from '~/model/grid/layout/LayoutConfiguration';
+    PINNED_COLUMN_STATE, ROW_HEIGHTS, GRID_LAYOUT, GHOST_ELEMENT_MODEL, GHOST_ID,
+} from '~/defaults/grid/main';
 
 export default {
     name: 'Grid',
     components: {
-        GridAdvancedFilters: () => import('~/components/Grid/GridAdvancedFilters'),
+        GridAdvancedFilters: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilters'),
         GridHeader: () => import('~/components/Grid/GridHeader'),
         GridColumn: () => import('~/components/Grid/GridColumn'),
         GridColumnSentinel: () => import('~/components/Grid/GridColumnSentinel'),
@@ -139,10 +139,10 @@ export default {
         isListElementDragging() {
             if (this.isListElementDragging) {
                 this.addGhostColumn();
-                // this.addGhostFilter();
+                this.addGhostFilter();
             } else {
                 this.removeGhostColumn();
-                // this.removeGhostFilter();
+                this.removeGhostFilter();
             }
         },
     },
@@ -195,7 +195,7 @@ export default {
             const columnEl = columnEls[columnIndex];
 
             if (sticky) {
-                if (state === PinnedColumnState.RIGHT) {
+                if (state === PINNED_COLUMN_STATE.RIGHT) {
                     columnEl.style.right = `${sumIntegers(this.rightPinnedColumns)}px`;
                     this.rightPinnedColumns.push(columnEl.offsetWidth);
                     columnEl.classList.add('drop-shadow-right-pinned');
@@ -206,7 +206,7 @@ export default {
                 }
                 columnEl.classList.add('sticky');
             } else {
-                if (state === PinnedColumnState.RIGHT) {
+                if (state === PINNED_COLUMN_STATE.RIGHT) {
                     const indexToRemove = this.rightPinnedColumns.length - 1;
 
                     columnEl.classList.remove('drop-shadow-right-pinned');
@@ -222,26 +222,32 @@ export default {
                 columnEl.classList.remove('sticky');
             }
         },
+        onFilterDropped(filter) {
+            const { length } = this.gridState.advancedFilters;
+            const index = length - 1;
+
+            this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, { index, filter: { id: filter, label: 'Label' } });
+        },
         addGhostColumn() {
-            const column = getGhostColumnElementModel();
+            const column = GHOST_ELEMENT_MODEL;
             const width = 100;
-            const ghostIndex = 1;
-            const secondColumn = document.documentElement.querySelector('.grid__content').children[ghostIndex];
+            const index = 1;
+            const secondColumn = document.documentElement.querySelector('.grid__content').children[index];
             const { x: xPos } = secondColumn.getBoundingClientRect();
 
-            this.$store.dispatch(`${this.storeNamespace}/insertColumnAtIndex`, { column, index: ghostIndex });
-            this.$store.dispatch(`${this.storeNamespace}/insertColumnWidthAtIndex`, { width: `${width}px`, index: ghostIndex });
+            this.$store.dispatch(`${this.storeNamespace}/insertColumnAtIndex`, { column, index });
+            this.$store.dispatch(`${this.storeNamespace}/insertColumnWidthAtIndex`, { width: `${width}px`, index });
 
             this.setBounds({ x: xPos, width });
             this.setGhostIndex(1);
             this.setDraggedElIndex(1);
         },
         removeGhostColumn() {
-            const ghostIndex = 1;
+            const index = 1;
 
-            if (this.gridState.columns[ghostIndex].id === 'ghost') {
-                this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index: ghostIndex });
-                this.$store.dispatch(`${this.storeNamespace}/removeColumnWidthAtIndex`, { index: ghostIndex });
+            if (this.gridState.columns[index].id === GHOST_ID) {
+                this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index });
+                this.$store.dispatch(`${this.storeNamespace}/removeColumnWidthAtIndex`, { index });
 
                 this.setBounds();
                 this.setGhostIndex();
@@ -249,12 +255,17 @@ export default {
             }
         },
         addGhostFilter() {
-            const filter = getGhostFilterElementModel();
+            const filter = GHOST_ELEMENT_MODEL;
 
             this.$store.dispatch(`${this.storeNamespace}/addAdvancedFilter`, filter);
         },
         removeGhostFilter() {
+            const { length } = this.gridState.advancedFilters;
+            const index = length - 1;
 
+            if (this.gridState.advancedFilters[index].id === GHOST_ID) {
+                this.$store.dispatch(`${this.storeNamespace}/removeAdvancedFilterAtIndex`, index);
+            }
         },
     },
 };

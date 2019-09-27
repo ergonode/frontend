@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { ROW_HEIGHTS, GRID_LAYOUT } from '~/model/grid/layout/LayoutConfiguration';
+import { ROW_HEIGHTS, GRID_LAYOUT } from '~/defaults/grid/main';
 
 export default {
     name: 'GridHeader',

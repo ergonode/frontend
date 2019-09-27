@@ -15,6 +15,9 @@ export const types = {
     SET_ROW_IDS: 'SET_ROW_IDS',
     SET_COUNT: 'SET_COUNT',
     SET_FILTERED: 'SET_FILTERED',
+    ADD_ADVANCED_FILTER: 'ADD_ADVANCED_FILTER',
+    SET_ADVANCED_FILTER_AT_INDEX: 'SET_ADVANCED_FILTER_AT_INDEX',
+    REMOVE_ADVANCED_FILTER_AT_INDEX: 'REMOVE_ADVANCED_FILTER_AT_INDEX',
     SET_BASIC_FILTER: 'SET_BASIC_FILTER',
     RELOAD_GRID_DATA: 'RELOAD_GRID_DATA',
     UPDATE_DATA_CELL_VALUE: 'UPDATE_DATA_CELL_VALUE',
@@ -74,6 +77,16 @@ export default {
     [types.REMOVE_BASIC_FILTER](state, id) {
         delete state.basicFilters[id];
         state.basicFilters = { ...state.basicFilters };
+    },
+    [types.SET_ADVANCED_FILTER_AT_INDEX](state, { index, filter }) {
+        state.advancedFilters[index] = filter;
+        state.advancedFilters = [...state.advancedFilters];
+    },
+    [types.ADD_ADVANCED_FILTER](state, filter) {
+        state.advancedFilters.push(filter);
+    },
+    [types.REMOVE_ADVANCED_FILTER_AT_INDEX](state, index) {
+        state.advancedFilters.splice(index, 1);
     },
     [types.SET_CURRENT_PAGE](state, payload) {
         state.displayedPage = payload;

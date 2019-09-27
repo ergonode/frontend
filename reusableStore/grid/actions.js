@@ -176,6 +176,15 @@ export default {
             commit(types.SET_BASIC_FILTER, { id, filter: filterToSet });
         }
     },
+    addAdvancedFilter({ commit }, filter) {
+        commit(types.ADD_ADVANCED_FILTER, filter);
+    },
+    setAdvancedFilterAtIndex({ commit }, payload) {
+        commit(types.SET_ADVANCED_FILTER_AT_INDEX, payload);
+    },
+    removeAdvancedFilterAtIndex({ commit }, index) {
+        commit(types.REMOVE_ADVANCED_FILTER_AT_INDEX, index);
+    },
     setColumnWidths({ commit }, columnWidths) {
         commit(types.SET_COLUMN_WIDTHS, columnWidths);
     },
