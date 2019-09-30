@@ -24,21 +24,32 @@ export default {
             image_id: imageID,
             elements,
         }) => {
-            const { elementDataByType } = getters;
             const { language: languageCode } = rootState.authentication.user;
-            const layoutElements = getMappedLayoutElements(
-                elements,
-                elementDataByType,
-            );
+            const attributesId = elements.map((el) => el.id);
+            const params = {
+                filter: `id${attributesId.join(',')}`,
+            };
 
-            for (let i = layoutElements.length - 1; i > -1; i -= 1) {
-                const { id } = layoutElements[i];
-                dispatch('list/setDisabledElement', { languageCode, elementId: id }, { root: true });
-            }
+            return this.app.$axios.$get(`${languageCode}/attributes`, { params }).then(({ collection }) => {
+                const elementsDescription = collection.map(
+                    ({ id, code }) => ({ id, code }),
+                );
+                const { elementDataByType } = getters;
+                const layoutElements = getMappedLayoutElements(
+                    elements,
+                    elementsDescription,
+                    elementDataByType,
+                );
 
-            commit(types.INITIALIZE_LAYOUT_ELEMENTS, layoutElements);
-            commit(types.SET_TEMPLATE_DESIGNER_TITLE, name);
-            commit(types.SET_TEMPLATE_DESIGNER_IMAGE, imageID);
+                for (let i = layoutElements.length - 1; i > -1; i -= 1) {
+                    const { id } = layoutElements[i];
+                    dispatch('list/setDisabledElement', { languageCode, elementId: id }, { root: true });
+                }
+
+                commit(types.INITIALIZE_LAYOUT_ELEMENTS, layoutElements);
+                commit(types.SET_TEMPLATE_DESIGNER_TITLE, name);
+                commit(types.SET_TEMPLATE_DESIGNER_IMAGE, imageID);
+            });
         }).catch(onDefaultError);
     },
     updateTemplateDesigner(
@@ -84,6 +95,7 @@ export default {
         const layoutElement = getMappedLayoutElement(
             element.id,
             elementDataByType(element.type),
+            element.code,
             position,
         );
 
