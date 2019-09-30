@@ -67,8 +67,9 @@ export default {
         },
         onCreate() {
             this.removeValidationErrors();
-            // Select / Multi select key values cannot be empty
+
             if (this.optionKeys.length > 0 && this.optionKeys.some((key) => key === '')) {
+                this.$addAlert({ type: 'warning', message: 'Options cannot have an empty keys' });
                 return;
             }
 
