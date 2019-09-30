@@ -18,13 +18,17 @@
                 </div>
                 <span
                     class="grid-advanced-filters__action"
-                    @click="onClearAll">Clear all filters</span>
+                    @click="onClearAll">
+                    Clear all filters
+                </span>
                 <div class="divider-container">
                     <Divider vertical />
                 </div>
                 <span
                     class="grid-advanced-filters__action"
-                    @click="onRemoveAll">Remove all filters</span>
+                    @click="onRemoveAll">
+                    Remove all filters
+                </span>
                 <div class="divider-container">
                     <Divider vertical />
                 </div>
