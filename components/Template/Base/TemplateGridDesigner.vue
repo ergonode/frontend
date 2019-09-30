@@ -23,7 +23,7 @@ export default {
             default: 62,
         },
     },
-    beforeCreate() {
+    created() {
         this.debounceFunc = debounce(this.emitRowsNumber, 100);
     },
     mounted() {

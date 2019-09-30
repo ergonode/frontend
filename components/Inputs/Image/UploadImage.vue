@@ -24,7 +24,8 @@
         </div>
         <div
             v-else
-            class="upload-image__container">
+            class="upload-image__container"
+            :style="imageHeightStyle">
             <button
                 class="upload-image__remove-btn"
                 @click="onRemove"
@@ -59,6 +60,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        fixedHeight: {
+            type: Boolean,
+            default: true,
+        },
     },
     components: {
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
@@ -75,6 +80,9 @@ export default {
         ...mapState('validations', {
             uploadError: (state) => state.validationErrors.upload,
         }),
+        imageHeightStyle() {
+            return this.fixedHeight ? { height: '150px' } : null;
+        },
     },
     methods: {
         ...mapActions('validations', [
@@ -114,10 +122,8 @@ export default {
 <style lang="scss" scoped>
     .upload-image {
         position: relative;
-        display: grid;
-        grid-auto-flow: row;
-        grid-template-rows: max-content;
-        row-gap: 8px;
+        display: flex;
+        flex-direction: column;
 
         &--disabled::after {
             position: absolute;
@@ -138,7 +144,6 @@ export default {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 150px;
             background-color: $white;
             box-shadow:
                 0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -157,7 +162,7 @@ export default {
         &__container {
             position: relative;
             display: flex;
-            height: 150px;
+            max-height: 100%;
             background-color: $white;
             box-shadow:
                 0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -199,12 +204,18 @@ export default {
             text-align: center;
         }
 
+        &__title {
+            margin-bottom: 8px;
+        }
+
         &__description, &__title {
             @include setFont(medium, small, regular, $graphite);
         }
 
         &__error-label {
             @include setFont(regular, tiny, tiny, $error);
+
+            margin-top: 8px;
         }
     }
 </style>
