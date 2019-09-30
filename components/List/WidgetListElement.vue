@@ -3,31 +3,29 @@
  * See LICENSE for license details.
  */
 <template>
-    <ListElement
-        v-draggable-element="{
-            id: item.type,
-            draggedElementStyle,
-            onDraggedState,
-            draggable: $hasAccess('TEMPLATE_DESIGNER_UPDATE'),
-        }"
-        :dragged="isDragged">
+    <ListDraggableElement
+        :is-draggable="$hasAccess('TEMPLATE_DESIGNER_UPDATE')"
+        :draggable-id="item.type"
+        @drag="onDrag">
         <ListElementIcon icon-path="Editor/IconFontSize" />
-        <ListElementDescription
-            :title="item.type"
-            :subtitle="item.label" />
-    </ListElement>
+        <ListElementDescription>
+            <ListElementSubtitle :subtitle="item.type" />
+            <ListElementTitle :title="item.label" />
+        </ListElementDescription>
+    </ListDraggableElement>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import DraggableStates from '~/model/draggableStates';
 
 export default {
     name: 'AttributeListElement',
     components: {
-        ListElement: () => import('~/components/List/ListElement'),
+        ListDraggableElement: () => import('~/components/List/ListDraggableElement'),
         ListElementIcon: () => import('~/components/List/ListElementIcon'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
+        ListElementTitle: () => import('~/components/List/ListElementTitle'),
+        ListElementSubtitle: () => import('~/components/List/ListElementSubtitle'),
     },
     props: {
         item: {
@@ -35,31 +33,19 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            isDragged: false,
-            draggedElementStyle: { width: 246, height: 32, backgroundColor: '#fff' },
-        };
-    },
     methods: {
         ...mapActions('draggable', [
             'setDraggedElement',
             'setDraggableState',
         ]),
-        onDraggedState(event) {
-            switch (event.detail.state) {
-            case DraggableStates.START:
-                this.isDragged = true;
-                this.setDraggedElement(event.target.id);
-                break;
-            case DraggableStates.END:
-                this.isDragged = false;
+        onDrag(isDragged) {
+            if (isDragged) {
+                this.setDraggedElement(this.item.type);
+            } else {
                 this.setDraggedElement();
-                break;
-            default: break;
             }
 
-            this.setDraggableState({ propName: 'isListElementDragging', value: this.isDragged });
+            this.setDraggableState({ propName: 'isListElementDragging', value: isDragged });
         },
     },
 };

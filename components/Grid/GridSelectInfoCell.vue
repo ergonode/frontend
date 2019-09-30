@@ -24,6 +24,10 @@ export default {
             type: [String, Number, Array],
             required: true,
         },
+        fixedWidth: {
+            type: Boolean,
+            default: false,
+        },
     },
 };
 </script>

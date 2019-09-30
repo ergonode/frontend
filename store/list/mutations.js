@@ -8,6 +8,7 @@ export const types = {
     INITIALIZE_ELEMENTS_FOR_LANGUAGE: 'INITIALIZE_ELEMENTS_FOR_LANGUAGE',
     SET_GROUPS_FOR_LANGUAGE: 'SET_GROUPS_FOR_LANGUAGE',
     SET_ELEMENTS_FOR_LANGUAGE: 'SET_ELEMENTS_FOR_LANGUAGE',
+    SET_ELEMENTS: 'SET_ELEMENTS',
     SET_DISABLED_ELEMENT: 'SET_DISABLED_ELEMENT',
     REMOVE_DISABLED_ELEMENT: 'REMOVE_DISABLED_ELEMENT',
     CLEAR_STATE: 'CLEAR_STATE',
@@ -24,6 +25,9 @@ export default {
     [types.SET_ELEMENTS_FOR_LANGUAGE](state, { languageCode, elements }) {
         state.elements[languageCode] = [...state.elements[languageCode], ...elements];
         state.elements = { ...state.elements };
+    },
+    [types.SET_ELEMENTS](state, { languageCode, elements }) {
+        state.elements[languageCode] = elements;
     },
     [types.SET_DISABLED_ELEMENT](state, { languageCode, elementId }) {
         state.disabledElements[languageCode] = {

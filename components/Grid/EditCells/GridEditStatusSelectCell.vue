@@ -4,28 +4,40 @@
  */
 <template>
     <Select
+        :style="{width: `${fixedWidth}px`}"
         :value="value"
         solid
         clearable
         :dismissible="false"
         :error-messages="errorMessages"
         autofocus
+        :options="options"
         @focus="onFocus"
         @input="onValueChange"
-        @apply="onApply" />
+        @apply="onApply">
+        <template #selectContent>
+            <StatusSelectListContent
+                :options="options"
+                :selected-option="value"
+                :colors="colors"
+                @value="onValueChange" />
+        </template>
+    </Select>
 </template>
 
 <script>
 import Select from '~/components/Inputs/Select/Select';
+import StatusSelectListContent from '~/components/Inputs/Select/Contents/StatusSelectListContent';
 
 export default {
     name: 'GridEditStatusSelectCell',
     components: {
         Select,
+        StatusSelectListContent,
     },
     props: {
         value: {
-            type: Object,
+            type: String,
             required: true,
         },
         errorMessages: {
@@ -34,6 +46,14 @@ export default {
         },
         options: {
             type: Array,
+            required: true,
+        },
+        colors: {
+            type: Object,
+            required: true,
+        },
+        fixedWidth: {
+            type: Number,
             required: true,
         },
     },
@@ -45,7 +65,7 @@ export default {
             this.$emit('focus', false);
         },
         onValueChange(value) {
-            this.$emit('input', value);
+            this.$emit('input', value.key || value);
         },
     },
 };

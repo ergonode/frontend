@@ -4,19 +4,21 @@
  */
 <template>
     <div class="status-info-cell">
-        <div
-            class="status-info-cell__block"
-            :style="{backgroundColor: color, color: txtColor}">
-            {{ cellData.value }}
-        </div>
+        <StatusBadge :color="colors[cellData.key]" />
+        <GridInfoCell :value="cellData.value" />
     </div>
 </template>
 
 <script>
-import { hexToRGB, calculateRelativeLuminance, calculateContrastRatio } from '~/model/inputs/ColorContrast';
+import StatusBadge from '~/components/Badges/StatusBadge';
+import GridInfoCell from '~/components/Grid/GridInfoCell';
 
 export default {
     name: 'GridStatusInfoCell',
+    components: {
+        StatusBadge,
+        GridInfoCell,
+    },
     props: {
         cellData: {
             type: Object,
@@ -27,43 +29,14 @@ export default {
             required: true,
         },
     },
-    computed: {
-        color() {
-            return this.colors[this.cellData.key];
-        },
-        txtColor() {
-            const whiteColorRelativeLuminance = 0.9982138681756572;
-            const badgeRGB = hexToRGB(this.color);
-            const relativeLuminance = calculateRelativeLuminance(badgeRGB);
-            const contrastRatio = calculateContrastRatio(
-                whiteColorRelativeLuminance, relativeLuminance,
-            );
-
-            return contrastRatio > 4.5 ? '#fff' : '#000';
-        },
-    },
 };
 </script>
 
 <style lang="scss" scoped>
     .status-info-cell {
-        @include setFont(medium, small, regular);
-
         display: flex;
         flex: 1;
-        flex-direction: column;
-        padding: 4px;
-
-        &__block {
-            border-radius: 7px;
-            display: flex;
-            flex: 1;
-            justify-content: center;
-            align-items: center;
-            padding: 8px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-        }
+        align-items: center;
+        padding-left: 8px;
     }
 </style>

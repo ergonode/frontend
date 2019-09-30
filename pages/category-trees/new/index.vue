@@ -25,12 +25,16 @@ export default {
     },
     created() {
         this.clearStorage();
+        this.clearDesignerStorage();
     },
     methods: {
         ...mapActions('tree', [
             'createTree',
             'clearStorage',
         ]),
+        ...mapActions('gridDesigner', {
+            clearDesignerStorage: 'clearStorage',
+        }),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',

@@ -3,4 +3,3 @@
  * See LICENSE for license details.
  */
 export const JWT_KEY = 'jwt';
-export const USER_KEY = 'user';

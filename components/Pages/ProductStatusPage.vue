@@ -22,8 +22,8 @@ export default {
     name: 'ProductStatusPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
-        let generalOptTabPath = '/workflow/statuses/new/general';
-        let translationsTabPath = '/workflow/statuses/new/translation';
+        let generalOptTabPath = '/workflow/status/new/general';
+        let translationsTabPath = '';
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -38,8 +38,8 @@ export default {
         ];
 
         if (this.isEdit) {
-            generalOptTabPath = `/workflow/statuses/edit/${this.$route.params.id}/general`;
-            translationsTabPath = `/workflow/statuses/edit/${this.$route.params.id}/translations`;
+            generalOptTabPath = `/workflow/status/edit/${this.$route.params.id}/general`;
+            translationsTabPath = `/workflow/status/edit/${this.$route.params.id}/translations`;
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 

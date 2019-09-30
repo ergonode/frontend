@@ -7,11 +7,17 @@
         <ListElement
             v-for="(option, index) in options"
             :key="index"
+            small
             @click.native="onSelectedValue(index)">
-            <ListElementDescription
-                :title="option.key"
-                :subtitle="option.value || 'No translation'"
-                subtitle-typo="typo-label" />
+            <ListElementDescription>
+                <ListElementSubtitle
+                    small
+                    :subtitle="option.key" />
+                <ListElementTitle
+                    small
+                    :title="option.value || 'No translation'"
+                    :color="getSelectedColor(option.key)" />
+            </ListElementDescription>
         </ListElement>
     </List>
 </template>
@@ -23,16 +29,16 @@ export default {
         List: () => import('~/components/List/List'),
         ListElement: () => import('~/components/List/ListElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
+        ListElementTitle: () => import('~/components/List/ListElementTitle'),
+        ListElementSubtitle: () => import('~/components/List/ListElementSubtitle'),
     },
     props: {
         options: {
             type: Array,
-            required: false,
             default: () => [],
         },
         selectedOption: {
             type: [String, Number],
-            required: false,
             default: '',
         },
     },
@@ -48,7 +54,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-
-</style>

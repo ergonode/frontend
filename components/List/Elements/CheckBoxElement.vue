@@ -3,17 +3,20 @@
  * See LICENSE for license details.
  */
 <template>
-    <ListElement @click.native="onClick">
+    <ListElement
+        :small="small"
+        @click.native="onClick">
         <ListElementAction>
             <CheckBox
-                ref="checkbox"
-                v-model="localValue" />
+                :value="selectedValue"
+                @input="onClick" />
         </ListElementAction>
-        <slot name="checkboxDescription">
-            <ListElementDescription
-                :subtitle="description"
-                subtitle-typo="typo-label"
-                :subtitle-color="color" />
+        <slot name="description">
+            <ListElementDescription>
+                <ListElementTitle
+                    :title="description"
+                    :color="color" />
+            </ListElementDescription>
         </slot>
     </ListElement>
 </template>
@@ -21,6 +24,7 @@
 <script>
 import ListElement from '~/components/List/ListElement';
 import ListElementDescription from '~/components/List/ListElementDescription';
+import ListElementTitle from '~/components/List/ListElementTitle';
 import ListElementAction from '~/components/List/ListElementAction';
 import CheckBox from '~/components/Inputs/CheckBox';
 
@@ -29,30 +33,25 @@ export default {
     components: {
         ListElement,
         ListElementDescription,
+        ListElementTitle,
         ListElementAction,
         CheckBox,
     },
     props: {
         description: {
-            type: [Object, String, Number],
-            required: false,
+            type: [String, Number],
             default: '',
         },
         selectedValue: {
             type: Boolean,
-            required: false,
+            default: false,
+        },
+        small: {
+            type: Boolean,
             default: false,
         },
     },
     computed: {
-        localValue: {
-            get() {
-                return this.selectedValue;
-            },
-            set(value) {
-                this.$emit('value', { value, option: this.description });
-            },
-        },
         color() {
             return this.selectedValue
                 ? 'txt--dark-graphite'
@@ -60,13 +59,15 @@ export default {
         },
     },
     methods: {
-        onClick(event) {
-            const { checkbox } = this.$refs;
-
-            if (!event.target.contains(checkbox.$el)) {
-                this.localValue = !this.localValue;
-            }
+        onClick() {
+            this.$emit('value', { value: !this.selectedValue, option: this.description });
         },
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .element-action {
+        margin-right: 8px;
+    }
+</style>

@@ -21,12 +21,12 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .info-cell {
         @include setFont(medium, small, regular, $darkGraphite);
 
         flex: 1;
-        width: 0;
+        width: min-content;
         padding: 8px;
         user-select: none;
         text-overflow: ellipsis;

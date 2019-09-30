@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
+<template functional>
     <span
         class="header-cell"
-        v-text="header" />
+        v-text="props.header" />
 </template>
 
 <script>

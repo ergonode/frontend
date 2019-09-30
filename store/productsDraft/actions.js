@@ -158,6 +158,11 @@ export default {
         const { authentication: { user: { language } } } = rootState;
         return this.app.$axios.$put(`${language}/products/${id}`, data).then(onSuccess).catch(onDefaultError);
     },
+    removeProduct({ state, rootState }, { onSuccess }) {
+        const { id } = state;
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$delete(`${userLanguageCode}/products/${id}`).then(() => onSuccess()).catch(onDefaultError);
+    },
     clearStorage: ({ commit }) => {
         commit(types.CLEAR_STATE);
     },

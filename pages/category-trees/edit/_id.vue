@@ -7,6 +7,7 @@
         :title="code"
         is-edit
         @dismiss="onDismiss"
+        @remove="onRemove"
         @save="onSave" />
 </template>
 
@@ -28,14 +29,19 @@ export default {
         ...mapState('tree', {
             treeId: state => state.treeId,
             code: state => state.code,
-            fullTreeData: state => state.fullTreeData,
+        }),
+        ...mapState('gridDesigner', {
+            fullGridData: state => state.fullGridData,
         }),
         ...mapState('translations', {
             translations: state => state.translations,
         }),
     },
     methods: {
-        ...mapActions('tree', ['updateTree']),
+        ...mapActions('tree', [
+            'updateTree',
+            'removeCategoryTree',
+        ]),
         ...mapActions('list', ['setConfigurationForList']),
         ...mapActions('validations', [
             'onError',
@@ -44,10 +50,13 @@ export default {
         onDismiss() {
             this.$router.push('/category-trees');
         },
-        onUpdateTreeSuccess() {
-            this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Tree updated' });
-            this.$router.push('/category-trees');
+        onRemove() {
+            const isConfirm = confirm('Are you sure you want to delete this category tree?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirm) {
+                this.removeCategoryTree({
+                    onSuccess: this.onRemoveSuccess,
+                });
+            }
         },
         onSave() {
             let { name } = this.translations;
@@ -58,11 +67,20 @@ export default {
                 id: this.treeId,
                 data: {
                     name,
-                    categories: getMappedTreeData(this.fullTreeData),
+                    categories: getMappedTreeData(this.fullGridData),
                 },
-                onSuccess: this.onUpdateTreeSuccess,
+                onSuccess: this.onUpdateSuccess,
                 onError: this.onError,
             });
+        },
+        onUpdateSuccess() {
+            this.removeValidationErrors();
+            this.$addAlert({ type: 'success', message: 'Tree updated' });
+            this.$router.push('/category-trees/grid');
+        },
+        onRemoveSuccess() {
+            this.$addAlert({ type: 'success', message: 'Category tree removed' });
+            this.$router.push('/category-trees/grid');
         },
     },
     async fetch({ store, params }) {
@@ -70,15 +88,16 @@ export default {
             user: { language: userLanguageCode },
         } = store.state.authentication;
 
-        await store.dispatch('translations/clearStorage');
+        await store.dispatch('gridDesigner/clearStorage');
         await store.dispatch('list/clearStorage');
+        await store.dispatch('tree/clearStorage');
+        await store.dispatch('translations/clearStorage');
         await store.dispatch('list/getElementsForGroup', {
             listType: 'categories',
             groupId: null,
             elementsCount: 9999,
             languageCode: userLanguageCode,
         });
-        await store.dispatch('tree/clearStorage');
         await store.dispatch('tree/getTreeById', {
             treeId: params.id,
         });

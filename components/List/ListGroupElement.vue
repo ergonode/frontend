@@ -4,32 +4,57 @@
  */
 <template>
     <div class="group">
-        <div
-            class="header"
-            @click="expandGroup">
-            <slot name="headerContent" />
-        </div>
-        <div
-            v-if="isExpanded"
-            class="items">
+        <ListElement
+            large
+            @click.native="expandGroup">
+            <ListElementDescription>
+                <span
+                    class="group__title"
+                    v-text="group.label" />
+                <span
+                    class="group__subtitle"
+                    v-text="`${group.elementsCount} Attributes`" />
+            </ListElementDescription>
+            <ListElementAction>
+                <IconArrowSingle :state="iconState" />
+            </ListElementAction>
+        </ListElement>
+        <div v-if="isExpanded">
             <slot name="item" />
         </div>
     </div>
 </template>
 
 <script>
+import { Arrow } from '~/model/icons/Arrow';
+
 export default {
     name: 'ListGroupElement',
+    components: {
+        ListElementAction: () => import('~/components/List/ListElementAction'),
+        ListElement: () => import('~/components/List/ListElement'),
+        ListElementDescription: () => import('~/components/List/ListElementDescription'),
+        IconArrowSingle: () => import('~/components/Icon/Arrows/IconArrowSingle'),
+    },
     props: {
         index: {
             type: String,
-            required: false,
             default: null,
+        },
+        group: {
+            type: Object,
+            required: true,
         },
         isExpanded: {
             type: Boolean,
-            required: false,
             default: false,
+        },
+    },
+    computed: {
+        iconState() {
+            return this.isExpanded
+                ? Arrow.UP
+                : Arrow.DOWN;
         },
     },
     methods: {
@@ -46,35 +71,18 @@ export default {
 
 <style lang="scss" scoped>
     .group {
-        .header {
-            position: relative;
-            display: flex;
-            padding: 8px 16px;
-            transition: background-color 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-            cursor: pointer;
+        &__title {
+            @include setFont(medium, regular, semiRegular, $darkGraphite);
+        }
 
-            &::after {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                box-shadow:
-                    0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                    0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                    0 1px 5px 0 rgba(0, 0, 0, 0.2);
-                transition: opacity 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-                opacity: 0;
-                content: "";
-            }
+        &__subtitle {
+            @include setFont(semiBold, tiny, regular, $graphite);
+        }
 
-            &:hover {
-                background-color: $background;
-            }
-
-            &:hover::after {
-                opacity: 1;
-            }
+        &__title, &__subtitle {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
     }
 </style>

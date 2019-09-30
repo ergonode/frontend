@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <SettingsPage
+    <SettingsTabs
         title="Settings"
         icon="Settings"
         @save="onSave" />
@@ -16,7 +16,7 @@ export default {
     name: 'Settings',
     middleware: ['tab/redirectToLanguageSettings'],
     components: {
-        SettingsPage: () => import('~/components/Pages/SettingsPage'),
+        SettingsTabs: () => import('~/components/Pages/Tabs/SettingsTabs'),
     },
     methods: {
         ...mapActions('languageSettings', [

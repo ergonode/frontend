@@ -23,7 +23,7 @@
         :regular="regular"
         @focus="onFocus"
         @clear="emitValue">
-        <template v-slot:prepend>
+        <template #prepend>
             <slot name="prepend" />
         </template>
         <input
@@ -34,10 +34,10 @@
             :aria-label="label || 'no description'"
             type="text"
             readonly>
-        <template v-slot:append>
+        <template #append>
             <slot name="append" />
         </template>
-        <template v-slot:selectContent>
+        <template #selectContent>
             <slot name="selectContent">
                 <MultiselectListContent
                     v-if="multiselect"
@@ -140,7 +140,7 @@ export default {
     },
     computed: {
         selectedOptions() {
-            return this.value === '' ? [] : this.value;
+            return this.value ? this.value : [];
         },
         parsedInputValue() {
             return Array.isArray(this.value) ? this.value.join(', ') : this.value;

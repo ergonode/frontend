@@ -4,7 +4,7 @@
  */
 export default function ({ route, redirect }) {
     const { name } = route;
-    if (name === 'workflow-statuses-new' || name === 'workflow-statuses-edit-id') {
+    if (name === 'workflow-status-new' || name === 'workflow-status-edit-id') {
         return redirect(`${route.path}/general`);
     }
 

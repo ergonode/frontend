@@ -27,13 +27,13 @@
 <script>
 import { mapState } from 'vuex';
 import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
-import TemplateGridDesigner from '~/components/TemplateGrid/TemplateDesigner/TemplateGridDesigner';
-import ProductTemplateSection from '~/components/Template/ProductDesigner/ProductTemplateSection';
-import ProductTemplateDate from '~/components/Template/ProductDesigner/ProductTemplateDate';
-import ProductTemplateImage from '~/components/Template/ProductDesigner/ProductTemplateImage';
-import ProductTemplateMultiLine from '~/components/Template/ProductDesigner/ProductTemplateMultiLine';
-import ProductTemplateOptions from '~/components/Template/ProductDesigner/ProductTemplateOptions';
-import ProductTemplateSingleLine from '~/components/Template/ProductDesigner/ProductTemplateSingleLine';
+import TemplateGridDesigner from '~/components/Template/Base/TemplateGridDesigner';
+import ProductTemplateSection from '~/components/Template/Product/ProductTemplateSection';
+import ProductTemplateDate from '~/components/Template/Product/ProductTemplateDate';
+import ProductTemplateImage from '~/components/Template/Product/ProductTemplateImage';
+import ProductTemplateMultiLine from '~/components/Template/Product/ProductTemplateMultiLine';
+import ProductTemplateOptions from '~/components/Template/Product/ProductTemplateOptions';
+import ProductTemplateSingleLine from '~/components/Template/Product/ProductTemplateSingleLine';
 
 export default {
     name: 'ProductTemplateCard',

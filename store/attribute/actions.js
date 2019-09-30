@@ -141,6 +141,11 @@ export default {
             onSuccess();
         }).catch(e => onError(e.data));
     },
+    removeAttribute({ state, rootState }, { onSuccess }) {
+        const { id } = state;
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$delete(`${userLanguageCode}/attributes/${id}`).then(() => onSuccess());
+    },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);
     },

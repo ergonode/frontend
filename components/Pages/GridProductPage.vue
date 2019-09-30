@@ -8,7 +8,7 @@
             :title="title"
             :buttons="buttons"
             :icon="icon"
-            :is-read-only="Privilege.isReadOnly" />
+            :is-read-only="$isReadOnly('PRODUCT')" />
         <HorizontalTabBar
             :items="tabs" />
         <!--
@@ -23,7 +23,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import Privilege from '~/model/privilege';
 
 export default {
     name: 'GridProductPage',
@@ -49,7 +48,6 @@ export default {
         },
     },
     beforeCreate() {
-        this.Privilege = new Privilege(this.$hasAccess, 'PRODUCT');
         this.tabs = [
             {
                 title: 'Products',
@@ -88,7 +86,6 @@ export default {
     },
     beforeDestroy() {
         delete this.tabs;
-        delete this.Privilege;
     },
 };
 </script>

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="action-wrapper">
+    <div class="element-action">
         <slot />
     </div>
 </template>
@@ -16,12 +16,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .action-wrapper {
+    .element-action {
         display: flex;
         flex: 0;
         justify-content: center;
         align-items: center;
-        cursor: pointer;
-        margin-right: 8px;
     }
 </style>

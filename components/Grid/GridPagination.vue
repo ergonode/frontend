@@ -12,7 +12,7 @@
                 fab
                 color="transparent"
                 @click.native="decrementPage">
-                <template v-slot:prepend>
+                <template #prepend>
                     <IconArrowPointer />
                 </template>
             </Button>
@@ -40,7 +40,7 @@
                 fab
                 color="transparent"
                 @click.native="incrementPage">
-                <template v-slot:prepend>
+                <template #prepend>
                     <IconArrowPointer :state="rightArrow" />
                 </template>
             </Button>

@@ -2,8 +2,8 @@ nuxt.config.js
 package.json
 router.js
 node_modules/
-tests/
 cypress/
+tests/
 build/
 coverage/
 lib/

@@ -96,7 +96,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .badge-preview {
         display: grid;
         grid-gap: 8px;

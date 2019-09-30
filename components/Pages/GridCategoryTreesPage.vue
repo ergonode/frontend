@@ -8,15 +8,13 @@
             :title="title"
             :buttons="buttons"
             :icon="icon"
-            :is-read-only="Privilege.isReadOnly" />
+            :is-read-only="$isReadOnly('CATEGORY_TREE')" />
         <HorizontalTabBar
             :items="tabs" />
     </PageWrapper>
 </template>
 
 <script>
-import Privilege from '~/model/privilege';
-
 export default {
     name: 'GridCategoryTreesPage',
     components: {
@@ -39,7 +37,6 @@ export default {
         },
     },
     beforeCreate() {
-        this.Privilege = new Privilege(this.$hasAccess, 'CATEGORY_TREE');
         this.tabs = [];
         if (this.$hasAccess('CATEGORY_TREE_READ')) {
             this.tabs.push({
@@ -52,7 +49,6 @@ export default {
     },
     beforeDestroy() {
         delete this.tabs;
-        delete this.Privilege;
     },
 };
 </script>

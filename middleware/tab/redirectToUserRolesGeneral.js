@@ -4,7 +4,7 @@
  */
 export default function ({ route, redirect }) {
     const { name } = route;
-    if (name === 'users-roles-new' || name === 'users-roles-edit-id') {
+    if (name === 'users-role-new' || name === 'users-role-edit-id') {
         return redirect(`${route.path}/general`);
     }
 

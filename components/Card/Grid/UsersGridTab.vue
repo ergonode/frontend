@@ -75,7 +75,7 @@ export default {
         actionPaths() {
             return {
                 getData: `${this.userLanguageCode}/accounts`,
-                routerEdit: 'users-edit-id',
+                routerEdit: 'user-edit-id',
             };
         },
         rowsHeight: {

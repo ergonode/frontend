@@ -8,15 +8,13 @@
             :title="title"
             :buttons="buttons"
             :icon="icon"
-            :is-read-only="Privilege.isReadOnly" />
+            :is-read-only="$isReadOnly('ATTRIBUTE')" />
         <HorizontalTabBar
             :items="tabs" />
     </PageWrapper>
 </template>
 
 <script>
-import Privilege from '~/model/privilege';
-
 export default {
     name: 'GridAttributePage',
     components: {
@@ -39,7 +37,6 @@ export default {
         },
     },
     beforeCreate() {
-        this.Privilege = new Privilege(this.$hasAccess, 'ATTRIBUTE');
         this.tabs = [];
         if (this.$hasAccess('ATTRIBUTE_READ')) {
             this.tabs.push({
@@ -51,7 +48,6 @@ export default {
         }
     },
     beforeDestroy() {
-        delete this.Privilege;
         delete this.tabs;
     },
 };

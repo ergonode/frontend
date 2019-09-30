@@ -7,6 +7,7 @@
         :title="sku"
         is-edit
         @dismiss="onDismiss"
+        @remove="onRemove"
         @save="onSave" />
 </template>
 
@@ -38,15 +39,28 @@ export default {
     methods: {
         ...mapActions('productsDraft', [
             'updateProduct',
+            'removeProduct',
             'applyDraft',
             'clearStorage',
         ]),
         onDraftAppliedSuccess() {
             this.$addAlert({ type: 'success', message: 'Product updated' });
-            this.$router.push('/products');
+            this.$router.push('/products/grid');
+        },
+        onRemoveSuccess() {
+            this.$addAlert({ type: 'success', message: 'Product removed' });
+            this.$router.push('/products/grid');
         },
         onDismiss() {
-            this.$router.push('/products');
+            this.$router.push('/products/grid');
+        },
+        onRemove() {
+            const isConfirm = confirm('Are you sure you want to delete this product?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirm) {
+                this.removeProduct({
+                    onSuccess: this.onRemoveSuccess,
+                });
+            }
         },
         onSave() {
             const categoryIds = getMappedCategoryID(

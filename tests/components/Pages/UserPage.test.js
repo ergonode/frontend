@@ -39,8 +39,8 @@ describe('Pages/UserPage', () => {
 
     it('Check tab paths for new page', () => {
         expect(wrapper.vm.isEdit).toBeFalsy();
-        expect(wrapper.vm.tabs[0].path).toBe('/users/new/general');
-        expect(wrapper.vm.tabs[1].path).toBe('/users/new/avatar');
+        expect(wrapper.vm.tabs[0].path).toBe('/users/user/new/general');
+        expect(wrapper.vm.tabs[1].path).toBe('/users/user/new/avatar');
     });
 
     it('Check tab paths for edit page', () => {
@@ -56,7 +56,7 @@ describe('Pages/UserPage', () => {
             },
         });
         expect(wrapper.vm.isEdit).toBeTruthy();
-        expect(wrapper.vm.tabs[0].path).toBe('/users/edit/12345/general');
-        expect(wrapper.vm.tabs[1].path).toBe('/users/edit/12345/avatar');
+        expect(wrapper.vm.tabs[0].path).toBe('/users/user/edit/12345/general');
+        expect(wrapper.vm.tabs[1].path).toBe('/users/user/edit/12345/avatar');
     });
 });

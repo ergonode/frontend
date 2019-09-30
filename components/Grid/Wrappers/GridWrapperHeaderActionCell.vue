@@ -15,14 +15,15 @@
             <Component
                 :is="infoComponent"
                 v-if="!isEditingCell || isActionCell"
-                v-bind="infoComponentProps" />
+                :value="filterParsedValue" />
             <GridEditActivatorCell
                 v-else
                 :store-namespace="storeNamespace"
-                :is-select-kind="isSelectKind"
                 :is-multi-select="isMultiSelect"
+                :type="filterType"
                 :value="filterValue"
                 :options="options"
+                :colors="column.colors || null"
                 :fixed-width="$el.offsetWidth"
                 @updateValue="onUpdateFilter" />
         </template>
@@ -96,6 +97,11 @@ export default {
 
             return type === 'MULTI_SELECT';
         },
+        filterType() {
+            if (this.column.colors) return this.column.type;
+
+            return this.column.filter.type;
+        },
         filterValue() {
             const { [this.column.id]: filter } = this.gridState.filter;
 
@@ -148,25 +154,6 @@ export default {
                 return () => import('~/components/Grid/GridSelectInfoCell');
             default:
                 return () => import('~/components/Grid/GridInfoCell');
-            }
-        },
-        infoComponentProps() {
-            const { filter } = this.column;
-            const type = !filter ? this.column.type : filter.type;
-
-            switch (type) {
-            case 'CHECK':
-                return {};
-            case 'SELECT':
-            case 'MULTI_SELECT':
-                return {
-                    value: this.filterParsedValue,
-                    filterOptions: this.column.filter.options,
-                };
-            default:
-                return {
-                    value: this.filterParsedValue,
-                };
             }
         },
     },

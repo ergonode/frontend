@@ -7,6 +7,7 @@
         :title="templateTitle"
         is-edit
         @dismiss="onCancel"
+        @remove="onRemove"
         @save="onCreate" />
 </template>
 
@@ -39,6 +40,7 @@ export default {
     methods: {
         ...mapActions('templateDesigner', [
             'updateTemplateDesigner',
+            'removeTemplate',
             'getTemplateByID',
             'clearStorage',
         ]),
@@ -53,6 +55,20 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Template updated' });
             this.$router.push('/templates');
+        },
+        onRemoveSuccess() {
+            this.$addAlert({ type: 'success', message: 'Template removed' });
+            this.$router.push('/templates');
+        },
+        onRemove() {
+            const isConfirm = confirm('Are you sure you want to delete this template?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirm) {
+                const { id } = this.$route.params;
+                this.removeTemplate({
+                    id,
+                    onSuccess: this.onRemoveSuccess,
+                });
+            }
         },
         onCreate() {
             import('~/model/mappers/templateMapper').then(({ getMappedLayoutElementsForAPIUpdate }) => {

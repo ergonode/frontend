@@ -5,14 +5,17 @@
  * See LICENSE for license details.
  */
 import { getPagesConfig } from '~/plugins/moduleLoader';
-import { JWT_KEY, USER_KEY } from '~/defaults/authenticate/cookies';
+import { JWT_KEY } from '~/defaults/authenticate/cookies';
 
 export const actions = {
     async nuxtServerInit({ dispatch }) {
         const token = this.$cookies.get(JWT_KEY) || null;
-        const user = this.$cookies.get(USER_KEY) || null;
 
-        dispatch('authentication/setAuth', { user, token });
+        await dispatch('authentication/setAuth', token);
+
+        if (token) {
+            await dispatch('authentication/getUser');
+        }
     },
     resetState({ dispatch, commit }) {
         dispatch('categories/clearStorage');
@@ -21,6 +24,9 @@ export const actions = {
         dispatch('data/clearStorage');
         dispatch('draggable/clearStorage');
         dispatch('tree/clearStorage');
+        dispatch('segments/clearStorage');
+        dispatch('conditions/clearStorage');
+        dispatch('gridDesigner/clearStorage');
         dispatch('productsDraft/clearStorage');
         dispatch('productStatus/clearStorage');
         dispatch('templateDesigner/clearStorage');

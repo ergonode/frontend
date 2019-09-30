@@ -8,8 +8,8 @@
             :title="title"
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
-            icon="Templates"
             :is-read-only="!isUserAllowedToUpdateTemplate && isEdit"
+            icon="Templates"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -22,58 +22,64 @@ import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPag
 export default {
     name: 'TemplatePage',
     mixins: [categoryManagementPageBaseMixin],
-    data() {
-        return {
-            breadcrumbs: [
-                {
-                    title: 'Templates',
-                    icon: 'Templates',
-                    path: '/templates',
-                },
-            ],
-            buttons: [],
-            tabs: [
-                {
-                    title: 'General options',
-                    path: `/templates/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/general`,
-                    active: true,
-                    props: {
-                        updateButton: {
-                            title: this.isEdit ? 'SAVE TEMPLATE' : 'CREATE TEMPLATE',
-                            action: this.isEdit ? this.onSave : this.onCreate,
-                            disabled: this.isEdit ? !this.isUserAllowedToUpdateTemplate : false,
-                        },
-                    },
-                },
-                {
-                    title: 'Template designer',
-                    path: `/templates/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/template`,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE TEMPLATE',
-                            action: this.onSave,
-                            disabled: this.isEdit ? !this.isUserAllowedToUpdateTemplate : false,
-                        },
-                    },
-                },
-            ],
-        };
-    },
     created() {
+        let generalOptTabPath = '/templates/new/general';
+        let templatePath = '';
+        let tabAction = this.onCreate;
+        let buttonPrefix = 'CREATE';
+
+        this.buttons = [];
+        this.breadcrumbs = [
+            {
+                title: 'Templates',
+                icon: 'Templates',
+                path: '/templates',
+            },
+        ];
         this.isUserAllowedToUpdateTemplate = this.$hasAccess('TEMPLATE_DESIGNER_UPDATE');
         if (this.isEdit) {
-            // uncomment when we create removal options
-            // this.buttons = [
-            //     {
-            //         title: 'REMOVE TEMPLATE',
-            //         color: 'transparent',
-            //         action: this.onRemove,
-            //         theme: 'dark',
-            //         icon: 'sprite-system system-trash--deactive',
-            //     },
-            // ];
+            generalOptTabPath = `/templates/edit/${this.$route.params.id}/general`;
+            templatePath = `/templates/edit/${this.$route.params.id}/template`;
+            tabAction = this.onSave;
+            buttonPrefix = 'SAVE';
+
+            this.buttons = [
+                {
+                    title: 'REMOVE TEMPLATE',
+                    color: 'transparent',
+                    action: this.onRemove,
+                    theme: 'dark',
+                    icon: 'remove',
+                    disabled: !this.$hasAccess('TEMPLATE_DESIGNER_DELETE'),
+                },
+            ];
         }
+        this.tabs = [
+            {
+                title: 'General options',
+                path: generalOptTabPath,
+                active: true,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} TEMPLATE`,
+                        action: tabAction,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateTemplate : false,
+                    },
+                },
+            },
+            {
+                title: 'Template designer',
+                path: templatePath,
+                active: this.isEdit,
+                props: {
+                    updateButton: {
+                        title: `${buttonPrefix} TEMPLATE`,
+                        action: tabAction,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateTemplate : false,
+                    },
+                },
+            },
+        ];
     },
     methods: {
         ...mapActions('list', {
@@ -82,6 +88,8 @@ export default {
     },
     beforeDestroy() {
         delete this.isUserAllowedToUpdateTemplate;
+        delete this.breadcrumbs;
+        delete this.buttons;
     },
 };
 </script>

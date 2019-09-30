@@ -47,14 +47,14 @@ export default {
     },
     created() {
         if (this.value) {
-            this.localValue = parseDate(this.value, this.parameters.format);
+            this.localValue = parseDate(this.value, this.parameters.format, new Date());
         }
     },
     computed: {
         parsedDate() {
             if (!this.value) return null;
 
-            return parseDate(this.value, this.parameters.format);
+            return parseDate(this.value, this.parameters.format, new Date());
         },
     },
     methods: {

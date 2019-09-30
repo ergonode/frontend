@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { mount } from '@vue/test-utils';
-import TemplateGridDesigner from '~/components/TemplateGrid/TemplateDesigner/TemplateGridDesigner';
+import TemplateGridDesigner from '~/components/Template/Base/TemplateGridDesigner';
 import TemplateGridPresentationLayer from '~/components/TemplateGrid/TemplateGridPresentationLayer';
 
 const columnsNumber = 4;
@@ -14,7 +14,7 @@ const gridStyle = {
     gridAutoRows: `${rowHeight}px`,
 };
 
-describe('TemplateGrid/TemplateDesigner/TemplateGridDesigner', () => {
+describe('Template/Base/TemplateGridDesigner', () => {
     let wrapper;
 
     beforeEach(() => {
@@ -22,7 +22,7 @@ describe('TemplateGrid/TemplateDesigner/TemplateGridDesigner', () => {
             attachToDocument: true,
             propsData: {
                 maxRow: maxRows,
-                rowHeight: rowHeight,
+                rowHeight,
             },
             slots: {
                 default: {

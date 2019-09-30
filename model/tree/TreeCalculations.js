@@ -4,7 +4,7 @@
  */
 const positionBetweenRows = 0.5;
 
-function getCoordinatesForHiddenCategories(hiddenElements, { row, column }) {
+export function getCoordinatesForHiddenCategories(hiddenElements, { row, column }) {
     const [{ row: firstRow, column: firstColumn }] = hiddenElements;
     const getFixedRow = oldRow => oldRow - ((firstRow - 1) - row);
     const getFixedColumn = oldColumn => oldColumn - ((firstColumn - 1) - column);
@@ -18,7 +18,7 @@ function getCoordinatesForHiddenCategories(hiddenElements, { row, column }) {
     });
 }
 
-export function getMaxChildRow(tree, column, row) {
+export function getNearestNeighborRowId(tree, column, row) {
     const [neighbor] = tree.filter(
         e => e.column <= column && e.row > row,
     );
@@ -77,9 +77,8 @@ export function getTreeWhenElementExpand(hiddenChildren, oldTree, index) {
 }
 
 export function getRowBounds(elements) {
-    const { length } = elements;
     const elementBounds = [];
-    for (let i = 0; i < length; i += 1) {
+    for (let i = 0; i < elements.length; i += 1) {
         const bounds = elements[i].getBoundingClientRect();
         elementBounds.push(bounds);
     }
@@ -87,8 +86,7 @@ export function getRowBounds(elements) {
 }
 
 export function getRowBellowMouse({ clientY, elements, elementBounds }, completion) {
-    const { length } = elements;
-    for (let i = 0; i < length; i += 1) {
+    for (let i = 0; i < elements.length; i += 1) {
         const { y, height } = elementBounds[i];
         if (y <= clientY && y + height >= clientY) {
             return completion({ index: i, category: elements[i] });

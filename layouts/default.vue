@@ -4,14 +4,14 @@
  */
 <template>
     <App>
-        <NavigationBar>
-            <template v-slot:leftSectionContent>
+        <NavigationBar v-if="user">
+            <template #leftSectionContent>
                 <NavigationBarMenuButton
                     :value="sideBarState"
                     @state="onStateChange" />
                 <NavigationBarDashboardButton />
             </template>
-            <template v-slot:rightSectionContent>
+            <template #rightSectionContent>
                 <NavigationBarUserButton />
                 <NavigationBarSynchronizationButton />
                 <NavigationBarNotificationButton />
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 
 export default {
     middleware: ['setDictionaries', 'authenticated'],
@@ -45,6 +46,11 @@ export default {
         return {
             sideBarState: 2,
         };
+    },
+    computed: {
+        ...mapState('authentication', {
+            user: state => state.user,
+        }),
     },
     methods: {
         onStateChange(value) {

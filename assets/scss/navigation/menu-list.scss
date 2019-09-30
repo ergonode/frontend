@@ -10,8 +10,8 @@
     &__title {
         @include setFont(medium, small, regular, $darkGrey, 0.5);
         position: relative;
-        width: 100%;
         padding: 12px 16px;
+        text-align: left;
         text-transform: uppercase;
 
         &::after {
@@ -62,22 +62,16 @@
 
             &__link {
                 display: flex;
-                justify-content: flex-start;
                 align-items: center;
                 height: 100%;
                 text-decoration: none;
                 padding: 0 24px;
 
-                & .link-icon {
-                    margin-right: 24px;
-                }
-
                 & .link-text {
                     @include setFont(medium, medium, medium, $graphite);
-                    display: flex;
-                    flex: 1;
-                    align-items: center;
-                    height: 100%;
+
+                    margin-left: 24px;
+                    text-align: left;
                     text-overflow: ellipsis;
                     overflow: hidden;
                     word-break: break-all;

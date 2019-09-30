@@ -11,6 +11,7 @@ import {
     getParamsOptionsForType,
     getParamsKeyForType,
     getTypeElement,
+    getTypeTranslation,
 } from '~/model/attributes/AttributeTypes';
 
 describe('AttributeTypes/hasOptions', () => {
@@ -62,21 +63,41 @@ describe('AttributeTypes/hasParamsWithMultiSelect', () => {
 
 describe('AttributeTypes/getIcon', () => {
     it.each([
-        ['TEXT', 'text'],
-        ['TEXTAREA', 'text_area'],
-        ['NUMERIC', 'text'],
-        ['SELECT', 'select'],
-        ['MULTI_SELECT', 'select'],
-        ['IMAGE', 'image'],
-        ['PRICE', 'price'],
-        ['UNIT', 'unit'],
-        ['DATE', 'date'],
+        ['TEXT', 'Text'],
+        ['TEXTAREA', 'Textarea'],
+        ['NUMERIC', 'Numeric'],
+        ['SELECT', 'Select'],
+        ['MULTI_SELECT', 'MultiSelect'],
+        ['IMAGE', 'Image'],
+        ['PRICE', 'Price'],
+        ['UNIT', 'Unit'],
+        ['DATE', 'Date'],
         ['OTHER_TYPE', ''],
-
     ])(
         ' Set type (%s) get class (%s)',
         (type, expected) => {
             const fun = getIcon(type);
+            expect(fun).toBe(expected);
+        },
+    );
+});
+
+describe('AttributeTypes/getTypeTranslation', () => {
+    it.each([
+        ['TEXT', 'TEXT'],
+        ['TEXTAREA', 'TEXT AREA'],
+        ['NUMERIC', 'NUMERIC'],
+        ['SELECT', 'SELECT'],
+        ['MULTI_SELECT', 'MULTI SELECT'],
+        ['IMAGE', 'IMAGE'],
+        ['PRICE', 'PRICE'],
+        ['UNIT', 'UNIT'],
+        ['DATE', 'DATE'],
+        ['OTHER_TYPE', ''],
+    ])(
+        ' Set type (%s) get class (%s)',
+        (type, expected) => {
+            const fun = getTypeTranslation(type);
             expect(fun).toBe(expected);
         },
     );

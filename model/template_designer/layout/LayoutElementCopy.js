@@ -22,5 +22,10 @@ export function addLayoutElementCopyToDocumentBody(event) {
 export function removeLayoutElementCopyFromDocumentBody(event) {
     const clonedDOMElement = document.documentElement.querySelector('.cloned-layout-element');
     document.body.removeChild(clonedDOMElement);
-    event.dataTransfer.clearData();
+
+    if (navigator.userAgent.toLowerCase().indexOf('firefox') === -1) {
+        // TODO: Only Firefox Error: Modifications are not allowed for this document
+        // check why firefox does not support clearData
+        event.dataTransfer.clearData();
+    }
 }
