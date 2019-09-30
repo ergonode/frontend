@@ -22,8 +22,8 @@ export default {
     name: 'GridGlobalFilters',
     computed: {
         ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
-            isFilterDragging: state => state.isFilterDragging,
+            isListElementDragging: (state) => state.isListElementDragging,
+            isFilterDragging: (state) => state.isFilterDragging,
         }),
     },
 };

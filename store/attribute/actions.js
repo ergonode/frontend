@@ -108,7 +108,7 @@ export default {
                 commit(types.INITIALIZE_OPTION_KEYS, optionKeys);
                 commit(types.INITIALIZE_OPTION_VALUES, optionValues);
             }
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
     },
     setMultilingualAttribute({ commit }, isMultilingual) {
         commit(types.SET_MULTILINGUAL_ATTRIBUTE, isMultilingual);
@@ -125,7 +125,7 @@ export default {
         return this.app.$axios.$post(`${userLanguageCode}/attributes`, data).then(({ id }) => {
             commit(types.SET_ATTRIBUTE_ID, id);
             onSuccess(id);
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
     },
     updateAttribute(
         { rootState },
@@ -139,7 +139,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$put(`${userLanguageCode}/attributes/${id}`, data).then(() => {
             onSuccess();
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
     },
     removeAttribute({ state, rootState }, { onSuccess }) {
         const { id } = state;

@@ -27,14 +27,14 @@ export default {
     },
     computed: {
         ...mapState('tree', {
-            treeId: state => state.treeId,
-            code: state => state.code,
+            treeId: (state) => state.treeId,
+            code: (state) => state.code,
         }),
         ...mapState('gridDesigner', {
-            fullGridData: state => state.fullGridData,
+            fullGridData: (state) => state.fullGridData,
         }),
         ...mapState('translations', {
-            translations: state => state.translations,
+            translations: (state) => state.translations,
         }),
     },
     methods: {

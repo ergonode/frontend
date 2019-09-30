@@ -142,14 +142,14 @@ export default {
     },
     computed: {
         ...mapState('templateDesigner', {
-            templateGroups: state => state.templateGroups,
-            layoutElements: state => state.layoutElements,
-            titleValidationError: state => state.titleValidationError,
-            title: state => state.title,
+            templateGroups: (state) => state.templateGroups,
+            layoutElements: (state) => state.layoutElements,
+            titleValidationError: (state) => state.titleValidationError,
+            title: (state) => state.title,
         }),
         ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
-            isListElementDragging: state => state.isListElementDragging,
+            draggedElement: (state) => state.draggedElement,
+            isListElementDragging: (state) => state.isListElementDragging,
         }),
         isUserAllowedToUpdate() {
             return this.$hasAccess('TEMPLATE_DESIGNER_UPDATE');
@@ -197,7 +197,9 @@ export default {
 
             if (typeof this.draggedElement === 'object') {
                 const { row, column } = position;
-                const index = this.layoutElements.findIndex(el => el.id === this.draggedElement.id);
+                const index = this.layoutElements.findIndex(
+                    (el) => el.id === this.draggedElement.id,
+                );
 
                 this.updateLayoutElementPosition({ index, row, column });
             } else if (this.draggedElement === 'SECTION') {

@@ -40,8 +40,8 @@ export default {
     },
     computed: {
         ...mapState('attribute', {
-            optionValues: state => state.optionValues,
-            isMultilingual: state => state.isMultilingual,
+            optionValues: (state) => state.optionValues,
+            isMultilingual: (state) => state.isMultilingual,
         }),
         translationOptionValue() {
             if (!this.isMultilingual) {

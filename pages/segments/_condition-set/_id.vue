@@ -28,15 +28,15 @@ export default {
     },
     computed: {
         ...mapState('conditions', {
-            id: state => state.id,
-            code: state => state.code,
-            conditionsValues: state => state.conditionsValues,
+            id: (state) => state.id,
+            code: (state) => state.code,
+            conditionsValues: (state) => state.conditionsValues,
         }),
         ...mapState('gridDesigner', {
-            fullGridData: state => state.fullGridData,
+            fullGridData: (state) => state.fullGridData,
         }),
         ...mapState('translations', {
-            translations: state => state.translations,
+            translations: (state) => state.translations,
         }),
     },
     methods: {

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export function isThereAnyTranslation(obj) {
-    return !!Object.keys(obj).find(key => obj[key] !== '');
+    return !!Object.keys(obj).find((key) => obj[key] !== '');
 }
 
 export function getParsedTranslations(obj) {

@@ -52,7 +52,7 @@ import {
     removeColumnCookieByID,
 } from '~/model/grid/cookies/GridLayoutConfiguration';
 import { SortingOrder } from '~/model/icons/SortingOrder';
-import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
+import { PINNED_COLUMN_STATE } from '~/defaults/grid/main';
 
 export default {
     name: 'GridInteractiveHeaderCell',
@@ -101,7 +101,7 @@ export default {
         if (this.pinnedColumn) {
             const { state } = this.pinnedColumn;
 
-            if (state === PinnedColumnState.LEFT) this.contextualMenuItems[1].value = true;
+            if (state === PINNED_COLUMN_STATE.LEFT) this.contextualMenuItems[1].value = true;
             else this.contextualMenuItems[2].value = true;
         }
     },
@@ -119,7 +119,7 @@ export default {
     },
     computed: {
         ...mapState('draggable', {
-            isColumnDragging: state => state.isColumnDragging,
+            isColumnDragging: (state) => state.isColumnDragging,
         }),
         gridState() {
             return this.$store.state[this.storeNamespace];
@@ -188,11 +188,11 @@ export default {
                 break;
             }
             case 'Pin to left':
-                this.pinOrRemovePinnedColumn(!option.value, PinnedColumnState.LEFT);
+                this.pinOrRemovePinnedColumn(!option.value, PINNED_COLUMN_STATE.LEFT);
                 this.contextualMenuItems[1].value = !option.value;
                 break;
             case 'Pin to right':
-                this.pinOrRemovePinnedColumn(!option.value, PinnedColumnState.RIGHT);
+                this.pinOrRemovePinnedColumn(!option.value, PINNED_COLUMN_STATE.RIGHT);
                 this.contextualMenuItems[2].value = !option.value;
                 break;
             default: break;
@@ -205,8 +205,8 @@ export default {
             else this.$store.dispatch(`${this.storeNamespace}/removePinnedColumn`, this.column.id);
         },
         getColumnAtIndex(index) {
-            const gridElement = document.querySelector('.grid');
-            const { children: { [index]: columnElement } } = gridElement;
+            const contentGrid = document.querySelector('.grid__content');
+            const { children: { [index]: columnElement } } = contentGrid;
 
             return columnElement;
         },
@@ -234,8 +234,8 @@ export default {
             }
         },
         borderColumnAction(action, columnElement) {
-            const gridElement = document.querySelector('.grid');
-            const { children: columns } = gridElement;
+            const contentGrid = document.querySelector('.grid__content');
+            const { children: columns } = contentGrid;
 
             const indexOfThisElement = [...columns].indexOf(columnElement);
 
@@ -245,8 +245,8 @@ export default {
             }
         },
         isMenuSelected() {
-            const gridElement = document.querySelector('.grid');
-            const headerEls = gridElement.querySelectorAll('.horizontal-wrapper--active');
+            const contentGrid = document.querySelector('.grid__content');
+            const headerEls = contentGrid.querySelectorAll('.horizontal-wrapper--active');
 
             return headerEls.length;
         },

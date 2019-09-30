@@ -6,7 +6,7 @@
 // Helpers
 const paddingGap = 16;
 const isObstacle = (obstacles, x, y) => obstacles.some(
-    obstacle => obstacle.row === y && obstacle.column === x,
+    (obstacle) => obstacle.row === y && obstacle.column === x,
 );
 const isObstacleInRangeOf = (obstacles, x, y, xRange, yRange) => obstacles.some((obstacle) => {
     const { row, column } = obstacle;
@@ -47,7 +47,7 @@ const addObstaclesToHighlightingPositions = ({
         for (let x = column - draggedElWidth + 1; x <= column; x += 1) {
             for (let y = row - draggedElHeight + 1; y <= row; y += 1) {
                 const posIndex = positions.findIndex(
-                    position => position.row === y && position.column === x,
+                    (position) => position.row === y && position.column === x,
                 );
 
                 if (posIndex > -1) {

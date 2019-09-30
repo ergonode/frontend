@@ -38,7 +38,7 @@ export default {
     },
     computed: {
         ...mapState('list', {
-            disabledElements: state => state.disabledElements,
+            disabledElements: (state) => state.disabledElements,
         }),
         productsCount() {
             return `${this.item.elements_count || 0} Product${this.item.elements_count === 1 ? '' : 's'}`;

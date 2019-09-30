@@ -114,7 +114,7 @@ const sections = [
 const extendSections = (modulesMenu) => {
     const newSections = JSON.parse(JSON.stringify(sections)); // deep array clone hack
     for (let i = 0; i < modulesMenu.length; i += 1) {
-        const index = newSections.findIndex(e => e.key === modulesMenu[i].key);
+        const index = newSections.findIndex((e) => e.key === modulesMenu[i].key);
         if (index >= 0) {
             newSections[index].items.push(...modulesMenu[i].items);
         } else {
@@ -131,9 +131,9 @@ export const getValidatedMenuData = (hasAccess, modulesMenu) => {
 
     for (let i = 0; i < sectionsNumber; i += 1) {
         const { key, items } = extendedSections[i];
-        const filteredItems = items.filter(e => !e.privileges
+        const filteredItems = items.filter((e) => !e.privileges
           || (e.privileges && !e.privileges.length)
-          || e.privileges.every(privilege => hasAccess(privilege)));
+          || e.privileges.every((privilege) => hasAccess(privilege)));
         menu.push({
             key,
             items: filteredItems,

@@ -3,13 +3,13 @@
  * See LICENSE for license details.
  */
 export function getKeyByValue(object, value) {
-    return Object.keys(object).find(key => object[key] === value);
+    return Object.keys(object).find((key) => object[key] === value);
 }
 
 export function getNestedObjectByKeyWithValue(object, key, value) {
     let lookingNestedObject = null;
 
-    Object.values(object).some(values => values.some((nestedObject) => {
+    Object.values(object).some((values) => values.some((nestedObject) => {
         if (nestedObject[key] === value) {
             lookingNestedObject = { ...nestedObject };
             return true;

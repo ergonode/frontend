@@ -27,17 +27,17 @@ export default {
     },
     computed: {
         ...mapState('attribute', {
-            code: state => state.code,
-            groups: state => state.groups,
-            type: state => state.type,
-            multilingual: state => state.isMultilingual,
-            parameter: state => state.parameter,
-            optionKeys: state => state.optionKeys,
-            optionValues: state => state.optionValues,
+            code: (state) => state.code,
+            groups: (state) => state.groups,
+            type: (state) => state.type,
+            multilingual: (state) => state.isMultilingual,
+            parameter: (state) => state.parameter,
+            optionKeys: (state) => state.optionKeys,
+            optionValues: (state) => state.optionValues,
         }),
         ...mapState('data', {
-            attrTypes: state => state.attrTypes,
-            attrGroups: state => state.attrGroups,
+            attrTypes: (state) => state.attrTypes,
+            attrGroups: (state) => state.attrGroups,
         }),
     },
     created() {
@@ -68,7 +68,7 @@ export default {
         onCreate() {
             this.removeValidationErrors();
             // Select / Multi select key values cannot be empty
-            if (this.optionKeys.length > 0 && this.optionKeys.some(key => key === '')) {
+            if (this.optionKeys.length > 0 && this.optionKeys.some((key) => key === '')) {
                 return;
             }
 

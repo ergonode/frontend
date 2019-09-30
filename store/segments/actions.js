@@ -50,7 +50,7 @@ export default {
         return this.app.$axios.$post(`${userLanguageCode}/segments`, data).then(({ id }) => {
             commit(types.SET_SEGMENT_ID, id);
             onSuccess(id);
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
     },
     updateSegment(
         { rootState },
@@ -62,7 +62,7 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/segments/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`${userLanguageCode}/segments/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
     },
     removeSegment({ state, rootState }, { onSuccess }) {
         const { id } = state;

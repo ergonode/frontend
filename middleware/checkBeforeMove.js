@@ -9,7 +9,7 @@ export default ({
     if (meta[0] && store.state.authentication.jwt && store.state.authentication.user) {
         const { privileges } = meta[0];
         if (privileges && privileges.length
-            && !privileges.every(privilege => app.$hasAccess(privilege))) {
+            && !privileges.every((privilege) => app.$hasAccess(privilege))) {
             error({ statusCode: 403 });
         }
     }

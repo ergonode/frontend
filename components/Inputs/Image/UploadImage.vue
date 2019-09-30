@@ -73,7 +73,7 @@ export default {
     },
     computed: {
         ...mapState('validations', {
-            uploadError: state => state.validationErrors.upload,
+            uploadError: (state) => state.validationErrors.upload,
         }),
     },
     methods: {
@@ -105,7 +105,7 @@ export default {
 
                 this.$addAlert({ type: 'success', message: 'File uploaded' });
                 this.removeValidationError('upload');
-            }).catch(e => this.onError(e.data));
+            }).catch((e) => this.onError(e.data));
         },
     },
 };

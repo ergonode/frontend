@@ -24,19 +24,19 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            user: state => state.user,
+            user: (state) => state.user,
         }),
         ...mapState('users', {
-            id: state => state.id,
-            avatarId: state => state.avatarId,
-            email: state => state.email,
-            firstName: state => state.firstName,
-            lastName: state => state.lastName,
-            language: state => state.language,
-            password: state => state.password,
-            passwordRepeat: state => state.passwordRepeat,
-            isActive: state => state.isActive,
-            roleId: state => state.roleId,
+            id: (state) => state.id,
+            avatarId: (state) => state.avatarId,
+            email: (state) => state.email,
+            firstName: (state) => state.firstName,
+            lastName: (state) => state.lastName,
+            language: (state) => state.language,
+            password: (state) => state.password,
+            passwordRepeat: (state) => state.passwordRepeat,
+            isActive: (state) => state.isActive,
+            roleId: (state) => state.roleId,
         }),
         title() {
             return `${this.firstName} ${this.lastName}`;

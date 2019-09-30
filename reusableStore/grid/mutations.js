@@ -15,10 +15,15 @@ export const types = {
     SET_ROW_IDS: 'SET_ROW_IDS',
     SET_COUNT: 'SET_COUNT',
     SET_FILTERED: 'SET_FILTERED',
-    SET_FILTER: 'SET_FILTER',
+    ADD_ADVANCED_FILTER: 'ADD_ADVANCED_FILTER',
+    SET_ADVANCED_FILTER_AT_INDEX: 'SET_ADVANCED_FILTER_AT_INDEX',
+    REMOVE_ADVANCED_FILTER_AT_INDEX: 'REMOVE_ADVANCED_FILTER_AT_INDEX',
+    REMOVE_ALL_ADVANCED_FILTERS: 'REMOVE_ALL_ADVANCED_FILTERS',
+    CLEAR_ALL_ADVANCED_FILTERS: 'CLEAR_ALL_ADVANCED_FILTERS',
+    SET_BASIC_FILTER: 'SET_BASIC_FILTER',
     RELOAD_GRID_DATA: 'RELOAD_GRID_DATA',
     UPDATE_DATA_CELL_VALUE: 'UPDATE_DATA_CELL_VALUE',
-    REMOVE_FILTER: 'REMOVE_FILTER',
+    REMOVE_BASIC_FILTER: 'REMOVE_BASIC_FILTER',
     SET_CURRENT_PAGE: 'SET_CURRENT_PAGE',
     SET_SORTING_STATE: 'SET_SORTING_STATE',
     INSERT_COLUMN_AT_INDEX: 'INSERT_COLUMN_AT_INDEX',
@@ -68,12 +73,30 @@ export default {
     [types.SET_FILTERED](state, payload) {
         state.filtered = payload;
     },
-    [types.SET_FILTER](state, { id, filter }) {
-        state.filter = { ...state.filter, [id]: filter };
+    [types.SET_BASIC_FILTER](state, { id, filter }) {
+        state.basicFilters = { ...state.basicFilters, [id]: filter };
     },
-    [types.REMOVE_FILTER](state, id) {
-        delete state.filter[id];
-        state.filter = { ...state.filter };
+    [types.REMOVE_BASIC_FILTER](state, id) {
+        delete state.basicFilters[id];
+        state.basicFilters = { ...state.basicFilters };
+    },
+    [types.SET_ADVANCED_FILTER_AT_INDEX](state, { index, filter }) {
+        state.advancedFilters[index] = filter;
+        state.advancedFilters = [...state.advancedFilters];
+    },
+    [types.ADD_ADVANCED_FILTER](state, filter) {
+        state.advancedFilters.push(filter);
+    },
+    [types.REMOVE_ALL_ADVANCED_FILTERS](state) {
+        state.advancedFilters = [];
+    },
+    [types.CLEAR_ALL_ADVANCED_FILTERS](state) {
+        state.advancedFilters = state.advancedFilters.map(
+            (filter) => ({ ...filter, value: null }),
+        );
+    },
+    [types.REMOVE_ADVANCED_FILTER_AT_INDEX](state, index) {
+        state.advancedFilters.splice(index, 1);
     },
     [types.SET_CURRENT_PAGE](state, payload) {
         state.displayedPage = payload;

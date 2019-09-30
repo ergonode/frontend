@@ -38,7 +38,7 @@ export default {
         return this.app.$axios.$post(`${userLanguageCode}/categories`, data).then(({ id }) => {
             commit(types.SET_ID, id);
             onSuccess(id);
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
     },
     updateCategory(
         { rootState },
@@ -50,7 +50,7 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/categories/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`${userLanguageCode}/categories/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
     },
     setCategoryCode({ commit }, code) {
         commit(types.SET_CODE, code);

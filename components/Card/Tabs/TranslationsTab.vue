@@ -39,17 +39,17 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
+            userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('data', {
-            languages: state => state.languages,
+            languages: (state) => state.languages,
         }),
         ...mapState('translations', {
-            cardsLanguageCodes: state => state.cardsLanguageCodes,
+            cardsLanguageCodes: (state) => state.cardsLanguageCodes,
         }),
     },
     created() {
-        if (!this.cardsLanguageCodes.find(langCode => langCode === this.userLanguageCode)) {
+        if (!this.cardsLanguageCodes.find((langCode) => langCode === this.userLanguageCode)) {
             this.addCardLanguageCode({ languageCode: this.userLanguageCode });
         }
     },

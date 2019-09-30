@@ -26,7 +26,7 @@ export default {
     },
     computed: {
         ...mapState('productStatus', {
-            code: state => state.code,
+            code: (state) => state.code,
         }),
     },
     methods: {

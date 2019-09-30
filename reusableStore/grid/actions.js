@@ -11,7 +11,7 @@ import {
     getSortedColumnsByIDs,
     getMappedFilter,
 } from '~/model/mappers/gridDataMapper';
-import { swapItemPosition, insertValueAtIndex } from '~/model/arrayWrapper';
+import { swapItemPosition, insertValueAtIndex, removeValueAtIndex } from '~/model/arrayWrapper';
 import { COLUMN_IDS } from '~/defaults/grid/cookies';
 import { types } from './mutations';
 
@@ -23,12 +23,12 @@ export default {
             sortedByColumn,
             displayedPage,
             numberOfDisplayedElements,
-            filter,
+            basicFilters,
         } = state;
-        const parsedFilter = getMappedFilter(filter);
+        const parsedFilter = getMappedFilter(basicFilters);
         const isProductGrid = path.includes('products');
         const columnIDs = isProductGrid
-            ? this.$cookies.get(COLUMN_IDS) || stateColumns.map(col => col.id).join(',')
+            ? this.$cookies.get(COLUMN_IDS) || stateColumns.map((col) => col.id).join(',')
             : null;
         const params = {
             limit: numberOfDisplayedElements,
@@ -53,14 +53,14 @@ export default {
         }) => {
             const { count, filtered } = info;
             const columnsToMap = columnIDs ? getSortedColumnsByIDs([...columns], columnIDs, 'id') : columns;
-            const visibleColumns = columnsToMap.filter(col => col.visible);
+            const visibleColumns = columnsToMap.filter((col) => col.visible);
             const { mappedColumns, pinnedColumns, columnWidths } = getMappedColumns(visibleColumns);
             const mappedConfiguration = getMappedGridConfiguration(configuration);
             const rowIds = getMappedRowIds(rows);
             const cellValues = getMappedCellValues(columns, rows, rowIds);
 
             if (isProductGrid) {
-                this.$cookies.set(COLUMN_IDS, visibleColumns.map(col => col.id).join(','));
+                this.$cookies.set(COLUMN_IDS, visibleColumns.map((col) => col.id).join(','));
                 for (let i = mappedColumns.length - 1; i > -1; i -= 1) {
                     const { element_id: elementId, language } = mappedColumns[i];
                     if (elementId) {
@@ -92,11 +92,11 @@ export default {
             displayedPage,
             numberOfDisplayedElements,
             sortedByColumn,
-            filter,
+            basicFilters,
         } = state;
-        const stateColumnsID = stateColumns.filter(col => !(col.id.includes('extender') || col.id.includes('ghost'))).map(col => col.id);
+        const stateColumnsID = stateColumns.filter((col) => !(col.id.includes('extender') || col.id.includes('ghost'))).map((col) => col.id);
         const parsedColumnsID = insertValueAtIndex(stateColumnsID, columnId, ghostIndex).join(',');
-        const parsedFilter = getMappedFilter(filter);
+        const parsedFilter = getMappedFilter(basicFilters);
         const params = {
             columns: parsedColumnsID,
             offset: (displayedPage - 1) * numberOfDisplayedElements,
@@ -119,26 +119,30 @@ export default {
         }) => {
             this.$cookies.set(COLUMN_IDS, parsedColumnsID);
 
-            const draggedColumn = columns.find(col => col.id === columnId);
+            const draggedColumn = columns.find((col) => col.id === columnId);
             const { mappedColumn, columnWidth } = getMappedColumn(draggedColumn);
             const rowIds = getMappedRowIds(rows);
             const cellValues = getMappedCellValues(columns, rows, rowIds);
 
-            let columnWidthsCopy = [...stateColumnWidths];
-            let columnsWithoutGhost = stateColumns.filter(column => column.id !== 'ghost');
+            let newColumnsWidth = stateColumnWidths;
+            let newColumns = stateColumns;
 
-            columnWidthsCopy.splice(draggedElIndex, 1);
-            columnsWithoutGhost = insertValueAtIndex(
-                columnsWithoutGhost, mappedColumn, ghostIndex,
+            if (stateColumns[draggedElIndex].id === 'ghost') {
+                newColumnsWidth = removeValueAtIndex(stateColumnWidths, draggedElIndex);
+                newColumns = removeValueAtIndex(stateColumns, draggedElIndex);
+            }
+
+            newColumns = insertValueAtIndex(
+                newColumns, mappedColumn, ghostIndex,
             );
-            columnWidthsCopy = insertValueAtIndex(
-                columnWidthsCopy, columnWidth, ghostIndex,
+            newColumnsWidth = insertValueAtIndex(
+                newColumnsWidth, columnWidth, ghostIndex,
             );
 
             dispatch('list/setDisabledElement', { languageCode: draggedColumn.language, elementId: draggedColumn.element_id }, { root: true });
 
-            commit(types.SET_COLUMNS, columnsWithoutGhost);
-            commit(types.SET_COLUMN_WIDTHS, columnWidthsCopy);
+            commit(types.SET_COLUMNS, newColumns);
+            commit(types.SET_COLUMN_WIDTHS, newColumnsWidth);
             commit(types.SET_CELL_VALUES, cellValues);
             commit(types.SET_ROW_IDS, rowIds);
         });
@@ -157,7 +161,7 @@ export default {
         commit(types.REMOVE_SELECTED_ROWS);
         commit(types.SET_SELECTION_FOR_ALL_ROWS, false);
 
-        const isFilterExist = state.filter[id];
+        const isFilterExist = state.basicFilters[id];
 
         if (!isFilterExist && (Array.isArray(filterToSet) ? !filterToSet.length : !filterToSet)) {
             return;
@@ -167,10 +171,25 @@ export default {
         const removeFilterCondition = isFilterExist && isFilterToSetEmpty;
 
         if (removeFilterCondition) {
-            commit(types.REMOVE_FILTER, id);
+            commit(types.REMOVE_BASIC_FILTER, id);
         } else {
-            commit(types.SET_FILTER, { id, filter: filterToSet });
+            commit(types.SET_BASIC_FILTER, { id, filter: filterToSet });
         }
+    },
+    addAdvancedFilter({ commit }, filter) {
+        commit(types.ADD_ADVANCED_FILTER, filter);
+    },
+    setAdvancedFilterAtIndex({ commit }, payload) {
+        commit(types.SET_ADVANCED_FILTER_AT_INDEX, payload);
+    },
+    removeAllAdvancedFilters({ commit }) {
+        commit(types.REMOVE_ALL_ADVANCED_FILTERS);
+    },
+    clearAllAdvancedFilters({ commit }) {
+        commit(types.CLEAR_ALL_ADVANCED_FILTERS);
+    },
+    removeAdvancedFilterAtIndex({ commit }, index) {
+        commit(types.REMOVE_ADVANCED_FILTER_AT_INDEX, index);
     },
     setColumnWidths({ commit }, columnWidths) {
         commit(types.SET_COLUMN_WIDTHS, columnWidths);
@@ -219,8 +238,8 @@ export default {
         const newOrderedColumns = [
             ...swapItemPosition(columns, from, to),
         ];
-        const columnsWithoutExtender = newOrderedColumns.filter(column => column.id !== 'extender');
-        this.$cookies.set(COLUMN_IDS, columnsWithoutExtender.map(column => column.id).join(','));
+        const columnsWithoutExtender = newOrderedColumns.filter((column) => column.id !== 'extender');
+        this.$cookies.set(COLUMN_IDS, columnsWithoutExtender.map((column) => column.id).join(','));
 
         commit(types.SET_COLUMNS, newOrderedColumns);
     },
@@ -273,14 +292,14 @@ export default {
     },
     addDraftToProduct({ commit, state }, { columnId, productId, value }) {
         const { columns } = state;
-        const column = columns.find(col => col.id === columnId);
+        const column = columns.find((col) => col.id === columnId);
         const parsedValue = { value };
 
         if (column.filter && column.filter.options) {
             const { options } = column.filter;
 
             if (Array.isArray(value)) {
-                parsedValue.value = value.map(key => options[key] || 'No translation').join(', ');
+                parsedValue.value = value.map((key) => options[key] || 'No translation').join(', ');
                 parsedValue.key = value;
             }
             if (typeof options[value] !== 'undefined') {
@@ -311,7 +330,7 @@ export default {
     },
     removePinnedColumn({ commit, state }, id) {
         const { pinnedColumns } = state;
-        const index = pinnedColumns.findIndex(col => col.id === id);
+        const index = pinnedColumns.findIndex((col) => col.id === id);
         commit(types.REMOVE_PINNED_COLUMN_AT_INDEX, index);
     },
     reloadGridData({ commit }) {

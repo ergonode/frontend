@@ -59,18 +59,20 @@ export default {
     mixins: [errorValidationMixin],
     computed: {
         ...mapState('productsDraft', {
-            productID: state => state.id,
-            sku: state => state.sku,
-            template: state => state.template,
-            templates: state => state.templates,
-            selectedCategories: state => state.selectedCategories,
-            categories: state => state.categories,
+            productID: (state) => state.id,
+            sku: (state) => state.sku,
+            template: (state) => state.template,
+            templates: (state) => state.templates,
+            selectedCategories: (state) => state.selectedCategories,
+            categories: (state) => state.categories,
         }),
         templateValues() {
-            return this.templates.map(template => template.name);
+            return this.templates.map((template) => template.name);
         },
         categoryOptions() {
-            return this.categories.map(category => ({ key: category.code, value: category.name }));
+            return this.categories.map(
+                (category) => ({ key: category.code, value: category.name }),
+            );
         },
         isDisabled() {
             return Boolean(this.productID);

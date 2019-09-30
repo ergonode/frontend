@@ -95,16 +95,16 @@ export default {
     },
     computed: {
         ...mapState('attribute', {
-            attrID: state => state.id,
-            code: state => state.code,
-            groups: state => state.groups,
-            type: state => state.type,
-            parameter: state => state.parameter,
-            isMultilingual: state => state.isMultilingual,
+            attrID: (state) => state.id,
+            code: (state) => state.code,
+            groups: (state) => state.groups,
+            type: (state) => state.type,
+            parameter: (state) => state.parameter,
+            isMultilingual: (state) => state.isMultilingual,
         }),
         ...mapState('data', {
-            attrGroups: state => state.attrGroups,
-            attrTypes: state => state.attrTypes,
+            attrGroups: (state) => state.attrGroups,
+            attrTypes: (state) => state.attrTypes,
         }),
         paramsLabel() {
             const paramsKey = getMappedParameterKey(
@@ -143,11 +143,11 @@ export default {
             return Object.values(this.attrTypes);
         },
         attrGroupValues() {
-            return this.attrGroups.filter(group => group.id !== null).map(group => group.label);
+            return this.attrGroups.filter((group) => group.id !== null).map((group) => group.label);
         },
         attrParamValues() {
             return Array.isArray(this.params)
-                ? this.params.map(param => param.label)
+                ? this.params.map((param) => param.label)
                 : Object.values(this.params);
         },
         errorCodeMessage() {

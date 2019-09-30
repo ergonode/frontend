@@ -21,14 +21,14 @@ export default {
     },
     computed: {
         ...mapState('users', {
-            email: state => state.email,
-            firstName: state => state.firstName,
-            lastName: state => state.lastName,
-            language: state => state.language,
-            password: state => state.password,
-            passwordRepeat: state => state.passwordRepeat,
-            isActive: state => state.isActive,
-            roleId: state => state.roleId,
+            email: (state) => state.email,
+            firstName: (state) => state.firstName,
+            lastName: (state) => state.lastName,
+            language: (state) => state.language,
+            password: (state) => state.password,
+            passwordRepeat: (state) => state.passwordRepeat,
+            isActive: (state) => state.isActive,
+            roleId: (state) => state.roleId,
         }),
     },
     created() {

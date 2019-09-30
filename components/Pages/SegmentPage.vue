@@ -95,7 +95,7 @@ export default {
     },
     computed: {
         ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
+            isListElementDragging: (state) => state.isListElementDragging,
         }),
         isBlurVisible() {
             return this.isListElementDragging;

@@ -32,7 +32,7 @@ export default {
     },
     methods: {
         getSelectedValueByOption(option) {
-            const index = this.selectedOptions.findIndex(opt => opt === option);
+            const index = this.selectedOptions.findIndex((opt) => opt === option);
 
             return index !== -1;
         },
@@ -42,7 +42,7 @@ export default {
             if (value) {
                 localSelectedOptions = [...this.selectedOptions, option];
             } else {
-                localSelectedOptions = this.selectedOptions.filter(opt => opt !== option);
+                localSelectedOptions = this.selectedOptions.filter((opt) => opt !== option);
             }
             this.$emit('values', localSelectedOptions);
         },

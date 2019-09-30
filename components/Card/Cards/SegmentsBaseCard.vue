@@ -44,12 +44,12 @@ export default {
     mixins: [errorValidationMixin],
     computed: {
         ...mapState('segments', {
-            segmentId: state => state.id,
-            code: state => state.code,
-            conditionSetId: state => state.conditionSetId,
+            segmentId: (state) => state.id,
+            code: (state) => state.code,
+            conditionSetId: (state) => state.conditionSetId,
         }),
         ...mapState('conditions', {
-            conditionSets: state => state.conditionSets,
+            conditionSets: (state) => state.conditionSets,
         }),
         isDisabled() {
             return Boolean(this.segmentId);

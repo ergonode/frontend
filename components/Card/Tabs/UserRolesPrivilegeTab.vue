@@ -5,12 +5,12 @@
 <template>
     <div class="tab">
         <div class="tab__grid">
-            <GridWrapper
+            <Grid
                 store-namespace="privilegesGrid"
-                :rows-height="32"
                 :is-draft="false"
                 :action-paths="actionPaths"
-                :filterable="false">
+                :basic-filters="false"
+                title="Role privileges">
                 <template #cell="{column, columnIndex}">
                     <GridCell
                         v-for="(rowId, rowIndex) in rowIds"
@@ -30,7 +30,7 @@
                             @input="onValueChange(rowId, column.id)" />
                     </GridCell>
                 </template>
-            </GridWrapper>
+            </Grid>
         </div>
         <Footer
             slot="footer"
@@ -41,8 +41,8 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
-import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
 import { getMappedGridData } from '~/model/mappers/privilegesMapper';
+import Grid from '~/components/Grid/Grid';
 import GridCell from '~/components/Grid/GridCell';
 import GridInfoCell from '~/components/Grid/GridInfoCell';
 import GridCheckCell from '~/components/Grid/GridCheckCell';
@@ -59,7 +59,7 @@ export default {
     components: {
         GridCell,
         GridInfoCell,
-        GridWrapper,
+        Grid,
         Footer,
     },
     async beforeCreate() {
@@ -89,8 +89,8 @@ export default {
     },
     computed: {
         ...mapState('privilegesGrid', {
-            rowIds: state => state.rowIds,
-            cellValues: state => state.cellValues,
+            rowIds: (state) => state.rowIds,
+            cellValues: (state) => state.cellValues,
         }),
     },
     methods: {
@@ -146,7 +146,7 @@ export default {
             display: flex;
             flex: 1;
             flex-direction: column;
-            margin: 12px 12px 0;
+            margin: 24px 24px 0;
             overflow: hidden;
         }
     }

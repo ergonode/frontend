@@ -66,7 +66,7 @@ class ModuleLoader {
 
     setPagesConfiguration({ pages }) {
         const pagesConfiguration = { router: [], menu: [], store: [] };
-        const filteredPages = pages.filter(page => page.isActive);
+        const filteredPages = pages.filter((page) => page.isActive);
 
         for (let i = 0; i < filteredPages.length; i += 1) {
             let config = null;

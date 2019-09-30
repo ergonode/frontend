@@ -113,21 +113,21 @@ export default {
     },
     computed: {
         ...mapState('data', {
-            languages: state => state.languages,
+            languages: (state) => state.languages,
         }),
         ...mapState('roles', {
-            roles: state => state.roles,
+            roles: (state) => state.roles,
         }),
         ...mapState('users', {
-            userID: state => state.id,
-            email: state => state.email,
-            firstName: state => state.firstName,
-            lastName: state => state.lastName,
-            password: state => state.password,
-            passwordRepeat: state => state.passwordRepeat,
-            language: state => state.language,
-            isActive: state => state.isActive,
-            roleId: state => state.roleId,
+            userID: (state) => state.id,
+            email: (state) => state.email,
+            firstName: (state) => state.firstName,
+            lastName: (state) => state.lastName,
+            password: (state) => state.password,
+            passwordRepeat: (state) => state.passwordRepeat,
+            language: (state) => state.language,
+            isActive: (state) => state.isActive,
+            roleId: (state) => state.roleId,
         }),
         isUserAllowedToUpdate() {
             return this.$hasAccess('USER_UPDATE');

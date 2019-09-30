@@ -28,21 +28,21 @@ export default {
     },
     computed: {
         ...mapState('attribute', {
-            id: state => state.id,
-            groups: state => state.groups,
-            code: state => state.code,
-            type: state => state.type,
-            parameter: state => state.parameter,
-            optionKeys: state => state.optionKeys,
-            optionValues: state => state.optionValues,
-            isMultilingual: state => state.isMultilingual,
+            id: (state) => state.id,
+            groups: (state) => state.groups,
+            code: (state) => state.code,
+            type: (state) => state.type,
+            parameter: (state) => state.parameter,
+            optionKeys: (state) => state.optionKeys,
+            optionValues: (state) => state.optionValues,
+            isMultilingual: (state) => state.isMultilingual,
         }),
         ...mapState('data', {
-            attrGroups: state => state.attrGroups,
-            attrTypes: state => state.attrTypes,
+            attrGroups: (state) => state.attrGroups,
+            attrTypes: (state) => state.attrTypes,
         }),
         ...mapState('translations', {
-            translations: state => state.translations,
+            translations: (state) => state.translations,
         }),
     },
     methods: {
@@ -77,7 +77,7 @@ export default {
         onSave() {
             this.removeValidationErrors();
             // Select / Multi select key values cannot be empty
-            if (this.optionKeys.length > 0 && this.optionKeys.some(key => key === '')) {
+            if (this.optionKeys.length > 0 && this.optionKeys.some((key) => key === '')) {
                 return;
             }
 

@@ -56,7 +56,7 @@ export default {
     },
     computed: {
         ...mapState('templateLists', {
-            templatesSection: state => state.templatesSection,
+            templatesSection: (state) => state.templatesSection,
         }),
         ...mapGetters('templateLists', {
             sectionElementsByID: 'sectionElementsByID',

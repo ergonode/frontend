@@ -25,13 +25,13 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
+            userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('templateDesigner', {
-            groups: state => state.templateGroups,
-            templateTitle: state => state.title,
-            templateImage: state => state.image,
-            layoutElements: state => state.layoutElements,
+            groups: (state) => state.templateGroups,
+            templateTitle: (state) => state.title,
+            templateImage: (state) => state.image,
+            layoutElements: (state) => state.layoutElements,
         }),
     },
     destroyed() {

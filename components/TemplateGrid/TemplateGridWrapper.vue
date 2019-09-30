@@ -93,12 +93,12 @@ export default {
     },
     computed: {
         ...mapState('gridDesigner', {
-            rows: state => state.rows,
-            gridData: state => state.gridData,
+            rows: (state) => state.rows,
+            gridData: (state) => state.gridData,
         }),
         filteredGridData() {
             return this.gridData.filter(
-                item => item.column < this.columns,
+                (item) => item.column < this.columns,
             );
         },
         gridStyles() {
@@ -149,7 +149,7 @@ export default {
             }
         },
         connectionLineStyle({ id, row, parent }) {
-            const children = this.filteredGridData.filter(e => e.parent === parent);
+            const children = this.filteredGridData.filter((e) => e.parent === parent);
             const connectionHeight = this.rowsHeight * (
                 row - (children.length ? children[0].row : 0) + 1
             );

@@ -18,14 +18,14 @@ export default {
         if (numberOfCards > numberOfSelectedLanguages) {
             // Remove unselected cards
             const languageCodesToRemove = cardsLanguageCodes.filter(
-                cardLanguageCode => !languages.some(
+                (cardLanguageCode) => !languages.some(
                     selectedLanguageCode => cardLanguageCode === selectedLanguageCode, // eslint-disable-line
                 ),
             );
 
             languageCodesToRemove.forEach((languageCode) => {
                 const indexToRemove = cardsLanguageCodes.findIndex(
-                    cardLanguageCode => cardLanguageCode === languageCode,
+                    (cardLanguageCode) => cardLanguageCode === languageCode,
                 );
                 commit('removeCardLanguageCode', {
                     index: indexToRemove,
@@ -34,8 +34,8 @@ export default {
         } else {
             // Add new cards
             const languageCodesToAdd = languages.filter(
-                selectedLanguageCode => !cardsLanguageCodes.some(
-                    cardLanguageCode => selectedLanguageCode === cardLanguageCode,
+                (selectedLanguageCode) => !cardsLanguageCodes.some(
+                    (cardLanguageCode) => selectedLanguageCode === cardLanguageCode,
                 ),
             );
             languageCodesToAdd.forEach((languageCode) => {

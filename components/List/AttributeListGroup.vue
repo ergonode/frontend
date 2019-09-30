@@ -43,16 +43,16 @@ export default {
     },
     computed: {
         ...mapState('list', {
-            groups: state => state.groups,
-            elements: state => state.elements,
+            groups: (state) => state.groups,
+            elements: (state) => state.elements,
         }),
         elementsByGroupInLanguage() {
             if (!this.elements[this.languageCode]
                 || this.elements[this.languageCode].length === 0) return [];
 
             return this.elements[this.languageCode].filter(
-                element => (element.groups.length === 0 && this.group.id === null)
-                    || element.groups.some(group => group === this.group.id),
+                (element) => (element.groups.length === 0 && this.group.id === null)
+                    || element.groups.some((group) => group === this.group.id),
             );
         },
     },

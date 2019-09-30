@@ -30,11 +30,11 @@ export default {
     mixins: [errorValidationMixin],
     computed: {
         ...mapState('languageSettings', {
-            languages: state => state.languages,
-            selectedLanguageNames: state => state.selectedLanguageNames,
+            languages: (state) => state.languages,
+            selectedLanguageNames: (state) => state.selectedLanguageNames,
         }),
         languageNames() {
-            return this.$store.state.languageSettings.languages.map(language => language.name);
+            return this.$store.state.languageSettings.languages.map((language) => language.name);
         },
     },
     methods: {

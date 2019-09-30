@@ -108,10 +108,10 @@ export default {
     },
     computed: {
         ...mapState('validations', {
-            validationErrors: state => state.validationErrors,
+            validationErrors: (state) => state.validationErrors,
         }),
         ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
+            userLanguageCode: (state) => state.user.language,
         }),
         gridState() {
             return this.$store.state[this.storeNamespace];
@@ -202,7 +202,7 @@ export default {
                     const value = this.draft[this.column.id][languageCode];
 
                     if (Array.isArray(value)) {
-                        return value.map(val => options[val] || 'No translation').join(', ');
+                        return value.map((val) => options[val] || 'No translation').join(', ');
                     }
                     if (typeof options[value] !== 'undefined') {
                         return options[value] || 'No translation';
@@ -230,7 +230,7 @@ export default {
             const { options } = filter;
             const optionKeys = Object.keys(options);
 
-            return optionKeys.map(key => ({ key, value: options[key] }));
+            return optionKeys.map((key) => ({ key, value: options[key] }));
         },
         parameters() {
             if (hasParams(this.column.type)) {

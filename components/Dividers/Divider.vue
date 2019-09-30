@@ -3,18 +3,31 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="divider" />
+    <div :class="['divider', {'divider--vertical': vertical}]" />
 </template>
 
 <script>
 export default {
     name: 'Divider',
+    props: {
+        vertical: {
+            type: Boolean,
+            default: false,
+        },
+    },
 };
 </script>
 
 <style lang="scss" scoped>
     .divider {
-        height: 1px;
         background-color: $lightGrey;
+
+        &:not(&--vertical) {
+            height: 1px;
+        }
+
+        &--vertical {
+            width: 1px;
+        }
     }
 </style>

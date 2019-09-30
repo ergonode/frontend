@@ -17,5 +17,5 @@ export function removeColumnCookieByID(cookies, columnId) {
     const columnsIDCookie = cookies.get(COLUMN_IDS);
     const columnIDs = columnsIDCookie.split(',');
 
-    cookies.set(COLUMN_IDS, columnIDs.filter(id => id !== columnId).join(','));
+    cookies.set(COLUMN_IDS, columnIDs.filter((id) => id !== columnId).join(','));
 }

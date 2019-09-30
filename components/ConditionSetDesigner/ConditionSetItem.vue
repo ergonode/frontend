@@ -51,7 +51,7 @@ export default {
     },
     computed: {
         ...mapState('conditions', {
-            conditionsValues: state => state.conditionsValues,
+            conditionsValues: (state) => state.conditionsValues,
         }),
         parametersStyle() {
             const { parameters } = this.condition;
@@ -73,8 +73,10 @@ export default {
     methods: {
         replacePlaceholderOnPhrase(placeholders) {
             const { phrase, parameters } = this.condition;
-            const findKeyWhenSelect = clearedKey => parameters.findIndex(p => p.name === clearedKey
-                && (p.type === 'SELECT' || p.type === 'MULTI_SELECT'));
+            const findKeyWhenSelect = (clearedKey) => parameters.findIndex(
+                (p) => p.name === clearedKey
+                && (p.type === 'SELECT' || p.type === 'MULTI_SELECT'),
+            );
 
             return phrase.replace(/\[\w+\]/g, (placeholder) => {
                 const clearedKey = placeholder.slice(1).slice(0, -1);

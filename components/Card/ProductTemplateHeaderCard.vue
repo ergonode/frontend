@@ -44,11 +44,11 @@ export default {
     },
     computed: {
         ...mapState('data', {
-            languages: state => state.languages,
+            languages: (state) => state.languages,
         }),
         ...mapState('productsDraft', {
-            languageCode: state => state.languageCode,
-            completeness: state => state.completeness,
+            languageCode: (state) => state.languageCode,
+            completeness: (state) => state.completeness,
         }),
         languagesValues() {
             return Object.values(this.languages);

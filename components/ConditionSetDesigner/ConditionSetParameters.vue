@@ -47,7 +47,7 @@ export default {
     },
     computed: {
         ...mapState('conditions', {
-            conditionsValues: state => state.conditionsValues,
+            conditionsValues: (state) => state.conditionsValues,
         }),
         hasOptions() {
             return this.parameter.options || false;

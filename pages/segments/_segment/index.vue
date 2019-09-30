@@ -20,8 +20,8 @@ export default {
     },
     computed: {
         ...mapState('segments', {
-            code: state => state.code,
-            conditionSetId: state => state.conditionSetId,
+            code: (state) => state.code,
+            conditionSetId: (state) => state.conditionSetId,
         }),
     },
     created() {

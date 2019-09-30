@@ -25,11 +25,11 @@ export default {
     },
     computed: {
         ...mapState('categories', {
-            id: state => state.id,
-            code: state => state.code,
+            id: (state) => state.id,
+            code: (state) => state.code,
         }),
         ...mapState('translations', {
-            translations: state => state.translations,
+            translations: (state) => state.translations,
         }),
     },
     methods: {

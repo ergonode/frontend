@@ -29,7 +29,7 @@ export default {
     },
     computed: {
         ...mapState('translations', {
-            cardsLanguageCodes: state => state.cardsLanguageCodes,
+            cardsLanguageCodes: (state) => state.cardsLanguageCodes,
         }),
     },
 };

@@ -7,3 +7,4 @@ tests/
 build/
 coverage/
 lib/
+model/mappers/conditionSetMapper.js

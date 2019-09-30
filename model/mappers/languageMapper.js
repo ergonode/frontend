@@ -26,7 +26,7 @@ function getNonActiveLanguages(activeLanguageCodes, languageCodes) {
 
     for (let i = 0; i < length; i += 1) {
         const activeCode = activeLanguageCodes[i];
-        if (languageCodes.findIndex(code => activeCode === code) === -1) {
+        if (languageCodes.findIndex((code) => activeCode === code) === -1) {
             collection.push({
                 code: activeCode,
                 active: false,
@@ -47,7 +47,7 @@ export function getParsedData(activeAppLanguages, languageCodes) {
 
 export function getLanguageCodesBasedOnNames(names, languages) {
     return languages
-        .filter(language => names
-            .some(name => name === language.name))
-        .map(language => language.code);
+        .filter((language) => names
+            .some((name) => name === language.name))
+        .map((language) => language.code);
 }

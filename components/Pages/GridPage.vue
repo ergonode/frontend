@@ -9,10 +9,11 @@
             :buttons="buttons"
             :icon="icon" />
         <div class="vertical-wrapper">
-            <GridWrapper
+            <Grid
                 store-namespace="grid"
-                :rows-height="rowsHeight"
-                :action-paths="actionPaths" />
+                :action-paths="actionPaths"
+                :basic-filters="true"
+                title="Grid" />
         </div>
         <GridFooter>
             <GridPageSelector
@@ -30,7 +31,7 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
 import NavigationHeader from '~/components/ReusableHeader/NavigationHeader';
-import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
+import Grid from '~/components/Grid/Grid';
 import GridFooter from '~/components/Grid/GridFooter';
 import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
@@ -40,7 +41,7 @@ export default {
     name: 'GridPage',
     components: {
         NavigationHeader,
-        GridWrapper,
+        Grid,
         GridFooter,
         GridPageSelector,
         GridPagination,
@@ -64,15 +65,6 @@ export default {
             default: null,
         },
     },
-    data() {
-        return {
-            gridConfiguration: {
-                rows: {
-                    height: 32,
-                },
-            },
-        };
-    },
     async beforeCreate() {
         const { getData: path } = this.$options.propsData.actionPaths;
 
@@ -89,9 +81,9 @@ export default {
     },
     computed: {
         ...mapState('grid', {
-            numberOfDataElements: state => state.count,
-            displayedPage: state => state.displayedPage,
-            numberOfDisplayedElements: state => state.numberOfDisplayedElements,
+            numberOfDataElements: (state) => state.count,
+            displayedPage: (state) => state.displayedPage,
+            numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
         ...mapGetters('grid', {
             numberOfPages: 'numberOfPages',
@@ -107,16 +99,6 @@ export default {
                     this.changeNumberOfDisplayingElements({ number });
                     this.getDataWrapper();
                 }
-            },
-        },
-        rowsHeight: {
-            get() {
-                const { height } = this.gridConfiguration.rows;
-
-                return height;
-            },
-            set(value) {
-                this.gridConfiguration.rows.height = value;
             },
         },
     },

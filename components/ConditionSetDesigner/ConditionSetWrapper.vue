@@ -41,9 +41,9 @@ export default {
     },
     computed: {
         ...mapState('conditions', {
-            columns: state => state.columns,
-            rowsHeight: state => state.rowsHeight,
-            conditions: state => state.conditions,
+            columns: (state) => state.columns,
+            rowsHeight: (state) => state.rowsHeight,
+            conditions: (state) => state.conditions,
         }),
         gridStyles() {
             return {

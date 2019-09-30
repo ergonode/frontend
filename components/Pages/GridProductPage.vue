@@ -15,9 +15,9 @@
             is-adding-new-tab-enabled
             NOTE: We will add this attribute when we support the functionality of many tabs
         -->
-        <Blur
-            v-show="isBlurVisible"
-            :style="blurZIndex" />
+        <!--        <Blur-->
+        <!--            v-show="isBlurVisible"-->
+        <!--            :style="blurZIndex" />-->
     </PageWrapper>
 </template>
 
@@ -30,7 +30,7 @@ export default {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
-        Blur: () => import('~/components/Blur/Blur'),
+        // Blur: () => import('~/components/Blur/Blur'),
     },
     props: {
         title: {
@@ -59,9 +59,9 @@ export default {
     },
     computed: {
         ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
-            isColumnDragging: state => state.isColumnDragging,
-            isFilterDragging: state => state.isFilterDragging,
+            isListElementDragging: (state) => state.isListElementDragging,
+            isColumnDragging: (state) => state.isColumnDragging,
+            isFilterDragging: (state) => state.isFilterDragging,
         }),
         isBlurVisible() {
             return this.isListElementDragging

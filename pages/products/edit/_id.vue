@@ -27,10 +27,10 @@ export default {
     },
     computed: {
         ...mapState('productsDraft', {
-            id: state => state.id,
-            sku: state => state.sku,
-            selectedCategories: state => state.selectedCategories,
-            categories: state => state.categories,
+            id: (state) => state.id,
+            sku: (state) => state.sku,
+            selectedCategories: (state) => state.selectedCategories,
+            categories: (state) => state.categories,
         }),
     },
     destroyed() {

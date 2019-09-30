@@ -54,8 +54,8 @@ export default {
     },
     computed: {
         ...mapState('productsDraft', {
-            layoutElements: state => state.layoutElements,
-            draft: state => state.draft,
+            layoutElements: (state) => state.layoutElements,
+            draft: (state) => state.draft,
         }),
         maxRowOfLayoutElements() {
             const maxVisibleRows = this.columnsNumber * this.maxRows;

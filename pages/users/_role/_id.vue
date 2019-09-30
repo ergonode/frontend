@@ -26,15 +26,15 @@ export default {
     },
     computed: {
         ...mapState('roles', {
-            roleID: state => state.id,
-            name: state => state.name,
-            description: state => state.description,
+            roleID: (state) => state.id,
+            name: (state) => state.name,
+            description: (state) => state.description,
         }),
         ...mapState('data', {
-            privileges: state => state.privileges,
+            privileges: (state) => state.privileges,
         }),
         ...mapState('authentication', {
-            userPrivileges: state => state.user.privileges,
+            userPrivileges: (state) => state.user.privileges,
         }),
     },
     destroyed() {

@@ -45,14 +45,17 @@ import { Arrow } from '~/model/icons/Arrow';
 import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
 import { getValuesByKeys, getValueByKey } from '~/model/objectWrapper';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
+import TranslationSelectListContent from '~/components/Inputs/Select/Contents/TranslationSelectListContent';
+import TranslationMultiselectListContent from '~/components/Inputs/Select/Contents/TranslationMultiselectListContent';
+import Select from '~/components/Inputs/Select/Select';
 
 export default {
     name: 'ProductTemplateOptions',
     mixins: [baseProductTemplateElementMixin],
     components: {
-        Select: () => import('~/components/Inputs/Select/Select'),
-        TranslationSelectListContent: () => import('~/components/Inputs/Select/Contents/TranslationSelectListContent'),
-        TranslationMultiselectListContent: () => import('~/components/Inputs/Select/Contents/TranslationMultiselectListContent'),
+        Select,
+        TranslationSelectListContent,
+        TranslationMultiselectListContent,
         IconArrowDropDown,
     },
     props: {
@@ -89,7 +92,7 @@ export default {
         parsedOptions() {
             const optionKeys = Object.keys(this.options);
 
-            return optionKeys.map(key => ({ key, value: this.options[key] }));
+            return optionKeys.map((key) => ({ key, value: this.options[key] }));
         },
     },
     methods: {

@@ -57,9 +57,9 @@ export default {
     mixins: [errorValidationMixin],
     computed: {
         ...mapState('productStatus', {
-            id: state => state.id,
-            code: state => state.code,
-            color: state => state.color,
+            id: (state) => state.id,
+            code: (state) => state.code,
+            color: (state) => state.color,
         }),
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess('WORKFLOW_UPDATE'))

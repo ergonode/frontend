@@ -47,14 +47,14 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            user: state => state.user,
+            user: (state) => state.user,
         }),
         ...mapState('data', {
-            languages: state => state.languages,
+            languages: (state) => state.languages,
         }),
         ...mapState('productsDraft', {
-            languageCode: state => state.languageCode,
-            completeness: state => state.completeness,
+            languageCode: (state) => state.languageCode,
+            completeness: (state) => state.completeness,
         }),
         languagesValues() {
             return objectToArray(this.languages);

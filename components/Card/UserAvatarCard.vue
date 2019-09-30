@@ -26,7 +26,7 @@ export default {
     },
     computed: {
         ...mapState('users', {
-            avatarId: state => state.avatarId,
+            avatarId: (state) => state.avatarId,
         }),
         isUserAllowedToUpdate() {
             return this.$hasAccess('USER_UPDATE');
