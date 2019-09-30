@@ -22,7 +22,7 @@ export function getMappedConditionSetData(treeStructure, conditionSetData) {
 export function getParsedConditionSetData(conditions) {
     const parsedData = { conditionsData: {}, conditionsTree: [] };
     for (let i = 0; i < conditions.length; i += 1) {
-        const { type, ...parameters } = conditions[i];
+        const { type, parameters } = conditions[i];
         const uniqId = `${type}--${getUUID()}`;
         parsedData.conditionsData[uniqId] = parameters;
         parsedData.conditionsTree.push({
