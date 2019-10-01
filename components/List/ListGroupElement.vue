@@ -10,10 +10,10 @@
             <ListElementDescription>
                 <span
                     class="group__title"
-                    v-text="group.label" />
+                    v-text="title" />
                 <span
                     class="group__subtitle"
-                    v-text="`${group.elementsCount} Attributes`" />
+                    v-text="subtitle" />
             </ListElementDescription>
             <ListElementAction>
                 <IconArrowSingle :state="iconState" />
@@ -41,8 +41,12 @@ export default {
             type: String,
             default: null,
         },
-        group: {
-            type: Object,
+        title: {
+            type: String,
+            required: true,
+        },
+        subtitle: {
+            type: String,
             required: true,
         },
         isExpanded: {

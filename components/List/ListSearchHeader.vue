@@ -10,27 +10,30 @@
             class="search-text-field"
             solid
             placeholder="Search..."
-            @input="onSearch"
+            @input="debouncedSearch"
             @focus="onSearchFocus">
             <template #append>
                 <IconSearch :fill-color="searchIconFillColor" />
             </template>
         </TextField>
-        <!--TODO: show button when search logic will exist -->
         <Button
-            v-show="false"
             class="search-btn"
             fab
             @click.native="onSearchBtnClick">
             <template #prepend>
-                <IconSearch fill-color="#fff" />
+                <Component
+                    :is="searchBtnIconComponent"
+                    fill-color="#fff" />
             </template>
         </Button>
     </ListHeader>
 </template>
 
 <script>
-import debounce from 'debounce';
+import { debounce } from 'debounce';
+import {
+    primary, graphite,
+} from '~/model/theme/colors';
 import ListHeader from '~/components/List/ListHeader';
 import Button from '~/components/Buttons/Button';
 import TextField from '~/components/Inputs/TextField';
@@ -58,29 +61,35 @@ export default {
         };
     },
     created() {
-        this.debounceFunc = debounce((value) => {
-            this.searchResult = value;
-            this.$emit('searchResult', value);
-        }, 500);
+        this.debouncedSearch = debounce(this.onSearch, 500);
     },
-    watch: {
-        searchResult() {
-            this.$emit('searchResult', this.searchResult);
-        },
+    beforeDestroy() {
+        delete this.debouncedSearch;
     },
     computed: {
+        searchBtnIconComponent() {
+            return this.isSearchBtnClicked
+                ? () => import('~/components/Icon/Window/IconClose')
+                : IconSearch;
+        },
         searchIconFillColor() {
             return this.isSearchFocused
-                ? '#00bc87'
-                : '#5c5f65';
+                ? primary
+                : graphite;
         },
     },
     methods: {
         onSearch(value) {
-            this.debounceFunc(value);
+            this.searchResult = value;
+            this.$emit('searchResult', value);
         },
         onSearchBtnClick() {
             this.isSearchBtnClicked = !this.isSearchBtnClicked;
+
+            if (!this.isSearchBtnClicked && this.searchResult !== '') {
+                this.searchResult = '';
+                this.onSearch(this.searchResult);
+            }
         },
         onSearchFocus(isFocused) {
             this.isSearchFocused = isFocused;

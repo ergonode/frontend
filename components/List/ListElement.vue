@@ -50,7 +50,7 @@ export default {
 
         &--large {
             height: 48px;
-            padding: 8px 12px;
+            padding: 8px 10px 8px 16px;
         }
     }
 </style>

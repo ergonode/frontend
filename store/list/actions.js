@@ -3,34 +3,72 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { getMappedFilter } from '~/model/mappers/gridDataMapper';
-
-const onError = () => {};
+import { getMappedFilter, getMappedElementsToGroups } from '~/model/mappers/gridDataMapper';
+import { UNASSIGNED_GROUP_ID } from '~/defaults/list/main';
 
 export default {
-    getGroups({ commit }, {
+    setFilter({ commit }, filter) {
+        commit(types.SET_FILTER, filter);
+    },
+    getFilteredGroupElements({ commit, state }, { listType, languageCode }) {
+        const path = `${languageCode}/${listType}`;
+        const params = {
+            filter: `code=${state.filter}`,
+        };
+
+        return this.app.$axios.$get(path, { params }).then(({ collection: elements }) => {
+            const { groupElementsCount } = state;
+            const { unassignedElements, groupedElements } = getMappedElementsToGroups(elements);
+
+            if (groupElementsCount[UNASSIGNED_GROUP_ID] !== unassignedElements.length) {
+                commit(types.SET_GROUP_ELEMENTS_COUNT,
+                    { groupId: UNASSIGNED_GROUP_ID, elementsCount: unassignedElements.length });
+            }
+
+            Object.keys(groupedElements).forEach((key) => {
+                if (groupElementsCount[key] !== groupedElements[key].length) {
+                    commit(types.SET_GROUP_ELEMENTS_COUNT,
+                        { groupId: key, elementsCount: groupedElements[key].length });
+                }
+            });
+
+            commit(types.SET_ELEMENTS_FOR_LANGUAGE, { languageCode, elements });
+        });
+    },
+    getGroups({ commit, state }, {
         languageCode,
     }) {
+        const { groupElementsCount } = state;
         const groupsPath = `${languageCode}/attributes/groups`;
 
         return this.app.$axios.$get(groupsPath).then(({ collection: groups }) => {
             commit(types.SET_GROUPS_FOR_LANGUAGE, {
                 languageCode,
-                groups: groups.map(({ id, label, elements_count: elementsCount }) => ({
-                    id, label, elementsCount,
+                groups: groups.map(({ id, label }) => ({
+                    id: id || UNASSIGNED_GROUP_ID, label,
                 })),
             });
-        }).catch(onError);
+
+            groups.forEach((group) => {
+                if (groupElementsCount[group.id] !== group.elements_count) {
+                    commit(types.SET_GROUP_ELEMENTS_COUNT, {
+                        groupId: group.id || UNASSIGNED_GROUP_ID,
+                        elementsCount: group.elements_count,
+                    });
+                }
+            });
+        });
     },
     getElementsForGroup({ commit, state }, {
         listType, groupId, elementsCount, languageCode,
     }) {
         const { elements: stateElements } = state;
         const path = `${languageCode}/${listType}`;
+        const groupFilter = groupId !== UNASSIGNED_GROUP_ID ? getMappedFilter({ groups: groupId }) : 'groups=';
         const params = {
             limit: elementsCount,
             offset: 0,
-            filter: groupId ? getMappedFilter({ groups: groupId }) : 'groups=',
+            filter: state.filter ? `${groupFilter};code=${state.filter}` : groupFilter,
         };
 
         return this.app.$axios.$get(path, { params }).then(({ collection: elements }) => {
@@ -44,13 +82,23 @@ export default {
                     ),
                 );
 
-                commit(types.SET_ELEMENTS_FOR_LANGUAGE, { languageCode, elements: elementsToAdd });
+                commit(types.ADD_ELEMENTS_FOR_LANGUAGE, { languageCode, elements: elementsToAdd });
             }
-        }).catch(onError);
+        });
+    },
+    getElements({ commit, state }, { listType, languageCode }) {
+        const path = `${languageCode}/${listType}`;
+        const params = {
+            filter: `code=${state.filter}`,
+        };
+
+        return this.app.$axios.$get(path, { params }).then(({ collection: elements }) => {
+            commit(types.SET_ELEMENTS_FOR_LANGUAGE, { languageCode, elements });
+        });
     },
     setElementsForLanguage: ({ commit, rootState }, elements) => {
         const { language: languageCode } = rootState.authentication.user;
-        commit(types.SET_ELEMENTS, { languageCode, elements });
+        commit(types.SET_ELEMENTS_FOR_LANGUAGE, { languageCode, elements });
     },
     setDisabledElement: ({ commit }, payload) => {
         commit(types.SET_DISABLED_ELEMENT, payload);

@@ -5,5 +5,7 @@
 export default () => ({
     groups: {},
     elements: {},
+    groupElementsCount: {},
     disabledElements: {},
+    filter: '',
 });

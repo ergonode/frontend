@@ -72,10 +72,13 @@ export default {
     },
     methods: {
         ...mapActions('list', [
+            'setFilter',
             'getGroups',
+            'getFilteredGroupElements',
         ]),
-        onSearch() {
-            // TODO: Send request to backend and update list - no request yet.
+        onSearch(value) {
+            this.setFilter(value);
+            this.getFilteredGroupElements({ listType: 'attributes', languageCode: this.languageCode });
         },
         onSelect(option) {
             this.attributesLanguageCode = option;

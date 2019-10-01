@@ -214,3 +214,31 @@ export function getMappedFilter(filter) {
 
     return mappedFilter;
 }
+
+export function getMappedElementsToGroups(elements) {
+    const { length } = elements;
+    const groupedElements = {};
+    const unassignedElements = [];
+
+    for (let i = 0; i < length; i += 1) {
+        const element = elements[i];
+        const { groups } = element;
+        const { length: groupsNumber } = groups;
+
+        if (groupsNumber) {
+            for (let j = 0; j < groupsNumber; j += 1) {
+                const group = groups[j];
+
+                if (groupedElements[group]) {
+                    groupedElements[group].push(element);
+                } else {
+                    groupedElements[group] = [];
+                }
+            }
+        } else {
+            unassignedElements.push(element);
+        }
+    }
+
+    return { unassignedElements, groupedElements };
+}

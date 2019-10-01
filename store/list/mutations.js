@@ -7,9 +7,11 @@ import defaultState from './state';
 export const types = {
     INITIALIZE_ELEMENTS_FOR_LANGUAGE: 'INITIALIZE_ELEMENTS_FOR_LANGUAGE',
     SET_GROUPS_FOR_LANGUAGE: 'SET_GROUPS_FOR_LANGUAGE',
+    ADD_ELEMENTS_FOR_LANGUAGE: 'ADD_ELEMENTS_FOR_LANGUAGE',
     SET_ELEMENTS_FOR_LANGUAGE: 'SET_ELEMENTS_FOR_LANGUAGE',
-    SET_ELEMENTS: 'SET_ELEMENTS',
+    SET_FILTER: 'SET_FILTER',
     SET_DISABLED_ELEMENT: 'SET_DISABLED_ELEMENT',
+    SET_GROUP_ELEMENTS_COUNT: 'SET_GROUP_ELEMENTS_COUNT',
     REMOVE_DISABLED_ELEMENT: 'REMOVE_DISABLED_ELEMENT',
     CLEAR_STATE: 'CLEAR_STATE',
 };
@@ -18,15 +20,22 @@ export default {
     [types.INITIALIZE_ELEMENTS_FOR_LANGUAGE](state, { languageCode }) {
         state.elements[languageCode] = [];
     },
+    [types.SET_FILTER](state, filter) {
+        state.filter = filter;
+    },
     [types.SET_GROUPS_FOR_LANGUAGE](state, { languageCode, groups }) {
         state.groups[languageCode] = groups;
         state.groups = { ...state.groups };
     },
-    [types.SET_ELEMENTS_FOR_LANGUAGE](state, { languageCode, elements }) {
+    [types.SET_GROUP_ELEMENTS_COUNT](state, { groupId, elementsCount }) {
+        state.groupElementsCount[groupId] = elementsCount;
+        state.groupElementsCount = { ...state.groupElementsCount };
+    },
+    [types.ADD_ELEMENTS_FOR_LANGUAGE](state, { languageCode, elements }) {
         state.elements[languageCode] = [...state.elements[languageCode], ...elements];
         state.elements = { ...state.elements };
     },
-    [types.SET_ELEMENTS](state, { languageCode, elements }) {
+    [types.SET_ELEMENTS_FOR_LANGUAGE](state, { languageCode, elements }) {
         state.elements[languageCode] = elements;
     },
     [types.SET_DISABLED_ELEMENT](state, { languageCode, elementId }) {

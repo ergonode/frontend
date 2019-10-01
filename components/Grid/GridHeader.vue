@@ -18,11 +18,13 @@
             </div>
             <div class="actions-container">
                 <IconFabButton
+                    theme="secondary"
                     icon-path="Others/IconGrid"
                     :is-stateable="true"
                     :is-selected="layout === gridLayouts.GRID"
                     @select="() => onSelectLayout(gridLayouts.GRID)" />
                 <IconFabButton
+                    theme="secondary"
                     icon-path="Others/IconTable"
                     :is-stateable="true"
                     :is-selected="layout === gridLayouts.TABLE"
@@ -33,16 +35,19 @@
             </div>
             <div class="actions-container">
                 <IconFabButton
+                    theme="secondary"
                     icon-path="Others/IconListSmall"
                     :is-stateable="true"
                     :is-selected="rowHeight === rowHeights.SMALL"
                     @select="() => onSelectRowHeight(rowHeights.SMALL)" />
                 <IconFabButton
+                    theme="secondary"
                     icon-path="Others/IconListMedium"
                     :is-stateable="true"
                     :is-selected="rowHeight === rowHeights.MEDIUM"
                     @select="() => onSelectRowHeight(rowHeights.MEDIUM)" />
                 <IconFabButton
+                    theme="secondary"
                     icon-path="Others/IconListLarge"
                     :is-stateable="true"
                     :is-selected="rowHeight === rowHeights.LARGE"
@@ -97,6 +102,7 @@ export default {
 <style lang="scss" scoped>
     .grid-header {
         display: flex;
+        flex-shrink: 0;
         justify-content: space-between;
         border: 1px solid $grey;
         padding: 0 6px 0 16px;
