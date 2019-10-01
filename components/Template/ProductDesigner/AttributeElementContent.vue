@@ -16,7 +16,7 @@
                 v-text="element.type" />
             <span
                 class="element-content__subheader txt--dark-graphite typo-subtitle"
-                v-text="element.label || 'No translation'" />
+                v-text="element.label" />
         </div>
         <div
             v-if="!disabled"

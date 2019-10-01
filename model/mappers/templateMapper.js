@@ -7,6 +7,7 @@ import { getUUID } from '~/model/stringWrapper';
 export function getMappedLayoutElement(
     elementID,
     elementData,
+    elementCode,
     position,
     required = false,
     size = { width: 1, height: 1 },
@@ -18,7 +19,6 @@ export function getMappedLayoutElement(
         min_height: minHeight,
         max_width: maxWidth,
         max_height: maxHeight,
-        label,
         type,
     } = elementData;
 
@@ -33,7 +33,7 @@ export function getMappedLayoutElement(
         minHeight,
         maxHeight,
         type,
-        label,
+        label: elementCode,
         required,
     };
 }
@@ -68,7 +68,7 @@ export function getMappedLayoutSectionElement(
     };
 }
 
-export function getMappedLayoutElements(elements, elementDataByType) {
+export function getMappedLayoutElements(elements, elementsDescription, elementDataByType) {
     return elements.map((element) => {
         const {
             position, size, properties, type,
@@ -79,6 +79,7 @@ export function getMappedLayoutElements(elements, elementDataByType) {
             return getMappedLayoutElement(
                 attrID,
                 elementDataByType(type),
+                elementsDescription.find((el) => el.id === attrID).code,
                 { row: row + 1, column: column + 1 },
                 required,
                 size,
