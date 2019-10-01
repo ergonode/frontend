@@ -19,23 +19,13 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-
 export default {
     name: 'TrashCan',
     components: {
         Label: () => import('~/components/Label/Label'),
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
-    computed: {
-        ...mapState('draggable', {
-            isColumnDragging: (state) => state.isColumnDragging,
-        }),
-    },
     methods: {
-        ...mapActions('draggable', [
-            'setDraggableState',
-        ]),
         drop(event) {
             event.dataTransfer.clearData();
         },
@@ -49,12 +39,11 @@ export default {
 <style lang="scss" scoped>
     .trash-can {
         position: absolute;
-        left: 50%;
+        left: 5%;
         bottom: -324px;
         z-index: 9999;
         width: 480px;
         height: 480px;
-        transform: translate(-50%, 0);
         background-color: $darkGraphite;
         box-shadow:
             0 12px 17px 2px rgba(0, 0, 0, 0.14),

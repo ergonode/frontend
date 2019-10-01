@@ -103,9 +103,9 @@ export default {
         }
         commit(types.SET_CONDITION_VALUE, { conditionId, parameterName, parameterValue });
     },
-    removeCondition({ commit, state }, conditionId) {
+    removeConditionValue({ commit, state }, conditionId) {
         if (state.conditionsValues[conditionId]) {
-            commit(types.REMOVE_CONDITION_FROM_SET, conditionId);
+            commit(types.REMOVE_CONDITION_VALUE_FROM_SET, conditionId);
         }
     },
     removeConditionSet({ state, rootState }, { onSuccess }) {

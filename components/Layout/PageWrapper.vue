@@ -16,6 +16,7 @@ export default {
 
 <style lang="scss" scoped>
     .page-wrapper {
+        position: relative;
         display: flex;
         flex: 1;
         flex-direction: column;

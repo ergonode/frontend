@@ -15,6 +15,7 @@
         <Blur
             v-show="isBlurVisible"
             :style="blurZIndex" />
+        <TrashCan v-show="draggedElementOnGrid" />
     </PageWrapper>
 </template>
 
@@ -26,6 +27,7 @@ export default {
     name: 'ConditionSetPage',
     mixins: [categoryManagementPageBaseMixin],
     components: {
+        TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
         Blur: () => import('~/components/Blur/Blur'),
     },
     created() {
@@ -109,12 +111,13 @@ export default {
     computed: {
         ...mapState('draggable', {
             isListElementDragging: (state) => state.isListElementDragging,
+            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
         isBlurVisible() {
-            return this.isListElementDragging;
+            return this.isListElementDragging || this.draggedElementOnGrid;
         },
         blurZIndex() {
-            if (this.isListElementDragging) {
+            if (this.isBlurVisible) {
                 return { zIndex: '10' };
             }
             return null;

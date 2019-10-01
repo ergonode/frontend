@@ -4,8 +4,7 @@
  */
 export default () => ({
     isListElementDragging: false,
-    isColumnDragging: false,
-    isFilterDragging: false,
+    draggedElementOnGrid: null,
     draggedElement: null,
     bounds: null,
     ghostIndex: -1,

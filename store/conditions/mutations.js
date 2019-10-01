@@ -14,7 +14,7 @@ export const types = {
     SET_CONDITION_VALUE: 'SET_CONDITION_VALUE',
     SET_CONDITIONS_VALUES: 'SET_CONDITIONS_VALUES',
     SET_CONDITIONS_DATA: 'SET_CONDITIONS_DATA',
-    REMOVE_CONDITION_FROM_SET: 'REMOVE_CONDITION_FROM_SET',
+    REMOVE_CONDITION_VALUE_FROM_SET: 'REMOVE_CONDITION_VALUE_FROM_SET',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 
@@ -51,7 +51,7 @@ export default {
     [types.SET_CONDITIONS_DATA](state, data) {
         state.conditionsValues = data;
     },
-    [types.REMOVE_CONDITION_FROM_SET](state, key) {
+    [types.REMOVE_CONDITION_VALUE_FROM_SET](state, key) {
         state.conditionsValues = removeFromObjectByKey(state.conditionsValues, key);
     },
     [types.CLEAR_STATE](state) {

@@ -158,7 +158,7 @@ export default {
                         this.$emit('toggleItem', categoryItem);
                     }
                     this.setDraggedElement(categoryId);
-                    this.setDraggableState({ propName: 'isListElementDragging', value: true });
+                    this.setDraggableState({ propName: 'draggedElementOnGrid', value: 'template' });
                     addTreeElementCopyToDocumentBody(event, category);
                     if (parentId !== 'root') {
                         this.setChildrenLength({ id: parentId, value: -1 });
@@ -170,7 +170,6 @@ export default {
                             elementId: id,
                         });
                     }
-                    this.$emit('afterRemove', id);
                 } else {
                     event.preventDefault();
                 }
@@ -180,7 +179,7 @@ export default {
         onDragEnd(event) {
             removeTreeElementCopyFromDocumentBody(event);
             this.setDraggedElement();
-            this.setDraggableState({ propName: 'isListElementDragging', value: false });
+            this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
         },
         onDragOver(event) {
             event.preventDefault();
@@ -220,7 +219,6 @@ export default {
                     }
                 }
                 this.removeHiddenItem(this.draggedElement);
-                this.$emit('afterRemove', this.draggedElement);
             }
         },
         onDrop() {

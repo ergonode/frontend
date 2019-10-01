@@ -40,10 +40,14 @@ export default {
         ConditionSetItem: () => import('~/components/ConditionSetDesigner/ConditionSetItem'),
     },
     computed: {
+        ...mapState('gridDesigner', {
+            gridData: (state) => state.gridData,
+        }),
         ...mapState('conditions', {
             columns: (state) => state.columns,
             rowsHeight: (state) => state.rowsHeight,
             conditions: (state) => state.conditions,
+            conditionsValues: (state) => state.conditionsValues,
         }),
         gridStyles() {
             return {
@@ -55,7 +59,7 @@ export default {
     methods: {
         ...mapActions('conditions', [
             'getConditionConfigurationById',
-            'removeCondition',
+            'removeConditionValue',
         ]),
         getCondition(id) {
             const [correctId] = id.split('--');
@@ -68,7 +72,8 @@ export default {
             }
         },
         removeConditionFromSet(id) {
-            this.removeCondition(id);
+            console.log('remove', id);
+            // this.removeConditionValue(id);
         },
     },
 };
