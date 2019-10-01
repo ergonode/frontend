@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="grid-wrapper">
+    <div class="list-header">
         <span
-            class="header typo-list txt--dark-graphite"
+            class="list-header__title typo-list txt--dark-graphite"
             v-text="header" />
         <slot />
     </div>
@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .grid-wrapper {
+    .list-header {
         position: relative;
         display: grid;
         row-gap: 8px;
@@ -32,7 +32,7 @@ export default {
         align-items: center;
         padding: 16px;
 
-        .header {
+        &__title {
             grid-column: 1;
             grid-row: 1;
         }

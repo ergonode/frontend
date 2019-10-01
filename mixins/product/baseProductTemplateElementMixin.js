@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { mapActions } from 'vuex';
-import debounce from 'debounce';
+import { debounce } from 'debounce';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import ProductTemplateDetailsContent from '~/components/Template/Product/ProductTemplateDetailsContent';
 

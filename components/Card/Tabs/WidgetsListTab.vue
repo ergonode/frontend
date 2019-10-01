@@ -4,9 +4,6 @@
  */
 <template>
     <div class="tab-wrapper">
-        <ListSearchHeader
-            header="Widgets"
-            @searchResult="onSearch" />
         <WidgetsList />
     </div>
 </template>
@@ -16,13 +13,7 @@
 export default {
     name: 'WidgetsListTab',
     components: {
-        ListSearchHeader: () => import('~/components/List/ListSearchHeader'),
         WidgetsList: () => import('~/components/List/WidgetsList'),
-    },
-    methods: {
-        onSearch() {
-            // TODO: Send request to backend and update list - no request yet.
-        },
     },
 };
 </script>
