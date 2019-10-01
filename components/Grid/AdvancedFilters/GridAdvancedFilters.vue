@@ -52,8 +52,12 @@
             <GridAdvancedFilter
                 v-for="filter in filters"
                 :key="filter.id"
-                :filter="filter">
-                <template v-slot="{ isEditing }" />
+                :filter="filter"
+                @apply="onApply"
+                @clear="onClear">
+                <GridAdvancedFilterContent
+                    :type="filter.type"
+                    :value="filter.value" />
             </GridAdvancedFilter>
         </GridAdvancedFiltersDroppableArea>
     </div>
@@ -74,6 +78,7 @@ export default {
         GridAdvancedFiltersDroppableArea: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFiltersDroppableArea'),
         GridAdvancedFilter: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilter'),
         GridAdvancedFilterPlaceholder: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder'),
+        GridAdvancedFilterContent: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterContent'),
     },
     props: {
         filters: {
@@ -123,6 +128,12 @@ export default {
         },
         onRemoveAll() {
             this.$emit('removeAll');
+        },
+        onClear() {
+
+        },
+        onApply() {
+
         },
     },
 };

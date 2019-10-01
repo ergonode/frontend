@@ -37,6 +37,7 @@ export default {
     },
     [types.SET_ELEMENTS_FOR_LANGUAGE](state, { languageCode, elements }) {
         state.elements[languageCode] = elements;
+        state.elements = { ...state.elements };
     },
     [types.SET_DISABLED_ELEMENT](state, { languageCode, elementId }) {
         state.disabledElements[languageCode] = {

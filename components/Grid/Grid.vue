@@ -228,7 +228,12 @@ export default {
             const { length } = this.gridState.advancedFilters;
             const index = length - 1;
 
-            this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, { index, filter: { id: filter, label: 'Label' } });
+            this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
+                index,
+                filter: {
+                    id: filter, label: 'Label', type: 'TEXT', value: '',
+                },
+            });
         },
         onRemoveAllFilters() {
             this.$store.dispatch(`${this.storeNamespace}/removeAllAdvancedFilters`);

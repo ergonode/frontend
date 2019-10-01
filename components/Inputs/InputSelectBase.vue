@@ -367,7 +367,6 @@ export default {
 
             return position;
         },
-
     },
 };
 </script>

@@ -7,7 +7,7 @@
         :class="[
             'advanced-filter',
             {
-                'advanced-filter--editing': isEditing,
+                'advanced-filter--selected': isSelected,
                 'advanced-filter--error': isError,
                 'advanced-filter--ghost': isGhostFilter,
             }
@@ -27,7 +27,7 @@
                     v-else
                     class="advanced-filter__value"
                     v-text="filter.value" />
-                <IconArrowDropDown />
+                <IconArrowDropDown :state="arrowIconState" />
             </div>
             <div class="icon-error-container">
                 <IconError
@@ -38,12 +38,21 @@
         <template v-else>
             <GridAdvancedFilterGhost />
         </template>
-        <slot :is-editing="isEditing" />
+        <SelectContent
+            v-if="isSelected"
+            ref="selectContent"
+            :style="selectContentPositionStyle"
+            :fixed-content="false"
+            @clear="onClear"
+            @apply="onApply">
+            <slot />
+        </SelectContent>
     </div>
 </template>
 
 <script>
 import { GHOST_ID } from '~/defaults/grid/main';
+import { Arrow } from '~/model/icons/Arrow';
 
 export default {
     name: 'GridAdvancedFilter',
@@ -51,6 +60,7 @@ export default {
         IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
         IconError: () => import('~/components/Icon/Feedback/IconError'),
         GridAdvancedFilterGhost: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterGhost'),
+        SelectContent: () => import('~/components/Inputs/Select/Contents/SelectContent'),
     },
     props: {
         isError: {
@@ -64,8 +74,12 @@ export default {
     },
     data() {
         return {
-            isEditing: false,
+            isSelected: false,
+            selectContentPositionStyle: null,
         };
+    },
+    destroyed() {
+        window.removeEventListener('click', this.onClickOutside);
     },
     computed: {
         ghostFilterId() {
@@ -74,10 +88,78 @@ export default {
         isGhostFilter() {
             return this.filter.id === this.ghostFilterId;
         },
+        arrowIconState() {
+            return this.isSelected ? Arrow.UP : Arrow.DOWN;
+        },
     },
     methods: {
+        onClear() {
+            this.$emit('clear');
+        },
+        onApply() {
+            this.isSelected = false;
+            window.removeEventListener('click', this.onClickOutside);
+
+            this.$emit('apply');
+        },
         onClick() {
-            this.isEditing = !this.isEditing;
+            if (!this.isSelected) {
+                window.addEventListener('click', this.onClickOutside);
+            }
+        },
+        onClickOutside(event) {
+            if (this.isSelected) {
+                const { clientX, clientY } = event;
+                const {
+                    top, left, width, height,
+                } = this.$refs.selectContent.$el.getBoundingClientRect();
+                const isClickedInsideSelectContent = clientX > left
+                    && clientX < left + width
+                    && clientY > top
+                    && clientY < top + height;
+
+                if (!isClickedInsideSelectContent) {
+                    this.isSelected = false;
+                }
+            } else {
+                this.isSelected = !this.isSelected;
+            }
+
+            if (this.isSelected) {
+                this.selectContentPositionStyle = this.getSelectBoundingBox();
+            }
+
+            if (!this.isSelected) {
+                window.removeEventListener('click', this.onClickOutside);
+            }
+        },
+        getSelectBoundingBox() {
+            const {
+                x,
+                y,
+                height,
+                width,
+            } = this.$el.getBoundingClientRect();
+            const { innerHeight } = window;
+            const maxHeight = 200;
+
+            const position = { left: `${x}px` };
+
+            if (this.fixedSelectContent) {
+                position.width = `${width}px`;
+            }
+
+            if (innerHeight - y < maxHeight) {
+                const offsetBottom = innerHeight - y;
+
+                position.bottom = `${offsetBottom + 1}px`;
+
+                return position;
+            }
+
+            position.top = `${y + height + 2}px`;
+
+            return position;
         },
     },
 };
@@ -96,8 +178,9 @@ export default {
 
             display: flex;
             align-items: center;
-            border-right: 1px solid $grey;
+            border: 1px solid $grey;
             padding: 0 8px;
+            box-sizing: border-box;
             background-color: $background;
         }
 
@@ -105,6 +188,10 @@ export default {
             display: flex;
             align-items: center;
             padding: 0 2px 0 8px;
+            box-sizing: border-box;
+            border-right: 1px solid $grey;
+            border-top: 1px solid $grey;
+            border-bottom: 1px solid $grey;
         }
 
         &__placeholder {
@@ -115,12 +202,9 @@ export default {
             @include setFont(medium, small, regular, $lightGraphite);
         }
 
-        &:not(&--ghost) {
-            border: 1px solid $grey;
-        }
-
-        &--editing {
+        &--selected {
             #{$filter}__label {
+                border-color: $primary;
                 background-color: $primary;
                 color: $white;
             }

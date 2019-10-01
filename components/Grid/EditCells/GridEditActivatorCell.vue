@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import AttributeTypes from '~/model/attributes/AttributeTypes';
+import { AttributeTypes } from '~/defaults/attributes/main';
 
 export default {
     name: 'GridEditActivatorCell',

@@ -67,12 +67,14 @@ export default {
             'getElementsForGroup',
         ]),
         getElementsForGroupWrapper(id = '') {
-            this.getElementsForGroup({
-                listType: 'attributes',
-                groupId: this.group.id,
-                elementsCount: this.group.elementsCount,
-                languageCode: this.languageCode,
-            });
+            if (!this.isExpanded) {
+                this.getElementsForGroup({
+                    listType: 'attributes',
+                    groupId: this.group.id,
+                    elementsCount: this.group.elementsCount,
+                    languageCode: this.languageCode,
+                });
+            }
 
             this.$emit('expandedGroup', id);
         },
