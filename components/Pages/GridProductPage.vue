@@ -73,7 +73,7 @@ export default {
             }
 
             if (this.draggedElementOnGrid === 'filter') {
-                return { zIndex: '20' };
+                return { zIndex: '15' };
             }
 
             if (this.draggedElementOnGrid === 'column') {
