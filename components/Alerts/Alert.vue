@@ -70,7 +70,7 @@ export default {
         &__title {
             margin-left: 16px;
             flex: 1;
-            word-break: break-all;
+            word-break: break-word;
         }
 
         &--error {
