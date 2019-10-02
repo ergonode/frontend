@@ -12,6 +12,7 @@
             :grid-data="filteredGridData"
             :is-dragging-enabled="isDraggingEnabled"
             :is-multi-draggable="isMultiDraggable"
+            :element-copy-size="elementCopySize"
             @toggleItem="toggleItem"
             @afterDrop="id => $emit('afterDrop', id)"
             @afterRemove="id => $emit('afterRemove', id)">
@@ -89,6 +90,13 @@ export default {
         rowsHeight: {
             type: Number,
             required: true,
+        },
+        elementCopySize: {
+            type: Object,
+            default: () => ({
+                width: 247,
+                height: 40,
+            }),
         },
     },
     computed: {

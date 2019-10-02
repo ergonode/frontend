@@ -10,6 +10,7 @@
         :grid-gap="15"
         :is-dragging-enabled="$hasAccess('SEGMENT_UPDATE')"
         :is-multi-draggable="true"
+        :element-copy-size="{ width: 600, height: 60 }"
         @afterDrop="onGetConditionConfigurationById"
         @afterRemove="removeConditionFromSet">
         <template #gridHeader>
@@ -72,8 +73,7 @@ export default {
             }
         },
         removeConditionFromSet(id) {
-            console.log('remove', id);
-            // this.removeConditionValue(id);
+            this.removeConditionValue(id);
         },
     },
 };

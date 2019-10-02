@@ -19,8 +19,8 @@
 import { mapState, mapActions } from 'vuex';
 import { debounce } from 'debounce';
 import {
-    addTreeElementCopyToDocumentBody,
-    removeTreeElementCopyFromDocumentBody,
+    addElementCopyToDocumentBody,
+    removeElementCopyFromDocumentBody,
 } from '~/model/tree/TreeElementCopy';
 import {
     getRowBounds,
@@ -55,6 +55,13 @@ export default {
         isMultiDraggable: {
             type: Boolean,
             default: false,
+        },
+        elementCopySize: {
+            type: Object,
+            default: () => ({
+                width: 247,
+                height: 40,
+            }),
         },
     },
     data: () => ({
@@ -156,7 +163,11 @@ export default {
                     }
                     this.setDraggedElement(categoryItem);
                     this.setDraggableState({ propName: 'draggedElementOnGrid', value: 'template' });
-                    addTreeElementCopyToDocumentBody(event, category);
+                    addElementCopyToDocumentBody(event, {
+                        element: category,
+                        width: this.elementCopySize.width,
+                        height: this.elementCopySize.height,
+                    });
                     if (parentId !== 'root') {
                         this.setChildrenLength({ id: parentId, value: -1 });
                     }
@@ -168,7 +179,7 @@ export default {
             return true;
         },
         onDrop() {
-            this.insertElementInToGrid();
+            this.insertElementIntoGrid();
         },
         onDragEnd(event) {
             const { id } = this.draggedElement;
@@ -177,11 +188,12 @@ export default {
             if (isTrashBelowMouse) {
                 if (!this.isMultiDraggable) this.removeAllDisabledElementOnList();
                 this.removeHiddenItem(id);
+                this.$emit('afterRemove', id);
             }
             if (isOutOfBounds && !isTrashBelowMouse) {
-                this.insertElementInToGrid();
+                this.insertElementIntoGrid();
             }
-            removeTreeElementCopyFromDocumentBody(event);
+            removeElementCopyFromDocumentBody(event);
             this.setDraggedElement();
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
         },
@@ -212,7 +224,7 @@ export default {
             }
             return true;
         },
-        insertElementInToGrid() {
+        insertElementIntoGrid() {
             const { id: draggedId, row: draggedRow, column: draggedColumn } = this.draggedElement;
             const { row, column } = this.ghostElement;
             const rowToInsert = row === null ? draggedRow - this.positionBetweenRows : row;
@@ -273,7 +285,6 @@ export default {
         },
         removeAllDisabledElementOnList() {
             const { id } = this.draggedElement;
-            console.log(id, this.hiddenItems[id]);
             if (this.hiddenItems[id]) {
                 const childrenForHiddenItem = this.hiddenItems[id];
                 for (let i = 0; i < childrenForHiddenItem.length; i += 1) {
