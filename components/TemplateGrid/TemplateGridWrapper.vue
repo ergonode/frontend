@@ -28,7 +28,7 @@
                     :columns="columns"
                     :grid-gap="gridGap">
                     <TemplateGridGhostItem
-                        v-if="item.ghost" />
+                        v-if="item.id === 'ghost_item'" />
                     <slot
                         v-else
                         name="gridItem"

@@ -49,7 +49,7 @@ export default {
             commit(types.ADD_GRID_ITEM, item);
         }
     },
-    rebuildGrid: ({
+    rebuildGridById: ({
         state, getters, dispatch,
     }, id) => {
         const index = getters.getIndexById(id);

@@ -27,9 +27,7 @@ import {
     getRowBellowMouse,
 } from '~/model/tree/TreeCalculations';
 import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
-import {
-    isMouseOutOfBoundsElement,
-} from '~/model/drag_and_drop/helpers';
+import { isMouseOutOfBoundsElement } from '~/model/drag_and_drop/helpers';
 
 export default {
     name: 'TemplateGridContainer',
@@ -65,7 +63,7 @@ export default {
             id: 'ghost_item',
             column: null,
             row: null,
-            ghost: true,
+            parent: null,
         },
         mousePosition: {
             overColumn: null,
@@ -120,7 +118,7 @@ export default {
             'setChildrenLength',
             'addGridItem',
             'removeGridItem',
-            'rebuildGrid',
+            'rebuildGridById',
             'removeHiddenItem',
         ]),
         calculateRowsCount() {
@@ -132,7 +130,7 @@ export default {
         onDragStart(event) {
             const { clientY } = event;
             const itemsContainer = this.$el.querySelector('.grid-items-container');
-            const { children: categories } = itemsContainer;
+            const { children: items } = itemsContainer;
             const {
                 top: containerTop,
                 height: containerHeight,
@@ -143,47 +141,59 @@ export default {
             }
             getRowBellowMouse({
                 clientY,
-                elements: categories,
-                elementBounds: getRowBounds(categories),
+                elements: items,
+                elementBounds: getRowBounds(items),
             }, ({ index, category }) => {
                 if (category) {
                     const hasChildren = category.querySelector('.grid-item__categories-length');
-                    const categoryId = category.getAttribute('item-id');
                     const categoryItem = this.dataWithoutGhostElement[index];
                     const {
-                        id, row, column, expanded,
+                        row, column, expanded,
                     } = categoryItem;
                     const parentId = this.getParentId(row, column);
                     if (hasChildren && !expanded) {
                         this.$emit('toggleItem', categoryItem);
                     }
-                    this.setDraggedElement(categoryId);
+                    this.setDraggedElement(categoryItem);
                     this.setDraggableState({ propName: 'draggedElementOnGrid', value: 'template' });
                     addTreeElementCopyToDocumentBody(event, category);
                     if (parentId !== 'root') {
                         this.setChildrenLength({ id: parentId, value: -1 });
                     }
                     this.removeGridItem(index);
-                    if (!this.isMultiDraggable) {
-                        this.removeDisabledElement({
-                            languageCode: this.language,
-                            elementId: id,
-                        });
-                    }
                 } else {
                     event.preventDefault();
                 }
             });
             return true;
         },
+        onDrop() {
+            this.insertElementInToGrid();
+        },
         onDragEnd(event) {
+            const { id } = this.draggedElement;
+            const { isOutOfBounds, isTrashBelowMouse } = this.getElementBelowMouse(event);
+
+            if (isTrashBelowMouse) {
+                if (!this.isMultiDraggable) this.removeAllDisabledElementOnList();
+                this.removeHiddenItem(id);
+            }
+            if (isOutOfBounds && !isTrashBelowMouse) {
+                this.insertElementInToGrid();
+            }
             removeTreeElementCopyFromDocumentBody(event);
             this.setDraggedElement();
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
         },
+        onDragLeave(event) {
+            const { isOutOfBounds, isTrashBelowMouse } = this.getElementBelowMouse(event);
+            if (isOutOfBounds || isTrashBelowMouse) {
+                this.removeGhostElement();
+            }
+        },
         onDragOver(event) {
             event.preventDefault();
-            if (this.onDragFirstItem(event)) return false;
+            if (this.onDragFirstItem()) return false;
             const { clientX, clientY } = event;
             const { overRow, directionOfCollision } = this.mousePosition;
             const localDirectionOfCollision = this.getMouseOverProps(clientX, clientY);
@@ -202,40 +212,24 @@ export default {
             }
             return true;
         },
-        onDragLeave(event) {
-            const { pageX, pageY } = event;
-            const itemsContainer = document.querySelector('.grid-container');
-            const isOutOfBounds = isMouseOutOfBoundsElement(itemsContainer, pageX, pageY);
-
-            if (isOutOfBounds) {
-                this.removeGhostElement();
-                if (!this.isMultiDraggable && this.hiddenItems[this.draggedElement]) {
-                    const childrenForHiddenItem = this.hiddenItems[this.draggedElement];
-                    for (let i = 0; i < childrenForHiddenItem.length; i += 1) {
-                        this.removeDisabledElement({
-                            languageCode: this.language,
-                            elementId: childrenForHiddenItem[i].id,
-                        });
-                    }
-                }
-                this.removeHiddenItem(this.draggedElement);
-            }
-        },
-        onDrop() {
+        insertElementInToGrid() {
+            const { id: draggedId, row: draggedRow, column: draggedColumn } = this.draggedElement;
             const { row, column } = this.ghostElement;
+            const rowToInsert = row === null ? draggedRow - this.positionBetweenRows : row;
+            const columnToInsert = row === null ? draggedColumn : column;
             const { code: categoryCode, name: categoryName } = this.listElements[this.language]
-                .find((e) => e.id === this.draggedElement.split('--')[0]);
+                .find((e) => e.id === draggedId.split('--')[0]);
             this.removeGhostElement();
-            const parentId = this.getParentId(row, column);
-            const childrenLength = this.hiddenItems[this.draggedElement]
-                ? this.hiddenItems[this.draggedElement].length
+            const parentId = this.getParentId(rowToInsert, columnToInsert);
+            const childrenLength = this.hiddenItems[draggedId]
+                ? this.hiddenItems[draggedId].length
                 : 0;
             const droppedItem = {
-                id: this.draggedElement,
+                id: draggedId,
                 code: categoryCode,
                 name: categoryName,
-                column,
-                row,
+                column: columnToInsert,
+                row: rowToInsert,
                 children: childrenLength,
                 expanded: childrenLength > 0,
                 parent: parentId,
@@ -244,21 +238,55 @@ export default {
             if (!this.isMultiDraggable) {
                 this.setDisabledElement({
                     languageCode: this.language,
-                    elementId: this.draggedElement,
+                    elementId: draggedId,
                 });
             }
             if (parentId !== 'root') {
                 this.setChildrenLength({ id: parentId, value: 1 });
             }
-            this.rebuildGrid(this.draggedElement);
-            if (childrenLength > 0) this.$emit('toggleItem', { ...droppedItem, row: row + this.positionBetweenRows });
+            this.rebuildGridById(draggedId);
+            if (childrenLength > 0) {
+                this.$emit('toggleItem', {
+                    ...droppedItem,
+                    row: rowToInsert + this.positionBetweenRows,
+                });
+            }
             this.calculateRowsCount();
-            this.$emit('afterDrop', this.draggedElement);
+            this.$emit('afterDrop', draggedId);
+        },
+        getElementBelowMouse(event) {
+            const { pageX, pageY } = event;
+            const elementBelowMouse = document.elementFromPoint(pageX, pageY);
+            const itemsContainer = document.querySelector('.grid-container');
+
+            return {
+                itemsContainer,
+                isOutOfBounds: isMouseOutOfBoundsElement(itemsContainer, pageX, pageY),
+                isTrashBelowMouse: elementBelowMouse && elementBelowMouse.className === 'trash-can',
+            };
         },
         removeGhostElement() {
+            const { id } = this.ghostElement;
             this.ghostElement.row = null;
             this.ghostElement.column = null;
-            this.removeGridItem(this.ghostElement.id);
+            this.removeGridItem(id);
+        },
+        removeAllDisabledElementOnList() {
+            const { id } = this.draggedElement;
+            console.log(id, this.hiddenItems[id]);
+            if (this.hiddenItems[id]) {
+                const childrenForHiddenItem = this.hiddenItems[id];
+                for (let i = 0; i < childrenForHiddenItem.length; i += 1) {
+                    this.removeDisabledElement({
+                        languageCode: this.language,
+                        elementId: childrenForHiddenItem[i].id,
+                    });
+                }
+            }
+            this.removeDisabledElement({
+                languageCode: this.language,
+                elementId: id,
+            });
         },
         getBottomCollidingColumn({ neighborElColumn, collidingElColumn }) {
             const { overColumn } = this.mousePosition;
@@ -291,8 +319,8 @@ export default {
             return null;
         },
         getCollidingPosition(collidingEl) {
-            const { row: collidingElRow, column: collidingElColumn } = collidingEl;
-            if (collidingEl.ghost) {
+            const { id, row: collidingElRow, column: collidingElColumn } = collidingEl;
+            if (id === 'ghost_item') {
                 const topNeighbor = this.dataWithoutGhostElement[
                     collidingElRow - this.positionBetweenRows
                 ];

@@ -51,7 +51,8 @@ export default {
         ]),
         onDrag(isDragged) {
             if (isDragged) {
-                this.setDraggedElement(this.item.id);
+                const { id, code, name } = this.item;
+                this.setDraggedElement({ id, code, name });
             } else {
                 this.setDraggedElement();
             }

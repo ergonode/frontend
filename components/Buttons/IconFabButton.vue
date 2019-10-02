@@ -24,7 +24,7 @@
 import ButtonTheme from '~/model/theme/button-theme';
 import {
     primary, graphite, grey, white,
-} from '~/model/theme/colors';
+} from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'IconFabButton',
