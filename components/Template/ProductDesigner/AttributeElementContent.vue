@@ -34,10 +34,13 @@
                             <ListElementDescription>
                                 <ListElementTitle :title="option" />
                             </ListElementDescription>
-                            <CheckBox
-                                v-if="option === 'Required'"
-                                ref="checkbox"
-                                :value="element.required" />
+                            <ListElementAction>
+                                <CheckBox
+                                    v-if="option === 'Required'"
+                                    ref="checkbox"
+                                    :value="element.required"
+                                    @click.native="() => onSelectValue(optIndex)" />
+                            </ListElementAction>
                         </ListElement>
                     </List>
                 </template>
@@ -54,6 +57,7 @@ import CheckBox from '~/components/Inputs/CheckBox';
 import ElementContentBase from '~/components/Template/ProductDesigner/ElementContentBase';
 import List from '~/components/List/List';
 import ListElement from '~/components/List/ListElement';
+import ListElementAction from '~/components/List/ListElementAction';
 import ListElementDescription from '~/components/List/ListElementDescription';
 import ListElementTitle from '~/components/List/ListElementTitle';
 
@@ -65,6 +69,7 @@ export default {
         ElementContentBase,
         List,
         ListElement,
+        ListElementAction,
         ListElementDescription,
         CheckBox,
     },
