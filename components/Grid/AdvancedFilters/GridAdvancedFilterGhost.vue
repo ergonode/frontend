@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template functional>
+<template>
     <div class="advanced-filters-ghost">
         <div class="container">
-            <!-- TODO: Add Icon - Eryk -->
+            <IconAddFilter fill-color="#fff" />
             <span class="advanced-filters-ghost__title">
                 ADD FILTER
             </span>
@@ -16,6 +16,9 @@
 <script>
 export default {
     name: 'GridAdvancedFilterGhost',
+    components: {
+        IconAddFilter: () => import('~/components/Icon/Actions/IconAddFilter'),
+    },
 };
 </script>
 
@@ -34,10 +37,13 @@ export default {
 
         &__title {
             @include setFont(bold, small, regular, $white);
+
+            margin-left: 8px;
         }
     }
 
     .container {
         display: flex;
+        align-items: center;
     }
 </style>

@@ -32,6 +32,10 @@ export default {
             type: Number,
             required: true,
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
         selected: {
             type: Boolean,
             default: false,

@@ -4,38 +4,31 @@
  */
 <template>
     <GridAdvancedFilterBaseContent>
-        <div class="container">
-            <TextField
-                :value="value"
-                autofocus
-                left-alignment
-                small
-                underline />
-        </div>
+        <TranslationMultiselectListContent
+            :options="options"
+            :selected-options="value" />
     </GridAdvancedFilterBaseContent>
 </template>
 
 <script>
-import TextField from '~/components/Inputs/TextField';
 import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/GridAdvancedFilterBaseContent';
+import TranslationMultiselectListContent from '~/components/Inputs/Select/Contents/TranslationMultiselectListContent';
 
 export default {
-    name: 'GridAdvancedFilterTextContent',
+    name: 'GridAdvancedFilterMultiselectContent',
     components: {
-        TextField,
         GridAdvancedFilterBaseContent,
+        TranslationMultiselectListContent,
     },
     props: {
         value: {
             type: String,
             required: true,
         },
+        options: {
+            type: Array,
+            default: () => [],
+        },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .container {
-        padding: 8px 12px;
-    }
-</style>

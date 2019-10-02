@@ -155,6 +155,9 @@ export default {
         ...mapState('gridDraft', {
             drafts: (state) => state.drafts,
         }),
+        ...mapState('list', {
+            elements: (state) => state.elements,
+        }),
         gridState() {
             return this.$store.state[this.storeNamespace];
         },
@@ -224,15 +227,15 @@ export default {
                 columnEl.classList.remove('sticky');
             }
         },
-        onFilterDropped(filter) {
+        onFilterDropped(filterKey) {
             const { length } = this.gridState.advancedFilters;
             const index = length - 1;
+            const [value, languageCode] = filterKey.split(':');
+            const filter = this.elements[languageCode].find((element) => element.code === value);
 
             this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
                 index,
-                filter: {
-                    id: filter, label: 'Label', type: 'TEXT', value: '',
-                },
+                filter: { ...filter, value: '' },
             });
         },
         onRemoveAllFilters() {

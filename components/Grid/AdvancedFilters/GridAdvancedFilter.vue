@@ -16,7 +16,7 @@
         <template v-if="!isGhostFilter">
             <span
                 class="advanced-filter__label"
-                v-text="filter.label" />
+                v-text="filter.label || filter.code" />
             <div class="advanced-filter__details">
                 <span
                     v-if="!filter.value"
@@ -38,21 +38,31 @@
         <template v-else>
             <GridAdvancedFilterGhost />
         </template>
-        <SelectContent
+        <SelectBaseContent
             v-if="isSelected"
             ref="selectContent"
             :style="selectContentPositionStyle"
-            :fixed-content="false"
-            @clear="onClear"
-            @apply="onApply">
-            <slot />
-        </SelectContent>
+            :fixed-content="false">
+            <template #body>
+                <Component
+                    :is="selectBodyComponent"
+                    :value="filterValue"
+                    :options="filter.options" />
+            </template>
+            <template #footer>
+                <Component
+                    :is="selectFooterComponent"
+                    @apply="onApply"
+                    @clear="onClear" />
+            </template>
+        </SelectBaseContent>
     </div>
 </template>
 
 <script>
 import { GHOST_ID } from '~/defaults/grid/main';
 import { Arrow } from '~/model/icons/Arrow';
+import { AttributeTypes } from '~/defaults/attributes/main';
 
 export default {
     name: 'GridAdvancedFilter',
@@ -60,7 +70,7 @@ export default {
         IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
         IconError: () => import('~/components/Icon/Feedback/IconError'),
         GridAdvancedFilterGhost: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterGhost'),
-        SelectContent: () => import('~/components/Inputs/Select/Contents/SelectContent'),
+        SelectBaseContent: () => import('~/components/Inputs/Select/Contents/SelectBaseContent'),
     },
     props: {
         isError: {
@@ -76,6 +86,7 @@ export default {
         return {
             isSelected: false,
             selectContentPositionStyle: null,
+            filterValue: this.filter.value,
         };
     },
     destroyed() {
@@ -91,16 +102,42 @@ export default {
         arrowIconState() {
             return this.isSelected ? Arrow.UP : Arrow.DOWN;
         },
+        selectFooterComponent() {
+            switch (this.filter.type) {
+            case AttributeTypes.SELECT:
+                return () => import('~/components/Inputs/Select/Contents/Footers/SelectContentFooter');
+            case AttributeTypes.MULTI_SELECT:
+            case AttributeTypes.DATE:
+            case AttributeTypes.PRICE:
+                return () => import('~/components/Inputs/Select/Contents/Footers/MultiselectContentFooter');
+            default: return () => import('~/components/Inputs/Select/Contents/Footers/SelectContentApplyFooter');
+            }
+        },
+        selectBodyComponent() {
+            switch (this.filter.type) {
+            case AttributeTypes.SELECT:
+                return () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterSelectContent');
+            case AttributeTypes.MULTI_SELECT:
+                return () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterMultiselectContent');
+            case AttributeTypes.TEXT:
+                return () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterTextContent');
+            default: return () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterTextContent');
+            }
+        },
     },
     methods: {
         onClear() {
-            this.$emit('clear');
+            if (this.filter.type === AttributeTypes.MULTI_SELECT) {
+                this.filterValue = [];
+            } else {
+                this.filterValue = '';
+            }
         },
         onApply() {
             this.isSelected = false;
             window.removeEventListener('click', this.onClickOutside);
 
-            this.$emit('apply');
+            this.$emit('apply', { id: this.filter.id, value: this.filterValue });
         },
         onClick() {
             if (!this.isSelected) {

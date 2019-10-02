@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template functional>
+<template>
     <div class="ghost-column">
         <div class="container">
-            <!-- TODO: Add Icon - Eryk -->
+            <IconAddColumn fill-color="#fff" />
             <span class="ghost-column__title">ADD COLUMN</span>
         </div>
     </div>
@@ -14,6 +14,9 @@
 <script>
 export default {
     name: 'GridGhostColumn',
+    components: {
+        IconAddColumn: () => import('~/components/Icon/Actions/IconAddColumn'),
+    },
 };
 </script>
 
@@ -30,11 +33,14 @@ export default {
 
         &__title {
             @include setFont(bold, small, regular, $white);
+
+            margin-top: 8px;
         }
     }
 
     .container {
         display: flex;
         flex-direction: column;
+        align-items: center;
     }
 </style>
