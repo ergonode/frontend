@@ -33,11 +33,12 @@
             clearable
             :disabled="isDisabledByPrivileges"
             @input="clearContent">
-            <TranslationMultiselectListContent
-                slot="selectContent"
-                :options="categoryOptions"
-                :selected-options="selectedCategories"
-                @values="onCategoriesChange" />
+            <template #selectContent>
+                <TranslationMultiselectListContent
+                    :options="categoryOptions"
+                    :selected-options="selectedCategories"
+                    @values="onCategoriesChange" />
+            </template>
         </Select>
         <slot />
     </BaseCard>

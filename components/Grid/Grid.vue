@@ -123,7 +123,7 @@ export default {
     data() {
         return {
             isHeaderFocused: false,
-            rowHeight: ROW_HEIGHTS.SMALL,
+            rowHeight: ROW_HEIGHTS.LARGE,
             layout: GRID_LAYOUT.TABLE,
         };
     },

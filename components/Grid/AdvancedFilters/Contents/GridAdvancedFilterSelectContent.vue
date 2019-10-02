@@ -4,21 +4,21 @@
  */
 <template>
     <GridAdvancedFilterBaseContent>
-        <TranslationMultiselectListContent
+        <TranslationSelectListContent
             :options="options"
             :selected-options="value" />
     </GridAdvancedFilterBaseContent>
 </template>
 
 <script>
-import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/GridAdvancedFilterBaseContent';
-import TranslationMultiselectListContent from '~/components/Inputs/Select/Contents/TranslationMultiselectListContent';
+import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
+import TranslationSelectListContent from '~/components/Inputs/Select/Contents/TranslationSelectListContent';
 
 export default {
-    name: 'GridAdvancedFilterMultiselectContent',
+    name: 'GridAdvancedFilterSelectContent',
     components: {
         GridAdvancedFilterBaseContent,
-        TranslationMultiselectListContent,
+        TranslationSelectListContent,
     },
     props: {
         value: {

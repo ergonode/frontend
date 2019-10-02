@@ -20,15 +20,16 @@
         :regular="regular"
         :dismissible="dismissible"
         @focus="onFocus">
-        <textarea
-            slot="input"
-            :value="value"
-            :placeholder="placeholder"
-            :autofocus="autofocus"
-            :disabled="disabled"
-            :aria-label="label || 'no description'"
-            :style="textareaStyle"
-            @input="emitValue" />
+        <template #input>
+            <textarea
+                :value="value"
+                :placeholder="placeholder"
+                :autofocus="autofocus"
+                :disabled="disabled"
+                :aria-label="label || 'no description'"
+                :style="textareaStyle"
+                @input="emitValue" />
+        </template>
         <template #append>
             <slot name="append" />
         </template>

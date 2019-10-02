@@ -4,10 +4,12 @@
  */
 <template>
     <BaseTab>
-        <ConditionSetBaseCard slot="content" />
-        <Footer
-            slot="footer"
-            :buttons="[...updateButton]" />
+        <template #content>
+            <ConditionSetBaseCard />
+        </template>
+        <template #footer>
+            <Footer :buttons="[...updateButton]" />
+        </template>
     </BaseTab>
 </template>
 

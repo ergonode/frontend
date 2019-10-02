@@ -7,9 +7,9 @@
         <template #content>
             <LanguageSettingsCard />
         </template>
-        <Footer
-            slot="footer"
-            :buttons="[...updateButton]" />
+        <template #footer>
+            <Footer :buttons="[...updateButton]" />
+        </template>
     </BaseTab>
 </template>
 

@@ -44,12 +44,13 @@
                     Dr. Emmett „Doc” Brown
                 </a>
             </div>
-            <img
-                slot="placeholder"
-                class="preloader"
-                width="24"
-                src="~assets/images/preloader.gif"
-                alt="Loading...">
+            <template #placeholder>
+                <img
+                    class="preloader"
+                    width="24"
+                    src="~assets/images/preloader.gif"
+                    alt="Loading...">
+            </template>
         </client-only>
     </div>
 </template>

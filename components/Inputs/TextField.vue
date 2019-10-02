@@ -20,17 +20,18 @@
         :regular="regular"
         :dismissible="dismissible"
         @focus="onFocus">
-        <input
-            slot="input"
-            :value="value"
-            :placeholder="placeholder"
-            :autofocus="autofocus"
-            :type="inputType"
-            :min="minRange"
-            :max="maxRange"
-            :disabled="disabled"
-            :aria-label="label || 'no description'"
-            @input="emitValue">
+        <template #input>
+            <input
+                :value="value"
+                :placeholder="placeholder"
+                :autofocus="autofocus"
+                :type="inputType"
+                :min="minRange"
+                :max="maxRange"
+                :disabled="disabled"
+                :aria-label="label || 'no description'"
+                @input="emitValue">
+        </template>
         <template #append>
             <slot name="append" />
         </template>

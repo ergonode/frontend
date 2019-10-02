@@ -24,7 +24,9 @@ export default {
     .header-cell {
         @include setFont(bold, small, regular, $darkGraphite);
 
+        display: flex;
         flex: 1 1 auto;
+        align-items: center;
         width: min-content;
         padding: 8px;
         user-select: none;

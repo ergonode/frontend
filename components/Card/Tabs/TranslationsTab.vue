@@ -4,17 +4,17 @@
  */
 <template>
     <BaseTab>
-        <OptionsHeader
-            slot="header"
-            :cards-language-codes="cardsLanguageCodes" />
+        <template #header>
+            <OptionsHeader :cards-language-codes="cardsLanguageCodes" />
+        </template>
         <template #content>
             <div class="translation-cards">
                 <slot />
             </div>
         </template>
-        <Footer
-            slot="footer"
-            :buttons="[...updateButton]" />
+        <template #footer>
+            <Footer :buttons="[...updateButton]" />
+        </template>
     </BaseTab>
 </template>
 

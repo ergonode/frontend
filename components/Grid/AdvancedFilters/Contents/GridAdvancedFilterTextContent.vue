@@ -17,7 +17,7 @@
 
 <script>
 import TextField from '~/components/Inputs/TextField';
-import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/GridAdvancedFilterBaseContent';
+import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 
 export default {
     name: 'GridAdvancedFilterTextContent',

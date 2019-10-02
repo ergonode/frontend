@@ -116,12 +116,14 @@ export default {
         selectBodyComponent() {
             switch (this.filter.type) {
             case AttributeTypes.SELECT:
-                return () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterSelectContent');
+                return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterSelectContent');
             case AttributeTypes.MULTI_SELECT:
-                return () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterMultiselectContent');
+                return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterMultiselectContent');
             case AttributeTypes.TEXT:
-                return () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterTextContent');
-            default: return () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterTextContent');
+                return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
+            case AttributeTypes.DATE:
+                return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterDateContent');
+            default: return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
             }
         },
     },

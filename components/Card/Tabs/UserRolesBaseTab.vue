@@ -8,8 +8,7 @@
             <UserRolesBaseCard />
         </template>
         <template #footer>
-            <Footer
-                :buttons="[...updateButton]" />
+            <Footer :buttons="[...updateButton]" />
         </template>
     </BaseTab>
 </template>
