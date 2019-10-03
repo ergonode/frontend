@@ -22,11 +22,12 @@ export default {
 
 <style lang="scss" scoped>
     .element-hint {
+        @include setFont(medium, tiny, tiny, $graphite, 0.5);
+
         position: absolute;
         right: 6px;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        @include setFont(medium, tiny, tiny, $graphite, 0.5);
     }
 </style>

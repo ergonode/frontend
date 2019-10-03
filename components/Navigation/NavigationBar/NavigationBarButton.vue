@@ -38,6 +38,7 @@ export default {
 
         .title {
             @include setFont(semiBold, regular, medium, $white);
+
             margin-left: 8px;
         }
     }

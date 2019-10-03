@@ -74,6 +74,7 @@ export default {
 
         &__title {
             @include setFont(medium, huge, large, $darkGraphite);
+
             margin-right: 8px;
         }
 

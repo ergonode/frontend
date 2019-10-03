@@ -6,6 +6,7 @@
 
 html, body {
     @include setFont(medium, regular, regular, $darkGraphite);
+
     -webkit-text-size-adjust: 100%; //fix for iOS
 }
 

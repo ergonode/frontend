@@ -57,6 +57,7 @@ export default {
 <style lang="scss" scoped>
     .tab-bar-item {
         @include setFont(medium, small, 15, $graphite);
+
         $tabItem: &;
 
         position: relative;

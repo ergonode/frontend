@@ -56,6 +56,7 @@ export default {
 
         .grid-title {
             @include setFont(medium, huge, large, $darkGraphite);
+
             height: 37px;
             text-align: center;
             font-display: swap;
@@ -77,6 +78,7 @@ export default {
 
                 .item-title {
                     @include setFont(medium, huge, large, $darkGraphite);
+
                     height: 24px;
                     text-align: center;
                     font-display: swap;

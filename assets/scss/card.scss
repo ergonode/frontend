@@ -20,6 +20,7 @@
 
     & .card__title {
         @include setFont(medium, medium, medium, $graphite);
+
         display: flex;
         flex: 1 1 auto;
         flex-wrap: wrap;
@@ -41,6 +42,7 @@
 
         &--toolbar {
             @include setFont(medium, large, medium, $white);
+
             background-color: $darkGraphite;
             box-shadow:
                 0 4px 5px 0 rgba(0, 0, 0, 0.14),
