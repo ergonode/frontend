@@ -9,35 +9,34 @@
             {
                 'advanced-filter--selected': isSelected,
                 'advanced-filter--error': isError,
-                'advanced-filter--ghost': isGhostFilter,
             }
         ]"
+        draggable
+        @dragover="onDragOver"
+        @dragstart="onDragStart"
+        @dragleave="onDragLeave"
+        @dragend="onDragEnd"
         @click="onClick">
-        <template v-if="!isGhostFilter">
+        <span
+            class="advanced-filter__label"
+            v-text="filter.label || filter.code" />
+        <div class="advanced-filter__details">
             <span
-                class="advanced-filter__label"
-                v-text="filter.label || filter.code" />
-            <div class="advanced-filter__details">
-                <span
-                    v-if="!filter.value"
-                    class="advanced-filter__placeholder">
-                    Select
-                </span>
-                <span
-                    v-else
-                    class="advanced-filter__value"
-                    v-text="filter.value" />
-                <IconArrowDropDown :state="arrowIconState" />
-            </div>
-            <div class="icon-error-container">
-                <IconError
-                    v-if="isError"
-                    size="16" />
-            </div>
-        </template>
-        <template v-else>
-            <GridAdvancedFilterGhost />
-        </template>
+                v-if="!filter.value"
+                class="advanced-filter__placeholder">
+                Select
+            </span>
+            <span
+                v-else
+                class="advanced-filter__value"
+                v-text="filter.value" />
+            <IconArrowDropDown :state="arrowIconState" />
+        </div>
+        <div class="icon-error-container">
+            <IconError
+                v-if="isError"
+                size="16" />
+        </div>
         <SelectBaseContent
             v-if="isSelected"
             ref="selectContent"
@@ -60,22 +59,29 @@
 </template>
 
 <script>
-import { GHOST_ID } from '~/defaults/grid/main';
+import { mapState, mapActions } from 'vuex';
 import { Arrow } from '~/model/icons/Arrow';
 import { AttributeTypes } from '~/defaults/attributes/main';
+import {
+    addGridColumnCopyToDocumentBody,
+    // removeGridColumnCopyFromDocumentBody,
+} from '~/model/grid/layout/GridColumnElementCopy';
 
 export default {
     name: 'GridAdvancedFilter',
     components: {
         IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
         IconError: () => import('~/components/Icon/Feedback/IconError'),
-        GridAdvancedFilterGhost: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterGhost'),
         SelectBaseContent: () => import('~/components/Inputs/Select/Contents/SelectBaseContent'),
     },
     props: {
         isError: {
             type: Boolean,
             default: false,
+        },
+        index: {
+            type: Number,
+            required: true,
         },
         filter: {
             type: Object,
@@ -93,12 +99,9 @@ export default {
         window.removeEventListener('click', this.onClickOutside);
     },
     computed: {
-        ghostFilterId() {
-            return GHOST_ID;
-        },
-        isGhostFilter() {
-            return this.filter.id === this.ghostFilterId;
-        },
+        ...mapState('draggable', {
+            draggedElement: (state) => state.draggedElement,
+        }),
         arrowIconState() {
             return this.isSelected ? Arrow.UP : Arrow.DOWN;
         },
@@ -128,6 +131,25 @@ export default {
         },
     },
     methods: {
+        ...mapActions('draggable', [
+            'setDraggedElement',
+        ]),
+        onDragStart(event) {
+            const { width } = this.$el.getBoundingClientRect();
+
+            addGridColumnCopyToDocumentBody(event, width, this.filter.id);
+            this.setDraggedElement({ ...this.filter });
+            this.$emit('swapFilters', { });
+        },
+        onDragLeave() {
+
+        },
+        onDragEnd() {
+
+        },
+        onDragOver(event) {
+            event.preventDefault();
+        },
         onClear() {
             if (this.filter.type === AttributeTypes.MULTI_SELECT) {
                 this.filterValue = [];
@@ -210,7 +232,7 @@ export default {
 
         position: relative;
         display: flex;
-        height: 30px;
+        height: 32px;
 
         &__label {
             @include setFont(bold, small, regular, $darkGraphite);

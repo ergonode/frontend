@@ -8,6 +8,7 @@
             v-if="advancedFilters"
             :filters="gridState.advancedFilters"
             @addFilter="onFilterDropped"
+            @removeFilter="onRemoveFilter"
             @removeAll="onRemoveAllFilters"
             @clearAll="onClearAllFilters" />
         <GridHeader
@@ -240,6 +241,9 @@ export default {
         },
         onRemoveAllFilters() {
             this.$store.dispatch(`${this.storeNamespace}/removeAllAdvancedFilters`);
+        },
+        onRemoveFilter() {
+
         },
         onClearAllFilters() {
             this.$store.dispatch(`${this.storeNamespace}/clearAllAdvancedFilters`);

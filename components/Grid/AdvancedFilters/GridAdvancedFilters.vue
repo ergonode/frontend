@@ -45,16 +45,21 @@
                 </template>
             </IconFabButton>
         </div>
-        <GridAdvancedFiltersDroppableArea
-            v-if="isExpanded"
-            @addFilter="onFilterDropped">
+        <GridAdvancedFiltersContainer v-if="isExpanded">
             <GridAdvancedFilterPlaceholder v-if="filters.length === 0" />
-            <GridAdvancedFilter
-                v-for="filter in filters"
-                :key="filter.id"
-                :filter="filter"
-                @apply="onApply" />
-        </GridAdvancedFiltersDroppableArea>
+            <template v-for="(filter, index) in filters">
+                <GridAdvancedFilter
+                    v-if="filter.id !== ghostFilterId"
+                    :key="index"
+                    :index="index"
+                    :filter="filter"
+                    @apply="onApply" />
+                <GridAdvancedFilterGhost
+                    v-else
+                    :key="index"
+                    @addFilter="onFilterDropped" />
+            </template>
+        </GridAdvancedFiltersContainer>
     </div>
 </template>
 
@@ -70,9 +75,10 @@ export default {
         NumericBadge: () => import('~/components/Badges/NumericBadge'),
         IconFabButton: () => import('~/components/Buttons/IconFabButton'),
         IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),
-        GridAdvancedFiltersDroppableArea: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFiltersDroppableArea'),
+        GridAdvancedFiltersContainer: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFiltersContainer'),
         GridAdvancedFilter: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilter'),
         GridAdvancedFilterPlaceholder: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder'),
+        GridAdvancedFilterGhost: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterGhost'),
     },
     props: {
         filters: {

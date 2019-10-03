@@ -3,7 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="advanced-filters-ghost">
+    <div
+        class="advanced-filters-ghost"
+        draggable
+        @drop="onDrop"
+        @dragover="onDragOver">
         <div class="container">
             <IconAddFilter fill-color="#fff" />
             <span class="advanced-filters-ghost__title">
@@ -18,6 +22,14 @@ export default {
     name: 'GridAdvancedFilterGhost',
     components: {
         IconAddFilter: () => import('~/components/Icon/Actions/IconAddFilter'),
+    },
+    methods: {
+        onDrop(event) {
+            this.$emit('addFilter', event.dataTransfer.getData('text/plain'));
+        },
+        onDragOver(event) {
+            event.preventDefault();
+        },
     },
 };
 </script>
