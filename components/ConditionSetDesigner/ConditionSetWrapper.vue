@@ -10,7 +10,7 @@
         :grid-gap="15"
         :is-dragging-enabled="$hasAccess('SEGMENT_UPDATE')"
         :is-multi-draggable="true"
-        :element-copy-size="{ width: 600, height: 60 }"
+        :dragged-element-size="{ width: 600, height: 60 }"
         @afterDrop="onGetConditionConfigurationById"
         @afterRemove="removeConditionFromSet">
         <template #gridHeader>

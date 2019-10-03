@@ -56,7 +56,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        elementCopySize: {
+        draggedElementSize: {
             type: Object,
             default: () => ({
                 width: 247,
@@ -165,8 +165,8 @@ export default {
                     this.setDraggableState({ propName: 'draggedElementOnGrid', value: 'template' });
                     addElementCopyToDocumentBody(event, {
                         element: category,
-                        width: this.elementCopySize.width,
-                        height: this.elementCopySize.height,
+                        width: this.draggedElementSize.width,
+                        height: this.draggedElementSize.height,
                     });
                     if (parentId !== 'root') {
                         this.setChildrenLength({ id: parentId, value: -1 });
@@ -279,12 +279,14 @@ export default {
         },
         removeGhostElement() {
             const { id } = this.ghostElement;
+
             this.ghostElement.row = null;
             this.ghostElement.column = null;
             this.removeGridItem(id);
         },
         removeAllDisabledElementOnList() {
             const { id } = this.draggedElement;
+
             if (this.hiddenItems[id]) {
                 const childrenForHiddenItem = this.hiddenItems[id];
                 for (let i = 0; i < childrenForHiddenItem.length; i += 1) {

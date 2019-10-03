@@ -108,7 +108,7 @@ export default {
             verticalTabs: [
                 {
                     title: 'Attributes',
-                    component: () => import('~/components/Card/AttributesListTab'),
+                    component: () => import('~/components/Card/Lists/AttributesListTab'),
                     props: {
                         isSelectLanguage: false,
                         disabled: !this.$hasAccess('TEMPLATE_DESIGNER_UPDATE'),

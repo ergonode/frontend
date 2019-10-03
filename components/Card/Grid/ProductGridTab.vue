@@ -60,7 +60,7 @@ export default {
             verticalTabs: [
                 {
                     title: 'Attributes',
-                    component: () => import('~/components/Card/AttributesListTab'),
+                    component: () => import('~/components/Card/Lists/AttributesListTab'),
                     props: {
                         disabled: !this.$hasAccess('PRODUCT_READ'),
                     },
