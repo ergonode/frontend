@@ -25,7 +25,7 @@ export default {
     },
     methods: {
         onDrop(event) {
-            this.$emit('addFilter', event.dataTransfer.getData('text/plain'));
+            this.$emit('add', event.dataTransfer.getData('text/plain'));
         },
         onDragOver(event) {
             event.preventDefault();

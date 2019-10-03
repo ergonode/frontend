@@ -66,6 +66,7 @@ import {
     addGridColumnCopyToDocumentBody,
     // removeGridColumnCopyFromDocumentBody,
 } from '~/model/grid/layout/GridColumnElementCopy';
+import { GHOST_ELEMENT_MODEL } from '~/defaults/grid/main';
 
 export default {
     name: 'GridAdvancedFilter',
@@ -137,9 +138,9 @@ export default {
         onDragStart(event) {
             const { width } = this.$el.getBoundingClientRect();
 
-            addGridColumnCopyToDocumentBody(event, width, this.filter.id);
-            this.setDraggedElement({ ...this.filter });
-            this.$emit('swapFilters', { });
+            addGridColumnCopyToDocumentBody(event, width, JSON.stringify(this.filter));
+
+            this.$emit('replace', { atIndex: this.index, data: GHOST_ELEMENT_MODEL });
         },
         onDragLeave() {
 

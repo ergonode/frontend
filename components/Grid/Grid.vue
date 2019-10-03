@@ -7,7 +7,8 @@
         <GridAdvancedFilters
             v-if="advancedFilters"
             :filters="gridState.advancedFilters"
-            @addFilter="onFilterDropped"
+            @add="onFilterDropped"
+            @replace="onFiltersReplaced"
             @removeFilter="onRemoveFilter"
             @removeAll="onRemoveAllFilters"
             @clearAll="onClearAllFilters" />
@@ -237,6 +238,12 @@ export default {
             this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
                 index,
                 filter: { ...filter, value: '' },
+            });
+        },
+        onFiltersReplaced({ atIndex, data }) {
+            this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
+                index: atIndex,
+                filter: data,
             });
         },
         onRemoveAllFilters() {

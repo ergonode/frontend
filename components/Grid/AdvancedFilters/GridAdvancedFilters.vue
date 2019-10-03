@@ -53,11 +53,12 @@
                     :key="index"
                     :index="index"
                     :filter="filter"
-                    @apply="onApply" />
+                    @apply="onApply"
+                    @replace="onFiltersChangedPosition" />
                 <GridAdvancedFilterGhost
                     v-else
                     :key="index"
-                    @addFilter="onFilterDropped" />
+                    @add="onFilterDropped" />
             </template>
         </GridAdvancedFiltersContainer>
     </div>
@@ -121,7 +122,7 @@ export default {
             }
         },
         onFilterDropped(filter) {
-            this.$emit('addFilter', filter);
+            this.$emit('add', filter);
         },
         onClearAll() {
             this.$emit('clearAll');
@@ -130,7 +131,10 @@ export default {
             this.$emit('removeAll');
         },
         onApply(value) {
-            this.$emit('applyFilter', value);
+            this.$emit('apply', value);
+        },
+        onFiltersChangedPosition(payload) {
+            this.$emit('replace', payload);
         },
     },
 };
