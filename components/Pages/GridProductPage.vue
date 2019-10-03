@@ -15,9 +15,10 @@
             is-adding-new-tab-enabled
             NOTE: We will add this attribute when we support the functionality of many tabs
         -->
-        <!--        <Blur-->
-        <!--            v-show="isBlurVisible"-->
-        <!--            :style="blurZIndex" />-->
+        <!-- <Blur
+            v-show="isBlurVisible"
+            :style="blurZIndex" /> -->
+        <TrashCan v-show="draggedElementOnGrid" />
     </PageWrapper>
 </template>
 
@@ -30,6 +31,7 @@ export default {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
+        TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
         // Blur: () => import('~/components/Blur/Blur'),
     },
     props: {
@@ -60,24 +62,21 @@ export default {
     computed: {
         ...mapState('draggable', {
             isListElementDragging: (state) => state.isListElementDragging,
-            isColumnDragging: (state) => state.isColumnDragging,
-            isFilterDragging: (state) => state.isFilterDragging,
+            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
         isBlurVisible() {
-            return this.isListElementDragging
-                || this.isColumnDragging
-                || this.isFilterDragging;
+            return this.isListElementDragging || this.draggedElementOnGrid;
         },
         blurZIndex() {
             if (this.isListElementDragging) {
                 return { zIndex: '10' };
             }
 
-            if (this.isColumnDragging) {
+            if (this.draggedElementOnGrid === 'filter') {
                 return { zIndex: '15' };
             }
 
-            if (this.isFilterDragging) {
+            if (this.draggedElementOnGrid === 'column') {
                 return { zIndex: '20' };
             }
 

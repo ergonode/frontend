@@ -24,6 +24,7 @@ export default {
 <style lang="scss" scoped>
     .section {
         @include setFont(medium, huge, regular, $darkGraphite);
+
         display: flex;
         align-items: center;
     }

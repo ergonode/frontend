@@ -33,6 +33,7 @@ export default {
 
         .header {
             @include setFont(semiBold, tiny, regular, $graphite);
+
             display: flex;
             justify-content: center;
             align-items: center;

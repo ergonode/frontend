@@ -105,6 +105,7 @@ export default {
 
                 .info__header {
                     @include setFont(extraBold, 56, 56);
+
                     height: 56px;
                     min-width: 1px;
                 }

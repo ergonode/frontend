@@ -176,7 +176,7 @@ export default {
             this.setGhostIndex(this.index);
             this.setDraggedElIndex(this.index);
             this.setDraggedElement({ ...this.column, index: this.index });
-            this.setDraggableState({ propName: 'isColumnDragging', value: true });
+            this.setDraggableState({ propName: 'draggedElementOnGrid', value: 'column' });
             this.updateElementWidth(`${headerWidth}px`);
 
             return true;
@@ -204,7 +204,7 @@ export default {
 
             this.resetDraggedElementCache();
 
-            this.setDraggableState({ propName: 'isColumnDragging', value: false });
+            this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
         },
         async onDrop(event) {
             event.preventDefault();

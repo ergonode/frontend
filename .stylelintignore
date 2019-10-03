@@ -11,4 +11,5 @@ build/
 docker/
 static/
 coverage/
+assets/scss/_variables/_colors.scss
 

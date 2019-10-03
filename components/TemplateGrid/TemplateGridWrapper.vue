@@ -12,6 +12,7 @@
             :grid-data="filteredGridData"
             :is-dragging-enabled="isDraggingEnabled"
             :is-multi-draggable="isMultiDraggable"
+            :dragged-element-size="draggedElementSize"
             @toggleItem="toggleItem"
             @afterDrop="id => $emit('afterDrop', id)"
             @afterRemove="id => $emit('afterRemove', id)">
@@ -28,7 +29,7 @@
                     :columns="columns"
                     :grid-gap="gridGap">
                     <TemplateGridGhostItem
-                        v-if="item.ghost" />
+                        v-if="item.id === 'ghost_item'" />
                     <slot
                         v-else
                         name="gridItem"
@@ -89,6 +90,13 @@ export default {
         rowsHeight: {
             type: Number,
             required: true,
+        },
+        draggedElementSize: {
+            type: Object,
+            default: () => ({
+                width: 247,
+                height: 40,
+            }),
         },
     },
     computed: {

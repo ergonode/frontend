@@ -10,6 +10,7 @@
         :grid-gap="15"
         :is-dragging-enabled="$hasAccess('SEGMENT_UPDATE')"
         :is-multi-draggable="true"
+        :dragged-element-size="{ width: 600, height: 60 }"
         @afterDrop="onGetConditionConfigurationById"
         @afterRemove="removeConditionFromSet">
         <template #gridHeader>
@@ -40,10 +41,14 @@ export default {
         ConditionSetItem: () => import('~/components/ConditionSetDesigner/ConditionSetItem'),
     },
     computed: {
+        ...mapState('gridDesigner', {
+            gridData: (state) => state.gridData,
+        }),
         ...mapState('conditions', {
             columns: (state) => state.columns,
             rowsHeight: (state) => state.rowsHeight,
             conditions: (state) => state.conditions,
+            conditionsValues: (state) => state.conditionsValues,
         }),
         gridStyles() {
             return {
@@ -55,7 +60,7 @@ export default {
     methods: {
         ...mapActions('conditions', [
             'getConditionConfigurationById',
-            'removeCondition',
+            'removeConditionValue',
         ]),
         getCondition(id) {
             const [correctId] = id.split('--');
@@ -68,7 +73,7 @@ export default {
             }
         },
         removeConditionFromSet(id) {
-            this.removeCondition(id);
+            this.removeConditionValue(id);
         },
     },
 };

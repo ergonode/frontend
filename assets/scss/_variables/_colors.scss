@@ -17,3 +17,21 @@ $grey: #d6d7d8;
 $lightGrey: #ebebec;
 $background: #fafafa;
 $white: #fff;
+
+:export {
+    primary: $primary;
+    information: $information;
+    error: $error;
+    warning: $warning;
+    success: $success;
+    lightGreen: $lightGreen;
+    lightRed: $lightRed;
+    darkGraphite: $darkGraphite;
+    graphite: $graphite;
+    lightGraphite: $lightGraphite;
+    darkGrey: $darkGrey;
+    grey: $grey;
+    lightGrey: $lightGrey;
+    background: $background;
+    white: $white;
+}

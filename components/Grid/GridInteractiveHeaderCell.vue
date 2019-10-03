@@ -118,7 +118,7 @@ export default {
     },
     computed: {
         ...mapState('draggable', {
-            isColumnDragging: (state) => state.isColumnDragging,
+            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
         gridState() {
             return this.$store.state[this.storeNamespace];
@@ -210,7 +210,7 @@ export default {
             return columnElement;
         },
         onMouseEnter() {
-            if (this.isColumnDragging || this.isMenuSelected() || this.isCellEditing) return;
+            if (this.draggedElementOnGrid === 'column' || this.isMenuSelected() || this.isCellEditing) return;
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
@@ -222,7 +222,7 @@ export default {
         onMouseLeave() {
             this.isMouseOver = false;
 
-            if (this.isColumnDragging || this.isMenuSelected() || this.isCellEditing) return;
+            if (this.draggedElementOnGrid === 'column' || this.isMenuSelected() || this.isCellEditing) return;
 
             this.resetColumnHoveringState();
         },

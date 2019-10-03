@@ -38,9 +38,9 @@ export default {
             'setDraggableState',
         ]),
         onDrag(isDragged) {
-            const uniqId = `${this.item.id}--${getUUID()}`;
+            const { id, name, code } = this.item;
             if (isDragged) {
-                this.setDraggedElement(uniqId);
+                this.setDraggedElement({ id: `${id}--${getUUID()}`, name, code });
             } else {
                 this.setDraggedElement();
             }

@@ -73,12 +73,14 @@ export default {
 
         &__initials {
             @include setFont(medium, medium, medium, $darkGraphite, 0.1);
+
             grid-row: 1;
             align-self: flex-end;
         }
 
         &__email {
             @include setFont(medium, small, regular, $darkGrey);
+
             grid-row: 2;
             align-self: flex-start;
         }

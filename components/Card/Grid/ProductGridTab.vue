@@ -16,7 +16,6 @@
                     :advanced-filters="true"
                     :basic-filters="true"
                     title="Products" />
-                <TrashCan v-show="isColumnDragging" />
             </div>
         </div>
         <GridFooter>
@@ -44,7 +43,6 @@ import GridFooter from '~/components/Grid/GridFooter';
 import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
 import VerticalTabBar from '~/components/Tab/VerticalTabBar';
-import TrashCan from '~/components/DragAndDrop/TrashCan';
 import Button from '~/components/Buttons/Button';
 
 export default {
@@ -55,7 +53,6 @@ export default {
         GridPageSelector,
         GridPagination,
         VerticalTabBar,
-        TrashCan,
         Button,
     },
     data() {
@@ -63,7 +60,7 @@ export default {
             verticalTabs: [
                 {
                     title: 'Attributes',
-                    component: () => import('~/components/Card/AttributesListTab'),
+                    component: () => import('~/components/Card/Lists/AttributesListTab'),
                     props: {
                         disabled: !this.$hasAccess('PRODUCT_READ'),
                     },
@@ -86,7 +83,6 @@ export default {
     computed: {
         ...mapState('draggable', {
             isListElementDragging: (state) => state.isListElementDragging,
-            isColumnDragging: (state) => state.isColumnDragging,
         }),
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,

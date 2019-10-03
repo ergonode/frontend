@@ -33,7 +33,7 @@
 import { debounce } from 'debounce';
 import {
     primary, graphite,
-} from '~/model/theme/colors';
+} from '~/assets/scss/_variables/_colors.scss';
 import ListHeader from '~/components/List/ListHeader';
 import Button from '~/components/Buttons/Button';
 import TextField from '~/components/Inputs/TextField';
