@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template functional>
+<template>
     <div
         class="status-badge"
-        :style="{backgroundColor: props.color}" />
+        :style="{backgroundColor: color}" />
 </template>
 
 <script>

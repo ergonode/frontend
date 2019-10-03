@@ -5,7 +5,8 @@
 <template>
     <ListGroupElement
         :index="group.id"
-        :group="group"
+        :title="group.label"
+        :subtitle="groupSubtitle"
         :is-expanded="isExpanded"
         @group="getElementsForGroupWrapper">
         <template #item>
@@ -20,6 +21,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { UNASSIGNED_GROUP_ID } from '~/defaults/list/main';
 
 export default {
     name: 'AttributeListGroup',
@@ -45,15 +47,19 @@ export default {
         ...mapState('list', {
             groups: (state) => state.groups,
             elements: (state) => state.elements,
+            groupElementsCount: (state) => state.groupElementsCount,
         }),
         elementsByGroupInLanguage() {
             if (!this.elements[this.languageCode]
                 || this.elements[this.languageCode].length === 0) return [];
 
             return this.elements[this.languageCode].filter(
-                (element) => (element.groups.length === 0 && this.group.id === null)
+                (element) => (element.groups.length === 0 && this.group.id === UNASSIGNED_GROUP_ID)
                     || element.groups.some((group) => group === this.group.id),
             );
+        },
+        groupSubtitle() {
+            return `${this.groupElementsCount[this.group.id]} Attributes`;
         },
     },
     methods: {

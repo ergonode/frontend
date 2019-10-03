@@ -124,8 +124,16 @@ export default {
                 0 1px 5px 0 rgba(0, 0, 0, 0.2);
         }
 
+        &--primary {
+            background-color: $primary;
+        }
+
         &--primary:disabled {
             background-color: $grey;
+        }
+
+        &--secondary {
+            background-color: transparent;
         }
     }
 </style>

@@ -6,13 +6,13 @@
     <div class="tab-wrapper">
         <ListSearchHeader
             header="Categories"
-            @searchResults="onSearch" />
+            @searchResult="onSearch" />
         <CategoriesList :language-code="userLanguageCode" />
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'CategoriesListTab',
@@ -26,8 +26,16 @@ export default {
         }),
     },
     methods: {
-        onSearch() {
-            // TODO: Add whenever we handle it at the BE
+        ...mapActions('list', [
+            'setFilter',
+            'getElements',
+        ]),
+        onSearch(value) {
+            this.setFilter(value);
+            this.getElements({
+                listType: 'categories',
+                languageCode: this.userLanguageCode,
+            });
         },
     },
 };

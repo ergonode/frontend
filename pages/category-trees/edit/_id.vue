@@ -92,10 +92,8 @@ export default {
         await store.dispatch('list/clearStorage');
         await store.dispatch('tree/clearStorage');
         await store.dispatch('translations/clearStorage');
-        await store.dispatch('list/getElementsForGroup', {
+        await store.dispatch('list/getElements', {
             listType: 'categories',
-            groupId: null,
-            elementsCount: 9999,
             languageCode: userLanguageCode,
         });
         await store.dispatch('tree/getTreeById', {

@@ -23,7 +23,6 @@
             <ButtonSelect
                 v-if="isColumnEditable"
                 icon-path="Others/IconDots"
-                :options="contextualMenuItems"
                 @focus="onSelectFocus">
                 <template #content>
                     <List>

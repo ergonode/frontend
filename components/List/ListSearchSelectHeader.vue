@@ -12,20 +12,19 @@
             :options="options"
             @input="onLanguageSelect" />
         <TextField
-            v-show="isSearchBtnClicked"
+            v-if="isSearchBtnClicked"
             :value="searchResult"
             class="search-text-field"
             solid
+            autofocus
             placeholder="Search..."
-            @input="onSearch"
+            @input="debouncedSearch"
             @focus="onSearchFocus">
             <template #append>
                 <IconSearch :fill-color="searchIconFillColor" />
             </template>
         </TextField>
-        <!--TODO: show button when search logic will exist -->
         <Button
-            v-show="false"
             class="search-btn"
             fab
             @click.native="onSearchBtnClick">
@@ -39,7 +38,10 @@
 </template>
 
 <script>
-import debounce from 'debounce';
+import { debounce } from 'debounce';
+import {
+    primary, graphite,
+} from '~/model/theme/colors';
 import ListHeader from '~/components/List/ListHeader';
 import Button from '~/components/Buttons/Button';
 import Select from '~/components/Inputs/Select/Select';
@@ -77,10 +79,10 @@ export default {
         };
     },
     created() {
-        this.debounceFunc = debounce((value) => {
-            this.searchResult = value;
-            this.$emit('searchResult', value);
-        }, 500);
+        this.debouncedSearch = debounce(this.onSearch, 500);
+    },
+    beforeDestroy() {
+        delete this.debouncedSearch;
     },
     computed: {
         searchBtnIconComponent() {
@@ -90,19 +92,25 @@ export default {
         },
         searchIconFillColor() {
             return this.isSearchFocused
-                ? '#00bc87'
-                : '#5c5f65';
+                ? primary
+                : graphite;
         },
     },
     methods: {
         onSearch(value) {
-            this.debounceFunc(value);
+            this.searchResult = value;
+            this.$emit('searchResult', value);
         },
         onLanguageSelect(value) {
             this.$emit('selectOption', value);
         },
         onSearchBtnClick() {
             this.isSearchBtnClicked = !this.isSearchBtnClicked;
+
+            if (!this.isSearchBtnClicked && this.searchResult !== '') {
+                this.searchResult = '';
+                this.onSearch(this.searchResult);
+            }
         },
         onSearchFocus(isFocused) {
             this.isSearchFocused = isFocused;

@@ -49,7 +49,7 @@ export default {
         },
         options: {
             type: Array,
-            required: true,
+            default: () => [],
         },
     },
     data() {
@@ -109,20 +109,22 @@ export default {
                 width,
                 height,
             } = this.$el.getBoundingClientRect();
-            const { innerHeight } = window;
+            const { innerHeight, innerWidth } = window;
             const maxHeight = 200;
+            const minWidth = 130;
+            const leftPos = left + minWidth > innerWidth ? (left - minWidth + (width / 2)) : left;
 
             if (innerHeight - top < maxHeight) {
                 const offsetBottom = innerHeight - top;
 
                 return {
-                    left: `${left}px`,
+                    left: `${leftPos}px`,
                     bottom: `${offsetBottom + 1}px`,
                 };
             }
 
             return {
-                left: `${left}px`,
+                left: `${leftPos}px`,
                 top: `${top + height + 2}px`,
                 width: `${width}px`,
             };
