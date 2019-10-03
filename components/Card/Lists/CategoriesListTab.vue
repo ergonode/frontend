@@ -46,7 +46,7 @@ export default {
             this.setFilter(value);
             this.getElements({
                 listType: 'categories',
-                languageCode: this.languageCode,
+                languageCode: this.userLanguageCode,
             });
         },
         addNewCategory() {
