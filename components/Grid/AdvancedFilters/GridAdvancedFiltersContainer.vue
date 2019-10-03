@@ -3,31 +3,19 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="droppable-area"
-        draggable
-        @drop="onDrop"
-        @dragover="onDragOver">
+    <div class="advanced-filters-container">
         <slot />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'GridAdvancedFiltersDroppableArea',
-    methods: {
-        onDrop(event) {
-            this.$emit('addFilter', event.dataTransfer.getData('text/plain'));
-        },
-        onDragOver(event) {
-            event.preventDefault();
-        },
-    },
+    name: 'GridAdvancedFiltersContainer',
 };
 </script>
 
 <style lang="scss" scoped>
-    .droppable-area {
+    .advanced-filters-container {
         display: flex;
         flex-wrap: wrap;
         padding-bottom: 8px;

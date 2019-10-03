@@ -2,53 +2,43 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-const types = {
-    TEXT: 'TEXT',
-    TEXTAREA: 'TEXTAREA',
-    NUMERIC: 'NUMERIC',
-    SELECT: 'SELECT',
-    MULTI_SELECT: 'MULTI_SELECT',
-    IMAGE: 'IMAGE',
-    PRICE: 'PRICE',
-    UNIT: 'UNIT',
-    DATE: 'DATE',
-    LABEL: 'LABEL',
-};
+
+import { AttributeTypes } from '~/defaults/attributes/main';
 
 export function hasOptions(type) {
-    return type === types.SELECT || type === types.MULTI_SELECT;
+    return type === AttributeTypes.SELECT || type === AttributeTypes.MULTI_SELECT;
 }
 
 export function hasPlaceholder(type) {
     return (
-        type === types.TEXT
-        || type === types.TEXTAREA
-        || type === types.NUMERIC
+        type === AttributeTypes.TEXT
+        || type === AttributeTypes.TEXTAREA
+        || type === AttributeTypes.NUMERIC
     );
 }
 
 export function hasParams(type) {
     return (
-        type === types.IMAGE
-        || type === types.PRICE
-        || type === types.UNIT
-        || type === types.DATE
+        type === AttributeTypes.IMAGE
+        || type === AttributeTypes.PRICE
+        || type === AttributeTypes.UNIT
+        || type === AttributeTypes.DATE
     );
 }
 
 export function hasParamsWithMultiSelect(type) {
-    return type === types.IMAGE;
+    return type === AttributeTypes.IMAGE;
 }
 
 export function getParamsOptionsForType(type, data) {
     switch (type) {
-    case types.UNIT:
+    case AttributeTypes.UNIT:
         return data.units;
-    case types.DATE:
+    case AttributeTypes.DATE:
         return data.dateFormats;
-    case types.PRICE:
+    case AttributeTypes.PRICE:
         return data.currencies;
-    case types.IMAGE:
+    case AttributeTypes.IMAGE:
         return data.imageFormats;
     default:
         return [];
@@ -57,23 +47,23 @@ export function getParamsOptionsForType(type, data) {
 
 export function getIcon(type) {
     switch (type) {
-    case types.TEXT:
+    case AttributeTypes.TEXT:
         return 'Text';
-    case types.TEXTAREA:
+    case AttributeTypes.TEXTAREA:
         return 'Textarea';
-    case types.NUMERIC:
+    case AttributeTypes.NUMERIC:
         return 'Numeric';
-    case types.SELECT:
+    case AttributeTypes.SELECT:
         return 'Select';
-    case types.MULTI_SELECT:
+    case AttributeTypes.MULTI_SELECT:
         return 'MultiSelect';
-    case types.IMAGE:
+    case AttributeTypes.IMAGE:
         return 'Image';
-    case types.PRICE:
+    case AttributeTypes.PRICE:
         return 'Price';
-    case types.UNIT:
+    case AttributeTypes.UNIT:
         return 'Unit';
-    case types.DATE:
+    case AttributeTypes.DATE:
         return 'Date';
     default:
         return '';
@@ -82,23 +72,23 @@ export function getIcon(type) {
 
 export function getTypeTranslation(type) {
     switch (type) {
-    case types.TEXT:
+    case AttributeTypes.TEXT:
         return 'TEXT';
-    case types.TEXTAREA:
+    case AttributeTypes.TEXTAREA:
         return 'TEXT AREA';
-    case types.NUMERIC:
+    case AttributeTypes.NUMERIC:
         return 'NUMERIC';
-    case types.SELECT:
+    case AttributeTypes.SELECT:
         return 'SELECT';
-    case types.MULTI_SELECT:
+    case AttributeTypes.MULTI_SELECT:
         return 'MULTI SELECT';
-    case types.IMAGE:
+    case AttributeTypes.IMAGE:
         return 'IMAGE';
-    case types.PRICE:
+    case AttributeTypes.PRICE:
         return 'PRICE';
-    case types.UNIT:
+    case AttributeTypes.UNIT:
         return 'UNIT';
-    case types.DATE:
+    case AttributeTypes.DATE:
         return 'DATE';
     default:
         return '';
@@ -107,13 +97,13 @@ export function getTypeTranslation(type) {
 
 export function getParamsKeyForType(type) {
     switch (type) {
-    case types.DATE:
+    case AttributeTypes.DATE:
         return 'format';
-    case types.UNIT:
+    case AttributeTypes.UNIT:
         return 'unit';
-    case types.PRICE:
+    case AttributeTypes.PRICE:
         return 'currency';
-    case types.IMAGE:
+    case AttributeTypes.IMAGE:
         return 'formats';
     default:
         return '';
@@ -122,27 +112,25 @@ export function getParamsKeyForType(type) {
 
 export function getTypeElement(type) {
     switch (type) {
-    case types.TEXT:
+    case AttributeTypes.TEXT:
         return 'SingleLine';
-    case types.TEXTAREA:
+    case AttributeTypes.TEXTAREA:
         return 'MultiLine';
-    case types.NUMERIC:
+    case AttributeTypes.NUMERIC:
         return 'SingleLine';
-    case types.SELECT:
+    case AttributeTypes.SELECT:
         return 'Options';
-    case types.MULTI_SELECT:
+    case AttributeTypes.MULTI_SELECT:
         return 'Options';
-    case types.IMAGE:
+    case AttributeTypes.IMAGE:
         return 'Image';
-    case types.PRICE:
+    case AttributeTypes.PRICE:
         return 'SingleLine';
-    case types.UNIT:
+    case AttributeTypes.UNIT:
         return 'SingleLine';
-    case types.DATE:
+    case AttributeTypes.DATE:
         return 'Date';
     default:
         return 'SingleLine';
     }
 }
-
-export default types;

@@ -23,15 +23,25 @@
             </slot>
         </div>
         <FadeTransition v-if="isFocused">
-            <SelectContent
+            <SelectBaseContent
                 :style="selectBoundingBox"
-                :multiselect="multiselect"
-                :clearable="clearable"
-                :fixed-content="fixedSelectContent"
-                @clear="onClear"
-                @apply="dismissSelect">
-                <slot name="selectContent" />
-            </SelectContent>
+                :fixed-content="fixedSelectContent">
+                <template #body>
+                    <slot name="selectContent" />
+                </template>
+                <template
+                    v-if="clearable"
+                    #footer>
+                    <MultiselectContentFooter
+                        v-if="multiselect"
+                        @clear="onClear"
+                        @apply="dismissSelect" />
+                    <SelectContentFooter
+                        v-else
+                        @clear="onClear"
+                        @apply="dismissSelect" />
+                </template>
+            </SelectBaseContent>
         </FadeTransition>
         <label
             v-if="informationLabel"
@@ -43,15 +53,19 @@
 <script>
 import { Arrow } from '~/model/icons/Arrow';
 import FadeTransition from '~/components/Transitions/FadeTransition';
-import SelectContent from '~/components/Inputs/Select/Contents/SelectContent';
+import SelectBaseContent from '~/components/Inputs/Select/Contents/SelectBaseContent';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
+import MultiselectContentFooter from '~/components/Inputs/Select/Contents/Footers/MultiselectContentFooter';
+import SelectContentFooter from '~/components/Inputs/Select/Contents/Footers/SelectContentFooter';
 
 export default {
     name: 'InputSelectBase',
     components: {
         FadeTransition,
-        SelectContent,
+        SelectBaseContent,
         IconArrowDropDown,
+        MultiselectContentFooter,
+        SelectContentFooter,
     },
     props: {
         value: {
@@ -309,7 +323,7 @@ export default {
                     input.focus();
                 }
             } else {
-                const selectContentEl = this.$el.querySelector('.select-content');
+                const selectContentEl = this.$el.querySelector('.select-base-content');
 
                 if (selectContentEl) {
                     const {
@@ -367,7 +381,6 @@ export default {
 
             return position;
         },
-
     },
 };
 </script>

@@ -6,22 +6,23 @@
     <NavigationBarSelectButton
         :title="capitalizedUserFirstName || capitalizedUserLastName"
         data-cy="user-select">
-        <div
-            slot="prependIcon"
-            class="user-image">
-            <Picture
-                v-if="user.avatar_id"
-                fab
-                :image-id="user.avatar_id" />
-            <IconUser
-                v-else
-                fill-color="#fff" />
-        </div>
-        <NavigationBarUserSelectContent
-            slot="selectContent"
-            :avatar-id="user.avatar_id"
-            :initials="userInitials"
-            :email="user.email" />
+        <template #prependIcon>
+            <div class="user-image">
+                <Picture
+                    v-if="user.avatar_id"
+                    fab
+                    :image-id="user.avatar_id" />
+                <IconUser
+                    v-else
+                    fill-color="#fff" />
+            </div>
+        </template>
+        <template #selectContent>
+            <NavigationBarUserSelectContent
+                :avatar-id="user.avatar_id"
+                :initials="userInitials"
+                :email="user.email" />
+        </template>
     </NavigationBarSelectButton>
 </template>
 

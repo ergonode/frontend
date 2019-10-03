@@ -13,7 +13,6 @@
                 <NavigationHeaderBreadcrumb
                     v-for="(breadcrumb, index) in breadcrumbs"
                     :key="index"
-                    slot="breadcrumb"
                     :breadcrumb="breadcrumb" />
             </template>
             <template #badge>

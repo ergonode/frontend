@@ -5,22 +5,31 @@
 <template>
     <div class="date-range-picker">
         <div class="date-range-picker__left">
+            <DatePickerInteractiveHeader
+                v-if="inputHeader"
+                header="From"
+                :value="headerFromValue"
+                @input="onFromHeaderValueChange" />
+            <DatePickerHeader
+                v-else
+                :header="fromHeader" />
             <DatePickerNavigationHeader
                 :header="getDisplayingMonthAndYear(
                     lowerBoundMonth, lowerBoundYear
                 )">
-                <Button
-                    slot="previous"
-                    fab
-                    color="transparent"
-                    @click.native="previousMonth">
-                    <template #prepend>
-                        <IconArrowSingle :state="leftArrow" />
-                    </template>
-                </Button>
-                <div
-                    slot="next"
-                    class="expander" />
+                <template #previous>
+                    <Button
+                        fab
+                        color="transparent"
+                        @click.native="previousMonth">
+                        <template #prepend>
+                            <IconArrowSingle :state="leftArrow" />
+                        </template>
+                    </Button>
+                </template>
+                <template #next>
+                    <div class="expander" />
+                </template>
             </DatePickerNavigationHeader>
             <DatePickerContentHeader :headers="weekDays" />
             <DatePickerMonthDays
@@ -28,23 +37,33 @@
                 :selected-dates="parsedRange"
                 @select="onSelectRange" />
         </div>
+        <Divider vertical />
         <div class="date-range-picker__right">
+            <DatePickerInteractiveHeader
+                v-if="inputHeader"
+                header="To"
+                :value="headerToValue"
+                @input="onToHeaderValueChange" />
+            <DatePickerHeader
+                v-else
+                :header="toHeader" />
             <DatePickerNavigationHeader
                 :header="getDisplayingMonthAndYear(
                     upperBoundMonth, upperBoundYear
                 )">
-                <div
-                    slot="previous"
-                    class="expander" />
-                <Button
-                    slot="next"
-                    fab
-                    color="transparent"
-                    @click.native="nextMonth">
-                    <template #prepend>
-                        <IconArrowSingle :state="rightArrow" />
-                    </template>
-                </Button>
+                <template #previous>
+                    <div class="expander" />
+                </template>
+                <template #next>
+                    <Button
+                        fab
+                        color="transparent"
+                        @click.native="nextMonth">
+                        <template #prepend>
+                            <IconArrowSingle :state="rightArrow" />
+                        </template>
+                    </Button>
+                </template>
             </DatePickerNavigationHeader>
             <DatePickerContentHeader :headers="weekDays" />
             <DatePickerMonthDays
@@ -57,32 +76,42 @@
 
 <script>
 import { Arrow } from '~/model/icons/Arrow';
-import Button from '~/components/Buttons/Button';
-import IconArrowSingle from '~/components/Icon/Arrows/IconArrowSingle';
-import DatePickerMonthDays from '~/components/Inputs/Date/DatePickerMonthDays';
-import DatePickerContentHeader from '~/components/Inputs/Date/DatePickerContentHeader';
-import DatePickerNavigationHeader from '~/components/Inputs/Date/DatePickerNavigationHeader';
 import calendar, {
     getNextMonth,
     getPreviousMonth,
     WEEK_DAYS,
     CALENDAR_MONTHS,
 } from '~/model/calendar/calendar';
+import Button from '~/components/Buttons/Button';
+import IconArrowSingle from '~/components/Icon/Arrows/IconArrowSingle';
+import DatePickerMonthDays from '~/components/Inputs/Date/DatePickerMonthDays';
+import DatePickerContentHeader from '~/components/Inputs/Date/DatePickerContentHeader';
+import DatePickerNavigationHeader from '~/components/Inputs/Date/DatePickerNavigationHeader';
+import Divider from '~/components/Dividers/Divider';
+import DatePickerHeader from '~/components/Inputs/Date/DatePickerHeader';
+import DatePickerInteractiveHeader from '~/components/Inputs/Date/DatePickerInteractiveHeader';
 
 export default {
-    name: 'DateRangePicker',
+    name: 'DateRangePickerContent',
     components: {
         Button,
         DatePickerMonthDays,
         DatePickerContentHeader,
         DatePickerNavigationHeader,
         IconArrowSingle,
+        Divider,
+        DatePickerHeader,
+        DatePickerInteractiveHeader,
     },
     props: {
         value: {
             type: Object,
             required: false,
             default: () => ({ from: null, to: null }),
+        },
+        inputHeader: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
@@ -97,6 +126,8 @@ export default {
             upperBoundYear: month === 12 ? year + 1 : year,
             leftArrow: Arrow.LEFT,
             rightArrow: Arrow.RIGHT,
+            headerFromValue: '',
+            headerToValue: '',
         };
     },
     computed: {
@@ -118,8 +149,28 @@ export default {
                 return previous;
             }, []);
         },
+        fromHeader() {
+            if (this.value.from) {
+                return `From ${this.value.from}`;
+            }
+
+            return 'From';
+        },
+        toHeader() {
+            if (this.value.to) {
+                return `To ${this.value.to}`;
+            }
+
+            return 'To';
+        },
     },
     methods: {
+        onFromHeaderValueChange(value) {
+            this.headerFromValue = value;
+        },
+        onToHeaderValueChange(value) {
+            this.headerToValue = value;
+        },
         getDisplayingMonthAndYear(month, year) {
             return `${this.getDisplayingMonth(month)} ${year}`;
         },
@@ -183,18 +234,20 @@ export default {
 
 <style lang="scss" scoped>
     .date-range-picker {
-        display: flex;
+        display: grid;
+        grid-template-columns: max-content 1px max-content;
+        grid-auto-flow: column;
 
-        &__left {
-            margin-right: 8px;
+        &__left, &__right {
+            padding: 16px;
         }
 
-        &__right {
-            margin-left: 8px;
+        .interactive-header {
+            margin-bottom: 8px;
         }
+    }
 
-        .expander {
-            flex-basis: 32px;
-        }
+    .expander {
+        flex-basis: 32px;
     }
 </style>

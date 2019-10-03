@@ -4,10 +4,12 @@
  */
 <template>
     <BaseTab>
-        <TemplateDesignerBaseCard slot="content" />
-        <Footer
-            slot="footer"
-            :buttons="[...updateButton]" />
+        <template #content>
+            <TemplateDesignerBaseCard />
+        </template>
+        <template #footer>
+            <Footer :buttons="[...updateButton]" />
+        </template>
     </BaseTab>
 </template>
 

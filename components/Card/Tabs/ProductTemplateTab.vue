@@ -4,13 +4,15 @@
  */
 <template>
     <BaseTab>
-        <ProductTemplateHeaderCard slot="header" />
-        <ProductTemplateCard
-            slot="content"
-            :language-code="languageCode" />
-        <Footer
-            slot="footer"
-            :buttons="[...updateButton]" />
+        <template #header>
+            <ProductTemplateHeaderCard />
+        </template>
+        <template #content>
+            <ProductTemplateCard :language-code="languageCode" />
+        </template>
+        <template #footer>
+            <Footer :buttons="[...updateButton]" />
+        </template>
     </BaseTab>
 </template>
 

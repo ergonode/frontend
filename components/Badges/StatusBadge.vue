@@ -22,8 +22,8 @@ export default {
 
 <style lang="scss" scoped>
     .status-badge {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        border-radius: 6px;
     }
 </style>

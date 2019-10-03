@@ -2,10 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template functional>
-    <div class="advanced-filters-ghost">
+<template>
+    <div
+        class="advanced-filters-ghost"
+        draggable
+        @drop="onDrop"
+        @dragover="onDragOver">
         <div class="container">
-            <!-- TODO: Add Icon - Eryk -->
+            <IconAddFilter fill-color="#fff" />
             <span class="advanced-filters-ghost__title">
                 ADD FILTER
             </span>
@@ -16,6 +20,17 @@
 <script>
 export default {
     name: 'GridAdvancedFilterGhost',
+    components: {
+        IconAddFilter: () => import('~/components/Icon/Actions/IconAddFilter'),
+    },
+    methods: {
+        onDrop(event) {
+            this.$emit('add', event.dataTransfer.getData('text/plain'));
+        },
+        onDragOver(event) {
+            event.preventDefault();
+        },
+    },
 };
 </script>
 
@@ -34,10 +49,13 @@ export default {
 
         &__title {
             @include setFont(bold, small, regular, $white);
+
+            margin-left: 8px;
         }
     }
 
     .container {
         display: flex;
+        align-items: center;
     }
 </style>

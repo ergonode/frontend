@@ -12,9 +12,7 @@
                 <CategoryTreeWrapper />
             </div>
         </div>
-        <Footer
-            slot="footer"
-            :buttons="[...updateButton]" />
+        <Footer :buttons="[...updateButton]" />
     </div>
 </template>
 

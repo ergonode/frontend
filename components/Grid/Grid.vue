@@ -7,7 +7,9 @@
         <GridAdvancedFilters
             v-if="advancedFilters"
             :filters="gridState.advancedFilters"
-            @addFilter="onFilterDropped"
+            @add="onFilterDropped"
+            @replace="onFiltersReplaced"
+            @removeFilter="onRemoveFilter"
             @removeAll="onRemoveAllFilters"
             @clearAll="onClearAllFilters" />
         <GridHeader
@@ -123,7 +125,7 @@ export default {
     data() {
         return {
             isHeaderFocused: false,
-            rowHeight: ROW_HEIGHTS.SMALL,
+            rowHeight: ROW_HEIGHTS.LARGE,
             layout: GRID_LAYOUT.TABLE,
         };
     },
@@ -154,6 +156,9 @@ export default {
         }),
         ...mapState('gridDraft', {
             drafts: (state) => state.drafts,
+        }),
+        ...mapState('list', {
+            elements: (state) => state.elements,
         }),
         gridState() {
             return this.$store.state[this.storeNamespace];
@@ -224,14 +229,28 @@ export default {
                 columnEl.classList.remove('sticky');
             }
         },
-        onFilterDropped(filter) {
+        onFilterDropped(filterKey) {
             const { length } = this.gridState.advancedFilters;
             const index = length - 1;
+            const [value, languageCode] = filterKey.split(':');
+            const filter = this.elements[languageCode].find((element) => element.code === value);
 
-            this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, { index, filter: { id: filter, label: 'Label' } });
+            this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
+                index,
+                filter: { ...filter, value: '' },
+            });
+        },
+        onFiltersReplaced({ atIndex, data }) {
+            this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
+                index: atIndex,
+                filter: data,
+            });
         },
         onRemoveAllFilters() {
             this.$store.dispatch(`${this.storeNamespace}/removeAllAdvancedFilters`);
+        },
+        onRemoveFilter() {
+
         },
         onClearAllFilters() {
             this.$store.dispatch(`${this.storeNamespace}/clearAllAdvancedFilters`);

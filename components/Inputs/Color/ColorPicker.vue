@@ -26,14 +26,15 @@
         <template #prepend>
             <slot name="prepend" />
         </template>
-        <input
-            slot="input"
-            :style="{backgroundColor: value}"
-            :placeholder="placeholder"
-            :disabled="disabled"
-            :aria-label="label || 'no description'"
-            type="text"
-            readonly>
+        <template #input>
+            <input
+                :style="{backgroundColor: value}"
+                :placeholder="placeholder"
+                :disabled="disabled"
+                :aria-label="label || 'no description'"
+                type="text"
+                readonly>
+        </template>
         <template #append>
             <slot name="append" />
         </template>

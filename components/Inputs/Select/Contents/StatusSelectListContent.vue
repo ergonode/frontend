@@ -62,6 +62,6 @@ export default {
 
 <style lang="scss" scoped>
     .status-badge {
-        margin-right: 8px;
+        margin-right: 6px;
     }
 </style>
