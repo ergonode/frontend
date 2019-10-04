@@ -46,6 +46,12 @@ export default {
                 active: true,
                 isContextualMenu: false,
             });
+            this.tabs.push({
+                title: 'Transitions',
+                path: '/workflow/transitions',
+                active: true,
+                isContextualMenu: false,
+            });
         }
     },
     beforeDestroy() {

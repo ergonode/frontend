@@ -8,8 +8,8 @@
             :title="title"
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
-            :is-read-only="!isUserAllowedToUpdateSegments && isEdit"
-            icon="Templates"
+            :is-read-only="!isUserAllowedToUpdateTransitions && isEdit"
+            icon="Flow"
             @navigateback="onDismiss" />
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
@@ -19,10 +19,10 @@
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
-    name: 'SegmentPage',
+    name: 'TransitionPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
-        let generalOptTabPath = '/segments/segment/new/general';
+        let generalOptTabPath = '/workflow/transition/new/general';
         let translationTabPath = '';
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
@@ -30,27 +30,27 @@ export default {
         this.buttons = [];
         this.breadcrumbs = [
             {
-                title: 'Segments',
-                icon: 'Templates',
-                path: '/segments',
+                title: 'Workflow',
+                icon: 'Flow',
+                path: '/workflow/transitions',
             },
         ];
-        this.isUserAllowedToUpdateSegments = this.$hasAccess('SEGMENT_UPDATE');
+        this.isUserAllowedToUpdateTransitions = this.$hasAccess('WORKFLOW_UPDATE');
         if (this.isEdit) {
-            generalOptTabPath = `/segments/segment/edit/${this.$route.params.id}/general`;
-            translationTabPath = `/segments/segment/edit/${this.$route.params.id}/translations`;
+            generalOptTabPath = `/workflow/transition/edit/${this.$route.params.id}/general`;
+            translationTabPath = `/workflow/transition/edit/${this.$route.params.id}/translations`;
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
 
             this.buttons = [
                 {
-                    title: 'REMOVE SEGMENT',
+                    title: 'REMOVE TRANSITION',
                     color: 'transparent',
                     action: this.onRemove,
                     theme: 'dark',
                     icon: 'remove',
-                    disabled: !this.$hasAccess('SEGMENT_DELETE'),
+                    disabled: !this.$hasAccess('WORKFLOW_DELETE'),
                 },
             ];
         }
@@ -61,9 +61,9 @@ export default {
                 active: true,
                 props: {
                     updateButton: {
-                        title: `${buttonPrefix} SEGMENT`,
+                        title: `${buttonPrefix} TRANSITION`,
                         action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateSegments : false,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateTransitions : false,
                     },
                 },
             },
@@ -73,9 +73,9 @@ export default {
                 active: this.isEdit,
                 props: {
                     updateButton: {
-                        title: `${buttonPrefix} SEGMENT`,
+                        title: `${buttonPrefix} TRANSITION`,
                         action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateSegments : false,
+                        disabled: this.isEdit ? !this.isUserAllowedToUpdateTransitions : false,
                     },
                 },
             },
@@ -83,7 +83,7 @@ export default {
     },
     beforeDestroy() {
         delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateSegments;
+        delete this.isUserAllowedToUpdateTransitions;
         delete this.buttons;
     },
 };
