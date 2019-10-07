@@ -13,7 +13,7 @@
             :options="statuses"
             :disabled="isDisabledByPrivileges"
             :error-messages="errorSourceMessage"
-            @input="setSource" />
+            @input="onSetSource" />
         <Select
             :value="destination"
             solid
@@ -23,7 +23,7 @@
             :options="statuses"
             :disabled="isDisabledByPrivileges"
             :error-messages="errorDestinationMessage"
-            @input="setDestination" />
+            @input="onSetDestination" />
         <Select
             :value="parsedConditionSet"
             solid
@@ -94,8 +94,27 @@ export default {
             'setDestination',
             'setConditionSetId',
         ]),
+        ...mapActions('validations', [
+            'setErrorForKey',
+        ]),
         onSetConditionSetId(conditionSet) {
             this.setConditionSetId(getKeyByValue(this.conditionSets, conditionSet));
+        },
+        onSetSource(source) {
+            let value = source;
+            if (source === this.destination) {
+                value = null;
+                this.setErrorForKey({ key: 'source', error: ['Source must be different then destination'] });
+            }
+            this.setSource(value);
+        },
+        onSetDestination(destination) {
+            let value = destination;
+            if (destination === this.source) {
+                value = null;
+                this.setErrorForKey({ key: 'destination', error: ['Destination must be different then source'] });
+            }
+            this.setDestination(value);
         },
     },
 };
