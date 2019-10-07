@@ -86,16 +86,18 @@ export default {
     async fetch({
         store, params,
     }) {
-        await store.dispatch('translations/clearStorage');
-        await store.dispatch('transitions/clearStorage');
-        await store.dispatch('conditions/getConditionSets', {
-            limit: 9999,
-            offset: 0,
-        });
-        await store.dispatch('productStatus/getProductStatuses', {
-            limit: 9999,
-            offset: 0,
-        });
+        await Promise.all([
+            store.dispatch('translations/clearStorage'),
+            store.dispatch('transitions/clearStorage'),
+            store.dispatch('productStatus/getProductStatuses', {
+                limit: 9999,
+                offset: 0,
+            }),
+            store.dispatch('conditions/getConditionSets', {
+                limit: 9999,
+                offset: 0,
+            }),
+        ]);
         await store.dispatch('transitions/getTransitionById', {
             transitionId: params.id,
         });

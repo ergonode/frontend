@@ -95,12 +95,13 @@ export default {
     }) {
         const { conditions } = store.state.data;
         const conditionsList = objectToArrayWithPropsName(conditions);
-
-        await store.dispatch('gridDesigner/clearStorage');
-        await store.dispatch('translations/clearStorage');
-        await store.dispatch('list/clearStorage');
-        await store.dispatch('conditions/clearStorage');
-        await store.dispatch('list/setElementsForLanguage', conditionsList);
+        await Promise.all([
+            store.dispatch('gridDesigner/clearStorage'),
+            store.dispatch('translations/clearStorage'),
+            store.dispatch('list/clearStorage'),
+            store.dispatch('conditions/clearStorage'),
+            store.dispatch('list/setElementsForLanguage', conditionsList),
+        ]);
         await store.dispatch('conditions/getConditionSetById', {
             conditionSetId: params.id,
         });

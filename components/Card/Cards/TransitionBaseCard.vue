@@ -11,7 +11,7 @@
             required
             label="Source"
             :options="statuses"
-            :disabled="isDisabledByPrivileges"
+            :disabled="isDisabled || isDisabledByPrivileges"
             :error-messages="errorSourceMessage"
             @input="onSetSource" />
         <Select
@@ -21,7 +21,7 @@
             required
             label="Destination"
             :options="statuses"
-            :disabled="isDisabledByPrivileges"
+            :disabled="isDisabled || isDisabledByPrivileges"
             :error-messages="errorDestinationMessage"
             @input="onSetDestination" />
         <Select
@@ -51,7 +51,6 @@ export default {
     mixins: [errorValidationMixin],
     computed: {
         ...mapState('transitions', {
-            transitionId: (state) => state.id,
             source: (state) => state.source,
             destination: (state) => state.destination,
             conditionSetId: (state) => state.conditionSetId,
@@ -63,7 +62,7 @@ export default {
             statuses: (state) => state.statuses,
         }),
         isDisabled() {
-            return Boolean(this.transitionId);
+            return Boolean(this.source) && Boolean(this.destination);
         },
         conditionSetsValues() {
             return Object.values(this.conditionSets);

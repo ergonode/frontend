@@ -132,8 +132,10 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('translations/clearStorage');
-        await store.dispatch('attribute/clearStorage');
+        await Promise.all([
+            store.dispatch('translations/clearStorage'),
+            store.dispatch('attribute/clearStorage'),
+        ]);
         await store.dispatch('attribute/getAttributeById', {
             attributeId: params.id,
         });

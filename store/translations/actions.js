@@ -3,13 +3,13 @@
  * See LICENSE for license details.
  */
 export default {
-    setTabTranslations: ({ commit }, payload) => {
-        commit('setTabTranslations', payload);
+    setTabTranslations: ({ commit }, translation) => {
+        commit('setTabTranslations', translation);
     },
-    setMultilingualTranslationPropertyValue: ({ commit }, payload) => {
-        commit('setMultilingualTranslationPropertyValue', payload);
+    setMultilingualTranslationPropertyValue: ({ commit }, value) => {
+        commit('setMultilingualTranslationPropertyValue', value);
     },
-    addCardLanguageCode: ({ commit }, payload) => commit('addCardLanguageCode', payload),
+    addCardLanguageCode: ({ commit }, language) => commit('addCardLanguageCode', language),
     setVisibleCardTranslations: ({ commit, state }, { languages }) => {
         const { cardsLanguageCodes, translations } = state;
         const { length: numberOfCards } = cardsLanguageCodes;
@@ -42,10 +42,10 @@ export default {
                 commit('addCardLanguageCode', { languageCode });
             });
 
-            commit('setTabTranslations', { translations });
+            commit('setTabTranslations', translations);
         }
     },
-    addOptionTranslation: ({ commit }, payload) => commit('addOptionTranslation', payload),
+    addOptionTranslation: ({ commit }, option) => commit('addOptionTranslation', option),
     clearStorage: ({ commit }) => {
         commit('clearStorage');
     },

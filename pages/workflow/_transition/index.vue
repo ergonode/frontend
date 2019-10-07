@@ -67,14 +67,16 @@ export default {
     async fetch({
         store,
     }) {
-        await store.dispatch('conditions/getConditionSets', {
-            limit: 9999,
-            offset: 0,
-        });
-        await store.dispatch('productStatus/getProductStatuses', {
-            limit: 9999,
-            offset: 0,
-        });
+        await Promise.all([
+            store.dispatch('productStatus/getProductStatuses', {
+                limit: 9999,
+                offset: 0,
+            }),
+            store.dispatch('conditions/getConditionSets', {
+                limit: 9999,
+                offset: 0,
+            }),
+        ]);
     },
 };
 </script>

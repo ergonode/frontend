@@ -73,9 +73,11 @@ export default {
         },
     },
     async fetch({ store }) {
-        await store.dispatch('productsDraft/clearStorage');
-        await store.dispatch('productsDraft/getTemplates');
-        await store.dispatch('productsDraft/getCategories');
+        await Promise.all([
+            store.dispatch('productsDraft/clearStorage'),
+            store.dispatch('productsDraft/getTemplates'),
+            store.dispatch('productsDraft/getCategories'),
+        ]);
     },
 };
 </script>

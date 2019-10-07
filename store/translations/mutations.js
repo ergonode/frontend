@@ -9,7 +9,7 @@ export default {
     removeCardLanguageCode: (state, { index }) => {
         state.cardsLanguageCodes.splice(index, 1);
     },
-    setTabTranslations: (state, { translations }) => {
+    setTabTranslations: (state, translations) => {
         state.translations = { ...translations };
     },
     setMultilingualTranslationPropertyValue: (state, { languageCode, propertyName, value }) => {

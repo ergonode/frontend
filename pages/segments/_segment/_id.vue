@@ -89,12 +89,14 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('translations/clearStorage');
-        await store.dispatch('segments/clearStorage');
-        await store.dispatch('conditions/getConditionSets', {
-            limit: 9999,
-            offset: 0,
-        });
+        await Promise.all([
+            store.dispatch('translations/clearStorage'),
+            store.dispatch('segments/clearStorage'),
+            store.dispatch('conditions/getConditionSets', {
+                limit: 9999,
+                offset: 0,
+            }),
+        ]);
         await store.dispatch('segments/getSegmentById', {
             segmentId: params.id,
         });

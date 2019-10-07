@@ -92,13 +92,15 @@ export default {
         } = store.state.authentication;
         const { id } = params;
 
-        await store.dispatch('list/clearStorage');
-        await store.dispatch('templateDesigner/getTypes', {
-            path: `${userLanguageCode}/templates/types`,
-        });
-        await store.dispatch('list/getGroups', {
-            languageCode: userLanguageCode,
-        });
+        await Promise.all([
+            store.dispatch('list/clearStorage'),
+            store.dispatch('templateDesigner/getTypes', {
+                path: `${userLanguageCode}/templates/types`,
+            }),
+            store.dispatch('list/getGroups', {
+                languageCode: userLanguageCode,
+            }),
+        ]);
         await store.dispatch('templateDesigner/getTemplateByID', {
             path: `${userLanguageCode}/templates/${id}`,
         });

@@ -35,7 +35,7 @@ export default {
             commit(types.SET_SOURCE, source);
             commit(types.SET_DESTINATION, destination);
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
-            dispatch('translations/setTabTranslations', { translations }, { root: true });
+            dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onDefaultError);
     },
     createTransition(

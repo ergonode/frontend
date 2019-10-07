@@ -35,7 +35,7 @@ export default {
             commit(types.SET_SEGMENT_ID, id);
             commit(types.SET_SEGMENT_CODE, code);
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
-            dispatch('translations/setTabTranslations', { translations }, { root: true });
+            dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onDefaultError);
     },
     createSegment(
