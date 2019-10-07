@@ -7,24 +7,24 @@ import { types } from './mutations';
 const onDefaultError = () => {};
 
 export default {
-    setId({ commit }, value) {
-        commit(types.SET_SEGMENT_ID, value);
+    setSource({ commit }, value) {
+        commit(types.SET_SOURCE, value);
     },
-    setCode({ commit }, value) {
-        commit(types.SET_SEGMENT_CODE, value);
+    setDestination({ commit }, value) {
+        commit(types.SET_DESTINATION, value);
     },
     setConditionSetId({ commit }, value) {
         commit(types.SET_CONDITION_SET_ID, value);
     },
-    getSegmentById(
+    getTransitionById(
         { commit, dispatch, rootState },
-        { segmentId },
+        { transitionId },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/segments/${segmentId}`).then(({
-            id,
-            code,
-            condition_set_id: conditionSetId,
+        const [source, destination] = transitionId.split('--');
+
+        return this.app.$axios.$get(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`).then(({
+            condition_set: conditionSetId,
             name = '',
             description = '',
         }) => {
@@ -32,42 +32,39 @@ export default {
                 name,
                 description,
             };
-            commit(types.SET_SEGMENT_ID, id);
-            commit(types.SET_SEGMENT_CODE, code);
+            commit(types.SET_SOURCE, source);
+            commit(types.SET_DESTINATION, destination);
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
             dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onDefaultError);
     },
-    createSegment(
-        { commit, rootState },
-        {
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$post(`${userLanguageCode}/segments`, data).then(({ id }) => {
-            commit(types.SET_SEGMENT_ID, id);
-            onSuccess(id);
-        }).catch((e) => onError(e.data));
-    },
-    updateSegment(
+    createTransition(
         { rootState },
         {
-            id,
             data,
             onSuccess,
             onError,
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/segments/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+        return this.app.$axios.$post(`${userLanguageCode}/workflow/default/transitions`, data).then(() => onSuccess()).catch((e) => onError(e.data));
     },
-    removeSegment({ state, rootState }, { onSuccess }) {
-        const { id } = state;
+    updateTransition(
+        { state, rootState },
+        {
+            data,
+            onSuccess,
+            onError,
+        },
+    ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/segments/${id}`).then(() => onSuccess()).catch(onDefaultError);
+        const { source, destination } = state;
+        return this.app.$axios.$put(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+    },
+    removeTransition({ state, rootState }, { onSuccess }) {
+        const { source, destination } = state;
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$delete(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`).then(() => onSuccess()).catch(onDefaultError);
     },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);

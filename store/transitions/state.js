@@ -3,8 +3,7 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    id: null,
-    code: null,
-    color: null,
-    statuses: [],
+    source: null,
+    destination: null,
+    conditionSetId: null,
 });

@@ -32,6 +32,8 @@ export const Pages = {
     Workflow: () => import('~/pages/workflow/index').then((m) => m.default || m),
     ProductStatusNew: () => import('~/pages/workflow/_status/index').then((m) => m.default || m),
     ProductStatusEdit: () => import('~/pages/workflow/_status/_id').then((m) => m.default || m),
+    TransitionNew: () => import('~/pages/workflow/_transition/index').then((m) => m.default || m),
+    TransitionEdit: () => import('~/pages/workflow/_transition/_id').then((m) => m.default || m),
     Segments: () => import('~/pages/segments/index').then((m) => m.default || m),
     SegmentNew: () => import('~/pages/segments/_segment/index').then((m) => m.default || m),
     SegmentEdit: () => import('~/pages/segments/_segment/_id').then((m) => m.default || m),
@@ -57,6 +59,8 @@ export const Tabs = {
     ProductTemplateTab: () => import('~/components/Card/Tabs/ProductTemplateTab').then((m) => m.default || m),
     ProductStatusBaseTab: () => import('~/components/Card/Tabs/ProductStatusBaseTab').then((m) => m.default || m),
     ProductStatusTranslationsTab: () => import('~/components/Card/Tabs/ProductStatusTranslationsTab').then((m) => m.default || m),
+    TransitionBaseTab: () => import('~/components/Card/Tabs/TransitionBaseTab').then((m) => m.default || m),
+    TransitionTranslationsTab: () => import('~/components/Card/Tabs/TransitionTranslationsTab').then((m) => m.default || m),
     SegmentsBaseTab: () => import('~/components/Card/Tabs/SegmentsBaseTab').then((m) => m.default || m),
     SegmentsTranslationsTab: () => import('~/components/Card/Tabs/SegmentsTranslationsTab').then((m) => m.default || m),
     ConditionSetBaseTab: () => import('~/components/Card/Tabs/ConditionSetBaseTab').then((m) => m.default || m),
@@ -67,6 +71,7 @@ export const Tabs = {
 
 export const GridTabs = {
     ProductStatusGridTab: () => import('~/components/Card/Grid/ProductStatusGridTab').then((m) => m.default || m),
+    TransitionsGridTab: () => import('~/components/Card/Grid/TransitionsGridTab').then((m) => m.default || m),
     ProductGridTab: () => import('~/components/Card/Grid/ProductGridTab').then((m) => m.default || m),
     CategoryGridTab: () => import('~/components/Card/Grid/CategoryGridTab').then((m) => m.default || m),
     CategoryTreesGridTab: () => import('~/components/Card/Grid/CategoryTreesGridTab').then((m) => m.default || m),

@@ -23,7 +23,7 @@ export default {
             commit(types.SET_CODE, code);
             commit(types.SET_NAME, name);
 
-            commit('translations/setTabTranslations', { translations }, { root: true });
+            commit('translations/setTabTranslations', translations, { root: true });
         }).catch(onError);
     },
     createCategory(

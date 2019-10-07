@@ -52,7 +52,7 @@ export default {
             commit(types.SET_CONDITIONS_DATA, conditionsData);
             dispatch('gridDesigner/setGridData', conditionsTree, { root: true });
             dispatch('gridDesigner/setFullGridData', conditionsTree, { root: true });
-            dispatch('translations/setTabTranslations', { translations }, { root: true });
+            dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onDefaultError);
     },
     createConditionSet(

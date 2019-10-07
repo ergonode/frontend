@@ -91,7 +91,7 @@ export default {
                 groups,
             ));
 
-            dispatch('translations/setTabTranslations', { translations }, { root: true });
+            dispatch('translations/setTabTranslations', translations, { root: true });
 
             if (parameters) {
                 commit(

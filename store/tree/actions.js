@@ -30,7 +30,7 @@ export default {
             commit(types.SET_CODE, code);
             dispatch('gridDesigner/setGridData', treeToSet, { root: true });
             dispatch('gridDesigner/setFullGridData', treeToSet, { root: true });
-            commit('translations/setTabTranslations', { translations }, { root: true });
+            commit('translations/setTabTranslations', translations, { root: true });
         }).catch(onDefaultError);
     },
     createTree(

@@ -383,6 +383,10 @@ export const pages = [
                 path: 'statuses',
                 component: GridTabs.ProductStatusGridTab,
             },
+            {
+                path: 'transitions',
+                component: GridTabs.TransitionsGridTab,
+            },
         ],
         meta: {
             privileges: ['WORKFLOW_READ'],
@@ -414,6 +418,38 @@ export const pages = [
             {
                 path: 'translations',
                 component: Tabs.ProductStatusTranslationsTab,
+            },
+        ],
+        meta: {
+            privileges: ['WORKFLOW_READ'],
+        },
+    },
+    {
+        name: 'transition-new',
+        path: '/workflow/transition/new',
+        component: Pages.TransitionNew,
+        children: [
+            {
+                path: 'general',
+                component: Tabs.TransitionBaseTab,
+            },
+        ],
+        meta: {
+            privileges: ['WORKFLOW_READ', 'WORKFLOW_CREATE'],
+        },
+    },
+    {
+        name: 'transition-edit-id',
+        path: '/workflow/transition/edit/:id?',
+        component: Pages.TransitionEdit,
+        children: [
+            {
+                path: 'general',
+                component: Tabs.TransitionBaseTab,
+            },
+            {
+                path: 'translations',
+                component: Tabs.TransitionTranslationsTab,
             },
         ],
         meta: {

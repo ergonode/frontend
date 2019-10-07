@@ -5,25 +5,21 @@
 import defaultState from './state';
 
 export const types = {
-    SET_CODE: 'SET_CODE',
-    SET_COLOR: 'SET_COLOR',
-    SET_STATUS_ID: 'SET_STATUS_ID',
-    SET_STATUSES: 'SET_STATUSES',
+    SET_SOURCE: 'SET_SOURCE',
+    SET_DESTINATION: 'SET_DESTINATION',
+    SET_CONDITION_SET_ID: 'SET_CONDITION_SET_ID',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 
 export default {
-    [types.SET_STATUS_ID](state, id) {
-        state.id = id;
+    [types.SET_SOURCE](state, value) {
+        state.source = value;
     },
-    [types.SET_CODE](state, code) {
-        state.code = code;
+    [types.SET_DESTINATION](state, value) {
+        state.destination = value;
     },
-    [types.SET_COLOR](state, color) {
-        state.color = color;
-    },
-    [types.SET_STATUSES](state, value) {
-        state.statuses = value;
+    [types.SET_CONDITION_SET_ID](state, value) {
+        state.conditionSetId = value;
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

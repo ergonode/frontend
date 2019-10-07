@@ -88,14 +88,16 @@ export default {
             user: { language: userLanguageCode },
         } = store.state.authentication;
 
-        await store.dispatch('gridDesigner/clearStorage');
-        await store.dispatch('list/clearStorage');
-        await store.dispatch('tree/clearStorage');
-        await store.dispatch('translations/clearStorage');
-        await store.dispatch('list/getElements', {
-            listType: 'categories',
-            languageCode: userLanguageCode,
-        });
+        await Promise.all([
+            store.dispatch('gridDesigner/clearStorage'),
+            store.dispatch('list/clearStorage'),
+            store.dispatch('tree/clearStorage'),
+            store.dispatch('translations/clearStorage'),
+            store.dispatch('list/getElements', {
+                listType: 'categories',
+                languageCode: userLanguageCode,
+            }),
+        ]);
         await store.dispatch('tree/getTreeById', {
             treeId: params.id,
         });
