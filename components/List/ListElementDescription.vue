@@ -2,9 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template functional>
-    <div :class="['element-description', { 'element-description--short': props.short }]">
-        <slot />
+<template>
+    <div class="element-description">
+        <div class="description__left">
+            <slot name="elementsOnLeft" />
+        </div>
+        <div class="description__right">
+            <slot name="elementsOnRight" />
+        </div>
     </div>
 </template>
 
@@ -12,26 +17,23 @@
 
 export default {
     name: 'ListElementDescription',
-    props: {
-        short: {
-            type: Boolean,
-            default: false,
-        },
-    },
 };
 </script>
 
 <style lang="scss" scoped>
     .element-description {
         display: flex;
-        flex: 1 1 auto;
-        flex-direction: column;
+        flex: 1;
+        flex-flow: row nowrap;
         justify-content: center;
-        align-items: flex-start;
+        align-items: center;
         overflow: hidden;
 
-        &--short {
-            flex: 0 0 70%;
+        .description__left {
+            display: flex;
+            flex: 1;
+            flex-wrap: wrap;
+            overflow: hidden;
         }
     }
 </style>

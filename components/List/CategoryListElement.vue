@@ -8,10 +8,14 @@
         :is-draggable="$hasAccess('CATEGORY_TREE_UPDATE')"
         :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
         @drag="onDrag">
-        <ListElementDescription :short="true">
-            <ListElementSubtitle :subtitle="item.code" />
-            <ListElementTitle :title="item.name || 'No translation'" />
-            <ListElementHint :title="productsCount" />
+        <ListElementDescription>
+            <template #elementsOnLeft>
+                <ListElementSubtitle :subtitle="item.code" />
+                <ListElementTitle :title="item.name || 'No translation'" />
+            </template>
+            <template #elementsOnRight>
+                <ListElementHint :title="productsCount" />
+            </template>
         </ListElementDescription>
     </ListDraggableElement>
 </template>

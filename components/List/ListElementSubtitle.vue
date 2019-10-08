@@ -26,6 +26,7 @@ export default {
 
 <style lang="scss" scoped>
     .element-subtitle {
+        flex: 0 1 auto;
         width: 100%;
         text-overflow: ellipsis;
         overflow: hidden;
