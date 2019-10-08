@@ -8,14 +8,12 @@
             large
             @click.native="expandGroup">
             <ListElementDescription>
-                <template #elementsOnLeft>
-                    <span
-                        class="group__title"
-                        v-text="title" />
-                    <span
-                        class="group__subtitle"
-                        v-text="subtitle" />
-                </template>
+                <span
+                    class="group__title"
+                    v-text="title" />
+                <span
+                    class="group__subtitle"
+                    v-text="subtitle" />
             </ListElementDescription>
             <ListElementAction>
                 <IconArrowSingle :state="iconState" />
@@ -86,7 +84,6 @@ export default {
         }
 
         &__title, &__subtitle {
-            flex: 0 1 auto;
             width: 100%;
             text-overflow: ellipsis;
             overflow: hidden;

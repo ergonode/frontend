@@ -10,10 +10,8 @@
         @drag="onDrag">
         <ListElementIcon :icon-path="typeIcon" />
         <ListElementDescription>
-            <template #elementsOnLeft>
-                <ListElementSubtitle :subtitle="item.code" />
-                <ListElementTitle :title="item.name || 'No translation'" />
-            </template>
+            <ListElementSubtitle :subtitle="item.code" />
+            <ListElementTitle :title="item.name || 'No translation'" />
         </ListElementDescription>
     </ListDraggableElement>
 </template>

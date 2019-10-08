@@ -4,12 +4,7 @@
  */
 <template>
     <div class="element-description">
-        <div class="description__left">
-            <slot name="elementsOnLeft" />
-        </div>
-        <div class="description__right">
-            <slot name="elementsOnRight" />
-        </div>
+        <slot />
     </div>
 </template>
 
@@ -24,16 +19,9 @@ export default {
     .element-description {
         display: flex;
         flex: 1;
-        flex-flow: row nowrap;
+        flex-flow: row wrap;
         justify-content: center;
         align-items: center;
         overflow: hidden;
-
-        .description__left {
-            display: flex;
-            flex: 1;
-            flex-wrap: wrap;
-            overflow: hidden;
-        }
     }
 </style>
