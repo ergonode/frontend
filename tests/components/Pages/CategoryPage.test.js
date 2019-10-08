@@ -22,6 +22,7 @@ describe('Pages/CategoryPage', () => {
                 title: '',
             },
             stubs: {
+                NuxtLink: true,
                 Button: true,
                 HorizontalTabBar: true,
             },
