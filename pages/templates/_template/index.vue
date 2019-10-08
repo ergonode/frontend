@@ -44,7 +44,7 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Template created' });
             this.$router.push({
-                name: 'templates-edit-id',
+                name: 'template-edit-id',
                 params: {
                     id,
                 },

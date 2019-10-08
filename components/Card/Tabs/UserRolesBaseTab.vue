@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import UserRolesBaseCard from '~/components/Card/UserRolesBaseCard';
+import UserRolesBaseCard from '~/components/Card/Cards/UserRolesBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
 import Footer from '~/components/ReusableFooter/Footer';
 

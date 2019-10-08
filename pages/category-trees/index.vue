@@ -38,7 +38,7 @@ export default {
     },
     methods: {
         addNewTree() {
-            this.$router.push('/category-trees/new');
+            this.$router.push('/category-trees/tree/new');
         },
     },
 };

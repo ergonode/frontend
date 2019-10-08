@@ -19,7 +19,7 @@ export default {
     name: 'CategoryTranslationsTab',
     components: {
         TranslationsTab: () => import('~/components/Card/Tabs/TranslationsTab'),
-        CategoryTranslationCard: () => import('~/components/Card/CategoryTranslationCard'),
+        CategoryTranslationCard: () => import('~/components/Card/Cards/CategoryTranslationCard'),
     },
 
     props: {

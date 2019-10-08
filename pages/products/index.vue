@@ -41,7 +41,7 @@ export default {
             setConfigurationForList: 'setConfigurationForList',
         }),
         addNewProduct() {
-            this.$router.push('/products/new');
+            this.$router.push('/products/product/new');
         },
     },
     async fetch(parameters) {

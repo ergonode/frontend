@@ -71,7 +71,7 @@ export default {
         actionPaths() {
             return {
                 getData: `${this.userLanguageCode}/trees`,
-                routerEdit: 'category-trees-edit-id',
+                routerEdit: 'category-tree-edit-id',
             };
         },
         visibleRowsInPageCount: {

@@ -42,8 +42,8 @@ export const pages = [
         },
     },
     {
-        name: 'categories-new',
-        path: '/categories/new',
+        name: 'category-new',
+        path: '/categories/category/new',
         component: Pages.CategoryNew,
         children: [
             {
@@ -60,8 +60,8 @@ export const pages = [
         },
     },
     {
-        name: 'categories-edit-id',
-        path: '/categories/edit/:id/:tab?',
+        name: 'category-edit-id',
+        path: '/categories/category/edit/:id/:tab?',
         component: Pages.CategoryEdit,
         children: [
             {
@@ -92,8 +92,8 @@ export const pages = [
         },
     },
     {
-        name: 'category-trees-new',
-        path: '/category-trees/new',
+        name: 'category-tree-new',
+        path: '/category-trees/tree/new',
         component: Pages.CategoryTreesNew,
         children: [
             {
@@ -114,8 +114,8 @@ export const pages = [
         },
     },
     {
-        name: 'category-trees-edit-id',
-        path: '/category-trees/edit/:id/:tab?',
+        name: 'category-tree-edit-id',
+        path: '/category-trees/tree/edit/:id/:tab?',
         component: Pages.CategoryTreesEdit,
         children: [
             {
@@ -150,8 +150,8 @@ export const pages = [
         },
     },
     {
-        name: 'products-new',
-        path: '/products/new',
+        name: 'product-new',
+        path: '/products/product/new',
         component: Pages.ProductNew,
         children: [
             {
@@ -168,8 +168,8 @@ export const pages = [
         },
     },
     {
-        name: 'products-edit-id',
-        path: '/products/edit/:id?',
+        name: 'product-edit-id',
+        path: '/products/product/edit/:id?',
         component: Pages.ProductEdit,
         children: [
             {
@@ -194,8 +194,8 @@ export const pages = [
         },
     },
     {
-        name: 'templates-new',
-        path: '/templates/new',
+        name: 'template-new',
+        path: '/templates/template/new',
         component: Pages.TemplateNew,
         children: [
             {
@@ -212,8 +212,8 @@ export const pages = [
         },
     },
     {
-        name: 'templates-edit-id',
-        path: '/templates/edit/:id?',
+        name: 'template-edit-id',
+        path: '/templates/template/edit/:id?',
         component: Pages.TemplateEdit,
         children: [
             {
@@ -247,8 +247,8 @@ export const pages = [
         ],
     },
     {
-        name: 'attributes-new',
-        path: '/attributes/new',
+        name: 'attribute-new',
+        path: '/attributes/attribute/new',
         component: Pages.AttributeNew,
         children: [
             {
@@ -265,8 +265,8 @@ export const pages = [
         },
     },
     {
-        name: 'attributes-edit-id',
-        path: '/attributes/edit/:id?',
+        name: 'attribute-edit-id',
+        path: '/attributes/attribute/edit/:id?',
         component: Pages.AttributeEdit,
         children: [
             {

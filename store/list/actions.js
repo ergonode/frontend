@@ -90,6 +90,8 @@ export default {
         const path = `${languageCode}/${listType}`;
         const params = {
             filter: `code=${state.filter}`,
+            field: 'code',
+            order: 'ASC',
         };
 
         return this.app.$axios.$get(path, { params }).then(({ collection: elements }) => {

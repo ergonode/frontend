@@ -33,7 +33,7 @@ import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import BaseCard from '~/components/Card/BaseCard';
 
 export default {
-    name: 'UserBaseCard',
+    name: 'UserRolesBaseCard',
     components: {
         BaseCard,
         TextField: () => import('~/components/Inputs/TextField'),

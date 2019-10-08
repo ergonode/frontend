@@ -104,7 +104,7 @@ export default {
         actionPaths() {
             return {
                 getData: `${this.userLanguageCode}/products`,
-                routerEdit: 'products-edit-id',
+                routerEdit: 'product-edit-id',
             };
         },
         visibleRowsInPageCount: {

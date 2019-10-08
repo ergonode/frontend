@@ -55,7 +55,7 @@ export default {
     methods: {
         onEditTemplate() {
             this.$router.push({
-                name: 'templates-edit-id',
+                name: 'template-edit-id',
                 params: {
                     id: this.index,
                 },

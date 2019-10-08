@@ -19,7 +19,7 @@ export default {
     name: 'AttributeTranslationsTab',
     components: {
         TranslationsTab: () => import('~/components/Card/Tabs/TranslationsTab'),
-        AttributeTranslationCard: () => import('~/components/Card/AttributeTranslationCard'),
+        AttributeTranslationCard: () => import('~/components/Card/Cards/AttributeTranslationCard'),
     },
     props: {
         updateButton: {

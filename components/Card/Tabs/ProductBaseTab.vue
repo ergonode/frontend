@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ProductBaseCard from '~/components/Card/ProductBaseCard';
+import ProductBaseCard from '~/components/Card/Cards/ProductBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
 import Footer from '~/components/ReusableFooter/Footer';
 

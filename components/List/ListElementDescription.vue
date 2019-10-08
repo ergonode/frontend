@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template functional>
-    <div class="element-description">
+    <div :class="['element-description', { 'element-description--short': props.short }]">
         <slot />
     </div>
 </template>
@@ -12,6 +12,12 @@
 
 export default {
     name: 'ListElementDescription',
+    props: {
+        short: {
+            type: Boolean,
+            default: false,
+        },
+    },
 };
 </script>
 
@@ -23,5 +29,9 @@ export default {
         justify-content: center;
         align-items: flex-start;
         overflow: hidden;
+
+        &--short {
+            flex: 0 0 70%;
+        }
     }
 </style>

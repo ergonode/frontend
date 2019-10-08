@@ -4,7 +4,7 @@
  */
 export default function ({ route, redirect }) {
     const { name } = route;
-    if (name === 'products-new' || name === 'products-edit-id') {
+    if (name === 'product-new' || name === 'product-edit-id') {
         return redirect(`${route.path}/general`);
     }
 

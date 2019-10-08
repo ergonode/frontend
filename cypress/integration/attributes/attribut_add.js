@@ -21,9 +21,9 @@ context('Attribute add', () => {
             cy.url().should('include', '/attributes/grid');
         });
 
-        it('Visit /attributes/new', () => {
+        it('Visit /attributes/attribute/new', () => {
             cy.get('button').contains('CREATE ATTRIBUTE').click({ force: true });
-            cy.url().should('include', '/attributes/new/general');
+            cy.url().should('include', '/attributes/attribute/new/general');
         });
     });
 
@@ -36,7 +36,7 @@ context('Attribute add', () => {
           cy.wait(500);
           cy.get('button').contains('CREATE ATTRIBUTE').click({ force: true });
           cy.wait('@attrRoute').its('status').should('eq', 400);
-          cy.url().should('include', '/attributes/new');
+          cy.url().should('include', '/attributes/attribute/new');
       });
     });
 
@@ -77,7 +77,7 @@ context('Attribute add', () => {
             cy.route('POST', '/api/v1/EN/attributes').as('attrRoute');
             cy.get('button').contains('CREATE ATTRIBUTE').click({ force: true });
             cy.wait('@attrRoute').its('status').should('eq', 201);
-            cy.url().should('include', '/attributes/edit');
+            cy.url().should('include', '/attributes/attribute/edit');
         });
         it('Check added attribute', () => {
             cy.get('input[aria-label="Code"]')

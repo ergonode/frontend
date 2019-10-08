@@ -15,7 +15,7 @@
 
 <script>
 import languageSettingsModule from '~/reusableStore/languageSettings/state';
-import LanguageSettingsCard from '~/components/Card/LanguageSettingsCard';
+import LanguageSettingsCard from '~/components/Card/Cards/LanguageSettingsCard';
 import BaseTab from '~/components/Card/BaseTab';
 
 export default {

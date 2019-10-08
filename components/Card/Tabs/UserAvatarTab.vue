@@ -16,7 +16,7 @@
 
 <script>
 import BaseTab from '~/components/Card/BaseTab';
-import UserAvatarCard from '~/components/Card/UserAvatarCard';
+import UserAvatarCard from '~/components/Card/Cards/UserAvatarCard';
 import Footer from '~/components/ReusableFooter/Footer';
 
 export default {
