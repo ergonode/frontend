@@ -26,6 +26,7 @@
                 :value="translations.placeholder[languageCode]"
                 solid
                 label="Placeholder"
+                regular
                 resize="vertical"
                 :style="{height: '150px'}"
                 :error-messages="errorPlaceholderMessage"
@@ -35,6 +36,7 @@
                 :value="translations.hint[languageCode]"
                 solid
                 label="Tooltip for writers"
+                regular
                 resize="none"
                 :style="{height: '150px'}"
                 :error-messages="errorHintMessage"

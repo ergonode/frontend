@@ -20,6 +20,7 @@ describe('Pages/AttributePage', () => {
                 title: '',
             },
             stubs: {
+                NuxtLink: true,
                 HorizontalTabBar: true,
             },
         });

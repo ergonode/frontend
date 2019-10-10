@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import TemplateDesignerBaseCard from '~/components/Card/TemplateDesignerBaseCard';
+import TemplateDesignerBaseCard from '~/components/Card/Cards/TemplateDesignerBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
 import Footer from '~/components/ReusableFooter/Footer';
 

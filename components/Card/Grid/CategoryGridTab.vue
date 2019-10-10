@@ -71,7 +71,7 @@ export default {
         actionPaths() {
             return {
                 getData: `${this.userLanguageCode}/categories`,
-                routerEdit: 'categories-edit-id',
+                routerEdit: 'category-edit-id',
             };
         },
         visibleRowsInPageCount: {

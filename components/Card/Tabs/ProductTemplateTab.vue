@@ -25,8 +25,8 @@ import Footer from '~/components/ReusableFooter/Footer';
 export default {
     name: 'ProductTemplateTab',
     components: {
-        ProductTemplateCard: () => import('~/components/Card/ProductTemplateCard'),
-        ProductTemplateHeaderCard: () => import('~/components/Card/ProductTemplateHeaderCard'),
+        ProductTemplateCard: () => import('~/components/Card/Cards/ProductTemplateCard'),
+        ProductTemplateHeaderCard: () => import('~/components/Card/Cards/ProductTemplateHeaderCard'),
         Footer,
         BaseTab,
     },

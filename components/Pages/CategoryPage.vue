@@ -22,8 +22,8 @@ export default {
     name: 'CategoryPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
-        let generalOptTabPath = '/categories/new/general';
-        let privilegesTabPath = '/categories/new/translations';
+        let generalOptTabPath = '/categories/category/new/general';
+        let privilegesTabPath = '/categories/category/new/translations';
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -38,21 +38,21 @@ export default {
         this.isUserAllowedToUpdateCategory = this.$hasAccess('CATEGORY_UPDATE');
 
         if (this.isEdit) {
-            generalOptTabPath = `/categories/edit/${this.$route.params.id}/general`;
-            privilegesTabPath = `/categories/edit/${this.$route.params.id}/translations`;
+            generalOptTabPath = `/categories/category/edit/${this.$route.params.id}/general`;
+            privilegesTabPath = `/categories/category/edit/${this.$route.params.id}/translations`;
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
-            // TODO: uncomment when we create removal options
-            // this.buttons = [
-            //     {
-            //         title: 'REMOVE CATEGORY',
-            //         color: 'transparent',
-            //         action: this.onRemove,
-            //         theme: 'dark',
-            //         icon: 'sprite-system system-trash--deactive',
-            //     },
-            // ];
+            this.buttons = [
+                {
+                    title: 'REMOVE CATEGORY',
+                    color: 'transparent',
+                    action: this.onRemove,
+                    theme: 'dark',
+                    icon: 'remove',
+                    disabled: !this.$hasAccess('CATEGORY_DELETE'),
+                },
+            ];
         }
 
         this.tabs = [

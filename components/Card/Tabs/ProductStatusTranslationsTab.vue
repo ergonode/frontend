@@ -19,7 +19,7 @@ export default {
     name: 'ProductStatusTranslationsTab',
     components: {
         TranslationsTab: () => import('~/components/Card/Tabs/TranslationsTab'),
-        ProductStatusTranslationCard: () => import('~/components/Card/ProductStatusTranslationCard'),
+        ProductStatusTranslationCard: () => import('~/components/Card/Cards/ProductStatusTranslationCard'),
     },
     props: {
         updateButton: {

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import CategoryTreeBaseCard from '~/components/Card/CategoryTreeBaseCard';
+import CategoryTreeBaseCard from '~/components/Card/Cards/CategoryTreeBaseCard';
 import BaseTab from '~/components/Card/BaseTab';
 import Footer from '~/components/ReusableFooter/Footer';
 

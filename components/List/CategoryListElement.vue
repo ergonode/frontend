@@ -11,8 +11,10 @@
         <ListElementDescription>
             <ListElementSubtitle :subtitle="item.code" />
             <ListElementTitle :title="item.name || 'No translation'" />
-            <ListElementHint :title="productsCount" />
         </ListElementDescription>
+        <ListElementAction>
+            <ListElementHint :title="productsCount" />
+        </ListElementAction>
     </ListDraggableElement>
 </template>
 
@@ -27,6 +29,7 @@ export default {
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
         ListElementSubtitle: () => import('~/components/List/ListElementSubtitle'),
         ListElementHint: () => import('~/components/List/ListElementHint'),
+        ListElementAction: () => import('~/components/List/ListElementAction'),
     },
     props: {
         item: {

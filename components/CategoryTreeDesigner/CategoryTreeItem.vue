@@ -77,17 +77,19 @@ export default {
         cursor: move;
         overflow: hidden;
 
-        &__icon, &__title {
-            flex: 0 0 auto;
-        }
-
         &__icon {
             margin-right: 8px;
+            flex: 0 0 auto;
             cursor: pointer;
         }
 
         &__title {
+            flex: 1;
             margin-right: 8px;
+            width: 100%;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
         &__categories-length {

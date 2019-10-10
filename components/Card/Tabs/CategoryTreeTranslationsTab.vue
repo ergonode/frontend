@@ -19,7 +19,7 @@ export default {
     name: 'CategoryTreeTranslationsTab',
     components: {
         TranslationsTab: () => import('~/components/Card/Tabs/TranslationsTab'),
-        CategoryTreeTranslationCard: () => import('~/components/Card/CategoryTreeTranslationCard'),
+        CategoryTreeTranslationCard: () => import('~/components/Card/Cards/CategoryTreeTranslationCard'),
     },
     props: {
         updateButton: {

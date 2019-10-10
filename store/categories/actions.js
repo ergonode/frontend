@@ -4,6 +4,8 @@
  */
 import { types } from './mutations';
 
+const onDefaultError = () => {};
+
 export default {
     getCategoryById(
         { commit, rootState },
@@ -51,6 +53,11 @@ export default {
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$put(`${userLanguageCode}/categories/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+    },
+    removeCategory({ state, rootState }, { onSuccess }) {
+        const { id } = state;
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$delete(`${userLanguageCode}/categories/${id}`).then(() => onSuccess()).catch(onDefaultError);
     },
     setCategoryCode({ commit }, code) {
         commit(types.SET_CODE, code);

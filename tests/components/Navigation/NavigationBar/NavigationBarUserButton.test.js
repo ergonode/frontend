@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount, createLocalVue } from '@vue/test-utils';
+import { mount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
 import NavigationBarUserButton from '~/components/Navigation/NavigationBar/NavigationBarUserButton';
 
@@ -26,10 +26,12 @@ describe('Navigation/NavigationBar/NavigationBarUserButton', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(NavigationBarUserButton, {
+        wrapper = mount(NavigationBarUserButton, {
             localVue,
             mocks,
-            stubs: ['NuxtLink'],
+            stubs: {
+                NuxtLink: true,
+            },
         });
     });
 

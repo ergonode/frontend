@@ -25,6 +25,7 @@
                 :value="translations.description[languageCode]"
                 solid
                 label="Status description"
+                regular
                 resize="none"
                 :style="{height: '150px'}"
                 :error-messages="errorDescriptionMessage"

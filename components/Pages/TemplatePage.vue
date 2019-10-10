@@ -23,7 +23,7 @@ export default {
     name: 'TemplatePage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
-        let generalOptTabPath = '/templates/new/general';
+        let generalOptTabPath = '/templates/template/new/general';
         let templatePath = '';
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
@@ -38,8 +38,8 @@ export default {
         ];
         this.isUserAllowedToUpdateTemplate = this.$hasAccess('TEMPLATE_DESIGNER_UPDATE');
         if (this.isEdit) {
-            generalOptTabPath = `/templates/edit/${this.$route.params.id}/general`;
-            templatePath = `/templates/edit/${this.$route.params.id}/template`;
+            generalOptTabPath = `/templates/template/edit/${this.$route.params.id}/general`;
+            templatePath = `/templates/template/edit/${this.$route.params.id}/template`;
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 

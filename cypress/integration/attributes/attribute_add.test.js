@@ -19,9 +19,9 @@ context('Add Attribute', () => {
             cy.url().should('include', '/attributes/grid');
         });
 
-        it('Visit /attributes/new/general', () => {
+        it('Visit /attributes/attribute/new/general', () => {
             cy.get('button').contains('CREATE ATTRIBUTE').click();
-            cy.url().should('include', '/attributes/new/general');
+            cy.url().should('include', '/attributes/attribute/new/general');
         });
     });
 
@@ -34,7 +34,7 @@ context('Add Attribute', () => {
       it('Create Attribute', () => {
           cy.get('button').contains('CREATE ATTRIBUTE').click();
           cy.wait('@addAttribute').its('status').should('eq', 400);
-          cy.url().should('include', '/attributes/new');
+          cy.url().should('include', '/attributes/attribute/new');
       });
     });
 
@@ -69,7 +69,7 @@ context('Add Attribute', () => {
             cy.route('POST', '/api/v1/EN/attributes').as('addAttribute');
             cy.get('button').contains('CREATE ATTRIBUTE').click();
             cy.wait('@addAttribute').its('status').should('eq', 201);
-            cy.url().should('include', '/attributes/edit');
+            cy.url().should('include', '/attributes/attribute/edit');
         });
     });
 });

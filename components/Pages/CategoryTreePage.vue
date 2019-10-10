@@ -31,9 +31,9 @@ export default {
         Blur: () => import('~/components/Blur/Blur'),
     },
     created() {
-        let generalOptTabPath = '/category-trees/new/general';
-        let translationTabPath = '/category-trees/new/translations';
-        let designerPath = '/category-trees/new/designer';
+        let generalOptTabPath = '/category-trees/tree/new/general';
+        let translationTabPath = '/category-trees/tree/new/translations';
+        let designerPath = '/category-trees/tree/new/designer';
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -47,9 +47,9 @@ export default {
         ];
         this.isUserAllowedToUpdateCategoryTree = this.$hasAccess('CATEGORY_TREE_UPDATE');
         if (this.isEdit) {
-            generalOptTabPath = `/category-trees/edit/${this.$route.params.id}/general`;
-            translationTabPath = `/category-trees/edit/${this.$route.params.id}/translations`;
-            designerPath = `/category-trees/edit/${this.$route.params.id}/designer`;
+            generalOptTabPath = `/category-trees/tree/edit/${this.$route.params.id}/general`;
+            translationTabPath = `/category-trees/tree/edit/${this.$route.params.id}/translations`;
+            designerPath = `/category-trees/tree/edit/${this.$route.params.id}/designer`;
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 

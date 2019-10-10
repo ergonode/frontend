@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <CategoryPage
-        :title="title"
+    <CategoryTreePage
+        title="New tree"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>
@@ -13,39 +13,40 @@
 import { mapState, mapActions } from 'vuex';
 
 export default {
-    name: 'NewCategory',
-    middleware: ['tab/redirectToCategoryGeneral'],
+    name: 'NewCategoryTree',
+    middleware: ['tab/redirectToCategoryTreesGeneral'],
     components: {
-        CategoryPage: () => import('~/components/Pages/CategoryPage'),
+        CategoryTreePage: () => import('~/components/Pages/CategoryTreePage'),
     },
-    data: () => ({
-        title: 'New Category',
-    }),
     computed: {
-        ...mapState('categories', {
+        ...mapState('tree', {
             code: (state) => state.code,
         }),
     },
     created() {
         this.clearStorage();
+        this.clearDesignerStorage();
     },
     methods: {
-        ...mapActions('categories', [
-            'createCategory',
+        ...mapActions('tree', [
+            'createTree',
             'clearStorage',
         ]),
+        ...mapActions('gridDesigner', {
+            clearDesignerStorage: 'clearStorage',
+        }),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
         ]),
         onDismiss() {
-            this.$router.push('/categories');
+            this.$router.push('/category-trees');
         },
-        onCreateCategorySuccess(id) {
+        onCreateCategoryTreeSuccess(id) {
             this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Category created' });
+            this.$addAlert({ type: 'success', message: 'Category tree created' });
             this.$router.push({
-                name: 'categories-edit-id',
+                name: 'category-tree-edit-id',
                 params: {
                     id,
                 },
@@ -53,12 +54,12 @@ export default {
         },
         onCreate() {
             this.removeValidationErrors();
-            const category = {
+            const tree = {
                 code: this.code,
             };
-            this.createCategory({
-                data: category,
-                onSuccess: this.onCreateCategorySuccess,
+            this.createTree({
+                data: tree,
+                onSuccess: this.onCreateCategoryTreeSuccess,
                 onError: this.onError,
             });
         },

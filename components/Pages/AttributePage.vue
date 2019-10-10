@@ -32,27 +32,26 @@ export default {
         this.buttons = [];
 
         this.isUserAllowedToUpdateAttribute = this.$hasAccess('ATTRIBUTE_UPDATE');
-        let generalOptTabPath = '/attributes/new/general';
-        let translationsTabPath = '/attributes/new/translation';
+        let generalOptTabPath = '/attributes/attribute/new/general';
+        let translationsTabPath = '/attributes/attribute/new/translation';
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
         if (this.isEdit) {
-            generalOptTabPath = `/attributes/edit/${this.$route.params.id}/general`;
-            translationsTabPath = `/attributes/edit/${this.$route.params.id}/translations`;
+            generalOptTabPath = `/attributes/attribute/edit/${this.$route.params.id}/general`;
+            translationsTabPath = `/attributes/attribute/edit/${this.$route.params.id}/translations`;
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
             this.buttons = [
-                // uncomment when we create removal options
-                // {
-                //     title: 'REMOVE ATTRIBUTE',
-                //     color: 'transparent',
-                //     action: this.onRemove,
-                //     theme: 'dark',
-                //     icon: 'remove',
-                //     disabled: !this.$hasAccess('ATTRIBUTE_DELETE'),
-                // },
+                {
+                    title: 'REMOVE ATTRIBUTE',
+                    color: 'transparent',
+                    action: this.onRemove,
+                    theme: 'dark',
+                    icon: 'remove',
+                    disabled: !this.$hasAccess('ATTRIBUTE_DELETE'),
+                },
             ];
         }
 

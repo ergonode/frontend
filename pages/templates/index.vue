@@ -64,7 +64,7 @@ export default {
     },
     methods: {
         onCreate() {
-            this.$router.push('templates/new');
+            this.$router.push('templates/template/new');
         },
     },
     async fetch({ store }) {

@@ -7,6 +7,7 @@
         :title="code"
         is-edit
         @dismiss="onDismiss"
+        @remove="onRemove"
         @save="onSave" />
 </template>
 
@@ -35,6 +36,7 @@ export default {
     methods: {
         ...mapActions('categories', [
             'updateCategory',
+            'removeCategory',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -43,10 +45,13 @@ export default {
         onDismiss() {
             this.$router.push('/categories');
         },
-        onUpdateCategorySuccess() {
-            this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Category updated' });
-            this.$router.push('/categories');
+        onRemove() {
+            const isConfirm = confirm('Are you sure you want to delete this category?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirm) {
+                this.removeCategory({
+                    onSuccess: this.onRemoveSuccess,
+                });
+            }
         },
         onSave() {
             this.removeValidationErrors();
@@ -60,6 +65,15 @@ export default {
                 onSuccess: this.onUpdateCategorySuccess,
                 onError: this.onError,
             });
+        },
+        onUpdateCategorySuccess() {
+            this.removeValidationErrors();
+            this.$addAlert({ type: 'success', message: 'Category updated' });
+            this.$router.push('/categories');
+        },
+        onRemoveSuccess() {
+            this.$addAlert({ type: 'success', message: 'Category removed' });
+            this.$router.push('/categories/grid');
         },
     },
     async fetch({

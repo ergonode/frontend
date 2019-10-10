@@ -44,7 +44,7 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Product created' });
             this.$router.push({
-                name: 'products-edit-id',
+                name: 'product-edit-id',
                 params: {
                     id,
                 },

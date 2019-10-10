@@ -23,6 +23,7 @@ describe('Pages/UserPage', () => {
                 title: '',
             },
             stubs: {
+                NuxtLink: true,
                 Button: true,
                 HorizontalTabBar: true,
             },

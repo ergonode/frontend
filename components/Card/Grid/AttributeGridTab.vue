@@ -71,7 +71,7 @@ export default {
         actionPaths() {
             return {
                 getData: `${this.userLanguageCode}/attributes`,
-                routerEdit: 'attributes-edit-id',
+                routerEdit: 'attribute-edit-id',
             };
         },
         visibleRowsInPageCount: {

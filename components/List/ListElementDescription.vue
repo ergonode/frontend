@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template functional>
+<template>
     <div class="element-description">
         <slot />
     </div>
@@ -18,10 +18,10 @@ export default {
 <style lang="scss" scoped>
     .element-description {
         display: flex;
-        flex: 1 1 auto;
-        flex-direction: column;
+        flex: 1;
+        flex-flow: row wrap;
         justify-content: center;
-        align-items: flex-start;
+        align-items: center;
         overflow: hidden;
     }
 </style>

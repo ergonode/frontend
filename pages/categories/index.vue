@@ -37,7 +37,7 @@ export default {
     },
     methods: {
         addNewCategory() {
-            this.$router.push('/categories/new');
+            this.$router.push('/categories/category/new');
         },
     },
 };
