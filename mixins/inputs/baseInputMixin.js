@@ -53,7 +53,6 @@ export default {
             return [
                 'input__information-label',
                 'typo-hint',
-                'txt-fixed',
                 colorClass,
             ];
         },
@@ -96,7 +95,7 @@ export default {
     },
     mounted() {
         if (this.autofocus) {
-            this.$refs.input.focus();
+            this.onFocus();
         }
 
         this.isMounted = true;
@@ -104,8 +103,10 @@ export default {
         this.associatedLabel = `input-${this._uid}`;
     },
     methods: {
+        onValueChange(event) {
+            this.$emit('input', event.target.value);
+        },
         onFocus() {
-            console.log('focused');
             this.isFocused = true;
             this.hasMouseDown = false;
         },

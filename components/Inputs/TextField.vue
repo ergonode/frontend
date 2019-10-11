@@ -27,7 +27,7 @@
                 :max="maxRange"
                 :disabled="disabled"
                 :aria-label="label || 'no description'"
-                @input="emitValue"
+                @input="onValueChange"
                 @focus="onFocus"
                 @blur="onBlur">
             <slot name="append" />
@@ -128,11 +128,6 @@ export default {
             if (this.inputType === 'number') return this.input.max;
 
             return null;
-        },
-    },
-    methods: {
-        emitValue(event) {
-            this.$emit('input', event.target.value);
         },
     },
 };
