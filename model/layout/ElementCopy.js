@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export function addGridColumnCopyToDocumentBody(event, width, id) {
+export function addElementCopyToDocumentBody(event, width, id) {
     const clonedDOMElement = event.target.cloneNode(true);
     const clonedDOMElementStyle = `
         position: absolute;
@@ -11,14 +11,14 @@ export function addGridColumnCopyToDocumentBody(event, width, id) {
     `;
 
     clonedDOMElement.setAttribute('style', clonedDOMElementStyle);
-    clonedDOMElement.classList.add('cloned-column-element');
+    clonedDOMElement.classList.add('cloned-element');
     document.body.appendChild(clonedDOMElement);
     event.dataTransfer.setDragImage(clonedDOMElement, clonedDOMElement.offsetWidth / 2, 0);
     event.dataTransfer.setData('text/plain', id);
 }
 
-export function removeGridColumnCopyFromDocumentBody(event) {
-    const clonedDOMElement = document.documentElement.querySelector('.cloned-column-element');
+export function removeElementCopyFromDocumentBody(event) {
+    const clonedDOMElement = document.documentElement.querySelector('.cloned-element');
     document.body.removeChild(clonedDOMElement);
 
     if (navigator.userAgent.toLowerCase().indexOf('firefox') === -1) {

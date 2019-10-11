@@ -15,8 +15,10 @@ export const types = {
     SET_ROW_IDS: 'SET_ROW_IDS',
     SET_COUNT: 'SET_COUNT',
     SET_FILTERED: 'SET_FILTERED',
-    ADD_ADVANCED_FILTER: 'ADD_ADVANCED_FILTER',
     SET_ADVANCED_FILTER_AT_INDEX: 'SET_ADVANCED_FILTER_AT_INDEX',
+    SET_ADVANCED_FILTER_VALUE_AT_INDEX: 'SET_ADVANCED_FILTER_VALUE_AT_INDEX',
+    SET_ADVANCED_FILTERS: 'SET_ADVANCED_FILTERS',
+    INSERT_ADVANCED_FILTER_AT_INDEX: 'INSERT_ADVANCED_FILTER_AT_INDEX',
     REMOVE_ADVANCED_FILTER_AT_INDEX: 'REMOVE_ADVANCED_FILTER_AT_INDEX',
     REMOVE_ALL_ADVANCED_FILTERS: 'REMOVE_ALL_ADVANCED_FILTERS',
     CLEAR_ALL_ADVANCED_FILTERS: 'CLEAR_ALL_ADVANCED_FILTERS',
@@ -58,6 +60,9 @@ export default {
     [types.INSERT_PINNED_COLUMN_AT_INDEX](state, { index, column }) {
         state.pinnedColumns = insertValueAtIndex(state.pinnedColumns, column, index);
     },
+    [types.INSERT_ADVANCED_FILTER_AT_INDEX](state, { index, filter }) {
+        state.advancedFilters = insertValueAtIndex(state.advancedFilters, filter, index);
+    },
     [types.REMOVE_PINNED_COLUMN_AT_INDEX](state, index) {
         state.pinnedColumns.splice(index, 1);
     },
@@ -84,8 +89,12 @@ export default {
         state.advancedFilters[index] = filter;
         state.advancedFilters = [...state.advancedFilters];
     },
-    [types.ADD_ADVANCED_FILTER](state, filter) {
-        state.advancedFilters.push(filter);
+    [types.SET_ADVANCED_FILTER_VALUE_AT_INDEX](state, { index, value }) {
+        state.advancedFilters[index].value = value;
+        state.advancedFilters = [...state.advancedFilters];
+    },
+    [types.SET_ADVANCED_FILTERS](state, advancedFilters) {
+        state.advancedFilters = advancedFilters;
     },
     [types.REMOVE_ALL_ADVANCED_FILTERS](state) {
         state.advancedFilters = [];

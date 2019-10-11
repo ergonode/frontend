@@ -4,12 +4,11 @@
  */
 <template>
     <div
-        class="advanced-filters-ghost"
-        draggable
+        :class="['advanced-filters-ghost', {'advanced-filters-ghost--hovered': isMouseOverFilters}]"
         @drop="onDrop"
         @dragover="onDragOver">
         <div class="container">
-            <IconAddFilter fill-color="#fff" />
+            <IconAddFilter :fill-color="addIconFillColor" />
             <span class="advanced-filters-ghost__title">
                 ADD FILTER
             </span>
@@ -18,17 +17,74 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import {
+    white, graphite,
+} from '~/assets/scss/_variables/_colors.scss';
+
 export default {
     name: 'GridAdvancedFilterGhost',
     components: {
         IconAddFilter: () => import('~/components/Icon/Actions/IconAddFilter'),
     },
+    props: {
+        isMouseOverFilters: {
+            type: Boolean,
+            default: false,
+        },
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
+    },
+    computed: {
+        ...mapState('draggable', {
+            ghostFilterIndex: (state) => state.ghostFilterIndex,
+        }),
+        ...mapState('list', {
+            elements: (state) => state.elements,
+        }),
+        addIconFillColor() {
+            return this.isMouseOverFilters ? white : graphite;
+        },
+    },
     methods: {
-        onDrop(event) {
-            this.$emit('add', event.dataTransfer.getData('text/plain'));
+        async onDrop(event) {
+            this.$emit('mouseoverfilters', false);
+
+            const data = event.dataTransfer.getData('text/plain');
+
+            try {
+                const parsedFilter = JSON.parse(data);
+
+                this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
+                    index: this.ghostFilterIndex,
+                    filter: parsedFilter,
+                });
+            } catch (e) {
+                const [value, languageCode] = data.split(':');
+
+                await this.getAttributeByCode(languageCode, value);
+            }
         },
         onDragOver(event) {
+            if (!this.isMouseOverFilters) this.$emit('mouseoverfilters', true);
+
             event.preventDefault();
+        },
+        getAttributeByCode(languageCode, value) {
+            const index = this.ghostFilterIndex;
+            const params = {
+                limit: 999999,
+                offset: 0,
+                columns: `${value}:${languageCode}`,
+            };
+            return this.$axios.$get(`${languageCode}/products`, { params }).then(({ columns }) => {
+                this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
+                    index,
+                    filter: { ...columns[0], value: '' },
+                });
+            });
         },
     },
 };
@@ -36,21 +92,31 @@ export default {
 
 <style lang="scss" scoped>
     .advanced-filters-ghost {
+        $filter: &;
+
         display: flex;
         justify-content: center;
         align-items: center;
         height: 32px;
         padding: 0 12px;
-        background-color: $primary;
+        background-color: $lightGrey;
         box-shadow:
             inset 0 2px 2px 0 rgba(0, 0, 0, 0.14),
             inset 0 3px 1px 0 rgba(0, 0, 0, 0.12),
             inset 0 1px 5px 0 rgba(0, 0, 0, 0.2);
 
         &__title {
-            @include setFont(bold, small, regular, $white);
+            @include setFont(bold, small, regular, $darkGraphite);
 
             margin-left: 8px;
+        }
+
+        &--hovered {
+            background-color: $primary;
+
+            #{$filter}__title {
+                color: $white;
+            }
         }
     }
 

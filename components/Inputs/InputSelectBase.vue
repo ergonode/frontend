@@ -332,6 +332,7 @@ export default {
                         width: contentWidth,
                         height: contentHeight,
                     } = selectContentEl.getBoundingClientRect();
+
                     const isClickedInsideSelectContent = clientX > left
                         && clientX < contentLeft + contentWidth
                         && clientY > contentTop

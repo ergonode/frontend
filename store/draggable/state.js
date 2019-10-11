@@ -6,8 +6,7 @@ export default () => ({
     isListElementDragging: false,
     draggedElementOnGrid: null,
     draggedElement: null,
-    bounds: null,
     ghostIndex: -1,
+    ghostFilterIndex: -1,
     draggedElIndex: -1,
-    ghostElTransform: 0,
 });

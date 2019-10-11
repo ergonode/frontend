@@ -45,22 +45,29 @@
                 </template>
             </IconFabButton>
         </div>
-        <GridAdvancedFiltersContainer v-if="isExpanded">
-            <GridAdvancedFilterPlaceholder v-if="filters.length === 0" />
-            <template v-for="(filter, index) in filters">
-                <GridAdvancedFilter
-                    v-if="filter.id !== ghostFilterId"
-                    :key="index"
-                    :index="index"
-                    :filter="filter"
-                    @apply="onApply"
-                    @replace="onFiltersChangedPosition" />
-                <GridAdvancedFilterGhost
-                    v-else
-                    :key="index"
-                    @add="onFilterDropped" />
-            </template>
-        </GridAdvancedFiltersContainer>
+        <FadeTransition>
+            <GridAdvancedFiltersContainer
+                v-if="isExpanded"
+                @mouseoverfilters="onMouseOverFilters">
+                <GridAdvancedFilterPlaceholder v-if="filters.length === 0" />
+                <template v-for="(filter, index) in filters">
+                    <GridAdvancedFilter
+                        v-if="filter.id !== ghostFilterId"
+                        :key="index"
+                        :index="index"
+                        :filter="filter"
+                        :is-mouse-over-filters="isMouseOverFilters"
+                        :store-namespace="storeNamespace"
+                        @mouseoverfilters="onMouseOverFilters" />
+                    <GridAdvancedFilterGhost
+                        v-else
+                        :key="index"
+                        :is-mouse-over-filters="isMouseOverFilters"
+                        :store-namespace="storeNamespace"
+                        @mouseoverfilters="onMouseOverFilters" />
+                </template>
+            </GridAdvancedFiltersContainer>
+        </FadeTransition>
     </div>
 </template>
 
@@ -68,6 +75,8 @@
 import { mapState } from 'vuex';
 import { Arrow } from '~/model/icons/Arrow';
 import { GHOST_ID } from '~/defaults/grid/main';
+import GridAdvancedFilterPlaceholder from '~/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder';
+import GridAdvancedFilterGhost from '~/components/Grid/AdvancedFilters/GridAdvancedFilterGhost';
 
 export default {
     name: 'GridAdvancedFilters',
@@ -78,19 +87,25 @@ export default {
         IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),
         GridAdvancedFiltersContainer: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFiltersContainer'),
         GridAdvancedFilter: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilter'),
-        GridAdvancedFilterPlaceholder: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder'),
-        GridAdvancedFilterGhost: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilterGhost'),
+        FadeTransition: () => import('~/components/Transitions/FadeTransition'),
+        GridAdvancedFilterPlaceholder,
+        GridAdvancedFilterGhost,
     },
     props: {
         filters: {
             type: Array,
             default: () => [],
         },
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
     },
     data() {
         return {
             isExpanded: false,
             iconExpanderState: Arrow.DOWN,
+            isMouseOverFilters: false,
         };
     },
     computed: {
@@ -112,6 +127,9 @@ export default {
         },
     },
     methods: {
+        onMouseOverFilters(isOver) {
+            this.isMouseOverFilters = isOver;
+        },
         onExpandFilters(isExpanded) {
             this.isExpanded = isExpanded;
 
@@ -121,20 +139,11 @@ export default {
                 this.iconExpanderState = Arrow.DOWN;
             }
         },
-        onFilterDropped(filter) {
-            this.$emit('add', filter);
+        onRemoveAll() {
+            this.$store.dispatch(`${this.storeNamespace}/removeAllAdvancedFilters`);
         },
         onClearAll() {
-            this.$emit('clearAll');
-        },
-        onRemoveAll() {
-            this.$emit('removeAll');
-        },
-        onApply(value) {
-            this.$emit('apply', value);
-        },
-        onFiltersChangedPosition(payload) {
-            this.$emit('replace', payload);
+            this.$store.dispatch(`${this.storeNamespace}/clearAllAdvancedFilters`);
         },
     },
 };
@@ -145,7 +154,6 @@ export default {
         display: grid;
         grid-auto-flow: row;
         border: 1px solid $grey;
-        padding: 0 6px 0 16px;
         margin-bottom: 24px;
 
         &__title {
@@ -156,6 +164,7 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 6px 0 16px;
             box-sizing: border-box;
             background-color: $white;
         }
