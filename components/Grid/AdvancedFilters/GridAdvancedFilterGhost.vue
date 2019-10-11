@@ -50,7 +50,7 @@ export default {
     },
     methods: {
         async onDrop(event) {
-            this.$emit('mouseoverfilters', false);
+            this.$emit('mouseOverFilters', false);
 
             const data = event.dataTransfer.getData('text/plain');
 
@@ -68,7 +68,7 @@ export default {
             }
         },
         onDragOver(event) {
-            if (!this.isMouseOverFilters) this.$emit('mouseoverfilters', true);
+            if (!this.isMouseOverFilters) this.$emit('mouseOverFilters', true);
 
             event.preventDefault();
         },

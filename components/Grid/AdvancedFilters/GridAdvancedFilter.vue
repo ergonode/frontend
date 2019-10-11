@@ -181,7 +181,7 @@ export default {
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
         },
         onDragOver(event) {
-            if (!this.isMouseOverFilters) this.$emit('mouseoverfilters', true);
+            if (!this.isMouseOverFilters) this.$emit('mouseOverFilters', true);
 
             event.preventDefault();
 

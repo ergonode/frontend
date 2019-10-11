@@ -192,7 +192,7 @@ export default {
 
             this.resetDraggedElementCache();
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
-            this.$emit('mouseovergrid', false);
+            this.$emit('mouseOverGrid', false);
         },
         async onDrop(event) {
             event.preventDefault();
@@ -207,12 +207,12 @@ export default {
                     path: `${this.languageCode}/products`,
                 });
                 this.resetDraggedElementCache();
-                this.$emit('mouseovergrid', false);
+                this.$emit('mouseOverGrid', false);
             }
         },
         onDragOver(event) {
             if (!this.draggedElement) return false;
-            if (!this.isMouseOverGrid) this.$emit('mouseovergrid', true);
+            if (!this.isMouseOverGrid) this.$emit('mouseOverGrid', true);
 
             event.preventDefault();
 

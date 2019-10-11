@@ -28,7 +28,7 @@ export default {
             const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
 
             if (isOutOfBounds || isTrashBelowMouse) {
-                this.$emit('mouseoverfilters', false);
+                this.$emit('mouseOverFilters', false);
             }
 
             return true;

@@ -29,7 +29,7 @@
                 :rows-height="rowHeight"
                 :is-header-focused="isHeaderFocused"
                 :is-mouse-over-grid="isMouseOverGrid"
-                @mouseovergrid="onMouseOverGrid">
+                @mouseOverGrid="onMouseOverGrid">
                 <GridWrapperHeaderCell
                     :store-namespace="storeNamespace"
                     :column-index="colIndex"

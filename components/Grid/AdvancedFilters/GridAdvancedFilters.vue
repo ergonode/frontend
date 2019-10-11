@@ -48,7 +48,7 @@
         <FadeTransition>
             <GridAdvancedFiltersContainer
                 v-if="isExpanded"
-                @mouseoverfilters="onMouseOverFilters">
+                @mouseOverFilters="onMouseOverFilters">
                 <GridAdvancedFilterPlaceholder v-if="filters.length === 0" />
                 <template v-for="(filter, index) in filters">
                     <GridAdvancedFilter
@@ -58,13 +58,13 @@
                         :filter="filter"
                         :is-mouse-over-filters="isMouseOverFilters"
                         :store-namespace="storeNamespace"
-                        @mouseoverfilters="onMouseOverFilters" />
+                        @mouseOverFilters="onMouseOverFilters" />
                     <GridAdvancedFilterGhost
                         v-else
                         :key="index"
                         :is-mouse-over-filters="isMouseOverFilters"
                         :store-namespace="storeNamespace"
-                        @mouseoverfilters="onMouseOverFilters" />
+                        @mouseOverFilters="onMouseOverFilters" />
                 </template>
             </GridAdvancedFiltersContainer>
         </FadeTransition>
