@@ -189,9 +189,7 @@ export default {
             const { isOutOfBounds, isTrashBelowMouse } = this.getElementBelowMouse(event);
 
             if (isTrashBelowMouse) {
-                if (!this.isMultiDraggable) this.removeAllDisabledElementOnList();
-                this.removeHiddenItem(id);
-                this.$emit('afterRemove', id);
+                this.removeElementFromGrid(id);
             }
             if (isOutOfBounds && !isTrashBelowMouse) {
                 this.insertElementIntoGrid();
@@ -227,6 +225,11 @@ export default {
                 });
             }
             return true;
+        },
+        removeElementFromGrid(id) {
+            if (!this.isMultiDraggable) this.removeDisabledElementsOnList();
+            this.removeHiddenItem(id);
+            this.$emit('afterRemove', id);
         },
         insertElementIntoGrid() {
             const { id: draggedId, row: draggedRow, column: draggedColumn } = this.draggedElement;
@@ -289,7 +292,7 @@ export default {
             this.ghostElement.column = null;
             this.removeGridItem(id);
         },
-        removeAllDisabledElementOnList() {
+        removeDisabledElementsOnList() {
             const { id } = this.draggedElement;
 
             if (this.hiddenItems[id]) {
