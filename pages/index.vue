@@ -14,6 +14,7 @@
                     v-model="userAuthData.username"
                     left-alignment
                     regular
+                    autofocus
                     underline
                     label="E-mail address" />
                 <TextField

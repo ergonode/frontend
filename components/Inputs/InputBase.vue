@@ -14,6 +14,7 @@
             <slot name="prepend" />
             <label
                 v-if="label"
+                :for="associatedLabel"
                 :class="floatingLabelClasses"
                 :style="floatingLabelTransforms"
                 v-text="label" />
@@ -33,7 +34,7 @@ export default {
     name: 'InputBase',
     props: {
         value: {
-            type: [Array, String, Number],
+            type: [String, Number],
             default: null,
         },
         solid: {
@@ -97,6 +98,7 @@ export default {
         return {
             isFocused: false,
             isMounted: false,
+            associatedLabel: '',
         };
     },
     computed: {
@@ -190,6 +192,8 @@ export default {
         }
 
         this.isMounted = true;
+        // eslint-disable-next-line no-underscore-dangle
+        this.associatedLabel = `input-${this._uid}`;
     },
     destroyed() {
         window.removeEventListener('click', this.onClickOutside);
@@ -224,6 +228,7 @@ export default {
             }
         },
         onFocusInput(event) {
+            console.log(event.target);
             const isDoubleClicked = event.detail > 1;
 
             if (isDoubleClicked || this.isFocused) {
