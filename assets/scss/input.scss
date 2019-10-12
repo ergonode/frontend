@@ -13,7 +13,7 @@
     flex-direction: column;
     background-color: $white;
 
-    &__content {
+    &__activator {
         position: relative;
         display: flex;
         flex: 1;
@@ -85,7 +85,7 @@
     }
 
     &.solid {
-        #{$input}__content {
+        #{$input}__activator {
             border: 1px solid $grey;
             padding: 4px;
             box-sizing: border-box;
@@ -111,7 +111,7 @@
     }
 
     &.underline {
-        #{$input}__content::before {
+        #{$input}__activator::before {
             bottom: 0;
             width: 100%;
             border: solid $grey;
@@ -119,19 +119,19 @@
             @extend %defaultLine;
         }
 
-        #{$input}__content:hover::before {
+        #{$input}__activator:hover::before {
             border-color: $primary;
         }
     }
 
     &.left-alignment {
-        #{$input}__content {
+        #{$input}__activator {
             input, textarea {
                 text-align: left;
             }
         }
 
-        #{$input}__content::after {
+        #{$input}__activator::after {
             bottom: 0;
             right: 100%;
             height: 2px;
@@ -141,13 +141,13 @@
     }
 
     &.center-alignment {
-        #{$input}__content {
+        #{$input}__activator {
             input, textarea {
                 text-align: center;
             }
         }
 
-        #{$input}__content::after {
+        #{$input}__activator::after {
             bottom: -1px;
             width: 100%;
             border: solid $grey;
@@ -159,13 +159,13 @@
 
     &--focused {
         &.left-alignment {
-            #{$input}__content::after {
+            #{$input}__activator::after {
                 right: 0;
             }
         }
 
         &.center-alignment, &:not(&.solid) {
-            #{$input}__content::after {
+            #{$input}__activator::after {
                 transform: scaleX(1);
             }
         }
@@ -178,13 +178,13 @@
             }
 
             &.center-alignment {
-                #{$input}__content::after {
+                #{$input}__activator::after {
                     border-color: $primary;
                 }
             }
 
             &.solid {
-                #{$input}__content {
+                #{$input}__activator {
                     border: 2px solid $success;
                     padding: 3px;
                 }
@@ -193,7 +193,7 @@
 
         &.input--error {
             &.solid {
-                #{$input}__content {
+                #{$input}__activator {
                     border: 2px solid $error;
                     padding: 3px;
                 }
@@ -209,20 +209,20 @@
 
     &--error {
         &.left-alignment {
-            #{$input}__content::after {
+            #{$input}__activator::after {
                 background-color: $error;
             }
         }
 
         &.underline {
-            #{$input}__content:hover::before {
+            #{$input}__activator:hover::before {
                 border-color: $error;
             }
         }
 
         &:not(#{$input}--focused) {
             &.solid {
-                #{$input}__content {
+                #{$input}__activator {
                     border: 1px solid $error;
                 }
             }
@@ -232,7 +232,7 @@
     &--disabled {
         pointer-events: none;
 
-        #{$input}__content {
+        #{$input}__activator {
             background-color: $background;
 
             input, textarea {

@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['element', {'element--small': small, 'element--large': large}]">
+    <li :class="['element', {'element--small': small, 'element--large': large}]">
         <slot />
-    </div>
+    </li>
 </template>
 
 <script>

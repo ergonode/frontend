@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <InputSelectBase
-        :value="value"
+    <Select
+        :value="parsedDate"
         :solid="solid"
         :underline="underline"
         :left-alignment="leftAlignment"
@@ -16,25 +16,14 @@
         :required="required"
         :autofocus="autofocus"
         :disabled="disabled"
-        :dismissible="dismissible"
+        :dismissible="false"
         :small="small"
         :regular="regular"
-        :fixed-select-content="false"
-        multiselect
+        :fixed-content-width="false"
         clearable
-        @focus="onFocus"
-        @clear="emitValue">
+        @focus="onFocus">
         <template #prepend>
             <slot name="prepend" />
-        </template>
-        <template #input>
-            <input
-                :value="parsedDate"
-                :placeholder="placeholder"
-                :disabled="disabled"
-                :aria-label="label || 'no description'"
-                type="text"
-                readonly>
         </template>
         <template #append>
             <slot name="append" />
@@ -43,20 +32,20 @@
             <slot name="selectContent">
                 <DatePickerContent
                     :value="value"
-                    @input="emitValue" />
+                    @input="onValueChange" />
             </slot>
         </template>
-    </InputSelectBase>
+    </Select>
 </template>
 
 <script>
 import { format as formatDate } from 'date-fns';
-import InputSelectBase from '~/components/Inputs/InputSelectBase';
+import Select from '~/components/Inputs/Select/Select';
 
 export default {
     name: 'DatePicker',
     components: {
-        InputSelectBase,
+        Select,
         DatePickerContent: () => import('~/components/Inputs/Date/DatePickerContent'),
     },
     props: {
@@ -83,10 +72,6 @@ export default {
         centerAlignment: {
             type: Boolean,
             default: false,
-        },
-        dismissible: {
-            type: Boolean,
-            default: true,
         },
         label: {
             type: String,
@@ -133,9 +118,8 @@ export default {
         },
     },
     methods: {
-        emitValue(value) {
-            if (Array.isArray(value)) this.$emit('input', null);
-            else this.$emit('input', value);
+        onValueChange(value) {
+            this.$emit('input', value);
         },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);

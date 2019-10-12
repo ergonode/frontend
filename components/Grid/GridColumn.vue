@@ -11,6 +11,7 @@
                 {
                     'column__extender': isExtenderColumn,
                     'column--last': isLast,
+                    'column--dragged': draggedElIndex !== -1,
                 }
             ]"
         :style="colGridTemplate"
@@ -468,6 +469,10 @@ export default {
     .column {
         position: relative;
         display: grid;
+
+        &--dragged {
+            will-change: transform;
+        }
 
         &::before {
             position: absolute;

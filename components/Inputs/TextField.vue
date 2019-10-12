@@ -6,7 +6,7 @@
     <div :class="inputStyle">
         <div
             ref="activator"
-            :class="inputContentClasses"
+            :class="activatorClasses"
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
             <slot name="prepend" />

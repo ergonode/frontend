@@ -6,11 +6,11 @@
     <DatePicker
         :value="localValue"
         solid
+        clearable
         :label="label"
         :placeholder="parameters.format"
         :format="parameters.format"
         :error-messages="errorMessages"
-        multiselect
         :required="required"
         :disabled="disabled"
         @focus="onFocusChange"

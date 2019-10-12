@@ -38,7 +38,7 @@ export default {
     },
     methods: {
         onSelectedValue(index) {
-            this.$emit('value', this.options[index]);
+            this.$emit('select', this.options[index]);
         },
         getSelectedColor(option) {
             return String(this.selectedOption) === option

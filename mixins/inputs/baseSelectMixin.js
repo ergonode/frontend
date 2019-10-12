@@ -2,11 +2,16 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { Arrow } from '~/model/icons/Arrow';
+
 export default {
     data() {
         return {
+            selectBoundingBox: null,
             isFocused: false,
             isMounted: false,
+            isMenuActive: false,
+            isClickedOutside: false,
             hasMouseDown: false,
             associatedLabel: '',
         };
@@ -23,9 +28,27 @@ export default {
         // eslint-disable-next-line no-underscore-dangle
         this.associatedLabel = `input-${this._uid}`;
     },
+    destroyed() {
+        window.removeEventListener('click', this.onClickOutside);
+    },
+    watch: {
+        isMenuActive() {
+            if (this.isMenuActive) {
+                this.selectBoundingBox = this.getSelectBoundingBox();
+                window.addEventListener('click', this.onClickOutside);
+            } else {
+                window.removeEventListener('click', this.onClickOutside);
+            }
+        },
+    },
     computed: {
+        dropDownState() {
+            return this.isFocused
+                ? Arrow.UP
+                : Arrow.DOWN;
+        },
         isEmpty() {
-            return this.value === '' || this.value === null;
+            return this.value === '' || this.value === null || this.value.length === 0;
         },
         isFloatingLabel() {
             return this.label !== null;
@@ -106,19 +129,34 @@ export default {
         },
     },
     methods: {
+        onClear() {
+            this.$emit('input', this.multiselect ? [] : '');
+        },
+        onSelectValue(value) {
+            this.$emit('input', value);
+        },
+        onDismiss() {
+            this.isClickedOutside = true;
+
+            this.onBlur();
+        },
         onValueChange(event) {
             this.$emit('input', event.target.value);
         },
         onFocus() {
             this.isFocused = true;
             this.hasMouseDown = false;
+            this.isMenuActive = true;
 
             this.$emit('focus', true);
         },
         onBlur() {
-            this.isFocused = false;
+            if (this.isClickedOutside) {
+                this.isFocused = false;
+                this.isMenuActive = false;
 
-            this.$emit('focus', false);
+                this.$emit('focus', false);
+            }
         },
         onMouseDown(event) {
             const isClickedInInput = event.target === this.$refs.input;
@@ -138,14 +176,64 @@ export default {
 
             if (this.dismissible) {
                 if (isClickedInInput) {
-                    if (this.isFocused && this.hasMouseDown) this.$refs.input.blur();
-                } else if (!this.isFocused) this.$refs.input.focus();
-                else this.$refs.input.blur();
+                    if (this.isFocused && this.hasMouseDown) {
+                        this.isClickedOutside = true;
+                        this.$refs.input.blur();
+                    }
+                } else if (!this.isFocused) {
+                    this.$refs.input.focus();
+                } else {
+                    this.isClickedOutside = true;
+                    this.$refs.input.blur();
+                }
             } else if (!isClickedInInput) {
                 this.$refs.input.focus();
             }
 
             this.hasMouseDown = false;
+        },
+        onClickOutside(event) {
+            const isClickedInsideMenu = this.$refs.menu.$el.contains(event.target);
+
+            this.isClickedOutside = !isClickedInsideMenu
+                && !this.$refs.activator.contains(event.target);
+
+            console.log(this.isClickedOutside);
+
+            if (this.isClickedOutside || (isClickedInsideMenu && this.dismissible)) {
+                this.isFocused = false;
+                this.isMenuActive = false;
+
+                this.$emit('focus', false);
+            }
+        },
+        getSelectBoundingBox() {
+            const {
+                x,
+                y,
+                height,
+                width,
+            } = this.$el.getBoundingClientRect();
+            const { innerHeight } = window;
+            const maxHeight = 200;
+
+            const position = { left: `${x}px` };
+
+            if (this.fixedContentWidth) {
+                position.width = `${width}px`;
+            }
+
+            if (innerHeight - y < maxHeight) {
+                const offsetBottom = innerHeight - y;
+
+                position.bottom = `${offsetBottom + 1}px`;
+
+                return position;
+            }
+
+            position.top = `${y + height + 2}px`;
+
+            return position;
         },
     },
 };
