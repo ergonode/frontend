@@ -7,11 +7,7 @@
         <GridAdvancedFilters
             v-if="advancedFilters"
             :filters="gridState.advancedFilters"
-            @add="onFilterDropped"
-            @replace="onFiltersReplaced"
-            @removeFilter="onRemoveFilter"
-            @removeAll="onRemoveAllFilters"
-            @clearAll="onClearAllFilters" />
+            :store-namespace="storeNamespace" />
         <GridHeader
             :title="title"
             :row-height="rowHeight"
@@ -21,7 +17,8 @@
         <div
             ref="gridContent"
             class="grid__content"
-            :style="templateColumns">
+            :style="templateColumns"
+            @dragleave="onDragLeave">
             <GridColumn
                 v-for="(column, colIndex) in gridState.columns"
                 :key="column.id"
@@ -30,7 +27,9 @@
                 :column="column"
                 :is-last="gridState.columns.length - 1 === colIndex"
                 :rows-height="rowHeight"
-                :is-header-focused="isHeaderFocused">
+                :is-header-focused="isHeaderFocused"
+                :is-mouse-over-grid="isMouseOverGrid"
+                @mouseOverGrid="onMouseOverGrid">
                 <GridWrapperHeaderCell
                     :store-namespace="storeNamespace"
                     :column-index="colIndex"
@@ -83,6 +82,9 @@ import { sumIntegers } from '~/model/arrayWrapper';
 import {
     PINNED_COLUMN_STATE, ROW_HEIGHTS, GRID_LAYOUT, GHOST_ELEMENT_MODEL, GHOST_ID,
 } from '~/defaults/grid/main';
+import {
+    isMouseOutOfBoundsElement,
+} from '~/model/drag_and_drop/helpers';
 
 export default {
     name: 'Grid',
@@ -127,6 +129,7 @@ export default {
             isHeaderFocused: false,
             rowHeight: ROW_HEIGHTS.LARGE,
             layout: GRID_LAYOUT.TABLE,
+            isMouseOverGrid: false,
         };
     },
     beforeCreate() {
@@ -153,12 +156,12 @@ export default {
     computed: {
         ...mapState('draggable', {
             isListElementDragging: (state) => state.isListElementDragging,
+            ghostIndex: (state) => state.ghostIndex,
+            ghostFilterIndex: (state) => state.ghostFilterIndex,
+            draggedElIndex: (state) => state.draggedElIndex,
         }),
         ...mapState('gridDraft', {
             drafts: (state) => state.drafts,
-        }),
-        ...mapState('list', {
-            elements: (state) => state.elements,
         }),
         gridState() {
             return this.$store.state[this.storeNamespace];
@@ -181,10 +184,26 @@ export default {
             'setDraggedElement',
             'setDraggedElIndex',
             'setGhostElXTranslation',
-            'setBounds',
-            'setGhostElTransform',
             'setGhostIndex',
+            'setGhostFilterIndex',
         ]),
+        onMouseOverGrid(isOver) {
+            this.isMouseOverGrid = isOver;
+        },
+        onDragLeave({ pageX, pageY }) {
+            if (pageX === 0 && pageY === 0) return false;
+
+            const { gridContent } = this.$refs;
+            const elementBelowMouse = document.elementFromPoint(pageX, pageY);
+            const isOutOfBounds = isMouseOutOfBoundsElement(gridContent, pageX, pageY);
+            const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
+
+            if (isOutOfBounds || isTrashBelowMouse) {
+                this.isMouseOverGrid = false;
+            }
+
+            return true;
+        },
         onRowHeightChange(height) {
             this.rowHeight = height;
         },
@@ -229,69 +248,37 @@ export default {
                 columnEl.classList.remove('sticky');
             }
         },
-        onFilterDropped(filterKey) {
-            const { length } = this.gridState.advancedFilters;
-            const index = length - 1;
-            const [value, languageCode] = filterKey.split(':');
-            const filter = this.elements[languageCode].find((element) => element.code === value);
-
-            this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
-                index,
-                filter: { ...filter, value: '' },
-            });
-        },
-        onFiltersReplaced({ atIndex, data }) {
-            this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
-                index: atIndex,
-                filter: data,
-            });
-        },
-        onRemoveAllFilters() {
-            this.$store.dispatch(`${this.storeNamespace}/removeAllAdvancedFilters`);
-        },
-        onRemoveFilter() {
-
-        },
-        onClearAllFilters() {
-            this.$store.dispatch(`${this.storeNamespace}/clearAllAdvancedFilters`);
-        },
         addGhostColumn() {
-            const column = GHOST_ELEMENT_MODEL;
             const width = 100;
-            const index = 1;
-            const secondColumn = document.documentElement.querySelector('.grid__content').children[index];
-            const { x: xPos } = secondColumn.getBoundingClientRect();
+            const ghostIndex = 1;
 
-            this.$store.dispatch(`${this.storeNamespace}/insertColumnAtIndex`, { column, index });
-            this.$store.dispatch(`${this.storeNamespace}/insertColumnWidthAtIndex`, { width: `${width}px`, index });
+            this.$store.dispatch(`${this.storeNamespace}/insertColumnAtIndex`, { column: GHOST_ELEMENT_MODEL, index: ghostIndex });
+            this.$store.dispatch(`${this.storeNamespace}/insertColumnWidthAtIndex`, { width: `${width}px`, index: ghostIndex });
 
-            this.setBounds({ x: xPos, width });
-            this.setGhostIndex(1);
-            this.setDraggedElIndex(1);
+            this.setGhostIndex(ghostIndex);
+            this.setDraggedElIndex(ghostIndex);
         },
         removeGhostColumn() {
-            const index = 1;
+            this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, this.draggedElIndex);
+            this.$store.dispatch(`${this.storeNamespace}/removeColumnWidthAtIndex`, this.draggedElIndex);
 
-            if (this.gridState.columns[index].id === GHOST_ID) {
-                this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index });
-                this.$store.dispatch(`${this.storeNamespace}/removeColumnWidthAtIndex`, { index });
-
-                this.setBounds();
-                this.setGhostIndex();
-                this.setDraggedElIndex();
-            }
+            this.setDraggedElIndex();
+            this.setGhostIndex();
         },
         addGhostFilter() {
-            const filter = GHOST_ELEMENT_MODEL;
+            const ghostIndex = 0;
 
-            this.$store.dispatch(`${this.storeNamespace}/addAdvancedFilter`, filter);
+            this.$store.dispatch(`${this.storeNamespace}/insertAdvancedFilterAtIndex`, {
+                index: ghostIndex,
+                filter: GHOST_ELEMENT_MODEL,
+            });
+            this.setGhostFilterIndex(ghostIndex);
         },
         removeGhostFilter() {
-            const { length } = this.gridState.advancedFilters;
-            const index = length - 1;
-
-            if (this.gridState.advancedFilters[index].id === GHOST_ID) {
-                this.$store.dispatch(`${this.storeNamespace}/removeAdvancedFilterAtIndex`, index);
+            if (this.ghostFilterIndex !== -1
+                && this.gridState.advancedFilters[this.ghostFilterIndex].id === GHOST_ID) {
+                this.$store.dispatch(`${this.storeNamespace}/removeAdvancedFilterAtIndex`, this.ghostFilterIndex);
+                this.setGhostFilterIndex();
             }
         },
     },

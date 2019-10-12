@@ -164,7 +164,7 @@
             }
         }
 
-        &.center-alignment, &:not(&.solid) {
+        &.center-alignment {
             #{$input}__activator::after {
                 transform: scaleX(1);
             }
@@ -187,6 +187,10 @@
                 #{$input}__activator {
                     border: 2px solid $success;
                     padding: 3px;
+                }
+
+                #{$input}__content::after {
+                    transform: scaleX(0);
                 }
             }
         }

@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        :tabindex="0"
+        :tabindex="-1"
         :class="gridCellClasses"
         @keydown="onKeyDown">
         <slot />
@@ -87,7 +87,7 @@ export default {
 
             let element;
 
-            if (!event.target.classList.contains('grid-cell') && !this.actionCell && keyCode !== 13) {
+            if ((!event.target.classList.contains('grid-cell') && !this.actionCell && keyCode !== 13)) {
                 return false;
             }
 
@@ -96,7 +96,8 @@ export default {
                 // Key: ENTER
                 if (this.editingAllowed) {
                     element = this.$el;
-                    if (this.selected || this.editing) {
+
+                    if ((this.actionCell && this.selected) || this.editing) {
                         element.focus();
                         this.$emit('edit', false);
                     } else {

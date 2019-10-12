@@ -168,7 +168,7 @@ export default {
         onSelectFocus(isFocused) {
             this.isContextualMenuActive = isFocused;
             if (!this.isContextualMenuActive && !this.isMouseOver) {
-                this.resetColumnHoveringState();
+                this.removeColumnHover();
             }
 
             this.$emit('focus', isFocused);
@@ -180,8 +180,8 @@ export default {
 
                 // We are hovering element while removing it
                 this.borderColumnAction('add', columnElement);
-                this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, { index: this.columnIndex });
-                this.$store.dispatch(`${this.storeNamespace}/removeColumnWidthAtIndex`, { index: this.columnIndex });
+                this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, this.columnIndex);
+                this.$store.dispatch(`${this.storeNamespace}/removeColumnWidthAtIndex`, this.columnIndex);
                 removeColumnCookieByID(this.$cookies, this.column.id);
                 this.$emit('focus', false);
                 break;
@@ -205,12 +205,12 @@ export default {
         },
         getColumnAtIndex(index) {
             const contentGrid = document.querySelector('.grid__content');
-            const { children: { [index]: columnElement } } = contentGrid;
+            const { children } = contentGrid;
 
-            return columnElement;
+            return children[index];
         },
         onMouseEnter() {
-            if (this.draggedElementOnGrid === 'column' || this.isMenuSelected() || this.isCellEditing) return;
+            if (this.draggedElementOnGrid || this.isMenuSelected() || this.isCellEditing) return;
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
@@ -222,9 +222,9 @@ export default {
         onMouseLeave() {
             this.isMouseOver = false;
 
-            if (this.draggedElementOnGrid === 'column' || this.isMenuSelected() || this.isCellEditing) return;
+            if (this.draggedElementOnGrid || this.isMenuSelected() || this.isCellEditing) return;
 
-            this.resetColumnHoveringState();
+            this.removeColumnHover();
         },
         setHorizontalWrapperOpacityIfNeeded(opacity) {
             if (!this.isSorted && !this.pinnedColumn) {
@@ -249,7 +249,7 @@ export default {
 
             return headerEls.length;
         },
-        resetColumnHoveringState() {
+        removeColumnHover() {
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
             columnElement.classList.remove('hover');

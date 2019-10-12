@@ -12,19 +12,19 @@ import {
 } from '~/model/arrayWrapper';
 
 describe('arrayWrapper/swapItemPosition', () => {
-    it('Chage array items position. Pos1 bigger then pos2', () => {
+    it('Change array items position. Pos1 bigger then pos2', () => {
         const array = [6, 6, 5, 2];
         const obj = swapItemPosition(array, 3, 1);
         expect(obj).toEqual([6, 2, 6, 5]);
     });
 
-    it('Chage array items position. Pos2 bigger then pos1', () => {
+    it('Change array items position. Pos2 bigger then pos1', () => {
         const array = [6, 6, 5, 2];
         const obj = swapItemPosition(array, 1, 3);
         expect(obj).toEqual([6, 5, 2, 6]);
     });
 
-    it('Chage array items position. Incorrect positions', () => {
+    it('Change array items position. Incorrect positions', () => {
         const array = [6, 6, 5, 2];
         const obj = swapItemPosition(array, 6, 3);
         expect(obj).toEqual([6, 6, 5, 2]);

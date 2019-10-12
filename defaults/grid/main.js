@@ -30,3 +30,9 @@ export const GRID_HEADER_TYPE = {
     PLAIN: 'PLAIN',
     INTERACTIVE: 'INTERACTIVE',
 };
+
+export const DRAGGED_ELEMENTS = {
+    COLUMN: 'COLUMN',
+    FILTER: 'FILTER',
+    TEMPLATE: 'TEMPLATE',
+};
