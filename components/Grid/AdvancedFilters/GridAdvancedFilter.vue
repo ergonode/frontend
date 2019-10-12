@@ -11,15 +11,14 @@
                 'advanced-filter--error': isError,
             }
         ]"
-        draggable
+        :draggable="!isSelected"
         @dragover="onDragOver"
         @dragstart="onDragStart"
-        @dragleave="onDragLeave"
         @dragend="onDragEnd"
         @click="onClick">
         <span
             class="advanced-filter__label"
-            v-text="filter.label || filter.code" />
+            v-text="filter.id" />
         <div class="advanced-filter__details">
             <span
                 v-if="!filter.value"
@@ -46,7 +45,8 @@
                 <Component
                     :is="selectBodyComponent"
                     :value="filterValue"
-                    :options="filter.options" />
+                    :options="filter.parameters.options"
+                    @input="onValueChange" />
             </template>
             <template #footer>
                 <Component
@@ -63,10 +63,13 @@ import { mapState, mapActions } from 'vuex';
 import { Arrow } from '~/model/icons/Arrow';
 import { AttributeTypes } from '~/defaults/attributes/main';
 import {
-    addGridColumnCopyToDocumentBody,
-    // removeGridColumnCopyFromDocumentBody,
-} from '~/model/grid/layout/GridColumnElementCopy';
-import { GHOST_ELEMENT_MODEL } from '~/defaults/grid/main';
+    addElementCopyToDocumentBody,
+    removeElementCopyFromDocumentBody,
+} from '~/model/layout/ElementCopy';
+import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENTS } from '~/defaults/grid/main';
+import {
+    getDraggedColumnPositionState,
+} from '~/model/drag_and_drop/helpers';
 
 export default {
     name: 'GridAdvancedFilter',
@@ -88,6 +91,14 @@ export default {
             type: Object,
             required: true,
         },
+        isMouseOverFilters: {
+            type: Boolean,
+            default: false,
+        },
+        storeNamespace: {
+            type: String,
+            required: true,
+        },
     },
     data() {
         return {
@@ -101,7 +112,7 @@ export default {
     },
     computed: {
         ...mapState('draggable', {
-            draggedElement: (state) => state.draggedElement,
+            ghostFilterIndex: (state) => state.ghostFilterIndex,
         }),
         arrowIconState() {
             return this.isSelected ? Arrow.UP : Arrow.DOWN;
@@ -127,42 +138,94 @@ export default {
                 return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
             case AttributeTypes.DATE:
                 return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterDateContent');
+            case AttributeTypes.PRICE:
+                return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterRangeContent');
             default: return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
             }
         },
     },
     methods: {
         ...mapActions('draggable', [
-            'setDraggedElement',
+            'setDraggableState',
+            'setGhostFilterIndex',
         ]),
         onDragStart(event) {
             const { width } = this.$el.getBoundingClientRect();
 
-            addGridColumnCopyToDocumentBody(event, width, JSON.stringify(this.filter));
+            addElementCopyToDocumentBody(event, width, JSON.stringify(this.filter));
+            this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENTS.FILTER });
 
-            this.$emit('replace', { atIndex: this.index, data: GHOST_ELEMENT_MODEL });
+            window.requestAnimationFrame(() => {
+                this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
+                    index: this.index,
+                    filter: GHOST_ELEMENT_MODEL,
+                });
+                this.setGhostFilterIndex(this.index);
+            });
         },
-        onDragLeave() {
+        onDragEnd(event) {
+            const { pageX, pageY } = event;
+            const elementBelowMouse = document.elementFromPoint(pageX, pageY);
+            const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
 
-        },
-        onDragEnd() {
+            if (isTrashBelowMouse) {
+                this.$store.dispatch(`${this.storeNamespace}/removeAdvancedFilterAtIndex`, this.index);
+            } else {
+                this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
+                    index: this.ghostFilterIndex,
+                    filter: this.filter,
+                });
+            }
 
+            removeElementCopyFromDocumentBody(event);
+            this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
         },
         onDragOver(event) {
+            if (!this.isMouseOverFilters) this.$emit('mouseOverFilters', true);
+
             event.preventDefault();
+
+            const { clientX } = event;
+            const {
+                x: columnXPos, width: columnWidth,
+            } = this.$el.getBoundingClientRect();
+            const isBefore = getDraggedColumnPositionState(
+                clientX,
+                columnXPos,
+                columnWidth,
+            );
+
+            if ((isBefore && this.ghostFilterIndex === this.index - 1)
+                || (!isBefore && this.ghostFilterIndex === this.index + 1)) {
+                return false;
+            }
+
+            if (this.ghostFilterIndex === -1) {
+                const ghostFilterIndex = isBefore ? this.index : this.index + 1;
+
+                this.setGhostFilterIndex(ghostFilterIndex);
+                this.$store.dispatch(`${this.storeNamespace}/insertAdvancedFilterAtIndex`, { index: ghostFilterIndex, filter: GHOST_ELEMENT_MODEL });
+            } else {
+                this.$store.dispatch(`${this.storeNamespace}/changeFiltersPosition`, {
+                    from: this.ghostFilterIndex,
+                    to: this.index,
+                });
+                this.setGhostFilterIndex(this.index);
+            }
+
+            return true;
+        },
+        onValueChange(value) {
+            this.filterValue = value;
         },
         onClear() {
-            if (this.filter.type === AttributeTypes.MULTI_SELECT) {
-                this.filterValue = [];
-            } else {
-                this.filterValue = '';
-            }
+            this.filterValue = '';
         },
         onApply() {
-            this.isSelected = false;
             window.removeEventListener('click', this.onClickOutside);
+            this.isSelected = false;
 
-            this.$emit('apply', { id: this.filter.id, value: this.filterValue });
+            this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterValueAtIndex`, { index: this.index, value: this.filterValue });
         },
         onClick() {
             if (!this.isSelected) {
@@ -234,6 +297,7 @@ export default {
         position: relative;
         display: flex;
         height: 32px;
+        outline: none;
 
         &__label {
             @include setFont(bold, small, regular, $darkGraphite);
@@ -261,7 +325,7 @@ export default {
         }
 
         &__value {
-            @include setFont(medium, small, regular, $lightGraphite);
+            @include setFont(medium, small, regular, $darkGraphite);
         }
 
         &--selected {

@@ -28,7 +28,7 @@ export default {
         display: flex;
         flex: 1;
         align-items: center;
-        width: min-content;
+        width: 0;
         padding: 8px;
         user-select: none;
         text-overflow: ellipsis;

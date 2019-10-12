@@ -11,9 +11,10 @@ import {
     getSortedColumnsByIDs,
     getMappedFilter,
 } from '~/model/mappers/gridDataMapper';
-import { swapItemPosition, insertValueAtIndex, removeValueAtIndex } from '~/model/arrayWrapper';
+import { swapItemPosition, insertValueAtIndex } from '~/model/arrayWrapper';
 import { COLUMN_IDS } from '~/defaults/grid/cookies';
 import { types } from './mutations';
+import { GHOST_ID } from '~/defaults/grid/main';
 
 export default {
     getData({ commit, dispatch, state }, { path }) {
@@ -82,7 +83,6 @@ export default {
     },
     getColumnData({ commit, dispatch, state }, {
         ghostIndex,
-        draggedElIndex,
         columnId,
         path,
     }) {
@@ -94,7 +94,7 @@ export default {
             sortedByColumn,
             basicFilters,
         } = state;
-        const stateColumnsID = stateColumns.filter((col) => !(col.id.includes('extender') || col.id.includes('ghost'))).map((col) => col.id);
+        const stateColumnsID = stateColumns.filter((col) => !(col.id.includes('extender') || col.id.includes(GHOST_ID))).map((col) => col.id);
         const parsedColumnsID = insertValueAtIndex(stateColumnsID, columnId, ghostIndex).join(',');
         const parsedFilter = getMappedFilter(basicFilters);
         const params = {
@@ -123,20 +123,11 @@ export default {
             const { mappedColumn, columnWidth } = getMappedColumn(draggedColumn);
             const rowIds = getMappedRowIds(rows);
             const cellValues = getMappedCellValues(columns, rows, rowIds);
-
-            let newColumnsWidth = stateColumnWidths;
-            let newColumns = stateColumns;
-
-            if (stateColumns[draggedElIndex].id === 'ghost') {
-                newColumnsWidth = removeValueAtIndex(stateColumnWidths, draggedElIndex);
-                newColumns = removeValueAtIndex(stateColumns, draggedElIndex);
-            }
-
-            newColumns = insertValueAtIndex(
-                newColumns, mappedColumn, ghostIndex,
+            const newColumnsWidth = insertValueAtIndex(
+                stateColumnWidths, columnWidth, ghostIndex,
             );
-            newColumnsWidth = insertValueAtIndex(
-                newColumnsWidth, columnWidth, ghostIndex,
+            const newColumns = insertValueAtIndex(
+                stateColumns, mappedColumn, ghostIndex,
             );
 
             dispatch('list/setDisabledElement', { languageCode: draggedColumn.language, elementId: draggedColumn.element_id }, { root: true });
@@ -176,11 +167,22 @@ export default {
             commit(types.SET_BASIC_FILTER, { id, filter: filterToSet });
         }
     },
-    addAdvancedFilter({ commit }, filter) {
-        commit(types.ADD_ADVANCED_FILTER, filter);
-    },
     setAdvancedFilterAtIndex({ commit }, payload) {
         commit(types.SET_ADVANCED_FILTER_AT_INDEX, payload);
+    },
+    setAdvancedFilterValueAtIndex({ commit }, payload) {
+        commit(types.SET_ADVANCED_FILTER_VALUE_AT_INDEX, payload);
+    },
+    insertAdvancedFilterAtIndex({ commit }, payload) {
+        commit(types.INSERT_ADVANCED_FILTER_AT_INDEX, payload);
+    },
+    changeFiltersPosition({ commit, state }, { from, to }) {
+        const { advancedFilters } = state;
+        const newOrderedFilters = [
+            ...swapItemPosition(advancedFilters, from, to),
+        ];
+
+        commit(types.SET_ADVANCED_FILTERS, newOrderedFilters);
     },
     removeAllAdvancedFilters({ commit }) {
         commit(types.REMOVE_ALL_ADVANCED_FILTERS);
@@ -222,7 +224,7 @@ export default {
     insertColumnAtIndex({ commit }, { column, index }) {
         commit(types.INSERT_COLUMN_AT_INDEX, { column, index });
     },
-    removeColumnAtIndex({ commit, dispatch, state }, { index }) {
+    removeColumnAtIndex({ commit, dispatch, state }, index) {
         const { columns } = state;
         if (columns[index].element_id) {
             dispatch('list/removeDisabledElement', { languageCode: columns[index].language, elementId: columns[index].element_id }, { root: true });
@@ -230,7 +232,7 @@ export default {
 
         commit(types.REMOVE_COLUMN_AT_INDEX, index);
     },
-    removeColumnWidthAtIndex({ commit }, { index }) {
+    removeColumnWidthAtIndex({ commit }, index) {
         commit(types.REMOVE_COLUMN_WIDTH_AT_INDEX, index);
     },
     changeColumnPosition({ commit, state }, { from, to }) {

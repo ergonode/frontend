@@ -28,6 +28,7 @@ import {
 } from '~/model/tree/TreeCalculations';
 import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
 import { isMouseOutOfBoundsElement } from '~/model/drag_and_drop/helpers';
+import { DRAGGED_ELEMENTS } from '~/defaults/grid/main';
 
 export default {
     name: 'TemplateGridContainer',
@@ -165,7 +166,7 @@ export default {
                         this.$emit('toggleItem', categoryItem);
                     }
                     this.setDraggedElement(categoryItem);
-                    this.setDraggableState({ propName: 'draggedElementOnGrid', value: 'template' });
+                    this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENTS.TEMPLATE });
                     addElementCopyToDocumentBody(event, {
                         element: category,
                         width: this.draggedElementSize.width,

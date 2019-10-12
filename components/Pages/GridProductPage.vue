@@ -24,6 +24,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { DRAGGED_ELEMENTS } from '~/defaults/grid/main';
 
 export default {
     name: 'GridProductPage',
@@ -72,11 +73,11 @@ export default {
                 return { zIndex: '10' };
             }
 
-            if (this.draggedElementOnGrid === 'filter') {
+            if (this.draggedElementOnGrid === DRAGGED_ELEMENTS.FILTER) {
                 return { zIndex: '15' };
             }
 
-            if (this.draggedElementOnGrid === 'column') {
+            if (this.draggedElementOnGrid === DRAGGED_ELEMENTS.COLUMN) {
                 return { zIndex: '20' };
             }
 

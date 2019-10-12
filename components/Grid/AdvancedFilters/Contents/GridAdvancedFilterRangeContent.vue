@@ -6,12 +6,16 @@
     <GridAdvancedFilterBaseContent>
         <div class="container">
             <TextField
-                :value="value"
-                left-alignment
-                autofocus
-                small
+                :value="value.from"
                 underline
-                @input="onValueChange" />
+                center-alignment
+                small />
+            <span class="dash">-</span>
+            <TextField
+                :value="value.to"
+                underline
+                center-alignment
+                small />
         </div>
     </GridAdvancedFilterBaseContent>
 </template>
@@ -21,20 +25,15 @@ import TextField from '~/components/Inputs/TextField';
 import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 
 export default {
-    name: 'GridAdvancedFilterTextContent',
+    name: 'GridAdvancedFilterRangeContent',
     components: {
         TextField,
         GridAdvancedFilterBaseContent,
     },
     props: {
         value: {
-            type: String,
+            type: Object,
             required: true,
-        },
-    },
-    methods: {
-        onValueChange(value) {
-            this.$emit('input', value);
         },
     },
 };
@@ -42,6 +41,17 @@ export default {
 
 <style lang="scss" scoped>
     .container {
+        display: grid;
+        grid-template-columns: 80px 24px 80px;
+        align-items: center;
         padding: 8px 12px;
+    }
+
+    .dash {
+        @include setFont(medium, small, regular, $darkGraphite);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>

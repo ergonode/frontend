@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount, createLocalVue } from '@vue/test-utils';
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
 import GridColumn from '~/components/Grid/GridColumn';
 import draggableMutations from '~/store/draggable/mutations';
@@ -23,7 +23,6 @@ const store = new Store({
         draggable: {
             draggedElIndex: -1,
             bounds: null,
-            ghostElTransform: 0,
             ghostIndex: -1,
             draggedElement: null,
         },
@@ -40,7 +39,7 @@ const mocks = {
 describe('Grid/GridColumn', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(GridColumn, {
+        wrapper = shallowMount(GridColumn, {
             localVue,
             mocks,
             propsData: {
@@ -82,34 +81,6 @@ describe('Grid/GridColumn', () => {
     });
 
     describe('Calculations', () => {
-        describe('Calculating index under dragged column', () => {
-            beforeEach(() => {
-                wrapper.setProps({
-                    index: 2,
-                });
-            });
-
-            it('Column above has no transform, it has not had interaction yet', () => {
-                const result = wrapper.vm.getColumnFixedIndex();
-
-                expect(result).toBe(2);
-            });
-
-            it('Column above has positive transform, it was moved to next position', () => {
-                wrapper.vm.setColumnElementTransform(100);
-                const result = wrapper.vm.getColumnFixedIndex();
-
-                expect(result).toBe(3);
-            });
-
-            it('Column above has negative transform, it was moved to position before', () => {
-                wrapper.vm.setColumnElementTransform(-100);
-                const result = wrapper.vm.getColumnFixedIndex();
-
-                expect(result).toBe(1);
-            });
-        });
-
         describe('Calculating ghost index position after interactions of dragged column with column bellow', () => {
             describe('Dragged column is before first half of column bellow', () => {
                 it('Index of column bellow is smaller than dragged column (The origin of dragged column is after column bellow)', () => {
@@ -160,70 +131,145 @@ describe('Grid/GridColumn', () => {
             });
         });
 
-        describe('Insert ghost column if it does not exist - dragged column/list element is out of bounds grid', () => {
-            beforeEach(() => {
+        describe('Columns transform', () => {
+            let gridContent = null;
+
+            beforeAll(() => {
+                Element.prototype.getBoundingClientRect = jest.fn(() => {
+                    return {
+                        width: 200,
+                        height: 0,
+                        top: 0,
+                        left: 0,
+                        bottom: 0,
+                        right: 0,
+                    }
+                });
+                const columnStyle = `
+                    height: 100%;
+                    width: 200px;
+                `;
+                const contentStyle = `
+                    display: grid;
+                    gird-auto-flow: column;
+                    height: 500px;
+                `;
+                gridContent = document.createElement('div');
+                const column1 = document.createElement('div');
+                const column2 = document.createElement('div');
+                const column3 = document.createElement('div');
+                const column4 = document.createElement('div');
+                const column5 = document.createElement('div');
+                const column6 = document.createElement('div');
+                const column7 = document.createElement('div');
+
+                gridContent.appendChild(column1);
+                gridContent.appendChild(column2);
+                gridContent.appendChild(column3);
+                gridContent.appendChild(column4);
+                gridContent.appendChild(column5);
+                gridContent.appendChild(column6);
+                gridContent.appendChild(column7);
+
+                gridContent.setAttribute('style', contentStyle);
+                column1.setAttribute('style', columnStyle);
+                column2.setAttribute('style', columnStyle);
+                column3.setAttribute('style', columnStyle);
+                column4.setAttribute('style', columnStyle);
+                column5.setAttribute('style', columnStyle);
+                column6.setAttribute('style', columnStyle);
+                column7.setAttribute('style', columnStyle);
+            });
+
+            it('Dragged index is higher than index bellow mouse', () => {
+                draggableMutations.SET_DRAGGED_EL_INDEX(store.state.draggable, 3);
+                draggableMutations.SET_GHOST_INDEX(store.state.draggable, 3);
+
+                let lowerBounds = {};
+
                 wrapper.setProps({
                     index: 2,
                 });
+
+                lowerBounds = wrapper.vm.getLowerBoundsTransforms(gridContent, 200, 0);
+
+                expect(lowerBounds).toStrictEqual({ transforms: { 2: 200 }, updatedGhostTransform: -200 });
+
+                wrapper.setProps({
+                    index: 1,
+                });
+
+                lowerBounds = wrapper.vm.getLowerBoundsTransforms(gridContent, 200, 0);
+
+                expect(lowerBounds).toStrictEqual({ transforms: { 2: 200, 1: 200 }, updatedGhostTransform: -400 });
+
+                wrapper.setProps({
+                    index: 0,
+                });
+
+                lowerBounds = wrapper.vm.getLowerBoundsTransforms(gridContent, 200, 0);
+
+                expect(lowerBounds).toStrictEqual({ transforms: { 2: 200, 1: 200, 0: 200 }, updatedGhostTransform: -600 });
             });
 
-            const xPos = 0;
-            const width = 200;
+            it('Dragged index is lower than index bellow mouse', () => {
+                draggableMutations.SET_DRAGGED_EL_INDEX(store.state.draggable, 3);
+                draggableMutations.SET_GHOST_INDEX(store.state.draggable, 3);
 
-            describe('Dragged element is column', () => {
-                beforeEach(() => {
-                    draggableMutations.SET_DRAGGED_ELEMENT(store.state.draggable, {});
-                    draggableMutations.SET_BOUNDS(store.state.draggable, { width: 200 });
+                let upperBounds = {};
+
+                wrapper.setProps({
+                    index: 4,
                 });
 
-                it('Dragged element is before first half of column bellow', () => {
-                    const isBefore = true;
+                upperBounds = wrapper.vm.getUpperBoundsTransforms(gridContent, 200, 0);
 
-                    wrapper.vm.insertColumnOnDragOver(isBefore, xPos, width);
+                expect(upperBounds).toStrictEqual({ transforms: { 4: -200 }, updatedGhostTransform: 200 });
 
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnAtIndex', { column: {}, index: 2 });
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnWidthAtIndex', { width: `${wrapper.vm.$store.state.draggable.bounds.width}px`, index: 2 });
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setGhostIndex', 2);
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setDraggedElIndex', 2);
+                wrapper.setProps({
+                    index: 5,
                 });
 
-                it('Dragged element is after first half of column bellow', () => {
-                    const isBefore = false;
+                upperBounds = wrapper.vm.getUpperBoundsTransforms(gridContent, 200, 0);
 
-                    wrapper.vm.insertColumnOnDragOver(isBefore, xPos, width);
+                expect(upperBounds).toStrictEqual({ transforms: { 4: -200, 5: -200 }, updatedGhostTransform: 400 });
 
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnAtIndex', { column: {}, index: 3 });
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnWidthAtIndex', { width: `${wrapper.vm.$store.state.draggable.bounds.width}px`, index: 3 });
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setGhostIndex', 3);
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setDraggedElIndex', 3);
+                wrapper.setProps({
+                    index: 6,
                 });
+
+                upperBounds = wrapper.vm.getUpperBoundsTransforms(gridContent, 200, 0);
+
+                expect(upperBounds).toStrictEqual({ transforms: { 4: -200, 5: -200, 6: -200 }, updatedGhostTransform: 600 });
             });
 
-            describe('Dragged element is list element', () => {
-                beforeEach(() => {
-                    draggableMutations.SET_DRAGGED_ELEMENT(store.state.draggable, 'id');
+            it('Dragged index is higher than index bellow mouse and ghost element is greater than dragged index', () => {
+                draggableMutations.SET_DRAGGED_EL_INDEX(store.state.draggable, 3);
+                draggableMutations.SET_GHOST_INDEX(store.state.draggable, 4);
+                gridContent.children[4].style.transform = 'translateX(200px)';
+
+                let lowerBounds = {};
+
+                wrapper.setProps({
+                    index: 2,
                 });
+                lowerBounds = wrapper.vm.getLowerBoundsTransforms(gridContent, 200, -200);
 
-                it('Dragged element is before first half of column bellow', () => {
-                    const isBefore = true;
+                expect(lowerBounds).toStrictEqual({ transforms: { 4: 0, 2: 200 }, updatedGhostTransform: -200 });
 
-                    wrapper.vm.insertColumnOnDragOver(isBefore, xPos, width);
-
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnAtIndex', { column: GHOST_ELEMENT_MODEL, index: 2 });
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnWidthAtIndex', { width: '100px', index: 2 });
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setGhostIndex', 2);
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setDraggedElIndex', 2);
+                wrapper.setProps({
+                    index: 1,
                 });
+                lowerBounds = wrapper.vm.getLowerBoundsTransforms(gridContent, 200, -200);
 
-                it('Dragged element is after first half of column bellow', () => {
-                    const isBefore = false;
+                expect(lowerBounds).toStrictEqual({ transforms: { 4: 0, 2: 200, 1: 200 }, updatedGhostTransform: -400 });
 
-                    wrapper.vm.insertColumnOnDragOver(isBefore, xPos, width);
+                gridContent.children[4].style.transform = 'translateX(0)';
+                gridContent.children[2].style.transform = 'translateX(200px)';
+                gridContent.children[1].style.transform = 'translateX(200px)';
 
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnAtIndex', { column: GHOST_ELEMENT_MODEL, index: 3 });
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('grid/insertColumnWidthAtIndex', { width: '100px', index: 3 });
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setGhostIndex', 3);
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setDraggedElIndex', 3);
+                wrapper.setProps({
+                    index: 4,
                 });
             });
         });
