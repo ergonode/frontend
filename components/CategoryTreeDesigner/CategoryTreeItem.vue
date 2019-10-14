@@ -114,7 +114,7 @@ export default {
         grid-column: 1 / 4;
         height: 100%;
         border: 1px solid $grey;
-        padding-left: 13px;
+        padding-left: 12px;
         background-color: $background;
         cursor: move;
         overflow: hidden;

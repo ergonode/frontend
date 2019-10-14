@@ -13,7 +13,7 @@
             :is-dragging-enabled="isDraggingEnabled"
             :is-multi-draggable="isMultiDraggable"
             :dragged-element-size="draggedElementSize"
-            :remove-disabled-elements-on-list="removeDisabledElementsOnList"
+            @removeDisabledElementsOnList="removeDisabledElementsOnList"
             @toggleItem="toggleItem"
             @afterDrop="id => $emit('afterDrop', id)"
             @afterRemove="id => $emit('afterRemove', id)">

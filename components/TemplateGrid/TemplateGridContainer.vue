@@ -56,10 +56,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        removeDisabledElementsOnList: {
-            type: Function,
-            default: () => {},
-        },
         draggedElementSize: {
             type: Object,
             default: () => ({
@@ -230,7 +226,7 @@ export default {
             return true;
         },
         removeElementFromGrid(id) {
-            if (!this.isMultiDraggable) this.removeDisabledElementsOnList(id);
+            if (!this.isMultiDraggable) this.$emit('removeDisabledElementsOnList', id);
             this.removeHiddenItem(id);
             this.$emit('afterRemove', id);
         },
