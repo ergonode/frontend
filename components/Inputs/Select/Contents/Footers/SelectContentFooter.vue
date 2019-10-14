@@ -25,7 +25,6 @@ export default {
     },
     methods: {
         onClear() {
-            console.log('clear');
             this.$emit('clear');
         },
     },

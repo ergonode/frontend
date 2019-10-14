@@ -164,7 +164,7 @@
             }
         }
 
-        &.center-alignment {
+        &.center-alignment, &:not(&.solid) {
             #{$input}__activator::after {
                 transform: scaleX(1);
             }

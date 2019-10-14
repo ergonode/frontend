@@ -198,9 +198,8 @@ export default {
             this.isClickedOutside = !isClickedInsideMenu
                 && !this.$refs.activator.contains(event.target);
 
-            console.log(this.isClickedOutside);
-
-            if (this.isClickedOutside || (isClickedInsideMenu && this.dismissible)) {
+            if (this.isClickedOutside
+                || (isClickedInsideMenu && !this.multiselect && this.dismissible)) {
                 this.isFocused = false;
                 this.isMenuActive = false;
 

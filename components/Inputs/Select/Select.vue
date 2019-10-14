@@ -54,14 +54,19 @@
                 <template
                     v-if="clearable"
                     #footer>
-                    <MultiselectContentFooter
-                        v-if="multiselect"
-                        @clear="onClear"
-                        @apply="onDismiss" />
-                    <SelectContentFooter
-                        v-else
-                        @clear="onClear"
-                        @apply="onDismiss" />
+                    <slot
+                        name="footer"
+                        :clear="onClear"
+                        :apply="onDismiss">
+                        <MultiselectContentFooter
+                            v-if="multiselect"
+                            @clear="onClear"
+                            @apply="onDismiss" />
+                        <SelectContentFooter
+                            v-else
+                            @clear="onClear"
+                            @apply="onDismiss" />
+                    </slot>
                 </template>
             </SelectBaseContent>
         </FadeTransition>

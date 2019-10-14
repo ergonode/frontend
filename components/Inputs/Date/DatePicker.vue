@@ -21,7 +21,8 @@
         :regular="regular"
         :fixed-content-width="false"
         clearable
-        @focus="onFocus">
+        @focus="onFocus"
+        @input="onValueChange">
         <template #prepend>
             <slot name="prepend" />
         </template>
@@ -29,11 +30,14 @@
             <slot name="append" />
         </template>
         <template #selectContent>
-            <slot name="selectContent">
-                <DatePickerContent
-                    :value="value"
-                    @input="onValueChange" />
-            </slot>
+            <DatePickerContent
+                :value="value"
+                @input="onValueChange" />
+        </template>
+        <template #footer="{ clear, apply }">
+            <SelectContentApplyFooter
+                @clear="clear"
+                @apply="apply" />
         </template>
     </Select>
 </template>
@@ -47,6 +51,7 @@ export default {
     components: {
         Select,
         DatePickerContent: () => import('~/components/Inputs/Date/DatePickerContent'),
+        SelectContentApplyFooter: () => import('~/components/Inputs/Select/Contents/Footers/SelectContentApplyFooter'),
     },
     props: {
         value: {
@@ -119,7 +124,7 @@ export default {
     },
     methods: {
         onValueChange(value) {
-            this.$emit('input', value);
+            this.$emit('input', value === '' ? null : value);
         },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);
