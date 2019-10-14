@@ -11,7 +11,6 @@
         :error-messages="errorMessages"
         :dismissible="false"
         autofocus
-        multiselect
         @focus="onFocusChange"
         @input="onValueChange" />
 </template>

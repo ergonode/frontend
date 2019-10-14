@@ -3,25 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <InputBase
-        :value="value"
-        :solid="solid"
-        :underline="underline"
-        :left-alignment="leftAlignment"
-        :center-alignment="centerAlignment"
-        :label="label"
-        :placeholder="placeholder"
-        :error-messages="errorMessages"
-        :hint="hint"
-        :required="required"
-        :autofocus="autofocus"
-        :disabled="disabled"
-        :small="small"
-        :regular="regular"
-        :dismissible="dismissible"
-        @focus="onFocus">
-        <template #input>
+    <div :class="inputClasses">
+        <div
+            ref="activator"
+            :class="activatorClasses"
+            @mousedown="onMouseDown"
+            @mouseup="onMouseUp">
+            <slot name="prepend" />
+            <label
+                v-if="label"
+                :for="associatedLabel"
+                :class="floatingLabelClasses"
+                :style="floatingLabelTransforms"
+                v-text="label" />
             <input
+                :id="associatedLabel"
+                ref="input"
                 :value="value"
                 :placeholder="placeholder"
                 :autofocus="autofocus"
@@ -30,22 +27,24 @@
                 :max="maxRange"
                 :disabled="disabled"
                 :aria-label="label || 'no description'"
-                @input="emitValue">
-        </template>
-        <template #append>
+                @input="onValueChange"
+                @focus="onFocus"
+                @blur="onBlur">
             <slot name="append" />
-        </template>
-    </InputBase>
+        </div>
+        <label
+            v-if="informationLabel"
+            :class="informationLabelClasses"
+            v-text="informationLabel" />
+    </div>
 </template>
 
 <script>
-import InputBase from '~/components/Inputs/InputBase';
+import baseInputMixin from '~/mixins/inputs/baseInputMixin';
 
 export default {
     name: 'TextField',
-    components: {
-        InputBase,
-    },
+    mixins: [baseInputMixin],
     props: {
         input: {
             type: Object,
@@ -131,13 +130,9 @@ export default {
             return null;
         },
     },
-    methods: {
-        emitValue(event) {
-            this.$emit('input', event.target.value);
-        },
-        onFocus(isFocused) {
-            this.$emit('focus', isFocused);
-        },
-    },
 };
 </script>
+
+<style lang="scss" scoped>
+    @import "~assets/scss/input.scss";
+</style>

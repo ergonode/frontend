@@ -14,11 +14,14 @@
 </template>
 
 <script>
+import List from '~/components/List/List';
+import CheckBoxElement from '~/components/List/Elements/CheckBoxElement';
+
 export default {
     name: 'MultiselectListContent',
     components: {
-        List: () => import('~/components/List/List'),
-        CheckBoxElement: () => import('~/components/List/Elements/CheckBoxElement'),
+        List,
+        CheckBoxElement,
     },
     props: {
         options: {
@@ -44,7 +47,7 @@ export default {
             } else {
                 localSelectedOptions = this.selectedOptions.filter((opt) => opt !== option);
             }
-            this.$emit('values', localSelectedOptions);
+            this.$emit('select', localSelectedOptions);
         },
     },
 };

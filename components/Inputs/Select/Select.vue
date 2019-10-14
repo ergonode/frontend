@@ -3,67 +3,102 @@
  * See LICENSE for license details.
  */
 <template>
-    <InputSelectBase
-        :value="parsedInputValue"
-        :solid="solid"
-        :underline="underline"
-        :left-alignment="leftAlignment"
-        :center-alignment="centerAlignment"
-        :label="label"
-        :placeholder="placeholder"
-        :error-messages="errorMessages"
-        :hint="hint"
-        :required="required"
-        :autofocus="autofocus"
-        :disabled="disabled"
-        :dismissible="dismissible"
-        :multiselect="multiselect"
-        :clearable="clearable"
-        :small="small"
-        :regular="regular"
-        @focus="onFocus"
-        @clear="emitValue">
-        <template #prepend>
+    <div :class="inputClasses">
+        <div
+            ref="activator"
+            :class="activatorClasses"
+            @mousedown="onMouseDown"
+            @mouseup="onMouseUp">
             <slot name="prepend" />
-        </template>
-        <template #input>
+            <label
+                v-if="label"
+                :for="associatedLabel"
+                :class="floatingLabelClasses"
+                :style="floatingLabelTransforms"
+                v-text="label" />
             <input
+                :id="associatedLabel"
+                ref="input"
                 :value="parsedInputValue"
                 :placeholder="placeholder"
                 :disabled="disabled"
                 :aria-label="label || 'no description'"
                 type="text"
-                readonly>
-        </template>
-        <template #append>
-            <slot name="append" />
-        </template>
-        <template #selectContent>
-            <slot name="selectContent">
-                <MultiselectListContent
-                    v-if="multiselect"
-                    :options="options"
-                    :selected-options="selectedOptions"
-                    @values="emitValue" />
-                <SelectListContent
-                    v-else
-                    :options="options"
-                    :selected-option="String(value)"
-                    @value="emitValue" />
+                readonly
+                @input="onValueChange"
+                @focus="onFocus"
+                @blur="onBlur">
+            <slot name="append">
+                <IconArrowDropDown :state="dropDownState" />
             </slot>
-        </template>
-    </InputSelectBase>
+        </div>
+        <FadeTransition v-if="isMenuActive">
+            <SelectBaseContent
+                ref="menu"
+                :style="selectBoundingBox"
+                :fixed-content="fixedContentWidth">
+                <template #body>
+                    <slot name="selectContent">
+                        <MultiselectListContent
+                            v-if="multiselect"
+                            :options="options"
+                            :selected-options="selectedOptions"
+                            @select="onSelectValue" />
+                        <SelectListContent
+                            v-else
+                            :options="options"
+                            :selected-option="String(value)"
+                            @select="onSelectValue" />
+                    </slot>
+                </template>
+                <template
+                    v-if="clearable"
+                    #footer>
+                    <slot
+                        name="footer"
+                        :clear="onClear"
+                        :apply="onDismiss">
+                        <MultiselectContentFooter
+                            v-if="multiselect"
+                            @clear="onClear"
+                            @apply="onDismiss" />
+                        <SelectContentFooter
+                            v-else
+                            @clear="onClear"
+                            @apply="onDismiss" />
+                    </slot>
+                </template>
+            </SelectBaseContent>
+        </FadeTransition>
+        <label
+            v-if="informationLabel"
+            :class="informationLabelClasses"
+            v-text="informationLabel" />
+    </div>
 </template>
 
 <script>
-import InputSelectBase from '~/components/Inputs/InputSelectBase';
+
+import baseSelectMixin from '~/mixins/inputs/baseSelectMixin';
+import FadeTransition from '~/components/Transitions/FadeTransition';
+import SelectBaseContent from '~/components/Inputs/Select/Contents/SelectBaseContent';
+import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
+import MultiselectContentFooter from '~/components/Inputs/Select/Contents/Footers/MultiselectContentFooter';
+import SelectContentFooter from '~/components/Inputs/Select/Contents/Footers/SelectContentFooter';
+import MultiselectListContent from '~/components/Inputs/Select/Contents/MultiselectListContent';
+import SelectListContent from '~/components/Inputs/Select/Contents/SelectListContent';
 
 export default {
     name: 'Select',
+    mixins: [baseSelectMixin],
     components: {
-        InputSelectBase,
-        MultiselectListContent: () => import('~/components/Inputs/Select/Contents/MultiselectListContent'),
-        SelectListContent: () => import('~/components/Inputs/Select/Contents/SelectListContent'),
+        FadeTransition,
+        SelectBaseContent,
+        IconArrowDropDown,
+        MultiselectContentFooter,
+        SelectContentFooter,
+        MultiselectListContent,
+        SelectListContent,
     },
     props: {
         value: {
@@ -81,6 +116,10 @@ export default {
         underline: {
             type: Boolean,
             default: false,
+        },
+        fixedContentWidth: {
+            type: Boolean,
+            default: true,
         },
         leftAlignment: {
             type: Boolean,
@@ -147,13 +186,9 @@ export default {
             return Array.isArray(this.value) ? this.value.join(', ') : this.value;
         },
     },
-    methods: {
-        emitValue(value) {
-            this.$emit('input', value);
-        },
-        onFocus(isFocused) {
-            this.$emit('focus', isFocused);
-        },
-    },
 };
 </script>
+
+<style lang="scss" scoped>
+    @import "~assets/scss/input.scss";
+</style>

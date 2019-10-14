@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <InputSelectBase
-        :value="value"
+    <Select
+        :value="parsedDate"
         :solid="solid"
         :underline="underline"
         :left-alignment="leftAlignment"
@@ -16,48 +16,42 @@
         :required="required"
         :autofocus="autofocus"
         :disabled="disabled"
-        :dismissible="dismissible"
+        :dismissible="false"
         :small="small"
         :regular="regular"
-        :fixed-select-content="false"
-        multiselect
+        :fixed-content-width="false"
         clearable
         @focus="onFocus"
-        @clear="emitValue">
+        @input="onValueChange">
         <template #prepend>
             <slot name="prepend" />
-        </template>
-        <template #input>
-            <input
-                :value="parsedDate"
-                :placeholder="placeholder"
-                :disabled="disabled"
-                :aria-label="label || 'no description'"
-                type="text"
-                readonly>
         </template>
         <template #append>
             <slot name="append" />
         </template>
         <template #selectContent>
-            <slot name="selectContent">
-                <DatePickerContent
-                    :value="value"
-                    @input="emitValue" />
-            </slot>
+            <DatePickerContent
+                :value="value"
+                @input="onValueChange" />
         </template>
-    </InputSelectBase>
+        <template #footer="{ clear, apply }">
+            <SelectContentApplyFooter
+                @clear="clear"
+                @apply="apply" />
+        </template>
+    </Select>
 </template>
 
 <script>
 import { format as formatDate } from 'date-fns';
-import InputSelectBase from '~/components/Inputs/InputSelectBase';
+import Select from '~/components/Inputs/Select/Select';
 
 export default {
     name: 'DatePicker',
     components: {
-        InputSelectBase,
+        Select,
         DatePickerContent: () => import('~/components/Inputs/Date/DatePickerContent'),
+        SelectContentApplyFooter: () => import('~/components/Inputs/Select/Contents/Footers/SelectContentApplyFooter'),
     },
     props: {
         value: {
@@ -83,10 +77,6 @@ export default {
         centerAlignment: {
             type: Boolean,
             default: false,
-        },
-        dismissible: {
-            type: Boolean,
-            default: true,
         },
         label: {
             type: String,
@@ -133,9 +123,8 @@ export default {
         },
     },
     methods: {
-        emitValue(value) {
-            if (Array.isArray(value)) this.$emit('input', null);
-            else this.$emit('input', value);
+        onValueChange(value) {
+            this.$emit('input', value === '' ? null : value);
         },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);

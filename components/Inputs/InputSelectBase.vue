@@ -4,12 +4,12 @@
  */
 <template>
     <div
-        :class="inputStyle"
+        :class="inputClasses"
         @keyup="onKeyUp"
         @keydown="onKeyDown">
         <div
-            ref="inputContent"
-            :class="inputContentClasses"
+            ref="activator"
+            :class="activatorClasses"
             @click="onFocusInput">
             <slot name="prepend" />
             <label
@@ -163,7 +163,7 @@ export default {
         isPlaceholder() {
             return this.placeholder !== null;
         },
-        inputStyle() {
+        inputClasses() {
             return [
                 'input',
                 {
@@ -178,12 +178,12 @@ export default {
                 },
             ];
         },
-        inputContentClasses() {
+        activatorClasses() {
             return [
-                'input__content',
+                'input__activator',
                 {
-                    'input__content--small': this.small,
-                    'input__content--regular': this.regular,
+                    'input__activator--small': this.small,
+                    'input__activator--regular': this.regular,
                 },
             ];
         },
@@ -203,9 +203,9 @@ export default {
             if (!this.isMounted) return null;
 
             if (this.isFocused || !this.isEmpty || this.isPlaceholder) {
-                const { inputContent } = this.$refs;
+                const { activator } = this.$refs;
                 const translateX = this.solid ? '-4px' : '-5px';
-                const transform = `translate(${translateX}, -${inputContent.offsetHeight / 2}px) scale(0.9)`;
+                const transform = `translate(${translateX}, -${activator.offsetHeight / 2}px) scale(0.9)`;
 
                 return {
                     transform,
@@ -304,10 +304,10 @@ export default {
             if (isDoubleClicked) return false;
 
             const { clientX, clientY } = event;
-            const inputActivator = this.$el.querySelector('.input__content');
+            const activator = this.$el.querySelector('.input__activator');
             const {
                 top, left, width, height,
-            } = inputActivator.getBoundingClientRect();
+            } = activator.getBoundingClientRect();
             const isClickedInsideInput = this.$el.contains(event.target)
                 && clientX > left
                 && clientX < left + width

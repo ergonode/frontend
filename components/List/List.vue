@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="list">
+    <ul class="list">
         <slot />
-    </div>
+    </ul>
 </template>
 
 <script>

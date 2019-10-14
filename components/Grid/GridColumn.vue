@@ -11,6 +11,7 @@
                 {
                     'column__extender': isExtenderColumn,
                     'column--last': isLast,
+                    'column--dragged': draggedElIndex !== -1,
                 }
             ]"
         :style="colGridTemplate"
@@ -346,7 +347,7 @@ export default {
                 this.setGhostIndex(isBefore ? this.index - 1 : this.index);
             }
         },
-        updateColumnsTransform(isBefore) {
+        updateColumnsTransform() {
             const contentGrid = this.getGridContentElement();
             const { width: ghostWidth } = contentGrid.children[this.draggedElIndex]
                 .getBoundingClientRect();
@@ -354,13 +355,13 @@ export default {
             let bounds = {};
 
             if (this.ghostIndex > this.index) {
-                bounds = this.getLowerBoundsTransforms({
-                    contentGrid, ghostWidth, ghostTransform, isBefore,
-                });
+                bounds = this.getLowerBoundsTransforms(
+                    contentGrid, ghostWidth, ghostTransform,
+                );
             } else {
-                bounds = this.getUpperBoundsTransforms({
-                    contentGrid, ghostWidth, ghostTransform, isBefore,
-                });
+                bounds = this.getUpperBoundsTransforms(
+                    contentGrid, ghostWidth, ghostTransform,
+                );
             }
 
             Object.keys(bounds.transforms).forEach((index) => {
@@ -462,6 +463,10 @@ export default {
         position: relative;
         display: grid;
         box-sizing: border-box;
+
+        &--dragged {
+            will-change: transform;
+        }
 
         &::before {
             position: absolute;
