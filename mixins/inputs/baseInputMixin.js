@@ -13,14 +13,12 @@ export default {
     },
     mounted() {
         if (this.autofocus) {
-            // this.onFocus();
             this.$nextTick(() => {
                 this.$refs.input.focus();
             });
         }
 
         this.isMounted = true;
-        // eslint-disable-next-line no-underscore-dangle
         this.associatedLabel = `input-${this._uid}`;
     },
     computed: {
@@ -33,7 +31,7 @@ export default {
         isPlaceholder() {
             return this.placeholder !== null;
         },
-        inputStyle() {
+        inputClasses() {
             return [
                 'input',
                 {

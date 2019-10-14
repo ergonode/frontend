@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        :class="inputStyle"
+        :class="inputClasses"
         @keyup="onKeyUp"
         @keydown="onKeyDown">
         <div
@@ -163,7 +163,7 @@ export default {
         isPlaceholder() {
             return this.placeholder !== null;
         },
-        inputStyle() {
+        inputClasses() {
             return [
                 'input',
                 {

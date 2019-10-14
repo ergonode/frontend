@@ -54,7 +54,7 @@ module.exports = {
             ],
         }],
         'class-methods-use-this':['off'],
-        'no-underscore-dangle': ['error', { 'allow': ['_router'] }],
+        'no-underscore-dangle': 'off',
         'no-unused-vars':['error', { 'argsIgnorePattern': 'commit' }],
         'max-len': ['error', {
             'code': 100,

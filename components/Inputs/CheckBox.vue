@@ -33,7 +33,6 @@ export default {
         };
     },
     mounted() {
-        // eslint-disable-next-line no-underscore-dangle
         this.associatedLabel = `checkbox-${this._uid}`;
     },
     computed: {
