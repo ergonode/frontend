@@ -118,7 +118,6 @@ export default {
             'setDraggableState',
         ]),
         ...mapActions('list', [
-            'removeDisabledElement',
             'setDisabledElement',
         ]),
         ...mapActions('gridDesigner', [
@@ -190,9 +189,7 @@ export default {
             const { isOutOfBounds, isTrashBelowMouse } = this.getElementBelowMouse(event);
 
             if (isTrashBelowMouse) {
-                if (!this.isMultiDraggable) this.removeAllDisabledElementOnList();
-                this.removeHiddenItem(id);
-                this.$emit('afterRemove', id);
+                this.removeElementFromGrid(id);
             }
             if (isOutOfBounds && !isTrashBelowMouse) {
                 this.insertElementIntoGrid();
@@ -228,6 +225,11 @@ export default {
                 });
             }
             return true;
+        },
+        removeElementFromGrid(id) {
+            if (!this.isMultiDraggable) this.$emit('removeDisabledElementsOnList', id);
+            this.removeHiddenItem(id);
+            this.$emit('afterRemove', id);
         },
         insertElementIntoGrid() {
             const { id: draggedId, row: draggedRow, column: draggedColumn } = this.draggedElement;
@@ -289,24 +291,6 @@ export default {
             this.ghostElement.row = null;
             this.ghostElement.column = null;
             this.removeGridItem(id);
-        },
-        removeAllDisabledElementOnList() {
-            const { id } = this.draggedElement;
-
-            if (this.hiddenItems[id]) {
-                const childrenForHiddenItem = this.hiddenItems[id];
-
-                for (let i = 0; i < childrenForHiddenItem.length; i += 1) {
-                    this.removeDisabledElement({
-                        languageCode: this.language,
-                        elementId: childrenForHiddenItem[i].id,
-                    });
-                }
-            }
-            this.removeDisabledElement({
-                languageCode: this.language,
-                elementId: id,
-            });
         },
         getBottomCollidingColumn({ neighborElColumn, collidingElColumn }) {
             const { overColumn } = this.mousePosition;

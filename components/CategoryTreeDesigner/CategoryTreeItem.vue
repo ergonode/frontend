@@ -3,7 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="grid-item">
+    <div
+        :class="['grid-item',{ 'grid-item--menu-active': isContextualMenuActive }]"
+        @mouseover="onMouseOver"
+        @mouseout="onMouseOut">
         <IconPlusMinus
             v-if="hasChildren"
             class="grid-item__icon"
@@ -18,16 +21,33 @@
             class="grid-item__categories-length txt-fixed typo-hint txt--dark-graphite">
             {{ numberOfChildren }}
         </span>
+        <div
+            :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
+            <ButtonSelect
+                icon-path="Others/IconDots"
+                :options="contextualMenuItems"
+                @input="onSelectValue"
+                @focus="onSelectFocus" />
+        </div>
     </div>
 </template>
 <script>
 import { Action } from '~/model/icons/Action';
 import IconPlusMinus from '~/components/Icon/Actions/IconPlusMinus';
+import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
 
 export default {
     name: 'CategoryTreeItem',
     components: {
         IconPlusMinus,
+        ButtonSelect,
+    },
+    data() {
+        return {
+            isContextualMenuActive: false,
+            contextualMenuItems: ['Remove'],
+            isHovered: false,
+        };
     },
     props: {
         isExpanded: {
@@ -52,10 +72,32 @@ export default {
                 ? Action.PLUS
                 : Action.MINUS;
         },
+        contextualMenuHoveStateClasses() {
+            return { 'grid-item__contextual-menu--hovered': this.isHovered };
+        },
     },
     methods: {
         toggleItemExpand() {
             this.$emit('toggleItem');
+        },
+        onSelectFocus(isFocused) {
+            if (!isFocused) this.isHovered = false;
+
+            this.isContextualMenuActive = isFocused;
+        },
+        onSelectValue(value) {
+            switch (value) {
+            case 'Remove':
+                this.$emit('removeItem');
+                break;
+            default: break;
+            }
+        },
+        onMouseOver() {
+            if (!this.isHovered) this.isHovered = true;
+        },
+        onMouseOut() {
+            if (!this.isContextualMenuActive) this.isHovered = false;
         },
     },
 };
@@ -69,13 +111,26 @@ export default {
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        grid-column: 1 / 3;
+        grid-column: 1 / 4;
         height: 100%;
         border: 1px solid $grey;
-        padding: 0 12px;
+        padding-left: 12px;
         background-color: $background;
         cursor: move;
         overflow: hidden;
+
+        &--menu-active {
+            z-index: 15;
+        }
+
+        &:hover {
+            z-index: 10;
+            border: none;
+            box-shadow:
+                0 4px 5px 0 rgba(0, 0, 0, 0.14),
+                0 1px 10px 0 rgba(0, 0, 0, 0.12),
+                0 2px 4px -1px rgba(0, 0, 0, 0.2);
+        }
 
         &__icon {
             margin-right: 8px;
@@ -97,6 +152,16 @@ export default {
             border: 1px solid $grey;
             padding: 2px 8px;
             border-radius: 12px;
+        }
+
+        &__contextual-menu {
+            flex: 0 1 auto;
+            align-items: flex-start;
+            opacity: 0;
+
+            &--hovered {
+                opacity: 1;
+            }
         }
     }
 </style>

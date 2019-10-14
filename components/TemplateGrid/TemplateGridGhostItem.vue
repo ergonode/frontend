@@ -14,7 +14,7 @@ export default {
 <style lang="scss" scoped>
     .grid__ghost-item {
         display: flex;
-        grid-column: 1 / 3;
+        grid-column: 1 / 4;
         justify-content: flex-start;
         align-items: center;
         height: 100%;

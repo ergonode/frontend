@@ -13,6 +13,7 @@
             :is-dragging-enabled="isDraggingEnabled"
             :is-multi-draggable="isMultiDraggable"
             :dragged-element-size="draggedElementSize"
+            @removeDisabledElementsOnList="removeDisabledElementsOnList"
             @toggleItem="toggleItem"
             @afterDrop="id => $emit('afterDrop', id)"
             @afterRemove="id => $emit('afterRemove', id)">
@@ -34,7 +35,8 @@
                         v-else
                         name="gridItem"
                         :item="item"
-                        :toggle-item-method="toggleItem" />
+                        :toggle-item="toggleItem"
+                        :remove-item="removeItem" />
                     <template
                         v-if="isConnectionsVisible"
                         #connection>
@@ -100,9 +102,13 @@ export default {
         },
     },
     computed: {
+        ...mapState('authentication', {
+            language: (state) => state.user.language,
+        }),
         ...mapState('gridDesigner', {
             rows: (state) => state.rows,
             gridData: (state) => state.gridData,
+            hiddenItems: (state) => state.hiddenItems,
         }),
         filteredGridData() {
             return this.gridData.filter(
@@ -120,9 +126,14 @@ export default {
         ...mapActions('gridDesigner', [
             'setGridWhenCollapse',
             'setGridWhenExpand',
+            'setChildrenLength',
             'setHiddenItem',
             'removeHiddenItem',
             'setExpandItem',
+            'removeGridItem',
+        ]),
+        ...mapActions('list', [
+            'removeDisabledElement',
         ]),
         toggleItem({
             id, row, column, expanded,
@@ -180,6 +191,32 @@ export default {
                 height: `${connectionHeight}px`,
                 bottom: `${this.rowsHeight / 2}px`,
             };
+        },
+        removeItem(item) {
+            const { id, parent } = item;
+            this.toggleItem(item);
+            this.removeDisabledElementsOnList(id);
+            this.removeHiddenItem(id);
+            if (parent !== 'root') {
+                this.setChildrenLength({ id: parent, value: -1 });
+            }
+            this.removeGridItem(id);
+        },
+        removeDisabledElementsOnList(id) {
+            if (this.hiddenItems[id]) {
+                const childrenForHiddenItem = this.hiddenItems[id];
+
+                for (let i = 0; i < childrenForHiddenItem.length; i += 1) {
+                    this.removeDisabledElement({
+                        languageCode: this.language,
+                        elementId: childrenForHiddenItem[i].id,
+                    });
+                }
+            }
+            this.removeDisabledElement({
+                languageCode: this.language,
+                elementId: id,
+            });
         },
     },
 };
