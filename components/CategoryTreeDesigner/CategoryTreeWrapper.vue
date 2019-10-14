@@ -13,12 +13,13 @@
                 :columns="columns" />
         </template>
         <template
-            #gridItem="{item, toggleItemMethod}">
+            #gridItem="{item, toggleItem, removeItem}">
             <CategoryTreeItem
                 :number-of-children="getChildrenLengthById(item.id)"
                 :is-expanded="getExpandStateById(item.id)"
                 :item-name="item.name || item.code"
-                @toggleItem="toggleItemMethod(item)" />
+                @toggleItem="toggleItem(item)"
+                @removeItem="removeItem(item)" />
         </template>
     </TemplateGridWrapper>
 </template>

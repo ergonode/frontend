@@ -56,6 +56,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        removeDisabledElementsOnList: {
+            type: Function,
+            default: () => {},
+        },
         draggedElementSize: {
             type: Object,
             default: () => ({
@@ -117,7 +121,6 @@ export default {
             'setDraggableState',
         ]),
         ...mapActions('list', [
-            'removeDisabledElement',
             'setDisabledElement',
         ]),
         ...mapActions('gridDesigner', [
@@ -227,7 +230,7 @@ export default {
             return true;
         },
         removeElementFromGrid(id) {
-            if (!this.isMultiDraggable) this.removeDisabledElementsOnList();
+            if (!this.isMultiDraggable) this.removeDisabledElementsOnList(id);
             this.removeHiddenItem(id);
             this.$emit('afterRemove', id);
         },
@@ -291,24 +294,6 @@ export default {
             this.ghostElement.row = null;
             this.ghostElement.column = null;
             this.removeGridItem(id);
-        },
-        removeDisabledElementsOnList() {
-            const { id } = this.draggedElement;
-
-            if (this.hiddenItems[id]) {
-                const childrenForHiddenItem = this.hiddenItems[id];
-
-                for (let i = 0; i < childrenForHiddenItem.length; i += 1) {
-                    this.removeDisabledElement({
-                        languageCode: this.language,
-                        elementId: childrenForHiddenItem[i].id,
-                    });
-                }
-            }
-            this.removeDisabledElement({
-                languageCode: this.language,
-                elementId: id,
-            });
         },
         getBottomCollidingColumn({ neighborElColumn, collidingElColumn }) {
             const { overColumn } = this.mousePosition;

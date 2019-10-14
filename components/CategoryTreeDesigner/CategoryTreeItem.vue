@@ -88,7 +88,7 @@ export default {
         onSelectValue(value) {
             switch (value) {
             case 'Remove':
-                console.log('remove');
+                this.$emit('removeItem');
                 break;
             default: break;
             }
