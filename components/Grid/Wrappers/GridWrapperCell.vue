@@ -14,24 +14,22 @@
         :selected="isSelected"
         :editing="isEditingCell"
         @edit="onEdit">
-        <template v-if="!isExtenderColumn">
-            <Component
-                :is="infoComponent"
-                v-if="!isEditingCell || isActionCell"
-                v-bind="infoComponentProps" />
-            <GridEditActivatorCell
-                v-else
-                :store-namespace="storeNamespace"
-                :is-multi-select="isMultiSelect"
-                :type="column.type"
-                :value="editValue"
-                :options="options"
-                :colors="column.colors || null"
-                :parameters="parameters"
-                :error-messages="errorValue"
-                :fixed-width="$el.offsetWidth"
-                @updateValue="onUpdateDraft" />
-        </template>
+        <Component
+            :is="infoComponent"
+            v-if="!isEditingCell || isActionCell"
+            v-bind="infoComponentProps" />
+        <GridEditActivatorCell
+            v-else
+            :namespace="namespace"
+            :is-multi-select="isMultiSelect"
+            :type="column.type"
+            :value="editValue"
+            :options="options"
+            :colors="column.colors || null"
+            :parameters="parameters"
+            :error-messages="errorValue"
+            :fixed-width="$el.offsetWidth"
+            @updateValue="onUpdateDraft" />
     </GridCell>
 </template>
 
@@ -48,7 +46,7 @@ export default {
         GridEditActivatorCell: () => import('~/components/Grid/EditCells/GridEditActivatorCell'),
     },
     props: {
-        storeNamespace: {
+        namespace: {
             type: String,
             required: true,
         },
@@ -90,10 +88,9 @@ export default {
         },
     },
     beforeCreate() {
-        const { type, editable, id } = this.$options.propsData.column;
+        const { type, editable } = this.$options.propsData.column;
 
         this.isActionCell = type === 'CHECK' || type === 'ACTION';
-        this.isExtenderColumn = id === 'extender';
         this.isSelectKind = type === 'SELECT' || type === 'MULTI_SELECT' || type === 'LABEL';
         this.isMultiSelect = type === 'MULTI_SELECT';
         this.isEditingAllowed = (editable && this.$options.propsData.editingPrivilegeAllowed)
@@ -101,7 +98,6 @@ export default {
     },
     beforeDestroy() {
         delete this.isActionCell;
-        delete this.isExtenderColumn;
         delete this.isSelectKind;
         delete this.isMultiSelect;
         delete this.isEditingAllowed;
@@ -114,7 +110,7 @@ export default {
             userLanguageCode: (state) => state.user.language,
         }),
         gridState() {
-            return this.$store.state[this.storeNamespace];
+            return this.$store.state[this.namespace];
         },
         isEditingCell() {
             const { row, column } = this.gridState.editingCellCoordinates;
@@ -131,8 +127,6 @@ export default {
             const { type } = this.column;
 
             switch (type) {
-            case 'ACTION':
-                return () => import('~/components/Grid/EditCells/GridEditRowCell');
             case 'LABEL':
                 return () => import('~/components/Grid/GridStatusInfoCell');
             case 'IMAGE':
@@ -159,7 +153,7 @@ export default {
                 };
             case 'CHECK':
                 return {
-                    storeNamespace: this.storeNamespace,
+                    namespace: this.namespace,
                     row: this.rowIndex,
                 };
             case 'LABEL':
@@ -248,9 +242,9 @@ export default {
         ]),
         onEdit(isEditing) {
             if (this.column.type === 'CHECK') {
-                this.$store.dispatch(`${this.storeNamespace}/setSelectedRow`, { row: this.rowIndex, value: isEditing });
+                this.$store.dispatch(`${this.namespace}/setSelectedRow`, { row: this.rowIndex, value: isEditing });
             } else {
-                this.$store.dispatch(`${this.storeNamespace}/setEditingCellCoordinates`, isEditing
+                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, isEditing
                     ? { column: this.columnIndex, row: this.rowIndex }
                     : {});
             }

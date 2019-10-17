@@ -37,7 +37,7 @@ export default {
     },
     methods: {
         addNewAttribute() {
-            this.$router.push('/attributes/attribute/new');
+            this.$router.push('/attributes/attribute/new/general');
         },
     },
 };

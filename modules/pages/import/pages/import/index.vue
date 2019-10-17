@@ -5,7 +5,7 @@
 <template>
     <GridPage
         :title="title"
-        :action-paths="actionPaths"
+        :route-edit="routeEdit"
         :buttons="buttons"
         icon="Import" />
 </template>
@@ -36,10 +36,10 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
         }),
-        actionPaths() {
+        routeEdit() {
             return {
                 getData: `${this.userLanguageCode}/imports`,
-                routerEdit: 'imports-edit-id',
+                name: 'imports-edit-id',
             };
         },
     },

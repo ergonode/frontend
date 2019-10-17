@@ -3,7 +3,12 @@
  * See LICENSE for license details.
  */
 import { toCapitalize } from '~/model/stringWrapper';
-import { PINNED_COLUMN_STATE, GRID_HEADER_TYPE } from '~/defaults/grid/main';
+import {
+    PINNED_COLUMN_STATE,
+    GRID_HEADER_TYPE,
+    COLUMN_TYPE,
+    COLUMN_WIDTH,
+} from '~/defaults/grid/main';
 
 const getMappedColumnHeaderTitle = ({
     id,
@@ -15,8 +20,7 @@ const getMappedColumnHeaderTitle = ({
     let suffix = '';
     const columnIDs = id.split(':');
 
-    if (type === 'PRICE') suffix = parameter.currency;
-    if (type === 'ACTION') return 'Edit';
+    if (type === COLUMN_TYPE.PRICE) suffix = parameter.currency;
     if (!language) return `${label} ${suffix}`;
     if (columnIDs.length > 1) return `${label || id} ${suffix}`;
 
@@ -26,8 +30,8 @@ const getMappedColumnHeaderTitle = ({
 };
 
 const getMappedColumnHeaderType = ({ filter, type }) => {
-    if (type === 'CHECK') return GRID_HEADER_TYPE.CHECK;
-    if (filter || type === 'IMAGE') return GRID_HEADER_TYPE.INTERACTIVE;
+    if (type === COLUMN_TYPE.CHECK) return GRID_HEADER_TYPE.CHECK;
+    if (filter || type === COLUMN_TYPE.IMAGE) return GRID_HEADER_TYPE.INTERACTIVE;
 
     return GRID_HEADER_TYPE.PLAIN;
 };
@@ -38,11 +42,13 @@ const getMappedColumnHeader = (column) => ({
 });
 
 const getMappedColumnWidth = (column) => {
-    const isSelectKind = column.filter && (column.filter.type === 'SELECT' || column.filter.type === 'MULTI_SELECT');
-    const isActionKind = column.type === 'ACTION' || column.type === 'CHECK';
-    if (isSelectKind) return '150px';
-    if (isActionKind) return '40px';
-    return 'min-content';
+    const isSelectKind = column.filter
+        && (column.filter.type === COLUMN_TYPE.SELECT
+            || column.filter.type === COLUMN_TYPE.MULTI_SELECT);
+    const isActionKind = column.type === COLUMN_TYPE.ACTION || column.type === COLUMN_TYPE.CHECK;
+    if (isSelectKind) return COLUMN_WIDTH.SELECT;
+    if (isActionKind) return COLUMN_WIDTH.ACTION;
+    return COLUMN_WIDTH.DEFAULT;
 };
 
 export function getSortedColumnsByIDs(columns, columnsID) {
@@ -59,53 +65,37 @@ export function getMappedColumn(column) {
     return { mappedColumn, columnWidth };
 }
 
-export function getMappedColumns(columns, isExtenderNeeded = true) {
+export function getMappedColumns(columns) {
     const mappedColumns = [];
     const columnWidths = [];
     const pinnedColumns = [];
     const { length } = columns;
-    const fixedColumnsLength = isExtenderNeeded ? length + 1 : length;
-    const extenderColumn = {
-        id: 'extender',
-        label: '',
-        type: '',
-        editable: false,
-    };
-    let isExtenderColumnAdded = false;
 
-    for (let i = 0; i < fixedColumnsLength; i += 1) {
-        const fixedIndex = isExtenderColumnAdded ? i - 1 : i;
+    for (let i = 0; i < length; i += 1) {
         const gridColumnPosition = `${i + 1} / ${i + 2}`;
+        const column = columns[i];
 
-        if ((i + 1 === length && columns[i].type === 'ACTION' && isExtenderNeeded)
-            || (i === length && !isExtenderColumnAdded)) {
-            mappedColumns.push(extenderColumn);
-            columnWidths.push('auto');
-            isExtenderColumnAdded = true;
-        } else {
-            columnWidths.push(getMappedColumnWidth(columns[fixedIndex]));
-            mappedColumns.push(columns[fixedIndex]);
-        }
+        columnWidths.push(getMappedColumnWidth(column));
+        mappedColumns.push({
+            ...column,
+            header: getMappedColumnHeader(column),
+        });
 
-        mappedColumns[i].header = getMappedColumnHeader(mappedColumns[i]);
-
-        const { id, type } = mappedColumns[i];
-
-        if (type === 'CHECK') {
+        if (column.type === COLUMN_TYPE.CHECK) {
             pinnedColumns.push({
-                id,
+                id: column.id,
                 state: PINNED_COLUMN_STATE.LEFT,
                 position: gridColumnPosition,
             });
         }
-
-        if (type === 'ACTION') {
-            pinnedColumns.push({
-                id,
-                state: PINNED_COLUMN_STATE.RIGHT,
-                position: gridColumnPosition,
-            });
-        }
+        //
+        // if (type === COLUMN_TYPE.ACTION) {
+        //     pinnedColumns.push({
+        //         id,
+        //         state: PINNED_COLUMN_STATE.RIGHT,
+        //         position: gridColumnPosition,
+        //     });
+        // }
     }
 
     return {
@@ -143,7 +133,7 @@ export function getMappedCellValues(columns, rows, rowIds) {
                 }
             } else if (typeof value === 'undefined' || value === null) {
                 values[rowId][columnId] = { value: '' };
-            } else if (typeof value === 'boolean' && column.type !== 'CHECK_CELL') {
+            } else if (typeof value === 'boolean' && column.type !== COLUMN_TYPE.CHECK_CELL) {
                 values[rowId][columnId] = { value: value ? 'Yes' : 'No' };
             } else {
                 values[rowId][columnId] = { value };
@@ -166,6 +156,20 @@ export function getMappedRowIds(rows) {
     }
 
     return rowIds;
+}
+
+export function getMappedRowLinks(rows) {
+    const rowLinks = [];
+    const { length } = rows;
+
+    for (let i = 0; i < length; i += 1) {
+        const { id, _links } = rows[i];
+
+        if (typeof id === 'undefined') rowLinks.push({ id: i + 1, links: _links });
+        else rowLinks.push({ id, links: _links });
+    }
+
+    return rowLinks;
 }
 
 export function getMappedGridConfiguration(configuration) {

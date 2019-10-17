@@ -5,7 +5,7 @@
 <template>
     <TemplateGridWrapper
         :columns="columns"
-        :rows-height="rowsHeight"
+        :row-height="rowHeight"
         :is-connections-visible="false"
         :grid-gap="15"
         :is-dragging-enabled="$hasAccess('SEGMENT_UPDATE')"
@@ -46,7 +46,7 @@ export default {
         }),
         ...mapState('conditions', {
             columns: (state) => state.columns,
-            rowsHeight: (state) => state.rowsHeight,
+            rowHeight: (state) => state.rowHeight,
             conditions: (state) => state.conditions,
             conditionsValues: (state) => state.conditionsValues,
         }),

@@ -36,27 +36,4 @@ describe('Pages/CategoryPage', () => {
         expect(typeof CategoryPage.name).toBe('string');
         expect(CategoryPage.name).toEqual('CategoryPage');
     });
-
-    it('Check tab paths for new page', () => {
-        expect(wrapper.vm.isEdit).toBeFalsy();
-        expect(wrapper.vm.tabs[0].path).toBe('/categories/category/new/general');
-        expect(wrapper.vm.tabs[1].path).toBe('/categories/category/new/translations');
-    });
-
-    it('Check tab paths for edit page', () => {
-        wrapper = mount(CategoryPage, {
-            mocks,
-            propsData: {
-                title: '',
-                isEdit: true,
-            },
-            stubs: {
-                Button: true,
-                HorizontalTabBar: true,
-            },
-        });
-        expect(wrapper.vm.isEdit).toBeTruthy();
-        expect(wrapper.vm.tabs[0].path).toBe('/categories/category/edit/12345/general');
-        expect(wrapper.vm.tabs[1].path).toBe('/categories/category/edit/12345/translations');
-    });
 });

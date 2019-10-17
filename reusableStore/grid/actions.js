@@ -6,6 +6,7 @@ import {
     getMappedGridConfiguration,
     getMappedCellValues,
     getMappedRowIds,
+    getMappedRowLinks,
     getMappedColumn,
     getMappedColumns,
     getSortedColumnsByIDs,
@@ -22,7 +23,7 @@ export default {
             columns: stateColumns,
             columnWidths: stateColumnWidths,
             sortedByColumn,
-            displayedPage,
+            currentPage,
             numberOfDisplayedElements,
             basicFilters,
         } = state;
@@ -33,7 +34,7 @@ export default {
             : null;
         const params = {
             limit: numberOfDisplayedElements,
-            offset: (displayedPage - 1) * numberOfDisplayedElements,
+            offset: (currentPage - 1) * numberOfDisplayedElements,
             columns: columnIDs,
         };
         const isSorted = Object.keys(sortedByColumn).length;
@@ -58,6 +59,7 @@ export default {
             const { mappedColumns, pinnedColumns, columnWidths } = getMappedColumns(visibleColumns);
             const mappedConfiguration = getMappedGridConfiguration(configuration);
             const rowIds = getMappedRowIds(rows);
+            const rowLinks = getMappedRowLinks(rows);
             const cellValues = getMappedCellValues(columns, rows, rowIds);
 
             if (isProductGrid) {
@@ -75,6 +77,7 @@ export default {
             commit(types.SET_CONFIGURATION, mappedConfiguration);
             commit(types.SET_CELL_VALUES, cellValues);
             commit(types.SET_ROW_IDS, rowIds);
+            commit(types.SET_ROW_LINKS, rowLinks);
             commit(types.SET_COUNT, count);
             commit(types.SET_FILTERED, filtered);
             commit(types.SET_COLUMNS, mappedColumns);
@@ -89,17 +92,19 @@ export default {
         const {
             columns: stateColumns,
             columnWidths: stateColumnWidths,
-            displayedPage,
+            currentPage,
             numberOfDisplayedElements,
             sortedByColumn,
             basicFilters,
         } = state;
-        const stateColumnsID = stateColumns.filter((col) => !(col.id.includes('extender') || col.id.includes(GHOST_ID))).map((col) => col.id);
+        const stateColumnsID = stateColumns
+            .filter((col) => !col.id.includes(GHOST_ID))
+            .map((col) => col.id);
         const parsedColumnsID = insertValueAtIndex(stateColumnsID, columnId, ghostIndex).join(',');
         const parsedFilter = getMappedFilter(basicFilters);
         const params = {
             columns: parsedColumnsID,
-            offset: (displayedPage - 1) * numberOfDisplayedElements,
+            offset: (currentPage - 1) * numberOfDisplayedElements,
             limit: numberOfDisplayedElements,
         };
 
@@ -122,6 +127,7 @@ export default {
             const draggedColumn = columns.find((col) => col.id === columnId);
             const { mappedColumn, columnWidth } = getMappedColumn(draggedColumn);
             const rowIds = getMappedRowIds(rows);
+            const rowLinks = getMappedRowLinks(rows);
             const cellValues = getMappedCellValues(columns, rows, rowIds);
             const newColumnsWidth = insertValueAtIndex(
                 stateColumnWidths, columnWidth, ghostIndex,
@@ -136,10 +142,11 @@ export default {
             commit(types.SET_COLUMN_WIDTHS, newColumnsWidth);
             commit(types.SET_CELL_VALUES, cellValues);
             commit(types.SET_ROW_IDS, rowIds);
+            commit(types.SET_ROW_LINKS, rowLinks);
         });
     },
     setGridData({ commit }, { columns, rows }) {
-        const { mappedColumns } = getMappedColumns(columns, false);
+        const { mappedColumns } = getMappedColumns(columns);
         const rowIds = getMappedRowIds(rows);
         const cellValues = getMappedCellValues(columns, rows, rowIds);
 
@@ -202,14 +209,14 @@ export default {
     changeNumberOfDisplayingElements({ commit, state }, { number }) {
         commit(types.SET_NUMBER_OF_ELEMENTS_TO_DISPLAY, number);
 
-        const { numberOfDisplayedElements, filtered, displayedPage } = state;
+        const { numberOfDisplayedElements, filtered, currentPage } = state;
 
         if (numberOfDisplayedElements > filtered) {
             // We have only 1 page!
             commit(types.SET_CURRENT_PAGE, 1);
         } else {
             const page = Math.floor(filtered / numberOfDisplayedElements);
-            commit(types.SET_CURRENT_PAGE, Math.min(page, displayedPage));
+            commit(types.SET_CURRENT_PAGE, Math.min(page, currentPage));
         }
     },
     updateColumnWidthAtIndex({ commit }, payload) {
@@ -218,7 +225,7 @@ export default {
     insertColumnWidthAtIndex({ commit }, payload) {
         commit(types.INSERT_COLUMN_WIDTH_AT_INDEX, payload);
     },
-    changeDisplayingPage({ commit }, page) {
+    setCurrentPage({ commit }, page) {
         commit(types.SET_CURRENT_PAGE, page);
     },
     insertColumnAtIndex({ commit }, { column, index }) {
@@ -240,8 +247,7 @@ export default {
         const newOrderedColumns = [
             ...swapItemPosition(columns, from, to),
         ];
-        const columnsWithoutExtender = newOrderedColumns.filter((column) => column.id !== 'extender');
-        this.$cookies.set(COLUMN_IDS, columnsWithoutExtender.map((column) => column.id).join(','));
+        this.$cookies.set(COLUMN_IDS, newOrderedColumns.map((column) => column.id).join(','));
 
         commit(types.SET_COLUMNS, newOrderedColumns);
     },

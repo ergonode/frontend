@@ -41,7 +41,7 @@ export default {
         if (this.$hasAccess('CATEGORY_READ')) {
             this.tabs.push({
                 title: 'Categories',
-                path: '/categories/grid',
+                route: { name: 'categories-grid' },
                 active: true,
                 isContextualMenu: false,
             });

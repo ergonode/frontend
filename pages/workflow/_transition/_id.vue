@@ -16,9 +16,6 @@ import { mapState, mapActions } from 'vuex';
 import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 
 export default {
-    validate({ params }) {
-        return /\w--\w/.test(params.id);
-    },
     name: 'TransitionEdit',
     middleware: ['tab/redirectToTransitionGeneral'],
     components: {
@@ -98,9 +95,8 @@ export default {
                 offset: 0,
             }),
         ]);
-        await store.dispatch('transitions/getTransitionById', {
-            transitionId: params.id,
-        });
+
+        await store.dispatch('transitions/getTransition', params);
     },
 };
 </script>

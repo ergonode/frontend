@@ -26,20 +26,20 @@ export default {
             {
                 title: 'Attributes',
                 icon: 'Attributes',
-                path: '/attributes',
+                route: { name: 'attributes-grid' },
             },
         ];
         this.buttons = [];
 
         this.isUserAllowedToUpdateAttribute = this.$hasAccess('ATTRIBUTE_UPDATE');
-        let generalOptTabPath = '/attributes/attribute/new/general';
-        let translationsTabPath = '/attributes/attribute/new/translation';
+        let generalRoute = { name: 'attribute-new-general' };
+        let translationRoute = { name: 'attribute-new-general' };
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
         if (this.isEdit) {
-            generalOptTabPath = `/attributes/attribute/edit/${this.$route.params.id}/general`;
-            translationsTabPath = `/attributes/attribute/edit/${this.$route.params.id}/translations`;
+            generalRoute = { name: 'attribute-edit-id-general', params: this.$route.params };
+            translationRoute = { name: 'attribute-edit-id-translations', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -58,7 +58,7 @@ export default {
         this.tabs = [
             {
                 title: 'General options',
-                path: generalOptTabPath,
+                route: generalRoute,
                 active: true,
                 props: {
                     updateButton: {
@@ -70,7 +70,7 @@ export default {
             },
             {
                 title: 'Translations',
-                path: translationsTabPath,
+                route: translationRoute,
                 active: this.isEdit,
                 props: {
                     updateButton: {

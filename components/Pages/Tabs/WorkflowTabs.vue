@@ -42,13 +42,13 @@ export default {
         if (this.$hasAccess('WORKFLOW_READ')) {
             this.tabs.push({
                 title: 'Product statuses',
-                path: '/workflow/statuses',
+                route: { name: 'workflow-statuses' },
                 active: true,
                 isContextualMenu: false,
             });
             this.tabs.push({
                 title: 'Transitions',
-                path: '/workflow/transitions',
+                route: { name: 'workflow-transitions' },
                 active: true,
                 isContextualMenu: false,
             });

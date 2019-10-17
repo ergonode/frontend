@@ -24,7 +24,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { DRAGGED_ELEMENTS } from '~/defaults/grid/main';
+import { DRAGGED_ELEMENT } from '~/defaults/grid/main';
 
 export default {
     name: 'GridProductPage',
@@ -54,7 +54,7 @@ export default {
         this.tabs = [
             {
                 title: 'Products',
-                path: '/products/grid',
+                route: { name: 'products-grid' },
                 active: true,
                 isContextualMenu: false,
             },
@@ -73,11 +73,11 @@ export default {
                 return { zIndex: '10' };
             }
 
-            if (this.draggedElementOnGrid === DRAGGED_ELEMENTS.FILTER) {
+            if (this.draggedElementOnGrid === DRAGGED_ELEMENT.FILTER) {
                 return { zIndex: '15' };
             }
 
-            if (this.draggedElementOnGrid === DRAGGED_ELEMENTS.COLUMN) {
+            if (this.draggedElementOnGrid === DRAGGED_ELEMENT.COLUMN) {
                 return { zIndex: '20' };
             }
 

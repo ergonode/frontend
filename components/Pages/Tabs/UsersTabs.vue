@@ -41,7 +41,7 @@ export default {
         if (this.$hasAccess('USER_READ')) {
             this.tabs.push({
                 title: 'Users',
-                path: '/users/grid',
+                route: { name: 'users-grid' },
                 active: true,
                 isContextualMenu: false,
             });
@@ -49,7 +49,7 @@ export default {
         if (this.$hasAccess('USER_ROLE_READ')) {
             this.tabs.push({
                 title: 'Roles',
-                path: '/users/roles',
+                route: { name: 'users-roles' },
                 active: true,
                 isContextualMenu: false,
             });
@@ -57,7 +57,7 @@ export default {
         // TODO: BE need to decide if the new privilege is needed - fill the condition with correct equation
         this.tabs.push({
             title: 'Users activity logs',
-            path: '/users/logs',
+            route: { name: 'users-activity-logs' },
             active: true,
             isContextualMenu: false,
         });

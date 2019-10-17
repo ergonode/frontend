@@ -4,8 +4,9 @@
  */
 export default function ({ route, redirect }) {
     const { name } = route;
+
     if (name === 'profile') {
-        return redirect(`${route.path}/activity-log`);
+        return redirect(`${route.path}/activity-log-grid`);
     }
 
     return null;

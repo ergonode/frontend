@@ -6,18 +6,19 @@
     <div class="tab">
         <div class="tab__grid">
             <Grid
-                store-namespace="transitionsGrid"
-                :action-paths="actionPaths"
+                namespace="transitionsGrid"
+                :route-edit="routeEdit"
                 :editing-privilege-allowed="$hasAccess('WORKFLOW_UPDATE')"
                 :basic-filters="true"
-                title="Transitions" />
+                title="Transitions"
+                @rowEdit="onRowEdit" />
         </div>
         <GridFooter>
             <GridPageSelector
                 v-model="visibleRowsInPageCount"
                 :rows-number="numberOfDataElements" />
             <GridPagination
-                :value="displayedPage"
+                :value="currentPage"
                 :max-page="numberOfPages"
                 @input="onPageChanged" />
         </GridFooter>
@@ -62,16 +63,16 @@ export default {
         }),
         ...mapState('transitionsGrid', {
             numberOfDataElements: (state) => state.count,
-            displayedPage: (state) => state.displayedPage,
+            currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
         ...mapGetters('transitionsGrid', {
             numberOfPages: 'numberOfPages',
         }),
-        actionPaths() {
+        routeEdit() {
             return {
                 getData: `${this.userLanguageCode}/workflow/default/transitions`,
-                routerEdit: 'transition-edit-id',
+                name: 'transition-edit-source-destination',
             };
         },
         visibleRowsInPageCount: {
@@ -91,15 +92,27 @@ export default {
     methods: {
         ...mapActions('transitionsGrid', [
             'getData',
-            'changeDisplayingPage',
+            'setCurrentPage',
             'changeNumberOfDisplayingElements',
         ]),
+        onRowEdit({ links: { edit } }) {
+            const args = edit.href.split('/');
+            const lastIndex = args.length - 1;
+
+            this.$router.push({
+                name: 'transition-edit-source-destination-general',
+                params: {
+                    source: args[lastIndex - 1],
+                    destination: args[lastIndex],
+                },
+            });
+        },
         onPageChanged(page) {
-            this.changeDisplayingPage(page);
+            this.setCurrentPage(page);
             this.getDataWrapper();
         },
         getDataWrapper() {
-            const { getData: path } = this.actionPaths;
+            const { getData: path } = this.routeEdit;
             this.getData(
                 {
                     path,

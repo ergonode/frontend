@@ -31,9 +31,9 @@ export default {
         Blur: () => import('~/components/Blur/Blur'),
     },
     created() {
-        let generalOptTabPath = '/segments/condition-set/new/general';
-        let translationTabPath = '';
-        let designerPath = '';
+        let generalRoute = { name: 'condition-set-new-general' };
+        let translationRoute = null;
+        let designerRoute = null;
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -42,14 +42,14 @@ export default {
             {
                 title: 'Condition Sets',
                 icon: 'Templates',
-                path: '/segments/condition-sets',
+                route: { name: 'condition-sets' },
             },
         ];
         this.isUserAllowedToUpdateConditionSet = this.$hasAccess('CONDITION_UPDATE');
         if (this.isEdit) {
-            generalOptTabPath = `/segments/condition-set/edit/${this.$route.params.id}/general`;
-            translationTabPath = `/segments/condition-set/edit/${this.$route.params.id}/translations`;
-            designerPath = `/segments/condition-set/edit/${this.$route.params.id}/designer`;
+            generalRoute = { name: 'condition-set-edit-id-general', params: this.$route.params };
+            translationRoute = { name: 'condition-set-edit-id-translations', params: this.$route.params };
+            designerRoute = { name: 'condition-set-edit-id-designer', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -67,7 +67,7 @@ export default {
         this.tabs = [
             {
                 title: 'General options',
-                path: generalOptTabPath,
+                route: generalRoute,
                 active: true,
                 props: {
                     updateButton: {
@@ -79,7 +79,7 @@ export default {
             },
             {
                 title: 'Translations',
-                path: translationTabPath,
+                route: translationRoute,
                 active: this.isEdit,
                 props: {
                     updateButton: {
@@ -91,7 +91,7 @@ export default {
             },
             {
                 title: 'Designer',
-                path: designerPath,
+                route: designerRoute,
                 active: this.isEdit,
                 props: {
                     updateButton: {

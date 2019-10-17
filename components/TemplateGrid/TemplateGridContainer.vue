@@ -28,7 +28,7 @@ import {
 } from '~/model/tree/TreeCalculations';
 import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
 import { isMouseOutOfBoundsElement } from '~/model/drag_and_drop/helpers';
-import { DRAGGED_ELEMENTS } from '~/defaults/grid/main';
+import { DRAGGED_ELEMENT } from '~/defaults/grid/main';
 
 export default {
     name: 'TemplateGridContainer',
@@ -45,7 +45,7 @@ export default {
             type: Number,
             required: true,
         },
-        rowsHeight: {
+        rowHeight: {
             type: Number,
             required: true,
         },
@@ -130,7 +130,7 @@ export default {
         ]),
         calculateRowsCount() {
             const { clientHeight } = document.querySelector('.grid-container');
-            const visibleRows = Math.ceil(clientHeight / this.rowsHeight);
+            const visibleRows = Math.ceil(clientHeight / this.rowHeight);
             const totalRows = Math.max(this.fullGridData.length, visibleRows) + 1;
 
             this.setRowsCount(totalRows);
@@ -165,7 +165,7 @@ export default {
                         this.$emit('toggleItem', categoryItem);
                     }
                     this.setDraggedElement(categoryItem);
-                    this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENTS.TEMPLATE });
+                    this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.TEMPLATE });
                     addElementCopyToDocumentBody(event, {
                         element: category,
                         width: this.draggedElementSize.width,
@@ -428,7 +428,7 @@ export default {
             return null;
         },
         checkCollidingRelation(layerPositionY) {
-            const centerPosition = Math.floor(this.rowsHeight / 2);
+            const centerPosition = Math.floor(this.rowHeight / 2);
 
             return layerPositionY > centerPosition ? 'bottom' : 'top';
         },

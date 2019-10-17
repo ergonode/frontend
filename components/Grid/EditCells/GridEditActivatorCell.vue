@@ -24,7 +24,7 @@ import { AttributeTypes } from '~/defaults/attributes/main';
 export default {
     name: 'GridEditActivatorCell',
     props: {
-        storeNamespace: {
+        namespace: {
             type: String,
             required: true,
         },
@@ -98,7 +98,7 @@ export default {
         },
         onFocus(isFocused) {
             if (!isFocused) {
-                this.$store.dispatch(`${this.storeNamespace}/setEditingCellCoordinates`);
+                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`);
             }
         },
     },

@@ -16,12 +16,11 @@ export default {
     setConditionSetId({ commit }, value) {
         commit(types.SET_CONDITION_SET_ID, value);
     },
-    getTransitionById(
+    getTransition(
         { commit, dispatch, rootState },
-        { transitionId },
+        { source, destination },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        const [source, destination] = transitionId.split('--');
 
         return this.app.$axios.$get(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`).then(({
             condition_set: conditionSetId,
@@ -32,8 +31,8 @@ export default {
                 name,
                 description,
             };
-            commit(types.SET_SOURCE, source);
-            commit(types.SET_DESTINATION, destination);
+            commit(types.SET_SOURCE, source.replace('%20', ' '));
+            commit(types.SET_DESTINATION, destination.replace('%20', ' '));
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
             dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onDefaultError);

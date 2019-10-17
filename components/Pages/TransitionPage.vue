@@ -22,8 +22,8 @@ export default {
     name: 'TransitionPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
-        let generalOptTabPath = '/workflow/transition/new/general';
-        let translationTabPath = '';
+        let generalRoute = { name: 'workflow-transition-new-general' };
+        let translationRoute = {};
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -32,16 +32,15 @@ export default {
             {
                 title: 'Workflow',
                 icon: 'Flow',
-                path: '/workflow/transitions',
+                route: { name: 'workflow-transitions' },
             },
         ];
         this.isUserAllowedToUpdateTransitions = this.$hasAccess('WORKFLOW_UPDATE');
         if (this.isEdit) {
-            generalOptTabPath = `/workflow/transition/edit/${this.$route.params.id}/general`;
-            translationTabPath = `/workflow/transition/edit/${this.$route.params.id}/translations`;
+            generalRoute = { name: 'transition-edit-source-destination-general', params: this.$route.params };
+            translationRoute = { name: 'transition-edit-source-destination-translations', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
-
 
             this.buttons = [
                 {
@@ -57,7 +56,7 @@ export default {
         this.tabs = [
             {
                 title: 'General options',
-                path: generalOptTabPath,
+                route: generalRoute,
                 active: true,
                 props: {
                     updateButton: {
@@ -69,7 +68,7 @@ export default {
             },
             {
                 title: 'Translations',
-                path: translationTabPath,
+                route: translationRoute,
                 active: this.isEdit,
                 props: {
                     updateButton: {

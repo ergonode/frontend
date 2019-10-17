@@ -3,27 +3,20 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="
-            [
-                'column',
-                'border-right',
-                {
-                    'column__extender': isExtenderColumn,
-                    'column--last': isLast,
-                    'column--dragged': draggedElIndex !== -1,
-                }
-            ]"
+    <GridBaseColumn
+        :class="{
+            'column--dragged': draggedElIndex !== -1,
+        }"
         :style="colGridTemplate"
         :draggable="isColumnDraggable"
-        @dragstart="onDragStart"
-        @dragend="onDragEnd"
-        @dragover="onDragOver"
-        @drop="onDrop">
+        @dragstart.native="onDragStart"
+        @dragend.native="onDragEnd"
+        @dragover.native="onDragOver"
+        @drop.native="onDrop">
         <template v-if="!isDraggedColumn">
             <slot />
             <div
-                v-if="!isExtenderColumn && isColumnResizeable && !isHeaderFocused"
+                v-if="!isCheckColumn && isColumnResizeable && !isHeaderFocused"
                 :class="['column__resizer', {
                     'column__resizer--resizing': isResizing
                 }]"
@@ -32,7 +25,7 @@
         <template v-else>
             <GridGhostColumn :is-mouse-over-grid="isMouseOverGrid" />
         </template>
-    </div>
+    </GridBaseColumn>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
@@ -42,15 +35,17 @@ import {
 } from '~/model/layout/ElementCopy';
 import { removeColumnCookieByID } from '~/model/grid/cookies/GridLayoutConfiguration';
 import { getDraggedColumnPositionState } from '~/model/drag_and_drop/helpers';
-import { DRAGGED_ELEMENTS } from '~/defaults/grid/main';
+import { DRAGGED_ELEMENT, COLUMN_TYPE } from '~/defaults/grid/main';
+
 
 export default {
     name: 'GridColumn',
     components: {
-        GridGhostColumn: () => import('~/components/Grid/GridGhostColumn'),
+        GridBaseColumn: () => import('~/components/Grid/Columns/GridBaseColumn'),
+        GridGhostColumn: () => import('~/components/Grid/Columns/GridGhostColumn'),
     },
     props: {
-        storeNamespace: {
+        namespace: {
             type: String,
             required: true,
         },
@@ -62,13 +57,9 @@ export default {
             type: Object,
             required: true,
         },
-        rowsHeight: {
+        rowHeight: {
             type: Number,
             default: 40,
-        },
-        isLast: {
-            type: Boolean,
-            default: false,
         },
         isHeaderFocused: {
             type: Boolean,
@@ -108,11 +99,14 @@ export default {
             if (this.isDraggedColumn) return null;
 
             return {
-                gridAutoRows: `${this.rowsHeight}px`,
+                gridAutoRows: `${this.rowHeight}px`,
             };
         },
         gridState() {
-            return this.$store.state[this.storeNamespace];
+            return this.$store.state[this.namespace];
+        },
+        isCheckColumn() {
+            return this.column.type === COLUMN_TYPE.CHECK;
         },
         isPinnedColumn() {
             return this.gridState.pinnedColumns.find((col) => col.id === this.column.id);
@@ -120,13 +114,11 @@ export default {
         isColumnDraggable() {
             return this.gridState.configuration.isColumnMoveable
                 && Object.keys(this.gridState.editingCellCoordinates).length === 0
-                && !this.isHeaderFocused;
+                && !this.isHeaderFocused
+                && !this.isCheckColumn;
         },
         isColumnResizeable() {
             return this.gridState.configuration.isColumnResizeable;
-        },
-        isExtenderColumn() {
-            return this.column.id === 'extender';
         },
         isDraggedColumn() {
             return this.draggedElIndex === this.index;
@@ -156,7 +148,6 @@ export default {
             if (!isMouseAboveColumnHeader
                 || isMouseAboveLeftBorderLimit
                 || this.isPinnedColumn
-                || this.isExtenderColumn
                 || this.isResizing) {
                 event.preventDefault();
 
@@ -169,7 +160,7 @@ export default {
             this.setGhostIndex(this.index);
             this.setDraggedElIndex(this.index);
             this.setDraggedElement({ ...this.column, index: this.index });
-            this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENTS.COLUMN });
+            this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.COLUMN });
             this.updateElementWidth(`${headerWidth}px`);
 
             return true;
@@ -181,16 +172,12 @@ export default {
             removeElementCopyFromDocumentBody(event);
 
             if (isTrashBelowMouse) {
-                removeColumnCookieByID(this.$cookies, this.draggedElement.id);
                 this.removeColumnWrapper(this.draggedElIndex);
-            } else {
-                this.removeColumnsTransform();
-
-                if (this.ghostIndex !== this.draggedElIndex) {
-                    this.changeColumnPositionWrapper();
-                }
+            } else if (this.ghostIndex !== this.draggedElIndex) {
+                this.changeColumnPositionWrapper();
             }
 
+            this.removeColumnsTransform();
             this.resetDraggedElementCache();
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
             this.$emit('mouseOverGrid', false);
@@ -202,7 +189,7 @@ export default {
                 const columnId = event.dataTransfer.getData('text/plain');
 
                 this.removeColumnsTransform();
-                await this.$store.dispatch(`${this.storeNamespace}/getColumnData`, {
+                await this.$store.dispatch(`${this.namespace}/getColumnData`, {
                     ghostIndex: this.ghostIndex,
                     columnId,
                     path: `${this.languageCode}/products`,
@@ -231,7 +218,6 @@ export default {
             if ((this.index === this.draggedElIndex && this.ghostIndex !== -1)
                 || (isBefore && this.ghostIndex === fixedIndex - 1)
                 || (!isBefore && this.ghostIndex === fixedIndex + 1)
-                || (this.isExtenderColumn && !isBefore)
                 || this.isPinnedColumn) {
                 return false;
             }
@@ -255,7 +241,7 @@ export default {
 
             if (width > minWidth) {
                 this.updateElementWidth(`${width}px`);
-                this.$store.dispatch(`${this.storeNamespace}/updateColumnWidthAtIndex`, {
+                this.$store.dispatch(`${this.namespace}/updateColumnWidthAtIndex`, {
                     index: this.index, width: `${width}px`,
                 });
             }
@@ -327,15 +313,17 @@ export default {
             return document.documentElement.querySelector('.grid__content');
         },
         removeColumnWrapper(index) {
-            this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, index);
-            this.$store.dispatch(`${this.storeNamespace}/removeColumnWidthAtIndex`, index);
+            removeColumnCookieByID(this.$cookies, this.draggedElement.id);
+
+            this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, index);
+            this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, index);
         },
         changeColumnPositionWrapper() {
-            this.$store.dispatch(`${this.storeNamespace}/changeColumnPosition`, {
+            this.$store.dispatch(`${this.namespace}/changeColumnPosition`, {
                 from: this.draggedElIndex,
                 to: this.ghostIndex,
             });
-            this.$store.dispatch(`${this.storeNamespace}/changeColumnWidthPosition`, {
+            this.$store.dispatch(`${this.namespace}/changeColumnWidthPosition`, {
                 from: this.draggedElIndex,
                 to: this.ghostIndex,
             });

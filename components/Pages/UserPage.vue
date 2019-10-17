@@ -22,8 +22,8 @@ export default {
     name: 'UserPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
-        let generalOptTabPath = '/users/user/new/general';
-        let avatarTabPath = '/users/user/new/avatar';
+        let generalRoute = { name: 'user-new-general' };
+        let avatarRoute = {};
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -32,14 +32,14 @@ export default {
             {
                 title: 'Users',
                 icon: 'User',
-                path: '/users',
+                route: { name: 'users-grid' },
             },
         ];
         this.isUserAllowedToUpdateUser = this.$hasAccess('USER_UPDATE');
 
         if (this.isEdit) {
-            generalOptTabPath = `/users/user/edit/${this.$route.params.id}/general`;
-            avatarTabPath = `/users/user/edit/${this.$route.params.id}/avatar`;
+            generalRoute = { name: 'user-edit-id-general', params: this.$route.params };
+            avatarRoute = { name: 'user-edit-id-avatar', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -58,7 +58,7 @@ export default {
         this.tabs = [
             {
                 title: 'General options',
-                path: generalOptTabPath,
+                route: generalRoute,
                 active: true,
                 props: {
                     updateButton: {
@@ -70,7 +70,7 @@ export default {
             },
             {
                 title: 'Avatar',
-                path: avatarTabPath,
+                route: avatarRoute,
                 active: this.isEdit,
                 props: {
                     updateButton: {

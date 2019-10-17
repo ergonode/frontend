@@ -57,13 +57,13 @@
                         :index="index"
                         :filter="filter"
                         :is-mouse-over-filters="isMouseOverFilters"
-                        :store-namespace="storeNamespace"
+                        :namespace="namespace"
                         @mouseOverFilters="onMouseOverFilters" />
                     <GridAdvancedFilterGhost
                         v-else
                         :key="index"
                         :is-mouse-over-filters="isMouseOverFilters"
-                        :store-namespace="storeNamespace"
+                        :namespace="namespace"
                         @mouseOverFilters="onMouseOverFilters" />
                 </template>
             </GridAdvancedFiltersContainer>
@@ -96,7 +96,7 @@ export default {
             type: Array,
             default: () => [],
         },
-        storeNamespace: {
+        namespace: {
             type: String,
             required: true,
         },
@@ -140,10 +140,10 @@ export default {
             }
         },
         onRemoveAll() {
-            this.$store.dispatch(`${this.storeNamespace}/removeAllAdvancedFilters`);
+            this.$store.dispatch(`${this.namespace}/removeAllAdvancedFilters`);
         },
         onClearAll() {
-            this.$store.dispatch(`${this.storeNamespace}/clearAllAdvancedFilters`);
+            this.$store.dispatch(`${this.namespace}/clearAllAdvancedFilters`);
         },
     },
 };

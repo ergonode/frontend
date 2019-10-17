@@ -22,8 +22,8 @@ export default {
     name: 'UserRolesPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
-        let generalOptTabPath = '/users/role/new/general';
-        let privilegesTabPath = '/users/role/new/privileges';
+        let generalRoute = { name: 'users-role-new-general' };
+        let privilegesRoute = {};
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -32,14 +32,14 @@ export default {
             {
                 title: 'Users/Roles',
                 icon: 'User',
-                path: '/users/roles',
+                route: { name: 'users-roles' },
             },
         ];
         this.isUserAllowedToUpdateRole = this.$hasAccess('USER_ROLE_UPDATE');
 
         if (this.isEdit) {
-            generalOptTabPath = `/users/role/edit/${this.$route.params.id}/general`;
-            privilegesTabPath = `/users/role/edit/${this.$route.params.id}/privileges`;
+            generalRoute = { name: 'users-role-edit-id-general', params: this.$route.params };
+            privilegesRoute = { name: 'users-role-edit-id-privileges', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -58,7 +58,7 @@ export default {
         this.tabs = [
             {
                 title: 'General options',
-                path: generalOptTabPath,
+                route: generalRoute,
                 active: true,
                 props: {
                     updateButton: {
@@ -70,7 +70,7 @@ export default {
             },
             {
                 title: 'Privileges',
-                path: privilegesTabPath,
+                route: privilegesRoute,
                 active: this.isEdit,
                 props: {
                     updateButton: {

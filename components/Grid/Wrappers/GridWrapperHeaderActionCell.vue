@@ -11,27 +11,24 @@
         :action-cell="isActionCell"
         :editing="isEditingCell"
         @edit="onEdit">
-        <template v-if="!isExtenderColumn">
-            <Component
-                :is="infoComponent"
-                v-if="!isEditingCell || isActionCell"
-                :value="filterParsedValue" />
-            <GridEditActivatorCell
-                v-else
-                :store-namespace="storeNamespace"
-                :is-multi-select="isMultiSelect"
-                :type="filterType"
-                :value="filterValue"
-                :options="options"
-                :colors="column.colors || null"
-                :fixed-width="$el.offsetWidth"
-                @updateValue="onUpdateFilter" />
-        </template>
+        <Component
+            :is="infoComponent"
+            v-if="!isEditingCell || isActionCell"
+            :value="filterParsedValue" />
+        <GridEditActivatorCell
+            v-else
+            :namespace="namespace"
+            :is-multi-select="isMultiSelect"
+            :type="filterType"
+            :value="filterValue"
+            :options="options"
+            :colors="column.colors || null"
+            :fixed-width="$el.offsetWidth"
+            @updateValue="onUpdateFilter" />
     </GridCell>
 </template>
 
 <script>
-
 export default {
     name: 'GridWrapperHeaderActionCell',
     components: {
@@ -39,7 +36,7 @@ export default {
         GridEditActivatorCell: () => import('~/components/Grid/EditCells/GridEditActivatorCell'),
     },
     props: {
-        storeNamespace: {
+        namespace: {
             type: String,
             required: true,
         },
@@ -63,10 +60,7 @@ export default {
     },
     computed: {
         gridState() {
-            return this.$store.state[this.storeNamespace];
-        },
-        isExtenderColumn() {
-            return this.column.id === 'extender';
+            return this.$store.state[this.namespace];
         },
         isEditingCell() {
             const { row, column } = this.gridState.editingCellCoordinates;
@@ -160,7 +154,7 @@ export default {
     methods: {
         onEdit(isEditing) {
             if (this.column.type !== 'CHECK') {
-                this.$store.dispatch(`${this.storeNamespace}/setEditingCellCoordinates`, isEditing
+                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, isEditing
                     ? { column: this.columnIndex, row: this.rowIndex }
                     : {});
             }
@@ -169,9 +163,9 @@ export default {
             const { id } = this.column;
 
             if (this.gridState.basicFilters[id] !== value) {
-                this.$store.dispatch(`${this.storeNamespace}/setFilter`, { id, filter: value });
-                this.$store.dispatch(`${this.storeNamespace}/getData`, { path: this.path });
-                this.$store.dispatch(`${this.storeNamespace}/changeDisplayingPage`, 1);
+                this.$store.dispatch(`${this.namespace}/setFilter`, { id, filter: value });
+                this.$store.dispatch(`${this.namespace}/getData`, { path: this.path });
+                this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
             }
         },
     },

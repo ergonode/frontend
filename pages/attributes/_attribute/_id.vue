@@ -128,10 +128,7 @@ export default {
             });
         },
     },
-    async fetch({
-        store,
-        params,
-    }) {
+    async fetch({ store, params }) {
         await Promise.all([
             store.dispatch('translations/clearStorage'),
             store.dispatch('attribute/clearStorage'),

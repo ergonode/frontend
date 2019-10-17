@@ -32,7 +32,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        storeNamespace: {
+        namespace: {
             type: String,
             required: true,
         },
@@ -57,7 +57,7 @@ export default {
             try {
                 const parsedFilter = JSON.parse(data);
 
-                this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
+                this.$store.dispatch(`${this.namespace}/setAdvancedFilterAtIndex`, {
                     index: this.ghostFilterIndex,
                     filter: parsedFilter,
                 });
@@ -80,7 +80,7 @@ export default {
                 columns: `${value}:${languageCode}`,
             };
             return this.$axios.$get(`${languageCode}/products`, { params }).then(({ columns }) => {
-                this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
+                this.$store.dispatch(`${this.namespace}/setAdvancedFilterAtIndex`, {
                     index,
                     filter: { ...columns[0], value: '' },
                 });

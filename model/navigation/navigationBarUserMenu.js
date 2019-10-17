@@ -8,7 +8,7 @@ export default [
         menu: [
             {
                 title: 'My profile',
-                routing: '/profile',
+                routing: '/profile/activity-log-grid',
                 icon: 'User',
             },
             {

@@ -22,8 +22,8 @@ export default {
     name: 'ProductStatusPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
-        let generalOptTabPath = '/workflow/status/new/general';
-        let translationsTabPath = '';
+        let generalRoute = { name: 'workflow-status-new-general' };
+        let translationRoute = {};
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -33,13 +33,13 @@ export default {
             {
                 title: 'Workflow',
                 icon: 'Flow',
-                path: '/workflow/statuses',
+                route: { name: 'workflow-statuses' },
             },
         ];
 
         if (this.isEdit) {
-            generalOptTabPath = `/workflow/status/edit/${this.$route.params.id}/general`;
-            translationsTabPath = `/workflow/status/edit/${this.$route.params.id}/translations`;
+            generalRoute = { name: 'workflow-status-edit-id-general', params: this.$route.params };
+            translationRoute = { name: 'workflow-status-edit-id-translations', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -58,7 +58,7 @@ export default {
         this.tabs = [
             {
                 title: 'General options',
-                path: generalOptTabPath,
+                route: generalRoute,
                 active: true,
                 props: {
                     updateButton: {
@@ -70,7 +70,7 @@ export default {
             },
             {
                 title: 'Translations',
-                path: translationsTabPath,
+                route: translationRoute,
                 active: this.isEdit,
                 props: {
                     updateButton: {

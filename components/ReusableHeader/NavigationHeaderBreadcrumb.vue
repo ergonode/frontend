@@ -5,7 +5,7 @@
 <template>
     <NuxtLink
         class="breadcrumb"
-        :to="{ path: breadcrumb.path }">
+        :to="breadcrumb.route">
         <Component
             :is="breadcrumbIconComponent"
             fill-color="#00bc87"

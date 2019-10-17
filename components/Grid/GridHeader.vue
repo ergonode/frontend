@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { ROW_HEIGHTS, GRID_LAYOUT } from '~/defaults/grid/main';
+import { ROW_HEIGHT, GRID_LAYOUT } from '~/defaults/grid/main';
 
 export default {
     name: 'GridHeader',
@@ -73,7 +73,7 @@ export default {
         },
         rowHeight: {
             type: Number,
-            default: ROW_HEIGHTS.SMALL,
+            default: ROW_HEIGHT.SMALL,
         },
         layout: {
             type: String,
@@ -82,7 +82,7 @@ export default {
     },
     computed: {
         rowHeights() {
-            return ROW_HEIGHTS;
+            return ROW_HEIGHT;
         },
         gridLayouts() {
             return GRID_LAYOUT;

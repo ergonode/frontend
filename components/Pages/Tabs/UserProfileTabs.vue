@@ -40,7 +40,7 @@ export default {
             tabs: [
                 {
                     title: 'Activity log',
-                    path: '/profile/activity-log',
+                    route: { name: 'profile-activity-log-grid' },
                     active: true,
                     isContextualMenu: false,
                 },

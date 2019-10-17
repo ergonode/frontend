@@ -13,16 +13,15 @@
         @edit="onEdit">
         <Component
             :is="headerComponent"
-            v-if="!isExtenderColumn"
             v-bind="headerComponentProps"
-            :store-namespace="storeNamespace"
+            :namespace="namespace"
             @sort="() => getData({ path })"
             @focus="onFocus" />
     </GridCell>
 </template>
 
 <script>
-import { GRID_HEADER_TYPE } from '~/defaults/grid/main';
+import { GRID_HEADER_TYPE, COLUMN_TYPE } from '~/defaults/grid/main';
 
 export default {
     name: 'GridWrapperHeaderCell',
@@ -30,7 +29,7 @@ export default {
         GridCell: () => import('~/components/Grid/GridCell'),
     },
     props: {
-        storeNamespace: {
+        namespace: {
             type: String,
             required: true,
         },
@@ -54,23 +53,20 @@ export default {
     },
     computed: {
         gridState() {
-            return this.$store.state[this.storeNamespace];
+            return this.$store.state[this.namespace];
         },
         isActionCell() {
             const { type } = this.column;
 
-            return type === 'CHECK' || type === 'ACTION';
+            return type === COLUMN_TYPE.CHECK || type === COLUMN_TYPE.ACTION;
         },
         headerComponent() {
             const { type } = this.column.header;
 
             if (type === GRID_HEADER_TYPE.CHECK) return () => import('~/components/Grid/EditCells/GridEditSelectRowCell');
-            if (type === GRID_HEADER_TYPE.PLAIN) return () => import('~/components/Grid/GridBaseHeaderCell');
+            if (type === GRID_HEADER_TYPE.PLAIN) return () => import('~/components/Grid/HeaderCells/GridBaseHeaderCell');
 
-            return () => import('~/components/Grid/GridInteractiveHeaderCell');
-        },
-        isExtenderColumn() {
-            return this.column.id === 'extender';
+            return () => import('~/components/Grid/HeaderCells/GridInteractiveHeaderCell');
         },
         headerComponentProps() {
             const { type, title } = this.column.header;
@@ -91,11 +87,11 @@ export default {
     },
     methods: {
         getData({ path }) {
-            this.$store.dispatch(`${this.storeNamespace}/getData`, { path });
+            this.$store.dispatch(`${this.namespace}/getData`, { path });
         },
         onEdit() {
-            if (this.column.type === 'CHECK') {
-                this.$store.dispatch(`${this.storeNamespace}/setSelectionForAllRows`, { isSelected: !this.gridState.isSelectedAllRows });
+            if (this.column.type === COLUMN_TYPE.CHECK) {
+                this.$store.dispatch(`${this.namespace}/setSelectionForAllRows`, { isSelected: !this.gridState.isSelectedAllRows });
             }
         },
         onFocus(isFocused) {

@@ -4,6 +4,7 @@
  */
 export default function ({ route, redirect }) {
     const { name } = route;
+
     if (name === 'category-tree-new' || name === 'category-tree-edit-id') {
         return redirect(`${route.path}/general`);
     }

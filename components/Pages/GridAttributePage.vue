@@ -41,7 +41,7 @@ export default {
         if (this.$hasAccess('ATTRIBUTE_READ')) {
             this.tabs.push({
                 title: 'Attributes',
-                path: '/attributes/grid',
+                route: { name: 'attributes-grid' },
                 active: true,
                 isContextualMenu: false,
             });

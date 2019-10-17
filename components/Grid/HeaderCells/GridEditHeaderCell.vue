@@ -3,39 +3,26 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="action-link"
-        @click="onEdit">
+    <div class="edit-header-cell">
         <IconEdit />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'GridEditRowCell',
+    name: 'GridEditHeaderCell',
     components: {
         IconEdit: () => import('~/components/Icon/Actions/IconEdit'),
-    },
-    props: {
-        params: {
-            type: Object,
-            required: true,
-        },
-    },
-    methods: {
-        onEdit() {
-            this.$emit('edit', this.params);
-        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .action-link {
+    .edit-header-cell {
         display: flex;
-        flex: 1;
+        flex: 1 1 auto;
         justify-content: center;
         align-items: center;
-        cursor: pointer;
+        user-select: none;
     }
 </style>

@@ -4,6 +4,7 @@
  */
 export default function ({ route, redirect }) {
     const { name } = route;
+
     if (name === 'template-new' || name === 'template-edit-id') {
         return redirect(`${route.path}/general`);
     }

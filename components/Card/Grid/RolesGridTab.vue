@@ -6,18 +6,19 @@
     <div class="tab">
         <div class="tab__grid">
             <Grid
-                store-namespace="rolesGrid"
-                :action-paths="actionPaths"
+                namespace="rolesGrid"
+                :route-edit="routeEdit"
                 :editing-privilege-allowed="$hasAccess('USER_ROLE_UPDATE')"
                 :basic-filters="true"
-                title="User roles" />
+                title="User roles"
+                @rowEdit="onRowEdit" />
         </div>
         <GridFooter>
             <GridPageSelector
                 v-model="visibleRowsInPageCount"
                 :rows-number="numberOfDataElements" />
             <GridPagination
-                :value="displayedPage"
+                :value="currentPage"
                 :max-page="numberOfPages"
                 @input="onPageChanged" />
         </GridFooter>
@@ -62,16 +63,16 @@ export default {
         }),
         ...mapState('rolesGrid', {
             numberOfDataElements: (state) => state.count,
-            displayedPage: (state) => state.displayedPage,
+            currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
         ...mapGetters('rolesGrid', {
             numberOfPages: 'numberOfPages',
         }),
-        actionPaths() {
+        routeEdit() {
             return {
                 getData: `${this.userLanguageCode}/roles`,
-                routerEdit: 'users-role-edit-id',
+                name: 'users-role-edit-id',
             };
         },
         visibleRowsInPageCount: {
@@ -91,15 +92,21 @@ export default {
     methods: {
         ...mapActions('rolesGrid', [
             'getData',
-            'changeDisplayingPage',
+            'setCurrentPage',
             'changeNumberOfDisplayingElements',
         ]),
+        onRowEdit({ links: { edit } }) {
+            const args = edit.href.split('/');
+            const lastIndex = args.length - 1;
+
+            this.$router.push({ name: 'users-role-edit-id-general', params: { id: args[lastIndex] } });
+        },
         onPageChanged(page) {
-            this.changeDisplayingPage(page);
+            this.setCurrentPage(page);
             this.getDataWrapper();
         },
         getDataWrapper() {
-            const { getData: path } = this.actionPaths;
+            const { getData: path } = this.routeEdit;
             this.getData(
                 {
                     path,
