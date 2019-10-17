@@ -317,9 +317,12 @@ export default {
             this.setGhostFilterIndex(ghostIndex);
         },
         removeGhostFilter() {
-            if (this.ghostFilterIndex !== -1
-                && this.gridState.advancedFilters[this.ghostFilterIndex].id === GHOST_ID) {
-                this.$store.dispatch(`${this.namespace}/removeAdvancedFilterAtIndex`, this.ghostFilterIndex);
+            const ghostIndex = this.gridState.advancedFilters.findIndex(
+                (filter) => filter.id === GHOST_ID,
+            );
+
+            if (ghostIndex !== -1) {
+                this.$store.dispatch(`${this.namespace}/removeAdvancedFilterAtIndex`, ghostIndex);
                 this.setGhostFilterIndex();
             }
         },

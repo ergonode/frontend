@@ -7,46 +7,60 @@
         :class="[
             'advanced-filter',
             {
-                'advanced-filter--selected': isSelected,
+                'advanced-filter--selected': isFocused,
                 'advanced-filter--error': isError,
             }
         ]"
-        :draggable="!isSelected"
+        :draggable="true"
         @dragover="onDragOver"
         @dragstart="onDragStart"
-        @dragend="onDragEnd"
-        @click="onClick">
-        <span
-            class="advanced-filter__label"
-            v-text="filter.id" />
-        <div class="advanced-filter__details">
-            <span
-                v-if="!filter.value"
-                class="advanced-filter__placeholder">
-                Select
-            </span>
-            <span
-                v-else
-                class="advanced-filter__value"
-                v-text="filter.value" />
-            <IconArrowDropDown :state="arrowIconState" />
-        </div>
-        <div class="icon-error-container">
-            <IconError
-                v-if="isError"
-                size="16" />
+        @dragend="onDragEnd">
+        <div
+            ref="activator"
+            class="advanced-filter__activator"
+            @mousedown="onMouseDown"
+            @mouseup="onMouseUp">
+            <label
+                class="advanced-filter__label"
+                :for="associatedLabel"
+                v-text="filter.id" />
+            <input
+                :id="associatedLabel"
+                ref="input"
+                class="advanced-filter__input"
+                readonly
+                @focus="onFocus"
+                @blur="onBlur">
+            <div class="advanced-filter__details">
+                <span
+                    v-if="!filter.value"
+                    class="advanced-filter__placeholder">
+                    Select
+                </span>
+                <span
+                    v-else
+                    class="advanced-filter__value"
+                    v-text="filter.value" />
+                <IconArrowDropDown :state="arrowIconState" />
+            </div>
+            <div class="icon-error-container">
+                <IconError
+                    v-if="isError"
+                    size="16" />
+            </div>
         </div>
         <SelectBaseContent
-            v-if="isSelected"
-            ref="selectContent"
-            :style="selectContentPositionStyle"
+            v-if="isMenuActive"
+            ref="menu"
+            :style="selectBoundingBox"
             :fixed-content="false">
             <template #body>
                 <Component
                     :is="selectBodyComponent"
                     :value="filterValue"
-                    :options="filter.parameters.options"
-                    @input="onValueChange" />
+                    :options="options"
+                    @input="onValueChange"
+                    @focus="onFocusContent" />
             </template>
             <template #footer>
                 <Component
@@ -70,13 +84,14 @@ import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT } from '~/defaults/grid/main';
 import {
     getDraggedColumnPositionState,
 } from '~/model/drag_and_drop/helpers';
+import SelectBaseContent from '~/components/Inputs/Select/Contents/SelectBaseContent';
 
 export default {
     name: 'GridAdvancedFilter',
     components: {
         IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
         IconError: () => import('~/components/Icon/Feedback/IconError'),
-        SelectBaseContent: () => import('~/components/Inputs/Select/Contents/SelectBaseContent'),
+        SelectBaseContent,
     },
     props: {
         isError: {
@@ -102,20 +117,46 @@ export default {
     },
     data() {
         return {
-            isSelected: false,
-            selectContentPositionStyle: null,
+            isFocused: false,
+            isMenuActive: false,
+            isClickedOutside: false,
+            hasMouseDown: false,
+            selectBoundingBox: null,
+            associatedLabel: '',
             filterValue: this.filter.value,
         };
     },
+    mounted() {
+        this.associatedLabel = `input-${this._uid}`;
+    },
     destroyed() {
         window.removeEventListener('click', this.onClickOutside);
+    },
+    watch: {
+        isMenuActive() {
+            if (this.isMenuActive) {
+                this.selectBoundingBox = this.getSelectBoundingBox();
+                window.addEventListener('click', this.onClickOutside);
+            } else {
+                window.removeEventListener('click', this.onClickOutside);
+            }
+        },
     },
     computed: {
         ...mapState('draggable', {
             ghostFilterIndex: (state) => state.ghostFilterIndex,
         }),
+        options() {
+            const { filter } = this.filter;
+            if (!filter || !filter.options) return null;
+
+            const { options } = filter;
+            const optionKeys = Object.keys(options);
+
+            return optionKeys.map((key) => ({ key, value: options[key] }));
+        },
         arrowIconState() {
-            return this.isSelected ? Arrow.UP : Arrow.DOWN;
+            return this.isFocused ? Arrow.UP : Arrow.DOWN;
         },
         selectFooterComponent() {
             switch (this.filter.type) {
@@ -139,6 +180,7 @@ export default {
             case AttributeTypes.DATE:
                 return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterDateContent');
             case AttributeTypes.PRICE:
+            case AttributeTypes.NUMERIC:
                 return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterRangeContent');
             default: return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
             }
@@ -149,6 +191,11 @@ export default {
             'setDraggableState',
             'setGhostFilterIndex',
         ]),
+        onFocusContent(isFocused) {
+            if (isFocused) {
+                this.onFocus();
+            }
+        },
         onDragStart(event) {
             const { width } = this.$el.getBoundingClientRect();
 
@@ -223,39 +270,62 @@ export default {
         },
         onApply() {
             window.removeEventListener('click', this.onClickOutside);
-            this.isSelected = false;
+
+            this.isFocused = false;
+            this.isMenuActive = false;
 
             this.$store.dispatch(`${this.namespace}/setAdvancedFilterValueAtIndex`, { index: this.index, value: this.filterValue });
         },
-        onClick() {
-            if (!this.isSelected) {
-                window.addEventListener('click', this.onClickOutside);
+        onFocus() {
+            if (!this.isFocused) {
+                this.isFocused = true;
+                this.isMenuActive = true;
+                this.hasMouseDown = false;
             }
         },
-        onClickOutside(event) {
-            if (this.isSelected) {
-                const { clientX, clientY } = event;
-                const {
-                    top, left, width, height,
-                } = this.$refs.selectContent.$el.getBoundingClientRect();
-                const isClickedInsideSelectContent = clientX > left
-                    && clientX < left + width
-                    && clientY > top
-                    && clientY < top + height;
+        onBlur() {
+            if (this.isClickedOutside) {
+                this.isFocused = false;
+                this.isMenuActive = false;
+            }
+        },
+        onMouseDown(event) {
+            const isClickedInsideInput = event.target === this.$refs.input;
 
-                if (!isClickedInsideSelectContent) {
-                    this.isSelected = false;
+            if (!isClickedInsideInput) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            this.hasMouseDown = true;
+        },
+        onMouseUp(event) {
+            const isClickedInsideInput = event.target === this.$refs.input;
+            const isDblClicked = event.detail > 1;
+
+            if (isDblClicked) return;
+
+            if (isClickedInsideInput) {
+                if (this.isFocused && this.hasMouseDown) {
+                    this.isClickedOutside = true;
+                    this.$refs.input.blur();
+                } else {
+                    this.$refs.input.focus();
                 }
-            } else {
-                this.isSelected = !this.isSelected;
             }
 
-            if (this.isSelected) {
-                this.selectContentPositionStyle = this.getSelectBoundingBox();
-            }
+            this.hasMouseDown = false;
+        },
+        onClickOutside(event) {
+            const isClickedInsideMenu = this.$refs.menu.$el.contains(event.target);
+            const isClickedInsideActivator = this.$refs.activator.contains(event.target);
 
-            if (!this.isSelected) {
-                window.removeEventListener('click', this.onClickOutside);
+            this.isClickedOutside = !isClickedInsideMenu
+                && !isClickedInsideActivator;
+
+            if (this.isClickedOutside) {
+                this.isFocused = false;
+                this.isMenuActive = false;
             }
         },
         getSelectBoundingBox() {
@@ -270,7 +340,7 @@ export default {
 
             const position = { left: `${x}px` };
 
-            if (this.fixedSelectContent) {
+            if (this.fixedContentWidth) {
                 position.width = `${width}px`;
             }
 
@@ -297,7 +367,18 @@ export default {
         position: relative;
         display: flex;
         height: 32px;
-        outline: none;
+
+        &__activator {
+            position: relative;
+            display: flex;
+        }
+
+        &__input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
 
         &__label {
             @include setFont(bold, small, regular, $darkGraphite);
@@ -321,7 +402,7 @@ export default {
         }
 
         &__placeholder {
-            @include setFont(bold, small, regular, $lightGraphite);
+            @include setFont(medium, small, regular, $darkGrey);
         }
 
         &__value {
@@ -333,6 +414,12 @@ export default {
                 border-color: $primary;
                 background-color: $primary;
                 color: $white;
+            }
+
+            #{$filter}__details {
+                border-color: $primary;
+                border-width: 2px;
+                padding: 0 1px 0 8px;
             }
         }
 

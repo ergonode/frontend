@@ -6,7 +6,8 @@
     <GridAdvancedFilterBaseContent>
         <TranslationSelectListContent
             :options="options"
-            :selected-options="value" />
+            :selected-options="value"
+            @value="onValueChange" />
     </GridAdvancedFilterBaseContent>
 </template>
 
@@ -28,6 +29,11 @@ export default {
         options: {
             type: Array,
             default: () => [],
+        },
+    },
+    methods: {
+        onValueChange(value) {
+            this.$emit('input', value.key);
         },
     },
 };

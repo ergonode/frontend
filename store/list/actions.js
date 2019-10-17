@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { getMappedFilter, getMappedElementsToGroups } from '~/model/mappers/gridDataMapper';
+import { getMappedFilters, getMappedElementsToGroups } from '~/model/mappers/gridDataMapper';
 import { UNASSIGNED_GROUP_ID } from '~/defaults/list/main';
 
 export default {
@@ -64,7 +64,7 @@ export default {
     }) {
         const { elements: stateElements } = state;
         const path = `${languageCode}/${listType}`;
-        const groupFilter = groupId !== UNASSIGNED_GROUP_ID ? getMappedFilter({ groups: groupId }) : 'groups=';
+        const groupFilter = groupId !== UNASSIGNED_GROUP_ID ? getMappedFilters({ groups: groupId }) : 'groups=';
         const params = {
             limit: elementsCount,
             offset: 0,

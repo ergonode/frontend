@@ -193,16 +193,42 @@ export function getMappedGridConfiguration(configuration) {
     return mappedConfiguration;
 }
 
-export function getMappedFilter(filter) {
-    const entries = Object.entries(filter);
+export function getMappedAdvancedFilters(filters) {
+    const { length } = filters;
+
+    let mappedFilter = '';
+
+    for (let i = 0; i < length; i += 1) {
+        const { id, value } = filters[i];
+
+        if (value) {
+            if (i === 0) {
+                mappedFilter += `${id}=`;
+            } else {
+                mappedFilter += `;${id}=`;
+            }
+
+            if (Array.isArray(value)) {
+                mappedFilter += value.join(',');
+            } else {
+                mappedFilter += value;
+            }
+        }
+    }
+
+    return mappedFilter;
+}
+
+export function getMappedFilters(filters) {
+    const entries = Object.entries(filters);
     const { length: entriesLength } = entries;
 
     let mappedFilter = '';
 
-    for (let j = 0; j < entriesLength; j += 1) {
-        const [key, value] = entries[j];
-        if (value !== null) {
-            if (j === 0) {
+    for (let i = 0; i < entriesLength; i += 1) {
+        const [key, value] = entries[i];
+        if (value) {
+            if (i === 0) {
                 mappedFilter += `${key}=`;
             } else {
                 mappedFilter += `;${key}=`;

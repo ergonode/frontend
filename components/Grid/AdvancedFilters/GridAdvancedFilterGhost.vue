@@ -80,7 +80,7 @@ export default {
                 columns: `${value}:${languageCode}`,
             };
             return this.$axios.$get(`${languageCode}/products`, { params }).then(({ columns }) => {
-                this.$store.dispatch(`${this.namespace}/setAdvancedFilterAtIndex`, {
+                this.$store.dispatch(`${this.namespace}/insertAdvancedFilterAtIndex`, {
                     index,
                     filter: { ...columns[0], value: '' },
                 });

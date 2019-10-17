@@ -10,7 +10,8 @@ import {
     getMappedColumn,
     getMappedColumns,
     getSortedColumnsByIDs,
-    getMappedFilter,
+    getMappedFilters,
+    getMappedAdvancedFilters,
 } from '~/model/mappers/gridDataMapper';
 import { swapItemPosition, insertValueAtIndex } from '~/model/arrayWrapper';
 import { COLUMN_IDS } from '~/defaults/grid/cookies';
@@ -26,8 +27,11 @@ export default {
             currentPage,
             numberOfDisplayedElements,
             basicFilters,
+            advancedFilters,
         } = state;
-        const parsedFilter = getMappedFilter(basicFilters);
+        const parsedFilter = getMappedFilters(basicFilters);
+        const parsedAdvcFilters = getMappedAdvancedFilters(advancedFilters);
+        console.log(parsedAdvcFilters);
         const isProductGrid = path.includes('products');
         const columnIDs = isProductGrid
             ? this.$cookies.get(COLUMN_IDS) || stateColumns.map((col) => col.id).join(',')
@@ -101,7 +105,7 @@ export default {
             .filter((col) => !col.id.includes(GHOST_ID))
             .map((col) => col.id);
         const parsedColumnsID = insertValueAtIndex(stateColumnsID, columnId, ghostIndex).join(',');
-        const parsedFilter = getMappedFilter(basicFilters);
+        const parsedFilter = getMappedFilters(basicFilters);
         const params = {
             columns: parsedColumnsID,
             offset: (currentPage - 1) * numberOfDisplayedElements,

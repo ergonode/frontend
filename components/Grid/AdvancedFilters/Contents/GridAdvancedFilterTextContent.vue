@@ -8,10 +8,10 @@
             <TextField
                 :value="value"
                 left-alignment
-                autofocus
                 small
                 underline
-                @input="onValueChange" />
+                @input="onValueChange"
+                @focus="onFocus" />
         </div>
     </GridAdvancedFilterBaseContent>
 </template>
@@ -35,6 +35,9 @@ export default {
     methods: {
         onValueChange(value) {
             this.$emit('input', value);
+        },
+        onFocus(isFocused) {
+            this.$emit('focus', isFocused);
         },
     },
 };
