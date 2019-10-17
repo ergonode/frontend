@@ -88,7 +88,7 @@ export function getMappedColumns(columns) {
                 position: gridColumnPosition,
             });
         }
-        //
+        // TODO: Refactor needed
         // if (type === COLUMN_TYPE.ACTION) {
         //     pinnedColumns.push({
         //         id,
