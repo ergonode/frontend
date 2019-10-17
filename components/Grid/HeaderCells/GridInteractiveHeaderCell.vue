@@ -63,10 +63,10 @@ export default {
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
         CheckBox: () => import('~/components/Inputs/CheckBox'),
-        GridBaseHeaderCell: () => import('~/components/Grid/GridBaseHeaderCell'),
+        GridBaseHeaderCell: () => import('~/components/Grid/HeaderCells/GridBaseHeaderCell'),
     },
     props: {
-        storeNamespace: {
+        namespace: {
             type: String,
             required: true,
         },
@@ -121,7 +121,7 @@ export default {
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
         gridState() {
-            return this.$store.state[this.storeNamespace];
+            return this.$store.state[this.namespace];
         },
         pinnedColumn() {
             if (!this.gridState) return null;
@@ -161,7 +161,7 @@ export default {
                     orderState = SortingOrder.ASC;
                 }
             }
-            this.$store.dispatch(`${this.storeNamespace}/setSortingState`, { index: this.column.id, orderState });
+            this.$store.dispatch(`${this.namespace}/setSortingState`, { index: this.column.id, orderState });
 
             this.$emit('sort');
         },
@@ -180,8 +180,8 @@ export default {
 
                 // We are hovering element while removing it
                 this.borderColumnAction('add', columnElement);
-                this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, this.columnIndex);
-                this.$store.dispatch(`${this.storeNamespace}/removeColumnWidthAtIndex`, this.columnIndex);
+                this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, this.columnIndex);
+                this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, this.columnIndex);
                 removeColumnCookieByID(this.$cookies, this.column.id);
                 this.$emit('focus', false);
                 break;
@@ -200,8 +200,8 @@ export default {
         pinOrRemovePinnedColumn(pinned, state) {
             const columnPosition = `${this.columnIndex + 1} / ${this.columnIndex + 2}`;
 
-            if (pinned) this.$store.dispatch(`${this.storeNamespace}/addPinnedColumn`, { id: this.column.id, state, position: columnPosition });
-            else this.$store.dispatch(`${this.storeNamespace}/removePinnedColumn`, this.column.id);
+            if (pinned) this.$store.dispatch(`${this.namespace}/addPinnedColumn`, { id: this.column.id, state, position: columnPosition });
+            else this.$store.dispatch(`${this.namespace}/removePinnedColumn`, this.column.id);
         },
         getColumnAtIndex(index) {
             const contentGrid = document.querySelector('.grid__content');

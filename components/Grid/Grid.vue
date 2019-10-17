@@ -7,7 +7,7 @@
         <GridAdvancedFilters
             v-if="advancedFilters"
             :filters="gridState.advancedFilters"
-            :store-namespace="storeNamespace" />
+            :namespace="namespace" />
         <GridHeader
             :title="title"
             :row-height="rowHeight"
@@ -22,26 +22,25 @@
             <GridColumn
                 v-for="(column, colIndex) in gridState.columns"
                 :key="column.id"
-                :store-namespace="storeNamespace"
+                :namespace="namespace"
                 :index="colIndex"
                 :column="column"
-                :is-last="gridState.columns.length - 1 === colIndex"
-                :rows-height="rowHeight"
+                :row-height="rowHeight"
                 :is-header-focused="isHeaderFocused"
                 :is-mouse-over-grid="isMouseOverGrid"
                 @mouseOverGrid="onMouseOverGrid">
                 <GridWrapperHeaderCell
-                    :store-namespace="storeNamespace"
+                    :namespace="namespace"
                     :column-index="colIndex"
                     :column="column"
-                    :path="actionPaths.getData"
+                    :path="routeEdit.getData"
                     @focus="onHeaderFocus" />
                 <GridWrapperHeaderActionCell
                     v-if="basicFilters"
-                    :store-namespace="storeNamespace"
+                    :namespace="namespace"
                     :column-index="colIndex"
                     :column="column"
-                    :path="actionPaths.getData" />
+                    :path="routeEdit.getData" />
                 <slot
                     name="cell"
                     :column="column"
@@ -49,22 +48,42 @@
                     <GridWrapperCell
                         v-for="(id, rowIndex) in gridState.rowIds"
                         :key="`row[${rowIndex + fixedRowOffset}, ${column.id}]`"
-                        :store-namespace="storeNamespace"
+                        :namespace="namespace"
                         :column-index="colIndex"
-                        :row-index="(rowIndex + fixedRowOffset) * gridState.displayedPage"
+                        :row-index="(rowIndex + fixedRowOffset) * gridState.currentPage"
                         :row-id="id"
                         :cell-data="gridState.cellValues[id][column.id] || { value: ''}"
                         :column="column"
                         :draft="drafts[id]"
-                        :edit-routing-path="actionPaths.routerEdit"
+                        :edit-routing-path="routeEdit.name"
                         :is-selected="gridState.isSelectedAllRows
-                            || gridState.selectedRows[(rowIndex + fixedRowOffset)
-                                * gridState.displayedPage]"
+                            || gridState.selectedRows[
+                                (rowIndex + fixedRowOffset) * gridState.currentPage
+                            ]"
                         :editing-privilege-allowed="editingPrivilegeAllowed" />
                 </slot>
             </GridColumn>
+            <GridExtenderColumn
+                v-if="extenderColumn"
+                :is-selected-all-rows="gridState.isSelectedAllRows"
+                :selected-rows="gridState.selectedRows"
+                :current-page="gridState.currentPage"
+                :rows-number="gridState.rowIds.length + fixedRowOffset"
+                :column-index="gridState.columns.length" />
+            <GridEditColumn
+                v-if="editColumn"
+                :is-selected-all-rows="gridState.isSelectedAllRows"
+                :selected-rows="gridState.selectedRows"
+                :current-page="gridState.currentPage"
+                :row-height="rowHeight"
+                :column-index="extenderColumn
+                    ? gridState.columns.length + 1
+                    : gridState.columns.length"
+                :row-links="gridState.rowLinks"
+                :route-path="routeEdit.name"
+                @rowEdit="onRowEdit" />
             <template v-for="(column, index) in gridState.pinnedColumns">
-                <GridColumnSentinel
+                <GridSentinelColumn
                     :key="index"
                     :style="{gridColumn: column.position}"
                     :index="gridState.columns.length + index"
@@ -80,7 +99,12 @@
 import { mapState, mapActions } from 'vuex';
 import { sumIntegers } from '~/model/arrayWrapper';
 import {
-    PINNED_COLUMN_STATE, ROW_HEIGHTS, GRID_LAYOUT, GHOST_ELEMENT_MODEL, GHOST_ID,
+    PINNED_COLUMN_STATE,
+    ROW_HEIGHT,
+    GRID_LAYOUT,
+    GHOST_ELEMENT_MODEL,
+    GHOST_ID,
+    COLUMN_WIDTH,
 } from '~/defaults/grid/main';
 import {
     isMouseOutOfBoundsElement,
@@ -91,15 +115,17 @@ export default {
     components: {
         GridAdvancedFilters: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilters'),
         GridHeader: () => import('~/components/Grid/GridHeader'),
-        GridColumn: () => import('~/components/Grid/GridColumn'),
-        GridColumnSentinel: () => import('~/components/Grid/GridColumnSentinel'),
+        GridColumn: () => import('~/components/Grid/Columns/GridColumn'),
+        GridExtenderColumn: () => import('~/components/Grid/Columns/GridExtenderColumn'),
+        GridEditColumn: () => import('~/components/Grid/Columns/GridEditColumn'),
+        GridSentinelColumn: () => import('~/components/Grid/Columns/GridSentinelColumn'),
         GridWrapperCell: () => import('~/components/Grid/Wrappers/GridWrapperCell'),
         GridWrapperHeaderActionCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderActionCell'),
         GridWrapperHeaderCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderCell'),
         GridPlaceholder: () => import('~/components/Grid/GridPlaceholder'),
     },
     props: {
-        storeNamespace: {
+        namespace: {
             type: String,
             required: true,
         },
@@ -111,7 +137,7 @@ export default {
             type: Boolean,
             default: true,
         },
-        actionPaths: {
+        routeEdit: {
             type: Object,
             required: true,
         },
@@ -123,13 +149,21 @@ export default {
             type: Boolean,
             default: false,
         },
+        extenderColumn: {
+            type: Boolean,
+            default: true,
+        },
+        editColumn: {
+            type: Boolean,
+            default: true,
+        },
     },
     data() {
         return {
             isHeaderFocused: false,
-            rowHeight: ROW_HEIGHTS.LARGE,
-            layout: GRID_LAYOUT.TABLE,
             isMouseOverGrid: false,
+            rowHeight: ROW_HEIGHT.LARGE,
+            layout: GRID_LAYOUT.TABLE,
         };
     },
     beforeCreate() {
@@ -164,14 +198,20 @@ export default {
             drafts: (state) => state.drafts,
         }),
         gridState() {
-            return this.$store.state[this.storeNamespace];
+            return this.$store.state[this.namespace];
         },
         numberOfPages() {
-            return this.$store.getters[`${this.storeNamespace}/numberOfPages`];
+            return this.$store.getters[`${this.namespace}/numberOfPages`];
         },
         templateColumns() {
+            const widths = [];
+            const template = this.gridState.columnWidths.join(' ');
+
+            if (this.extenderColumn) widths.push(COLUMN_WIDTH.AUTO);
+            if (this.editColumn) widths.push(COLUMN_WIDTH.ACTION);
+
             return {
-                gridTemplateColumns: this.gridState.columnWidths.join(' '),
+                gridTemplateColumns: `${template} ${widths.join(' ')}`,
             };
         },
         isPlaceholder() {
@@ -187,6 +227,9 @@ export default {
             'setGhostIndex',
             'setGhostFilterIndex',
         ]),
+        onRowEdit(route) {
+            this.$emit('rowEdit', route);
+        },
         onMouseOverGrid(isOver) {
             this.isMouseOverGrid = isOver;
         },
@@ -252,15 +295,15 @@ export default {
             const width = 100;
             const ghostIndex = 1;
 
-            this.$store.dispatch(`${this.storeNamespace}/insertColumnAtIndex`, { column: GHOST_ELEMENT_MODEL, index: ghostIndex });
-            this.$store.dispatch(`${this.storeNamespace}/insertColumnWidthAtIndex`, { width: `${width}px`, index: ghostIndex });
+            this.$store.dispatch(`${this.namespace}/insertColumnAtIndex`, { column: GHOST_ELEMENT_MODEL, index: ghostIndex });
+            this.$store.dispatch(`${this.namespace}/insertColumnWidthAtIndex`, { width: `${width}px`, index: ghostIndex });
 
             this.setGhostIndex(ghostIndex);
             this.setDraggedElIndex(ghostIndex);
         },
         removeGhostColumn() {
-            this.$store.dispatch(`${this.storeNamespace}/removeColumnAtIndex`, this.draggedElIndex);
-            this.$store.dispatch(`${this.storeNamespace}/removeColumnWidthAtIndex`, this.draggedElIndex);
+            this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, this.draggedElIndex);
+            this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, this.draggedElIndex);
 
             this.setDraggedElIndex();
             this.setGhostIndex();
@@ -268,7 +311,7 @@ export default {
         addGhostFilter() {
             const ghostIndex = 0;
 
-            this.$store.dispatch(`${this.storeNamespace}/insertAdvancedFilterAtIndex`, {
+            this.$store.dispatch(`${this.namespace}/insertAdvancedFilterAtIndex`, {
                 index: ghostIndex,
                 filter: GHOST_ELEMENT_MODEL,
             });
@@ -277,7 +320,7 @@ export default {
         removeGhostFilter() {
             if (this.ghostFilterIndex !== -1
                 && this.gridState.advancedFilters[this.ghostFilterIndex].id === GHOST_ID) {
-                this.$store.dispatch(`${this.storeNamespace}/removeAdvancedFilterAtIndex`, this.ghostFilterIndex);
+                this.$store.dispatch(`${this.namespace}/removeAdvancedFilterAtIndex`, this.ghostFilterIndex);
                 this.setGhostFilterIndex();
             }
         },
@@ -303,6 +346,7 @@ export default {
         }
 
         &__content {
+            position: relative;
             display: grid;
             border-left: 1px solid $grey;
             border-right: 1px solid $grey;

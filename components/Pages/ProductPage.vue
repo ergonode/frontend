@@ -22,8 +22,8 @@ export default {
     name: 'ProductPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
-        let generalOptTabPath = '/products/product/new/general';
-        let templateTabPath = '/products/product/new/template';
+        let generalRoute = { name: 'product-new-general' };
+        let templateRoute = { name: 'product-new-template' };
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -32,7 +32,7 @@ export default {
             {
                 title: 'Products',
                 icon: 'Document',
-                path: '/products',
+                route: { name: 'products-grid' },
             },
         ];
 
@@ -40,8 +40,8 @@ export default {
         this.isUserAllowedToUpdateProduct = this.$hasAccess('PRODUCT_UPDATE');
 
         if (this.isEdit) {
-            generalOptTabPath = `/products/product/edit/${this.$route.params.id}/general`;
-            templateTabPath = `/products/product/edit/${this.$route.params.id}/template`;
+            generalRoute = { name: 'product-edit-id-general', params: this.$route.params };
+            templateRoute = { name: 'product-edit-id-template', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -60,7 +60,7 @@ export default {
         this.tabs = [
             {
                 title: 'General options',
-                path: generalOptTabPath,
+                route: generalRoute,
                 active: true,
                 props: {
                     updateButton: {
@@ -72,7 +72,7 @@ export default {
             },
             {
                 title: 'Product template',
-                path: templateTabPath,
+                route: templateRoute,
                 active: this.isEdit,
                 props: {
                     updateButton: {

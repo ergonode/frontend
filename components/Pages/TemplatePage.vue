@@ -23,8 +23,8 @@ export default {
     name: 'TemplatePage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
-        let generalOptTabPath = '/templates/template/new/general';
-        let templatePath = '';
+        let generalRoute = { name: 'template-new-general' };
+        let templateRoute = {};
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -33,13 +33,13 @@ export default {
             {
                 title: 'Templates',
                 icon: 'Templates',
-                path: '/templates',
+                route: { name: 'templates' },
             },
         ];
         this.isUserAllowedToUpdateTemplate = this.$hasAccess('TEMPLATE_DESIGNER_UPDATE');
         if (this.isEdit) {
-            generalOptTabPath = `/templates/template/edit/${this.$route.params.id}/general`;
-            templatePath = `/templates/template/edit/${this.$route.params.id}/template`;
+            generalRoute = { name: 'template-edit-id-general', params: this.$route.params };
+            templateRoute = { name: 'template-edit-id-template', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -57,7 +57,7 @@ export default {
         this.tabs = [
             {
                 title: 'General options',
-                path: generalOptTabPath,
+                route: generalRoute,
                 active: true,
                 props: {
                     updateButton: {
@@ -69,7 +69,7 @@ export default {
             },
             {
                 title: 'Template designer',
-                path: templatePath,
+                route: templateRoute,
                 active: this.isEdit,
                 props: {
                     updateButton: {

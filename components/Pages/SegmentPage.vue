@@ -22,8 +22,8 @@ export default {
     name: 'SegmentPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
-        let generalOptTabPath = '/segments/segment/new/general';
-        let translationTabPath = '';
+        let generalRoute = { name: 'segment-new-general' };
+        let translationRoute = {};
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -32,13 +32,13 @@ export default {
             {
                 title: 'Segments',
                 icon: 'Templates',
-                path: '/segments',
+                route: { name: 'segments-grid' },
             },
         ];
         this.isUserAllowedToUpdateSegments = this.$hasAccess('SEGMENT_UPDATE');
         if (this.isEdit) {
-            generalOptTabPath = `/segments/segment/edit/${this.$route.params.id}/general`;
-            translationTabPath = `/segments/segment/edit/${this.$route.params.id}/translations`;
+            generalRoute = { name: 'segment-edit-id-general', params: this.$route.params };
+            translationRoute = { name: 'segment-edit-id-translations', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -57,7 +57,7 @@ export default {
         this.tabs = [
             {
                 title: 'General options',
-                path: generalOptTabPath,
+                route: generalRoute,
                 active: true,
                 props: {
                     updateButton: {
@@ -69,7 +69,7 @@ export default {
             },
             {
                 title: 'Translations',
-                path: translationTabPath,
+                route: translationRoute,
                 active: this.isEdit,
                 props: {
                     updateButton: {

@@ -21,7 +21,7 @@
         </template>
         <template v-else>
             <NuxtLink
-                :to="item.path"
+                :to="item.route"
                 :class="[
                     'tab-bar-item__button',
                     'typo-subtitle',

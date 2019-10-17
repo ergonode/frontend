@@ -37,27 +37,4 @@ describe('Pages/UserPage', () => {
         expect(typeof UserPage.name).toBe('string');
         expect(UserPage.name).toEqual('UserPage');
     });
-
-    it('Check tab paths for new page', () => {
-        expect(wrapper.vm.isEdit).toBeFalsy();
-        expect(wrapper.vm.tabs[0].path).toBe('/users/user/new/general');
-        expect(wrapper.vm.tabs[1].path).toBe('/users/user/new/avatar');
-    });
-
-    it('Check tab paths for edit page', () => {
-        wrapper = mount(UserPage, {
-            mocks,
-            propsData: {
-                title: '',
-                isEdit: true,
-            },
-            stubs: {
-                Button: true,
-                HorizontalTabBar: true,
-            },
-        });
-        expect(wrapper.vm.isEdit).toBeTruthy();
-        expect(wrapper.vm.tabs[0].path).toBe('/users/user/edit/12345/general');
-        expect(wrapper.vm.tabs[1].path).toBe('/users/user/edit/12345/avatar');
-    });
 });

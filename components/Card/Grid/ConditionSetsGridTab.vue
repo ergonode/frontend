@@ -6,18 +6,19 @@
     <div class="tab">
         <div class="tab__grid">
             <Grid
-                store-namespace="conditionSetsGrid"
-                :action-paths="actionPaths"
+                namespace="conditionSetsGrid"
+                :route-edit="routeEdit"
                 :editing-privilege-allowed="$hasAccess('CONDITION_UPDATE')"
                 :basic-filters="true"
-                title="Condition sets" />
+                title="Condition sets"
+                @rowEdit="onRowEdit" />
         </div>
         <GridFooter>
             <GridPageSelector
                 v-model="visibleRowsInPageCount"
                 :rows-number="numberOfDataElements" />
             <GridPagination
-                :value="displayedPage"
+                :value="currentPage"
                 :max-page="numberOfPages"
                 @input="onPageChanged" />
         </GridFooter>
@@ -62,16 +63,16 @@ export default {
         }),
         ...mapState('conditionSetsGrid', {
             numberOfDataElements: (state) => state.count,
-            displayedPage: (state) => state.displayedPage,
+            currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
         ...mapGetters('conditionSetsGrid', {
             numberOfPages: 'numberOfPages',
         }),
-        actionPaths() {
+        routeEdit() {
             return {
                 getData: `${this.userLanguageCode}/conditionsets`,
-                routerEdit: 'condition-set-edit-id',
+                name: 'condition-set-edit-id',
             };
         },
         visibleRowsInPageCount: {
@@ -91,15 +92,21 @@ export default {
     methods: {
         ...mapActions('conditionSetsGrid', [
             'getData',
-            'changeDisplayingPage',
+            'setCurrentPage',
             'changeNumberOfDisplayingElements',
         ]),
+        onRowEdit({ links: { edit } }) {
+            const args = edit.href.split('/');
+            const lastIndex = args.length - 1;
+
+            this.$router.push({ name: 'condition-set-edit-id-general', params: { id: args[lastIndex] } });
+        },
         onPageChanged(page) {
-            this.changeDisplayingPage(page);
+            this.setCurrentPage(page);
             this.getDataWrapper();
         },
         getDataWrapper() {
-            const { getData: path } = this.actionPaths;
+            const { getData: path } = this.routeEdit;
 
             this.getData(
                 {

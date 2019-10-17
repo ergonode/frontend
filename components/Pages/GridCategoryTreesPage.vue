@@ -41,7 +41,7 @@ export default {
         if (this.$hasAccess('CATEGORY_TREE_READ')) {
             this.tabs.push({
                 title: 'Category trees',
-                path: '/category-trees/grid',
+                route: { name: 'category-trees-grid' },
                 active: true,
                 isContextualMenu: false,
             });

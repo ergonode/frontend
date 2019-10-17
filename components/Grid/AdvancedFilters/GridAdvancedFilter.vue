@@ -66,7 +66,7 @@ import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '~/model/layout/ElementCopy';
-import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENTS } from '~/defaults/grid/main';
+import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT } from '~/defaults/grid/main';
 import {
     getDraggedColumnPositionState,
 } from '~/model/drag_and_drop/helpers';
@@ -95,7 +95,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        storeNamespace: {
+        namespace: {
             type: String,
             required: true,
         },
@@ -153,10 +153,10 @@ export default {
             const { width } = this.$el.getBoundingClientRect();
 
             addElementCopyToDocumentBody(event, width, JSON.stringify(this.filter));
-            this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENTS.FILTER });
+            this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.FILTER });
 
             window.requestAnimationFrame(() => {
-                this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
+                this.$store.dispatch(`${this.namespace}/setAdvancedFilterAtIndex`, {
                     index: this.index,
                     filter: GHOST_ELEMENT_MODEL,
                 });
@@ -169,9 +169,9 @@ export default {
             const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
 
             if (isTrashBelowMouse) {
-                this.$store.dispatch(`${this.storeNamespace}/removeAdvancedFilterAtIndex`, this.index);
+                this.$store.dispatch(`${this.namespace}/removeAdvancedFilterAtIndex`, this.index);
             } else {
-                this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterAtIndex`, {
+                this.$store.dispatch(`${this.namespace}/setAdvancedFilterAtIndex`, {
                     index: this.ghostFilterIndex,
                     filter: this.filter,
                 });
@@ -204,9 +204,9 @@ export default {
                 const ghostFilterIndex = isBefore ? this.index : this.index + 1;
 
                 this.setGhostFilterIndex(ghostFilterIndex);
-                this.$store.dispatch(`${this.storeNamespace}/insertAdvancedFilterAtIndex`, { index: ghostFilterIndex, filter: GHOST_ELEMENT_MODEL });
+                this.$store.dispatch(`${this.namespace}/insertAdvancedFilterAtIndex`, { index: ghostFilterIndex, filter: GHOST_ELEMENT_MODEL });
             } else {
-                this.$store.dispatch(`${this.storeNamespace}/changeFiltersPosition`, {
+                this.$store.dispatch(`${this.namespace}/changeFiltersPosition`, {
                     from: this.ghostFilterIndex,
                     to: this.index,
                 });
@@ -225,7 +225,7 @@ export default {
             window.removeEventListener('click', this.onClickOutside);
             this.isSelected = false;
 
-            this.$store.dispatch(`${this.storeNamespace}/setAdvancedFilterValueAtIndex`, { index: this.index, value: this.filterValue });
+            this.$store.dispatch(`${this.namespace}/setAdvancedFilterValueAtIndex`, { index: this.index, value: this.filterValue });
         },
         onClick() {
             if (!this.isSelected) {

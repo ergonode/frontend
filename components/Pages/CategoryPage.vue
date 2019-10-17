@@ -22,8 +22,8 @@ export default {
     name: 'CategoryPage',
     mixins: [categoryManagementPageBaseMixin],
     created() {
-        let generalOptTabPath = '/categories/category/new/general';
-        let privilegesTabPath = '/categories/category/new/translations';
+        let generalRoute = { name: 'category-new-general' };
+        let translationRoute = { name: 'category-new-translations' };
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -32,14 +32,14 @@ export default {
             {
                 title: 'Categories',
                 icon: 'Category',
-                path: '/categories',
+                route: { name: 'categories-grid' },
             },
         ];
         this.isUserAllowedToUpdateCategory = this.$hasAccess('CATEGORY_UPDATE');
 
         if (this.isEdit) {
-            generalOptTabPath = `/categories/category/edit/${this.$route.params.id}/general`;
-            privilegesTabPath = `/categories/category/edit/${this.$route.params.id}/translations`;
+            generalRoute = { name: 'category-edit-id-general', params: this.$route.params };
+            translationRoute = { name: 'category-edit-id-translations', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -58,7 +58,7 @@ export default {
         this.tabs = [
             {
                 title: 'General options',
-                path: generalOptTabPath,
+                route: generalRoute,
                 active: true,
                 props: {
                     updateButton: {
@@ -70,7 +70,7 @@ export default {
             },
             {
                 title: 'Translations',
-                path: privilegesTabPath,
+                route: translationRoute,
                 active: this.isEdit,
                 props: {
                     updateButton: {

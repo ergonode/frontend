@@ -13,6 +13,7 @@ export const types = {
     REMOVE_PINNED_COLUMN_AT_INDEX: 'REMOVE_PINNED_COLUMN_AT_INDEX',
     SET_CELL_VALUES: 'SET_CELL_VALUES',
     SET_ROW_IDS: 'SET_ROW_IDS',
+    SET_ROW_LINKS: 'SET_ROW_LINKS',
     SET_COUNT: 'SET_COUNT',
     SET_FILTERED: 'SET_FILTERED',
     SET_ADVANCED_FILTER_AT_INDEX: 'SET_ADVANCED_FILTER_AT_INDEX',
@@ -72,6 +73,9 @@ export default {
     [types.SET_ROW_IDS](state, ids) {
         state.rowIds = ids;
     },
+    [types.SET_ROW_LINKS](state, links) {
+        state.rowLinks = links;
+    },
     [types.SET_COUNT](state, payload) {
         state.count = payload;
     },
@@ -108,7 +112,7 @@ export default {
         state.advancedFilters.splice(index, 1);
     },
     [types.SET_CURRENT_PAGE](state, payload) {
-        state.displayedPage = payload;
+        state.currentPage = payload;
     },
     [types.SET_SORTING_STATE](state, sortedColumn = {}) {
         state.sortedByColumn = sortedColumn;

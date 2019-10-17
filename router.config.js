@@ -16,7 +16,8 @@ export const pages = [
         component: Pages.Profile,
         children: [
             {
-                path: 'activity-log',
+                name: 'profile-activity-log-grid',
+                path: 'activity-log-grid',
                 component: GridTabs.UserActivityLogsGridTab,
             },
         ],
@@ -30,6 +31,7 @@ export const pages = [
         component: Pages.Categories,
         children: [
             {
+                name: 'categories-grid',
                 path: 'grid',
                 component: GridTabs.CategoryGridTab,
                 meta: {
@@ -47,10 +49,12 @@ export const pages = [
         component: Pages.CategoryNew,
         children: [
             {
+                name: 'category-new-general',
                 path: 'general',
                 component: Tabs.CategoryBaseTab,
             },
             {
+                name: 'category-new-translations',
                 path: 'translations',
                 component: Tabs.CategoryTranslationsTab,
             },
@@ -61,14 +65,16 @@ export const pages = [
     },
     {
         name: 'category-edit-id',
-        path: '/categories/category/edit/:id/:tab?',
+        path: '/categories/category/edit/:id',
         component: Pages.CategoryEdit,
         children: [
             {
+                name: 'category-edit-id-general',
                 path: 'general',
                 component: Tabs.CategoryBaseTab,
             },
             {
+                name: 'category-edit-id-translations',
                 path: 'translations',
                 component: Tabs.CategoryTranslationsTab,
             },
@@ -83,6 +89,7 @@ export const pages = [
         component: Pages.CategoryTrees,
         children: [
             {
+                name: 'category-trees-grid',
                 path: 'grid',
                 component: GridTabs.CategoryTreesGridTab,
             },
@@ -97,14 +104,17 @@ export const pages = [
         component: Pages.CategoryTreesNew,
         children: [
             {
+                name: 'category-tree-new-general',
                 path: 'general',
                 component: Tabs.CategoryTreeBaseTab,
             },
             {
+                name: 'category-tree-new-translations',
                 path: 'translations',
                 component: Tabs.CategoryTreeTranslationsTab,
             },
             {
+                name: 'category-tree-new-designer',
                 path: 'designer',
                 component: Tabs.CategoryTreeDesignTab,
             },
@@ -115,18 +125,21 @@ export const pages = [
     },
     {
         name: 'category-tree-edit-id',
-        path: '/category-trees/tree/edit/:id/:tab?',
+        path: '/category-trees/tree/edit/:id',
         component: Pages.CategoryTreesEdit,
         children: [
             {
+                name: 'category-tree-edit-id-general',
                 path: 'general',
                 component: Tabs.CategoryTreeBaseTab,
             },
             {
+                name: 'category-tree-edit-id-translations',
                 path: 'translations',
                 component: Tabs.CategoryTreeTranslationsTab,
             },
             {
+                name: 'category-tree-edit-id-designer',
                 path: 'designer',
                 component: Tabs.CategoryTreeDesignTab,
             },
@@ -141,6 +154,7 @@ export const pages = [
         component: Pages.Products,
         children: [
             {
+                name: 'products-grid',
                 path: 'grid',
                 component: GridTabs.ProductGridTab,
             },
@@ -155,10 +169,12 @@ export const pages = [
         component: Pages.ProductNew,
         children: [
             {
+                name: 'product-new-general',
                 path: 'general',
                 component: Tabs.ProductBaseTab,
             },
             {
+                name: 'product-new-template',
                 path: 'template',
                 component: Tabs.ProductTemplateTab,
             },
@@ -169,14 +185,16 @@ export const pages = [
     },
     {
         name: 'product-edit-id',
-        path: '/products/product/edit/:id?',
+        path: '/products/product/edit/:id',
         component: Pages.ProductEdit,
         children: [
             {
+                name: 'product-edit-id-general',
                 path: 'general',
                 component: Tabs.ProductBaseTab,
             },
             {
+                name: 'product-edit-id-template',
                 path: 'template',
                 component: Tabs.ProductTemplateTab,
             },
@@ -199,10 +217,12 @@ export const pages = [
         component: Pages.TemplateNew,
         children: [
             {
+                name: 'template-new-general',
                 path: 'general',
                 component: Tabs.TemplateDesignerBaseTab,
             },
             {
+                name: 'template-new-template',
                 path: 'template',
                 component: Tabs.TemplateDesignerTab,
             },
@@ -213,14 +233,16 @@ export const pages = [
     },
     {
         name: 'template-edit-id',
-        path: '/templates/template/edit/:id?',
+        path: '/templates/template/edit/:id',
         component: Pages.TemplateEdit,
         children: [
             {
+                name: 'template-edit-id-general',
                 path: 'general',
                 component: Tabs.TemplateDesignerBaseTab,
             },
             {
+                name: 'template-edit-id-template',
                 path: 'template',
                 component: Tabs.TemplateDesignerTab,
             },
@@ -238,6 +260,7 @@ export const pages = [
         },
         children: [
             {
+                name: 'attributes-grid',
                 path: 'grid',
                 component: GridTabs.AttributeGridTab,
                 meta: {
@@ -252,10 +275,12 @@ export const pages = [
         component: Pages.AttributeNew,
         children: [
             {
+                name: 'attribute-new-general',
                 path: 'general',
                 component: Tabs.AttributeBaseTab,
             },
             {
+                name: 'attribute-new-translations',
                 path: 'translations',
                 component: Tabs.AttributeTranslationsTab,
             },
@@ -266,14 +291,16 @@ export const pages = [
     },
     {
         name: 'attribute-edit-id',
-        path: '/attributes/attribute/edit/:id?',
+        path: '/attributes/attribute/edit/:id',
         component: Pages.AttributeEdit,
         children: [
             {
+                name: 'attribute-edit-id-general',
                 path: 'general',
                 component: Tabs.AttributeBaseTab,
             },
             {
+                name: 'attribute-edit-id-translations',
                 path: 'translations',
                 component: Tabs.AttributeTranslationsTab,
             },
@@ -288,6 +315,7 @@ export const pages = [
         component: Pages.Users,
         children: [
             {
+                name: 'users-grid',
                 path: 'grid',
                 component: GridTabs.UsersGridTab,
                 meta: {
@@ -295,6 +323,7 @@ export const pages = [
                 },
             },
             {
+                name: 'users-roles',
                 path: 'roles',
                 component: GridTabs.RolesGridTab,
                 meta: {
@@ -302,6 +331,7 @@ export const pages = [
                 },
             },
             {
+                name: 'users-activity-logs',
                 path: 'logs',
                 component: GridTabs.UsersActivityLogsGridTab,
             },
@@ -316,6 +346,7 @@ export const pages = [
         component: Pages.UserNew,
         children: [
             {
+                name: 'user-new-general',
                 path: 'general',
                 component: Tabs.UserBaseTab,
             },
@@ -326,14 +357,16 @@ export const pages = [
     },
     {
         name: 'user-edit-id',
-        path: '/users/user/edit/:id?',
+        path: '/users/user/edit/:id',
         component: Pages.UserEdit,
         children: [
             {
+                name: 'user-edit-id-general',
                 path: 'general',
                 component: Tabs.UserBaseTab,
             },
             {
+                name: 'user-edit-id-avatar',
                 path: 'avatar',
                 component: Tabs.UserAvatarTab,
             },
@@ -348,6 +381,7 @@ export const pages = [
         component: Pages.UsersRolesNew,
         children: [
             {
+                name: 'users-role-new-general',
                 path: 'general',
                 component: Tabs.UserRolesBaseTab,
             },
@@ -358,14 +392,16 @@ export const pages = [
     },
     {
         name: 'users-role-edit-id',
-        path: '/users/role/edit/:id?',
+        path: '/users/role/edit/:id',
         component: Pages.UsersRolesEdit,
         children: [
             {
+                name: 'users-role-edit-id-general',
                 path: 'general',
                 component: Tabs.UserRolesBaseTab,
             },
             {
+                name: 'users-role-edit-id-privileges',
                 path: 'privileges',
                 component: Tabs.UserRolesPrivilegeTab,
             },
@@ -380,10 +416,12 @@ export const pages = [
         component: Pages.Workflow,
         children: [
             {
+                name: 'workflow-statuses',
                 path: 'statuses',
                 component: GridTabs.ProductStatusGridTab,
             },
             {
+                name: 'workflow-transitions',
                 path: 'transitions',
                 component: GridTabs.TransitionsGridTab,
             },
@@ -398,6 +436,7 @@ export const pages = [
         component: Pages.ProductStatusNew,
         children: [
             {
+                name: 'workflow-status-new-general',
                 path: 'general',
                 component: Tabs.ProductStatusBaseTab,
             },
@@ -408,14 +447,16 @@ export const pages = [
     },
     {
         name: 'workflow-status-edit-id',
-        path: '/workflow/status/edit/:id?',
+        path: '/workflow/status/edit/:id',
         component: Pages.ProductStatusEdit,
         children: [
             {
+                name: 'workflow-status-edit-id-general',
                 path: 'general',
                 component: Tabs.ProductStatusBaseTab,
             },
             {
+                name: 'workflow-status-edit-id-translations',
                 path: 'translations',
                 component: Tabs.ProductStatusTranslationsTab,
             },
@@ -430,6 +471,7 @@ export const pages = [
         component: Pages.TransitionNew,
         children: [
             {
+                name: 'workflow-transition-new-general',
                 path: 'general',
                 component: Tabs.TransitionBaseTab,
             },
@@ -439,15 +481,17 @@ export const pages = [
         },
     },
     {
-        name: 'transition-edit-id',
-        path: '/workflow/transition/edit/:id?',
+        name: 'transition-edit-source-destination',
+        path: '/workflow/transition/edit/:source/:destination',
         component: Pages.TransitionEdit,
         children: [
             {
+                name: 'transition-edit-source-destination-general',
                 path: 'general',
                 component: Tabs.TransitionBaseTab,
             },
             {
+                name: 'transition-edit-source-destination-translations',
                 path: 'translations',
                 component: Tabs.TransitionTranslationsTab,
             },
@@ -462,6 +506,7 @@ export const pages = [
         component: Pages.Segments,
         children: [
             {
+                name: 'segments-grid',
                 path: 'grid',
                 component: GridTabs.SegmentsGridTab,
                 meta: {
@@ -469,6 +514,7 @@ export const pages = [
                 },
             },
             {
+                name: 'condition-sets',
                 path: 'condition-sets',
                 component: GridTabs.ConditionSetsGridTab,
                 meta: {
@@ -486,6 +532,7 @@ export const pages = [
         component: Pages.SegmentNew,
         children: [
             {
+                name: 'segment-new-general',
                 path: 'general',
                 component: Tabs.SegmentsBaseTab,
             },
@@ -500,10 +547,12 @@ export const pages = [
         component: Pages.SegmentEdit,
         children: [
             {
+                name: 'segment-edit-id-general',
                 path: 'general',
                 component: Tabs.SegmentsBaseTab,
             },
             {
+                name: 'segment-edit-id-translations',
                 path: 'translations',
                 component: Tabs.SegmentsTranslationsTab,
             },
@@ -518,6 +567,7 @@ export const pages = [
         component: Pages.ConditionSetNew,
         children: [
             {
+                name: 'condition-set-new-general',
                 path: 'general',
                 component: Tabs.ConditionSetBaseTab,
             },
@@ -532,14 +582,17 @@ export const pages = [
         component: Pages.ConditionSetEdit,
         children: [
             {
+                name: 'condition-set-edit-id-general',
                 path: 'general',
                 component: Tabs.ConditionSetBaseTab,
             },
             {
+                name: 'condition-set-edit-id-translations',
                 path: 'translations',
                 component: Tabs.ConditionSetTranslationsTab,
             },
             {
+                name: 'condition-set-edit-id-designer',
                 path: 'designer',
                 component: Tabs.ConditionSetDesignTab,
             },
@@ -554,6 +607,7 @@ export const pages = [
         component: Pages.Settings,
         children: [
             {
+                name: 'settings-language',
                 path: '/settings/language',
                 component: Tabs.LanguageSettingsTab,
 
@@ -564,6 +618,6 @@ export const pages = [
         name: 'channels', path: '/channels', component: Pages.Channels,
     },
     {
-        name: 'placeholder', path: '/placeholder/:placeholder?', component: Pages.Placeholder,
+        name: 'placeholder', path: '/placeholder/:placeholder', component: Pages.Placeholder,
     },
 ];

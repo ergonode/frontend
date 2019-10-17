@@ -44,7 +44,7 @@ export default {
             tabs: [
                 {
                     title: 'Language',
-                    path: '/settings/language',
+                    route: { name: 'settings-language' },
                     active: true,
                     isContextualMenu: false,
                     props: {

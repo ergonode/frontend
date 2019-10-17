@@ -31,9 +31,9 @@ export default {
         Blur: () => import('~/components/Blur/Blur'),
     },
     created() {
-        let generalOptTabPath = '/category-trees/tree/new/general';
-        let translationTabPath = '/category-trees/tree/new/translations';
-        let designerPath = '/category-trees/tree/new/designer';
+        let generalRoute = { name: 'category-tree-new-general' };
+        let translationRoute = { name: 'category-tree-new-translations' };
+        let designerRoute = { name: 'category-tree-new-designer' };
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -42,14 +42,14 @@ export default {
             {
                 title: 'Category trees',
                 icon: 'Tree',
-                path: '/category-trees',
+                route: { name: 'category-trees-grid' },
             },
         ];
         this.isUserAllowedToUpdateCategoryTree = this.$hasAccess('CATEGORY_TREE_UPDATE');
         if (this.isEdit) {
-            generalOptTabPath = `/category-trees/tree/edit/${this.$route.params.id}/general`;
-            translationTabPath = `/category-trees/tree/edit/${this.$route.params.id}/translations`;
-            designerPath = `/category-trees/tree/edit/${this.$route.params.id}/designer`;
+            generalRoute = { name: 'category-tree-edit-id-general', params: this.$route.params };
+            translationRoute = { name: 'category-tree-edit-id-translations', params: this.$route.params };
+            designerRoute = { name: 'category-tree-edit-id-designer', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -67,7 +67,7 @@ export default {
         this.tabs = [
             {
                 title: 'General options',
-                path: generalOptTabPath,
+                route: generalRoute,
                 active: true,
                 props: {
                     updateButton: {
@@ -79,7 +79,7 @@ export default {
             },
             {
                 title: 'Translations',
-                path: translationTabPath,
+                route: translationRoute,
                 active: this.isEdit,
                 props: {
                     updateButton: {
@@ -91,7 +91,7 @@ export default {
             },
             {
                 title: 'Designer',
-                path: designerPath,
+                route: designerRoute,
                 active: this.isEdit,
                 props: {
                     updateButton: {

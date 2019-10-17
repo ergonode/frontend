@@ -4,7 +4,8 @@
  */
 export default function ({ route, redirect }) {
     const { name } = route;
-    if (name === 'transition-new' || name === 'transition-edit-id') {
+
+    if (name === 'transition-new' || name === 'transition-edit-source-destination') {
         return redirect(`${route.path}/general`);
     }
 

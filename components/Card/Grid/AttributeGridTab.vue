@@ -6,18 +6,19 @@
     <div class="tab">
         <div class="tab__grid">
             <Grid
-                store-namespace="attributeGrid"
-                :action-paths="actionPaths"
+                namespace="attributeGrid"
+                :route-edit="routeEdit"
                 :editing-privilege-allowed="$hasAccess('ATTRIBUTE_UPDATE')"
                 :basic-filters="true"
-                title="Attributes" />
+                title="Attributes"
+                @rowEdit="onRowEdit" />
         </div>
         <GridFooter>
             <GridPageSelector
                 v-model="visibleRowsInPageCount"
                 :rows-number="numberOfDataElements" />
             <GridPagination
-                :value="displayedPage"
+                :value="currentPage"
                 :max-page="numberOfPages"
                 @input="onPageChanged" />
         </GridFooter>
@@ -62,16 +63,16 @@ export default {
         }),
         ...mapState('attributeGrid', {
             numberOfDataElements: (state) => state.count,
-            displayedPage: (state) => state.displayedPage,
+            currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
         ...mapGetters('attributeGrid', {
             numberOfPages: 'numberOfPages',
         }),
-        actionPaths() {
+        routeEdit() {
             return {
                 getData: `${this.userLanguageCode}/attributes`,
-                routerEdit: 'attribute-edit-id',
+                name: 'attribute-edit-id',
             };
         },
         visibleRowsInPageCount: {
@@ -91,15 +92,21 @@ export default {
     methods: {
         ...mapActions('attributeGrid', [
             'getData',
-            'changeDisplayingPage',
+            'setCurrentPage',
             'changeNumberOfDisplayingElements',
         ]),
+        onRowEdit({ links: { edit } }) {
+            const args = edit.href.split('/');
+            const lastIndex = args.length - 1;
+
+            this.$router.push({ name: 'attribute-edit-id-general', params: { id: args[lastIndex] } });
+        },
         onPageChanged(page) {
-            this.changeDisplayingPage(page);
+            this.setCurrentPage(page);
             this.getDataWrapper();
         },
         getDataWrapper() {
-            const { getData: path } = this.actionPaths;
+            const { getData: path } = this.routeEdit;
             this.getData(
                 {
                     path,

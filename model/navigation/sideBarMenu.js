@@ -14,7 +14,7 @@ const unassignedToSectionItems = [
 const manageSectionItems = [
     {
         title: 'Products catalog',
-        routing: '/products',
+        routing: '/products/grid',
         icon: 'Document',
         privileges: ['PRODUCT_READ'],
     },
@@ -26,19 +26,19 @@ const manageSectionItems = [
     },
     {
         title: 'Categories',
-        routing: '/categories',
+        routing: '/categories/grid',
         icon: 'Category',
         privileges: ['CATEGORY_READ'],
     },
     {
         title: 'Category trees',
-        routing: '/category-trees',
+        routing: '/category-trees/grid',
         icon: 'Tree',
         privileges: ['ATTRIBUTE_READ'],
     },
     {
         title: 'Attributes',
-        routing: '/attributes',
+        routing: '/attributes/grid',
         icon: 'Attributes',
         privileges: ['CATEGORY_TREE_READ'],
     },
@@ -50,7 +50,7 @@ const manageSectionItems = [
     },
     {
         title: 'Segments',
-        routing: '/segments',
+        routing: '/segments/grid',
         icon: 'Templates',
         privileges: ['SEGMENT_READ'],
     },
@@ -74,7 +74,7 @@ const collectAndDistributeSectionItems = [
 const systemSectionItems = [
     {
         title: 'Users',
-        routing: '/users',
+        routing: '/users/grid',
         icon: 'User',
         privileges: ['USER_READ'],
     },

@@ -4,6 +4,7 @@
  */
 export default function ({ route, redirect }) {
     const { name } = route;
+
     if (name === 'categories') {
         return redirect(`${route.path}/grid`);
     }

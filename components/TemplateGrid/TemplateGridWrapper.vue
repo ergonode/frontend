@@ -8,7 +8,7 @@
         <TemplateGridContainer
             :columns="columns"
             :rows="rows"
-            :rows-height="rowsHeight"
+            :row-height="rowHeight"
             :grid-data="filteredGridData"
             :is-dragging-enabled="isDraggingEnabled"
             :is-multi-draggable="isMultiDraggable"
@@ -89,7 +89,7 @@ export default {
             type: Number,
             required: true,
         },
-        rowsHeight: {
+        rowHeight: {
             type: Number,
             required: true,
         },
@@ -118,7 +118,7 @@ export default {
         gridStyles() {
             return {
                 gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                gridAutoRows: `${this.rowsHeight}px`,
+                gridAutoRows: `${this.rowHeight}px`,
             };
         },
     },
@@ -169,7 +169,7 @@ export default {
         },
         connectionLineStyle({ id, row, parent }) {
             const children = this.filteredGridData.filter((e) => e.parent === parent);
-            const connectionHeight = this.rowsHeight * (
+            const connectionHeight = this.rowHeight * (
                 row - (children.length ? children[0].row : 0) + 1
             );
             const borderStyle = id === 'ghost_item' ? 'dashed' : 'solid';
@@ -189,7 +189,7 @@ export default {
                 left: linePosition.left,
                 width: linePosition.width,
                 height: `${connectionHeight}px`,
-                bottom: `${this.rowsHeight / 2}px`,
+                bottom: `${this.rowHeight / 2}px`,
             };
         },
         removeItem(item) {

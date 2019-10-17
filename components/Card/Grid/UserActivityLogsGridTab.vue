@@ -6,9 +6,10 @@
     <div class="tab">
         <div class="tab__grid">
             <Grid
-                store-namespace="userActivityLogsGrid"
-                :action-paths="actionPaths"
+                namespace="userActivityLogsGrid"
+                :route-edit="routeEdit"
                 :basic-filters="true"
+                :edit-column="false"
                 title="Activity logs" />
         </div>
         <GridFooter>
@@ -16,7 +17,7 @@
                 v-model="visibleRowsInPageCount"
                 :rows-number="numberOfDataElements" />
             <GridPagination
-                :value="displayedPage"
+                :value="currentPage"
                 :max-page="numberOfPages"
                 @input="onPageChanged" />
         </GridFooter>
@@ -61,16 +62,16 @@ export default {
         }),
         ...mapState('userActivityLogsGrid', {
             numberOfDataElements: (state) => state.count,
-            displayedPage: (state) => state.displayedPage,
+            currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
         ...mapGetters('userActivityLogsGrid', {
             numberOfPages: 'numberOfPages',
         }),
-        actionPaths() {
+        routeEdit() {
             return {
                 getData: '/profile/log',
-                routerEdit: 'users-logs-edit-id',
+                name: 'users-logs-edit-id',
             };
         },
         visibleRowsInPageCount: {
@@ -90,15 +91,15 @@ export default {
     methods: {
         ...mapActions('userActivityLogsGrid', [
             'getData',
-            'changeDisplayingPage',
+            'setCurrentPage',
             'changeNumberOfDisplayingElements',
         ]),
         onPageChanged(page) {
-            this.changeDisplayingPage(page);
+            this.setCurrentPage(page);
             this.getDataWrapper();
         },
         getDataWrapper() {
-            const { getData: path } = this.actionPaths;
+            const { getData: path } = this.routeEdit;
             this.getData(
                 {
                     path,

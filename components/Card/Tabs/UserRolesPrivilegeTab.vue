@@ -6,10 +6,11 @@
     <div class="tab">
         <div class="tab__grid">
             <Grid
-                store-namespace="privilegesGrid"
+                namespace="privilegesGrid"
                 :is-draft="false"
-                :action-paths="actionPaths"
+                :route-edit="routeEdit"
                 :basic-filters="false"
+                :edit-column="false"
                 title="Role privileges">
                 <template #cell="{column, columnIndex}">
                     <GridCell
@@ -61,9 +62,9 @@ export default {
         Footer,
     },
     async beforeCreate() {
-        this.actionPaths = {
+        this.routeEdit = {
             getData: '',
-            routerEdit: '',
+            name: '',
         };
         this.isEditingAllowed = this.$hasAccess('USER_ROLE_UPDATE');
         this.$registerStore({
@@ -82,7 +83,7 @@ export default {
     beforeDestroy() {
         this.$store.unregisterModule('privilegesGrid');
 
-        delete this.actionPaths;
+        delete this.routeEdit;
         delete this.isEditingAllowed;
     },
     computed: {

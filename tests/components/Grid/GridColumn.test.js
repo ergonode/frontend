@@ -4,7 +4,7 @@
  */
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
-import GridColumn from '~/components/Grid/GridColumn';
+import GridColumn from '~/components/Grid/Columns/GridColumn';
 import draggableMutations from '~/store/draggable/mutations';
 import {
     GHOST_ELEMENT_MODEL,
@@ -43,7 +43,7 @@ describe('Grid/GridColumn', () => {
             localVue,
             mocks,
             propsData: {
-                storeNamespace: 'grid',
+                namespace: 'grid',
                 index: 1,
                 column: { width: 100 },
             },
@@ -62,7 +62,7 @@ describe('Grid/GridColumn', () => {
     describe('Layout configuration', () => {
         it('Grid cells has correct size', () => {
             wrapper.setProps({
-                rowsHeight: 50,
+                rowHeight: 50,
             });
 
             expect(wrapper.vm.colGridTemplate).toStrictEqual({

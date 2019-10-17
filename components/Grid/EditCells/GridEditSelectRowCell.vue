@@ -6,7 +6,7 @@
     <GridCheckCell
         :value="selectionState"
         :row="row"
-        :store-namespace="storeNamespace"
+        :namespace="namespace"
         :disabled="false"
         @input="onCheck" />
 </template>
@@ -24,7 +24,7 @@ export default {
             type: Number,
             required: true,
         },
-        storeNamespace: {
+        namespace: {
             type: String,
             required: true,
         },
@@ -35,7 +35,7 @@ export default {
     },
     computed: {
         gridState() {
-            return this.$store.state[this.storeNamespace];
+            return this.$store.state[this.namespace];
         },
         selectionState() {
             if (this.multicheck) {
@@ -52,8 +52,8 @@ export default {
     },
     methods: {
         onCheck(value) {
-            if (this.multicheck) this.$store.dispatch(`${this.storeNamespace}/setSelectionForAllRows`, { isSelected: Boolean(value) });
-            else this.$store.dispatch(`${this.storeNamespace}/setSelectedRow`, { row: this.row, value });
+            if (this.multicheck) this.$store.dispatch(`${this.namespace}/setSelectionForAllRows`, { isSelected: Boolean(value) });
+            else this.$store.dispatch(`${this.namespace}/setSelectedRow`, { row: this.row, value });
         },
     },
 };

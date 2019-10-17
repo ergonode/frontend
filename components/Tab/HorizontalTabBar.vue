@@ -62,7 +62,9 @@ export default {
     mixins: [tabBarMixin],
     data() {
         return {
-            selectedTabIndex: 0,
+            selectedTabIndex: this.items.findIndex(
+                (item) => item.route.name === this.$route.name,
+            ),
             isLeftBoundReached: true,
             isRightBoundReached: true,
         };
@@ -74,9 +76,6 @@ export default {
                 'tab-bar__scrollable-container--right-gradient': !this.isRightBoundReached,
             };
         },
-    },
-    created() {
-        this.selectedTabIndex = this.items.findIndex((item) => item.path === this.$route.path);
     },
     methods: {
         onSelectTabBarItem(index) {

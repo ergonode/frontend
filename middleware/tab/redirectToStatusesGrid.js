@@ -4,6 +4,7 @@
  */
 export default function ({ route, redirect }) {
     const { name } = route;
+
     if (name === 'workflow') {
         return redirect(`${route.path}/statuses`);
     }

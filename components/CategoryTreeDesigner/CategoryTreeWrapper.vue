@@ -5,7 +5,7 @@
 <template>
     <TemplateGridWrapper
         :columns="columns"
-        :rows-height="rowsHeight"
+        :row-height="rowHeight"
         :is-dragging-enabled="$hasAccess('CATEGORY_TREE_UPDATE')">
         <template #gridHeader>
             <TemplateGridHeader
@@ -40,7 +40,7 @@ export default {
     computed: {
         ...mapState('tree', {
             columns: (state) => state.treeLevels,
-            rowsHeight: (state) => state.rowsHeight,
+            rowHeight: (state) => state.rowHeight,
         }),
         ...mapGetters('gridDesigner', [
             'getChildrenLengthById',
@@ -49,7 +49,7 @@ export default {
         gridStyles() {
             return {
                 gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                gridAutoRows: `${this.rowsHeight}px`,
+                gridAutoRows: `${this.rowHeight}px`,
             };
         },
     },

@@ -57,9 +57,9 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Transition created' });
             this.$router.push({
-                name: 'transition-edit-id',
+                name: 'transition-edit-source-destination-general',
                 params: {
-                    id: `${this.source}--${this.destination}`,
+                    id: `${this.source.replace(/ /g, '%20')}/${this.destination.replace(/ /g, '%20')}`,
                 },
             });
         },

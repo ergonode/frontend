@@ -7,7 +7,7 @@ export default () => ({
     code: '',
     conditionSets: {},
     columns: 1,
-    rowsHeight: 120,
+    rowHeight: 120,
     conditions: {},
     conditionsValues: {},
 });

@@ -41,7 +41,7 @@ export default {
         if (this.$hasAccess('SEGMENT_READ')) {
             this.tabs.push({
                 title: 'Segments',
-                path: '/segments/grid',
+                route: { name: 'segments-grid' },
                 active: true,
                 isContextualMenu: false,
             });
@@ -49,7 +49,7 @@ export default {
         if (this.$hasAccess('CONDITION_READ')) {
             this.tabs.push({
                 title: 'Condition sets',
-                path: '/segments/condition-sets',
+                route: { name: 'condition-sets' },
                 active: true,
                 isContextualMenu: false,
             });

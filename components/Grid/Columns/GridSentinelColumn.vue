@@ -10,7 +10,7 @@
 import { PINNED_COLUMN_STATE } from '~/defaults/grid/main';
 
 export default {
-    name: 'GridColumnSentinel',
+    name: 'GridSentinelColumn',
     props: {
         index: {
             type: Number,

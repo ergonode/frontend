@@ -10,8 +10,8 @@
             :icon="icon" />
         <div class="vertical-wrapper">
             <Grid
-                store-namespace="grid"
-                :action-paths="actionPaths"
+                namespace="grid"
+                :route-edit="routeEdit"
                 :basic-filters="true"
                 title="Grid" />
         </div>
@@ -20,7 +20,7 @@
                 v-model="visibleRowsInPageCount"
                 :rows-number="numberOfDataElements" />
             <GridPagination
-                :value="displayedPage"
+                :value="currentPage"
                 :max-page="numberOfPages"
                 @input="onPageChanged" />
         </GridFooter>
@@ -48,7 +48,7 @@ export default {
         PageWrapper,
     },
     props: {
-        actionPaths: {
+        routeEdit: {
             type: Object,
             required: true,
         },
@@ -66,7 +66,7 @@ export default {
         },
     },
     async beforeCreate() {
-        const { getData: path } = this.$options.propsData.actionPaths;
+        const { getData: path } = this.$options.propsData.routeEdit;
 
         this.$registerStore({
             module: gridModule,
@@ -82,7 +82,7 @@ export default {
     computed: {
         ...mapState('grid', {
             numberOfDataElements: (state) => state.count,
-            displayedPage: (state) => state.displayedPage,
+            currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
         ...mapGetters('grid', {
@@ -105,15 +105,15 @@ export default {
     methods: {
         ...mapActions('grid', [
             'getData',
-            'changeDisplayingPage',
+            'setCurrentPage',
             'changeNumberOfDisplayingElements',
         ]),
         onPageChanged(page) {
-            this.changeDisplayingPage(page);
+            this.setCurrentPage(page);
             this.getDataWrapper();
         },
         getDataWrapper() {
-            const { getData: path } = this.actionPaths;
+            const { getData: path } = this.routeEdit;
             this.getData(
                 {
                     path,
