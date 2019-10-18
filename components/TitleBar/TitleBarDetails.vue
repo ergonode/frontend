@@ -3,14 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="header-title">
+    <div class="title-bar__details">
         <Component
             :is="headerIconComponent"
             v-if="icon && !isBreadcrumb"
             fill-color="#00bc87" />
         <Button
             v-if="isBreadcrumb"
-            class="header-title__back-btn"
+            class="details__back-btn"
             fab
             @click.native="onClick">
             <template #prepend>
@@ -19,7 +19,7 @@
         </Button>
         <div class="vertical-wrapper">
             <span
-                class="header-title__title"
+                class="details__title"
                 v-text="title" />
             <slot name="badge" />
         </div>
@@ -29,7 +29,7 @@
 
 <script>
 export default {
-    name: 'NavigationHeaderTitle',
+    name: 'TitleBarDetails',
     components: {
         IconArrowPointer: () => import('~/components/Icon/Arrows/IconArrowPointer'),
         Button: () => import('~/components/Buttons/Button'),
@@ -62,17 +62,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .header-title {
+    .title-bar__details {
         display: grid;
         align-items: center;
         grid-gap: 0 8px;
 
-        &__back-btn {
+        .details__back-btn {
             grid-column: 1 / 2;
             grid-row: 1 / 3;
         }
 
-        &__title {
+        .details__title {
             @include setFont(medium, huge, large, $darkGraphite);
 
             margin-right: 8px;

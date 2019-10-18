@@ -4,7 +4,7 @@
  */
 <template>
     <PageWrapper>
-        <NavigationHeader
+        <TitleBar
             title="Templates"
             :buttons="buttons"
             :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')"
@@ -37,7 +37,7 @@ import { mapState, mapGetters } from 'vuex';
 export default {
     name: 'Templates',
     components: {
-        NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
+        TitleBar: () => import('~/components/TitleBar/TitleBar'),
         TemplateElement: () => import('~/components/Template/TemplateElement'),
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
     },
@@ -45,9 +45,11 @@ export default {
         this.buttons = [
             {
                 title: 'CREATE TEMPLATE',
-                color: 'success',
                 action: this.onCreate,
                 disabled: !this.$hasAccess('TEMPLATE_DESIGNER_CREATE'),
+                prepend: {
+                    component: () => import('~/components/Icon/Actions/IconAdd'),
+                },
             },
         ];
     },

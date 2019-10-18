@@ -4,7 +4,7 @@
  */
 <template>
     <PageWrapper>
-        <NavigationHeader
+        <TitleBar
             :title="title"
             :buttons="buttons"
             :icon="icon"
@@ -19,7 +19,7 @@ export default {
     name: 'GridCategoryTreesPage',
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
-        NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
+        TitleBar: () => import('~/components/TitleBar/TitleBar'),
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
     },
     props: {

@@ -1,12 +1,12 @@
 import { mount, createLocalVue } from '@vue/test-utils';
-import NavigationHeaderBreadcrumb from '~/components/ReusableHeader/NavigationHeaderBreadcrumb';
+import TitleBarBreadcrumb from '~/components/TitleBar/TitleBarBreadcrumb';
 
 const localVue = createLocalVue();
 
-describe('ReusableHeader/NavigationHeaderBreadcrumb', () => {
+describe('TitleBar/TitleBarBreadcrumb', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(NavigationHeaderBreadcrumb, {
+        wrapper = mount(TitleBarBreadcrumb, {
             localVue,
             propsData: {
                 breadcrumb: {
@@ -23,11 +23,11 @@ describe('ReusableHeader/NavigationHeaderBreadcrumb', () => {
     });
 
     it('Component is rendered', () => {
-        expect(wrapper.is(NavigationHeaderBreadcrumb)).toBe(true);
+        expect(wrapper.is(TitleBarBreadcrumb)).toBe(true);
     });
 
     it('Component is named well', () => {
-        expect(typeof NavigationHeaderBreadcrumb.name).toBe('string');
-        expect(NavigationHeaderBreadcrumb.name).toEqual('NavigationHeaderBreadcrumb');
+        expect(typeof TitleBarBreadcrumb.name).toBe('string');
+        expect(TitleBarBreadcrumb.name).toEqual('TitleBarBreadcrumb');
     });
 });

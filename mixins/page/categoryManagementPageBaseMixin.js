@@ -5,7 +5,7 @@
 export default {
     components: {
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
-        NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
+        TitleBar: () => import('~/components/TitleBar/TitleBar'),
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
     },
     props: {

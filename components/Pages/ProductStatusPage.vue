@@ -4,7 +4,7 @@
  */
 <template>
     <PageWrapper>
-        <NavigationHeader
+        <TitleBar
             :title="title"
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
@@ -46,11 +46,12 @@ export default {
             this.buttons = [
                 {
                     title: 'REMOVE STATUS',
-                    color: 'transparent',
                     action: this.onRemove,
-                    theme: 'dark',
-                    icon: 'remove',
+                    theme: 'secondary',
                     disabled: !this.$hasAccess('WORKFLOW_DELETE'),
+                    prepend: {
+                        component: () => import('~/components/Icon/Actions/IconDelete'),
+                    },
                 },
             ];
         }

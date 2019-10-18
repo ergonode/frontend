@@ -4,7 +4,7 @@
  */
 <template>
     <PageWrapper>
-        <NavigationHeader
+        <TitleBar
             :title="title"
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
@@ -47,10 +47,12 @@ export default {
             // this.buttons = [
             //     {
             //         title: 'REMOVE USER',
-            //         color: 'transparent',
             //         action: this.onRemove,
-            //         theme: 'dark',
+            //         theme: 'secondary',
             //         disabled: !this.$hasAccess('USER_DELETE'),
+            //         prepend: {
+            //             component: () => import('~/components/Icon/Actions/IconDelete'),
+            //         },
             //     },
             // ];
         }

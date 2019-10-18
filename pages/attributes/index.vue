@@ -28,9 +28,11 @@ export default {
             return [
                 {
                     title: 'CREATE ATTRIBUTE',
-                    color: 'success',
                     action: this.addNewAttribute,
                     disabled: !this.$hasAccess('ATTRIBUTE_CREATE'),
+                    prepend: {
+                        component: () => import('~/components/Icon/Actions/IconAdd'),
+                    },
                 },
             ];
         },

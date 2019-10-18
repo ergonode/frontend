@@ -62,7 +62,6 @@ export default {
         }
 
         const data = {
-            code: state.code,
             color: state.color,
             name,
             description,
