@@ -18,7 +18,7 @@
 
 <script>
 export default {
-    name: 'NavigationHeaderBreadcrumb',
+    name: 'TitleBarBreadcrumb',
     props: {
         breadcrumb: {
             type: Object,

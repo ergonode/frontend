@@ -4,7 +4,7 @@
  */
 <template>
     <PageWrapper>
-        <NavigationHeader
+        <TitleBar
             :title="title"
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
@@ -56,11 +56,12 @@ export default {
             this.buttons = [
                 {
                     title: 'REMOVE CATEGORY TREE',
-                    color: 'transparent',
                     action: this.onRemove,
-                    theme: 'dark',
-                    icon: 'remove',
+                    theme: 'secondary',
                     disabled: !this.$hasAccess('CATEGORY_TREE_DELETE'),
+                    prepend: {
+                        component: () => import('~/components/Icon/Actions/IconDelete'),
+                    },
                 },
             ];
         }

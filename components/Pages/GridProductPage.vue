@@ -4,7 +4,7 @@
  */
 <template>
     <PageWrapper>
-        <NavigationHeader
+        <TitleBar
             :title="title"
             :buttons="buttons"
             :icon="icon"
@@ -30,7 +30,7 @@ export default {
     name: 'GridProductPage',
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
-        NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
+        TitleBar: () => import('~/components/TitleBar/TitleBar'),
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
         TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
         // Blur: () => import('~/components/Blur/Blur'),

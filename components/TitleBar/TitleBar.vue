@@ -3,14 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="navigation-header">
-        <NavigationHeaderTitle
+    <div class="title-bar">
+        <TitleBarDetails
             :title="title"
             :icon="icon"
             :is-breadcrumb="breadcrumbs.length !== 0"
             @navigateback="onClick">
             <template #breadcrumb>
-                <NavigationHeaderBreadcrumb
+                <TitleBarBreadcrumb
                     v-for="(breadcrumb, index) in breadcrumbs"
                     :key="index"
                     :breadcrumb="breadcrumb" />
@@ -26,38 +26,19 @@
                     </template>
                 </InformationBadge>
             </template>
-        </NavigationHeaderTitle>
-        <div class="header-buttons-wrapper">
-            <Button
-                v-for="button in buttons"
-                :key="button.title"
-                :title="button.title"
-                :color="button.color"
-                :theme="button.theme"
-                :disabled="button.disabled"
-                large
-                @click.native="button.action">
-                <template #prepend>
-                    <IconDelete v-if="isRemoveButton(button.icon)" />
-                    <IconAdd
-                        v-else
-                        fill-color="#fff" />
-                </template>
-            </Button>
-        </div>
+        </TitleBarDetails>
+        <TitleBarActions :buttons="buttons" />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'NavigationHeader',
+    name: 'TitleBar',
     components: {
-        NavigationHeaderTitle: () => import('~/components/ReusableHeader/NavigationHeaderTitle'),
-        NavigationHeaderBreadcrumb: () => import('~/components/ReusableHeader/NavigationHeaderBreadcrumb'),
-        Button: () => import('~/components/Buttons/Button'),
+        TitleBarDetails: () => import('~/components/TitleBar/TitleBarDetails'),
+        TitleBarActions: () => import('~/components/TitleBar/TitleBarActions'),
+        TitleBarBreadcrumb: () => import('~/components/TitleBar/TitleBarBreadcrumb'),
         InformationBadge: () => import('~/components/Badges/InformationBadge'),
-        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
-        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
         IconLock: () => import('~/components/Icon/Feedback/IconLock'),
     },
     props: {
@@ -86,29 +67,18 @@ export default {
         onClick() {
             this.$emit('navigateback');
         },
-        isRemoveButton(title) {
-            return !!(title && title === 'remove');
-        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .navigation-header {
+    .title-bar {
         display: flex;
         flex: 0 0 auto;
         justify-content: space-between;
         align-items: center;
-        min-height: 40px;
+        min-height: 32px;
         padding: 24px;
-
-        .header-buttons-wrapper {
-            display: flex;
-
-            & > * {
-                margin: 0 5px;
-            }
-        }
     }
 
 </style>

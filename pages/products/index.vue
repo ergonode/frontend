@@ -4,8 +4,8 @@
  */
 <template>
     <GridProductPage
-        :title="title"
-        :buttons="buttons"
+        title="Products"
+        :buttons="getButtons"
         icon="Document" />
 </template>
 
@@ -18,23 +18,25 @@ export default {
     components: {
         GridProductPage: () => import('~/components/Pages/GridProductPage'),
     },
-    data() {
-        return {
-            title: 'Products',
-            buttons: [
-                {
-                    title: 'CREATE PRODUCT',
-                    color: 'success',
-                    action: this.addNewProduct,
-                    disabled: !this.$hasAccess('PRODUCT_CREATE'),
-                },
-            ],
-        };
-    },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
         }),
+        getButtons() {
+            const isGridPath = /grid/.test(this.$route.path);
+
+            if (!isGridPath) return [];
+            return [
+                {
+                    title: 'CREATE PRODUCT',
+                    action: this.addNewProduct,
+                    disabled: !this.$hasAccess('PRODUCT_CREATE'),
+                    prepend: {
+                        component: () => import('~/components/Icon/Actions/IconAdd'),
+                    },
+                },
+            ];
+        },
     },
     methods: {
         ...mapActions('list', {

@@ -65,8 +65,9 @@
                         :draft="drafts[id]"
                         :edit-routing-path="routeEdit.name"
                         :is-selected="gridState.isSelectedAllRows
-                            || gridState.selectedRows[(rowIndex + fixedRowOffset)
-                                * gridState.currentPage]"
+                            || gridState.selectedRows[
+                                (rowIndex + fixedRowOffset) * gridState.currentPage
+                            ]"
                         :editing-privilege-allowed="editingPrivilegeAllowed" />
                 </slot>
             </GridColumn>
@@ -383,8 +384,6 @@ export default {
         }
 
         &__content {
-            $content: &;
-
             position: relative;
             display: grid;
             border-left: 1px solid $grey;

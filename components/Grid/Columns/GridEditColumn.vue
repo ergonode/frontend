@@ -28,8 +28,7 @@
             :editing-allowed="true"
             :action-cell="true"
             :selected="isSelectedAllRows
-                || selectedRows[(index + 2)
-                    * currentPage]"
+                || selectedRows[(index + 2) * currentPage]"
             @edit="onEdit(rowLink)">
             <GridEditRowCell
                 :params="rowLink"
