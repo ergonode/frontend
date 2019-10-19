@@ -571,6 +571,16 @@ export const pages = [
                 path: 'general',
                 component: Tabs.ConditionSetBaseTab,
             },
+            {
+                name: 'condition-set-new-translations',
+                path: 'translations',
+                component: Tabs.ConditionSetTranslationsTab,
+            },
+            {
+                name: 'condition-set-new-designer',
+                path: 'designer',
+                component: Tabs.ConditionSetDesignTab,
+            },
         ],
         meta: {
             privileges: ['CONDITION_READ', 'CONDITION_CREATE'],
