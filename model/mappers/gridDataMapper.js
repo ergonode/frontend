@@ -193,20 +193,25 @@ export function getMappedGridConfiguration(configuration) {
     return mappedConfiguration;
 }
 
-export function getMappedAdvancedFilters(filters) {
-    const { length } = filters;
+export function getMappedFilters(filters) {
+    const entries = Object.entries(filters);
+    const { length: entriesLength } = entries;
 
     let mappedFilter = '';
 
-    for (let i = 0; i < length; i += 1) {
-        const { id, value } = filters[i];
+    for (let i = 0; i < entriesLength; i += 1) {
+        const [key, filter] = entries[i];
 
-        if (value) {
+        if (filter) {
+            const { value, operator } = filter;
+
             if (i === 0) {
-                mappedFilter += `${id}=`;
+                mappedFilter += `${key}`;
             } else {
-                mappedFilter += `;${id}=`;
+                mappedFilter += `;${key}`;
             }
+
+            mappedFilter += operator;
 
             if (Array.isArray(value)) {
                 mappedFilter += value.join(',');
@@ -219,28 +224,20 @@ export function getMappedAdvancedFilters(filters) {
     return mappedFilter;
 }
 
-export function getMappedFilters(filters) {
-    const entries = Object.entries(filters);
-    const { length: entriesLength } = entries;
-
+export function getMappedAdvancedFilters(filters) {
     let mappedFilter = '';
 
-    for (let i = 0; i < entriesLength; i += 1) {
-        const [key, value] = entries[i];
-        if (value) {
-            if (i === 0) {
-                mappedFilter += `${key}=`;
+    Object.keys(filters).forEach((id, index) => {
+        Object.keys(filters[id]).forEach((operator) => {
+            if (index === 0) {
+                mappedFilter += `${id}`;
             } else {
-                mappedFilter += `;${key}=`;
+                mappedFilter += `;${id}`;
             }
 
-            if (Array.isArray(value)) {
-                mappedFilter += value.join(',');
-            } else {
-                mappedFilter += value;
-            }
-        }
-    }
+            mappedFilter += `${operator}${filters[id][operator]}`;
+        });
+    });
 
     return mappedFilter;
 }

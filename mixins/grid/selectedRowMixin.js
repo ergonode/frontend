@@ -25,7 +25,7 @@ export default {
                 if (this.isSelectedAllRows) {
                     // If we had chosen option with selected all of the options, we need to remove it
                     // and mark visible rows as selected
-                    const fixedIndex = this.basicFilters ? 2 : 1;
+                    const fixedIndex = this.filters ? 2 : 1;
 
                     for (let i = fixedIndex; i < this.gridState().filtered + fixedIndex; i += 1) {
                         if (i !== row) {

@@ -3,11 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['grid', {'grid--placeholder': isPlaceholder}]">
+    <div
+        :class="['grid', {
+            'grid--placeholder': isPlaceholder,
+            'grid--disabled': isColumnExists,
+        }]">
         <GridAdvancedFilters
             v-if="advancedFilters"
+            :filters-data="gridState.advancedFiltersData"
             :filters="gridState.advancedFilters"
-            :namespace="namespace" />
+            :namespace="namespace"
+            :path="routeEdit.getData"
+            :disabled="isFilterExists" />
         <GridHeader
             :title="title"
             :row-height="rowHeight"
@@ -40,6 +47,7 @@
                     :namespace="namespace"
                     :column-index="colIndex"
                     :column="column"
+                    :filter="gridState.filters[column.id]"
                     :path="routeEdit.getData" />
                 <slot
                     name="cell"
@@ -192,6 +200,7 @@ export default {
             ghostIndex: (state) => state.ghostIndex,
             ghostFilterIndex: (state) => state.ghostFilterIndex,
             draggedElIndex: (state) => state.draggedElIndex,
+            draggedElement: (state) => state.draggedElement,
         }),
         ...mapState('gridDraft', {
             drafts: (state) => state.drafts,
@@ -212,6 +221,20 @@ export default {
             return {
                 gridTemplateColumns: `${template} ${widths.join(' ')}`,
             };
+        },
+        isFilterExists() {
+            const draggedElIndex = this.gridState.advancedFiltersData.findIndex(
+                (filter) => filter.id === this.draggedElement,
+            );
+
+            return draggedElIndex !== -1;
+        },
+        isColumnExists() {
+            const draggedElIndex = this.gridState.columns.findIndex(
+                (column) => column.id === this.draggedElement,
+            );
+
+            return draggedElIndex !== -1;
         },
         isPlaceholder() {
             return !this.gridState.rowIds.length;
@@ -291,33 +314,39 @@ export default {
             }
         },
         addGhostColumn() {
-            const width = 100;
-            const ghostIndex = 1;
+            if (!this.isColumnExists) {
+                const width = 100;
+                const ghostIndex = 1;
 
-            this.$store.dispatch(`${this.namespace}/insertColumnAtIndex`, { column: GHOST_ELEMENT_MODEL, index: ghostIndex });
-            this.$store.dispatch(`${this.namespace}/insertColumnWidthAtIndex`, { width: `${width}px`, index: ghostIndex });
+                this.$store.dispatch(`${this.namespace}/insertColumnAtIndex`, { column: GHOST_ELEMENT_MODEL, index: ghostIndex });
+                this.$store.dispatch(`${this.namespace}/insertColumnWidthAtIndex`, { width: `${width}px`, index: ghostIndex });
 
-            this.setGhostIndex(ghostIndex);
-            this.setDraggedElIndex(ghostIndex);
+                this.setGhostIndex(ghostIndex);
+                this.setDraggedElIndex(ghostIndex);
+            }
         },
         removeGhostColumn() {
-            this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, this.draggedElIndex);
-            this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, this.draggedElIndex);
+            if (this.draggedElIndex !== -1) {
+                this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, this.draggedElIndex);
+                this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, this.draggedElIndex);
 
-            this.setDraggedElIndex();
-            this.setGhostIndex();
+                this.setDraggedElIndex();
+                this.setGhostIndex();
+            }
         },
         addGhostFilter() {
-            const ghostIndex = 0;
+            if (!this.isFilterExists) {
+                const ghostIndex = 0;
 
-            this.$store.dispatch(`${this.namespace}/insertAdvancedFilterAtIndex`, {
-                index: ghostIndex,
-                filter: GHOST_ELEMENT_MODEL,
-            });
-            this.setGhostFilterIndex(ghostIndex);
+                this.$store.dispatch(`${this.namespace}/insertAdvancedFilterAtIndex`, {
+                    index: ghostIndex,
+                    filter: GHOST_ELEMENT_MODEL,
+                });
+                this.setGhostFilterIndex(ghostIndex);
+            }
         },
         removeGhostFilter() {
-            const ghostIndex = this.gridState.advancedFilters.findIndex(
+            const ghostIndex = this.gridState.advancedFiltersData.findIndex(
                 (filter) => filter.id === GHOST_ID,
             );
 
@@ -347,13 +376,29 @@ export default {
             }
         }
 
+        &--disabled {
+            #{$grid}__content::after {
+                z-index: 9999;
+            }
+        }
+
         &__content {
+            $content: &;
+
             position: relative;
             display: grid;
             border-left: 1px solid $grey;
             border-right: 1px solid $grey;
             background-color: $background;
             overflow: auto;
+
+            &::after {
+                position: absolute;
+                z-index: -1;
+                width: 100%;
+                height: 100%;
+                content: "";
+            }
         }
     }
 </style>

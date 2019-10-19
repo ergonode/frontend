@@ -6,16 +6,20 @@
     <GridAdvancedFilterBaseContent>
         <div class="container">
             <TextField
-                :value="value.from"
+                :value="filter[operators.GREATER_OR_EQUAL]"
+                placeholder="From"
                 underline
                 center-alignment
-                small />
+                small
+                @input="(fromValue) => onValueChange(fromValue, operators.GREATER_OR_EQUAL)" />
             <span class="dash">-</span>
             <TextField
-                :value="value.to"
+                :value="filter[operators.SMALLER_OR_EQUAL]"
+                placeholder="To"
                 underline
                 center-alignment
-                small />
+                small
+                @input="(toValue) => onValueChange(toValue, operators.SMALLER_OR_EQUAL)" />
         </div>
     </GridAdvancedFilterBaseContent>
 </template>
@@ -23,6 +27,7 @@
 <script>
 import TextField from '~/components/Inputs/TextField';
 import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
+import { FILTER_OPERATOR } from '~/defaults/operators/main';
 
 export default {
     name: 'GridAdvancedFilterRangeContent',
@@ -31,9 +36,19 @@ export default {
         GridAdvancedFilterBaseContent,
     },
     props: {
-        value: {
+        filter: {
             type: Object,
             required: true,
+        },
+    },
+    computed: {
+        operators() {
+            return FILTER_OPERATOR;
+        },
+    },
+    methods: {
+        onValueChange(value, operator) {
+            this.$emit('input', { value, operator });
         },
     },
 };

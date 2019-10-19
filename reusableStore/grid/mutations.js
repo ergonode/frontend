@@ -17,16 +17,17 @@ export const types = {
     SET_COUNT: 'SET_COUNT',
     SET_FILTERED: 'SET_FILTERED',
     SET_ADVANCED_FILTER_AT_INDEX: 'SET_ADVANCED_FILTER_AT_INDEX',
-    SET_ADVANCED_FILTER_VALUE_AT_INDEX: 'SET_ADVANCED_FILTER_VALUE_AT_INDEX',
     SET_ADVANCED_FILTERS: 'SET_ADVANCED_FILTERS',
+    SET_ADVANCED_FILTER: 'SET_ADVANCED_FILTER',
     INSERT_ADVANCED_FILTER_AT_INDEX: 'INSERT_ADVANCED_FILTER_AT_INDEX',
     REMOVE_ADVANCED_FILTER_AT_INDEX: 'REMOVE_ADVANCED_FILTER_AT_INDEX',
     REMOVE_ALL_ADVANCED_FILTERS: 'REMOVE_ALL_ADVANCED_FILTERS',
+    REMOVE_FILTER_FOR_OPERATOR: 'REMOVE_FILTER_FOR_OPERATOR',
     CLEAR_ALL_ADVANCED_FILTERS: 'CLEAR_ALL_ADVANCED_FILTERS',
-    SET_BASIC_FILTER: 'SET_BASIC_FILTER',
+    SET_FILTER: 'SET_FILTER',
     RELOAD_GRID_DATA: 'RELOAD_GRID_DATA',
     UPDATE_DATA_CELL_VALUE: 'UPDATE_DATA_CELL_VALUE',
-    REMOVE_BASIC_FILTER: 'REMOVE_BASIC_FILTER',
+    REMOVE_FILTER: 'REMOVE_FILTER',
     SET_CURRENT_PAGE: 'SET_CURRENT_PAGE',
     SET_SORTING_STATE: 'SET_SORTING_STATE',
     INSERT_COLUMN_AT_INDEX: 'INSERT_COLUMN_AT_INDEX',
@@ -62,7 +63,7 @@ export default {
         state.pinnedColumns = insertValueAtIndex(state.pinnedColumns, column, index);
     },
     [types.INSERT_ADVANCED_FILTER_AT_INDEX](state, { index, filter }) {
-        state.advancedFilters = insertValueAtIndex(state.advancedFilters, filter, index);
+        state.advancedFiltersData = insertValueAtIndex(state.advancedFiltersData, filter, index);
     },
     [types.REMOVE_PINNED_COLUMN_AT_INDEX](state, index) {
         state.pinnedColumns.splice(index, 1);
@@ -82,34 +83,40 @@ export default {
     [types.SET_FILTERED](state, payload) {
         state.filtered = payload;
     },
-    [types.SET_BASIC_FILTER](state, { id, filter }) {
-        state.basicFilters = { ...state.basicFilters, [id]: filter };
+    [types.SET_FILTER](state, { id, filter, operator }) {
+        state.filters = { ...state.filters, [id]: { value: filter, operator } };
     },
-    [types.REMOVE_BASIC_FILTER](state, id) {
-        delete state.basicFilters[id];
-        state.basicFilters = { ...state.basicFilters };
+    [types.REMOVE_FILTER](state, id) {
+        delete state.filters[id];
+        state.filters = { ...state.filters };
+    },
+    [types.REMOVE_FILTER_FOR_OPERATOR](state, { id, operator }) {
+        delete state.advancedFilters[id][operator];
+        state.advancedFilters[id] = { ...state.advancedFilters[id] };
+        state.advancedFilters = { ...state.advancedFilters };
     },
     [types.SET_ADVANCED_FILTER_AT_INDEX](state, { index, filter }) {
-        state.advancedFilters[index] = filter;
-        state.advancedFilters = [...state.advancedFilters];
+        state.advancedFiltersData[index] = filter;
+        state.advancedFiltersData = [...state.advancedFiltersData];
     },
-    [types.SET_ADVANCED_FILTER_VALUE_AT_INDEX](state, { index, value }) {
-        state.advancedFilters[index].value = value;
-        state.advancedFilters = [...state.advancedFilters];
+    [types.SET_ADVANCED_FILTERS](state, advancedFiltersData) {
+        state.advancedFiltersData = advancedFiltersData;
     },
-    [types.SET_ADVANCED_FILTERS](state, advancedFilters) {
-        state.advancedFilters = advancedFilters;
+    [types.SET_ADVANCED_FILTER](state, { id, operator, value }) {
+        state.advancedFilters = { ...state.advancedFilters, [id]: { [operator]: value } };
+        state.advancedFilters[id] = { ...state.advancedFilters[id] };
+        state.advancedFilters = { ...state.advancedFilters };
     },
     [types.REMOVE_ALL_ADVANCED_FILTERS](state) {
-        state.advancedFilters = [];
+        state.advancedFiltersData = [];
     },
-    [types.CLEAR_ALL_ADVANCED_FILTERS](state) {
-        state.advancedFilters = state.advancedFilters.map(
-            (filter) => ({ ...filter, value: null }),
-        );
+    [types.CLEAR_ALL_ADVANCED_FILTERS]() {
+        // state.advancedFiltersData = state.advancedFiltersData.map(
+        //     (filter) => ({ ...filter, value: null }),
+        // );
     },
     [types.REMOVE_ADVANCED_FILTER_AT_INDEX](state, index) {
-        state.advancedFilters.splice(index, 1);
+        state.advancedFiltersData.splice(index, 1);
     },
     [types.SET_CURRENT_PAGE](state, payload) {
         state.currentPage = payload;

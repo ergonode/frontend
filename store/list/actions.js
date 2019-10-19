@@ -7,9 +7,6 @@ import { getMappedFilters, getMappedElementsToGroups } from '~/model/mappers/gri
 import { UNASSIGNED_GROUP_ID } from '~/defaults/list/main';
 
 export default {
-    setFilter({ commit }, filter) {
-        commit(types.SET_FILTER, filter);
-    },
     getFilteredGroupElements({ commit, state }, { listType, languageCode }) {
         const path = `${languageCode}/${listType}`;
         const params = {
@@ -97,6 +94,9 @@ export default {
         return this.app.$axios.$get(path, { params }).then(({ collection: elements }) => {
             commit(types.SET_ELEMENTS_FOR_LANGUAGE, { languageCode, elements });
         });
+    },
+    setFilter({ commit }, filter) {
+        commit(types.SET_FILTER, filter);
     },
     setElementsForLanguage: ({ commit, rootState }, elements) => {
         const { language: languageCode } = rootState.authentication.user;

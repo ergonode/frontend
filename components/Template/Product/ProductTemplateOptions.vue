@@ -30,7 +30,7 @@
                 v-if="multiselect"
                 :options="parsedOptions"
                 :selected-options="localValue || []"
-                @values="onValueChange" />
+                @value="onValueChange" />
             <TranslationSelectListContent
                 v-else
                 :options="parsedOptions"

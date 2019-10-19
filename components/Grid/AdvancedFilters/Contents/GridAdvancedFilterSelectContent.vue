@@ -6,7 +6,7 @@
     <GridAdvancedFilterBaseContent>
         <TranslationSelectListContent
             :options="options"
-            :selected-options="value"
+            :selected-options="filterValue"
             @value="onValueChange" />
     </GridAdvancedFilterBaseContent>
 </template>
@@ -14,6 +14,7 @@
 <script>
 import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 import TranslationSelectListContent from '~/components/Inputs/Select/Contents/TranslationSelectListContent';
+import { FILTER_OPERATOR } from '~/defaults/operators/main';
 
 export default {
     name: 'GridAdvancedFilterSelectContent',
@@ -22,8 +23,8 @@ export default {
         TranslationSelectListContent,
     },
     props: {
-        value: {
-            type: String,
+        filter: {
+            type: Object,
             required: true,
         },
         options: {
@@ -31,9 +32,16 @@ export default {
             default: () => [],
         },
     },
+    computed: {
+        filterValue() {
+            if (this.filter) return this.filter[FILTER_OPERATOR.EQUAL];
+
+            return '';
+        },
+    },
     methods: {
         onValueChange(value) {
-            this.$emit('input', value.key);
+            this.$emit('input', { value: value.key, operator: FILTER_OPERATOR.EQUAL });
         },
     },
 };

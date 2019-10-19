@@ -259,6 +259,7 @@ export default {
                 this.setDisabledElement({
                     languageCode: this.language,
                     elementId: draggedId,
+                    disabled: true,
                 });
             }
             if (parentId !== 'root') {

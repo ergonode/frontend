@@ -56,7 +56,7 @@ export default {
                 localSelectedOptions = this.selectedOptions.filter((opt) => opt !== option);
             }
 
-            this.$emit('values', localSelectedOptions);
+            this.$emit('value', localSelectedOptions);
         },
         getSelectedValueByOption(option) {
             const index = this.selectedOptions.findIndex((opt) => opt === option.key);
