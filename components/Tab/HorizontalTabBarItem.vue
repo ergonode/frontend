@@ -50,7 +50,7 @@
 import tabBarItemMixin from '~/mixins/tabBar/tabBarItemMixin';
 
 export default {
-    name: 'HorizontalTabContent',
+    name: 'HorizontalTabBarItem',
     components: {
         TextField: () => import('~/components/Inputs/TextField'),
         ButtonSelect: () => import('~/components/Inputs/Select/ButtonSelect'),

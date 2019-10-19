@@ -26,18 +26,22 @@ export default {
                 return [
                     {
                         title: 'CREATE TRANSITIONS',
-                        color: 'success',
                         action: this.addNewTransition,
                         disabled: !this.$hasAccess('WORKFLOW_CREATE'),
+                        prepend: {
+                            component: () => import('~/components/Icon/Actions/IconAdd'),
+                        },
                     },
                 ];
             }
             return [
                 {
                     title: 'CREATE STATUS',
-                    color: 'success',
                     action: this.addNewStatus,
                     disabled: !this.$hasAccess('WORKFLOW_CREATE'),
+                    prepend: {
+                        component: () => import('~/components/Icon/Actions/IconAdd'),
+                    },
                 },
             ];
         },

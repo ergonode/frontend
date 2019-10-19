@@ -47,6 +47,8 @@ export default {
             design_template_id: templateId,
             categories: categoryIds,
             sku,
+            status,
+            workflow = [],
         }) => {
             const { categories, templates } = state;
 
@@ -66,6 +68,8 @@ export default {
 
             commit(types.SET_PRODUCT_ID, id);
             commit(types.SET_PRODUCT_SKU, sku);
+            commit(types.SET_PRODUCT_STATUS, status);
+            commit(types.SET_PRODUCT_WORKFLOW, workflow);
         }).catch(onDefaultError);
     },
     getProductTemplate({ commit }, { languageCode, id }) {
@@ -122,6 +126,20 @@ export default {
             }
             onSuccess(name);
         }).catch((e) => onError({ errors: e.data.errors, name }));
+    },
+    updateProductStatus({ state, rootState, dispatch }, {
+        attributeId,
+        value,
+        onSuccess,
+    }) {
+        const { id } = state;
+        const { authentication: { user: { language } } } = rootState;
+        return this.app.$axios.$put(`${language}/products/${id}/draft/${attributeId}/value`, { value }).then(() => {
+            dispatch('applyDraft', {
+                id,
+                onSuccess,
+            });
+        }).catch(onDefaultError);
     },
     createProduct(
         { commit, rootState },

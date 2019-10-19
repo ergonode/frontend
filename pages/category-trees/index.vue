@@ -29,9 +29,11 @@ export default {
             return [
                 {
                     title: 'CREATE TREE',
-                    color: 'success',
                     action: this.addNewTree,
                     disabled: !this.$hasAccess('CATEGORY_TREE_CREATE'),
+                    prepend: {
+                        component: () => import('~/components/Icon/Actions/IconAdd'),
+                    },
                 },
             ];
         },

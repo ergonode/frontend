@@ -89,10 +89,12 @@ export default {
     getElements({ commit, state }, { listType, languageCode }) {
         const path = `${languageCode}/${listType}`;
         const params = {
-            filter: `code=${state.filter}`,
             field: 'code',
             order: 'ASC',
         };
+        if (state.filter) {
+            params.filter = `code=${state.filter}`;
+        }
 
         return this.app.$axios.$get(path, { params }).then(({ collection: elements }) => {
             commit(types.SET_ELEMENTS_FOR_LANGUAGE, { languageCode, elements });

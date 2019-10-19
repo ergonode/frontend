@@ -38,7 +38,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getValueByKey, getKeyByValue } from '~/model/objectWrapper';
+import { getValueByKey, getKeyByValue, isEmpty } from '~/model/objectWrapper';
 import BaseCard from '~/components/Card/BaseCard';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
@@ -62,7 +62,11 @@ export default {
             statuses: (state) => state.statuses,
         }),
         isDisabled() {
-            return Boolean(this.source) && Boolean(this.destination);
+            if (!isEmpty(this.$route.params)) {
+                const { source, destination } = this.$route.params;
+                return Boolean(source) && Boolean(destination);
+            }
+            return false;
         },
         conditionSetsValues() {
             return Object.values(this.conditionSets);

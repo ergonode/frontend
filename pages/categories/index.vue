@@ -28,9 +28,11 @@ export default {
             return [
                 {
                     title: 'CREATE CATEGORY',
-                    color: 'success',
                     action: this.addNewCategory,
                     disabled: !this.$hasAccess('CATEGORY_CREATE'),
+                    prepend: {
+                        component: () => import('~/components/Icon/Actions/IconAdd'),
+                    },
                 },
             ];
         },

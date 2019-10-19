@@ -4,7 +4,7 @@
  */
 <template>
     <PageWrapper>
-        <NavigationHeader
+        <TitleBar
             :title="title"
             :buttons="buttons"
             :icon="icon"
@@ -16,10 +16,10 @@
 
 <script>
 export default {
-    name: 'GridSegmentsPage',
+    name: 'SegmentsTabs',
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
-        NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
+        TitleBar: () => import('~/components/TitleBar/TitleBar'),
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
     },
     props: {

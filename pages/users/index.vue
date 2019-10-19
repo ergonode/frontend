@@ -5,7 +5,7 @@
 <template>
     <UsersTabs
         title="Users"
-        :buttons="getButtons()"
+        :buttons="getButtons"
         icon="User" />
 </template>
 <script>
@@ -21,14 +21,6 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
         }),
-    },
-    methods: {
-        addNewUser() {
-            this.$router.push('/users/user/new');
-        },
-        addNewRole() {
-            this.$router.push('/users/role/new');
-        },
         getButtons() {
             const isRolesPath = /roles/.test(this.$route.path);
             const isUsersPath = /grid/.test(this.$route.path);
@@ -39,9 +31,11 @@ export default {
                 return [
                     {
                         title: 'CREATE USER',
-                        color: 'success',
                         action: this.addNewUser,
                         disabled: !this.$hasAccess('USER_CREATE'),
+                        prepend: {
+                            component: () => import('~/components/Icon/Actions/IconAdd'),
+                        },
                     },
                 ];
             }
@@ -49,11 +43,21 @@ export default {
             return [
                 {
                     title: 'CREATE ROLE',
-                    color: 'success',
                     action: this.addNewRole,
                     disabled: !this.$hasAccess('USER_ROLE_CREATE'),
+                    prepend: {
+                        component: () => import('~/components/Icon/Actions/IconAdd'),
+                    },
                 },
             ];
+        },
+    },
+    methods: {
+        addNewUser() {
+            this.$router.push('/users/user/new');
+        },
+        addNewRole() {
+            this.$router.push('/users/role/new');
         },
     },
 };

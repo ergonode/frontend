@@ -25,18 +25,22 @@ export default {
                 return [
                     {
                         title: 'CREATE CONDITION SET',
-                        color: 'success',
                         action: this.addNewConditionSet,
                         disabled: !this.$hasAccess('CONDITION_CREATE'),
+                        prepend: {
+                            component: () => import('~/components/Icon/Actions/IconAdd'),
+                        },
                     },
                 ];
             }
             return [
                 {
                     title: 'CREATE SEGMENT',
-                    color: 'success',
                     action: this.addNewSegment,
                     disabled: !this.$hasAccess('SEGMENT_CREATE'),
+                    prepend: {
+                        component: () => import('~/components/Icon/Actions/IconAdd'),
+                    },
                 },
             ];
         },

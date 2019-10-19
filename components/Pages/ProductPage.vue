@@ -4,7 +4,7 @@
  */
 <template>
     <PageWrapper>
-        <NavigationHeader
+        <TitleBar
             :title="title"
             :buttons="buttons"
             :breadcrumbs="breadcrumbs"
@@ -14,8 +14,8 @@
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
 </template>
-
 <script>
+import { mapState, mapActions } from 'vuex';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
@@ -36,7 +36,6 @@ export default {
             },
         ];
 
-
         this.isUserAllowedToUpdateProduct = this.$hasAccess('PRODUCT_UPDATE');
 
         if (this.isEdit) {
@@ -48,12 +47,15 @@ export default {
             this.buttons = [
                 {
                     title: 'REMOVE PRODUCT',
-                    color: 'transparent',
                     action: this.onRemove,
-                    theme: 'dark',
-                    icon: 'remove',
+                    theme: 'secondary',
                     disabled: !this.$hasAccess('PRODUCT_DELETE'),
+                    prepend: {
+                        component: () => import('~/components/Icon/Actions/IconDelete'),
+                    },
                 },
+                ...this.getButtonsForStatuses,
+                this.getActiveStatus,
             ];
         }
 
@@ -83,6 +85,78 @@ export default {
                 },
             },
         ];
+    },
+    computed: {
+        ...mapState('productsDraft', {
+            producId: (state) => state.id,
+            status: (state) => state.status,
+            workflow: (state) => state.workflow,
+        }),
+        getActiveStatus() {
+            return {
+                title: this.status.code,
+                theme: 'secondary',
+                inactive: true,
+                disabled: !this.$hasAccess('PRODUCT_UPDATE'),
+                prepend: {
+                    color: this.status.color,
+                    component: () => import('~/components/Badges/StatusBadge'),
+                },
+            };
+        },
+        getButtonsForStatuses() {
+            if (!this.workflow.length) return [];
+            const moreStatuses = JSON.parse(JSON.stringify(this.workflow)); // deep array clone hack
+            const statuses = moreStatuses.splice(0, 2);
+            const statusesButtons = statuses.map((current) => ({
+                title: current.code,
+                theme: 'secondary',
+                action: this.updateStatus.bind(this, current.code),
+                disabled: !this.$hasAccess('PRODUCT_UPDATE'),
+            }));
+
+            if (moreStatuses.length) {
+                return [
+                    {
+                        title: 'more',
+                        theme: 'secondary',
+                        disabled: !this.$hasAccess('PRODUCT_UPDATE'),
+                        append: {
+                            component: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
+                        },
+                        options: [
+                            ...moreStatuses.map((current) => ({
+                                title: current.code,
+                                action: this.updateStatus.bind(this, current.code),
+                            })),
+                        ],
+                    },
+                    ...statusesButtons,
+                ];
+            }
+            return [
+                ...statusesButtons,
+            ];
+        },
+    },
+    methods: {
+        ...mapActions('productsDraft', [
+            'updateProductStatus',
+        ]),
+        updateStatus(value = null) {
+            const isConfirm = confirm(`Are you sure you want to change status to ${value}?`); /* eslint-disable-line no-restricted-globals */
+            if (isConfirm) {
+                this.updateProductStatus({
+                    value,
+                    attributeId: this.status.attribute_id,
+                    onSuccess: () => {
+                        this.$addAlert({ type: 'success', message: 'Status updated' });
+                        // this.$router.push({ name: 'product-edit-id-general', params: { id: this.producId } });
+                        window.location.reload(true);
+                    },
+                });
+            }
+        },
     },
     beforeDestroy() {
         delete this.breadcrumbs;

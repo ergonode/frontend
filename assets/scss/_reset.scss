@@ -54,3 +54,8 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

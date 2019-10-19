@@ -5,7 +5,7 @@
 <template>
     <NuxtLink
         class="breadcrumb"
-        :to="breadcrumb.route">
+        :to="{ path: breadcrumb.path }">
         <Component
             :is="breadcrumbIconComponent"
             fill-color="#00bc87"
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-    name: 'NavigationHeaderBreadcrumb',
+    name: 'TitleBarBreadcrumb',
     props: {
         breadcrumb: {
             type: Object,

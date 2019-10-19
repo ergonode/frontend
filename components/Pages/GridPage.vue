@@ -4,7 +4,7 @@
  */
 <template>
     <PageWrapper>
-        <NavigationHeader
+        <TitleBar
             :title="title"
             :buttons="buttons"
             :icon="icon" />
@@ -30,7 +30,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
-import NavigationHeader from '~/components/ReusableHeader/NavigationHeader';
+import TitleBar from '~/components/TitleBar/TitleBar';
 import Grid from '~/components/Grid/Grid';
 import GridFooter from '~/components/Grid/GridFooter';
 import GridPageSelector from '~/components/Grid/GridPageSelector';
@@ -40,7 +40,7 @@ import PageWrapper from '~/components/Layout/PageWrapper';
 export default {
     name: 'GridPage',
     components: {
-        NavigationHeader,
+        TitleBar,
         Grid,
         GridFooter,
         GridPageSelector,

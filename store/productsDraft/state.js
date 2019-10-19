@@ -6,6 +6,8 @@ export default () => ({
     draft: {},
     id: null,
     sku: '',
+    status: {},
+    workflow: [],
     template: '',
     selectedCategories: [],
     languageCode: '',

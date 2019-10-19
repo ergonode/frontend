@@ -7,6 +7,8 @@ import defaultState from './state';
 export const types = {
     SET_PRODUCT_ID: 'SET_PRODUCT_ID',
     SET_PRODUCT_SKU: 'SET_PRODUCT_SKU',
+    SET_PRODUCT_STATUS: 'SET_PRODUCT_STATUS',
+    SET_PRODUCT_WORKFLOW: 'SET_PRODUCT_WORKFLOW',
     SET_PRODUCT_TEMPLATE: 'SET_PRODUCT_TEMPLATE',
     SET_PRODUCT_CATEGORIES: 'SET_PRODUCT_CATEGORIES',
     SET_DRAFT_LANGUAGE_CODE: 'SET_DRAFT_LANGUAGE_CODE',
@@ -25,6 +27,12 @@ export default {
     },
     [types.SET_PRODUCT_SKU](state, sku) {
         state.sku = sku;
+    },
+    [types.SET_PRODUCT_STATUS](state, status) {
+        state.status = status;
+    },
+    [types.SET_PRODUCT_WORKFLOW](state, workflow) {
+        state.workflow = workflow;
     },
     [types.SET_PRODUCT_TEMPLATE](state, template) {
         state.template = template;
