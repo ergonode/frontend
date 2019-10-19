@@ -482,16 +482,16 @@ export const pages = [
     },
     {
         name: 'transition-edit-source-destination',
-        path: '/workflow/transition/edit/:source/:destination',
+        path: '/workflow/transition/edit/:id',
         component: Pages.TransitionEdit,
         children: [
             {
-                name: 'transition-edit-source-destination-general',
+                name: 'transition-edit-id-general',
                 path: 'general',
                 component: Tabs.TransitionBaseTab,
             },
             {
-                name: 'transition-edit-source-destination-translations',
+                name: 'transition-edit-id-translations',
                 path: 'translations',
                 component: Tabs.TransitionTranslationsTab,
             },

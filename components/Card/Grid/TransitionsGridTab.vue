@@ -98,13 +98,11 @@ export default {
         onRowEdit({ links: { edit } }) {
             const args = edit.href.split('/');
             const lastIndex = args.length - 1;
+            const id = `${args[lastIndex - 1].replace(/%20/g, ' ')}--${args[lastIndex].replace(/%20/g, ' ')}`;
 
             this.$router.push({
-                name: 'transition-edit-source-destination-general',
-                params: {
-                    source: args[lastIndex - 1],
-                    destination: args[lastIndex],
-                },
+                name: 'transition-edit-id-general',
+                params: { id },
             });
         },
         onPageChanged(page) {

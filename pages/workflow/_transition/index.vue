@@ -44,6 +44,7 @@ export default {
                 destination: this.destination,
                 condition_set: this.conditionSetId,
             };
+            debugger;
             this.createTransition({
                 data: transition,
                 onSuccess: this.onTransitionCreated,
@@ -57,9 +58,9 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Transition created' });
             this.$router.push({
-                name: 'transition-edit-source-destination-general',
+                name: 'transition-edit-id-general',
                 params: {
-                    id: `${this.source.replace(/ /g, '%20')}/${this.destination.replace(/ /g, '%20')}`,
+                    id: `${this.source}--${this.destination}`,
                 },
             });
         },
