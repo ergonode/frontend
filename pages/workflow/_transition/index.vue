@@ -44,7 +44,7 @@ export default {
                 destination: this.destination,
                 condition_set: this.conditionSetId,
             };
-            debugger;
+
             this.createTransition({
                 data: transition,
                 onSuccess: this.onTransitionCreated,
