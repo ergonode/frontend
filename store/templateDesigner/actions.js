@@ -43,7 +43,7 @@ export default {
 
                 for (let i = layoutElements.length - 1; i > -1; i -= 1) {
                     const { id } = layoutElements[i];
-                    dispatch('list/setDisabledElement', { languageCode, elementId: id }, { root: true });
+                    dispatch('list/setDisabledElement', { languageCode, elementId: id, disabled: true }, { root: true });
                 }
 
                 commit(types.INITIALIZE_LAYOUT_ELEMENTS, layoutElements);
@@ -99,7 +99,7 @@ export default {
             position,
         );
 
-        dispatch('list/setDisabledElement', { languageCode, elementId: element.id }, { root: true });
+        dispatch('list/setDisabledElement', { languageCode, elementId: element.id, disabled: true }, { root: true });
         commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
     },
     addSectionElementToLayout: ({

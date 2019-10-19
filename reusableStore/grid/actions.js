@@ -10,7 +10,8 @@ import {
     getMappedColumn,
     getMappedColumns,
     getSortedColumnsByIDs,
-    getMappedFilter,
+    getMappedFilters,
+    getMappedAdvancedFilters,
 } from '~/model/mappers/gridDataMapper';
 import { swapItemPosition, insertValueAtIndex } from '~/model/arrayWrapper';
 import { COLUMN_IDS } from '~/defaults/grid/cookies';
@@ -25,17 +26,30 @@ export default {
             sortedByColumn,
             currentPage,
             numberOfDisplayedElements,
-            basicFilters,
+            filters,
+            advancedFilters,
+            advancedFiltersData,
         } = state;
-        const parsedFilter = getMappedFilter(basicFilters);
+        const parsedFilter = getMappedFilters(filters);
+        const parsedAdvcFilter = getMappedAdvancedFilters(advancedFilters);
         const isProductGrid = path.includes('products');
         const columnIDs = isProductGrid
             ? this.$cookies.get(COLUMN_IDS) || stateColumns.map((col) => col.id).join(',')
             : null;
+
+        let filter = parsedFilter;
+
+        if (parsedFilter && parsedAdvcFilter) {
+            filter += `${parsedFilter};${parsedAdvcFilter}`;
+        } else if (parsedAdvcFilter) {
+            filter = parsedAdvcFilter;
+        }
+
         const params = {
             limit: numberOfDisplayedElements,
             offset: (currentPage - 1) * numberOfDisplayedElements,
             columns: columnIDs,
+            filter,
         };
         const isSorted = Object.keys(sortedByColumn).length;
 
@@ -44,10 +58,6 @@ export default {
 
             params.field = index;
             params.order = orderState;
-        }
-
-        if (parsedFilter) {
-            params.filter = parsedFilter;
         }
 
         return this.app.$axios.$get(path, { params }).then(({
@@ -64,10 +74,14 @@ export default {
 
             if (isProductGrid) {
                 this.$cookies.set(COLUMN_IDS, visibleColumns.map((col) => col.id).join(','));
+
                 for (let i = mappedColumns.length - 1; i > -1; i -= 1) {
                     const { element_id: elementId, language } = mappedColumns[i];
                     if (elementId) {
-                        dispatch('list/setDisabledElement', { languageCode: language, elementId }, { root: true });
+                        const advcFilterIndex = advancedFiltersData
+                            .findIndex((f) => f.element_id === elementId);
+
+                        dispatch('list/setDisabledElement', { languageCode: language, elementId, disabled: advcFilterIndex !== -1 }, { root: true });
                     }
                 }
             }
@@ -95,17 +109,30 @@ export default {
             currentPage,
             numberOfDisplayedElements,
             sortedByColumn,
-            basicFilters,
+            advancedFiltersData,
+            advancedFilters,
+            filters,
         } = state;
         const stateColumnsID = stateColumns
             .filter((col) => !col.id.includes(GHOST_ID))
             .map((col) => col.id);
         const parsedColumnsID = insertValueAtIndex(stateColumnsID, columnId, ghostIndex).join(',');
-        const parsedFilter = getMappedFilter(basicFilters);
+        const parsedFilter = getMappedFilters(filters);
+        const parsedAdvcFilter = getMappedAdvancedFilters(advancedFilters);
+
+        let filter = parsedFilter;
+
+        if (parsedFilter && parsedAdvcFilter) {
+            filter += `${parsedFilter};${parsedAdvcFilter}`;
+        } else if (parsedAdvcFilter) {
+            filter = parsedAdvcFilter;
+        }
+
         const params = {
             columns: parsedColumnsID,
             offset: (currentPage - 1) * numberOfDisplayedElements,
             limit: numberOfDisplayedElements,
+            filter,
         };
 
         if (Object.keys(sortedByColumn).length) {
@@ -135,8 +162,10 @@ export default {
             const newColumns = insertValueAtIndex(
                 stateColumns, mappedColumn, ghostIndex,
             );
+            const advcFilterIndex = advancedFiltersData
+                .findIndex((f) => f.element_id === draggedColumn.element_id);
 
-            dispatch('list/setDisabledElement', { languageCode: draggedColumn.language, elementId: draggedColumn.element_id }, { root: true });
+            dispatch('list/setDisabledElement', { languageCode: draggedColumn.language, elementId: draggedColumn.element_id, disabled: advcFilterIndex !== -1 }, { root: true });
 
             commit(types.SET_COLUMNS, newColumns);
             commit(types.SET_COLUMN_WIDTHS, newColumnsWidth);
@@ -154,39 +183,38 @@ export default {
         commit(types.SET_CELL_VALUES, cellValues);
         commit(types.SET_ROW_IDS, rowIds);
     },
-    setFilter({ commit, state }, { filter: filterToSet, id }) {
+    setFilter({ commit, state }, { filter, id, operator }) {
         // Remove selection on filter action
         commit(types.REMOVE_SELECTED_ROWS);
         commit(types.SET_SELECTION_FOR_ALL_ROWS, false);
 
-        const isFilterExist = state.basicFilters[id];
-
-        if (!isFilterExist && (Array.isArray(filterToSet) ? !filterToSet.length : !filterToSet)) {
-            return;
-        }
-
-        const isFilterToSetEmpty = filterToSet.length === 0;
-        const removeFilterCondition = isFilterExist && isFilterToSetEmpty;
-
-        if (removeFilterCondition) {
-            commit(types.REMOVE_BASIC_FILTER, id);
+        if (state.filters[id] && !filter.length) {
+            commit(types.REMOVE_FILTER, id);
         } else {
-            commit(types.SET_BASIC_FILTER, { id, filter: filterToSet });
+            commit(types.SET_FILTER, { id, filter, operator });
+        }
+    },
+    setAdvancedFilter({ commit, state }, { value, id, operator }) {
+        // Remove selection on filter action
+        commit(types.REMOVE_SELECTED_ROWS);
+        commit(types.SET_SELECTION_FOR_ALL_ROWS, false);
+
+        if (state.advancedFilters[id] && !value.length) {
+            commit(types.REMOVE_FILTER_FOR_OPERATOR, { id, operator });
+        } else {
+            commit(types.SET_ADVANCED_FILTER, { id, value, operator });
         }
     },
     setAdvancedFilterAtIndex({ commit }, payload) {
         commit(types.SET_ADVANCED_FILTER_AT_INDEX, payload);
     },
-    setAdvancedFilterValueAtIndex({ commit }, payload) {
-        commit(types.SET_ADVANCED_FILTER_VALUE_AT_INDEX, payload);
-    },
     insertAdvancedFilterAtIndex({ commit }, payload) {
         commit(types.INSERT_ADVANCED_FILTER_AT_INDEX, payload);
     },
     changeFiltersPosition({ commit, state }, { from, to }) {
-        const { advancedFilters } = state;
+        const { advancedFiltersData } = state;
         const newOrderedFilters = [
-            ...swapItemPosition(advancedFilters, from, to),
+            ...swapItemPosition(advancedFiltersData, from, to),
         ];
 
         commit(types.SET_ADVANCED_FILTERS, newOrderedFilters);

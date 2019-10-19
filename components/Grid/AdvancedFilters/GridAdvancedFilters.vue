@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="grid-advanced-filters">
+    <div :class="['grid-advanced-filters', {'grid-advanced-filters--disabled': disabled}]">
         <div class="grid-advanced-filters__header">
             <div class="container">
                 <div class="title-container">
@@ -49,15 +49,17 @@
             <GridAdvancedFiltersContainer
                 v-if="isExpanded"
                 @mouseOverFilters="onMouseOverFilters">
-                <GridAdvancedFilterPlaceholder v-if="filters.length === 0" />
-                <template v-for="(filter, index) in filters">
+                <GridAdvancedFilterPlaceholder v-if="filtersData.length === 0" />
+                <template v-for="(filter, index) in filtersData">
                     <GridAdvancedFilter
                         v-if="filter.id !== ghostFilterId"
                         :key="index"
                         :index="index"
-                        :filter="filter"
+                        :data="filter"
+                        :filter="filters[filter.id]"
                         :is-mouse-over-filters="isMouseOverFilters"
                         :namespace="namespace"
+                        :path="path"
                         @mouseOverFilters="onMouseOverFilters" />
                     <GridAdvancedFilterGhost
                         v-else
@@ -93,12 +95,24 @@ export default {
     },
     props: {
         filters: {
+            type: Object,
+            default: () => {},
+        },
+        filtersData: {
             type: Array,
             default: () => [],
         },
         namespace: {
             type: String,
             required: true,
+        },
+        path: {
+            type: String,
+            required: true,
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
@@ -116,7 +130,7 @@ export default {
             return GHOST_ID;
         },
         filtersNumber() {
-            return this.filters.filter((f) => f.id !== this.ghostFilterId).length;
+            return this.filtersData.filter((f) => f.id !== this.ghostFilterId).length;
         },
     },
     watch: {
@@ -176,6 +190,10 @@ export default {
             align-items: center;
             text-decoration: underline;
             cursor: pointer;
+        }
+
+        &--disabled {
+            pointer-events: none;
         }
     }
 

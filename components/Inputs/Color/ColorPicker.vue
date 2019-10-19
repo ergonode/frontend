@@ -19,7 +19,7 @@
         :dismissible="dismissible"
         :small="small"
         :regular="regular"
-        :fixed-select-content="false"
+        :fixed-content-width="false"
         clearable
         @focus="onFocus"
         @clear="emitValue">

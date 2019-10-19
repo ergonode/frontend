@@ -23,11 +23,4 @@ describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent', () => {
         expect(typeof GridAdvancedFilterTextContent.name).toBe('string');
         expect(GridAdvancedFilterTextContent.name).toEqual('GridAdvancedFilterTextContent');
     });
-
-    it('Value is emitted', () => {
-        wrapper.vm.onValueChange('Test');
-
-        expect(wrapper.emitted().input).toBeTruthy();
-        expect(wrapper.emitted().input[0][0]).toBe('Test');
-    });
 });

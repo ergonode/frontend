@@ -88,7 +88,7 @@ export function getMappedColumns(columns) {
                 position: gridColumnPosition,
             });
         }
-        // TODO: Refactor needed
+        //
         // if (type === COLUMN_TYPE.ACTION) {
         //     pinnedColumns.push({
         //         id,
@@ -193,20 +193,25 @@ export function getMappedGridConfiguration(configuration) {
     return mappedConfiguration;
 }
 
-export function getMappedFilter(filter) {
-    const entries = Object.entries(filter);
+export function getMappedFilters(filters) {
+    const entries = Object.entries(filters);
     const { length: entriesLength } = entries;
 
     let mappedFilter = '';
 
-    for (let j = 0; j < entriesLength; j += 1) {
-        const [key, value] = entries[j];
-        if (value !== null) {
-            if (j === 0) {
-                mappedFilter += `${key}=`;
+    for (let i = 0; i < entriesLength; i += 1) {
+        const [key, filter] = entries[i];
+
+        if (filter) {
+            const { value, operator } = filter;
+
+            if (i === 0) {
+                mappedFilter += `${key}`;
             } else {
-                mappedFilter += `;${key}=`;
+                mappedFilter += `;${key}`;
             }
+
+            mappedFilter += operator;
 
             if (Array.isArray(value)) {
                 mappedFilter += value.join(',');
@@ -215,6 +220,24 @@ export function getMappedFilter(filter) {
             }
         }
     }
+
+    return mappedFilter;
+}
+
+export function getMappedAdvancedFilters(filters) {
+    let mappedFilter = '';
+
+    Object.keys(filters).forEach((id, index) => {
+        Object.keys(filters[id]).forEach((operator) => {
+            if (index === 0) {
+                mappedFilter += `${id}`;
+            } else {
+                mappedFilter += `;${id}`;
+            }
+
+            mappedFilter += `${operator}${filters[id][operator]}`;
+        });
+    });
 
     return mappedFilter;
 }

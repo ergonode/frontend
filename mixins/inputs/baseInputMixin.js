@@ -119,9 +119,9 @@ export default {
             this.$emit('focus', false);
         },
         onMouseDown(event) {
-            const isClickedInInput = event.target === this.$refs.input;
+            const isClickedInsideInput = event.target === this.$refs.input;
 
-            if (!isClickedInInput) {
+            if (!isClickedInsideInput) {
                 event.preventDefault();
                 event.stopPropagation();
             }
@@ -129,17 +129,17 @@ export default {
             this.hasMouseDown = true;
         },
         onMouseUp(event) {
-            const isClickedInInput = event.target === this.$refs.input;
+            const isClickedInsideInput = event.target === this.$refs.input;
             const isDblClicked = event.detail > 1;
 
             if (isDblClicked) return;
 
             if (this.dismissible) {
-                if (isClickedInInput) {
+                if (isClickedInsideInput) {
                     if (this.isFocused && this.hasMouseDown) this.$refs.input.blur();
                 } else if (!this.isFocused) this.$refs.input.focus();
                 else this.$refs.input.blur();
-            } else if (!isClickedInInput) {
+            } else if (!isClickedInsideInput) {
                 this.$refs.input.focus();
             }
 

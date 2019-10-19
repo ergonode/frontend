@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { FILTER_OPERATOR } from '~/defaults/operators/main';
+
 export default {
     name: 'GridWrapperHeaderActionCell',
     components: {
@@ -47,6 +49,10 @@ export default {
         column: {
             type: Object,
             required: true,
+        },
+        filter: {
+            type: Object,
+            default: null,
         },
         path: {
             type: String,
@@ -97,30 +103,28 @@ export default {
             return this.column.filter.type;
         },
         filterValue() {
-            const { [this.column.id]: filter } = this.gridState.basicFilters;
-
-            if (!filter) {
+            if (!this.filter) {
                 if (this.isMultiSelect) return [];
 
                 return '';
             }
 
-            return filter;
+            return this.filter.value;
         },
         filterParsedValue() {
             if (!this.column.filter) return '';
 
-            const { [this.column.id]: filter } = this.gridState.basicFilters;
-
-            if (filter) {
-                if (Array.isArray(filter)) {
-                    return filter.map((val) => this.column.filter.options[val] || 'No translation').join(', ');
+            if (this.filter) {
+                if (Array.isArray(this.filter.value)) {
+                    return this.filter.value
+                        .map((val) => this.column.filter.options[val] || 'No translation')
+                        .join(', ');
                 }
-                if (this.column.filter.options && typeof this.column.filter.options[filter] !== 'undefined') {
-                    return this.column.filter.options[filter] || 'No translation';
+                if (this.column.filter.options && typeof this.column.filter.options[this.filter.value] !== 'undefined') {
+                    return this.column.filter.options[this.filter.value] || 'No translation';
                 }
 
-                return filter;
+                return this.filter.value;
             }
 
             if (this.options) return 'Select...';
@@ -162,8 +166,8 @@ export default {
         onUpdateFilter(value) {
             const { id } = this.column;
 
-            if (this.gridState.basicFilters[id] !== value) {
-                this.$store.dispatch(`${this.namespace}/setFilter`, { id, filter: value });
+            if (this.gridState.filters[id] !== value) {
+                this.$store.dispatch(`${this.namespace}/setFilter`, { id, filter: value, operator: FILTER_OPERATOR.EQUAL });
                 this.$store.dispatch(`${this.namespace}/getData`, { path: this.path });
                 this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
             }

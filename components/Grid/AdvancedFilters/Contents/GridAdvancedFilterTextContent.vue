@@ -6,9 +6,8 @@
     <GridAdvancedFilterBaseContent>
         <div class="container">
             <TextField
-                :value="value"
+                :value="filterValue"
                 left-alignment
-                autofocus
                 small
                 underline
                 @input="onValueChange" />
@@ -19,6 +18,7 @@
 <script>
 import TextField from '~/components/Inputs/TextField';
 import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
+import { FILTER_OPERATOR } from '~/defaults/operators/main';
 
 export default {
     name: 'GridAdvancedFilterTextContent',
@@ -27,14 +27,21 @@ export default {
         GridAdvancedFilterBaseContent,
     },
     props: {
-        value: {
-            type: String,
-            required: true,
+        filter: {
+            type: Object,
+            default: null,
+        },
+    },
+    computed: {
+        filterValue() {
+            if (this.filter) return this.filter[FILTER_OPERATOR.EQUAL];
+
+            return '';
         },
     },
     methods: {
         onValueChange(value) {
-            this.$emit('input', value);
+            this.$emit('input', { value, operator: FILTER_OPERATOR.EQUAL });
         },
     },
 };

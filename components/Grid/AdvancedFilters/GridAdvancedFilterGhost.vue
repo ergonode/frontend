@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import {
     white, graphite,
 } from '~/assets/scss/_variables/_colors.scss';
@@ -49,6 +49,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('list', [
+            'setDisabledElement',
+        ]),
         async onDrop(event) {
             this.$emit('mouseOverFilters', false);
 
@@ -73,16 +76,24 @@ export default {
             event.preventDefault();
         },
         getAttributeByCode(languageCode, value) {
+            const attributeId = `${value}:${languageCode}`;
             const index = this.ghostFilterIndex;
             const params = {
                 limit: 999999,
                 offset: 0,
-                columns: `${value}:${languageCode}`,
+                columns: attributeId,
             };
             return this.$axios.$get(`${languageCode}/products`, { params }).then(({ columns }) => {
-                this.$store.dispatch(`${this.namespace}/setAdvancedFilterAtIndex`, {
+                const [attribute] = columns;
+                const columnIndex = this.$store.state[this.namespace].columns
+                    .findIndex((column) => column.id === attributeId);
+
+                this.$store.dispatch(`${this.namespace}/insertAdvancedFilterAtIndex`, {
                     index,
-                    filter: { ...columns[0], value: '' },
+                    filter: attribute,
+                });
+                this.setDisabledElement({
+                    languageCode, elementId: attribute.element_id, disabled: columnIndex !== -1,
                 });
             });
         },

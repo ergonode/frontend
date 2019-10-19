@@ -37,7 +37,7 @@
                 <TranslationMultiselectListContent
                     :options="categoryOptions"
                     :selected-options="selectedCategories"
-                    @values="onCategoriesChange" />
+                    @value="onCategoriesChange" />
             </template>
         </Select>
         <slot />

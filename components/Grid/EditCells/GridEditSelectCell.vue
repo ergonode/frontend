@@ -21,7 +21,7 @@
                 v-if="multiselect"
                 :options="options"
                 :selected-options="value || []"
-                @values="onValueChange" />
+                @value="onValueChange" />
             <TranslationSelectListContent
                 v-else
                 :options="options"

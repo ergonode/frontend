@@ -3,13 +3,10 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { getMappedFilter, getMappedElementsToGroups } from '~/model/mappers/gridDataMapper';
+import { getMappedFilters, getMappedElementsToGroups } from '~/model/mappers/gridDataMapper';
 import { UNASSIGNED_GROUP_ID } from '~/defaults/list/main';
 
 export default {
-    setFilter({ commit }, filter) {
-        commit(types.SET_FILTER, filter);
-    },
     getFilteredGroupElements({ commit, state }, { listType, languageCode }) {
         const path = `${languageCode}/${listType}`;
         const params = {
@@ -64,7 +61,7 @@ export default {
     }) {
         const { elements: stateElements } = state;
         const path = `${languageCode}/${listType}`;
-        const groupFilter = groupId !== UNASSIGNED_GROUP_ID ? getMappedFilter({ groups: groupId }) : 'groups=';
+        const groupFilter = groupId !== UNASSIGNED_GROUP_ID ? getMappedFilters({ groups: groupId }) : 'groups=';
         const params = {
             limit: elementsCount,
             offset: 0,
@@ -99,6 +96,9 @@ export default {
         return this.app.$axios.$get(path, { params }).then(({ collection: elements }) => {
             commit(types.SET_ELEMENTS_FOR_LANGUAGE, { languageCode, elements });
         });
+    },
+    setFilter({ commit }, filter) {
+        commit(types.SET_FILTER, filter);
     },
     setElementsForLanguage: ({ commit, rootState }, elements) => {
         const { language: languageCode } = rootState.authentication.user;

@@ -264,8 +264,7 @@ export default {
             this.updateDraftValue({
                 productId: this.rowId,
                 columnId: this.column.id,
-                // FIXME: BE - two different values!!!
-                elementId: this.column.element_id || this.column.attribute_id,
+                elementId: this.column.element_id,
                 value,
                 languageCode: this.column.language || this.userLanguageCode,
             });

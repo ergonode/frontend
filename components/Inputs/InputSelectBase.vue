@@ -25,7 +25,7 @@
         <FadeTransition v-if="isFocused">
             <SelectBaseContent
                 :style="selectBoundingBox"
-                :fixed-content="fixedSelectContent">
+                :fixed-content="fixedContentWidth">
                 <template #body>
                     <slot name="selectContent" />
                 </template>
@@ -128,7 +128,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        fixedSelectContent: {
+        fixedContentWidth: {
             type: Boolean,
             default: true,
         },
@@ -366,7 +366,7 @@ export default {
 
             const position = { left: `${x}px` };
 
-            if (this.fixedSelectContent) {
+            if (this.fixedContentWidth) {
                 position.width = `${width}px`;
             }
 

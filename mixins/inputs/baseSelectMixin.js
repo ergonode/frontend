@@ -142,11 +142,13 @@ export default {
             this.$emit('input', event.target.value);
         },
         onFocus() {
-            this.isFocused = true;
-            this.hasMouseDown = false;
-            this.isMenuActive = true;
+            if (!this.isFocused) {
+                this.isFocused = true;
+                this.isMenuActive = true;
+                this.hasMouseDown = false;
 
-            this.$emit('focus', true);
+                this.$emit('focus', true);
+            }
         },
         onBlur() {
             if (this.isClickedOutside) {
@@ -157,9 +159,10 @@ export default {
             }
         },
         onMouseDown(event) {
-            const isClickedInInput = event.target === this.$refs.input;
+            const isClickedInsideInput = event.target === this.$refs.input;
 
-            if (!isClickedInInput) {
+
+            if (!isClickedInsideInput) {
                 event.preventDefault();
                 event.stopPropagation();
             }
@@ -167,24 +170,21 @@ export default {
             this.hasMouseDown = true;
         },
         onMouseUp(event) {
-            const isClickedInInput = event.target === this.$refs.input;
+            const isClickedInsideActivator = this.$refs.activator.contains(event.target);
             const isDblClicked = event.detail > 1;
 
             if (isDblClicked) return;
 
             if (this.dismissible) {
-                if (isClickedInInput) {
+                if (isClickedInsideActivator) {
                     if (this.isFocused && this.hasMouseDown) {
                         this.isClickedOutside = true;
                         this.$refs.input.blur();
+                    } else {
+                        this.$refs.input.focus();
                     }
-                } else if (!this.isFocused) {
-                    this.$refs.input.focus();
-                } else {
-                    this.isClickedOutside = true;
-                    this.$refs.input.blur();
                 }
-            } else if (!isClickedInInput) {
+            } else if (!isClickedInsideActivator) {
                 this.$refs.input.focus();
             }
 
@@ -192,9 +192,9 @@ export default {
         },
         onClickOutside(event) {
             const isClickedInsideMenu = this.$refs.menu.$el.contains(event.target);
-
+            const isClickedInsideActivator = this.$refs.activator.contains(event.target);
             this.isClickedOutside = !isClickedInsideMenu
-                && !this.$refs.activator.contains(event.target);
+                && !isClickedInsideActivator;
 
             if (this.isClickedOutside
                 || (isClickedInsideMenu && !this.multiselect && this.dismissible)) {
