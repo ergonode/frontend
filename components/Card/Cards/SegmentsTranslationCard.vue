@@ -16,7 +16,7 @@
             <TextField
                 :value="translations.name[languageCode]"
                 solid
-                label="Segment name"
+                label="Condition set name"
                 regular
                 :error-messages="errorNameMessage"
                 :disabled="!isUserAllowedToUpdate"

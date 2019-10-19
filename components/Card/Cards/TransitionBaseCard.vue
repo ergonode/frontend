@@ -63,7 +63,9 @@ export default {
         }),
         isDisabled() {
             if (!isEmpty(this.$route.params)) {
-                const { source, destination } = this.$route.params;
+                const { id } = this.$route.params;
+                const [source, destination] = id.split('--');
+
                 return Boolean(source) && Boolean(destination);
             }
             return false;

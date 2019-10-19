@@ -47,10 +47,10 @@ export default {
     },
     methods: {
         addNewSegment() {
-            this.$router.push('/segments/segment/new');
+            this.$router.push('/segments/segment/new/general');
         },
         addNewConditionSet() {
-            this.$router.push('/segments/condition-set/new');
+            this.$router.push('/segments/condition-set/new/general');
         },
     },
 };

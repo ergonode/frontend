@@ -37,8 +37,8 @@ export default {
         ];
         this.isUserAllowedToUpdateTransitions = this.$hasAccess('WORKFLOW_UPDATE');
         if (this.isEdit) {
-            generalRoute = { name: 'transition-edit-source-destination-general', params: this.$route.params };
-            translationRoute = { name: 'transition-edit-source-destination-translations', params: this.$route.params };
+            generalRoute = { name: 'transition-edit-id-general', params: this.$route.params };
+            translationRoute = { name: 'transition-edit-id-translations', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 

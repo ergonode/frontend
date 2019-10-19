@@ -157,18 +157,19 @@ export default {
         saveDrafts() {
             const promises = [];
 
-            Object.entries(this.drafts).forEach(([productId, column]) => {
-                Object.entries(column).forEach(([columnId, languageCode]) => {
-                    const [value] = Object.values(languageCode);
+            Object.keys(this.drafts).forEach((productId) => {
+                promises.push(this.applyDraft({
+                    id: productId,
+                    onSuccess: () => {
+                        Object.entries(this.drafts[productId])
+                            .forEach(([columnId, languageCode]) => {
+                                const [value] = Object.values(languageCode);
 
-                    promises.push(this.applyDraft({
-                        id: productId,
-                        onSuccess: () => {
-                            this.addDraftToProduct({ columnId, productId, value });
-                            this.removeDraft(productId);
-                        },
-                    }));
-                });
+                                this.addDraftToProduct({ columnId, productId, value });
+                                this.removeDraft(productId);
+                            });
+                    },
+                }));
             });
 
             Promise.all(promises).then(() => {

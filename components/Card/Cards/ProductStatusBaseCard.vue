@@ -14,6 +14,14 @@
             label="Code"
             hint="Status code must be unique"
             @input="setCode" />
+        <div class="horizontal-wrapper">
+            <CheckBox
+                :value="isDefaultStatus"
+                @input="setStatusAsDefault" />
+            <span class="typo-btn--xs txt--dark-graphite">
+                Status for new product in the system
+            </span>
+        </div>
         <ColorPicker
             :value="color"
             solid
@@ -24,26 +32,11 @@
             hint="Badge color is needed for presentation purpose"
             :disabled="isDisabledByPrivileges"
             @input="setColor" />
-        <div
-            v-if="color"
-            class="badge-preview">
-            <span class="badge-preview__label">
-                Badge preview
-            </span>
-            <div
-                :style="{backgroundColor: color}"
-                class="badge-preview__badge">
-                <span
-                    :style="{color: textContrastColor}"
-                    class="badge__text">Preview text</span>
-            </div>
-        </div>
     </BaseCard>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { hexToRGB, calculateContrastRatio, calculateRelativeLuminance } from '~/model/inputs/ColorContrast';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import BaseCard from '~/components/Card/BaseCard';
 
@@ -53,6 +46,7 @@ export default {
         BaseCard,
         TextField: () => import('~/components/Inputs/TextField'),
         ColorPicker: () => import('~/components/Inputs/Color/ColorPicker'),
+        CheckBox: () => import('~/components/Inputs/CheckBox'),
     },
     mixins: [errorValidationMixin],
     computed: {
@@ -60,6 +54,7 @@ export default {
             id: (state) => state.id,
             code: (state) => state.code,
             color: (state) => state.color,
+            isDefaultStatus: (state) => state.isDefaultStatus,
         }),
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess('WORKFLOW_UPDATE'))
@@ -76,21 +71,12 @@ export default {
             const colorIndex = 'color';
             return this.elementIsValidate(colorIndex);
         },
-        textContrastColor() {
-            const badgeRGB = hexToRGB(this.color);
-            const badgeRelativeLuminance = calculateRelativeLuminance(badgeRGB);
-            const whiteColorRelativeLuminance = 0.9982138681756572;
-            const contrastRatio = calculateContrastRatio(
-                whiteColorRelativeLuminance, badgeRelativeLuminance,
-            );
-
-            return contrastRatio > 4.5 ? '#fff' : '#000';
-        },
     },
     methods: {
         ...mapActions('productStatus', [
             'setCode',
             'setColor',
+            'setStatusAsDefault',
         ]),
     },
 };
@@ -111,6 +97,15 @@ export default {
             justify-content: center;
             align-items: center;
             height: 30px;
+        }
+    }
+
+    .horizontal-wrapper {
+        display: flex;
+        align-items: center;
+
+        span {
+            margin-left: 8px;
         }
     }
 </style>

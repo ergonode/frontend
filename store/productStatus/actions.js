@@ -31,7 +31,7 @@ export default {
             commit(types.SET_STATUSES, statuses.map((status) => status.code));
         }).catch(onDefaultError);
     },
-    getProductStatus({ commit }, { path }) {
+    getProductStatus({ commit }, path) {
         return this.app.$axios.$get(path).then(({
             id, code, color, name, description,
         }) => {
@@ -47,7 +47,24 @@ export default {
             commit('translations/setTabTranslations', translations, { root: true });
         }).catch(onDefaultError);
     },
-    updateProductStatus({ commit, state, rootState }, { onSuccess, onError }) {
+    getDefaultStatus({ commit, state, rootState }) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+
+        return this.app.$axios.$get(`${userLanguageCode}/workflow/default`).then(({ default_status: defaultStatus }) => {
+            if (defaultStatus === state.code) {
+                commit(types.SET_AS_DEFAULT_STATUS, true);
+            }
+        });
+    },
+    updateDefaultStatus({ commit, state, rootState }) {
+        if (state.isDefaultStatus) {
+            const { language: userLanguageCode } = rootState.authentication.user;
+
+            return this.app.$axios.$put(`${userLanguageCode}/workflow/default/status/${state.id}/default`);
+        }
+        return null;
+    },
+    updateProductStatus({ commit, state, rootState }, { onError }) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { translations } = rootState.translations;
 
@@ -67,9 +84,10 @@ export default {
             description,
         };
 
-        return this.app.$axios.$put(`${userLanguageCode}/status/${state.id}`, data).then(() => {
-            onSuccess();
-        }).catch((e) => onError(e.data));
+        return this.app.$axios.$put(`${userLanguageCode}/status/${state.id}`, data).catch((e) => onError(e.data));
+    },
+    setStatusAsDefault({ commit }, isDefault) {
+        commit(types.SET_AS_DEFAULT_STATUS, isDefault);
     },
     removeProductStatus({ commit, state, rootState }, { onSuccess }) {
         const { id } = state;

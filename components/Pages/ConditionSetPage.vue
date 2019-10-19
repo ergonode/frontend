@@ -32,8 +32,8 @@ export default {
     },
     created() {
         let generalRoute = { name: 'condition-set-new-general' };
-        let translationRoute = null;
-        let designerRoute = null;
+        let translationRoute = { name: 'condition-set-new-translations' };
+        let designerRoute = { name: 'condition-set-new-designer' };
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
