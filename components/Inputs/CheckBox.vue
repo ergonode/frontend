@@ -80,7 +80,6 @@ export default {
             width: 16px;
             height: 16px;
             border: 1px solid $grey;
-            margin: 1px;
             box-sizing: border-box;
             border-radius: 2px;
             cursor: pointer;

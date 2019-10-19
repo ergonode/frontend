@@ -27,11 +27,13 @@ export default {
     computed: {
         ...mapState('productStatus', {
             code: (state) => state.code,
+            isDefaultStatus: (state) => state.isDefaultStatus,
         }),
     },
     methods: {
         ...mapActions('productStatus', [
             'updateProductStatus',
+            'updateDefaultStatus',
             'removeProductStatus',
         ]),
         ...mapActions('validations', [
@@ -39,9 +41,15 @@ export default {
             'removeValidationErrors',
         ]),
         onSave() {
-            this.updateProductStatus({
-                onSuccess: this.onProductStatusUpdated,
-                onError: this.onError,
+            const requests = [
+                this.updateProductStatus({
+                    onError: this.onError,
+                }),
+                this.updateDefaultStatus(),
+            ];
+
+            Promise.all(requests).then(() => {
+                this.onProductStatusUpdated();
             });
         },
         onDismiss() {
@@ -69,9 +77,10 @@ export default {
         store, params,
     }) {
         const path = `${store.state.authentication.user.language}/status/${params.id}`;
-        await store.dispatch('productStatus/getProductStatus', {
-            path,
-        });
+
+        await store.dispatch('productStatus/clearStorage');
+        await store.dispatch('productStatus/getProductStatus', path);
+        await store.dispatch('productStatus/getDefaultStatus');
     },
 };
 </script>
