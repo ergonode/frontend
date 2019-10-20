@@ -200,10 +200,13 @@ export default {
         commit(types.SET_SELECTION_FOR_ALL_ROWS, false);
 
         if (state.advancedFilters[id] && !value.length) {
-            commit(types.REMOVE_FILTER_FOR_OPERATOR, { id, operator });
+            commit(types.REMOVE_ADVANCED_FILTER_FOR_OPERATOR, { id, operator });
         } else {
             commit(types.SET_ADVANCED_FILTER, { id, value, operator });
         }
+    },
+    removeAdvancedFilter({ commit }, id) {
+        commit(types.REMOVE_ADVANCED_FILTER, id);
     },
     setAdvancedFilterAtIndex({ commit }, payload) {
         commit(types.SET_ADVANCED_FILTER_AT_INDEX, payload);

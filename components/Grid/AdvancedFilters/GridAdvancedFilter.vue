@@ -57,7 +57,7 @@
             <template #body>
                 <Component
                     :is="selectBodyComponent"
-                    :filter="localFilter"
+                    :filter="filter || {}"
                     :options="options"
                     @input="onValueChange" />
             </template>
@@ -130,7 +130,6 @@ export default {
             hasMouseDown: false,
             selectBoundingBox: null,
             associatedLabel: '',
-            localFilter: this.filter || {},
         };
     },
     mounted() {
@@ -154,12 +153,12 @@ export default {
             ghostFilterIndex: (state) => state.ghostFilterIndex,
         }),
         filterValue() {
-            if (this.localFilter) {
+            if (this.filter) {
                 const value = [];
 
-                Object.keys(this.localFilter).forEach((key) => {
-                    if (this.localFilter[key]) {
-                        value.push(this.localFilter[key]);
+                Object.keys(this.filter).forEach((key) => {
+                    if (this.filter[key]) {
+                        value.push(this.filter[key]);
                     }
                 });
 
@@ -287,37 +286,25 @@ export default {
 
             return true;
         },
-        updateFilter() {
-            Object.keys(this.localFilter).forEach((key) => {
-                this.$store.dispatch(`${this.namespace}/setAdvancedFilter`, { id: this.data.id, operator: key, value: this.localFilter[key] });
-            });
-
-            this.$store.dispatch(`${this.namespace}/getData`, { path: this.path });
-            this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
-        },
         onValueChange({ value, operator }) {
-            this.localFilter[operator] = value;
-
-            this.localFilter = { ...this.localFilter };
+            this.$store.dispatch(`${this.namespace}/setAdvancedFilter`, { id: this.data.id, operator, value });
 
             if (this.data.type === AttributeTypes.SELECT) {
                 this.onApply();
             }
         },
         onClear() {
-            Object.keys(this.filter).forEach((key) => {
-                this.localFilter[key] = '';
-            });
-
-            this.localFilter = { ...this.localFilter };
-
-            this.updateFilter();
+            this.$store.dispatch(`${this.namespace}/removeAdvancedFilter`, this.data.id);
+            this.$store.dispatch(`${this.namespace}/getData`, { path: this.path });
+            this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
         },
         onApply() {
             window.removeEventListener('click', this.onClickOutside);
 
             this.deactivateFilter();
-            this.updateFilter();
+
+            this.$store.dispatch(`${this.namespace}/getData`, { path: this.path });
+            this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
         },
         onFocus() {
             if (!this.isFocused) {
@@ -376,6 +363,9 @@ export default {
 
             if (this.isClickedOutside) {
                 this.deactivateFilter();
+
+                this.$store.dispatch(`${this.namespace}/getData`, { path: this.path });
+                this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
             }
         },
         getSelectBoundingBox() {
