@@ -10,7 +10,7 @@
             :placeholder="dateFormat"
             small
             underline
-            left-alignment
+            center-alignment
             @input="onValueChange" />
     </div>
 </template>
