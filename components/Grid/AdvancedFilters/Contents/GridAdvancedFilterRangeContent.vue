@@ -7,6 +7,7 @@
         <div class="container">
             <TextField
                 :value="filter[operators.GREATER_OR_EQUAL]"
+                :input="{ type: 'number' }"
                 placeholder="From"
                 underline
                 center-alignment
@@ -15,6 +16,7 @@
             <span class="dash">-</span>
             <TextField
                 :value="filter[operators.SMALLER_OR_EQUAL]"
+                :input="{ type: 'number' }"
                 placeholder="To"
                 underline
                 center-alignment

@@ -155,13 +155,15 @@ export default {
         }),
         filterValue() {
             if (this.localFilter) {
-                let value = '';
+                const value = [];
 
                 Object.keys(this.localFilter).forEach((key) => {
-                    value += this.localFilter[key];
+                    if (this.localFilter[key]) {
+                        value.push(this.localFilter[key]);
+                    }
                 });
 
-                return value;
+                return value.join(' - ');
             }
 
             return null;
