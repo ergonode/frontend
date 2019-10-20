@@ -4,7 +4,7 @@
  */
 <template>
     <TextArea
-        :value="value"
+        :value="localValue"
         solid
         :label="label"
         :placeholder="placeholder"
@@ -30,6 +30,11 @@ export default {
     mixins: [baseProductTemplateElementMixin],
     components: {
         TextArea: () => import('~/components/Inputs/TextArea'),
+    },
+    watch: {
+        value() {
+            this.localValue = this.value;
+        },
     },
 };
 </script>
