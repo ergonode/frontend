@@ -225,21 +225,15 @@ export function getMappedFilters(filters) {
 }
 
 export function getMappedAdvancedFilters(filters) {
-    let mappedFilter = '';
+    const mappedFilter = [];
 
-    Object.keys(filters).forEach((id, index) => {
+    Object.keys(filters).forEach((id) => {
         Object.keys(filters[id]).forEach((operator) => {
-            if (index === 0) {
-                mappedFilter += `${id}`;
-            } else {
-                mappedFilter += `;${id}`;
-            }
-
-            mappedFilter += `${operator}${filters[id][operator]}`;
+            mappedFilter.push(`${id}${operator}${filters[id][operator]}`);
         });
     });
 
-    return mappedFilter;
+    return mappedFilter.join(';');
 }
 
 export function getMappedElementsToGroups(elements) {
