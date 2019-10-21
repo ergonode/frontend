@@ -11,7 +11,7 @@
         <ListElementIcon :icon-path="typeIcon" />
         <ListElementDescription>
             <ListElementSubtitle :subtitle="item.code" />
-            <ListElementTitle :title="item.name || 'No translation'" />
+            <ListElementTitle :title="item.label || 'No translation'" />
         </ListElementDescription>
     </ListDraggableElement>
 </template>

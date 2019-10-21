@@ -22,7 +22,8 @@ export const types = {
     INSERT_ADVANCED_FILTER_AT_INDEX: 'INSERT_ADVANCED_FILTER_AT_INDEX',
     REMOVE_ADVANCED_FILTER_AT_INDEX: 'REMOVE_ADVANCED_FILTER_AT_INDEX',
     REMOVE_ALL_ADVANCED_FILTERS: 'REMOVE_ALL_ADVANCED_FILTERS',
-    REMOVE_FILTER_FOR_OPERATOR: 'REMOVE_FILTER_FOR_OPERATOR',
+    REMOVE_ADVANCED_FILTER_FOR_OPERATOR: 'REMOVE_ADVANCED_FILTER_FOR_OPERATOR',
+    REMOVE_ADVANCED_FILTER: 'REMOVE_ADVANCED_FILTER',
     CLEAR_ALL_ADVANCED_FILTERS: 'CLEAR_ALL_ADVANCED_FILTERS',
     SET_FILTER: 'SET_FILTER',
     RELOAD_GRID_DATA: 'RELOAD_GRID_DATA',
@@ -90,9 +91,13 @@ export default {
         delete state.filters[id];
         state.filters = { ...state.filters };
     },
-    [types.REMOVE_FILTER_FOR_OPERATOR](state, { id, operator }) {
+    [types.REMOVE_ADVANCED_FILTER_FOR_OPERATOR](state, { id, operator }) {
         delete state.advancedFilters[id][operator];
         state.advancedFilters[id] = { ...state.advancedFilters[id] };
+        state.advancedFilters = { ...state.advancedFilters };
+    },
+    [types.REMOVE_ADVANCED_FILTER](state, id) {
+        delete state.advancedFilters[id];
         state.advancedFilters = { ...state.advancedFilters };
     },
     [types.SET_ADVANCED_FILTER_AT_INDEX](state, { index, filter }) {
@@ -103,17 +108,14 @@ export default {
         state.advancedFiltersData = advancedFiltersData;
     },
     [types.SET_ADVANCED_FILTER](state, { id, operator, value }) {
-        state.advancedFilters = { ...state.advancedFilters, [id]: { [operator]: value } };
-        state.advancedFilters[id] = { ...state.advancedFilters[id] };
+        state.advancedFilters[id] = { ...state.advancedFilters[id], [operator]: value };
         state.advancedFilters = { ...state.advancedFilters };
     },
     [types.REMOVE_ALL_ADVANCED_FILTERS](state) {
         state.advancedFiltersData = [];
     },
-    [types.CLEAR_ALL_ADVANCED_FILTERS]() {
-        // state.advancedFiltersData = state.advancedFiltersData.map(
-        //     (filter) => ({ ...filter, value: null }),
-        // );
+    [types.CLEAR_ALL_ADVANCED_FILTERS](state) {
+        state.advancedFilters = {};
     },
     [types.REMOVE_ADVANCED_FILTER_AT_INDEX](state, index) {
         state.advancedFiltersData.splice(index, 1);
