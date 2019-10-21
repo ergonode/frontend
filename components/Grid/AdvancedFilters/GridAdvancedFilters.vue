@@ -164,10 +164,12 @@ export default {
                     )),
             );
             this.$store.dispatch(`${this.namespace}/removeAllAdvancedFilters`);
-            this.$store.dispatch(`${this.namespace}/clearAllAdvancedFilters`);
+            this.onClearAll();
         },
         onClearAll() {
             this.$store.dispatch(`${this.namespace}/clearAllAdvancedFilters`);
+            this.$store.dispatch(`${this.namespace}/getData`, { path: this.path });
+            this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
         },
     },
 };
