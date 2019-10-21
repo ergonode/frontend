@@ -18,9 +18,12 @@
                 </p>
             </div>
         </div>
-        <img
-            class="error-plug"
-            src="~assets/images/icons/plug.svg">
+        <div class="plug-wrapper">
+            <img
+                class="plug"
+                src="~assets/images/icons/plug.svg">
+            <div class="cable" />
+        </div>
     </div>
 </template>
 
@@ -43,6 +46,7 @@ export default {
         flex: 1;
         flex-direction: column;
         justify-content: center;
+        overflow: hidden;
 
         .horizontal-wrapper {
             display: flex;
@@ -70,8 +74,20 @@ export default {
             }
         }
 
-        .error-plug {
-            justify-self: flex-start;
+        .plug-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .cable {
+                position: absolute;
+                bottom: 0;
+                width: 12px;
+                height: 35%;
+                align-self: center;
+                justify-self: center;
+                background-color: $graphite;
+            }
         }
     }
 </style>

@@ -8,7 +8,6 @@
         :draggable-id="item.id"
         @drag="onDrag">
         <ListElementDescription>
-            <ListElementSubtitle subtitle="Short description" />
             <ListElementTitle :title="item.name" />
         </ListElementDescription>
     </ListDraggableElement>
@@ -24,7 +23,6 @@ export default {
         ListDraggableElement: () => import('~/components/List/ListDraggableElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
-        ListElementSubtitle: () => import('~/components/List/ListElementSubtitle'),
     },
     props: {
         item: {
