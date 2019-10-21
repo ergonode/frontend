@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Select from '~/components/Inputs/Select/Select';
 import StatusSelectListContent from '~/components/Inputs/Select/Contents/StatusSelectListContent';
 
@@ -40,22 +41,44 @@ export default {
             type: String,
             required: true,
         },
+        rowId: {
+            type: [String, Number],
+            required: true,
+        },
         errorMessages: {
             type: [String, Array],
             default: '',
-        },
-        options: {
-            type: Array,
-            required: true,
-        },
-        colors: {
-            type: Object,
-            required: true,
         },
         fixedWidth: {
             type: Number,
             required: true,
         },
+    },
+    data() {
+        return {
+            options: [],
+            colors: {},
+        };
+    },
+    async created() {
+        await this.$axios.$get(`${this.languageCode}/products/${this.rowId}`).then(({
+            workflow = [],
+        }) => {
+            this.options = workflow.map((e) => ({
+                key: e.code,
+                value: e.name,
+            }));
+            this.colors = workflow.reduce((acc, current) => {
+                const newObject = acc;
+                newObject[current.code] = current.color;
+                return newObject;
+            }, {});
+        }).catch(() => {});
+    },
+    computed: {
+        ...mapState('authentication', {
+            languageCode: (state) => state.user.language,
+        }),
     },
     methods: {
         onFocus(isFocused) {
