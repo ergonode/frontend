@@ -6,6 +6,7 @@
     <TextField
         :value="localValue"
         solid
+        regular
         :label="labelWithSuffix"
         :placeholder="placeholder"
         :error-messages="isError ? [' '] : null"

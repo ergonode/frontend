@@ -7,6 +7,7 @@
         :value="parsedValue"
         solid
         clearable
+        regular
         :label="label"
         :placeholder="placeholder"
         :multiselect="multiselect"

@@ -22,11 +22,11 @@
         &--small {
             flex-basis: 32px;
 
-            input::placeholder, textarea::placeholder, input, textarea {
+            input::placeholder, input {
                 @include setFont(medium, small, regular, $darkGraphite);
             }
 
-            input::placeholder, textarea::placeholder {
+            input::placeholder {
                 opacity: 0.4;
             }
         }
@@ -34,11 +34,11 @@
         &--regular {
             flex-basis: 40px;
 
-            input::placeholder, textarea::placeholder, input, textarea {
+            input::placeholder, input {
                 @include setFont(medium, regular, regular, $darkGraphite);
             }
 
-            input::placeholder, textarea::placeholder {
+            input::placeholder {
                 opacity: 0.4;
             }
         }
@@ -52,8 +52,16 @@
             border: none;
         }
 
+        textarea, textarea::placeholder {
+            @include setFont(medium, regular, regular, $darkGraphite);
+        }
+
         textarea {
             height: 100%;
+
+            &::placeholder {
+                opacity: 0.4;
+            }
         }
     }
 
