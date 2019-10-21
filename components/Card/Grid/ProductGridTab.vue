@@ -174,6 +174,7 @@ export default {
 
             Promise.all(promises).then(() => {
                 this.forceDraftsMutation();
+                this.$addAlert({ type: 'success', message: 'Product changes saved' });
             });
         },
     },
