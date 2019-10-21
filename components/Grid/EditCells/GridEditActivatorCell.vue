@@ -7,6 +7,7 @@
         <Component
             :is="editableComponent"
             v-model="localValue"
+            :row-id="rowId"
             :error-messages="errorMessages"
             :options="options"
             :parameters="parameters"
@@ -26,6 +27,10 @@ export default {
     props: {
         namespace: {
             type: String,
+            required: true,
+        },
+        rowId: {
+            type: [String, Number],
             required: true,
         },
         value: {

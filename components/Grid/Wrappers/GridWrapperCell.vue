@@ -21,6 +21,7 @@
         <GridEditActivatorCell
             v-else
             :namespace="namespace"
+            :row-id="rowId"
             :is-multi-select="isMultiSelect"
             :type="column.type"
             :value="editValue"
