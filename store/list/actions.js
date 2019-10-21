@@ -107,6 +107,11 @@ export default {
     setDisabledElement: ({ commit }, payload) => {
         commit(types.SET_DISABLED_ELEMENT, payload);
     },
+    setDisabledElements: ({ commit }, elements) => {
+        elements.forEach((element) => {
+            commit(types.SET_DISABLED_ELEMENT, element);
+        });
+    },
     removeDisabledElement: ({ commit }, payload) => {
         commit(types.REMOVE_DISABLED_ELEMENT, payload);
     },

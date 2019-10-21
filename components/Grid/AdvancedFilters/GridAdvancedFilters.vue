@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { Arrow } from '~/model/icons/Arrow';
 import { GHOST_ID } from '~/defaults/grid/main';
 import GridAdvancedFilterPlaceholder from '~/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder';
@@ -141,6 +141,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('list', [
+            'setDisabledElements',
+        ]),
         onMouseOverFilters(isOver) {
             this.isMouseOverFilters = isOver;
         },
@@ -154,10 +157,19 @@ export default {
             }
         },
         onRemoveAll() {
+            this.setDisabledElements(
+                this.filtersData
+                    .map(({ element_id: elementId, language: languageCode }) => (
+                        { languageCode, elementId, isDisabled: false }
+                    )),
+            );
             this.$store.dispatch(`${this.namespace}/removeAllAdvancedFilters`);
+            this.onClearAll();
         },
         onClearAll() {
             this.$store.dispatch(`${this.namespace}/clearAllAdvancedFilters`);
+            this.$store.dispatch(`${this.namespace}/getData`, { path: this.path });
+            this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
         },
     },
 };

@@ -17,7 +17,6 @@
             :value="description"
             solid
             required
-            regular
             label="Role description"
             resize="none"
             :style="{height: '150px'}"

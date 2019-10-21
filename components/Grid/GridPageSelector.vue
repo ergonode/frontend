@@ -12,6 +12,7 @@
             style="width: 72px;"
             :options="rowIntervals"
             solid
+            small
             @input="onValueChange" />
         <span
             class="page-selector__text"

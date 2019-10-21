@@ -101,14 +101,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        small: {
-            type: Boolean,
-            default: false,
-        },
-        regular: {
-            type: Boolean,
-            default: false,
-        },
         resize: {
             type: String,
             default: 'auto',

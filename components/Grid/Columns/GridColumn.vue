@@ -94,6 +94,7 @@ export default {
             ghostIndex: (state) => state.ghostIndex,
             bounds: (state) => state.bounds,
             draggedElIndex: (state) => state.draggedElIndex,
+            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
         colGridTemplate() {
             if (this.isDraggedColumn) return null;
@@ -218,7 +219,8 @@ export default {
             if ((this.index === this.draggedElIndex && this.ghostIndex !== -1)
                 || (isBefore && this.ghostIndex === fixedIndex - 1)
                 || (!isBefore && this.ghostIndex === fixedIndex + 1)
-                || this.isPinnedColumn) {
+                || this.isPinnedColumn
+                || this.draggedElementOnGrid === DRAGGED_ELEMENT.FILTER) {
                 return false;
             }
 

@@ -151,6 +151,7 @@ export default {
     computed: {
         ...mapState('draggable', {
             ghostFilterIndex: (state) => state.ghostFilterIndex,
+            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
         filterValue() {
             if (this.filter) {
@@ -267,7 +268,8 @@ export default {
             );
 
             if ((isBefore && this.ghostFilterIndex === this.index - 1)
-                || (!isBefore && this.ghostFilterIndex === this.index + 1)) {
+                || (!isBefore && this.ghostFilterIndex === this.index + 1)
+                || this.draggedElementOnGrid === DRAGGED_ELEMENT.COLUMN) {
                 return false;
             }
 

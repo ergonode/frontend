@@ -10,7 +10,6 @@
             :autofocus="true"
             :left-alignment="true"
             :error-messages="errorMessages"
-            small
             resize="none"
             @focus="onFocusChange"
             @input="onValueChange" />
