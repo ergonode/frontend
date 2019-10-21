@@ -25,7 +25,7 @@ export default {
                 name,
             };
 
-            treeToSet.forEach((e) => dispatch('list/setDisabledElement', { languageCode: userLanguageCode, elementId: e.id }, { root: true }));
+            treeToSet.forEach((e) => dispatch('list/setDisabledElement', { languageCode: userLanguageCode, elementId: e.id, disabled: true }, { root: true }));
             commit(types.SET_TREE_ID, treeId);
             commit(types.SET_CODE, code);
             dispatch('gridDesigner/setGridData', treeToSet, { root: true });
