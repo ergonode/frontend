@@ -3,7 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['upload-image', {'upload-image--disabled': disabled}]">
+    <div
+        :class="['upload-image', {
+            'upload-image--disabled': disabled,
+            'upload-image--elevator': elevator,
+        }]">
         <span
             v-if="title"
             class="upload-image__title"
@@ -60,6 +64,10 @@ export default {
             default: false,
         },
         fixedHeight: {
+            type: Boolean,
+            default: true,
+        },
+        elevator: {
             type: Boolean,
             default: true,
         },
@@ -120,9 +128,20 @@ export default {
 
 <style lang="scss" scoped>
     .upload-image {
+        $parent: &;
+
         position: relative;
         display: flex;
         flex-direction: column;
+
+        &--elevator {
+            #{$parent}__wrapper, #{$parent}__container {
+                box-shadow:
+                    0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                    0 3px 1px -2px rgba(0, 0, 0, 0.12),
+                    0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            }
+        }
 
         &--disabled::after {
             position: absolute;
@@ -145,10 +164,6 @@ export default {
             align-items: center;
             padding: 43px 0;
             background-color: $white;
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
 
             &::before {
                 position: absolute;
@@ -164,10 +179,6 @@ export default {
             display: flex;
             max-height: 100%;
             background-color: $white;
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
         }
 
         &__activator {
