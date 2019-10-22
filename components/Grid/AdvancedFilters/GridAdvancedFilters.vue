@@ -60,7 +60,8 @@
                         :is-mouse-over-filters="isMouseOverFilters"
                         :namespace="namespace"
                         :path="path"
-                        @mouseOverFilters="onMouseOverFilters" />
+                        @mouseOverFilters="onMouseOverFilters"
+                        @focus="onFilterFocus"/>
                     <GridAdvancedFilterGhost
                         v-else
                         :key="index"
@@ -146,6 +147,9 @@ export default {
         ]),
         onMouseOverFilters(isOver) {
             this.isMouseOverFilters = isOver;
+        },
+        onFilterFocus(isFocused) {
+            this.$emit('focus', isFocused);
         },
         onExpandFilters(isExpanded) {
             this.isExpanded = isExpanded;
