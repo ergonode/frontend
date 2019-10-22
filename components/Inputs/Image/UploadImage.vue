@@ -26,13 +26,12 @@
             v-else
             class="upload-image__container"
             :style="imageHeightStyle">
-            <button
-                class="upload-image__remove-btn"
-                @click="onRemove"
-                @mouseenter="onMouseEnter"
-                @mouseleave="onMouseLeave">
-                <IconDelete :fill-color="deleteIconFillColor" />
-            </button>
+            <div class="upload-image__remove-btn">
+                <IconFabButton
+                    theme="secondary"
+                    icon-path="Actions/IconDelete"
+                    @select="onRemove" />
+            </div>
             <Picture :image-id="selectedFileID" />
         </div>
         <span
@@ -66,8 +65,8 @@ export default {
         },
     },
     components: {
-        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
         Picture: () => import('~/components/Inputs/Image/Picture'),
+        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
     },
     data() {
         return {
@@ -183,21 +182,17 @@ export default {
 
         &__remove-btn {
             position: absolute;
-            top: 16px;
-            right: 16px;
+            top: 8px;
+            right: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 32px;
-            height: 32px;
-            padding: 0;
             background-color: $white;
             border-radius: 50%;
             box-shadow:
                 0 2px 2px 0 rgba(0, 0, 0, 0.14),
                 0 3px 1px -2px rgba(0, 0, 0, 0.12),
                 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-            cursor: pointer;
         }
 
         &__description {

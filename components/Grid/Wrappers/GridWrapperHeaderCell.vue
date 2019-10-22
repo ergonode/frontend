@@ -105,7 +105,7 @@ export default {
     .fixed-header {
         position: sticky !important;
         top: 0;
-        z-index: 8;
+        z-index: 1;
         background-color: $background !important;
     }
 </style>

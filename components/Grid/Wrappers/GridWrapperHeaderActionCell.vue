@@ -4,13 +4,14 @@
  */
 <template>
     <GridCell
-        :editing-allowed="column.editable || isActionCell || isFilterCell"
+        :editing-allowed="(column.editable && isActionCell) || isFilterCell"
         :row="rowIndex"
         :column="columnIndex"
         :locked="isLockedCell"
         :action-cell="isActionCell"
         :editing="isEditingCell"
-        @edit="onEdit">
+        @edit="onEdit"
+        @dismissEditDialog="onDismissEditDialog">
         <Component
             :is="infoComponent"
             v-if="!isEditingCell || isActionCell"
@@ -156,12 +157,13 @@ export default {
         },
     },
     methods: {
-        onEdit(isEditing) {
+        onEdit() {
             if (this.column.type !== 'CHECK') {
-                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, isEditing
-                    ? { column: this.columnIndex, row: this.rowIndex }
-                    : {});
+                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, { column: this.columnIndex, row: this.rowIndex });
             }
+        },
+        onDismissEditDialog() {
+            this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
         },
         onUpdateFilter(value) {
             const { id } = this.column;

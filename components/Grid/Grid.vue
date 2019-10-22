@@ -179,10 +179,15 @@ export default {
         this.rightPinnedColumns = [];
         this.leftPinnedColumns = [];
     },
+    mounted() {
+        window.addEventListener('click', this.onClickOutside);
+    },
     beforeDestroy() {
         delete this.rightPinnedColumns;
         delete this.leftPinnedColumns;
         delete this.fixedRowOffset;
+
+        window.removeEventListener('click', this.onClickOutside);
     },
     watch: {
         isListElementDragging() {
@@ -250,6 +255,20 @@ export default {
             'setGhostIndex',
             'setGhostFilterIndex',
         ]),
+        onClickOutside(event) {
+            const { gridContent } = this.$refs;
+            const isVisible = !!gridContent
+                && !!(
+                    gridContent.offsetWidth
+                    || gridContent.offsetHeight
+                    || gridContent.getClientRects().length
+                );
+
+            if (!gridContent.contains(event.target) && isVisible) {
+                // Dismiss editable cell mode
+                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
+            }
+        },
         onRowEdit(route) {
             this.$emit('rowEdit', route);
         },

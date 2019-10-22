@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="image-cell">
+    <div :class="['image-cell', {'image-cell--has-value': imageId !== ''}]">
         <UploadImage
             :value="value"
             @upload="updateValue"
@@ -23,18 +23,19 @@ export default {
             default: '',
         },
     },
-    created() {
-        this.imageID = this.value;
+    data() {
+        return {
+            imageId: this.value,
+        };
     },
     destroyed() {
-        if (this.imageID !== this.value) {
-            this.$emit('imageid', this.imageID);
+        if (this.imageId !== this.value) {
+            this.$emit('imageid', this.imageId);
         }
-        delete this.imageID;
     },
     methods: {
         updateValue(value) {
-            this.imageID = value || '';
+            this.imageId = value || '';
         },
     },
 };
@@ -42,7 +43,11 @@ export default {
 
 <style lang="scss" scoped>
     .image-cell {
-        width: 280px;
+        width: 300px;
         background-color: $white;
+
+        &--has-value {
+            padding: 12px;
+        }
     }
 </style>

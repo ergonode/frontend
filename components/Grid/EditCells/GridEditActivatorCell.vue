@@ -14,8 +14,7 @@
             :multiselect="isMultiSelect"
             :fixed-width="fixedWidth"
             :colors="colors"
-            @imageid="onImageIDChange"
-            @focus="onFocus" />
+            @imageid="onImageIDChange" />
     </div>
 </template>
 
@@ -31,7 +30,7 @@ export default {
         },
         rowId: {
             type: [String, Number],
-            required: true,
+            default: null,
         },
         value: {
             type: [String, Number, Array, Boolean],
@@ -100,11 +99,6 @@ export default {
     methods: {
         onImageIDChange(id) {
             this.localValue = id;
-        },
-        onFocus(isFocused) {
-            if (!isFocused) {
-                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`);
-            }
         },
     },
 };
