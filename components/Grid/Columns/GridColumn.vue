@@ -73,6 +73,7 @@ export default {
     data() {
         return {
             isResizing: false,
+            minWidth: null,
         };
     },
     beforeCreate() {
@@ -240,15 +241,15 @@ export default {
             this.isResizing = true;
             this.initMousePosition(event);
             this.initElementWidth();
+            this.initElementMinWidth();
             this.updateElementWidth(`${this.startWidth}px`);
             this.addEventListenersForResizeState();
         },
         doResizeDrag(event) {
             const { clientX } = event;
             const width = this.getElementWidthBasedOnMouseXPosition(clientX);
-            const minWidth = 40;
 
-            if (width > minWidth) {
+            if (width > this.minWidth) {
                 this.updateElementWidth(`${width}px`);
                 this.$store.dispatch(`${this.namespace}/updateColumnWidthAtIndex`, {
                     index: this.index, width: `${width}px`,
@@ -268,6 +269,11 @@ export default {
             } = this.$el.getBoundingClientRect();
 
             this.startWidth = parseInt(elementWidth, 10);
+        },
+        initElementMinWidth() {
+            if (this.minWidth === null) {
+                this.minWidth = this.startWidth;
+            }
         },
         getElementWidthBasedOnMouseXPosition(xPos) {
             return this.startWidth + xPos - this.startX;
