@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 /* eslint-disable no-param-reassign */
-import DraggableStates from '~/model/draggableStates';
+import { STATES } from '~/defaults/draggable/main';
 
 const onDragStart = ({ width, height, backgroundColor }, event) => {
     const clonedDOMElement = event.target.cloneNode(true);
@@ -22,7 +22,7 @@ const onDragStart = ({ width, height, backgroundColor }, event) => {
     event.dataTransfer.setDragImage(clonedDOMElement, width / 2, 0);
     event.dataTransfer.setData('text/plain', event.target.id);
 
-    const customEvent = new CustomEvent('state', { bubbles: true, detail: { state: DraggableStates.START } });
+    const customEvent = new CustomEvent('state', { bubbles: true, detail: { state: STATES.START } });
 
     event.target.dispatchEvent(customEvent);
 };
@@ -32,7 +32,7 @@ const onDragEnd = (event) => {
 
     event.target.removeAttribute('style');
     document.body.removeChild(clonedDOMElement);
-    const customEvent = new CustomEvent('state', { bubbles: true, detail: { state: DraggableStates.END } });
+    const customEvent = new CustomEvent('state', { bubbles: true, detail: { state: STATES.END } });
     event.target.dispatchEvent(customEvent);
     if (navigator.userAgent.toLowerCase().indexOf('firefox') === -1) {
         // TODO: Only Firefox Error: Modifications are not allowed for this document

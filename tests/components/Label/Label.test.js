@@ -31,5 +31,21 @@ describe('Label/Label', () => {
             isDisabled: true,
         });
         expect(wrapper.vm.getLabelColor).toBe('txt--light-graphite');
+        expect(wrapper.contains('.txt--light-graphite')).toBeTruthy();
     });
+
+    describe('Check label text', () => {
+      it('Check default text', () => {
+          expect(wrapper.find('label').exists()).toBeTruthy();
+          expect(wrapper.find('label').text()).toEqual('');
+      });
+
+      it('Check the text for the set property', () => {
+          wrapper.setProps({
+              text: 'test jest',
+          });
+          expect(wrapper.find('label').exists()).toBeTruthy();
+          expect(wrapper.find('label').text()).toEqual('test jest');
+      });
+  });
 });

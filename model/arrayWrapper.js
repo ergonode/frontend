@@ -2,6 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+/** @module arrayWrapper */
+/**
+ * Returns object with max value in array by object key
+ * @function
+ * @param {Array} array
+ * @param {string} propName
+ * @returns {Object}
+ */
 export function getObjectWithMaxValueInArrayByObjectKey(array, propName) {
     if (!array.length) return null;
 
@@ -13,6 +21,14 @@ export function getObjectWithMaxValueInArrayByObjectKey(array, propName) {
     );
 }
 
+/**
+ * Returns swap item position
+ * @function
+ * @param {Array} array
+ * @param {number} pos1
+ * @param {number} pos2
+ * @returns {Array}
+ */
 export function swapItemPosition(array, pos1, pos2) {
     const tmpArray = array;
     // local variables
@@ -43,6 +59,13 @@ export function swapItemPosition(array, pos1, pos2) {
     return tmpArray;
 }
 
+/**
+ * Check is arrays equal
+ * @function
+ * @param {Array} arr1
+ * @param {Array} arr2
+ * @returns {boolean}
+ */
 export function isArrayEqualToArray(arr1, arr2) {
     const { length: arr1Length } = arr1;
     const { length: arr2Length } = arr2;
@@ -60,6 +83,14 @@ export function isArrayEqualToArray(arr1, arr2) {
     return isEqual;
 }
 
+/**
+ * Returns an array with new item with index
+ * @function
+ * @param {Array} array
+ * @param {*} value
+ * @param {number} index
+ * @returns {number} Transformed array
+ */
 export function insertValueAtIndex(array, value, index) {
     return [
         ...array.slice(0, index),
@@ -68,10 +99,23 @@ export function insertValueAtIndex(array, value, index) {
     ];
 }
 
+/**
+ * Returns an array without item with index
+ * @function
+ * @param {Array} array
+ * @param {number} index
+ * @returns {number} Transformed array
+ */
 export function removeValueAtIndex(array, index) {
     return [...array.slice(0, index), ...array.slice(index + 1)];
 }
 
+/**
+ * Returns sum of integers
+ * @function
+ * @param {Array} array
+ * @returns {number} Sum
+ */
 export function sumIntegers(arr) {
     if (!Array.isArray(arr)) return 0;
 
@@ -85,10 +129,40 @@ export function sumIntegers(arr) {
     return value;
 }
 
+/**
+ * Returns object from array with objects
+ * @function
+ * @param {Array} array
+ * @param {string} keyField
+ * @param {string} value
+ * @returns {Object} Flat object
+ */
 export function arrayToObject(array, keyField, value) {
     return array.reduce((prev, current) => {
         const newObject = prev;
         newObject[current[keyField]] = current[value];
         return newObject;
     }, {});
+}
+
+/**
+ * Returns last element on array
+ * @function
+ * @param {Array} array
+ * @returns {*} Last element
+ */
+export function lastElementInList(array) {
+    const arrayLength = array.length;
+    return arrayLength > 0 ? array[arrayLength - 1] : null;
+}
+
+/**
+ * Returns first element on array
+ * @function
+ * @param {Array} array
+ * @returns {*} First element
+ */
+export function firstElementInList(array) {
+    const arrayLength = array.length;
+    return arrayLength > 0 ? array[0] : null;
 }

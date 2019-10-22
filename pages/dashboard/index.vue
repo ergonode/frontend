@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import GridItems from '~/model/dashboard_grid_columns';
+import GridItems from '~/defaults/dashboard/main';
 
 export default {
     name: 'Dashboard',
