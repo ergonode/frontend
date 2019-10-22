@@ -6,7 +6,8 @@
     <div
         :tabindex="-1"
         :class="gridCellClasses"
-        @keydown="onKeyDown">
+        @keydown="onKeyDown"
+        @focus="onFocus">
         <slot />
     </div>
 </template>
@@ -82,12 +83,22 @@ export default {
         },
     },
     methods: {
+        onFocus() {
+            if (!this.editing) {
+                this.$emit('dismissEditDialog');
+            }
+        },
         onKeyDown(event) {
             const { keyCode } = event;
 
             let element;
 
-            if ((!event.target.classList.contains('grid-cell') && !this.actionCell && keyCode !== 13)) {
+            if (this.editing && !this.actionCell && keyCode !== 13) {
+                if (keyCode === 9) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
                 return false;
             }
 
@@ -97,9 +108,12 @@ export default {
                 if (this.editingAllowed) {
                     element = this.$el;
 
-                    if ((this.actionCell && this.selected) || this.editing) {
+                    if (this.actionCell && this.selected) {
                         element.focus();
                         this.$emit('edit', false);
+                    } else if (this.editing) {
+                        element.focus();
+                        this.$emit('dismissEditDialog');
                     } else {
                         this.$emit('edit', true);
                     }

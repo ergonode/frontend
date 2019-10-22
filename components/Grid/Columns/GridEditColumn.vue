@@ -96,7 +96,7 @@ export default {
         .grid-cell:nth-child(1) {
             position: sticky !important;
             top: 0;
-            z-index: 8;
+            z-index: 1;
             background-color: $background;
         }
     }

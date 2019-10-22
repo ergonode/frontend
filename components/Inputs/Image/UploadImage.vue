@@ -3,7 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['upload-image', {'upload-image--disabled': disabled}]">
+    <div
+        :class="['upload-image', {
+            'upload-image--disabled': disabled,
+            'upload-image--elevator': elevator,
+        }]">
         <span
             v-if="title"
             class="upload-image__title"
@@ -26,13 +30,12 @@
             v-else
             class="upload-image__container"
             :style="imageHeightStyle">
-            <button
-                class="upload-image__remove-btn"
-                @click="onRemove"
-                @mouseenter="onMouseEnter"
-                @mouseleave="onMouseLeave">
-                <IconDelete :fill-color="deleteIconFillColor" />
-            </button>
+            <div class="upload-image__remove-btn">
+                <IconFabButton
+                    theme="secondary"
+                    icon-path="Actions/IconDelete"
+                    @select="onRemove" />
+            </div>
             <Picture :image-id="selectedFileID" />
         </div>
         <span
@@ -64,10 +67,14 @@ export default {
             type: Boolean,
             default: true,
         },
+        elevator: {
+            type: Boolean,
+            default: true,
+        },
     },
     components: {
-        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
         Picture: () => import('~/components/Inputs/Image/Picture'),
+        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
     },
     data() {
         return {
@@ -121,9 +128,20 @@ export default {
 
 <style lang="scss" scoped>
     .upload-image {
+        $parent: &;
+
         position: relative;
         display: flex;
         flex-direction: column;
+
+        &--elevator {
+            #{$parent}__wrapper, #{$parent}__container {
+                box-shadow:
+                    0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                    0 3px 1px -2px rgba(0, 0, 0, 0.12),
+                    0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            }
+        }
 
         &--disabled::after {
             position: absolute;
@@ -146,10 +164,6 @@ export default {
             align-items: center;
             padding: 43px 0;
             background-color: $white;
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
 
             &::before {
                 position: absolute;
@@ -165,10 +179,6 @@ export default {
             display: flex;
             max-height: 100%;
             background-color: $white;
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
         }
 
         &__activator {
@@ -183,21 +193,17 @@ export default {
 
         &__remove-btn {
             position: absolute;
-            top: 16px;
-            right: 16px;
+            top: 8px;
+            right: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 32px;
-            height: 32px;
-            padding: 0;
             background-color: $white;
             border-radius: 50%;
             box-shadow:
                 0 2px 2px 0 rgba(0, 0, 0, 0.14),
                 0 3px 1px -2px rgba(0, 0, 0, 0.12),
                 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-            cursor: pointer;
         }
 
         &__description {

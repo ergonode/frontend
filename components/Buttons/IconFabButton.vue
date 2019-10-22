@@ -40,7 +40,7 @@ export default {
         },
         iconPath: {
             type: String,
-            required: true,
+            default: null,
         },
         isDisabled: {
             type: Boolean,

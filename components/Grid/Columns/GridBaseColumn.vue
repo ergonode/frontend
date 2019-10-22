@@ -30,7 +30,7 @@ export default {
             position: absolute;
             top: 0;
             right: 0;
-            z-index: 10;
+            z-index: 2;
             width: 1px;
             height: 100%;
             background-color: $grey;

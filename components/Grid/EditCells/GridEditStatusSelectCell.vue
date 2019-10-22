@@ -11,15 +11,15 @@
         :dismissible="false"
         :error-messages="errorMessages"
         autofocus
-        :options="options"
+        :options="rowId ? workflowOptions : options"
         @focus="onFocus"
         @input="onValueChange"
         @apply="onApply">
         <template #selectContent>
             <StatusSelectListContent
-                :options="options"
+                :options="rowId ? workflowOptions : options"
                 :selected-option="value"
-                :colors="colors"
+                :colors="rowId ? workflowColors : colors"
                 @value="onValueChange" />
         </template>
     </Select>
@@ -41,6 +41,14 @@ export default {
             type: String,
             required: true,
         },
+        options: {
+            type: Array,
+            default: null,
+        },
+        colors: {
+            type: Object,
+            default: null,
+        },
         rowId: {
             type: [String, Number],
             required: true,
@@ -56,24 +64,26 @@ export default {
     },
     data() {
         return {
-            options: [],
-            colors: {},
+            workflowOptions: [],
+            workflowColors: {},
         };
     },
     async created() {
-        await this.$axios.$get(`${this.languageCode}/products/${this.rowId}`).then(({
-            workflow = [],
-        }) => {
-            this.options = workflow.map((e) => ({
-                key: e.code,
-                value: e.name,
-            }));
-            this.colors = workflow.reduce((acc, current) => {
-                const newObject = acc;
-                newObject[current.code] = current.color;
-                return newObject;
-            }, {});
-        }).catch(() => {});
+        if (this.rowId) {
+            await this.$axios.$get(`${this.languageCode}/products/${this.rowId}`).then(({
+                workflow = [],
+            }) => {
+                this.workflowOptions = workflow.map((e) => ({
+                    key: e.code,
+                    value: e.name,
+                }));
+                this.workflowColors = workflow.reduce((acc, current) => {
+                    const newObject = acc;
+                    newObject[current.code] = current.color;
+                    return newObject;
+                }, {});
+            });
+        }
     },
     computed: {
         ...mapState('authentication', {

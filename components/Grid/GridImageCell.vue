@@ -3,10 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <Picture
-        v-if="value"
-        class="image-cell"
-        :image-id="value" />
+    <div class="image-cell">
+        <Picture
+            v-if="value"
+            :image-id="value" />
+    </div>
 </template>
 
 <script>
