@@ -156,9 +156,9 @@ export default {
             this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
         doResizeDrag(event) {
-            const { clientX, clientY } = event;
-            const width = this.getElementWidthBasedOnMouseXPosition(clientX);
-            const height = this.getElementHeightBasedOnMouseYPosition(clientY);
+            const { pageX, pageY } = event;
+            const width = this.getElementWidthBasedOnMouseXPosition(pageX);
+            const height = this.getElementHeightBasedOnMouseYPosition(pageY);
 
             this.updateElementWidth(width);
             this.updateElementHeight(height);
@@ -281,9 +281,9 @@ export default {
         blockOtherInteractionsOnResizeEvent() {
             this.isDraggingEnabled = false;
         },
-        initMousePosition({ clientX, clientY }) {
-            this.startX = clientX;
-            this.startY = clientY;
+        initMousePosition({ pageX, pageY }) {
+            this.startX = pageX;
+            this.startY = pageY;
         },
         initActualElementNormalizedBoundary() {
             const { row, column } = this.element;

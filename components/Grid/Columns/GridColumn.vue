@@ -136,16 +136,16 @@ export default {
             'setGhostIndex',
         ]),
         onDragStart(event) {
-            const { clientX, clientY } = event;
+            const { pageX, pageY } = event;
             const [header] = this.$el.children;
             const {
                 x: headerXPos, y: headerYPos, height: headerHeight, width: headerWidth,
             } = header.getBoundingClientRect();
             const xOffset = 2.5;
             const contentGrid = this.getGridContentElement();
-            const isMouseAboveColumnHeader = headerYPos <= clientY
-                && headerYPos + headerHeight >= clientY;
-            const isMouseAboveLeftBorderLimit = clientX - headerXPos < xOffset;
+            const isMouseAboveColumnHeader = headerYPos <= pageY
+                && headerYPos + headerHeight >= pageY;
+            const isMouseAboveLeftBorderLimit = pageX - headerXPos < xOffset;
             const neighbourIndex = this.index === 0 ? this.index : this.index - 1;
 
             if (!isMouseAboveColumnHeader
@@ -170,9 +170,22 @@ export default {
             return true;
         },
         onDragEnd(event) {
-            const { clientX, clientY } = event;
-            const elementBelowMouse = document.elementFromPoint(clientX, clientY);
+            let elementBelowMouse = null;
+
+            // Firefox does not support pageX, pageY...
+            if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+                const { screenX, screenY } = event;
+
+                elementBelowMouse = document.elementFromPoint(screenX, screenY);
+                console.log(elementBelowMouse);
+            } else {
+                const { pageX, pageY } = event;
+
+                elementBelowMouse = document.elementFromPoint(pageX, pageY);
+            }
+
             const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
+
             removeElementCopyFromDocumentBody(event);
 
             if (isTrashBelowMouse) {
@@ -208,12 +221,12 @@ export default {
 
             event.preventDefault();
 
-            const { clientX } = event;
+            const { pageX } = event;
             const {
                 x: columnXPos, width: columnWidth,
             } = this.$el.getBoundingClientRect();
             const isBefore = getDraggedColumnPositionState(
-                clientX,
+                pageX,
                 columnXPos,
                 columnWidth,
             );
@@ -246,8 +259,8 @@ export default {
             this.addEventListenersForResizeState();
         },
         doResizeDrag(event) {
-            const { clientX } = event;
-            const width = this.getElementWidthBasedOnMouseXPosition(clientX);
+            const { pageX } = event;
+            const width = this.getElementWidthBasedOnMouseXPosition(pageX);
 
             if (width > this.minWidth) {
                 this.updateElementWidth(`${width}px`);
@@ -260,8 +273,8 @@ export default {
             this.removeEventListenersForResizeState();
             this.isResizing = false;
         },
-        initMousePosition({ clientX }) {
-            this.startX = clientX;
+        initMousePosition({ pageX }) {
+            this.startX = pageX;
         },
         initElementWidth() {
             const {

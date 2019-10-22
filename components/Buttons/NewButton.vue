@@ -137,12 +137,12 @@ export default {
             const {
                 top, left, width, height,
             } = this.$el.getBoundingClientRect();
-            const { clientX, clientY } = event;
+            const { pageX, pageY } = event;
 
-            if (!(clientX > left
-                && clientX < left + width
-                && clientY > top
-                && clientY < top + height)) {
+            if (!(pageX > left
+                && pageX < left + width
+                && pageY > top
+                && pageY < top + height)) {
                 this.isFocused = false;
             }
         },

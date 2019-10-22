@@ -247,12 +247,12 @@ export default {
 
             event.preventDefault();
 
-            const { clientX } = event;
+            const { pageX } = event;
             const {
                 x: columnXPos, width: columnWidth,
             } = this.$el.getBoundingClientRect();
             const isBefore = getDraggedColumnPositionState(
-                clientX,
+                pageX,
                 columnXPos,
                 columnWidth,
             );

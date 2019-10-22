@@ -303,16 +303,16 @@ export default {
 
             if (isDoubleClicked) return false;
 
-            const { clientX, clientY } = event;
+            const { pageX, pageY } = event;
             const activator = this.$el.querySelector('.input__activator');
             const {
                 top, left, width, height,
             } = activator.getBoundingClientRect();
             const isClickedInsideInput = this.$el.contains(event.target)
-                && clientX > left
-                && clientX < left + width
-                && clientY > top
-                && clientY < top + height;
+                && pageX > left
+                && pageX < left + width
+                && pageY > top
+                && pageY < top + height;
 
             if (isClickedInsideInput) {
                 if (this.dismissible) {
@@ -333,10 +333,10 @@ export default {
                         height: contentHeight,
                     } = selectContentEl.getBoundingClientRect();
 
-                    const isClickedInsideSelectContent = clientX > left
-                        && clientX < contentLeft + contentWidth
-                        && clientY > contentTop
-                        && clientY < contentTop + contentHeight;
+                    const isClickedInsideSelectContent = pageX > left
+                        && pageX < contentLeft + contentWidth
+                        && pageY > contentTop
+                        && pageY < contentTop + contentHeight;
 
                     if (!isClickedInsideSelectContent || !this.multiselect) this.isFocused = false;
                 }

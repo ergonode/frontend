@@ -85,10 +85,10 @@ export function getRowBounds(elements) {
     return elementBounds;
 }
 
-export function getRowBellowMouse({ clientY, elements, elementBounds }, completion) {
+export function getRowBellowMouse({ pageY, elements, elementBounds }, completion) {
     for (let i = 0; i < elements.length; i += 1) {
         const { y, height } = elementBounds[i];
-        if (y <= clientY && y + height >= clientY) {
+        if (y <= pageY && y + height >= pageY) {
             return completion({ index: i, category: elements[i] });
         }
     }
