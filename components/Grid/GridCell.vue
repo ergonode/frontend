@@ -84,7 +84,9 @@ export default {
     },
     methods: {
         onFocus() {
-            this.$emit('dismissEditDialog');
+            if (!this.editing) {
+                this.$emit('dismissEditDialog');
+            }
         },
         onKeyDown(event) {
             const { keyCode } = event;

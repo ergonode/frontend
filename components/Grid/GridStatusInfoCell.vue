@@ -4,7 +4,9 @@
  */
 <template>
     <div class="status-info-cell">
-        <StatusBadge :color="colors[cellData.key]" />
+        <StatusBadge
+            v-if="colors[cellData.key]"
+            :color="colors[cellData.key]" />
         <GridInfoCell :value="cellData.value" />
     </div>
 </template>

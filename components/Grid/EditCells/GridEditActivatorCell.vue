@@ -30,7 +30,7 @@ export default {
         },
         rowId: {
             type: [String, Number],
-            default: null,
+            default: '',
         },
         value: {
             type: [String, Number, Array, Boolean],
