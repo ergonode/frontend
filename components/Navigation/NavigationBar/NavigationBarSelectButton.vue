@@ -61,14 +61,14 @@ export default {
         },
         onClickOutside(event) {
             if (this.isSelected) {
-                const { clientX, clientY } = event;
+                const { pageX, pageY } = event;
                 const {
                     top, left, width, height,
                 } = this.$refs.selectContent.getBoundingClientRect();
-                const isClickedInsideSelectContent = clientX > left
-                    && clientX < left + width
-                    && clientY > top
-                    && clientY < top + height;
+                const isClickedInsideSelectContent = pageX > left
+                    && pageX < left + width
+                    && pageY > top
+                    && pageY < top + height;
 
                 if (!isClickedInsideSelectContent) {
                     this.isSelected = false;

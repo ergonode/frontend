@@ -73,6 +73,7 @@ export default {
     data() {
         return {
             isResizing: false,
+            minWidth: null,
         };
     },
     beforeCreate() {
@@ -110,7 +111,8 @@ export default {
             return this.column.type === COLUMN_TYPE.CHECK;
         },
         isPinnedColumn() {
-            return this.gridState.pinnedColumns.find((col) => col.id === this.column.id);
+            return this.gridState.pinnedColumns
+                .findIndex((col) => col.id === this.column.id) > -1;
         },
         isColumnDraggable() {
             return this.gridState.configuration.isColumnMoveable
@@ -134,16 +136,16 @@ export default {
             'setGhostIndex',
         ]),
         onDragStart(event) {
-            const { clientX, clientY } = event;
+            const { pageX, pageY } = event;
             const [header] = this.$el.children;
             const {
                 x: headerXPos, y: headerYPos, height: headerHeight, width: headerWidth,
             } = header.getBoundingClientRect();
             const xOffset = 2.5;
             const contentGrid = this.getGridContentElement();
-            const isMouseAboveColumnHeader = headerYPos <= clientY
-                && headerYPos + headerHeight >= clientY;
-            const isMouseAboveLeftBorderLimit = clientX - headerXPos < xOffset;
+            const isMouseAboveColumnHeader = headerYPos <= pageY
+                && headerYPos + headerHeight >= pageY;
+            const isMouseAboveLeftBorderLimit = pageX - headerXPos < xOffset;
             const neighbourIndex = this.index === 0 ? this.index : this.index - 1;
 
             if (!isMouseAboveColumnHeader
@@ -151,6 +153,7 @@ export default {
                 || this.isPinnedColumn
                 || this.isResizing) {
                 event.preventDefault();
+                event.stopPropagation();
 
                 return false;
             }
@@ -167,9 +170,21 @@ export default {
             return true;
         },
         onDragEnd(event) {
-            const { clientX, clientY } = event;
-            const elementBelowMouse = document.elementFromPoint(clientX, clientY);
+            let xPos = null;
+            let yPos = null;
+
+            // Firefox does not support pageX, pageY...
+            if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+                xPos = event.screenX;
+                yPos = event.screenY;
+            } else {
+                xPos = event.pageX;
+                yPos = event.pageY;
+            }
+
+            const elementBelowMouse = document.elementFromPoint(xPos, yPos);
             const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
+
             removeElementCopyFromDocumentBody(event);
 
             if (isTrashBelowMouse) {
@@ -205,12 +220,12 @@ export default {
 
             event.preventDefault();
 
-            const { clientX } = event;
+            const { pageX } = event;
             const {
                 x: columnXPos, width: columnWidth,
             } = this.$el.getBoundingClientRect();
             const isBefore = getDraggedColumnPositionState(
-                clientX,
+                pageX,
                 columnXPos,
                 columnWidth,
             );
@@ -221,11 +236,16 @@ export default {
                 || (!isBefore && this.ghostIndex === fixedIndex + 1)
                 || this.isPinnedColumn
                 || this.draggedElementOnGrid === DRAGGED_ELEMENT.FILTER) {
+                event.preventDefault();
+                event.stopPropagation();
+
                 return false;
             }
 
-            this.updateColumnsTransform(isBefore);
-            this.updateGhostIndex(isBefore);
+            const targetGhostIndex = this.getTargetGhostIndex(isBefore);
+
+            this.updateColumnsTransform(targetGhostIndex);
+            this.setGhostIndex(targetGhostIndex);
 
             return true;
         },
@@ -233,15 +253,15 @@ export default {
             this.isResizing = true;
             this.initMousePosition(event);
             this.initElementWidth();
+            this.initElementMinWidth();
             this.updateElementWidth(`${this.startWidth}px`);
             this.addEventListenersForResizeState();
         },
         doResizeDrag(event) {
-            const { clientX } = event;
-            const width = this.getElementWidthBasedOnMouseXPosition(clientX);
-            const minWidth = 40;
+            const { pageX } = event;
+            const width = this.getElementWidthBasedOnMouseXPosition(pageX);
 
-            if (width > minWidth) {
+            if (width > this.minWidth) {
                 this.updateElementWidth(`${width}px`);
                 this.$store.dispatch(`${this.namespace}/updateColumnWidthAtIndex`, {
                     index: this.index, width: `${width}px`,
@@ -252,8 +272,8 @@ export default {
             this.removeEventListenersForResizeState();
             this.isResizing = false;
         },
-        initMousePosition({ clientX }) {
-            this.startX = clientX;
+        initMousePosition({ pageX }) {
+            this.startX = pageX;
         },
         initElementWidth() {
             const {
@@ -261,6 +281,11 @@ export default {
             } = this.$el.getBoundingClientRect();
 
             this.startWidth = parseInt(elementWidth, 10);
+        },
+        initElementMinWidth() {
+            if (this.minWidth === null) {
+                this.minWidth = this.startWidth;
+            }
         },
         getElementWidthBasedOnMouseXPosition(xPos) {
             return this.startWidth + xPos - this.startX;
@@ -330,84 +355,94 @@ export default {
                 to: this.ghostIndex,
             });
         },
-        updateGhostIndex(isBefore) {
+        getTargetGhostIndex(isBefore) {
             if (this.index < this.draggedElIndex) {
-                this.setGhostIndex(isBefore ? this.index : this.index + 1);
-            } else {
-                this.setGhostIndex(isBefore ? this.index - 1 : this.index);
+                return isBefore ? this.index : this.index + 1;
             }
+
+            return isBefore ? this.index - 1 : this.index;
         },
-        updateColumnsTransform() {
+        updateColumnsTransform(targetGhostIndex) {
             const contentGrid = this.getGridContentElement();
             const { width: ghostWidth } = contentGrid.children[this.draggedElIndex]
                 .getBoundingClientRect();
             const ghostTransform = +contentGrid.children[this.draggedElIndex].style.transform.replace(/[^0-9\-.,]/g, '');
             let bounds = {};
 
-            if (this.ghostIndex > this.index) {
+            if (targetGhostIndex < this.ghostIndex) {
                 bounds = this.getLowerBoundsTransforms(
-                    contentGrid, ghostWidth, ghostTransform,
+                    contentGrid, ghostWidth, ghostTransform, targetGhostIndex,
                 );
             } else {
                 bounds = this.getUpperBoundsTransforms(
-                    contentGrid, ghostWidth, ghostTransform,
+                    contentGrid, ghostWidth, ghostTransform, targetGhostIndex,
                 );
             }
-
             Object.keys(bounds.transforms).forEach((index) => {
                 contentGrid.children[index].style.transform = `translateX(${bounds.transforms[index]}px)`;
             });
 
             contentGrid.children[this.draggedElIndex].style.transform = `translateX(${bounds.updatedGhostTransform}px)`;
         },
-        getLowerBoundsTransforms(contentGrid, ghostWidth, ghostTransform) {
+        getLowerBoundsTransforms(contentGrid, ghostWidth, ghostTransform, targetGhostIndex) {
             const transforms = {};
-            const lowerBoundOffset = this.ghostIndex > this.draggedElIndex ? 1 : 0;
-            let lowerBound = this.ghostIndex + lowerBoundOffset;
+            let lowerBound = this.ghostIndex - 1; // We can shift to next iteration - no need to do anything with ghost column
             let updatedGhostTransform = ghostTransform;
 
-            while (lowerBound > this.index) {
-                lowerBound -= 1;
+            while (lowerBound >= targetGhostIndex) {
+                const index = this.draggedElIndex <= lowerBound ? lowerBound + 1 : lowerBound;
 
                 if (lowerBound !== this.draggedElIndex) {
                     const {
                         colWidth, colTransform,
-                    } = this.getColumnElBounds(contentGrid, lowerBound);
+                    } = this.getColumnElBounds(contentGrid, index);
 
                     if (colTransform > 0) {
-                        transforms[lowerBound] = 0;
+                        transforms[index] = 0;
                         updatedGhostTransform += colWidth;
                     } else {
-                        transforms[lowerBound] = lowerBound > this.draggedElIndex ? 0 : ghostWidth;
+                        transforms[index] = lowerBound > this.draggedElIndex ? 0 : ghostWidth;
                         updatedGhostTransform -= colWidth;
                     }
+                } else {
+                    // Reset transforms - columns are at theirs start position
+                    transforms[index] = 0;
+                    updatedGhostTransform = 0;
                 }
+
+                lowerBound -= 1;
             }
 
             return { transforms, updatedGhostTransform };
         },
-        getUpperBoundsTransforms(contentGrid, ghostWidth, ghostTransform) {
+        getUpperBoundsTransforms(contentGrid, ghostWidth, ghostTransform, targetGhostIndex) {
             const transforms = {};
-            const upperBoundOffset = this.ghostIndex < this.draggedElIndex ? 1 : 0;
-            let upperBound = this.ghostIndex - upperBoundOffset;
+            let upperBound = this.ghostIndex + 1; // We can shift to next iteration - no need to do anything with ghost column
             let updatedGhostTransform = ghostTransform;
 
-            while (upperBound < this.index) {
-                upperBound += 1;
+            while (upperBound <= targetGhostIndex) {
+                const index = this.draggedElIndex >= upperBound ? upperBound - 1 : upperBound;
 
                 if (upperBound !== this.draggedElIndex) {
                     const {
                         colWidth, colTransform,
-                    } = this.getColumnElBounds(contentGrid, upperBound);
+                    } = this.getColumnElBounds(contentGrid, index);
+
 
                     if (colTransform < 0) {
-                        transforms[upperBound] = 0;
+                        transforms[index] = 0;
                         updatedGhostTransform -= colWidth;
                     } else {
-                        transforms[upperBound] = upperBound < this.draggedElIndex ? 0 : -ghostWidth;
+                        transforms[index] = upperBound < this.draggedElIndex ? 0 : -ghostWidth;
                         updatedGhostTransform += colWidth;
                     }
+                } else {
+                    // Reset transforms - columns are at theirs start position
+                    transforms[index] = 0;
+                    updatedGhostTransform = 0;
                 }
+
+                upperBound += 1;
             }
 
             return { transforms, updatedGhostTransform };

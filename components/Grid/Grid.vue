@@ -6,7 +6,7 @@
     <div
         :class="['grid', {
             'grid--placeholder': isPlaceholder,
-            'grid--disabled': isColumnExists,
+            'grid--disabled': isColumnExists || isAdvancedFilterFocused,
         }]">
         <GridAdvancedFilters
             v-if="advancedFilters"
@@ -14,7 +14,8 @@
             :filters="gridState.advancedFilters"
             :namespace="namespace"
             :path="routeEdit.getData"
-            :disabled="isFilterExists" />
+            :disabled="isFilterExists"
+            @focus="onAdvancedFilterFocus" />
         <GridHeader
             :title="title"
             :row-height="rowHeight"
@@ -170,6 +171,7 @@ export default {
         return {
             isHeaderFocused: false,
             isMouseOverGrid: false,
+            isAdvancedFilterFocused: false,
             rowHeight: ROW_HEIGHT.LARGE,
             layout: GRID_LAYOUT.TABLE,
         };
@@ -268,6 +270,9 @@ export default {
                 // Dismiss editable cell mode
                 this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
             }
+        },
+        onAdvancedFilterFocus(isFocused) {
+            this.isAdvancedFilterFocused = isFocused;
         },
         onRowEdit(route) {
             this.$emit('rowEdit', route);

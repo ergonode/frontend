@@ -89,9 +89,9 @@ describe('Grid/GridColumn', () => {
                         index: 2,
                     });
 
-                    wrapper.vm.updateGhostIndex(true);
+                    const targetGhostIndex = wrapper.vm.getTargetGhostIndex(false);
 
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setGhostIndex', 2);
+                    expect(targetGhostIndex).toBe(3);
                 });
 
                 it('Index of column bellow is greater than dragged column (The origin of dragged column is before column bellow)', () => {
@@ -100,9 +100,10 @@ describe('Grid/GridColumn', () => {
                         index: 3,
                     });
 
-                    wrapper.vm.updateGhostIndex(true);
 
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setGhostIndex', 2);
+                    const targetGhostIndex = wrapper.vm.getTargetGhostIndex(true);
+
+                    expect(targetGhostIndex).toBe(2);
                 });
             });
 
@@ -113,9 +114,10 @@ describe('Grid/GridColumn', () => {
                         index: 2,
                     });
 
-                    wrapper.vm.updateGhostIndex(false);
 
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setGhostIndex', 3);
+                    const targetGhostIndex = wrapper.vm.getTargetGhostIndex(false);
+
+                    expect(targetGhostIndex).toBe(3);
                 });
 
                 it('Index of column bellow is greater than dragged column (The origin of dragged column is before column bellow)', () => {
@@ -124,9 +126,10 @@ describe('Grid/GridColumn', () => {
                         index: 3,
                     });
 
-                    wrapper.vm.updateGhostIndex(false);
 
-                    expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith('draggable/setGhostIndex', 2);
+                    const targetGhostIndex = wrapper.vm.getTargetGhostIndex(true);
+
+                    expect(targetGhostIndex).toBe(2);
                 });
             });
         });
@@ -181,96 +184,60 @@ describe('Grid/GridColumn', () => {
                 column7.setAttribute('style', columnStyle);
             });
 
-            it('Dragged index is higher than index bellow mouse', () => {
+            it('Dragged index is greater than index bellow mouse and is after first column half', () => {
                 draggableMutations.SET_DRAGGED_EL_INDEX(store.state.draggable, 3);
                 draggableMutations.SET_GHOST_INDEX(store.state.draggable, 3);
-
-                let lowerBounds = {};
 
                 wrapper.setProps({
                     index: 2,
                 });
 
-                lowerBounds = wrapper.vm.getLowerBoundsTransforms(gridContent, 200, 0);
+                const targetGhostIndex = wrapper.vm.getTargetGhostIndex(false);
+                const lowerBounds = wrapper.vm.getLowerBoundsTransforms(gridContent, 200, 0, targetGhostIndex);
+
+                expect(lowerBounds).toStrictEqual({ transforms: { }, updatedGhostTransform: 0 });
+            });
+
+            it('Dragged index is greater than index bellow mouse and is at first column half', () => {
+                draggableMutations.SET_DRAGGED_EL_INDEX(store.state.draggable, 3);
+                draggableMutations.SET_GHOST_INDEX(store.state.draggable, 3);
+
+                wrapper.setProps({
+                    index: 2,
+                });
+
+                const targetGhostIndex = wrapper.vm.getTargetGhostIndex(true);
+                const lowerBounds = wrapper.vm.getLowerBoundsTransforms(gridContent, 200, 0, targetGhostIndex);
 
                 expect(lowerBounds).toStrictEqual({ transforms: { 2: 200 }, updatedGhostTransform: -200 });
-
-                wrapper.setProps({
-                    index: 1,
-                });
-
-                lowerBounds = wrapper.vm.getLowerBoundsTransforms(gridContent, 200, 0);
-
-                expect(lowerBounds).toStrictEqual({ transforms: { 2: 200, 1: 200 }, updatedGhostTransform: -400 });
-
-                wrapper.setProps({
-                    index: 0,
-                });
-
-                lowerBounds = wrapper.vm.getLowerBoundsTransforms(gridContent, 200, 0);
-
-                expect(lowerBounds).toStrictEqual({ transforms: { 2: 200, 1: 200, 0: 200 }, updatedGhostTransform: -600 });
             });
 
-            it('Dragged index is lower than index bellow mouse', () => {
+            it('Dragged index is lower than index bellow mouse and is after first column half', () => {
                 draggableMutations.SET_DRAGGED_EL_INDEX(store.state.draggable, 3);
                 draggableMutations.SET_GHOST_INDEX(store.state.draggable, 3);
 
-                let upperBounds = {};
-
                 wrapper.setProps({
                     index: 4,
                 });
 
-                upperBounds = wrapper.vm.getUpperBoundsTransforms(gridContent, 200, 0);
+                const targetGhostIndex = wrapper.vm.getTargetGhostIndex(false);
+                const upperBounds = wrapper.vm.getUpperBoundsTransforms(gridContent, 200, 0, targetGhostIndex);
 
                 expect(upperBounds).toStrictEqual({ transforms: { 4: -200 }, updatedGhostTransform: 200 });
-
-                wrapper.setProps({
-                    index: 5,
-                });
-
-                upperBounds = wrapper.vm.getUpperBoundsTransforms(gridContent, 200, 0);
-
-                expect(upperBounds).toStrictEqual({ transforms: { 4: -200, 5: -200 }, updatedGhostTransform: 400 });
-
-                wrapper.setProps({
-                    index: 6,
-                });
-
-                upperBounds = wrapper.vm.getUpperBoundsTransforms(gridContent, 200, 0);
-
-                expect(upperBounds).toStrictEqual({ transforms: { 4: -200, 5: -200, 6: -200 }, updatedGhostTransform: 600 });
             });
 
-            it('Dragged index is higher than index bellow mouse and ghost element is greater than dragged index', () => {
+            it('Dragged index is lower than index bellow mouse and is at first column half', () => {
                 draggableMutations.SET_DRAGGED_EL_INDEX(store.state.draggable, 3);
-                draggableMutations.SET_GHOST_INDEX(store.state.draggable, 4);
-                gridContent.children[4].style.transform = 'translateX(200px)';
-
-                let lowerBounds = {};
-
-                wrapper.setProps({
-                    index: 2,
-                });
-                lowerBounds = wrapper.vm.getLowerBoundsTransforms(gridContent, 200, -200);
-
-                expect(lowerBounds).toStrictEqual({ transforms: { 4: 0, 2: 200 }, updatedGhostTransform: -200 });
-
-                wrapper.setProps({
-                    index: 1,
-                });
-                lowerBounds = wrapper.vm.getLowerBoundsTransforms(gridContent, 200, -200);
-
-                expect(lowerBounds).toStrictEqual({ transforms: { 4: 0, 2: 200, 1: 200 }, updatedGhostTransform: -400 });
-
-                gridContent.children[4].style.transform = 'translateX(0)';
-                gridContent.children[2].style.transform = 'translateX(200px)';
-                gridContent.children[1].style.transform = 'translateX(200px)';
+                draggableMutations.SET_GHOST_INDEX(store.state.draggable, 3);
 
                 wrapper.setProps({
                     index: 4,
                 });
+
+                const targetGhostIndex = wrapper.vm.getTargetGhostIndex(true);
+                const upperBounds = wrapper.vm.getUpperBoundsTransforms(gridContent, 200, 0, targetGhostIndex);
+
+                expect(upperBounds).toStrictEqual({ transforms: { }, updatedGhostTransform: 0 });
             });
         });
     });
