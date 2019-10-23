@@ -69,7 +69,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    $border: 1px dashed $grey;
+    $border: 1px dashed $GREY;
 
     .draggable-layer {
         position: relative;

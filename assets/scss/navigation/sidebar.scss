@@ -5,7 +5,7 @@
 .side-bar-wrapper {
     position: relative;
     z-index: 9999;
-    background-color: $white;
+    background-color: $WHITE;
     transition:
         width 0.3s,
         opacity 0.3s;
@@ -16,7 +16,7 @@
     .side-bar {
         position: absolute;
         height: 100%;
-        background-color: $white;
+        background-color: $WHITE;
         box-shadow:
             0 4px 5px 0 rgba(0, 0, 0, 0.14),
             0 1px 10px 0 rgba(0, 0, 0, 0.12),

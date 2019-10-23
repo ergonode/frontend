@@ -47,7 +47,7 @@ export default {
             flex-direction: column;
             max-height: 100%;
             width: 400px;
-            background-color: $white;
+            background-color: $WHITE;
             box-shadow:
                 0 12px 17px 2px rgba(0, 0, 0, 0.14),
                 0 5px 22px 4px rgba(0, 0, 0, 0.12),

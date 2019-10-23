@@ -18,7 +18,7 @@ export default {
     .text-edit-cell {
         padding: 8px;
         box-sizing: border-box;
-        background-color: $white;
+        background-color: $WHITE;
         transform: translate(-4px, -4px);
         box-shadow:
             0 2px 2px 0 rgba(0, 0, 0, 0.14),

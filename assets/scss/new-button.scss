@@ -31,7 +31,7 @@
     }
 
     &__title {
-        @include setFont(semiBold, regular, regular, $white, 0.5);
+        @include setFont(semiBold, regular, regular, $WHITE, 0.5);
     }
 
     &__prepend {
@@ -47,7 +47,7 @@
         z-index: 999;
         display: flex;
         flex-direction: column;
-        background-color: $white;
+        background-color: $WHITE;
         box-shadow:
             0 2px 2px 0 rgba(0, 0, 0, 0.14),
             0 3px 1px -2px rgba(0, 0, 0, 0.12),
@@ -61,10 +61,10 @@
     }
 
     &--primary {
-        background-color: $primary;
+        background-color: $GREEN;
 
         &:disabled {
-            background-color: $grey;
+            background-color: $GREY;
         }
     }
 
@@ -72,12 +72,12 @@
         background-color: transparent;
 
         #{$btn}__title {
-            color: $graphite;
+            color: $GRAPHITE;
         }
 
         &:disabled {
             #{$btn}__title {
-                color: $darkGrey;
+                color: $GREY_DARK;
             }
         }
     }

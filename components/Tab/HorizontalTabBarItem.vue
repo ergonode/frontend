@@ -110,9 +110,9 @@ export default {
         flex: 0 0 auto;
         width: 165px;
         box-sizing: border-box;
-        background-color: $white;
+        background-color: $WHITE;
         cursor: pointer;
-        border-top: 1px solid $grey;
+        border-top: 1px solid $GREY;
 
         &__button, &__input {
             width: 100%;
@@ -138,7 +138,7 @@ export default {
             right: 0;
             width: 34px;
             height: 100%;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, $white 100%);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, $WHITE 100%);
             content: "";
         }
 
@@ -163,25 +163,25 @@ export default {
         }
 
         &:not(&--selected) {
-            border-bottom: 1px solid $grey;
+            border-bottom: 1px solid $GREY;
         }
 
         &:nth-child(even), &:nth-child(odd), &:first-child {
-            border-left: 1px solid  $grey;
+            border-left: 1px solid  $GREY;
         }
 
         &:last-child {
-            border-right: 1px solid  $grey;
+            border-right: 1px solid  $GREY;
         }
 
         &--disabled {
-            background-color: $background;
+            background-color: $WHITESMOKE;
             cursor: default;
-            border-color: $grey;
+            border-color: $GREY;
             pointer-events: none;
 
             #{$item}__button {
-                color: $lightGraphite;
+                color: $GRAPHITE_LIGHT;
             }
         }
 
@@ -193,7 +193,7 @@ export default {
             z-index: 1;
             width: calc(100% + 2px);
             height: 3px;
-            background-color: $primary;
+            background-color: $GREEN;
             opacity: 0;
             content: "";
         }

@@ -15,6 +15,7 @@
 
 <script>
 import IconBase from '~/components/Icon/IconBase';
+import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'IconProcessing',
@@ -24,7 +25,7 @@ export default {
     props: {
         fillColor: {
             type: String,
-            default: '#5C5F65',
+            default: GRAPHITE,
         },
         size: {
             type: [String, Number],

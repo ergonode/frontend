@@ -405,9 +405,9 @@ export default {
         &__content {
             position: relative;
             display: grid;
-            border-left: 1px solid $grey;
-            border-right: 1px solid $grey;
-            background-color: $background;
+            border-left: 1px solid $GREY;
+            border-right: 1px solid $GREY;
+            background-color: $WHITESMOKE;
             overflow: auto;
 
             &::after {

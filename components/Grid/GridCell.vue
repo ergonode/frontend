@@ -178,29 +178,29 @@ export default {
         display: flex;
         outline: none;
         box-sizing: border-box;
-        border-bottom: 1px solid $grey;
-        background-color: $white;
+        border-bottom: 1px solid $GREY;
+        background-color: $WHITE;
 
         &:not(&--error):not(&--locked) {
             &:focus {
-                box-shadow: inset -0.5px 0 0 2px $primary;
+                box-shadow: inset -0.5px 0 0 2px $GREEN;
             }
         }
 
         &--selected, &--draft {
-            background-color: $lightGreen;
+            background-color: $GREEN_LIGHT;
         }
 
         &--error {
-            background-color: $lightRed;
+            background-color: $RED_LIGHT;
 
             &:focus {
-                box-shadow: inset -0.5px 0 0 2px $error;
+                box-shadow: inset -0.5px 0 0 2px $RED;
             }
         }
 
         &--locked:focus {
-            box-shadow: inset -0.5px 0 0 2px $lightGraphite;
+            box-shadow: inset -0.5px 0 0 2px $GRAPHITE_LIGHT;
         }
 
         &:focus {

@@ -53,11 +53,11 @@ export default {
     .presentation-layer {
         display: grid;
         height: auto;
-        border-left: 1px dashed $lightGrey;
-        border-right: 1px dashed $lightGrey;
+        border-left: 1px dashed $GREY_light;
+        border-right: 1px dashed $GREY_light;
 
         &__border-top {
-            border-top: 1px dashed $lightGrey;
+            border-top: 1px dashed $GREY_light;
         }
     }
 </style>

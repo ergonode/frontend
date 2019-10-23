@@ -72,6 +72,6 @@ export default {
         justify-content: space-between;
         align-items: center;
         padding: 24px 34px;
-        border-bottom: 1px solid $grey;
+        border-bottom: 1px solid $GREY;
     }
 </style>

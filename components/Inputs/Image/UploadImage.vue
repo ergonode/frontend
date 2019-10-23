@@ -149,7 +149,7 @@ export default {
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: $background;
+            background-color: $WHITESMOKE;
             opacity: 0.5;
             content: "";
             cursor: not-allowed;
@@ -163,13 +163,13 @@ export default {
             justify-content: center;
             align-items: center;
             padding: 43px 0;
-            background-color: $white;
+            background-color: $WHITE;
 
             &::before {
                 position: absolute;
                 width: calc(100% - 32px);
                 height: calc(100% - 32px);
-                border: 1px dashed $grey;
+                border: 1px dashed $GREY;
                 content: "";
             }
         }
@@ -178,7 +178,7 @@ export default {
             position: relative;
             display: flex;
             max-height: 100%;
-            background-color: $white;
+            background-color: $WHITE;
         }
 
         &__activator {
@@ -198,7 +198,7 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: $white;
+            background-color: $WHITE;
             border-radius: 50%;
             box-shadow:
                 0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -216,11 +216,11 @@ export default {
         }
 
         &__description, &__title {
-            @include setFont(medium, small, regular, $graphite);
+            @include setFont(medium, small, regular, $GRAPHITE);
         }
 
         &__error-label {
-            @include setFont(regular, tiny, tiny, $error);
+            @include setFont(regular, tiny, tiny, $RED);
 
             margin-top: 8px;
         }

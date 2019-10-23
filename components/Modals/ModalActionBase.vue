@@ -84,7 +84,7 @@ export default {
             }
 
             .title {
-                color: $darkGraphite;
+                color: $GRAPHITE_DARK;
                 font: 500 24px/32px "Inter UI";
                 margin-left: 12px;
             }

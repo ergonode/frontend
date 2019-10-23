@@ -73,7 +73,7 @@ export default {
         }
 
         .details__title {
-            @include setFont(medium, huge, large, $darkGraphite);
+            @include setFont(medium, huge, large, $GRAPHITE_DARK);
 
             margin-right: 8px;
         }

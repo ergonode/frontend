@@ -92,7 +92,7 @@ export default {
             flex-direction: column;
 
             &__title {
-                @include setFont(medium, small, regular, $lightGraphite, 1);
+                @include setFont(medium, small, regular, $GRAPHITE_LIGHT, 1);
                 margin-bottom: 8px;
             }
 

@@ -20,7 +20,7 @@ export default {
         display: flex;
         align-items: center;
         padding: 12px 24px;
-        background-color: $white;
+        background-color: $WHITE;
         flex-shrink: 0;
         min-height: 40px;
         box-shadow:

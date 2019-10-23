@@ -22,6 +22,7 @@
 
 <script>
 import { SortingOrder } from '~/model/icons/SortingOrder';
+import { GRAPHITE, GREY, GREEN } from '~/assets/scss/_variables/_colors.scss';
 import IconBase from '~/components/Icon/IconBase';
 
 export default {
@@ -36,7 +37,7 @@ export default {
         },
         fillColor: {
             type: String,
-            default: '#5C5F65',
+            default: GRAPHITE,
         },
         size: {
             type: [String, Number],
@@ -60,9 +61,9 @@ export default {
         upperArrowFill() {
             switch (this.sortingOrder) {
             case SortingOrder.ASC:
-                return '#D6D7D8';
+                return GREY;
             case SortingOrder.DESC:
-                return '#00bc87';
+                return GREEN;
             default:
                 return null;
             }

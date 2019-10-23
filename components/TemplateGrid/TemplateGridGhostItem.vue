@@ -18,7 +18,7 @@ export default {
         justify-content: flex-start;
         align-items: center;
         height: 100%;
-        background-color: $primary;
+        background-color: $GREEN;
         box-shadow:
             inset 0 2px 2px 0 rgba(0, 0, 0, 0.14),
             inset 0 3px 1px 0 rgba(0, 0, 0, 0.12),

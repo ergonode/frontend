@@ -46,7 +46,7 @@
         }
 
         &__header {
-            @include setFont(bold, 48, 56, $white);
+            @include setFont(bold, 48, 56, $WHITE);
 
             width: 100%;
             margin: 2% 0 5%;

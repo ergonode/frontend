@@ -39,7 +39,7 @@ export default {
         display: flex;
         height: 4px;
         border-radius: 2px;
-        background: $lightGrey;
+        background: $GREY_light;
 
         &__progress {
             border-radius: 2px;

@@ -22,7 +22,7 @@ export default {
 
 <style lang="scss" scoped>
     .header {
-        @include setFont(medium, small, regular, $graphite);
+        @include setFont(medium, small, regular, $GRAPHITE);
 
         display: flex;
         justify-content: center;

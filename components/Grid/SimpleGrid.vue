@@ -55,7 +55,7 @@ export default {
         padding-bottom: 86px;
 
         .grid-title {
-            @include setFont(medium, huge, large, $darkGraphite);
+            @include setFont(medium, huge, large, $GRAPHITE_DARK);
 
             height: 37px;
             text-align: center;
@@ -77,7 +77,7 @@ export default {
                 grid-gap: 20px;
 
                 .item-title {
-                    @include setFont(medium, huge, large, $darkGraphite);
+                    @include setFont(medium, huge, large, $GRAPHITE_DARK);
 
                     height: 24px;
                     text-align: center;

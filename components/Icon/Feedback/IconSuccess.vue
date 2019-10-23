@@ -15,6 +15,7 @@
 
 <script>
 import IconBase from '~/components/Icon/IconBase';
+import { GREEN } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'IconSuccess',
@@ -24,7 +25,7 @@ export default {
     props: {
         fillColor: {
             type: String,
-            default: '#00BC87',
+            default: GREEN,
         },
         size: {
             type: [String, Number],

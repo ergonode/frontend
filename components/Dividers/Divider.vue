@@ -20,7 +20,7 @@ export default {
 
 <style lang="scss" scoped>
     .divider {
-        background-color: $lightGrey;
+        background-color: $GREY_light;
 
         &:not(&--vertical) {
             height: 1px;

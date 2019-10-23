@@ -33,7 +33,7 @@ export default {
             z-index: 2;
             width: 1px;
             height: 100%;
-            background-color: $grey;
+            background-color: $GREY;
             opacity: 0;
             content: "";
         }

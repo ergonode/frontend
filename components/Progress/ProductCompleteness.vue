@@ -55,7 +55,7 @@ export default {
         width: 200px;
 
         &__title {
-            @include setFont(medium, small, medium, $darkGraphite);
+            @include setFont(medium, small, medium, $GRAPHITE_DARK);
         }
     }
 </style>

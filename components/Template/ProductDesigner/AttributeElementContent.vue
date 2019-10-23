@@ -189,7 +189,7 @@ export default {
 
         &--required::after {
             position: absolute;
-            color: $error;
+            color: $RED;
             content: "*";
         }
     }

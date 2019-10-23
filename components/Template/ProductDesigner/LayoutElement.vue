@@ -329,10 +329,10 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        border: 1px solid $grey;
+        border: 1px solid $GREY;
         margin: 8px;
         box-sizing: border-box;
-        background-color: $background;
+        background-color: $WHITESMOKE;
         user-select: none;
         cursor: grab;
 
@@ -360,7 +360,7 @@ export default {
         &--resized {
             position: absolute;
             z-index: 5;
-            border: 2px solid $success;
+            border: 2px solid $GREEN;
         }
 
         &--disabled {

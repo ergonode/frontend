@@ -72,7 +72,7 @@ export default {
 
         &:not(&--selected) &:not(&--disabled) {
             #{$node}__title {
-                color: $darkGraphite;
+                color: $GRAPHITE_DARK;
             }
         }
 
@@ -82,7 +82,7 @@ export default {
                 bottom: 7px;
                 width: 16px;
                 height: 1px;
-                background-color: $darkGraphite;
+                background-color: $GRAPHITE_DARK;
                 content: "";
             }
 
@@ -92,20 +92,20 @@ export default {
         }
 
         &--selected {
-            background-color: $success;
+            background-color: $GREEN;
 
             #{$node}__title {
-                color: $white;
+                color: $WHITE;
             }
 
             &::after {
-                background-color: $white;
+                background-color: $WHITE;
             }
         }
 
         &--disabled {
             #{$node}__title {
-                color: $lightGraphite;
+                color: $GRAPHITE_LIGHT;
             }
         }
     }

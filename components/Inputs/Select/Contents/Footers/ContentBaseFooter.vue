@@ -27,7 +27,7 @@ export default {
         justify-content: flex-end;
         align-items: center;
         padding: 8px 12px;
-        background-color: $white;
+        background-color: $WHITE;
         box-shadow: 0 -5px 5px -5px rgba(0, 0, 0, 0.12);
 
         &--space-between {

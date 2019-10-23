@@ -128,19 +128,19 @@ export default {
         &__progress {
             width: 1px;
             transform-origin: left;
-            background-color: $success;
+            background-color: $GREEN;
         }
 
         &__tracker {
             width: 100%;
-            background-color: $grey;
+            background-color: $GREY;
         }
 
         &__sphere {
             z-index: 1;
             width: 16px;
             height: 16px;
-            background-color: $success;
+            background-color: $GREEN;
             border-radius: 50%;
             cursor: grab;
 

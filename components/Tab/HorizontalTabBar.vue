@@ -168,12 +168,12 @@ export default {
 
             &:after {
                 right: 74px;
-                background: linear-gradient(90deg, rgba(248, 248, 248, 0) 0%, $white 100%);
+                background: linear-gradient(90deg, rgba(248, 248, 248, 0) 0%, $WHITE 100%);
             }
 
             &:before {
                 left: 42px;
-                background: linear-gradient(-90deg, rgba(248, 248, 248, 0) 0%, $white 100%);
+                background: linear-gradient(-90deg, rgba(248, 248, 248, 0) 0%, $WHITE 100%);
             }
 
             &--left-gradient:before, &--right-gradient:after {

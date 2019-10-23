@@ -86,7 +86,7 @@ export default {
                 height: 35%;
                 align-self: center;
                 justify-self: center;
-                background-color: $graphite;
+                background-color: $GRAPHITE;
             }
         }
     }

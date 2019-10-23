@@ -13,15 +13,15 @@
     }
 
     &__text {
-        @include setFont(medium, small, regular, $darkGraphite);
+        @include setFont(medium, small, regular, $GRAPHITE_DARK);
     }
 
     &__number {
-        @include setFont(medium, small, regular, $darkGraphite);
+        @include setFont(medium, small, regular, $GRAPHITE_DARK);
     }
 
     &__icon {
-        color: $lightGraphite;
+        color: $GRAPHITE_LIGHT;
     }
 
     .non-visible {

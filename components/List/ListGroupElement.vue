@@ -76,11 +76,11 @@ export default {
 <style lang="scss" scoped>
     .group {
         &__title {
-            @include setFont(medium, regular, semiRegular, $darkGraphite);
+            @include setFont(medium, regular, semiRegular, $GRAPHITE_DARK);
         }
 
         &__subtitle {
-            @include setFont(semiBold, tiny, regular, $graphite);
+            @include setFont(semiBold, tiny, regular, $GRAPHITE);
         }
 
         &__title, &__subtitle {

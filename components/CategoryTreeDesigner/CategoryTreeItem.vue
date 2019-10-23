@@ -113,9 +113,9 @@ export default {
         align-items: center;
         grid-column: 1 / 4;
         height: 100%;
-        border: 1px solid $grey;
+        border: 1px solid $GREY;
         padding-left: 12px;
-        background-color: $background;
+        background-color: $WHITESMOKE;
         cursor: move;
         overflow: hidden;
 
@@ -149,7 +149,7 @@ export default {
 
         &__categories-length {
             flex: 0 1 auto;
-            border: 1px solid $grey;
+            border: 1px solid $GREY;
             padding: 2px 8px;
             border-radius: 12px;
         }

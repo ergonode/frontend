@@ -44,7 +44,7 @@ export default {
         z-index: 9999;
         width: 480px;
         height: 480px;
-        background-color: $darkGraphite;
+        background-color: $GRAPHITE_DARK;
         box-shadow:
             0 12px 17px 2px rgba(0, 0, 0, 0.14),
             0 5px 22px 4px rgba(0, 0, 0, 0.12),

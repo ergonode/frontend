@@ -6,7 +6,7 @@
     display: block;
     min-width: 0;
     padding-bottom: 10px;
-    background-color: $white;
+    background-color: $WHITE;
     border-radius: 2px;
     text-decoration: none;
     transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
@@ -19,7 +19,7 @@
     }
 
     & .card__title {
-        @include setFont(medium, medium, medium, $graphite);
+        @include setFont(medium, medium, medium, $GRAPHITE);
 
         display: flex;
         flex: 1 1 auto;
@@ -29,7 +29,7 @@
         padding: 16px;
 
         .title__optional {
-            @include setFont(medium, small, medium, $graphite);
+            @include setFont(medium, small, medium, $GRAPHITE);
         }
 
         &--right {
@@ -41,9 +41,9 @@
         }
 
         &--toolbar {
-            @include setFont(medium, large, medium, $white);
+            @include setFont(medium, large, medium, $WHITE);
 
-            background-color: $darkGraphite;
+            background-color: $GRAPHITE_DARK;
             box-shadow:
                 0 4px 5px 0 rgba(0, 0, 0, 0.14),
                 0 1px 10px 0 rgba(0, 0, 0, 0.12),

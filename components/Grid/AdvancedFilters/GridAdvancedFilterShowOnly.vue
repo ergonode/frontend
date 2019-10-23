@@ -44,7 +44,7 @@ export default {
         padding: 8px 12px;
 
         &__title {
-            @include setFont(semiBold, tiny, regular, $graphite);
+            @include setFont(semiBold, tiny, regular, $GRAPHITE);
         }
     }
 </style>

@@ -121,8 +121,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    $highlightingBorder: 1px dashed $success;
-    $border: 1px dashed $grey;
+    $highlightingBorder: 1px dashed $GREEN;
+    $border: 1px dashed $GREY;
 
     .ghost-item {
         position: relative;
@@ -134,7 +134,7 @@ export default {
 
         &--highlighted {
             flex: 1;
-            background-color: $lightGreen;
+            background-color: $GREEN_LIGHT;
             border-left: $highlightingBorder;
             border-bottom: $highlightingBorder;
         }

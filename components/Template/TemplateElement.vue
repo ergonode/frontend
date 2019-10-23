@@ -70,7 +70,7 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        border: 1px solid $grey;
+        border: 1px solid $GREY;
         cursor: pointer;
 
         &:hover {

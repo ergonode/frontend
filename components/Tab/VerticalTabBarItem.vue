@@ -56,7 +56,7 @@ export default {
 
 <style lang="scss" scoped>
     .tab-bar-item {
-        @include setFont(medium, small, 15, $graphite);
+        @include setFont(medium, small, 15, $GRAPHITE);
 
         $tabItem: &;
 
@@ -66,10 +66,10 @@ export default {
         justify-content: center;
         align-items: center;
         padding: 14px 8px;
-        background-color: $white;
+        background-color: $WHITE;
         outline: none;
-        border-left: 1px solid $grey;
-        border-top: 1px solid $grey;
+        border-left: 1px solid $GREY;
+        border-top: 1px solid $GREY;
         text-align: center;
 
         &__title {
@@ -77,12 +77,12 @@ export default {
         }
 
         &:not(&--selected), &.not-expanded-content {
-            border-right: 1px solid $grey;
+            border-right: 1px solid $GREY;
             padding-right: 7px;
         }
 
         &:last-child {
-            border-bottom: 1px solid $grey;
+            border-bottom: 1px solid $GREY;
         }
 
         &:after {
@@ -93,7 +93,7 @@ export default {
             z-index: 1;
             width: 3px;
             height: calc(100% + 2px);
-            background-color: $success;
+            background-color: $GREEN;
             opacity: 0;
             content: "";
         }
@@ -105,7 +105,7 @@ export default {
         &--selected {
             #{$tabItem}__title {
                 opacity: 0.9;
-                color: $darkGraphite;
+                color: $GRAPHITE_DARK;
             }
         }
     }

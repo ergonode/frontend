@@ -5,7 +5,7 @@
 @import "reset";
 
 html, body {
-    @include setFont(medium, regular, regular, $darkGraphite);
+    @include setFont(medium, regular, regular, $GRAPHITE_DARK);
 
     -webkit-text-size-adjust: 100%; //fix for iOS
 }
@@ -69,55 +69,55 @@ html, body {
 .txt {
     //  Colors
     &--primary {
-        color: $primary;
+        color: $GREEN;
     }
 
     &--information {
-        color: $information;
+        color: $BLUE;
     }
 
     &--error {
-        color: $error;
+        color: $RED;
     }
 
     &--warning {
-        color: $warning;
+        color: $YELLOW;
     }
 
     &--success {
-        color: $success;
+        color: $GREEN;
     }
 
     &--dark-graphite {
-        color: $darkGraphite;
+        color: $GRAPHITE_DARK;
     }
 
     &--graphite {
-        color: $graphite;
+        color: $GRAPHITE;
     }
 
     &--light-graphite {
-        color: $lightGraphite;
+        color: $GRAPHITE_LIGHT;
     }
 
     &--dark-grey {
-        color: $darkGrey;
+        color: $GREY_DARK;
     }
 
     &--grey {
-        color: $grey;
+        color: $GREY;
     }
 
     &--light-grey {
-        color: $lightGrey;
+        color: $GREY_light;
     }
 
     &--background {
-        color: $background;
+        color: $WHITESMOKE;
     }
 
     &--white {
-        color: $white;
+        color: $WHITE;
     }
 
     // Alignment

@@ -23,7 +23,7 @@
 <script>
 import ButtonTheme from '~/model/theme/button-theme';
 import {
-    primary, graphite, grey, white,
+    GREEN, GRAPHITE, GREY, WHITE,
 } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
@@ -67,24 +67,24 @@ export default {
         iconFillColor() {
             if (this.isDisabled) {
                 if (ButtonTheme.primary) {
-                    return white;
+                    return WHITE;
                 }
-                return grey;
+                return GREY;
             }
 
             if (this.isStateable) {
                 if (this.isSelected || this.isHovered) {
-                    return primary;
+                    return GREEN;
                 }
 
-                return graphite;
+                return GRAPHITE;
             }
 
             if (this.isHovered && (!this.isStateable || !this.isSelected)) {
-                return primary;
+                return GREEN;
             }
 
-            return graphite;
+            return GRAPHITE;
         },
     },
     methods: {
@@ -125,11 +125,11 @@ export default {
         }
 
         &--primary {
-            background-color: $primary;
+            background-color: $GREEN;
         }
 
         &--primary:disabled {
-            background-color: $grey;
+            background-color: $GREY;
         }
 
         &--secondary {

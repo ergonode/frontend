@@ -44,7 +44,7 @@ export default {
         text-decoration: none;
 
         &__title {
-            @include setFont(medium, regular, semiRegular, $darkGraphite);
+            @include setFont(medium, regular, semiRegular, $GRAPHITE_DARK);
 
             margin-left: 4px;
         }

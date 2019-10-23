@@ -65,7 +65,7 @@ export default {
     }
 
     .dash {
-        @include setFont(medium, small, regular, $darkGraphite);
+        @include setFont(medium, small, regular, $GRAPHITE_DARK);
 
         display: flex;
         justify-content: center;

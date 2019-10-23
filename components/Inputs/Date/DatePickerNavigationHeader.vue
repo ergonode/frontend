@@ -74,7 +74,7 @@ export default {
         align-items: center;
 
         .header {
-            @include setFont(medium, regular, semiRegular, $darkGraphite);
+            @include setFont(medium, regular, semiRegular, $GRAPHITE_DARK);
 
             display: flex;
             flex: 1;

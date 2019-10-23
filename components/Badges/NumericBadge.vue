@@ -22,7 +22,7 @@ export default {
 
 <style lang="scss" scoped>
     .numeric-badge {
-        @include setFont(semiBold, tiny, regular, $white);
+        @include setFont(semiBold, tiny, regular, $WHITE);
 
         display: flex;
         justify-content: center;
@@ -30,6 +30,6 @@ export default {
         width: 24px;
         height: 24px;
         border-radius: 50%;
-        background-color: $primary;
+        background-color: $GREEN;
     }
 </style>

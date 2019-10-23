@@ -57,7 +57,7 @@ export default {
             position: sticky !important;
             top: 0;
             z-index: 1;
-            background-color: $background;
+            background-color: $WHITESMOKE;
         }
     }
 </style>

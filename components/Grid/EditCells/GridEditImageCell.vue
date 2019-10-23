@@ -50,7 +50,7 @@ export default {
 <style lang="scss" scoped>
     .image-cell {
         width: 300px;
-        background-color: $white;
+        background-color: $WHITE;
 
         &--has-value {
             padding: 12px;

@@ -106,6 +106,6 @@ export default {
         position: sticky !important;
         top: 0;
         z-index: 1;
-        background-color: $background !important;
+        background-color: $WHITESMOKE !important;
     }
 </style>

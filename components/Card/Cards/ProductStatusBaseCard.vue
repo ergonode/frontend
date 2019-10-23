@@ -88,7 +88,7 @@ export default {
         grid-gap: 8px;
 
         &__label {
-            @include setFont(medium, regular, semiRegular, $darkGraphite);
+            @include setFont(medium, regular, semiRegular, $GRAPHITE_DARK);
         }
 
         &__badge {

@@ -13,6 +13,7 @@
 
 <script>
 import IconBase from '~/components/Icon/IconBase';
+import { RED } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'IconError',
@@ -22,7 +23,7 @@ export default {
     props: {
         fillColor: {
             type: String,
-            default: '#F44336',
+            default: RED,
         },
         size: {
             type: [String, Number],
