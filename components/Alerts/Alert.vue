@@ -74,19 +74,19 @@ export default {
         }
 
         &--error {
-            border: solid 2px $RED;
+            border: $BORDER_2_RED;
         }
 
         &--warning {
-            border: solid 2px $YELLOW;
+            border: $BORDER_2_YELLOW;
         }
 
         &--info {
-            border: solid 2px $BLUE;
+            border: $BORDER_2_BLUE;
         }
 
         &--success {
-            border: solid 2px $GREEN;
+            border: $BORDER_2_GREEN;
         }
     }
 </style>

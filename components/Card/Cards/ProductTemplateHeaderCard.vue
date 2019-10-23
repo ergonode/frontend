@@ -21,6 +21,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getKeyByValue, getValueByKey } from '~/model/objectWrapper';
+import { GREEN, RED, YELLOW } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'ProductTemplateHeaderCard',
@@ -54,7 +55,7 @@ export default {
             return Object.values(this.languages);
         },
         color() {
-            return ['#f44336', '#ffc108', '#00bc87'][Math.floor(this.progress / 40)];
+            return [RED, YELLOW, GREEN][Math.floor(this.progress / 40)];
         },
     },
     methods: {

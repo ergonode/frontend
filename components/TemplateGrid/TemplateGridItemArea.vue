@@ -56,8 +56,8 @@ export default {
             display: flex;
             width: 100%;
             grid-column: 1 / 1;
-            border-left: 2px solid $GREEN;
-            border-bottom: 2px solid $GREEN;
+            border-left: $BORDER_2_GREEN;
+            border-bottom: $BORDER_2_GREEN;
             transition: width 0.3s;
 
             &::before {

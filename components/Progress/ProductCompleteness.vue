@@ -15,6 +15,9 @@
 
 <script>
 import { mapState } from 'vuex';
+import {
+    GREEN, RED, YELLOW,
+} from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'ProductCompleteness',
@@ -44,7 +47,7 @@ export default {
             return progress;
         },
         color() {
-            return ['#f44336', '#ffc108', '#00bc87'][Math.floor(this.progress / 40)];
+            return [RED, YELLOW, GREEN][Math.floor(this.progress / 40)];
         },
     },
 };

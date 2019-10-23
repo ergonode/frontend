@@ -132,7 +132,7 @@ export default {
 
         &__phrase {
             padding: 6px 8px;
-            border-top: 1px dashed $GREY_light;
+            border-top: $BORDER_DASHED_GREY;
             letter-spacing: 1px;
             color: $GRAPHITE_LIGHT;
         }

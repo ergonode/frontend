@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { GRAPHITE, GREEN } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'ButtonSelect',
@@ -64,8 +65,8 @@ export default {
         },
         buttonIconFillColor() {
             return this.isFocused
-                ? '#00bc87'
-                : '#5c5f65';
+                ? GREEN
+                : GRAPHITE;
         },
     },
     watch: {
@@ -149,10 +150,7 @@ export default {
             display: flex;
             flex-direction: column;
             background-color: $WHITE;
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            box-shadow: $ELEVATOR_2_DP;
             max-height: 200px;
             min-width: 130px;
         }

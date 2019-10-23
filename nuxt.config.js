@@ -2,7 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { GREEN } from '~/assets/scss/_variables/_colors.scss';
 require('dotenv').config({path: '.env'});
 const path = require('path');
 const pkg = require('./package');
@@ -34,7 +33,7 @@ module.exports = {
             },
         ],
     },
-    loading: { color: GREEN, height: '3px' },
+    loading: { color: '#00BC87', height: '3px' },
     css: [
         '~assets/scss/plugins-config.scss',
         '~assets/scss/font-inter-ui.scss',

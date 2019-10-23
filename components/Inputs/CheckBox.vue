@@ -119,7 +119,7 @@ export default {
             pointer-events: none;
 
             label, label::after {
-                background-color: $GREY_light;
+                background-color: $GREY_LIGHT;
                 border-color: $GREY_DARK;
             }
         }

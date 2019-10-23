@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
 import IconBase from '~/components/Icon/IconBase';
 
 export default {
@@ -24,7 +25,7 @@ export default {
     props: {
         fillColor: {
             type: String,
-            default: '#5C5F65',
+            default: GRAPHITE,
         },
         size: {
             type: [String, Number],

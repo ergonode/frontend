@@ -22,7 +22,7 @@
                     <template #prepend>
                         <IconLock
                             size="24"
-                            fill-color="#fff" />
+                            :fill-color="whiteColor" />
                     </template>
                 </InformationBadge>
             </template>
@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import { WHITE } from '~/assets/scss/_variables/_colors.scss';
+
 export default {
     name: 'TitleBar',
     components: {
@@ -61,6 +63,11 @@ export default {
         isReadOnly: {
             type: Boolean,
             default: false,
+        },
+    },
+    computed: {
+        whiteColor() {
+            return WHITE;
         },
     },
     methods: {

@@ -61,7 +61,7 @@
                         :namespace="namespace"
                         :path="path"
                         @mouseOverFilters="onMouseOverFilters"
-                        @focus="onFilterFocus"/>
+                        @focus="onFilterFocus" />
                     <GridAdvancedFilterGhost
                         v-else
                         :key="index"

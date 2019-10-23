@@ -94,7 +94,7 @@
 
     &.solid {
         #{$input}__activator {
-            border: 1px solid $GREY;
+            border: $BORDER_1_GREY;
             padding: 4px;
             box-sizing: border-box;
 
@@ -193,7 +193,7 @@
 
             &.solid {
                 #{$input}__activator {
-                    border: 2px solid $GREEN;
+                    border: $BORDER_2_GREEN;
                     padding: 3px;
 
                     &::after {
@@ -210,7 +210,7 @@
         &.input--error {
             &.solid {
                 #{$input}__activator {
-                    border: 2px solid $RED;
+                    border: $BORDER_2_RED;
                     padding: 3px;
                 }
             }

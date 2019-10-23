@@ -9,7 +9,7 @@
         @drop="drop">
         <div class="vertical-wrapper">
             <IconDelete
-                fill-color="#fff"
+                :fill-color="whiteColor"
                 size="48" />
             <Label
                 class="typo-btn txt--white txt--upper l-spacing--half"
@@ -19,11 +19,20 @@
 </template>
 
 <script>
+import {
+    WHITE,
+} from '~/assets/scss/_variables/_colors.scss';
+
 export default {
     name: 'TrashCan',
     components: {
         Label: () => import('~/components/Label/Label'),
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
+    },
+    computed: {
+        whiteColor() {
+            return WHITE;
+        },
     },
     methods: {
         drop(event) {
@@ -51,10 +60,7 @@ export default {
         width: 480px;
         height: 480px;
         background-color: $GRAPHITE_DARK;
-        box-shadow:
-            0 12px 17px 2px rgba(0, 0, 0, 0.14),
-            0 5px 22px 4px rgba(0, 0, 0, 0.12),
-            0 7px 8px -4px rgba(0, 0, 0, 0.2);
+        box-shadow: $ELEVATOR_12_DP;
         border-radius: 240px;
 
         & > * {

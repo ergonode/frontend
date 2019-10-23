@@ -23,7 +23,7 @@
             <template #prepend>
                 <Component
                     :is="searchBtnIconComponent"
-                    fill-color="#fff" />
+                    :fill-color="whiteColor" />
             </template>
         </Button>
     </ListHeader>
@@ -32,7 +32,7 @@
 <script>
 import { debounce } from 'debounce';
 import {
-    GREEN, GRAPHITE,
+    GREEN, GRAPHITE, WHITE,
 } from '~/assets/scss/_variables/_colors.scss';
 import ListHeader from '~/components/List/ListHeader';
 import Button from '~/components/Buttons/Button';
@@ -67,6 +67,9 @@ export default {
         delete this.debouncedSearch;
     },
     computed: {
+        whiteColor() {
+            return WHITE;
+        },
         searchBtnIconComponent() {
             return this.isSearchBtnClicked
                 ? () => import('~/components/Icon/Window/IconClose')

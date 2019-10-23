@@ -66,9 +66,9 @@ export default {
 
         .grid-item {
             height: 251px;
-            border: #D6D7D8 1px solid;
+            border: $BORDER_1_GREY;
             padding: 20px;
-            background-color: #FFFFFF;
+            background-color: $WHITE;
 
             .item-wrapper {
                 display: grid;

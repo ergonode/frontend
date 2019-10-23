@@ -14,7 +14,7 @@
                 :disabled="!$hasAccess('CATEGORY_CREATE')"
                 @click.native="addNewCategory">
                 <template #prepend>
-                    <IconAdd fill-color="#fff" />
+                    <IconAdd :fill-color="whiteColor" />
                 </template>
             </Button>
         </div>
@@ -23,6 +23,9 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import {
+    WHITE,
+} from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'CategoriesListTab',
@@ -36,6 +39,9 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
         }),
+        whiteColor() {
+            return WHITE;
+        },
     },
     methods: {
         ...mapActions('list', [

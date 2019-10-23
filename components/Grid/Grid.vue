@@ -410,8 +410,8 @@ export default {
         &__content {
             position: relative;
             display: grid;
-            border-left: 1px solid $GREY;
-            border-right: 1px solid $GREY;
+            border-left: $BORDER_1_GREY;
+            border-right: $BORDER_1_GREY;
             background-color: $WHITESMOKE;
             overflow: auto;
 

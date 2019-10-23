@@ -14,7 +14,7 @@
                     :image-id="user.avatar_id" />
                 <IconUser
                     v-else
-                    fill-color="#fff" />
+                    :fill-color="whiteColor" />
             </div>
         </template>
         <template #selectContent>
@@ -29,6 +29,7 @@
 <script>
 import { mapState } from 'vuex';
 import { toCapitalize } from '~/model/stringWrapper';
+import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'NavigationBarUserButton',
@@ -42,6 +43,9 @@ export default {
         ...mapState('authentication', {
             user: (state) => state.user,
         }),
+        whiteColor() {
+            return WHITE;
+        },
         capitalizedUserFirstName() {
             const { first_name: firstName } = this.user;
 
@@ -67,10 +71,7 @@ export default {
 
         & > img {
             object-fit: contain;
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            box-shadow: $ELEVATOR_2_DP;
         }
     }
 </style>

@@ -24,6 +24,7 @@
 
 <script>
 import tabBarItemMixin from '~/mixins/tabBar/tabBarItemMixin';
+import { GRAPHITE, GREEN } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'VerticalTabBarItem',
@@ -42,8 +43,8 @@ export default {
             }
 
             return this.isSelected && this.isContentExpanded
-                ? '#00bc87'
-                : '#5c5f65';
+                ? GREEN
+                : GRAPHITE;
         },
     },
     methods: {
@@ -68,8 +69,8 @@ export default {
         padding: 14px 8px;
         background-color: $WHITE;
         outline: none;
-        border-left: 1px solid $GREY;
-        border-top: 1px solid $GREY;
+        border-left: $BORDER_1_GREY;
+        border-top: $BORDER_1_GREY;
         text-align: center;
 
         &__title {
@@ -77,12 +78,12 @@ export default {
         }
 
         &:not(&--selected), &.not-expanded-content {
-            border-right: 1px solid $GREY;
+            border-right: $BORDER_1_GREY;
             padding-right: 7px;
         }
 
         &:last-child {
-            border-bottom: 1px solid $GREY;
+            border-bottom: $BORDER_1_GREY;
         }
 
         &:after {

@@ -71,9 +71,9 @@ export default {
         lowerArrowFill() {
             switch (this.sortingOrder) {
             case SortingOrder.ASC:
-                return '#00bc87';
+                return GREEN;
             case SortingOrder.DESC:
-                return '#D6D7D8';
+                return GREY;
             default:
                 return null;
             }

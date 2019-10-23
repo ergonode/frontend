@@ -106,7 +106,7 @@ export default {
         &__item-content-container {
             display: flex;
             flex-direction: column;
-            border: 1px solid $GREY;
+            border: $BORDER_1_GREY;
             box-sizing: border-box;
             background-color: $WHITE;
             border-bottom: none;

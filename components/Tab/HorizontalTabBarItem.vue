@@ -112,7 +112,7 @@ export default {
         box-sizing: border-box;
         background-color: $WHITE;
         cursor: pointer;
-        border-top: 1px solid $GREY;
+        border-top: $BORDER_1_GREY;
 
         &__button, &__input {
             width: 100%;
@@ -163,15 +163,15 @@ export default {
         }
 
         &:not(&--selected) {
-            border-bottom: 1px solid $GREY;
+            border-bottom: $BORDER_1_GREY;
         }
 
         &:nth-child(even), &:nth-child(odd), &:first-child {
-            border-left: 1px solid  $GREY;
+            border-left: $BORDER_1_GREY;
         }
 
         &:last-child {
-            border-right: 1px solid  $GREY;
+            border-right: $BORDER_1_GREY;
         }
 
         &--disabled {
