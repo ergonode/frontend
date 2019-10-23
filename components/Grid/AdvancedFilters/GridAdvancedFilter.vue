@@ -138,16 +138,6 @@ export default {
     destroyed() {
         window.removeEventListener('click', this.onClickOutside);
     },
-    watch: {
-        isMenuActive() {
-            if (this.isMenuActive) {
-                this.selectBoundingBox = this.getSelectBoundingBox();
-                window.addEventListener('click', this.onClickOutside);
-            } else {
-                window.removeEventListener('click', this.onClickOutside);
-            }
-        },
-    },
     computed: {
         ...mapState('draggable', {
             ghostFilterIndex: (state) => state.ghostFilterIndex,
@@ -257,12 +247,12 @@ export default {
 
             event.preventDefault();
 
-            const { clientX } = event;
+            const { pageX } = event;
             const {
                 x: columnXPos, width: columnWidth,
             } = this.$el.getBoundingClientRect();
             const isBefore = getDraggedColumnPositionState(
-                clientX,
+                pageX,
                 columnXPos,
                 columnWidth,
             );
@@ -313,6 +303,10 @@ export default {
                 this.isFocused = true;
                 this.isMenuActive = true;
                 this.hasMouseDown = false;
+                this.selectBoundingBox = this.getSelectBoundingBox();
+
+                window.addEventListener('click', this.onClickOutside);
+                this.$emit('focus', true);
             }
         },
         onBlur() {
@@ -323,6 +317,9 @@ export default {
         deactivateFilter() {
             this.isFocused = false;
             this.isMenuActive = false;
+
+            window.removeEventListener('click', this.onClickOutside);
+            this.$emit('focus', false);
         },
         onMouseMove() {
             // Dismiss drop down menu when we detect any move of mouse

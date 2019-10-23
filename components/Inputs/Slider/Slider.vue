@@ -64,7 +64,7 @@ export default {
             this.addEventListenersForResizeState();
         },
         onClick(event) {
-            this.$emit('input', this.getProgress(event.clientX));
+            this.$emit('input', this.getProgress(event.pageX));
         },
         onMouseEnter(event) {
             event.target.classList.add('hover');
@@ -73,15 +73,15 @@ export default {
             event.target.classList.remove('hover');
         },
         doResizeDrag(event) {
-            if (this.xPos < event.clientX) {
-                this.$emit('input', this.getProgress(event.clientX));
+            if (this.xPos < event.pageX) {
+                this.$emit('input', this.getProgress(event.pageX));
             }
         },
         stopResizeDrag() {
             this.removeEventListenersForResizeState();
         },
-        getProgress(clientX) {
-            const fixedXOffset = clientX - this.xPos - (this.sphereSize / 2);
+        getProgress(pageX) {
+            const fixedXOffset = pageX - this.xPos - (this.sphereSize / 2);
 
             return Math.round((fixedXOffset / this.width) * this.maxValue);
         },
