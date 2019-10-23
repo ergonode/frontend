@@ -170,20 +170,19 @@ export default {
             return true;
         },
         onDragEnd(event) {
-            let elementBelowMouse = null;
+            let xPos = null;
+            let yPos = null;
 
             // Firefox does not support pageX, pageY...
             if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-                const { screenX, screenY } = event;
-
-                elementBelowMouse = document.elementFromPoint(screenX, screenY);
-                console.log(elementBelowMouse);
+                xPos = event.screenX;
+                yPos = event.screenY;
             } else {
-                const { pageX, pageY } = event;
-
-                elementBelowMouse = document.elementFromPoint(pageX, pageY);
+                xPos = event.pageX;
+                yPos = event.pageY;
             }
 
+            const elementBelowMouse = document.elementFromPoint(xPos, yPos);
             const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
 
             removeElementCopyFromDocumentBody(event);
