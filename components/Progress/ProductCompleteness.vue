@@ -39,7 +39,7 @@ export default {
         },
         progress() {
             const { filled, required } = this.completeness;
-            const progress = Math.round(filled / (required * 100));
+            const progress = (filled / required) * 100;
 
             if (Number.isNaN(progress)) {
                 return 100;
