@@ -8,7 +8,7 @@
         :to="breadcrumb.route">
         <Component
             :is="breadcrumbIconComponent"
-            fill-color="#00bc87"
+            :fill-color="greenColor"
             size="16" />
         <span
             class="breadcrumb__title"
@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { GREEN } from '~/assets/scss/_variables/_colors.scss';
+
 export default {
     name: 'TitleBarBreadcrumb',
     props: {
@@ -26,6 +28,9 @@ export default {
         },
     },
     computed: {
+        greenColor() {
+            return GREEN;
+        },
         breadcrumbIconComponent() {
             return () => import(`~/components/Icon/Menu/Icon${this.breadcrumb.icon}`);
         },
@@ -44,7 +49,7 @@ export default {
         text-decoration: none;
 
         &__title {
-            @include setFont(medium, regular, semiRegular, $darkGraphite);
+            @include setFont(medium, regular, semiRegular, $GRAPHITE_DARK);
 
             margin-left: 4px;
         }

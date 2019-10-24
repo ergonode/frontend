@@ -20,12 +20,9 @@ export default {
         display: flex;
         align-items: center;
         padding: 12px 24px;
-        background-color: $white;
+        background-color: $WHITE;
         flex-shrink: 0;
         min-height: 40px;
-        box-shadow:
-            0 6px 10px 0 rgba(0, 0, 0, 0.14),
-            0 1px 18px 0 rgba(0, 0, 0, 0.12),
-            0 3px 5px -1px rgba(0, 0, 0, 0.2);
+        box-shadow: $ELEVATOR_6_DP;
     }
 </style>

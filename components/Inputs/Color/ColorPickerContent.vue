@@ -70,7 +70,7 @@ export default {
                 left: -4px;
                 width: calc(100% + 4px);
                 height: calc(100% + 4px);
-                border: 2px solid $success;
+                border: 2px solid $GREEN;
                 opacity: 0;
                 content: "";
             }

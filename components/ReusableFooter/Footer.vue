@@ -40,11 +40,8 @@ export default {
         justify-content: flex-end;
         align-items: center;
         padding: 12px 24px;
-        background-color: $white;
-        box-shadow:
-            0 6px 10px 0 rgba(0, 0, 0, 0.14),
-            0 1px 18px 0 rgba(0, 0, 0, 0.12),
-            0 3px 5px -1px rgba(0, 0, 0, 0.2);
+        background-color: $WHITE;
+        box-shadow: $ELEVATOR_6_DP;
 
         & > button {
             margin: 0 5px;

@@ -51,7 +51,7 @@
 import { Themes, Sizes } from '~/model/buttons';
 import { Arrow } from '~/model/icons/Arrow';
 import {
-    graphite, darkGrey, white, primary,
+    GRAPHITE, GREY_DARK, WHITE, GREEN,
 } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
@@ -101,15 +101,15 @@ export default {
             return this.isFocused && this.options.length;
         },
         iconFillColor() {
-            if (this.isSelectButton) return primary;
+            if (this.isSelectButton) return GREEN;
             if (this.theme === Themes.secondary) {
                 if (this.disabled) {
-                    return darkGrey;
+                    return GREY_DARK;
                 }
-                return graphite;
+                return GRAPHITE;
             }
 
-            return white;
+            return WHITE;
         },
         iconArrowState() {
             return this.isSelectButton ? Arrow.UP : Arrow.DOWN;

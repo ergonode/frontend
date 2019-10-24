@@ -121,30 +121,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    $highlightingBorder: 1px dashed $success;
-    $border: 1px dashed $grey;
-
     .ghost-item {
         position: relative;
         display: flex;
         padding: 8px;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-        border-left: $border;
-        border-bottom: $border;
+        border-left: $BORDER_DASHED_GREY;
+        border-bottom: $BORDER_DASHED_GREY;
 
         &--highlighted {
             flex: 1;
-            background-color: $lightGreen;
-            border-left: $highlightingBorder;
-            border-bottom: $highlightingBorder;
+            background-color: $GREEN_LIGHT;
+            border-left: $BORDER_DASHED_GREEN;
+            border-bottom: $BORDER_DASHED_GREEN;
         }
 
         &--top-border {
-            border-top: $highlightingBorder;
+            border-top: $BORDER_DASHED_GREEN;
         }
 
         &--right-border {
-            border-right: $highlightingBorder;
+            border-right: $BORDER_DASHED_GREEN;
         }
     }
 </style>

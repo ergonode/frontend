@@ -32,11 +32,11 @@ export default {
         white-space: nowrap;
 
         &:not(&--small) {
-            @include setFont(semiBold, small, regular, $graphite, 0.5);
+            @include setFont(semiBold, small, regular, $GRAPHITE, 0.5);
         }
 
         &--small {
-            @include setFont(medium, tiny, tiny, $graphite, 0.5);
+            @include setFont(medium, tiny, tiny, $GRAPHITE, 0.5);
         }
     }
 </style>

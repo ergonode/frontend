@@ -79,7 +79,7 @@ export default {
             left: 0;
             width: 16px;
             height: 16px;
-            border: 1px solid $grey;
+            border: 1px solid $GREY;
             box-sizing: border-box;
             border-radius: 2px;
             cursor: pointer;
@@ -90,8 +90,8 @@ export default {
                 left: 2px;
                 width: 8px;
                 height: 4px;
-                border-left: 2px solid $white;
-                border-bottom: 2px solid $white;
+                border-left: 2px solid $WHITE;
+                border-bottom: 2px solid $WHITE;
                 transform: rotate(-45deg);
                 opacity: 0;
                 content: "";
@@ -111,7 +111,7 @@ export default {
                 height: 0.5px;
                 border-left: none;
                 transform: translate(1px, 2px);
-                border-bottom: 2px solid $white;
+                border-bottom: 2px solid $WHITE;
             }
         }
 
@@ -119,16 +119,16 @@ export default {
             pointer-events: none;
 
             label, label::after {
-                background-color: $lightGrey;
-                border-color: $darkGrey;
+                background-color: $GREY_LIGHT;
+                border-color: $GREY_DARK;
             }
         }
 
         &--checked, &--checked-any {
             &:not(#{$checkbox}--disabled) {
                 & label {
-                    border-color: $success;
-                    background-color: $success;
+                    border-color: $GREEN;
+                    background-color: $GREEN;
                 }
             }
 

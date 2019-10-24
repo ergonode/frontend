@@ -22,7 +22,7 @@ export default {
 
 <style lang="scss" scoped>
     .header-cell {
-        @include setFont(bold, small, regular, $darkGraphite);
+        @include setFont(bold, small, regular, $GRAPHITE_DARK);
 
         display: flex;
         flex: 1 1 auto;

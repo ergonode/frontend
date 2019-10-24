@@ -113,9 +113,9 @@ export default {
         align-items: center;
         grid-column: 1 / 4;
         height: 100%;
-        border: 1px solid $grey;
+        border: 1px solid $GREY;
         padding-left: 12px;
-        background-color: $background;
+        background-color: $WHITESMOKE;
         cursor: move;
         overflow: hidden;
 
@@ -126,10 +126,7 @@ export default {
         &:hover {
             z-index: 10;
             border: none;
-            box-shadow:
-                0 4px 5px 0 rgba(0, 0, 0, 0.14),
-                0 1px 10px 0 rgba(0, 0, 0, 0.12),
-                0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            box-shadow: $ELEVATOR_6_DP;
         }
 
         &__icon {
@@ -149,7 +146,7 @@ export default {
 
         &__categories-length {
             flex: 0 1 auto;
-            border: 1px solid $grey;
+            border: 1px solid $GREY;
             padding: 2px 8px;
             border-radius: 12px;
         }

@@ -61,7 +61,7 @@
                         :namespace="namespace"
                         :path="path"
                         @mouseOverFilters="onMouseOverFilters"
-                        @focus="onFilterFocus"/>
+                        @focus="onFilterFocus" />
                     <GridAdvancedFilterGhost
                         v-else
                         :key="index"
@@ -183,11 +183,11 @@ export default {
     .grid-advanced-filters {
         display: grid;
         grid-auto-flow: row;
-        border: 1px solid $grey;
+        border: 1px solid $GREY;
         margin-bottom: 24px;
 
         &__title {
-            @include setFont(medium, medium, medium, $darkGraphite);
+            @include setFont(medium, medium, medium, $GRAPHITE_DARK);
         }
 
         &__header {
@@ -196,11 +196,11 @@ export default {
             align-items: center;
             padding: 0 6px 0 16px;
             box-sizing: border-box;
-            background-color: $white;
+            background-color: $WHITE;
         }
 
         &__action {
-            @include setFont(medium, small, regular, $darkGraphite);
+            @include setFont(medium, small, regular, $GRAPHITE_DARK);
 
             display: flex;
             align-items: center;

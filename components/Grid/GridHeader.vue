@@ -104,13 +104,13 @@ export default {
         display: flex;
         flex-shrink: 0;
         justify-content: space-between;
-        border: 1px solid $grey;
+        border: 1px solid $GREY;
         padding: 0 6px 0 16px;
         box-sizing: border-box;
-        background-color: $white;
+        background-color: $WHITE;
 
         &__title {
-            @include setFont(medium, medium, medium, $darkGraphite);
+            @include setFont(medium, medium, medium, $GRAPHITE_DARK);
 
             display: flex;
             align-items: center;

@@ -52,6 +52,7 @@
 
 <script>
 import { Arrow } from '~/model/icons/Arrow';
+import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 import FadeTransition from '~/components/Transitions/FadeTransition';
 import SelectBaseContent from '~/components/Inputs/Select/Contents/SelectBaseContent';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
@@ -209,7 +210,7 @@ export default {
 
                 return {
                     transform,
-                    backgroundColor: '#fff',
+                    backgroundColor: WHITE,
                 };
             }
 

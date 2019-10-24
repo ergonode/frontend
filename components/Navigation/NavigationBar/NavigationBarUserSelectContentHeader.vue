@@ -72,14 +72,14 @@ export default {
         }
 
         &__initials {
-            @include setFont(medium, medium, medium, $darkGraphite, 0.1);
+            @include setFont(medium, medium, medium, $GRAPHITE_DARK, 0.1);
 
             grid-row: 1;
             align-self: flex-end;
         }
 
         &__email {
-            @include setFont(medium, small, regular, $darkGrey);
+            @include setFont(medium, small, regular, $GREY_DARK);
 
             grid-row: 2;
             align-self: flex-start;

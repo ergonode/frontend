@@ -26,7 +26,7 @@ export default {
         flex: 1;
         height: 100%;
         padding-left: 10px;
-        background-color: $background;
+        background-color: $WHITESMOKE;
         overflow: hidden;
         resize: both;
 

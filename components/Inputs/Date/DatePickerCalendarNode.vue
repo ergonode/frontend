@@ -64,15 +64,12 @@ export default {
         cursor: pointer;
 
         &--hovered {
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            box-shadow: $ELEVATOR_2_DP;
         }
 
         &:not(&--selected) &:not(&--disabled) {
             #{$node}__title {
-                color: $darkGraphite;
+                color: $GRAPHITE_DARK;
             }
         }
 
@@ -82,7 +79,7 @@ export default {
                 bottom: 7px;
                 width: 16px;
                 height: 1px;
-                background-color: $darkGraphite;
+                background-color: $GRAPHITE_DARK;
                 content: "";
             }
 
@@ -92,20 +89,20 @@ export default {
         }
 
         &--selected {
-            background-color: $success;
+            background-color: $GREEN;
 
             #{$node}__title {
-                color: $white;
+                color: $WHITE;
             }
 
             &::after {
-                background-color: $white;
+                background-color: $WHITE;
             }
         }
 
         &--disabled {
             #{$node}__title {
-                color: $lightGraphite;
+                color: $GRAPHITE_LIGHT;
             }
         }
     }

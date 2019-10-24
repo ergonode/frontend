@@ -32,7 +32,7 @@ export default {
         align-items: center;
 
         .header {
-            @include setFont(semiBold, tiny, regular, $graphite);
+            @include setFont(semiBold, tiny, regular, $GRAPHITE);
 
             display: flex;
             justify-content: center;

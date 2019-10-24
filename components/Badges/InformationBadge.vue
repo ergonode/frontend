@@ -29,14 +29,14 @@ export default {
         border-radius: 4px;
         height: 16px;
         padding: 4px 8px;
-        background-color: $information;
+        background-color: $BLUE;
 
         & > svg {
             margin: -4px 0 0 -7px;
         }
 
         &__title {
-            @include setFont(semiBold, tiny, regular, $white);
+            @include setFont(semiBold, tiny, regular, $WHITE);
         }
     }
 </style>

@@ -6,13 +6,14 @@
     <NavigationBarButton @click.native="onClick">
         <Component
             :is="menuIconComponent"
-            fill-color="#fff"
+            :fill-color="whiteColor"
             :state="leftDoubleArrow" />
     </NavigationBarButton>
 </template>
 
 <script>
 import { Arrow } from '~/model/icons/Arrow';
+import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 import IconHamburgerList from '~/components/Icon/Menu/IconHamburgerList';
 import IconArrowDouble from '~/components/Icon/Arrows/IconArrowDouble';
 import IconHamburger from '~/components/Icon/Menu/IconHamburger';
@@ -34,6 +35,9 @@ export default {
         };
     },
     computed: {
+        whiteColor() {
+            return WHITE;
+        },
         menuIconComponent() {
             switch (this.value) {
             case 2:

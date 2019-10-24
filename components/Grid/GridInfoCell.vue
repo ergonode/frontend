@@ -23,7 +23,7 @@ export default {
 
 <style lang="scss" scoped>
     .info-cell {
-        @include setFont(medium, small, regular, $darkGraphite);
+        @include setFont(medium, small, regular, $GRAPHITE_DARK);
 
         display: flex;
         flex: 1;

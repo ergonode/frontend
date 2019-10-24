@@ -58,10 +58,7 @@ export default {
             width: 100%;
             height: 12px;
             border-radius: 8px;
-            box-shadow:
-                inset 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                inset 0 3px 1px 0 rgba(0, 0, 0, 0.12),
-                inset 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            box-shadow: $ELEVATOR_HOLE;
             content: "";
         }
 
@@ -72,11 +69,8 @@ export default {
             width: 16px;
             height: 16px;
             border-radius: 8px;
-            background-color: $white;
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            background-color: $WHITE;
+            box-shadow: $ELEVATOR_2_DP;
 
             &::after {
                 position: absolute;
@@ -84,8 +78,8 @@ export default {
                 left: 4px;
                 width: 6px;
                 height: 3px;
-                border-left: 2px solid $white;
-                border-bottom: 2px solid $white;
+                border-left: 2px solid $WHITE;
+                border-bottom: 2px solid $WHITE;
                 transform: rotate(-45deg);
                 opacity: 0;
                 content: "";
@@ -96,7 +90,7 @@ export default {
             justify-content: flex-end;
 
             #{$toogler}__state-wrapper {
-                background-color: $success;
+                background-color: $GREEN;
             }
 
             #{$toogler}__state-wrapper::after {
@@ -108,7 +102,7 @@ export default {
             pointer-events: none;
 
             #{$toogler}__state-wrapper {
-                background-color: $darkGrey;
+                background-color: $GREY_DARK;
             }
         }
     }

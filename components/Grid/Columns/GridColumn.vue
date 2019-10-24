@@ -503,7 +503,7 @@ export default {
             cursor: col-resize;
 
             &:not(&--resizing):hover, &--resizing {
-                background-color: $darkGraphite;
+                background-color: $GRAPHITE_DARK;
             }
         }
     }

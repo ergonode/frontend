@@ -48,7 +48,7 @@ export default {
 
 <style lang="scss" scoped>
     .interactive-header {
-        @include setFont(medium, small, regular, $graphite);
+        @include setFont(medium, small, regular, $GRAPHITE);
 
         display: grid;
         grid-template-columns: auto 80px;

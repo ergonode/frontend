@@ -33,7 +33,7 @@ export default {
             z-index: 2;
             width: 1px;
             height: 100%;
-            background-color: $grey;
+            background-color: $GREY;
             opacity: 0;
             content: "";
         }
@@ -44,10 +44,7 @@ export default {
             left: 0;
             width: 100%;
             height: 100%;
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            box-shadow: $ELEVATOR_2_DP;
             opacity: 0;
             pointer-events: none;
             content: "";
@@ -78,10 +75,7 @@ export default {
                 right: unset;
                 z-index: unset;
                 background-color: unset;
-                box-shadow:
-                    0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                    0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                    0 1px 5px 0 rgba(0, 0, 0, 0.2);
+                box-shadow: $ELEVATOR_2_DP;
                 opacity: 1;
             }
         }
@@ -90,10 +84,7 @@ export default {
             &::before {
                 z-index: unset;
                 background-color: unset;
-                box-shadow:
-                    0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                    0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                    0 1px 5px 0 rgba(0, 0, 0, 0.2);
+                box-shadow: $ELEVATOR_2_DP;
                 opacity: 1;
             }
         }

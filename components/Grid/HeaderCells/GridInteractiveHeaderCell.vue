@@ -18,7 +18,7 @@
             ]">
             <IconArrowSort
                 :sorting-order="sortingOrder"
-                fill-color="#85878B"
+                :fill-color="graphiteLightColor"
                 @click.native="onClickSort" />
             <ButtonSelect
                 v-if="isColumnEditable"
@@ -52,6 +52,7 @@ import {
 } from '~/model/grid/cookies/GridLayoutConfiguration';
 import { SortingOrder } from '~/model/icons/SortingOrder';
 import { PINNED_COLUMN_STATE } from '~/defaults/grid/main';
+import { GRAPHITE_LIGHT } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'GridInteractiveHeaderCell',
@@ -120,6 +121,9 @@ export default {
         ...mapState('draggable', {
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
+        graphiteLightColor() {
+            return GRAPHITE_LIGHT;
+        },
         gridState() {
             return this.$store.state[this.namespace];
         },

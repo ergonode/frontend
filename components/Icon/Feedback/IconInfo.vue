@@ -15,6 +15,7 @@
 
 <script>
 import IconBase from '~/components/Icon/IconBase';
+import { BLUE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'IconInfo',
@@ -24,7 +25,7 @@ export default {
     props: {
         fillColor: {
             type: String,
-            default: '#2096F3',
+            default: BLUE,
         },
         size: {
             type: [String, Number],

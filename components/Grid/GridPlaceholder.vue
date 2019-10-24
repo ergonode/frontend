@@ -27,10 +27,10 @@ export default {
         flex: 1 1 auto;
         flex-direction: column;
         align-items: center;
-        background: $background url("~assets/images/icons/placeholder_noresults.svg") no-repeat;
+        background: $WHITESMOKE url("~assets/images/icons/placeholder_noresults.svg") no-repeat;
         padding-top: 80px;
-        border-left: 1px solid $grey;
-        border-right: 1px solid $grey;
+        border-left: 1px solid $GREY;
+        border-right: 1px solid $GREY;
 
         .description-wrapper {
             display: flex;

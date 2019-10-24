@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { GRAPHITE, GREEN, WHITE } from '~/assets/scss/_variables/_colors.scss';
+
 export default {
     name: 'MenuListElement',
     props: {
@@ -36,9 +38,9 @@ export default {
     },
     computed: {
         iconFillColor() {
-            let iconColor = '#5c5f65';
-            if (this.isHover) iconColor = '#00bc87';
-            if (this.isSelected) iconColor = '#fff';
+            let iconColor = GRAPHITE;
+            if (this.isHover) iconColor = GREEN;
+            if (this.isSelected) iconColor = WHITE;
 
             return iconColor;
         },
