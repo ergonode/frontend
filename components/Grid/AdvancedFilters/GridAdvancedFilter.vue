@@ -21,7 +21,7 @@
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
             <label
-                class="advanced-filter__label"
+                class="advanced-filter__label font--bold-s-1"
                 :for="associatedLabel"
                 v-text="data.id" />
             <input
@@ -34,12 +34,12 @@
             <div class="advanced-filter__details">
                 <span
                     v-if="!filterValue"
-                    class="advanced-filter__placeholder">
+                    class="advanced-filter__placeholder font--medium-s-1">
                     Select
                 </span>
                 <span
                     v-else
-                    class="advanced-filter__value"
+                    class="advanced-filter__value font--medium-s-1"
                     v-text="filterValue" />
                 <IconArrowDropDown :state="arrowIconState" />
             </div>
@@ -420,14 +420,13 @@ export default {
         }
 
         &__label {
-            @include setFont(bold, small, regular, $GRAPHITE_DARK);
-
             display: flex;
             align-items: center;
             border: 1px solid $GREY;
             padding: 0 8px;
             box-sizing: border-box;
             background-color: $WHITESMOKE;
+            color: $GRAPHITE_DARK;
         }
 
         &__details {
@@ -441,11 +440,11 @@ export default {
         }
 
         &__placeholder {
-            @include setFont(medium, small, regular, $GREY_DARK);
+            color: $GREY_DARK;
         }
 
         &__value {
-            @include setFont(medium, small, regular, $GRAPHITE_DARK);
+            color: $GRAPHITE_DARK;
         }
 
         &--selected {

@@ -4,7 +4,7 @@
  */
 <template functional>
     <div class="advanced-filters-placeholder">
-        <span class="advanced-filters-placeholder__title">
+        <span class="font--medium-s-1">
             Create a filter by dragging an attribute here
         </span>
     </div>
@@ -24,9 +24,6 @@ export default {
         padding: 0 12px;
         background-color: $GREY_LIGHT;
         box-shadow: $ELEVATOR_HOLE;
-
-        &__title {
-            @include setFont(medium, small, regular, $GRAPHITE_DARK);
-        }
+        color: $GRAPHITE_DARK;
     }
 </style>

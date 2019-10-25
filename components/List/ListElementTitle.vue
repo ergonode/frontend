@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template functional>
+<template>
     <span
-        :class="['element-title', props.color, {'element-title--small': props.small}]"
-        v-text="props.title" />
+        :class="['element-title', color, font]"
+        v-text="title" />
 </template>
 
 <script>
@@ -25,6 +25,11 @@ export default {
             default: 'txt--dark-graphite',
         },
     },
+    computed: {
+        font() {
+            return this.small ? 'font--medium-s-1' : 'font--medium-m-2';
+        },
+    },
 };
 </script>
 
@@ -34,13 +39,5 @@ export default {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-
-        &:not(&--small) {
-            @include setFont(medium, regular, semiRegular);
-        }
-
-        &--small {
-            @include setFont(medium, small, regular);
-        }
     }
 </style>

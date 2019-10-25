@@ -5,65 +5,46 @@
 @import "reset";
 
 html, body {
-    @include setFont(medium, regular, regular, $GRAPHITE_DARK);
-
+    font-family:
+        "Inter UI",
+        sans-serif;
     -webkit-text-size-adjust: 100%; //fix for iOS
 }
 
-.l-spacing {
-    &--half {
-        letter-spacing: 0.5px;
-    }
-
-    &--quarter {
-        letter-spacing: 0.25px;
-    }
-
-    &--negative-half {
-        letter-spacing: -0.5px;
-    }
+.font--medium-s-1 {
+    font: $FONT_MEDIUM_S_1;
 }
 
-.typo-title {
-    @include setFont(medium, huge, large);
+.font--medium-m-2 {
+    font: $FONT_MEDIUM_M_2;
 }
 
-.typo-list {
-    @include setFont(medium, medium, medium);
+.font--medium-l-3 {
+    font: $FONT_MEDIUM_L_3;
 }
 
-.typo-subtitle {
-    @include setFont(medium, regular, semiRegular);
+.font--medium-xl-4 {
+    font: $FONT_MEDIUM_XL_4;
 }
 
-.typo-btn {
-    @include setFont(semiBold, regular, regular);
-
-    &--xs {
-        @include setFont(medium, small, regular);
-    }
+.font--semi-bold-xs-1 {
+    font: $FONT_SEMI_BOLD_XS_1;
 }
 
-.typo-label {
-    @include setFont(semiBold, small, regular);
-
-    &--strong {
-        @include setFont(bold, small, regular);
-    }
+.font--semi-bold-s-1 {
+    font: $FONT_SEMI_BOLD_S_1;
 }
 
-.typo-input {
-    @include setFont(medium, small, regular);
+.font--semi-bold-m-1 {
+    font: $FONT_SEMI_BOLD_M_1;
 }
 
-.typo-hint {
-    @include setFont(medium, tiny, tiny);
+.font--semi-bold-m-2 {
+    font: $FONT_SEMI_BOLD_M_2;
 }
 
-.txt-fixed {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+.font--bold-s-1 {
+    font: $FONT_BOLD_S_1;
 }
 
 .txt {
@@ -118,35 +99,5 @@ html, body {
 
     &--white {
         color: $WHITE;
-    }
-
-    // Alignment
-    &--centered {
-        text-align: center;
-    }
-
-    &--left {
-        text-align: left;
-    }
-
-    &--right {
-        text-align: right;
-    }
-
-    // Transform
-    &--capital {
-        text-transform: capitalize;
-    }
-
-    &--upper {
-        text-transform: uppercase;
-    }
-
-    &--lower {
-        text-transform: lowercase;
-    }
-
-    &--none {
-        text-transform: none;
     }
 }

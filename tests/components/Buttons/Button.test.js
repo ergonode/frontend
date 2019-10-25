@@ -41,11 +41,11 @@ describe('Buttons/Button', () => {
     });
 
     it('Check title classes', () => {
-        expect(wrapper.vm.titleTypo).toBe('typo-btn l-spacing--half');
+        expect(wrapper.vm.titleTypo).toBe('font--semi-bold-m-1');
         wrapper.setProps({
             small: true,
         });
-        expect(wrapper.vm.titleTypo).toBe('typo-btn--xs');
+        expect(wrapper.vm.titleTypo).toBe('font--semi-bold-s-1');
     });
 
     it('Check button classes if no props', () => {

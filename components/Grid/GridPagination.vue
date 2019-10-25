@@ -28,11 +28,11 @@
             center-alignment
             :input="inputNumberType"
             @input="onValueChange" />
-        <span class="pagination__text">
+        <span class="pagination__text font--medium-s-1">
             of
         </span>
         <span
-            class="pagination__number"
+            class="pagination__number font--medium-s-1"
             v-text="maxPage" />
         <Transition name="fade">
             <Button

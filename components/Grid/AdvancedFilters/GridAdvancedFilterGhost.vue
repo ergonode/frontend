@@ -9,7 +9,7 @@
         @dragover="onDragOver">
         <div class="container">
             <IconAddFilter :fill-color="addIconFillColor" />
-            <span class="advanced-filters-ghost__title">
+            <span class="advanced-filters-ghost__title font--bold-s-1">
                 ADD FILTER
             </span>
         </div>
@@ -114,9 +114,8 @@ export default {
         box-shadow: $ELEVATOR_HOLE;
 
         &__title {
-            @include setFont(bold, small, regular, $GRAPHITE_DARK);
-
             margin-left: 8px;
+            color: $GRAPHITE_DARK;
         }
 
         &--hovered {

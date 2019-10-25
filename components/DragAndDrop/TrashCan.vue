@@ -11,9 +11,7 @@
             <IconDelete
                 :fill-color="whiteColor"
                 size="48" />
-            <Label
-                class="typo-btn txt--white txt--upper l-spacing--half"
-                text="drop here to remove" />
+            <span class="trash-can__label font--semi-bold-m-1">drop here to remove</span>
         </div>
     </div>
 </template>
@@ -26,7 +24,6 @@ import {
 export default {
     name: 'TrashCan',
     components: {
-        Label: () => import('~/components/Label/Label'),
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
     computed: {
@@ -76,6 +73,11 @@ export default {
             & > * {
                 margin-bottom: 12px;
             }
+        }
+
+        &__label {
+            color: $WHITE;
+            text-transform: uppercase;
         }
     }
 </style>

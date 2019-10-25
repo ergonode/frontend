@@ -9,11 +9,11 @@
                 class="image"
                 src="~/assets/images/icons/socket.svg">
             <div class="navigation-section">
-                <h1 class="navigation-section__header txt--success">
+                <h1 class="navigation-section__header">
                     Error
                 </h1>
                 <p
-                    class="navigation-section__description txt--dark-graphite typo-list">
+                    class="navigation-section__description font--medium-l-3">
                     Internal server error. Please contact with the system administrator.
                 </p>
             </div>
@@ -61,11 +61,13 @@ export default {
                 width: 285px;
 
                 &__header {
+                    color: $GREEN;
                     font: bold 56px/56px "Inter UI";
                 }
 
                 &__description {
                     margin: 8px 0 16px;
+                    color: $GRAPHITE_DARK;
                 }
 
                 &__header, &__description {

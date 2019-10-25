@@ -27,16 +27,18 @@ export default {
 <style lang="scss" scoped>
     .element-subtitle {
         width: 100%;
+        color: $GRAPHITE;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+        letter-spacing: 0.5px;
 
         &:not(&--small) {
-            @include setFont(semiBold, small, regular, $GRAPHITE, 0.5);
+            font: $FONT_SEMI_BOLD_S_1;
         }
 
         &--small {
-            @include setFont(medium, tiny, tiny, $GRAPHITE, 0.5);
+            font: $FONT_MEDIUM_S_1;
         }
     }
 </style>

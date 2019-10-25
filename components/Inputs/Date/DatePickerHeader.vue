@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template functional>
-    <div class="header">
+    <div class="header font--medium-s-1">
         <span v-text="props.header" />
     </div>
 </template>
@@ -22,11 +22,10 @@ export default {
 
 <style lang="scss" scoped>
     .header {
-        @include setFont(medium, small, regular, $GRAPHITE);
-
         display: flex;
         justify-content: center;
         align-items: center;
         height: 32px;
+        color: $GRAPHITE;
     }
 </style>

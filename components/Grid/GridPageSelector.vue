@@ -4,7 +4,7 @@
  */
 <template>
     <div class="page-selector">
-        <span class="page-selector__text">
+        <span class="page-selector__tex font--medium-s-1t">
             Show
         </span>
         <Select

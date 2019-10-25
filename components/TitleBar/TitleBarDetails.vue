@@ -19,7 +19,7 @@
         </Button>
         <div class="vertical-wrapper">
             <span
-                class="details__title"
+                class="details__title font--medium-xl-4"
                 v-text="title" />
             <slot name="badge" />
         </div>
@@ -81,9 +81,8 @@ export default {
         }
 
         .details__title {
-            @include setFont(medium, huge, large, $GRAPHITE_DARK);
-
             margin-right: 8px;
+            color: $GRAPHITE_DARK;
         }
 
         .vertical-wrapper {

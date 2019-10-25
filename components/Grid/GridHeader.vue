@@ -6,7 +6,7 @@
     <div class="grid-header">
         <div class="header-container">
             <span
-                class="grid-header__title"
+                class="grid-header__title font--medium-l-3"
                 v-text="title" />
             <div class="divider-container">
                 <Divider vertical />
@@ -110,11 +110,10 @@ export default {
         background-color: $WHITE;
 
         &__title {
-            @include setFont(medium, medium, medium, $GRAPHITE_DARK);
-
             display: flex;
             align-items: center;
             padding: 12px 0;
+            color: $GRAPHITE_DARK;
         }
     }
 

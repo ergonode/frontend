@@ -35,7 +35,7 @@
             <h1 class="login__background__header">
                 The first human - centric <br>designed PIM
             </h1>
-            <h2 class="login__background__subheader txt--white">
+            <h2 class="login__background__subheader">
                 <Typer :value="['Simple', 'Ergonomic', 'Efficient', 'For people.']" />
             </h2>
         </section>

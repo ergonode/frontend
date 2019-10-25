@@ -43,10 +43,6 @@ export default {
         &--modal {
             box-shadow: $ELEVATOR_2_DP;
 
-            & > .card-header {
-                padding: 16px 24px;
-            }
-
             .modal-container {
                 display: grid;
                 grid-row-gap: 16px;

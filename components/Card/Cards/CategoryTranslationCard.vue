@@ -5,11 +5,7 @@
 <template>
     <BaseCard modal>
         <template #header>
-            <div class="card-header">
-                <span
-                    class="typo-title txt--dark-graphite"
-                    v-text="selectedLanguage" />
-            </div>
+            <BaseCardHeader :title="selectedLanguage" />
         </template>
         <Divider />
         <template #modal>
@@ -28,6 +24,7 @@ import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
 import Divider from '~/components/Dividers/Divider';
 import BaseCard from '~/components/Card/BaseCard';
+import BaseCardHeader from '~/components/Card/BaseCardHeader';
 import TextField from '~/components/Inputs/TextField';
 
 export default {
@@ -36,6 +33,7 @@ export default {
     components: {
         Divider,
         BaseCard,
+        BaseCardHeader,
         TextField,
     },
     computed: {

@@ -23,7 +23,7 @@
             class="add-option-wrapper"
             @click="addOptionKey">
             <IconAdd />
-            <label class="txt--graphite typo-btn--xs">Add option</label>
+            <span class="font--medium-s-1">Add option</span>
         </div>
     </div>
 </template>
@@ -98,6 +98,7 @@ export default {
 
             & > label {
                 margin-left: 4px;
+                color: $GRAPHITE;
                 cursor: pointer;
             }
         }

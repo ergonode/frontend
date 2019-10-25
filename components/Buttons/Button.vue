@@ -43,8 +43,8 @@ export default {
     computed: {
         titleTypo() {
             return this.small
-                ? 'typo-btn--xs'
-                : 'typo-btn l-spacing--half';
+                ? 'font--semi-bold-s-1'
+                : 'font--semi-bold-m-1';
         },
         buttonTypeClasses() {
             return [

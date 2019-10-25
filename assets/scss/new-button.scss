@@ -28,7 +28,9 @@
     }
 
     &__title {
-        @include setFont(semiBold, regular, regular, $WHITE, 0.5);
+        color: $WHITE;
+        font: $FONT_SEMI_BOLD_M_1;
+        letter-spacing: 0.5px;
     }
 
     &__prepend {
@@ -81,7 +83,7 @@
         padding: 0 12px;
 
         #{$btn}__title {
-            @include setFont(semiBold, small, regular);
+            font: $FONT_SEMI_BOLD_S_1;
         }
 
         #{$btn}__prepend {
@@ -98,7 +100,7 @@
         padding: 0 8px;
 
         #{$btn}__title {
-            @include setFont(semiBold, small, regular);
+            font: $FONT_SEMI_BOLD_S_1;
         }
 
         #{$btn}__prepend {

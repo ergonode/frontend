@@ -26,17 +26,12 @@
             :error-messages="errorGroupsMessage"
             @input="setAttributeGroups" />
         <Divider />
-        <div class="horizontal-wrapper">
-            <Toggler
-                :value="isMultilingual"
-                :disabled="isDisabled || isDisabledByPrivileges"
-                @input="setMultilingualAttribute" />
-            <Label
-                text="Multilingual attribute"
-                class="txt--dark-graphite typo-btn--xs"
-                :is-disabled="isDisabled || isDisabledByPrivileges" />
-            <InfoHint :hint="multilingualHint" />
-        </div>
+        <MultilingualToggler
+            :value="isMultilingual"
+            :disabled="isDisabled || isDisabledByPrivileges"
+            label="Multilingual attribute"
+            :hint="multilingualHint"
+            @input="setMultilingualAttribute" />
         <Select
             :value="type"
             solid
@@ -80,11 +75,9 @@ export default {
     components: {
         BaseCard,
         AttributeOptionKeyValues: () => import('~/components/Card/AttributeOptionKeyValues'),
-        Toggler: () => import('~/components/Inputs/Toggler'),
+        MultilingualToggler: () => import('~/components/Inputs/Toggler/MultilingualToggler'),
         TextField: () => import('~/components/Inputs/TextField'),
         Select: () => import('~/components/Inputs/Select/Select'),
-        Label: () => import('~/components/Label/Label'),
-        InfoHint: () => import('~/components/Inputs/Hint/InfoHint'),
         Divider: () => import('~/components/Dividers/Divider'),
     },
     mixins: [errorValidationMixin],
@@ -192,14 +185,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .horizontal-wrapper {
-        display: flex;
-        align-items: center;
-
-        & > label {
-            margin-left: 8px;
-        }
-    }
-</style>

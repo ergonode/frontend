@@ -5,7 +5,7 @@
 <template>
     <div class="list-header">
         <span
-            class="list-header__title typo-list txt--dark-graphite"
+            class="list-header__title font--medium-l-3"
             v-text="header" />
         <slot />
     </div>
@@ -35,6 +35,7 @@ export default {
         &__title {
             grid-column: 1;
             grid-row: 1;
+            color: $GRAPHITE_DARK;
         }
     }
 </style>

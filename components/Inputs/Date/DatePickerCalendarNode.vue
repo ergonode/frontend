@@ -5,7 +5,7 @@
 <template>
     <div :class="calendarNodeStateClasses">
         <span
-            class="node__title typo-btn--xs"
+            class="node__title font--medium-s-1"
             v-text="title" />
     </div>
 </template>

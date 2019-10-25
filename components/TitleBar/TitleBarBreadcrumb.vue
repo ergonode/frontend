@@ -11,7 +11,7 @@
             :fill-color="greenColor"
             size="16" />
         <span
-            class="breadcrumb__title"
+            class="breadcrumb__title font--medium-m-2"
             v-text="breadcrumb.title" />
     </NuxtLink>
 </template>
@@ -49,9 +49,8 @@ export default {
         text-decoration: none;
 
         &__title {
-            @include setFont(medium, regular, semiRegular, $GRAPHITE_DARK);
-
             margin-left: 4px;
+            color: $GRAPHITE_DARK;
         }
 
         &:hover {

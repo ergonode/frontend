@@ -18,10 +18,10 @@
                     class="delorean"
                     src="~assets/images/placeholders/delorean.svg">
                 <div class="section__info">
-                    <h1 class="info__header txt--success">
+                    <h1 class="info__header font--medium-xl-4">
                         <Typer :value="['Future', 'Feature']" />
                     </h1>
-                    <p class="info__text txt--dark-graphite typo-list">
+                    <p class="info__text font--medium-l-3">
                         This feature will be implemented in the near future!
                     </p>
                     <Button
@@ -33,12 +33,12 @@
                 </div>
             </div>
             <div class="wrapper__section">
-                <q class="typo-list txt--graphite section__quotation">
+                <q class="font--medium-l-3 section__quotation">
                     „Time traveling is just too dangerous. Better that I devote myself<br>
                     to study the other great mystery of the universe: women!”
                 </q>
                 <a
-                    class="section__video-link typo-list"
+                    class="section__video-link font--medium-l-3"
                     href="https://www.youtube.com/watch?v=Dylp3c3_OBQ"
                     target="_blank">
                     Dr. Emmett „Doc” Brown
@@ -105,14 +105,14 @@ export default {
                 margin-top: 24px;
 
                 .info__header {
-                    @include setFont(extraBold, 56, 56);
-
                     height: 56px;
                     min-width: 1px;
+                    color: $GREEN;
                 }
 
                 .info__text {
                     margin-top: 24px;
+                    color: $GRAPHITE_DARK;
                 }
 
                 .info__button {
@@ -124,6 +124,7 @@ export default {
                 max-width: 700px;
                 min-width: 370px;
                 width: 100%;
+                color: $GRAPHITE;
             }
 
             .section__video-link {

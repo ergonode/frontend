@@ -16,7 +16,7 @@
                 :key="section.id"
                 class="section">
                 <span
-                    class="section__title"
+                    class="section__title font--medium-s-1"
                     v-text="section.name" />
                 <div class="section__items">
                     <TemplateElement
@@ -92,7 +92,7 @@ export default {
             flex-direction: column;
 
             &__title {
-                @include setFont(medium, small, regular, $GRAPHITE_LIGHT, 1);
+                color: $GRAPHITE_LIGHT;
                 margin-bottom: 8px;
             }
 
