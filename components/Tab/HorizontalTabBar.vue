@@ -4,7 +4,9 @@
  */
 <template>
     <div class="tab-bar">
-        <div :class="['tab-bar__items', {'tab-bar__items--scrolling': isScrollingEnabled}]">
+        <div
+            v-if="isTabVisible"
+            :class="['tab-bar__items', {'tab-bar__items--scrolling': isScrollingEnabled}]">
             <Button
                 v-if="isScrollingEnabled"
                 icon="arrow-dart trans-quarter"
@@ -79,6 +81,9 @@ export default {
                 'tab-bar__scrollable-container--left-gradient': !this.isLeftBoundReached,
                 'tab-bar__scrollable-container--right-gradient': !this.isRightBoundReached,
             };
+        },
+        isTabVisible() {
+            return this.items.length > 1;
         },
     },
     methods: {

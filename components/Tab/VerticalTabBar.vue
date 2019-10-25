@@ -4,7 +4,9 @@
  */
 <template>
     <div class="tab-bar">
-        <div class="tab-bar__items">
+        <div
+            v-if="isTabVisible"
+            class="tab-bar__items">
             <div
                 :class="
                     [
@@ -63,6 +65,9 @@ export default {
             return this.isExpanded
                 ? Arrow.LEFT
                 : Arrow.RIGHT;
+        },
+        isTabVisible() {
+            return this.items.length > 1;
         },
     },
     methods: {
