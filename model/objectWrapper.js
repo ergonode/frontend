@@ -85,7 +85,7 @@ export function getValueByKey(object, key) {
 }
 
 /**
- * Returns keys by values in the object
+ * Return keys by values in the object
  * @function
  * @param {Object} object
  * @param {Array} values
@@ -100,7 +100,7 @@ export function getKeysByValues(object, values) {
 }
 
 /**
- * Returns values by keys in the object
+ * Return values by keys in the object
  * @function
  * @param {Object} object
  * @param {Array} keys
@@ -125,7 +125,7 @@ export function getMaxKeyValue(object) {
 }
 
 /**
- * Check is object empty
+ * Check if object is empty
  * @function
  * @param {Object} object
  * @returns {boolean}
@@ -135,7 +135,7 @@ export function isEmpty(obj) {
 }
 
 /**
- * Returns an object without item with key
+ * Returns an object without item by key
  * @function
  * @param {Object} object
  * @param {string} keyToRemove

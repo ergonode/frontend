@@ -7,36 +7,23 @@
         <div class="horizontal-wrapper">
             <img
                 class="image"
-                src="~/assets/images/icons/socket.svg">
+                src="~/assets/images/icons/404.svg">
             <div class="navigation-section">
                 <h1 class="navigation-section__header txt--success">
-                    Error
+                    Access denied
                 </h1>
                 <p
                     class="navigation-section__description txt--dark-graphite typo-list">
-                    Internal server error. Please contact with the system administrator.
+                    You do not have permission to view this page.
                 </p>
             </div>
         </div>
-        <div class="plug-wrapper">
-            <img
-                class="plug"
-                src="~assets/images/icons/plug.svg">
-            <div class="cable" />
-        </div>
     </div>
 </template>
-
 <script>
 
 export default {
-    name: 'Error500',
-    props: {
-        error: {
-            type: [Object, Error],
-            default: () => {},
-        },
-    },
+    name: 'Error403',
 };
 </script>
 
@@ -46,7 +33,6 @@ export default {
         flex: 1;
         flex-direction: column;
         justify-content: center;
-        overflow: hidden;
 
         .horizontal-wrapper {
             display: flex;
@@ -58,6 +44,8 @@ export default {
             }
 
             .navigation-section {
+                display: flex;
+                flex-direction: column;
                 width: 285px;
 
                 &__header {
@@ -74,20 +62,8 @@ export default {
             }
         }
 
-        .plug-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            .cable {
-                position: absolute;
-                bottom: 0;
-                width: 12px;
-                height: 35%;
-                align-self: center;
-                justify-self: center;
-                background-color: $graphite;
-            }
+        .error-plug {
+            justify-self: flex-start;
         }
     }
 </style>

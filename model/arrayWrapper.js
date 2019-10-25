@@ -60,7 +60,7 @@ export function swapItemPosition(array, pos1, pos2) {
 }
 
 /**
- * Check is arrays equal
+ * Check if arrays are equal
  * @function
  * @param {Array} arr1
  * @param {Array} arr2
@@ -84,7 +84,7 @@ export function isArrayEqualToArray(arr1, arr2) {
 }
 
 /**
- * Returns an array with new item with index
+ * Returns an array with new value at index
  * @function
  * @param {Array} array
  * @param {*} value
@@ -100,7 +100,7 @@ export function insertValueAtIndex(array, value, index) {
 }
 
 /**
- * Returns an array without item with index
+ * Returns an array without value at index
  * @function
  * @param {Array} array
  * @param {number} index

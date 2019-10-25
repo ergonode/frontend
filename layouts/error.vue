@@ -27,11 +27,11 @@ export default {
         errorPage() {
             switch (this.error.statusCode) {
             case 403:
-                return () => import('~/components/Error/403');
+                return () => import('~/components/Errors/403');
             case 404:
-                return () => import('~/components/Error/404');
+                return () => import('~/components/Errors/404');
             default:
-                return () => import('~/components/Error/500');
+                return () => import('~/components/Errors/500');
             }
         },
     },
