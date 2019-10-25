@@ -33,13 +33,12 @@ export default {
 
         this.isUserAllowedToUpdateAttribute = this.$hasAccess('ATTRIBUTE_UPDATE');
         let generalRoute = { name: 'attribute-new-general' };
-        let translationRoute = { name: 'attribute-new-general' };
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
         if (this.isEdit) {
+            const translationRoute = { name: 'attribute-edit-id-translations', params: this.$route.params };
             generalRoute = { name: 'attribute-edit-id-general', params: this.$route.params };
-            translationRoute = { name: 'attribute-edit-id-translations', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -54,34 +53,49 @@ export default {
                     },
                 },
             ];
-        }
 
-        this.tabs = [
-            {
-                title: 'General options',
-                route: generalRoute,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} ATTRIBUTE`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateAttribute : false,
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} ATTRIBUTE`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateAttribute,
+                        },
                     },
                 },
-            },
-            {
-                title: 'Translations',
-                route: translationRoute,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} ATTRIBUTE`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateAttribute : false,
+                {
+                    title: 'Translations',
+                    route: translationRoute,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} ATTRIBUTE`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateAttribute,
+                        },
                     },
                 },
-            },
-        ];
+            ];
+        } else {
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} ATTRIBUTE`,
+                            action: tabAction,
+                            disabled: false,
+                        },
+                    },
+                },
+            ];
+        }
     },
     beforeDestroy() {
         delete this.breadcrumbs;

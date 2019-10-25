@@ -23,7 +23,6 @@ export default {
     mixins: [categoryManagementPageBaseMixin],
     created() {
         let generalRoute = { name: 'product-new-general' };
-        let templateRoute = { name: 'product-new-template' };
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -39,8 +38,8 @@ export default {
         this.isUserAllowedToUpdateProduct = this.$hasAccess('PRODUCT_UPDATE');
 
         if (this.isEdit) {
+            const templateRoute = { name: 'product-edit-id-template', params: this.$route.params };
             generalRoute = { name: 'product-edit-id-general', params: this.$route.params };
-            templateRoute = { name: 'product-edit-id-template', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -57,34 +56,49 @@ export default {
                 ...this.getButtonsForStatuses,
                 this.getActiveStatus,
             ];
-        }
 
-        this.tabs = [
-            {
-                title: 'General options',
-                route: generalRoute,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} PRODUCT`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateProduct : false,
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} PRODUCT`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateProduct,
+                        },
                     },
                 },
-            },
-            {
-                title: 'Product template',
-                route: templateRoute,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} PRODUCT`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateProduct : false,
+                {
+                    title: 'Product template',
+                    route: templateRoute,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} PRODUCT`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateProduct,
+                        },
                     },
                 },
-            },
-        ];
+            ];
+        } else {
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} PRODUCT`,
+                            action: tabAction,
+                            disabled: false,
+                        },
+                    },
+                },
+            ];
+        }
     },
     computed: {
         ...mapState('productsDraft', {

@@ -53,11 +53,6 @@ export const pages = [
                 path: 'general',
                 component: Tabs.CategoryBaseTab,
             },
-            {
-                name: 'category-new-translations',
-                path: 'translations',
-                component: Tabs.CategoryTranslationsTab,
-            },
         ],
         meta: {
             privileges: ['CATEGORY_READ'],
@@ -107,16 +102,6 @@ export const pages = [
                 name: 'category-tree-new-general',
                 path: 'general',
                 component: Tabs.CategoryTreeBaseTab,
-            },
-            {
-                name: 'category-tree-new-translations',
-                path: 'translations',
-                component: Tabs.CategoryTreeTranslationsTab,
-            },
-            {
-                name: 'category-tree-new-designer',
-                path: 'designer',
-                component: Tabs.CategoryTreeDesignTab,
             },
         ],
         meta: {
@@ -173,11 +158,6 @@ export const pages = [
                 path: 'general',
                 component: Tabs.ProductBaseTab,
             },
-            {
-                name: 'product-new-template',
-                path: 'template',
-                component: Tabs.ProductTemplateTab,
-            },
         ],
         meta: {
             privileges: ['PRODUCT_READ'],
@@ -220,11 +200,6 @@ export const pages = [
                 name: 'template-new-general',
                 path: 'general',
                 component: Tabs.TemplateDesignerBaseTab,
-            },
-            {
-                name: 'template-new-template',
-                path: 'template',
-                component: Tabs.TemplateDesignerTab,
             },
         ],
         meta: {
@@ -278,11 +253,6 @@ export const pages = [
                 name: 'attribute-new-general',
                 path: 'general',
                 component: Tabs.AttributeBaseTab,
-            },
-            {
-                name: 'attribute-new-translations',
-                path: 'translations',
-                component: Tabs.AttributeTranslationsTab,
             },
         ],
         meta: {
@@ -570,16 +540,6 @@ export const pages = [
                 name: 'condition-set-new-general',
                 path: 'general',
                 component: Tabs.ConditionSetBaseTab,
-            },
-            {
-                name: 'condition-set-new-translations',
-                path: 'translations',
-                component: Tabs.ConditionSetTranslationsTab,
-            },
-            {
-                name: 'condition-set-new-designer',
-                path: 'designer',
-                component: Tabs.ConditionSetDesignTab,
             },
         ],
         meta: {

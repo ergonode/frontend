@@ -64,45 +64,61 @@ export default {
                     },
                 },
             ];
+
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} CONDITION SET`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateConditionSet,
+                        },
+                    },
+                },
+                {
+                    title: 'Translations',
+                    route: translationRoute,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} CONDITION SET`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateConditionSet,
+                        },
+                    },
+                },
+                {
+                    title: 'Designer',
+                    route: designerRoute,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} CONDITION SET`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateConditionSet,
+                        },
+                    },
+                },
+            ];
+        } else {
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} CONDITION SET`,
+                            action: tabAction,
+                            disabled: false,
+                        },
+                    },
+                },
+            ];
         }
-        this.tabs = [
-            {
-                title: 'General options',
-                route: generalRoute,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} CONDITION SET`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateConditionSet : false,
-                    },
-                },
-            },
-            {
-                title: 'Translations',
-                route: translationRoute,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} CONDITION SET`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateConditionSet : false,
-                    },
-                },
-            },
-            {
-                title: 'Designer',
-                route: designerRoute,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} CONDITION SET`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateConditionSet : false,
-                    },
-                },
-            },
-        ];
     },
     beforeDestroy() {
         delete this.breadcrumbs;
