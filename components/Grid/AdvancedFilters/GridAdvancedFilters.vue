@@ -8,7 +8,7 @@
             <div class="container">
                 <div class="title-container">
                     <span
-                        class="grid-advanced-filters__title">
+                        class="grid-advanced-filters__title font--medium-16-24">
                         Filters
                     </span>
                     <NumericBadge :number="filtersNumber" />
@@ -17,7 +17,7 @@
                     <Divider vertical />
                 </div>
                 <span
-                    class="grid-advanced-filters__action"
+                    class="grid-advanced-filters__action font--medium-12-16"
                     @click="onClearAll">
                     Clear all filters
                 </span>
@@ -25,7 +25,7 @@
                     <Divider vertical />
                 </div>
                 <span
-                    class="grid-advanced-filters__action"
+                    class="grid-advanced-filters__action font--medium-12-16"
                     @click="onRemoveAll">
                     Remove all filters
                 </span>
@@ -187,7 +187,7 @@ export default {
         margin-bottom: 24px;
 
         &__title {
-            @include setFont(medium, medium, medium, $GRAPHITE_DARK);
+            color: $GRAPHITE_DARK;
         }
 
         &__header {
@@ -200,10 +200,9 @@ export default {
         }
 
         &__action {
-            @include setFont(medium, small, regular, $GRAPHITE_DARK);
-
             display: flex;
             align-items: center;
+            color: $GRAPHITE_DARK;
             text-decoration: underline;
             cursor: pointer;
         }

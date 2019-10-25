@@ -16,7 +16,7 @@
                     :item-row="itemRow" />
             </div>
             <span
-                class="condition__phrase typo-label txt--graphite"
+                class="condition__phrase font--semi-bold-12-16"
                 v-text="conditionPhrase" />
         </template>
     </div>
@@ -134,7 +134,7 @@ export default {
             padding: 6px 8px;
             border-top: $BORDER_DASHED_GREY;
             letter-spacing: 1px;
-            color: $GRAPHITE_LIGHT;
+            color: $GRAPHITE;
         }
     }
 </style>

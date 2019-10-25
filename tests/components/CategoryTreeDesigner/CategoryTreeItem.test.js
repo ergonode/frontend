@@ -40,7 +40,6 @@ describe('CategoryTreeDesigner/CategoryTreeItem', () => {
         expect(wrapper.vm.numberOfChildren).toEqual(10);
         expect(wrapper.vm.hasChildren).toBeTruthy();
         expect(wrapper.find('.grid-item__icon').exists()).toBe(true);
-        expect(wrapper.find('.grid-item__categories-length').exists()).toBe(true);
     });
 
     it('Expanded state is emitted', () => {

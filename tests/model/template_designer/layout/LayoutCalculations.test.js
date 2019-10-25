@@ -49,7 +49,7 @@ test('Element has correct values of obstacle points', () => {
     expect(getObstaclePositionsForElement(elementBounds)[0]).toEqual({ row: 1, column: 1 });
 });
 
-test('Based on layout elements getting number of elements to highlight', () => {
+test('Based on theme elements getting number of elements to highlight', () => {
     const elementPosition = {
         row: 5,
         column: 2,
@@ -221,8 +221,8 @@ test('Getting normalized row', () => {
     expect(normalizedRow).toEqual(3);
 });
 
-test('Based on non layout elements getting highlighting positions where we can drop element', () => {
-    describe('Zero layout elements', () => {
+test('Based on non theme elements getting highlighting positions where we can drop element', () => {
+    describe('Zero theme elements', () => {
         const layoutElements = [];
         const highlightingPositions = getHighlightingLayoutDropPositions({
             draggedElWidth: 2,
@@ -235,7 +235,7 @@ test('Based on non layout elements getting highlighting positions where we can d
         expect(highlightingPositions.length).toEqual(20);
     });
 
-    describe('Many layout elements', () => {
+    describe('Many theme elements', () => {
         const layoutElements = [
             {
                 row: 3,

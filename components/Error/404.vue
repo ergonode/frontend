@@ -9,11 +9,11 @@
                 class="image"
                 src="~/assets/images/icons/404.svg">
             <div class="navigation-section">
-                <h1 class="navigation-section__header txt--success">
+                <h1 class="navigation-section__header">
                     Not found
                 </h1>
                 <p
-                    class="navigation-section__description txt--dark-graphite typo-list">
+                    class="navigation-section__description font--medium-16-24">
                     The link you clicked may be broken or the page may have been removed.
                 </p>
                 <Button
@@ -24,7 +24,7 @@
             </div>
         </div>
         <span
-            class="error-section typo-list txt--graphite section__quotation">
+            class="error-section font--medium-16-24 section__quotation">
             The page you were looking for doesn’t exist. If you think this is an
             <br> error, please report it to the system administrator.
         </span>
@@ -67,11 +67,13 @@ export default {
                 width: 285px;
 
                 &__header {
+                    color: $GREEN;
                     font: bold 56px/56px "Inter UI";
                 }
 
                 &__description {
                     margin: 8px 0 16px;
+                    color: $GRAPHITE_DARK;
                 }
 
                 &__header, &__description {
@@ -82,6 +84,7 @@ export default {
 
         .error-section {
             margin-top: 64px;
+            color: $GRAPHITE;
             text-align: center;
         }
 

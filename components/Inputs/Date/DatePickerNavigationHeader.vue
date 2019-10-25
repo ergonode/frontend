@@ -15,7 +15,7 @@
             </Button>
         </slot>
         <span
-            class="header"
+            class="header font--medium-14-20"
             @click="onClick"
             v-text="header" />
         <slot name="next">
@@ -74,13 +74,12 @@ export default {
         align-items: center;
 
         .header {
-            @include setFont(medium, regular, semiRegular, $GRAPHITE_DARK);
-
             display: flex;
             flex: 1;
             justify-content: center;
             align-items: center;
             height: 32px;
+            color: $GRAPHITE_DARK;
             cursor: pointer;
 
             &:hover {

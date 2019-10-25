@@ -4,7 +4,7 @@
  */
 <template functional>
     <span
-        class="element-hint"
+        class="element-hint font--medium-12-16"
         v-text="props.title" />
 </template>
 
@@ -22,10 +22,10 @@ export default {
 
 <style lang="scss" scoped>
     .element-hint {
-        @include setFont(medium, tiny, tiny, $GRAPHITE, 0.5);
-
+        color: $GRAPHITE;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+        letter-spacing: 0.5px;
     }
 </style>

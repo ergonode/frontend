@@ -8,12 +8,12 @@
     }
 
     &__title {
-        @include setFont(medium, small, regular, $GREY_DARK, 0.5);
-
         position: relative;
         padding: 12px 16px;
+        color: $GREY_DARK;
         text-align: left;
         text-transform: uppercase;
+        letter-spacing: 0.5px;
 
         &::after {
             position: absolute;
@@ -66,9 +66,8 @@
                 padding: 0 24px;
 
                 & .link-text {
-                    @include setFont(medium, medium, medium, $GRAPHITE);
-
                     margin-left: 24px;
+                    color: $GRAPHITE;
                     text-align: left;
                     text-overflow: ellipsis;
                     overflow: hidden;

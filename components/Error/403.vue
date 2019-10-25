@@ -9,11 +9,11 @@
                 class="image"
                 src="~/assets/images/icons/404.svg">
             <div class="navigation-section">
-                <h1 class="navigation-section__header txt--success">
+                <h1 class="navigation-section__header">
                     Access denied
                 </h1>
                 <p
-                    class="navigation-section__description txt--dark-graphite typo-list">
+                    class="navigation-section__description font--medium-16-24">
                     You do not have permission to view this page.
                 </p>
             </div>
@@ -54,11 +54,13 @@ export default {
                 width: 285px;
 
                 &__header {
+                    color: $GREEN;
                     font: bold 56px/56px "Inter UI";
                 }
 
                 &__description {
                     margin: 8px 0 16px;
+                    color: $GRAPHITE_DARK;
                 }
 
                 &__header, &__description {

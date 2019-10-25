@@ -8,9 +8,8 @@
     justify-self: flex-start;
 
     &__text {
-        @include setFont(medium, small, regular, $GRAPHITE_DARK);
-
         flex: 0 0 auto;
         margin: 0 4px;
+        color: $GRAPHITE_DARK;
     }
 }

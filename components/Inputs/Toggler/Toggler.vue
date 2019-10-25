@@ -6,7 +6,7 @@
     <div
         :class="['toggler', togglerStateClasses]"
         @click="onClick">
-        <div class="toggler__state-wrapper" />
+        <div class="toggler__state" />
     </div>
 </template>
 
@@ -42,7 +42,7 @@ export default {
 
 <style lang="scss" scoped>
     .toggler {
-        $toogler: &;
+        $TOGGLER: &;
 
         position: relative;
         display: flex;
@@ -62,7 +62,7 @@ export default {
             content: "";
         }
 
-        &__state-wrapper {
+        &__state {
             position: relative;
             z-index: 1;
             display: flex;
@@ -89,11 +89,11 @@ export default {
         &--selected {
             justify-content: flex-end;
 
-            #{$toogler}__state-wrapper {
+            #{$TOGGLER}__state {
                 background-color: $GREEN;
             }
 
-            #{$toogler}__state-wrapper::after {
+            #{$TOGGLER}__state::after {
                 opacity: 1;
             }
         }
@@ -101,7 +101,7 @@ export default {
         &--disabled {
             pointer-events: none;
 
-            #{$toogler}__state-wrapper {
+            #{$TOGGLER}__state {
                 background-color: $GREY_DARK;
             }
         }

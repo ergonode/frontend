@@ -3,12 +3,16 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="numeric-badge">
-        <span v-text="number" />
+    <div :class="['numeric-badge', `numeric-badge--${theme}`]">
+        <span
+            class="font--semi-bold-10-16"
+            v-text="number" />
     </div>
 </template>
 
 <script>
+import { THEME } from '~/defaults/theme/main';
+
 export default {
     name: 'NumericBadge',
     props: {
@@ -16,20 +20,33 @@ export default {
             type: Number,
             required: true,
         },
+        theme: {
+            type: String,
+            default: THEME.PRIMARY,
+            validator: (value) => Object.values(THEME).indexOf(value) !== -1,
+        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
     .numeric-badge {
-        @include setFont(semiBold, tiny, regular, $WHITE);
-
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background-color: $GREEN;
+        min-width: 16px;
+        height: 16px;
+        border-radius: 999px;
+
+        &--transparent {
+            border: $BORDER_1_GREY;
+            background-color: $WHITE;
+            color: $GRAPHITE_DARK;
+        }
+
+        &--primary {
+            background-color: $GREEN;
+            color: $WHITE;
+        }
     }
 </style>

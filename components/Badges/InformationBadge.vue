@@ -6,7 +6,7 @@
     <div class="badge">
         <slot name="prepend" />
         <span
-            class="badge__title"
+            class="badge__title font--semi-bold-10-16"
             v-text="title" />
     </div>
 </template>
@@ -27,8 +27,8 @@ export default {
     .badge {
         display: flex;
         border-radius: 4px;
-        height: 16px;
-        padding: 4px 8px;
+        height: 24px;
+        padding: 4px 8px 4px 0;
         background-color: $BLUE;
 
         & > svg {
@@ -36,7 +36,8 @@ export default {
         }
 
         &__title {
-            @include setFont(semiBold, tiny, regular, $WHITE);
+            color: $WHITE;
+            text-transform: uppercase;
         }
     }
 </style>

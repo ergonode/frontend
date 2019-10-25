@@ -8,7 +8,7 @@
         <label
             v-for="index in columns"
             :key="index"
-            class="grid-header__title txt-fixed typo-label--strong txt--graphite">
+            class="grid-header__title font--bold-12-16">
             {{ addOrdinalNumberSuffix(index) }} {{ headerName }}
         </label>
     </div>
@@ -59,6 +59,10 @@ export default {
             align-items: center;
             padding: 8px;
             border-left: 1px solid $GREY;
+            color: $GRAPHITE;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
     }
 </style>

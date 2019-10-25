@@ -7,6 +7,7 @@
         :class="
             [
                 'tab-bar-item',
+                'font--medium-12-16',
                 {
                     'tab-bar-item--selected': (isSelected && isContentExpanded),
                     'not-expanded-content': !isContentExpanded,
@@ -57,8 +58,6 @@ export default {
 
 <style lang="scss" scoped>
     .tab-bar-item {
-        @include setFont(medium, small, 15, $GRAPHITE);
-
         $tabItem: &;
 
         position: relative;
@@ -68,6 +67,7 @@ export default {
         align-items: center;
         padding: 14px 8px;
         background-color: $WHITE;
+        color: $GRAPHITE;
         outline: none;
         border-left: $BORDER_1_GREY;
         border-top: $BORDER_1_GREY;

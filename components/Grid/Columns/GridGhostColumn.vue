@@ -6,7 +6,7 @@
     <div :class="['ghost-column', {'ghost-column--hovered': isMouseOverGrid}]">
         <div class="container">
             <IconAddColumn :fill-color="addIconFillColor" />
-            <span class="ghost-column__title">ADD COLUMN</span>
+            <span class="ghost-column__title font--bold-12-16">ADD COLUMN</span>
         </div>
     </div>
 </template>
@@ -46,9 +46,8 @@ export default {
         box-shadow: $ELEVATOR_HOLE;
 
         &__title {
-            @include setFont(bold, small, regular, $GRAPHITE_DARK);
-
             margin-top: 8px;
+            color: $GRAPHITE_DARK;
         }
 
         &--hovered {

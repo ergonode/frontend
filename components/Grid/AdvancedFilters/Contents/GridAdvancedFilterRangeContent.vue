@@ -13,7 +13,7 @@
                 center-alignment
                 small
                 @input="(fromValue) => onValueChange(fromValue, operators.GREATER_OR_EQUAL)" />
-            <span class="dash">-</span>
+            <span class="dash font--medium-12-16">-</span>
             <TextField
                 :value="filter[operators.SMALLER_OR_EQUAL]"
                 :input="{ type: 'number' }"
@@ -65,10 +65,9 @@ export default {
     }
 
     .dash {
-        @include setFont(medium, small, regular, $GRAPHITE_DARK);
-
         display: flex;
         justify-content: center;
         align-items: center;
+        color: $GRAPHITE_DARK;
     }
 </style>

@@ -18,7 +18,7 @@
             <CheckBox
                 :value="isDefaultStatus"
                 @input="setStatusAsDefault" />
-            <span class="typo-btn--xs txt--dark-graphite">
+            <span class="font--medium-12-16">
                 Status for new product in the system
             </span>
         </div>
@@ -87,10 +87,6 @@ export default {
         display: grid;
         grid-gap: 8px;
 
-        &__label {
-            @include setFont(medium, regular, semiRegular, $GRAPHITE_DARK);
-        }
-
         &__badge {
             border-radius: 7px;
             display: flex;
@@ -106,6 +102,7 @@ export default {
 
         span {
             margin-left: 8px;
+            color: $GRAPHITE_DARK;
         }
     }
 </style>

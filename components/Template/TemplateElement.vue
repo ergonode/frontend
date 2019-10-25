@@ -18,7 +18,7 @@
         </div>
         <div class="horizontal-wrapper">
             <span
-                class="template-element__title typo-btn--xs txt--dark-graphite"
+                class="template-element__title font--medium-12-16"
                 v-text="title" />
             <IconEdit />
         </div>
@@ -93,6 +93,7 @@ export default {
 
         &__title {
             margin-left: 8px;
+            color: $GRAPHITE_DARK;
         }
     }
 </style>

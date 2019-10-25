@@ -4,7 +4,9 @@
  */
 <template>
     <div class="interactive-header">
-        <span v-text="header" />
+        <span
+            class="font--medium-12-16"
+            v-text="header" />
         <TextField
             :value="value"
             :placeholder="dateFormat"
@@ -48,13 +50,12 @@ export default {
 
 <style lang="scss" scoped>
     .interactive-header {
-        @include setFont(medium, small, regular, $GRAPHITE);
-
         display: grid;
         grid-template-columns: auto 80px;
         grid-auto-flow: column;
         justify-content: center;
         align-items: center;
         column-gap: 8px;
+        color: $GRAPHITE;
     }
 </style>

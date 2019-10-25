@@ -7,7 +7,7 @@
         <span
             v-for="header in headers"
             :key="header"
-            class="header">
+            class="header font--semi-bold-12-16">
             {{ header }}
         </span>
     </div>
@@ -32,13 +32,12 @@ export default {
         align-items: center;
 
         .header {
-            @include setFont(semiBold, tiny, regular, $GRAPHITE);
-
             display: flex;
             justify-content: center;
             align-items: center;
             flex-basis: 32px;
             height: 32px;
+            color: $GRAPHITE;
         }
     }
 </style>

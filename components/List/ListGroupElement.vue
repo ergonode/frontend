@@ -9,10 +9,10 @@
             @click.native="expandGroup">
             <ListElementDescription>
                 <span
-                    class="group__title"
+                    class="group__title font--semi-bold-14-20"
                     v-text="title" />
                 <span
-                    class="group__subtitle"
+                    class="group__subtitle font--semi-bold-12-16"
                     v-text="subtitle" />
             </ListElementDescription>
             <ListElementAction>
@@ -76,11 +76,11 @@ export default {
 <style lang="scss" scoped>
     .group {
         &__title {
-            @include setFont(medium, regular, semiRegular, $GRAPHITE_DARK);
+            color: $GRAPHITE_DARK;
         }
 
         &__subtitle {
-            @include setFont(semiBold, tiny, regular, $GRAPHITE);
+            color: $GRAPHITE;
         }
 
         &__title, &__subtitle {

@@ -10,7 +10,7 @@
                     <div class="horizontal-wrapper">
                         <Component :is="headerIconComponent" />
                         <span
-                            class="title"
+                            class="title font--medium-24-32"
                             v-text="title" />
                     </div>
                     <Button
@@ -85,7 +85,6 @@ export default {
 
             .title {
                 color: $GRAPHITE_DARK;
-                font: 500 24px/32px "Inter UI";
                 margin-left: 12px;
             }
         }
