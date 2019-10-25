@@ -23,7 +23,7 @@
             class="add-option-wrapper"
             @click="addOptionKey">
             <IconAdd />
-            <span class="font--medium-s-1">Add option</span>
+            <span class="font--medium-12-16">Add option</span>
         </div>
     </div>
 </template>

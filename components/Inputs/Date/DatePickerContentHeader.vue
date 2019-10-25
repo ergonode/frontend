@@ -7,7 +7,7 @@
         <span
             v-for="header in headers"
             :key="header"
-            class="header font--semi-bold-s-1">
+            class="header font--semi-bold-12-16">
             {{ header }}
         </span>
     </div>

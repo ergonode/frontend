@@ -5,7 +5,7 @@
 <template>
     <div class="list-header">
         <span
-            class="list-header__title font--medium-l-3"
+            class="list-header__title font--medium-16-24"
             v-text="header" />
         <slot />
     </div>

@@ -15,7 +15,7 @@
             </Button>
         </slot>
         <span
-            class="header font--medium-m-2"
+            class="header font--medium-14-20"
             @click="onClick"
             v-text="header" />
         <slot name="next">

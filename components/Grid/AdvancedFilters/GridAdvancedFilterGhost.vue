@@ -9,7 +9,7 @@
         @dragover="onDragOver">
         <div class="container">
             <IconAddFilter :fill-color="addIconFillColor" />
-            <span class="advanced-filters-ghost__title font--bold-s-1">
+            <span class="advanced-filters-ghost__title font--bold-12-16">
                 ADD FILTER
             </span>
         </div>

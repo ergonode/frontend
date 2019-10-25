@@ -18,7 +18,7 @@
         </div>
         <div class="horizontal-wrapper">
             <span
-                class="template-element__title font--medium-s-1"
+                class="template-element__title font--medium-12-16"
                 v-text="title" />
             <IconEdit />
         </div>

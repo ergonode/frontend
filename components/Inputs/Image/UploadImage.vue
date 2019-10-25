@@ -10,7 +10,7 @@
         }]">
         <span
             v-if="title"
-            class="upload-image__title font--medium-s-1"
+            class="upload-image__title font--medium-12-16"
             v-text="title" />
         <div
             v-if="!selectedFileID"
@@ -24,7 +24,7 @@
             <img
                 :src="require('~/assets/images/icons/upload.svg')"
                 alt="placeholder">
-            <span class="upload-image__description font--medium-s-1">
+            <span class="upload-image__description font--medium-12-16">
                 Drag image here or browse
             </span>
         </div>
@@ -42,7 +42,7 @@
         </div>
         <span
             v-if="uploadError"
-            class="upload-image__error-label font--medium-s-1"
+            class="upload-image__error-label font--medium-12-16"
             v-text="uploadError.join(', ')" />
     </div>
 </template>

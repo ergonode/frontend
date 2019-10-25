@@ -5,7 +5,7 @@
 <template>
     <div class="completeness-progress">
         <span
-            class="completeness-progress__title font--medium-s-1"
+            class="completeness-progress__title font--medium-12-16"
             v-text="caption" />
         <ProgressBar
             :value="progress"

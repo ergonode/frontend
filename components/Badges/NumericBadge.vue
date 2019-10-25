@@ -5,7 +5,7 @@
 <template>
     <div :class="['numeric-badge', `numeric-badge--${theme}`]">
         <span
-            class="font--semi-bold-xs-1"
+            class="font--semi-bold-10-16"
             v-text="number" />
     </div>
 </template>

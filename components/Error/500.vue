@@ -13,7 +13,7 @@
                     Error
                 </h1>
                 <p
-                    class="navigation-section__description font--medium-l-3">
+                    class="navigation-section__description font--medium-16-24">
                     Internal server error. Please contact with the system administrator.
                 </p>
             </div>

@@ -11,7 +11,7 @@
             <IconDelete
                 :fill-color="whiteColor"
                 size="48" />
-            <span class="trash-can__label font--semi-bold-m-1">drop here to remove</span>
+            <span class="trash-can__label font--semi-bold-14-16">drop here to remove</span>
         </div>
     </div>
 </template>

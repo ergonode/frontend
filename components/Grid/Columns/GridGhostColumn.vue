@@ -6,7 +6,7 @@
     <div :class="['ghost-column', {'ghost-column--hovered': isMouseOverGrid}]">
         <div class="container">
             <IconAddColumn :fill-color="addIconFillColor" />
-            <span class="ghost-column__title font--bold-s-1">ADD COLUMN</span>
+            <span class="ghost-column__title font--bold-12-16">ADD COLUMN</span>
         </div>
     </div>
 </template>

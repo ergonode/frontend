@@ -7,7 +7,7 @@
         :class="
             [
                 'tab-bar-item',
-                'font--medium-s-1',
+                'font--medium-12-16',
                 {
                     'tab-bar-item--selected': (isSelected && isContentExpanded),
                     'not-expanded-content': !isContentExpanded,

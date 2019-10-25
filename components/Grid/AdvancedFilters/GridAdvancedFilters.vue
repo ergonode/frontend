@@ -8,7 +8,7 @@
             <div class="container">
                 <div class="title-container">
                     <span
-                        class="grid-advanced-filters__title font--medium-l-3">
+                        class="grid-advanced-filters__title font--medium-16-24">
                         Filters
                     </span>
                     <NumericBadge :number="filtersNumber" />
@@ -17,7 +17,7 @@
                     <Divider vertical />
                 </div>
                 <span
-                    class="grid-advanced-filters__action font--medium-s-1"
+                    class="grid-advanced-filters__action font--medium-12-16"
                     @click="onClearAll">
                     Clear all filters
                 </span>
@@ -25,7 +25,7 @@
                     <Divider vertical />
                 </div>
                 <span
-                    class="grid-advanced-filters__action font--medium-s-1"
+                    class="grid-advanced-filters__action font--medium-12-16"
                     @click="onRemoveAll">
                     Remove all filters
                 </span>

@@ -8,7 +8,7 @@
         <label
             v-for="index in columns"
             :key="index"
-            class="grid-header__title font--bold-s-1">
+            class="grid-header__title font--bold-12-16">
             {{ addOrdinalNumberSuffix(index) }} {{ headerName }}
         </label>
     </div>

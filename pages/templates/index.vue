@@ -16,7 +16,7 @@
                 :key="section.id"
                 class="section">
                 <span
-                    class="section__title font--medium-s-1"
+                    class="section__title font--medium-12-16"
                     v-text="section.name" />
                 <div class="section__items">
                     <TemplateElement

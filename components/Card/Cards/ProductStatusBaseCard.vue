@@ -18,7 +18,7 @@
             <CheckBox
                 :value="isDefaultStatus"
                 @input="setStatusAsDefault" />
-            <span class="font--medium-s-1">
+            <span class="font--medium-12-16">
                 Status for new product in the system
             </span>
         </div>

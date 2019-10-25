@@ -34,11 +34,11 @@ export default {
         letter-spacing: 0.5px;
 
         &:not(&--small) {
-            font: $FONT_SEMI_BOLD_S_1;
+            font: $FONT_SEMI_BOLD_12_16;
         }
 
         &--small {
-            font: $FONT_MEDIUM_S_1;
+            font: $FONT_MEDIUM_12_16;
         }
     }
 </style>

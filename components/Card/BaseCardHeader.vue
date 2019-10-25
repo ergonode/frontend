@@ -5,7 +5,7 @@
 <template>
     <div class="card-header">
         <span
-            class="font--medium-xl-4"
+            class="font--medium-24-32"
             v-text="title" />
     </div>
 </template>

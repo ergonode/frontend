@@ -41,11 +41,11 @@ describe('Buttons/Button', () => {
     });
 
     it('Check title classes', () => {
-        expect(wrapper.vm.titleTypo).toBe('font--semi-bold-m-1');
+        expect(wrapper.vm.titleTypo).toBe('font--semi-bold-14-16');
         wrapper.setProps({
             small: true,
         });
-        expect(wrapper.vm.titleTypo).toBe('font--semi-bold-s-1');
+        expect(wrapper.vm.titleTypo).toBe('font--semi-bold-12-16');
     });
 
     it('Check button classes if no props', () => {

@@ -7,7 +7,7 @@
         <Toggler
             :value="value"
             @input="onValueChange" />
-        <span class="show-only-content__title font--semi-bold-s-1">
+        <span class="show-only-content__title font--semi-bold-12-16">
             Show only empty records
         </span>
     </div>

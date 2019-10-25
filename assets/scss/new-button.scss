@@ -29,7 +29,7 @@
 
     &__title {
         color: $WHITE;
-        font: $FONT_SEMI_BOLD_M_1;
+        font: $FONT_SEMI_BOLD_14_16;
         letter-spacing: 0.5px;
     }
 
@@ -83,7 +83,7 @@
         padding: 0 12px;
 
         #{$btn}__title {
-            font: $FONT_SEMI_BOLD_S_1;
+            font: $FONT_SEMI_BOLD_12_16;
         }
 
         #{$btn}__prepend {
@@ -100,7 +100,7 @@
         padding: 0 8px;
 
         #{$btn}__title {
-            font: $FONT_SEMI_BOLD_S_1;
+            font: $FONT_SEMI_BOLD_12_16;
         }
 
         #{$btn}__prepend {

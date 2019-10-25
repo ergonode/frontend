@@ -4,7 +4,7 @@
  */
 <template functional>
     <span
-        class="section font--medium-xl-4"
+        class="section font--medium-24-32"
         v-text="props.label" />
 </template>
 

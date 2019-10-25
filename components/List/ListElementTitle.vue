@@ -27,7 +27,7 @@ export default {
     },
     computed: {
         font() {
-            return this.small ? 'font--medium-s-1' : 'font--medium-m-2';
+            return this.small ? 'font--medium-12-16' : 'font--medium-14-20';
         },
     },
 };

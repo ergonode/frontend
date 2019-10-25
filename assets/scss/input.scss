@@ -27,7 +27,7 @@
             flex-basis: 32px;
 
             input::placeholder, input {
-                font: $FONT_MEDIUM_S_1;
+                font: $FONT_MEDIUM_12_16;
             }
 
             input::placeholder {
@@ -39,7 +39,7 @@
             flex-basis: 40px;
 
             input::placeholder, input {
-                font: $FONT_MEDIUM_S_1;
+                font: $FONT_MEDIUM_12_16;
             }
 
             input::placeholder {
@@ -57,7 +57,7 @@
         }
 
         textarea, textarea::placeholder {
-            font: $FONT_MEDIUM_S_1;
+            font: $FONT_MEDIUM_12_16;
         }
 
         textarea {
@@ -71,7 +71,7 @@
 
     &__information-label {
         color: $GRAPHITE_DARK;
-        font: $FONT_MEDIUM_S_1;
+        font: $FONT_MEDIUM_12_16;
         margin-top: 2px;
         word-break: break-word;
     }
@@ -84,7 +84,7 @@
             background-color: $WHITE;
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             color: $GRAPHITE_LIGHT;
-            font: $FONT_MEDIUM_M_2;
+            font: $FONT_MEDIUM_14_20;
             padding-left: 2px;
 
             &--required {

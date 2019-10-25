@@ -9,7 +9,7 @@
             :disabled="disabled"
             @input="onValueChange" />
         <span
-            class="multilingual-toggler__label font--medium-s-1"
+            class="multilingual-toggler__label font--medium-12-16"
             v-text="label" />
         <InfoHint :hint="hint" />
     </div>

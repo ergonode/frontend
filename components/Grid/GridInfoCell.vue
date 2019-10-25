@@ -4,7 +4,7 @@
  */
 <template functional>
     <span
-        class="info-cell font--medium-s-1"
+        class="info-cell font--medium-12-16"
         v-text="props.value" />
 </template>
 

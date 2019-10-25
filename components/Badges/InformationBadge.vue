@@ -6,7 +6,7 @@
     <div class="badge">
         <slot name="prepend" />
         <span
-            class="badge__title font--semi-bold-xs-1"
+            class="badge__title font--semi-bold-10-16"
             v-text="title" />
     </div>
 </template>

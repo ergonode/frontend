@@ -13,7 +13,7 @@
                     Access denied
                 </h1>
                 <p
-                    class="navigation-section__description font--medium-l-3">
+                    class="navigation-section__description font--medium-16-24">
                     You do not have permission to view this page.
                 </p>
             </div>

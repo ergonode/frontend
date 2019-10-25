@@ -5,7 +5,7 @@
 <template>
     <div class="grid-container">
         <span
-            class="grid-title font--medium-xl-4"
+            class="grid-title font--medium-24-32"
             v-text="title" />
         <div
             v-for="item in items"
@@ -16,7 +16,7 @@
                     :src="require(`~/assets/images/dashboard/${item.icon}`)"
                     :alt="`${item.title} icon`">
                 <span
-                    class="item-title font--medium-xl-4"
+                    class="item-title font--medium-24-32"
                     v-text="item.title" />
                 <Button
                     color="success"

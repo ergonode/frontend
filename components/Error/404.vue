@@ -13,7 +13,7 @@
                     Not found
                 </h1>
                 <p
-                    class="navigation-section__description font--medium-l-3">
+                    class="navigation-section__description font--medium-16-24">
                     The link you clicked may be broken or the page may have been removed.
                 </p>
                 <Button
@@ -24,7 +24,7 @@
             </div>
         </div>
         <span
-            class="error-section font--medium-l-3 section__quotation">
+            class="error-section font--medium-16-24 section__quotation">
             The page you were looking for doesn’t exist. If you think this is an
             <br> error, please report it to the system administrator.
         </span>

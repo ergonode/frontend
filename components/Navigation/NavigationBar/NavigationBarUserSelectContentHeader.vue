@@ -14,10 +14,10 @@
                 size="72" />
         </div>
         <span
-            class="header__initials font--medium-l-3"
+            class="header__initials font--medium-16-24"
             v-text="initials" />
         <span
-            class="header__email font--medium-s-1"
+            class="header__email font--medium-12-16"
             v-text="email" />
     </div>
 </template>

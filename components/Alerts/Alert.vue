@@ -6,7 +6,7 @@
     <div :class="['alert', typeClass]">
         <Component :is="feedbackIconComponent" />
         <span
-            class="alert__title font--medium-m-2"
+            class="alert__title font--medium-14-20"
             v-text="alert.message" />
         <Button
             fab

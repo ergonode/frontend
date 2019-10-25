@@ -13,7 +13,7 @@
             size="20"
             :state="btnExpanderIconState"
             @click.native="toggleItemExpand" />
-        <span class="grid-item__title font--medium-m-2">
+        <span class="grid-item__title font--medium-14-20">
             {{ itemName }}
         </span>
         <NumericBadge

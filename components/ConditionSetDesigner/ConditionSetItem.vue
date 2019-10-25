@@ -16,7 +16,7 @@
                     :item-row="itemRow" />
             </div>
             <span
-                class="condition__phrase font--semi-bold-s-1"
+                class="condition__phrase font--semi-bold-12-16"
                 v-text="conditionPhrase" />
         </template>
     </div>

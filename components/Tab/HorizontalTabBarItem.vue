@@ -24,7 +24,7 @@
                 :to="item.route"
                 :class="[
                     'tab-bar-item__button',
-                    'font--medium-m-2',
+                    'font--medium-14-20',
                     isSelected ? 'txt--dark-graphite' : 'txt--graphite'
                 ]"
                 @click.native="onLinkSelect"

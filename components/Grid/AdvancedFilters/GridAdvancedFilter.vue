@@ -21,7 +21,7 @@
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
             <label
-                class="advanced-filter__label font--bold-s-1"
+                class="advanced-filter__label font--bold-12-16"
                 :for="associatedLabel"
                 v-text="data.id" />
             <input
@@ -34,12 +34,12 @@
             <div class="advanced-filter__details">
                 <span
                     v-if="!filterValue"
-                    class="advanced-filter__placeholder font--medium-s-1">
+                    class="advanced-filter__placeholder font--medium-12-16">
                     Select
                 </span>
                 <span
                     v-else
-                    class="advanced-filter__value font--medium-s-1"
+                    class="advanced-filter__value font--medium-12-16"
                     v-text="filterValue" />
                 <IconArrowDropDown :state="arrowIconState" />
             </div>

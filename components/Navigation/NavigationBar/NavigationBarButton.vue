@@ -38,7 +38,7 @@ export default {
 
         .title {
             color: $WHITE;
-            font: $FONT_SEMI_BOLD_M_2;
+            font: $FONT_SEMI_BOLD_14_20;
             margin-left: 8px;
         }
     }

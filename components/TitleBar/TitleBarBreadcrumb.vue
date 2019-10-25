@@ -11,7 +11,7 @@
             :fill-color="greenColor"
             size="16" />
         <span
-            class="breadcrumb__title font--medium-m-2"
+            class="breadcrumb__title font--medium-14-20"
             v-text="breadcrumb.title" />
     </NuxtLink>
 </template>

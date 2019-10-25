@@ -5,7 +5,7 @@
 <template>
     <div class="interactive-header">
         <span
-            class="font--medium-s-1"
+            class="font--medium-12-16"
             v-text="header" />
         <TextField
             :value="value"

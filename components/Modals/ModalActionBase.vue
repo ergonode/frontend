@@ -10,7 +10,7 @@
                     <div class="horizontal-wrapper">
                         <Component :is="headerIconComponent" />
                         <span
-                            class="title font--medium-xl-4"
+                            class="title font--medium-24-32"
                             v-text="title" />
                     </div>
                     <Button

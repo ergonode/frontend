@@ -43,8 +43,8 @@ export default {
     computed: {
         titleTypo() {
             return this.small
-                ? 'font--semi-bold-s-1'
-                : 'font--semi-bold-m-1';
+                ? 'font--semi-bold-12-16'
+                : 'font--semi-bold-14-16';
         },
         buttonTypeClasses() {
             return [

@@ -9,10 +9,10 @@
             @click.native="expandGroup">
             <ListElementDescription>
                 <span
-                    class="group__title font--semi-bold-m-2"
+                    class="group__title font--semi-bold-14-20"
                     v-text="title" />
                 <span
-                    class="group__subtitle font--semi-bold-s-1"
+                    class="group__subtitle font--semi-bold-12-16"
                     v-text="subtitle" />
             </ListElementDescription>
             <ListElementAction>

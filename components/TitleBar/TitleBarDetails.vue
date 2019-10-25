@@ -19,7 +19,7 @@
         </Button>
         <div class="vertical-wrapper">
             <span
-                class="details__title font--medium-xl-4"
+                class="details__title font--medium-24-32"
                 v-text="title" />
             <slot name="badge" />
         </div>

@@ -13,7 +13,7 @@
                 center-alignment
                 small
                 @input="(fromValue) => onValueChange(fromValue, operators.GREATER_OR_EQUAL)" />
-            <span class="dash font--medium-s-1">-</span>
+            <span class="dash font--medium-12-16">-</span>
             <TextField
                 :value="filter[operators.SMALLER_OR_EQUAL]"
                 :input="{ type: 'number' }"

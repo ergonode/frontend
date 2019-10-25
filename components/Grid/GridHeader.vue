@@ -6,7 +6,7 @@
     <div class="grid-header">
         <div class="header-container">
             <span
-                class="grid-header__title font--medium-l-3"
+                class="grid-header__title font--medium-16-24"
                 v-text="title" />
             <div class="divider-container">
                 <Divider vertical />

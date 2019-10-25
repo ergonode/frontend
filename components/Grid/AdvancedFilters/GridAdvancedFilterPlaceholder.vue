@@ -4,7 +4,7 @@
  */
 <template functional>
     <div class="advanced-filters-placeholder">
-        <span class="font--medium-s-1">
+        <span class="font--medium-12-16">
             Create a filter by dragging an attribute here
         </span>
     </div>

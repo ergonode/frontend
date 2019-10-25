@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template functional>
-    <div class="header font--medium-s-1">
+    <div class="header font--medium-12-16">
         <span v-text="props.header" />
     </div>
 </template>
