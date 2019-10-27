@@ -80,8 +80,8 @@ export default {
             event.target.classList.remove('hover');
         },
         doResizeDrag(event) {
-            if (this.xPos < event.clientX) {
-                const progress = this.getProgress(event.clientX);
+            if (this.xPos < event.pageX) {
+                const progress = this.getProgress(event.pageX);
 
                 if (this.isDraggingUpperSphere) {
                     this.$emit('input', {
@@ -99,8 +99,8 @@ export default {
         stopResizeDrag() {
             this.removeEventListenersForResizeState();
         },
-        getProgress(clientX) {
-            const fixedXOffset = clientX - this.xPos - (this.sphereSize / 2);
+        getProgress(pageX) {
+            const fixedXOffset = pageX - this.xPos - (this.sphereSize / 2);
 
             return Math.round((fixedXOffset / this.width) * this.maxValue);
         },
@@ -153,27 +153,24 @@ export default {
         &__progress {
             width: 1px;
             transform-origin: left;
-            background-color: $success;
+            background-color: $GREEN;
         }
 
         &__tracker {
             width: 100%;
-            background-color: $grey;
+            background-color: $GREY;
         }
 
         &__lower-sphere, &__upper-sphere {
             position: absolute;
             width: 16px;
             height: 16px;
-            background-color: $success;
+            background-color: $GREEN;
             border-radius: 50%;
             cursor: grab;
 
             &.hover {
-                box-shadow:
-                    0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                    0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                    0 1px 5px 0 rgba(0, 0, 0, 0.2);
+                box-shadow: $ELEVATOR_2_DP;
             }
         }
 

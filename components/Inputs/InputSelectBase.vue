@@ -52,6 +52,7 @@
 
 <script>
 import { Arrow } from '~/model/icons/Arrow';
+import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 import FadeTransition from '~/components/Transitions/FadeTransition';
 import SelectBaseContent from '~/components/Inputs/Select/Contents/SelectBaseContent';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
@@ -188,15 +189,8 @@ export default {
             ];
         },
         informationLabelClasses() {
-            const colorClass = this.isError
-                ? 'txt--error'
-                : 'txt--graphite';
-
             return [
                 'input__information-label',
-                'typo-hint',
-                'txt-fixed',
-                colorClass,
             ];
         },
         floatingLabelTransforms() {
@@ -209,7 +203,7 @@ export default {
 
                 return {
                     transform,
-                    backgroundColor: '#fff',
+                    backgroundColor: WHITE,
                 };
             }
 
@@ -303,16 +297,16 @@ export default {
 
             if (isDoubleClicked) return false;
 
-            const { clientX, clientY } = event;
+            const { pageX, pageY } = event;
             const activator = this.$el.querySelector('.input__activator');
             const {
                 top, left, width, height,
             } = activator.getBoundingClientRect();
             const isClickedInsideInput = this.$el.contains(event.target)
-                && clientX > left
-                && clientX < left + width
-                && clientY > top
-                && clientY < top + height;
+                && pageX > left
+                && pageX < left + width
+                && pageY > top
+                && pageY < top + height;
 
             if (isClickedInsideInput) {
                 if (this.dismissible) {
@@ -333,10 +327,10 @@ export default {
                         height: contentHeight,
                     } = selectContentEl.getBoundingClientRect();
 
-                    const isClickedInsideSelectContent = clientX > left
-                        && clientX < contentLeft + contentWidth
-                        && clientY > contentTop
-                        && clientY < contentTop + contentHeight;
+                    const isClickedInsideSelectContent = pageX > left
+                        && pageX < contentLeft + contentWidth
+                        && pageY > contentTop
+                        && pageY < contentTop + contentHeight;
 
                     if (!isClickedInsideSelectContent || !this.multiselect) this.isFocused = false;
                 }

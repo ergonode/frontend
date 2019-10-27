@@ -4,7 +4,7 @@
  */
 <template functional>
     <span
-        class="info-cell"
+        class="info-cell font--medium-12-16"
         v-text="props.value" />
 </template>
 
@@ -23,13 +23,12 @@ export default {
 
 <style lang="scss" scoped>
     .info-cell {
-        @include setFont(medium, small, regular, $darkGraphite);
-
         display: flex;
         flex: 1;
         align-items: center;
         width: 0;
         padding: 8px;
+        color: $GRAPHITE_DARK;
         user-select: none;
         text-overflow: ellipsis;
         overflow: hidden;

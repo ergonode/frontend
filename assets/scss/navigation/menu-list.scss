@@ -4,16 +4,16 @@
  */
 .menu-section {
     &:not(:first-child) {
-        border-top: 1px solid rgba( $grey, 0.5 );
+        border-top: 1px solid rgba( $GREY, 0.5 );
     }
 
     &__title {
-        @include setFont(medium, small, regular, $darkGrey, 0.5);
-
         position: relative;
         padding: 12px 16px;
+        color: $GREY_DARK;
         text-align: left;
         text-transform: uppercase;
+        letter-spacing: 0.5px;
 
         &::after {
             position: absolute;
@@ -21,7 +21,7 @@
             left: 40px;
             width: 34px;
             height: 41px;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, $white 100%);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, $WHITE 100%);
             transition: opacity 0.9s;
             opacity: 0;
             content: "";
@@ -43,20 +43,17 @@
             z-index: 0;
             width: 100%;
             height: 48px;
-            background-color: $white;
+            background-color: $WHITE;
             cursor: pointer;
 
             &:not(.list-element--selected) {
                 &:hover {
                     z-index: 100;
-                    background-color: $background;
-                    box-shadow:
-                        0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                        0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                        0 1px 5px 0 rgba(0, 0, 0, 0.2);
+                    background-color: $WHITESMOKE;
+                    box-shadow: $ELEVATOR_2_DP;
 
                     span {
-                        color: $darkGraphite;
+                        color: $GRAPHITE_DARK;
                     }
                 }
             }
@@ -69,9 +66,8 @@
                 padding: 0 24px;
 
                 & .link-text {
-                    @include setFont(medium, medium, medium, $graphite);
-
                     margin-left: 24px;
+                    color: $GRAPHITE;
                     text-align: left;
                     text-overflow: ellipsis;
                     overflow: hidden;
@@ -80,11 +76,11 @@
             }
 
             &--selected {
-                background-color: $primary;
-                color: $white;
+                background-color: $GREEN;
+                color: $WHITE;
 
                 .link-text {
-                    color: $white;
+                    color: $WHITE;
                 }
             }
         }

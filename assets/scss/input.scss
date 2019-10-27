@@ -11,7 +11,7 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    background-color: $white;
+    background-color: $WHITE;
 
     &__activator {
         position: relative;
@@ -19,11 +19,15 @@
         flex: 1;
         align-items: center;
 
+        input::placeholder, textarea::placeholder, input, textarea {
+            color: $GRAPHITE_DARK;
+        }
+
         &--small {
             flex-basis: 32px;
 
             input::placeholder, input {
-                @include setFont(medium, small, regular, $darkGraphite);
+                font: $FONT_MEDIUM_12_16;
             }
 
             input::placeholder {
@@ -35,7 +39,7 @@
             flex-basis: 40px;
 
             input::placeholder, input {
-                @include setFont(medium, regular, regular, $darkGraphite);
+                font: $FONT_MEDIUM_12_16;
             }
 
             input::placeholder {
@@ -53,7 +57,7 @@
         }
 
         textarea, textarea::placeholder {
-            @include setFont(medium, regular, regular, $darkGraphite);
+            font: $FONT_MEDIUM_12_16;
         }
 
         textarea {
@@ -66,6 +70,8 @@
     }
 
     &__information-label {
+        color: $GRAPHITE_DARK;
+        font: $FONT_MEDIUM_12_16;
         margin-top: 2px;
         word-break: break-word;
     }
@@ -75,9 +81,10 @@
 
         #{$input}__label {
             position: absolute;
-            background-color: $white;
+            background-color: $WHITE;
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-            color: $lightGraphite;
+            color: $GRAPHITE_LIGHT;
+            font: $FONT_MEDIUM_14_20;
             padding-left: 2px;
 
             &--required {
@@ -86,7 +93,7 @@
 
             &--required::after {
                 position: absolute;
-                color: $error;
+                color: $RED;
                 content: "*";
             }
         }
@@ -94,7 +101,7 @@
 
     &.solid {
         #{$input}__activator {
-            border: 1px solid $grey;
+            border: $BORDER_1_GREY;
             padding: 4px;
             box-sizing: border-box;
 
@@ -105,7 +112,7 @@
 
         #{$input}__label {
             position: absolute;
-            color: $lightGraphite;
+            color: $GRAPHITE_LIGHT;
             margin-left: 6px;
         }
 
@@ -114,7 +121,7 @@
         }
 
         &:hover {
-            border-color: $primary;
+            border-color: $GREEN;
         }
     }
 
@@ -122,13 +129,13 @@
         #{$input}__activator::before {
             bottom: 0;
             width: 100%;
-            border: solid $grey;
+            border: solid $GREY;
             border-width: thin 0 0;
             @extend %defaultLine;
         }
 
         #{$input}__activator:hover::before {
-            border-color: $primary;
+            border-color: $GREEN;
         }
     }
 
@@ -143,7 +150,7 @@
             bottom: 0;
             right: 100%;
             height: 2px;
-            background-color: $primary;
+            background-color: $GREEN;
             @extend %defaultLine;
         }
     }
@@ -158,7 +165,7 @@
         #{$input}__activator::after {
             bottom: -1px;
             width: 100%;
-            border: solid $grey;
+            border: solid $GREY;
             border-width: thin 0;
             transform: scaleX(0);
             @extend %defaultLine;
@@ -181,19 +188,19 @@
         &:not(#{$input}--error) {
             &.floating-label {
                 #{$input}__label {
-                    color: $success;
+                    color: $GREEN;
                 }
             }
 
             &.center-alignment {
                 #{$input}__activator::after {
-                    border-color: $primary;
+                    border-color: $GREEN;
                 }
             }
 
             &.solid {
                 #{$input}__activator {
-                    border: 2px solid $success;
+                    border: $BORDER_2_GREEN;
                     padding: 3px;
 
                     &::after {
@@ -210,14 +217,14 @@
         &.input--error {
             &.solid {
                 #{$input}__activator {
-                    border: 2px solid $error;
+                    border: $BORDER_2_RED;
                     padding: 3px;
                 }
             }
 
             &.floating-label {
                 #{$input}__label {
-                    color: $error;
+                    color: $RED;
                 }
             }
         }
@@ -226,22 +233,26 @@
     &--error {
         &.left-alignment {
             #{$input}__activator::after {
-                background-color: $error;
+                background-color: $RED;
             }
         }
 
         &.underline {
             #{$input}__activator:hover::before {
-                border-color: $error;
+                border-color: $RED;
             }
         }
 
         &:not(#{$input}--focused) {
             &.solid {
                 #{$input}__activator {
-                    border: 1px solid $error;
+                    border: 1px solid $RED;
                 }
             }
+        }
+
+        #{$input}__information-label {
+            color: $RED;
         }
     }
 
@@ -249,12 +260,12 @@
         pointer-events: none;
 
         #{$input}__activator {
-            background-color: $background;
+            background-color: $WHITESMOKE;
 
             input, textarea {
-                background-color: $background;
+                background-color: $WHITESMOKE;
                 opacity: 0.4;
-                color: $darkGraphite;
+                color: $GRAPHITE_DARK;
             }
         }
     }

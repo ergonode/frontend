@@ -21,7 +21,7 @@
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
             <label
-                class="advanced-filter__label"
+                class="advanced-filter__label font--bold-12-16"
                 :for="associatedLabel"
                 v-text="data.id" />
             <input
@@ -34,12 +34,12 @@
             <div class="advanced-filter__details">
                 <span
                     v-if="!filterValue"
-                    class="advanced-filter__placeholder">
+                    class="advanced-filter__placeholder font--medium-12-16">
                     Select
                 </span>
                 <span
                     v-else
-                    class="advanced-filter__value"
+                    class="advanced-filter__value font--medium-12-16"
                     v-text="filterValue" />
                 <IconArrowDropDown :state="arrowIconState" />
             </div>
@@ -137,16 +137,6 @@ export default {
     },
     destroyed() {
         window.removeEventListener('click', this.onClickOutside);
-    },
-    watch: {
-        isMenuActive() {
-            if (this.isMenuActive) {
-                this.selectBoundingBox = this.getSelectBoundingBox();
-                window.addEventListener('click', this.onClickOutside);
-            } else {
-                window.removeEventListener('click', this.onClickOutside);
-            }
-        },
     },
     computed: {
         ...mapState('draggable', {
@@ -257,12 +247,12 @@ export default {
 
             event.preventDefault();
 
-            const { clientX } = event;
+            const { pageX } = event;
             const {
                 x: columnXPos, width: columnWidth,
             } = this.$el.getBoundingClientRect();
             const isBefore = getDraggedColumnPositionState(
-                clientX,
+                pageX,
                 columnXPos,
                 columnWidth,
             );
@@ -313,6 +303,10 @@ export default {
                 this.isFocused = true;
                 this.isMenuActive = true;
                 this.hasMouseDown = false;
+                this.selectBoundingBox = this.getSelectBoundingBox();
+
+                window.addEventListener('click', this.onClickOutside);
+                this.$emit('focus', true);
             }
         },
         onBlur() {
@@ -323,6 +317,9 @@ export default {
         deactivateFilter() {
             this.isFocused = false;
             this.isMenuActive = false;
+
+            window.removeEventListener('click', this.onClickOutside);
+            this.$emit('focus', false);
         },
         onMouseMove() {
             // Dismiss drop down menu when we detect any move of mouse
@@ -423,14 +420,13 @@ export default {
         }
 
         &__label {
-            @include setFont(bold, small, regular, $darkGraphite);
-
             display: flex;
             align-items: center;
-            border: 1px solid $grey;
+            border: 1px solid $GREY;
             padding: 0 8px;
             box-sizing: border-box;
-            background-color: $background;
+            background-color: $WHITESMOKE;
+            color: $GRAPHITE_DARK;
         }
 
         &__details {
@@ -438,28 +434,28 @@ export default {
             align-items: center;
             padding: 0 2px 0 8px;
             box-sizing: border-box;
-            border-right: 1px solid $grey;
-            border-top: 1px solid $grey;
-            border-bottom: 1px solid $grey;
+            border-right: 1px solid $GREY;
+            border-top: 1px solid $GREY;
+            border-bottom: 1px solid $GREY;
         }
 
         &__placeholder {
-            @include setFont(medium, small, regular, $darkGrey);
+            color: $GREY_DARK;
         }
 
         &__value {
-            @include setFont(medium, small, regular, $darkGraphite);
+            color: $GRAPHITE_DARK;
         }
 
         &--selected {
             #{$filter}__label {
-                border-color: $primary;
-                background-color: $primary;
-                color: $white;
+                border-color: $GREEN;
+                background-color: $GREEN;
+                color: $WHITE;
             }
 
             #{$filter}__details {
-                border-color: $primary;
+                border-color: $GREEN;
                 border-width: 2px;
                 padding: 0 1px 0 8px;
             }
@@ -467,7 +463,7 @@ export default {
 
         &--error {
             #{$filter}__details {
-                background-color: $lightRed;
+                background-color: $RED_LIGHT;
             }
         }
     }

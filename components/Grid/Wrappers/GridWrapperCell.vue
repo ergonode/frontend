@@ -13,7 +13,8 @@
         :action-cell="isActionCell"
         :selected="isSelected"
         :editing="isEditingCell"
-        @edit="onEdit">
+        @edit="onEdit"
+        @dismissEditDialog="onDismissEditDialog">
         <Component
             :is="infoComponent"
             v-if="!isEditingCell || isActionCell"
@@ -245,10 +246,11 @@ export default {
             if (this.column.type === 'CHECK') {
                 this.$store.dispatch(`${this.namespace}/setSelectedRow`, { row: this.rowIndex, value: isEditing });
             } else {
-                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, isEditing
-                    ? { column: this.columnIndex, row: this.rowIndex }
-                    : {});
+                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, { column: this.columnIndex, row: this.rowIndex });
             }
+        },
+        onDismissEditDialog() {
+            this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
         },
         onUpdateDraft(value) {
             const isValueArray = Array.isArray(value);

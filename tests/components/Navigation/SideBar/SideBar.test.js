@@ -38,7 +38,7 @@ describe('Navigation/SideBar/SideBar', () => {
         expect(SideBar.name).toEqual('SideBar');
     });
 
-    it('Switching menu state classes', () => {
+    it('Togglering menu state classes', () => {
         expect(wrapper.vm.value).toBe(2);
         expect(wrapper.vm.menuStateClass).toBe('menu--full');
 

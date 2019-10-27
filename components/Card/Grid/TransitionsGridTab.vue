@@ -135,7 +135,7 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
-        background-color: $white;
+        background-color: $WHITE;
 
         &__grid {
             display: flex;

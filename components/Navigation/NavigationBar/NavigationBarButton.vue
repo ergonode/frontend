@@ -33,12 +33,12 @@ export default {
         outline: none;
 
         &:hover, &--selected {
-            background-color: rgba($graphite, 0.5);
+            background-color: rgba($GRAPHITE, 0.5);
         }
 
         .title {
-            @include setFont(semiBold, regular, medium, $white);
-
+            color: $WHITE;
+            font: $FONT_SEMI_BOLD_14_20;
             margin-left: 8px;
         }
     }

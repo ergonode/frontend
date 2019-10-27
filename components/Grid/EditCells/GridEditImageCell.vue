@@ -3,9 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="image-cell">
+    <div :class="['image-cell', {'image-cell--has-value': hasValue}]">
         <UploadImage
             :value="value"
+            :elevator="!hasValue"
             @upload="updateValue"
             @remove="updateValue" />
     </div>
@@ -23,18 +24,24 @@ export default {
             default: '',
         },
     },
-    created() {
-        this.imageID = this.value;
+    data() {
+        return {
+            imageId: this.value,
+        };
     },
     destroyed() {
-        if (this.imageID !== this.value) {
-            this.$emit('imageid', this.imageID);
+        if (this.imageId !== this.value) {
+            this.$emit('imageid', this.imageId);
         }
-        delete this.imageID;
+    },
+    computed: {
+        hasValue() {
+            return this.imageId !== '';
+        },
     },
     methods: {
         updateValue(value) {
-            this.imageID = value || '';
+            this.imageId = value || '';
         },
     },
 };
@@ -42,7 +49,12 @@ export default {
 
 <style lang="scss" scoped>
     .image-cell {
-        width: 280px;
-        background-color: $white;
+        width: 300px;
+        background-color: $WHITE;
+
+        &--has-value {
+            padding: 12px;
+            box-shadow: $ELEVATOR_2_DP;
+        }
     }
 </style>

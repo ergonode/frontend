@@ -8,7 +8,7 @@
             <div class="container">
                 <div class="title-container">
                     <span
-                        class="grid-advanced-filters__title">
+                        class="grid-advanced-filters__title font--medium-16-24">
                         Filters
                     </span>
                     <NumericBadge :number="filtersNumber" />
@@ -17,7 +17,7 @@
                     <Divider vertical />
                 </div>
                 <span
-                    class="grid-advanced-filters__action"
+                    class="grid-advanced-filters__action font--medium-12-16"
                     @click="onClearAll">
                     Clear all filters
                 </span>
@@ -25,7 +25,7 @@
                     <Divider vertical />
                 </div>
                 <span
-                    class="grid-advanced-filters__action"
+                    class="grid-advanced-filters__action font--medium-12-16"
                     @click="onRemoveAll">
                     Remove all filters
                 </span>
@@ -60,7 +60,8 @@
                         :is-mouse-over-filters="isMouseOverFilters"
                         :namespace="namespace"
                         :path="path"
-                        @mouseOverFilters="onMouseOverFilters" />
+                        @mouseOverFilters="onMouseOverFilters"
+                        @focus="onFilterFocus" />
                     <GridAdvancedFilterGhost
                         v-else
                         :key="index"
@@ -147,6 +148,9 @@ export default {
         onMouseOverFilters(isOver) {
             this.isMouseOverFilters = isOver;
         },
+        onFilterFocus(isFocused) {
+            this.$emit('focus', isFocused);
+        },
         onExpandFilters(isExpanded) {
             this.isExpanded = isExpanded;
 
@@ -179,11 +183,11 @@ export default {
     .grid-advanced-filters {
         display: grid;
         grid-auto-flow: row;
-        border: 1px solid $grey;
+        border: 1px solid $GREY;
         margin-bottom: 24px;
 
         &__title {
-            @include setFont(medium, medium, medium, $darkGraphite);
+            color: $GRAPHITE_DARK;
         }
 
         &__header {
@@ -192,14 +196,13 @@ export default {
             align-items: center;
             padding: 0 6px 0 16px;
             box-sizing: border-box;
-            background-color: $white;
+            background-color: $WHITE;
         }
 
         &__action {
-            @include setFont(medium, small, regular, $darkGraphite);
-
             display: flex;
             align-items: center;
+            color: $GRAPHITE_DARK;
             text-decoration: underline;
             cursor: pointer;
         }

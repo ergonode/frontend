@@ -4,16 +4,23 @@
  */
 <template>
     <NavigationBarButton>
-        <IconProcessing fill-color="#fff" />
+        <IconProcessing :fill-color="whiteColor" />
     </NavigationBarButton>
 </template>
 
 <script>
+import { WHITE } from '~/assets/scss/_variables/_colors.scss';
+
 export default {
     name: 'NavigationBarSynchronizationButton',
     components: {
         NavigationBarButton: () => import('~/components/Navigation/NavigationBar/NavigationBarButton'),
         IconProcessing: () => import('~/components/Icon/Others/IconProcessing'),
+    },
+    computed: {
+        whiteColor() {
+            return WHITE;
+        },
     },
 };
 </script>

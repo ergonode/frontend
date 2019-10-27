@@ -4,9 +4,9 @@
  */
 <template>
     <div class="completeness-progress">
-        <span class="completeness-progress__title">
-            {{ caption }}
-        </span>
+        <span
+            class="completeness-progress__title font--medium-12-16"
+            v-text="caption" />
         <ProgressBar
             :value="progress"
             :color="color" />
@@ -15,6 +15,9 @@
 
 <script>
 import { mapState } from 'vuex';
+import {
+    GREEN, RED, YELLOW,
+} from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'ProductCompleteness',
@@ -36,7 +39,7 @@ export default {
         },
         progress() {
             const { filled, required } = this.completeness;
-            const progress = Math.round(filled / (required * 100));
+            const progress = (filled / required) * 100;
 
             if (Number.isNaN(progress)) {
                 return 100;
@@ -44,7 +47,7 @@ export default {
             return progress;
         },
         color() {
-            return ['#f44336', '#ffc108', '#00bc87'][Math.floor(this.progress / 40)];
+            return [RED, YELLOW, GREEN][Math.floor(this.progress / 40)];
         },
     },
 };
@@ -55,7 +58,7 @@ export default {
         width: 200px;
 
         &__title {
-            @include setFont(medium, small, medium, $darkGraphite);
+            color: $GRAPHITE_DARK;
         }
     }
 </style>

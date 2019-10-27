@@ -16,7 +16,7 @@
                     :item-row="itemRow" />
             </div>
             <span
-                class="condition__phrase typo-label txt--graphite"
+                class="condition__phrase font--semi-bold-12-16"
                 v-text="conditionPhrase" />
         </template>
     </div>
@@ -100,8 +100,8 @@ export default {
         display: flex;
         flex-direction: column;
         height: 100%;
-        border: 1px solid $grey;
-        background-color: $background;
+        border: 1px solid $GREY;
+        background-color: $WHITESMOKE;
         cursor: move;
         overflow: hidden;
 
@@ -111,14 +111,14 @@ export default {
             bottom: -8px;
             padding: 0 8px;
             transform: translateX(-50%);
-            background-color: $white;
-            color: $lightGraphite;
+            background-color: $WHITE;
+            color: $GRAPHITE_LIGHT;
             content: "AND";
         }
 
         &--loader {
-            border: 1px dashed $primary;
-            background-color: $lightGreen;
+            border: 1px dashed $GREEN;
+            background-color: $GREEN_LIGHT;
         }
 
         &__parameters {
@@ -127,14 +127,14 @@ export default {
             grid-template-rows: 1fr;
             flex: 0 1 100%;
             padding: 4px 6% 6px;
-            background-color: $white;
+            background-color: $WHITE;
         }
 
         &__phrase {
             padding: 6px 8px;
-            border-top: 1px dashed $lightGrey;
+            border-top: $BORDER_DASHED_GREY;
             letter-spacing: 1px;
-            color: $lightGraphite;
+            color: $GRAPHITE;
         }
     }
 </style>

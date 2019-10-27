@@ -5,7 +5,7 @@
 <template>
     <div class="grid-container">
         <span
-            class="grid-title"
+            class="grid-title font--medium-24-32"
             v-text="title" />
         <div
             v-for="item in items"
@@ -16,13 +16,13 @@
                     :src="require(`~/assets/images/dashboard/${item.icon}`)"
                     :alt="`${item.title} icon`">
                 <span
-                    class="item-title"
+                    class="item-title font--medium-24-32"
                     v-text="item.title" />
                 <Button
                     color="success"
                     large
                     :title="item.actionTitle "
-                    @click.native="$router.push(item.action);" />
+                    @click.native="$router.push(item.action)" />
             </div>
         </div>
     </div>
@@ -55,20 +55,18 @@ export default {
         padding-bottom: 86px;
 
         .grid-title {
-            @include setFont(medium, huge, large, $darkGraphite);
-
             height: 37px;
+            color: $GRAPHITE_DARK;
             text-align: center;
-            font-display: swap;
             grid-column: 1/4;
             grid-row: 1;
         }
 
         .grid-item {
             height: 251px;
-            border: #D6D7D8 1px solid;
+            border: $BORDER_1_GREY;
             padding: 20px;
-            background-color: #FFFFFF;
+            background-color: $WHITE;
 
             .item-wrapper {
                 display: grid;
@@ -77,11 +75,9 @@ export default {
                 grid-gap: 20px;
 
                 .item-title {
-                    @include setFont(medium, huge, large, $darkGraphite);
-
                     height: 24px;
+                    color: $GRAPHITE_DARK;
                     text-align: center;
-                    font-display: swap;
                 }
             }
         }

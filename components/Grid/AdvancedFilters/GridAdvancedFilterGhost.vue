@@ -9,7 +9,7 @@
         @dragover="onDragOver">
         <div class="container">
             <IconAddFilter :fill-color="addIconFillColor" />
-            <span class="advanced-filters-ghost__title">
+            <span class="advanced-filters-ghost__title font--bold-12-16">
                 ADD FILTER
             </span>
         </div>
@@ -19,7 +19,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import {
-    white, graphite,
+    WHITE, GRAPHITE,
 } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
@@ -45,7 +45,7 @@ export default {
             elements: (state) => state.elements,
         }),
         addIconFillColor() {
-            return this.isMouseOverFilters ? white : graphite;
+            return this.isMouseOverFilters ? WHITE : GRAPHITE;
         },
     },
     methods: {
@@ -110,23 +110,19 @@ export default {
         align-items: center;
         height: 32px;
         padding: 0 12px;
-        background-color: $lightGrey;
-        box-shadow:
-            inset 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-            inset 0 3px 1px 0 rgba(0, 0, 0, 0.12),
-            inset 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+        background-color: $GREY_LIGHT;
+        box-shadow: $ELEVATOR_HOLE;
 
         &__title {
-            @include setFont(bold, small, regular, $darkGraphite);
-
             margin-left: 8px;
+            color: $GRAPHITE_DARK;
         }
 
         &--hovered {
-            background-color: $primary;
+            background-color: $GREEN;
 
             #{$filter}__title {
-                color: $white;
+                color: $WHITE;
             }
         }
     }

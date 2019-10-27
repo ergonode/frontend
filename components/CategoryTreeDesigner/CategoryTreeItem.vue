@@ -13,14 +13,13 @@
             size="20"
             :state="btnExpanderIconState"
             @click.native="toggleItemExpand" />
-        <span class="grid-item__title txt-fixed typo-subtitle txt--dark-graphite">
+        <span class="grid-item__title font--medium-14-20">
             {{ itemName }}
         </span>
-        <span
+        <NumericBadge
             v-if="hasChildren"
-            class="grid-item__categories-length txt-fixed typo-hint txt--dark-graphite">
-            {{ numberOfChildren }}
-        </span>
+            :number="numberOfChildren"
+            theme="transparent" />
         <div
             :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
             <ButtonSelect
@@ -35,12 +34,14 @@
 import { Action } from '~/model/icons/Action';
 import IconPlusMinus from '~/components/Icon/Actions/IconPlusMinus';
 import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
+import NumericBadge from '~/components/Badges/NumericBadge';
 
 export default {
     name: 'CategoryTreeItem',
     components: {
         IconPlusMinus,
         ButtonSelect,
+        NumericBadge,
     },
     data() {
         return {
@@ -113,9 +114,9 @@ export default {
         align-items: center;
         grid-column: 1 / 4;
         height: 100%;
-        border: 1px solid $grey;
+        border: 1px solid $GREY;
         padding-left: 12px;
-        background-color: $background;
+        background-color: $WHITESMOKE;
         cursor: move;
         overflow: hidden;
 
@@ -126,10 +127,7 @@ export default {
         &:hover {
             z-index: 10;
             border: none;
-            box-shadow:
-                0 4px 5px 0 rgba(0, 0, 0, 0.14),
-                0 1px 10px 0 rgba(0, 0, 0, 0.12),
-                0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            box-shadow: $ELEVATOR_6_DP;
         }
 
         &__icon {
@@ -139,23 +137,15 @@ export default {
         }
 
         &__title {
-            flex: 1;
             margin-right: 8px;
-            width: 100%;
+            color: $GRAPHITE_DARK;
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
         }
 
-        &__categories-length {
-            flex: 0 1 auto;
-            border: 1px solid $grey;
-            padding: 2px 8px;
-            border-radius: 12px;
-        }
-
         &__contextual-menu {
-            flex: 0 1 auto;
+            justify-self: flex-end;
             align-items: flex-start;
             opacity: 0;
 

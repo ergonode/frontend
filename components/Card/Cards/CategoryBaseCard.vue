@@ -13,8 +13,7 @@
             :disabled="isDisabled || isDisabledByPrivileges"
             label="Code"
             hint="Category code must be unique"
-            @input="setCategoryCode($event)"
-        />
+            @input="setCategoryCode($event)" />
     </BaseCard>
 </template>
 

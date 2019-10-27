@@ -17,8 +17,8 @@ export function isMouseOutOfBoundsElement(element, xPos, yPos) {
         || leftAtTheRight);
 }
 
-export function getDraggedColumnPositionState(clientX, elXPos, width) {
+export function getDraggedColumnPositionState(pageX, elXPos, width) {
     const normalizedHalfWidthFactor = 0.5;
 
-    return (clientX - elXPos) / width < normalizedHalfWidthFactor;
+    return (pageX - elXPos) / width < normalizedHalfWidthFactor;
 }

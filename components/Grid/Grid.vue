@@ -6,7 +6,7 @@
     <div
         :class="['grid', {
             'grid--placeholder': isPlaceholder,
-            'grid--disabled': isColumnExists,
+            'grid--disabled': isColumnExists || isAdvancedFilterFocused,
         }]">
         <GridAdvancedFilters
             v-if="advancedFilters"
@@ -14,7 +14,8 @@
             :filters="gridState.advancedFilters"
             :namespace="namespace"
             :path="routeEdit.getData"
-            :disabled="isFilterExists" />
+            :disabled="isFilterExists"
+            @focus="onAdvancedFilterFocus" />
         <GridHeader
             :title="title"
             :row-height="rowHeight"
@@ -170,6 +171,7 @@ export default {
         return {
             isHeaderFocused: false,
             isMouseOverGrid: false,
+            isAdvancedFilterFocused: false,
             rowHeight: ROW_HEIGHT.LARGE,
             layout: GRID_LAYOUT.TABLE,
         };
@@ -179,10 +181,15 @@ export default {
         this.rightPinnedColumns = [];
         this.leftPinnedColumns = [];
     },
+    mounted() {
+        window.addEventListener('click', this.onClickOutside);
+    },
     beforeDestroy() {
         delete this.rightPinnedColumns;
         delete this.leftPinnedColumns;
         delete this.fixedRowOffset;
+
+        window.removeEventListener('click', this.onClickOutside);
     },
     watch: {
         isListElementDragging() {
@@ -250,6 +257,23 @@ export default {
             'setGhostIndex',
             'setGhostFilterIndex',
         ]),
+        onClickOutside(event) {
+            const { gridContent } = this.$refs;
+            const isVisible = !!gridContent
+                && !!(
+                    gridContent.offsetWidth
+                    || gridContent.offsetHeight
+                    || gridContent.getClientRects().length
+                );
+
+            if (!gridContent.contains(event.target) && isVisible) {
+                // Dismiss editable cell mode
+                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
+            }
+        },
+        onAdvancedFilterFocus(isFocused) {
+            this.isAdvancedFilterFocused = isFocused;
+        },
         onRowEdit(route) {
             this.$emit('rowEdit', route);
         },
@@ -386,9 +410,9 @@ export default {
         &__content {
             position: relative;
             display: grid;
-            border-left: 1px solid $grey;
-            border-right: 1px solid $grey;
-            background-color: $background;
+            border-left: $BORDER_1_GREY;
+            border-right: $BORDER_1_GREY;
+            background-color: $WHITESMOKE;
             overflow: auto;
 
             &::after {

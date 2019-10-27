@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { shallowMount, createLocalVue } from '@vue/test-utils';
+import { mount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
 import ProductCompleteness from '~/components/Progress/ProductCompleteness.vue';
 
@@ -11,10 +11,10 @@ const store = new Store({
   state: {
     productsDraft: {
       completeness: {
-        filled: 50,
+        filled: 1,
         required: 1,
       }
-    }
+    },
   },
 });
 const mocks = {
@@ -24,10 +24,11 @@ afterEach(() => store.reset());
 describe('Badges/ProductCompleteness', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(ProductCompleteness, {
+        wrapper = mount(ProductCompleteness, {
             localVue,
             mocks,
             propsData: {
+                progress: 100,
                 language: 'PL',
             },
       });
@@ -43,15 +44,11 @@ describe('Badges/ProductCompleteness', () => {
     });
 
     it('Check caption', () => {
-        expect(wrapper.vm.caption).toBe('1% Completeness of PL');
-    });
-
-    it('Check color', () => {
-        expect(wrapper.vm.color).toBe('#f44336');
+        expect(wrapper.vm.caption).toBe('100% Completeness of PL');
     });
 
     it('Check progress', () => {
-        expect(wrapper.vm.progress).toBe(1);
+        expect(wrapper.vm.progress).toBe(100);
     });
 
 });

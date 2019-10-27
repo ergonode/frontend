@@ -3,10 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['upload-image', {'upload-image--disabled': disabled}]">
+    <div
+        :class="['upload-image', {
+            'upload-image--disabled': disabled,
+            'upload-image--elevator': elevator,
+        }]">
         <span
             v-if="title"
-            class="upload-image__title"
+            class="upload-image__title font--medium-12-16"
             v-text="title" />
         <div
             v-if="!selectedFileID"
@@ -20,30 +24,32 @@
             <img
                 :src="require('~/assets/images/icons/upload.svg')"
                 alt="placeholder">
-            <span class="upload-image__description txt-fixed">Drag image here or browse</span>
+            <span class="upload-image__description font--medium-12-16">
+                Drag image here or browse
+            </span>
         </div>
         <div
             v-else
             class="upload-image__container"
             :style="imageHeightStyle">
-            <button
-                class="upload-image__remove-btn"
-                @click="onRemove"
-                @mouseenter="onMouseEnter"
-                @mouseleave="onMouseLeave">
-                <IconDelete :fill-color="deleteIconFillColor" />
-            </button>
+            <div class="upload-image__remove-btn">
+                <IconFabButton
+                    theme="secondary"
+                    icon-path="Actions/IconDelete"
+                    @select="onRemove" />
+            </div>
             <Picture :image-id="selectedFileID" />
         </div>
         <span
             v-if="uploadError"
-            class="upload-image__error-label"
+            class="upload-image__error-label font--medium-12-16"
             v-text="uploadError.join(', ')" />
     </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { GRAPHITE, GREEN } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'UploadImage',
@@ -64,16 +70,20 @@ export default {
             type: Boolean,
             default: true,
         },
+        elevator: {
+            type: Boolean,
+            default: true,
+        },
     },
     components: {
-        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
         Picture: () => import('~/components/Inputs/Image/Picture'),
+        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
     },
     data() {
         return {
             selectedFileID: this.value,
             localImage: null,
-            deleteIconFillColor: '#5c5f65',
+            deleteIconFillColor: GRAPHITE,
         };
     },
     computed: {
@@ -90,10 +100,10 @@ export default {
             'removeValidationError',
         ]),
         onMouseEnter() {
-            this.deleteIconFillColor = '#00bc87';
+            this.deleteIconFillColor = GREEN;
         },
         onMouseLeave() {
-            this.deleteIconFillColor = '#5c5f65';
+            this.deleteIconFillColor = GRAPHITE;
         },
         onRemove() {
             this.selectedFileID = '';
@@ -121,9 +131,17 @@ export default {
 
 <style lang="scss" scoped>
     .upload-image {
+        $parent: &;
+
         position: relative;
         display: flex;
         flex-direction: column;
+
+        &--elevator {
+            #{$parent}__wrapper, #{$parent}__container {
+                box-shadow: $ELEVATOR_2_DP;
+            }
+        }
 
         &--disabled::after {
             position: absolute;
@@ -131,7 +149,7 @@ export default {
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: $background;
+            background-color: $WHITESMOKE;
             opacity: 0.5;
             content: "";
             cursor: not-allowed;
@@ -145,17 +163,13 @@ export default {
             justify-content: center;
             align-items: center;
             padding: 43px 0;
-            background-color: $white;
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            background-color: $WHITE;
 
             &::before {
                 position: absolute;
                 width: calc(100% - 32px);
                 height: calc(100% - 32px);
-                border: 1px dashed $grey;
+                border: $BORDER_DASHED_GREY;
                 content: "";
             }
         }
@@ -164,11 +178,7 @@ export default {
             position: relative;
             display: flex;
             max-height: 100%;
-            background-color: $white;
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            background-color: $WHITE;
         }
 
         &__activator {
@@ -183,21 +193,14 @@ export default {
 
         &__remove-btn {
             position: absolute;
-            top: 16px;
-            right: 16px;
+            top: 8px;
+            right: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 32px;
-            height: 32px;
-            padding: 0;
-            background-color: $white;
+            background-color: $WHITE;
             border-radius: 50%;
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
-            cursor: pointer;
+            box-shadow: $ELEVATOR_2_DP;
         }
 
         &__description {
@@ -210,12 +213,11 @@ export default {
         }
 
         &__description, &__title {
-            @include setFont(medium, small, regular, $graphite);
+            color: $GRAPHITE;
         }
 
         &__error-label {
-            @include setFont(regular, tiny, tiny, $error);
-
+            color: $RED;
             margin-top: 8px;
         }
     }

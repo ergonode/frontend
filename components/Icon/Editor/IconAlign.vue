@@ -12,8 +12,9 @@
 </template>
 
 <script>
-import IconBase from '~/components/Icon/IconBase';
 import { Align } from '~/model/icons/Align';
+import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
+import IconBase from '~/components/Icon/IconBase';
 
 export default {
     name: 'IconAlignLeft',
@@ -27,7 +28,7 @@ export default {
         },
         fillColor: {
             type: String,
-            default: '#5C5F65',
+            default: GRAPHITE,
         },
         size: {
             type: [String, Number],

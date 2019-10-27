@@ -56,8 +56,8 @@ export default {
             display: flex;
             width: 100%;
             grid-column: 1 / 1;
-            border-left: 2px solid $primary;
-            border-bottom: 2px solid $primary;
+            border-left: $BORDER_2_GREEN;
+            border-bottom: $BORDER_2_GREEN;
             transition: width 0.3s;
 
             &::before {
@@ -66,7 +66,7 @@ export default {
                 right: 0;
                 width: 7px;
                 height: 6px;
-                background-color: $primary;
+                background-color: $GREEN;
                 content: "";
             }
         }

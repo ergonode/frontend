@@ -11,24 +11,21 @@
     justify-content: space-between;
     width: 100%;
     height: $toolBarHeight;
-    background-color: $darkGraphite;
-    box-shadow:
-        0 4px 5px 0 rgba(0, 0, 0, 0.14),
-        0 1px 10px 0 rgba(0, 0, 0, 0.12),
-        0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    background-color: $GRAPHITE_DARK;
+    box-shadow: $ELEVATOR_6_DP;
 
     &__section {
         display: flex;
 
         &.left {
             & > * {
-                border-right: 1px solid rgba($graphite, 0.5);
+                border-right: 1px solid rgba($GRAPHITE, 0.5);
             }
         }
 
         &.right {
             & > * {
-                border-left: 1px solid rgba($graphite, 0.5);
+                border-left: 1px solid rgba($GRAPHITE, 0.5);
             }
         }
     }

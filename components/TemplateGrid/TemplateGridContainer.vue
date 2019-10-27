@@ -136,7 +136,7 @@ export default {
             this.setRowsCount(totalRows);
         },
         onDragStart(event) {
-            const { clientY } = event;
+            const { pageY } = event;
             const itemsContainer = this.$el.querySelector('.grid-items-container');
             const { children: items } = itemsContainer;
             const {
@@ -144,12 +144,12 @@ export default {
                 height: containerHeight,
             } = itemsContainer.getBoundingClientRect();
 
-            if (clientY > containerHeight + containerTop) {
+            if (pageY > containerHeight + containerTop) {
                 event.preventDefault();
                 return false;
             }
             getRowBellowMouse({
-                clientY,
+                pageY,
                 elements: items,
                 elementBounds: getRowBounds(items),
             }, ({ index, category }) => {
@@ -181,7 +181,8 @@ export default {
             });
             return true;
         },
-        onDrop() {
+        onDrop(event) {
+            event.preventDefault();
             this.insertElementIntoGrid();
         },
         onDragEnd(event) {
@@ -208,9 +209,9 @@ export default {
         onDragOver(event) {
             event.preventDefault();
             if (this.onDragFirstItem()) return false;
-            const { clientX, clientY } = event;
+            const { pageX, pageY } = event;
             const { overRow, directionOfCollision } = this.mousePosition;
-            const localDirectionOfCollision = this.getMouseOverProps(clientX, clientY);
+            const localDirectionOfCollision = this.getMouseOverProps(pageX, pageY);
             const collidingItem = this.getCollidingItemAtRow(overRow);
             const isElementHasCollision = collidingItem !== null
                 && directionOfCollision !== localDirectionOfCollision;
@@ -402,12 +403,12 @@ export default {
                 this.addGridItem({ ...this.ghostElement });
             }
         },
-        getMouseOverProps(clientX, clientY) {
-            const elements = document.elementsFromPoint(clientX, clientY);
+        getMouseOverProps(pageX, pageY) {
+            const elements = document.elementsFromPoint(pageX, pageY);
             const shadowItem = elements.find((e) => e.classList.contains('shadow-grid-item'));
 
             if (shadowItem) {
-                const positionOverRow = clientY - shadowItem.getBoundingClientRect().top;
+                const positionOverRow = pageY - shadowItem.getBoundingClientRect().top;
                 const directionOfCollision = this.checkCollidingRelation(positionOverRow);
 
                 if (directionOfCollision !== this.mousePosition.directionOfCollision) {

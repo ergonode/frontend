@@ -7,6 +7,7 @@
         :class="
             [
                 'tab-bar-item',
+                'font--medium-12-16',
                 {
                     'tab-bar-item--selected': (isSelected && isContentExpanded),
                     'not-expanded-content': !isContentExpanded,
@@ -24,6 +25,7 @@
 
 <script>
 import tabBarItemMixin from '~/mixins/tabBar/tabBarItemMixin';
+import { GRAPHITE, GREEN } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'VerticalTabBarItem',
@@ -42,8 +44,8 @@ export default {
             }
 
             return this.isSelected && this.isContentExpanded
-                ? '#00bc87'
-                : '#5c5f65';
+                ? GREEN
+                : GRAPHITE;
         },
     },
     methods: {
@@ -56,8 +58,6 @@ export default {
 
 <style lang="scss" scoped>
     .tab-bar-item {
-        @include setFont(medium, small, 15, $graphite);
-
         $tabItem: &;
 
         position: relative;
@@ -66,10 +66,11 @@ export default {
         justify-content: center;
         align-items: center;
         padding: 14px 8px;
-        background-color: $white;
+        background-color: $WHITE;
+        color: $GRAPHITE;
         outline: none;
-        border-left: 1px solid $grey;
-        border-top: 1px solid $grey;
+        border-left: $BORDER_1_GREY;
+        border-top: $BORDER_1_GREY;
         text-align: center;
 
         &__title {
@@ -77,12 +78,12 @@ export default {
         }
 
         &:not(&--selected), &.not-expanded-content {
-            border-right: 1px solid $grey;
+            border-right: $BORDER_1_GREY;
             padding-right: 7px;
         }
 
         &:last-child {
-            border-bottom: 1px solid $grey;
+            border-bottom: $BORDER_1_GREY;
         }
 
         &:after {
@@ -93,7 +94,7 @@ export default {
             z-index: 1;
             width: 3px;
             height: calc(100% + 2px);
-            background-color: $success;
+            background-color: $GREEN;
             opacity: 0;
             content: "";
         }
@@ -105,7 +106,7 @@ export default {
         &--selected {
             #{$tabItem}__title {
                 opacity: 0.9;
-                color: $darkGraphite;
+                color: $GRAPHITE_DARK;
             }
         }
     }

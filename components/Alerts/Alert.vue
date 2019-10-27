@@ -6,7 +6,7 @@
     <div :class="['alert', typeClass]">
         <Component :is="feedbackIconComponent" />
         <span
-            class="alert__title typo-subtitle txt--dark-graphite"
+            class="alert__title font--medium-14-20"
             v-text="alert.message" />
         <Button
             fab
@@ -65,7 +65,8 @@ export default {
         width: 400px;
         padding: 10px 18px;
         margin: 2px 0;
-        background-color: $white;
+        background-color: $WHITE;
+        color: $GRAPHITE_DARK;
 
         &__title {
             margin-left: 16px;
@@ -74,19 +75,19 @@ export default {
         }
 
         &--error {
-            border: solid 2px $error;
+            border: $BORDER_2_RED;
         }
 
         &--warning {
-            border: solid 2px $warning;
+            border: $BORDER_2_YELLOW;
         }
 
         &--info {
-            border: solid 2px $information;
+            border: $BORDER_2_BLUE;
         }
 
         &--success {
-            border: solid 2px $success;
+            border: $BORDER_2_GREEN;
         }
     }
 </style>

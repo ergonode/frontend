@@ -19,6 +19,9 @@
                     :multiselect="element.type === 'MULTI_SELECT'"
                     :disabled="!isUserAllowedToUpdate"
                     v-bind="element" />
+                <div
+                    :style="gridExtenderStyle"
+                    class="extender" />
             </div>
         </TemplateGridDesigner>
     </div>
@@ -75,7 +78,13 @@ export default {
         },
         gridStyle() {
             return {
-                gridTemplateRows: `repeat(${this.maxRowOfLayoutElements}, 48px)`,
+                gridTemplateRows: `repeat(${this.maxRowOfLayoutElements + 1}, 48px)`,
+            };
+        },
+        gridExtenderStyle() {
+            return {
+                gridArea: `${this.maxRowOfLayoutElements} / 1 / ${this.maxRowOfLayoutElements + 1} / 4`,
+
             };
         },
     },
@@ -136,6 +145,7 @@ export default {
             grid-template-columns: repeat(4, 1fr);
             height: 0;
             margin: 0 200px;
+            padding-top: 48px;
         }
     }
 </style>

@@ -46,10 +46,11 @@
         }
 
         &__header {
-            @include setFont(bold, 48, 56, $white);
+            @include setFont(bold, 48, 56);
 
             width: 100%;
             margin: 2% 0 5%;
+            color: $WHITE;
         }
 
         &__subheader {
@@ -57,6 +58,7 @@
 
             height: 46px;
             min-width: 1px;
+            color: $WHITE;
         }
     }
 }

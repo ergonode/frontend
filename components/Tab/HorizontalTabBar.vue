@@ -33,7 +33,7 @@
                 color="transparent"
                 @click.native="addTab">
                 <template #prepend>
-                    <IconAdd fill-color="#5c5f65" />
+                    <IconAdd :fill-color="graphiteColor" />
                 </template>
             </Button>
             <Button
@@ -50,6 +50,7 @@
 <script>
 import tabBarMixin from '~/mixins/tabBar/tabBarMixin';
 import { rightBound, leftBound } from '~/model/scroll/boundaryScroll';
+import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'HorizontalTabBar',
@@ -70,6 +71,9 @@ export default {
         };
     },
     computed: {
+        graphiteColor() {
+            return GRAPHITE;
+        },
         scrollableStateClasses() {
             return {
                 'tab-bar__scrollable-container--left-gradient': !this.isLeftBoundReached,
@@ -168,12 +172,12 @@ export default {
 
             &:after {
                 right: 74px;
-                background: linear-gradient(90deg, rgba(248, 248, 248, 0) 0%, $white 100%);
+                background: linear-gradient(90deg, rgba(248, 248, 248, 0) 0%, $WHITE 100%);
             }
 
             &:before {
                 left: 42px;
-                background: linear-gradient(-90deg, rgba(248, 248, 248, 0) 0%, $white 100%);
+                background: linear-gradient(-90deg, rgba(248, 248, 248, 0) 0%, $WHITE 100%);
             }
 
             &--left-gradient:before, &--right-gradient:after {

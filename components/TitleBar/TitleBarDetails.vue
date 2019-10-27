@@ -7,19 +7,19 @@
         <Component
             :is="headerIconComponent"
             v-if="icon && !isBreadcrumb"
-            fill-color="#00bc87" />
+            :fill-color="greenColor" />
         <Button
             v-if="isBreadcrumb"
             class="details__back-btn"
             fab
             @click.native="onClick">
             <template #prepend>
-                <IconArrowPointer fill-color="#fff" />
+                <IconArrowPointer :fill-color="whiteColor" />
             </template>
         </Button>
         <div class="vertical-wrapper">
             <span
-                class="details__title"
+                class="details__title font--medium-24-32"
                 v-text="title" />
             <slot name="badge" />
         </div>
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import { GREEN, WHITE } from '~/assets/scss/_variables/_colors.scss';
+
 export default {
     name: 'TitleBarDetails',
     components: {
@@ -49,6 +51,12 @@ export default {
         },
     },
     computed: {
+        greenColor() {
+            return GREEN;
+        },
+        whiteColor() {
+            return WHITE;
+        },
         headerIconComponent() {
             return () => import(`~/components/Icon/Menu/Icon${this.icon}`);
         },
@@ -73,9 +81,8 @@ export default {
         }
 
         .details__title {
-            @include setFont(medium, huge, large, $darkGraphite);
-
             margin-right: 8px;
+            color: $GRAPHITE_DARK;
         }
 
         .vertical-wrapper {

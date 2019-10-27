@@ -3,11 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <label
+    <span
         class="info-hint"
         :title="hint">
         <IconTooltip size="16" />
-    </label>
+    </span>
 </template>
 
 <script>

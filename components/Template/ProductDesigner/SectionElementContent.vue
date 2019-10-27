@@ -15,7 +15,7 @@
                 :class="typeLabelClasses"
                 v-text="element.type" />
             <span
-                class="element-content__subheader txt--dark-graphite typo-subtitle"
+                class="element-content__subheader font--medium-14-20"
                 v-text="element.label" />
         </div>
         <div
@@ -72,8 +72,7 @@ export default {
             return [
                 'element-content__header',
                 'txt--light-graphite',
-                'typo-label',
-                'l-spacing--half',
+                'font--semi-bold-12-16',
             ];
         },
     },
@@ -121,8 +120,13 @@ export default {
             padding-top: 12px;
         }
 
+        &__header {
+            letter-spacing: 0.5px;
+        }
+
         &__subheader {
             height: 20px;
+            color: $GRAPHITE_DARK;
         }
 
         &__header, &__subheader {

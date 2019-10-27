@@ -98,8 +98,8 @@ describe('Template/ProductDesigner/LayoutElement', () => {
 
         it('Mouse position', () => {
             const position = {
-                clientX: 100,
-                clientY: 100,
+                pageX: 100,
+                pageY: 100,
             };
 
             wrapper.vm.initMousePosition(position);

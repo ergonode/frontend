@@ -14,10 +14,10 @@
                 size="72" />
         </div>
         <span
-            class="header__initials"
+            class="header__initials font--medium-16-24"
             v-text="initials" />
         <span
-            class="header__email"
+            class="header__email font--medium-12-16"
             v-text="email" />
     </div>
 </template>
@@ -72,17 +72,16 @@ export default {
         }
 
         &__initials {
-            @include setFont(medium, medium, medium, $darkGraphite, 0.1);
-
             grid-row: 1;
             align-self: flex-end;
+            color: $GRAPHITE_DARK;
+            letter-spacing: 0.1px;
         }
 
         &__email {
-            @include setFont(medium, small, regular, $darkGrey);
-
             grid-row: 2;
             align-self: flex-start;
+            color: $GREY_DARK;
         }
     }
 </style>

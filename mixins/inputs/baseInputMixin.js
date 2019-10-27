@@ -56,14 +56,8 @@ export default {
             ];
         },
         informationLabelClasses() {
-            const colorClass = this.isError
-                ? 'txt--error'
-                : 'txt--graphite';
-
             return [
                 'input__information-label',
-                'typo-hint',
-                colorClass,
             ];
         },
         floatingLabelTransforms() {

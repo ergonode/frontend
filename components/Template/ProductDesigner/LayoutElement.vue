@@ -156,9 +156,9 @@ export default {
             this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
         doResizeDrag(event) {
-            const { clientX, clientY } = event;
-            const width = this.getElementWidthBasedOnMouseXPosition(clientX);
-            const height = this.getElementHeightBasedOnMouseYPosition(clientY);
+            const { pageX, pageY } = event;
+            const width = this.getElementWidthBasedOnMouseXPosition(pageX);
+            const height = this.getElementHeightBasedOnMouseYPosition(pageY);
 
             this.updateElementWidth(width);
             this.updateElementHeight(height);
@@ -281,9 +281,9 @@ export default {
         blockOtherInteractionsOnResizeEvent() {
             this.isDraggingEnabled = false;
         },
-        initMousePosition({ clientX, clientY }) {
-            this.startX = clientX;
-            this.startY = clientY;
+        initMousePosition({ pageX, pageY }) {
+            this.startX = pageX;
+            this.startY = pageY;
         },
         initActualElementNormalizedBoundary() {
             const { row, column } = this.element;
@@ -329,19 +329,16 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        border: 1px solid $grey;
+        border: $BORDER_1_GREY;
         margin: 8px;
         box-sizing: border-box;
-        background-color: $background;
+        background-color: $WHITESMOKE;
         user-select: none;
         cursor: grab;
 
         &:hover:not(&--resized):not(&--disabled) {
             border: unset;
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            box-shadow: $ELEVATOR_2_DP;
         }
 
         &__resizer {
@@ -360,7 +357,7 @@ export default {
         &--resized {
             position: absolute;
             z-index: 5;
-            border: 2px solid $success;
+            border: 2px solid $GREEN;
         }
 
         &--disabled {

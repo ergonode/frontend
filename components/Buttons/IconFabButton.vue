@@ -23,7 +23,7 @@
 <script>
 import ButtonTheme from '~/model/theme/button-theme';
 import {
-    primary, graphite, grey, white,
+    GREEN, GRAPHITE, GREY, WHITE,
 } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
@@ -40,7 +40,7 @@ export default {
         },
         iconPath: {
             type: String,
-            required: true,
+            default: null,
         },
         isDisabled: {
             type: Boolean,
@@ -67,24 +67,24 @@ export default {
         iconFillColor() {
             if (this.isDisabled) {
                 if (ButtonTheme.primary) {
-                    return white;
+                    return WHITE;
                 }
-                return grey;
+                return GREY;
             }
 
             if (this.isStateable) {
                 if (this.isSelected || this.isHovered) {
-                    return primary;
+                    return GREEN;
                 }
 
-                return graphite;
+                return GRAPHITE;
             }
 
             if (this.isHovered && (!this.isStateable || !this.isSelected)) {
-                return primary;
+                return GREEN;
             }
 
-            return graphite;
+            return GRAPHITE;
         },
     },
     methods: {
@@ -118,18 +118,15 @@ export default {
         border-radius: 50%;
 
         &--hovered {
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            box-shadow: $ELEVATOR_2_DP;
         }
 
         &--primary {
-            background-color: $primary;
+            background-color: $GREEN;
         }
 
         &--primary:disabled {
-            background-color: $grey;
+            background-color: $GREY;
         }
 
         &--secondary {

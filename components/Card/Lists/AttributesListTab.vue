@@ -22,7 +22,7 @@
                 :disabled="!$hasAccess('ATTRIBUTE_CREATE')"
                 @click.native="addNewAttribute">
                 <template #prepend>
-                    <IconAdd fill-color="#fff" />
+                    <IconAdd :fill-color="whiteColor" />
                 </template>
             </Button>
         </div>
@@ -32,6 +32,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getValueByKey, getKeyByValue } from '~/model/objectWrapper';
+import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'AttributesListTab',
@@ -63,6 +64,9 @@ export default {
         ...mapState('data', {
             languages: (state) => state.languages,
         }),
+        whiteColor() {
+            return WHITE;
+        },
         languageCode() {
             return getKeyByValue(this.languages, this.attributesLanguageCode);
         },

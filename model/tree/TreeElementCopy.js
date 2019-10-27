@@ -2,14 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { white } from '~/assets/scss/_variables/_colors.scss';
+import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 
 export function addElementCopyToDocumentBody(event, { element, width, height }) {
     const elementId = element.getAttribute('item-id');
     const clonedDOMElement = element.childNodes[0].cloneNode(true);
     const clonedDOMElementStyle = `
         position: absolute;
-        background-color: ${white};
+        background-color: ${WHITE};
         height: ${height}px;
         width: ${width}px;
     `;

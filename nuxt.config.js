@@ -33,7 +33,7 @@ module.exports = {
             },
         ],
     },
-    loading: {color: '#00bc87', height: '3px'},
+    loading: { color: '#00BC87', height: '3px' },
     css: [
         '~assets/scss/plugins-config.scss',
         '~assets/scss/font-inter-ui.scss',

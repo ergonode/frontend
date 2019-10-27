@@ -12,16 +12,12 @@
         margin: $flexItemsMargin;
     }
 
-    &__text {
-        @include setFont(medium, small, regular, $darkGraphite);
-    }
-
-    &__number {
-        @include setFont(medium, small, regular, $darkGraphite);
+    &__text, &__number {
+        color: $GRAPHITE_DARK;
     }
 
     &__icon {
-        color: $lightGraphite;
+        color: $GRAPHITE_LIGHT;
     }
 
     .non-visible {

@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
+<template functional>
     <span
-        class="section"
-        v-text="label" />
+        class="section font--medium-24-32"
+        v-text="props.label" />
 </template>
 
 <script>
@@ -23,9 +23,8 @@ export default {
 
 <style lang="scss" scoped>
     .section {
-        @include setFont(medium, huge, regular, $darkGraphite);
-
         display: flex;
         align-items: center;
+        color: $GRAPHITE_DARK;
     }
 </style>
