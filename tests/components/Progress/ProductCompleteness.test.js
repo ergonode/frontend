@@ -28,8 +28,12 @@ describe('Badges/ProductCompleteness', () => {
             localVue,
             mocks,
             propsData: {
-                progress: 100,
                 language: 'PL',
+            },
+            computed: {
+              color() {
+                return '';
+              }
             },
       });
     });
