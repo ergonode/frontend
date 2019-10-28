@@ -4,9 +4,11 @@
  */
 <template>
     <div class="filter-content">
-        <GridAdvancedFilterShowOnly v-model="showOnlyEmptyRecords" />
+        <GridAdvancedFilterShowOnly
+            :value="isEmptyRecord"
+            @input="onValueChange" />
         <Divider />
-        <slot v-if="!showOnlyEmptyRecords" />
+        <slot v-if="!isEmptyRecord" />
     </div>
 </template>
 
@@ -20,10 +22,16 @@ export default {
         GridAdvancedFilterShowOnly,
         Divider,
     },
-    data() {
-        return {
-            showOnlyEmptyRecords: false,
-        };
+    props: {
+        isEmptyRecord: {
+            type: Boolean,
+            required: true,
+        },
+    },
+    methods: {
+        onValueChange() {
+            this.$emit('input', !this.isEmptyRecord);
+        },
     },
 };
 </script>

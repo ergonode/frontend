@@ -11,19 +11,18 @@ describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent', () => {
     beforeEach(() => {
         const contentWrapper = {
             render(h) {
-                return h(GridAdvancedFilterTextContent, { props: { value: 'Test' } });
+                return h(GridAdvancedFilterTextContent, { props: { filter: null } });
             }
         };
 
         wrapper = shallowMount(GridAdvancedFilterBaseContent, {
+            propsData: {
+                isEmptyRecord: false,
+            },
             slots: {
                 default: contentWrapper,
             },
         });
-    });
-
-    it('Component is rendered', () => {
-        expect(wrapper.is(GridAdvancedFilterBaseContent)).toBe(true);
     });
 
     it('Component is named well', () => {
@@ -37,11 +36,29 @@ describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent', () => {
         });
 
         it('Are not rendered', () => {
-            wrapper.setData({
-                showOnlyEmptyRecords: true,
+            wrapper.setProps({
+                isEmptyRecord: true,
             });
 
             expect(wrapper.findAll(GridAdvancedFilterTextContent).length).toBe(0);
+        });
+    });
+
+    describe('Emits', () => {
+        it('Not empty records', () => {
+            wrapper.vm.onValueChange();
+            expect(wrapper.emitted().input).toBeTruthy();
+            expect(wrapper.emitted().input[0][0]).toEqual(true);
+        });
+
+        it('Empty records', () => {
+            wrapper.setProps({
+                isEmptyRecord: true,
+            });
+
+            wrapper.vm.onValueChange();
+            expect(wrapper.emitted().input).toBeTruthy();
+            expect(wrapper.emitted().input[0][0]).toEqual(false);
         });
     });
 });

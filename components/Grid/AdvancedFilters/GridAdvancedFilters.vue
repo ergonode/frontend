@@ -76,8 +76,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { Arrow } from '~/model/icons/Arrow';
-import { GHOST_ID } from '~/defaults/grid/main';
+import { ARROW } from '~/defaults/icons';
+import { GHOST_ID } from '~/defaults/grid';
 import GridAdvancedFilterPlaceholder from '~/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder';
 import GridAdvancedFilterGhost from '~/components/Grid/AdvancedFilters/GridAdvancedFilterGhost';
 
@@ -119,7 +119,7 @@ export default {
     data() {
         return {
             isExpanded: false,
-            iconExpanderState: Arrow.DOWN,
+            iconExpanderState: ARROW.DOWN,
             isMouseOverFilters: false,
         };
     },
@@ -155,9 +155,9 @@ export default {
             this.isExpanded = isExpanded;
 
             if (this.isExpanded) {
-                this.iconExpanderState = Arrow.UP;
+                this.iconExpanderState = ARROW.UP;
             } else {
-                this.iconExpanderState = Arrow.DOWN;
+                this.iconExpanderState = ARROW.DOWN;
             }
         },
         onRemoveAll() {

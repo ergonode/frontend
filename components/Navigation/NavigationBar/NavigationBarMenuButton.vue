@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { Arrow } from '~/model/icons/Arrow';
+import { ARROW } from '~/defaults/icons';
 import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 import IconHamburgerList from '~/components/Icon/Menu/IconHamburgerList';
 import IconArrowDouble from '~/components/Icon/Arrows/IconArrowDouble';
@@ -31,7 +31,7 @@ export default {
     },
     data() {
         return {
-            leftDoubleArrow: Arrow.LEFT,
+            leftDoubleArrow: ARROW.LEFT,
         };
     },
     computed: {

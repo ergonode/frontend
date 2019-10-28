@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { Arrow } from '~/model/icons/Arrow';
+import { ARROW } from '~/defaults/icons';
 import Button from '~/components/Buttons/Button';
 import IconArrowSingle from '~/components/Icon/Arrows/IconArrowSingle';
 
@@ -50,8 +50,8 @@ export default {
     },
     data() {
         return {
-            leftArrow: Arrow.LEFT,
-            rightArrow: Arrow.RIGHT,
+            leftArrow: ARROW.LEFT,
+            rightArrow: ARROW.RIGHT,
         };
     },
     methods: {

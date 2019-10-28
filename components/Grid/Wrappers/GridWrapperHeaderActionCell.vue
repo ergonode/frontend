@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { FILTER_OPERATOR } from '~/defaults/operators/main';
+import { FILTER_OPERATOR } from '~/defaults/operators';
 
 export default {
     name: 'GridWrapperHeaderActionCell',

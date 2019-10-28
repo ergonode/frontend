@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { Action } from '~/model/icons/Action';
+import { ACTION } from '~/defaults/icons';
 import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
 import IconBase from '~/components/Icon/IconBase';
 
@@ -32,12 +32,12 @@ export default {
         },
         state: {
             type: String,
-            default: Action.PLUS,
+            default: ACTION.PLUS,
         },
     },
     computed: {
         iconPoints() {
-            if (this.state === Action.MINUS) return '5 11 19 11 19 13 5 13 5 11';
+            if (this.state === ACTION.MINUS) return '5 11 19 11 19 13 5 13 5 11';
             return '11 5 11 11 5 11 5 13 11 13 11 19 13 19 13 13 19 13 19 11 13 11 13 5';
         },
     },

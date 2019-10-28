@@ -15,9 +15,6 @@ describe('TemplateGrid/TemplateGridShadowItem', () => {
             },
         });
     });
-    it('Component is rendered', () => {
-        expect(wrapper.is(TemplateGridShadowItem)).toBe(true);
-    });
 
     it('Component is named well', () => {
         expect(typeof TemplateGridShadowItem.name).toBe('string');

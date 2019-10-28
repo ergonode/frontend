@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilterBaseContent>
+    <GridAdvancedFilterBaseContent
+        :is-empty-record="isEmptyRecord"
+        @input="onEmptyRecordChange">
         <TranslationMultiselectListContent
             :options="options"
             :selected-options="filterValue"
@@ -14,7 +16,7 @@
 <script>
 import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 import TranslationMultiselectListContent from '~/components/Inputs/Select/Contents/TranslationMultiselectListContent';
-import { FILTER_OPERATOR } from '~/defaults/operators/main';
+import { FILTER_OPERATOR } from '~/defaults/operators';
 
 export default {
     name: 'GridAdvancedFilterMultiselectContent',
@@ -39,10 +41,18 @@ export default {
 
             return [];
         },
+        isEmptyRecord() {
+            if (this.filter) return Boolean(this.filter.isEmptyRecord);
+
+            return false;
+        },
     },
     methods: {
         onValueChange(values) {
             this.$emit('input', { value: values.join(','), operator: FILTER_OPERATOR.EQUAL });
+        },
+        onEmptyRecordChange(value) {
+            this.$emit('emptyRecord', value);
         },
     },
 };

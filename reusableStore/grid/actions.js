@@ -16,7 +16,7 @@ import {
 import { swapItemPosition, insertValueAtIndex } from '~/model/arrayWrapper';
 import { COLUMN_IDS } from '~/defaults/grid/cookies';
 import { types } from './mutations';
-import { GHOST_ID } from '~/defaults/grid/main';
+import { GHOST_ID } from '~/defaults/grid';
 
 export default {
     getData({ commit, dispatch, state }, { path }) {
@@ -194,15 +194,26 @@ export default {
             commit(types.SET_FILTER, { id, filter, operator });
         }
     },
-    setAdvancedFilter({ commit, state }, { value, id, operator }) {
+    setAdvancedFilterValue({ commit, state }, { value, id, operator }) {
         // Remove selection on filter action
         commit(types.REMOVE_SELECTED_ROWS);
         commit(types.SET_SELECTION_FOR_ALL_ROWS, false);
 
         if (state.advancedFilters[id] && !value.length) {
-            commit(types.REMOVE_ADVANCED_FILTER_FOR_OPERATOR, { id, operator });
+            commit(types.REMOVE_ADVANCED_FILTER_OPERATOR, { id, operator });
         } else {
-            commit(types.SET_ADVANCED_FILTER, { id, value, operator });
+            commit(types.SET_ADVANCED_FILTER_VALUE, { id, value, operator });
+        }
+    },
+    setAdvancedFilterEmptyRecord({ commit, state }, { id, isEmptyRecord }) {
+        // Remove selection on filter action
+        commit(types.REMOVE_SELECTED_ROWS);
+        commit(types.SET_SELECTION_FOR_ALL_ROWS, false);
+
+        if (state.advancedFilters[id] && !isEmptyRecord) {
+            commit(types.REMOVE_ADVANCED_FILTER_EMPTY_RECORD, id);
+        } else {
+            commit(types.SET_ADVANCED_FILTER_EMPTY_RECORD, { id, isEmptyRecord });
         }
     },
     removeAdvancedFilter({ commit }, id) {

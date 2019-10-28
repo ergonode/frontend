@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { Arrow } from '~/model/icons/Arrow';
+import { ARROW } from '~/defaults/icons';
 import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
@@ -54,7 +54,7 @@ export default {
             return WHITE;
         },
         arrowIconState() {
-            return this.isSelected ? Arrow.UP : Arrow.DOWN;
+            return this.isSelected ? ARROW.UP : ARROW.DOWN;
         },
     },
     methods: {

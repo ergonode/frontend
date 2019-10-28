@@ -30,9 +30,6 @@ describe('Tab/HorizontalTabBar', () => {
             },
         });
     });
-    it('Component rendered correctly', () => {
-        expect(wrapper.is(HorizontalTabBar)).toBe(true);
-    });
 
     it('Check if component is named correctly', () => {
         expect(typeof HorizontalTabBar.name).toBe('string');

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import GridItems from '~/model/dashboard_grid_columns';
+import { GRID_ITEMS } from '~/defaults/dashboard';
 
 export default {
     name: 'Dashboard',
@@ -26,7 +26,7 @@ export default {
     },
     methods: {
         filteredItems() {
-            return GridItems.filter((e) => this.$hasAccess(e.privileges));
+            return GRID_ITEMS.filter((e) => this.$hasAccess(e.privileges));
         },
     },
 };

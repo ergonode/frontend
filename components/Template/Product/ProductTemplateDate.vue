@@ -30,7 +30,7 @@
 
 <script>
 import { format as formatDate, parse as parseDate } from 'date-fns';
-import { Arrow } from '~/model/icons/Arrow';
+import { ARROW } from '~/defaults/icons';
 import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
 import DatePicker from '~/components/Inputs/Date/DatePicker';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
@@ -54,8 +54,8 @@ export default {
     computed: {
         dropDownState() {
             return this.isFocused
-                ? Arrow.UP
-                : Arrow.DOWN;
+                ? ARROW.UP
+                : ARROW.DOWN;
         },
     },
     methods: {

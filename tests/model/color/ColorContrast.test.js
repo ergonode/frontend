@@ -5,7 +5,7 @@
 
 import {
     hexToRGB, calculateRelativeLuminance, calculateContrastRatio,
-} from '~/model/inputs/ColorContrast';
+} from '~/model/color/ColorContrast';
 
 describe('Color contrast conversion', () => {
     it('Hex is converted to RGB', () => {

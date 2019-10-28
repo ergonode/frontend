@@ -35,7 +35,7 @@ import {
 } from '~/model/layout/ElementCopy';
 import { removeColumnCookieByID } from '~/model/grid/cookies/GridLayoutConfiguration';
 import { getDraggedColumnPositionState } from '~/model/drag_and_drop/helpers';
-import { DRAGGED_ELEMENT, COLUMN_TYPE } from '~/defaults/grid/main';
+import { DRAGGED_ELEMENT, COLUMN_TYPE } from '~/defaults/grid';
 
 
 export default {

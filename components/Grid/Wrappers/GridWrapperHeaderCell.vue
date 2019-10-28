@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { GRID_HEADER_TYPE, COLUMN_TYPE } from '~/defaults/grid/main';
+import { GRID_HEADER_TYPE, COLUMN_TYPE } from '~/defaults/grid';
 
 export default {
     name: 'GridWrapperHeaderCell',

@@ -29,10 +29,6 @@ describe('Navigation/SideBar/SideBar', () => {
         });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.is(SideBar)).toBe(true);
-    });
-
     it('Component is named well', () => {
         expect(typeof SideBar.name).toBe('string');
         expect(SideBar.name).toEqual('SideBar');

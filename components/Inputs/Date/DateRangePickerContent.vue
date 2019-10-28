@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { Arrow } from '~/model/icons/Arrow';
+import { ARROW } from '~/defaults/icons';
 import calendar, {
     getNextMonth,
     getPreviousMonth,
@@ -124,8 +124,8 @@ export default {
             lowerBoundYear: year,
             upperBoundMonth: month === 12 ? 1 : month + 1,
             upperBoundYear: month === 12 ? year + 1 : year,
-            leftArrow: Arrow.LEFT,
-            rightArrow: Arrow.RIGHT,
+            leftArrow: ARROW.LEFT,
+            rightArrow: ARROW.RIGHT,
             headerFromValue: '',
             headerToValue: '',
         };

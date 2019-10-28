@@ -14,9 +14,6 @@ describe('TemplateGrid/TemplateGridHeader', () => {
             },
         });
     });
-    it('Component is rendered', () => {
-        expect(wrapper.is(TemplateGridHeader)).toBe(true);
-    });
 
     it('Component is named well', () => {
         expect(typeof TemplateGridHeader.name).toBe('string');

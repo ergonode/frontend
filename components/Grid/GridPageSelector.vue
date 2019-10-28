@@ -4,7 +4,7 @@
  */
 <template>
     <div class="page-selector">
-        <span class="page-selector__tex font--medium-12-16">
+        <span class="page-selector__text font--medium-12-16">
             Show
         </span>
         <Select
@@ -15,7 +15,7 @@
             small
             @input="onValueChange" />
         <span
-            class="page-selector__text"
+            class="page-selector__text font--medium-12-16"
             v-text="infoText" />
     </div>
 </template>

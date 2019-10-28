@@ -17,10 +17,18 @@
             </template>
             <template #badge>
                 <InformationBadge
+                    v-if="status"
+                    :background="status.color"
+                    :color="statusTextContrastRation"
+                    :title="status.code" />
+                <InformationBadge
                     v-if="isReadOnly"
+                    :background="blueColor"
+                    :color="whiteColor"
                     title="READ ONLY">
                     <template #prepend>
                         <IconLock
+                            class="badge__icon"
                             size="24"
                             :fill-color="whiteColor" />
                     </template>
@@ -32,7 +40,10 @@
 </template>
 
 <script>
-import { WHITE } from '~/assets/scss/_variables/_colors.scss';
+import { WHITE, BLUE, GRAPHITE_DARK } from '~/assets/scss/_variables/_colors.scss';
+import {
+    hexToRGB, calculateRelativeLuminance, calculateContrastRatio,
+} from '~/model/color/ColorContrast';
 
 export default {
     name: 'TitleBar',
@@ -52,6 +63,10 @@ export default {
             type: Array,
             default: () => [],
         },
+        status: {
+            type: Object,
+            default: () => {},
+        },
         icon: {
             type: String,
             default: null,
@@ -68,6 +83,21 @@ export default {
     computed: {
         whiteColor() {
             return WHITE;
+        },
+        blueColor() {
+            return BLUE;
+        },
+        statusTextContrastRation() {
+            const convertedRgbText = hexToRGB(WHITE);
+            const convertedRgbBg = hexToRGB(this.status.color);
+            const relativeLuminance = calculateRelativeLuminance(convertedRgbText);
+            const relativeLuminanceBackground = calculateRelativeLuminance(convertedRgbBg);
+            const contrastRatio = calculateContrastRatio(
+                relativeLuminance,
+                relativeLuminanceBackground,
+            );
+
+            return contrastRatio > 4.5 ? WHITE : GRAPHITE_DARK;
         },
     },
     methods: {
@@ -86,6 +116,10 @@ export default {
         align-items: center;
         min-height: 32px;
         padding: 24px;
+
+        .badge__icon {
+            margin: -6px 0 -6px -8px;
+        }
     }
 
 </style>

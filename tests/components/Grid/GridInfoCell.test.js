@@ -15,10 +15,6 @@ describe('Grid/GridInfoCell', () => {
         });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.is(GridInfoCell)).toBe(true);
-    });
-
     it('Component is named well', () => {
         expect(typeof GridInfoCell.name).toBe('string');
         expect(GridInfoCell.name).toEqual('GridInfoCell');

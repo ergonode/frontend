@@ -15,10 +15,6 @@ describe('Navigation/NavigationBar/NavigationBarButton', () => {
         });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.is(NavigationBarButton)).toBe(true);
-    });
-
     it('Component is named well', () => {
         expect(typeof NavigationBarButton.name).toBe('string');
         expect(NavigationBarButton.name).toEqual('NavigationBarButton');

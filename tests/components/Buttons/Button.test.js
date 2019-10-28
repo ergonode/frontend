@@ -17,9 +17,6 @@ describe('Buttons/Button', () => {
     afterEach(() => {
         wrapper.destroy();
     });
-    it('Component is rendered', () => {
-        expect(wrapper.is(Button)).toBe(true);
-    });
 
     it('Component is named well', () => {
         expect(typeof Button.name).toBe('string');

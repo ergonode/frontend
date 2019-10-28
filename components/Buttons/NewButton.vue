@@ -4,7 +4,7 @@
  */
 <template>
     <button
-        :class="['btn', `btn--${theme}`,`btn--${size}`, {'btn--inactive': inactive}]"
+        :class="['btn', `btn--${theme}`,`btn--${size}`]"
         :disabled="disabled"
         :aria-label="title"
         @click="onClick">
@@ -48,8 +48,8 @@
     </button>
 </template>
 <script>
-import { Themes, Sizes } from '~/model/buttons';
-import { Arrow } from '~/model/icons/Arrow';
+import { THEMES, SIZES } from '~/defaults/buttons';
+import { ARROW } from '~/defaults/icons';
 import {
     GRAPHITE, GREY_DARK, WHITE, GREEN,
 } from '~/assets/scss/_variables/_colors.scss';
@@ -66,22 +66,18 @@ export default {
         theme: {
             type: String,
             default: 'primary',
-            validator: (value) => (value in Themes),
+            validator: (value) => Object.values(THEMES).indexOf(value) !== -1,
         },
         size: {
             type: String,
             default: 'regular',
-            validator: (value) => (value in Sizes),
+            validator: (value) => Object.values(SIZES).indexOf(value) !== -1,
         },
         title: {
             type: String,
             default: null,
         },
         disabled: {
-            type: Boolean,
-            default: false,
-        },
-        inactive: {
             type: Boolean,
             default: false,
         },
@@ -102,7 +98,7 @@ export default {
         },
         iconFillColor() {
             if (this.isSelectButton) return GREEN;
-            if (this.theme === Themes.secondary) {
+            if (this.theme === THEMES.SECONDARY) {
                 if (this.disabled) {
                     return GREY_DARK;
                 }
@@ -112,7 +108,7 @@ export default {
             return WHITE;
         },
         iconArrowState() {
-            return this.isSelectButton ? Arrow.UP : Arrow.DOWN;
+            return this.isSelectButton ? ARROW.UP : ARROW.DOWN;
         },
     },
     watch: {

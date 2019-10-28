@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import ButtonTheme from '~/model/theme/button-theme';
+import { THEMES } from '~/defaults/buttons';
 import {
     GREEN, GRAPHITE, GREY, WHITE,
 } from '~/assets/scss/_variables/_colors.scss';
@@ -32,7 +32,7 @@ export default {
         theme: {
             type: String,
             default: 'primary',
-            validator: (value) => ButtonTheme.indexOf(value) !== -1,
+            validator: (value) => Object.values(THEMES).indexOf(value) !== -1,
         },
         shadow: {
             type: Boolean,
@@ -66,7 +66,7 @@ export default {
         },
         iconFillColor() {
             if (this.isDisabled) {
-                if (ButtonTheme.primary) {
+                if (THEMES.PRIMARY) {
                     return WHITE;
                 }
                 return GREY;

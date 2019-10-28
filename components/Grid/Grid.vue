@@ -114,7 +114,7 @@ import {
     GHOST_ELEMENT_MODEL,
     GHOST_ID,
     COLUMN_WIDTH,
-} from '~/defaults/grid/main';
+} from '~/defaults/grid';
 import {
     isMouseOutOfBoundsElement,
 } from '~/model/drag_and_drop/helpers';
@@ -403,7 +403,7 @@ export default {
 
         &--disabled {
             #{$grid}__content::after {
-                z-index: 9999;
+                z-index: 15;
             }
         }
 

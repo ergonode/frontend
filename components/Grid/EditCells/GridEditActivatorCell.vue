@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { AttributeTypes } from '~/defaults/attributes/main';
+import { TYPES } from '~/defaults/attributes';
 
 export default {
     name: 'GridEditActivatorCell',
@@ -81,16 +81,16 @@ export default {
         },
         editableComponent() {
             switch (this.type) {
-            case AttributeTypes.TEXTAREA:
+            case TYPES.TEXTAREA:
                 return () => import('~/components/Grid/EditCells/GridEditLongTextCell');
-            case AttributeTypes.IMAGE:
+            case TYPES.IMAGE:
                 return () => import('~/components/Grid/EditCells/GridEditImageCell');
-            case AttributeTypes.DATE:
+            case TYPES.DATE:
                 return () => import('~/components/Grid/EditCells/GridEditDateCell');
-            case AttributeTypes.LABEL:
+            case TYPES.LABEL:
                 return () => import('~/components/Grid/EditCells/GridEditStatusSelectCell');
-            case AttributeTypes.SELECT:
-            case AttributeTypes.MULTI_SELECT:
+            case TYPES.SELECT:
+            case TYPES.MULTI_SELECT:
                 return () => import('~/components/Grid/EditCells/GridEditSelectCell');
             default: return () => import('~/components/Grid/EditCells/GridEditShortTextCell');
             }

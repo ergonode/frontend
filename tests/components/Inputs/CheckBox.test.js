@@ -15,9 +15,6 @@ describe('Inputs/CheckBox', () => {
             },
         });
     });
-    it('Component is rendered', () => {
-        expect(wrapper.is(CheckBox)).toBe(true);
-    });
 
     it('Component is named well', () => {
         expect(typeof CheckBox.name).toBe('string');

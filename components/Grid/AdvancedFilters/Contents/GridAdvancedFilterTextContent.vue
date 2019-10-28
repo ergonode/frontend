@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilterBaseContent>
+    <GridAdvancedFilterBaseContent
+        :is-empty-record="isEmptyRecord"
+        @input="onEmptyRecordChange">
         <div class="container">
             <TextField
                 :value="filterValue"
@@ -18,7 +20,7 @@
 <script>
 import TextField from '~/components/Inputs/TextField';
 import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
-import { FILTER_OPERATOR } from '~/defaults/operators/main';
+import { FILTER_OPERATOR } from '~/defaults/operators';
 
 export default {
     name: 'GridAdvancedFilterTextContent',
@@ -38,10 +40,18 @@ export default {
 
             return '';
         },
+        isEmptyRecord() {
+            if (this.filter) return Boolean(this.filter.isEmptyRecord);
+
+            return false;
+        },
     },
     methods: {
         onValueChange(value) {
             this.$emit('input', { value, operator: FILTER_OPERATOR.EQUAL });
+        },
+        onEmptyRecordChange(value) {
+            this.$emit('emptyRecord', value);
         },
     },
 };

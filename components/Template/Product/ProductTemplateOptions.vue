@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { Arrow } from '~/model/icons/Arrow';
+import { ARROW } from '~/defaults/icons';
 import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
 import { getValuesByKeys, getValueByKey } from '~/model/objectWrapper';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
@@ -87,8 +87,8 @@ export default {
     computed: {
         dropDownState() {
             return this.isFocused
-                ? Arrow.UP
-                : Arrow.DOWN;
+                ? ARROW.UP
+                : ARROW.DOWN;
         },
         parsedOptions() {
             const optionKeys = Object.keys(this.options);

@@ -28,9 +28,6 @@ describe('Pages/CategoryPage', () => {
             },
         });
     });
-    it('Component rendered correctly', () => {
-        expect(wrapper.is(CategoryPage)).toBe(true);
-    });
 
     it('Check if component is named correctly', () => {
         expect(typeof CategoryPage.name).toBe('string');

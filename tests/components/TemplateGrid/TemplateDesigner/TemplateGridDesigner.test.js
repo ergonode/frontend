@@ -41,10 +41,6 @@ describe('Template/Base/TemplateGridDesigner', () => {
         });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.is(TemplateGridDesigner)).toBe(true);
-    });
-
     it('Component is named well', () => {
         expect(typeof TemplateGridDesigner.name).toBe('string');
         expect(TemplateGridDesigner.name).toEqual('TemplateGridDesigner');
