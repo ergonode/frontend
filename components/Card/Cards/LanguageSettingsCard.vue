@@ -37,6 +37,11 @@ export default {
             return this.$store.state.languageSettings.languages.map((language) => language.name);
         },
     },
+    data() {
+        return {
+            text: 'test',
+        };
+    },
     methods: {
         ...mapActions('languageSettings', [
             'setSelectedLanguages',

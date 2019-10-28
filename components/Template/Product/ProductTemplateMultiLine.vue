@@ -15,9 +15,9 @@
         @input="onValueChange">
         <template #append>
             <ProductTemplateDetailsContent
-                :hint="hint"
-                :error-messages="errorMessages"
-                :is-error="isError" />
+                    :hint="hint"
+                    :error-messages="errorMessages"
+                    :is-error="isError" />
         </template>
     </TextArea>
 </template>
