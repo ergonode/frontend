@@ -21,7 +21,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { UNASSIGNED_GROUP_ID } from '~/defaults/list/main';
+import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
 
 export default {
     name: 'AttributeListGroup',

@@ -16,7 +16,7 @@ import {
 import { swapItemPosition, insertValueAtIndex } from '~/model/arrayWrapper';
 import { COLUMN_IDS } from '~/defaults/grid/cookies';
 import { types } from './mutations';
-import { GHOST_ID } from '~/defaults/grid/main';
+import { GHOST_ID } from '~/defaults/grid';
 
 export default {
     getData({ commit, dispatch, state }, { path }) {

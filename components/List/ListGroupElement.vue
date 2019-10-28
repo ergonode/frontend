@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { Arrow } from '~/model/icons/Arrow';
+import { ARROW } from '~/defaults/icons';
 
 export default {
     name: 'ListGroupElement',
@@ -57,8 +57,8 @@ export default {
     computed: {
         iconState() {
             return this.isExpanded
-                ? Arrow.UP
-                : Arrow.DOWN;
+                ? ARROW.UP
+                : ARROW.DOWN;
         },
     },
     methods: {

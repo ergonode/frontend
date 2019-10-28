@@ -24,7 +24,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { DRAGGED_ELEMENT } from '~/defaults/grid/main';
+import { DRAGGED_ELEMENT } from '~/defaults/grid';
 
 export default {
     name: 'GridProductPage',

@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { SortingOrder } from '~/model/icons/SortingOrder';
+import { SORTING_ORDER } from '~/defaults/icons';
 import { GRAPHITE, GREY, GREEN } from '~/assets/scss/_variables/_colors.scss';
 import IconBase from '~/components/Icon/IconBase';
 
@@ -33,7 +33,7 @@ export default {
     props: {
         sortingOrder: {
             type: String,
-            default: SortingOrder.NONE,
+            default: SORTING_ORDER.NONE,
         },
         fillColor: {
             type: String,
@@ -60,9 +60,9 @@ export default {
     computed: {
         upperArrowFill() {
             switch (this.sortingOrder) {
-            case SortingOrder.ASC:
+            case SORTING_ORDER.ASC:
                 return GREY;
-            case SortingOrder.DESC:
+            case SORTING_ORDER.DESC:
                 return GREEN;
             default:
                 return null;
@@ -70,9 +70,9 @@ export default {
         },
         lowerArrowFill() {
             switch (this.sortingOrder) {
-            case SortingOrder.ASC:
+            case SORTING_ORDER.ASC:
                 return GREEN;
-            case SortingOrder.DESC:
+            case SORTING_ORDER.DESC:
                 return GREY;
             default:
                 return null;

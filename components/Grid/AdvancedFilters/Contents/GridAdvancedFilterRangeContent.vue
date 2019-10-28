@@ -31,7 +31,7 @@
 <script>
 import TextField from '~/components/Inputs/TextField';
 import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
-import { FILTER_OPERATOR } from '~/defaults/operators/main';
+import { FILTER_OPERATOR } from '~/defaults/operators';
 
 export default {
     name: 'GridAdvancedFilterRangeContent',

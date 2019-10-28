@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { ROW_HEIGHT, GRID_LAYOUT } from '~/defaults/grid/main';
+import { ROW_HEIGHT, GRID_LAYOUT } from '~/defaults/grid';
 
 export default {
     name: 'GridHeader',

@@ -4,7 +4,7 @@
  */
 import { types } from './mutations';
 import { getMappedFilters, getMappedElementsToGroups } from '~/model/mappers/gridDataMapper';
-import { UNASSIGNED_GROUP_ID } from '~/defaults/list/main';
+import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
 
 export default {
     getFilteredGroupElements({ commit, state }, { listType, languageCode }) {

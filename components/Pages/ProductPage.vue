@@ -7,6 +7,7 @@
         <TitleBar
             :title="title"
             :buttons="buttons"
+            :status="status"
             :breadcrumbs="breadcrumbs"
             icon="Document"
             :is-read-only="!isUserAllowedToUpdateProduct && isEdit"
@@ -54,7 +55,6 @@ export default {
                     },
                 },
                 ...this.getButtonsForStatuses,
-                this.getActiveStatus,
             ];
 
             this.tabs = [
@@ -106,26 +106,14 @@ export default {
             status: (state) => state.status,
             workflow: (state) => state.workflow,
         }),
-        getActiveStatus() {
-            return {
-                title: this.status.code,
-                theme: 'secondary',
-                inactive: true,
-                disabled: !this.$hasAccess('PRODUCT_UPDATE'),
-                prepend: {
-                    color: this.status.color,
-                    component: () => import('~/components/Badges/StatusBadge'),
-                },
-            };
-        },
         getButtonsForStatuses() {
             if (!this.workflow.length) return [];
             const moreStatuses = JSON.parse(JSON.stringify(this.workflow)); // deep array clone hack
             const statuses = moreStatuses.splice(0, 2);
-            const statusesButtons = statuses.map((current) => ({
-                title: current.code,
+            const statusesButtons = statuses.map((status) => ({
+                title: status.code,
                 theme: 'secondary',
-                action: this.updateStatus.bind(this, current.code),
+                action: this.updateStatus.bind(this, status),
                 disabled: !this.$hasAccess('PRODUCT_UPDATE'),
             }));
 
@@ -139,9 +127,9 @@ export default {
                             component: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
                         },
                         options: [
-                            ...moreStatuses.map((current) => ({
-                                title: current.code,
-                                action: this.updateStatus.bind(this, current.code),
+                            ...moreStatuses.map((status) => ({
+                                title: status.code,
+                                action: this.updateStatus.bind(this, status),
                             })),
                         ],
                     },
@@ -156,17 +144,18 @@ export default {
     methods: {
         ...mapActions('productsDraft', [
             'updateProductStatus',
+            'setProductStatus',
         ]),
-        updateStatus(value = null) {
-            const isConfirm = confirm(`Are you sure you want to change status to ${value}?`); /* eslint-disable-line no-restricted-globals */
+        updateStatus(newStatus) {
+            const { code } = newStatus;
+            const isConfirm = confirm(`Are you sure you want to change status to ${code}?`); /* eslint-disable-line no-restricted-globals */
             if (isConfirm) {
                 this.updateProductStatus({
-                    value,
+                    value: code,
                     attributeId: this.status.attribute_id,
                     onSuccess: () => {
+                        this.setProductStatus(newStatus);
                         this.$addAlert({ type: 'success', message: 'Status updated' });
-                        // this.$router.push({ name: 'product-edit-id-general', params: { id: this.producId } });
-                        window.location.reload(true);
                     },
                 });
             }

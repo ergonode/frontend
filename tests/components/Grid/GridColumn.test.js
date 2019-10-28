@@ -8,7 +8,7 @@ import GridColumn from '~/components/Grid/Columns/GridColumn';
 import draggableMutations from '~/store/draggable/mutations';
 import {
     GHOST_ELEMENT_MODEL,
-} from '~/defaults/grid/main';
+} from '~/defaults/grid';
 
 const localVue = createLocalVue();
 const store = new Store({

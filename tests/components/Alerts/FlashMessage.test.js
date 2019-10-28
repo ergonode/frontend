@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount, createLocalVue } from '@vue/test-utils';
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
 import FlashMessage from '~/components/Alerts/FlashMessage.vue';
 
@@ -27,10 +27,9 @@ describe('Alerts/FlashMessage', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = mount(FlashMessage, {
+        wrapper = shallowMount(FlashMessage, {
             localVue,
             mocks,
-            stubs: ['transition-group'],
         });
     });
 

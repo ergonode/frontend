@@ -28,7 +28,7 @@ import {
 } from '~/model/tree/TreeCalculations';
 import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
 import { isMouseOutOfBoundsElement } from '~/model/drag_and_drop/helpers';
-import { DRAGGED_ELEMENT } from '~/defaults/grid/main';
+import { DRAGGED_ELEMENT } from '~/defaults/grid';
 
 export default {
     name: 'TemplateGridContainer',

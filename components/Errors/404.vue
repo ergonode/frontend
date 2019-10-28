@@ -30,19 +30,12 @@
         </span>
     </div>
 </template>
-
 <script>
 
 export default {
     name: 'Error404',
     components: {
         Button: () => import('~/components/Buttons/Button'),
-    },
-    props: {
-        error: {
-            type: [Object, Error],
-            default: () => {},
-        },
     },
 };
 </script>
@@ -64,6 +57,8 @@ export default {
             }
 
             .navigation-section {
+                display: flex;
+                flex-direction: column;
                 width: 285px;
 
                 &__header {

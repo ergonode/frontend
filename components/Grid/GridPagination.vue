@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { Arrow } from '~/model/icons/Arrow';
+import { ARROW } from '~/defaults/icons';
 
 export default {
     name: 'GridPagination',
@@ -70,7 +70,7 @@ export default {
     },
     data() {
         return {
-            rightArrow: Arrow.RIGHT,
+            rightArrow: ARROW.RIGHT,
         };
     },
     computed: {

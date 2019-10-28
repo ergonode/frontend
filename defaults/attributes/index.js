@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 
-export const AttributeTypes = {
+export const TYPES = {
     TEXT: 'TEXT',
     TEXTAREA: 'TEXTAREA',
     NUMERIC: 'NUMERIC',

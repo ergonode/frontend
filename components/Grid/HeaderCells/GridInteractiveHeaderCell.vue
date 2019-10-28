@@ -50,8 +50,8 @@ import { mapState } from 'vuex';
 import {
     removeColumnCookieByID,
 } from '~/model/grid/cookies/GridLayoutConfiguration';
-import { SortingOrder } from '~/model/icons/SortingOrder';
-import { PINNED_COLUMN_STATE } from '~/defaults/grid/main';
+import { SORTING_ORDER } from '~/defaults/icons';
+import { PINNED_COLUMN_STATE } from '~/defaults/grid';
 import { GRAPHITE_LIGHT } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
@@ -156,13 +156,13 @@ export default {
     },
     methods: {
         onClickSort() {
-            let orderState = SortingOrder.ASC;
+            let orderState = SORTING_ORDER.ASC;
             if (this.isSorted) {
-                if (this.gridState.sortedByColumn.orderState === SortingOrder.ASC) {
-                    orderState = SortingOrder.DESC;
+                if (this.gridState.sortedByColumn.orderState === SORTING_ORDER.ASC) {
+                    orderState = SORTING_ORDER.DESC;
                 }
-                if (this.gridState.sortedByColumn.orderState === SortingOrder.DESC) {
-                    orderState = SortingOrder.ASC;
+                if (this.gridState.sortedByColumn.orderState === SORTING_ORDER.DESC) {
+                    orderState = SORTING_ORDER.ASC;
                 }
             }
             this.$store.dispatch(`${this.namespace}/setSortingState`, { index: this.column.id, orderState });

@@ -5,7 +5,7 @@
 import { mount } from '@vue/test-utils';
 
 import CategoryTreeItem from '~/components/CategoryTreeDesigner/CategoryTreeItem';
-import { Action } from '~/model/icons/Action';
+import { ACTION } from '~/defaults/icons';
 
 describe('CategoryTreeDesigner/CategoryTreeItem', () => {
     let wrapper;
@@ -52,14 +52,14 @@ describe('CategoryTreeDesigner/CategoryTreeItem', () => {
         wrapper.setProps({
             isExpanded: true,
         });
-        expect(wrapper.vm.btnExpanderIconState).toBe(Action.PLUS);
+        expect(wrapper.vm.btnExpanderIconState).toBe(ACTION.PLUS);
     });
 
     it('Expanded is not icon', () => {
         wrapper.setProps({
             isExpanded: false,
         });
-        expect(wrapper.vm.btnExpanderIconState).toBe(Action.MINUS);
+        expect(wrapper.vm.btnExpanderIconState).toBe(ACTION.MINUS);
     });
 
 });
