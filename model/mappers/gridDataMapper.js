@@ -229,7 +229,11 @@ export function getMappedAdvancedFilters(filters) {
 
     Object.keys(filters).forEach((id) => {
         Object.keys(filters[id]).forEach((operator) => {
-            mappedFilter.push(`${id}${operator}${filters[id][operator]}`);
+            if (operator === 'isEmptyRecord') {
+                mappedFilter.push(`${id}=`);
+            } else {
+                mappedFilter.push(`${id}${operator}${filters[id][operator]}`);
+            }
         });
     });
 

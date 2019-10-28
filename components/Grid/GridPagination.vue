@@ -17,7 +17,7 @@
                 </template>
             </Button>
         </Transition>
-        <span class="pagination__text">
+        <span class="pagination__text font--medium-12-16">
             Page
         </span>
         <TextField

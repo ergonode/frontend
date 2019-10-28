@@ -33,12 +33,16 @@ describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent', () => {
 
     describe('Slots', () => {
         it('Are rendered', () => {
+            wrapper.setProps({
+                isEmptyRecord: false,
+            });
+
             expect(wrapper.find(GridAdvancedFilterTextContent).isVueInstance()).toBe(true);
         });
 
         it('Are not rendered', () => {
-            wrapper.setData({
-                showOnlyEmptyRecords: true,
+            wrapper.setProps({
+                isEmptyRecord: true,
             });
 
             expect(wrapper.findAll(GridAdvancedFilterTextContent).length).toBe(0);

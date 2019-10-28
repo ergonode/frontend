@@ -18,11 +18,13 @@ export const types = {
     SET_FILTERED: 'SET_FILTERED',
     SET_ADVANCED_FILTER_AT_INDEX: 'SET_ADVANCED_FILTER_AT_INDEX',
     SET_ADVANCED_FILTERS: 'SET_ADVANCED_FILTERS',
-    SET_ADVANCED_FILTER: 'SET_ADVANCED_FILTER',
+    SET_ADVANCED_FILTER_VALUE: 'SET_ADVANCED_FILTER_VALUE',
+    SET_ADVANCED_FILTER_EMPTY_RECORD: 'SET_ADVANCED_FILTER_EMPTY_RECORD',
     INSERT_ADVANCED_FILTER_AT_INDEX: 'INSERT_ADVANCED_FILTER_AT_INDEX',
     REMOVE_ADVANCED_FILTER_AT_INDEX: 'REMOVE_ADVANCED_FILTER_AT_INDEX',
     REMOVE_ALL_ADVANCED_FILTERS: 'REMOVE_ALL_ADVANCED_FILTERS',
-    REMOVE_ADVANCED_FILTER_FOR_OPERATOR: 'REMOVE_ADVANCED_FILTER_FOR_OPERATOR',
+    REMOVE_ADVANCED_FILTER_OPERATOR: 'REMOVE_ADVANCED_FILTER_OPERATOR',
+    REMOVE_ADVANCED_FILTER_EMPTY_RECORD: 'REMOVE_ADVANCED_FILTER_EMPTY_RECORD',
     REMOVE_ADVANCED_FILTER: 'REMOVE_ADVANCED_FILTER',
     CLEAR_ALL_ADVANCED_FILTERS: 'CLEAR_ALL_ADVANCED_FILTERS',
     SET_FILTER: 'SET_FILTER',
@@ -91,8 +93,13 @@ export default {
         delete state.filters[id];
         state.filters = { ...state.filters };
     },
-    [types.REMOVE_ADVANCED_FILTER_FOR_OPERATOR](state, { id, operator }) {
+    [types.REMOVE_ADVANCED_FILTER_OPERATOR](state, { id, operator }) {
         delete state.advancedFilters[id][operator];
+        state.advancedFilters[id] = { ...state.advancedFilters[id] };
+        state.advancedFilters = { ...state.advancedFilters };
+    },
+    [types.REMOVE_ADVANCED_FILTER_EMPTY_RECORD](state, id) {
+        delete state.advancedFilters[id].isEmptyRecord;
         state.advancedFilters[id] = { ...state.advancedFilters[id] };
         state.advancedFilters = { ...state.advancedFilters };
     },
@@ -107,8 +114,12 @@ export default {
     [types.SET_ADVANCED_FILTERS](state, advancedFiltersData) {
         state.advancedFiltersData = advancedFiltersData;
     },
-    [types.SET_ADVANCED_FILTER](state, { id, operator, value }) {
+    [types.SET_ADVANCED_FILTER_VALUE](state, { id, operator, value }) {
         state.advancedFilters[id] = { ...state.advancedFilters[id], [operator]: value };
+        state.advancedFilters = { ...state.advancedFilters };
+    },
+    [types.SET_ADVANCED_FILTER_EMPTY_RECORD](state, { id, isEmptyRecord }) {
+        state.advancedFilters[id] = { ...state.advancedFilters[id], isEmptyRecord };
         state.advancedFilters = { ...state.advancedFilters };
     },
     [types.REMOVE_ALL_ADVANCED_FILTERS](state) {

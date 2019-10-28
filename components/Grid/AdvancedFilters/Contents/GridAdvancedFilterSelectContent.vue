@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilterBaseContent>
+    <GridAdvancedFilterBaseContent
+        :is-empty-record="isEmptyRecord"
+        @input="onEmptyRecordChange">
         <TranslationSelectListContent
             :options="options"
             :selected-options="filterValue"
@@ -38,10 +40,18 @@ export default {
 
             return '';
         },
+        isEmptyRecord() {
+            if (this.filter) return Boolean(this.filter.isEmptyRecord);
+
+            return false;
+        },
     },
     methods: {
         onValueChange(value) {
             this.$emit('input', { value: value.key, operator: FILTER_OPERATOR.EQUAL });
+        },
+        onEmptyRecordChange(value) {
+            this.$emit('emptyRecord', value);
         },
     },
 };

@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilterBaseContent>
+    <GridAdvancedFilterBaseContent
+        :is-empty-record="isEmptyRecord"
+        @input="onEmptyRecordChange">
         <DateRangePickerContent
             :value="parsedDate"
             :input-header="true"
@@ -46,6 +48,11 @@ export default {
                 to: dateTo,
             };
         },
+        isEmptyRecord() {
+            if (this.filter) return Boolean(this.filter.isEmptyRecord);
+
+            return false;
+        },
     },
     methods: {
         onValueChange({ from, to }) {
@@ -56,6 +63,9 @@ export default {
                 && dateFrom) this.$emit('input', { value: dateFrom, operator: FILTER_OPERATOR.GREATER_OR_EQUAL });
             else if (this.filter[FILTER_OPERATOR.SMALLER_OR_EQUAL] !== dateTo
                 && dateTo) this.$emit('input', { value: dateTo, operator: FILTER_OPERATOR.SMALLER_OR_EQUAL });
+        },
+        onEmptyRecordChange(value) {
+            this.$emit('emptyRecord', value);
         },
     },
 };
