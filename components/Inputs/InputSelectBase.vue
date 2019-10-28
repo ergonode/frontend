@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { Arrow } from '~/model/icons/Arrow';
+import { ARROW } from '~/defaults/icons';
 import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 import FadeTransition from '~/components/Transitions/FadeTransition';
 import SelectBaseContent from '~/components/Inputs/Select/Contents/SelectBaseContent';
@@ -152,8 +152,8 @@ export default {
     computed: {
         dropDownState() {
             return this.isFocused
-                ? Arrow.UP
-                : Arrow.DOWN;
+                ? ARROW.UP
+                : ARROW.DOWN;
         },
         isEmpty() {
             return this.value === '' || this.value === null;

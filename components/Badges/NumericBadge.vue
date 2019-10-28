@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { THEME } from '~/defaults/theme/main';
+import { THEME } from '~/defaults/theme';
 
 export default {
     name: 'NumericBadge',

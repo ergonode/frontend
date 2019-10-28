@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { Align } from '~/model/icons/Align';
+import { ALIGN } from '~/defaults/icons';
 import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
 import IconBase from '~/components/Icon/IconBase';
 
@@ -24,7 +24,7 @@ export default {
     props: {
         state: {
             type: String,
-            default: Align.LEFT,
+            default: ALIGN.LEFT,
         },
         fillColor: {
             type: String,
@@ -42,7 +42,7 @@ export default {
     },
     computed: {
         iconTransform() {
-            if (this.state === Align.RIGHT) return 'translate(12, 12) scale(-1, 1) translate(-12, -12)';
+            if (this.state === ALIGN.RIGHT) return 'translate(12, 12) scale(-1, 1) translate(-12, -12)';
 
             return null;
         },

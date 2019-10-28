@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { PINNED_COLUMN_STATE } from '~/defaults/grid/main';
+import { PINNED_COLUMN_STATE } from '~/defaults/grid';
 
 export default {
     name: 'GridSentinelColumn',

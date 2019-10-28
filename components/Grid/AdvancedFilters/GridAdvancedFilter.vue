@@ -73,13 +73,13 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { Arrow } from '~/model/icons/Arrow';
-import { AttributeTypes } from '~/defaults/attributes/main';
+import { ARROW } from '~/defaults/icons';
+import { TYPES } from '~/defaults/attributes';
 import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '~/model/layout/ElementCopy';
-import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT } from '~/defaults/grid/main';
+import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT } from '~/defaults/grid';
 import {
     getDraggedColumnPositionState,
 } from '~/model/drag_and_drop/helpers';
@@ -168,31 +168,31 @@ export default {
             return optionKeys.map((key) => ({ key, value: options[key] }));
         },
         arrowIconState() {
-            return this.isFocused ? Arrow.UP : Arrow.DOWN;
+            return this.isFocused ? ARROW.UP : ARROW.DOWN;
         },
         selectFooterComponent() {
             switch (this.data.type) {
-            case AttributeTypes.SELECT:
+            case TYPES.SELECT:
                 return () => import('~/components/Inputs/Select/Contents/Footers/SelectContentFooter');
-            case AttributeTypes.MULTI_SELECT:
-            case AttributeTypes.DATE:
-            case AttributeTypes.PRICE:
+            case TYPES.MULTI_SELECT:
+            case TYPES.DATE:
+            case TYPES.PRICE:
                 return () => import('~/components/Inputs/Select/Contents/Footers/MultiselectContentFooter');
             default: return () => import('~/components/Inputs/Select/Contents/Footers/SelectContentApplyFooter');
             }
         },
         selectBodyComponent() {
             switch (this.data.type) {
-            case AttributeTypes.SELECT:
+            case TYPES.SELECT:
                 return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterSelectContent');
-            case AttributeTypes.MULTI_SELECT:
+            case TYPES.MULTI_SELECT:
                 return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterMultiselectContent');
-            case AttributeTypes.TEXT:
+            case TYPES.TEXT:
                 return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
-            case AttributeTypes.DATE:
+            case TYPES.DATE:
                 return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterDateContent');
-            case AttributeTypes.PRICE:
-            case AttributeTypes.NUMERIC:
+            case TYPES.PRICE:
+            case TYPES.NUMERIC:
                 return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterRangeContent');
             default: return () => import('~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
             }
@@ -281,7 +281,7 @@ export default {
         onValueChange({ value, operator }) {
             this.$store.dispatch(`${this.namespace}/setAdvancedFilter`, { id: this.data.id, operator, value });
 
-            if (this.data.type === AttributeTypes.SELECT) {
+            if (this.data.type === TYPES.SELECT) {
                 this.onApply();
             }
         },

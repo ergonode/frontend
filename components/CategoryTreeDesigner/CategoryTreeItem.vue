@@ -31,7 +31,7 @@
     </div>
 </template>
 <script>
-import { Action } from '~/model/icons/Action';
+import { ACTION } from '~/defaults/icons';
 import IconPlusMinus from '~/components/Icon/Actions/IconPlusMinus';
 import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
 import NumericBadge from '~/components/Badges/NumericBadge';
@@ -70,8 +70,8 @@ export default {
         },
         btnExpanderIconState() {
             return this.isExpanded
-                ? Action.PLUS
-                : Action.MINUS;
+                ? ACTION.PLUS
+                : ACTION.MINUS;
         },
         contextualMenuHoveStateClasses() {
             return { 'grid-item__contextual-menu--hovered': this.isHovered };

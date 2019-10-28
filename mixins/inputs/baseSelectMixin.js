@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Arrow } from '~/model/icons/Arrow';
+import { ARROW } from '~/defaults/icons';
 
 export default {
     data() {
@@ -42,8 +42,8 @@ export default {
     computed: {
         dropDownState() {
             return this.isFocused
-                ? Arrow.UP
-                : Arrow.DOWN;
+                ? ARROW.UP
+                : ARROW.DOWN;
         },
         isEmpty() {
             return this.value === '' || this.value === null || this.value.length === 0;

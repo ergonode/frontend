@@ -15,7 +15,7 @@
 import { format as formatDate, parse as parseDate } from 'date-fns';
 import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 import DateRangePickerContent from '~/components/Inputs/Date/DateRangePickerContent';
-import { FILTER_OPERATOR } from '~/defaults/operators/main';
+import { FILTER_OPERATOR } from '~/defaults/operators';
 
 export default {
     name: 'GridAdvancedFilterDateContent',

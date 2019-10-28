@@ -114,7 +114,7 @@ import {
     GHOST_ELEMENT_MODEL,
     GHOST_ID,
     COLUMN_WIDTH,
-} from '~/defaults/grid/main';
+} from '~/defaults/grid';
 import {
     isMouseOutOfBoundsElement,
 } from '~/model/drag_and_drop/helpers';

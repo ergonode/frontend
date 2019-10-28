@@ -43,7 +43,7 @@
 
 <script>
 import tabBarMixin from '~/mixins/tabBar/tabBarMixin';
-import { Arrow } from '~/model/icons/Arrow';
+import { ARROW } from '~/defaults/icons';
 
 export default {
     name: 'VerticalTabBar',
@@ -61,8 +61,8 @@ export default {
     computed: {
         expendStateTabIcon() {
             return this.isExpanded
-                ? Arrow.LEFT
-                : Arrow.RIGHT;
+                ? ARROW.LEFT
+                : ARROW.RIGHT;
         },
     },
     methods: {

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 
-export default [
+export const GRID_ITEMS = [
     {
         title: 'Categories',
         actionTitle: 'Create categories',

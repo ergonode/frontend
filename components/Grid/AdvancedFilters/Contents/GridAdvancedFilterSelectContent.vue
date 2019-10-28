@@ -14,7 +14,7 @@
 <script>
 import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 import TranslationSelectListContent from '~/components/Inputs/Select/Contents/TranslationSelectListContent';
-import { FILTER_OPERATOR } from '~/defaults/operators/main';
+import { FILTER_OPERATOR } from '~/defaults/operators';
 
 export default {
     name: 'GridAdvancedFilterSelectContent',

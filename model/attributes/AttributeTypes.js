@@ -3,42 +3,42 @@
  * See LICENSE for license details.
  */
 
-import { AttributeTypes } from '~/defaults/attributes/main';
+import { TYPES } from '~/defaults/attributes';
 
 export function hasOptions(type) {
-    return type === AttributeTypes.SELECT || type === AttributeTypes.MULTI_SELECT;
+    return type === TYPES.SELECT || type === TYPES.MULTI_SELECT;
 }
 
 export function hasPlaceholder(type) {
     return (
-        type === AttributeTypes.TEXT
-        || type === AttributeTypes.TEXTAREA
-        || type === AttributeTypes.NUMERIC
+        type === TYPES.TEXT
+        || type === TYPES.TEXTAREA
+        || type === TYPES.NUMERIC
     );
 }
 
 export function hasParams(type) {
     return (
-        type === AttributeTypes.IMAGE
-        || type === AttributeTypes.PRICE
-        || type === AttributeTypes.UNIT
-        || type === AttributeTypes.DATE
+        type === TYPES.IMAGE
+        || type === TYPES.PRICE
+        || type === TYPES.UNIT
+        || type === TYPES.DATE
     );
 }
 
 export function hasParamsWithMultiSelect(type) {
-    return type === AttributeTypes.IMAGE;
+    return type === TYPES.IMAGE;
 }
 
 export function getParamsOptionsForType(type, data) {
     switch (type) {
-    case AttributeTypes.UNIT:
+    case TYPES.UNIT:
         return data.units;
-    case AttributeTypes.DATE:
+    case TYPES.DATE:
         return data.dateFormats;
-    case AttributeTypes.PRICE:
+    case TYPES.PRICE:
         return data.currencies;
-    case AttributeTypes.IMAGE:
+    case TYPES.IMAGE:
         return data.imageFormats;
     default:
         return [];
@@ -47,23 +47,23 @@ export function getParamsOptionsForType(type, data) {
 
 export function getIcon(type) {
     switch (type) {
-    case AttributeTypes.TEXT:
+    case TYPES.TEXT:
         return 'Text';
-    case AttributeTypes.TEXTAREA:
+    case TYPES.TEXTAREA:
         return 'Textarea';
-    case AttributeTypes.NUMERIC:
+    case TYPES.NUMERIC:
         return 'Numeric';
-    case AttributeTypes.SELECT:
+    case TYPES.SELECT:
         return 'Select';
-    case AttributeTypes.MULTI_SELECT:
+    case TYPES.MULTI_SELECT:
         return 'MultiSelect';
-    case AttributeTypes.IMAGE:
+    case TYPES.IMAGE:
         return 'Image';
-    case AttributeTypes.PRICE:
+    case TYPES.PRICE:
         return 'Price';
-    case AttributeTypes.UNIT:
+    case TYPES.UNIT:
         return 'Unit';
-    case AttributeTypes.DATE:
+    case TYPES.DATE:
         return 'Date';
     default:
         return '';
@@ -72,23 +72,23 @@ export function getIcon(type) {
 
 export function getTypeTranslation(type) {
     switch (type) {
-    case AttributeTypes.TEXT:
+    case TYPES.TEXT:
         return 'TEXT';
-    case AttributeTypes.TEXTAREA:
+    case TYPES.TEXTAREA:
         return 'TEXT AREA';
-    case AttributeTypes.NUMERIC:
+    case TYPES.NUMERIC:
         return 'NUMERIC';
-    case AttributeTypes.SELECT:
+    case TYPES.SELECT:
         return 'SELECT';
-    case AttributeTypes.MULTI_SELECT:
+    case TYPES.MULTI_SELECT:
         return 'MULTI SELECT';
-    case AttributeTypes.IMAGE:
+    case TYPES.IMAGE:
         return 'IMAGE';
-    case AttributeTypes.PRICE:
+    case TYPES.PRICE:
         return 'PRICE';
-    case AttributeTypes.UNIT:
+    case TYPES.UNIT:
         return 'UNIT';
-    case AttributeTypes.DATE:
+    case TYPES.DATE:
         return 'DATE';
     default:
         return '';
@@ -97,13 +97,13 @@ export function getTypeTranslation(type) {
 
 export function getParamsKeyForType(type) {
     switch (type) {
-    case AttributeTypes.DATE:
+    case TYPES.DATE:
         return 'format';
-    case AttributeTypes.UNIT:
+    case TYPES.UNIT:
         return 'unit';
-    case AttributeTypes.PRICE:
+    case TYPES.PRICE:
         return 'currency';
-    case AttributeTypes.IMAGE:
+    case TYPES.IMAGE:
         return 'formats';
     default:
         return '';
@@ -112,23 +112,23 @@ export function getParamsKeyForType(type) {
 
 export function getTypeElement(type) {
     switch (type) {
-    case AttributeTypes.TEXT:
+    case TYPES.TEXT:
         return 'SingleLine';
-    case AttributeTypes.TEXTAREA:
+    case TYPES.TEXTAREA:
         return 'MultiLine';
-    case AttributeTypes.NUMERIC:
+    case TYPES.NUMERIC:
         return 'SingleLine';
-    case AttributeTypes.SELECT:
+    case TYPES.SELECT:
         return 'Options';
-    case AttributeTypes.MULTI_SELECT:
+    case TYPES.MULTI_SELECT:
         return 'Options';
-    case AttributeTypes.IMAGE:
+    case TYPES.IMAGE:
         return 'Image';
-    case AttributeTypes.PRICE:
+    case TYPES.PRICE:
         return 'SingleLine';
-    case AttributeTypes.UNIT:
+    case TYPES.UNIT:
         return 'SingleLine';
-    case AttributeTypes.DATE:
+    case TYPES.DATE:
         return 'Date';
     default:
         return 'SingleLine';

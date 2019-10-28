@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 /* eslint-disable no-param-reassign */
-import { STATES } from '~/defaults/draggable/main';
+import { STATES } from '~/defaults/draggable';
 
 const onDragStart = ({ width, height, backgroundColor }, event) => {
     const clonedDOMElement = event.target.cloneNode(true);

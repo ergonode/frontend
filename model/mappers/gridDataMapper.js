@@ -8,7 +8,7 @@ import {
     GRID_HEADER_TYPE,
     COLUMN_TYPE,
     COLUMN_WIDTH,
-} from '~/defaults/grid/main';
+} from '~/defaults/grid';
 
 const getMappedColumnHeaderTitle = ({
     id,

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { Arrow } from '~/model/icons/Arrow';
+import { ARROW } from '~/defaults/icons';
 import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
 import IconBase from '~/components/Icon/IconBase';
 
@@ -26,7 +26,7 @@ export default {
     props: {
         state: {
             type: String,
-            default: Arrow.DOWN,
+            default: ARROW.DOWN,
         },
         fillColor: {
             type: String,
@@ -44,9 +44,9 @@ export default {
     },
     computed: {
         iconTransform() {
-            if (this.state === Arrow.LEFT) return 'translate(12, 12.005) scale(1, -1) rotate(-270) translate(-12, -12.005)';
-            if (this.state === Arrow.RIGHT) return 'translate(12, 12) rotate(-90) translate(-12, -12)';
-            if (this.state === Arrow.UP) return 'translate(12, 12.005) scale(1, -1) translate(-12, -12.005)';
+            if (this.state === ARROW.LEFT) return 'translate(12, 12.005) scale(1, -1) rotate(-270) translate(-12, -12.005)';
+            if (this.state === ARROW.RIGHT) return 'translate(12, 12) rotate(-90) translate(-12, -12)';
+            if (this.state === ARROW.UP) return 'translate(12, 12.005) scale(1, -1) translate(-12, -12.005)';
 
             return null;
         },
