@@ -17,11 +17,6 @@ describe('TemplateGrid/TemplateGridPresentationLayer', () => {
         });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.is(TemplateGridPresentationLayer)).toBe(true);
-        expect(wrapper.isVueInstance()).toBeTruthy();
-    });
-
     it('Component is named well', () => {
         expect(typeof TemplateGridPresentationLayer.name).toBe('string');
         expect(TemplateGridPresentationLayer.name).toEqual('TemplateGridPresentationLayer');

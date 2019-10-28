@@ -25,9 +25,6 @@ describe('Pages/AttributePage', () => {
             },
         });
     });
-    it('Component rendered correctly', () => {
-        expect(wrapper.is(AttributePage)).toBe(true);
-    });
 
     it('Check if component is named correctly', () => {
         expect(typeof AttributePage.name).toBe('string');

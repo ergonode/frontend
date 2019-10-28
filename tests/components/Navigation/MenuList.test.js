@@ -34,10 +34,6 @@ describe('Navigation/MenuList', () => {
         });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.is(MenuList)).toBe(true);
-    });
-
     it('Component is named well', () => {
         expect(typeof MenuList.name).toBe('string');
         expect(MenuList.name).toEqual('MenuList');

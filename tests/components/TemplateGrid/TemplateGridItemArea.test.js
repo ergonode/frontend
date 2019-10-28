@@ -18,10 +18,6 @@ describe('TemplateGrid/TemplateGridItemArea', () => {
             },
         });
     });
-    it('Component is rendered', () => {
-        expect(wrapper.is(TemplateGridItemArea)).toBe(true);
-        expect(wrapper.isVueInstance()).toBeTruthy();
-    });
 
     it('Component is named well', () => {
         expect(typeof TemplateGridItemArea.name).toBe('string');

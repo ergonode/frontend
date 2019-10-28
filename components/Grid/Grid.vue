@@ -403,7 +403,7 @@ export default {
 
         &--disabled {
             #{$grid}__content::after {
-                z-index: 9999;
+                z-index: 15;
             }
         }
 

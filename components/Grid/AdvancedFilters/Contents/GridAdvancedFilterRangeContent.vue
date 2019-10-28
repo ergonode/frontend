@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridAdvancedFilterBaseContent>
+    <GridAdvancedFilterBaseContent
+        :is-empty-record="isEmptyRecord"
+        @input="onEmptyRecordChange">
         <div class="container">
             <TextField
                 :value="filter[operators.GREATER_OR_EQUAL]"
@@ -47,10 +49,18 @@ export default {
         operators() {
             return FILTER_OPERATOR;
         },
+        isEmptyRecord() {
+            if (this.filter) return Boolean(this.filter.isEmptyRecord);
+
+            return false;
+        },
     },
     methods: {
         onValueChange(value, operator) {
             this.$emit('input', { value, operator });
+        },
+        onEmptyRecordChange(value) {
+            this.$emit('emptyRecord', value);
         },
     },
 };

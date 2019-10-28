@@ -36,9 +36,6 @@ describe('Tab/HorizontalTabContent', () => {
             stubs: ['NuxtChild', 'NuxtLink'],
         });
     });
-    it('Component rendered correctly', () => {
-        expect(wrapper.is(HorizontalTabContent)).toBe(true);
-    });
 
     it('Check if component is named correctly', () => {
         expect(typeof HorizontalTabContent.name).toBe('string');

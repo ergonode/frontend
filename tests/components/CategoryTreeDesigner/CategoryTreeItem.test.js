@@ -17,9 +17,6 @@ describe('CategoryTreeDesigner/CategoryTreeItem', () => {
             },
         });
     });
-    it('Component is rendered', () => {
-        expect(wrapper.is(CategoryTreeItem)).toBe(true);
-    });
 
     it('Component is named well', () => {
         expect(typeof CategoryTreeItem.name).toBe('string');

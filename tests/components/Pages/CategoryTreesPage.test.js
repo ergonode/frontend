@@ -34,9 +34,6 @@ describe('Pages/CategoryTreePage', () => {
             },
         });
     });
-    it('Component rendered correctly', () => {
-        expect(wrapper.is(CategoryTreePage)).toBe(true);
-    });
 
     it('Check if component is named correctly', () => {
         expect(typeof CategoryTreePage.name).toBe('string');

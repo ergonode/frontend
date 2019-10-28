@@ -15,10 +15,6 @@ describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterShowOnly', () => {
         });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.is(GridAdvancedFilterShowOnly)).toBe(true);
-    });
-
     it('Component is named well', () => {
         expect(typeof GridAdvancedFilterShowOnly.name).toBe('string');
         expect(GridAdvancedFilterShowOnly.name).toEqual('GridAdvancedFilterShowOnly');

@@ -32,10 +32,6 @@ describe('Template/Base/TemplateGridDraggableLayer', () => {
         });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.is(TemplateGridDraggableLayer)).toBe(true);
-    });
-
     it('Component is named well', () => {
         expect(typeof TemplateGridDraggableLayer.name).toBe('string');
         expect(TemplateGridDraggableLayer.name).toEqual('TemplateGridDraggableLayer');

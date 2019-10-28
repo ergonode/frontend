@@ -59,6 +59,7 @@
                     :is="selectBodyComponent"
                     :filter="filter || {}"
                     :options="options"
+                    @emptyRecord="onEmptyRecordChange"
                     @input="onValueChange" />
             </template>
             <template #footer>
@@ -145,6 +146,8 @@ export default {
         }),
         filterValue() {
             if (this.filter) {
+                if (this.filter.isEmptyRecord) return 'Empty records';
+
                 const value = [];
 
                 Object.keys(this.filter).forEach((key) => {
@@ -278,8 +281,11 @@ export default {
 
             return true;
         },
+        onEmptyRecordChange(isEmptyRecord) {
+            this.$store.dispatch(`${this.namespace}/setAdvancedFilterEmptyRecord`, { id: this.data.id, isEmptyRecord });
+        },
         onValueChange({ value, operator }) {
-            this.$store.dispatch(`${this.namespace}/setAdvancedFilter`, { id: this.data.id, operator, value });
+            this.$store.dispatch(`${this.namespace}/setAdvancedFilterValue`, { id: this.data.id, operator, value });
 
             if (this.data.type === AttributeTypes.SELECT) {
                 this.onApply();
