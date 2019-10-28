@@ -23,10 +23,6 @@ describe('Alert', () => {
         });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.is(Alert)).toBe(true);
-    });
-
     it('Component is named well', () => {
         expect(typeof Alert.name).toBe('string');
         expect(Alert.name).toEqual('Alert');

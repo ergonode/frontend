@@ -48,7 +48,7 @@ export default {
     },
     methods: {
         onValueChange(value) {
-            this.$emit('input', { value, operator: FILTER_OPERATOR.EQUAL, isEmptyRecord: false });
+            this.$emit('input', { value, operator: FILTER_OPERATOR.EQUAL });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

@@ -10,10 +10,6 @@ describe('TemplateGrid/TemplateGridItemsContainer', () => {
     beforeEach(() => {
         wrapper = mount(TemplateGridItemsContainer);
     });
-    it('Component is rendered', () => {
-        expect(wrapper.is(TemplateGridItemsContainer)).toBe(true);
-        expect(wrapper.isVueInstance()).toBeTruthy();
-    });
 
     it('Component is named well', () => {
         expect(typeof TemplateGridItemsContainer.name).toBe('string');

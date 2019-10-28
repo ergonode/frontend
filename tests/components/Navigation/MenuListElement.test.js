@@ -42,9 +42,6 @@ describe('Navigation/MenuListElement', () => {
         wrapper.destroy();
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.is(MenuListElement)).toBe(true);
-    });
     it('Component is named well', () => {
         expect(typeof MenuListElement.name).toBe('string');
         expect(MenuListElement.name).toEqual('MenuListElement');

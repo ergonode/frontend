@@ -29,9 +29,6 @@ describe('Pages/UserPage', () => {
             },
         });
     });
-    it('Component rendered correctly', () => {
-        expect(wrapper.is(UserPage)).toBe(true);
-    });
 
     it('Check if component is named correctly', () => {
         expect(typeof UserPage.name).toBe('string');

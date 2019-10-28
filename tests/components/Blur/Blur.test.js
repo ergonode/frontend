@@ -12,10 +12,6 @@ describe('Blur/Blur', () => {
         wrapper = mount(Blur);
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.is(Blur)).toBe(true);
-    });
-
     it('Component is named well', () => {
         expect(typeof Blur.name).toBe('string');
         expect(Blur.name).toEqual('Blur');

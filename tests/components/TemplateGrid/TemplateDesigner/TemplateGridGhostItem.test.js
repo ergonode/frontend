@@ -31,10 +31,6 @@ describe('Template/Base/TemplateGridGhostItem', () => {
         });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.is(TemplateGridGhostItem)).toBe(true);
-    });
-
     it('Component is named well', () => {
         expect(typeof TemplateGridGhostItem.name).toBe('string');
         expect(TemplateGridGhostItem.name).toEqual('TemplateGridGhostItem');

@@ -10,9 +10,6 @@ describe('Inputs/Toggler/Toggler', () => {
     beforeEach(() => {
         wrapper = mount(Toggler);
     });
-    it('Component is rendered', () => {
-        expect(wrapper.is(Toggler)).toBe(true);
-    });
 
     it('Component is named well', () => {
         expect(typeof Toggler.name).toBe('string');

@@ -22,10 +22,6 @@ describe('TitleBar/TitleBarBreadcrumb', () => {
         });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.is(TitleBarBreadcrumb)).toBe(true);
-    });
-
     it('Component is named well', () => {
         expect(typeof TitleBarBreadcrumb.name).toBe('string');
         expect(TitleBarBreadcrumb.name).toEqual('TitleBarBreadcrumb');

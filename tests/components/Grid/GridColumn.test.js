@@ -50,10 +50,6 @@ describe('Grid/GridColumn', () => {
         });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.is(GridColumn)).toBe(true);
-    });
-
     it('Component is named well', () => {
         expect(typeof GridColumn.name).toBe('string');
         expect(GridColumn.name).toEqual('GridColumn');
