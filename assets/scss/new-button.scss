@@ -23,7 +23,7 @@
         cursor: not-allowed;
     }
 
-    &:hover:not(:disabled):not(.btn--inactive) {
+    &:hover:not(:disabled) {
         box-shadow: $ELEVATOR_2_DP;
     }
 
@@ -52,10 +52,6 @@
         min-width: 130px;
     }
 
-    &--inactive {
-        cursor: default;
-    }
-
     &--primary {
         background-color: $GREEN;
 
@@ -75,6 +71,10 @@
             #{$btn}__title {
                 color: $GREY_DARK;
             }
+        }
+
+        &:hover:not(:disabled) {
+            background-color: $WHITE;
         }
     }
 

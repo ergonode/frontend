@@ -4,7 +4,7 @@
  */
 <template>
     <button
-        :class="['btn', `btn--${theme}`,`btn--${size}`, {'btn--inactive': inactive}]"
+        :class="['btn', `btn--${theme}`,`btn--${size}`]"
         :disabled="disabled"
         :aria-label="title"
         @click="onClick">
@@ -78,10 +78,6 @@ export default {
             default: null,
         },
         disabled: {
-            type: Boolean,
-            default: false,
-        },
-        inactive: {
             type: Boolean,
             default: false,
         },

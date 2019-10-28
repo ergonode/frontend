@@ -137,6 +137,7 @@ export default {
         }
 
         &__title {
+            flex: 1;
             margin-right: 8px;
             color: $GRAPHITE_DARK;
             text-overflow: ellipsis;
@@ -145,7 +146,7 @@ export default {
         }
 
         &__contextual-menu {
-            justify-self: flex-end;
+            flex: 0 1 auto;
             align-items: flex-start;
             opacity: 0;
 
