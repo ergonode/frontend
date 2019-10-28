@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { Colors } from '~/model/inputs/Colors';
+import { STATUS as COLOR_STATUS } from '~/defaults/colors';
 import InputSelectBase from '~/components/Inputs/InputSelectBase';
 
 export default {
@@ -66,7 +66,7 @@ export default {
         },
         options: {
             type: Array,
-            default: () => Colors,
+            default: () => COLOR_STATUS,
         },
         solid: {
             type: Boolean,

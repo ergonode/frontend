@@ -14,6 +14,7 @@ const onDefaultError = () => {};
 
 export default {
     setProductSku: ({ commit }, sku) => commit(types.SET_PRODUCT_SKU, sku),
+    setProductStatus: ({ commit }, status) => commit(types.SET_PRODUCT_STATUS, status),
     setProductTemplate: ({ commit }, template) => commit(types.SET_PRODUCT_TEMPLATE, template),
     setProductCategories: ({ commit }, categories = []) => {
         commit(types.SET_PRODUCT_CATEGORIES, categories);

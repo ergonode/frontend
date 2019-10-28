@@ -5,7 +5,7 @@
 <template>
     <div :class="['numeric-badge', `numeric-badge--${theme}`]">
         <span
-            class="font--semi-bold-10-16"
+            class="font--semi-bold-10-12"
             v-text="number" />
     </div>
 </template>
@@ -36,6 +36,7 @@ export default {
         align-items: center;
         min-width: 16px;
         height: 16px;
+        box-sizing: border-box;
         border-radius: 999px;
 
         &--transparent {

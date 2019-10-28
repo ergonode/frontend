@@ -9,7 +9,11 @@ import InformationBadge from '~/components/Badges/InformationBadge.vue';
 describe('Badges/InformationBadge', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(InformationBadge);
+        wrapper = shallowMount(InformationBadge, {
+          propsData: {
+              title: '',
+          }
+      });
     });
 
     it('Component is rendered', () => {
@@ -22,7 +26,7 @@ describe('Badges/InformationBadge', () => {
     });
 
     it('Check default text', () => {
-        expect(wrapper.find('.badge__title').text()).toEqual('Title');
+        expect(wrapper.find('.badge__title').text()).toEqual('');
     });
 
     it('Check text', () => {
