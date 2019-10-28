@@ -32,8 +32,6 @@ export default {
     },
     created() {
         let generalRoute = { name: 'category-tree-new-general' };
-        let translationRoute = { name: 'category-tree-new-translations' };
-        let designerRoute = { name: 'category-tree-new-designer' };
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -47,9 +45,10 @@ export default {
         ];
         this.isUserAllowedToUpdateCategoryTree = this.$hasAccess('CATEGORY_TREE_UPDATE');
         if (this.isEdit) {
+            const translationRoute = { name: 'category-tree-edit-id-translations', params: this.$route.params };
+            const designerRoute = { name: 'category-tree-edit-id-designer', params: this.$route.params };
+
             generalRoute = { name: 'category-tree-edit-id-general', params: this.$route.params };
-            translationRoute = { name: 'category-tree-edit-id-translations', params: this.$route.params };
-            designerRoute = { name: 'category-tree-edit-id-designer', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -64,45 +63,61 @@ export default {
                     },
                 },
             ];
+
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} TREE`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateCategoryTree,
+                        },
+                    },
+                },
+                {
+                    title: 'Translations',
+                    route: translationRoute,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} TREE`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateCategoryTree,
+                        },
+                    },
+                },
+                {
+                    title: 'Designer',
+                    route: designerRoute,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} TREE`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateCategoryTree,
+                        },
+                    },
+                },
+            ];
+        } else {
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} TREE`,
+                            action: tabAction,
+                            disabled: false,
+                        },
+                    },
+                },
+            ];
         }
-        this.tabs = [
-            {
-                title: 'General options',
-                route: generalRoute,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} TREE`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateCategoryTree : false,
-                    },
-                },
-            },
-            {
-                title: 'Translations',
-                route: translationRoute,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} TREE`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateCategoryTree : false,
-                    },
-                },
-            },
-            {
-                title: 'Designer',
-                route: designerRoute,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} TREE`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateCategoryTree : false,
-                    },
-                },
-            },
-        ];
     },
     beforeDestroy() {
         delete this.breadcrumbs;

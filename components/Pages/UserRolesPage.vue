@@ -23,7 +23,6 @@ export default {
     mixins: [categoryManagementPageBaseMixin],
     created() {
         let generalRoute = { name: 'users-role-new-general' };
-        let privilegesRoute = {};
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -38,8 +37,8 @@ export default {
         this.isUserAllowedToUpdateRole = this.$hasAccess('USER_ROLE_UPDATE');
 
         if (this.isEdit) {
+            const privilegesRoute = { name: 'users-role-edit-id-privileges', params: this.$route.params };
             generalRoute = { name: 'users-role-edit-id-general', params: this.$route.params };
-            privilegesRoute = { name: 'users-role-edit-id-privileges', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -54,34 +53,49 @@ export default {
                     },
                 },
             ];
-        }
 
-        this.tabs = [
-            {
-                title: 'General options',
-                route: generalRoute,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} ROLE`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateRole : false,
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} ROLE`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateRole,
+                        },
                     },
                 },
-            },
-            {
-                title: 'Privileges',
-                route: privilegesRoute,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} PRIVILEGES`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateRole : false,
+                {
+                    title: 'Privileges',
+                    route: privilegesRoute,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} PRIVILEGES`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateRole,
+                        },
                     },
                 },
-            },
-        ];
+            ];
+        } else {
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} ROLE`,
+                            action: tabAction,
+                            disabled: false,
+                        },
+                    },
+                },
+            ];
+        }
     },
     beforeDestroy() {
         delete this.breadcrumbs;

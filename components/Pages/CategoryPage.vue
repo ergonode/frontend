@@ -23,7 +23,6 @@ export default {
     mixins: [categoryManagementPageBaseMixin],
     created() {
         let generalRoute = { name: 'category-new-general' };
-        let translationRoute = { name: 'category-new-translations' };
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -38,8 +37,8 @@ export default {
         this.isUserAllowedToUpdateCategory = this.$hasAccess('CATEGORY_UPDATE');
 
         if (this.isEdit) {
+            const translationRoute = { name: 'category-edit-id-translations', params: this.$route.params };
             generalRoute = { name: 'category-edit-id-general', params: this.$route.params };
-            translationRoute = { name: 'category-edit-id-translations', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -54,34 +53,49 @@ export default {
                     },
                 },
             ];
-        }
 
-        this.tabs = [
-            {
-                title: 'General options',
-                route: generalRoute,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} CATEGORY`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateCategory : false,
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} CATEGORY`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateCategory,
+                        },
                     },
                 },
-            },
-            {
-                title: 'Translations',
-                route: translationRoute,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} CATEGORY`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateCategory : false,
+                {
+                    title: 'Translations',
+                    route: translationRoute,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} CATEGORY`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateCategory,
+                        },
                     },
                 },
-            },
-        ];
+            ];
+        } else {
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} CATEGORY`,
+                            action: tabAction,
+                            disabled: false,
+                        },
+                    },
+                },
+            ];
+        }
     },
     beforeDestroy() {
         delete this.breadcrumbs;

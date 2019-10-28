@@ -23,7 +23,6 @@ export default {
     mixins: [categoryManagementPageBaseMixin],
     created() {
         let generalRoute = { name: 'user-new-general' };
-        let avatarRoute = {};
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -38,8 +37,8 @@ export default {
         this.isUserAllowedToUpdateUser = this.$hasAccess('USER_UPDATE');
 
         if (this.isEdit) {
+            const avatarRoute = { name: 'user-edit-id-avatar', params: this.$route.params };
             generalRoute = { name: 'user-edit-id-general', params: this.$route.params };
-            avatarRoute = { name: 'user-edit-id-avatar', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -55,34 +54,49 @@ export default {
             //         },
             //     },
             // ];
-        }
 
-        this.tabs = [
-            {
-                title: 'General options',
-                route: generalRoute,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} USER`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateUser : false,
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} USER`,
+                            action: tabAction,
+                            disabled: this.isEdit ? !this.isUserAllowedToUpdateUser : false,
+                        },
                     },
                 },
-            },
-            {
-                title: 'Avatar',
-                route: avatarRoute,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} USER`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateUser : false,
+                {
+                    title: 'Avatar',
+                    route: avatarRoute,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} USER`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateUser,
+                        },
                     },
                 },
-            },
-        ];
+            ];
+        } else {
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} USER`,
+                            action: tabAction,
+                            disabled: false,
+                        },
+                    },
+                },
+            ];
+        }
     },
     beforeDestroy() {
         delete this.breadcrumbs;

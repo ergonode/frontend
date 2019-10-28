@@ -23,7 +23,6 @@ export default {
     mixins: [categoryManagementPageBaseMixin],
     created() {
         let generalRoute = { name: 'segment-new-general' };
-        let translationRoute = {};
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -37,8 +36,8 @@ export default {
         ];
         this.isUserAllowedToUpdateSegments = this.$hasAccess('SEGMENT_UPDATE');
         if (this.isEdit) {
+            const translationRoute = { name: 'segment-edit-id-translations', params: this.$route.params };
             generalRoute = { name: 'segment-edit-id-general', params: this.$route.params };
-            translationRoute = { name: 'segment-edit-id-translations', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -54,33 +53,49 @@ export default {
                     },
                 },
             ];
+
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} SEGMENT`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateSegments,
+                        },
+                    },
+                },
+                {
+                    title: 'Translations',
+                    route: translationRoute,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} SEGMENT`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateSegments,
+                        },
+                    },
+                },
+            ];
+        } else {
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} SEGMENT`,
+                            action: tabAction,
+                            disabled: false,
+                        },
+                    },
+                },
+            ];
         }
-        this.tabs = [
-            {
-                title: 'General options',
-                route: generalRoute,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} SEGMENT`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateSegments : false,
-                    },
-                },
-            },
-            {
-                title: 'Translations',
-                route: translationRoute,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} SEGMENT`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateSegments : false,
-                    },
-                },
-            },
-        ];
     },
     beforeDestroy() {
         delete this.breadcrumbs;

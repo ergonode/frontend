@@ -24,7 +24,6 @@ export default {
     mixins: [categoryManagementPageBaseMixin],
     created() {
         let generalRoute = { name: 'template-new-general' };
-        let templateRoute = {};
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -38,8 +37,8 @@ export default {
         ];
         this.isUserAllowedToUpdateTemplate = this.$hasAccess('TEMPLATE_DESIGNER_UPDATE');
         if (this.isEdit) {
+            const templateRoute = { name: 'template-edit-id-template', params: this.$route.params };
             generalRoute = { name: 'template-edit-id-general', params: this.$route.params };
-            templateRoute = { name: 'template-edit-id-template', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -54,33 +53,49 @@ export default {
                     },
                 },
             ];
+
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} TEMPLATE`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateTemplate,
+                        },
+                    },
+                },
+                {
+                    title: 'Template designer',
+                    route: templateRoute,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} TEMPLATE`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateTemplate,
+                        },
+                    },
+                },
+            ];
+        } else {
+            this.tabs = [
+                {
+                    title: 'General options',
+                    route: generalRoute,
+                    active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} TEMPLATE`,
+                            action: tabAction,
+                            disabled: false,
+                        },
+                    },
+                },
+            ];
         }
-        this.tabs = [
-            {
-                title: 'General options',
-                route: generalRoute,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} TEMPLATE`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateTemplate : false,
-                    },
-                },
-            },
-            {
-                title: 'Template designer',
-                route: templateRoute,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} TEMPLATE`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateTemplate : false,
-                    },
-                },
-            },
-        ];
     },
     methods: {
         ...mapActions('list', {
