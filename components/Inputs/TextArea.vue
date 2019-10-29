@@ -21,14 +21,25 @@
                 ref="input"
                 :style="textareaStyle"
                 :value="value"
-                :placeholder="placeholder"
+                :placeholder="placeholderValue"
                 :autofocus="autofocus"
                 :disabled="disabled"
                 :aria-label="label || 'no description'"
                 @input="onValueChange"
                 @focus="onFocus"
                 @blur="onBlur" />
-            <slot name="append" />
+            <slot name="append">
+                <div
+                    v-if="isError || isDescription"
+                    class="input__append">
+                    <IconError
+                        v-if="isError"
+                        size="14" />
+                    <InfoHint
+                        v-if="isDescription"
+                        :hint="description" />
+                </div>
+            </slot>
         </div>
         <label
             v-if="informationLabel"
@@ -78,6 +89,10 @@ export default {
             default: null,
         },
         placeholder: {
+            type: String,
+            default: null,
+        },
+        description: {
             type: String,
             default: null,
         },

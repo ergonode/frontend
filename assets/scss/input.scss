@@ -23,28 +23,8 @@
             color: $GRAPHITE_DARK;
         }
 
-        &--small {
-            flex-basis: 32px;
-
-            input::placeholder, input {
-                font: $FONT_MEDIUM_12_16;
-            }
-
-            input::placeholder {
-                opacity: 0.4;
-            }
-        }
-
-        &--regular {
-            flex-basis: 40px;
-
-            input::placeholder, input {
-                font: $FONT_MEDIUM_14_20;
-            }
-
-            input::placeholder {
-                opacity: 0.4;
-            }
+        textarea::placeholder, input::placeholder {
+            opacity: 0.4;
         }
 
         input, textarea {
@@ -61,12 +41,9 @@
         }
 
         textarea {
-            height: 100%;
+            min-height: 100%;
+            box-sizing: border-box;
             padding-top: 6px;
-
-            &::placeholder {
-                opacity: 0.4;
-            }
         }
     }
 
@@ -74,7 +51,17 @@
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_12_16;
         margin-top: 4px;
+        margin-left: 12px;
         word-break: break-word;
+    }
+
+    &__append {
+        display: grid;
+        grid-auto-flow: column;
+        grid-template-columns: 24px;
+        justify-items: center;
+        align-items: center;
+        margin: 0 6px;
     }
 
     &.floating-label {
@@ -82,11 +69,12 @@
 
         #{$input}__label {
             position: absolute;
+            padding: 0 2px;
             background-color: $WHITE;
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             color: $GRAPHITE_LIGHT;
-            padding-left: 2px;
             font: $FONT_MEDIUM_14_20;
+            cursor: text;
 
             &--required {
                 padding-right: 8px;
@@ -98,53 +86,19 @@
                 content: "*";
             }
         }
-
-        #{$input}__activator {
-            &--small {
-                #{$input}__label {
-                    font: $FONT_MEDIUM_12_16;
-                }
-            }
-        }
     }
 
     &.solid {
         #{$input}__activator {
             border: $BORDER_1_GREY;
-            padding: 4px;
+            padding: 1px;
             box-sizing: border-box;
-
-            input, textarea {
-                margin-left: 8px;
-            }
-
-            &--small {
-                padding: 2px;
-
-                input {
-                    margin-left: 6px;
-                }
-            }
         }
 
         #{$input}__label {
             position: absolute;
+            margin-left: 8px;
             color: $GRAPHITE_LIGHT;
-            margin-left: 6px;
-        }
-
-        #{$input}__information-label {
-            margin-left: 12px;
-        }
-
-        #{$input}__activator:hover {
-            border: $BORDER_2_GREEN;
-            padding: 3px;
-        }
-
-        #{$input}__activator--small:hover {
-            border: $BORDER_2_GREEN;
-            padding: 1px;
         }
     }
 
@@ -159,6 +113,75 @@
 
         #{$input}__activator:hover::before {
             border-color: $GREEN;
+        }
+
+        #{$input}__label {
+            position: absolute;
+            color: $GRAPHITE_LIGHT;
+        }
+
+        #{$input}__information-label {
+            margin-left: 0;
+        }
+    }
+
+    &:not(.underline) {
+        #{$input}__activator {
+            textarea {
+                margin-left: 8px;
+            }
+        }
+    }
+
+    &.small:not(.underline) {
+        #{$input}__activator {
+            input::placeholder, input {
+                margin-left: 5px;
+            }
+        }
+
+        #{$input}__label {
+            margin-left: 4px;
+        }
+
+        #{$input}__information-label {
+            margin-left: 8px;
+        }
+
+        #{$input}__append {
+            margin: 0 4px;
+        }
+    }
+
+    &.small {
+        #{$input}__activator {
+            flex-basis: 32px;
+
+            input::placeholder, input {
+                font: $FONT_MEDIUM_12_16;
+            }
+        }
+
+        #{$input}__label {
+            font: $FONT_MEDIUM_12_16;
+        }
+    }
+
+    &.regular:not(.underline) {
+        #{$input}__activator {
+            input::placeholder, input {
+                margin-left: 9px;
+            }
+        }
+    }
+
+    &.regular {
+        #{$input}__activator {
+            flex-basis: 40px;
+
+            input::placeholder, input {
+                font: $FONT_MEDIUM_14_20;
+            }
         }
     }
 
@@ -224,11 +247,7 @@
             &.solid {
                 #{$input}__activator {
                     border: $BORDER_2_GREEN;
-                    padding: 3px;
-
-                    &--small {
-                        padding: 1px;
-                    }
+                    padding: 0;
 
                     &::after {
                         transform: scaleX(0);
@@ -240,19 +259,13 @@
                 }
             }
         }
+    }
 
-        &.input--error {
-            &.solid {
-                #{$input}__activator {
-                    border: $BORDER_2_RED;
-                    padding: 3px;
-                }
-            }
-
-            &.floating-label {
-                #{$input}__label {
-                    color: $RED;
-                }
+    &:not(&--error):not(&--focused) {
+        &.solid {
+            #{$input}__activator:hover {
+                border: $BORDER_2_GREY;
+                padding: 0;
             }
         }
     }
@@ -270,11 +283,15 @@
             }
         }
 
-        &:not(#{$input}--focused) {
-            &.solid {
-                #{$input}__activator {
-                    border: 1px solid $RED;
-                }
+        &.floating-label {
+            #{$input}__label {
+                color: $RED;
+            }
+        }
+
+        &.solid {
+            #{$input}__activator {
+                border: $BORDER_2_RED;
             }
         }
 

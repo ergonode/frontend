@@ -13,13 +13,13 @@
         :disabled="disabled"
         resize="none"
         @input="onValueChange">
-        <template #append>
-            <ProductTemplateDetailsContent
+            <template #append>
+                <ProductTemplateDetailsContent
                     :hint="hint"
                     :error-messages="errorMessages"
                     :is-error="isError" />
-        </template>
-    </TextArea>
+            </template>
+        </TextArea>
 </template>
 
 <script>
