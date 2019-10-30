@@ -5,7 +5,6 @@
 <template>
     <GridProductPage
         title="Products"
-        :buttons="getButtons"
         icon="Document" />
 </template>
 
@@ -22,29 +21,11 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
         }),
-        getButtons() {
-            const isGridPath = /grid/.test(this.$route.path);
-
-            if (!isGridPath) return [];
-            return [
-                {
-                    title: 'CREATE PRODUCT',
-                    action: this.addNewProduct,
-                    disabled: !this.$hasAccess('PRODUCT_CREATE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconAdd'),
-                    },
-                },
-            ];
-        },
     },
     methods: {
         ...mapActions('list', {
             setConfigurationForList: 'setConfigurationForList',
         }),
-        addNewProduct() {
-            this.$router.push('/products/product/new');
-        },
     },
     async fetch(parameters) {
         const { store } = parameters;

@@ -4,9 +4,8 @@
  */
 <template>
     <GridPage
-        :title="title"
+        title="Imports"
         :route-edit="routeEdit"
-        :buttons="buttons"
         icon="Import" />
 </template>
 
@@ -18,20 +17,6 @@ export default {
     components: {
         GridPage: () => import('~/components/Pages/GridPage'),
     },
-    data() {
-        return {
-            title: 'Imports',
-            buttons: [
-                // TODO: uncomment when we have create action
-                // {
-                //     title: 'CREATE IMPORT',
-                //     color: 'success',
-                //     action: this.addNewImport,
-                //     disabled: !this.$hasAccess('IMPORT_CREATE'),
-                // },
-            ],
-        };
-    },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
@@ -41,12 +26,6 @@ export default {
                 getData: `${this.userLanguageCode}/imports`,
                 name: 'imports-edit-id',
             };
-        },
-    },
-    methods: {
-        addNewImport() {
-            // TODO: Imports will have add / edit
-            // this.$router.push('/imports/new');
         },
     },
 };

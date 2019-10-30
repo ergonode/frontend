@@ -6,11 +6,26 @@
     <PageWrapper>
         <TitleBar
             :title="title"
-            :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="User"
             :is-read-only="!isUserAllowedToUpdateRole && isEdit"
-            @navigateback="onDismiss" />
+            @navigateback="onDismiss">
+            <template
+                v-if="isEdit"
+                #buttons>
+                <PrependIconButton
+                    theme="secondary"
+                    size="small"
+                    title="REMOVE ROLE"
+                    :disabled="!$hasAccess('USER_ROLE_DELETE')"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
 </template>
@@ -26,7 +41,6 @@ export default {
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
-        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Users/Roles',
@@ -41,18 +55,6 @@ export default {
             generalRoute = { name: 'users-role-edit-id-general', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
-
-            this.buttons = [
-                {
-                    title: 'REMOVE ROLE',
-                    action: this.onRemove,
-                    theme: 'secondary',
-                    disabled: !this.$hasAccess('USER_ROLE_DELETE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconDelete'),
-                    },
-                },
-            ];
 
             this.tabs = [
                 {
@@ -100,7 +102,6 @@ export default {
     beforeDestroy() {
         delete this.breadcrumbs;
         delete this.isUserAllowedToUpdateRole;
-        delete this.buttons;
     },
 };
 </script>

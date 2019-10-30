@@ -6,11 +6,26 @@
     <PageWrapper>
         <TitleBar
             :title="title"
-            :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="Flow"
             :is-read-only="!isUserAllowedToUpdateStatus && isEdit"
-            @navigateback="onDismiss" />
+            @navigateback="onDismiss">
+            <template
+                v-if="isEdit"
+                #buttons>
+                <PrependIconButton
+                    theme="secondary"
+                    size="small"
+                    title="REMOVE STATUS"
+                    :disabled="!$hasAccess('WORKFLOW_DELETE')"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
 </template>
@@ -26,7 +41,6 @@ export default {
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
-        this.buttons = [];
         this.isUserAllowedToUpdateStatus = this.$hasAccess('WORKFLOW_UPDATE');
         this.breadcrumbs = [
             {
@@ -41,18 +55,6 @@ export default {
             generalRoute = { name: 'workflow-status-edit-id-general', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
-
-            this.buttons = [
-                {
-                    title: 'REMOVE STATUS',
-                    action: this.onRemove,
-                    theme: 'secondary',
-                    disabled: !this.$hasAccess('WORKFLOW_DELETE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconDelete'),
-                    },
-                },
-            ];
 
             this.tabs = [
                 {
@@ -100,7 +102,6 @@ export default {
     beforeDestroy() {
         delete this.breadcrumbs;
         delete this.isUserAllowedToUpdateStatus;
-        delete this.buttons;
     },
 };
 </script>

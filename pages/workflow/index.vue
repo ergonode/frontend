@@ -3,56 +3,95 @@
  * See LICENSE for license details.
  */
 <template>
-    <WorkflowTabs
-        title="Workflow"
-        :buttons="getButtons"
-        icon="Flow" />
+    <PageWrapper>
+        <TitleBar
+            title="Workflow"
+            icon="Flow"
+            :is-read-only="$isReadOnly(getTitleBarData.isReadOnly)">
+            <template
+                v-if="getTitleBarData.button"
+                #buttons>
+                <PrependIconButton
+                    :title="getTitleBarData.button.title"
+                    size="small"
+                    :disabled="!$hasAccess(getTitleBarData.button.access)"
+                    @click.native="addNew(getTitleBarData.button.path)">
+                    <template #prepend="{ color }">
+                        <IconAdd
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template>
+        </TitleBar>
+        <HorizontalTabBar
+            :items="tabs" />
+    </PageWrapper>
 </template>
 
 <script>
+import PrependIconButton from '~/components/Buttons/PrependIconButton';
+import IconAdd from '~/components/Icon/Actions/IconAdd';
+
 export default {
-    name: 'Workflow',
+    name: 'WorkflowTabs',
     middleware: ['tab/redirectToStatusesGrid'],
     components: {
-        WorkflowTabs: () => import('~/components/Pages/Tabs/WorkflowTabs'),
+        HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
+        TitleBar: () => import('~/components/TitleBar/TitleBar'),
+        PageWrapper: () => import('~/components/Layout/PageWrapper'),
+        PrependIconButton,
+        IconAdd,
+    },
+    beforeCreate() {
+        this.tabs = [];
+        if (this.$hasAccess('WORKFLOW_READ')) {
+            this.tabs.push({
+                title: 'Product statuses',
+                route: { name: 'workflow-statuses' },
+                active: true,
+                isContextualMenu: false,
+            });
+            this.tabs.push({
+                title: 'Transitions',
+                route: { name: 'workflow-transitions' },
+                active: true,
+                isContextualMenu: false,
+            });
+        }
     },
     computed: {
-        getButtons() {
-            const isStatusesPath = /statuses/.test(this.$route.path);
-            const isTransitionsPath = /transitions/.test(this.$route.path);
-
-            if (!isStatusesPath && !isTransitionsPath) return [];
-            if (isTransitionsPath) {
-                return [
-                    {
+        getTitleBarData() {
+            switch (true) {
+            case /statuses/.test(this.$route.path):
+                return {
+                    button: {
+                        title: 'CREATE STATUS',
+                        access: 'WORKFLOW_CREATE',
+                        path: '/workflow/status/new',
+                    },
+                    isReadOnly: 'WORKFLOW',
+                };
+            case /transitions/.test(this.$route.path):
+                return {
+                    button: {
                         title: 'CREATE TRANSITIONS',
-                        action: this.addNewTransition,
-                        disabled: !this.$hasAccess('WORKFLOW_CREATE'),
-                        prepend: {
-                            component: () => import('~/components/Icon/Actions/IconAdd'),
-                        },
+                        access: 'WORKFLOW_CREATE',
+                        path: '/workflow/transition/new',
                     },
-                ];
+                    isReadOnly: 'WORKFLOW',
+                };
+            default:
+                return {};
             }
-            return [
-                {
-                    title: 'CREATE STATUS',
-                    action: this.addNewStatus,
-                    disabled: !this.$hasAccess('WORKFLOW_CREATE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconAdd'),
-                    },
-                },
-            ];
         },
     },
     methods: {
-        addNewStatus() {
-            this.$router.push('/workflow/status/new');
+        addNew(path) {
+            this.$router.push(path);
         },
-        addNewTransition() {
-            this.$router.push('/workflow/transition/new');
-        },
+    },
+    beforeDestroy() {
+        delete this.tabs;
     },
 };
 </script>

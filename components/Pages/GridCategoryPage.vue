@@ -6,29 +6,42 @@
     <PageWrapper>
         <TitleBar
             :title="title"
-            :buttons="buttons"
             :icon="icon"
-            :is-read-only="$isReadOnly('CATEGORY')" />
+            :is-read-only="$isReadOnly('CATEGORY')">
+            <template #buttons>
+                <PrependIconButton
+                    title="CREATE CATEGORY"
+                    size="small"
+                    :disabled="!$hasAccess('CATEGORY_CREATE')"
+                    @click.native="addNewCategory">
+                    <template #prepend="{ color }">
+                        <IconAdd
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template>
+        </TitleBar>
         <HorizontalTabBar
             :items="tabs" />
     </PageWrapper>
 </template>
 
 <script>
+import PrependIconButton from '~/components/Buttons/PrependIconButton';
+import IconAdd from '~/components/Icon/Actions/IconAdd';
+
 export default {
     name: 'GridCategoryPage',
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         TitleBar: () => import('~/components/TitleBar/TitleBar'),
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
+        PrependIconButton,
+        IconAdd,
     },
     props: {
         title: {
             type: String,
-            required: true,
-        },
-        buttons: {
-            type: Array,
             required: true,
         },
         icon: {
@@ -46,6 +59,11 @@ export default {
                 isContextualMenu: false,
             });
         }
+    },
+    methods: {
+        addNewCategory() {
+            this.$router.push('/categories/category/new');
+        },
     },
     beforeDestroy() {
         delete this.tabs;

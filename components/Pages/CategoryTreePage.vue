@@ -6,11 +6,26 @@
     <PageWrapper>
         <TitleBar
             :title="title"
-            :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             :is-read-only="!isUserAllowedToUpdateCategoryTree && isEdit"
             icon="Tree"
-            @navigateback="onDismiss" />
+            @navigateback="onDismiss">
+            <template
+                v-if="isEdit"
+                #buttons>
+                <PrependIconButton
+                    theme="secondary"
+                    size="small"
+                    title="REMOVE CATEGORY TREE"
+                    :disabled="!$hasAccess('CATEGORY_TREE_DELETE')"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
         <Blur
             v-show="isBlurVisible"
@@ -35,7 +50,6 @@ export default {
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
-        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Category trees',
@@ -51,18 +65,6 @@ export default {
             generalRoute = { name: 'category-tree-edit-id-general', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
-
-            this.buttons = [
-                {
-                    title: 'REMOVE CATEGORY TREE',
-                    action: this.onRemove,
-                    theme: 'secondary',
-                    disabled: !this.$hasAccess('CATEGORY_TREE_DELETE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconDelete'),
-                    },
-                },
-            ];
 
             this.tabs = [
                 {
@@ -122,7 +124,6 @@ export default {
     beforeDestroy() {
         delete this.breadcrumbs;
         delete this.isUserAllowedToUpdateCategoryTree;
-        delete this.buttons;
     },
     computed: {
         ...mapState('draggable', {

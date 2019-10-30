@@ -3,30 +3,17 @@
  * See LICENSE for license details.
  */
 <template>
-    <button
-        :class="['btn', `btn--${theme}`,`btn--${size}`]"
+    <AppendIconButton
         :disabled="disabled"
-        :aria-label="title"
-        @click="onClick">
-        <div
-            v-if="$scopedSlots.prepend || $slots.prepend"
-            class="btn__prepend">
-            <slot
-                name="prepend"
-                :icon-fill-color="iconFillColor" />
-        </div>
-        <span
-            v-if="title"
-            class="btn__title"
-            v-text="title" />
-        <div
-            v-if="$scopedSlots.append || $slots.append"
-            class="btn__append">
-            <slot
-                name="append"
-                :icon-fill-color="iconFillColor"
-                :icon-arrow-state="iconArrowState" />
-        </div>
+        :title="title"
+        :theme="theme"
+        :size="size"
+        @click.native="onClick">
+        <template #append="{ color }">
+            <IconArrowDropDown
+                :state="iconArrowState"
+                :fill-color="color" />
+        </template>
         <Transition
             v-if="isSelectButton"
             name="fade">
@@ -45,42 +32,25 @@
                 </List>
             </div>
         </Transition>
-    </button>
+    </AppendIconButton>
 </template>
 <script>
-import { THEMES, SIZES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
-import {
-    GRAPHITE, GREY_DARK, WHITE, GREEN,
-} from '~/assets/scss/_variables/_colors.scss';
+import buttonPropsMixin from '~/mixins/buttons/buttonPropsMixin';
+import AppendIconButton from '~/components/Buttons/AppendIconButton';
 
 export default {
-    name: 'NewButton',
+    name: 'MultiButton',
+    mixins: [buttonPropsMixin],
     components: {
+        AppendIconButton,
         List: () => import('~/components/List/List'),
         ListElement: () => import('~/components/List/ListElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
+        IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
     },
     props: {
-        theme: {
-            type: String,
-            default: 'primary',
-            validator: (value) => Object.values(THEMES).indexOf(value) !== -1,
-        },
-        size: {
-            type: String,
-            default: 'regular',
-            validator: (value) => Object.values(SIZES).indexOf(value) !== -1,
-        },
-        title: {
-            type: String,
-            default: null,
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
         options: {
             type: Array,
             default: () => [],
@@ -94,18 +64,7 @@ export default {
     },
     computed: {
         isSelectButton() {
-            return this.isFocused && this.options.length;
-        },
-        iconFillColor() {
-            if (this.isSelectButton) return GREEN;
-            if (this.theme === THEMES.SECONDARY) {
-                if (this.disabled) {
-                    return GREY_DARK;
-                }
-                return GRAPHITE;
-            }
-
-            return WHITE;
+            return this.isFocused;
         },
         iconArrowState() {
             return this.isSelectButton ? ARROW.UP : ARROW.DOWN;
@@ -175,7 +134,15 @@ export default {
     },
 };
 </script>
-
 <style lang="scss" scoped>
-    @import "~assets/scss/new-button.scss";
+    .btn__select-content {
+        position: fixed;
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        background-color: $WHITE;
+        box-shadow: $ELEVATOR_2_DP;
+        max-height: 200px;
+        min-width: 130px;
+    }
 </style>

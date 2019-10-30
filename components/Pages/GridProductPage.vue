@@ -6,9 +6,21 @@
     <PageWrapper>
         <TitleBar
             :title="title"
-            :buttons="buttons"
             :icon="icon"
-            :is-read-only="$isReadOnly('PRODUCT')" />
+            :is-read-only="$isReadOnly('PRODUCT')">
+            <template #buttons>
+                <PrependIconButton
+                    title="CREATE PRODUCT"
+                    size="small"
+                    :disabled="!$hasAccess('PRODUCT_CREATE')"
+                    @click.native="addNewProduct">
+                    <template #prepend="{ color }">
+                        <IconAdd
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template>
+        </TitleBar>
         <HorizontalTabBar
             :items="tabs" />
         <!--
@@ -25,6 +37,9 @@
 <script>
 import { mapState } from 'vuex';
 import { DRAGGED_ELEMENT } from '~/defaults/grid';
+import PrependIconButton from '~/components/Buttons/PrependIconButton';
+import IconAdd from '~/components/Icon/Actions/IconAdd';
+
 
 export default {
     name: 'GridProductPage',
@@ -33,15 +48,13 @@ export default {
         TitleBar: () => import('~/components/TitleBar/TitleBar'),
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
         TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
+        PrependIconButton,
+        IconAdd,
         // Blur: () => import('~/components/Blur/Blur'),
     },
     props: {
         title: {
             type: String,
-            required: true,
-        },
-        buttons: {
-            type: Array,
             required: true,
         },
         icon: {
@@ -82,6 +95,11 @@ export default {
             }
 
             return null;
+        },
+    },
+    methods: {
+        addNewProduct() {
+            this.$router.push('/products/product/new');
         },
     },
     beforeDestroy() {

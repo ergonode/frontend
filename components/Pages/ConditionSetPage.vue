@@ -6,11 +6,26 @@
     <PageWrapper>
         <TitleBar
             :title="title"
-            :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             :is-read-only="!isUserAllowedToUpdateConditionSet && isEdit"
             icon="Templates"
-            @navigateback="onDismiss" />
+            @navigateback="onDismiss">
+            <template
+                v-if="isEdit"
+                #buttons>
+                <PrependIconButton
+                    theme="secondary"
+                    size="small"
+                    title="REMOVE CONDITION SET"
+                    :disabled="!$hasAccess('CONDITION_DELETE')"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
         <Blur
             v-show="isBlurVisible"
@@ -37,7 +52,6 @@ export default {
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
-        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Condition Sets',
@@ -52,18 +66,6 @@ export default {
             designerRoute = { name: 'condition-set-edit-id-designer', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
-
-            this.buttons = [
-                {
-                    title: 'REMOVE CONDITION SET',
-                    action: this.onRemove,
-                    theme: 'secondary',
-                    disabled: !this.$hasAccess('CONDITION_DELETE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconDelete'),
-                    },
-                },
-            ];
 
             this.tabs = [
                 {
@@ -123,7 +125,6 @@ export default {
     beforeDestroy() {
         delete this.breadcrumbs;
         delete this.isUserAllowedToUpdateConditionSet;
-        delete this.buttons;
     },
     computed: {
         ...mapState('draggable', {

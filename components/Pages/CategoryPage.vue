@@ -6,11 +6,26 @@
     <PageWrapper>
         <TitleBar
             :title="title"
-            :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="Category"
             :is-read-only="!isUserAllowedToUpdateCategory && isEdit"
-            @navigateback="onDismiss" />
+            @navigateback="onDismiss">
+            <template
+                v-if="isEdit"
+                #buttons>
+                <PrependIconButton
+                    theme="secondary"
+                    size="small"
+                    title="REMOVE CATEGORY"
+                    :disabled="!$hasAccess('CATEGORY_DELETE')"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
 </template>
@@ -26,7 +41,6 @@ export default {
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
-        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Categories',
@@ -41,18 +55,6 @@ export default {
             generalRoute = { name: 'category-edit-id-general', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
-
-            this.buttons = [
-                {
-                    title: 'REMOVE CATEGORY',
-                    action: this.onRemove,
-                    theme: 'secondary',
-                    disabled: !this.$hasAccess('CATEGORY_DELETE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconDelete'),
-                    },
-                },
-            ];
 
             this.tabs = [
                 {
@@ -100,7 +102,6 @@ export default {
     beforeDestroy() {
         delete this.breadcrumbs;
         delete this.isUserAllowedToUpdateCategory;
-        delete this.buttons;
     },
 };
 </script>

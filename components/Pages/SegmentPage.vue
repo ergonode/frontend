@@ -6,11 +6,26 @@
     <PageWrapper>
         <TitleBar
             :title="title"
-            :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             :is-read-only="!isUserAllowedToUpdateSegments && isEdit"
             icon="Templates"
-            @navigateback="onDismiss" />
+            @navigateback="onDismiss">
+            <template
+                v-if="isEdit"
+                #buttons>
+                <PrependIconButton
+                    theme="secondary"
+                    size="small"
+                    title="REMOVE SEGMENT"
+                    :disabled="!$hasAccess('SEGMENT_DELETE')"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
 </template>
@@ -26,7 +41,6 @@ export default {
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
-        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Segments',
@@ -40,19 +54,6 @@ export default {
             generalRoute = { name: 'segment-edit-id-general', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
-
-
-            this.buttons = [
-                {
-                    title: 'REMOVE SEGMENT',
-                    action: this.onRemove,
-                    theme: 'secondary',
-                    disabled: !this.$hasAccess('SEGMENT_DELETE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconDelete'),
-                    },
-                },
-            ];
 
             this.tabs = [
                 {
@@ -100,7 +101,6 @@ export default {
     beforeDestroy() {
         delete this.breadcrumbs;
         delete this.isUserAllowedToUpdateSegments;
-        delete this.buttons;
     },
 };
 </script>
