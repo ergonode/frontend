@@ -12,6 +12,7 @@
             <TextField
                 v-model="nameValue"
                 solid
+                regular
                 label="Category name"
                 :disabled="!isUserAllowedToUpdate"
                 :error-messages="errorNameMessage" />

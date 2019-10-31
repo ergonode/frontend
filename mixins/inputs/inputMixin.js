@@ -4,8 +4,8 @@
  */
 export default {
     components: {
-        IconError: () => import('~/components/Icon/Feedback/IconError'),
         InfoHint: () => import('~/components/Inputs/Hint/InfoHint'),
+        ErrorHint: () => import('~/components/Inputs/Hint/ErrorHint'),
     },
     data() {
         return {

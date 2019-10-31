@@ -4,9 +4,9 @@
  */
 <template>
     <div class="tab-wrapper">
-        <!--        <ListSearchHeader-->
-        <!--            header="Conditions"-->
-        <!--            @searchResults="onSearch" />-->
+        <ListSearchHeader
+            header="Conditions"
+            @searchResults="onSearch" />
         <ConditionsList :language-code="userLanguageCode" />
     </div>
 </template>
@@ -18,8 +18,7 @@ export default {
     name: 'ConditionsListTab',
     components: {
         ConditionsList: () => import('~/components/List/ConditionsList'),
-        // TODO: Add when its done at BE
-        // ListSearchHeader: () => import('~/components/List/ListSearchHeader'),
+        ListSearchHeader: () => import('~/components/List/ListSearchHeader'),
     },
     computed: {
         ...mapState('authentication', {

@@ -58,7 +58,6 @@
     &__append {
         display: grid;
         grid-auto-flow: column;
-        grid-template-columns: 24px;
         justify-items: center;
         align-items: center;
         margin: 0 6px;
@@ -291,6 +290,7 @@
         &.solid {
             #{$input}__activator {
                 border: $BORDER_2_RED;
+                padding: 0;
             }
         }
 

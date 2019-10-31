@@ -30,18 +30,15 @@
                 @input="onValueChange"
                 @focus="onFocus"
                 @blur="onBlur">
-            <slot name="append">
-                <div
-                    v-if="isError || isDescription"
-                    class="input__append">
-                    <IconError
-                        v-if="isError"
-                        size="14" />
-                    <InfoHint
-                        v-if="isDescription"
-                        :hint="description" />
-                </div>
-            </slot>
+            <div class="input__append">
+                <slot name="append" />
+                <ErrorHint
+                    v-if="isError"
+                    :hint="parsedErrorMessages" />
+                <InfoHint
+                    v-if="isDescription"
+                    :hint="description" />
+            </div>
         </div>
         <label
             v-if="informationLabel"

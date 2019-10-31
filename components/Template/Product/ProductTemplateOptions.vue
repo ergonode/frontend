@@ -3,61 +3,32 @@
  * See LICENSE for license details.
  */
 <template>
-    <Select
-        :value="parsedValue"
-        solid
-        clearable
-        regular
+    <TranslationSelect
+        :value="localValue"
+        :solid="true"
+        :clearable="true"
+        :regular="true"
         :label="label"
         :placeholder="placeholder"
         :multiselect="multiselect"
         :disabled="disabled"
         :error-messages="isError ? [' '] : null"
         :required="required"
+        :options="parsedOptions"
         @focus="onFocusChange"
         @input="onValueChange">
-        <template #append>
-            <ProductTemplateDetailsContent
-                :hint="hint"
-                :error-messages="errorMessages"
-                :is-error="isError">
-                <template #append>
-                    <IconArrowDropDown :state="dropDownState" />
-                </template>
-            </ProductTemplateDetailsContent>
-        </template>
-        <template #selectContent>
-            <TranslationMultiselectListContent
-                v-if="multiselect"
-                :options="parsedOptions"
-                :selected-options="localValue || []"
-                @value="onValueChange" />
-            <TranslationSelectListContent
-                v-else
-                :options="parsedOptions"
-                :selected-option="localValue"
-                @value="onValueChange" />
-        </template>
-    </Select>
+    </TranslationSelect>
 </template>
 
 <script>
-import { ARROW } from '~/defaults/icons';
-import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
-import { getValuesByKeys, getValueByKey } from '~/model/objectWrapper';
-import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
-import TranslationSelectListContent from '~/components/Inputs/Select/Contents/TranslationSelectListContent';
-import TranslationMultiselectListContent from '~/components/Inputs/Select/Contents/TranslationMultiselectListContent';
-import Select from '~/components/Inputs/Select/Select';
+import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
+import TranslationSelect from '~/components/Inputs/Select/TranslationSelect';
 
 export default {
     name: 'ProductTemplateOptions',
-    mixins: [baseProductTemplateElementMixin],
+    mixins: [productTemplateElementMixin],
     components: {
-        Select,
-        TranslationSelectListContent,
-        TranslationMultiselectListContent,
-        IconArrowDropDown,
+        TranslationSelect,
     },
     props: {
         options: {
@@ -66,7 +37,6 @@ export default {
         },
         multiselect: {
             type: Boolean,
-            required: false,
             default: false,
         },
     },
@@ -85,11 +55,6 @@ export default {
         },
     },
     computed: {
-        dropDownState() {
-            return this.isFocused
-                ? ARROW.UP
-                : ARROW.DOWN;
-        },
         parsedOptions() {
             const optionKeys = Object.keys(this.options);
 
@@ -98,10 +63,6 @@ export default {
     },
     methods: {
         initializeValues(value) {
-            this.parsedValue = Array.isArray(value)
-                ? getValuesByKeys(this.options, value)
-                : getValueByKey(this.options, value);
-
             this.localValue = value;
         },
         onFocusChange(isFocused) {
@@ -110,10 +71,8 @@ export default {
         onValueChange(value) {
             if (Array.isArray(value)) {
                 this.localValue = value;
-                this.parsedValue = getValuesByKeys(this.options, value);
             } else {
                 this.localValue = value.key;
-                this.parsedValue = value.value;
             }
 
             this.debounceFunc(this.localValue);

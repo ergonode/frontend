@@ -30,18 +30,17 @@
                 @input="onValueChange"
                 @focus="onFocus"
                 @blur="onBlur">
-            <slot name="append">
-                <div
-                    class="input__append">
-                    <IconError
-                        v-if="isError"
-                        size="14" />
-                    <InfoHint
-                        v-if="isDescription"
-                        :hint="description" />
-                    <IconArrowDropDown :state="dropDownState" />
-                </div>
-            </slot>
+            <div
+                class="input__append">
+                <slot name="append" />
+                <ErrorHint
+                    v-if="isError"
+                    :hint="parsedErrorMessages" />
+                <InfoHint
+                    v-if="isDescription"
+                    :hint="description" />
+                <IconArrowDropDown :state="dropDownState" />
+            </div>
         </div>
         <FadeTransition v-if="isMenuActive">
             <DropDown
@@ -131,8 +130,8 @@ export default {
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
         CheckBox: () => import('~/components/Inputs/CheckBox'),
-        IconError: () => import('~/components/Icon/Feedback/IconError'),
         InfoHint: () => import('~/components/Inputs/Hint/InfoHint'),
+        ErrorHint: () => import('~/components/Inputs/Hint/ErrorHint'),
         ContentBaseFooter: () => import('~/components/Inputs/Select/Contents/Footers/ContentBaseFooter'),
         Button: () => import('~/components/Buttons/Button'),
     },

@@ -12,22 +12,15 @@
         :error-messages="isError ? [' '] : null"
         :disabled="disabled"
         resize="none"
-        @input="onValueChange">
-            <template #append>
-                <ProductTemplateDetailsContent
-                    :hint="hint"
-                    :error-messages="errorMessages"
-                    :is-error="isError" />
-            </template>
-        </TextArea>
+        @input="onValueChange" />
 </template>
 
 <script>
-import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
+import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
 
 export default {
     name: 'ProductTemplateMultiLine',
-    mixins: [baseProductTemplateElementMixin],
+    mixins: [productTemplateElementMixin],
     components: {
         TextArea: () => import('~/components/Inputs/TextArea'),
     },

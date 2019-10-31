@@ -6,6 +6,7 @@
     <DatePicker
         :value="localValue"
         solid
+        regular
         clearable
         :label="label"
         :placeholder="parameters.format"
@@ -14,33 +15,19 @@
         :required="required"
         :disabled="disabled"
         @focus="onFocusChange"
-        @input="onValueChange">
-        <template #append>
-            <ProductTemplateDetailsContent
-                :hint="hint"
-                :error-messages="errorMessages"
-                :is-error="isError">
-                <template #append>
-                    <IconArrowDropDown :state="dropDownState" />
-                </template>
-            </ProductTemplateDetailsContent>
-        </template>
-    </DatePicker>
+        @input="onValueChange" />
 </template>
 
 <script>
 import { format as formatDate, parse as parseDate } from 'date-fns';
-import { ARROW } from '~/defaults/icons';
-import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
+import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
 import DatePicker from '~/components/Inputs/Date/DatePicker';
-import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
 
 export default {
     name: 'ProductTemplateDate',
-    mixins: [baseProductTemplateElementMixin],
+    mixins: [productTemplateElementMixin],
     components: {
         DatePicker,
-        IconArrowDropDown,
     },
     data() {
         return {
@@ -50,13 +37,6 @@ export default {
     created() {
         if (!this.value) this.localValue = null;
         else this.localValue = parseDate(this.value, this.parameters.format, new Date());
-    },
-    computed: {
-        dropDownState() {
-            return this.isFocused
-                ? ARROW.UP
-                : ARROW.DOWN;
-        },
     },
     methods: {
         onFocusChange(isFocused) {
