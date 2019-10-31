@@ -9,8 +9,8 @@
         @drag="onDrag">
         <ListElementIcon icon-path="Editor/IconFontSize" />
         <ListElementDescription>
-            <ListElementSubtitle :subtitle="item.type" />
             <ListElementTitle :title="item.label" />
+            <ListElementHint :title="item.code" />
         </ListElementDescription>
     </ListDraggableElement>
 </template>
@@ -25,7 +25,7 @@ export default {
         ListElementIcon: () => import('~/components/List/ListElementIcon'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
-        ListElementSubtitle: () => import('~/components/List/ListElementSubtitle'),
+        ListElementHint: () => import('~/components/List/ListElementHint'),
     },
     props: {
         item: {

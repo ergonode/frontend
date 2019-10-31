@@ -49,10 +49,10 @@
 </template>
 
 <script>
-import baseInputMixin from '~/mixins/inputs/baseInputMixin';
+import inputMixin from '~/mixins/inputs/inputMixin';
 
 export default {
-    mixins: [baseInputMixin],
+    mixins: [inputMixin],
     props: {
         input: {
             type: Object,

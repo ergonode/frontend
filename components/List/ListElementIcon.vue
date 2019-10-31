@@ -28,9 +28,10 @@ export default {
 <style lang="scss" scoped>
     .element-icon {
         display: flex;
-        flex: 0;
         justify-content: flex-start;
         align-items: center;
-        padding: 0 8px 0 0;
+        min-width: 24px;
+        min-height: 24px;
+        margin-right: 4px;
     }
 </style>

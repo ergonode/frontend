@@ -13,123 +13,6 @@
             multiselect
             clearable
             @input="setSelectedLanguages" />
-        <TextField
-            v-model="text"
-            solid
-            :error-messages="['TEST']"
-            hint="I am an amazing hint!!!"
-            description="My amazing long description"
-            label="Small"
-            small />
-        <TextField
-            v-model="text"
-            solid
-            placeholder="Placeholder"
-            hint="I am an amazing hint!!!"
-            label="Small"
-            small />
-        <TextField
-            v-model="text"
-            solid
-            placeholder="Placeholder"
-            hint="I am an amazing hint!!!"
-            label="Regular"
-            :error-messages="['TEST']"
-            regular />
-        <TextField
-            v-model="text"
-            solid
-            placeholder="Placeholder"
-            hint="I am an amazing hint!!!"
-            description="My amazing long description"
-            disabled
-            label="Regular"
-            regular />
-        <TextArea
-            v-model="text"
-            solid
-            placeholder="Placeholder"
-            hint="I am an amazing hint!!!"
-            :error-messages="['TEST']"
-            description="My amazing long description"
-            label="Regular" />
-        <TextArea
-            v-model="text"
-            solid
-            placeholder="Placeholder"
-            hint="I am an amazing hint!!!"
-            description="My amazing long description"
-            label="Regular" />
-        <TextArea
-            v-model="text"
-            left-alignment
-            solid
-            placeholder="Placeholder"
-            hint="I am an amazing hint!!!"
-            description="My amazing long description"
-            label="Regular" />
-        <TextField
-            v-model="text"
-            left-alignment
-            underline
-            :error-messages="['TEST']"
-            hint="I am an amazing hint!!!"
-            description="My amazing long description"
-            label="Small"
-            small />
-        <TextField
-            v-model="text"
-            left-alignment
-            underline
-            placeholder="Placeholder"
-            hint="I am an amazing hint!!!"
-            label="Small"
-            small />
-        <TextField
-            v-model="text"
-            left-alignment
-            underline
-            placeholder="Placeholder"
-            hint="I am an amazing hint!!!"
-            label="Regular"
-            :error-messages="['TEST']"
-            regular />
-        <TextField
-            v-model="text"
-            left-alignment
-            underline
-            placeholder="Placeholder"
-            hint="I am an amazing hint!!!"
-            description="My amazing long description"
-            disabled
-            label="Regular"
-            regular />
-        <TextArea
-            v-model="text"
-            left-alignment
-            underline
-            placeholder="Placeholder"
-            hint="I am an amazing hint!!!"
-            :error-messages="['TEST']"
-            description="My amazing long description"
-            label="Regular" />
-        <TextArea
-            v-model="text"
-            left-alignment
-            underline
-            placeholder="Placeholder"
-            hint="I am an amazing hint!!!"
-            description="My amazing long description"
-            label="Regular" />
-        <TextArea
-            v-model="text"
-            left-alignment
-            underline
-            disabled
-            placeholder="Placeholder"
-            hint="I am an amazing hint!!!"
-            description="My amazing long description"
-            label="Regular" />
     </BaseCard>
 </template>
 
@@ -143,8 +26,6 @@ export default {
     components: {
         BaseCard,
         Select: () => import('~/components/Inputs/Select/Select'),
-        TextField: () => import('~/components/Inputs/TextField'),
-        TextArea: () => import('~/components/Inputs/TextArea'),
     },
     mixins: [errorValidationMixin],
     computed: {

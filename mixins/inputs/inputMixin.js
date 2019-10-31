@@ -71,8 +71,7 @@ export default {
 
             if (this.isFocused || !this.isEmpty) {
                 const { activator } = this.$refs;
-                const translateX = this.solid ? '-2px' : '-5px';
-                const transform = `translate(${translateX}, -${activator.offsetHeight / 2}px) scale(0.9)`;
+                const transform = `translateY(-${activator.offsetHeight / 2}px)`;
 
                 return {
                     transform,
@@ -80,12 +79,13 @@ export default {
             }
 
             return {
-                transform: 'translate(0, 0) scale(1)',
+                transform: 'translateY(0)',
             };
         },
         floatingLabelClasses() {
             return [
                 'input__label',
+                this.isEmpty && !this.isFocused ? 'font--medium-14-20' : 'font--medium-12-16',
                 { 'input__label--required': this.required },
             ];
         },

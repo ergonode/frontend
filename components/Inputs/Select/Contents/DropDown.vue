@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['select-base-content', {'select-base-content--fixed': fixedContent}]">
+    <div :class="['drop-down', {'drop-down--fixed': fixedContent}]">
         <slot name="body" />
         <slot name="footer" />
     </div>
@@ -12,7 +12,7 @@
 <script>
 
 export default {
-    name: 'SelectBaseContent',
+    name: 'DropDown',
     props: {
         fixedContent: {
             type: Boolean,
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .select-base-content {
+    .drop-down {
         position: fixed;
         z-index: 999;
         display: flex;

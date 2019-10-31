@@ -4,7 +4,7 @@
  */
 <template functional>
     <span
-        class="element-hint font--medium-12-16"
+        class="element-hint font--semi-bold-10-12"
         v-text="props.title" />
 </template>
 
@@ -26,6 +26,5 @@ export default {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        letter-spacing: 0.5px;
     }
 </style>

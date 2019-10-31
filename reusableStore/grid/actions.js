@@ -183,23 +183,23 @@ export default {
         commit(types.SET_CELL_VALUES, cellValues);
         commit(types.SET_ROW_IDS, rowIds);
     },
-    setFilter({ commit, state }, { filter, id, operator }) {
+    setFilter({ commit }, { filter, id, operator }) {
         // Remove selection on filter action
         commit(types.REMOVE_SELECTED_ROWS);
         commit(types.SET_SELECTION_FOR_ALL_ROWS, false);
 
-        if (state.filters[id] && !filter.length) {
+        if (!filter.length) {
             commit(types.REMOVE_FILTER, id);
         } else {
             commit(types.SET_FILTER, { id, filter, operator });
         }
     },
-    setAdvancedFilterValue({ commit, state }, { value, id, operator }) {
+    setAdvancedFilterValue({ commit }, { value, id, operator }) {
         // Remove selection on filter action
         commit(types.REMOVE_SELECTED_ROWS);
         commit(types.SET_SELECTION_FOR_ALL_ROWS, false);
 
-        if (state.advancedFilters[id] && !value.length) {
+        if (!value.length) {
             commit(types.REMOVE_ADVANCED_FILTER_OPERATOR, { id, operator });
         } else {
             commit(types.SET_ADVANCED_FILTER_VALUE, { id, value, operator });

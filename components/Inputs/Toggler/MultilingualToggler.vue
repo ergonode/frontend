@@ -64,7 +64,9 @@ export default {
         }
 
         &__label {
-            margin-left: 8px;
+            display: flex;
+            align-items: center;
+            margin: 0 4px 0 8px;
             color: $GRAPHITE_DARK;
         }
     }

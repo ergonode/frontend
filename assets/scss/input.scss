@@ -42,8 +42,8 @@
 
         textarea {
             min-height: 100%;
+            padding: 6px 1px 1px;
             box-sizing: border-box;
-            padding-top: 6px;
         }
     }
 
@@ -73,7 +73,6 @@
             background-color: $WHITE;
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             color: $GRAPHITE_LIGHT;
-            font: $FONT_MEDIUM_14_20;
             cursor: text;
 
             &--required {
@@ -125,7 +124,7 @@
         }
     }
 
-    &:not(.underline) {
+    &:not(.left-alignment):not(.underline):not(.center-alignment) {
         #{$input}__activator {
             textarea {
                 margin-left: 8px;
@@ -133,7 +132,7 @@
         }
     }
 
-    &.small:not(.underline) {
+    &.small:not(.left-alignment):not(.underline):not(.center-alignment) {
         #{$input}__activator {
             input::placeholder, input {
                 margin-left: 5px;
@@ -141,7 +140,7 @@
         }
 
         #{$input}__label {
-            margin-left: 4px;
+            margin-left: 3px;
         }
 
         #{$input}__information-label {
@@ -167,7 +166,7 @@
         }
     }
 
-    &.regular:not(.underline) {
+    &.regular:not(.left-alignment):not(.underline):not(.center-alignment) {
         #{$input}__activator {
             input::placeholder, input {
                 margin-left: 9px;

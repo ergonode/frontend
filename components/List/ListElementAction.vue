@@ -18,7 +18,8 @@ export default {
 <style lang="scss" scoped>
     .element-action {
         display: flex;
-        flex: 0;
+        min-height: 24px;
+        min-width: 24px;
         justify-content: center;
         align-items: center;
     }

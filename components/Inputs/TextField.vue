@@ -51,11 +51,11 @@
 </template>
 
 <script>
-import baseInputMixin from '~/mixins/inputs/baseInputMixin';
+import inputMixin from '~/mixins/inputs/inputMixin';
 
 export default {
     name: 'TextField',
-    mixins: [baseInputMixin],
+    mixins: [inputMixin],
     props: {
         input: {
             type: Object,

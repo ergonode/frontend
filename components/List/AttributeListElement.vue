@@ -10,8 +10,8 @@
         @drag="onDrag">
         <ListElementIcon :icon-path="typeIcon" />
         <ListElementDescription>
-            <ListElementSubtitle :subtitle="item.code" />
             <ListElementTitle :title="item.label || 'No translation'" />
+            <ListElementHint :title="item.code" />
         </ListElementDescription>
     </ListDraggableElement>
 </template>
@@ -27,7 +27,7 @@ export default {
         ListElementIcon: () => import('~/components/List/ListElementIcon'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
-        ListElementSubtitle: () => import('~/components/List/ListElementSubtitle'),
+        ListElementHint: () => import('~/components/List/ListElementHint'),
     },
     props: {
         item: {

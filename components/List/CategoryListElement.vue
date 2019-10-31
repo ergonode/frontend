@@ -9,8 +9,8 @@
         :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
         @drag="onDrag">
         <ListElementDescription>
-            <ListElementSubtitle :subtitle="item.code" />
             <ListElementTitle :title="item.name || 'No translation'" />
+            <ListElementHint :title="item.code" />
         </ListElementDescription>
         <ListElementAction>
             <ListElementHint :title="productsCount" />
@@ -27,7 +27,6 @@ export default {
         ListDraggableElement: () => import('~/components/List/ListDraggableElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
-        ListElementSubtitle: () => import('~/components/List/ListElementSubtitle'),
         ListElementHint: () => import('~/components/List/ListElementHint'),
         ListElementAction: () => import('~/components/List/ListElementAction'),
     },

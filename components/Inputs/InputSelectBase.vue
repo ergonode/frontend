@@ -23,7 +23,7 @@
             </slot>
         </div>
         <FadeTransition v-if="isFocused">
-            <SelectBaseContent
+            <DropDown
                 :style="selectBoundingBox"
                 :fixed-content="fixedContentWidth">
                 <template #body>
@@ -41,7 +41,7 @@
                         @clear="onClear"
                         @apply="dismissSelect" />
                 </template>
-            </SelectBaseContent>
+            </DropDown>
         </FadeTransition>
         <label
             v-if="informationLabel"
@@ -54,7 +54,7 @@
 import { ARROW } from '~/defaults/icons';
 import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 import FadeTransition from '~/components/Transitions/FadeTransition';
-import SelectBaseContent from '~/components/Inputs/Select/Contents/SelectBaseContent';
+import DropDown from '~/components/Inputs/Select/Contents/DropDown';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
 import MultiselectContentFooter from '~/components/Inputs/Select/Contents/Footers/MultiselectContentFooter';
 import SelectContentFooter from '~/components/Inputs/Select/Contents/Footers/SelectContentFooter';
@@ -63,7 +63,7 @@ export default {
     name: 'InputSelectBase',
     components: {
         FadeTransition,
-        SelectBaseContent,
+        DropDown,
         IconArrowDropDown,
         MultiselectContentFooter,
         SelectContentFooter,
@@ -212,6 +212,7 @@ export default {
         floatingLabelClasses() {
             return [
                 'input__label',
+                this.isEmpty && !this.isFocused ? 'font--medium-14-20' : 'font--medium-12-16',
                 { 'input__label--required': this.required },
             ];
         },
@@ -317,7 +318,7 @@ export default {
                     input.focus();
                 }
             } else {
-                const selectContentEl = this.$el.querySelector('.select-base-content');
+                const selectContentEl = this.$el.querySelector('.drop-down');
 
                 if (selectContentEl) {
                     const {
