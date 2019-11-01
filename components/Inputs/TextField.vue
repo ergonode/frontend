@@ -30,7 +30,9 @@
                 @input="onValueChange"
                 @focus="onFocus"
                 @blur="onBlur">
-            <div class="input__append">
+            <div
+                v-if="isAppendSlotVisible"
+                class="input__append">
                 <slot name="append" />
                 <ErrorHint
                     v-if="isError"

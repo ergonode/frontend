@@ -27,6 +27,9 @@ export default {
         this.associatedLabel = `input-${this._uid}`;
     },
     computed: {
+        isAppendSlotVisible() {
+            return this.isError || this.isDescription || !!this.$slots.append;
+        },
         isEmpty() {
             return this.value === '' || this.value === null;
         },
@@ -38,6 +41,11 @@ export default {
         },
         isDescription() {
             return this.description !== '' && this.description !== null;
+        },
+        isError() {
+            return Boolean(Array.isArray(this.errorMessages)
+                ? this.errorMessages.length
+                : this.errorMessages);
         },
         inputClasses() {
             return [
@@ -91,11 +99,6 @@ export default {
         },
         informationLabel() {
             return this.isError ? this.parsedErrorMessages : this.hint;
-        },
-        isError() {
-            return Boolean(Array.isArray(this.errorMessages)
-                ? this.errorMessages.length
-                : this.errorMessages);
         },
         parsedErrorMessages() {
             return Array.isArray(this.errorMessages)
