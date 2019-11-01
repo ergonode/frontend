@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="element-action">
+    <div :class="['element-action', {'element-action--small': small}]">
         <slot />
     </div>
 </template>
@@ -12,15 +12,24 @@
 
 export default {
     name: 'ListElementAction',
+    props: {
+        small: {
+            type: Boolean,
+            default: false,
+        },
+    },
 };
 </script>
 
 <style lang="scss" scoped>
     .element-action {
         display: flex;
-        min-height: 24px;
-        min-width: 24px;
         justify-content: center;
         align-items: center;
+        margin: 0 4px;
+
+        &--small {
+            margin-left: 0;
+        }
     }
 </style>

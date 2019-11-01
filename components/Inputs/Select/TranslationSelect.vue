@@ -13,17 +13,17 @@
                 :large="!$attrs.small && $attrs.regular"
                 :selected="index === selectedOptionIndex"
                 @click.native="onSelectValue(option, index)">
-                <ListElementAction v-if="$attrs.multiselect">
+                <ListElementAction
+                    v-if="$attrs.multiselect"
+                    :small="$attrs.small">
                     <CheckBox
-                        :value="
-                            typeof selectedOptions[index] !== 'undefined'
-                        "
+                        :value="isSelected(index)"
                         @input="onSelectValue(option, index)" />
                 </ListElementAction>
                 <ListElementDescription>
                     <ListElementTitle
                         :small="$attrs.small"
-                        :title="option.value" />
+                        :title="option.value || 'No translation'" />
                     <ListElementHint :title="option.key" />
                 </ListElementDescription>
             </ListElement>
@@ -50,10 +50,13 @@ export default {
             selectedOptions: {},
         };
     },
-    mounted() {
+    created() {
         this.initSelectedOptions();
     },
     methods: {
+        isSelected(index) {
+            return typeof this.selectedOptions[index] !== 'undefined';
+        },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);
         },

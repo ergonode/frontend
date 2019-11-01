@@ -101,20 +101,27 @@
     }
 
     &.underline {
-        #{$input}__activator::before {
-            bottom: 0;
-            width: 100%;
-            border: solid $GREY;
-            border-width: thin 0 0;
-            @extend %defaultLine;
-        }
+        #{$input}__activator {
+            input {
+                padding: 0;
+            }
 
-        #{$input}__activator:hover::before {
-            border-color: $GREEN;
+            &::before {
+                bottom: 0;
+                width: 100%;
+                border: solid $GREY;
+                border-width: thin 0 0;
+                @extend %defaultLine;
+            }
+
+            &:hover::before {
+                border-color: $GREEN;
+            }
         }
 
         #{$input}__label {
             position: absolute;
+            padding: 0;
             color: $GRAPHITE_LIGHT;
         }
 
