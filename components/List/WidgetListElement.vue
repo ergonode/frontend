@@ -7,7 +7,9 @@
         :is-draggable="$hasAccess('TEMPLATE_DESIGNER_UPDATE')"
         :draggable-id="item.type"
         @drag="onDrag">
-        <ListElementHintIcon icon-path="Editor/IconFontSize" />
+        <ListElementHintIcon
+            icon-path="Editor/IconFontSize"
+            hint="Title" />
         <ListElementDescription>
             <ListElementTitle :title="item.label" />
             <ListElementHint :title="item.code" />
