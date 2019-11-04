@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <ContentBaseFooter :space-between="true">
+    <ContentBaseFooter
+        :small="true"
+        :space-between="true">
         <Button
             small
             title="OK"

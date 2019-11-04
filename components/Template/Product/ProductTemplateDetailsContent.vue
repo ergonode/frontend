@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="details-content">
+    <div class="input__append">
         <slot name="append" />
         <InfoHint
             v-if="hint && !isError"
@@ -40,10 +40,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .details-content {
-        display: flex;
-        align-items: center;
-    }
-</style>

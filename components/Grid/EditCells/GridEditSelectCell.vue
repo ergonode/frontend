@@ -3,45 +3,28 @@
  * See LICENSE for license details.
  */
 <template>
-    <Select
+    <TranslationSelect
         :style="{width: `${fixedWidth}px`}"
         :value="value"
-        solid
-        small
-        clearable
+        :solid="true"
+        :small="true"
+        :clearable="true"
+        :autofocus="true"
         :multiselect="multiselect"
         :dismissible="false"
         :error-messages="errorMessages"
-        autofocus
+        :options="options"
         @focus="onFocus"
-        @input="onValueChange"
-        @apply="onApply">
-        <template #selectContent>
-            <TranslationMultiselectListContent
-                v-if="multiselect"
-                :options="options"
-                :selected-options="value || []"
-                @value="onValueChange" />
-            <TranslationSelectListContent
-                v-else
-                :options="options"
-                :selected-option="value"
-                @value="onValueChange" />
-        </template>
-    </Select>
+        @input="onValueChange" />
 </template>
 
 <script>
-import Select from '~/components/Inputs/Select/Select';
-import TranslationSelectListContent from '~/components/Inputs/Select/Contents/TranslationSelectListContent';
-import TranslationMultiselectListContent from '~/components/Inputs/Select/Contents/TranslationMultiselectListContent';
+import TranslationSelect from '~/components/Inputs/Select/TranslationSelect';
 
 export default {
     name: 'GridEditSelectCell',
     components: {
-        Select,
-        TranslationSelectListContent,
-        TranslationMultiselectListContent,
+        TranslationSelect,
     },
     props: {
         value: {
@@ -68,9 +51,6 @@ export default {
     methods: {
         onFocus(isFocused) {
             this.$emit('focus', isFocused);
-        },
-        onApply() {
-            this.$emit('focus', false);
         },
         onValueChange(value) {
             if (value) {

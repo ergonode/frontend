@@ -9,7 +9,7 @@
                 v-model="language"
                 solid
                 regular
-                label="Display language"
+                label="Edit language"
                 :options="languagesValues" />
         </div>
         <div>

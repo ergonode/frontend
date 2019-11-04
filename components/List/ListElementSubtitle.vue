@@ -4,7 +4,9 @@
  */
 <template functional>
     <span
-        :class="['element-subtitle', {'element-subtitle--small': props.small}]"
+        :class="['element-subtitle', {
+            'element-subtitle--small': props.small
+        }]"
         v-text="props.subtitle" />
 </template>
 

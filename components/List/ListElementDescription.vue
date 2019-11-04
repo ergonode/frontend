@@ -19,9 +19,11 @@ export default {
     .element-description {
         display: flex;
         flex: 1;
-        flex-flow: row wrap;
+        flex-direction: column;
         justify-content: center;
-        align-items: center;
+        margin: 0 4px;
+        text-overflow: ellipsis;
         overflow: hidden;
+        word-break: break-all;
     }
 </style>

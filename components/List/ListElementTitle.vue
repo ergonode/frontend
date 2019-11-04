@@ -2,10 +2,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
+<template functional>
     <span
-        :class="['element-title', color, font]"
-        v-text="title" />
+        :class="['element-title', props.color, {
+            'element-title--small': props.small
+        }]"
+        v-text="props.title" />
 </template>
 
 <script>
@@ -39,5 +41,13 @@ export default {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+
+        &:not(&--small) {
+            font: $FONT_MEDIUM_14_20;
+        }
+
+        &--small {
+            font: $FONT_MEDIUM_12_16;
+        }
     }
 </style>

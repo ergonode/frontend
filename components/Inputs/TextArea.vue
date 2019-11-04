@@ -21,14 +21,24 @@
                 ref="input"
                 :style="textareaStyle"
                 :value="value"
-                :placeholder="placeholder"
+                :placeholder="placeholderValue"
                 :autofocus="autofocus"
                 :disabled="disabled"
                 :aria-label="label || 'no description'"
                 @input="onValueChange"
                 @focus="onFocus"
                 @blur="onBlur" />
-            <slot name="append" />
+            <div
+                v-if="isAppendSlotVisible"
+                class="input__append">
+                <slot name="append" />
+                <IconError
+                    v-if="isError"
+                    size="14" />
+                <InfoHint
+                    v-if="isDescription"
+                    :hint="description" />
+            </div>
         </div>
         <label
             v-if="informationLabel"
@@ -38,10 +48,11 @@
 </template>
 
 <script>
-import baseInputMixin from '~/mixins/inputs/baseInputMixin';
+import inputMixin from '~/mixins/inputs/inputMixin';
 
 export default {
-    mixins: [baseInputMixin],
+    name: 'TextArea',
+    mixins: [inputMixin],
     props: {
         input: {
             type: Object,
@@ -78,6 +89,10 @@ export default {
             default: null,
         },
         placeholder: {
+            type: String,
+            default: null,
+        },
+        description: {
             type: String,
             default: null,
         },

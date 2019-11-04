@@ -13,7 +13,7 @@
             required
             :error-messages="errorSkuMessage"
             :disabled="isDisabled || isDisabledByPrivileges"
-            @input="(sku) => setProductSku(sku)" />
+            @input="setProductSku" />
         <Select
             :value="template"
             solid
@@ -23,23 +23,17 @@
             :error-messages="errorTemplateMessage"
             :options="templateValues"
             :disabled="isDisabled || isDisabledByPrivileges"
-            @input="(template) => setProductTemplate(template)" />
-        <Select
+            @input="setProductTemplate" />
+        <TranslationSelect
             :value="selectedCategories"
-            solid
-            regular
-            multiselect
+            :solid="true"
+            :regular="true"
+            :multiselect="true"
             label="Category"
-            clearable
+            :clearable="true"
+            :options="categoryOptions"
             :disabled="isDisabledByPrivileges"
-            @input="clearContent">
-            <template #selectContent>
-                <TranslationMultiselectListContent
-                    :options="categoryOptions"
-                    :selected-options="selectedCategories"
-                    @value="onCategoriesChange" />
-            </template>
-        </Select>
+            @input="setProductCategories" />
         <slot />
     </BaseCard>
 </template>
@@ -55,7 +49,7 @@ export default {
         BaseCard,
         TextField: () => import('~/components/Inputs/TextField'),
         Select: () => import('~/components/Inputs/Select/Select'),
-        TranslationMultiselectListContent: () => import('~/components/Inputs/Select/Contents/TranslationMultiselectListContent'),
+        TranslationSelect: () => import('~/components/Inputs/Select/TranslationSelect'),
     },
     mixins: [errorValidationMixin],
     computed: {
@@ -97,12 +91,6 @@ export default {
             'setProductTemplate',
             'setProductCategories',
         ]),
-        onCategoriesChange(categories) {
-            this.setProductCategories(categories);
-        },
-        clearContent() {
-            this.setProductCategories();
-        },
     },
 };
 </script>

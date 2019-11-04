@@ -3,34 +3,32 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="element-icon">
-        <Component :is="iconComponent" />
-    </div>
+    <span
+        class="element-hint"
+        :title="hint">
+        <slot />
+    </span>
 </template>
 
 <script>
 export default {
-    name: 'ListElementIcon',
+    name: 'ListElementHintIcon',
     props: {
-        iconPath: {
+        hint: {
             type: String,
-            default: null,
-        },
-    },
-    computed: {
-        iconComponent() {
-            return () => import(`~/components/Icon/${this.iconPath}`);
+            default: '',
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .element-icon {
+    .element-hint {
         display: flex;
-        flex: 0;
         justify-content: flex-start;
         align-items: center;
-        padding: 0 8px 0 0;
+        min-width: 24px;
+        min-height: 24px;
+        margin-right: 4px;
     }
 </style>

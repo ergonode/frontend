@@ -40,9 +40,8 @@ export default {
             default: '',
         },
         parameters: {
-            type: [Array, Object],
-            required: false,
-            default: () => {},
+            type: Object,
+            default: null,
         },
     },
     data() {

@@ -7,6 +7,7 @@
         :class="['upload-image', {
             'upload-image--disabled': disabled,
             'upload-image--elevator': elevator,
+            'upload-image--fixed-height': fixedHeight,
         }]">
         <span
             v-if="title"
@@ -30,8 +31,7 @@
         </div>
         <div
             v-else
-            class="upload-image__container"
-            :style="imageHeightStyle">
+            class="upload-image__container">
             <div class="upload-image__remove-btn">
                 <IconFabButton
                     theme="secondary"
@@ -90,9 +90,6 @@ export default {
         ...mapState('validations', {
             uploadError: (state) => state.validationErrors.upload,
         }),
-        imageHeightStyle() {
-            return this.fixedHeight ? { height: '150px' } : null;
-        },
     },
     methods: {
         ...mapActions('validations', [
@@ -162,7 +159,6 @@ export default {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 43px 0;
             background-color: $WHITE;
 
             &::before {
@@ -219,6 +215,16 @@ export default {
         &__error-label {
             color: $RED;
             margin-top: 8px;
+        }
+
+        &--fixed-height {
+            #{$parent}__wrapper {
+                min-height: 150px;
+            }
+
+            #{$parent}__container {
+                height: 150px;
+            }
         }
     }
 </style>

@@ -5,12 +5,13 @@
 import { types } from './mutations';
 import { getMappedFilters, getMappedElementsToGroups } from '~/model/mappers/gridDataMapper';
 import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
+import { FILTER_OPERATOR } from '~/defaults/operators';
 
 export default {
     getFilteredGroupElements({ commit, state }, { listType, languageCode }) {
         const path = `${languageCode}/${listType}`;
         const params = {
-            filter: `code=${state.filter}`,
+            filter: state.filter.length ? `code=${state.filter}` : null,
         };
 
         return this.app.$axios.$get(path, { params }).then(({ collection: elements }) => {
@@ -61,7 +62,7 @@ export default {
     }) {
         const { elements: stateElements } = state;
         const path = `${languageCode}/${listType}`;
-        const groupFilter = groupId !== UNASSIGNED_GROUP_ID ? getMappedFilters({ groups: groupId }) : 'groups=';
+        const groupFilter = groupId !== UNASSIGNED_GROUP_ID ? getMappedFilters({ groups: { value: groupId, operator: FILTER_OPERATOR.EQUAL } }) : 'groups=';
         const params = {
             limit: elementsCount,
             offset: 0,

@@ -30,7 +30,9 @@ export default {
 <style lang="scss" scoped>
     .info-hint {
         display: flex;
+        justify-content: center;
         align-items: center;
-        padding: 0 6px;
+        width: 24px;
+        height: 24px;
     }
 </style>
