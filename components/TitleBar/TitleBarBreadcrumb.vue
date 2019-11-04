@@ -48,6 +48,10 @@ export default {
         margin-left: 8px;
         text-decoration: none;
 
+        &:active {
+            color: inherit;
+        }
+
         &__title {
             margin-left: 4px;
             color: $GRAPHITE_DARK;

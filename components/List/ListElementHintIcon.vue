@@ -4,9 +4,9 @@
  */
 <template>
     <span
-        class="element-icon"
+        class="element-hint"
         :title="hint">
-        <Component :is="iconComponent" />
+        <slot />
     </span>
 </template>
 
@@ -14,25 +14,16 @@
 export default {
     name: 'ListElementHintIcon',
     props: {
-        iconPath: {
-            type: String,
-            default: null,
-        },
         hint: {
             type: String,
             default: '',
-        },
-    },
-    computed: {
-        iconComponent() {
-            return () => import(`~/components/Icon/${this.iconPath}`);
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .element-icon {
+    .element-hint {
         display: flex;
         justify-content: flex-start;
         align-items: center;

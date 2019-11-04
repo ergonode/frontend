@@ -7,9 +7,9 @@
         :is-draggable="$hasAccess('TEMPLATE_DESIGNER_UPDATE')"
         :draggable-id="item.type"
         @drag="onDrag">
-        <ListElementHintIcon
-            icon-path="Editor/IconFontSize"
-            hint="Title" />
+        <ListElementHintIcon hint="Title">
+            <Component :is="widgetIconComponent" />
+        </ListElementHintIcon>
         <ListElementDescription>
             <ListElementTitle :title="item.label" />
             <ListElementHint :title="item.code" />
@@ -33,6 +33,11 @@ export default {
         item: {
             type: Object,
             required: true,
+        },
+    },
+    computed: {
+        widgetIconComponent() {
+            return () => import('~/components/Icon/Editor/IconEditor/IconFontSize');
         },
     },
     methods: {

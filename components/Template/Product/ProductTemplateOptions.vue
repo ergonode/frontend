@@ -16,8 +16,7 @@
         :required="required"
         :options="parsedOptions"
         @focus="onFocusChange"
-        @input="onValueChange">
-    </TranslationSelect>
+        @input="onValueChange" />
 </template>
 
 <script>

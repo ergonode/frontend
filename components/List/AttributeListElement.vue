@@ -8,9 +8,9 @@
         :is-draggable="$hasAccess('ATTRIBUTE_UPDATE')"
         :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
         @drag="onDrag">
-        <ListElementHintIcon
-            :icon-path="typeIcon"
-            :hint="formattedAttributeType" />
+        <ListElementHintIcon :hint="formattedAttributeType">
+            <Component :is="typeIconComponent" />
+        </ListElementHintIcon>
         <ListElementDescription>
             <ListElementTitle :title="item.label || 'No translation'" />
             <ListElementHint :title="item.code" />
@@ -45,8 +45,8 @@ export default {
         ...mapState('list', {
             disabledElements: (state) => state.disabledElements,
         }),
-        typeIcon() {
-            return `Attributes/Icon${this.formattedAttributeType}`;
+        typeIconComponent() {
+            return () => import(`~/components/Icon/Attributes/Icon${this.formattedAttributeType}`);
         },
         formattedAttributeType() {
             return getIcon(this.item.type);
