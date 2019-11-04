@@ -2,14 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import Blur from '~/components/Blur/Blur.vue';
 
 
 describe('Blur/Blur', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(Blur);
+        wrapper = shallowMount(Blur);
     });
 
     it('Component is named well', () => {

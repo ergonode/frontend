@@ -2,13 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount, createLocalVue } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import CheckBox from '~/components/Inputs/CheckBox';
 
 describe('Inputs/CheckBox', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(CheckBox, {
+        wrapper = shallowMount(CheckBox, {
             propsData: {
                 isDisabled: false,
                 value: 0,

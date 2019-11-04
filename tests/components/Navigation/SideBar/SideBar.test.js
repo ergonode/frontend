@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import VueRouter from 'vue-router';
-import { mount, createLocalVue } from '@vue/test-utils';
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import SideBar from '~/components/Navigation/SideBar/SideBar';
 
 const localVue = createLocalVue();
@@ -21,7 +21,7 @@ const mocks = {
 describe('Navigation/SideBar/SideBar', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(SideBar, {
+        wrapper = shallowMount(SideBar, {
             localVue,
             router,
             mocks,

@@ -2,13 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import TemplateGridHeader from '~/components/TemplateGrid/TemplateGridHeader';
 
 describe('TemplateGrid/TemplateGridHeader', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(TemplateGridHeader, {
+        wrapper = shallowMount(TemplateGridHeader, {
             propsData: {
                 columns: 1,
             },

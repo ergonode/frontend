@@ -2,13 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import TemplateGridGhostItem from '~/components/TemplateGrid/TemplateGridGhostItem';
 
 describe('TemplateGrid/TemplateGridGhostItem', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(TemplateGridGhostItem);
+        wrapper = shallowMount(TemplateGridGhostItem);
     });
 
     it('Component is named well', () => {

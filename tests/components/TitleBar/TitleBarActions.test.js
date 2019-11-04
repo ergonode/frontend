@@ -1,14 +1,10 @@
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import TitleBarActions from '~/components/TitleBar/TitleBarActions';
 
 describe('TitleBar/TitleBarActions', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(TitleBarActions);
-    });
-
-    it('Component is rendered', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy();
+        wrapper = shallowMount(TitleBarActions);
     });
 
     it('Component is named well', () => {
