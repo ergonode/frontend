@@ -57,6 +57,7 @@ export default {
             transform: translate(0, -50%);
             width: 100%;
             height: 12px;
+            background-color: $GREY_LIGHT;
             border-radius: 8px;
             box-shadow: $ELEVATOR_HOLE;
             content: "";
@@ -102,7 +103,11 @@ export default {
             pointer-events: none;
 
             #{$TOGGLER}__state {
-                background-color: $GREY_DARK;
+                background-color: $GREY_LIGHT;
+
+                &::after {
+                    border-color: $GREY_DARK;
+                }
             }
         }
     }
