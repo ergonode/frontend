@@ -51,6 +51,7 @@
 import inputMixin from '~/mixins/inputs/inputMixin';
 
 export default {
+    name: 'TextArea',
     mixins: [inputMixin],
     props: {
         input: {
