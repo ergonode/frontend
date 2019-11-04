@@ -36,11 +36,17 @@
                         'tab-bar-item__contextual-menu',
                         {'tab-bar-item__contextual-menu--active': menuActive}
                     ]">
-                <ButtonSelect
-                    icon-path="Others/IconDots"
+                <MultiButton
+                    theme="secondary"
+                    size="small"
+                    :plain="true"
                     :options="options"
                     @input="onSelectValue"
-                    @focus="onMenuActive" />
+                    @focus="onMenuActive">
+                    <template #icon="{ color }">
+                        <IconDots :fill-color="color" />
+                    </template>
+                </MultiButton>
             </div>
         </template>
     </div>
@@ -53,7 +59,8 @@ export default {
     name: 'HorizontalTabBarItem',
     components: {
         TextField: () => import('~/components/Inputs/TextField'),
-        ButtonSelect: () => import('~/components/Inputs/Select/ButtonSelect'),
+        IconDots: () => import('~/components/Icon/Others/IconDots'),
+        MultiButton: () => import('~/components/Buttons/MultiButton'),
     },
     mixins: [tabBarItemMixin],
     data() {

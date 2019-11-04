@@ -7,16 +7,16 @@
         <div
             v-if="isTabVisible"
             :class="['tab-bar__items', {'tab-bar__items--scrolling': isScrollingEnabled}]">
-            <IconFabButton
+            <FabButton
                 v-if="isScrollingEnabled"
                 theme="secondary"
                 @click.native="scrollTo('back')">
-                <template #icon="{ iconFillColor }">
+                <template #icon="{ color }">
                     <IconArrowSingle
-                        :fill-color="iconFillColor"
+                        :fill-color="color"
                         :state="leftArrow" />
                 </template>
-            </IconFabButton>
+            </FabButton>
             <div
                 :class="
                     [
@@ -33,24 +33,24 @@
                     :item="item"
                     @select="onSelectTabBarItem" />
             </div>
-            <IconFabButton
+            <FabButton
                 v-if="isAddingNewTabEnabled"
                 theme="secondary"
                 @click.native="addTab">
-                <template #icon="{ iconFillColor }">
-                    <IconAdd :fill-color="iconFillColor" />
+                <template #icon="{ color }">
+                    <IconAdd :fill-color="color" />
                 </template>
-            </IconFabButton>
-            <IconFabButton
+            </FabButton>
+            <FabButton
                 v-if="isScrollingEnabled"
                 theme="secondary"
                 @click.native="scrollTo('forward')">
-                <template #icon="{ iconFillColor }">
+                <template #icon="{ color }">
                     <IconArrowSingle
-                        :fill-color="iconFillColor"
+                        :fill-color="color"
                         :state="rightArrow" />
                 </template>
-            </IconFabButton>
+            </FabButton>
         </div>
         <HorizontalTabContent :item="items[selectedTabIndex]" />
     </div>
@@ -67,7 +67,7 @@ export default {
     components: {
         HorizontalTabContent: () => import('~/components/Tab/HorizontalTabContent'),
         HorizontalTabBarItem: () => import('~/components/Tab/HorizontalTabBarItem'),
-        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
+        FabButton: () => import('~/components/Buttons/FabButton'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
         IconArrowSingle: () => import('~/components/Icon/Arrows/IconArrowSingle'),
     },

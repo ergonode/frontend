@@ -24,15 +24,15 @@
                 <IconSearch :fill-color="searchIconFillColor" />
             </template>
         </TextField>
-        <IconFabButton
+        <FabButton
             class="search-btn"
             @click.native="onSearchBtnClick">
-            <template #icon="{ iconFillColor }">
+            <template #icon="{ color }">
                 <Component
                     :is="searchBtnIconComponent"
-                    :fill-color="iconFillColor" />
+                    :fill-color="color" />
             </template>
-        </IconFabButton>
+        </FabButton>
     </ListHeader>
 </template>
 
@@ -42,7 +42,7 @@ import {
     GREEN, GRAPHITE, WHITE,
 } from '~/assets/scss/_variables/_colors.scss';
 import ListHeader from '~/components/List/ListHeader';
-import IconFabButton from '~/components/Buttons/IconFabButton';
+import FabButton from '~/components/Buttons/FabButton';
 import Select from '~/components/Inputs/Select/Select';
 import TextField from '~/components/Inputs/TextField';
 import IconSearch from '~/components/Icon/Actions/IconSearch';
@@ -51,7 +51,7 @@ export default {
     name: 'ListSearchSelectHeader',
     components: {
         ListHeader,
-        IconFabButton,
+        FabButton,
         Select,
         TextField,
         IconSearch,

@@ -24,5 +24,9 @@ export default {
             type: Boolean,
             default: false,
         },
+        plain: {
+            type: Boolean,
+            default: false,
+        },
     },
 };

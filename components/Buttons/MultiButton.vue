@@ -4,11 +4,12 @@
  */
 <template>
     <AppendIconButton
-        :class="[{'btn--plain': plain}]"
+        class="btn--multi"
         :disabled="disabled"
         :title="title"
         :theme="theme"
         :size="size"
+        :plain="plain"
         @click.native="onClick">
         <template #append="{ color }">
             <slot
@@ -25,16 +26,18 @@
             <div
                 class="btn__select-content"
                 :style="contentPositionStyle">
-                <List>
-                    <ListElement
-                        v-for="(option, index) in options"
-                        :key="index"
-                        @click.native="onSelectedValue(index)">
-                        <ListElementDescription>
-                            <ListElementTitle :title="option" />
-                        </ListElementDescription>
-                    </ListElement>
-                </List>
+                <slot name="content">
+                    <List>
+                        <ListElement
+                            v-for="(option, index) in options"
+                            :key="index"
+                            @click.native="onSelectedValue(index)">
+                            <ListElementDescription>
+                                <ListElementTitle :title="option" />
+                            </ListElementDescription>
+                        </ListElement>
+                    </List>
+                </slot>
             </div>
         </Transition>
     </AppendIconButton>
@@ -42,13 +45,12 @@
 <script>
 import { ARROW } from '~/defaults/icons';
 import buttonPropsMixin from '~/mixins/buttons/buttonPropsMixin';
-import AppendIconButton from '~/components/Buttons/AppendIconButton';
 
 export default {
     name: 'MultiButton',
     mixins: [buttonPropsMixin],
     components: {
-        AppendIconButton,
+        AppendIconButton: () => import('~/components/Buttons/AppendIconButton'),
         List: () => import('~/components/List/List'),
         ListElement: () => import('~/components/List/ListElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
@@ -59,10 +61,6 @@ export default {
         options: {
             type: Array,
             default: () => [],
-        },
-        plain: {
-            type: Boolean,
-            default: false,
         },
     },
     data() {
@@ -144,14 +142,19 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-    .btn__select-content {
-        position: fixed;
-        z-index: 999;
-        display: flex;
-        flex-direction: column;
-        background-color: $WHITE;
-        box-shadow: $ELEVATOR_2_DP;
-        max-height: 200px;
-        min-width: 130px;
+    .btn--multi {
+        width: 20px;
+        padding: 0;
+
+        .btn__select-content {
+            position: fixed;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            background-color: $WHITE;
+            box-shadow: $ELEVATOR_2_DP;
+            max-height: 200px;
+            min-width: 130px;
+        }
     }
 </style>

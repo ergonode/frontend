@@ -7,9 +7,10 @@
         :disabled="disabled"
         :title="title"
         :theme="theme"
+        :plain="plain"
         :size="size">
         <template #append="{ color }">
-            <div :class="`btn__append--${size}`">
+            <div :class="appendClasses">
                 <slot
                     name="append"
                     :color="color" />
@@ -28,10 +29,14 @@ export default {
     components: {
         BaseButton,
     },
+    computed: {
+        appendClasses() {
+            return this.title ? `btn__append--${this.size}` : null;
+        },
+    },
 };
 </script>
 <style lang="scss" scoped>
-
     .btn__append {
         &--regular {
             margin: 0 -6px 0 6px;

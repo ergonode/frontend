@@ -33,16 +33,16 @@
                     <Divider vertical />
                 </div>
             </div>
-            <IconFabButton
+            <FabButton
                 theme="secondary"
                 :is-selected="isExpanded"
                 @select="onExpandFilters">
-                <template #icon="{ iconFillColor }">
+                <template #icon="{ color }">
                     <IconArrowDouble
-                        :fill-color="iconFillColor"
+                        :fill-color="color"
                         :state="iconExpanderState" />
                 </template>
-            </IconFabButton>
+            </FabButton>
         </div>
         <FadeTransition>
             <GridAdvancedFiltersContainer
@@ -85,7 +85,7 @@ export default {
     components: {
         Divider: () => import('~/components/Dividers/Divider'),
         NumericBadge: () => import('~/components/Badges/NumericBadge'),
-        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
+        FabButton: () => import('~/components/Buttons/FabButton'),
         IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),
         GridAdvancedFiltersContainer: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFiltersContainer'),
         GridAdvancedFilter: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilter'),

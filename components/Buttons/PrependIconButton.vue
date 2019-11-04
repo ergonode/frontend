@@ -7,6 +7,7 @@
         :disabled="disabled"
         :title="title"
         :theme="theme"
+        :plain="plain"
         :size="size">
         <template #prepend="{ color }">
             <div :class="`btn__prepend--${size}`">

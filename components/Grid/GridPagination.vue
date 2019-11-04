@@ -7,14 +7,14 @@
         <Transition
             name="fade"
             mode="out-in">
-            <IconFabButton
+            <FabButton
                 :class="{'non-visible': !isLeftArrowVisible}"
                 theme="secondary"
                 @click.native="decrementPage">
-                <template #icon="{ iconFillColor }">
-                    <IconArrowPointer :fill-color="iconFillColor" />
+                <template #icon="{ color }">
+                    <IconArrowPointer :fill-color="color" />
                 </template>
-            </IconFabButton>
+            </FabButton>
         </Transition>
         <span class="pagination__text font--medium-12-16">
             Page
@@ -34,16 +34,16 @@
             class="pagination__number font--medium-12-16"
             v-text="maxPage" />
         <Transition name="fade">
-            <IconFabButton
+            <FabButton
                 :class="{'non-visible': !isRightArrowVisible}"
                 theme="secondary"
                 @click.native="incrementPage">
-                <template #icon="{ iconFillColor }">
+                <template #icon="{ color }">
                     <IconArrowPointer
-                        :fill-color="iconFillColor"
+                        :fill-color="color"
                         :state="rightArrow" />
                 </template>
-            </IconFabButton>
+            </FabButton>
         </Transition>
     </div>
 </template>
@@ -55,7 +55,7 @@ export default {
     name: 'GridPagination',
     components: {
         TextField: () => import('~/components/Inputs/TextField'),
-        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
+        FabButton: () => import('~/components/Buttons/FabButton'),
         IconArrowPointer: () => import('~/components/Icon/Arrows/IconArrowPointer'),
     },
     props: {

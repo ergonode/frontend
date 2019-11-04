@@ -8,27 +8,27 @@
         <span
             class="alert__title font--medium-14-20"
             v-text="alert.message" />
-        <IconFabButton
+        <FabButton
             theme="secondary"
             :plain="true"
             @click.native="() => removeAlert(alert)">
-            <template #icon="{ iconFillColor }">
-                <IconClose :fill-color="iconFillColor" />
+            <template #icon="{ color }">
+                <IconClose :fill-color="color" />
             </template>
-        </IconFabButton>
+        </FabButton>
     </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import { toCapitalize } from '~/model/stringWrapper';
-import IconFabButton from '~/components/Buttons/IconFabButton';
+import FabButton from '~/components/Buttons/FabButton';
 import IconClose from '~/components/Icon/Window/IconClose';
 
 export default {
     name: 'Alert',
     components: {
-        IconFabButton,
+        FabButton,
         IconClose,
     },
     props: {

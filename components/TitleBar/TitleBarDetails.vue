@@ -8,14 +8,14 @@
             :is="headerIconComponent"
             v-if="icon && !isBreadcrumb"
             :fill-color="greenColor" />
-        <IconFabButton
+        <FabButton
             v-if="isBreadcrumb"
             class="details__back-btn"
             @click.native="onClick">
-            <template #icon="{ iconFillColor }">
-                <IconArrowPointer :fill-color="iconFillColor" />
+            <template #icon="{ color }">
+                <IconArrowPointer :fill-color="color" />
             </template>
-        </IconFabButton>
+        </FabButton>
         <div class="vertical-wrapper">
             <span
                 class="details__title font--medium-24-32"
@@ -33,7 +33,7 @@ export default {
     name: 'TitleBarDetails',
     components: {
         IconArrowPointer: () => import('~/components/Icon/Arrows/IconArrowPointer'),
-        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
+        FabButton: () => import('~/components/Buttons/FabButton'),
     },
     props: {
         title: {

@@ -33,13 +33,13 @@
             class="upload-image__container"
             :style="imageHeightStyle">
             <div class="upload-image__remove-btn">
-                <IconFabButton
+                <FabButton
                     theme="secondary"
                     @select="onRemove">
-                    <template #icon="{ iconFillColor }">
-                        <IconDelete :fill-color="iconFillColor" />
+                    <template #icon="{ color }">
+                        <IconDelete :fill-color="color" />
                     </template>
-                </IconFabButton>
+                </FabButton>
             </div>
             <Picture :image-id="selectedFileID" />
         </div>
@@ -80,7 +80,7 @@ export default {
     },
     components: {
         Picture: () => import('~/components/Inputs/Image/Picture'),
-        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
+        FabButton: () => import('~/components/Buttons/FabButton'),
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
     data() {

@@ -2,11 +2,12 @@
 
 exports[`TitleBar/TitleBarDetails Component is named well 1`] = `
 <div class="title-bar__details">
-  <!----> <button class="details__back-btn fab-btn fab-btn--primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-label="box" role="presentation">
+  <!----> <button class="btn--fab details__back-btn btn btn--primary btn--regular">
+    <!----> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-label="box" role="presentation">
       <g fill="currentColor">
         <polygon points="20 11 7.8 11 13.4 5.4 12 4 4 12 12 20 13.4 18.6 7.8 13 20 13"></polygon>
       </g>
-    </svg></button>
+    </svg> </button>
   <div class="vertical-wrapper"><span class="details__title font--medium-24-32">test</span> </div>
 </div>
 `;

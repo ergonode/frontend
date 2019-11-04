@@ -4,7 +4,7 @@
  */
 <template>
     <button
-        :class="['btn', `btn--${theme}`,`btn--${size}`]"
+        :class="['btn', `btn--${theme}`,`btn--${size}`, {'btn--plain': plain}]"
         :disabled="disabled"
         :aria-label="title">
         <slot
