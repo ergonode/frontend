@@ -7,7 +7,7 @@
         :is-draggable="$hasAccess('TEMPLATE_DESIGNER_UPDATE')"
         :draggable-id="item.type"
         @drag="onDrag">
-        <ListElementIcon icon-path="Editor/IconFontSize" />
+        <ListElementHintIcon icon-path="Editor/IconFontSize" />
         <ListElementDescription>
             <ListElementTitle :title="item.label" />
             <ListElementHint :title="item.code" />
@@ -22,7 +22,7 @@ export default {
     name: 'AttributeListElement',
     components: {
         ListDraggableElement: () => import('~/components/List/ListDraggableElement'),
-        ListElementIcon: () => import('~/components/List/ListElementIcon'),
+        ListElementHintIcon: () => import('~/components/List/ListElementHintIcon'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
         ListElementHint: () => import('~/components/List/ListElementHint'),

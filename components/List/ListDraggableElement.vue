@@ -97,16 +97,6 @@ export default {
         user-select: none;
         cursor: grab;
 
-        &::before {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            width: 100%;
-            height: 100%;
-            content: "";
-        }
-
         &--dragged {
             z-index: 11;
             background-color: $GREY_LIGHT;

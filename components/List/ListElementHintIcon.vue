@@ -3,18 +3,24 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="element-icon">
+    <span
+        class="element-icon"
+        :title="hint">
         <Component :is="iconComponent" />
-    </div>
+    </span>
 </template>
 
 <script>
 export default {
-    name: 'ListElementIcon',
+    name: 'ListElementHintIcon',
     props: {
         iconPath: {
             type: String,
             default: null,
+        },
+        hint: {
+            type: String,
+            default: '',
         },
     },
     computed: {
