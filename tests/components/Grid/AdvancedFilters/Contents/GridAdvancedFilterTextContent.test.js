@@ -4,7 +4,7 @@
  */
 import { shallowMount } from '@vue/test-utils';
 import GridAdvancedFilterTextContent from '~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent';
-import { FILTER_OPERATOR } from '~/defaults/operators/index';
+import { FILTER_OPERATOR } from '~/defaults/operators';
 
 describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent', () => {
     let wrapper;

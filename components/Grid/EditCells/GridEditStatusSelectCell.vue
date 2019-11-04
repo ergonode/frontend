@@ -7,6 +7,7 @@
         :style="{width: `${fixedWidth}px`}"
         :value="value"
         solid
+        small
         clearable
         :dismissible="false"
         :error-messages="errorMessages"

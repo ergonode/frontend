@@ -12,6 +12,7 @@
             :value="selectedOption"
             class="options-select"
             solid
+            small
             :options="options"
             @input="onLanguageSelect" />
         <TextField
@@ -20,6 +21,7 @@
             class="search-text-field"
             solid
             autofocus
+            small
             placeholder="Search..."
             @input="debouncedSearch"
             @focus="onSearchFocus">

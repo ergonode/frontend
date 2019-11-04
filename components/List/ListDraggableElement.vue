@@ -3,13 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
+    <li
         :class="elementClasses"
         :draggable="!isDragged && isDraggable"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
         <slot v-if="!isDragged" />
-    </div>
+    </li>
 </template>
 
 <script>
@@ -91,21 +91,11 @@ export default {
         position: relative;
         display: flex;
         height: 48px;
-        padding: 6px 12px;
+        padding: 0 12px;
         box-sizing: border-box;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         user-select: none;
         cursor: grab;
-
-        &::before {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            width: 100%;
-            height: 100%;
-            content: "";
-        }
 
         &--dragged {
             z-index: 11;

@@ -8,26 +8,28 @@
         :is-draggable="$hasAccess('ATTRIBUTE_UPDATE')"
         :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
         @drag="onDrag">
-        <ListElementIcon :icon-path="typeIcon" />
+        <ListElementHintIcon :hint="formattedAttributeType">
+            <Component :is="typeIconComponent" />
+        </ListElementHintIcon>
         <ListElementDescription>
-            <ListElementSubtitle :subtitle="item.code" />
             <ListElementTitle :title="item.label || 'No translation'" />
+            <ListElementHint :title="item.code" />
         </ListElementDescription>
     </ListDraggableElement>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getTypeTranslation, getIcon } from '~/model/attributes/AttributeTypes';
+import { getIcon } from '~/model/attributes/AttributeTypes';
 
 export default {
     name: 'AttributeListElement',
     components: {
         ListDraggableElement: () => import('~/components/List/ListDraggableElement'),
-        ListElementIcon: () => import('~/components/List/ListElementIcon'),
+        ListElementHintIcon: () => import('~/components/List/ListElementHintIcon'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
-        ListElementSubtitle: () => import('~/components/List/ListElementSubtitle'),
+        ListElementHint: () => import('~/components/List/ListElementHint'),
     },
     props: {
         item: {
@@ -43,11 +45,11 @@ export default {
         ...mapState('list', {
             disabledElements: (state) => state.disabledElements,
         }),
-        typeIcon() {
-            return `Attributes/Icon${getIcon(this.item.type)}`;
+        typeIconComponent() {
+            return () => import(`~/components/Icon/Attributes/Icon${this.formattedAttributeType}`);
         },
-        typeTranslation() {
-            return getTypeTranslation(this.item.type);
+        formattedAttributeType() {
+            return getIcon(this.item.type);
         },
     },
     methods: {

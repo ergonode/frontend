@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ContentBaseFooter>
+    <ContentBaseFooter :small="true">
         <Button
             theme="dark"
             small

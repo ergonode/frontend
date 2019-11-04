@@ -2,8 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-@import "_extends/input-line";
-
 .input {
     $input: &;
 
@@ -23,28 +21,8 @@
             color: $GRAPHITE_DARK;
         }
 
-        &--small {
-            flex-basis: 32px;
-
-            input::placeholder, input {
-                font: $FONT_MEDIUM_12_16;
-            }
-
-            input::placeholder {
-                opacity: 0.4;
-            }
-        }
-
-        &--regular {
-            flex-basis: 40px;
-
-            input::placeholder, input {
-                font: $FONT_MEDIUM_12_16;
-            }
-
-            input::placeholder {
-                opacity: 0.4;
-            }
+        textarea::placeholder, input::placeholder {
+            opacity: 0.4;
         }
 
         input, textarea {
@@ -57,23 +35,30 @@
         }
 
         textarea, textarea::placeholder {
-            font: $FONT_MEDIUM_12_16;
+            font: $FONT_MEDIUM_14_20;
         }
 
         textarea {
-            height: 100%;
-
-            &::placeholder {
-                opacity: 0.4;
-            }
+            min-height: 100%;
+            padding: 6px 1px 1px;
+            box-sizing: border-box;
         }
     }
 
     &__information-label {
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_12_16;
-        margin-top: 2px;
+        margin-top: 4px;
+        margin-left: 12px;
         word-break: break-word;
+    }
+
+    &__append {
+        display: grid;
+        grid-auto-flow: column;
+        justify-items: center;
+        align-items: center;
+        margin: 0 6px;
     }
 
     &.floating-label {
@@ -81,11 +66,11 @@
 
         #{$input}__label {
             position: absolute;
+            padding: 0 2px;
             background-color: $WHITE;
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             color: $GRAPHITE_LIGHT;
-            font: $FONT_MEDIUM_14_20;
-            padding-left: 2px;
+            cursor: text;
 
             &--required {
                 padding-right: 8px;
@@ -102,40 +87,116 @@
     &.solid {
         #{$input}__activator {
             border: $BORDER_1_GREY;
-            padding: 4px;
+            padding: 1px;
             box-sizing: border-box;
+        }
 
-            input, textarea {
-                margin-left: 8px;
+        #{$input}__label {
+            position: absolute;
+            margin-left: 8px;
+            color: $GRAPHITE_LIGHT;
+        }
+    }
+
+    &.underline {
+        #{$input}__activator {
+            input {
+                padding: 0;
+            }
+
+            &::before {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                border: solid $GREY;
+                border-width: thin 0 0;
+                transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+                content: "";
+            }
+
+            &:hover::before {
+                border-color: $GREEN;
             }
         }
 
         #{$input}__label {
             position: absolute;
+            padding: 0;
             color: $GRAPHITE_LIGHT;
-            margin-left: 6px;
         }
 
         #{$input}__information-label {
-            margin-left: 12px;
-        }
-
-        &:hover {
-            border-color: $GREEN;
+            margin-left: 0;
         }
     }
 
-    &.underline {
-        #{$input}__activator::before {
-            bottom: 0;
-            width: 100%;
-            border: solid $GREY;
-            border-width: thin 0 0;
-            @extend %defaultLine;
+    &:not(.left-alignment):not(.underline):not(.center-alignment) {
+        #{$input}__activator {
+            textarea {
+                margin-left: 8px;
+            }
+        }
+    }
+
+    &.small:not(.left-alignment):not(.underline):not(.center-alignment) {
+        #{$input}__activator {
+            input::placeholder, input {
+                margin-left: 5px;
+            }
         }
 
-        #{$input}__activator:hover::before {
-            border-color: $GREEN;
+        #{$input}__label {
+            margin-left: 3px;
+        }
+
+        #{$input}__information-label {
+            margin-left: 8px;
+        }
+
+        #{$input}__append {
+            margin: 0 4px;
+        }
+    }
+
+    &.small {
+        #{$input}__activator {
+            flex-basis: 32px;
+
+            input::placeholder, input {
+                font: $FONT_MEDIUM_12_16;
+            }
+        }
+
+        #{$input}__label {
+            font: $FONT_MEDIUM_12_16;
+        }
+    }
+
+    &.regular:not(.left-alignment):not(.underline):not(.center-alignment) {
+        #{$input}__activator {
+            input::placeholder, input {
+                margin-left: 9px;
+            }
+        }
+    }
+
+    &.regular {
+        #{$input}__activator {
+            flex-basis: 40px;
+
+            input::placeholder, input {
+                font: $FONT_MEDIUM_14_20;
+            }
+        }
+    }
+
+    &.left-alignment, &.center-alignment {
+        #{$input}__activator::after {
+            position: absolute;
+            left: 0;
+            transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+            content: "";
         }
     }
 
@@ -151,7 +212,6 @@
             right: 100%;
             height: 2px;
             background-color: $GREEN;
-            @extend %defaultLine;
         }
     }
 
@@ -168,7 +228,6 @@
             border: solid $GREY;
             border-width: thin 0;
             transform: scaleX(0);
-            @extend %defaultLine;
         }
     }
 
@@ -201,7 +260,7 @@
             &.solid {
                 #{$input}__activator {
                     border: $BORDER_2_GREEN;
-                    padding: 3px;
+                    padding: 0;
 
                     &::after {
                         transform: scaleX(0);
@@ -213,19 +272,13 @@
                 }
             }
         }
+    }
 
-        &.input--error {
-            &.solid {
-                #{$input}__activator {
-                    border: $BORDER_2_RED;
-                    padding: 3px;
-                }
-            }
-
-            &.floating-label {
-                #{$input}__label {
-                    color: $RED;
-                }
+    &:not(&--error):not(&--focused) {
+        &.solid {
+            #{$input}__activator:hover {
+                border: $BORDER_2_GREY;
+                padding: 0;
             }
         }
     }
@@ -243,11 +296,16 @@
             }
         }
 
-        &:not(#{$input}--focused) {
-            &.solid {
-                #{$input}__activator {
-                    border: 1px solid $RED;
-                }
+        &.floating-label {
+            #{$input}__label {
+                color: $RED;
+            }
+        }
+
+        &.solid {
+            #{$input}__activator {
+                border: $BORDER_2_RED;
+                padding: 0;
             }
         }
 
@@ -264,8 +322,7 @@
 
             input, textarea {
                 background-color: $WHITESMOKE;
-                opacity: 0.4;
-                color: $GRAPHITE_DARK;
+                color: $GRAPHITE_LIGHT;
             }
         }
     }

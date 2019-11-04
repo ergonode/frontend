@@ -49,7 +49,7 @@
                     size="16" />
             </div>
         </div>
-        <SelectBaseContent
+        <DropDown
             v-if="isMenuActive"
             ref="menu"
             :style="selectBoundingBox"
@@ -68,7 +68,7 @@
                     @apply="onApply"
                     @clear="onClear" />
             </template>
-        </SelectBaseContent>
+        </DropDown>
     </div>
 </template>
 
@@ -84,14 +84,14 @@ import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT } from '~/defaults/grid';
 import {
     getDraggedColumnPositionState,
 } from '~/model/drag_and_drop/helpers';
-import SelectBaseContent from '~/components/Inputs/Select/Contents/SelectBaseContent';
+import DropDown from '~/components/Inputs/Select/Contents/DropDown';
 
 export default {
     name: 'GridAdvancedFilter',
     components: {
         IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
         IconError: () => import('~/components/Icon/Feedback/IconError'),
-        SelectBaseContent,
+        DropDown,
     },
     props: {
         isError: {

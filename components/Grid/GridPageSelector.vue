@@ -36,9 +36,11 @@ export default {
             default: null,
         },
     },
-    data: () => ({
-        rowIntervals: ['25', '50', '100', '200'],
-    }),
+    data() {
+        return {
+            rowIntervals: [25, 50, 100, 200],
+        };
+    },
     computed: {
         infoText() {
             return `of ${this.rowsNumber}`;
