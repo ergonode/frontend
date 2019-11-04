@@ -37,7 +37,7 @@ export default {
     },
     computed: {
         widgetIconComponent() {
-            return () => import('~/components/Icon/Editor/IconEditor/IconFontSize');
+            return () => import('~/components/Icon/Editor/IconFontSize');
         },
     },
     methods: {
