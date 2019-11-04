@@ -6,7 +6,9 @@
     <div class="tab-wrapper">
         <!--        <ListSearchHeader-->
         <!--            header="Conditions"-->
+        <!--            :is-expanded="isExpanded"-->
         <!--            @searchResults="onSearch" />-->
+        <!--            @expand="onExpand" />-->
         <ConditionsList :language-code="userLanguageCode" />
     </div>
 </template>
@@ -16,6 +18,12 @@ import { mapState } from 'vuex';
 
 export default {
     name: 'ConditionsListTab',
+    props: {
+        isExpanded: {
+            type: Boolean,
+            required: true,
+        },
+    },
     components: {
         ConditionsList: () => import('~/components/List/ConditionsList'),
         // TODO: Add when its done at BE
@@ -27,6 +35,9 @@ export default {
         }),
     },
     methods: {
+        onExpand(isExpanded) {
+            this.$emit('expand', isExpanded);
+        },
         onSearch() {
             // TODO: Add whenever we handle it at the BE
         },
