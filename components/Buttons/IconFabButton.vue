@@ -4,26 +4,21 @@
  */
 <template>
     <button
-        :class="['fab-btn', `fab-btn--${theme}`,{'shadow': shadow, 'fab-btn--hovered': isHovered}]"
-        :disabled="isDisabled"
-        :aria-label="iconPath"
+        :class="btnClasses"
+        :disabled="disabled"
         @click="onClick"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave">
         <slot
             name="icon"
-            :icon-fill-color="iconFillColor">
-            <Component
-                :is="iconComponent"
-                :fill-color="iconFillColor" />
-        </slot>
+            :icon-fill-color="iconFillColor" />
     </button>
 </template>
 
 <script>
 import { THEMES } from '~/defaults/buttons';
 import {
-    GREEN, GRAPHITE, GREY, WHITE,
+    GREEN, GRAPHITE, WHITE, GREY_DARK,
 } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
@@ -31,18 +26,14 @@ export default {
     props: {
         theme: {
             type: String,
-            default: 'primary',
+            default: THEMES.PRIMARY,
             validator: (value) => Object.values(THEMES).indexOf(value) !== -1,
         },
-        shadow: {
+        plain: {
             type: Boolean,
             default: false,
         },
-        iconPath: {
-            type: String,
-            default: null,
-        },
-        isDisabled: {
+        disabled: {
             type: Boolean,
             default: false,
         },
@@ -61,30 +52,30 @@ export default {
         };
     },
     computed: {
-        iconComponent() {
-            return () => import(`~/components/Icon/${this.iconPath}`);
+        btnClasses() {
+            return [
+                'fab-btn',
+                `fab-btn--${this.theme}`,
+                {
+                    'fab-btn--plain': this.plain,
+                    'fab-btn--hovered': this.isHovered,
+                },
+            ];
         },
         iconFillColor() {
-            if (this.isDisabled) {
-                if (THEMES.PRIMARY) {
-                    return WHITE;
+            if (this.theme === THEMES.SECONDARY) {
+                if (this.disabled) {
+                    return GREY_DARK;
                 }
-                return GREY;
-            }
-
-            if (this.isStateable) {
-                if (this.isSelected || this.isHovered) {
+                if ((this.isHovered && (!this.isStateable || !this.isSelected))
+                    || (this.isStateable && (this.isSelected || this.isHovered))
+                ) {
                     return GREEN;
                 }
-
                 return GRAPHITE;
             }
 
-            if (this.isHovered && (!this.isStateable || !this.isSelected)) {
-                return GREEN;
-            }
-
-            return GRAPHITE;
+            return WHITE;
         },
     },
     methods: {
@@ -102,35 +93,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .fab-btn {
-        position: relative;
-        display: flex;
-        flex-shrink: 0;
-        justify-content: center;
-        align-items: center;
-        width: 32px;
-        height: 32px;
-        border: none;
-        padding: 0;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-        cursor: pointer;
-        outline: none;
-        border-radius: 50%;
-
-        &--hovered {
-            box-shadow: $ELEVATOR_2_DP;
-        }
-
-        &--primary {
-            background-color: $GREEN;
-        }
-
-        &--primary:disabled {
-            background-color: $GREY;
-        }
-
-        &--secondary {
-            background-color: transparent;
-        }
-    }
+    @import "~assets/scss/fab-button.scss";
 </style>

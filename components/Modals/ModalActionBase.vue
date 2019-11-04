@@ -13,14 +13,13 @@
                             class="title font--medium-24-32"
                             v-text="title" />
                     </div>
-                    <Button
-                        fab
-                        color="transparent"
+                    <IconFabButton
+                        theme="secondary"
                         @click.native="onClose">
-                        <template #prepend>
-                            <IconClose />
+                        <template #icon="{ iconFillColor }">
+                            <IconClose :fill-color="iconFillColor" />
                         </template>
-                    </Button>
+                    </IconFabButton>
                 </slot>
             </div>
             <Divider />
@@ -37,14 +36,14 @@
 <script>
 
 import ModalBase from '~/components/Modals/ModalBase';
-import Button from '~/components/Buttons/Button';
+import IconFabButton from '~/components/Buttons/IconFabButton';
 import Divider from '~/components/Dividers/Divider';
 import IconClose from '~/components/Icon/Window/IconClose';
 
 export default {
     name: 'ModalActionBase',
     components: {
-        Divider, ModalBase, Button, IconClose,
+        Divider, ModalBase, IconFabButton, IconClose,
     },
     props: {
         value: {

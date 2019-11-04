@@ -19,12 +19,11 @@
                 @input="onTitleChange" />
         </template>
         <template #footer>
-            <Button
+            <BaseButton
                 title="SAVE"
                 @click.native="onSave" />
-            <Button
-                theme="dark"
-                color="transparent"
+            <BaseButton
+                theme="secondary"
                 title="CANCEL"
                 @click.native="onClose" />
         </template>
@@ -35,11 +34,11 @@
 import { mapActions } from 'vuex';
 import ModalActionBase from '~/components/Modals/ModalActionBase';
 import TextField from '~/components/Inputs/TextField';
-import Button from '~/components/Buttons/Button';
+import BaseButton from '~/components/Buttons/BaseButton';
 
 export default {
     name: 'ModalSectionTitleTemplate',
-    components: { TextField, ModalActionBase, Button },
+    components: { TextField, ModalActionBase, BaseButton },
     props: {
         value: {
             type: Boolean,

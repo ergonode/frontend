@@ -9,14 +9,13 @@
             @searchResult="onSearch" />
         <CategoriesList :language-code="userLanguageCode" />
         <div class="add-btn-wrapper">
-            <Button
-                fab
+            <IconFabButton
                 :disabled="!$hasAccess('CATEGORY_CREATE')"
                 @click.native="addNewCategory">
-                <template #prepend>
-                    <IconAdd :fill-color="whiteColor" />
+                <template #icon="{ iconFillColor }">
+                    <IconAdd :fill-color="iconFillColor" />
                 </template>
-            </Button>
+            </IconFabButton>
         </div>
     </div>
 </template>
@@ -33,7 +32,7 @@ export default {
         ListSearchHeader: () => import('~/components/List/ListSearchHeader'),
         CategoriesList: () => import('~/components/List/CategoriesList'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
-        Button: () => import('~/components/Buttons/Button'),
+        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
     },
     computed: {
         ...mapState('authentication', {

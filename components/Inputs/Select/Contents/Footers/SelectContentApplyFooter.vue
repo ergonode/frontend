@@ -4,28 +4,27 @@
  */
 <template>
     <ContentBaseFooter :space-between="true">
-        <Button
-            small
+        <BaseButton
+            size="tiny"
             title="OK"
             @click.native="onApply" />
-        <Button
-            theme="dark"
-            small
+        <BaseButton
+            theme="secondary"
+            size="tiny"
             title="CLEAR"
-            color="transparent"
             @click.native="onClear" />
     </ContentBaseFooter>
 </template>
 
 <script>
 import ContentBaseFooter from '~/components/Inputs/Select/Contents/Footers/ContentBaseFooter';
-import Button from '~/components/Buttons/Button';
+import BaseButton from '~/components/Buttons/BaseButton';
 
 export default {
     name: 'SelectContentFooter',
     components: {
         ContentBaseFooter,
-        Button,
+        BaseButton,
     },
     methods: {
         onClear() {

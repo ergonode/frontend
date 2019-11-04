@@ -7,12 +7,16 @@
         <div
             v-if="isTabVisible"
             :class="['tab-bar__items', {'tab-bar__items--scrolling': isScrollingEnabled}]">
-            <Button
+            <IconFabButton
                 v-if="isScrollingEnabled"
-                icon="arrow-dart trans-quarter"
-                fab
-                color="transparent"
-                @click.native="scrollTo('back')" />
+                theme="secondary"
+                @click.native="scrollTo('back')">
+                <template #icon="{ iconFillColor }">
+                    <IconArrowSingle
+                        :fill-color="iconFillColor"
+                        :state="leftArrow" />
+                </template>
+            </IconFabButton>
             <div
                 :class="
                     [
@@ -29,27 +33,31 @@
                     :item="item"
                     @select="onSelectTabBarItem" />
             </div>
-            <Button
+            <IconFabButton
                 v-if="isAddingNewTabEnabled"
-                fab
-                color="transparent"
+                theme="secondary"
                 @click.native="addTab">
-                <template #prepend>
-                    <IconAdd :fill-color="graphiteColor" />
+                <template #icon="{ iconFillColor }">
+                    <IconAdd :fill-color="iconFillColor" />
                 </template>
-            </Button>
-            <Button
+            </IconFabButton>
+            <IconFabButton
                 v-if="isScrollingEnabled"
-                icon="arrow-dart trans-three-fourth"
-                fab
-                color="transparent"
-                @click.native="scrollTo('forward')" />
+                theme="secondary"
+                @click.native="scrollTo('forward')">
+                <template #icon="{ iconFillColor }">
+                    <IconArrowSingle
+                        :fill-color="iconFillColor"
+                        :state="rightArrow" />
+                </template>
+            </IconFabButton>
         </div>
         <HorizontalTabContent :item="items[selectedTabIndex]" />
     </div>
 </template>
 
 <script>
+import { ARROW } from '~/defaults/icons';
 import tabBarMixin from '~/mixins/tabBar/tabBarMixin';
 import { rightBound, leftBound } from '~/model/scroll/boundaryScroll';
 import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
@@ -59,8 +67,9 @@ export default {
     components: {
         HorizontalTabContent: () => import('~/components/Tab/HorizontalTabContent'),
         HorizontalTabBarItem: () => import('~/components/Tab/HorizontalTabBarItem'),
-        Button: () => import('~/components/Buttons/Button'),
+        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
+        IconArrowSingle: () => import('~/components/Icon/Arrows/IconArrowSingle'),
     },
     mixins: [tabBarMixin],
     data() {
@@ -70,6 +79,8 @@ export default {
             ),
             isLeftBoundReached: true,
             isRightBoundReached: true,
+            leftArrow: ARROW.LEFT,
+            rightArrow: ARROW.RIGHT,
         };
     },
     computed: {

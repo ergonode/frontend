@@ -4,25 +4,23 @@
  */
 <template>
     <div class="footer">
-        <Button
+        <BaseButton
             v-for="button in buttons"
             :key="button.title"
             :title="button.title"
-            :color="button.color"
             :theme="button.theme"
             :disabled="button.disabled"
-            large
             @click.native="button.action" />
     </div>
 </template>
 
 <script>
-import Button from '~/components/Buttons/Button';
+import BaseButton from '~/components/Buttons/BaseButton';
 
 export default {
     name: 'Footer',
     components: {
-        Button,
+        BaseButton,
     },
     props: {
         buttons: {

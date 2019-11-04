@@ -17,14 +17,13 @@
             @searchResult="onSearch" />
         <AttributesList :language-code="languageCode" />
         <div class="add-btn-wrapper">
-            <Button
-                fab
+            <IconFabButton
                 :disabled="!$hasAccess('ATTRIBUTE_CREATE')"
                 @click.native="addNewAttribute">
-                <template #prepend>
-                    <IconAdd :fill-color="whiteColor" />
+                <template #icon="{ iconFillColor }">
+                    <IconAdd :fill-color="iconFillColor" />
                 </template>
-            </Button>
+            </IconFabButton>
         </div>
     </div>
 </template>
@@ -40,7 +39,7 @@ export default {
         AttributesList: () => import('~/components/List/AttributesList'),
         ListSearchSelectHeader: () => import('~/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('~/components/List/ListSearchHeader'),
-        Button: () => import('~/components/Buttons/Button'),
+        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
     },
     props: {

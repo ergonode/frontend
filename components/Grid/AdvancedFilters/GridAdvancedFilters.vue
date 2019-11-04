@@ -35,7 +35,6 @@
             </div>
             <IconFabButton
                 theme="secondary"
-                icon-path="Arrows/IconArrowDouble"
                 :is-selected="isExpanded"
                 @select="onExpandFilters">
                 <template #icon="{ iconFillColor }">

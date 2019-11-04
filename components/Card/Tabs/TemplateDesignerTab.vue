@@ -95,9 +95,8 @@ export default {
                 // TODO: Uncomment when we will have this feature
                 // {
                 //     title: 'PREVIEW',
-                //     color: 'transparent',
                 //     action: vm.onPreview,
-                //     theme: 'dark',
+                //     theme: 'secondary',
                 // },
                 {
                     title: 'SAVE TEMPLATE',

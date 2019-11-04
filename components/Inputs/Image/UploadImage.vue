@@ -35,8 +35,11 @@
             <div class="upload-image__remove-btn">
                 <IconFabButton
                     theme="secondary"
-                    icon-path="Actions/IconDelete"
-                    @select="onRemove" />
+                    @select="onRemove">
+                    <template #icon="{ iconFillColor }">
+                        <IconDelete :fill-color="iconFillColor" />
+                    </template>
+                </IconFabButton>
             </div>
             <Picture :image-id="selectedFileID" />
         </div>
@@ -78,6 +81,7 @@ export default {
     components: {
         Picture: () => import('~/components/Inputs/Image/Picture'),
         IconFabButton: () => import('~/components/Buttons/IconFabButton'),
+        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
     data() {
         return {

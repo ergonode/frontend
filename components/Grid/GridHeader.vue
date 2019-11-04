@@ -19,16 +19,22 @@
             <div class="actions-container">
                 <IconFabButton
                     theme="secondary"
-                    icon-path="Others/IconGrid"
                     :is-stateable="true"
                     :is-selected="layout === gridLayouts.GRID"
-                    @select="() => onSelectLayout(gridLayouts.GRID)" />
+                    @select="() => onSelectLayout(gridLayouts.GRID)">
+                    <template #icon="{ iconFillColor }">
+                        <IconGrid :fill-color="iconFillColor" />
+                    </template>
+                </IconFabButton>
                 <IconFabButton
                     theme="secondary"
-                    icon-path="Others/IconTable"
                     :is-stateable="true"
                     :is-selected="layout === gridLayouts.TABLE"
-                    @select="() => onSelectLayout(gridLayouts.TABLE)" />
+                    @select="() => onSelectLayout(gridLayouts.TABLE)">
+                    <template #icon="{ iconFillColor }">
+                        <IconTable :fill-color="iconFillColor" />
+                    </template>
+                </IconFabButton>
             </div>
             <div class="divider-container">
                 <Divider vertical />
@@ -36,22 +42,31 @@
             <div class="actions-container">
                 <IconFabButton
                     theme="secondary"
-                    icon-path="Others/IconListSmall"
                     :is-stateable="true"
                     :is-selected="rowHeight === rowHeights.SMALL"
-                    @select="() => onSelectRowHeight(rowHeights.SMALL)" />
+                    @select="() => onSelectRowHeight(rowHeights.SMALL)">
+                    <template #icon="{ iconFillColor }">
+                        <IconListSmall :fill-color="iconFillColor" />
+                    </template>
+                </IconFabButton>
                 <IconFabButton
                     theme="secondary"
-                    icon-path="Others/IconListMedium"
                     :is-stateable="true"
                     :is-selected="rowHeight === rowHeights.MEDIUM"
-                    @select="() => onSelectRowHeight(rowHeights.MEDIUM)" />
+                    @select="() => onSelectRowHeight(rowHeights.MEDIUM)">
+                    <template #icon="{ iconFillColor }">
+                        <IconListMedium :fill-color="iconFillColor" />
+                    </template>
+                </IconFabButton>
                 <IconFabButton
                     theme="secondary"
-                    icon-path="Others/IconListLarge"
                     :is-stateable="true"
                     :is-selected="rowHeight === rowHeights.LARGE"
-                    @select="() => onSelectRowHeight(rowHeights.LARGE)" />
+                    @select="() => onSelectRowHeight(rowHeights.LARGE)">
+                    <template #icon="{ iconFillColor }">
+                        <IconListLarge :fill-color="iconFillColor" />
+                    </template>
+                </IconFabButton>
             </div>
         </div>
     </div>
@@ -65,6 +80,11 @@ export default {
     components: {
         Divider: () => import('~/components/Dividers/Divider'),
         IconFabButton: () => import('~/components/Buttons/IconFabButton'),
+        IconGrid: () => import('~/components/Icon/Others/IconGrid'),
+        IconTable: () => import('~/components/Icon/Others/IconTable'),
+        IconListSmall: () => import('~/components/Icon/Others/IconListSmall'),
+        IconListMedium: () => import('~/components/Icon/Others/IconListMedium'),
+        IconListLarge: () => import('~/components/Icon/Others/IconListLarge'),
     },
     props: {
         title: {

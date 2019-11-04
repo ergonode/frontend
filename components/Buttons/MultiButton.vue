@@ -4,15 +4,20 @@
  */
 <template>
     <AppendIconButton
+        :class="[{'btn--plain': plain}]"
         :disabled="disabled"
         :title="title"
         :theme="theme"
         :size="size"
         @click.native="onClick">
         <template #append="{ color }">
-            <IconArrowDropDown
-                :state="iconArrowState"
-                :fill-color="color" />
+            <slot
+                name="icon"
+                :color="color">
+                <IconArrowDropDown
+                    :state="iconArrowState"
+                    :fill-color="color" />
+            </slot>
         </template>
         <Transition
             v-if="isSelectButton"
@@ -54,6 +59,10 @@ export default {
         options: {
             type: Array,
             default: () => [],
+        },
+        plain: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {

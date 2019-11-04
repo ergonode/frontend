@@ -25,14 +25,15 @@
                     @select="onSelectTabBarItem" />
             </div>
             <div class="tab-bar__items__expand-btn">
-                <Button
-                    fab
-                    color="transparent"
+                <IconFabButton
+                    theme="secondary"
                     @click.native="expandTabContent">
-                    <template #prepend>
-                        <IconArrowDouble :state="expendStateTabIcon" />
+                    <template #icon="{ iconFillColor }">
+                        <IconArrowDouble
+                            :fill-color="iconFillColor"
+                            :state="expendStateTabIcon" />
                     </template>
-                </Button>
+                </IconFabButton>
             </div>
         </div>
         <div
@@ -52,7 +53,7 @@ export default {
     components: {
         VerticalTabContent: () => import('~/components/Tab/VerticalTabContent'),
         VerticalTabBarItem: () => import('~/components/Tab/VerticalTabBarItem'),
-        Button: () => import('~/components/Buttons/Button'),
+        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
         IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),
     },
     mixins: [tabBarMixin],
