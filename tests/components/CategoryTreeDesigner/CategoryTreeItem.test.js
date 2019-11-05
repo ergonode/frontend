@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 
 import CategoryTreeItem from '~/components/CategoryTreeDesigner/CategoryTreeItem';
 import { ACTION } from '~/defaults/icons';
@@ -10,7 +10,7 @@ import { ACTION } from '~/defaults/icons';
 describe('CategoryTreeDesigner/CategoryTreeItem', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(CategoryTreeItem, {
+        wrapper = shallowMount(CategoryTreeItem, {
             propsData: {
                 numberOfChildren: 0,
                 itemName: '',

@@ -9,7 +9,7 @@
             mode="out-in">
             <FabButton
                 :class="{'non-visible': !isLeftArrowVisible}"
-                theme="secondary"
+                :theme="secondaryTheme"
                 @click.native="decrementPage">
                 <template #icon="{ color }">
                     <IconArrowPointer :fill-color="color" />
@@ -36,7 +36,7 @@
         <Transition name="fade">
             <FabButton
                 :class="{'non-visible': !isRightArrowVisible}"
-                theme="secondary"
+                :theme="secondaryTheme"
                 @click.native="incrementPage">
                 <template #icon="{ color }">
                     <IconArrowPointer
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import { THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
 
 export default {
@@ -74,6 +75,9 @@ export default {
         };
     },
     computed: {
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         isLeftArrowVisible() {
             return this.value > 1;
         },

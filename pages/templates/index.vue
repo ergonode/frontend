@@ -11,7 +11,7 @@
             <template #buttons>
                 <PrependIconButton
                     title="CREATE TEMPLATE"
-                    size="small"
+                    :size="smallSize"
                     :disabled="!$hasAccess('TEMPLATE_DESIGNER_CREATE')"
                     @click.native="onCreate">
                     <template #prepend="{ color }">
@@ -45,6 +45,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import { SIZES } from '~/defaults/buttons';
 
 export default {
     name: 'Templates',
@@ -62,6 +63,9 @@ export default {
         ...mapGetters('templateLists', {
             sectionElementsByID: 'sectionElementsByID',
         }),
+        smallSize() {
+            return SIZES.SMALL;
+        },
     },
     methods: {
         onCreate() {

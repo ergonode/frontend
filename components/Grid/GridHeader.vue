@@ -18,7 +18,7 @@
             </div>
             <div class="actions-container">
                 <FabButton
-                    theme="secondary"
+                    :theme="secondaryTheme"
                     :is-stateable="true"
                     :is-selected="layout === gridLayouts.GRID"
                     @select="() => onSelectLayout(gridLayouts.GRID)">
@@ -27,7 +27,7 @@
                     </template>
                 </FabButton>
                 <FabButton
-                    theme="secondary"
+                    :theme="secondaryTheme"
                     :is-stateable="true"
                     :is-selected="layout === gridLayouts.TABLE"
                     @select="() => onSelectLayout(gridLayouts.TABLE)">
@@ -41,7 +41,7 @@
             </div>
             <div class="actions-container">
                 <FabButton
-                    theme="secondary"
+                    :theme="secondaryTheme"
                     :is-stateable="true"
                     :is-selected="rowHeight === rowHeights.SMALL"
                     @select="() => onSelectRowHeight(rowHeights.SMALL)">
@@ -50,7 +50,7 @@
                     </template>
                 </FabButton>
                 <FabButton
-                    theme="secondary"
+                    :theme="secondaryTheme"
                     :is-stateable="true"
                     :is-selected="rowHeight === rowHeights.MEDIUM"
                     @select="() => onSelectRowHeight(rowHeights.MEDIUM)">
@@ -59,7 +59,7 @@
                     </template>
                 </FabButton>
                 <FabButton
-                    theme="secondary"
+                    :theme="secondaryTheme"
                     :is-stateable="true"
                     :is-selected="rowHeight === rowHeights.LARGE"
                     @select="() => onSelectRowHeight(rowHeights.LARGE)">
@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import { THEMES } from '~/defaults/buttons';
 import { ROW_HEIGHT, GRID_LAYOUT } from '~/defaults/grid';
 
 export default {
@@ -101,6 +102,9 @@ export default {
         },
     },
     computed: {
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         rowHeights() {
             return ROW_HEIGHT;
         },

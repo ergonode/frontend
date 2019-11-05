@@ -22,8 +22,8 @@
             v-if="!disabled"
             :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
             <MultiButton
-                theme="secondary"
-                size="small"
+                :theme="secondaryTheme"
+                :size="smallSize"
                 :plain="true"
                 @focus="onSelectFocus">
                 <template #icon="{ color }">
@@ -55,6 +55,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
 import { capitalizeAndConcatenationArray } from '~/model/stringWrapper';
 import MultiButton from '~/components/Buttons/MultiButton';
 import IconDots from '~/components/Icon/Others/IconDots';
@@ -101,6 +102,12 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         typeLabelRequireClass() {
             return { 'element-content--required': this.element.required };
         },

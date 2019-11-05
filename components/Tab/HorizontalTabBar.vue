@@ -9,7 +9,7 @@
             :class="['tab-bar__items', {'tab-bar__items--scrolling': isScrollingEnabled}]">
             <FabButton
                 v-if="isScrollingEnabled"
-                theme="secondary"
+                :theme="secondaryTheme"
                 @click.native="scrollTo('back')">
                 <template #icon="{ color }">
                     <IconArrowSingle
@@ -35,7 +35,7 @@
             </div>
             <FabButton
                 v-if="isAddingNewTabEnabled"
-                theme="secondary"
+                :theme="secondaryTheme"
                 @click.native="addTab">
                 <template #icon="{ color }">
                     <IconAdd :fill-color="color" />
@@ -43,7 +43,7 @@
             </FabButton>
             <FabButton
                 v-if="isScrollingEnabled"
-                theme="secondary"
+                :theme="secondaryTheme"
                 @click.native="scrollTo('forward')">
                 <template #icon="{ color }">
                     <IconArrowSingle
@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import { THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
 import tabBarMixin from '~/mixins/tabBar/tabBarMixin';
 import { rightBound, leftBound } from '~/model/scroll/boundaryScroll';
@@ -84,6 +85,9 @@ export default {
         };
     },
     computed: {
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         graphiteColor() {
             return GRAPHITE;
         },

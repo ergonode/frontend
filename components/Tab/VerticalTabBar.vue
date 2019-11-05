@@ -10,7 +10,7 @@
             <div
                 :class="
                     [
-                        'tab-bar__items__scrollable-container',
+                        'scrollable-container',
                         {
                             'scrolling-disabled': !isScrollingEnabled
                         }
@@ -20,55 +20,41 @@
                     :key="index"
                     :index="index"
                     :item="item"
-                    :is-content-expanded="isExpanded"
+                    :is-expanded="isExpanded"
                     :is-selected="index === selectedTabIndex"
                     @select="onSelectTabBarItem" />
-            </div>
-            <div class="tab-bar__items__expand-btn">
-                <FabButton
-                    theme="secondary"
-                    @click.native="expandTabContent">
-                    <template #icon="{ color }">
-                        <IconArrowDouble
-                            :fill-color="color"
-                            :state="expendStateTabIcon" />
-                    </template>
-                </FabButton>
             </div>
         </div>
         <div
             v-show="isExpanded"
-            class="tab-bar__item-content-container">
-            <VerticalTabContent :tab-item="items[selectedTabIndex]" />
+            class="tab-bar__item-content">
+            <VerticalTabContent
+                :tab-item="items[selectedTabIndex]"
+                :is-expanded="isExpanded"
+                @expand="onExpandTab" />
         </div>
     </div>
 </template>
 
 <script>
 import tabBarMixin from '~/mixins/tabBar/tabBarMixin';
-import { ARROW } from '~/defaults/icons';
 
 export default {
     name: 'VerticalTabBar',
     components: {
         VerticalTabContent: () => import('~/components/Tab/VerticalTabContent'),
         VerticalTabBarItem: () => import('~/components/Tab/VerticalTabBarItem'),
-        FabButton: () => import('~/components/Buttons/FabButton'),
-        IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),
     },
     mixins: [tabBarMixin],
-    data: () => ({
-        selectedTabIndex: 0,
-        isExpanded: true,
-    }),
+    data() {
+        return {
+            selectedTabIndex: 0,
+            isExpanded: true,
+        };
+    },
     computed: {
-        expendStateTabIcon() {
-            return this.isExpanded
-                ? ARROW.LEFT
-                : ARROW.RIGHT;
-        },
         isTabVisible() {
-            return this.items.length > 1;
+            return this.items.length > 1 || !this.isExpanded;
         },
     },
     methods: {
@@ -76,8 +62,8 @@ export default {
             this.selectedTabIndex = index;
             this.isExpanded = true;
         },
-        expandTabContent() {
-            this.isExpanded = !this.isExpanded;
+        onExpandTab(isExpanded) {
+            this.isExpanded = isExpanded;
         },
     },
 };
@@ -94,22 +80,9 @@ export default {
             display: flex;
             flex-flow: column nowrap;
             width: 82px;
-
-            &__scrollable-container {
-                position: relative;
-                display: flex;
-                overflow-x: auto;
-                flex-flow: column nowrap;
-            }
-
-            &__expand-btn {
-                display: flex;
-                justify-content: flex-end;
-                padding: 4px;
-            }
         }
 
-        &__item-content-container {
+        &__item-content {
             display: flex;
             flex-direction: column;
             border: $BORDER_1_GREY;
@@ -117,5 +90,12 @@ export default {
             background-color: $WHITE;
             border-bottom: none;
         }
+    }
+
+    .scrollable-container {
+        position: relative;
+        display: flex;
+        overflow-x: auto;
+        flex-flow: column nowrap;
     }
 </style>

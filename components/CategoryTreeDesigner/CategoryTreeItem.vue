@@ -23,8 +23,8 @@
         <div
             :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
             <MultiButton
-                theme="secondary"
-                size="small"
+                :theme="secondaryTheme"
+                :size="smallSize"
                 :plain="true"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
@@ -37,6 +37,7 @@
     </div>
 </template>
 <script>
+import { SIZES, THEMES } from '~/defaults/buttons';
 import { ACTION } from '~/defaults/icons';
 import IconDots from '~/components/Icon/Others/IconDots';
 import IconPlusMinus from '~/components/Icon/Actions/IconPlusMinus';
@@ -73,6 +74,12 @@ export default {
         },
     },
     computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         hasChildren() {
             return this.numberOfChildren > 0;
         },

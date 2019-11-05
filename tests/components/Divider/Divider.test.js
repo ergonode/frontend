@@ -2,14 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import Divider from '~/components/Dividers/Divider.vue';
 
 
 describe('Dividers/Divider', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(Divider);
+        wrapper = shallowMount(Divider);
     });
 
     it('Component is named well', () => {

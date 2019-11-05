@@ -86,7 +86,7 @@ export default {
             return BLUE;
         },
         isStatus() {
-            return !isEmpty(this.status || {});
+            return !isEmpty(this.status);
         },
         statusTextContrastRation() {
             if (!this.isStatus) return null;

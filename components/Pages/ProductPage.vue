@@ -15,8 +15,8 @@
                 v-if="isEdit"
                 #buttons>
                 <PrependIconButton
-                    theme="secondary"
-                    size="small"
+                    :theme="secondaryTheme"
+                    :size="smallSize"
                     title="REMOVE PRODUCT"
                     :disabled="!$hasAccess('PRODUCT_DELETE')"
                     @click.native="onRemove">
@@ -28,16 +28,16 @@
                 <MultiButton
                     v-if="statusesButtons.more && statusesButtons.more.length"
                     title="more"
-                    theme="secondary"
-                    size="small"
+                    :theme="secondaryTheme"
+                    :size="smallSize"
                     :disabled="!$hasAccess('PRODUCT_UPDATE')"
                     :options="optionTitle(statusesButtons.more)"
                     @input="(e) => optionAction(e, statusesButtons.more)" />
                 <BaseButton
                     v-for="button in statusesButtons.statuses"
                     :key="button.code"
-                    theme="secondary"
-                    size="small"
+                    :theme="secondaryTheme"
+                    :size="smallSize"
                     :title="button.name || button.code"
                     :disabled="!$hasAccess('PRODUCT_UPDATE')"
                     @click.native="updateStatus(button.code)" />
@@ -48,6 +48,7 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
 import BaseButton from '~/components/Buttons/BaseButton';
 import MultiButton from '~/components/Buttons/MultiButton';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
@@ -132,6 +133,12 @@ export default {
             status: (state) => state.status,
             workflow: (state) => state.workflow,
         }),
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         statusesButtons() {
             if (!this.workflow.length) return {};
             const numberOfVisibleStatuses = 2;

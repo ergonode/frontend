@@ -11,7 +11,7 @@
             <template #buttons>
                 <PrependIconButton
                     title="CREATE PRODUCT"
-                    size="small"
+                    :size="smallSize"
                     :disabled="!$hasAccess('PRODUCT_CREATE')"
                     @click.native="addNewProduct">
                     <template #prepend="{ color }">
@@ -36,6 +36,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { SIZES } from '~/defaults/buttons';
 import { DRAGGED_ELEMENT } from '~/defaults/grid';
 import PrependIconButton from '~/components/Buttons/PrependIconButton';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
@@ -78,6 +79,9 @@ export default {
             isListElementDragging: (state) => state.isListElementDragging,
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
+        smallSize() {
+            return SIZES.SMALL;
+        },
         isBlurVisible() {
             return this.isListElementDragging || this.draggedElementOnGrid;
         },

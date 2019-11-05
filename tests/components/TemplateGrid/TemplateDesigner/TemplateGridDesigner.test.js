@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import TemplateGridDesigner from '~/components/Template/Base/TemplateGridDesigner';
 import TemplateGridPresentationLayer from '~/components/TemplateGrid/TemplateGridPresentationLayer';
 
@@ -18,7 +18,7 @@ describe('Template/Base/TemplateGridDesigner', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = mount(TemplateGridDesigner, {
+        wrapper = shallowMount(TemplateGridDesigner, {
             attachToDocument: true,
             propsData: {
                 maxRow: maxRows,

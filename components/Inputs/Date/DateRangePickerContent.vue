@@ -19,7 +19,7 @@
                 )">
                 <template #previous>
                     <FabButton
-                        theme="secondary"
+                        :theme="secondaryTheme"
                         @click.native="previousMonth">
                         <template #icon="{ color }">
                             <IconArrowSingle
@@ -57,7 +57,7 @@
                 </template>
                 <template #next>
                     <FabButton
-                        theme="secondary"
+                        :theme="secondaryTheme"
                         @click.native="nextMonth">
                         <template #icon="{ color }">
                             <IconArrowSingle
@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import { THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
 import calendar, {
     getNextMonth,
@@ -133,6 +134,9 @@ export default {
         };
     },
     computed: {
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         weekDays() {
             return Object.values(WEEK_DAYS);
         },

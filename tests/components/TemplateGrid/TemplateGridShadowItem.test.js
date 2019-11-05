@@ -2,13 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import TemplateGridShadowItem from '~/components/TemplateGrid/TemplateGridShadowItem';
 
 describe('TemplateGrid/TemplateGridShadowItem', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(TemplateGridShadowItem, {
+        wrapper = shallowMount(TemplateGridShadowItem, {
             propsData: {
                 lastRow: false,
                 itemId: 1,

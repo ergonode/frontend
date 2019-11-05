@@ -22,8 +22,8 @@
             v-if="!disabled"
             :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
             <MultiButton
-                theme="secondary"
-                size="small"
+                :theme="secondaryTheme"
+                :size="smallSize"
                 :plain="true"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
@@ -38,6 +38,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
 import ElementContentBase from '~/components/Template/ProductDesigner/ElementContentBase';
 import IconFontSize from '~/components/Icon/Editor/IconFontSize';
 import MultiButton from '~/components/Buttons/MultiButton';
@@ -73,6 +74,12 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         contextualMenuHoveStateClasses() {
             return { 'element-content__contextual-menu--hovered': this.isHovered };
         },

@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount, createLocalVue } from '@vue/test-utils';
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
 import ProductCompleteness from '~/components/Progress/ProductCompleteness.vue';
 
@@ -24,7 +24,7 @@ afterEach(() => store.reset());
 describe('Badges/ProductCompleteness', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(ProductCompleteness, {
+        wrapper = shallowMount(ProductCompleteness, {
             localVue,
             mocks,
             propsData: {
@@ -36,10 +36,6 @@ describe('Badges/ProductCompleteness', () => {
               }
             },
       });
-    });
-
-    it('Component is rendered', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy();
     });
 
     it('Component is named well', () => {

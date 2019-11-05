@@ -11,7 +11,7 @@
             <template #buttons>
                 <PrependIconButton
                     title="CREATE ATTRIBUTE"
-                    size="small"
+                    :size="smallSize"
                     :disabled="!$hasAccess('ATTRIBUTE_CREATE')"
                     @click.native="addNewAttribute">
                     <template #prepend="{ color }">
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { SIZES } from '~/defaults/buttons';
 import PrependIconButton from '~/components/Buttons/PrependIconButton';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 
@@ -50,6 +51,11 @@ export default {
                 isContextualMenu: false,
             });
         }
+    },
+    computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
     },
     methods: {
         addNewAttribute() {

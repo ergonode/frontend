@@ -34,7 +34,7 @@
                 </div>
             </div>
             <FabButton
-                theme="secondary"
+                :theme="secondaryTheme"
                 :is-selected="isExpanded"
                 @select="onExpandFilters">
                 <template #icon="{ color }">
@@ -75,6 +75,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
 import { GHOST_ID } from '~/defaults/grid';
 import GridAdvancedFilterPlaceholder from '~/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder';
@@ -126,6 +127,9 @@ export default {
         ...mapState('draggable', {
             isListElementDragging: (state) => state.isListElementDragging,
         }),
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         ghostFilterId() {
             return GHOST_ID;
         },

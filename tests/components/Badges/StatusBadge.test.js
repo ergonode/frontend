@@ -16,10 +16,6 @@ describe('Badges/StatusBadge', () => {
         });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy();
-    });
-
     it('Component is named well', () => {
         expect(typeof StatusBadge.name).toBe('string');
         expect(StatusBadge.name).toEqual('StatusBadge');

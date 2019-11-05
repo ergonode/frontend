@@ -6,7 +6,7 @@
     <div class="date-picker-header">
         <slot name="previous">
             <FabButton
-                theme="secondary"
+                :theme="secondaryTheme"
                 @click.native="onPrevious">
                 <template #icon="{ color }">
                     <IconArrowSingle
@@ -21,7 +21,7 @@
             v-text="header" />
         <slot name="next">
             <FabButton
-                theme="secondary"
+                :theme="secondaryTheme"
                 @click.native="onNext">
                 <template #icon="{ color }">
                     <IconArrowSingle
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
 import FabButton from '~/components/Buttons/FabButton';
 import IconArrowSingle from '~/components/Icon/Arrows/IconArrowSingle';
@@ -55,6 +56,11 @@ export default {
             leftArrow: ARROW.LEFT,
             rightArrow: ARROW.RIGHT,
         };
+    },
+    computed: {
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
     methods: {
         onClick() {

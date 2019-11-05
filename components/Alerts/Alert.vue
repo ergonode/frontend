@@ -9,7 +9,7 @@
             class="alert__title font--medium-14-20"
             v-text="alert.message" />
         <FabButton
-            theme="secondary"
+            :theme="secondaryTheme"
             :plain="true"
             @click.native="() => removeAlert(alert)">
             <template #icon="{ color }">
@@ -21,6 +21,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { THEMES } from '~/defaults/buttons';
 import { toCapitalize } from '~/model/stringWrapper';
 import FabButton from '~/components/Buttons/FabButton';
 import IconClose from '~/components/Icon/Window/IconClose';
@@ -39,6 +40,9 @@ export default {
         },
     },
     computed: {
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         typeClass() {
             return `alert--${this.alert.type}`;
         },

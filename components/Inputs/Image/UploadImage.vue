@@ -34,7 +34,7 @@
             class="upload-image__container">
             <div class="upload-image__remove-btn">
                 <FabButton
-                    theme="secondary"
+                    :theme="secondaryTheme"
                     @select="onRemove">
                     <template #icon="{ color }">
                         <IconDelete :fill-color="color" />
@@ -52,6 +52,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { THEMES } from '~/defaults/buttons';
 import { GRAPHITE, GREEN } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
@@ -94,6 +95,9 @@ export default {
         ...mapState('validations', {
             uploadError: (state) => state.validationErrors.upload,
         }),
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
     methods: {
         ...mapActions('validations', [

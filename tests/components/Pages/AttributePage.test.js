@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount, createLocalVue } from '@vue/test-utils';
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import AttributePage from '~/components/Pages/AttributePage';
 
 const localVue = createLocalVue();
@@ -13,7 +13,7 @@ const mocks = {
 describe('Pages/AttributePage', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(AttributePage, {
+        wrapper = shallowMount(AttributePage, {
             localVue,
             mocks,
             propsData: {

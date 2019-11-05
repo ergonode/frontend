@@ -7,15 +7,15 @@
         <TitleBar
             title="Users"
             icon="User"
-            :is-read-only="$isReadOnly(getTitleBarData.isReadOnly)">
+            :is-read-only="$isReadOnly(titleBarData.isReadOnly)">
             <template
-                v-if="getTitleBarData.button"
+                v-if="titleBarData.button"
                 #buttons>
                 <PrependIconButton
-                    :title="getTitleBarData.button.title"
-                    size="small"
-                    :disabled="!$hasAccess(getTitleBarData.button.access)"
-                    @click.native="addNew(getTitleBarData.button.path)">
+                    :title="titleBarData.button.title"
+                    :size="smallSize"
+                    :disabled="!$hasAccess(titleBarData.button.access)"
+                    @click.native="addNew(titleBarData.button.path)">
                     <template #prepend="{ color }">
                         <IconAdd
                             :fill-color="color" />
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { SIZES } from '~/defaults/buttons';
 import PrependIconButton from '~/components/Buttons/PrependIconButton';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 
@@ -69,7 +70,10 @@ export default {
         });
     },
     computed: {
-        getTitleBarData() {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        titleBarData() {
             switch (true) {
             case /grid/.test(this.$route.path):
                 return {

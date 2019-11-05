@@ -11,7 +11,7 @@
             <template #buttons>
                 <PrependIconButton
                     title="CREATE CATEGORY"
-                    size="small"
+                    :size="smallSize"
                     :disabled="!$hasAccess('CATEGORY_CREATE')"
                     @click.native="addNewCategory">
                     <template #prepend="{ color }">
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { SIZES } from '~/defaults/buttons';
 import PrependIconButton from '~/components/Buttons/PrependIconButton';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 
@@ -47,6 +48,11 @@ export default {
         icon: {
             type: String,
             default: null,
+        },
+    },
+    computed: {
+        smallSize() {
+            return SIZES.SMALL;
         },
     },
     beforeCreate() {

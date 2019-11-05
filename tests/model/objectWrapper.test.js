@@ -136,6 +136,12 @@ describe('objectWrapper/isEmpty', () => {
         const fun = isEmpty(obj);
         expect(fun).toBeTruthy();
     });
+
+    it('Get true when not object', () => {
+        const obj = null;
+        const fun = isEmpty(obj);
+        expect(fun).toBeTruthy();
+    });
 });
 
 describe('objectWrapper/removeFromObjectByKey', () => {

@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount, createLocalVue } from '@vue/test-utils';
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
 import TemplateGridGhostItem from '~/components/Template/Base/TemplateGridGhostItem';
 
@@ -22,7 +22,7 @@ describe('Template/Base/TemplateGridGhostItem', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = mount(TemplateGridGhostItem, {
+        wrapper = shallowMount(TemplateGridGhostItem, {
             localVue,
             mocks,
             propsData: {

@@ -14,8 +14,8 @@
                 v-if="isEdit"
                 #buttons>
                 <PrependIconButton
-                    theme="secondary"
-                    size="small"
+                    :theme="secondaryTheme"
+                    :size="smallSize"
                     title="REMOVE CATEGORY TREE"
                     :disabled="!$hasAccess('CATEGORY_TREE_DELETE')"
                     @click.native="onRemove">
@@ -36,6 +36,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
@@ -130,6 +131,12 @@ export default {
             isListElementDragging: (state) => state.isListElementDragging,
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         isBlurVisible() {
             return this.isListElementDragging || this.draggedElementOnGrid;
         },

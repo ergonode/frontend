@@ -6,6 +6,8 @@
     <div class="tab-wrapper">
         <ListSearchHeader
             header="Categories"
+            :is-expanded="isExpanded"
+            @expand="onExpand"
             @searchResult="onSearch" />
         <CategoriesList :language-code="userLanguageCode" />
         <div class="add-btn-wrapper">
@@ -34,6 +36,12 @@ export default {
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
         FabButton: () => import('~/components/Buttons/FabButton'),
     },
+    props: {
+        isExpanded: {
+            type: Boolean,
+            required: true,
+        },
+    },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
@@ -47,6 +55,9 @@ export default {
             'setFilter',
             'getElements',
         ]),
+        onExpand(isExpanded) {
+            this.$emit('expand', isExpanded);
+        },
         onSearch(value) {
             this.setFilter(value);
             this.getElements({

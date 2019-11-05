@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount, createLocalVue } from '@vue/test-utils';
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import VueRouter from 'vue-router';
 import HorizontalTabContent from '~/components/Tab/HorizontalTabContent';
 
@@ -16,7 +16,7 @@ const mocks = {
 describe('Tab/HorizontalTabContent', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(HorizontalTabContent, {
+        wrapper = shallowMount(HorizontalTabContent, {
             localVue,
             router,
             mocks,

@@ -5,14 +5,15 @@
 <template>
     <ContentBaseFooter :small="true">
         <BaseButton
-            theme="secondary"
-            size="tiny"
+            :theme="secondaryTheme"
+            :size="tinySize"
             title="CLEAR"
             @click.native="onClear" />
     </ContentBaseFooter>
 </template>
 
 <script>
+import { SIZES, THEMES } from '~/defaults/buttons';
 import ContentBaseFooter from '~/components/Inputs/Select/Contents/Footers/ContentBaseFooter';
 import BaseButton from '~/components/Buttons/BaseButton';
 
@@ -25,6 +26,14 @@ export default {
     methods: {
         onClear() {
             this.$emit('clear');
+        },
+    },
+    computed: {
+        tinySize() {
+            return SIZES.TINY;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
         },
     },
 };

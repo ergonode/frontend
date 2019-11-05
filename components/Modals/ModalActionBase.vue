@@ -14,7 +14,7 @@
                             v-text="title" />
                     </div>
                     <FabButton
-                        theme="secondary"
+                        :theme="secondaryTheme"
                         @click.native="onClose">
                         <template #icon="{ color }">
                             <IconClose :fill-color="color" />
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-
+import { THEMES } from '~/defaults/buttons';
 import ModalBase from '~/components/Modals/ModalBase';
 import FabButton from '~/components/Buttons/FabButton';
 import Divider from '~/components/Dividers/Divider';
@@ -60,6 +60,9 @@ export default {
         },
     },
     computed: {
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         headerIconComponent() {
             return () => import(`~/components/Icon/${this.iconPath}`);
         },

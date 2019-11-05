@@ -22,8 +22,8 @@
                 @click.native="onClickSort" />
             <MultiButton
                 v-if="isColumnEditable"
-                theme="secondary"
-                size="small"
+                :theme="secondaryTheme"
+                :size="smallSize"
                 :plain="true"
                 @focus="onSelectFocus">
                 <template #icon="{ color }">
@@ -52,6 +52,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
 import {
     removeColumnCookieByID,
 } from '~/model/grid/cookies/GridLayoutConfiguration';
@@ -127,6 +128,12 @@ export default {
         ...mapState('draggable', {
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },

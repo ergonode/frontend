@@ -14,8 +14,8 @@
                 v-if="isEdit"
                 #buttons>
                 <PrependIconButton
-                    theme="secondary"
-                    size="small"
+                    :theme="secondaryTheme"
+                    :size="smallSize"
                     title="REMOVE TRANSITION"
                     :disabled="!$hasAccess('WORKFLOW_DELETE')"
                     @click.native="onRemove">
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { SIZES, THEMES } from '~/defaults/buttons';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
@@ -97,6 +98,14 @@ export default {
                 },
             ];
         }
+    },
+    computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
     beforeDestroy() {
         delete this.breadcrumbs;

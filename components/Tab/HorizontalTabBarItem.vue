@@ -38,8 +38,8 @@
                         {'tab-bar-item__contextual-menu--active': menuActive}
                     ]">
                 <MultiButton
-                    theme="secondary"
-                    size="small"
+                    :theme="secondaryTheme"
+                    :size="smallSize"
                     :plain="true"
                     :options="options"
                     @input="onSelectValue"
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { SIZES, THEMES } from '~/defaults/buttons';
 import tabBarItemMixin from '~/mixins/tabBar/tabBarItemMixin';
 
 export default {
@@ -70,6 +71,14 @@ export default {
             menuActive: false,
             editableMode: false,
         };
+    },
+    computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
     methods: {
         onLinkSelect() {

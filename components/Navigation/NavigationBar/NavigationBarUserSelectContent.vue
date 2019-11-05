@@ -16,7 +16,7 @@
             :section-menu="item.menu" />
         <div class="footer">
             <BaseButton
-                theme="secondary"
+                :theme="secondaryTheme"
                 title="LOG OUT"
                 @click.native="onLogout" />
         </div>
@@ -25,6 +25,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { THEMES } from '~/defaults/buttons';
 import navigationBarUserMenu from '~/model/navigation/navigationBarUserMenu';
 
 export default {
@@ -53,6 +54,11 @@ export default {
         return {
             userMenuElements: navigationBarUserMenu,
         };
+    },
+    computed: {
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
     methods: {
         ...mapActions('authentication', [

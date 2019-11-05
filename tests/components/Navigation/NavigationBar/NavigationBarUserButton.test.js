@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount, createLocalVue } from '@vue/test-utils';
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
 import NavigationBarUserButton from '~/components/Navigation/NavigationBar/NavigationBarUserButton';
 
@@ -26,7 +26,7 @@ describe('Navigation/NavigationBar/NavigationBarUserButton', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = mount(NavigationBarUserButton, {
+        wrapper = shallowMount(NavigationBarUserButton, {
             localVue,
             mocks,
             stubs: {

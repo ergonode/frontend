@@ -9,12 +9,16 @@
             header="Attributes"
             :options="formattedLanguages"
             :selected-option="attributesLanguageCode"
+            :is-expanded="isExpanded"
             @searchResult="onSearch"
-            @selectOption="onSelect" />
+            @selectOption="onSelect"
+            @expand="onExpand" />
         <ListSearchHeader
             v-else
             header="Attributes"
-            @searchResult="onSearch" />
+            :is-expanded="isExpanded"
+            @searchResult="onSearch"
+            @expand="onExpand" />
         <AttributesList :language-code="languageCode" />
         <div class="add-btn-wrapper">
             <FabButton
@@ -46,6 +50,10 @@ export default {
         isSelectLanguage: {
             type: Boolean,
             default: true,
+        },
+        isExpanded: {
+            type: Boolean,
+            required: true,
         },
     },
     data() {
@@ -79,6 +87,9 @@ export default {
             'getGroups',
             'getFilteredGroupElements',
         ]),
+        onExpand(isExpanded) {
+            this.$emit('expand', isExpanded);
+        },
         onSearch(value) {
             this.setFilter(value);
             this.getFilteredGroupElements({ listType: 'attributes', languageCode: this.languageCode });
