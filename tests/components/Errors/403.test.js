@@ -12,10 +12,6 @@ describe('Errors/403', () => {
         wrapper = shallowMount(Error403);
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy();
-    });
-
     it('Component is named well', () => {
         expect(typeof Error403.name).toBe('string');
         expect(Error403.name).toEqual('Error403');

@@ -2,13 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import GridInfoCell from '~/components/Grid/GridInfoCell';
 
 describe('Grid/GridInfoCell', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(GridInfoCell, {
+        wrapper = shallowMount(GridInfoCell, {
             propsData: {
                 value: 'Test',
             },

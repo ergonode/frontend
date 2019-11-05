@@ -16,10 +16,6 @@ describe('Badges/InformationBadge', () => {
       });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy();
-    });
-
     it('Component is named well', () => {
         expect(typeof InformationBadge.name).toBe('string');
         expect(InformationBadge.name).toEqual('InformationBadge');

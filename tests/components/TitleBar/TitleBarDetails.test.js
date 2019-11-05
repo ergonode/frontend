@@ -13,10 +13,6 @@ describe('TitleBar/TitleBarDetails', () => {
         });
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy();
-    });
-
     it('Component is named well', () => {
         expect(typeof TitleBarDetails.name).toBe('string');
         expect(TitleBarDetails.name).toEqual('TitleBarDetails');

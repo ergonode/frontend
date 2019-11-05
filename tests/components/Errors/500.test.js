@@ -12,10 +12,6 @@ describe('Errors/500', () => {
         wrapper = shallowMount(Error500);
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy();
-    });
-
     it('Component is named well', () => {
         expect(typeof Error500.name).toBe('string');
         expect(Error500.name).toEqual('Error500');

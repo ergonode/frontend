@@ -12,10 +12,6 @@ describe('Layout/Content', () => {
         wrapper = shallowMount(Content);
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy();
-    });
-
     it('Component is named well', () => {
         expect(typeof Content.name).toBe('string');
         expect(Content.name).toEqual('Content');

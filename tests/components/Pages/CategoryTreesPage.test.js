@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount, createLocalVue } from '@vue/test-utils';
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
 import CategoryTreePage from '~/components/Pages/CategoryTreePage';
 
@@ -22,7 +22,7 @@ afterEach(() => store.reset());
 describe('Pages/CategoryTreePage', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(CategoryTreePage, {
+        wrapper = shallowMount(CategoryTreePage, {
             localVue,
             mocks,
             propsData: {

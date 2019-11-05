@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount, createLocalVue } from '@vue/test-utils';
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Alert from '~/components/Alerts/Alert.vue';
 
 const localVue = createLocalVue();
@@ -11,7 +11,7 @@ describe('Alert', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = mount(Alert, {
+        wrapper = shallowMount(Alert, {
             localVue,
             propsData: {
                 alert: {

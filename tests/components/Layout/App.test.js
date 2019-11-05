@@ -12,10 +12,6 @@ describe('Layout/App', () => {
         wrapper = shallowMount(App);
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy();
-    });
-
     it('Component is named well', () => {
         expect(typeof App.name).toBe('string');
         expect(App.name).toEqual('App');

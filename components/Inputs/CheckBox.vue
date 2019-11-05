@@ -68,12 +68,13 @@ export default {
         $checkbox: &;
 
         position: relative;
-        width: 16px;
-        height: 16px;
 
-        & input[type="checkbox"] {
+        &, & input[type="checkbox"], & label {
             width: 16px;
             height: 16px;
+        }
+
+        & input[type="checkbox"] {
             margin: 0;
             visibility: hidden;
         }
@@ -82,8 +83,6 @@ export default {
             position: absolute;
             top: 0;
             left: 0;
-            width: 16px;
-            height: 16px;
             border: 1px solid $GREY;
             box-sizing: border-box;
             border-radius: 2px;

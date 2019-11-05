@@ -1,4 +1,4 @@
-import { mount, createLocalVue } from '@vue/test-utils';
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import TitleBarBreadcrumb from '~/components/TitleBar/TitleBarBreadcrumb';
 
 const localVue = createLocalVue();
@@ -6,7 +6,7 @@ const localVue = createLocalVue();
 describe('TitleBar/TitleBarBreadcrumb', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(TitleBarBreadcrumb, {
+        wrapper = shallowMount(TitleBarBreadcrumb, {
             localVue,
             propsData: {
                 breadcrumb: {

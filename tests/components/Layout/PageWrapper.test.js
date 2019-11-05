@@ -12,10 +12,6 @@ describe('Layout/PageWrapper', () => {
         wrapper = shallowMount(PageWrapper);
     });
 
-    it('Component is rendered', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy();
-    });
-
     it('Component is named well', () => {
         expect(typeof PageWrapper.name).toBe('string');
         expect(PageWrapper.name).toEqual('PageWrapper');

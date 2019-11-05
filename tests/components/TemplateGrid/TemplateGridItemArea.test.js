@@ -2,13 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import TemplateGridItemArea from '~/components/TemplateGrid/TemplateGridItemArea';
 
 describe('TemplateGrid/TemplateGridItemArea', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(TemplateGridItemArea, {
+        wrapper = shallowMount(TemplateGridItemArea, {
             propsData: {
                 item: {
                     id: 'test',
