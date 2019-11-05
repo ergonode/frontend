@@ -89,16 +89,15 @@
                         <ContentBaseFooter
                             :small="small"
                             :space-between="multiselect">
-                            <Button
+                            <BaseButton
                                 v-if="multiselect"
-                                small
+                                :size="tinySize"
                                 title="OK"
                                 @click.native="onDismiss" />
-                            <Button
-                                small
+                            <BaseButton
+                                :size="tinySize"
                                 :title="multiselect ? 'CLEAR ALL' : 'CLEAR'"
-                                color="transparent"
-                                theme="dark"
+                                :theme="secondaryTheme"
                                 @click.native="onClear" />
                         </ContentBaseFooter>
                     </slot>
@@ -113,6 +112,7 @@
 </template>
 
 <script>
+import { SIZES, THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
 import FadeTransition from '~/components/Transitions/FadeTransition';
 import DropDown from '~/components/Inputs/Select/Contents/DropDown';
@@ -133,7 +133,7 @@ export default {
         InfoHint: () => import('~/components/Inputs/Hint/InfoHint'),
         ErrorHint: () => import('~/components/Inputs/Hint/ErrorHint'),
         ContentBaseFooter: () => import('~/components/Inputs/Select/Contents/Footers/ContentBaseFooter'),
-        Button: () => import('~/components/Buttons/Button'),
+        BaseButton: () => import('~/components/Buttons/BaseButton'),
     },
     props: {
         value: {
@@ -247,6 +247,12 @@ export default {
         window.removeEventListener('click', this.onClickOutside);
     },
     computed: {
+        tinySize() {
+            return SIZES.TINY;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         parsedInputValue() {
             return Array.isArray(this.value) ? this.value.join(', ') : this.value;
         },

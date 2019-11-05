@@ -18,14 +18,15 @@
                     lowerBoundMonth, lowerBoundYear
                 )">
                 <template #previous>
-                    <Button
-                        fab
-                        color="transparent"
+                    <FabButton
+                        :theme="secondaryTheme"
                         @click.native="previousMonth">
-                        <template #prepend>
-                            <IconArrowSingle :state="leftArrow" />
+                        <template #icon="{ color }">
+                            <IconArrowSingle
+                                :fill-color="color"
+                                :state="leftArrow" />
                         </template>
-                    </Button>
+                    </FabButton>
                 </template>
                 <template #next>
                     <div class="expander" />
@@ -55,14 +56,15 @@
                     <div class="expander" />
                 </template>
                 <template #next>
-                    <Button
-                        fab
-                        color="transparent"
+                    <FabButton
+                        :theme="secondaryTheme"
                         @click.native="nextMonth">
-                        <template #prepend>
-                            <IconArrowSingle :state="rightArrow" />
+                        <template #icon="{ color }">
+                            <IconArrowSingle
+                                :fill-color="color"
+                                :state="rightArrow" />
                         </template>
-                    </Button>
+                    </FabButton>
                 </template>
             </DatePickerNavigationHeader>
             <DatePickerContentHeader :headers="weekDays" />
@@ -75,6 +77,7 @@
 </template>
 
 <script>
+import { THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
 import calendar, {
     getNextMonth,
@@ -82,7 +85,7 @@ import calendar, {
     WEEK_DAYS,
     CALENDAR_MONTHS,
 } from '~/model/calendar/calendar';
-import Button from '~/components/Buttons/Button';
+import FabButton from '~/components/Buttons/FabButton';
 import IconArrowSingle from '~/components/Icon/Arrows/IconArrowSingle';
 import DatePickerMonthDays from '~/components/Inputs/Date/DatePickerMonthDays';
 import DatePickerContentHeader from '~/components/Inputs/Date/DatePickerContentHeader';
@@ -94,7 +97,7 @@ import DatePickerInteractiveHeader from '~/components/Inputs/Date/DatePickerInte
 export default {
     name: 'DateRangePickerContent',
     components: {
-        Button,
+        FabButton,
         DatePickerMonthDays,
         DatePickerContentHeader,
         DatePickerNavigationHeader,
@@ -131,6 +134,9 @@ export default {
         };
     },
     computed: {
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         weekDays() {
             return Object.values(WEEK_DAYS);
         },

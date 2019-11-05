@@ -6,17 +6,33 @@
     <PageWrapper>
         <TitleBar
             :title="title"
-            :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             :is-read-only="!isUserAllowedToUpdateTemplate && isEdit"
             icon="Templates"
-            @navigateback="onDismiss" />
+            @navigateback="onDismiss">
+            <template
+                v-if="isEdit"
+                #buttons>
+                <PrependIconButton
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE TEMPLATE"
+                    :disabled="!$hasAccess('TEMPLATE_DESIGNER_DELETE')"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
@@ -27,7 +43,6 @@ export default {
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
-        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Templates',
@@ -41,18 +56,6 @@ export default {
             generalRoute = { name: 'template-edit-id-general', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
-
-            this.buttons = [
-                {
-                    title: 'REMOVE TEMPLATE',
-                    action: this.onRemove,
-                    theme: 'secondary',
-                    disabled: !this.$hasAccess('TEMPLATE_DESIGNER_DELETE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconDelete'),
-                    },
-                },
-            ];
 
             this.tabs = [
                 {
@@ -97,6 +100,14 @@ export default {
             ];
         }
     },
+    computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
+    },
     methods: {
         ...mapActions('list', {
             setConfigurationForList: 'setConfigurationForList',
@@ -105,7 +116,6 @@ export default {
     beforeDestroy() {
         delete this.isUserAllowedToUpdateTemplate;
         delete this.breadcrumbs;
-        delete this.buttons;
     },
 };
 </script>

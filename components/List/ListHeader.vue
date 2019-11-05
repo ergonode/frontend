@@ -5,14 +5,15 @@
 <template>
     <div class="list-header">
         <div class="vertical-wrapper">
-            <Button
-                fab
-                color="transparent"
+            <FabButton
+                :theme="secondaryTheme"
                 @click.native="onExpand">
-                <template #prepend>
-                    <IconArrowDouble :state="expendStateIcon" />
+                <template #icon="{ color }">
+                    <IconArrowDouble
+                        :fill-color="color"
+                        :state="expendStateIcon" />
                 </template>
-            </Button>
+            </FabButton>
             <span
                 class="list-header__title font--medium-16-24"
                 v-text="header" />
@@ -22,12 +23,13 @@
 </template>
 
 <script>
+import { THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
 
 export default {
     name: 'ListHeader',
     components: {
-        Button: () => import('~/components/Buttons/Button'),
+        FabButton: () => import('~/components/Buttons/FabButton'),
         IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),
     },
     props: {
@@ -41,6 +43,9 @@ export default {
         },
     },
     computed: {
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         expendStateIcon() {
             return ARROW.LEFT;
         },

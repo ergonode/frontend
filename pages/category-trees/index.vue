@@ -4,8 +4,7 @@
  */
 <template>
     <GridCategoryTreesPage
-        :title="title"
-        :buttons="getButtons"
+        title="Category trees"
         icon="Tree" />
 </template>
 
@@ -15,33 +14,6 @@ export default {
     middleware: ['tab/redirectToCategoryTrees'],
     components: {
         GridCategoryTreesPage: () => import('~/components/Pages/GridCategoryTreesPage'),
-    },
-    data() {
-        return {
-            title: 'Category trees',
-        };
-    },
-    computed: {
-        getButtons() {
-            const isCategoryTreesPath = /grid/.test(this.$route.path);
-
-            if (!isCategoryTreesPath) return [];
-            return [
-                {
-                    title: 'CREATE TREE',
-                    action: this.addNewTree,
-                    disabled: !this.$hasAccess('CATEGORY_TREE_CREATE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconAdd'),
-                    },
-                },
-            ];
-        },
-    },
-    methods: {
-        addNewTree() {
-            this.$router.push('/category-trees/tree/new');
-        },
     },
 };
 </script>

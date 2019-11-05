@@ -22,25 +22,34 @@
             theme="transparent" />
         <div
             :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
-            <ButtonSelect
-                icon-path="Others/IconDots"
+            <MultiButton
+                :theme="secondaryTheme"
+                :size="smallSize"
+                :plain="true"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
-                @focus="onSelectFocus" />
+                @focus="onSelectFocus">
+                <template #icon="{ color }">
+                    <IconDots :fill-color="color" />
+                </template>
+            </MultiButton>
         </div>
     </div>
 </template>
 <script>
+import { SIZES, THEMES } from '~/defaults/buttons';
 import { ACTION } from '~/defaults/icons';
+import IconDots from '~/components/Icon/Others/IconDots';
 import IconPlusMinus from '~/components/Icon/Actions/IconPlusMinus';
-import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
+import MultiButton from '~/components/Buttons/MultiButton';
 import NumericBadge from '~/components/Badges/NumericBadge';
 
 export default {
     name: 'CategoryTreeItem',
     components: {
+        IconDots,
         IconPlusMinus,
-        ButtonSelect,
+        MultiButton,
         NumericBadge,
     },
     data() {
@@ -65,6 +74,12 @@ export default {
         },
     },
     computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         hasChildren() {
             return this.numberOfChildren > 0;
         },

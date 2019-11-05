@@ -3,20 +3,43 @@
  * See LICENSE for license details.
  */
 <template>
-    <SettingsTabs
-        title="Settings"
-        icon="Settings"
-        @save="onSave" />
+    <PageWrapper>
+        <TitleBar
+            title="Settings"
+            icon="Settings" />
+        <HorizontalTabBar
+            :items="tabs" />
+    </PageWrapper>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 
 export default {
-    name: 'Settings',
+    name: 'SettingsTabs',
     middleware: ['tab/redirectToLanguageSettings'],
     components: {
-        SettingsTabs: () => import('~/components/Pages/Tabs/SettingsTabs'),
+        HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
+        TitleBar: () => import('~/components/TitleBar/TitleBar'),
+        PageWrapper: () => import('~/components/Layout/PageWrapper'),
+    },
+    data() {
+        return {
+            tabs: [
+                {
+                    title: 'Language',
+                    route: { name: 'settings-language' },
+                    active: true,
+                    isContextualMenu: false,
+                    props: {
+                        updateButton: {
+                            title: 'SAVE SETTINGS',
+                            action: this.onSave,
+                        },
+                    },
+                },
+            ],
+        };
     },
     methods: {
         ...mapActions('languageSettings', [

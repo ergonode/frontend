@@ -21,26 +21,35 @@
         <div
             v-if="!disabled"
             :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
-            <ButtonSelect
-                icon-path="Others/IconDots"
+            <MultiButton
+                :theme="secondaryTheme"
+                :size="smallSize"
+                :plain="true"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
-                @focus="onSelectFocus" />
+                @focus="onSelectFocus">
+                <template #icon="{ color }">
+                    <IconDots :fill-color="color" />
+                </template>
+            </MultiButton>
         </div>
     </ElementContentBase>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
 import ElementContentBase from '~/components/Template/ProductDesigner/ElementContentBase';
 import IconFontSize from '~/components/Icon/Editor/IconFontSize';
-import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
+import MultiButton from '~/components/Buttons/MultiButton';
+import IconDots from '~/components/Icon/Others/IconDots';
 
 export default {
     name: 'SectionElementContent',
     components: {
         IconFontSize,
-        ButtonSelect,
+        MultiButton,
+        IconDots,
         ElementContentBase,
     },
     props: {
@@ -65,6 +74,12 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         contextualMenuHoveStateClasses() {
             return { 'element-content__contextual-menu--hovered': this.isHovered };
         },

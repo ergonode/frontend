@@ -7,15 +7,14 @@
         <Transition
             name="fade"
             mode="out-in">
-            <Button
+            <FabButton
                 :class="{'non-visible': !isLeftArrowVisible}"
-                fab
-                color="transparent"
+                :theme="secondaryTheme"
                 @click.native="decrementPage">
-                <template #prepend>
-                    <IconArrowPointer />
+                <template #icon="{ color }">
+                    <IconArrowPointer :fill-color="color" />
                 </template>
-            </Button>
+            </FabButton>
         </Transition>
         <span class="pagination__text font--medium-12-16">
             Page
@@ -35,27 +34,29 @@
             class="pagination__number font--medium-12-16"
             v-text="maxPage" />
         <Transition name="fade">
-            <Button
+            <FabButton
                 :class="{'non-visible': !isRightArrowVisible}"
-                fab
-                color="transparent"
+                :theme="secondaryTheme"
                 @click.native="incrementPage">
-                <template #prepend>
-                    <IconArrowPointer :state="rightArrow" />
+                <template #icon="{ color }">
+                    <IconArrowPointer
+                        :fill-color="color"
+                        :state="rightArrow" />
                 </template>
-            </Button>
+            </FabButton>
         </Transition>
     </div>
 </template>
 
 <script>
+import { THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
 
 export default {
     name: 'GridPagination',
     components: {
         TextField: () => import('~/components/Inputs/TextField'),
-        Button: () => import('~/components/Buttons/Button'),
+        FabButton: () => import('~/components/Buttons/FabButton'),
         IconArrowPointer: () => import('~/components/Icon/Arrows/IconArrowPointer'),
     },
     props: {
@@ -74,6 +75,9 @@ export default {
         };
     },
     computed: {
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         isLeftArrowVisible() {
             return this.value > 1;
         },

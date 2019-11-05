@@ -33,17 +33,16 @@
                     <Divider vertical />
                 </div>
             </div>
-            <IconFabButton
-                theme="secondary"
-                icon-path="Arrows/IconArrowDouble"
+            <FabButton
+                :theme="secondaryTheme"
                 :is-selected="isExpanded"
                 @select="onExpandFilters">
-                <template #icon="{ iconFillColor }">
+                <template #icon="{ color }">
                     <IconArrowDouble
-                        :fill-color="iconFillColor"
+                        :fill-color="color"
                         :state="iconExpanderState" />
                 </template>
-            </IconFabButton>
+            </FabButton>
         </div>
         <FadeTransition>
             <GridAdvancedFiltersContainer
@@ -76,6 +75,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
 import { GHOST_ID } from '~/defaults/grid';
 import GridAdvancedFilterPlaceholder from '~/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder';
@@ -86,7 +86,7 @@ export default {
     components: {
         Divider: () => import('~/components/Dividers/Divider'),
         NumericBadge: () => import('~/components/Badges/NumericBadge'),
-        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
+        FabButton: () => import('~/components/Buttons/FabButton'),
         IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),
         GridAdvancedFiltersContainer: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFiltersContainer'),
         GridAdvancedFilter: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilter'),
@@ -127,6 +127,9 @@ export default {
         ...mapState('draggable', {
             isListElementDragging: (state) => state.isListElementDragging,
         }),
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         ghostFilterId() {
             return GHOST_ID;
         },

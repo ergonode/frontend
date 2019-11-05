@@ -4,28 +4,36 @@
  */
 <template>
     <ContentBaseFooter :small="true">
-        <Button
-            theme="dark"
-            small
+        <BaseButton
+            :theme="secondaryTheme"
+            :size="tinySize"
             title="CLEAR"
-            color="transparent"
             @click.native="onClear" />
     </ContentBaseFooter>
 </template>
 
 <script>
+import { SIZES, THEMES } from '~/defaults/buttons';
 import ContentBaseFooter from '~/components/Inputs/Select/Contents/Footers/ContentBaseFooter';
-import Button from '~/components/Buttons/Button';
+import BaseButton from '~/components/Buttons/BaseButton';
 
 export default {
     name: 'SelectContentFooter',
     components: {
         ContentBaseFooter,
-        Button,
+        BaseButton,
     },
     methods: {
         onClear() {
             this.$emit('clear');
+        },
+    },
+    computed: {
+        tinySize() {
+            return SIZES.TINY;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
         },
     },
 };

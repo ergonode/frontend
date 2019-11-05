@@ -6,7 +6,6 @@
     <PageWrapper>
         <TitleBar
             :title="title"
-            :buttons="buttons"
             :icon="icon" />
         <div class="vertical-wrapper">
             <Grid
@@ -54,10 +53,6 @@ export default {
         },
         title: {
             type: String,
-            required: true,
-        },
-        buttons: {
-            type: Array,
             required: true,
         },
         icon: {

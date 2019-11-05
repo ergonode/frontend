@@ -21,14 +21,13 @@
             @expand="onExpand" />
         <AttributesList :language-code="languageCode" />
         <div class="add-btn-wrapper">
-            <Button
-                fab
+            <FabButton
                 :disabled="!$hasAccess('ATTRIBUTE_CREATE')"
                 @click.native="addNewAttribute">
-                <template #prepend>
-                    <IconAdd :fill-color="whiteColor" />
+                <template #icon="{ color }">
+                    <IconAdd :fill-color="color" />
                 </template>
-            </Button>
+            </FabButton>
         </div>
     </div>
 </template>
@@ -44,7 +43,7 @@ export default {
         AttributesList: () => import('~/components/List/AttributesList'),
         ListSearchSelectHeader: () => import('~/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('~/components/List/ListSearchHeader'),
-        Button: () => import('~/components/Buttons/Button'),
+        FabButton: () => import('~/components/Buttons/FabButton'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
     },
     props: {

@@ -37,24 +37,32 @@
                         'tab-bar-item__contextual-menu',
                         {'tab-bar-item__contextual-menu--active': menuActive}
                     ]">
-                <ButtonSelect
-                    icon-path="Others/IconDots"
+                <MultiButton
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    :plain="true"
                     :options="options"
                     @input="onSelectValue"
-                    @focus="onMenuActive" />
+                    @focus="onMenuActive">
+                    <template #icon="{ color }">
+                        <IconDots :fill-color="color" />
+                    </template>
+                </MultiButton>
             </div>
         </template>
     </div>
 </template>
 
 <script>
+import { SIZES, THEMES } from '~/defaults/buttons';
 import tabBarItemMixin from '~/mixins/tabBar/tabBarItemMixin';
 
 export default {
     name: 'HorizontalTabBarItem',
     components: {
         TextField: () => import('~/components/Inputs/TextField'),
-        ButtonSelect: () => import('~/components/Inputs/Select/ButtonSelect'),
+        IconDots: () => import('~/components/Icon/Others/IconDots'),
+        MultiButton: () => import('~/components/Buttons/MultiButton'),
     },
     mixins: [tabBarItemMixin],
     data() {
@@ -63,6 +71,14 @@ export default {
             menuActive: false,
             editableMode: false,
         };
+    },
+    computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
     methods: {
         onLinkSelect() {

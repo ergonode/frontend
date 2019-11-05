@@ -6,28 +6,65 @@
     <PageWrapper>
         <TitleBar
             :title="title"
-            :buttons="buttons"
             :status="status"
             :breadcrumbs="breadcrumbs"
             icon="Document"
             :is-read-only="!isUserAllowedToUpdateProduct && isEdit"
-            @navigateback="onDismiss" />
+            @navigateback="onDismiss">
+            <template
+                v-if="isEdit"
+                #buttons>
+                <PrependIconButton
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE PRODUCT"
+                    :disabled="!$hasAccess('PRODUCT_DELETE')"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+                <MultiButton
+                    v-if="statusesButtons.more && statusesButtons.more.length"
+                    title="more"
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    :disabled="!$hasAccess('PRODUCT_UPDATE')"
+                    :options="optionTitle(statusesButtons.more)"
+                    @input="(e) => optionAction(e, statusesButtons.more)" />
+                <BaseButton
+                    v-for="button in statusesButtons.statuses"
+                    :key="button.code"
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    :title="button.name || button.code"
+                    :disabled="!$hasAccess('PRODUCT_UPDATE')"
+                    @click.native="updateStatus(button.code)" />
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
+import BaseButton from '~/components/Buttons/BaseButton';
+import MultiButton from '~/components/Buttons/MultiButton';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'ProductPage',
     mixins: [categoryManagementPageBaseMixin],
+    components: {
+        BaseButton,
+        MultiButton,
+    },
     created() {
         let generalRoute = { name: 'product-new-general' };
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
-        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Products',
@@ -43,19 +80,6 @@ export default {
             generalRoute = { name: 'product-edit-id-general', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
-
-            this.buttons = [
-                {
-                    title: 'REMOVE PRODUCT',
-                    action: this.onRemove,
-                    theme: 'secondary',
-                    disabled: !this.$hasAccess('PRODUCT_DELETE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconDelete'),
-                    },
-                },
-                ...this.getButtonsForStatuses,
-            ];
 
             this.tabs = [
                 {
@@ -101,60 +125,56 @@ export default {
         }
     },
     computed: {
+        ...mapState('authentication', {
+            userLanguageCode: (state) => state.user.language,
+        }),
         ...mapState('productsDraft', {
             producId: (state) => state.id,
             status: (state) => state.status,
             workflow: (state) => state.workflow,
         }),
-        getButtonsForStatuses() {
-            if (!this.workflow.length) return [];
-            const moreStatuses = JSON.parse(JSON.stringify(this.workflow)); // deep array clone hack
-            const statuses = moreStatuses.splice(0, 2);
-            const statusesButtons = statuses.map((status) => ({
-                title: status.code,
-                theme: 'secondary',
-                action: this.updateStatus.bind(this, status),
-                disabled: !this.$hasAccess('PRODUCT_UPDATE'),
-            }));
-
-            if (moreStatuses.length) {
-                return [
-                    {
-                        title: 'more',
-                        theme: 'secondary',
-                        disabled: !this.$hasAccess('PRODUCT_UPDATE'),
-                        append: {
-                            component: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
-                        },
-                        options: [
-                            ...moreStatuses.map((status) => ({
-                                title: status.code,
-                                action: this.updateStatus.bind(this, status),
-                            })),
-                        ],
-                    },
-                    ...statusesButtons,
-                ];
-            }
-            return [
-                ...statusesButtons,
-            ];
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
+        statusesButtons() {
+            if (!this.workflow.length) return {};
+            const numberOfVisibleStatuses = 2;
+            const statuses = JSON.parse(JSON.stringify(this.workflow)); // deep array clone hack
+            const visibleStatuses = statuses.splice(0, numberOfVisibleStatuses);
+            const hiddenStatuses = statuses.slice(
+                -(this.workflow.length - numberOfVisibleStatuses),
+            );
+            return {
+                statuses: visibleStatuses.map((status) => status),
+                more: hiddenStatuses.map((status) => status),
+            };
         },
     },
     methods: {
         ...mapActions('productsDraft', [
             'updateProductStatus',
-            'setProductStatus',
+            'getProduct',
         ]),
-        updateStatus(newStatus) {
-            const { code } = newStatus;
-            const isConfirm = confirm(`Are you sure you want to change status to ${code}?`); /* eslint-disable-line no-restricted-globals */
+        optionTitle(options) {
+            return options.map((option) => option.name || option.code);
+        },
+        optionAction(value, options) {
+            return options.forEach((option) => {
+                if (option.code === value) this.updateStatus(option.code);
+            });
+        },
+        updateStatus(statusCode) {
+            const isConfirm = confirm(`Are you sure you want to change status to ${statusCode}?`); /* eslint-disable-line no-restricted-globals */
             if (isConfirm) {
                 this.updateProductStatus({
-                    value: code,
+                    value: statusCode,
                     attributeId: this.status.attribute_id,
                     onSuccess: () => {
-                        this.setProductStatus(newStatus);
+                        const { params: { id } } = this.$route;
+                        this.getProduct({ languageCode: this.userLanguageCode, id });
                         this.$addAlert({ type: 'success', message: 'Status updated' });
                     },
                 });
@@ -164,7 +184,6 @@ export default {
     beforeDestroy() {
         delete this.breadcrumbs;
         delete this.isUserAllowedToUpdateProduct;
-        delete this.buttons;
     },
 };
 </script>

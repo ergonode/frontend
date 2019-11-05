@@ -3,12 +3,14 @@
  * See LICENSE for license details.
  */
 .btn {
+    $btn: &;
+
     position: relative;
     display: flex;
     flex-shrink: 0;
     justify-content: center;
     align-items: center;
-    height: 32px;
+    height: 40px;
     border: none;
     padding: 0 16px;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
@@ -16,55 +18,53 @@
     cursor: pointer;
     outline: none;
     border-radius: 4px;
-    letter-spacing: 0.5px;
 
-    &--fab {
-        width: 32px;
-        padding: 0;
-        border-radius: 50%;
+    &:disabled {
+        cursor: not-allowed;
     }
 
-    &--rounded {
-        border-radius: 999px;
-    }
-
-    &--small {
-        height: 24px;
-        padding: 0 8px;
-    }
-
-    &--large {
-        height: 40px;
-    }
-
-    &:not(&--fab) svg {
-        z-index: 2;
-        margin-right: 8px;
-    }
-
-    &--fab &--small {
-        width: 24px;
-    }
-
-    &--fab &--large {
-        width: 40px;
-    }
-
-    &--fab > &__icon {
-        margin-right: 0;
-    }
-
-    &:hover {
+    &:hover:not(:disabled):not(.btn--plain) {
         box-shadow: $ELEVATOR_2_DP;
     }
 
-    &:disabled {
-        background: $GREY !important;
-        color: $WHITE !important;
-        cursor: not-allowed;
+    &__title {
+        color: $WHITE;
+        letter-spacing: 0.5px;
+    }
 
-        &:hover {
-            box-shadow: none;
+    &--primary {
+        background-color: $GREEN;
+
+        &:disabled {
+            background-color: $GREY;
         }
+    }
+
+    &--secondary {
+        background-color: transparent;
+
+        #{$btn}__title {
+            color: $GRAPHITE;
+        }
+
+        &:disabled {
+            #{$btn}__title {
+                color: $GREY_DARK;
+            }
+        }
+
+        &:hover:not(:disabled):not(.btn--plain) {
+            background-color: $WHITE;
+        }
+    }
+
+    &--small {
+        height: 32px;
+        padding: 0 12px;
+    }
+
+    &--tiny {
+        height: 24px;
+        padding: 0 8px;
     }
 }

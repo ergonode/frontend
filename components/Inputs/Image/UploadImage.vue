@@ -33,10 +33,13 @@
             v-else
             class="upload-image__container">
             <div class="upload-image__remove-btn">
-                <IconFabButton
-                    theme="secondary"
-                    icon-path="Actions/IconDelete"
-                    @select="onRemove" />
+                <FabButton
+                    :theme="secondaryTheme"
+                    @select="onRemove">
+                    <template #icon="{ color }">
+                        <IconDelete :fill-color="color" />
+                    </template>
+                </FabButton>
             </div>
             <Picture :image-id="selectedFileID" />
         </div>
@@ -49,6 +52,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { THEMES } from '~/defaults/buttons';
 import { GRAPHITE, GREEN } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
@@ -77,7 +81,8 @@ export default {
     },
     components: {
         Picture: () => import('~/components/Inputs/Image/Picture'),
-        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
+        FabButton: () => import('~/components/Buttons/FabButton'),
+        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
     data() {
         return {
@@ -90,6 +95,9 @@ export default {
         ...mapState('validations', {
             uploadError: (state) => state.validationErrors.upload,
         }),
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
     methods: {
         ...mapActions('validations', [

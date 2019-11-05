@@ -6,9 +6,21 @@
     <PageWrapper>
         <TitleBar
             title="Templates"
-            :buttons="buttons"
             :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')"
-            icon="Templates" />
+            icon="Templates">
+            <template #buttons>
+                <PrependIconButton
+                    title="CREATE TEMPLATE"
+                    :size="smallSize"
+                    :disabled="!$hasAccess('TEMPLATE_DESIGNER_CREATE')"
+                    @click.native="onCreate">
+                    <template #prepend="{ color }">
+                        <IconAdd
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template>
+        </TitleBar>
         <div class="templates">
             <div
                 v-for="section in templatesSection"
@@ -33,6 +45,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import { SIZES } from '~/defaults/buttons';
 
 export default {
     name: 'Templates',
@@ -40,21 +53,8 @@ export default {
         TitleBar: () => import('~/components/TitleBar/TitleBar'),
         TemplateElement: () => import('~/components/Template/TemplateElement'),
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
-    },
-    created() {
-        this.buttons = [
-            {
-                title: 'CREATE TEMPLATE',
-                action: this.onCreate,
-                disabled: !this.$hasAccess('TEMPLATE_DESIGNER_CREATE'),
-                prepend: {
-                    component: () => import('~/components/Icon/Actions/IconAdd'),
-                },
-            },
-        ];
-    },
-    beforeDestroy() {
-        delete this.buttons;
+        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
+        PrependIconButton: () => import('~/components/Buttons/PrependIconButton'),
     },
     computed: {
         ...mapState('templateLists', {
@@ -63,6 +63,9 @@ export default {
         ...mapGetters('templateLists', {
             sectionElementsByID: 'sectionElementsByID',
         }),
+        smallSize() {
+            return SIZES.SMALL;
+        },
     },
     methods: {
         onCreate() {
@@ -84,7 +87,7 @@ export default {
 
 <style lang="scss" scoped>
     .templates {
-        padding: 0 24px 24px;
+        padding: 0 20px 24px 24px;
         overflow: auto;
 
         .section {
@@ -98,6 +101,7 @@ export default {
 
             &__items {
                 display: grid;
+                justify-content: space-between;
                 grid-template-columns: repeat(auto-fill, 300px);
                 grid-auto-rows: 205px;
                 grid-gap: 24px;
