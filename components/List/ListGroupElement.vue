@@ -8,12 +8,8 @@
             large
             @click.native="expandGroup">
             <ListElementDescription>
-                <span
-                    class="group__title font--semi-bold-14-20"
-                    v-text="title" />
-                <span
-                    class="group__subtitle font--semi-bold-12-16"
-                    v-text="subtitle" />
+                <ListElementTitle :title="title" />
+                <ListElementHint :title="subtitle" />
             </ListElementDescription>
             <ListElementAction>
                 <IconArrowSingle :state="iconState" />
@@ -34,6 +30,8 @@ export default {
         ListElementAction: () => import('~/components/List/ListElementAction'),
         ListElement: () => import('~/components/List/ListElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
+        ListElementTitle: () => import('~/components/List/ListElementTitle'),
+        ListElementHint: () => import('~/components/List/ListElementHint'),
         IconArrowSingle: () => import('~/components/Icon/Arrows/IconArrowSingle'),
     },
     props: {
@@ -72,22 +70,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .group {
-        &__title {
-            color: $GRAPHITE_DARK;
-        }
-
-        &__subtitle {
-            color: $GRAPHITE;
-        }
-
-        &__title, &__subtitle {
-            width: 100%;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-    }
-</style>

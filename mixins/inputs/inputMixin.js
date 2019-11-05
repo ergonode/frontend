@@ -3,10 +3,15 @@
  * See LICENSE for license details.
  */
 export default {
+    components: {
+        InfoHint: () => import('~/components/Inputs/Hint/InfoHint'),
+        ErrorHint: () => import('~/components/Inputs/Hint/ErrorHint'),
+    },
     data() {
         return {
             isFocused: false,
             isMounted: false,
+            isMouseMoving: false,
             hasMouseDown: false,
             associatedLabel: '',
         };
@@ -22,14 +27,25 @@ export default {
         this.associatedLabel = `input-${this._uid}`;
     },
     computed: {
+        isAppendSlotVisible() {
+            return this.isError || this.isDescription || !!this.$slots.append;
+        },
         isEmpty() {
             return this.value === '' || this.value === null;
         },
         isFloatingLabel() {
-            return this.label !== null;
+            return this.label !== '' && this.label !== null;
         },
         isPlaceholder() {
-            return this.placeholder !== null;
+            return this.placeholder !== '' && this.placeholder !== null;
+        },
+        isDescription() {
+            return this.description !== '' && this.description !== null;
+        },
+        isError() {
+            return Boolean(Array.isArray(this.errorMessages)
+                ? this.errorMessages.length
+                : this.errorMessages);
         },
         inputClasses() {
             return [
@@ -37,6 +53,8 @@ export default {
                 {
                     solid: this.solid,
                     underline: this.underline,
+                    small: this.small,
+                    regular: this.regular,
                     'left-alignment': this.leftAlignment,
                     'center-alignment': this.centerAlignment,
                     'floating-label': this.isFloatingLabel,
@@ -49,10 +67,6 @@ export default {
         activatorClasses() {
             return [
                 'input__activator',
-                {
-                    'input__activator--small': this.small,
-                    'input__activator--regular': this.regular,
-                },
             ];
         },
         informationLabelClasses() {
@@ -63,10 +77,9 @@ export default {
         floatingLabelTransforms() {
             if (!this.isMounted) return null;
 
-            if (this.isFocused || !this.isEmpty || this.isPlaceholder) {
+            if (this.isFocused || !this.isEmpty) {
                 const { activator } = this.$refs;
-                const translateX = this.solid ? '-2px' : '-5px';
-                const transform = `translate(${translateX}, -${activator.offsetHeight / 2}px) scale(0.9)`;
+                const transform = `translateY(-${activator.offsetHeight / 2}px)`;
 
                 return {
                     transform,
@@ -74,27 +87,26 @@ export default {
             }
 
             return {
-                transform: 'translate(0, 0) scale(1)',
+                transform: 'translateY(0)',
             };
         },
         floatingLabelClasses() {
             return [
                 'input__label',
+                this.isEmpty && !this.isFocused ? 'font--medium-14-20' : 'font--medium-12-16',
                 { 'input__label--required': this.required },
             ];
         },
         informationLabel() {
             return this.isError ? this.parsedErrorMessages : this.hint;
         },
-        isError() {
-            return Boolean(Array.isArray(this.errorMessages)
-                ? this.errorMessages.length
-                : this.errorMessages);
-        },
         parsedErrorMessages() {
             return Array.isArray(this.errorMessages)
                 ? this.errorMessages.join(', ')
                 : this.errorMessages;
+        },
+        placeholderValue() {
+            return this.isFocused && !this.value ? this.placeholder : null;
         },
     },
     methods: {
@@ -109,10 +121,13 @@ export default {
         },
         onBlur() {
             this.isFocused = false;
+            this.isMouseMoving = false;
 
             this.$emit('focus', false);
         },
         onMouseDown(event) {
+            this.$refs.activator.addEventListener('mousemove', this.onMouseMove);
+
             const isClickedInsideInput = event.target === this.$refs.input;
 
             if (!isClickedInsideInput) {
@@ -123,10 +138,12 @@ export default {
             this.hasMouseDown = true;
         },
         onMouseUp(event) {
+            this.$refs.activator.removeEventListener('mousemove', this.onMouseMove);
+
             const isClickedInsideInput = event.target === this.$refs.input;
             const isDblClicked = event.detail > 1;
 
-            if (isDblClicked) return;
+            if (isDblClicked || this.isMouseMoving) return;
 
             if (this.dismissible) {
                 if (isClickedInsideInput) {
@@ -138,6 +155,9 @@ export default {
             }
 
             this.hasMouseDown = false;
+        },
+        onMouseMove() {
+            this.isMouseMoving = true;
         },
     },
 };

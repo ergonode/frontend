@@ -9,6 +9,7 @@
             :value="searchResult"
             class="search-text-field"
             solid
+            small
             placeholder="Search..."
             @input="debouncedSearch"
             @focus="onSearchFocus">

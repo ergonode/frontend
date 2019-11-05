@@ -15,6 +15,7 @@
             ]">
         <template v-if="editableMode">
             <TextField
+                small
                 left-alignment
                 autofocus
                 @focus="onFocusLost" />

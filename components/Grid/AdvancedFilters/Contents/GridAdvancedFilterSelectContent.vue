@@ -6,23 +6,41 @@
     <GridAdvancedFilterBaseContent
         :is-empty-record="isEmptyRecord"
         @input="onEmptyRecordChange">
-        <TranslationSelectListContent
-            :options="options"
-            :selected-options="filterValue"
-            @value="onValueChange" />
+        <List>
+            <ListElement
+                v-for="(option, index) in options"
+                :key="index"
+                :selected="index === selectedOptionIndex"
+                @click.native="onSelectValue(option, index)">
+                <ListElementDescription>
+                    <ListElementTitle
+                        :small="true"
+                        :title="option.value || 'No translation'" />
+                    <ListElementHint :title="option.key" />
+                </ListElementDescription>
+            </ListElement>
+        </List>
     </GridAdvancedFilterBaseContent>
 </template>
 
 <script>
-import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
-import TranslationSelectListContent from '~/components/Inputs/Select/Contents/TranslationSelectListContent';
 import { FILTER_OPERATOR } from '~/defaults/operators';
+import GridAdvancedFilterBaseContent from '~/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
+import List from '~/components/List/List';
+import ListElement from '~/components/List/ListElement';
+import ListElementDescription from '~/components/List/ListElementDescription';
+import ListElementTitle from '~/components/List/ListElementTitle';
+import ListElementHint from '~/components/List/ListElementHint';
 
 export default {
     name: 'GridAdvancedFilterSelectContent',
     components: {
         GridAdvancedFilterBaseContent,
-        TranslationSelectListContent,
+        List,
+        ListElement,
+        ListElementDescription,
+        ListElementTitle,
+        ListElementHint,
     },
     props: {
         filter: {
@@ -32,6 +50,19 @@ export default {
         options: {
             type: Array,
             default: () => [],
+        },
+    },
+    data() {
+        return {
+            selectedOptionIndex: -1,
+        };
+    },
+    watch: {
+        filterValue: {
+            immediate: true,
+            handler() {
+                this.initSelectedOptions();
+            },
         },
     },
     computed: {
@@ -47,7 +78,11 @@ export default {
         },
     },
     methods: {
-        onValueChange(value) {
+        initSelectedOptions() {
+            this.selectedOptionIndex = this.options
+                .findIndex((option) => option.key === this.filterValue);
+        },
+        onSelectValue(value) {
             this.$emit('input', { value: value.key, operator: FILTER_OPERATOR.EQUAL });
         },
         onEmptyRecordChange(value) {

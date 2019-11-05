@@ -78,7 +78,7 @@ export default {
         },
         gridStyle() {
             return {
-                gridTemplateRows: `repeat(${this.maxRowOfLayoutElements + 1}, 48px)`,
+                gridTemplateRows: `repeat(${this.maxRowOfLayoutElements + 1}, 46px)`,
             };
         },
         gridExtenderStyle() {
