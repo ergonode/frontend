@@ -21,10 +21,14 @@
         <div
             v-if="!disabled"
             :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
-            <ButtonSelect
-                icon-path="Others/IconDots"
-                :options="contextualMenuItems"
+            <MultiButton
+                theme="secondary"
+                size="small"
+                :plain="true"
                 @focus="onSelectFocus">
+                <template #icon="{ color }">
+                    <IconDots :fill-color="color" />
+                </template>
                 <template #content>
                     <List>
                         <ListElement
@@ -44,7 +48,7 @@
                         </ListElement>
                     </List>
                 </template>
-            </ButtonSelect>
+            </MultiButton>
         </div>
     </ElementContentBase>
 </template>
@@ -52,7 +56,8 @@
 <script>
 import { mapActions } from 'vuex';
 import { capitalizeAndConcatenationArray } from '~/model/stringWrapper';
-import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
+import MultiButton from '~/components/Buttons/MultiButton';
+import IconDots from '~/components/Icon/Others/IconDots';
 import CheckBox from '~/components/Inputs/CheckBox';
 import ElementContentBase from '~/components/Template/ProductDesigner/ElementContentBase';
 import List from '~/components/List/List';
@@ -64,8 +69,9 @@ import ListElementTitle from '~/components/List/ListElementTitle';
 export default {
     name: 'AttributeElementContent',
     components: {
+        IconDots,
         ListElementTitle,
-        ButtonSelect,
+        MultiButton,
         ElementContentBase,
         List,
         ListElement,

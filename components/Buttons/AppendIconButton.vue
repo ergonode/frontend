@@ -4,11 +4,7 @@
  */
 <template>
     <BaseButton
-        :disabled="disabled"
-        :title="title"
-        :theme="theme"
-        :plain="plain"
-        :size="size">
+        v-bind="$attrs">
         <template #append="{ color }">
             <div :class="appendClasses">
                 <slot
@@ -20,18 +16,17 @@
     </BaseButton>
 </template>
 <script>
-import buttonPropsMixin from '~/mixins/buttons/buttonPropsMixin';
 import BaseButton from '~/components/Buttons/BaseButton';
 
 export default {
     name: 'AppendIconButton',
-    mixins: [buttonPropsMixin],
+    inheritAttrs: false,
     components: {
         BaseButton,
     },
     computed: {
         appendClasses() {
-            return this.title ? `btn__append--${this.size}` : null;
+            return this.$attrs.title ? `btn__append--${this.$attrs.size}` : null;
         },
     },
 };

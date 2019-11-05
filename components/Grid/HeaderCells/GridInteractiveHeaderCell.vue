@@ -20,10 +20,15 @@
                 :sorting-order="sortingOrder"
                 :fill-color="graphiteLightColor"
                 @click.native="onClickSort" />
-            <ButtonSelect
+            <MultiButton
                 v-if="isColumnEditable"
-                icon-path="Others/IconDots"
+                theme="secondary"
+                size="small"
+                :plain="true"
                 @focus="onSelectFocus">
+                <template #icon="{ color }">
+                    <IconDots :fill-color="color" />
+                </template>
                 <template #content>
                     <List>
                         <ListElement
@@ -40,7 +45,7 @@
                         </ListElement>
                     </List>
                 </template>
-            </ButtonSelect>
+            </MultiButton>
         </div>
     </div>
 </template>
@@ -57,8 +62,9 @@ import { GRAPHITE_LIGHT } from '~/assets/scss/_variables/_colors.scss';
 export default {
     name: 'GridInteractiveHeaderCell',
     components: {
-        ButtonSelect: () => import('~/components/Inputs/Select/ButtonSelect'),
+        MultiButton: () => import('~/components/Buttons/MultiButton'),
         IconArrowSort: () => import('~/components/Icon/Arrows/IconArrowSort'),
+        IconDots: () => import('~/components/Icon/Others/IconDots'),
         List: () => import('~/components/List/List'),
         ListElement: () => import('~/components/List/ListElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),

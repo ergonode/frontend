@@ -4,13 +4,9 @@
  */
 <template>
     <BaseButton
-        :disabled="disabled"
-        :title="title"
-        :theme="theme"
-        :plain="plain"
-        :size="size">
+        v-bind="$attrs">
         <template #prepend="{ color }">
-            <div :class="`btn__prepend--${size}`">
+            <div :class="prependClasses">
                 <slot
                     name="prepend"
                     :color="color" />
@@ -20,14 +16,18 @@
     </BaseButton>
 </template>
 <script>
-import buttonPropsMixin from '~/mixins/buttons/buttonPropsMixin';
 import BaseButton from '~/components/Buttons/BaseButton';
 
 export default {
     name: 'PrependIconButton',
-    mixins: [buttonPropsMixin],
+    inheritAttrs: false,
     components: {
         BaseButton,
+    },
+    computed: {
+        prependClasses() {
+            return this.$attrs.title ? `btn__prepend--${this.$attrs.size}` : null;
+        },
     },
 };
 </script>

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { shallowMount, createLocalVue } from '@vue/test-utils';
-import Button from '~/components/Buttons/Button';
+import Button from '~/components/Buttons/BaseButton';
 
 const localVue = createLocalVue();
 
@@ -20,7 +20,7 @@ describe('Buttons/Button', () => {
 
     it('Component is named well', () => {
         expect(typeof Button.name).toBe('string');
-        expect(Button.name).toEqual('Button');
+        expect(Button.name).toEqual('BaseButton');
     });
 
     it('Check if button has not children', () => {
@@ -38,45 +38,33 @@ describe('Buttons/Button', () => {
     });
 
     it('Check title classes', () => {
-        expect(wrapper.vm.titleTypo).toBe('font--semi-bold-14-16');
-        wrapper.setProps({
-            small: true,
-        });
-        expect(wrapper.vm.titleTypo).toBe('font--semi-bold-12-16');
+        expect(wrapper.vm.titleClasses).toStrictEqual(["btn__title", {"font--semi-bold-12-16": false, "font--semi-bold-14-16": true}]
+        );
     });
 
     it('Check button classes if no props', () => {
-        expect(wrapper.vm.buttonTypeClasses).toStrictEqual([
+        expect(wrapper.vm.btnClasses).toStrictEqual([
             'btn',
-            'theme',
-            'theme--light',
-            'primary',
+            'btn--primary',
+            'btn--regular',
             {
-                'btn--fab': false,
-                'btn--large': false,
-                'btn--rounded': false,
-                'btn--small': false,
+                'btn--plain': false,
             },
         ]);
     });
 
     it('Check button classes', () => {
         wrapper.setProps({
-            theme: 'dark',
-            color: 'success',
-            small: true,
-            fab: true,
+            theme: 'secondary',
+            size: 'small',
+            plain: true,
         });
-        expect(wrapper.vm.buttonTypeClasses).toStrictEqual([
+        expect(wrapper.vm.btnClasses).toStrictEqual([
             'btn',
-            'theme',
-            'theme--dark',
-            'success',
+            'btn--secondary',
+            'btn--small',
             {
-                'btn--fab': true,
-                'btn--large': false,
-                'btn--rounded': false,
-                'btn--small': true,
+                'btn--plain': true,
             },
         ]);
     });

@@ -8,6 +8,7 @@
         :disabled="disabled"
         :title="title"
         :size="size"
+        :plain="plain"
         :theme="theme"
         @click.native="onClick"
         @mouseenter.native="onMouseEnter"

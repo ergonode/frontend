@@ -4,7 +4,7 @@
  */
 <template>
     <button
-        :class="['btn', `btn--${theme}`,`btn--${size}`, {'btn--plain': plain}]"
+        :class="btnClasses"
         :disabled="disabled"
         :aria-label="title">
         <slot
@@ -41,6 +41,16 @@ export default {
 
             return WHITE;
         },
+        btnClasses() {
+            return [
+                'btn',
+                `btn--${this.theme}`,
+                `btn--${this.size}`,
+                {
+                    'btn--plain': this.plain,
+                },
+            ];
+        },
         titleClasses() {
             return [
                 'btn__title',
@@ -55,5 +65,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import "~assets/scss/base-button.scss";
+    @import "~assets/scss/button.scss";
 </style>

@@ -4,7 +4,7 @@
  */
 <template>
     <AppendIconButton
-        class="btn--multi"
+        :class="multiButtonClasses"
         :disabled="disabled"
         :title="title"
         :theme="theme"
@@ -70,6 +70,9 @@ export default {
         };
     },
     computed: {
+        multiButtonClasses() {
+            return !this.title ? 'btn--multi' : null;
+        },
         isSelectButton() {
             return this.isFocused;
         },
@@ -142,19 +145,21 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-    .btn--multi {
-        width: 20px;
-        padding: 0;
 
-        .btn__select-content {
-            position: fixed;
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            background-color: $WHITE;
-            box-shadow: $ELEVATOR_2_DP;
-            max-height: 200px;
-            min-width: 130px;
-        }
+    .btn--multi {
+        width: 24px;
+        height: 24px;
+        padding: 0;
+    }
+
+    .btn__select-content {
+        position: fixed;
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        background-color: $WHITE;
+        box-shadow: $ELEVATOR_2_DP;
+        max-height: 200px;
+        min-width: 130px;
     }
 </style>
