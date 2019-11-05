@@ -13,7 +13,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 
 export default {
     name: 'TransitionEdit',
@@ -26,9 +25,6 @@ export default {
             source: (state) => state.source,
             destination: (state) => state.destination,
             conditionSetId: (state) => state.conditionSetId,
-        }),
-        ...mapState('translations', {
-            translations: (state) => state.translations,
         }),
     },
     methods: {
@@ -45,14 +41,6 @@ export default {
             const propertiesToUpdate = {
                 condition_set: this.conditionSetId,
             };
-            const { name, description } = this.translations;
-
-            if (isThereAnyTranslation(name)) {
-                propertiesToUpdate.name = getParsedTranslations(name);
-            }
-            if (isThereAnyTranslation(description)) {
-                propertiesToUpdate.description = getParsedTranslations(description);
-            }
             this.updateTransition({
                 data: propertiesToUpdate,
                 onSuccess: this.onTransitionUpdated,
