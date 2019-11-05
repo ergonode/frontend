@@ -3,57 +3,40 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridCheckCell
-        :value="selectionState"
+    <GridCell
+        :column="0"
         :row="row"
-        :namespace="namespace"
-        :disabled="false"
-        @input="onCheck" />
+        editing-allowed
+        action-cell
+        :selected="isSelected"
+        @edit="onSelect">
+        <GridCheckCell
+            :value="isSelected"
+            @input="onSelect" />
+    </GridCell>
 </template>
 
 <script>
-import GridCheckCell from '~/components/Grid/GridCheckCell';
 
 export default {
     name: 'GridEditSelectRowCell',
     components: {
-        GridCheckCell,
+        GridCell: () => import('~/components/Grid/GridCell'),
+        GridCheckCell: () => import('~/components/Grid/GridCheckCell'),
     },
     props: {
         row: {
             type: Number,
             required: true,
         },
-        namespace: {
-            type: String,
-            required: true,
-        },
-        multicheck: {
+        isSelected: {
             type: Boolean,
             default: false,
         },
     },
-    computed: {
-        gridState() {
-            return this.$store.state[this.namespace];
-        },
-        selectionState() {
-            if (this.multicheck) {
-                const rowsAreSelected = Boolean(Object.entries(this.gridState.selectedRows).length);
-
-                if (!rowsAreSelected) {
-                    return +this.gridState.isSelectedAllRows;
-                }
-
-                return 2;
-            }
-            return this.gridState.selectedRows[this.row] || this.gridState.isSelectedAllRows;
-        },
-    },
     methods: {
-        onCheck(value) {
-            if (this.multicheck) this.$store.dispatch(`${this.namespace}/setSelectionForAllRows`, { isSelected: Boolean(value) });
-            else this.$store.dispatch(`${this.namespace}/setSelectedRow`, { row: this.row, value });
+        onSelect(isSelected) {
+            this.$emit('select', { row: this.row, isSelected });
         },
     },
 };

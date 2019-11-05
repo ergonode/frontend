@@ -5,12 +5,11 @@
 <template>
     <GridCell
         class="fixed-header"
-        editing-allowed
+        :editing-allowed="false"
         :row="rowIndex"
         :column="columnIndex"
-        :locked="!isActionCell"
-        :action-cell="isActionCell"
-        @edit="onEdit">
+        :locked="true"
+        :action-cell="false">
         <Component
             :is="headerComponent"
             v-bind="headerComponentProps"
@@ -21,7 +20,7 @@
 </template>
 
 <script>
-import { GRID_HEADER_TYPE, COLUMN_TYPE } from '~/defaults/grid';
+import { GRID_HEADER_TYPE } from '~/defaults/grid';
 
 export default {
     name: 'GridWrapperHeaderCell',
@@ -55,15 +54,9 @@ export default {
         gridState() {
             return this.$store.state[this.namespace];
         },
-        isActionCell() {
-            const { type } = this.column;
-
-            return type === COLUMN_TYPE.CHECK || type === COLUMN_TYPE.ACTION;
-        },
         headerComponent() {
             const { type } = this.column.header;
 
-            if (type === GRID_HEADER_TYPE.CHECK) return () => import('~/components/Grid/EditCells/GridEditSelectRowCell');
             if (type === GRID_HEADER_TYPE.PLAIN) return () => import('~/components/Grid/HeaderCells/GridBaseHeaderCell');
 
             return () => import('~/components/Grid/HeaderCells/GridInteractiveHeaderCell');
@@ -71,7 +64,6 @@ export default {
         headerComponentProps() {
             const { type, title } = this.column.header;
 
-            if (type === GRID_HEADER_TYPE.CHECK) return { row: this.rowIndex, multicheck: true };
             if (type === GRID_HEADER_TYPE.INTERACTIVE) {
                 return {
                     columnIndex: this.columnIndex,
@@ -88,11 +80,6 @@ export default {
     methods: {
         getData({ path }) {
             this.$store.dispatch(`${this.namespace}/getData`, { path });
-        },
-        onEdit() {
-            if (this.column.type === COLUMN_TYPE.CHECK) {
-                this.$store.dispatch(`${this.namespace}/setSelectionForAllRows`, { isSelected: !this.gridState.isSelectedAllRows });
-            }
         },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);

@@ -3,6 +3,15 @@
  * See LICENSE for license details.
  */
 export default {
+    components: {
+        GridSelectRowColumn: () => import('~/components/Grid/Columns/GridSelectRowColumn'),
+    },
+    props: {
+        selectRowColumn: {
+            type: Boolean,
+            default: true,
+        },
+    },
     data() {
         return {
             selectedRows: {},
@@ -10,24 +19,32 @@ export default {
         };
     },
     methods: {
-        selectAllRows(isSelected) {
+        onAllRowsSelect(isSelected) {
             const anyRowsSelected = Object.entries(this.selectedRows).length;
 
-            if (anyRowsSelected) this.selectedRows = {};
-            else this.isSelectedAllRows = isSelected;
+            if (anyRowsSelected) {
+                this.selectedRows = {};
+
+                this.$emit('selectRows', this.selectedRows);
+            } else {
+                this.isSelectedAllRows = isSelected;
+
+                this.$emit('selectAllRows', this.isSelectedAllRows);
+            }
         },
-        selectRow({ row, value }) {
-            if (value) {
-                this.selectedRows[row] = value;
+        onRowSelect({ row, isSelected }) {
+            if (isSelected) {
+                this.selectedRows[row] = true;
             } else {
                 delete this.selectedRows[row];
 
                 if (this.isSelectedAllRows) {
                     // If we had chosen option with selected all of the options, we need to remove it
                     // and mark visible rows as selected
-                    const fixedIndex = this.filters ? 2 : 1;
+                    const fixedIndex = this.basicFilters ? 2 : 1;
+                    const { length } = this.gridState.rowIds;
 
-                    for (let i = fixedIndex; i < this.gridState().filtered + fixedIndex; i += 1) {
+                    for (let i = fixedIndex; i <= length + fixedIndex; i += 1) {
                         if (i !== row) {
                             this.selectedRows[i] = true;
                         }
@@ -36,6 +53,10 @@ export default {
                     this.isSelectedAllRows = false;
                 }
             }
+
+            this.selectedRows = { ...this.selectedRows };
+
+            this.$emit('selectRows', this.selectedRows);
         },
     },
 };

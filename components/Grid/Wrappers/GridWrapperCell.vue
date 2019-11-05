@@ -31,6 +31,7 @@
             :parameters="parameters"
             :error-messages="errorValue"
             :fixed-width="$el.offsetWidth"
+            :fixed-height="$el.offsetHeight"
             @updateValue="onUpdateDraft" />
     </GridCell>
 </template>
@@ -40,6 +41,7 @@ import { mapState, mapActions } from 'vuex';
 import { isArrayEqualToArray } from '~/model/arrayWrapper';
 import { hasParams } from '~/model/attributes/AttributeTypes';
 import { getKeyByValue } from '~/model/objectWrapper';
+import { COLUMN_TYPE } from '~/defaults/grid';
 
 export default {
     name: 'GridWrapperCell',
@@ -92,9 +94,11 @@ export default {
     beforeCreate() {
         const { type, editable } = this.$options.propsData.column;
 
-        this.isActionCell = type === 'CHECK' || type === 'ACTION';
-        this.isSelectKind = type === 'SELECT' || type === 'MULTI_SELECT' || type === 'LABEL';
-        this.isMultiSelect = type === 'MULTI_SELECT';
+        this.isActionCell = type === COLUMN_TYPE.CHECK || type === COLUMN_TYPE.ACTION;
+        this.isSelectKind = type === COLUMN_TYPE.SELECT
+            || type === COLUMN_TYPE.MULTI_SELECT
+            || type === COLUMN_TYPE.LABEL;
+        this.isMultiSelect = type === COLUMN_TYPE.MULTI_SELECT;
         this.isEditingAllowed = (editable && this.$options.propsData.editingPrivilegeAllowed)
             || this.isActionCell;
     },
@@ -129,14 +133,14 @@ export default {
             const { type } = this.column;
 
             switch (type) {
-            case 'LABEL':
+            case COLUMN_TYPE.LABEL:
                 return () => import('~/components/Grid/GridStatusInfoCell');
-            case 'IMAGE':
+            case COLUMN_TYPE.IMAGE:
                 return () => import('~/components/Grid/GridImageCell');
-            case 'CHECK':
+            case COLUMN_TYPE.CHECK:
                 return () => import('~/components/Grid/EditCells/GridEditSelectRowCell');
-            case 'SELECT':
-            case 'MULTI_SELECT':
+            case COLUMN_TYPE.SELECT:
+            case COLUMN_TYPE.MULTI_SELECT:
                 return () => import('~/components/Grid/GridSelectInfoCell');
             default:
                 return () => import('~/components/Grid/GridInfoCell');
@@ -146,19 +150,19 @@ export default {
             const { type } = this.column;
 
             switch (type) {
-            case 'ACTION':
+            case COLUMN_TYPE.ACTION:
                 return {
                     params: { id: this.rowId },
                     actionPath: this.editRoutingPath,
                     isSelected: this.isEditingCell,
                     row: this.rowIndex,
                 };
-            case 'CHECK':
+            case COLUMN_TYPE.CHECK:
                 return {
                     namespace: this.namespace,
                     row: this.rowIndex,
                 };
-            case 'LABEL':
+            case COLUMN_TYPE.LABEL:
                 if (this.parsedDraftValue === null) {
                     return {
                         cellData: this.cellData,
@@ -242,12 +246,8 @@ export default {
             'updateDraftValue',
             'addDraftValue',
         ]),
-        onEdit(isEditing) {
-            if (this.column.type === 'CHECK') {
-                this.$store.dispatch(`${this.namespace}/setSelectedRow`, { row: this.rowIndex, value: isEditing });
-            } else {
-                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, { column: this.columnIndex, row: this.rowIndex });
-            }
+        onEdit() {
+            this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, { column: this.columnIndex, row: this.rowIndex });
         },
         onDismissEditDialog() {
             this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});

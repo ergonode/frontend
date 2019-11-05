@@ -65,7 +65,7 @@ export default {
         },
         status: {
             type: Object,
-            default: () => {},
+            default: null,
         },
         icon: {
             type: String,
@@ -88,6 +88,8 @@ export default {
             return BLUE;
         },
         statusTextContrastRation() {
+            if (!this.status) return null;
+
             const convertedRgbText = hexToRGB(WHITE);
             const convertedRgbBg = hexToRGB(this.status.color);
             const relativeLuminance = calculateRelativeLuminance(convertedRgbText);

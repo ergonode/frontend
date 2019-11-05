@@ -6,7 +6,7 @@ export default () => ({
     draft: {},
     id: null,
     sku: '',
-    status: {},
+    status: null,
     workflow: [],
     template: '',
     selectedCategories: [],

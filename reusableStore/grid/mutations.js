@@ -38,13 +38,8 @@ export const types = {
     UPDATE_COLUMN_AT_INDEX: 'UPDATE_COLUMN_AT_INDEX',
     REMOVE_COLUMN_AT_INDEX: 'REMOVE_COLUMN_AT_INDEX',
     REMOVE_COLUMN_WIDTH_AT_INDEX: 'REMOVE_COLUMN_WIDTH_AT_INDEX',
-    SET_SELECTION_FOR_ALL_ROWS: 'SET_SELECTION_FOR_ALL_ROWS',
     SET_COLUMN_WIDTHS: 'SET_COLUMN_WIDTHS',
-    SET_SELECTED_ROWS: 'SET_SELECTED_ROWS',
-    SET_SELECTED_ROW: 'SET_SELECTED_ROW',
     SET_COLUMN_WIDTH_AT_INDEX: 'SET_COLUMN_WIDTH_AT_INDEX',
-    REMOVE_SELECTED_ROW: 'REMOVE_SELECTED_ROW',
-    REMOVE_SELECTED_ROWS: 'REMOVE_SELECTED_ROWS',
     ADD_PRODUCT_VALUE: 'ADD_PRODUCT_VALUE',
     SET_NUMBER_OF_ELEMENTS_TO_DISPLAY: 'SET_NUMBER_OF_ELEMENTS_TO_DISPLAY',
 };
@@ -147,12 +142,6 @@ export default {
     [types.REMOVE_COLUMN_AT_INDEX](state, index) {
         state.columns.splice(index, 1);
     },
-    [types.SET_SELECTION_FOR_ALL_ROWS](state, isSelected) {
-        state.isSelectedAllRows = isSelected;
-    },
-    [types.SET_SELECTED_ROWS](state, rows) {
-        state.selectedRows = rows;
-    },
     [types.SET_COLUMN_WIDTH_AT_INDEX](state, { index, width }) {
         state.columnWidths[index] = width;
         state.columnWidths = [...state.columnWidths];
@@ -165,16 +154,6 @@ export default {
     },
     [types.REMOVE_COLUMN_WIDTH_AT_INDEX](state, index) {
         state.columnWidths.splice(index, 1);
-    },
-    [types.SET_SELECTED_ROW](state, row) {
-        state.selectedRows = { ...state.selectedRows, [row]: true };
-    },
-    [types.REMOVE_SELECTED_ROW](state, row) {
-        delete state.selectedRows[row];
-        state.selectedRows = { ...state.selectedRows };
-    },
-    [types.REMOVE_SELECTED_ROWS](state) {
-        state.selectedRows = {};
     },
     [types.RELOAD_GRID_DATA](state) {
         state.cellValues = { ...state.cellValues };

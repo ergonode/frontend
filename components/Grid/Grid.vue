@@ -27,78 +27,82 @@
             class="grid__content"
             :style="templateColumns"
             @dragleave="onDragLeave">
+            <GridSelectRowColumn
+                v-if="selectRowColumn"
+                :rows-number="gridState.rowIds.length"
+                :rows-offset="rowsOffset"
+                :row-height="rowHeight"
+                :is-selected-all-rows="isSelectedAllRows"
+                :selected-rows="selectedRows"
+                :basic-filters="basicFilters"
+                :current-page="gridState.currentPage"
+                @rowSelect="onRowSelect"
+                @rowsSelect="onAllRowsSelect" />
             <GridColumn
                 v-for="(column, colIndex) in gridState.columns"
                 :key="column.id"
                 :namespace="namespace"
-                :index="colIndex"
+                :index="colIndex + columnsOffset"
                 :column="column"
+                :column-offset="columnsOffset"
                 :row-height="rowHeight"
                 :is-header-focused="isHeaderFocused"
                 :is-mouse-over-grid="isMouseOverGrid"
                 @mouseOverGrid="onMouseOverGrid">
                 <GridWrapperHeaderCell
                     :namespace="namespace"
-                    :column-index="colIndex"
+                    :column-index="colIndex + columnsOffset"
                     :column="column"
                     :path="routeEdit.getData"
                     @focus="onHeaderFocus" />
                 <GridWrapperHeaderActionCell
                     v-if="basicFilters"
                     :namespace="namespace"
-                    :column-index="colIndex"
+                    :column-index="colIndex + columnsOffset"
                     :column="column"
                     :filter="gridState.filters[column.id]"
                     :path="routeEdit.getData" />
                 <slot
+                    v-for="(id, rowIndex) in gridState.rowIds"
                     name="cell"
                     :column="column"
-                    :column-index="colIndex">
+                    :row-id="id"
+                    :row-index="(rowIndex + rowsOffset) * gridState.currentPage"
+                    :column-index="colIndex + columnsOffset"
+                    :cell-data="gridState.cellValues[id][column.id]">
                     <GridWrapperCell
-                        v-for="(id, rowIndex) in gridState.rowIds"
-                        :key="`row[${rowIndex + fixedRowOffset}, ${column.id}]`"
+                        :key="rowIndex + rowsOffset"
                         :namespace="namespace"
-                        :column-index="colIndex"
-                        :row-index="(rowIndex + fixedRowOffset) * gridState.currentPage"
+                        :column-index="colIndex + columnsOffset"
+                        :row-index="(rowIndex + rowsOffset) * gridState.currentPage"
                         :row-id="id"
                         :cell-data="gridState.cellValues[id][column.id] || { value: ''}"
                         :column="column"
                         :draft="drafts[id]"
                         :edit-routing-path="routeEdit.name"
-                        :is-selected="gridState.isSelectedAllRows
-                            || gridState.selectedRows[
-                                (rowIndex + fixedRowOffset) * gridState.currentPage
-                            ]"
+                        :is-selected="isSelectedAllRows
+                            || selectedRows[(rowIndex + rowsOffset) * gridState.currentPage]"
                         :editing-privilege-allowed="editingPrivilegeAllowed" />
                 </slot>
             </GridColumn>
             <GridExtenderColumn
                 v-if="extenderColumn"
-                :is-selected-all-rows="gridState.isSelectedAllRows"
-                :selected-rows="gridState.selectedRows"
+                :is-selected-all-rows="isSelectedAllRows"
+                :selected-rows="selectedRows"
+                :row-height="rowHeight"
                 :current-page="gridState.currentPage"
-                :rows-number="gridState.rowIds.length + fixedRowOffset"
-                :column-index="gridState.columns.length" />
+                :rows-number="gridState.rowIds.length + rowsOffset"
+                :column-index="extenderColumnIndex" />
             <GridEditColumn
                 v-if="editColumn"
-                :is-selected-all-rows="gridState.isSelectedAllRows"
-                :selected-rows="gridState.selectedRows"
+                :is-selected-all-rows="isSelectedAllRows"
+                :selected-rows="selectedRows"
                 :current-page="gridState.currentPage"
                 :row-height="rowHeight"
-                :column-index="extenderColumn
-                    ? gridState.columns.length + 1
-                    : gridState.columns.length"
+                :column-index="editColumnIndex"
                 :row-links="gridState.rowLinks"
                 :route-path="routeEdit.name"
                 @rowEdit="onRowEdit" />
-            <template v-for="(column, index) in gridState.pinnedColumns">
-                <GridSentinelColumn
-                    :key="index"
-                    :style="{gridColumn: column.position}"
-                    :index="gridState.columns.length + index"
-                    :column="column"
-                    @sticky="onStickyChange" />
-            </template>
         </div>
         <GridPlaceholder v-if="isPlaceholder" />
     </div>
@@ -118,16 +122,17 @@ import {
 import {
     isMouseOutOfBoundsElement,
 } from '~/model/drag_and_drop/helpers';
+import selectedRowMixin from '~/mixins/grid/selectedRowMixin';
 
 export default {
     name: 'Grid',
+    mixins: [selectedRowMixin],
     components: {
         GridAdvancedFilters: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilters'),
         GridHeader: () => import('~/components/Grid/GridHeader'),
         GridColumn: () => import('~/components/Grid/Columns/GridColumn'),
         GridExtenderColumn: () => import('~/components/Grid/Columns/GridExtenderColumn'),
         GridEditColumn: () => import('~/components/Grid/Columns/GridEditColumn'),
-        GridSentinelColumn: () => import('~/components/Grid/Columns/GridSentinelColumn'),
         GridWrapperCell: () => import('~/components/Grid/Wrappers/GridWrapperCell'),
         GridWrapperHeaderActionCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderActionCell'),
         GridWrapperHeaderCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderCell'),
@@ -177,7 +182,6 @@ export default {
         };
     },
     beforeCreate() {
-        this.fixedRowOffset = this.$options.propsData.basicFilters ? 2 : 1;
         this.rightPinnedColumns = [];
         this.leftPinnedColumns = [];
     },
@@ -187,7 +191,6 @@ export default {
     beforeDestroy() {
         delete this.rightPinnedColumns;
         delete this.leftPinnedColumns;
-        delete this.fixedRowOffset;
 
         window.removeEventListener('click', this.onClickOutside);
     },
@@ -216,18 +219,42 @@ export default {
         gridState() {
             return this.$store.state[this.namespace];
         },
+        editColumnIndex() {
+            let index = this.gridState.columns.length;
+
+            if (this.selectRowColumn) index += 1;
+            if (this.extenderColumn) index += 1;
+
+            return index;
+        },
+        extenderColumnIndex() {
+            let index = this.gridState.columns.length;
+
+            if (this.selectRowColumn) index += 1;
+
+            return index;
+        },
         numberOfPages() {
             return this.$store.getters[`${this.namespace}/numberOfPages`];
         },
+        columnsOffset() {
+            return this.selectRowColumn ? 1 : 0;
+        },
+        rowsOffset() {
+            return this.basicFilters ? 2 : 1;
+        },
         templateColumns() {
-            const widths = [];
-            const template = this.gridState.columnWidths.join(' ');
+            let widths = [];
+
+            if (this.selectRowColumn) widths.push(COLUMN_WIDTH.ACTION);
+
+            widths = [...widths, ...this.gridState.columnWidths];
 
             if (this.extenderColumn) widths.push(COLUMN_WIDTH.AUTO);
             if (this.editColumn) widths.push(COLUMN_WIDTH.ACTION);
 
             return {
-                gridTemplateColumns: `${template} ${widths.join(' ')}`,
+                gridTemplateColumns: `${widths.join(' ')}`,
             };
         },
         isFilterExists() {
@@ -278,6 +305,7 @@ export default {
             this.$emit('rowEdit', route);
         },
         onMouseOverGrid(isOver) {
+            console.log(isOver);
             this.isMouseOverGrid = isOver;
         },
         onDragLeave({ pageX, pageY }) {
@@ -341,19 +369,19 @@ export default {
         addGhostColumn() {
             if (!this.isColumnExists) {
                 const width = 100;
-                const ghostIndex = 1;
+                const ghostIndex = 0; // 0 because we cannot drag select row column
 
                 this.$store.dispatch(`${this.namespace}/insertColumnAtIndex`, { column: GHOST_ELEMENT_MODEL, index: ghostIndex });
                 this.$store.dispatch(`${this.namespace}/insertColumnWidthAtIndex`, { width: `${width}px`, index: ghostIndex });
 
-                this.setGhostIndex(ghostIndex);
-                this.setDraggedElIndex(ghostIndex);
+                this.setGhostIndex(ghostIndex + this.columnsOffset);
+                this.setDraggedElIndex(ghostIndex + this.columnsOffset);
             }
         },
         removeGhostColumn() {
             if (this.draggedElIndex !== -1) {
-                this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, this.draggedElIndex);
-                this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, this.draggedElIndex);
+                this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, this.draggedElIndex - this.columnsOffset);
+                this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, this.draggedElIndex - this.columnsOffset);
 
                 this.setDraggedElIndex();
                 this.setGhostIndex();

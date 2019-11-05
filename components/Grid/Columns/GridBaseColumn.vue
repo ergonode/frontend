@@ -3,7 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['column', {'border-right': borderRight}]">
+    <div
+        :class="['column', {
+            'border-right': borderRight,
+            'sticky': sticky,
+        }]">
         <slot />
     </div>
 </template>
@@ -15,6 +19,10 @@ export default {
         borderRight: {
             type: Boolean,
             default: true,
+        },
+        sticky: {
+            type: Boolean,
+            default: false,
         },
     },
 };
@@ -60,7 +68,7 @@ export default {
 
         &.sticky {
             position: sticky;
-            z-index: 9999;
+            z-index: 3;
         }
 
         &.border-right {

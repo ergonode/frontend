@@ -49,6 +49,10 @@ export default {
             type: String,
             required: true,
         },
+        columnOffset: {
+            type: Number,
+            required: true,
+        },
         index: {
             type: Number,
             required: true,
@@ -205,13 +209,13 @@ export default {
                 const columnId = event.dataTransfer.getData('text/plain');
 
                 this.removeColumnsTransform();
+                this.$emit('mouseOverGrid', false);
                 await this.$store.dispatch(`${this.namespace}/getColumnData`, {
-                    ghostIndex: this.ghostIndex,
+                    ghostIndex: this.ghostIndex - this.columnOffset,
                     columnId,
                     path: `${this.languageCode}/products`,
                 });
                 this.resetDraggedElementCache();
-                this.$emit('mouseOverGrid', false);
             }
         },
         onDragOver(event) {
@@ -347,12 +351,12 @@ export default {
         },
         changeColumnPositionWrapper() {
             this.$store.dispatch(`${this.namespace}/changeColumnPosition`, {
-                from: this.draggedElIndex,
-                to: this.ghostIndex,
+                from: this.draggedElIndex - this.columnOffset,
+                to: this.ghostIndex - this.columnOffset,
             });
             this.$store.dispatch(`${this.namespace}/changeColumnWidthPosition`, {
-                from: this.draggedElIndex,
-                to: this.ghostIndex,
+                from: this.draggedElIndex - this.columnOffset,
+                to: this.ghostIndex - this.columnOffset,
             });
         },
         getTargetGhostIndex(isBefore) {

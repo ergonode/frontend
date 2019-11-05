@@ -10,6 +10,7 @@
                 :route-edit="routeEdit"
                 :editing-privilege-allowed="$hasAccess('WORKFLOW_UPDATE')"
                 :basic-filters="true"
+                :select-row-column="false"
                 title="Transitions"
                 @rowEdit="onRowEdit" />
         </div>

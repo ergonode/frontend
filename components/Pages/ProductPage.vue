@@ -102,7 +102,6 @@ export default {
     },
     computed: {
         ...mapState('productsDraft', {
-            producId: (state) => state.id,
             status: (state) => state.status,
             workflow: (state) => state.workflow,
         }),

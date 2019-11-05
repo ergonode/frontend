@@ -47,7 +47,9 @@ export const COLUMN_TYPE = {
     CHECK: 'CHECK',
     ACTION: 'ACTION',
     IMAGE: 'IMAGE',
+    LABEL: 'LABEL',
     SELECT: 'SELECT',
+    TEXT: 'TEXT',
     MULTI_SELECT: 'MULTI_SELECT',
     CHECK_CELL: 'CHECK_CELL',
 };

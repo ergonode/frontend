@@ -10,6 +10,7 @@
                 :route-edit="routeEdit"
                 :editing-privilege-allowed="$hasAccess('SEGMENT_UPDATE')"
                 :basic-filters="true"
+                :select-row-column="false"
                 title="Segments"
                 @rowEdit="onRowEdit" />
         </div>
