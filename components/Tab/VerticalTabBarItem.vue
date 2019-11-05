@@ -9,8 +9,8 @@
                 'tab-bar-item',
                 'font--medium-12-16',
                 {
-                    'tab-bar-item--selected': (isSelected && isContentExpanded),
-                    'not-expanded-content': !isContentExpanded,
+                    'tab-bar-item--selected': (isSelected && isExpanded),
+                    'tab-bar-item--expanded': isExpanded,
                 }
             ]"
         @click="onClick">
@@ -43,7 +43,7 @@ export default {
                 return null;
             }
 
-            return this.isSelected && this.isContentExpanded
+            return this.isSelected && this.isExpanded
                 ? GREEN
                 : GRAPHITE;
         },
@@ -77,7 +77,7 @@ export default {
             margin-top: 8px;
         }
 
-        &:not(&--selected), &.not-expanded-content {
+        &:not(&--selected), &:not(&--expanded) {
             border-right: $BORDER_1_GREY;
             padding-right: 7px;
         }

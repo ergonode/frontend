@@ -10,13 +10,14 @@ export default {
         },
         isAddingNewTabEnabled: {
             type: Boolean,
-            required: false,
             default: false,
         },
     },
-    data: () => ({
-        isScrollingEnabled: false,
-    }),
+    data() {
+        return {
+            isScrollingEnabled: false,
+        };
+    },
     methods: {
         addTab() {
             this.items.push({
