@@ -60,7 +60,6 @@ export const Tabs = {
     ProductStatusBaseTab: () => import('~/components/Card/Tabs/ProductStatusBaseTab').then((m) => m.default || m),
     ProductStatusTranslationsTab: () => import('~/components/Card/Tabs/ProductStatusTranslationsTab').then((m) => m.default || m),
     TransitionBaseTab: () => import('~/components/Card/Tabs/TransitionBaseTab').then((m) => m.default || m),
-    TransitionTranslationsTab: () => import('~/components/Card/Tabs/TransitionTranslationsTab').then((m) => m.default || m),
     SegmentsBaseTab: () => import('~/components/Card/Tabs/SegmentsBaseTab').then((m) => m.default || m),
     SegmentsTranslationsTab: () => import('~/components/Card/Tabs/SegmentsTranslationsTab').then((m) => m.default || m),
     ConditionSetBaseTab: () => import('~/components/Card/Tabs/ConditionSetBaseTab').then((m) => m.default || m),

@@ -17,7 +17,7 @@ export default {
         commit(types.SET_CONDITION_SET_ID, value);
     },
     getTransition(
-        { commit, dispatch, rootState },
+        { commit, rootState },
         { id },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
@@ -25,18 +25,10 @@ export default {
 
         return this.app.$axios.$get(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`).then(({
             condition_set: conditionSetId,
-            name = '',
-            description = '',
         }) => {
-            const translations = {
-                name,
-                description,
-            };
-
             commit(types.SET_SOURCE, source.replace(/%20/g, ' '));
             commit(types.SET_DESTINATION, destination.replace(/%20/g, ' '));
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
-            dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onDefaultError);
     },
     createTransition(

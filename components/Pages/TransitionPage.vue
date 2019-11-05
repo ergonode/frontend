@@ -36,7 +36,6 @@ export default {
         ];
         this.isUserAllowedToUpdateTransitions = this.$hasAccess('WORKFLOW_UPDATE');
         if (this.isEdit) {
-            const translationRoute = { name: 'transition-edit-id-translations', params: this.$route.params };
             generalRoute = { name: 'transition-edit-id-general', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
@@ -59,18 +58,6 @@ export default {
                     title: 'General options',
                     route: generalRoute,
                     active: true,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} TRANSITION`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateTransitions,
-                        },
-                    },
-                },
-                {
-                    title: 'Translations',
-                    route: translationRoute,
-                    active: this.isEdit,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} TRANSITION`,
