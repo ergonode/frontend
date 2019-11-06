@@ -31,11 +31,12 @@ export function getMappedGridData(privileges, rolePrivileges) {
     const tmpColumnKeys = {};
     const systemPrivilegesEntries = Object.entries(privileges);
     const { length: systemPrivilegesLength } = systemPrivilegesEntries;
+    const descriptions = {};
     let rowIndex = 0;
 
     for (let i = 0; i < systemPrivilegesLength; i += 1) {
         const [, entry] = systemPrivilegesEntries[i];
-        const { name, privileges: systemPrivileges } = entry;
+        const { name, privileges: systemPrivileges, description } = entry;
         const privilegeNames = Object.values(systemPrivileges);
         const { length: privilegeNamesNumber } = privilegeNames;
 
@@ -45,6 +46,7 @@ export function getMappedGridData(privileges, rolePrivileges) {
                 id: rowIndex,
                 name,
             });
+            descriptions[rowIndex] = description;
             rowIndex += 1;
         }
 
@@ -66,6 +68,7 @@ export function getMappedGridData(privileges, rolePrivileges) {
     return {
         rows,
         columns,
+        descriptions,
         columnWidths,
     };
 }
