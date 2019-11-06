@@ -84,8 +84,8 @@ export default {
     },
     methods: {
         onFocus() {
-            if (!this.editing) {
-                this.$emit('dismissEditDialog');
+            if (!this.editing && !this.actionCell && !this.locked) {
+                this.$emit('edit', false);
             }
         },
         onKeyDown(event) {
@@ -108,12 +108,9 @@ export default {
                 if (this.editingAllowed) {
                     element = this.$el;
 
-                    if (this.actionCell && this.selected) {
+                    if (this.editing) {
                         element.focus();
                         this.$emit('edit', false);
-                    } else if (this.editing) {
-                        element.focus();
-                        this.$emit('dismissEditDialog');
                     } else {
                         this.$emit('edit', true);
                     }
@@ -122,7 +119,7 @@ export default {
             case 32:
                 // Key: SPACE BAR
                 if (this.editingAllowed && this.actionCell) {
-                    if (this.selected) {
+                    if (this.editing) {
                         this.$emit('edit', false);
                     } else {
                         this.$emit('edit', true);

@@ -336,9 +336,6 @@ export default {
         const index = pinnedColumns.findIndex((col) => col.id === id);
         commit(types.REMOVE_PINNED_COLUMN_AT_INDEX, index);
     },
-    reloadGridData({ commit }) {
-        commit(types.RELOAD_GRID_DATA);
-    },
     updateDataCellValue({ commit }, payload) {
         commit(types.UPDATE_DATA_CELL_VALUE, payload);
     },

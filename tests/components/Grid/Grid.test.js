@@ -54,13 +54,13 @@ describe('Grid/Grid', () => {
     describe('mixins/selectedRowMixin', () => {
         describe('Selecting every row by marking header check', () => {
             it('None of rows are selected', () => {
-                wrapper.vm.onAllRowsSelect(true);
+                wrapper.vm.onSelectAllRows(true);
 
                 expect(wrapper.vm.isSelectedAllRows).toBeTruthy();
             });
 
             it('All rows are selected', () => {
-                wrapper.vm.onAllRowsSelect(false);
+                wrapper.vm.onSelectAllRows(false);
 
                 expect(wrapper.vm.isSelectedAllRows).toBeFalsy();
             });
@@ -72,7 +72,7 @@ describe('Grid/Grid', () => {
                     },
                 });
 
-                wrapper.vm.onAllRowsSelect(true);
+                wrapper.vm.onSelectAllRows(true);
 
                 expect(wrapper.vm.selectedRows).toStrictEqual({});
             });
@@ -80,7 +80,7 @@ describe('Grid/Grid', () => {
 
         describe('Select single row', () => {
             it('Row is not selected', () => {
-                wrapper.vm.onRowSelect({ row: 1, isSelected: true });
+                wrapper.vm.onSelectRow({ row: 1, isSelected: true });
 
                 expect(wrapper.vm.selectedRows).toStrictEqual({ 1: true });
             });
@@ -92,7 +92,7 @@ describe('Grid/Grid', () => {
                     },
                 });
 
-                wrapper.vm.onRowSelect({ row: 1, isSelected: false });
+                wrapper.vm.onSelectRow({ row: 1, isSelected: false });
 
                 expect(wrapper.vm.selectedRows).toStrictEqual({ });
             });
@@ -108,7 +108,7 @@ describe('Grid/Grid', () => {
                     selectedRows: {},
                 });
 
-                wrapper.vm.onRowSelect({ row: 1, isSelected: false });
+                wrapper.vm.onSelectRow({ row: 1, isSelected: false });
 
                 expect(wrapper.vm.selectedRows).toStrictEqual({
                     2: true,

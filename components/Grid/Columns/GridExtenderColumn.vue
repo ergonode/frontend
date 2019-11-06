@@ -60,14 +60,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .column {
-        .grid-cell:nth-child(1) {
-            position: sticky !important;
-            top: 0;
-            z-index: 1;
-            background-color: $WHITESMOKE;
-        }
-    }
-</style>

@@ -8,6 +8,7 @@
         :row="row"
         editing-allowed
         action-cell
+        :editing="isSelected"
         :selected="isSelected"
         @edit="onSelect">
         <GridCheckCell

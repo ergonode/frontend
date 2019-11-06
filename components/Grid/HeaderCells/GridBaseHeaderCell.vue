@@ -27,6 +27,7 @@ export default {
         align-items: center;
         width: min-content;
         padding: 8px;
+        background-color: $WHITESMOKE;
         color: $GRAPHITE_DARK;
         user-select: none;
         text-overflow: ellipsis;

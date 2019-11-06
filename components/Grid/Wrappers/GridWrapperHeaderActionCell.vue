@@ -9,8 +9,7 @@
         :column="columnIndex"
         :action-cell="false"
         :editing="isEditingCell"
-        @edit="onEdit"
-        @dismissEditDialog="onDismissEditDialog">
+        @edit="onEdit">
         <Component
             :is="infoComponent"
             v-if="!isEditingCell"
@@ -148,11 +147,12 @@ export default {
         },
     },
     methods: {
-        onEdit() {
-            this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, { column: this.columnIndex, row: this.rowIndex });
-        },
-        onDismissEditDialog() {
-            this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
+        onEdit(isEditing) {
+            if (isEditing) {
+                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, { column: this.columnIndex, row: this.rowIndex });
+            } else {
+                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
+            }
         },
         onUpdateFilter(value) {
             const { id } = this.column;

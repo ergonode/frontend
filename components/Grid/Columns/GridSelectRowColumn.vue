@@ -6,16 +6,22 @@
     <GridBaseColumn
         :sticky="true"
         :style="colGridTemplate">
-        <GridCell
-            editing-allowed
-            action-cell
-            :row="0"
+        <slot
+            name="headerCheckCell"
             :column="0"
-            @edit="onRowsSelect">
-            <GridCheckCell
-                :value="allRowsSelectionState"
-                @input="onRowsSelect" />
-        </GridCell>
+            :row="0">
+            <GridCell
+                editing-allowed
+                action-cell
+                :row="0"
+                :column="0"
+                :editing="isSelectedAllRows"
+                @edit="onRowsSelect">
+                <GridCheckCell
+                    :value="rowsSelectionState"
+                    @input="onRowsSelect" />
+            </GridCell>
+        </slot>
         <GridCell
             v-if="basicFilters"
             :locked="true"
@@ -25,14 +31,20 @@
             :column="0">
             <GridCheckPlaceholderCell />
         </GridCell>
-        <GridEditSelectRowCell
-            v-for="row in rowsNumber"
-            :key="row + rowsOffset - 1"
-            :column="0"
-            :row="(row + rowsOffset - 1) * currentPage"
-            :is-selected="isSelectedAllRows
-                || selectedRows[(row + rowsOffset - 1) * currentPage]"
-            @select="onRowSelect" />
+        <template v-for="(id, rowIndex) in rowIds">
+            <slot
+                name="checkCell"
+                :column="0"
+                :row="(rowIndex + rowsOffset) * currentPage">
+                <GridEditSelectRowCell
+                    :key="id"
+                    :column="0"
+                    :row="(rowIndex + rowsOffset) * currentPage"
+                    :is-selected="isSelectedAllRows
+                        || selectedRows[(rowIndex + rowsOffset) * currentPage]"
+                    @select="onSelectRow" />
+            </slot>
+        </template>
     </GridBaseColumn>
 </template>
 
@@ -47,9 +59,9 @@ export default {
         GridCheckPlaceholderCell: () => import('~/components/Grid/GridCheckPlaceholderCell'),
     },
     props: {
-        rowsNumber: {
-            type: Number,
-            default: 0,
+        rowIds: {
+            type: Array,
+            default: () => [],
         },
         rowsOffset: {
             type: Number,
@@ -77,7 +89,7 @@ export default {
         },
     },
     computed: {
-        allRowsSelectionState() {
+        rowsSelectionState() {
             const rowsAreSelected = Boolean(Object.keys(this.selectedRows).length);
 
             if (!rowsAreSelected) {
@@ -96,7 +108,7 @@ export default {
         onRowsSelect() {
             this.$emit('rowsSelect', !this.isSelectedAllRows);
         },
-        onRowSelect(payload) {
+        onSelectRow(payload) {
             this.$emit('rowSelect', payload);
         },
     },

@@ -12,9 +12,33 @@
                 :basic-filters="false"
                 :extender-column="false"
                 :edit-column="false"
-                title="Role privileges"
-                @selectRows="onSelectRows"
-                @selectAllRows="onSelectAllRows">
+                title="Role privileges">
+                <template #headerSelectAllRowsCell="{ row, column }">
+                    <GridCell
+                        editing-allowed
+                        action-cell
+                        :row="row"
+                        :column="column"
+                        :editing="Boolean(rowsSelectionState)"
+                        @edit="onSelectAllRows">
+                        <GridCheckCell
+                            :value="rowsSelectionState"
+                            @input="onSelectAllRows" />
+                    </GridCell>
+                </template>
+                <template #selectRowCell="{ row, column }">
+                    <GridCell
+                        editing-allowed
+                        action-cell
+                        :row="row"
+                        :column="column"
+                        :editing="Boolean(selectedRows[row - 1])"
+                        @edit="(value) => onSelectRow({ row: row - 1, value })">
+                        <GridCheckCell
+                            :value="selectedRows[row - 1]"
+                            @input="(value) => onSelectRow({ row: row - 1, value })" />
+                    </GridCell>
+                </template>
                 <template #cell="{ column, columnIndex, rowId, rowIndex, cellData }">
                     <GridCell
                         :key="rowId"
@@ -60,9 +84,16 @@ export default {
     },
     components: {
         GridCell,
+        GridCheckCell,
         GridInfoCell,
         Grid,
         Footer,
+    },
+    data() {
+        return {
+            isSelectedAllRows: 0,
+            selectedRows: {},
+        };
     },
     async beforeCreate() {
         this.routeEdit = {
@@ -92,24 +123,43 @@ export default {
     computed: {
         ...mapState('privilegesGrid', {
             rowIds: (state) => state.rowIds,
+            cellValues: (state) => state.cellValues,
         }),
+        rowsSelectionState() {
+            if (this.rowsAreDeselected) {
+                return 0;
+            }
+
+            if (this.rowsAreSelected) {
+                return 1;
+            }
+            return 2;
+        },
+        selectedRowsValues() {
+            return Object.values(this.selectedRows);
+        },
+        rowsAreDeselected() {
+            return this.selectedRowsValues.every((rowState) => rowState === 0);
+        },
+        rowsAreSelected() {
+            return this.selectedRowsValues.every((rowState) => rowState === 1);
+        },
+    },
+    mounted() {
+        this.initializeRowsSelections();
     },
     methods: {
         ...mapActions('privilegesGrid', [
             'updateDataCellValue',
-            'reloadGridData',
         ]),
-        onSelectRows(rows) {
-            this.rowIds.forEach((id) => {
-                if (typeof rows[id + 1] !== 'undefined') {
-                    console.log(id);
-                }
-            });
+        onSelectRow({ row, value }) {
+            this.selectedRows[row] = +value;
+            this.selectedRows = { ...this.selectedRows };
 
-            this.reloadGridData();
+            this.updateDataCellValues(row, value);
         },
-        onSelectAllRows() {
-            this.reloadGridData();
+        onSelectAllRows(value) {
+            this.selectEveryRowValues(value);
         },
         onValueChange(rowId, columnId, cellData) {
             const value = !cellData.value;
@@ -126,8 +176,46 @@ export default {
             }
 
             this.updateDataCellValue({ rowId, columnId, value });
+            this.selectRowValues(rowId);
+        },
+        initializeRowsSelections() {
+            this.rowIds.forEach((rowId) => {
+                this.selectRowValues(rowId);
+            });
 
-            this.reloadGridData();
+            this.selectedRows = { ...this.selectedRows };
+        },
+        selectRowValues(rowId) {
+            const {
+                read: { value: colReadValue },
+                create: { value: colCreateValue },
+                update: { value: colUpdateValue },
+                delete: { value: colDeleteValue },
+            } = this.cellValues[rowId];
+
+            const privileges = [colReadValue, colCreateValue, colUpdateValue, colDeleteValue];
+
+            if (privileges.every((privilege) => privilege === true)) {
+                this.selectedRows[rowId] = 1;
+            } else if (privileges.every((privilege) => privilege === false)) {
+                this.selectedRows[rowId] = 0;
+            } else {
+                this.selectedRows[rowId] = 2;
+            }
+        },
+        updateDataCellValues(rowId, isSelected) {
+            this.updateDataCellValue({ rowId, columnId: 'read', value: isSelected });
+            this.updateDataCellValue({ rowId, columnId: 'create', value: isSelected });
+            this.updateDataCellValue({ rowId, columnId: 'update', value: isSelected });
+            this.updateDataCellValue({ rowId, columnId: 'delete', value: isSelected });
+        },
+        selectEveryRowValues(isSelected) {
+            this.rowIds.forEach((rowId) => {
+                this.updateDataCellValues(rowId, isSelected);
+                this.selectedRows[rowId] = +isSelected;
+            });
+
+            this.selectedRows = { ...this.selectedRows };
         },
         getComponentByColumnType({ type }) {
             if (type === COLUMN_TYPE.TEXT) return GridInfoCell;

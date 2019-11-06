@@ -10,14 +10,13 @@
         :locked="!isEditingAllowed"
         :error="isErrorCell"
         :draft="isDraftCell"
-        :action-cell="isActionCell"
+        :action-cell="false"
         :selected="isSelected"
         :editing="isEditingCell"
-        @edit="onEdit"
-        @dismissEditDialog="onDismissEditDialog">
+        @edit="onEdit">
         <Component
             :is="infoComponent"
-            v-if="!isEditingCell || isActionCell"
+            v-if="!isEditingCell"
             v-bind="infoComponentProps" />
         <GridEditActivatorCell
             v-else
@@ -94,16 +93,13 @@ export default {
     beforeCreate() {
         const { type, editable } = this.$options.propsData.column;
 
-        this.isActionCell = type === COLUMN_TYPE.CHECK || type === COLUMN_TYPE.ACTION;
         this.isSelectKind = type === COLUMN_TYPE.SELECT
             || type === COLUMN_TYPE.MULTI_SELECT
             || type === COLUMN_TYPE.LABEL;
         this.isMultiSelect = type === COLUMN_TYPE.MULTI_SELECT;
-        this.isEditingAllowed = (editable && this.$options.propsData.editingPrivilegeAllowed)
-            || this.isActionCell;
+        this.isEditingAllowed = (editable && this.$options.propsData.editingPrivilegeAllowed);
     },
     beforeDestroy() {
-        delete this.isActionCell;
         delete this.isSelectKind;
         delete this.isMultiSelect;
         delete this.isEditingAllowed;
@@ -246,11 +242,12 @@ export default {
             'updateDraftValue',
             'addDraftValue',
         ]),
-        onEdit() {
-            this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, { column: this.columnIndex, row: this.rowIndex });
-        },
-        onDismissEditDialog() {
-            this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
+        onEdit(isEditing) {
+            if (isEditing) {
+                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, { column: this.columnIndex, row: this.rowIndex });
+            } else {
+                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
+            }
         },
         onUpdateDraft(value) {
             const isValueArray = Array.isArray(value);

@@ -28,7 +28,6 @@ export const types = {
     REMOVE_ADVANCED_FILTER: 'REMOVE_ADVANCED_FILTER',
     CLEAR_ALL_ADVANCED_FILTERS: 'CLEAR_ALL_ADVANCED_FILTERS',
     SET_FILTER: 'SET_FILTER',
-    RELOAD_GRID_DATA: 'RELOAD_GRID_DATA',
     UPDATE_DATA_CELL_VALUE: 'UPDATE_DATA_CELL_VALUE',
     REMOVE_FILTER: 'REMOVE_FILTER',
     SET_CURRENT_PAGE: 'SET_CURRENT_PAGE',
@@ -154,9 +153,6 @@ export default {
     },
     [types.REMOVE_COLUMN_WIDTH_AT_INDEX](state, index) {
         state.columnWidths.splice(index, 1);
-    },
-    [types.RELOAD_GRID_DATA](state) {
-        state.cellValues = { ...state.cellValues };
     },
     [types.UPDATE_DATA_CELL_VALUE](state, { rowId, columnId, value }) {
         state.cellValues[rowId][columnId] = { value };

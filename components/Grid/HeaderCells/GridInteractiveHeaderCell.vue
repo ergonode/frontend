@@ -286,6 +286,7 @@ export default {
         flex: 1;
         justify-content: space-between;
         align-items: center;
+        background-color: $WHITESMOKE;
         user-select: none;
         pointer-events: auto;
 

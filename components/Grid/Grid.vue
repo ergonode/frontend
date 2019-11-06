@@ -29,15 +29,28 @@
             @dragleave="onDragLeave">
             <GridSelectRowColumn
                 v-if="selectRowColumn"
-                :rows-number="gridState.rowIds.length"
+                :row-ids="gridState.rowIds"
                 :rows-offset="rowsOffset"
                 :row-height="rowHeight"
                 :is-selected-all-rows="isSelectedAllRows"
                 :selected-rows="selectedRows"
                 :basic-filters="basicFilters"
                 :current-page="gridState.currentPage"
-                @rowSelect="onRowSelect"
-                @rowsSelect="onAllRowsSelect" />
+                @rowSelect="onSelectRow"
+                @rowsSelect="onSelectAllRows">
+                <template #headerCheckCell="{ row, column }">
+                    <slot
+                        name="headerSelectAllRowsCell"
+                        :row="row"
+                        :column="column" />
+                </template>
+                <template #checkCell="{ row, column }">
+                    <slot
+                        name="selectRowCell"
+                        :row="row"
+                        :column="column" />
+                </template>
+            </GridSelectRowColumn>
             <GridColumn
                 v-for="(column, colIndex) in gridState.columns"
                 :key="column.id"
@@ -71,7 +84,7 @@
                     :column-index="colIndex + columnsOffset"
                     :cell-data="gridState.cellValues[id][column.id]">
                     <GridWrapperCell
-                        :key="rowIndex + rowsOffset"
+                        :key="id"
                         :namespace="namespace"
                         :column-index="colIndex + columnsOffset"
                         :row-index="(rowIndex + rowsOffset) * gridState.currentPage"

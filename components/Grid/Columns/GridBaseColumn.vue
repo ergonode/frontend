@@ -34,6 +34,13 @@ export default {
         display: grid;
         box-sizing: border-box;
 
+        .grid-cell:nth-child(1) {
+            position: sticky !important;
+            top: 0;
+            z-index: 1;
+            background-color: $WHITESMOKE;
+        }
+
         &::before {
             position: absolute;
             top: 0;
