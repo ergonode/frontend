@@ -68,6 +68,7 @@ import { mapState, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
 import { getMappedGridData } from '~/model/mappers/privilegesMapper';
 import { COLUMN_TYPE } from '~/defaults/grid';
+import { STATE } from '~/defaults/inputs/checkbox';
 import Grid from '~/components/Grid/Grid';
 import GridCell from '~/components/Grid/GridCell';
 import GridInfoCell from '~/components/Grid/GridInfoCell';
@@ -91,7 +92,7 @@ export default {
     },
     data() {
         return {
-            isSelectedAllRows: 0,
+            isSelectedAllRows: STATE.UNCHECK,
             selectedRows: {},
         };
     },
@@ -127,22 +128,23 @@ export default {
         }),
         rowsSelectionState() {
             if (this.rowsAreDeselected) {
-                return 0;
+                return STATE.UNCHECK;
             }
 
             if (this.rowsAreSelected) {
-                return 1;
+                return STATE.CHECK;
             }
-            return 2;
+
+            return STATE.CHECK_ANY;
         },
         selectedRowsValues() {
             return Object.values(this.selectedRows);
         },
         rowsAreDeselected() {
-            return this.selectedRowsValues.every((rowState) => rowState === 0);
+            return this.selectedRowsValues.every((rowState) => rowState === STATE.UNCHECK);
         },
         rowsAreSelected() {
-            return this.selectedRowsValues.every((rowState) => rowState === 1);
+            return this.selectedRowsValues.every((rowState) => rowState === STATE.CHECK);
         },
     },
     mounted() {
@@ -196,11 +198,11 @@ export default {
             const privileges = [colReadValue, colCreateValue, colUpdateValue, colDeleteValue];
 
             if (privileges.every((privilege) => privilege === true)) {
-                this.selectedRows[rowId] = 1;
+                this.selectedRows[rowId] = STATE.CHECK;
             } else if (privileges.every((privilege) => privilege === false)) {
-                this.selectedRows[rowId] = 0;
+                this.selectedRows[rowId] = STATE.UNCHECK;
             } else {
-                this.selectedRows[rowId] = 2;
+                this.selectedRows[rowId] = STATE.UNCHECK;
             }
         },
         updateDataCellValues(rowId, isSelected) {

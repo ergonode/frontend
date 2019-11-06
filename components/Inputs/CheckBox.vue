@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { STATE } from '~/defaults/inputs/checkbox';
 
 export default {
     name: 'CheckBox',
@@ -41,7 +42,7 @@ export default {
                 {
                     'checkbox--disabled': this.disabled,
                     'checkbox--checked': this.value,
-                    'checkbox--checked-any': this.value === 2,
+                    'checkbox--checked-any': this.value === STATE.CHECK_ANY,
                 },
             ];
         },
@@ -49,10 +50,10 @@ export default {
     methods: {
         onValueChange() {
             if (Number.isInteger(this.value)) {
-                if (this.value === 2) {
-                    this.$emit('input', 0);
+                if (this.value === STATE.CHECK_ANY) {
+                    this.$emit('input', STATE.UNCHECK);
                 } else {
-                    this.$emit('input', this.value === 0 ? this.value + 1 : this.value - 1);
+                    this.$emit('input', this.value === STATE.UNCHECK ? this.value + 1 : this.value - 1);
                 }
             } else {
                 this.$emit('input', !this.value);
