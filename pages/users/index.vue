@@ -3,62 +3,112 @@
  * See LICENSE for license details.
  */
 <template>
-    <UsersTabs
-        title="Users"
-        :buttons="getButtons"
-        icon="User" />
+    <PageWrapper>
+        <TitleBar
+            title="Users"
+            icon="User"
+            :is-read-only="$isReadOnly(titleBarData.isReadOnly)">
+            <template
+                v-if="titleBarData.button"
+                #buttons>
+                <PrependIconButton
+                    :title="titleBarData.button.title"
+                    :size="smallSize"
+                    :disabled="!$hasAccess(titleBarData.button.access)"
+                    @click.native="addNew(titleBarData.button.path)">
+                    <template #prepend="{ color }">
+                        <IconAdd
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template>
+        </TitleBar>
+        <HorizontalTabBar
+            :items="tabs" />
+    </PageWrapper>
 </template>
+
 <script>
-import { mapState } from 'vuex';
+import { SIZES } from '~/defaults/buttons';
+import PrependIconButton from '~/components/Buttons/PrependIconButton';
+import IconAdd from '~/components/Icon/Actions/IconAdd';
 
 export default {
-    name: 'Users',
+    name: 'UsersTabs',
     middleware: ['tab/redirectToUsersGrid'],
     components: {
-        UsersTabs: () => import('~/components/Pages/Tabs/UsersTabs'),
+        HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
+        TitleBar: () => import('~/components/TitleBar/TitleBar'),
+        PageWrapper: () => import('~/components/Layout/PageWrapper'),
+        PrependIconButton,
+        IconAdd,
+    },
+    beforeCreate() {
+        this.tabs = [];
+        if (this.$hasAccess('USER_READ')) {
+            this.tabs.push({
+                title: 'Users',
+                route: { name: 'users-grid' },
+                active: true,
+                isContextualMenu: false,
+            });
+        }
+        if (this.$hasAccess('USER_ROLE_READ')) {
+            this.tabs.push({
+                title: 'Roles',
+                route: { name: 'users-roles' },
+                active: true,
+                isContextualMenu: false,
+            });
+        }
+        // TODO: BE need to decide if the new privilege is needed - fill the condition with correct equation
+        this.tabs.push({
+            title: 'Users activity logs',
+            route: { name: 'users-activity-logs' },
+            active: true,
+            isContextualMenu: false,
+        });
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
-        }),
-        getButtons() {
-            const isRolesPath = /roles/.test(this.$route.path);
-            const isUsersPath = /grid/.test(this.$route.path);
-
-            if (!isRolesPath && !isUsersPath) return [];
-
-            if (isUsersPath) {
-                return [
-                    {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        titleBarData() {
+            switch (true) {
+            case /grid/.test(this.$route.path):
+                return {
+                    button: {
                         title: 'CREATE USER',
-                        action: this.addNewUser,
-                        disabled: !this.$hasAccess('USER_CREATE'),
-                        prepend: {
-                            component: () => import('~/components/Icon/Actions/IconAdd'),
-                        },
+                        access: 'USER_CREATE',
+                        path: '/users/user/new',
                     },
-                ];
+                    isReadOnly: 'USER',
+                };
+            case /roles/.test(this.$route.path):
+                return {
+                    button: {
+                        title: 'CREATE ROLE',
+                        access: 'USER_ROLE_CREATE',
+                        path: '/users/role/new',
+                    },
+                    isReadOnly: 'USER_ROLE',
+                };
+            case /logs/.test(this.$route.path):
+                return {
+                    isReadOnly: 'USER',
+                };
+            default:
+                return null;
             }
-
-            return [
-                {
-                    title: 'CREATE ROLE',
-                    action: this.addNewRole,
-                    disabled: !this.$hasAccess('USER_ROLE_CREATE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconAdd'),
-                    },
-                },
-            ];
         },
     },
     methods: {
-        addNewUser() {
-            this.$router.push('/users/user/new');
+        addNew(path) {
+            this.$router.push(path);
         },
-        addNewRole() {
-            this.$router.push('/users/role/new');
-        },
+    },
+    beforeDestroy() {
+        delete this.tabs;
     },
 };
 </script>

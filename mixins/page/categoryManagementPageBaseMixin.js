@@ -7,6 +7,8 @@ export default {
         PageWrapper: () => import('~/components/Layout/PageWrapper'),
         TitleBar: () => import('~/components/TitleBar/TitleBar'),
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
+        PrependIconButton: () => import('~/components/Buttons/PrependIconButton'),
+        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
     props: {
         title: {

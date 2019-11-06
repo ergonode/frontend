@@ -15,10 +15,8 @@
             :section-title="item.title"
             :section-menu="item.menu" />
         <div class="footer">
-            <Button
-                theme="dark"
-                large
-                color="transparent"
+            <BaseButton
+                :theme="secondaryTheme"
                 title="LOG OUT"
                 @click.native="onLogout" />
         </div>
@@ -27,6 +25,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { THEMES } from '~/defaults/buttons';
 import navigationBarUserMenu from '~/model/navigation/navigationBarUserMenu';
 
 export default {
@@ -35,7 +34,7 @@ export default {
         Divider: () => import('~/components/Dividers/Divider'),
         NavigationBarUserSelectContentHeader: () => import('~/components/Navigation/NavigationBar/NavigationBarUserSelectContentHeader'),
         MenuList: () => import('~/components/Navigation/MenuList'),
-        Button: () => import('~/components/Buttons/Button'),
+        BaseButton: () => import('~/components/Buttons/BaseButton'),
     },
     props: {
         avatarId: {
@@ -55,6 +54,11 @@ export default {
         return {
             userMenuElements: navigationBarUserMenu,
         };
+    },
+    computed: {
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
     methods: {
         ...mapActions('authentication', [

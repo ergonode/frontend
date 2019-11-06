@@ -27,8 +27,7 @@
                 :value="currentPage"
                 :max-page="numberOfPages"
                 @input="onPageChanged" />
-            <Button
-                large
+            <BaseButton
                 title="SAVE CHANGES"
                 :disabled="!isUserAllowedToUpdate"
                 @click.native="saveDrafts" />
@@ -44,7 +43,7 @@ import GridFooter from '~/components/Grid/GridFooter';
 import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
 import VerticalTabBar from '~/components/Tab/VerticalTabBar';
-import Button from '~/components/Buttons/Button';
+import BaseButton from '~/components/Buttons/BaseButton';
 
 export default {
     name: 'ProductGridTab',
@@ -54,7 +53,7 @@ export default {
         GridPageSelector,
         GridPagination,
         VerticalTabBar,
-        Button,
+        BaseButton,
     },
     data() {
         return {

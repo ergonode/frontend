@@ -6,16 +6,32 @@
     <PageWrapper>
         <TitleBar
             :title="title"
-            :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             icon="User"
             :is-read-only="!isUserAllowedToUpdateUser && isEdit"
-            @navigateback="onDismiss" />
+            @navigateback="onDismiss">
+            <!-- <template
+                v-if="isEdit"
+                #buttons>
+                <PrependIconButton
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE USER"
+                    :disabled="!$hasAccess('USER_DELETE')"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template> -->
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
     </PageWrapper>
 </template>
 
 <script>
+import { SIZES, THEMES } from '~/defaults/buttons';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
@@ -26,7 +42,6 @@ export default {
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
-        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Users',
@@ -41,19 +56,6 @@ export default {
             generalRoute = { name: 'user-edit-id-general', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
-
-            // TODO: Add when it's implemented on BE
-            // this.buttons = [
-            //     {
-            //         title: 'REMOVE USER',
-            //         action: this.onRemove,
-            //         theme: 'secondary',
-            //         disabled: !this.$hasAccess('USER_DELETE'),
-            //         prepend: {
-            //             component: () => import('~/components/Icon/Actions/IconDelete'),
-            //         },
-            //     },
-            // ];
 
             this.tabs = [
                 {
@@ -98,10 +100,17 @@ export default {
             ];
         }
     },
+    computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
+    },
     beforeDestroy() {
         delete this.breadcrumbs;
         delete this.isUserAllowedToUpdateUser;
-        delete this.buttons;
     },
 };
 </script>

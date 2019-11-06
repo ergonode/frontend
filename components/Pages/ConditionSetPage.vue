@@ -6,11 +6,26 @@
     <PageWrapper>
         <TitleBar
             :title="title"
-            :buttons="buttons"
             :breadcrumbs="breadcrumbs"
             :is-read-only="!isUserAllowedToUpdateConditionSet && isEdit"
             icon="Templates"
-            @navigateback="onDismiss" />
+            @navigateback="onDismiss">
+            <template
+                v-if="isEdit"
+                #buttons>
+                <PrependIconButton
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE CONDITION SET"
+                    :disabled="!$hasAccess('CONDITION_DELETE')"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
         <Blur
             v-show="isBlurVisible"
@@ -21,6 +36,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
@@ -37,7 +53,6 @@ export default {
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
-        this.buttons = [];
         this.breadcrumbs = [
             {
                 title: 'Condition Sets',
@@ -52,18 +67,6 @@ export default {
             designerRoute = { name: 'condition-set-edit-id-designer', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
-
-            this.buttons = [
-                {
-                    title: 'REMOVE CONDITION SET',
-                    action: this.onRemove,
-                    theme: 'secondary',
-                    disabled: !this.$hasAccess('CONDITION_DELETE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconDelete'),
-                    },
-                },
-            ];
 
             this.tabs = [
                 {
@@ -123,13 +126,18 @@ export default {
     beforeDestroy() {
         delete this.breadcrumbs;
         delete this.isUserAllowedToUpdateConditionSet;
-        delete this.buttons;
     },
     computed: {
         ...mapState('draggable', {
             isListElementDragging: (state) => state.isListElementDragging,
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         isBlurVisible() {
             return this.isListElementDragging || this.draggedElementOnGrid;
         },

@@ -268,7 +268,7 @@ export default {
             if (width > this.minWidth) {
                 this.updateElementWidth(`${width}px`);
                 this.$store.dispatch(`${this.namespace}/updateColumnWidthAtIndex`, {
-                    index: this.index, width: `${width}px`,
+                    index: this.index - this.columnOffset, width: `${width}px`,
                 });
             }
         },

@@ -28,6 +28,8 @@
             required
             :error-messages="errorColorMessage"
             regular
+            clearable
+            :fixed-content-width="false"
             label="Badge color"
             hint="Badge color is needed for presentation purpose"
             :disabled="isDisabledByPrivileges"

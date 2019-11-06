@@ -11,14 +11,13 @@
             @searchResult="onSearch" />
         <CategoriesList :language-code="userLanguageCode" />
         <div class="add-btn-wrapper">
-            <Button
-                fab
+            <FabButton
                 :disabled="!$hasAccess('CATEGORY_CREATE')"
                 @click.native="addNewCategory">
-                <template #prepend>
-                    <IconAdd :fill-color="whiteColor" />
+                <template #icon="{ color }">
+                    <IconAdd :fill-color="color" />
                 </template>
-            </Button>
+            </FabButton>
         </div>
     </div>
 </template>
@@ -35,7 +34,7 @@ export default {
         ListSearchHeader: () => import('~/components/List/ListSearchHeader'),
         CategoriesList: () => import('~/components/List/CategoriesList'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
-        Button: () => import('~/components/Buttons/Button'),
+        FabButton: () => import('~/components/Buttons/FabButton'),
     },
     props: {
         isExpanded: {

@@ -20,10 +20,15 @@
                 :sorting-order="sortingOrder"
                 :fill-color="graphiteLightColor"
                 @click.native="onClickSort" />
-            <ButtonSelect
+            <MultiButton
                 v-if="isColumnEditable"
-                icon-path="Others/IconDots"
+                :theme="secondaryTheme"
+                :size="smallSize"
+                :plain="true"
                 @focus="onSelectFocus">
+                <template #icon="{ color }">
+                    <IconDots :fill-color="color" />
+                </template>
                 <template #content>
                     <List>
                         <ListElement
@@ -40,13 +45,14 @@
                         </ListElement>
                     </List>
                 </template>
-            </ButtonSelect>
+            </MultiButton>
         </div>
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
 import {
     removeColumnCookieByID,
 } from '~/model/grid/cookies/GridLayoutConfiguration';
@@ -57,8 +63,9 @@ import { GRAPHITE_LIGHT } from '~/assets/scss/_variables/_colors.scss';
 export default {
     name: 'GridInteractiveHeaderCell',
     components: {
-        ButtonSelect: () => import('~/components/Inputs/Select/ButtonSelect'),
+        MultiButton: () => import('~/components/Buttons/MultiButton'),
         IconArrowSort: () => import('~/components/Icon/Arrows/IconArrowSort'),
+        IconDots: () => import('~/components/Icon/Others/IconDots'),
         List: () => import('~/components/List/List'),
         ListElement: () => import('~/components/List/ListElement'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
@@ -121,6 +128,12 @@ export default {
         ...mapState('draggable', {
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },

@@ -147,13 +147,13 @@ export default {
             type: String,
             required: true,
         },
-        editingPrivilegeAllowed: {
-            type: Boolean,
-            default: true,
-        },
         routeEdit: {
             type: Object,
             required: true,
+        },
+        editingPrivilegeAllowed: {
+            type: Boolean,
+            default: true,
         },
         advancedFilters: {
             type: Boolean,
@@ -181,17 +181,10 @@ export default {
             layout: GRID_LAYOUT.TABLE,
         };
     },
-    beforeCreate() {
-        this.rightPinnedColumns = [];
-        this.leftPinnedColumns = [];
-    },
     mounted() {
         window.addEventListener('click', this.onClickOutside);
     },
     beforeDestroy() {
-        delete this.rightPinnedColumns;
-        delete this.leftPinnedColumns;
-
         window.removeEventListener('click', this.onClickOutside);
     },
     watch: {
@@ -244,17 +237,15 @@ export default {
             return this.basicFilters ? 2 : 1;
         },
         templateColumns() {
-            let widths = [];
+            const rightWidths = [];
+            const leftWidths = [];
 
-            if (this.selectRowColumn) widths.push(COLUMN_WIDTH.ACTION);
-
-            widths = [...widths, ...this.gridState.columnWidths];
-
-            if (this.extenderColumn) widths.push(COLUMN_WIDTH.AUTO);
-            if (this.editColumn) widths.push(COLUMN_WIDTH.ACTION);
+            if (this.selectRowColumn) leftWidths.push(COLUMN_WIDTH.ACTION);
+            if (this.extenderColumn) rightWidths.push(COLUMN_WIDTH.AUTO);
+            if (this.editColumn) rightWidths.push(COLUMN_WIDTH.ACTION);
 
             return {
-                gridTemplateColumns: `${widths.join(' ')}`,
+                gridTemplateColumns: `${leftWidths.join(' ')} ${this.gridState.columnWidths.join(' ')} ${rightWidths.join(' ')}`,
             };
         },
         isFilterExists() {
@@ -305,7 +296,6 @@ export default {
             this.$emit('rowEdit', route);
         },
         onMouseOverGrid(isOver) {
-            console.log(isOver);
             this.isMouseOverGrid = isOver;
         },
         onDragLeave({ pageX, pageY }) {

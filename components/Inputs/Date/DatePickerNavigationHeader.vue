@@ -5,41 +5,44 @@
 <template>
     <div class="date-picker-header">
         <slot name="previous">
-            <Button
-                fab
-                color="transparent"
+            <FabButton
+                :theme="secondaryTheme"
                 @click.native="onPrevious">
-                <template #prepend>
-                    <IconArrowSingle :state="leftArrow" />
+                <template #icon="{ color }">
+                    <IconArrowSingle
+                        :fill-color="color"
+                        :state="leftArrow" />
                 </template>
-            </Button>
+            </FabButton>
         </slot>
         <span
             class="header font--medium-14-20"
             @click="onClick"
             v-text="header" />
         <slot name="next">
-            <Button
-                fab
-                color="transparent"
+            <FabButton
+                :theme="secondaryTheme"
                 @click.native="onNext">
-                <template #prepend>
-                    <IconArrowSingle :state="rightArrow" />
+                <template #icon="{ color }">
+                    <IconArrowSingle
+                        :fill-color="color"
+                        :state="rightArrow" />
                 </template>
-            </Button>
+            </FabButton>
         </slot>
     </div>
 </template>
 
 <script>
+import { THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
-import Button from '~/components/Buttons/Button';
+import FabButton from '~/components/Buttons/FabButton';
 import IconArrowSingle from '~/components/Icon/Arrows/IconArrowSingle';
 
 export default {
     name: 'DatePickerNavigationHeader',
     components: {
-        Button,
+        FabButton,
         IconArrowSingle,
     },
     props: {
@@ -53,6 +56,11 @@ export default {
             leftArrow: ARROW.LEFT,
             rightArrow: ARROW.RIGHT,
         };
+    },
+    computed: {
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
     methods: {
         onClick() {

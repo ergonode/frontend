@@ -164,7 +164,7 @@ export default {
             return true;
         },
         onDblcClick() {
-            if (this.editingAllowed && !this.isActionCell) {
+            if (this.editingAllowed && !this.actionCell) {
                 this.$emit('edit', true);
             }
         },

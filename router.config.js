@@ -460,11 +460,6 @@ export const pages = [
                 path: 'general',
                 component: Tabs.TransitionBaseTab,
             },
-            {
-                name: 'transition-edit-id-translations',
-                path: 'translations',
-                component: Tabs.TransitionTranslationsTab,
-            },
         ],
         meta: {
             privileges: ['WORKFLOW_READ'],

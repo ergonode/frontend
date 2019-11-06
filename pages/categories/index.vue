@@ -4,8 +4,7 @@
  */
 <template>
     <GridCategoryPage
-        :title="title"
-        :buttons="getButtons"
+        title="Categories"
         icon="Category" />
 </template>
 <script>
@@ -14,33 +13,6 @@ export default {
     middleware: ['tab/redirectToCategoryGrid'],
     components: {
         GridCategoryPage: () => import('~/components/Pages/GridCategoryPage'),
-    },
-    data() {
-        return {
-            title: 'Categories',
-        };
-    },
-    computed: {
-        getButtons() {
-            const isCategoryPath = /grid/.test(this.$route.path);
-
-            if (!isCategoryPath) return [];
-            return [
-                {
-                    title: 'CREATE CATEGORY',
-                    action: this.addNewCategory,
-                    disabled: !this.$hasAccess('CATEGORY_CREATE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconAdd'),
-                    },
-                },
-            ];
-        },
-    },
-    methods: {
-        addNewCategory() {
-            this.$router.push('/categories/category/new');
-        },
     },
 };
 </script>

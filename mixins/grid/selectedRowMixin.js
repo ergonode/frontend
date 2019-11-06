@@ -44,7 +44,7 @@ export default {
                     const fixedIndex = this.basicFilters ? 2 : 1;
                     const { length } = this.gridState.rowIds;
 
-                    for (let i = fixedIndex; i <= length + fixedIndex; i += 1) {
+                    for (let i = fixedIndex; i < length + fixedIndex; i += 1) {
                         if (i !== row) {
                             this.selectedRows[i] = true;
                         }

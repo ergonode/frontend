@@ -17,10 +17,10 @@
             </template>
             <template #badge>
                 <InformationBadge
-                    v-if="status"
+                    v-if="isStatus"
                     :background="status.color"
                     :color="statusTextContrastRation"
-                    :title="status.code" />
+                    :title="status.name || status.code" />
                 <InformationBadge
                     v-if="isReadOnly"
                     :background="blueColor"
@@ -35,11 +35,14 @@
                 </InformationBadge>
             </template>
         </TitleBarDetails>
-        <TitleBarActions :buttons="buttons" />
+        <div class="title-bar__actions">
+            <slot name="buttons" />
+        </div>
     </div>
 </template>
 
 <script>
+import { isEmpty } from '~/model/objectWrapper';
 import { WHITE, BLUE, GRAPHITE_DARK } from '~/assets/scss/_variables/_colors.scss';
 import {
     hexToRGB, calculateRelativeLuminance, calculateContrastRatio,
@@ -49,7 +52,6 @@ export default {
     name: 'TitleBar',
     components: {
         TitleBarDetails: () => import('~/components/TitleBar/TitleBarDetails'),
-        TitleBarActions: () => import('~/components/TitleBar/TitleBarActions'),
         TitleBarBreadcrumb: () => import('~/components/TitleBar/TitleBarBreadcrumb'),
         InformationBadge: () => import('~/components/Badges/InformationBadge'),
         IconLock: () => import('~/components/Icon/Feedback/IconLock'),
@@ -59,13 +61,9 @@ export default {
             type: String,
             required: true,
         },
-        buttons: {
-            type: Array,
-            default: () => [],
-        },
         status: {
             type: Object,
-            default: null,
+            default: () => {},
         },
         icon: {
             type: String,
@@ -87,9 +85,11 @@ export default {
         blueColor() {
             return BLUE;
         },
+        isStatus() {
+            return !isEmpty(this.status);
+        },
         statusTextContrastRation() {
-            if (!this.status) return null;
-
+            if (!this.isStatus) return null;
             const convertedRgbText = hexToRGB(WHITE);
             const convertedRgbBg = hexToRGB(this.status.color);
             const relativeLuminance = calculateRelativeLuminance(convertedRgbText);
@@ -121,6 +121,19 @@ export default {
 
         .badge__icon {
             margin: -6px 0 -6px -8px;
+        }
+
+        &__actions {
+            display: flex;
+            flex-direction: row-reverse;
+
+            & > * {
+                margin-left: 8px;
+            }
+
+            & > .btn--primary:first-of-type {
+                margin-left: 16px;
+            }
         }
     }
 

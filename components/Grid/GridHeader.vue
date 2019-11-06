@@ -17,54 +17,75 @@
                 <Divider vertical />
             </div>
             <div class="actions-container">
-                <IconFabButton
-                    theme="secondary"
-                    icon-path="Others/IconGrid"
+                <FabButton
+                    :theme="secondaryTheme"
                     :is-stateable="true"
                     :is-selected="layout === gridLayouts.GRID"
-                    @select="() => onSelectLayout(gridLayouts.GRID)" />
-                <IconFabButton
-                    theme="secondary"
-                    icon-path="Others/IconTable"
+                    @select="() => onSelectLayout(gridLayouts.GRID)">
+                    <template #icon="{ color }">
+                        <IconGrid :fill-color="color" />
+                    </template>
+                </FabButton>
+                <FabButton
+                    :theme="secondaryTheme"
                     :is-stateable="true"
                     :is-selected="layout === gridLayouts.TABLE"
-                    @select="() => onSelectLayout(gridLayouts.TABLE)" />
+                    @select="() => onSelectLayout(gridLayouts.TABLE)">
+                    <template #icon="{ color }">
+                        <IconTable :fill-color="color" />
+                    </template>
+                </FabButton>
             </div>
             <div class="divider-container">
                 <Divider vertical />
             </div>
             <div class="actions-container">
-                <IconFabButton
-                    theme="secondary"
-                    icon-path="Others/IconListSmall"
+                <FabButton
+                    :theme="secondaryTheme"
                     :is-stateable="true"
                     :is-selected="rowHeight === rowHeights.SMALL"
-                    @select="() => onSelectRowHeight(rowHeights.SMALL)" />
-                <IconFabButton
-                    theme="secondary"
-                    icon-path="Others/IconListMedium"
+                    @select="() => onSelectRowHeight(rowHeights.SMALL)">
+                    <template #icon="{ color }">
+                        <IconListSmall :fill-color="color" />
+                    </template>
+                </FabButton>
+                <FabButton
+                    :theme="secondaryTheme"
                     :is-stateable="true"
                     :is-selected="rowHeight === rowHeights.MEDIUM"
-                    @select="() => onSelectRowHeight(rowHeights.MEDIUM)" />
-                <IconFabButton
-                    theme="secondary"
-                    icon-path="Others/IconListLarge"
+                    @select="() => onSelectRowHeight(rowHeights.MEDIUM)">
+                    <template #icon="{ color }">
+                        <IconListMedium :fill-color="color" />
+                    </template>
+                </FabButton>
+                <FabButton
+                    :theme="secondaryTheme"
                     :is-stateable="true"
                     :is-selected="rowHeight === rowHeights.LARGE"
-                    @select="() => onSelectRowHeight(rowHeights.LARGE)" />
+                    @select="() => onSelectRowHeight(rowHeights.LARGE)">
+                    <template #icon="{ color }">
+                        <IconListLarge :fill-color="color" />
+                    </template>
+                </FabButton>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { THEMES } from '~/defaults/buttons';
 import { ROW_HEIGHT, GRID_LAYOUT } from '~/defaults/grid';
 
 export default {
     name: 'GridHeader',
     components: {
         Divider: () => import('~/components/Dividers/Divider'),
-        IconFabButton: () => import('~/components/Buttons/IconFabButton'),
+        FabButton: () => import('~/components/Buttons/FabButton'),
+        IconGrid: () => import('~/components/Icon/Others/IconGrid'),
+        IconTable: () => import('~/components/Icon/Others/IconTable'),
+        IconListSmall: () => import('~/components/Icon/Others/IconListSmall'),
+        IconListMedium: () => import('~/components/Icon/Others/IconListMedium'),
+        IconListLarge: () => import('~/components/Icon/Others/IconListLarge'),
     },
     props: {
         title: {
@@ -81,6 +102,9 @@ export default {
         },
     },
     computed: {
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         rowHeights() {
             return ROW_HEIGHT;
         },

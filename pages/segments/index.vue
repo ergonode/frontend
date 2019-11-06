@@ -3,55 +3,101 @@
  * See LICENSE for license details.
  */
 <template>
-    <SegmentsTabs
-        title="Segments"
-        :buttons="getButtons"
-        icon="Templates" />
+    <PageWrapper>
+        <TitleBar
+            title="Segments"
+            icon="Templates"
+            :is-read-only="$isReadOnly(titleBarData.isReadOnly)">
+            <template
+                v-if="titleBarData.button"
+                #buttons>
+                <PrependIconButton
+                    :title="titleBarData.button.title"
+                    :size="smallSize"
+                    :disabled="!$hasAccess(titleBarData.button.access)"
+                    @click.native="addNew(titleBarData.button.path)">
+                    <template #prepend="{ color }">
+                        <IconAdd
+                            :fill-color="color" />
+                    </template>
+                </PrependIconButton>
+            </template>
+        </TitleBar>
+        <HorizontalTabBar
+            :items="tabs" />
+    </PageWrapper>
 </template>
+
 <script>
+import { SIZES } from '~/defaults/buttons';
+import PrependIconButton from '~/components/Buttons/PrependIconButton';
+import IconAdd from '~/components/Icon/Actions/IconAdd';
+
 export default {
-    name: 'Segments',
+    name: 'SegmentsTabs',
     middleware: ['tab/redirectToSegmentsGrid'],
     components: {
-        SegmentsTabs: () => import('~/components/Pages/Tabs/SegmentsTabs'),
+        HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
+        TitleBar: () => import('~/components/TitleBar/TitleBar'),
+        PageWrapper: () => import('~/components/Layout/PageWrapper'),
+        PrependIconButton,
+        IconAdd,
+    },
+    beforeCreate() {
+        this.tabs = [];
+        if (this.$hasAccess('SEGMENT_READ')) {
+            this.tabs.push({
+                title: 'Segments',
+                route: { name: 'segments-grid' },
+                active: true,
+                isContextualMenu: false,
+            });
+        }
+        if (this.$hasAccess('CONDITION_READ')) {
+            this.tabs.push({
+                title: 'Condition sets',
+                route: { name: 'condition-sets' },
+                active: true,
+                isContextualMenu: false,
+            });
+        }
     },
     computed: {
-        getButtons() {
-            const isGridPath = /grid/.test(this.$route.path);
-            const isConditionSetPath = /condition-sets/.test(this.$route.path);
-
-            if (!isGridPath && !isConditionSetPath) return [];
-            if (isConditionSetPath) {
-                return [
-                    {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        titleBarData() {
+            switch (true) {
+            case /grid/.test(this.$route.path):
+                return {
+                    button: {
+                        title: 'CREATE SEGMENT',
+                        access: 'SEGMENT_CREATE',
+                        path: '/segments/segment/new',
+                    },
+                    isReadOnly: 'SEGMENT',
+                };
+            case /condition-sets/.test(this.$route.path):
+                return {
+                    button: {
                         title: 'CREATE CONDITION SET',
-                        action: this.addNewConditionSet,
-                        disabled: !this.$hasAccess('CONDITION_CREATE'),
-                        prepend: {
-                            component: () => import('~/components/Icon/Actions/IconAdd'),
-                        },
+                        access: 'CONDITION_CREATE',
+                        path: '/segments/condition-set/new',
                     },
-                ];
+                    isReadOnly: 'CONDITION',
+                };
+            default:
+                return {};
             }
-            return [
-                {
-                    title: 'CREATE SEGMENT',
-                    action: this.addNewSegment,
-                    disabled: !this.$hasAccess('SEGMENT_CREATE'),
-                    prepend: {
-                        component: () => import('~/components/Icon/Actions/IconAdd'),
-                    },
-                },
-            ];
         },
     },
     methods: {
-        addNewSegment() {
-            this.$router.push('/segments/segment/new/general');
+        addNew(path) {
+            this.$router.push(path);
         },
-        addNewConditionSet() {
-            this.$router.push('/segments/condition-set/new/general');
-        },
+    },
+    beforeDestroy() {
+        delete this.tabs;
     },
 };
 </script>
