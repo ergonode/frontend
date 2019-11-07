@@ -4,23 +4,27 @@
  */
 
 import { toCapitalize } from '~/model/stringWrapper';
+import { COLUMN_TYPE } from '~/defaults/grid';
 
 const getCheckColumn = (privilegeType) => ({
     id: privilegeType,
     label: toCapitalize(privilegeType),
-    type: 'CHECK_CELL',
+    type: COLUMN_TYPE.CHECK_CELL,
     width: '1fr',
     editable: true,
+});
+
+const getNameColumn = () => ({
+    id: 'name',
+    label: '',
+    type: COLUMN_TYPE.TEXT,
+    width: '0.5fr',
 });
 
 export function getMappedGridData(privileges, rolePrivileges) {
     const rows = [];
     const columns = [
-        {
-            id: 'name',
-            label: '',
-            type: 'TEXT',
-        },
+        getNameColumn(),
     ];
     const columnWidths = ['0.5fr'];
     const tmpRowKeys = {};

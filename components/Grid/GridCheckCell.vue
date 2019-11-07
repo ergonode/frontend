@@ -6,7 +6,6 @@
     <div class="check-cell">
         <CheckBox
             :value="value"
-            :disabled="disabled"
             @input="onSelect" />
     </div>
 </template>
@@ -22,14 +21,6 @@ export default {
         value: {
             type: [Boolean, Number],
             default: false,
-        },
-        row: {
-            type: Number,
-            required: true,
-        },
-        disabled: {
-            type: Boolean,
-            required: true,
         },
     },
     methods: {

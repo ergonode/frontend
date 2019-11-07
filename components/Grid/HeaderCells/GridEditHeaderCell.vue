@@ -23,6 +23,7 @@ export default {
         flex: 1 1 auto;
         justify-content: center;
         align-items: center;
+        padding: 8px;
         user-select: none;
     }
 </style>

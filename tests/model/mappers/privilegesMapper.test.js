@@ -93,7 +93,7 @@ describe('privilegesMapper/getMappedGridData', () => {
             },
         ];
         const expectedColumns = [
-            { id: 'name', label: '', type: 'TEXT' },
+            { id: 'name', label: '', type: 'TEXT', width: '0.5fr' },
             {
                 id: 'create', label: 'Create', type: 'CHECK_CELL', width: '1fr', editable: true,
             },

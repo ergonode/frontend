@@ -197,8 +197,8 @@ export default {
 
                 // We are hovering element while removing it
                 this.borderColumnAction('add', columnElement);
-                this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, this.columnIndex);
-                this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, this.columnIndex);
+                this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, this.columnIndex - 1);
+                this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, this.columnIndex - 1);
                 removeColumnCookieByID(this.$cookies, this.column.id);
                 this.$emit('focus', false);
                 break;
@@ -286,6 +286,7 @@ export default {
         flex: 1;
         justify-content: space-between;
         align-items: center;
+        background-color: $WHITESMOKE;
         user-select: none;
         pointer-events: auto;
 

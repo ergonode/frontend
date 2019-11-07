@@ -4,7 +4,6 @@
  */
 import { toCapitalize } from '~/model/stringWrapper';
 import {
-    PINNED_COLUMN_STATE,
     GRID_HEADER_TYPE,
     COLUMN_TYPE,
     COLUMN_WIDTH,
@@ -72,30 +71,17 @@ export function getMappedColumns(columns) {
     const { length } = columns;
 
     for (let i = 0; i < length; i += 1) {
-        const gridColumnPosition = `${i + 1} / ${i + 2}`;
         const column = columns[i];
 
-        columnWidths.push(getMappedColumnWidth(column));
-        mappedColumns.push({
-            ...column,
-            header: getMappedColumnHeader(column),
-        });
-
-        if (column.type === COLUMN_TYPE.CHECK) {
-            pinnedColumns.push({
-                id: column.id,
-                state: PINNED_COLUMN_STATE.LEFT,
-                position: gridColumnPosition,
+        // TODO:
+        // Backend have to remove column with type CHECK
+        if (column.type !== COLUMN_TYPE.CHECK) {
+            columnWidths.push(getMappedColumnWidth(column));
+            mappedColumns.push({
+                ...column,
+                header: getMappedColumnHeader(column),
             });
         }
-        //
-        // if (type === COLUMN_TYPE.ACTION) {
-        //     pinnedColumns.push({
-        //         id,
-        //         state: PINNED_COLUMN_STATE.RIGHT,
-        //         position: gridColumnPosition,
-        //     });
-        // }
     }
 
     return {

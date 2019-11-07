@@ -4,7 +4,7 @@
  */
 <template>
     <TranslationSelect
-        :style="{width: `${fixedWidth}px`}"
+        :style="{width: `${fixedWidth}px`, height: `${fixedHeight}px`}"
         :value="value"
         :solid="true"
         :small="true"
@@ -44,6 +44,10 @@ export default {
             required: true,
         },
         fixedWidth: {
+            type: Number,
+            required: true,
+        },
+        fixedHeight: {
             type: Number,
             required: true,
         },

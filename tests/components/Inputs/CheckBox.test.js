@@ -4,6 +4,7 @@
  */
 import { shallowMount } from '@vue/test-utils';
 import CheckBox from '~/components/Inputs/CheckBox';
+import { STATE } from '~/defaults/inputs/checkbox';
 
 describe('Inputs/CheckBox', () => {
     let wrapper;
@@ -11,7 +12,7 @@ describe('Inputs/CheckBox', () => {
         wrapper = shallowMount(CheckBox, {
             propsData: {
                 isDisabled: false,
-                value: 0,
+                value: STATE.UNCHECK,
             },
         });
     });
@@ -42,29 +43,29 @@ describe('Inputs/CheckBox', () => {
 
         it('For value = 0', () => {
             wrapper.setProps({
-                value: 0,
+                value: STATE.UNCHECK,
             });
             wrapper.find('input').trigger('click');
             expect(wrapper.emitted().input).toBeTruthy();
-            expect(wrapper.emitted().input[0][0]).toEqual(1);
+            expect(wrapper.emitted().input[0][0]).toEqual(STATE.CHECK);
         });
 
         it('For value = 1', () => {
             wrapper.setProps({
-                value: 1,
+                value: STATE.CHECK,
             });
             wrapper.find('input').trigger('click');
             expect(wrapper.emitted().input).toBeTruthy();
-            expect(wrapper.emitted().input[0][0]).toEqual(0);
+            expect(wrapper.emitted().input[0][0]).toEqual(STATE.UNCHECK);
         });
 
         it('For value = 2', () => {
             wrapper.setProps({
-                value: 2,
+                value: STATE.CHECK_ANY,
             });
             wrapper.find('input').trigger('click');
             expect(wrapper.emitted().input).toBeTruthy();
-            expect(wrapper.emitted().input[0][0]).toEqual(0);
+            expect(wrapper.emitted().input[0][0]).toEqual(STATE.UNCHECK);
         });
     });
 });

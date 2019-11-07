@@ -4,6 +4,7 @@
  */
 <template>
     <GridBaseColumn
+        :sticky="true"
         :style="colGridTemplate"
         :border-right="false">
         <GridCell
@@ -59,10 +60,6 @@ export default {
             type: Number,
             default: 40,
         },
-        routePath: {
-            type: String,
-            required: true,
-        },
         isSelectedAllRows: {
             type: Boolean,
             required: true,
@@ -93,11 +90,12 @@ export default {
 
 <style lang="scss" scoped>
     .column {
+        right: 0;
+
         .grid-cell:nth-child(1) {
             position: sticky !important;
             top: 0;
             z-index: 1;
-            background-color: $WHITESMOKE;
         }
     }
 </style>

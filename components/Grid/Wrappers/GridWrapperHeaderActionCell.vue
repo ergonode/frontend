@@ -4,17 +4,15 @@
  */
 <template>
     <GridCell
-        :editing-allowed="(column.editable && isActionCell) || isFilterCell"
+        :editing-allowed="isFilterCell"
         :row="rowIndex"
         :column="columnIndex"
-        :locked="isLockedCell"
-        :action-cell="isActionCell"
+        :action-cell="false"
         :editing="isEditingCell"
-        @edit="onEdit"
-        @dismissEditDialog="onDismissEditDialog">
+        @edit="onEdit">
         <Component
             :is="infoComponent"
-            v-if="!isEditingCell || isActionCell"
+            v-if="!isEditingCell"
             :value="filterParsedValue" />
         <GridEditActivatorCell
             v-else
@@ -25,12 +23,14 @@
             :options="options"
             :colors="column.colors || null"
             :fixed-width="$el.offsetWidth"
+            :fixed-height="$el.offsetHeight"
             @updateValue="onUpdateFilter" />
     </GridCell>
 </template>
 
 <script>
 import { FILTER_OPERATOR } from '~/defaults/operators';
+import { COLUMN_TYPE } from '~/defaults/grid';
 
 export default {
     name: 'GridWrapperHeaderActionCell',
@@ -77,26 +77,18 @@ export default {
         isFilterCell() {
             return typeof this.column.filter !== 'undefined';
         },
-        isActionCell() {
-            const { type } = this.column;
-
-            return type === 'CHECK' || type === 'ACTION';
-        },
-        isLockedCell() {
-            return !this.isFilterCell && !this.isActionCell;
-        },
         isSelectKind() {
             const { filter } = this.column;
 
             if (!filter) return false;
             const { type } = filter;
 
-            return type === 'SELECT' || type === 'MULTI_SELECT';
+            return type === COLUMN_TYPE.SELECT || type === COLUMN_TYPE.MULTI_SELECT;
         },
         isMultiSelect() {
             const { filter: { type } } = this.column;
 
-            return type === 'MULTI_SELECT';
+            return type === COLUMN_TYPE.MULTI_SELECT;
         },
         filterType() {
             if (this.column.colors) return this.column.type;
@@ -146,10 +138,8 @@ export default {
             const type = !filter ? this.column.type : filter.type;
 
             switch (type) {
-            case 'CHECK':
-                return () => import('~/components/Grid/GridCheckPlaceholderCell');
-            case 'SELECT':
-            case 'MULTI_SELECT':
+            case COLUMN_TYPE.SELECT:
+            case COLUMN_TYPE.MULTI_SELECT:
                 return () => import('~/components/Grid/GridSelectInfoCell');
             default:
                 return () => import('~/components/Grid/GridInfoCell');
@@ -157,13 +147,12 @@ export default {
         },
     },
     methods: {
-        onEdit() {
-            if (this.column.type !== 'CHECK') {
+        onEdit(isEditing) {
+            if (isEditing) {
                 this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, { column: this.columnIndex, row: this.rowIndex });
+            } else {
+                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
             }
-        },
-        onDismissEditDialog() {
-            this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
         },
         onUpdateFilter(value) {
             const { id } = this.column;

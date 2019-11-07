@@ -4,6 +4,7 @@
  */
 <template>
     <DatePicker
+        :style="{height: `${fixedHeight}px`}"
         :value="parsedDate"
         solid
         :placeholder="parameters.format"
@@ -36,6 +37,10 @@ export default {
         },
         parameters: {
             type: Object,
+            required: true,
+        },
+        fixedHeight: {
+            type: Number,
             required: true,
         },
     },

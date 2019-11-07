@@ -6,9 +6,6 @@ import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
 import GridColumn from '~/components/Grid/Columns/GridColumn';
 import draggableMutations from '~/store/draggable/mutations';
-import {
-    GHOST_ELEMENT_MODEL,
-} from '~/defaults/grid';
 
 const localVue = createLocalVue();
 const store = new Store({
@@ -46,6 +43,7 @@ describe('Grid/GridColumn', () => {
                 namespace: 'grid',
                 index: 1,
                 column: { width: 100 },
+                columnOffset: 0,
             },
         });
     });
@@ -127,6 +125,32 @@ describe('Grid/GridColumn', () => {
 
                     expect(targetGhostIndex).toBe(2);
                 });
+            });
+        });
+
+        describe('Column transform with fixed index', () => {
+            it('Column has transform', () => {
+                wrapper.vm.$el.style.transform = 'translateX(200px)';
+                wrapper.setProps({
+                    index: 3,
+                });
+
+                expect(wrapper.vm.getElementTransform()).toBe(200);
+                expect(wrapper.vm.getColumnFixedIndex()).toBe(4);
+
+                wrapper.vm.$el.style.transform = 'translateX(-200px)';
+
+                expect(wrapper.vm.getElementTransform()).toBe(-200);
+                expect(wrapper.vm.getColumnFixedIndex()).toBe(2);
+            });
+
+            it('Column does not have transform', () => {
+                wrapper.setProps({
+                    index: 3,
+                });
+
+                expect(wrapper.vm.getElementTransform()).toBe(0);
+                expect(wrapper.vm.getColumnFixedIndex()).toBe(3);
             });
         });
 

@@ -10,6 +10,7 @@
                 :route-edit="routeEdit"
                 :editing-privilege-allowed="$hasAccess('CONDITION_UPDATE')"
                 :basic-filters="true"
+                :select-row-column="false"
                 title="Condition sets"
                 @rowEdit="onRowEdit" />
         </div>

@@ -4,7 +4,7 @@
  */
 <template>
     <Select
-        :style="{width: `${fixedWidth}px`}"
+        :style="{width: `${fixedWidth}px`, height: `${fixedHeight}px`}"
         :value="value"
         solid
         small
@@ -59,6 +59,10 @@ export default {
             default: '',
         },
         fixedWidth: {
+            type: Number,
+            required: true,
+        },
+        fixedHeight: {
             type: Number,
             required: true,
         },
