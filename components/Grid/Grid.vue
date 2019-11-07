@@ -228,8 +228,7 @@ export default {
         editColumnIndex() {
             let index = this.gridState.columns.length;
 
-            if (this.selectRowColumn) index += 1;
-            if (this.extenderColumn) index += 1;
+            if (this.selectRowColumn || this.extenderColumn) index += 1;
 
             return index;
         },

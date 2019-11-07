@@ -71,7 +71,6 @@ export function getMappedColumns(columns) {
     const { length } = columns;
 
     for (let i = 0; i < length; i += 1) {
-        // const gridColumnPosition = `${i + 1} / ${i + 2}`;
         const column = columns[i];
 
         // TODO:
