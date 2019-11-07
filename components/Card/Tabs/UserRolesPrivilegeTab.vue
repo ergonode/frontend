@@ -50,9 +50,10 @@
                         :is-selected="cellData"
                         @edit="onValueChange(rowId, column.id, cellData)">
                         <Component
-                            :is="getComponentByColumnType(column)"
+                            :is="getCellComponent(column.type, rowId)"
                             :row="rowIndex"
                             :value="cellData.value"
+                            :hint="descriptions[rowId]"
                             :disabled="!isEditingAllowed"
                             @input="onValueChange(rowId, column.id, cellData)" />
                     </GridCell>
@@ -71,6 +72,7 @@ import { COLUMN_TYPE } from '~/defaults/grid';
 import { STATE } from '~/defaults/inputs/checkbox';
 import Grid from '~/components/Grid/Grid';
 import GridCell from '~/components/Grid/GridCell';
+import GridInfoHintCell from '~/components/Grid/GridInfoHintCell';
 import GridInfoCell from '~/components/Grid/GridInfoCell';
 import GridCheckCell from '~/components/Grid/GridCheckCell';
 import Footer from '~/components/ReusableFooter/Footer';
@@ -94,6 +96,7 @@ export default {
         return {
             isSelectedAllRows: STATE.UNCHECK,
             selectedRows: {},
+            descriptions: {},
         };
     },
     async beforeCreate() {
@@ -110,7 +113,11 @@ export default {
 
         const { privileges: privilegesDictionary } = this.$store.state.data;
         const { privileges } = this.$store.state.roles;
-        const { rows, columns, columnWidths } = getMappedGridData(privilegesDictionary, privileges);
+        const {
+            rows, columns, columnWidths, descriptions,
+        } = getMappedGridData(privilegesDictionary, privileges);
+
+        this.descriptions = descriptions;
 
         await this.$store.dispatch('privilegesGrid/setGridData', { columns, rows });
         await this.$store.dispatch('privilegesGrid/setColumnWidths', columnWidths);
@@ -202,7 +209,7 @@ export default {
             } else if (privileges.every((privilege) => privilege === false)) {
                 this.selectedRows[rowId] = STATE.UNCHECK;
             } else {
-                this.selectedRows[rowId] = STATE.UNCHECK;
+                this.selectedRows[rowId] = STATE.CHECK_ANY;
             }
         },
         updateDataCellValues(rowId, isSelected) {
@@ -219,8 +226,11 @@ export default {
 
             this.selectedRows = { ...this.selectedRows };
         },
-        getComponentByColumnType({ type }) {
-            if (type === COLUMN_TYPE.TEXT) return GridInfoCell;
+        getCellComponent(type, rowId) {
+            if (type === COLUMN_TYPE.TEXT) {
+                if (this.descriptions[rowId]) return GridInfoHintCell;
+                return GridInfoCell;
+            }
 
             return GridCheckCell;
         },
