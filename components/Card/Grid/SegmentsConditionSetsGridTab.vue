@@ -27,6 +27,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
+import { FILTER_OPERATOR } from '~/defaults/operators';
 import gridModule from '~/reusableStore/grid/state';
 import Grid from '~/components/Grid/Grid';
 import GridFooter from '~/components/Grid/GridFooter';
@@ -34,7 +35,7 @@ import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
 
 export default {
-    name: 'ConditionSetsGridTab',
+    name: 'SegmentsConditionSetsGridTab',
     components: {
         Grid,
         GridFooter,
@@ -72,7 +73,7 @@ export default {
         routeEdit() {
             return {
                 getData: `${this.userLanguageCode}/conditionsets`,
-                name: 'condition-set-edit-id',
+                name: 'segments-condition-set-edit-id',
             };
         },
         visibleRowsInPageCount: {
@@ -99,7 +100,7 @@ export default {
             const args = edit.href.split('/');
             const lastIndex = args.length - 1;
 
-            this.$router.push({ name: 'condition-set-edit-id-general', params: { id: args[lastIndex] } });
+            this.$router.push({ name: 'segments-condition-set-edit-id-general', params: { id: args[lastIndex] } });
         },
         onPageChanged(page) {
             this.setCurrentPage(page);
@@ -123,6 +124,7 @@ export default {
             moduleName: 'conditionSetsGrid',
             store,
         });
+        await store.dispatch('conditionSetsGrid/setFilter', { id: 'parent', filter: 'segment', operator: FILTER_OPERATOR.EQUAL });
         await store.dispatch('conditionSetsGrid/getData', { path: gridPath });
     },
 };

@@ -29,6 +29,12 @@ export default {
             commit(types.SET_SOURCE, source.replace(/%20/g, ' '));
             commit(types.SET_DESTINATION, destination.replace(/%20/g, ' '));
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
+            if (conditionSetId) {
+                console.log('pobieramy conditions');
+                // dispatch('conditions/getConditionSetById', {
+                //     conditionSetId: params.id,
+                // });
+            }
         }).catch(onDefaultError);
     },
     createTransition(

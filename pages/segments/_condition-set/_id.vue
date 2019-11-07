@@ -21,7 +21,7 @@ export default {
     validate({ params }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
-    name: 'ConditionSetEdit',
+    name: 'SegmentsConditionSetEdit',
     middleware: ['tab/redirectToConditionSetGeneral'],
     components: {
         ConditionSetPage: () => import('~/components/Pages/ConditionSetPage'),
@@ -40,9 +40,13 @@ export default {
         }),
     },
     methods: {
+        ...mapActions('gridDesigner', {
+            clearDesignerStorage: 'clearStorage',
+        }),
         ...mapActions('conditions', [
             'updateConditionSet',
             'removeConditionSet',
+            'clearStorage',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -88,6 +92,10 @@ export default {
                 onError: this.onError,
             });
         },
+    },
+    beforeDestroy() {
+        this.clearStorage();
+        this.clearDesignerStorage();
     },
     async fetch({
         store,

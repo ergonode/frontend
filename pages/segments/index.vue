@@ -56,7 +56,7 @@ export default {
         if (this.$hasAccess('CONDITION_READ')) {
             this.tabs.push({
                 title: 'Condition sets',
-                route: { name: 'condition-sets' },
+                route: { name: 'segments-condition-sets' },
                 active: true,
                 isContextualMenu: false,
             });

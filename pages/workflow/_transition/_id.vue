@@ -13,6 +13,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { getMappedConditionSetData } from '~/model/mappers/conditionSetMapper';
+import { objectToArrayWithPropsName } from '~/model/objectWrapper';
 
 export default {
     name: 'TransitionEdit',
@@ -26,8 +28,23 @@ export default {
             destination: (state) => state.destination,
             conditionSetId: (state) => state.conditionSetId,
         }),
+        ...mapState('gridDesigner', {
+            fullGridData: (state) => state.fullGridData,
+        }),
+        ...mapState('conditions', {
+            conditionsValues: (state) => state.conditionsValues,
+        }),
     },
     methods: {
+        ...mapActions('gridDesigner', {
+            clearDesignerStorage: 'clearStorage',
+        }),
+        ...mapActions('conditions', {
+            createConditionSet: 'createConditionSet',
+            updateConditionSet: 'updateConditionSet',
+            removeConditionSet: 'removeConditionSet',
+            clearConditionSet: 'clearStorage',
+        }),
         ...mapActions('transitions', [
             'updateTransition',
             'removeTransition',
@@ -38,14 +55,27 @@ export default {
         ]),
         onSave() {
             this.removeValidationErrors();
-            const propertiesToUpdate = {
-                condition_set: this.conditionSetId,
-            };
-            this.updateTransition({
-                data: propertiesToUpdate,
-                onSuccess: this.onTransitionUpdated,
-                onError: this.onError,
-            });
+            if (!this.conditionSetId) {
+                const condition = {
+                    code: `FROM_${this.source}_TO_${this.destination}`,
+                    conditions: getMappedConditionSetData(this.fullGridData, this.conditionsValues),
+                    // parent: 'segment',
+                };
+                console.log(condition);
+                this.createConditionSet({
+                    data: condition,
+                    onSuccess: (id) => {
+                        console.log(id);
+                    },
+                    onError: this.onError,
+                });
+            }
+            console.log(this.conditionSetId);
+            // this.updateTransition({
+            //     data: { condition_set: this.conditionSetId },
+            //     onSuccess: this.onTransitionUpdated,
+            //     onError: this.onError,
+            // });
         },
         onDismiss() {
             this.$router.push('/workflow/transitions');
@@ -68,20 +98,25 @@ export default {
             this.$router.push('/workflow/transitions');
         },
     },
+    beforeDestroy() {
+        this.clearConditionSet();
+        this.clearDesignerStorage();
+    },
     async fetch({
         store, params,
     }) {
+        const { conditions } = store.state.data;
+        const conditionsList = objectToArrayWithPropsName(conditions);
         await Promise.all([
-            store.dispatch('translations/clearStorage'),
             store.dispatch('transitions/clearStorage'),
             store.dispatch('productStatus/getProductStatuses', {
                 limit: 9999,
                 offset: 0,
             }),
-            store.dispatch('conditions/getConditionSets', {
-                limit: 9999,
-                offset: 0,
-            }),
+            store.dispatch('gridDesigner/clearStorage'),
+            store.dispatch('list/clearStorage'),
+            store.dispatch('conditions/clearStorage'),
+            store.dispatch('list/setElementsForLanguage', conditionsList),
         ]);
 
         await store.dispatch('transitions/getTransition', params);

@@ -5,7 +5,7 @@
 export default function ({ route, redirect }) {
     const { name } = route;
 
-    if (name === 'condition-set-new' || name === 'condition-set-edit-id') {
+    if (name === 'segments-condition-set-new' || name === 'segments-condition-set-edit-id') {
         return redirect(`${route.path}/general`);
     }
 

@@ -456,9 +456,17 @@ export const pages = [
         component: Pages.TransitionEdit,
         children: [
             {
-                name: 'transition-edit-id-general',
+                name: 'workflow-transition-edit-id-general',
                 path: 'general',
                 component: Tabs.TransitionBaseTab,
+            },
+            {
+                name: 'workflow-transition-edit-id-designer',
+                path: 'designer',
+                component: Tabs.ConditionSetDesignTab,
+                meta: {
+                    privileges: ['CONDITION_READ'],
+                },
             },
         ],
         meta: {
@@ -479,9 +487,9 @@ export const pages = [
                 },
             },
             {
-                name: 'condition-sets',
+                name: 'segments-condition-sets',
                 path: 'condition-sets',
-                component: GridTabs.ConditionSetsGridTab,
+                component: GridTabs.SegmentsConditionSetsGridTab,
                 meta: {
                     privileges: ['CONDITION_READ'],
                 },
@@ -527,12 +535,12 @@ export const pages = [
         },
     },
     {
-        name: 'condition-set-new',
+        name: 'segments-condition-set-new',
         path: '/segments/condition-set/new',
-        component: Pages.ConditionSetNew,
+        component: Pages.SegmentsConditionSetNew,
         children: [
             {
-                name: 'condition-set-new-general',
+                name: 'segments-condition-set-new-general',
                 path: 'general',
                 component: Tabs.ConditionSetBaseTab,
             },
@@ -542,22 +550,22 @@ export const pages = [
         },
     },
     {
-        name: 'condition-set-edit-id',
+        name: 'segments-condition-set-edit-id',
         path: '/segments/condition-set/edit/:id',
-        component: Pages.ConditionSetEdit,
+        component: Pages.SegmentsConditionSetEdit,
         children: [
             {
-                name: 'condition-set-edit-id-general',
+                name: 'segments-condition-set-edit-id-general',
                 path: 'general',
                 component: Tabs.ConditionSetBaseTab,
             },
             {
-                name: 'condition-set-edit-id-translations',
+                name: 'segments-condition-set-edit-id-translations',
                 path: 'translations',
                 component: Tabs.ConditionSetTranslationsTab,
             },
             {
-                name: 'condition-set-edit-id-designer',
+                name: 'segments-condition-set-edit-id-designer',
                 path: 'designer',
                 component: Tabs.ConditionSetDesignTab,
             },

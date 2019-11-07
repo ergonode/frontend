@@ -47,9 +47,9 @@ export default {
         Blur: () => import('~/components/Blur/Blur'),
     },
     created() {
-        let generalRoute = { name: 'condition-set-new-general' };
-        let translationRoute = { name: 'condition-set-new-translations' };
-        let designerRoute = { name: 'condition-set-new-designer' };
+        let generalRoute = { name: 'segments-condition-set-new-general' };
+        let translationRoute = { name: 'segments-condition-set-new-translations' };
+        let designerRoute = { name: 'segments-condition-set-new-designer' };
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -57,14 +57,14 @@ export default {
             {
                 title: 'Condition Sets',
                 icon: 'Templates',
-                route: { name: 'condition-sets' },
+                route: { name: 'segments-condition-sets' },
             },
         ];
         this.isUserAllowedToUpdateConditionSet = this.$hasAccess('CONDITION_UPDATE');
         if (this.isEdit) {
-            generalRoute = { name: 'condition-set-edit-id-general', params: this.$route.params };
-            translationRoute = { name: 'condition-set-edit-id-translations', params: this.$route.params };
-            designerRoute = { name: 'condition-set-edit-id-designer', params: this.$route.params };
+            generalRoute = { name: 'segments-condition-set-edit-id-general', params: this.$route.params };
+            translationRoute = { name: 'segments-condition-set-edit-id-translations', params: this.$route.params };
+            designerRoute = { name: 'segments-condition-set-edit-id-designer', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 

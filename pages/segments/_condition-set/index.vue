@@ -13,7 +13,7 @@
 import { mapState, mapActions } from 'vuex';
 
 export default {
-    name: 'ConditionSetNew',
+    name: 'SegmentsConditionSetNew',
     middleware: ['tab/redirectToConditionSetGeneral'],
     components: {
         ConditionSetPage: () => import('~/components/Pages/ConditionSetPage'),
@@ -46,7 +46,7 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Condition set created' });
             this.$router.push({
-                name: 'condition-set-edit-id',
+                name: 'segments-condition-set-edit-id',
                 params: {
                     id,
                 },
@@ -54,11 +54,12 @@ export default {
         },
         onCreate() {
             this.removeValidationErrors();
-            const segment = {
+            const condition = {
                 code: this.code,
+                parent: 'segment',
             };
             this.createConditionSet({
-                data: segment,
+                data: condition,
                 onSuccess: this.onCreateConditionSetSuccess,
                 onError: this.onError,
             });

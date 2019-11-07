@@ -37,8 +37,8 @@ export const Pages = {
     Segments: () => import('~/pages/segments/index').then((m) => m.default || m),
     SegmentNew: () => import('~/pages/segments/_segment/index').then((m) => m.default || m),
     SegmentEdit: () => import('~/pages/segments/_segment/_id').then((m) => m.default || m),
-    ConditionSetNew: () => import('~/pages/segments/_condition-set/index').then((m) => m.default || m),
-    ConditionSetEdit: () => import('~/pages/segments/_condition-set/_id').then((m) => m.default || m),
+    SegmentsConditionSetNew: () => import('~/pages/segments/_condition-set/index').then((m) => m.default || m),
+    SegmentsConditionSetEdit: () => import('~/pages/segments/_condition-set/_id').then((m) => m.default || m),
 };
 
 export const Tabs = {
@@ -80,5 +80,5 @@ export const GridTabs = {
     UserActivityLogsGridTab: () => import('~/components/Card/Grid/UserActivityLogsGridTab').then((m) => m.default || m),
     UsersActivityLogsGridTab: () => import('~/components/Card/Grid/UsersActivityLogsGridTab').then((m) => m.default || m),
     SegmentsGridTab: () => import('~/components/Card/Grid/SegmentsGridTab').then((m) => m.default || m),
-    ConditionSetsGridTab: () => import('~/components/Card/Grid/ConditionSetsGridTab').then((m) => m.default || m),
+    SegmentsConditionSetsGridTab: () => import('~/components/Card/Grid/SegmentsConditionSetsGridTab').then((m) => m.default || m),
 };

@@ -25,7 +25,6 @@ export default {
         ...mapState('transitions', {
             source: (state) => state.source,
             destination: (state) => state.destination,
-            conditionSetId: (state) => state.conditionSetId,
         }),
     },
     methods: {
@@ -33,16 +32,30 @@ export default {
             'createTransition',
             'clearStorage',
         ]),
+        ...mapActions('conditions', [
+            'createConditionSet',
+        ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
         ]),
         onCreate() {
             this.removeValidationErrors();
+            const condition = {
+                code: `FROM_${this.source}_TO_${this.destination}`,
+                // parent: 'workflow',
+            };
+            this.createConditionSet({
+                data: condition,
+                onSuccess: this.onCreateTransition,
+                onError: () => {},
+            });
+        },
+        onCreateTransition(id) {
             const transition = {
                 source: this.source,
                 destination: this.destination,
-                condition_set: this.conditionSetId,
+                condition_set: id,
             };
 
             this.createTransition({
@@ -58,7 +71,7 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Transition created' });
             this.$router.push({
-                name: 'transition-edit-id-general',
+                name: 'workflow-transition-edit-id-general',
                 params: {
                     id: `${this.source}--${this.destination}`,
                 },
@@ -70,10 +83,6 @@ export default {
     }) {
         await Promise.all([
             store.dispatch('productStatus/getProductStatuses', {
-                limit: 9999,
-                offset: 0,
-            }),
-            store.dispatch('conditions/getConditionSets', {
                 limit: 9999,
                 offset: 0,
             }),

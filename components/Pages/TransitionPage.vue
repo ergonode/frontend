@@ -39,6 +39,7 @@ export default {
     mixins: [categoryManagementPageBaseMixin],
     created() {
         let generalRoute = { name: 'workflow-transition-new-general' };
+        let designerRoute = { name: 'workflow-transition-new-designer' };
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -51,7 +52,8 @@ export default {
         ];
         this.isUserAllowedToUpdateTransitions = this.$hasAccess('WORKFLOW_UPDATE');
         if (this.isEdit) {
-            generalRoute = { name: 'transition-edit-id-general', params: this.$route.params };
+            generalRoute = { name: 'workflow-transition-edit-id-general', params: this.$route.params };
+            designerRoute = { name: 'workflow-transition-edit-id-designer', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -60,6 +62,18 @@ export default {
                     title: 'General options',
                     route: generalRoute,
                     active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} TRANSITION`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateTransitions,
+                        },
+                    },
+                },
+                {
+                    title: 'Designer',
+                    route: designerRoute,
+                    active: this.isEdit,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} TRANSITION`,

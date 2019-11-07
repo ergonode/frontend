@@ -57,9 +57,7 @@ export default {
     [types.CLEAR_STATE](state) {
         const states = defaultState();
         Object.keys(states).forEach((key) => {
-            if (key !== 'conditions') {
-                state[key] = states[key];
-            }
+            state[key] = states[key];
         });
     },
 };
