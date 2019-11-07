@@ -88,6 +88,7 @@ export default {
     components: {
         GridCell,
         GridCheckCell,
+        GridInfoCell,
         Grid,
         Footer,
     },
@@ -208,7 +209,7 @@ export default {
             } else if (privileges.every((privilege) => privilege === false)) {
                 this.selectedRows[rowId] = STATE.UNCHECK;
             } else {
-                this.selectedRows[rowId] = STATE.UNCHECK;
+                this.selectedRows[rowId] = STATE.CHECK_ANY;
             }
         },
         updateDataCellValues(rowId, isSelected) {
