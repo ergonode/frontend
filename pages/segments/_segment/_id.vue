@@ -13,6 +13,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { getMappedConditionSetData } from '~/model/mappers/conditionSetMapper';
+import { objectToArrayWithPropsName } from '~/model/objectWrapper';
 import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 
 export default {
@@ -34,12 +36,27 @@ export default {
         ...mapState('translations', {
             translations: (state) => state.translations,
         }),
+        ...mapState('gridDesigner', {
+            fullGridData: (state) => state.fullGridData,
+        }),
+        ...mapState('conditions', {
+            conditionsValues: (state) => state.conditionsValues,
+        }),
     },
     methods: {
-        ...mapActions('segments', [
-            'updateSegment',
-            'removeSegment',
-        ]),
+        ...mapActions('gridDesigner', {
+            clearDesignerStorage: 'clearStorage',
+        }),
+        ...mapActions('conditions', {
+            createConditionSet: 'createConditionSet',
+            updateConditionSet: 'updateConditionSet',
+            clearConditionSetStorage: 'clearStorage',
+        }),
+        ...mapActions('segments', {
+            updateSegment: 'updateSegment',
+            removeSegment: 'removeSegment',
+            clearSegmentStorage: 'clearStorage',
+        }),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
@@ -56,9 +73,29 @@ export default {
             }
         },
         onSave() {
-            this.removeValidationErrors();
             const propertiesToUpdate = {
-                condition_set_id: this.conditionSetId,
+                conditions: getMappedConditionSetData(this.fullGridData, this.conditionsValues),
+            };
+
+            this.removeValidationErrors();
+            if (!this.conditionSetId) {
+                this.createConditionSet({
+                    data: propertiesToUpdate,
+                    onSuccess: this.onUpdateSegment,
+                    onError: this.onError,
+                });
+            } else {
+                this.updateConditionSet({
+                    id: this.conditionSetId,
+                    data: propertiesToUpdate,
+                    onSuccess: this.onTransitionUpdated,
+                    onError: this.onError,
+                });
+            }
+        },
+        onUpdateSegment(conditionSetId) {
+            const propertiesToUpdate = {
+                condition_set_id: conditionSetId,
             };
             const { name, description } = this.translations;
 
@@ -68,6 +105,7 @@ export default {
             if (isThereAnyTranslation(description)) {
                 propertiesToUpdate.description = getParsedTranslations(description);
             }
+
             this.updateSegment({
                 id: this.id,
                 data: propertiesToUpdate,
@@ -76,7 +114,6 @@ export default {
             });
         },
         onUpdateSegmentsSuccess() {
-            this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Segment updated' });
             this.$router.push('/segments/grid');
         },
@@ -85,17 +122,25 @@ export default {
             this.$router.push('/segments/grid');
         },
     },
+    beforeDestroy() {
+        this.clearSegmentStorage();
+        this.clearConditionSetStorage();
+        this.clearDesignerStorage();
+    },
     async fetch({
         store,
         params,
     }) {
+        const { conditions } = store.state.data;
+        const conditionsList = objectToArrayWithPropsName(conditions);
+
         await Promise.all([
             store.dispatch('translations/clearStorage'),
             store.dispatch('segments/clearStorage'),
-            store.dispatch('conditions/getConditionSets', {
-                limit: 9999,
-                offset: 0,
-            }),
+            store.dispatch('gridDesigner/clearStorage'),
+            store.dispatch('list/clearStorage'),
+            store.dispatch('conditions/clearStorage'),
+            store.dispatch('list/setElementsForLanguage', conditionsList),
         ]);
         await store.dispatch('segments/getSegmentById', {
             segmentId: params.id,

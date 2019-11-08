@@ -4,7 +4,7 @@
  */
 <template>
     <TransitionPage
-        title="New transition"
+        :title="`From ${source} to ${destination}` || 'New transition'"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>
@@ -32,32 +32,17 @@ export default {
             'createTransition',
             'clearStorage',
         ]),
-        ...mapActions('conditions', [
-            'createConditionSet',
-        ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
         ]),
         onCreate() {
-            this.removeValidationErrors();
-            const condition = {
-                code: `FROM_${this.source}_TO_${this.destination}`,
-                // parent: 'workflow',
-            };
-            this.createConditionSet({
-                data: condition,
-                onSuccess: this.onCreateTransition,
-                onError: () => {},
-            });
-        },
-        onCreateTransition(id) {
             const transition = {
                 source: this.source,
                 destination: this.destination,
-                condition_set: id,
             };
 
+            this.removeValidationErrors();
             this.createTransition({
                 data: transition,
                 onSuccess: this.onTransitionCreated,

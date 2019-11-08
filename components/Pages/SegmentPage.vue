@@ -27,16 +27,25 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
+        <Blur
+            v-show="isBlurVisible"
+            :style="blurZIndex" />
+        <TrashCan v-show="draggedElementOnGrid" />
     </PageWrapper>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { SIZES, THEMES } from '~/defaults/buttons';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'SegmentPage',
     mixins: [categoryManagementPageBaseMixin],
+    components: {
+        TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
+        Blur: () => import('~/components/Blur/Blur'),
+    },
     created() {
         let generalRoute = { name: 'segment-new-general' };
         let tabAction = this.onCreate;
@@ -52,6 +61,7 @@ export default {
         this.isUserAllowedToUpdateSegments = this.$hasAccess('SEGMENT_UPDATE');
         if (this.isEdit) {
             const translationRoute = { name: 'segment-edit-id-translations', params: this.$route.params };
+            const designerRoute = { name: 'segment-edit-id-designer', params: this.$route.params };
             generalRoute = { name: 'segment-edit-id-general', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
@@ -81,6 +91,18 @@ export default {
                         },
                     },
                 },
+                {
+                    title: 'Conditions',
+                    route: designerRoute,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} SEGMENT`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateSegments,
+                        },
+                    },
+                },
             ];
         } else {
             this.tabs = [
@@ -100,11 +122,24 @@ export default {
         }
     },
     computed: {
+        ...mapState('draggable', {
+            isListElementDragging: (state) => state.isListElementDragging,
+            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
+        }),
         smallSize() {
             return SIZES.SMALL;
         },
         secondaryTheme() {
             return THEMES.SECONDARY;
+        },
+        isBlurVisible() {
+            return this.isListElementDragging || this.draggedElementOnGrid;
+        },
+        blurZIndex() {
+            if (this.isBlurVisible) {
+                return { zIndex: '10' };
+            }
+            return null;
         },
     },
     beforeDestroy() {

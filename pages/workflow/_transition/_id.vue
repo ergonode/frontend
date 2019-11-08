@@ -42,40 +42,52 @@ export default {
         ...mapActions('conditions', {
             createConditionSet: 'createConditionSet',
             updateConditionSet: 'updateConditionSet',
-            removeConditionSet: 'removeConditionSet',
-            clearConditionSet: 'clearStorage',
+            clearConditionSetStorage: 'clearStorage',
         }),
-        ...mapActions('transitions', [
-            'updateTransition',
-            'removeTransition',
-        ]),
+        ...mapActions('transitions', {
+            updateTransition: 'updateTransition',
+            removeTransition: 'removeTransition',
+            clearTransitionStorage: 'clearStorage',
+        }),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
         ]),
         onSave() {
+            const propertiesToUpdate = {
+                conditions: getMappedConditionSetData(this.fullGridData, this.conditionsValues),
+            };
+
             this.removeValidationErrors();
             if (!this.conditionSetId) {
-                const condition = {
-                    code: `FROM_${this.source}_TO_${this.destination}`,
-                    conditions: getMappedConditionSetData(this.fullGridData, this.conditionsValues),
-                    // parent: 'segment',
-                };
-                console.log(condition);
                 this.createConditionSet({
-                    data: condition,
-                    onSuccess: (id) => {
-                        console.log(id);
-                    },
+                    data: propertiesToUpdate,
+                    onSuccess: this.onUpdateTransition,
+                    onError: this.onError,
+                });
+            } else {
+                this.updateConditionSet({
+                    id: this.conditionSetId,
+                    data: propertiesToUpdate,
+                    onSuccess: this.onTransitionUpdated,
                     onError: this.onError,
                 });
             }
-            console.log(this.conditionSetId);
-            // this.updateTransition({
-            //     data: { condition_set: this.conditionSetId },
-            //     onSuccess: this.onTransitionUpdated,
-            //     onError: this.onError,
-            // });
+        },
+        onUpdateTransition(conditionSetId) {
+            const propertiesToUpdate = {
+                condition_set: conditionSetId,
+            };
+
+            this.updateTransition({
+                data: propertiesToUpdate,
+                onSuccess: this.onTransitionUpdated,
+                onError: this.onError,
+            });
+        },
+        onTransitionUpdated() {
+            this.$addAlert({ type: 'success', message: 'Transition updated' });
+            this.$router.push('/workflow/transitions');
         },
         onDismiss() {
             this.$router.push('/workflow/transitions');
@@ -92,14 +104,10 @@ export default {
             this.$addAlert({ type: 'success', message: 'Transition removed' });
             this.$router.push('/workflow/transitions');
         },
-        onTransitionUpdated() {
-            this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Transition updated' });
-            this.$router.push('/workflow/transitions');
-        },
     },
     beforeDestroy() {
-        this.clearConditionSet();
+        this.clearTransitionStorage();
+        this.clearConditionSetStorage();
         this.clearDesignerStorage();
     },
     async fetch({
@@ -107,6 +115,7 @@ export default {
     }) {
         const { conditions } = store.state.data;
         const conditionsList = objectToArrayWithPropsName(conditions);
+
         await Promise.all([
             store.dispatch('transitions/clearStorage'),
             store.dispatch('productStatus/getProductStatuses', {
@@ -118,8 +127,7 @@ export default {
             store.dispatch('conditions/clearStorage'),
             store.dispatch('list/setElementsForLanguage', conditionsList),
         ]);
-
-        await store.dispatch('transitions/getTransition', params);
+        await store.dispatch('transitions/getTransitionById', params);
     },
 };
 </script>

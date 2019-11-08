@@ -486,14 +486,6 @@ export const pages = [
                     privileges: ['SEGMENT_READ'],
                 },
             },
-            {
-                name: 'segments-condition-sets',
-                path: 'condition-sets',
-                component: GridTabs.SegmentsConditionSetsGridTab,
-                meta: {
-                    privileges: ['CONDITION_READ'],
-                },
-            },
         ],
         meta: {
             privileges: ['SEGMENT_READ'],
@@ -529,49 +521,17 @@ export const pages = [
                 path: 'translations',
                 component: Tabs.SegmentsTranslationsTab,
             },
+            {
+                name: 'segment-edit-id-designer',
+                path: 'designer',
+                component: Tabs.ConditionSetDesignTab,
+                meta: {
+                    privileges: ['CONDITION_READ'],
+                },
+            },
         ],
         meta: {
             privileges: ['SEGMENT_READ'],
-        },
-    },
-    {
-        name: 'segments-condition-set-new',
-        path: '/segments/condition-set/new',
-        component: Pages.SegmentsConditionSetNew,
-        children: [
-            {
-                name: 'segments-condition-set-new-general',
-                path: 'general',
-                component: Tabs.ConditionSetBaseTab,
-            },
-        ],
-        meta: {
-            privileges: ['CONDITION_READ', 'CONDITION_CREATE'],
-        },
-    },
-    {
-        name: 'segments-condition-set-edit-id',
-        path: '/segments/condition-set/edit/:id',
-        component: Pages.SegmentsConditionSetEdit,
-        children: [
-            {
-                name: 'segments-condition-set-edit-id-general',
-                path: 'general',
-                component: Tabs.ConditionSetBaseTab,
-            },
-            {
-                name: 'segments-condition-set-edit-id-translations',
-                path: 'translations',
-                component: Tabs.ConditionSetTranslationsTab,
-            },
-            {
-                name: 'segments-condition-set-edit-id-designer',
-                path: 'designer',
-                component: Tabs.ConditionSetDesignTab,
-            },
-        ],
-        meta: {
-            privileges: ['CONDITION_READ'],
         },
     },
     {

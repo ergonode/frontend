@@ -53,14 +53,6 @@ export default {
                 isContextualMenu: false,
             });
         }
-        if (this.$hasAccess('CONDITION_READ')) {
-            this.tabs.push({
-                title: 'Condition sets',
-                route: { name: 'segments-condition-sets' },
-                active: true,
-                isContextualMenu: false,
-            });
-        }
     },
     computed: {
         smallSize() {
@@ -76,15 +68,6 @@ export default {
                         path: '/segments/segment/new',
                     },
                     isReadOnly: 'SEGMENT',
-                };
-            case /condition-sets/.test(this.$route.path):
-                return {
-                    button: {
-                        title: 'CREATE CONDITION SET',
-                        access: 'CONDITION_CREATE',
-                        path: '/segments/condition-set/new',
-                    },
-                    isReadOnly: 'CONDITION',
                 };
             default:
                 return {};

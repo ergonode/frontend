@@ -4,7 +4,6 @@
  */
 export default () => ({
     id: null,
-    code: '',
     conditionSets: {},
     columns: 1,
     rowHeight: 120,
