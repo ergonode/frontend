@@ -7,7 +7,6 @@
         :class="{
             'column--dragged': draggedElIndex !== -1,
         }"
-        :style="colGridTemplate"
         :draggable="isColumnDraggable"
         @dragstart.native="onDragStart"
         @dragend.native="onDragEnd"
@@ -37,9 +36,8 @@ import { removeColumnCookieByID } from '~/model/grid/cookies/GridLayoutConfigura
 import { getDraggedColumnPositionState } from '~/model/drag_and_drop/helpers';
 import { DRAGGED_ELEMENT, COLUMN_TYPE } from '~/defaults/grid';
 
-
 export default {
-    name: 'GridColumn',
+    name: 'GridColumnData',
     components: {
         GridBaseColumn: () => import('~/components/Grid/Columns/GridBaseColumn'),
         GridGhostColumn: () => import('~/components/Grid/Columns/GridGhostColumn'),
@@ -61,9 +59,9 @@ export default {
             type: Object,
             required: true,
         },
-        rowHeight: {
-            type: Number,
-            default: 40,
+        basicFilters: {
+            type: Boolean,
+            default: true,
         },
         isHeaderFocused: {
             type: Boolean,
@@ -101,13 +99,6 @@ export default {
             draggedElIndex: (state) => state.draggedElIndex,
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
-        colGridTemplate() {
-            if (this.isDraggedColumn) return null;
-
-            return {
-                gridAutoRows: `${this.rowHeight}px`,
-            };
-        },
         gridState() {
             return this.$store.state[this.namespace];
         },
@@ -192,7 +183,7 @@ export default {
             removeElementCopyFromDocumentBody(event);
 
             if (isTrashBelowMouse) {
-                this.removeColumnWrapper(this.draggedElIndex);
+                this.removeColumnWrapper(this.draggedElIndex - this.columnOffset);
             } else if (this.ghostIndex !== this.draggedElIndex) {
                 this.changeColumnPositionWrapper();
             }
@@ -495,6 +486,7 @@ export default {
 
         &--dragged {
             will-change: transform;
+            grid-template-rows: unset !important;
         }
 
         &__resizer {

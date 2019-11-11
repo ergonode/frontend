@@ -141,7 +141,7 @@ export default {
         &__button {
             position: relative;
             border: none;
-            padding: 8px 12px;
+            padding: 9px 12px;
             background-color: transparent;
             text-overflow: ellipsis;
             overflow: hidden;

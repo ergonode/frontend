@@ -3,13 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
+    <BasePage>
         <TitleBar
             title="Profile"
             icon="User" />
         <HorizontalTabBar
             :items="tabs" />
-    </PageWrapper>
+    </BasePage>
 </template>
 
 <script>
@@ -19,7 +19,7 @@ export default {
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         TitleBar: () => import('~/components/TitleBar/TitleBar'),
-        PageWrapper: () => import('~/components/Layout/PageWrapper'),
+        BasePage: () => import('~/components/Layout/BasePage'),
     },
     data() {
         return {

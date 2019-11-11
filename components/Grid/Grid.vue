@@ -6,16 +6,8 @@
     <div
         :class="['grid', {
             'grid--placeholder': isPlaceholder,
-            'grid--disabled': isColumnExists || isAdvancedFilterFocused,
+            'grid--disabled': isColumnExists,
         }]">
-        <GridAdvancedFilters
-            v-if="advancedFilters"
-            :filters-data="gridState.advancedFiltersData"
-            :filters="gridState.advancedFilters"
-            :namespace="namespace"
-            :path="routeEdit.getData"
-            :disabled="isFilterExists"
-            @focus="onAdvancedFilterFocus" />
         <GridHeader
             :title="title"
             :row-height="rowHeight"
@@ -29,6 +21,7 @@
             @dragleave="onDragLeave">
             <GridSelectRowColumn
                 v-if="selectRowColumn"
+                :style="templateRows"
                 :row-ids="gridState.rowIds"
                 :rows-offset="rowsOffset"
                 :row-height="rowHeight"
@@ -51,9 +44,10 @@
                         :column="column" />
                 </template>
             </GridSelectRowColumn>
-            <GridColumn
+            <GridColumnData
                 v-for="(column, colIndex) in gridState.columns"
                 :key="column.id"
+                :style="templateRows"
                 :namespace="namespace"
                 :index="colIndex + columnsOffset"
                 :column="column"
@@ -97,22 +91,16 @@
                             || selectedRows[(rowIndex + rowsOffset) * gridState.currentPage]"
                         :editing-privilege-allowed="editingPrivilegeAllowed" />
                 </slot>
-            </GridColumn>
-            <GridExtenderColumn
-                v-if="extenderColumn"
-                :is-selected-all-rows="isSelectedAllRows"
-                :selected-rows="selectedRows"
-                :row-height="rowHeight"
-                :current-page="gridState.currentPage"
-                :rows-number="gridState.rowIds.length + rowsOffset"
-                :column-index="extenderColumnIndex" />
+            </GridColumnData>
             <GridEditColumn
                 v-if="editColumn"
+                :style="templateRows"
                 :is-selected-all-rows="isSelectedAllRows"
                 :selected-rows="selectedRows"
                 :current-page="gridState.currentPage"
-                :row-height="rowHeight"
+                :rows-offset="rowsOffset"
                 :column-index="editColumnIndex"
+                :basic-filters="basicFilters"
                 :row-links="gridState.rowLinks"
                 :route-path="routeEdit.name"
                 @rowEdit="onRowEdit" />
@@ -123,9 +111,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { sumIntegers } from '~/model/arrayWrapper';
 import {
-    PINNED_COLUMN_STATE,
     ROW_HEIGHT,
     GRID_LAYOUT,
     GHOST_ELEMENT_MODEL,
@@ -141,10 +127,8 @@ export default {
     name: 'Grid',
     mixins: [selectedRowMixin],
     components: {
-        GridAdvancedFilters: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilters'),
         GridHeader: () => import('~/components/Grid/GridHeader'),
-        GridColumn: () => import('~/components/Grid/Columns/GridColumn'),
-        GridExtenderColumn: () => import('~/components/Grid/Columns/GridExtenderColumn'),
+        GridColumnData: () => import('~/components/Grid/Columns/GridColumnData'),
         GridEditColumn: () => import('~/components/Grid/Columns/GridEditColumn'),
         GridWrapperCell: () => import('~/components/Grid/Wrappers/GridWrapperCell'),
         GridWrapperHeaderActionCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderActionCell'),
@@ -168,17 +152,9 @@ export default {
             type: Boolean,
             default: true,
         },
-        advancedFilters: {
-            type: Boolean,
-            default: false,
-        },
         basicFilters: {
             type: Boolean,
             default: false,
-        },
-        extenderColumn: {
-            type: Boolean,
-            default: true,
         },
         editColumn: {
             type: Boolean,
@@ -189,8 +165,7 @@ export default {
         return {
             isHeaderFocused: false,
             isMouseOverGrid: false,
-            isAdvancedFilterFocused: false,
-            rowHeight: ROW_HEIGHT.LARGE,
+            rowHeight: ROW_HEIGHT.MEDIUM,
             layout: GRID_LAYOUT.TABLE,
         };
     },
@@ -228,13 +203,6 @@ export default {
         editColumnIndex() {
             let index = this.gridState.columns.length;
 
-            if (this.selectRowColumn || this.extenderColumn) index += 1;
-
-            return index;
-        },
-        extenderColumnIndex() {
-            let index = this.gridState.columns.length;
-
             if (this.selectRowColumn) index += 1;
 
             return index;
@@ -248,12 +216,19 @@ export default {
         rowsOffset() {
             return this.basicFilters ? 2 : 1;
         },
+        templateRows() {
+            const headerRowsTemplate = this.basicFilters ? `${ROW_HEIGHT.MEDIUM}px ${ROW_HEIGHT.MEDIUM}px` : `${ROW_HEIGHT.MEDIUM}px`;
+            const dataRowsTemplate = this.gridState.rowIds.length > 0 ? `repeat(${this.gridState.rowIds.length}, ${this.rowHeight}px)` : '';
+
+            return {
+                gridTemplateRows: `${headerRowsTemplate} ${dataRowsTemplate}`,
+            };
+        },
         templateColumns() {
             const rightWidths = [];
             const leftWidths = [];
 
             if (this.selectRowColumn) leftWidths.push(COLUMN_WIDTH.ACTION);
-            if (this.extenderColumn) rightWidths.push(COLUMN_WIDTH.AUTO);
             if (this.editColumn) rightWidths.push(COLUMN_WIDTH.ACTION);
 
             return {
@@ -301,9 +276,6 @@ export default {
                 this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
             }
         },
-        onAdvancedFilterFocus(isFocused) {
-            this.isAdvancedFilterFocused = isFocused;
-        },
         onRowEdit(route) {
             this.$emit('rowEdit', route);
         },
@@ -332,41 +304,6 @@ export default {
         },
         onHeaderFocus(isFocused) {
             this.isHeaderFocused = isFocused;
-        },
-        onStickyChange({
-            sticky, columnId, state,
-        }) {
-            const columnIndex = this.gridState.columns.findIndex((col) => col.id === columnId);
-            const { gridContent: { children: columnEls } } = this.$refs;
-            const columnEl = columnEls[columnIndex];
-
-            if (sticky) {
-                if (state === PINNED_COLUMN_STATE.RIGHT) {
-                    columnEl.style.right = `${sumIntegers(this.rightPinnedColumns)}px`;
-                    this.rightPinnedColumns.push(columnEl.offsetWidth);
-                    columnEl.classList.add('drop-shadow-right-pinned');
-                } else {
-                    columnEl.style.left = `${sumIntegers(this.leftPinnedColumns)}px`;
-                    this.leftPinnedColumns.push(columnEl.offsetWidth);
-                    columnEl.classList.add('drop-shadow-left-pinned');
-                }
-                columnEl.classList.add('sticky');
-            } else {
-                if (state === PINNED_COLUMN_STATE.RIGHT) {
-                    const indexToRemove = this.rightPinnedColumns.length - 1;
-
-                    columnEl.classList.remove('drop-shadow-right-pinned');
-                    this.rightPinnedColumns.splice(indexToRemove, 1);
-                    columnEl.style.right = null;
-                } else {
-                    const indexToRemove = this.leftPinnedColumns.length - 1;
-
-                    columnEl.classList.remove('drop-shadow-left-pinned');
-                    this.leftPinnedColumns.splice(indexToRemove, 1);
-                    columnEl.style.left = null;
-                }
-                columnEl.classList.remove('sticky');
-            }
         },
         addGhostColumn() {
             if (!this.isColumnExists) {
@@ -422,7 +359,6 @@ export default {
         display: flex;
         flex: 1 1 auto;
         flex-direction: column;
-        border-bottom: none;
         height: 0;
 
         &--placeholder {

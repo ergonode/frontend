@@ -3,12 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseCard modal>
-        <template #header>
-            <BaseCardHeader :title="selectedLanguage" />
-        </template>
-        <Divider />
-        <template #modal>
+    <BaseModalCard>
+        <BaseCard :title="selectedLanguage">
             <TextField
                 :value="translations.name[languageCode]"
                 solid
@@ -26,8 +22,8 @@
                 :error-messages="errorDescriptionMessage"
                 :disabled="!isUserAllowedToUpdate"
                 @input="(value) => setTranslationPropertyValue(value, 'description')" />
-        </template>
-    </BaseCard>
+        </BaseCard>
+    </BaseModalCard>
 </template>
 
 <script>
@@ -35,18 +31,16 @@ import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
 import TextField from '~/components/Inputs/TextField';
 import TextArea from '~/components/Inputs/TextArea';
-import Divider from '~/components/Dividers/Divider';
 import BaseCard from '~/components/Card/BaseCard';
-import BaseCardHeader from '~/components/Card/BaseCardHeader';
+import BaseModalCard from '~/components/Card/BaseModalCard';
 
 export default {
     name: 'SegmentsTranslationCard',
     components: {
-        Divider,
         TextField,
         TextArea,
         BaseCard,
-        BaseCardHeader,
+        BaseModalCard,
     },
     mixins: [errorValidationMixin, translationCardMixin],
     computed: {

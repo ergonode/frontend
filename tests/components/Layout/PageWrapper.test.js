@@ -3,17 +3,17 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import PageWrapper from '~/components/Layout/PageWrapper.vue';
+import BasePage from '~/components/Layout/BasePage.vue';
 
 
-describe('Layout/PageWrapper', () => {
+describe('Layout/BasePage', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(PageWrapper);
+        wrapper = shallowMount(BasePage);
     });
 
     it('Component is named well', () => {
-        expect(typeof PageWrapper.name).toBe('string');
-        expect(PageWrapper.name).toEqual('PageWrapper');
+        expect(typeof BasePage.name).toBe('string');
+        expect(BasePage.name).toEqual('BasePage');
     });
 });

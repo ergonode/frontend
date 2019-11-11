@@ -3,17 +3,17 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import Content from '~/components/Layout/Content.vue';
+import AppContent from '~/components/Layout/AppContent.vue';
 
 
-describe('Layout/Content', () => {
+describe('Layout/AppContent', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(Content);
+        wrapper = shallowMount(AppContent);
     });
 
     it('Component is named well', () => {
-        expect(typeof Content.name).toBe('string');
-        expect(Content.name).toEqual('Content');
+        expect(typeof AppContent.name).toBe('string');
+        expect(AppContent.name).toEqual('AppContent');
     });
 });

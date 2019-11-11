@@ -3,31 +3,30 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseCard modal>
-        <template #header>
-            <BaseCardHeader :title="selectedLanguage" />
-        </template>
-        <Divider />
-        <template #modal>
-            <TextField
-                :value="translations.name[languageCode]"
-                solid
-                label="Condition set name"
-                regular
-                :error-messages="errorNameMessage"
-                :disabled="!isUserAllowedToUpdate"
-                @input="(value) => setTranslationPropertyValue(value, 'name')" />
-            <TextArea
-                :value="translations.description[languageCode]"
-                solid
-                label="Description"
-                resize="vertical"
-                :style="{height: '150px'}"
-                :error-messages="errorDescriptionMessage"
-                :disabled="!isUserAllowedToUpdate"
-                @input="(value) => setTranslationPropertyValue(value, 'description')" />
-        </template>
-    </BaseCard>
+    <BaseModalCard>
+        <BaseCard :title="selectedLanguage">
+            <Divider />
+            <template #modal>
+                <TextField
+                    :value="translations.name[languageCode]"
+                    solid
+                    label="Condition set name"
+                    regular
+                    :error-messages="errorNameMessage"
+                    :disabled="!isUserAllowedToUpdate"
+                    @input="(value) => setTranslationPropertyValue(value, 'name')" />
+                <TextArea
+                    :value="translations.description[languageCode]"
+                    solid
+                    label="Description"
+                    resize="vertical"
+                    :style="{height: '150px'}"
+                    :error-messages="errorDescriptionMessage"
+                    :disabled="!isUserAllowedToUpdate"
+                    @input="(value) => setTranslationPropertyValue(value, 'description')" />
+            </template>
+        </BaseCard>
+    </BaseModalCard>
 </template>
 
 <script>
@@ -37,7 +36,7 @@ import TextField from '~/components/Inputs/TextField';
 import TextArea from '~/components/Inputs/TextArea';
 import Divider from '~/components/Dividers/Divider';
 import BaseCard from '~/components/Card/BaseCard';
-import BaseCardHeader from '~/components/Card/BaseCardHeader';
+import BaseModalCard from '~/components/Card/BaseModalCard';
 
 export default {
     name: 'ConditionSetTranslationCard',
@@ -46,7 +45,7 @@ export default {
         TextField,
         TextArea,
         BaseCard,
-        BaseCardHeader,
+        BaseModalCard,
     },
     mixins: [errorValidationMixin, translationCardMixin],
     computed: {

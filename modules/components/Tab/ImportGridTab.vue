@@ -6,12 +6,12 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                namespace="categoryTreesGrid"
+                namespace="importGrid"
                 :route-edit="routeEdit"
-                :editing-privilege-allowed="$hasAccess('CATEGORY_TREE_UPDATE')"
+                :editing-privilege-allowed="$hasAccess('IMPORT_UPDATE')"
                 :basic-filters="true"
                 :select-row-column="false"
-                title="Category trees"
+                title="Imports"
                 @rowEdit="onRowEdit" />
         </template>
         <template #footer>
@@ -32,7 +32,7 @@ import gridModule from '~/reusableStore/grid/state';
 import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
 
 export default {
-    name: 'CategoryTreesGridTab',
+    name: 'ImportGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('~/components/Grid/Grid'),
@@ -48,29 +48,29 @@ export default {
     beforeCreate() {
         this.$registerStore({
             module: gridModule,
-            moduleName: 'categoryTreesGrid',
+            moduleName: 'importGrid',
             store: this.$store,
         });
     },
     beforeDestroy() {
-        this.$store.unregisterModule('categoryTreesGrid');
+        this.$store.unregisterModule('importGrid');
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
         }),
-        ...mapState('categoryTreesGrid', {
+        ...mapState('importGrid', {
             numberOfDataElements: (state) => state.count,
             currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
-        ...mapGetters('categoryTreesGrid', {
+        ...mapGetters('importGrid', {
             numberOfPages: 'numberOfPages',
         }),
         routeEdit() {
             return {
-                getData: `${this.userLanguageCode}/trees`,
-                name: 'category-tree-edit-id',
+                getData: `${this.userLanguageCode}/imports`,
+                name: 'import-edit-id',
             };
         },
         visibleRowsInPageCount: {
@@ -88,7 +88,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('categoryTreesGrid', [
+        ...mapActions('importGrid', [
             'getData',
             'setCurrentPage',
             'changeNumberOfDisplayingElements',
@@ -97,7 +97,7 @@ export default {
             const args = edit.href.split('/');
             const lastIndex = args.length - 1;
 
-            this.$router.push({ name: 'category-tree-edit-id-general', params: { id: args[lastIndex] } });
+            this.$router.push({ name: 'import-edit-id-general', params: { id: args[lastIndex] } });
         },
         onPageChanged(page) {
             this.setCurrentPage(page);
@@ -105,7 +105,6 @@ export default {
         },
         getDataWrapper() {
             const { getData: path } = this.routeEdit;
-
             this.getData(
                 {
                     path,
@@ -114,14 +113,13 @@ export default {
         },
     },
     async fetch({ app, store }) {
-        const gridPath = `${store.state.authentication.user.language}/trees`;
-
         app.$registerStore({
             module: gridModule,
-            moduleName: 'categoryTreesGrid',
+            moduleName: 'importGrid',
             store,
         });
-        await store.dispatch('categoryTreesGrid/getData', { path: gridPath });
+        const gridPath = `${store.state.authentication.user.language}/imports`;
+        await store.dispatch('importGrid/getData', { path: gridPath });
     },
 };
 </script>

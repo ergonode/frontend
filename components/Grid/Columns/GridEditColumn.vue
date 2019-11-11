@@ -5,7 +5,6 @@
 <template>
     <GridBaseColumn
         :sticky="true"
-        :style="colGridTemplate"
         :border-right="false">
         <GridCell
             :column="columnIndex"
@@ -16,6 +15,7 @@
             <GridEditHeaderCell />
         </GridCell>
         <GridCell
+            v-if="basicFilters"
             :column="columnIndex"
             :row="1"
             :editing-allowed="false"
@@ -25,11 +25,11 @@
             v-for="(rowLink, index) in rowLinks"
             :key="rowLink.id"
             :column="columnIndex"
-            :row="index + 2"
+            :row="index + rowsOffset"
             :editing-allowed="true"
             :action-cell="true"
             :selected="isSelectedAllRows
-                || selectedRows[(index + 2) * currentPage]"
+                || selectedRows[(index + rowsOffset) * currentPage]"
             @edit="onEdit(rowLink)">
             <GridEditRowCell
                 :params="rowLink"
@@ -52,13 +52,17 @@ export default {
             type: Number,
             required: true,
         },
+        rowsOffset: {
+            type: Number,
+            default: 0,
+        },
         rowLinks: {
             type: Array,
             required: true,
         },
-        rowHeight: {
-            type: Number,
-            default: 40,
+        basicFilters: {
+            type: Boolean,
+            default: true,
         },
         isSelectedAllRows: {
             type: Boolean,
@@ -71,13 +75,6 @@ export default {
         currentPage: {
             type: Number,
             required: true,
-        },
-    },
-    computed: {
-        colGridTemplate() {
-            return {
-                gridAutoRows: `${this.rowHeight}px`,
-            };
         },
     },
     methods: {

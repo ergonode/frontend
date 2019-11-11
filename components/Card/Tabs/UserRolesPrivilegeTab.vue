@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="tab">
-        <div class="tab__grid">
+    <ResponsiveCenteredViewTemplate>
+        <template #content>
             <Grid
                 namespace="privilegesGrid"
                 :is-draft="false"
@@ -59,9 +59,11 @@
                     </GridCell>
                 </template>
             </Grid>
-        </div>
-        <Footer :buttons="[...updateButton]" />
-    </div>
+        </template>
+        <template #footer>
+            <Footer :button="updateButton" />
+        </template>
+    </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
@@ -76,6 +78,7 @@ import GridInfoHintCell from '~/components/Grid/GridInfoHintCell';
 import GridInfoCell from '~/components/Grid/GridInfoCell';
 import GridCheckCell from '~/components/Grid/GridCheckCell';
 import Footer from '~/components/ReusableFooter/Footer';
+import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
 
 export default {
     name: 'UserRolesPrivilegeTab',
@@ -86,6 +89,7 @@ export default {
         },
     },
     components: {
+        ResponsiveCenteredViewTemplate,
         GridCell,
         GridCheckCell,
         GridInfoCell,
@@ -247,20 +251,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .tab {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        background-color: $WHITE;
-
-        &__grid {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            margin: 24px 24px 0;
-            overflow: hidden;
-        }
-    }
-</style>

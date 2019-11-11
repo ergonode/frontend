@@ -3,9 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="template-designer">
-        <div class="horizontal-wrapper">
+    <GridViewTemplate>
+        <template #sidebar>
             <VerticalTabBar :items="verticalTabs" />
+        </template>
+        <template #grid>
             <TemplateGridDesigner @rowsCount="onRowsCountChange">
                 <TemplateGridDraggableLayer
                     :style="gridStyles"
@@ -50,9 +52,11 @@
                     :section-index="sectionIndex"
                     @input="onCloseSectionModal" />
             </TemplateGridDesigner>
-        </div>
-        <Footer :buttons="buttons" />
-    </div>
+        </template>
+        <template #footer>
+            <Footer :button="button" />
+        </template>
+    </GridViewTemplate>
 </template>
 
 <script>
@@ -63,10 +67,12 @@ import {
 } from '~/model/template_designer/layout/LayoutCalculations';
 import TemplateGridDesigner from '~/components/Template/Base/TemplateGridDesigner';
 import TemplateGridDraggableLayer from '~/components/Template/Base/TemplateGridDraggableLayer';
+import GridViewTemplate from '~/components/Layout/GridViewTemplate';
 
 export default {
     name: 'TemplateDesignerTab',
     components: {
+        GridViewTemplate,
         TemplateGridDesigner,
         TemplateGridDraggableLayer,
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
@@ -91,19 +97,11 @@ export default {
             sectionTitle: '',
             columnsNumber: 4,
             maxRow: 0,
-            buttons: [
-                // TODO: Uncomment when we will have this feature
-                // {
-                //     title: 'PREVIEW',
-                //     action: vm.onPreview,
-                //     theme: 'secondary',
-                // },
-                {
-                    title: 'SAVE TEMPLATE',
-                    action: this.updateButton.action,
-                    disabled: !this.$hasAccess('TEMPLATE_DESIGNER_UPDATE'),
-                },
-            ],
+            button: {
+                title: 'SAVE TEMPLATE',
+                action: this.updateButton.action,
+                disabled: !this.$hasAccess('TEMPLATE_DESIGNER_UPDATE'),
+            },
             verticalTabs: [
                 {
                     title: 'Attributes',
@@ -220,9 +218,6 @@ export default {
             this.sectionTitle = '';
             this.sectionIndex = null;
         },
-        onPreview() {
-
-        },
         getLayoutElementPosition({
             row, column, width, height,
         }) {
@@ -233,27 +228,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .template-designer {
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        flex-grow: 1;
-
-        .horizontal-wrapper {
-            display: grid;
-            grid-template-columns: max-content auto;
-            flex: 1;
-            grid-column-gap: 24px;
-            margin: 24px 24px 0;
-        }
-
-        &__grid {
-            position: relative;
-            display: grid;
-            height: 0;
-            padding: 0 21px;
-            grid-gap: 10px 21px;
-            grid-template-columns: repeat(4, minmax(240px, auto));
-        }
+    .template-grid {
+        overflow: auto;
     }
 </style>
