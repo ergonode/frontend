@@ -3,11 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="['column', {
-            'border-right': borderRight,
-            'sticky': sticky,
-        }]">
+    <div class="column">
         <slot />
     </div>
 </template>
@@ -15,16 +11,6 @@
 <script>
 export default {
     name: 'GridBaseColumn',
-    props: {
-        borderRight: {
-            type: Boolean,
-            default: true,
-        },
-        sticky: {
-            type: Boolean,
-            default: false,
-        },
-    },
 };
 </script>
 
@@ -33,25 +19,6 @@ export default {
         position: relative;
         display: grid;
         box-sizing: border-box;
-
-        .grid-cell:nth-child(1) {
-            position: sticky !important;
-            top: 0;
-            z-index: 1;
-            background-color: $WHITESMOKE;
-        }
-
-        &::before {
-            position: absolute;
-            top: 0;
-            right: 0;
-            z-index: 2;
-            width: 1px;
-            height: 100%;
-            background-color: $GREY;
-            opacity: 0;
-            content: "";
-        }
 
         &::after {
             position: absolute;
@@ -65,41 +32,10 @@ export default {
             content: "";
         }
 
-        &.hover {
+        &--hovered {
             z-index: 999;
 
             &::after {
-                opacity: 1;
-            }
-        }
-
-        &.sticky {
-            position: sticky;
-            z-index: 3;
-        }
-
-        &.border-right {
-            &::before {
-                opacity: 1;
-            }
-        }
-
-        &.drop-shadow-right-pinned {
-            &::before {
-                left: 0;
-                right: unset;
-                z-index: unset;
-                background-color: unset;
-                box-shadow: $ELEVATOR_2_DP;
-                opacity: 1;
-            }
-        }
-
-        &.drop-shadow-left-pinned {
-            &::before {
-                z-index: unset;
-                background-color: unset;
-                box-shadow: $ELEVATOR_2_DP;
                 opacity: 1;
             }
         }

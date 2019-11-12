@@ -5,7 +5,7 @@
 <template>
     <GridBaseColumn
         :class="{
-            'column--dragged': draggedElIndex !== -1,
+            'column--dragged': isDraggedColumn,
         }"
         :draggable="isColumnDraggable"
         @dragstart.native="onDragStart"
@@ -22,7 +22,7 @@
                 @mousedown="initResizeDrag" />
         </template>
         <template v-else>
-            <GridGhostColumn :is-mouse-over-grid="isMouseOverGrid" />
+            <GridColumnGhost :is-mouse-over-grid="isMouseOverGrid" />
         </template>
     </GridBaseColumn>
 </template>
@@ -40,7 +40,7 @@ export default {
     name: 'GridColumnData',
     components: {
         GridBaseColumn: () => import('~/components/Grid/Columns/GridBaseColumn'),
-        GridGhostColumn: () => import('~/components/Grid/Columns/GridGhostColumn'),
+        GridColumnGhost: () => import('~/components/Grid/Columns/GridColumnGhost'),
     },
     props: {
         namespace: {
@@ -58,10 +58,6 @@ export default {
         column: {
             type: Object,
             required: true,
-        },
-        basicFilters: {
-            type: Boolean,
-            default: true,
         },
         isHeaderFocused: {
             type: Boolean,
@@ -460,7 +456,7 @@ export default {
             const contentGrid = this.getGridContentElement();
             const { children: columns } = contentGrid;
 
-            this.$el.classList.remove('hover');
+            this.$el.classList.remove('column--hovered');
 
             if (this.index - 1 > -1) {
                 columns[this.index - 1].classList.add('border-right');

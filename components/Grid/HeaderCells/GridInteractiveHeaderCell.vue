@@ -193,10 +193,7 @@ export default {
         onSelectOption(option) {
             switch (option.text) {
             case 'Remove': {
-                const columnElement = this.getColumnAtIndex(this.columnIndex);
-
                 // We are hovering element while removing it
-                this.borderColumnAction('add', columnElement);
                 this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, this.columnIndex - 1);
                 this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, this.columnIndex - 1);
                 removeColumnCookieByID(this.$cookies, this.column.id);
@@ -231,9 +228,8 @@ export default {
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
-            columnElement.classList.add('hover');
+            columnElement.classList.add('column--hovered');
             this.isMouseOver = true;
-            this.borderColumnAction('remove', columnElement);
             this.setHorizontalWrapperOpacityIfNeeded(1);
         },
         onMouseLeave() {
@@ -249,17 +245,6 @@ export default {
                 horizontalWrapperElement.style.opacity = opacity;
             }
         },
-        borderColumnAction(action, columnElement) {
-            const contentGrid = document.querySelector('.grid__content');
-            const { children: columns } = contentGrid;
-
-            const indexOfThisElement = [...columns].indexOf(columnElement);
-
-            if (indexOfThisElement - 1 > -1) {
-                columns[indexOfThisElement - 1].classList[action]('border-right');
-                columns[indexOfThisElement].classList[action]('border-right');
-            }
-        },
         isMenuSelected() {
             const contentGrid = document.querySelector('.grid__content');
             const headerEls = contentGrid.querySelectorAll('.horizontal-wrapper--active');
@@ -269,8 +254,7 @@ export default {
         removeColumnHover() {
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
-            columnElement.classList.remove('hover');
-            this.borderColumnAction('add', columnElement);
+            columnElement.classList.remove('column--hovered');
             this.setHorizontalWrapperOpacityIfNeeded(0);
         },
     },

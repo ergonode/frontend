@@ -10,15 +10,12 @@
 import { PINNED_COLUMN_STATE } from '~/defaults/grid';
 
 export default {
-    name: 'GridSentinelColumn',
+    name: 'GridColumnSentinel',
     props: {
-        index: {
-            type: Number,
+        pinnedState: {
+            type: String,
             required: true,
-        },
-        column: {
-            type: Object,
-            required: true,
+            validator: (value) => Object.values(PINNED_COLUMN_STATE).indexOf(value) !== -1,
         },
     },
     data() {
@@ -37,8 +34,8 @@ export default {
     computed: {
         pinnedStateClasses() {
             return {
-                'column-sentinel--left': this.column.state === PINNED_COLUMN_STATE.LEFT,
-                'column-sentinel--right': this.column.state === PINNED_COLUMN_STATE.RIGHT,
+                'column-sentinel--left': this.pinnedState === PINNED_COLUMN_STATE.LEFT,
+                'column-sentinel--right': this.pinnedState === PINNED_COLUMN_STATE.RIGHT,
             };
         },
     },
@@ -49,10 +46,8 @@ export default {
                 for (let i = length - 1; i > -1; i -= 1) {
                     const entry = entries[i];
                     this.$emit('sticky', {
-                        sticky: !entry.isIntersecting,
-                        columnId: this.column.id,
-                        index: this.index,
-                        state: this.column.state,
+                        isSticky: !entry.isIntersecting,
+                        state: this.pinnedState,
                     });
                 }
             }), {
