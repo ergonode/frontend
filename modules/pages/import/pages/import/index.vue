@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import { SIZES } from '~/defaults/buttons';
 
 export default {
     name: 'Import',
@@ -34,11 +33,6 @@ export default {
                 isContextualMenu: false,
             });
         }
-    },
-    computed: {
-        smallSize() {
-            return SIZES.SMALL;
-        },
     },
     beforeDestroy() {
         delete this.tabs;

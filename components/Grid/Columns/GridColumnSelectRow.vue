@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridBaseColumn :sticky="true">
+    <div :class="pinnedColumnClass">
         <slot
             name="headerCheckCell"
             :column="0"
@@ -43,14 +43,13 @@
                     @select="onSelectRow" />
             </slot>
         </template>
-    </GridBaseColumn>
+    </div>
 </template>
 
 <script>
 export default {
-    name: 'GridSelectRowColumn',
+    name: 'GridColumnSelectRow',
     components: {
-        GridBaseColumn: () => import('~/components/Grid/Columns/GridBaseColumn'),
         GridCell: () => import('~/components/Grid/GridCell'),
         GridCheckCell: () => import('~/components/Grid/GridCheckCell'),
         GridEditSelectRowCell: () => import('~/components/Grid/EditCells/GridEditSelectRowCell'),
@@ -69,6 +68,10 @@ export default {
             type: Boolean,
             required: true,
         },
+        isPinned: {
+            type: Boolean,
+            required: true,
+        },
         selectedRows: {
             type: Object,
             required: true,
@@ -83,6 +86,14 @@ export default {
         },
     },
     computed: {
+        pinnedColumnClass() {
+            return [
+                'pinned-column',
+                {
+                    'pinned-column--left': this.isPinned,
+                },
+            ];
+        },
         rowsSelectionState() {
             const rowsAreSelected = Boolean(Object.keys(this.selectedRows).length);
 
@@ -105,14 +116,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .column {
+    .pinned-column {
+        position: sticky;
         left: 0;
+        z-index: 3;
+        display: grid;
+        box-sizing: border-box;
 
-        .grid-cell:nth-child(1) {
-            position: sticky !important;
-            top: 0;
-            z-index: 1;
-            background-color: $WHITESMOKE;
+        &--left {
+            box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.2);
         }
     }
 </style>

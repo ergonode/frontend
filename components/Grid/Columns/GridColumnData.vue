@@ -5,7 +5,7 @@
 <template>
     <GridBaseColumn
         :class="{
-            'column--dragged': draggedElIndex !== -1,
+            'column--dragged': isDraggedColumn,
         }"
         :draggable="isColumnDraggable"
         @dragstart.native="onDragStart"
@@ -22,7 +22,7 @@
                 @mousedown="initResizeDrag" />
         </template>
         <template v-else>
-            <GridGhostColumn :is-mouse-over-grid="isMouseOverGrid" />
+            <GridColumnGhost :is-mouse-over-grid="isMouseOverGrid" />
         </template>
     </GridBaseColumn>
 </template>
@@ -40,7 +40,7 @@ export default {
     name: 'GridColumnData',
     components: {
         GridBaseColumn: () => import('~/components/Grid/Columns/GridBaseColumn'),
-        GridGhostColumn: () => import('~/components/Grid/Columns/GridGhostColumn'),
+        GridColumnGhost: () => import('~/components/Grid/Columns/GridColumnGhost'),
     },
     props: {
         namespace: {
@@ -59,10 +59,6 @@ export default {
             type: Object,
             required: true,
         },
-        basicFilters: {
-            type: Boolean,
-            default: true,
-        },
         isHeaderFocused: {
             type: Boolean,
             default: false,
@@ -75,7 +71,7 @@ export default {
     data() {
         return {
             isResizing: false,
-            minWidth: null,
+            minWidth: 150,
         };
     },
     beforeCreate() {
@@ -248,7 +244,6 @@ export default {
             this.isResizing = true;
             this.initMousePosition(event);
             this.initElementWidth();
-            this.initElementMinWidth();
             this.updateElementWidth(`${this.startWidth}px`);
             this.addEventListenersForResizeState();
         },
@@ -276,11 +271,6 @@ export default {
             } = this.$el.getBoundingClientRect();
 
             this.startWidth = parseInt(elementWidth, 10);
-        },
-        initElementMinWidth() {
-            if (this.minWidth === null) {
-                this.minWidth = this.startWidth;
-            }
         },
         getElementWidthBasedOnMouseXPosition(xPos) {
             return this.startWidth + xPos - this.startX;
@@ -460,7 +450,7 @@ export default {
             const contentGrid = this.getGridContentElement();
             const { children: columns } = contentGrid;
 
-            this.$el.classList.remove('hover');
+            this.$el.classList.remove('column--hovered');
 
             if (this.index - 1 > -1) {
                 columns[this.index - 1].classList.add('border-right');
@@ -492,7 +482,7 @@ export default {
         &__resizer {
             position: absolute;
             top: 0;
-            right: 0;
+            right: 1.25px;
             z-index: 9;
             width: 2.5px;
             height: 100%;

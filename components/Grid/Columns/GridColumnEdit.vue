@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridBaseColumn
-        :sticky="true"
-        :border-right="false">
+    <div :class="pinnedColumnClass">
         <GridCell
             :column="columnIndex"
             :row="0"
@@ -35,14 +33,13 @@
                 :params="rowLink"
                 @edit="onEdit" />
         </GridCell>
-    </GridBaseColumn>
+    </div>
 </template>
 
 <script>
 export default {
-    name: 'GridEditColumn',
+    name: 'GridColumnEdit',
     components: {
-        GridBaseColumn: () => import('~/components/Grid/Columns/GridBaseColumn'),
         GridEditHeaderCell: () => import('~/components/Grid/HeaderCells/GridEditHeaderCell'),
         GridCell: () => import('~/components/Grid/GridCell'),
         GridEditRowCell: () => import('~/components/Grid/EditCells/GridEditRowCell'),
@@ -58,6 +55,10 @@ export default {
         },
         rowLinks: {
             type: Array,
+            required: true,
+        },
+        isPinned: {
+            type: Boolean,
             required: true,
         },
         basicFilters: {
@@ -77,6 +78,16 @@ export default {
             required: true,
         },
     },
+    computed: {
+        pinnedColumnClass() {
+            return [
+                'pinned-column',
+                {
+                    'pinned-column--right': this.isPinned,
+                },
+            ];
+        },
+    },
     methods: {
         onEdit(route) {
             this.$emit('rowEdit', route);
@@ -86,13 +97,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .column {
+    .pinned-column {
+        position: sticky;
         right: 0;
+        z-index: 3;
+        display: grid;
+        box-sizing: border-box;
 
-        .grid-cell:nth-child(1) {
-            position: sticky !important;
-            top: 0;
-            z-index: 1;
+        &--right {
+            box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.2);
         }
     }
 </style>
