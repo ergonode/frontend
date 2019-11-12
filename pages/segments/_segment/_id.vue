@@ -88,7 +88,7 @@ export default {
                 this.updateConditionSet({
                     id: this.conditionSetId,
                     data: propertiesToUpdate,
-                    onSuccess: this.onTransitionUpdated,
+                    onSuccess: this.onUpdateSegmentsSuccess,
                     onError: this.onError,
                 });
             }

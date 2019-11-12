@@ -16,21 +16,21 @@ export default {
     setConditionSetId({ commit }, value) {
         commit(types.SET_CONDITION_SET_ID, value);
     },
-    getTransitionById(
+    async getTransitionById(
         { commit, dispatch, rootState },
         { id },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const [source, destination] = id.split('--');
 
-        return this.app.$axios.$get(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`).then(({
+        await this.app.$axios.$get(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`).then(async ({
             condition_set: conditionSetId,
         }) => {
             commit(types.SET_SOURCE, source.replace(/%20/g, ' '));
             commit(types.SET_DESTINATION, destination.replace(/%20/g, ' '));
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
             if (conditionSetId) {
-                dispatch('conditions/getConditionSetById', {
+                await dispatch('conditions/getConditionSetById', {
                     conditionSetId,
                 }, { root: true });
             }

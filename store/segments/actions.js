@@ -16,12 +16,12 @@ export default {
     setConditionSetId({ commit }, value) {
         commit(types.SET_CONDITION_SET_ID, value);
     },
-    getSegmentById(
+    async getSegmentById(
         { commit, dispatch, rootState },
         { segmentId },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/segments/${segmentId}`).then(({
+        await this.app.$axios.$get(`${userLanguageCode}/segments/${segmentId}`).then(async ({
             id,
             code,
             condition_set_id: conditionSetId,
@@ -37,7 +37,7 @@ export default {
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
             dispatch('translations/setTabTranslations', translations, { root: true });
             if (conditionSetId) {
-                dispatch('conditions/getConditionSetById', {
+                await dispatch('conditions/getConditionSetById', {
                     conditionSetId,
                 }, { root: true });
             }
