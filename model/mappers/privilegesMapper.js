@@ -4,34 +4,39 @@
  */
 
 import { toCapitalize } from '~/model/stringWrapper';
+import { COLUMN_TYPE } from '~/defaults/grid';
 
 const getCheckColumn = (privilegeType) => ({
     id: privilegeType,
     label: toCapitalize(privilegeType),
-    type: 'CHECK_CELL',
+    type: COLUMN_TYPE.CHECK_CELL,
     width: '1fr',
     editable: true,
+});
+
+const getNameColumn = () => ({
+    id: 'name',
+    label: '',
+    type: COLUMN_TYPE.TEXT,
+    width: '0.5fr',
 });
 
 export function getMappedGridData(privileges, rolePrivileges) {
     const rows = [];
     const columns = [
-        {
-            id: 'name',
-            label: '',
-            type: 'TEXT',
-        },
+        getNameColumn(),
     ];
     const columnWidths = ['0.5fr'];
     const tmpRowKeys = {};
     const tmpColumnKeys = {};
     const systemPrivilegesEntries = Object.entries(privileges);
     const { length: systemPrivilegesLength } = systemPrivilegesEntries;
+    const descriptions = {};
     let rowIndex = 0;
 
     for (let i = 0; i < systemPrivilegesLength; i += 1) {
         const [, entry] = systemPrivilegesEntries[i];
-        const { name, privileges: systemPrivileges } = entry;
+        const { name, privileges: systemPrivileges, description } = entry;
         const privilegeNames = Object.values(systemPrivileges);
         const { length: privilegeNamesNumber } = privilegeNames;
 
@@ -41,6 +46,7 @@ export function getMappedGridData(privileges, rolePrivileges) {
                 id: rowIndex,
                 name,
             });
+            descriptions[rowIndex] = description;
             rowIndex += 1;
         }
 
@@ -62,6 +68,7 @@ export function getMappedGridData(privileges, rolePrivileges) {
     return {
         rows,
         columns,
+        descriptions,
         columnWidths,
     };
 }

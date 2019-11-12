@@ -22,8 +22,6 @@ const state = () => ({
     currentPage: 1,
     configuration: {},
     sortedByColumn: {},
-    isSelectedAllRows: false,
-    selectedRows: {},
     editingCellCoordinates: {},
 });
 

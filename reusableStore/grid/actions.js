@@ -184,10 +184,6 @@ export default {
         commit(types.SET_ROW_IDS, rowIds);
     },
     setFilter({ commit }, { filter, id, operator }) {
-        // Remove selection on filter action
-        commit(types.REMOVE_SELECTED_ROWS);
-        commit(types.SET_SELECTION_FOR_ALL_ROWS, false);
-
         if (!filter.length) {
             commit(types.REMOVE_FILTER, id);
         } else {
@@ -195,10 +191,6 @@ export default {
         }
     },
     setAdvancedFilterValue({ commit }, { value, id, operator }) {
-        // Remove selection on filter action
-        commit(types.REMOVE_SELECTED_ROWS);
-        commit(types.SET_SELECTION_FOR_ALL_ROWS, false);
-
         if (!value.length) {
             commit(types.REMOVE_ADVANCED_FILTER_OPERATOR, { id, operator });
         } else {
@@ -206,10 +198,6 @@ export default {
         }
     },
     setAdvancedFilterEmptyRecord({ commit, state }, { id, isEmptyRecord }) {
-        // Remove selection on filter action
-        commit(types.REMOVE_SELECTED_ROWS);
-        commit(types.SET_SELECTION_FOR_ALL_ROWS, false);
-
         if (state.advancedFilters[id] && !isEmptyRecord) {
             commit(types.REMOVE_ADVANCED_FILTER_EMPTY_RECORD, id);
         } else {
@@ -289,6 +277,7 @@ export default {
         const newOrderedColumns = [
             ...swapItemPosition(columns, from, to),
         ];
+
         this.$cookies.set(COLUMN_IDS, newOrderedColumns.map((column) => column.id).join(','));
 
         commit(types.SET_COLUMNS, newOrderedColumns);
@@ -303,42 +292,6 @@ export default {
     },
     setEditingCellCoordinates({ commit }, editingCellCoordinates = {}) {
         commit(types.SET_EDITING_CELL_COORDINATES, editingCellCoordinates);
-    },
-    setSelectionForAllRows({ commit, state }, { isSelected }) {
-        const { selectedRows } = state;
-        const areSelectedRowsExist = Object.entries(selectedRows).length;
-
-        if (areSelectedRowsExist) {
-            commit(types.REMOVE_SELECTED_ROWS);
-        } else {
-            commit(types.SET_SELECTION_FOR_ALL_ROWS, isSelected);
-        }
-    },
-    setSelectedRow({ commit, state }, { row, value }) {
-        if (value) {
-            commit(types.SET_SELECTED_ROW, row);
-        } else {
-            const { isSelectedAllRows, filtered } = state;
-
-            commit(types.REMOVE_SELECTED_ROW, row);
-
-            if (isSelectedAllRows) {
-                // If we had chosen option with selected all of the options, we need to remove it
-                // and mark visible rows as selected
-                // +2 because we have 2 rows marked as a header and filter
-
-                const rowsToSelect = {};
-
-                for (let i = 2; i < filtered + 2; i += 1) {
-                    if (i !== row) {
-                        rowsToSelect[i] = true;
-                    }
-                }
-
-                commit(types.SET_SELECTED_ROWS, rowsToSelect);
-                commit(types.SET_SELECTION_FOR_ALL_ROWS, false);
-            }
-        }
     },
     addDraftToProduct({ commit, state }, { columnId, productId, value }) {
         const { columns } = state;
@@ -382,9 +335,6 @@ export default {
         const { pinnedColumns } = state;
         const index = pinnedColumns.findIndex((col) => col.id === id);
         commit(types.REMOVE_PINNED_COLUMN_AT_INDEX, index);
-    },
-    reloadGridData({ commit }) {
-        commit(types.RELOAD_GRID_DATA);
     },
     updateDataCellValue({ commit }, payload) {
         commit(types.UPDATE_DATA_CELL_VALUE, payload);

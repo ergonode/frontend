@@ -3,25 +3,29 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="info-select-cell">
+    <div class="info-hint-cell">
         <GridInfoCell :value="value" />
-        <IconArrowDropDown />
+        <InfoHint :hint="hint" />
     </div>
 </template>
 
 <script>
 import GridInfoCell from '~/components/Grid/GridInfoCell';
-import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
+import InfoHint from '~/components/Inputs/Hint/InfoHint';
 
 export default {
-    name: 'GridSelectInfoCell',
+    name: 'GridInfoHintCell',
     components: {
         GridInfoCell,
-        IconArrowDropDown,
+        InfoHint,
     },
     props: {
         value: {
-            type: [String, Number],
+            type: String,
+            required: true,
+        },
+        hint: {
+            type: String,
             required: true,
         },
         fixedWidth: {
@@ -33,11 +37,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .info-select-cell {
+    .info-hint-cell {
         display: flex;
         flex: 1;
         justify-content: space-between;
         align-items: center;
-        padding-right: 5px;
+        padding-right: 6px;
     }
 </style>

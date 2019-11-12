@@ -10,6 +10,7 @@
                 :route-edit="routeEdit"
                 :editing-privilege-allowed="$hasAccess('ATTRIBUTE_UPDATE')"
                 :basic-filters="true"
+                :select-row-column="false"
                 title="Attributes"
                 @rowEdit="onRowEdit" />
         </div>

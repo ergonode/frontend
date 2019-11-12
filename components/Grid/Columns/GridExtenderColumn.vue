@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridBaseColumn>
+    <GridBaseColumn :style="colGridTemplate">
         <GridCell
             v-for="(row, index) in rowsNumber"
             :key="row"
@@ -13,8 +13,7 @@
             :action-cell="false"
             :locked="true"
             :selected="isSelectedAllRows && index > 1
-                || selectedRows[(index)
-                    * currentPage]" />
+                || selectedRows[(index) * currentPage]" />
     </GridBaseColumn>
 </template>
 
@@ -47,17 +46,17 @@ export default {
             type: Number,
             required: true,
         },
+        rowHeight: {
+            type: Number,
+            default: 40,
+        },
+    },
+    computed: {
+        colGridTemplate() {
+            return {
+                gridAutoRows: `${this.rowHeight}px`,
+            };
+        },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .column {
-        .grid-cell:nth-child(1) {
-            position: sticky !important;
-            top: 0;
-            z-index: 1;
-            background-color: $WHITESMOKE;
-        }
-    }
-</style>

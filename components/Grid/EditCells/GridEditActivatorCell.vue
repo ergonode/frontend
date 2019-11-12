@@ -13,6 +13,7 @@
             :parameters="parameters"
             :multiselect="isMultiSelect"
             :fixed-width="fixedWidth"
+            :fixed-height="fixedHeight"
             :colors="colors"
             @imageid="onImageIDChange" />
     </div>
@@ -61,6 +62,10 @@ export default {
             default: '',
         },
         fixedWidth: {
+            type: Number,
+            required: true,
+        },
+        fixedHeight: {
             type: Number,
             required: true,
         },

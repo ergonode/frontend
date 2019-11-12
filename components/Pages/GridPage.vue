@@ -12,6 +12,7 @@
                 namespace="grid"
                 :route-edit="routeEdit"
                 :basic-filters="true"
+                :select-row-column="false"
                 title="Grid" />
         </div>
         <GridFooter>
