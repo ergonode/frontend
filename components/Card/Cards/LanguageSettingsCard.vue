@@ -13,6 +13,7 @@
             multiselect
             clearable
             @input="setSelectedLanguages" />
+        <Comment />
     </BaseCard>
 </template>
 
@@ -26,6 +27,7 @@ export default {
     components: {
         BaseCard,
         Select: () => import('~/components/Inputs/Select/Select'),
+        Comment: () => import('~/components/Comments/Comment'),
     },
     mixins: [errorValidationMixin],
     computed: {
