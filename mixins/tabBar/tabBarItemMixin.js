@@ -20,9 +20,5 @@ export default {
             type: Boolean,
             default: true,
         },
-        isContextualMenu: {
-            type: Boolean,
-            default: false,
-        },
     },
 };

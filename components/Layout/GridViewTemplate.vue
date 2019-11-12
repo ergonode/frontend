@@ -33,6 +33,7 @@ export default {
         grid-template-columns: min-content;
         column-gap: 24px;
         padding-top: 24px;
+        background-color: $WHITE;
 
         &__filters {
             grid-area: 1 / 2 / 2 / 3;

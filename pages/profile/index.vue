@@ -28,7 +28,6 @@ export default {
                     title: 'Activity log',
                     route: { name: 'profile-activity-log-grid' },
                     active: true,
-                    isContextualMenu: false,
                 },
             ],
         };

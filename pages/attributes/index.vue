@@ -48,7 +48,6 @@ export default {
                 title: 'Attributes',
                 route: { name: 'attributes-grid' },
                 active: true,
-                isContextualMenu: false,
             });
         }
     },

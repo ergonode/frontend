@@ -50,13 +50,11 @@ export default {
                 title: 'Product statuses',
                 route: { name: 'workflow-statuses' },
                 active: true,
-                isContextualMenu: false,
             });
             this.tabs.push({
                 title: 'Transitions',
                 route: { name: 'workflow-transitions' },
                 active: true,
-                isContextualMenu: false,
             });
         }
     },

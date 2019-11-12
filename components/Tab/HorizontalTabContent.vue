@@ -5,7 +5,6 @@
 <template>
     <NuxtChild
         :key="$route.name"
-        class="tab-content"
         keep-alive
         v-bind="item.props" />
 </template>
@@ -21,10 +20,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .tab-content {
-        background-color: $WHITE;
-        border-top: $BORDER_1_GREY;
-    }
-</style>

@@ -62,7 +62,6 @@ export default {
                 title: 'Categories',
                 route: { name: 'categories-grid' },
                 active: true,
-                isContextualMenu: false,
             });
         }
     },

@@ -50,7 +50,6 @@ export default {
                 title: 'Segments',
                 route: { name: 'segments-grid' },
                 active: true,
-                isContextualMenu: false,
             });
         }
         if (this.$hasAccess('CONDITION_READ')) {
@@ -58,7 +57,6 @@ export default {
                 title: 'Condition sets',
                 route: { name: 'condition-sets' },
                 active: true,
-                isContextualMenu: false,
             });
         }
     },
