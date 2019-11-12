@@ -10,7 +10,7 @@
                 :route-edit="routeEdit"
                 :editing-privilege-allowed="$hasAccess('USER_ROLE_UPDATE')"
                 :basic-filters="true"
-                :select-row-column="false"
+                :select-column="false"
                 title="User roles"
                 @rowEdit="onRowEdit" />
         </template>

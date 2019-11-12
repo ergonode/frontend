@@ -19,8 +19,8 @@
             class="grid__content"
             :style="templateColumns"
             @dragleave="onDragLeave">
-            <GridSelectRowColumn
-                v-if="selectRowColumn"
+            <GridColumnSelectRow
+                v-if="selectColumn"
                 :style="templateRows"
                 :row-ids="gridState.rowIds"
                 :rows-offset="rowsOffset"
@@ -29,6 +29,7 @@
                 :selected-rows="selectedRows"
                 :basic-filters="basicFilters"
                 :current-page="gridState.currentPage"
+                :is-pinned="isSelectColumnPinned"
                 @rowSelect="onSelectRow"
                 @rowsSelect="onSelectAllRows">
                 <template #headerCheckCell="{ row, column }">
@@ -43,7 +44,7 @@
                         :row="row"
                         :column="column" />
                 </template>
-            </GridSelectRowColumn>
+            </GridColumnSelectRow>
             <GridColumnData
                 v-for="(column, colIndex) in gridState.columns"
                 :key="column.id"
@@ -92,7 +93,7 @@
                         :editing-privilege-allowed="editingPrivilegeAllowed" />
                 </slot>
             </GridColumnData>
-            <GridEditColumn
+            <GridColumnEdit
                 v-if="editColumn"
                 :style="templateRows"
                 :is-selected-all-rows="isSelectedAllRows"
@@ -103,7 +104,17 @@
                 :basic-filters="basicFilters"
                 :row-links="gridState.rowLinks"
                 :route-path="routeEdit.name"
+                :is-pinned="isEditColumnPinned"
                 @rowEdit="onRowEdit" />
+            <GridColumnSentinel
+                v-if="selectColumn"
+                :pinned-state="columnPinnedState.LEFT"
+                @sticky="onStickyChange" />
+            <GridColumnSentinel
+                v-if="editColumn"
+                :style="{ gridColumn: `${editColumnIndex} / ${editColumnIndex}`}"
+                :pinned-state="columnPinnedState.RIGHT"
+                @sticky="onStickyChange" />
         </div>
         <GridPlaceholder v-if="isPlaceholder" />
     </div>
@@ -116,6 +127,7 @@ import {
     GRID_LAYOUT,
     GHOST_ELEMENT_MODEL,
     GHOST_ID,
+    PINNED_COLUMN_STATE,
     COLUMN_WIDTH,
 } from '~/defaults/grid';
 import {
@@ -129,7 +141,8 @@ export default {
     components: {
         GridHeader: () => import('~/components/Grid/GridHeader'),
         GridColumnData: () => import('~/components/Grid/Columns/GridColumnData'),
-        GridEditColumn: () => import('~/components/Grid/Columns/GridEditColumn'),
+        GridColumnSentinel: () => import('~/components/Grid/Columns/GridColumnSentinel'),
+        GridColumnEdit: () => import('~/components/Grid/Columns/GridColumnEdit'),
         GridWrapperCell: () => import('~/components/Grid/Wrappers/GridWrapperCell'),
         GridWrapperHeaderActionCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderActionCell'),
         GridWrapperHeaderCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderCell'),
@@ -156,6 +169,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        selectColumn: {
+            type: Boolean,
+            default: true,
+        },
         editColumn: {
             type: Boolean,
             default: true,
@@ -165,6 +182,8 @@ export default {
         return {
             isHeaderFocused: false,
             isMouseOverGrid: false,
+            isSelectColumnPinned: false,
+            isEditColumnPinned: false,
             rowHeight: ROW_HEIGHT.MEDIUM,
             layout: GRID_LAYOUT.TABLE,
         };
@@ -200,10 +219,13 @@ export default {
         gridState() {
             return this.$store.state[this.namespace];
         },
+        columnPinnedState() {
+            return PINNED_COLUMN_STATE;
+        },
         editColumnIndex() {
             let index = this.gridState.columns.length;
 
-            if (this.selectRowColumn) index += 1;
+            if (this.selectColumn) index += 1;
 
             return index;
         },
@@ -211,7 +233,7 @@ export default {
             return this.$store.getters[`${this.namespace}/numberOfPages`];
         },
         columnsOffset() {
-            return this.selectRowColumn ? 1 : 0;
+            return this.selectColumn ? 1 : 0;
         },
         rowsOffset() {
             return this.basicFilters ? 2 : 1;
@@ -228,7 +250,7 @@ export default {
             const rightWidths = [];
             const leftWidths = [];
 
-            if (this.selectRowColumn) leftWidths.push(COLUMN_WIDTH.ACTION);
+            if (this.selectColumn) leftWidths.push(COLUMN_WIDTH.ACTION);
             if (this.editColumn) rightWidths.push(COLUMN_WIDTH.ACTION);
 
             return {
@@ -262,6 +284,15 @@ export default {
             'setGhostIndex',
             'setGhostFilterIndex',
         ]),
+        onStickyChange({
+            isSticky, state,
+        }) {
+            if (state === PINNED_COLUMN_STATE.LEFT) {
+                this.isSelectColumnPinned = isSticky;
+            } else {
+                this.isEditColumnPinned = isSticky;
+            }
+        },
         onClickOutside(event) {
             const { gridContent } = this.$refs;
             const isVisible = !!gridContent

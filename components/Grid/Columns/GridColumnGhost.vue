@@ -17,7 +17,7 @@ import {
 } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
-    name: 'GridGhostColumn',
+    name: 'GridColumnGhost',
     props: {
         isMouseOverGrid: {
             type: Boolean,

@@ -10,7 +10,7 @@
                 :route-edit="routeEdit"
                 :editing-privilege-allowed="$hasAccess('CATEGORY_TREE_UPDATE')"
                 :basic-filters="true"
-                :select-row-column="false"
+                :select-column="false"
                 title="Category trees"
                 @rowEdit="onRowEdit" />
         </template>

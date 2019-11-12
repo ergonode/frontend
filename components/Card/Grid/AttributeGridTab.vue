@@ -10,7 +10,7 @@
                 :route-edit="routeEdit"
                 :editing-privilege-allowed="$hasAccess('ATTRIBUTE_UPDATE')"
                 :basic-filters="true"
-                :select-row-column="false"
+                :select-column="false"
                 title="Attributes"
                 @rowEdit="onRowEdit" />
         </template>

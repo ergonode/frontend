@@ -10,7 +10,7 @@
                 :route-edit="routeEdit"
                 :editing-privilege-allowed="$hasAccess('IMPORT_UPDATE')"
                 :basic-filters="true"
-                :select-row-column="false"
+                :select-column="false"
                 title="Imports"
                 @rowEdit="onRowEdit" />
         </template>

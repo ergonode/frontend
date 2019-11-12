@@ -28,6 +28,7 @@ const store = new Store({
     },
     dispatch: jest.fn(),
 });
+
 const mocks = {
     $store: store,
 };
@@ -46,6 +47,12 @@ describe('Grid/Grid', () => {
         });
     });
 
+    beforeAll(() => {
+        window.IntersectionObserver = jest.fn(function() {
+            this.observe = jest.fn();
+        })
+    });
+
     it('Component is named well', () => {
         expect(typeof Grid.name).toBe('string');
         expect(Grid.name).toEqual('Grid');
@@ -53,6 +60,7 @@ describe('Grid/Grid', () => {
 
     describe('mixins/selectedRowMixin', () => {
         describe('Selecting every row by marking header check', () => {
+
             it('None of rows are selected', () => {
                 wrapper.vm.onSelectAllRows(true);
 
