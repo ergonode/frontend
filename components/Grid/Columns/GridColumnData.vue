@@ -71,7 +71,7 @@ export default {
     data() {
         return {
             isResizing: false,
-            minWidth: null,
+            minWidth: 150,
         };
     },
     beforeCreate() {
@@ -244,7 +244,6 @@ export default {
             this.isResizing = true;
             this.initMousePosition(event);
             this.initElementWidth();
-            this.initElementMinWidth();
             this.updateElementWidth(`${this.startWidth}px`);
             this.addEventListenersForResizeState();
         },
@@ -272,11 +271,6 @@ export default {
             } = this.$el.getBoundingClientRect();
 
             this.startWidth = parseInt(elementWidth, 10);
-        },
-        initElementMinWidth() {
-            if (this.minWidth === null) {
-                this.minWidth = this.startWidth;
-            }
         },
         getElementWidthBasedOnMouseXPosition(xPos) {
             return this.startWidth + xPos - this.startX;
@@ -488,7 +482,7 @@ export default {
         &__resizer {
             position: absolute;
             top: 0;
-            right: 0;
+            right: 1.25px;
             z-index: 9;
             width: 2.5px;
             height: 100%;
