@@ -3,23 +3,21 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="content">
+    <div class="base-modal-card">
         <slot />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'ContentBaseTab',
+    name: 'BaseModalCard',
 };
 </script>
 
 <style lang="scss" scoped>
-    .content {
+    .base-modal-card {
         display: flex;
-        flex-grow: 1;
-        justify-content: center;
-        height: 0;
-        overflow: auto;
+        flex-direction: column;
+        box-shadow: $ELEVATOR_2_DP;
     }
 </style>

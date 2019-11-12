@@ -4,7 +4,7 @@
  */
 export default {
     components: {
-        PageWrapper: () => import('~/components/Layout/PageWrapper'),
+        BasePage: () => import('~/components/Layout/BasePage'),
         TitleBar: () => import('~/components/TitleBar/TitleBar'),
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         PrependIconButton: () => import('~/components/Buttons/PrependIconButton'),

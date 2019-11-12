@@ -7,7 +7,7 @@
         <TitleBarDetails
             :title="title"
             :icon="icon"
-            :is-breadcrumb="breadcrumbs.length !== 0"
+            :is-breadcrumb="isBreadcrumb"
             @navigateback="onClick">
             <template #breadcrumb>
                 <TitleBarBreadcrumb
@@ -87,6 +87,9 @@ export default {
         },
         isStatus() {
             return !isEmpty(this.status);
+        },
+        isBreadcrumb() {
+            return this.breadcrumbs.length > 0;
         },
         statusTextContrastRation() {
             if (!this.isStatus) return null;

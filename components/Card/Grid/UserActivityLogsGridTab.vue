@@ -3,16 +3,16 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="tab">
-        <div class="tab__grid">
+    <ResponsiveCenteredViewTemplate>
+        <template #content>
             <Grid
                 namespace="userActivityLogsGrid"
                 :route-edit="routeEdit"
                 :basic-filters="true"
                 :edit-column="false"
                 title="Activity logs" />
-        </div>
-        <GridFooter>
+        </template>
+        <template #footer>
             <GridPageSelector
                 v-model="visibleRowsInPageCount"
                 :rows-number="numberOfDataElements" />
@@ -20,25 +20,22 @@
                 :value="currentPage"
                 :max-page="numberOfPages"
                 @input="onPageChanged" />
-        </GridFooter>
-    </div>
+        </template>
+    </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
-import Grid from '~/components/Grid/Grid';
-import GridFooter from '~/components/Grid/GridFooter';
-import GridPageSelector from '~/components/Grid/GridPageSelector';
-import GridPagination from '~/components/Grid/GridPagination';
+import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
 
 export default {
     name: 'UserActivityLogsGridTab',
     components: {
-        Grid,
-        GridFooter,
-        GridPageSelector,
-        GridPagination,
+        ResponsiveCenteredViewTemplate,
+        Grid: () => import('~/components/Grid/Grid'),
+        GridPageSelector: () => import('~/components/Grid/GridPageSelector'),
+        GridPagination: () => import('~/components/Grid/GridPagination'),
     },
     data() {
         return {
@@ -118,20 +115,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .tab {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        background-color: $WHITE;
-
-        &__grid {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            margin: 24px 24px 0;
-            overflow: hidden;
-        }
-    }
-</style>

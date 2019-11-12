@@ -4,6 +4,7 @@
  */
 <template>
     <BaseCard>
+        <Headline title="Status change" />
         <Select
             :value="source"
             solid
@@ -38,6 +39,7 @@ export default {
     components: {
         BaseCard,
         Select: () => import('~/components/Inputs/Select/Select'),
+        Headline: () => import('~/components/Form/Headline'),
     },
     mixins: [errorValidationMixin],
     computed: {

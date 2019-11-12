@@ -3,21 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <main class="content">
+    <main class="app-content">
         <slot />
     </main>
 </template>
 
 <script>
 export default {
-    name: 'Content',
+    name: 'AppContent',
 };
 </script>
 
 <style lang="scss" scoped>
-    .content {
+    .app-content {
         display: flex;
         flex: 1;
         overflow: hidden;
+        margin-top: 48px;
     }
 </style>

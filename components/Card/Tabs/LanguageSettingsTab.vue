@@ -3,27 +3,31 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseTab>
+    <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <LanguageSettingsCard />
+            <BaseForm>
+                <LanguageSettingsCard />
+            </BaseForm>
         </template>
         <template #footer>
-            <Footer :buttons="[...updateButton]" />
+            <Footer :button="updateButton" />
         </template>
-    </BaseTab>
+    </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
 import languageSettingsModule from '~/reusableStore/languageSettings/state';
 import LanguageSettingsCard from '~/components/Card/Cards/LanguageSettingsCard';
-import BaseTab from '~/components/Card/BaseTab';
+import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
+import BaseForm from '~/components/Form/BaseForm';
 
 export default {
     name: 'LanguageSettingsTab',
     components: {
         Footer: () => import('~/components/ReusableFooter/Footer'),
         LanguageSettingsCard,
-        BaseTab,
+        ResponsiveCenteredViewTemplate,
+        BaseForm,
     },
     props: {
         updateButton: {

@@ -3,12 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseCard modal>
-        <template #header>
-            <BaseCardHeader :title="selectedLanguage" />
-        </template>
-        <Divider />
-        <template #modal>
+    <BaseModalCard>
+        <BaseCard :title="selectedLanguage">
             <TextField
                 :value="translations.label[languageCode]"
                 solid
@@ -42,8 +38,8 @@
                     :language-code="languageCode"
                     :disabled="!isUserAllowedToUpdate" />
             </template>
-        </template>
-    </BaseCard>
+        </BaseCard>
+    </BaseModalCard>
 </template>
 
 <script>
@@ -56,7 +52,7 @@ import TextField from '~/components/Inputs/TextField';
 import TextArea from '~/components/Inputs/TextArea';
 import Divider from '~/components/Dividers/Divider';
 import BaseCard from '~/components/Card/BaseCard';
-import BaseCardHeader from '~/components/Card/BaseCardHeader';
+import BaseModalCard from '~/components/Card/BaseModalCard';
 import AttributeOptionValues from '~/components/Card/AttributeOptionValues';
 
 export default {
@@ -66,7 +62,7 @@ export default {
         TextField,
         TextArea,
         BaseCard,
-        BaseCardHeader,
+        BaseModalCard,
         AttributeOptionValues,
     },
     mixins: [errorValidationMixin, translationCardMixin],

@@ -4,7 +4,7 @@
  */
 <template>
     <TransitionPage
-        title="Transition"
+        :title="`${source} -> ${destination}`"
         is-edit
         @dismiss="onDismiss"
         @remove="onRemove"

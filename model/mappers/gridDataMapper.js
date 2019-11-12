@@ -40,16 +40,6 @@ const getMappedColumnHeader = (column) => ({
     type: getMappedColumnHeaderType(column),
 });
 
-const getMappedColumnWidth = (column) => {
-    const isSelectKind = column.filter
-        && (column.filter.type === COLUMN_TYPE.SELECT
-            || column.filter.type === COLUMN_TYPE.MULTI_SELECT);
-    const isActionKind = column.type === COLUMN_TYPE.ACTION || column.type === COLUMN_TYPE.CHECK;
-    if (isSelectKind) return COLUMN_WIDTH.SELECT;
-    if (isActionKind) return COLUMN_WIDTH.ACTION;
-    return COLUMN_WIDTH.DEFAULT;
-};
-
 export function getSortedColumnsByIDs(columns, columnsID) {
     return columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id));
 }
@@ -59,7 +49,7 @@ export function getMappedColumn(column) {
         ...column,
         header: getMappedColumnHeader(column),
     };
-    const columnWidth = getMappedColumnWidth(column);
+    const columnWidth = COLUMN_WIDTH.DEFAULT;
 
     return { mappedColumn, columnWidth };
 }
@@ -76,7 +66,7 @@ export function getMappedColumns(columns) {
         // TODO:
         // Backend have to remove column with type CHECK
         if (column.type !== COLUMN_TYPE.CHECK) {
-            columnWidths.push(getMappedColumnWidth(column));
+            columnWidths.push(COLUMN_WIDTH.DEFAULT);
             mappedColumns.push({
                 ...column,
                 header: getMappedColumnHeader(column),

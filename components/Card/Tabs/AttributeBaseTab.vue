@@ -3,27 +3,31 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseTab>
+    <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <AttributeBaseCard />
+            <BaseForm>
+                <AttributeBaseCard />
+            </BaseForm>
         </template>
         <template #footer>
-            <Footer :buttons="[...updateButton]" />
+            <Footer :button="updateButton" />
         </template>
-    </BaseTab>
+    </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
 import AttributeBaseCard from '~/components/Card/Cards/AttributeBaseCard';
-import BaseTab from '~/components/Card/BaseTab';
 import Footer from '~/components/ReusableFooter/Footer';
+import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
+import BaseForm from '~/components/Form/BaseForm';
 
 export default {
     name: 'AttributeBaseTab',
     components: {
+        ResponsiveCenteredViewTemplate,
         Footer,
         AttributeBaseCard,
-        BaseTab,
+        BaseForm,
     },
     props: {
         updateButton: {

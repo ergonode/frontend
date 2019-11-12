@@ -3,23 +3,24 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="page-wrapper">
+    <div class="base-page">
         <slot />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'PageWrapper',
+    name: 'BasePage',
 };
 </script>
 
 <style lang="scss" scoped>
-    .page-wrapper {
+    .base-page {
         position: relative;
         display: flex;
         flex: 1;
         flex-direction: column;
         background-color: $WHITESMOKE;
+        overflow: hidden;
     }
 </style>

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
+    <BasePage>
         <TitleBar
             title="Users"
             icon="User"
@@ -25,7 +25,7 @@
         </TitleBar>
         <HorizontalTabBar
             :items="tabs" />
-    </PageWrapper>
+    </BasePage>
 </template>
 
 <script>
@@ -39,7 +39,7 @@ export default {
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         TitleBar: () => import('~/components/TitleBar/TitleBar'),
-        PageWrapper: () => import('~/components/Layout/PageWrapper'),
+        BasePage: () => import('~/components/Layout/BasePage'),
         PrependIconButton,
         IconAdd,
     },

@@ -4,24 +4,28 @@
  */
 <template>
     <App>
-        <NavigationBar v-if="user">
-            <template #leftSectionContent>
-                <NavigationBarMenuButton
-                    :value="sideBarState"
-                    @state="onStateChange" />
-                <NavigationBarDashboardButton />
-            </template>
-            <template #rightSectionContent>
-                <NavigationBarUserButton />
-                <NavigationBarSynchronizationButton />
-                <NavigationBarNotificationButton />
-            </template>
-        </NavigationBar>
-        <Content>
-            <SideBar :value="sideBarState" />
-            <nuxt />
+        <template v-if="user">
+            <NavigationBar>
+                <template #leftSectionContent>
+                    <NavigationBarMenuButton
+                        :value="sideBarState"
+                        @state="onStateChange" />
+                    <NavigationBarDashboardButton />
+                </template>
+                <template #rightSectionContent>
+                    <NavigationBarUserButton />
+                    <NavigationBarSynchronizationButton />
+                    <NavigationBarNotificationButton />
+                </template>
+            </NavigationBar>
+            <AppContent>
+                <SideBar :value="sideBarState" />
+                <BasePage>
+                    <nuxt />
+                </BasePage>
+            </AppContent>
             <FlashMessage />
-        </Content>
+        </template>
     </App>
 </template>
 
@@ -32,7 +36,8 @@ export default {
     middleware: ['setDictionaries', 'authenticated'],
     components: {
         App: () => import('~/components/Layout/App'),
-        Content: () => import('~/components/Layout/Content'),
+        AppContent: () => import('~/components/Layout/AppContent'),
+        BasePage: () => import('~/components/Layout/BasePage'),
         SideBar: () => import('~/components/Navigation//SideBar/SideBar'),
         NavigationBar: () => import('~/components/Navigation/NavigationBar/NavigationBar'),
         NavigationBarMenuButton: () => import('~/components/Navigation/NavigationBar/NavigationBarMenuButton'),
@@ -59,8 +64,3 @@ export default {
     },
 };
 </script>
-<style lang="scss" scoped>
-    .content {
-        margin-top: $toolBarHeight;
-    }
-</style>

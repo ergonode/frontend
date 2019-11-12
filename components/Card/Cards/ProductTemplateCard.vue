@@ -3,28 +3,23 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="centering-wrapper">
-        <TemplateGridDesigner
-            :row-height="48"
-            @rowsCount="onRowsCountChange">
-            <div
-                class="products-template-grid"
-                :style="gridStyle">
-                <Component
-                    :is="getComponentViaType(element.type)"
-                    v-for="(element, index) in layoutElements"
-                    :key="index"
-                    :style="getItemPosition(element)"
-                    :value="getElementValueByCode(element.code, element.type)"
-                    :multiselect="element.type === 'MULTI_SELECT'"
-                    :disabled="!isUserAllowedToUpdate"
-                    v-bind="element" />
-                <div
-                    :style="gridExtenderStyle"
-                    class="extender" />
-            </div>
-        </TemplateGridDesigner>
-    </div>
+    <TemplateGridDesigner
+        :row-height="48"
+        @rowsCount="onRowsCountChange">
+        <div
+            class="products-template-grid"
+            :style="gridStyle">
+            <Component
+                :is="getComponentViaType(element.type)"
+                v-for="(element, index) in layoutElements"
+                :key="index"
+                :style="getItemPosition(element)"
+                :value="getElementValueByCode(element.code, element.type)"
+                :multiselect="element.type === 'MULTI_SELECT'"
+                :disabled="!isUserAllowedToUpdate"
+                v-bind="element" />
+        </div>
+    </TemplateGridDesigner>
 </template>
 
 <script>
@@ -81,12 +76,6 @@ export default {
                 gridTemplateRows: `repeat(${this.maxRowOfLayoutElements + 1}, 46px)`,
             };
         },
-        gridExtenderStyle() {
-            return {
-                gridArea: `${this.maxRowOfLayoutElements} / 1 / ${this.maxRowOfLayoutElements + 1} / 4`,
-
-            };
-        },
     },
     methods: {
         onRowsCountChange({ value }) {
@@ -133,19 +122,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .centering-wrapper {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        overflow: auto;
-
-        .products-template-grid {
-            display: grid;
-            grid-gap: 24px;
-            grid-template-columns: repeat(4, 1fr);
-            height: 0;
-            margin: 0 200px;
-            padding-top: 48px;
-        }
+    .products-template-grid {
+        display: grid;
+        grid-gap: 24px;
+        grid-template-columns: repeat(4, 1fr);
+        height: 0;
     }
 </style>

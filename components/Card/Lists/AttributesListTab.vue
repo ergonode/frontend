@@ -118,8 +118,8 @@ export default {
 
         .add-btn-wrapper {
             position: absolute;
-            bottom: 16px;
-            right: 16px;
+            bottom: 12px;
+            right: 12px;
             z-index: 3;
         }
     }

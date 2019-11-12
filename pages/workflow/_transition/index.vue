@@ -4,7 +4,7 @@
  */
 <template>
     <TransitionPage
-        :title="`From ${source} to ${destination}` || 'New transition'"
+        title="New transition"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>

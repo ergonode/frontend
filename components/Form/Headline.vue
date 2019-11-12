@@ -2,30 +2,26 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
-    <div class="card-header">
-        <span
-            class="font--medium-24-32"
-            v-text="title" />
-    </div>
+<template functional>
+    <span
+        class="headline font--medium-16-24"
+        v-text="props.title" />
 </template>
 
 <script>
 export default {
-    name: 'BaseCardHeader',
+    name: 'Headline',
     props: {
         title: {
             type: String,
-            default: 'Header',
+            required: true,
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .card-header {
-        padding: 16px 24px;
+    .headline {
         color: $GRAPHITE_DARK;
-        border-bottom: $BORDER_1_GREY;
     }
 </style>

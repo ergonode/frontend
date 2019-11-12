@@ -178,7 +178,6 @@ export default {
         &__scrollable-container {
             position: relative;
             display: flex;
-            margin: 0 4px;
             overflow-x: auto;
 
             &:before, &:after {
