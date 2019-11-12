@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
+    <BasePage>
         <TitleBar
             :title="title"
             :icon="icon" />
@@ -24,7 +24,7 @@
                 :max-page="numberOfPages"
                 @input="onPageChanged" />
         </GridFooter>
-    </PageWrapper>
+    </BasePage>
 </template>
 
 <script>
@@ -35,7 +35,7 @@ import Grid from '~/components/Grid/Grid';
 import GridFooter from '~/components/Grid/GridFooter';
 import GridPageSelector from '~/components/Grid/GridPageSelector';
 import GridPagination from '~/components/Grid/GridPagination';
-import PageWrapper from '~/components/Layout/PageWrapper';
+import BasePage from '~/components/Layout/BasePage';
 
 export default {
     name: 'GridPage',
@@ -45,7 +45,7 @@ export default {
         GridFooter,
         GridPageSelector,
         GridPagination,
-        PageWrapper,
+        BasePage,
     },
     props: {
         routeEdit: {

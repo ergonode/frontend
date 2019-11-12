@@ -72,7 +72,7 @@ export default {
     .title-bar__details {
         display: grid;
         align-items: center;
-        grid-gap: 0 8px;
+        grid-gap: 2px 8px;
 
         .details__back-btn {
             grid-column: 1 / 2;

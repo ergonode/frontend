@@ -3,26 +3,31 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseTab>
+    <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <ConditionSetBaseCard />
+            <BaseForm>
+                <ConditionSetBaseCard />
+            </BaseForm>
         </template>
         <template #footer>
-            <Footer :buttons="[...updateButton]" />
+            <Footer :button="updateButton" />
         </template>
-    </BaseTab>
+    </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
+import Footer from '~/components/ReusableFooter/Footer';
 import ConditionSetBaseCard from '~/components/Card/Cards/ConditionSetBaseCard';
-import BaseTab from '~/components/Card/BaseTab';
+import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
+import BaseForm from '~/components/Form/BaseForm';
 
 export default {
     name: 'ConditionSetBaseTab',
     components: {
-        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Footer,
         ConditionSetBaseCard,
-        BaseTab,
+        ResponsiveCenteredViewTemplate,
+        BaseForm,
     },
     props: {
         updateButton: {

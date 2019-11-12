@@ -4,6 +4,7 @@
  */
 <template>
     <button
+        type="button"
         :class="btnClasses"
         :disabled="disabled"
         :aria-label="title">

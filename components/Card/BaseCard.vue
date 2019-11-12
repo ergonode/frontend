@@ -3,33 +3,29 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="cardClasses">
-        <slot name="header" />
+    <div class="base-card">
+        <slot name="header">
+            <BaseCardHeader
+                v-if="title"
+                :title="title" />
+        </slot>
         <div class="base-card__content">
             <slot />
-            <div class="modal-container">
-                <slot name="modal" />
-            </div>
         </div>
     </div>
 </template>
 
 <script>
+
 export default {
     name: 'BaseCard',
-    props: {
-        modal: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
+    components: {
+        BaseCardHeader: () => import('~/components/Card/BaseCardHeader'),
     },
-    computed: {
-        cardClasses() {
-            return [
-                'base-card',
-                { 'base-card--modal': this.modal },
-            ];
+    props: {
+        title: {
+            type: String,
+            default: '',
         },
     },
 };
@@ -37,22 +33,13 @@ export default {
 
 <style lang="scss" scoped>
     .base-card {
-        width: 280px;
-        margin: 16px;
-
-        &--modal {
-            box-shadow: $ELEVATOR_2_DP;
-
-            .modal-container {
-                display: grid;
-                grid-row-gap: 16px;
-                margin: 0 24px 16px;
-            }
-        }
-
         &__content {
             display: grid;
+            justify-content: center;
+            align-items: center;
             grid-gap: 16px;
+            grid-template-columns: 352px;
+            padding: 24px;
         }
     }
 </style>

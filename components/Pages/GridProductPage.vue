@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
+    <BasePage>
         <TitleBar
             :title="title"
             :icon="icon"
@@ -31,7 +31,7 @@
             v-show="isBlurVisible"
             :style="blurZIndex" /> -->
         <TrashCan v-show="draggedElementOnGrid" />
-    </PageWrapper>
+    </BasePage>
 </template>
 
 <script>
@@ -47,7 +47,7 @@ export default {
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         TitleBar: () => import('~/components/TitleBar/TitleBar'),
-        PageWrapper: () => import('~/components/Layout/PageWrapper'),
+        BasePage: () => import('~/components/Layout/BasePage'),
         TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
         PrependIconButton,
         IconAdd,

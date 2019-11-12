@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridBaseColumn
-        :sticky="true"
-        :style="colGridTemplate">
+    <GridBaseColumn :sticky="true">
         <slot
             name="headerCheckCell"
             :column="0"
@@ -83,10 +81,6 @@ export default {
             type: Number,
             required: true,
         },
-        rowHeight: {
-            type: Number,
-            default: 40,
-        },
     },
     computed: {
         rowsSelectionState() {
@@ -97,11 +91,6 @@ export default {
             }
 
             return 2;
-        },
-        colGridTemplate() {
-            return {
-                gridAutoRows: `${this.rowHeight}px`,
-            };
         },
     },
     methods: {

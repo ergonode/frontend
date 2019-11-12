@@ -9,10 +9,8 @@ export const GHOST_ELEMENT_MODEL = {
 };
 
 export const COLUMN_WIDTH = {
-    SELECT: '150px',
     ACTION: '40px',
-    DEFAULT: 'min-content',
-    AUTO: 'auto',
+    DEFAULT: 'minmax(150px, 1fr)',
 };
 
 export const PINNED_COLUMN_STATE = {
@@ -22,8 +20,8 @@ export const PINNED_COLUMN_STATE = {
 
 export const ROW_HEIGHT = {
     SMALL: 32,
-    MEDIUM: 36,
-    LARGE: 40,
+    MEDIUM: 40,
+    LARGE: 80,
 };
 
 export const GRID_LAYOUT = {

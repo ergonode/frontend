@@ -3,30 +3,45 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridPage
-        title="Imports"
-        :route-edit="routeEdit"
-        icon="Import" />
+    <BasePage>
+        <TitleBar
+            title="Imports"
+            icon="Import"
+            :is-read-only="$isReadOnly('IMPORT')" />
+        <HorizontalTabBar
+            :items="tabs" />
+    </BasePage>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { SIZES } from '~/defaults/buttons';
 
 export default {
-    name: 'Imports',
+    name: 'Import',
+    middleware: ['tab/redirectToImportGrid'],
     components: {
-        GridPage: () => import('~/components/Pages/GridPage'),
+        HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
+        TitleBar: () => import('~/components/TitleBar/TitleBar'),
+        BasePage: () => import('~/components/Layout/BasePage'),
+    },
+    beforeCreate() {
+        this.tabs = [];
+        if (this.$hasAccess('IMPORT_READ')) {
+            this.tabs.push({
+                title: 'Imports',
+                route: { name: 'imports-grid' },
+                active: true,
+                isContextualMenu: false,
+            });
+        }
     },
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
-        }),
-        routeEdit() {
-            return {
-                getData: `${this.userLanguageCode}/imports`,
-                name: 'imports-edit-id',
-            };
+        smallSize() {
+            return SIZES.SMALL;
         },
+    },
+    beforeDestroy() {
+        delete this.tabs;
     },
 };
 </script>

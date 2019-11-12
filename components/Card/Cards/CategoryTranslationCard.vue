@@ -3,12 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseCard modal>
-        <template #header>
-            <BaseCardHeader :title="selectedLanguage" />
-        </template>
-        <Divider />
-        <template #modal>
+    <BaseModalCard>
+        <BaseCard :title="selectedLanguage">
             <TextField
                 v-model="nameValue"
                 solid
@@ -16,26 +12,24 @@
                 label="Category name"
                 :disabled="!isUserAllowedToUpdate"
                 :error-messages="errorNameMessage" />
-        </template>
-    </BaseCard>
+        </BaseCard>
+    </BaseModalCard>
 </template>
 
 <script>
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
-import Divider from '~/components/Dividers/Divider';
 import BaseCard from '~/components/Card/BaseCard';
-import BaseCardHeader from '~/components/Card/BaseCardHeader';
 import TextField from '~/components/Inputs/TextField';
+import BaseModalCard from '~/components/Card/BaseModalCard';
 
 export default {
     name: 'CategoryTranslationCard',
     mixins: [errorValidationMixin, translationCardMixin],
     components: {
-        Divider,
         BaseCard,
-        BaseCardHeader,
         TextField,
+        BaseModalCard,
     },
     computed: {
         nameValue: {

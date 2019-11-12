@@ -52,9 +52,7 @@ export default {
     .template-grid {
         position: relative;
         display: flex;
-        flex: 1;
+        flex: 1 1 auto;
         flex-direction: column;
-        min-width: 0;
-        overflow: auto;
     }
 </style>

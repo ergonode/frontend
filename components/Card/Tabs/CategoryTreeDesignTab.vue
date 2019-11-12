@@ -3,21 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="tab">
-        <div class="horizontal-wrapper">
-            <div class="tab__options">
-                <VerticalTabBar :items="verticalTabs" />
-            </div>
-            <div class="tab__grid">
-                <CategoryTreeWrapper />
-            </div>
-        </div>
-        <Footer :buttons="[...updateButton]" />
-    </div>
+    <GridViewTemplate>
+        <template #sidebar>
+            <VerticalTabBar :items="verticalTabs" />
+        </template>
+        <template #grid>
+            <CategoryTreeWrapper />
+        </template>
+        <template #footer>
+            <Footer :button="updateButton" />
+        </template>
+    </GridViewTemplate>
 </template>
 
 <script>
 import Footer from '~/components/ReusableFooter/Footer';
+import GridViewTemplate from '~/components/Layout/GridViewTemplate';
 
 export default {
     name: 'CategoryTreeDesignTab',
@@ -25,6 +26,7 @@ export default {
         VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
         CategoryTreeWrapper: () => import('~/components/CategoryTreeDesigner/CategoryTreeWrapper'),
         Footer,
+        GridViewTemplate,
     },
     props: {
         updateButton: {
@@ -44,31 +46,3 @@ export default {
     }),
 };
 </script>
-
-<style lang="scss" scoped>
-    .tab {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        background-color: $WHITE;
-
-        .horizontal-wrapper {
-            display: flex;
-            flex: 1;
-        }
-
-        &__options {
-            display: flex;
-            margin: 24px 12px 0 24px;
-        }
-
-        &__grid {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            width: 0;
-            margin: 24px 24px 0 0;
-            overflow: hidden;
-        }
-    }
-</style>

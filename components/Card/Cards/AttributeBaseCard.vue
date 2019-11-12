@@ -38,7 +38,7 @@
             required
             label="Type"
             regular
-            :disabled="isDisabledByPrivileges"
+            :disabled="isDisabled || isDisabledByPrivileges"
             :options="attrTypeValues"
             :error-messages="errorTypeMessage"
             @input="onTypeChange" />

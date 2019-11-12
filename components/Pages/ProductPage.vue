@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
+    <BasePage>
         <TitleBar
             :title="title"
             :status="status"
@@ -31,7 +31,7 @@
                     :theme="secondaryTheme"
                     :size="smallSize"
                     :disabled="!$hasAccess('PRODUCT_UPDATE')"
-                    :options="optionTitle(statusesButtons.more)"
+                    :options="optionTitle"
                     @input="(e) => optionAction(e, statusesButtons.more)" />
                 <BaseButton
                     v-for="button in statusesButtons.statuses"
@@ -44,7 +44,7 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
-    </PageWrapper>
+    </BasePage>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
@@ -140,12 +140,14 @@ export default {
         },
         statusesButtons() {
             if (!this.workflow.length) return {};
+
             const numberOfVisibleStatuses = 2;
             const statuses = JSON.parse(JSON.stringify(this.workflow)); // deep array clone hack
             const visibleStatuses = statuses.splice(0, numberOfVisibleStatuses);
             const hiddenStatuses = statuses.slice(
                 -(this.workflow.length - numberOfVisibleStatuses),
             );
+
             return {
                 statuses: visibleStatuses.map((status) => status),
                 more: hiddenStatuses.map((status) => status),
@@ -157,8 +159,8 @@ export default {
             'updateProductStatus',
             'getProduct',
         ]),
-        optionTitle(options) {
-            return options.map((option) => option.name || option.code);
+        optionTitle() {
+            return this.statusesButtons.more.map((option) => option.name || option.code);
         },
         optionAction(value, options) {
             return options.forEach((option) => {
