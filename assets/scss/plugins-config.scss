@@ -14,9 +14,5 @@ input:-webkit-autofill:active {
 }
 
 * {
-    @include scrollbars(4px, $GREY);
-}
-
-html, body {
-    @include scrollbars(4px, $GRAPHITE_DARK);
+    @include scrollbars(4px, $GREY_DARK);
 }

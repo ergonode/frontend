@@ -30,7 +30,6 @@ export default {
                 title: 'Imports',
                 route: { name: 'imports-grid' },
                 active: true,
-                isContextualMenu: false,
             });
         }
     },

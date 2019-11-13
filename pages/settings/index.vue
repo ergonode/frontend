@@ -30,7 +30,6 @@ export default {
                     title: 'Language',
                     route: { name: 'settings-language' },
                     active: true,
-                    isContextualMenu: false,
                     props: {
                         updateButton: {
                             title: 'SAVE SETTINGS',

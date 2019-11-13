@@ -50,7 +50,6 @@ export default {
                 title: 'Users',
                 route: { name: 'users-grid' },
                 active: true,
-                isContextualMenu: false,
             });
         }
         if (this.$hasAccess('USER_ROLE_READ')) {
@@ -58,7 +57,6 @@ export default {
                 title: 'Roles',
                 route: { name: 'users-roles' },
                 active: true,
-                isContextualMenu: false,
             });
         }
         // TODO: BE need to decide if the new privilege is needed - fill the condition with correct equation
@@ -66,7 +64,6 @@ export default {
             title: 'Users activity logs',
             route: { name: 'users-activity-logs' },
             active: true,
-            isContextualMenu: false,
         });
     },
     computed: {

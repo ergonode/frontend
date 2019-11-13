@@ -6,97 +6,40 @@
     <div class="tab-bar">
         <div
             v-if="isTabVisible"
-            :class="['tab-bar__items', {'tab-bar__items--scrolling': isScrollingEnabled}]">
-            <FabButton
-                v-if="isScrollingEnabled"
-                :theme="secondaryTheme"
-                @click.native="scrollTo('back')">
-                <template #icon="{ color }">
-                    <IconArrowSingle
-                        :fill-color="color"
-                        :state="leftArrow" />
-                </template>
-            </FabButton>
-            <div
-                :class="
-                    [
-                        'scrollbar',
-                        'tab-bar__scrollable-container',
-                        scrollableStateClasses,
-                    ]"
-                @scroll="onScroll">
-                <HorizontalTabBarItem
-                    v-for="(item, index) in items"
-                    :key="index"
-                    :index="index"
-                    :is-selected="index === selectedTabIndex"
-                    :item="item"
-                    @select="onSelectTabBarItem" />
-            </div>
-            <FabButton
-                v-if="isAddingNewTabEnabled"
-                :theme="secondaryTheme"
-                @click.native="addTab">
-                <template #icon="{ color }">
-                    <IconAdd :fill-color="color" />
-                </template>
-            </FabButton>
-            <FabButton
-                v-if="isScrollingEnabled"
-                :theme="secondaryTheme"
-                @click.native="scrollTo('forward')">
-                <template #icon="{ color }">
-                    <IconArrowSingle
-                        :fill-color="color"
-                        :state="rightArrow" />
-                </template>
-            </FabButton>
+            class="tab-bar__items">
+            <HorizontalTabBarItem
+                v-for="(item, index) in items"
+                :key="index"
+                :index="index"
+                :is-selected="index === selectedTabIndex"
+                :item="item"
+                @select="onSelectTabBarItem" />
         </div>
         <HorizontalTabContent :item="items[selectedTabIndex]" />
     </div>
 </template>
 
 <script>
-import { THEMES } from '~/defaults/buttons';
-import { ARROW } from '~/defaults/icons';
-import tabBarMixin from '~/mixins/tabBar/tabBarMixin';
-import { rightBound, leftBound } from '~/model/scroll/boundaryScroll';
-import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
-
 export default {
     name: 'HorizontalTabBar',
     components: {
         HorizontalTabContent: () => import('~/components/Tab/HorizontalTabContent'),
         HorizontalTabBarItem: () => import('~/components/Tab/HorizontalTabBarItem'),
-        FabButton: () => import('~/components/Buttons/FabButton'),
-        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
-        IconArrowSingle: () => import('~/components/Icon/Arrows/IconArrowSingle'),
     },
-    mixins: [tabBarMixin],
+    props: {
+        items: {
+            type: Array,
+            required: true,
+        },
+    },
     data() {
         return {
             selectedTabIndex: this.items.findIndex(
                 (item) => item.route.name === this.$route.name,
             ),
-            isLeftBoundReached: true,
-            isRightBoundReached: true,
-            leftArrow: ARROW.LEFT,
-            rightArrow: ARROW.RIGHT,
         };
     },
     computed: {
-        secondaryTheme() {
-            return THEMES.SECONDARY;
-        },
-        graphiteColor() {
-            return GRAPHITE;
-        },
-        scrollableStateClasses() {
-            return {
-                'tab-bar__scrollable-container--left-gradient': !this.isLeftBoundReached,
-                'tab-bar__scrollable-container--right-gradient': !this.isRightBoundReached,
-            };
-        },
         isTabVisible() {
             return this.items.length > 1;
         },
@@ -105,49 +48,6 @@ export default {
         onSelectTabBarItem(index) {
             this.selectedTabIndex = index;
         },
-        onScroll(element) {
-            const { target: { scrollWidth, offsetWidth, scrollLeft } } = element;
-
-            this.isRightBoundReached = rightBound({
-                xOffset: scrollLeft + offsetWidth,
-                maxWidth: scrollWidth,
-            });
-
-            this.isLeftBoundReached = leftBound({
-                xOffset: scrollLeft,
-            });
-        },
-        determinateScrollingState() {
-            const scrollableContainer = document.querySelector('.tab-bar__scrollable-container');
-            const tabsContainer = document.querySelector('.tab-bar__items');
-            const { scrollWidth: scrollableContainerScrollWidth } = scrollableContainer;
-            const { scrollWidth: tabsContainerScrollWidth } = tabsContainer;
-            const paddingValue = 2 * 21;
-            const addBtnTabWidth = 32;
-            const tabWidth = 165;
-            const xOffset = paddingValue + tabWidth + addBtnTabWidth;
-
-            if (scrollableContainerScrollWidth >= tabsContainerScrollWidth - xOffset) {
-                this.isScrollingEnabled = true;
-                this.isRightBoundReached = false;
-            } else {
-                this.isScrollingEnabled = false;
-            }
-        },
-        scrollTo(side) {
-            const tabWidth = 200;
-            const scrollableContainer = document.querySelector('.tab-bar__scrollable-container');
-
-            switch (side) {
-            case 'back':
-                scrollableContainer.scrollTo(scrollableContainer.scrollLeft - tabWidth, 0);
-                break;
-            case 'forward':
-                scrollableContainer.scrollTo(scrollableContainer.scrollLeft + tabWidth, 0);
-                break;
-            default: break;
-            }
-        },
     },
 };
 </script>
@@ -155,54 +55,15 @@ export default {
 <style lang="scss" scoped>
     .tab-bar {
         display: flex;
-        flex-flow: column nowrap;
         flex: 1;
+        flex-direction: column;
 
         &__items {
             position: relative;
-            bottom: -1px;
-            z-index: 2;
             display: flex;
-            align-items: center;
-            margin: 0 24px;
-
-            & > button {
-                flex-shrink: 0;
-            }
-
-            &--scrolling {
-                margin: 0 6px;
-            }
-        }
-
-        &__scrollable-container {
-            position: relative;
-            display: flex;
-            overflow-x: auto;
-
-            &:before, &:after {
-                position: fixed;
-                z-index: -1;
-                width: 34px;
-                height: 42px;
-                opacity: 0;
-                content: "";
-            }
-
-            &:after {
-                right: 74px;
-                background: linear-gradient(90deg, rgba(248, 248, 248, 0) 0%, $WHITE 100%);
-            }
-
-            &:before {
-                left: 42px;
-                background: linear-gradient(-90deg, rgba(248, 248, 248, 0) 0%, $WHITE 100%);
-            }
-
-            &--left-gradient:before, &--right-gradient:after {
-                z-index: 1;
-                opacity: 1;
-            }
+            height: 48px;
+            box-sizing: border-box;
+            background-image: linear-gradient($WHITESMOKE, $WHITE);
         }
     }
 </style>

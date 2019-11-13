@@ -50,7 +50,6 @@ export default {
                 title: 'Segments',
                 route: { name: 'segments-grid' },
                 active: true,
-                isContextualMenu: false,
             });
         }
     },
