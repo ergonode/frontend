@@ -28,7 +28,7 @@ export default {
         align-items: center;
         border: none;
         padding: 0 24px;
-        background-color: transparent;
+        background-color: $GRAPHITE_DARK;
         cursor: pointer;
         outline: none;
 

@@ -6,13 +6,13 @@
     <App>
         <template v-if="user">
             <NavigationBar>
-                <template #leftSectionContent>
+                <template #leftSection>
                     <NavigationBarMenuButton
                         :value="sideBarState"
                         @state="onStateChange" />
                     <NavigationBarDashboardButton />
                 </template>
-                <template #rightSectionContent>
+                <template #rightSection>
                     <NavigationBarUserButton />
                     <NavigationBarSynchronizationButton />
                     <NavigationBarNotificationButton />

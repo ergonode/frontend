@@ -5,6 +5,9 @@
 <template>
     <NavigationBarButton>
         <IconBell :fill-color="whiteColor" />
+        <NotificationBadge
+            v-show="notificationNumber > 0"
+            :number="notificationNumber" />
     </NavigationBarButton>
 </template>
 
@@ -16,6 +19,12 @@ export default {
     components: {
         NavigationBarButton: () => import('~/components/Navigation/NavigationBar/NavigationBarButton'),
         IconBell: () => import('~/components/Icon/Menu/IconBell'),
+        NotificationBadge: () => import('~/components/Badges/NotificationBadge'),
+    },
+    data() {
+        return {
+            notificationNumber: 1,
+        };
     },
     computed: {
         whiteColor() {
