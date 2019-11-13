@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="comment">
-        <div class="comment__header">
+    <CommentWrapper>
+        <template #header>
             <div class="header__user">
                 <div class="user__avatar">
                     <!-- <Picture
@@ -37,29 +37,37 @@
                     </template>
                 </FabButton>
             </div>
-        </div>
-        <div class="comment__content font--medium-14-20">
-            Lorem Ipsum is simply dummy text of.
-        </div>
-        <div class="comment__footer font--medium-12-16">
-            <span>Created 12.3.1234 33:33</span>
-            <span>Edited 12.5.1234 24:34</span>
-        </div>
-    </div>
+        </template>
+        <template #content>
+            <span class="font--medium-14-20">
+                Lorem Ipsum is simply dummy text of.
+            </span>
+        </template>
+        <template #footer>
+            <span class="font--medium-12-16">Created 12.3.1234 33:33</span>
+            <span class="font--medium-12-16">Edited 12.5.1234 24:34</span>
+        </template>
+    </CommentWrapper>
 </template>
 <script>
 import { THEMES, SIZES } from '~/defaults/buttons';
 import {
     GREEN, RED, WHITE,
 } from '~/assets/scss/_variables/_colors.scss';
+import CommentWrapper from '~/components/Comments/CommentWrapper';
+import FabButton from '~/components/Buttons/FabButton';
+import IconEdit from '~/components/Icon/Actions/IconEdit';
+import IconDelete from '~/components/Icon/Actions/IconDelete';
+import IconUser from '~/components/Icon/Menu/IconUser';
 
 export default {
     name: 'Comment',
     components: {
-        FabButton: () => import('~/components/Buttons/FabButton'),
-        IconEdit: () => import('~/components/Icon/Actions/IconEdit'),
-        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
-        IconUser: () => import('~/components/Icon/Menu/IconUser'),
+        CommentWrapper,
+        FabButton,
+        IconEdit,
+        IconDelete,
+        IconUser,
         // Picture: () => import('~/components/Inputs/Image/Picture'),
     },
     props: {
@@ -95,60 +103,30 @@ export default {
     },
 };
 </script>
-
 <style lang="scss" scoped>
-    .comment {
+    .header__user {
         display: flex;
-        flex-direction: column;
-        min-width: 556px;
-        width: auto;
-        max-width: 600px;
-        padding: 24px;
-        background-color: $WHITE;
-        box-shadow: $ELEVATOR_2_DP;
-        color: $GRAPHITE_DARK;
+        align-items: center;
 
-        &__header {
+        .user__avatar {
+            padding-right: 12px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            width: 32px;
+            height: 32px;
 
-            .header__user {
-                display: flex;
-                align-items: center;
-
-                .user__avatar {
-                    padding-right: 12px;
-                    display: flex;
-                    width: 32px;
-                    height: 32px;
-
-                    & > svg {
-                        border-radius: 16px;
-                        object-fit: contain;
-                    }
-                }
-            }
-
-            .header__actions {
-                display: flex;
-                align-items: center;
-
-                & > button {
-                    margin-left: 8px;
-                }
+            & > svg {
+                border-radius: 16px;
+                object-fit: contain;
             }
         }
+    }
 
-        &__content {
-            padding: 16px 0;
-        }
+    .header__actions {
+        display: flex;
+        align-items: center;
 
-        &__footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: $GRAPHITE;
+        & > button {
+            margin-left: 8px;
         }
     }
 </style>
