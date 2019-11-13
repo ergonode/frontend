@@ -3,10 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridBaseColumn
-        :sticky="true"
-        :style="colGridTemplate"
-        :border-right="false">
+    <div :class="pinnedColumnClass">
         <GridCell
             :column="columnIndex"
             :row="0"
@@ -16,6 +13,7 @@
             <GridEditHeaderCell />
         </GridCell>
         <GridCell
+            v-if="basicFilters"
             :column="columnIndex"
             :row="1"
             :editing-allowed="false"
@@ -25,24 +23,23 @@
             v-for="(rowLink, index) in rowLinks"
             :key="rowLink.id"
             :column="columnIndex"
-            :row="index + 2"
+            :row="index + rowsOffset"
             :editing-allowed="true"
             :action-cell="true"
             :selected="isSelectedAllRows
-                || selectedRows[(index + 2) * currentPage]"
+                || selectedRows[(index + rowsOffset) * currentPage]"
             @edit="onEdit(rowLink)">
             <GridEditRowCell
                 :params="rowLink"
                 @edit="onEdit" />
         </GridCell>
-    </GridBaseColumn>
+    </div>
 </template>
 
 <script>
 export default {
-    name: 'GridEditColumn',
+    name: 'GridColumnEdit',
     components: {
-        GridBaseColumn: () => import('~/components/Grid/Columns/GridBaseColumn'),
         GridEditHeaderCell: () => import('~/components/Grid/HeaderCells/GridEditHeaderCell'),
         GridCell: () => import('~/components/Grid/GridCell'),
         GridEditRowCell: () => import('~/components/Grid/EditCells/GridEditRowCell'),
@@ -52,13 +49,21 @@ export default {
             type: Number,
             required: true,
         },
+        rowsOffset: {
+            type: Number,
+            default: 0,
+        },
         rowLinks: {
             type: Array,
             required: true,
         },
-        rowHeight: {
-            type: Number,
-            default: 40,
+        isPinned: {
+            type: Boolean,
+            required: true,
+        },
+        basicFilters: {
+            type: Boolean,
+            default: true,
         },
         isSelectedAllRows: {
             type: Boolean,
@@ -74,10 +79,13 @@ export default {
         },
     },
     computed: {
-        colGridTemplate() {
-            return {
-                gridAutoRows: `${this.rowHeight}px`,
-            };
+        pinnedColumnClass() {
+            return [
+                'pinned-column',
+                {
+                    'pinned-column--right': this.isPinned,
+                },
+            ];
         },
     },
     methods: {
@@ -89,13 +97,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .column {
+    .pinned-column {
+        position: sticky;
         right: 0;
+        z-index: 3;
+        display: grid;
+        box-sizing: border-box;
 
-        .grid-cell:nth-child(1) {
-            position: sticky !important;
-            top: 0;
-            z-index: 1;
+        &--right {
+            box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.2);
         }
     }
 </style>

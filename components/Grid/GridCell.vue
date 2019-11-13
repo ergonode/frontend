@@ -178,6 +178,13 @@ export default {
         border-bottom: 1px solid $GREY;
         background-color: $WHITE;
 
+        &:nth-child(1) {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: $WHITESMOKE;
+        }
+
         &:not(&--error):not(&--locked) {
             &:focus {
                 box-shadow: inset -0.5px 0 0 2px $GREEN;

@@ -6,12 +6,12 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                namespace="usersGrid"
+                namespace="importGrid"
                 :route-edit="routeEdit"
-                :editing-privilege-allowed="$hasAccess('USER_UPDATE')"
+                :editing-privilege-allowed="$hasAccess('IMPORT_UPDATE')"
                 :basic-filters="true"
                 :select-column="false"
-                title="Users"
+                title="Imports"
                 @rowEdit="onRowEdit" />
         </template>
         <template #footer>
@@ -32,7 +32,7 @@ import gridModule from '~/reusableStore/grid/state';
 import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
 
 export default {
-    name: 'UsersGridTab',
+    name: 'ImportGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('~/components/Grid/Grid'),
@@ -48,29 +48,29 @@ export default {
     beforeCreate() {
         this.$registerStore({
             module: gridModule,
-            moduleName: 'usersGrid',
+            moduleName: 'importGrid',
             store: this.$store,
         });
     },
     beforeDestroy() {
-        this.$store.unregisterModule('usersGrid');
+        this.$store.unregisterModule('importGrid');
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
         }),
-        ...mapState('usersGrid', {
+        ...mapState('importGrid', {
             numberOfDataElements: (state) => state.count,
             currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
-        ...mapGetters('usersGrid', {
+        ...mapGetters('importGrid', {
             numberOfPages: 'numberOfPages',
         }),
         routeEdit() {
             return {
-                getData: `${this.userLanguageCode}/accounts`,
-                name: 'user-edit-id',
+                getData: `${this.userLanguageCode}/imports`,
+                name: 'import-edit-id',
             };
         },
         visibleRowsInPageCount: {
@@ -88,7 +88,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('usersGrid', [
+        ...mapActions('importGrid', [
             'getData',
             'setCurrentPage',
             'changeNumberOfDisplayingElements',
@@ -97,7 +97,7 @@ export default {
             const args = edit.href.split('/');
             const lastIndex = args.length - 1;
 
-            this.$router.push({ name: 'user-edit-id-general', params: { id: args[lastIndex] } });
+            this.$router.push({ name: 'import-edit-id-general', params: { id: args[lastIndex] } });
         },
         onPageChanged(page) {
             this.setCurrentPage(page);
@@ -115,11 +115,11 @@ export default {
     async fetch({ app, store }) {
         app.$registerStore({
             module: gridModule,
-            moduleName: 'usersGrid',
+            moduleName: 'importGrid',
             store,
         });
-        const gridPath = `${store.state.authentication.user.language}/accounts`;
-        await store.dispatch('usersGrid/getData', { path: gridPath });
+        const gridPath = `${store.state.authentication.user.language}/imports`;
+        await store.dispatch('importGrid/getData', { path: gridPath });
     },
 };
 </script>

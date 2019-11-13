@@ -26,6 +26,7 @@
                     @keyup.13="onSubmit" />
                 <BaseButton
                     title="Log in"
+                    type="submit"
                     @click.stop.prevent.native="onSubmit" />
             </form>
         </section>

@@ -4,10 +4,10 @@
  */
 export default {
     components: {
-        GridSelectRowColumn: () => import('~/components/Grid/Columns/GridSelectRowColumn'),
+        GridColumnSelectRow: () => import('~/components/Grid/Columns/GridColumnSelectRow'),
     },
     props: {
-        selectRowColumn: {
+        selectColumn: {
             type: Boolean,
             default: true,
         },

@@ -74,10 +74,10 @@ export default {
             this.addEventListenersForResizeState();
         },
         onMouseEnter(event) {
-            event.target.classList.add('hover');
+            event.target.classList.add('column--hovered');
         },
         onMouseLeave(event) {
-            event.target.classList.remove('hover');
+            event.target.classList.remove('column--hovered');
         },
         doResizeDrag(event) {
             if (this.xPos < event.pageX) {

@@ -72,6 +72,7 @@ export default {
 <style lang="scss" scoped>
     .tab-bar {
         display: flex;
+        height: 100%;
 
         &__items {
             position: relative;

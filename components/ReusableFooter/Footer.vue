@@ -5,8 +5,6 @@
 <template>
     <div class="footer">
         <BaseButton
-            v-for="button in buttons"
-            :key="button.title"
             :title="button.title"
             :theme="button.theme"
             :disabled="button.disabled"
@@ -23,8 +21,8 @@ export default {
         BaseButton,
     },
     props: {
-        buttons: {
-            type: Array,
+        button: {
+            type: Object,
             required: true,
         },
     },
@@ -33,16 +31,9 @@ export default {
 
 <style lang="scss" scoped>
     .footer {
-        z-index: 99;
         display: flex;
+        flex: 1;
         justify-content: flex-end;
         align-items: center;
-        padding: 12px 24px;
-        background-color: $WHITE;
-        box-shadow: $ELEVATOR_6_DP;
-
-        & > button {
-            margin: 0 5px;
-        }
     }
 </style>

@@ -6,16 +6,8 @@
     <div
         :class="['grid', {
             'grid--placeholder': isPlaceholder,
-            'grid--disabled': isColumnExists || isAdvancedFilterFocused,
+            'grid--disabled': isColumnExists,
         }]">
-        <GridAdvancedFilters
-            v-if="advancedFilters"
-            :filters-data="gridState.advancedFiltersData"
-            :filters="gridState.advancedFilters"
-            :namespace="namespace"
-            :path="routeEdit.getData"
-            :disabled="isFilterExists"
-            @focus="onAdvancedFilterFocus" />
         <GridHeader
             :title="title"
             :row-height="rowHeight"
@@ -27,8 +19,9 @@
             class="grid__content"
             :style="templateColumns"
             @dragleave="onDragLeave">
-            <GridSelectRowColumn
-                v-if="selectRowColumn"
+            <GridColumnSelectRow
+                v-if="selectColumn"
+                :style="templateRows"
                 :row-ids="gridState.rowIds"
                 :rows-offset="rowsOffset"
                 :row-height="rowHeight"
@@ -36,6 +29,7 @@
                 :selected-rows="selectedRows"
                 :basic-filters="basicFilters"
                 :current-page="gridState.currentPage"
+                :is-pinned="isSelectColumnPinned"
                 @rowSelect="onSelectRow"
                 @rowsSelect="onSelectAllRows">
                 <template #headerCheckCell="{ row, column }">
@@ -50,10 +44,11 @@
                         :row="row"
                         :column="column" />
                 </template>
-            </GridSelectRowColumn>
-            <GridColumn
+            </GridColumnSelectRow>
+            <GridColumnData
                 v-for="(column, colIndex) in gridState.columns"
                 :key="column.id"
+                :style="templateRows"
                 :namespace="namespace"
                 :index="colIndex + columnsOffset"
                 :column="column"
@@ -97,25 +92,29 @@
                             || selectedRows[(rowIndex + rowsOffset) * gridState.currentPage]"
                         :editing-privilege-allowed="editingPrivilegeAllowed" />
                 </slot>
-            </GridColumn>
-            <GridExtenderColumn
-                v-if="extenderColumn"
-                :is-selected-all-rows="isSelectedAllRows"
-                :selected-rows="selectedRows"
-                :row-height="rowHeight"
-                :current-page="gridState.currentPage"
-                :rows-number="gridState.rowIds.length + rowsOffset"
-                :column-index="extenderColumnIndex" />
-            <GridEditColumn
+            </GridColumnData>
+            <GridColumnEdit
                 v-if="editColumn"
+                :style="templateRows"
                 :is-selected-all-rows="isSelectedAllRows"
                 :selected-rows="selectedRows"
                 :current-page="gridState.currentPage"
-                :row-height="rowHeight"
+                :rows-offset="rowsOffset"
                 :column-index="editColumnIndex"
+                :basic-filters="basicFilters"
                 :row-links="gridState.rowLinks"
                 :route-path="routeEdit.name"
+                :is-pinned="isEditColumnPinned"
                 @rowEdit="onRowEdit" />
+            <GridColumnSentinel
+                v-if="selectColumn"
+                :pinned-state="columnPinnedState.LEFT"
+                @sticky="onStickyChange" />
+            <GridColumnSentinel
+                v-if="editColumn"
+                :style="{ gridColumn: `${editColumnIndex} / ${editColumnIndex}`}"
+                :pinned-state="columnPinnedState.RIGHT"
+                @sticky="onStickyChange" />
         </div>
         <GridPlaceholder v-if="isPlaceholder" />
     </div>
@@ -123,13 +122,12 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { sumIntegers } from '~/model/arrayWrapper';
 import {
-    PINNED_COLUMN_STATE,
     ROW_HEIGHT,
     GRID_LAYOUT,
     GHOST_ELEMENT_MODEL,
     GHOST_ID,
+    PINNED_COLUMN_STATE,
     COLUMN_WIDTH,
 } from '~/defaults/grid';
 import {
@@ -141,11 +139,10 @@ export default {
     name: 'Grid',
     mixins: [selectedRowMixin],
     components: {
-        GridAdvancedFilters: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilters'),
         GridHeader: () => import('~/components/Grid/GridHeader'),
-        GridColumn: () => import('~/components/Grid/Columns/GridColumn'),
-        GridExtenderColumn: () => import('~/components/Grid/Columns/GridExtenderColumn'),
-        GridEditColumn: () => import('~/components/Grid/Columns/GridEditColumn'),
+        GridColumnData: () => import('~/components/Grid/Columns/GridColumnData'),
+        GridColumnSentinel: () => import('~/components/Grid/Columns/GridColumnSentinel'),
+        GridColumnEdit: () => import('~/components/Grid/Columns/GridColumnEdit'),
         GridWrapperCell: () => import('~/components/Grid/Wrappers/GridWrapperCell'),
         GridWrapperHeaderActionCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderActionCell'),
         GridWrapperHeaderCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderCell'),
@@ -168,15 +165,11 @@ export default {
             type: Boolean,
             default: true,
         },
-        advancedFilters: {
-            type: Boolean,
-            default: false,
-        },
         basicFilters: {
             type: Boolean,
             default: false,
         },
-        extenderColumn: {
+        selectColumn: {
             type: Boolean,
             default: true,
         },
@@ -189,8 +182,9 @@ export default {
         return {
             isHeaderFocused: false,
             isMouseOverGrid: false,
-            isAdvancedFilterFocused: false,
-            rowHeight: ROW_HEIGHT.LARGE,
+            isSelectColumnPinned: false,
+            isEditColumnPinned: false,
+            rowHeight: ROW_HEIGHT.MEDIUM,
             layout: GRID_LAYOUT.TABLE,
         };
     },
@@ -225,17 +219,13 @@ export default {
         gridState() {
             return this.$store.state[this.namespace];
         },
+        columnPinnedState() {
+            return PINNED_COLUMN_STATE;
+        },
         editColumnIndex() {
             let index = this.gridState.columns.length;
 
-            if (this.selectRowColumn || this.extenderColumn) index += 1;
-
-            return index;
-        },
-        extenderColumnIndex() {
-            let index = this.gridState.columns.length;
-
-            if (this.selectRowColumn) index += 1;
+            if (this.selectColumn) index += 1;
 
             return index;
         },
@@ -243,17 +233,24 @@ export default {
             return this.$store.getters[`${this.namespace}/numberOfPages`];
         },
         columnsOffset() {
-            return this.selectRowColumn ? 1 : 0;
+            return this.selectColumn ? 1 : 0;
         },
         rowsOffset() {
             return this.basicFilters ? 2 : 1;
+        },
+        templateRows() {
+            const headerRowsTemplate = this.basicFilters ? `${ROW_HEIGHT.MEDIUM}px ${ROW_HEIGHT.MEDIUM}px` : `${ROW_HEIGHT.MEDIUM}px`;
+            const dataRowsTemplate = this.gridState.rowIds.length > 0 ? `repeat(${this.gridState.rowIds.length}, ${this.rowHeight}px)` : '';
+
+            return {
+                gridTemplateRows: `${headerRowsTemplate} ${dataRowsTemplate}`,
+            };
         },
         templateColumns() {
             const rightWidths = [];
             const leftWidths = [];
 
-            if (this.selectRowColumn) leftWidths.push(COLUMN_WIDTH.ACTION);
-            if (this.extenderColumn) rightWidths.push(COLUMN_WIDTH.AUTO);
+            if (this.selectColumn) leftWidths.push(COLUMN_WIDTH.ACTION);
             if (this.editColumn) rightWidths.push(COLUMN_WIDTH.ACTION);
 
             return {
@@ -287,6 +284,15 @@ export default {
             'setGhostIndex',
             'setGhostFilterIndex',
         ]),
+        onStickyChange({
+            isSticky, state,
+        }) {
+            if (state === PINNED_COLUMN_STATE.LEFT) {
+                this.isSelectColumnPinned = isSticky;
+            } else {
+                this.isEditColumnPinned = isSticky;
+            }
+        },
         onClickOutside(event) {
             const { gridContent } = this.$refs;
             const isVisible = !!gridContent
@@ -300,9 +306,6 @@ export default {
                 // Dismiss editable cell mode
                 this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
             }
-        },
-        onAdvancedFilterFocus(isFocused) {
-            this.isAdvancedFilterFocused = isFocused;
         },
         onRowEdit(route) {
             this.$emit('rowEdit', route);
@@ -332,41 +335,6 @@ export default {
         },
         onHeaderFocus(isFocused) {
             this.isHeaderFocused = isFocused;
-        },
-        onStickyChange({
-            sticky, columnId, state,
-        }) {
-            const columnIndex = this.gridState.columns.findIndex((col) => col.id === columnId);
-            const { gridContent: { children: columnEls } } = this.$refs;
-            const columnEl = columnEls[columnIndex];
-
-            if (sticky) {
-                if (state === PINNED_COLUMN_STATE.RIGHT) {
-                    columnEl.style.right = `${sumIntegers(this.rightPinnedColumns)}px`;
-                    this.rightPinnedColumns.push(columnEl.offsetWidth);
-                    columnEl.classList.add('drop-shadow-right-pinned');
-                } else {
-                    columnEl.style.left = `${sumIntegers(this.leftPinnedColumns)}px`;
-                    this.leftPinnedColumns.push(columnEl.offsetWidth);
-                    columnEl.classList.add('drop-shadow-left-pinned');
-                }
-                columnEl.classList.add('sticky');
-            } else {
-                if (state === PINNED_COLUMN_STATE.RIGHT) {
-                    const indexToRemove = this.rightPinnedColumns.length - 1;
-
-                    columnEl.classList.remove('drop-shadow-right-pinned');
-                    this.rightPinnedColumns.splice(indexToRemove, 1);
-                    columnEl.style.right = null;
-                } else {
-                    const indexToRemove = this.leftPinnedColumns.length - 1;
-
-                    columnEl.classList.remove('drop-shadow-left-pinned');
-                    this.leftPinnedColumns.splice(indexToRemove, 1);
-                    columnEl.style.left = null;
-                }
-                columnEl.classList.remove('sticky');
-            }
         },
         addGhostColumn() {
             if (!this.isColumnExists) {
@@ -422,7 +390,6 @@ export default {
         display: flex;
         flex: 1 1 auto;
         flex-direction: column;
-        border-bottom: none;
         height: 0;
 
         &--placeholder {

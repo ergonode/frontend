@@ -3,23 +3,30 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="tab">
-        <div class="horizontal-wrapper">
-            <div class="tab__options">
-                <VerticalTabBar :items="verticalTabs" />
-            </div>
-            <div class="tab__grid">
-                <Grid
-                    namespace="productsGrid"
-                    :route-edit="routeEdit"
-                    :editing-privilege-allowed="isUserAllowedToUpdate"
-                    :advanced-filters="true"
-                    :basic-filters="true"
-                    title="Products"
-                    @rowEdit="onRowEdit" />
-            </div>
-        </div>
-        <GridFooter>
+    <GridViewTemplate>
+        <template #filters>
+            <GridAdvancedFilters
+                :filters-data="advancedFiltersData"
+                :filters="advancedFilters"
+                namespace="productsGrid"
+                :path="routeEdit.getData"
+                :disabled="isFilterExists"
+                @focus="onAdvancedFilterFocus" />
+        </template>
+        <template #sidebar>
+            <VerticalTabBar :items="verticalTabs" />
+        </template>
+        <template #grid>
+            <Grid
+                namespace="productsGrid"
+                :route-edit="routeEdit"
+                :editing-privilege-allowed="isUserAllowedToUpdate"
+                :advanced-filters="true"
+                :basic-filters="true"
+                title="Products"
+                @rowEdit="onRowEdit" />
+        </template>
+        <template #footer>
             <GridPageSelector
                 v-model="visibleRowsInPageCount"
                 :rows-number="numberOfDataElements" />
@@ -31,29 +38,27 @@
                 title="SAVE CHANGES"
                 :disabled="!isUserAllowedToUpdate"
                 @click.native="saveDrafts" />
-        </GridFooter>
-    </div>
+        </template>
+    </GridViewTemplate>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
-import Grid from '~/components/Grid/Grid';
-import GridFooter from '~/components/Grid/GridFooter';
-import GridPageSelector from '~/components/Grid/GridPageSelector';
-import GridPagination from '~/components/Grid/GridPagination';
 import VerticalTabBar from '~/components/Tab/VerticalTabBar';
 import BaseButton from '~/components/Buttons/BaseButton';
+import GridViewTemplate from '~/components/Layout/GridViewTemplate';
 
 export default {
     name: 'ProductGridTab',
     components: {
-        Grid,
-        GridFooter,
-        GridPageSelector,
-        GridPagination,
+        GridViewTemplate,
         VerticalTabBar,
         BaseButton,
+        Grid: () => import('~/components/Grid/Grid'),
+        GridAdvancedFilters: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilters'),
+        GridPagination: () => import('~/components/Grid/GridPagination'),
+        GridPageSelector: () => import('~/components/Grid/GridPageSelector'),
     },
     data() {
         return {
@@ -83,6 +88,7 @@ export default {
     computed: {
         ...mapState('draggable', {
             isListElementDragging: (state) => state.isListElementDragging,
+            draggedElement: (state) => state.draggedElement,
         }),
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
@@ -91,6 +97,8 @@ export default {
             numberOfDataElements: (state) => state.count,
             currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
+            advancedFiltersData: (state) => state.advancedFiltersData,
+            advancedFilters: (state) => state.advancedFilters,
         }),
         ...mapState('gridDraft', {
             drafts: (state) => state.drafts,
@@ -98,6 +106,13 @@ export default {
         ...mapGetters('productsGrid', {
             numberOfPages: 'numberOfPages',
         }),
+        isFilterExists() {
+            const draggedElIndex = this.advancedFiltersData.findIndex(
+                (filter) => filter.id === this.draggedElement,
+            );
+
+            return draggedElIndex !== -1;
+        },
         isUserAllowedToUpdate() {
             return this.$hasAccess('PRODUCT_UPDATE');
         },
@@ -135,6 +150,10 @@ export default {
             'removeDraft',
             'forceDraftsMutation',
         ]),
+        onAdvancedFilterFocus(isFocused) {
+            // TODO: Solve it
+            this.isAdvancedFilterFocused = isFocused;
+        },
         onRowEdit({ links: { edit } }) {
             const args = edit.href.split('/');
             const lastIndex = args.length - 1;
@@ -189,31 +208,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .tab {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        background-color: $WHITE;
-
-        .horizontal-wrapper {
-            display: flex;
-            flex: 1;
-        }
-
-        &__options {
-            display: flex;
-            margin: 24px 24px 0;
-        }
-
-        &__grid {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            width: 0;
-            margin: 24px 24px 0 0;
-            overflow: hidden;
-        }
-    }
-</style>

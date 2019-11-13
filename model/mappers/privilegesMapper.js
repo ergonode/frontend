@@ -18,7 +18,7 @@ const getNameColumn = () => ({
     id: 'name',
     label: '',
     type: COLUMN_TYPE.TEXT,
-    width: '0.5fr',
+    width: '1fr',
 });
 
 export function getMappedGridData(privileges, rolePrivileges) {
@@ -26,7 +26,7 @@ export function getMappedGridData(privileges, rolePrivileges) {
     const columns = [
         getNameColumn(),
     ];
-    const columnWidths = ['0.5fr'];
+    const columnWidths = ['1fr'];
     const tmpRowKeys = {};
     const tmpColumnKeys = {};
     const systemPrivilegesEntries = Object.entries(privileges);

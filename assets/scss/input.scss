@@ -62,8 +62,6 @@
     }
 
     &.floating-label {
-        margin-top: 6px;
-
         #{$input}__label {
             position: absolute;
             padding: 0 2px;

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
+    <BasePage>
         <TitleBar
             title="Templates"
             :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')"
@@ -40,7 +40,7 @@
                 </div>
             </div>
         </div>
-    </PageWrapper>
+    </BasePage>
 </template>
 
 <script>
@@ -52,7 +52,7 @@ export default {
     components: {
         TitleBar: () => import('~/components/TitleBar/TitleBar'),
         TemplateElement: () => import('~/components/Template/TemplateElement'),
-        PageWrapper: () => import('~/components/Layout/PageWrapper'),
+        BasePage: () => import('~/components/Layout/BasePage'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
         PrependIconButton: () => import('~/components/Buttons/PrependIconButton'),
     },

@@ -3,27 +3,31 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseTab>
+    <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <TransitionBaseCard />
+            <BaseForm>
+                <TransitionBaseCard />
+            </BaseForm>
         </template>
         <template #footer>
-            <Footer :buttons="[...updateButton]" />
+            <Footer :button="updateButton" />
         </template>
-    </BaseTab>
+    </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
 import TransitionBaseCard from '~/components/Card/Cards/TransitionBaseCard';
-import BaseTab from '~/components/Card/BaseTab';
+import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
 import Footer from '~/components/ReusableFooter/Footer';
+import BaseForm from '~/components/Form/BaseForm';
 
 export default {
     name: 'TransitionBaseTab',
     components: {
         TransitionBaseCard,
         Footer,
-        BaseTab,
+        ResponsiveCenteredViewTemplate,
+        BaseForm,
     },
     props: {
         updateButton: {

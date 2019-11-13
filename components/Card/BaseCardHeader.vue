@@ -26,5 +26,6 @@ export default {
     .card-header {
         padding: 16px 24px;
         color: $GRAPHITE_DARK;
+        border-bottom: $BORDER_1_GREY;
     }
 </style>
