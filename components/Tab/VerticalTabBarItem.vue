@@ -61,39 +61,23 @@ export default {
         $tabItem: &;
 
         position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        display: grid;
+        row-gap: 4px;
+        justify-items: center;
         align-items: center;
-        padding: 14px 8px;
+        padding: 12px 0;
         background-color: $WHITE;
         color: $GRAPHITE;
         outline: none;
-        border-left: $BORDER_1_GREY;
-        border-top: $BORDER_1_GREY;
         text-align: center;
-
-        &__title {
-            margin-top: 8px;
-        }
-
-        &:not(&--selected), &:not(&--expanded) {
-            border-right: $BORDER_1_GREY;
-            padding-right: 7px;
-        }
-
-        &:last-child {
-            border-bottom: $BORDER_1_GREY;
-        }
 
         &:after {
             position: absolute;
-            top: -1px;
-            left: -1px;
-            bottom: -1px;
+            top: 0;
+            left: 0;
+            bottom: 0;
             z-index: 1;
             width: 3px;
-            height: calc(100% + 2px);
             background-color: $GREEN;
             opacity: 0;
             content: "";

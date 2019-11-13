@@ -62,7 +62,6 @@ export default {
                 title: 'Category trees',
                 route: { name: 'category-trees-grid' },
                 active: true,
-                isContextualMenu: false,
             });
         }
     },

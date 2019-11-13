@@ -21,15 +21,7 @@
                 </PrependIconButton>
             </template>
         </TitleBar>
-        <HorizontalTabBar
-            :items="tabs" />
-        <!--
-            is-adding-new-tab-enabled
-            NOTE: We will add this attribute when we support the functionality of many tabs
-        -->
-        <!-- <Blur
-            v-show="isBlurVisible"
-            :style="blurZIndex" /> -->
+        <HorizontalTabBar :items="tabs" />
         <TrashCan v-show="draggedElementOnGrid" />
     </BasePage>
 </template>
@@ -70,7 +62,6 @@ export default {
                 title: 'Products',
                 route: { name: 'products-grid' },
                 active: true,
-                isContextualMenu: false,
             },
         ];
     },

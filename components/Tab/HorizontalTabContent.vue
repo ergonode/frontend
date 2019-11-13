@@ -24,7 +24,6 @@ export default {
 
 <style lang="scss" scoped>
     .tab-content {
-        background-color: $WHITE;
         border-top: $BORDER_1_GREY;
     }
 </style>
