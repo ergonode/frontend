@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['tab-bar', {'tab-bar--hidden': !isTabVisible}]">
+    <div class="tab-bar">
         <div
             v-if="isTabVisible"
             class="tab-bar__items">
@@ -58,16 +58,11 @@ export default {
         flex: 1;
         flex-direction: column;
 
-        &--hidden {
-            border-top: $BORDER_1_GREY;
-        }
-
         &__items {
             position: relative;
             display: flex;
             height: 48px;
             box-sizing: border-box;
-            border-bottom: $BORDER_1_GREY;
             background-image: linear-gradient($WHITESMOKE, $WHITE);
         }
     }

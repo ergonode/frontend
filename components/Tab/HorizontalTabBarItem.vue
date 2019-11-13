@@ -31,6 +31,7 @@ export default {
         $item: &;
 
         position: relative;
+        bottom: -1px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -46,10 +47,9 @@ export default {
         &:after {
             position: absolute;
             left: 0;
-            bottom: -1px;
+            bottom: 0;
             right: 0;
             z-index: 1;
-            width: 100%;
             height: 3px;
             background-color: $GREEN;
             opacity: 0;
