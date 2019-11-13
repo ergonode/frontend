@@ -456,9 +456,17 @@ export const pages = [
         component: Pages.TransitionEdit,
         children: [
             {
-                name: 'transition-edit-id-general',
+                name: 'workflow-transition-edit-id-general',
                 path: 'general',
                 component: Tabs.TransitionBaseTab,
+            },
+            {
+                name: 'workflow-transition-edit-id-designer',
+                path: 'designer',
+                component: Tabs.ConditionSetDesignTab,
+                meta: {
+                    privileges: ['CONDITION_READ'],
+                },
             },
         ],
         meta: {
@@ -476,14 +484,6 @@ export const pages = [
                 component: GridTabs.SegmentsGridTab,
                 meta: {
                     privileges: ['SEGMENT_READ'],
-                },
-            },
-            {
-                name: 'condition-sets',
-                path: 'condition-sets',
-                component: GridTabs.ConditionSetsGridTab,
-                meta: {
-                    privileges: ['CONDITION_READ'],
                 },
             },
         ],
@@ -521,49 +521,17 @@ export const pages = [
                 path: 'translations',
                 component: Tabs.SegmentsTranslationsTab,
             },
+            {
+                name: 'segment-edit-id-designer',
+                path: 'designer',
+                component: Tabs.ConditionSetDesignTab,
+                meta: {
+                    privileges: ['CONDITION_READ'],
+                },
+            },
         ],
         meta: {
             privileges: ['SEGMENT_READ'],
-        },
-    },
-    {
-        name: 'condition-set-new',
-        path: '/segments/condition-set/new',
-        component: Pages.ConditionSetNew,
-        children: [
-            {
-                name: 'condition-set-new-general',
-                path: 'general',
-                component: Tabs.ConditionSetBaseTab,
-            },
-        ],
-        meta: {
-            privileges: ['CONDITION_READ', 'CONDITION_CREATE'],
-        },
-    },
-    {
-        name: 'condition-set-edit-id',
-        path: '/segments/condition-set/edit/:id',
-        component: Pages.ConditionSetEdit,
-        children: [
-            {
-                name: 'condition-set-edit-id-general',
-                path: 'general',
-                component: Tabs.ConditionSetBaseTab,
-            },
-            {
-                name: 'condition-set-edit-id-translations',
-                path: 'translations',
-                component: Tabs.ConditionSetTranslationsTab,
-            },
-            {
-                name: 'condition-set-edit-id-designer',
-                path: 'designer',
-                component: Tabs.ConditionSetDesignTab,
-            },
-        ],
-        meta: {
-            privileges: ['CONDITION_READ'],
         },
     },
     {

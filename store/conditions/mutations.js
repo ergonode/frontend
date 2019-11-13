@@ -7,7 +7,6 @@ import { removeFromObjectByKey } from '~/model/objectWrapper';
 
 export const types = {
     SET_CONDITION_SET_ID: 'SET_CONDITION_SET_ID',
-    SET_CONDITION_SET_CODE: 'SET_CONDITION_SET_CODE',
     SET_CONDITION_SETS: 'SET_CONDITION_SETS',
     SET_CONDITIONS: 'SET_CONDITIONS',
     ADD_CONDITION_VALUE: 'ADD_CONDITION_VALUE',
@@ -21,9 +20,6 @@ export const types = {
 export default {
     [types.SET_CONDITION_SET_ID](state, value) {
         state.id = value;
-    },
-    [types.SET_CONDITION_SET_CODE](state, value) {
-        state.code = value;
     },
     [types.SET_CONDITION_SETS](state, value) {
         state.conditionSets = value;
@@ -57,9 +53,7 @@ export default {
     [types.CLEAR_STATE](state) {
         const states = defaultState();
         Object.keys(states).forEach((key) => {
-            if (key !== 'conditions') {
-                state[key] = states[key];
-            }
+            state[key] = states[key];
         });
     },
 };

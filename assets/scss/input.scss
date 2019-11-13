@@ -322,6 +322,11 @@
                 background-color: $WHITESMOKE;
                 color: $GRAPHITE_LIGHT;
             }
+
+            #{$input}__label {
+                background-color: unset;
+                background-image: linear-gradient($WHITE, $WHITESMOKE);
+            }
         }
     }
 }

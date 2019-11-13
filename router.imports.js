@@ -37,8 +37,6 @@ export const Pages = {
     Segments: () => import('~/pages/segments/index').then((m) => m.default || m),
     SegmentNew: () => import('~/pages/segments/_segment/index').then((m) => m.default || m),
     SegmentEdit: () => import('~/pages/segments/_segment/_id').then((m) => m.default || m),
-    ConditionSetNew: () => import('~/pages/segments/_condition-set/index').then((m) => m.default || m),
-    ConditionSetEdit: () => import('~/pages/segments/_condition-set/_id').then((m) => m.default || m),
 };
 
 export const Tabs = {
@@ -62,8 +60,6 @@ export const Tabs = {
     TransitionBaseTab: () => import('~/components/Card/Tabs/TransitionBaseTab').then((m) => m.default || m),
     SegmentsBaseTab: () => import('~/components/Card/Tabs/SegmentsBaseTab').then((m) => m.default || m),
     SegmentsTranslationsTab: () => import('~/components/Card/Tabs/SegmentsTranslationsTab').then((m) => m.default || m),
-    ConditionSetBaseTab: () => import('~/components/Card/Tabs/ConditionSetBaseTab').then((m) => m.default || m),
-    ConditionSetTranslationsTab: () => import('~/components/Card/Tabs/ConditionSetTranslationsTab').then((m) => m.default || m),
     ConditionSetDesignTab: () => import('~/components/Card/Tabs/ConditionSetDesignTab').then((m) => m.default || m),
     LanguageSettingsTab: () => import('~/components/Card/Tabs/LanguageSettingsTab').then((m) => m.default || m),
 };
@@ -80,5 +76,4 @@ export const GridTabs = {
     UserActivityLogsGridTab: () => import('~/components/Card/Grid/UserActivityLogsGridTab').then((m) => m.default || m),
     UsersActivityLogsGridTab: () => import('~/components/Card/Grid/UsersActivityLogsGridTab').then((m) => m.default || m),
     SegmentsGridTab: () => import('~/components/Card/Grid/SegmentsGridTab').then((m) => m.default || m),
-    ConditionSetsGridTab: () => import('~/components/Card/Grid/ConditionSetsGridTab').then((m) => m.default || m),
 };

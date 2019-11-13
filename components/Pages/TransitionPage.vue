@@ -27,18 +27,28 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
+        <Blur
+            v-show="isBlurVisible"
+            :style="blurZIndex" />
+        <TrashCan v-show="draggedElementOnGrid" />
     </BasePage>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { SIZES, THEMES } from '~/defaults/buttons';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'TransitionPage',
     mixins: [categoryManagementPageBaseMixin],
+    components: {
+        TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
+        Blur: () => import('~/components/Blur/Blur'),
+    },
     created() {
         let generalRoute = { name: 'workflow-transition-new-general' };
+        let designerRoute = { name: 'workflow-transition-new-designer' };
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
@@ -51,7 +61,8 @@ export default {
         ];
         this.isUserAllowedToUpdateTransitions = this.$hasAccess('WORKFLOW_UPDATE');
         if (this.isEdit) {
-            generalRoute = { name: 'transition-edit-id-general', params: this.$route.params };
+            generalRoute = { name: 'workflow-transition-edit-id-general', params: this.$route.params };
+            designerRoute = { name: 'workflow-transition-edit-id-designer', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
 
@@ -60,6 +71,18 @@ export default {
                     title: 'General options',
                     route: generalRoute,
                     active: true,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} TRANSITION`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateTransitions,
+                        },
+                    },
+                },
+                {
+                    title: 'Conditions',
+                    route: designerRoute,
+                    active: this.isEdit,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} TRANSITION`,
@@ -87,11 +110,24 @@ export default {
         }
     },
     computed: {
+        ...mapState('draggable', {
+            isListElementDragging: (state) => state.isListElementDragging,
+            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
+        }),
         smallSize() {
             return SIZES.SMALL;
         },
         secondaryTheme() {
             return THEMES.SECONDARY;
+        },
+        isBlurVisible() {
+            return this.isListElementDragging || this.draggedElementOnGrid;
+        },
+        blurZIndex() {
+            if (this.isBlurVisible) {
+                return { zIndex: '10' };
+            }
+            return null;
         },
     },
     beforeDestroy() {

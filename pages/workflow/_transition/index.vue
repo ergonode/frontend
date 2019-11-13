@@ -25,7 +25,6 @@ export default {
         ...mapState('transitions', {
             source: (state) => state.source,
             destination: (state) => state.destination,
-            conditionSetId: (state) => state.conditionSetId,
         }),
     },
     methods: {
@@ -38,13 +37,12 @@ export default {
             'removeValidationErrors',
         ]),
         onCreate() {
-            this.removeValidationErrors();
             const transition = {
                 source: this.source,
                 destination: this.destination,
-                condition_set: this.conditionSetId,
             };
 
+            this.removeValidationErrors();
             this.createTransition({
                 data: transition,
                 onSuccess: this.onTransitionCreated,
@@ -58,7 +56,7 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Transition created' });
             this.$router.push({
-                name: 'transition-edit-id-general',
+                name: 'workflow-transition-edit-id-general',
                 params: {
                     id: `${this.source}--${this.destination}`,
                 },
@@ -70,10 +68,6 @@ export default {
     }) {
         await Promise.all([
             store.dispatch('productStatus/getProductStatuses', {
-                limit: 9999,
-                offset: 0,
-            }),
-            store.dispatch('conditions/getConditionSets', {
                 limit: 9999,
                 offset: 0,
             }),

@@ -16,12 +16,12 @@ export default {
     setConditionSetId({ commit }, value) {
         commit(types.SET_CONDITION_SET_ID, value);
     },
-    getSegmentById(
+    async getSegmentById(
         { commit, dispatch, rootState },
         { segmentId },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/segments/${segmentId}`).then(({
+        await this.app.$axios.$get(`${userLanguageCode}/segments/${segmentId}`).then(async ({
             id,
             code,
             condition_set_id: conditionSetId,
@@ -36,6 +36,11 @@ export default {
             commit(types.SET_SEGMENT_CODE, code);
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
             dispatch('translations/setTabTranslations', translations, { root: true });
+            if (conditionSetId) {
+                await dispatch('conditions/getConditionSetById', {
+                    conditionSetId,
+                }, { root: true });
+            }
         }).catch(onDefaultError);
     },
     createSegment(
@@ -65,9 +70,19 @@ export default {
         return this.app.$axios.$put(`${userLanguageCode}/segments/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
     },
     removeSegment({ state, rootState }, { onSuccess }) {
-        const { id } = state;
+        const { id, conditionSetId } = state;
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/segments/${id}`).then(() => onSuccess()).catch(onDefaultError);
+
+        return this.app.$axios.$delete(`${userLanguageCode}/segments/${id}`)
+            .then(() => {
+                if (conditionSetId) {
+                    this.app.$axios.$delete(`${userLanguageCode}/conditionsets/${conditionSetId}`)
+                        .then(() => onSuccess())
+                        .catch(onDefaultError);
+                } else {
+                    onSuccess();
+                }
+            }).catch(onDefaultError);
     },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);

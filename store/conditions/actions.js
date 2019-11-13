@@ -4,22 +4,12 @@
  */
 import { types } from './mutations';
 import { getParsedConditionSetData } from '~/model/mappers/conditionSetMapper';
-import { arrayToObject } from '~/model/arrayWrapper';
 
 const onDefaultError = () => {};
 
 export default {
     setId({ commit }, value) {
         commit(types.SET_CONDITION_SET_ID, value);
-    },
-    setCode({ commit }, value) {
-        commit(types.SET_CONDITION_SET_CODE, value);
-    },
-    getConditionSets({ commit, rootState }, params) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/conditionsets`, { params }).then(({ collection: conditionSets }) => {
-            commit(types.SET_CONDITION_SETS, arrayToObject(conditionSets, 'id', 'code'));
-        }).catch(onDefaultError);
     },
     async getConditionSetById(
         {
@@ -30,15 +20,8 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         await this.app.$axios.$get(`${userLanguageCode}/conditionsets/${conditionSetId}`).then(async ({
             id,
-            code,
-            name = '',
-            description = '',
             conditions = [],
         }) => {
-            const translations = {
-                name,
-                description,
-            };
             const { conditionsData, conditionsTree } = getParsedConditionSetData(conditions);
 
             await Promise.all(conditions.map(async (condition) => {
@@ -48,11 +31,9 @@ export default {
                 }
             }));
             commit(types.SET_CONDITION_SET_ID, id);
-            commit(types.SET_CONDITION_SET_CODE, code);
             commit(types.SET_CONDITIONS_DATA, conditionsData);
             dispatch('gridDesigner/setGridData', conditionsTree, { root: true });
             dispatch('gridDesigner/setFullGridData', conditionsTree, { root: true });
-            dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onDefaultError);
     },
     createConditionSet(
@@ -107,11 +88,6 @@ export default {
         if (state.conditionsValues[conditionId]) {
             commit(types.REMOVE_CONDITION_VALUE_FROM_SET, conditionId);
         }
-    },
-    removeConditionSet({ state, rootState }, { onSuccess }) {
-        const { id } = state;
-        const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/conditionsets/${id}`).then(() => onSuccess()).catch(onDefaultError);
     },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);
