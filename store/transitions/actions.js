@@ -24,7 +24,7 @@ export default {
         const [source, destination] = id.split('--');
 
         await this.app.$axios.$get(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`).then(async ({
-            condition_set: conditionSetId,
+            condition_set_id: conditionSetId,
         }) => {
             commit(types.SET_SOURCE, source.replace(/%20/g, ' '));
             commit(types.SET_DESTINATION, destination.replace(/%20/g, ' '));
