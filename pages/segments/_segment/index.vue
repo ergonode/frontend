@@ -21,7 +21,6 @@ export default {
     computed: {
         ...mapState('segments', {
             code: (state) => state.code,
-            conditionSetId: (state) => state.conditionSetId,
         }),
     },
     created() {
@@ -44,7 +43,6 @@ export default {
             this.$router.push('/segments');
         },
         onCreateSegmentSuccess(id) {
-            this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Segment created' });
             this.$router.push({
                 name: 'segment-edit-id',
@@ -54,25 +52,17 @@ export default {
             });
         },
         onCreate() {
-            this.removeValidationErrors();
             const segment = {
                 code: this.code,
-                condition_set_id: this.conditionSetId,
             };
+
+            this.removeValidationErrors();
             this.createSegment({
                 data: segment,
                 onSuccess: this.onCreateSegmentSuccess,
                 onError: this.onError,
             });
         },
-    },
-    async fetch({
-        store,
-    }) {
-        await store.dispatch('conditions/getConditionSets', {
-            limit: 9999,
-            offset: 0,
-        });
     },
 };
 </script>

@@ -43,6 +43,7 @@ export default {
         flex: 1;
         grid-template-columns: auto minmax(auto, 1008px) auto;
         grid-template-rows: max-content auto max-content;
+        background-color: $WHITE;
 
         &--fixed {
             grid-template-columns: auto;

@@ -6,13 +6,14 @@
     <Component
         :is="getComponentViaType"
         solid
+        regular
         required
         clearable
         :label="parameter.name"
         :options="hasOptions ? Object.values(parameter.options) : []"
         :value="getConditionValue"
         :multiselect="parameter.type === 'MULTI_SELECT'"
-        :disabled="!$hasAccess('SEGMENT_UPDATE')"
+        :disabled="!$hasAccess('CONDITION_UPDATE')"
         :error-messages="errorParamsMessage"
         @input="setConditionValueByType" />
 </template>

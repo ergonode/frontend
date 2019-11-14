@@ -6,6 +6,7 @@
     <KeepAlive>
         <Component
             :is="tabItem.component"
+            class="tab-content"
             v-bind="tabItem.props"
             :is-expanded="isExpanded"
             @expand="onExpand" />
@@ -32,3 +33,12 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .tab-content {
+        border-top: $BORDER_1_GREY;
+        border-left: $BORDER_1_GREY;
+        border-right: $BORDER_1_GREY;
+        box-sizing: border-box;
+    }
+</style>

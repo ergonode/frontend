@@ -2,20 +2,18 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
-    <NuxtChild
-        :key="$route.name"
-        class="tab-content"
-        keep-alive
-        v-bind="item.props" />
+<template functional>
+    <span
+        class="headline font--medium-16-24"
+        v-text="props.title" />
 </template>
 
 <script>
 export default {
-    name: 'HorizontalTabContent',
+    name: 'Headline',
     props: {
-        item: {
-            type: Object,
+        title: {
+            type: String,
             required: true,
         },
     },
@@ -23,7 +21,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .tab-content {
-        border-top: $BORDER_1_GREY;
+    .headline {
+        color: $GRAPHITE_DARK;
     }
 </style>
