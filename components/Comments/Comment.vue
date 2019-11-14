@@ -7,18 +7,21 @@
         <template #header>
             <div class="header__user">
                 <div class="user__avatar">
-                    <!-- <Picture
+                    <Picture
                         v-if="comment.avatar_id"
                         fab
-                        :image-id="comment.avatar_id" /> -->
-                    <IconUser size="32" />
+                        :image-id="comment.avatar_id" />
+                    <IconUser
+                        v-else
+                        size="32" />
                 </div>
-                <span class="font--medium-16-24">
-                    Bleto P
-                </span>
+                <span
+                    class="font--medium-16-24"
+                    v-text="comment.author" />
             </div>
             <div class="header__actions">
                 <FabButton
+                    v-if="isAbleToEdit"
                     :theme="secondaryTheme"
                     :size="regularSize"
                     :hover-color="colorGreen"
@@ -28,10 +31,11 @@
                     </template>
                 </FabButton>
                 <FabButton
+                    v-if="isAbleToDelete"
                     :theme="secondaryTheme"
                     :size="regularSize"
                     :hover-color="colorRed"
-                    @click.native="deleteComment">
+                    @click.native="onRemove">
                     <template #icon="{ color }">
                         <IconDelete :fill-color="color" />
                     </template>
@@ -39,17 +43,23 @@
             </div>
         </template>
         <template #content>
-            <span class="font--medium-14-20">
-                Lorem Ipsum is simply dummy text of.
-            </span>
+            <span
+                class="font--medium-14-20"
+                v-text="comment.content" />
         </template>
         <template #footer>
-            <span class="font--medium-12-16">Created 12.3.1234 33:33</span>
-            <span class="font--medium-12-16">Edited 12.5.1234 24:34</span>
+            <span
+                class="font--medium-12-16"
+                v-text="comment.created_at" />
+            <span
+                v-if="comment.edited_at"
+                class="font--medium-12-16"
+                v-text="comment.edited_at" />
         </template>
     </CommentWrapper>
 </template>
 <script>
+import { mapActions } from 'vuex';
 import { THEMES, SIZES } from '~/defaults/buttons';
 import {
     GREEN, RED, WHITE,
@@ -59,6 +69,7 @@ import FabButton from '~/components/Buttons/FabButton';
 import IconEdit from '~/components/Icon/Actions/IconEdit';
 import IconDelete from '~/components/Icon/Actions/IconDelete';
 import IconUser from '~/components/Icon/Menu/IconUser';
+import Picture from '~/components/Inputs/Image/Picture';
 
 export default {
     name: 'Comment',
@@ -68,7 +79,7 @@ export default {
         IconEdit,
         IconDelete,
         IconUser,
-        // Picture: () => import('~/components/Inputs/Image/Picture'),
+        Picture,
     },
     props: {
         comment: {
@@ -92,13 +103,39 @@ export default {
         whiteColor() {
             return WHITE;
         },
+        isAbleToEdit() {
+            return this.comment._links.edit;
+        },
+        isAbleToDelete() {
+            return this.comment._links.delete;
+        },
     },
     methods: {
+        ...mapActions('comments', [
+            'removeComment',
+        ]),
         editComment() {
-            console.log('edit');
+            const { id } = this.comment;
+
+            this.$emit('edit', true, id);
         },
-        deleteComment() {
-            console.log('delete');
+        onRemove() {
+            const isConfirm = confirm('Are you sure you want to delete this role?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirm) {
+                const { id } = this.comment;
+
+                this.removeComment({
+                    id,
+                    onSuccess: this.onRemoveSuccess,
+                    onError: this.onRemoveError,
+                });
+            }
+        },
+        onRemoveSuccess() {
+            this.$addAlert({ type: 'success', message: 'Comment removed' });
+        },
+        onRemoveError({ message }) {
+            this.$addAlert({ type: 'error', message });
         },
     },
 };

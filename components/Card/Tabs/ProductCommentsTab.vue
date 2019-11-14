@@ -35,5 +35,18 @@ export default {
             required: true,
         },
     },
+    async fetch({
+        store,
+        params,
+    }) {
+        const { id } = params;
+        await store.dispatch('comments/setCommentObjectId', id);
+        await store.dispatch('comments/getComments', {
+            limit: 10,
+            offset: 0,
+            filter: `owner_id=${id}`,
+            field: 'created_at',
+        });
+    },
 };
 </script>

@@ -7,34 +7,34 @@
         <template #header>
             <span
                 class="font--medium-16-24"
-                v-text="title" />
+                v-text="isEdit ? 'Edit comment' : 'Add new comment'" />
         </template>
         <template #content>
             <TextArea
-                :value="comment"
+                :value="content"
                 solid
                 label="Comment"
                 resize="none"
                 :required="true"
                 :style="{height: '128px'}"
                 :error-messages="errorCommentMessage"
-                :disabled="!isUserAllowedToUpdate"
                 @input="setCommentValue" />
         </template>
         <template #footer>
             <BaseButton
                 :size="smallSize"
-                title="SAVE COMMENT"
+                :title="`${isEdit ? 'SAVE' : 'ADD'} COMMENT`"
                 @click.native="saveComment" />
             <BaseButton
                 :theme="secondaryTheme"
                 :size="smallSize"
                 title="CANCEL"
-                @click.native="cancelComment" />
+                @click.native="closeComment" />
         </template>
     </CommentWrapper>
 </template>
 <script>
+import { mapActions } from 'vuex';
 import { THEMES, SIZES } from '~/defaults/buttons';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import CommentWrapper from '~/components/Comments/CommentWrapper';
@@ -54,14 +54,18 @@ export default {
             type: String,
             default: '',
         },
-        title: {
+        commentId: {
             type: String,
-            default: 'Edit comment',
+            default: null,
+        },
+        isEdit: {
+            type: Boolean,
+            default: true,
         },
     },
     data() {
         return {
-            comment: this.commentValue,
+            content: this.commentValue,
         };
     },
     computed: {
@@ -71,23 +75,46 @@ export default {
         smallSize() {
             return SIZES.SMALL;
         },
-        isUserAllowedToUpdate() {
-            return this.$hasAccess('PRODUCT_UPDATE');
-        },
         errorCommentMessage() {
-            const placeholderIndex = 'comment';
+            const placeholderIndex = 'content';
             return this.elementIsValidate(placeholderIndex);
         },
     },
     methods: {
+        ...mapActions('comments', [
+            'createComment',
+            'updateComment',
+        ]),
+        ...mapActions('validations', [
+            'onError',
+            'removeValidationErrors',
+        ]),
         saveComment() {
-            console.log('save');
+            if (this.isEdit && this.commentId) {
+                this.updateComment({
+                    id: this.commentId,
+                    content: this.content,
+                    onSuccess: this.onSuccess,
+                    onError: this.onError,
+                });
+            } else {
+                this.createComment({
+                    content: this.content,
+                    onSuccess: this.onSuccess,
+                    onError: this.onError,
+                });
+            }
         },
-        cancelComment() {
-            console.log('cancel');
+        onSuccess() {
+            this.removeValidationErrors();
+            this.$addAlert({ type: 'success', message: `Comment ${this.isEdit ? 'edited' : 'created'}` });
+            this.$emit('close', this.isEdit);
+        },
+        closeComment() {
+            this.$emit('close', this.isEdit);
         },
         setCommentValue(value) {
-            this.comment = value;
+            this.content = value;
         },
     },
 };
