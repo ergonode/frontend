@@ -12,8 +12,22 @@ export default {
     },
     getComments({ commit, rootState }, params) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$get(`${userLanguageCode}/comments`, { params }).then(({ collection: comments }) => {
+        return this.app.$axios.$get(`${userLanguageCode}/comments`, { params }).then(({ collection: comments, info }) => {
             commit(types.SET_COMMENTS, comments);
+            commit(types.SET_COUNT, info.count);
+        }).catch(onDefaultError);
+    },
+    getMoreComments(
+        { commit, rootState, state },
+        { params, onSuccess },
+    ) {
+        let { currentPage } = state;
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$get(`${userLanguageCode}/comments`, { params }).then(({ collection: comments, info }) => {
+            commit(types.SET_CURRENT_PAGE, currentPage += 1);
+            commit(types.SET_COUNT, info.count);
+            commit(types.INSERT_MORE_COMMENTS, comments);
+            onSuccess();
         }).catch(onDefaultError);
     },
     createComment(
@@ -31,6 +45,7 @@ export default {
             avatar_id: avatarId,
         } = rootState.authentication.user;
         const { objectId } = state;
+        let { count } = state;
         const data = {
             content,
             object_id: objectId,
@@ -47,6 +62,7 @@ export default {
                     author: `${firstName} ${lastName}`,
                 };
                 commit(types.ADD_COMMENT, comment);
+                commit(types.SET_COUNT, count += 1);
                 onSuccess(id);
             }).catch(onDefaultError);
         }).catch((e) => onError(e.data));
@@ -86,16 +102,18 @@ export default {
         }).catch((e) => onError(e.data));
     },
     removeComment(
-        { commit, rootState },
+        { commit, rootState, state },
         {
             id,
             onSuccess,
             onError,
         },
     ) {
+        let { count } = state;
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$delete(`${userLanguageCode}/comments/${id}`).then(() => {
             commit(types.DELETE_COMMENT, id);
+            commit(types.SET_COUNT, count -= 1);
             onSuccess();
         }).catch((e) => onError(e.data));
     },

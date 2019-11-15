@@ -9,22 +9,18 @@
                 <ProductCommentsCard />
             </BaseForm>
         </template>
-        <template #footer>
-            <Footer :button="updateButton" />
-        </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
+import { LIMIT } from '~/defaults/gridList';
 import ProductCommentsCard from '~/components/Card/Cards/ProductCommentsCard';
 import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
-import Footer from '~/components/ReusableFooter/Footer';
 import BaseForm from '~/components/Form/BaseForm';
 
 export default {
     name: 'ProductCommentsTab',
     components: {
-        Footer,
         ProductCommentsCard,
         ResponsiveCenteredViewTemplate,
         BaseForm,
@@ -42,7 +38,7 @@ export default {
         const { id } = params;
         await store.dispatch('comments/setCommentObjectId', id);
         await store.dispatch('comments/getComments', {
-            limit: 10,
+            limit: LIMIT,
             offset: 0,
             filter: `owner_id=${id}`,
             field: 'created_at',

@@ -25,9 +25,8 @@ export default {
     .comment {
         display: flex;
         flex-direction: column;
-        min-width: 560px;
+
         width: auto;
-        max-width: 600px;
         padding: 24px;
         margin: 24px 0;
         box-sizing: border-box;

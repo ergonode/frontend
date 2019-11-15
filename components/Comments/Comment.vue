@@ -11,9 +11,10 @@
                         v-if="comment.avatar_id"
                         fab
                         :image-id="comment.avatar_id" />
-                    <IconUser
+                    <span
                         v-else
-                        size="32" />
+                        class="avatar__placeholder font--medium-14-20"
+                        v-text="avatarInitial" />
                 </div>
                 <span
                     class="font--medium-16-24"
@@ -68,7 +69,6 @@ import CommentWrapper from '~/components/Comments/CommentWrapper';
 import FabButton from '~/components/Buttons/FabButton';
 import IconEdit from '~/components/Icon/Actions/IconEdit';
 import IconDelete from '~/components/Icon/Actions/IconDelete';
-import IconUser from '~/components/Icon/Menu/IconUser';
 import Picture from '~/components/Inputs/Image/Picture';
 
 export default {
@@ -78,7 +78,6 @@ export default {
         FabButton,
         IconEdit,
         IconDelete,
-        IconUser,
         Picture,
     },
     props: {
@@ -108,6 +107,9 @@ export default {
         },
         isAbleToDelete() {
             return this.comment._links.delete;
+        },
+        avatarInitial() {
+            return this.comment.author[0];
         },
     },
     methods: {
@@ -146,14 +148,19 @@ export default {
         align-items: center;
 
         .user__avatar {
-            padding-right: 12px;
+            margin-right: 12px;
             display: flex;
+            justify-content: center;
+            align-items: center;
             width: 32px;
             height: 32px;
+            border-radius: 50%;
+            box-shadow: $ELEVATOR_2_DP;
 
-            & > svg {
-                border-radius: 16px;
-                object-fit: contain;
+            .avatar__placeholder {
+                margin: 1px 0 0 1px;
+                color: $GRAPHITE_DARK;
+                text-transform: uppercase;
             }
         }
     }
