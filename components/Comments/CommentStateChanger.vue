@@ -3,20 +3,21 @@
  * See LICENSE for license details.
  */
 <template>
-    <Transition
-        name="fade"
-        mode="out-in">
-        <EditableComment
-            v-if="showEditingForm"
-            :comment-value="comment.content"
-            :comment-id="comment.id"
-            @close="toggleState" />
-        <Comment
-            v-else
-            :comment="comment"
-            @edit="toggleState"
-        />
-    </Transition>
+    <li class="comment-list__element">
+        <Transition
+            name="fade"
+            mode="out-in">
+            <EditableComment
+                v-if="showEditingForm"
+                :comment-value="comment.content"
+                :comment-id="comment.id"
+                @close="toggleState" />
+            <Comment
+                v-else
+                :comment="comment"
+                @edit="toggleState" />
+        </Transition>
+    </li>
 </template>
 <script>
 export default {
@@ -37,12 +38,15 @@ export default {
         },
     },
     methods: {
-        toggleState(isEdit) {
-            if (isEdit) {
-                this.showEditingForm = !this.showEditingForm;
-                this.$emit('edit', true);
-            }
+        toggleState() {
+            this.showEditingForm = !this.showEditingForm;
+            this.$emit('close');
         },
     },
 };
 </script>
+<style lang="scss" scoped>
+    .comment-list__element {
+        margin: 24px 2px;
+    }
+</style>

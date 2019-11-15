@@ -108,10 +108,10 @@ export default {
         onSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: `Comment ${this.isEdit ? 'edited' : 'created'}` });
-            this.$emit('close', this.isEdit);
+            this.$emit('close');
         },
         closeComment() {
-            this.$emit('close', this.isEdit);
+            this.$emit('close');
         },
         setCommentValue(value) {
             this.content = value;

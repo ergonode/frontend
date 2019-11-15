@@ -83,7 +83,7 @@ export default {
     props: {
         comment: {
             type: Object,
-            default: () => {},
+            required: true,
         },
     },
     computed: {
@@ -117,9 +117,7 @@ export default {
             'removeComment',
         ]),
         editComment() {
-            const { id } = this.comment;
-
-            this.$emit('edit', true, id);
+            this.$emit('edit');
         },
         onRemove() {
             const isConfirm = confirm('Are you sure you want to delete this role?'); /* eslint-disable-line no-restricted-globals */

@@ -25,8 +25,7 @@
                 v-for="comment in commentList"
                 :key="comment.id"
                 :comment="comment"
-                @edit="toggleForm"
-            />
+                @close="closeForm" />
         </template>
         <template
             v-if="isMoreButtonVisible"
@@ -93,12 +92,11 @@ export default {
         ...mapActions('comments', [
             'getMoreComments',
         ]),
-        toggleForm(isEdit) {
-            if (isEdit) {
-                this.showAdditionForm = false;
-            } else {
-                this.showAdditionForm = !this.showAdditionForm;
-            }
+        closeForm() {
+            this.showAdditionForm = false;
+        },
+        toggleForm() {
+            this.showAdditionForm = !this.showAdditionForm;
         },
         showMore() {
             const params = {

@@ -9,12 +9,14 @@
             mode="out-in">
             <slot name="header" />
         </Transition>
-        <TransitionGroup
+        <Transition
             v-if="isPlaceholder"
             name="fade"
             mode="out-in">
-            <slot name="content" />
-        </TransitionGroup>
+            <List>
+                <slot name="content" />
+            </List>
+        </Transition>
         <div
             v-else
             class="grid-list__placeholder">
@@ -31,6 +33,9 @@
 <script>
 export default {
     name: 'GridList',
+    components: {
+        List: () => import('~/components/List/List'),
+    },
     props: {
         isPlaceholder: {
             type: Boolean,

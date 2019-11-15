@@ -25,10 +25,8 @@ export default {
     .comment {
         display: flex;
         flex-direction: column;
-
         width: auto;
         padding: 24px;
-        margin: 24px 0;
         box-sizing: border-box;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_2_DP;
