@@ -1,0 +1,12 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+$dotWidth: 10px;
+$dotHeight: 10px;
+$dotRadius: $dotWidth/2;
+$dotSpacing: $dotWidth + $dotWidth/2;
+$leftPos: -9999px;
+$x1: - $leftPos - $dotSpacing;
+$x2: - $leftPos;
+$x3: - $leftPos + $dotSpacing;

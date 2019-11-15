@@ -26,7 +26,12 @@ export default {
     },
     computed: {
         appendClasses() {
-            return this.$attrs.title ? `btn__append--${this.$attrs.size}` : null;
+            const { size, title } = this.$attrs;
+
+            if (title) {
+                return size ? `btn__append--${size}` : 'btn__append--regular';
+            }
+            return null;
         },
     },
 };

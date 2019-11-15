@@ -178,6 +178,11 @@ export const pages = [
                 path: 'template',
                 component: Tabs.ProductTemplateTab,
             },
+            {
+                name: 'product-edit-id-comments',
+                path: 'comments',
+                component: Tabs.ProductCommentsTab,
+            },
         ],
         meta: {
             privileges: ['PRODUCT_READ'],

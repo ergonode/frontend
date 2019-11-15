@@ -55,6 +55,7 @@ export const Tabs = {
     CategoryTreeDesignTab: () => import('~/components/Card/Tabs/CategoryTreeDesignTab').then((m) => m.default || m),
     ProductBaseTab: () => import('~/components/Card/Tabs/ProductBaseTab').then((m) => m.default || m),
     ProductTemplateTab: () => import('~/components/Card/Tabs/ProductTemplateTab').then((m) => m.default || m),
+    ProductCommentsTab: () => import('~/components/Card/Tabs/ProductCommentsTab').then((m) => m.default || m),
     ProductStatusBaseTab: () => import('~/components/Card/Tabs/ProductStatusBaseTab').then((m) => m.default || m),
     ProductStatusTranslationsTab: () => import('~/components/Card/Tabs/ProductStatusTranslationsTab').then((m) => m.default || m),
     TransitionBaseTab: () => import('~/components/Card/Tabs/TransitionBaseTab').then((m) => m.default || m),

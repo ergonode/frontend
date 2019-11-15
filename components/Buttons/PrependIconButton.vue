@@ -26,7 +26,12 @@ export default {
     },
     computed: {
         prependClasses() {
-            return this.$attrs.title ? `btn__prepend--${this.$attrs.size}` : null;
+            const { size, title } = this.$attrs;
+
+            if (title) {
+                return size ? `btn__prepend--${size}` : 'btn__prepend--regular';
+            }
+            return null;
         },
     },
 };
