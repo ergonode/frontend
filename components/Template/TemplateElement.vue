@@ -14,7 +14,7 @@
             <img
                 v-else
                 :src="getImage"
-                alt="template_placeholder icon">
+                alt="template icon">
         </div>
         <div class="horizontal-wrapper">
             <span
@@ -49,7 +49,7 @@ export default {
     },
     computed: {
         getImage() {
-            return require('~/assets/images/template-designer/template_placeholder.svg'); // eslint-disable-line global-require, import/no-dynamic-require
+            return require('~/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
     },
     methods: {

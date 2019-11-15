@@ -245,6 +245,18 @@ export const pages = [
         ],
     },
     {
+        name: 'notifications',
+        path: '/notifications',
+        component: Pages.Notifications,
+        children: [
+            {
+                name: 'notifications-grid',
+                path: 'grid',
+                component: GridTabs.NotificationGridTab,
+            },
+        ],
+    },
+    {
         name: 'attribute-new',
         path: '/attributes/attribute/new',
         component: Pages.AttributeNew,

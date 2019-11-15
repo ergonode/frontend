@@ -32,16 +32,15 @@ export default {
         grid-template-rows: max-content auto max-content;
         grid-template-columns: min-content;
         column-gap: 24px;
-        padding-top: 24px;
         background-color: $WHITE;
 
         &__filters {
             grid-area: 1 / 2 / 2 / 3;
+            padding-top: 24px;
         }
 
         &__sidebar {
             grid-area: 1 / 1 / 3 / 2;
-            padding-left: 24px;
             height: 100%;
         }
 

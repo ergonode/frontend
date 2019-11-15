@@ -2,7 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { toCapitalize } from '~/model/stringWrapper';
 import {
     GRID_HEADER_TYPE,
     COLUMN_TYPE,
@@ -146,27 +145,6 @@ export function getMappedRowLinks(rows) {
     }
 
     return rowLinks;
-}
-
-export function getMappedGridConfiguration(configuration) {
-    const mappedConfiguration = {};
-    const configurationKeys = Object.keys(configuration);
-    const configurationValues = Object.values(configuration);
-    const { length } = configurationKeys;
-
-    for (let i = 0; i < length; i += 1) {
-        const splittedKeys = configurationKeys[i].split('_');
-        const { length: splittedKeysLength } = splittedKeys;
-        if (splittedKeysLength > 0) {
-            const capitalizedFirstLetterKey = toCapitalize(
-                splittedKeys[splittedKeysLength - 1],
-            );
-
-            mappedConfiguration[`isColumn${capitalizedFirstLetterKey}able`] = configurationValues[i];
-        }
-    }
-
-    return mappedConfiguration;
 }
 
 export function getMappedFilters(filters) {

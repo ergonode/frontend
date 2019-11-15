@@ -3,33 +3,70 @@
  * See LICENSE for license details.
  */
 <template>
-    <NavigationBarButton>
-        <IconBell :fill-color="whiteColor" />
-        <NotificationBadge
-            v-show="notificationNumber > 0"
-            :number="notificationNumber" />
-    </NavigationBarButton>
+    <NavigationBarSelectButton>
+        <template #input>
+            <IconBell :fill-color="whiteColor" />
+            <NotificationBadge
+                v-if="notifications.length > 0"
+                :number="notifications.length" />
+        </template>
+        <template #selectContent>
+            <div class="notifications-dropdown">
+                <List v-if="notifications.length">
+                    <NotificationListElement
+                        v-for="notification in notifications"
+                        :key="notification.id"
+                        :notification="notification" />
+                    <NotificationListFooter>
+                        <BaseButton
+                            title="SEE ALL NOTIFICATIONS"
+                            @click.native="navigateToAllNotifications" />
+                    </NotificationListFooter>
+                </List>
+                <NotificationPlaceholder v-else />
+            </div>
+        </template>
+    </NavigationBarSelectButton>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'NavigationBarNotificationButton',
     components: {
-        NavigationBarButton: () => import('~/components/Navigation/NavigationBar/NavigationBarButton'),
+        NavigationBarSelectButton: () => import('~/components/Navigation/NavigationBar/NavigationBarSelectButton'),
         IconBell: () => import('~/components/Icon/Menu/IconBell'),
         NotificationBadge: () => import('~/components/Badges/NotificationBadge'),
-    },
-    data() {
-        return {
-            notificationNumber: 1,
-        };
+        BaseButton: () => import('~/components/Buttons/BaseButton'),
+        List: () => import('~/components/List/List'),
+        NotificationListElement: () => import('~/components/List/Notifications/NotificationListElement'),
+        NotificationListFooter: () => import('~/components/List/Notifications/NotificationListFooter'),
+        NotificationPlaceholder: () => import('~/components/List/Notifications/NotificationPlaceholder'),
     },
     computed: {
+        ...mapState('notifications', {
+            notifications: (state) => state.notifications,
+        }),
         whiteColor() {
             return WHITE;
         },
     },
+    methods: {
+        navigateToAllNotifications() {
+            this.$router.push({ name: 'notifications-grid' });
+        },
+    },
 };
 </script>
+
+<style lang="scss" scoped>
+    .notifications-dropdown {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        width: 400px;
+        height: calc(100vh - #{$toolBarHeight});
+    }
+</style>

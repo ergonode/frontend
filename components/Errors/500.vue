@@ -7,7 +7,7 @@
         <div class="horizontal-wrapper">
             <img
                 class="image"
-                src="~/assets/images/icons/socket.svg">
+                src="~/assets/images/placeholders/error-pages/socket.svg">
             <div class="navigation-section">
                 <h1 class="navigation-section__header">
                     Error
@@ -21,7 +21,7 @@
         <div class="plug-wrapper">
             <img
                 class="plug"
-                src="~assets/images/icons/plug.svg">
+                src="~assets/images/placeholders/error-pages/plug.svg">
             <div class="cable" />
         </div>
     </div>

@@ -12,7 +12,9 @@
         <div class="responsive-view-template__responsive-container">
             <slot name="content" />
         </div>
-        <div class="responsive-view-template__footer">
+        <div
+            v-if="isFooterSlotVisible"
+            class="responsive-view-template__footer">
             <slot name="footer" />
         </div>
     </div>
@@ -30,6 +32,9 @@ export default {
     computed: {
         isHeaderSlotVisible() {
             return !!this.$slots.header;
+        },
+        isFooterSlotVisible() {
+            return !!this.$slots.footer;
         },
     },
 };
@@ -74,6 +79,7 @@ export default {
             grid-area: 1 / 1 / 2 / 4;
             border-bottom: 1px solid $GREY;
             border-bottom: $BORDER_1_GREY;
+            box-sizing: border-box;
         }
 
         &__responsive-container {
@@ -94,7 +100,6 @@ export default {
             display: flex;
             align-items: center;
             padding: 12px 24px;
-            box-sizing: border-box;
             background-color: $WHITE;
         }
     }

@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedGridConfiguration,
     getMappedCellValues,
     getMappedRowIds,
     getMappedRowLinks,
@@ -61,13 +60,12 @@ export default {
         }
 
         return this.app.$axios.$get(path, { params }).then(({
-            configuration, collection: rows, columns, info,
+            collection: rows, columns, info,
         }) => {
             const { count, filtered } = info;
             const columnsToMap = columnIDs ? getSortedColumnsByIDs([...columns], columnIDs, 'id') : columns;
             const visibleColumns = columnsToMap.filter((col) => col.visible);
             const { mappedColumns, pinnedColumns, columnWidths } = getMappedColumns(visibleColumns);
-            const mappedConfiguration = getMappedGridConfiguration(configuration);
             const rowIds = getMappedRowIds(rows);
             const rowLinks = getMappedRowLinks(rows);
             const cellValues = getMappedCellValues(columns, rows, rowIds);
@@ -88,7 +86,6 @@ export default {
 
             if (!stateColumnWidths.length) commit(types.SET_COLUMN_WIDTHS, columnWidths);
 
-            commit(types.SET_CONFIGURATION, mappedConfiguration);
             commit(types.SET_CELL_VALUES, cellValues);
             commit(types.SET_ROW_IDS, rowIds);
             commit(types.SET_ROW_LINKS, rowLinks);

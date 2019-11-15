@@ -13,9 +13,6 @@ describe('Navigation/NavigationBar/NavigationBarSelectButton', () => {
     beforeEach(() => {
         wrapper = shallowMount(NavigationBarSelectButton, {
             localVue,
-            propsData: {
-                title: null,
-            },
         });
     });
 
@@ -26,14 +23,6 @@ describe('Navigation/NavigationBar/NavigationBarSelectButton', () => {
 
     it('Check no title exception', () => {
         expect(wrapper.vm.title).toBeFalsy();
-    });
-
-    it('Check title value', () => {
-        wrapper.setProps({
-            title: 'Jan Kowalsi',
-        });
-
-        expect(wrapper.vm.title).toBe('Jan Kowalsi');
     });
 
     it('Check click', () => {

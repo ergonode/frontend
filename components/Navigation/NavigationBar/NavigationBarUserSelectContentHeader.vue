@@ -4,15 +4,10 @@
  */
 <template>
     <div class="header">
-        <div class="header__image">
-            <Picture
-                v-if="avatarId"
-                fab
-                :image-id="avatarId" />
-            <IconUser
-                v-else
-                size="72" />
-        </div>
+        <UserPicture
+            :image-id="avatarId"
+            :placeholder-picture-color="graphiteColor"
+            :picture-size="72" />
         <span
             class="header__initials font--medium-16-24"
             v-text="initials" />
@@ -23,6 +18,8 @@
 </template>
 
 <script>
+import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
+
 export default {
     name: 'NavigationBarUserSelectContentHeader',
     props: {
@@ -36,13 +33,16 @@ export default {
         },
         avatarId: {
             type: String,
-            required: false,
             default: '',
         },
     },
     components: {
-        Picture: () => import('~/components/Inputs/Image/Picture'),
-        IconUser: () => import('~/components/Icon/Menu/IconUser'),
+        UserPicture: () => import('~/components/Inputs/Image/UserPicture'),
+    },
+    computed: {
+        graphiteColor() {
+            return GRAPHITE;
+        },
     },
 };
 </script>
@@ -55,20 +55,9 @@ export default {
         align-items: center;
         margin: 24px;
 
-        &__image {
-            display: flex;
-            flex-direction: column;
-            grid-column: 1;
-            grid-row: 1 / 3;
-
-            & > img {
-                height: 64px;
-                object-fit: contain;
-            }
-        }
-
         &__initials, &__email {
             grid-column: 2;
+            text-align: left;
         }
 
         &__initials {
@@ -82,6 +71,10 @@ export default {
             grid-row: 2;
             align-self: flex-start;
             color: $GREY_DARK;
+        }
+
+        .user-picture {
+            grid-row: 1 / 3;
         }
     }
 </style>

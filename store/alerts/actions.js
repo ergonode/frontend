@@ -19,7 +19,7 @@ export default {
             dispatch('removeAlert', { id });
         }, duration);
 
-        commit(types.APPEND_ALERT, {
+        commit(types.ADD_ALERT, {
             id, type, message, timeOut,
         });
     },

@@ -7,7 +7,7 @@
         <div class="horizontal-wrapper">
             <img
                 class="image"
-                src="~/assets/images/icons/404.svg">
+                src="~/assets/images/placeholders/error-pages/404.svg">
             <div class="navigation-section">
                 <h1 class="navigation-section__header">
                     Not found

@@ -5,7 +5,7 @@
 <template>
     <div
         :class="['header-cell',
-                 { 'draggable': !pinnedColumn && isColumnEditable && !isCellEditing }
+                 { 'draggable': isColumnEditable && !isCellEditing }
         ]">
         <GridBaseHeaderCell :header="column.header.title" />
         <div
@@ -57,7 +57,6 @@ import {
     removeColumnCookieByID,
 } from '~/model/grid/cookies/GridLayoutConfiguration';
 import { SORTING_ORDER } from '~/defaults/icons';
-import { PINNED_COLUMN_STATE } from '~/defaults/grid';
 import { GRAPHITE_LIGHT } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
@@ -96,33 +95,18 @@ export default {
         return {
             contextualMenuItems: [
                 { text: 'Remove' },
-                // TODO: Add it whenever we finish dynamic pinning columns
-                // { text: 'Pin to left', value: false },
-                // { text: 'Pin to right', value: false },
             ],
             isContextualMenuActive: false,
             isMouseOver: false,
         };
     },
-    created() {
-        if (this.pinnedColumn) {
-            const { state } = this.pinnedColumn;
-
-            if (state === PINNED_COLUMN_STATE.LEFT) this.contextualMenuItems[1].value = true;
-            else this.contextualMenuItems[2].value = true;
-        }
-    },
     mounted() {
-        if (!this.pinnedColumn) {
-            this.$el.addEventListener('mouseenter', this.onMouseEnter);
-            this.$el.addEventListener('mouseleave', this.onMouseLeave);
-        }
+        this.$el.addEventListener('mouseenter', this.onMouseEnter);
+        this.$el.addEventListener('mouseleave', this.onMouseLeave);
     },
     destroyed() {
-        if (!this.pinnedColumn) {
-            this.$el.removeEventListener('mouseenter', this.onMouseEnter);
-            this.$el.removeEventListener('mouseleave', this.onMouseLeave);
-        }
+        this.$el.removeEventListener('mouseenter', this.onMouseEnter);
+        this.$el.removeEventListener('mouseleave', this.onMouseLeave);
     },
     computed: {
         ...mapState('draggable', {
@@ -139,14 +123,6 @@ export default {
         },
         gridState() {
             return this.$store.state[this.namespace];
-        },
-        pinnedColumn() {
-            if (!this.gridState) return null;
-            const pinnedColumn = this.gridState.pinnedColumns[this.column.id];
-
-            if (!pinnedColumn) return null;
-
-            return pinnedColumn;
         },
         isCellEditing() {
             return Object.keys(this.gridState.editingCellCoordinates).length;
@@ -200,22 +176,8 @@ export default {
                 this.$emit('focus', false);
                 break;
             }
-            case 'Pin to left':
-                this.pinOrRemovePinnedColumn(!option.value, PINNED_COLUMN_STATE.LEFT);
-                this.contextualMenuItems[1].value = !option.value;
-                break;
-            case 'Pin to right':
-                this.pinOrRemovePinnedColumn(!option.value, PINNED_COLUMN_STATE.RIGHT);
-                this.contextualMenuItems[2].value = !option.value;
-                break;
             default: break;
             }
-        },
-        pinOrRemovePinnedColumn(pinned, state) {
-            const columnPosition = `${this.columnIndex + 1} / ${this.columnIndex + 2}`;
-
-            if (pinned) this.$store.dispatch(`${this.namespace}/addPinnedColumn`, { id: this.column.id, state, position: columnPosition });
-            else this.$store.dispatch(`${this.namespace}/removePinnedColumn`, this.column.id);
         },
         getColumnAtIndex(index) {
             const contentGrid = document.querySelector('.grid__content');
@@ -240,7 +202,7 @@ export default {
             this.removeColumnHover();
         },
         setHorizontalWrapperOpacityIfNeeded(opacity) {
-            if (!this.isSorted && !this.pinnedColumn) {
+            if (!this.isSorted) {
                 const horizontalWrapperElement = this.$el.querySelector('.horizontal-wrapper');
                 horizontalWrapperElement.style.opacity = opacity;
             }

@@ -41,7 +41,7 @@ module.exports = {
         '~assets/scss/typography.scss',
     ],
     router: {
-        middleware: "checkBeforeMove"
+        middleware: 'privilegeRoutingCheck',
     },
     plugins: [
         '~plugins/axios',

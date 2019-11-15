@@ -4,6 +4,7 @@
  */
 import { shallowMount } from '@vue/test-utils';
 import StatusBadge from '~/components/Badges/StatusBadge.vue';
+import { WHITE, GRAPHITE_DARK } from '~/assets/scss/_variables/_colors.scss';
 
 
 describe('Badges/StatusBadge', () => {
@@ -11,7 +12,7 @@ describe('Badges/StatusBadge', () => {
     beforeEach(() => {
         wrapper = shallowMount(StatusBadge, {
             propsData: {
-                color: '#000',
+                color: '#000000',
             }
         });
     });
@@ -21,15 +22,14 @@ describe('Badges/StatusBadge', () => {
         expect(StatusBadge.name).toEqual('StatusBadge');
     });
 
-    it('Check default color', () => {
-        expect(wrapper.vm.color).toEqual('#000');
-    });
 
-    it('Check color', () => {
-        wrapper.setProps({
-            color: '#fff',
-        });
-        expect(wrapper.vm.color).toEqual('#fff');
+    describe('Props validations', () => {
+        it('size', () => {
+            const { color } = wrapper.vm.$options.props;
+
+            expect(color.required).toBeTruthy();
+            expect(color.type).toBe(String);
+        })
     });
 
 });

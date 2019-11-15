@@ -15,7 +15,7 @@ const store = new Store({
                 id: 1,
                 type: 'warning',
                 message: 'You better watch out!!!',
-            }
+            },
         ],
     },
 });
@@ -24,6 +24,7 @@ const mocks = {
 };
 afterEach(() => store.reset());
 describe('Alerts/FlashMessage', () => {
+    // eslint-disable-next-line no-unused-vars
     let wrapper;
 
     beforeEach(() => {

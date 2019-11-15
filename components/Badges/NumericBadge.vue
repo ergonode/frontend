@@ -3,18 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['numeric-badge', `numeric-badge--${theme}`]">
-        <span
-            class="font--semi-bold-10-12"
-            v-text="number" />
-    </div>
+    <RoundedBaseBadge :class="`${theme}-badge`">
+        <BadgeLabel :label="number" />
+    </RoundedBaseBadge>
 </template>
 
 <script>
 import { THEME } from '~/defaults/theme';
+import RoundedBaseBadge from '~/components/Badges/RoundedBaseBadge';
+import BadgeLabel from '~/components/Badges/BadgeLabel';
 
 export default {
     name: 'NumericBadge',
+    components: {
+        RoundedBaseBadge,
+        BadgeLabel,
+    },
     props: {
         number: {
             type: Number,
@@ -30,24 +34,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .numeric-badge {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-width: 16px;
-        height: 16px;
-        box-sizing: border-box;
-        border-radius: 999px;
+    .transparent-badge {
+        border: $BORDER_1_GREY;
+        background-color: $WHITE;
+        color: $GRAPHITE_DARK;
+    }
 
-        &--transparent {
-            border: $BORDER_1_GREY;
-            background-color: $WHITE;
-            color: $GRAPHITE_DARK;
-        }
-
-        &--primary {
-            background-color: $GREEN;
-            color: $WHITE;
-        }
+    .primary-badge {
+        background-color: $GREEN;
+        color: $WHITE;
     }
 </style>

@@ -3,21 +3,26 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="notification-badge">
-        <span
-            class="font--semi-bold-10-12"
-            v-text="info" />
-    </div>
+    <RoundedBaseBadge class="notification-badge">
+        <BadgeLabel :label="info" />
+    </RoundedBaseBadge>
 </template>
 
 <script>
+import RoundedBaseBadge from '~/components/Badges/RoundedBaseBadge';
+import BadgeLabel from '~/components/Badges/BadgeLabel';
 
 export default {
     name: 'NumericBadge',
+    components: {
+        RoundedBaseBadge,
+        BadgeLabel,
+    },
     props: {
         number: {
             type: Number,
             required: true,
+            validator: (value) => value > 0,
         },
     },
     computed: {
@@ -33,13 +38,6 @@ export default {
         position: absolute;
         top: 8px;
         right: 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-width: 16px;
-        height: 16px;
-        box-sizing: border-box;
-        border-radius: 999px;
         background-color: $RED;
         color: $WHITE;
     }

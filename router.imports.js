@@ -37,6 +37,7 @@ export const Pages = {
     Segments: () => import('~/pages/segments/index').then((m) => m.default || m),
     SegmentNew: () => import('~/pages/segments/_segment/index').then((m) => m.default || m),
     SegmentEdit: () => import('~/pages/segments/_segment/_id').then((m) => m.default || m),
+    Notifications: () => import('~/pages/notifications/index').then((m) => m.default || m),
 };
 
 export const Tabs = {
@@ -76,4 +77,5 @@ export const GridTabs = {
     UserActivityLogsGridTab: () => import('~/components/Card/Grid/UserActivityLogsGridTab').then((m) => m.default || m),
     UsersActivityLogsGridTab: () => import('~/components/Card/Grid/UsersActivityLogsGridTab').then((m) => m.default || m),
     SegmentsGridTab: () => import('~/components/Card/Grid/SegmentsGridTab').then((m) => m.default || m),
+    NotificationGridTab: () => import('~/components/Card/Grid/NotificationGridTab').then((m) => m.default || m),
 };

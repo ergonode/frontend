@@ -27,7 +27,7 @@ export default {
         flex: 1 1 auto;
         flex-direction: column;
         align-items: center;
-        background: $WHITESMOKE url("~assets/images/icons/placeholder_noresults.svg") no-repeat;
+        background: $WHITESMOKE url("~assets/images/placeholders/noresults.svg") no-repeat;
         padding-top: 80px;
         border-left: 1px solid $GREY;
         border-right: 1px solid $GREY;
@@ -40,15 +40,16 @@ export default {
         }
 
         &__title, &__subtitle {
+            color: $GRAPHITE_DARK;
             text-align: center;
         }
 
         &__title {
-            color: $GRAPHITE;
+            font: $FONT_MEDIUM_24_32;
         }
 
         &__subtitle {
-            color: $GRAPHITE_LIGHT;
+            font: $FONT_MEDIUM_12_16;
         }
     }
 </style>

@@ -4,17 +4,17 @@
  */
 <template>
     <NavigationBarSelectButton
-        :title="capitalizedUserFirstName || capitalizedUserLastName"
-        data-cy="user-select">
-        <template #prependIcon>
-            <div class="user-image">
-                <Picture
-                    v-if="user.avatar_id"
-                    fab
-                    :image-id="user.avatar_id" />
-                <IconUser
-                    v-else
-                    :fill-color="whiteColor" />
+        data-cy="user-select"
+        @focus="onFocus">
+        <template #input>
+            <UserPicture :image-id="user.avatar_id" />
+            <span
+                class="title"
+                v-text="capitalizedUserFirstName || capitalizedUserLastName" />
+            <div class="icon-wrapper">
+                <IconArrowDropDown
+                    :fill-color="whiteColor"
+                    :state="arrowIconState" />
             </div>
         </template>
         <template #selectContent>
@@ -28,16 +28,22 @@
 
 <script>
 import { mapState } from 'vuex';
-import { toCapitalize } from '~/model/stringWrapper';
 import { WHITE } from '~/assets/scss/_variables/_colors.scss';
+import { toCapitalize } from '~/model/stringWrapper';
+import { ARROW } from '~/defaults/icons';
 
 export default {
     name: 'NavigationBarUserButton',
     components: {
         NavigationBarSelectButton: () => import('~/components/Navigation/NavigationBar/NavigationBarSelectButton'),
         NavigationBarUserSelectContent: () => import('~/components/Navigation/NavigationBar/NavigationBarUserSelectContent'),
-        Picture: () => import('~/components/Inputs/Image/Picture'),
-        IconUser: () => import('~/components/Icon/Menu/IconUser'),
+        IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
+        UserPicture: () => import('~/components/Inputs/Image/UserPicture'),
+    },
+    data() {
+        return {
+            isFocused: false,
+        };
     },
     computed: {
         ...mapState('authentication', {
@@ -45,6 +51,9 @@ export default {
         }),
         whiteColor() {
             return WHITE;
+        },
+        arrowIconState() {
+            return this.isFocused ? ARROW.UP : ARROW.DOWN;
         },
         capitalizedUserFirstName() {
             const { first_name: firstName } = this.user;
@@ -60,18 +69,23 @@ export default {
             return `${this.capitalizedUserFirstName} ${this.capitalizedUserLastName}`;
         },
     },
+    methods: {
+        onFocus(isFocused) {
+            this.isFocused = isFocused;
+        },
+    },
 };
 </script>
 
 <style lang="scss" scoped>
-    .user-image {
+    .icon-wrapper {
         display: flex;
-        width: 24px;
-        height: 24px;
+        margin-right: -8px;
+    }
 
-        & > img {
-            object-fit: contain;
-            box-shadow: $ELEVATOR_2_DP;
-        }
+    .title {
+        color: $WHITE;
+        font: $FONT_SEMI_BOLD_14_20;
+        margin-left: 8px;
     }
 </style>

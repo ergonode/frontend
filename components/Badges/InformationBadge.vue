@@ -4,22 +4,25 @@
  */
 <template>
     <div
-        :class="badgeClasses"
-        :style="badgeStyles">
+        :class="['badge', `badge--${size}`]"
+        :style="backgroundColorStyle">
         <slot name="prepend" />
-        <span
-            class="badge__title font--semi-bold-10-12"
-            :style="badgeTextStyles"
-            v-text="title" />
+        <BadgeLabel
+            :style="textColorStyle"
+            :label="title" />
     </div>
 </template>
 
 <script>
 import { SIZES } from '~/defaults/badge';
 import { WHITE, GRAPHITE_DARK } from '~/assets/scss/_variables/_colors.scss';
+import BadgeLabel from '~/components/Badges/BadgeLabel';
 
 export default {
     name: 'InformationBadge',
+    components: {
+        BadgeLabel,
+    },
     props: {
         title: {
             type: [String, Number],
@@ -42,20 +45,12 @@ export default {
         },
     },
     computed: {
-        badgeClasses() {
-            return [
-                'badge',
-                {
-                    'badge--small': this.size === SIZES.SMALL,
-                },
-            ];
-        },
-        badgeStyles() {
+        backgroundColorStyle() {
             return {
                 backgroundColor: this.background,
             };
         },
-        badgeTextStyles() {
+        textColorStyle() {
             return {
                 color: this.color,
             };
@@ -69,15 +64,14 @@ export default {
         display: flex;
         align-items: center;
         border-radius: 4px;
-        padding: 6px 8px;
         margin: 0 8px;
 
         &--small {
             padding: 2px 4px;
         }
 
-        &__title {
-            text-transform: uppercase;
+        &--regular {
+            padding: 6px 8px;
         }
     }
 </style>

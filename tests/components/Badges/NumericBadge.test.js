@@ -2,9 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { THEME } from '~/defaults/theme';
 import { shallowMount } from '@vue/test-utils';
 import NumericBadge from '~/components/Badges/NumericBadge.vue';
-
 
 describe('Badges/NumericBadge', () => {
     let wrapper;
@@ -21,14 +21,16 @@ describe('Badges/NumericBadge', () => {
         expect(NumericBadge.name).toEqual('NumericBadge');
     });
 
-    it('Check default text', () => {
-        expect(wrapper.find('span').text()).toEqual('0');
-    });
+    describe('Props validations', () => {
+        it('theme', () => {
+            const { theme } = wrapper.vm.$options.props;
 
-    it('Check text', () => {
-        wrapper.setProps({
-            number: 4,
-        });
-        expect(wrapper.find('span').text()).toEqual('4');
+            expect(theme.required).toBeFalsy();
+            expect(theme.default).toBe(THEME.PRIMARY);
+            expect(theme.type).toBe(String);
+            expect(theme.validator && theme.validator('test')).toBeFalsy();
+            expect(theme.validator && theme.validator(THEME.PRIMARY)).toBeTruthy();
+            expect(theme.validator && theme.validator(THEME.TRANSPARENT)).toBeTruthy();
+        })
     });
 });

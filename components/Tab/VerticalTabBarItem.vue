@@ -66,28 +66,13 @@ export default {
         justify-items: center;
         align-items: center;
         padding: 12px 0;
-        background-color: $WHITE;
         color: $GRAPHITE;
         outline: none;
         text-align: center;
 
-        &:after {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            z-index: 1;
-            width: 3px;
-            background-color: $GREEN;
-            opacity: 0;
-            content: "";
-        }
-
-        &--selected:after {
-            opacity: 1;
-        }
-
         &--selected {
+            background-image: linear-gradient(to left, $WHITE, $WHITESMOKE);
+
             #{$tabItem}__title {
                 opacity: 0.9;
                 color: $GRAPHITE_DARK;

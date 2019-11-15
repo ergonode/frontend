@@ -35,11 +35,5 @@ export default {
         &:hover, &--selected {
             background-color: rgba($GRAPHITE, 0.5);
         }
-
-        .title {
-            color: $WHITE;
-            font: $FONT_SEMI_BOLD_14_20;
-            margin-left: 8px;
-        }
     }
 </style>
