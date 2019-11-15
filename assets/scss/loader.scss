@@ -1,0 +1,85 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+
+@import "_variables/loader";
+@import "_mixins/loader";
+
+.loader {
+    position: relative;
+    left: $leftPos;
+
+    @include dot;
+
+    margin: 24px;
+    box-shadow: $x2 0 0 -5px $GREEN;
+    animation: dotPulse 1.5s infinite linear;
+    animation-delay: 0.25s;
+
+    &::before, &::after {
+        position: absolute;
+        top: 0;
+        display: inline-block;
+        content: "";
+
+        @include dot;
+    }
+
+    &::before {
+        box-shadow: $x1 0 0 -5px $GREEN;
+        animation: dotPulseBefore 1.5s infinite linear;
+        animation-delay: 0s;
+    }
+
+    &::after {
+        box-shadow: $x3 0 0 -5px $GREEN;
+        animation: dotPulseAfter 1.5s infinite linear;
+        animation-delay: 0.5s;
+    }
+}
+
+@keyframes dotPulseBefore {
+    0% {
+        box-shadow: $x1 0 0 -5px $GREEN;
+    }
+
+    30% {
+        box-shadow: $x1 0 0 2px $GREEN;
+    }
+
+    60%,
+    100% {
+        box-shadow: $x1 0 0 -5px $GREEN;
+    }
+}
+
+@keyframes dotPulse {
+    0% {
+        box-shadow: $x2 0 0 -5px $GREEN;
+    }
+
+    30% {
+        box-shadow: $x2 0 0 2px $GREEN;
+    }
+
+    60%,
+    100% {
+        box-shadow: $x2 0 0 -5px $GREEN;
+    }
+}
+
+@keyframes dotPulseAfter {
+    0% {
+        box-shadow: $x3 0 0 -5px $GREEN;
+    }
+
+    30% {
+        box-shadow: $x3 0 0 2px $GREEN;
+    }
+
+    60%,
+    100% {
+        box-shadow: $x3 0 0 -5px $GREEN;
+    }
+}
