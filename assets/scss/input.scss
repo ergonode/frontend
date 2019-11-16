@@ -15,7 +15,6 @@
         position: relative;
         display: flex;
         flex: 1;
-        align-items: center;
 
         input::placeholder, textarea::placeholder, input, textarea {
             color: $GRAPHITE_DARK;
@@ -39,7 +38,6 @@
         }
 
         textarea {
-            min-height: 100%;
             padding: 6px 1px 1px;
             box-sizing: border-box;
         }
@@ -51,6 +49,15 @@
         margin-top: 4px;
         margin-left: 12px;
         word-break: break-word;
+    }
+
+    textarea ~ &__label {
+        align-self: baseline;
+        margin-top: 8px;
+    }
+
+    input ~ &__label {
+        align-self: center;
     }
 
     &__append {

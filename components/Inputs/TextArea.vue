@@ -10,12 +10,6 @@
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
             <slot name="prepend" />
-            <label
-                v-if="label"
-                :for="associatedLabel"
-                :class="floatingLabelClasses"
-                :style="floatingLabelTransforms"
-                v-text="label" />
             <textarea
                 :id="associatedLabel"
                 ref="input"
@@ -28,6 +22,12 @@
                 @input="onValueChange"
                 @focus="onFocus"
                 @blur="onBlur" />
+            <label
+                v-if="label"
+                :for="associatedLabel"
+                :class="floatingLabelClasses"
+                :style="floatingLabelTransforms"
+                v-text="label" />
             <div
                 v-if="isAppendSlotVisible"
                 class="input__append">

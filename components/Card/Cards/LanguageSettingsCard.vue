@@ -13,6 +13,21 @@
             multiselect
             clearable
             @input="setSelectedLanguages" />
+        <TextArea
+            v-model="value"
+            solid
+            required
+            label="Role description"
+            :style="{height: '150px'}"
+            hint="dupa" />
+        <TextField
+            v-model="value"
+            solid
+            regular
+            required
+            label="Role description"
+            resize="none"
+            hint="dupa" />
     </BaseCard>
 </template>
 
@@ -26,6 +41,13 @@ export default {
     components: {
         BaseCard,
         Select: () => import('~/components/Inputs/Select/Select'),
+        TextArea: () => import('~/components/Inputs/TextArea'),
+        TextField: () => import('~/components/Inputs/TextField'),
+    },
+    data() {
+        return {
+            value: '',
+        };
     },
     mixins: [errorValidationMixin],
     computed: {
