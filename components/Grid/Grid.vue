@@ -49,6 +49,7 @@
                 v-for="(column, colIndex) in gridState.columns"
                 :key="column.id"
                 :style="templateRows"
+                :draggable="draggableColumn"
                 :namespace="namespace"
                 :index="colIndex + columnsOffset"
                 :column="column"
@@ -164,6 +165,10 @@ export default {
         editingPrivilegeAllowed: {
             type: Boolean,
             default: true,
+        },
+        draggableColumn: {
+            type: Boolean,
+            default: false,
         },
         basicFilters: {
             type: Boolean,

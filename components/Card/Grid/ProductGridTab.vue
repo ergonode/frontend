@@ -23,6 +23,7 @@
                 :editing-privilege-allowed="isUserAllowedToUpdate"
                 :advanced-filters="true"
                 :basic-filters="true"
+                :draggable-column="true"
                 title="Products"
                 @rowEdit="onRowEdit" />
         </template>

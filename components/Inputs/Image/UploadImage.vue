@@ -23,7 +23,7 @@
                 :value="selectedFileID"
                 @input="e => onUpload(e)">
             <img
-                :src="require('~/assets/images/icons/upload.svg')"
+                :src="require('~/assets/images/placeholders/upload_file.svg')"
                 alt="placeholder">
             <span class="upload-image__description font--medium-12-16">
                 Drag image here or browse

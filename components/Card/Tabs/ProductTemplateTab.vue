@@ -111,7 +111,7 @@ export default {
     }
 
     .template-grid {
-        max-width: 960px;
+        min-width: 1008px;
         padding: 24px;
     }
 </style>

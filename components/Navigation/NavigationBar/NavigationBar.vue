@@ -4,11 +4,11 @@
  */
 <template>
     <nav class="navigation-bar">
-        <section class="navigation-bar__section left">
-            <slot name="leftSectionContent" />
+        <section class="navigation-bar__section">
+            <slot name="leftSection" />
         </section>
-        <section class="navigation-bar__section right">
-            <slot name="rightSectionContent" />
+        <section class="navigation-bar__section">
+            <slot name="rightSection" />
         </section>
     </nav>
 </template>

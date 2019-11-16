@@ -15,18 +15,19 @@
     box-shadow: $ELEVATOR_6_DP;
 
     &__section {
-        display: flex;
+        $section: &;
 
-        &.left {
-            & > * {
-                border-right: 1px solid rgba($GRAPHITE, 0.5);
-            }
+        display: grid;
+        grid-auto-flow: column;
+        grid-column-gap: 1px;
+        background-color: rgba($GRAPHITE, 0.4);
+
+        &:nth-child(1) {
+            border-right: 1px solid rgba($GRAPHITE, 0.4);
         }
 
-        &.right {
-            & > * {
-                border-left: 1px solid rgba($GRAPHITE, 0.5);
-            }
+        &:nth-child(2) {
+            border-left: 1px solid rgba($GRAPHITE, 0.4);
         }
     }
 }

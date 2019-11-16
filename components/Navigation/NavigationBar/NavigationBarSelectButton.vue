@@ -4,20 +4,12 @@
  */
 <template>
     <NavigationBarButton
-        :is-selected="isSelected"
+        :is-selected="isFocused"
         @click.native="onClick">
-        <slot name="prependIcon" />
-        <span
-            class="title"
-            v-text="title" />
-        <div class="icon-wrapper">
-            <IconArrowDropDown
-                :fill-color="whiteColor"
-                :state="arrowIconState" />
-        </div>
+        <slot name="input" />
         <div
-            v-if="isSelected"
-            ref="selectContent"
+            v-if="isFocused"
+            ref="menu"
             class="select-content">
             <slot name="selectContent" />
         </div>
@@ -25,65 +17,49 @@
 </template>
 
 <script>
-import { ARROW } from '~/defaults/icons';
-import { WHITE } from '~/assets/scss/_variables/_colors.scss';
-
 export default {
     name: 'NavigationBarSelectButton',
     components: {
         NavigationBarButton: () => import('~/components/Navigation/NavigationBar/NavigationBarButton'),
-        IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
-    },
-    props: {
-        title: {
-            type: String,
-            default: 'Unknown',
-        },
     },
     data() {
         return {
-            isSelected: false,
+            isFocused: false,
             isClickedOutside: false,
         };
     },
     destroyed() {
         window.removeEventListener('click', this.onClickOutside);
     },
-    computed: {
-        whiteColor() {
-            return WHITE;
-        },
-        arrowIconState() {
-            return this.isSelected ? ARROW.UP : ARROW.DOWN;
-        },
-    },
     methods: {
         onClick() {
-            if (!this.isSelected) {
+            if (!this.isFocused) {
                 window.addEventListener('click', this.onClickOutside);
             }
         },
         onClickOutside(event) {
-            if (this.isSelected) {
+            if (this.isFocused) {
                 const { pageX, pageY } = event;
                 const {
                     top, left, width, height,
-                } = this.$refs.selectContent.getBoundingClientRect();
-                const isClickedInsideSelectContent = pageX > left
+                } = this.$refs.menu.getBoundingClientRect();
+                const isClickedInsideMenu = pageX > left
                     && pageX < left + width
                     && pageY > top
                     && pageY < top + height;
 
-                if (!isClickedInsideSelectContent) {
-                    this.isSelected = false;
+                if (!isClickedInsideMenu) {
+                    this.isFocused = false;
                 }
             } else {
-                this.isSelected = !this.isSelected;
+                this.isFocused = !this.isFocused;
             }
 
-            if (!this.isSelected) {
+            if (!this.isFocused) {
                 window.removeEventListener('click', this.onClickOutside);
             }
+
+            this.$emit('focus', this.isFocused);
         },
     },
 };
@@ -93,19 +69,13 @@ export default {
     .select-content {
         position: absolute;
         top: $toolBarHeight;
-        right: -1px;
+        right: 0;
         z-index: 1;
         display: flex;
-        width: 320px;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_2_DP;
         transition: all 0.4s ease;
         color: $GRAPHITE;
         cursor: default;
-    }
-
-    .icon-wrapper {
-        display: flex;
-        margin-right: -8px;
     }
 </style>

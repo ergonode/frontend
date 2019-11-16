@@ -6,7 +6,7 @@
     <div class="tab-bar">
         <div
             v-show="isTabVisible || !isExpanded"
-            :class="['tab-bar__items', {'tab-bar__items--visible': isTabVisible && isExpanded}]">
+            class="tab-bar__items">
             <VerticalTabBarItem
                 v-for="(item, index) in items"
                 :key="index"
@@ -64,20 +64,15 @@ export default {
     .tab-bar {
         display: flex;
         height: 100%;
+        border-right: $BORDER_1_GREY;
 
         &__items {
             position: relative;
             display: flex;
             flex-flow: column nowrap;
             width: 82px;
-            border-top: $BORDER_1_GREY;
-            border-left: $BORDER_1_GREY;
             box-sizing: border-box;
-
-            &:not(&--visible) {
-                padding-left: 1px;
-                border-right: $BORDER_1_GREY;
-            }
+            background-color: $WHITESMOKE;
         }
     }
 </style>

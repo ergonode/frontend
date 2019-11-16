@@ -77,6 +77,7 @@ export default {
         display: flex;
         flex: 1;
         flex-direction: column;
+        width: 320px;
 
         .footer {
             display: flex;

@@ -21,9 +21,4 @@ describe('TitleBar/TitleBar', () => {
         expect(wrapper.contains('.details__title')).toBeTruthy();
         expect(wrapper.find('.details__title').text()).toBe('test');
     });
-
-    it('WHEN badge props is set THEN show text', () => {
-        expect(wrapper.contains('.badge__title')).toBeTruthy();
-        expect(wrapper.find('.badge__title').text()).toBe('READ ONLY');
-    });
 });

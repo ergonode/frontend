@@ -51,3 +51,5 @@ export const COLUMN_TYPE = {
     MULTI_SELECT: 'MULTI_SELECT',
     CHECK_CELL: 'CHECK_CELL',
 };
+
+export const DATA_LIMIT = 25;

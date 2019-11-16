@@ -6,13 +6,13 @@
     <App>
         <template v-if="user">
             <NavigationBar>
-                <template #leftSectionContent>
+                <template #leftSection>
                     <NavigationBarMenuButton
                         :value="sideBarState"
                         @state="onStateChange" />
                     <NavigationBarDashboardButton />
                 </template>
-                <template #rightSectionContent>
+                <template #rightSection>
                     <NavigationBarUserButton />
                     <NavigationBarSynchronizationButton />
                     <NavigationBarNotificationButton />
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     middleware: ['setDictionaries', 'authenticated'],
@@ -52,12 +52,22 @@ export default {
             sideBarState: 2,
         };
     },
+    mounted() {
+        this.setRequestTimeout();
+    },
+    destroyed() {
+        this.invalidateRequestTimeout();
+    },
     computed: {
         ...mapState('authentication', {
             user: (state) => state.user,
         }),
     },
     methods: {
+        ...mapActions('notifications', [
+            'setRequestTimeout',
+            'invalidateRequestTimeout',
+        ]),
         onStateChange(value) {
             this.sideBarState = value;
         },

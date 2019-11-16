@@ -67,7 +67,7 @@ export default {
                 return {
                     columnIndex: this.columnIndex,
                     column: this.column,
-                    isColumnEditable: this.gridState.configuration.isColumnEditable,
+                    isColumnEditable: true,
                 };
             }
 

@@ -15,7 +15,7 @@
         <template v-if="!isDraggedColumn">
             <slot />
             <div
-                v-if="!isCheckColumn && isColumnResizeable && !isHeaderFocused"
+                v-if="!isCheckColumn && !isHeaderFocused"
                 :class="['column__resizer', {
                     'column__resizer--resizing': isResizing
                 }]"
@@ -45,6 +45,10 @@ export default {
     props: {
         namespace: {
             type: String,
+            required: true,
+        },
+        draggable: {
+            type: Boolean,
             required: true,
         },
         columnOffset: {
@@ -106,13 +110,10 @@ export default {
                 .findIndex((col) => col.id === this.column.id) > -1;
         },
         isColumnDraggable() {
-            return this.gridState.configuration.isColumnMoveable
+            return this.draggable
                 && Object.keys(this.gridState.editingCellCoordinates).length === 0
                 && !this.isHeaderFocused
                 && !this.isCheckColumn;
-        },
-        isColumnResizeable() {
-            return this.gridState.configuration.isColumnResizeable;
         },
         isDraggedColumn() {
             return this.draggedElIndex === this.index;

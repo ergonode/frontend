@@ -8,15 +8,15 @@
             <div class="wrapper__section">
                 <img
                     class="comet"
-                    src="~assets/images/placeholders/comet.svg">
+                    src="~assets/images/placeholders/error-pages/comet.svg">
                 <img
                     class="air"
-                    src="~assets/images/placeholders/air.svg">
+                    src="~assets/images/placeholders/error-pages/air.svg">
             </div>
             <div class="wrapper__section">
                 <img
                     class="delorean"
-                    src="~assets/images/placeholders/delorean.svg">
+                    src="~assets/images/placeholders/error-pages/delorean.svg">
                 <div class="section__info">
                     <h1 class="info__header font--medium-24-32">
                         <Typer :value="['Future', 'Feature']" />

@@ -6,7 +6,6 @@ import { insertValueAtIndex } from '~/model/arrayWrapper';
 
 export const types = {
     SET_EDITING_CELL_COORDINATES: 'SET_EDITING_CELL_COORDINATES',
-    SET_CONFIGURATION: 'SET_CONFIGURATION',
     SET_COLUMNS: 'SET_COLUMNS',
     SET_PINNED_COLUMNS: 'SET_PINNED_COLUMNS',
     INSERT_PINNED_COLUMN_AT_INDEX: 'INSERT_PINNED_COLUMN_AT_INDEX',
@@ -46,9 +45,6 @@ export const types = {
 export default {
     [types.SET_EDITING_CELL_COORDINATES](state, editingCellCoordinates) {
         state.editingCellCoordinates = editingCellCoordinates;
-    },
-    [types.SET_CONFIGURATION](state, configuration) {
-        state.configuration = configuration;
     },
     [types.SET_COLUMNS](state, columns) {
         state.columns = columns;

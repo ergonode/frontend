@@ -28,18 +28,12 @@ export default {
         align-items: center;
         border: none;
         padding: 0 24px;
-        background-color: transparent;
+        background-color: $GRAPHITE_DARK;
         cursor: pointer;
         outline: none;
 
         &:hover, &--selected {
             background-color: rgba($GRAPHITE, 0.5);
-        }
-
-        .title {
-            color: $WHITE;
-            font: $FONT_SEMI_BOLD_14_20;
-            margin-left: 8px;
         }
     }
 </style>

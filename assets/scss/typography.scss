@@ -11,6 +11,10 @@ html, body {
     -webkit-text-size-adjust: 100%; //fix for iOS
 }
 
+strong {
+    font-weight: 700;
+}
+
 .font--medium-12-16 {
     font: $FONT_MEDIUM_12_16;
 }

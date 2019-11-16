@@ -78,8 +78,10 @@ export default {
             if (!this.isMounted) return null;
 
             if (this.isFocused || !this.isEmpty) {
+                const isTextArea = this.$refs.input.type === 'textarea';
                 const { activator } = this.$refs;
-                const transform = `translateY(-${activator.offsetHeight / 2}px)`;
+                const transformValue = isTextArea ? 18 : activator.offsetHeight / 2;
+                const transform = `translateY(-${transformValue}px)`;
 
                 return {
                     transform,

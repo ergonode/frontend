@@ -2,12 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { DATA_LIMIT } from '~/defaults/grid';
 import actions from './actions';
 import mutations from './mutations';
 import getters from './getters';
 
 const state = () => ({
-    numberOfDisplayedElements: 25,
+    numberOfDisplayedElements: DATA_LIMIT,
     columns: [],
     columnWidths: [],
     pinnedColumns: [],
@@ -20,7 +21,6 @@ const state = () => ({
     advancedFilters: {},
     advancedFiltersData: [],
     currentPage: 1,
-    configuration: {},
     sortedByColumn: {},
     editingCellCoordinates: {},
 });
