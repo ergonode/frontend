@@ -40,7 +40,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { LIMIT } from '~/defaults/gridList';
+import { DATA_LIMIT } from '~/defaults/grid';
 import PrependIconButton from '~/components/Buttons/PrependIconButton';
 import BaseButton from '~/components/Buttons/BaseButton';
 import Loader from '~/components/Loader/Loader';
@@ -84,7 +84,7 @@ export default {
 
             return listLength
                 && listLength < this.fullListCount
-                && this.fullListCount > LIMIT;
+                && this.fullListCount > DATA_LIMIT;
         },
     },
     mixins: [errorValidationMixin],
@@ -100,8 +100,8 @@ export default {
         },
         showMore() {
             const params = {
-                limit: LIMIT,
-                offset: this.currentPage * LIMIT,
+                limit: DATA_LIMIT,
+                offset: this.currentPage * DATA_LIMIT,
                 filter: `owner_id=${this.objectId}`,
                 field: 'created_at',
             };

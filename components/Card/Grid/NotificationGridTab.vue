@@ -30,7 +30,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { LayoutOrientation } from '~/defaults/layout';
-import defaultState from '~/store/notifications/state';
+import { DATA_LIMIT } from '~/defaults/grid';
 import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
 import BaseForm from '~/components/Form/BaseForm';
 
@@ -55,9 +55,9 @@ export default {
             return LayoutOrientation.HORIZONTAL;
         },
         buttonTitle() {
-            const notificationsNumber = this.limit + defaultState().limit < this.count
-                ? defaultState().limit
-                : this.count - this.limit + defaultState().limit;
+            const notificationsNumber = this.limit + DATA_LIMIT < this.count
+                ? DATA_LIMIT
+                : this.count - this.limit + DATA_LIMIT;
 
             return `LOAD MORE NOTIFICATIONS (${notificationsNumber})`;
         },
@@ -68,7 +68,7 @@ export default {
             'requestForNotifications',
         ]),
         onLoadMoreNotifications() {
-            this.setNotificationsLimit(this.limit + defaultState().limit);
+            this.setNotificationsLimit(this.limit + DATA_LIMIT);
             this.requestForNotifications();
         },
     },

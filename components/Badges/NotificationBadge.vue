@@ -13,7 +13,7 @@ import RoundedBaseBadge from '~/components/Badges/RoundedBaseBadge';
 import BadgeLabel from '~/components/Badges/BadgeLabel';
 
 export default {
-    name: 'NumericBadge',
+    name: 'NotificationBadge',
     components: {
         RoundedBaseBadge,
         BadgeLabel,
