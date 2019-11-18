@@ -40,7 +40,7 @@ export default {
         await store.dispatch('comments/getComments', {
             limit: DATA_LIMIT,
             offset: 0,
-            filter: `owner_id=${id}`,
+            filter: `object_id=${id}`,
             field: 'created_at',
         });
     },
