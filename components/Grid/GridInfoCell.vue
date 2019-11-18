@@ -23,9 +23,7 @@ export default {
 
 <style lang="scss" scoped>
     .info-cell {
-        display: flex;
         flex: 1;
-        align-items: center;
         width: 0;
         padding: 8px;
         color: $GRAPHITE_DARK;

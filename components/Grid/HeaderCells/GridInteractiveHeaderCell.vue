@@ -7,7 +7,10 @@
         :class="['header-cell',
                  { 'draggable': isColumnEditable && !isCellEditing }
         ]">
-        <GridBaseHeaderCell :header="column.header.title" />
+        <GridBaseHeaderCell
+            :header="column.header.title"
+            :hint="column.header.hint"
+            :suffix="column.header.suffix" />
         <div
             :class="[
                 'horizontal-wrapper',
@@ -232,7 +235,7 @@ export default {
         flex: 1;
         justify-content: space-between;
         align-items: center;
-        background-color: $WHITESMOKE;
+        width: 0;
         user-select: none;
         pointer-events: auto;
 

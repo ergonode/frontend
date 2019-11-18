@@ -4,7 +4,7 @@
  */
 <template>
     <DatePicker
-        :style="{height: `${fixedHeight}px`}"
+        :style="{width: `${fixedWidth}px`, height: `${fixedHeight}px`}"
         :value="parsedDate"
         solid
         :placeholder="parameters.format"
@@ -12,7 +12,7 @@
         :error-messages="errorMessages"
         :dismissible="false"
         autofocus
-        @focus="onFocusChange"
+        @focus="onFocus"
         @input="onValueChange" />
 </template>
 
@@ -43,6 +43,10 @@ export default {
             type: Number,
             required: true,
         },
+        fixedWidth: {
+            type: Number,
+            required: true,
+        },
     },
     data() {
         return {
@@ -62,7 +66,7 @@ export default {
         },
     },
     methods: {
-        onFocusChange(isFocused) {
+        onFocus(isFocused) {
             this.$emit('focus', isFocused);
         },
         onValueChange(date) {

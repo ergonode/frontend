@@ -8,25 +8,6 @@ import {
     COLUMN_WIDTH,
 } from '~/defaults/grid';
 
-const getMappedColumnHeaderTitle = ({
-    id,
-    type,
-    label,
-    language,
-    parameter,
-}) => {
-    let suffix = '';
-    const columnIDs = id.split(':');
-
-    if (type === COLUMN_TYPE.PRICE) suffix = parameter.currency;
-    if (!language) return `${label} ${suffix}`;
-    if (columnIDs.length > 1) return `${label || id} ${suffix}`;
-
-    return label
-        ? `${label} ${language} ${suffix}`
-        : `${id} ${language} ${suffix}`;
-};
-
 const getMappedColumnHeaderType = ({ filter, type }) => {
     if (type === COLUMN_TYPE.CHECK) return GRID_HEADER_TYPE.CHECK;
     if (filter || type === COLUMN_TYPE.IMAGE) return GRID_HEADER_TYPE.INTERACTIVE;
@@ -34,10 +15,26 @@ const getMappedColumnHeaderType = ({ filter, type }) => {
     return GRID_HEADER_TYPE.PLAIN;
 };
 
-const getMappedColumnHeader = (column) => ({
-    title: getMappedColumnHeaderTitle(column),
-    type: getMappedColumnHeaderType(column),
-});
+const getMappedColumnHeader = ({
+    id,
+    label,
+    language = '',
+    parameters,
+    filter,
+    type,
+}) => {
+    let suffix = '';
+    const [code] = id.split(':');
+
+    if (parameters) suffix = Object.keys(parameters).map((key) => parameters[key]).join(', ');
+
+    return {
+        title: label || `#${code}`,
+        hint: label ? `${code} ${language}` : null,
+        suffix,
+        type: getMappedColumnHeaderType({ filter, type }),
+    };
+};
 
 export function getSortedColumnsByIDs(columns, columnsID) {
     return columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id));

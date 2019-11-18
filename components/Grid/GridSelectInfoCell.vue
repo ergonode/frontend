@@ -38,6 +38,6 @@ export default {
         flex: 1;
         justify-content: space-between;
         align-items: center;
-        padding-right: 5px;
+        padding-right: 6px;
     }
 </style>
