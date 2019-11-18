@@ -51,17 +51,19 @@
         <template #footer>
             <span
                 class="font--medium-12-16"
-                v-text="comment.created_at" />
+                v-text="`Created ${formatDate(comment.created_at)}`" />
             <span
                 v-if="comment.edited_at"
                 class="font--medium-12-16"
-                v-text="comment.edited_at" />
+                v-text="`Edited ${formatDate(comment.edited_at)}`" />
         </template>
     </CommentWrapper>
 </template>
 <script>
 import { mapActions } from 'vuex';
+import { format as formatDate } from 'date-fns';
 import { THEMES, SIZES } from '~/defaults/buttons';
+import { COMMENT_FORMAT } from '~/defaults/date';
 import {
     GREEN, RED, WHITE,
 } from '~/assets/scss/_variables/_colors.scss';
@@ -136,6 +138,11 @@ export default {
         },
         onRemoveError({ message }) {
             this.$addAlert({ type: 'error', message });
+        },
+        formatDate(date) {
+            if (!date) return null;
+
+            return formatDate(new Date(date), COMMENT_FORMAT);
         },
     },
 };
