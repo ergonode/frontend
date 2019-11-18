@@ -3,8 +3,6 @@
  * See LICENSE for license details.
  */
 /* eslint-disable no-param-reassign */
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
 import Vue from 'vue'; // eslint-disable-line import/no-extraneous-dependencies
 
 class ModuleLoader {

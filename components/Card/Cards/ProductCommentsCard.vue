@@ -27,6 +27,13 @@
                 :comment="comment"
                 @close="closeForm" />
         </template>
+        <template #placeholder>
+            <GridListPlaceholder
+                :layout-orientation="horizontalOrientation"
+                title="Nothing to see here"
+                subtitle="Here you can share information about the product with other people"
+                bg-url="placeholders/comments.svg" />
+        </template>
         <template
             v-if="isMoreButtonVisible"
             #footer>
@@ -41,6 +48,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { DATA_LIMIT } from '~/defaults/grid';
+import { LayoutOrientation } from '~/defaults/layout';
 import PrependIconButton from '~/components/Buttons/PrependIconButton';
 import BaseButton from '~/components/Buttons/BaseButton';
 import Loader from '~/components/Loader/Loader';
@@ -60,6 +68,7 @@ export default {
         GridList,
         CommentStateChanger,
         EditableComment,
+        GridListPlaceholder: () => import('~/components/Placeholder/GridListPlaceholder'),
     },
     data() {
         return {
@@ -74,6 +83,9 @@ export default {
             commentList: (state) => state.comments,
             currentPage: (state) => state.currentPage,
         }),
+        horizontalOrientation() {
+            return LayoutOrientation.HORIZONTAL;
+        },
         showMoreText() {
             const { length: listLength } = this.commentList;
 

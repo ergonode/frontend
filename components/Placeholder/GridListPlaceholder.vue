@@ -3,14 +3,16 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['notifications-placeholder', layoutOrientation]">
-        <div class="notifications-placeholder__description">
-            <span class="notifications-placeholder__title">
-                Nothing to see here
-            </span>
-            <span class="notifications-placeholder__subtitle">
-                This is where you will see important notifications for product updates
-            </span>
+    <div
+        :class="['placeholder', layoutOrientation]"
+        :style="placeholderStyles">
+        <div class="placeholder__description">
+            <span
+                class="placeholder__title"
+                v-text="title" />
+            <span
+                class="placeholder__subtitle"
+                v-text="subtitle" />
         </div>
     </div>
 </template>
@@ -19,22 +21,42 @@
 import { LayoutOrientation } from '~/defaults/layout';
 
 export default {
-    name: 'NotificationPlaceholder',
+    name: 'GridListPlaceholder',
     props: {
         layoutOrientation: {
             type: String,
             default: LayoutOrientation.VERTICAL,
             validator: (value) => Object.values(LayoutOrientation).indexOf(value) !== -1,
         },
+        title: {
+            type: String,
+            default: '',
+        },
+        subtitle: {
+            type: String,
+            default: '',
+        },
+        bgUrl: {
+            type: String,
+            default: null,
+        },
+    },
+    computed: {
+        placeholderStyles() {
+            const url = this.bgUrl ? require(`~/assets/images/${this.bgUrl}`) : null;
+
+            return {
+                background: url ? `url(${url}) no-repeat right bottom` : 'unset',
+            };
+        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .notifications-placeholder {
+    .placeholder {
         flex: 1;
         box-sizing: border-box;
-        background: url("~assets/images/placeholders/notify.svg") no-repeat right bottom;
         color: $GRAPHITE_DARK;
 
         &.vertical-layout {

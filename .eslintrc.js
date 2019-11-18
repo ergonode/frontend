@@ -54,6 +54,8 @@ module.exports = {
             ],
         }],
         'class-methods-use-this':['off'],
+        'global-require': ['off'],
+        'import/no-dynamic-require': ['off'],
         'no-underscore-dangle': 'off',
         'no-unused-vars':['error', { 'argsIgnorePattern': 'commit' }],
         'max-len': ['error', {
