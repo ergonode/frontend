@@ -10,6 +10,7 @@
                 :route-edit="routeEdit"
                 :basic-filters="true"
                 :edit-column="false"
+                :select-column="false"
                 title="Activity logs" />
         </template>
         <template #footer>

@@ -20,6 +20,11 @@ export const pages = [
                 path: 'activity-log-grid',
                 component: GridTabs.UserActivityLogsGridTab,
             },
+            {
+                name: 'profile-privileges-grid',
+                path: 'privileges-grid',
+                component: GridTabs.UserPrivilegesGridTab,
+            },
         ],
     },
     {
