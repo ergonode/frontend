@@ -27,9 +27,6 @@
                 v-show="sectionElementsByID(section.id).length !== 0"
                 :key="section.id"
                 class="section">
-                <span
-                    class="section__title font--medium-12-16"
-                    v-text="section.name" />
                 <div class="section__items">
                     <TemplateElement
                         v-for="element in sectionElementsByID(section.id)"
@@ -87,7 +84,7 @@ export default {
 
 <style lang="scss" scoped>
     .templates {
-        padding: 0 20px 24px 24px;
+        padding: 24px 20px 24px 24px;
         overflow: auto;
 
         .section {

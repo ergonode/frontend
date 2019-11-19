@@ -24,7 +24,7 @@
                     <p class="info__text font--medium-16-24">
                         This feature will be implemented in the near future!
                     </p>
-                    <BaseButton
+                    <Button
                         class="info__button"
                         title="Back to the… Dashboard"
                         @click.native="$router.push('/dashboard');" />
@@ -57,7 +57,7 @@
 export default {
     name: 'Placeholder',
     components: {
-        BaseButton: () => import('~/components/Buttons/BaseButton'),
+        Button: () => import('~/components/Buttons/Button'),
         Typer: () => import('~/components/Inputs/Typer'),
     },
 };

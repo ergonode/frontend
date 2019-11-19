@@ -31,6 +31,7 @@
                         <ListElement
                             v-for="(option, index) in options"
                             :key="index"
+                            :small="true"
                             @click.native="onSelectedValue(index)">
                             <ListElementDescription>
                                 <ListElementTitle :title="option" />
@@ -138,7 +139,6 @@ export default {
             return {
                 left: `${leftPos}px`,
                 top: `${top + height + 2}px`,
-                width: `${width}px`,
             };
         },
     },
@@ -161,5 +161,6 @@ export default {
         box-shadow: $ELEVATOR_2_DP;
         max-height: 200px;
         min-width: 130px;
+        max-width: 170px;
     }
 </style>

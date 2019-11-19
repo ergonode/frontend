@@ -42,7 +42,6 @@ export default {
     .breadcrumb {
         display: flex;
         align-items: center;
-        grid-column-gap: 6px;
         grid-column: 2 / 3;
         grid-row: 2 / 3;
         margin-left: 8px;

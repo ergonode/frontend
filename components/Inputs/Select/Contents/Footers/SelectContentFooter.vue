@@ -4,7 +4,7 @@
  */
 <template>
     <ContentBaseFooter :small="true">
-        <BaseButton
+        <Button
             :theme="secondaryTheme"
             :size="tinySize"
             title="CLEAR"
@@ -15,13 +15,13 @@
 <script>
 import { SIZES, THEMES } from '~/defaults/buttons';
 import ContentBaseFooter from '~/components/Inputs/Select/Contents/Footers/ContentBaseFooter';
-import BaseButton from '~/components/Buttons/BaseButton';
+import Button from '~/components/Buttons/Button';
 
 export default {
     name: 'SelectContentFooter',
     components: {
         ContentBaseFooter,
-        BaseButton,
+        Button,
     },
     methods: {
         onClear() {

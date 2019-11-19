@@ -15,7 +15,7 @@
             :section-title="item.title"
             :section-menu="item.menu" />
         <div class="footer">
-            <BaseButton
+            <Button
                 :theme="secondaryTheme"
                 title="LOG OUT"
                 @click.native="onLogout" />
@@ -34,7 +34,7 @@ export default {
         Divider: () => import('~/components/Dividers/Divider'),
         NavigationBarUserSelectContentHeader: () => import('~/components/Navigation/NavigationBar/NavigationBarUserSelectContentHeader'),
         MenuList: () => import('~/components/Navigation/MenuList'),
-        BaseButton: () => import('~/components/Buttons/BaseButton'),
+        Button: () => import('~/components/Buttons/Button'),
     },
     props: {
         avatarId: {

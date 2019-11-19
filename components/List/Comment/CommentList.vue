@@ -20,9 +20,7 @@
         <div
             v-else
             class="grid-list__placeholder">
-            <img
-                src="~/assets/images/placeholders/comments_placeholder.svg"
-                alt="list placeholder">
+            <slot name="placeholder" />
         </div>
         <div class="grid-list__footer">
             <slot name="footer" />
@@ -32,7 +30,7 @@
 
 <script>
 export default {
-    name: 'GridList',
+    name: 'CommentList',
     components: {
         List: () => import('~/components/List/List'),
     },
@@ -49,22 +47,15 @@ export default {
         min-width: 560px;
         padding: 24px;
 
+        &__placeholder {
+            margin: 25px 0;
+        }
+
         &__footer {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-        }
-
-        &__placeholder {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 24px 0;
-
-            & > img {
-                width: 100%;
-            }
         }
 
         .fade-enter-active, .fade-leave-active {

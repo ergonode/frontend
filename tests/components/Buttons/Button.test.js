@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { shallowMount, createLocalVue } from '@vue/test-utils';
-import Button from '~/components/Buttons/BaseButton';
+import Button from '~/components/Buttons/Button';
 
 const localVue = createLocalVue();
 
@@ -20,7 +20,7 @@ describe('Buttons/Button', () => {
 
     it('Component is named well', () => {
         expect(typeof Button.name).toBe('string');
-        expect(Button.name).toEqual('BaseButton');
+        expect(Button.name).toEqual('Button');
     });
 
     it('Check if button has not children', () => {

@@ -13,14 +13,18 @@
                             :key="notification.id"
                             :notification="notification" />
                         <NotificationListFooter>
-                            <BaseButton
+                            <Button
                                 :title="buttonTitle"
                                 @click.native="onLoadMoreNotifications" />
                         </NotificationListFooter>
                     </List>
-                    <NotificationPlaceholder
+                    <ListPlaceholder
                         v-else
-                        :layout-orientation="horizontalOrientation" />
+                        :layout-orientation="horizontalOrientation"
+                        title="Nothing to see here"
+                        subtitle="This is where you will see
+                        important notifications for product updates"
+                        bg-url="placeholders/notify.svg" />
                 </div>
             </BaseForm>
         </template>
@@ -39,11 +43,11 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
         BaseForm,
-        BaseButton: () => import('~/components/Buttons/BaseButton'),
+        Button: () => import('~/components/Buttons/Button'),
         List: () => import('~/components/List/List'),
         NotificationListElement: () => import('~/components/List/Notifications/NotificationListElement'),
         NotificationListFooter: () => import('~/components/List/Notifications/NotificationListFooter'),
-        NotificationPlaceholder: () => import('~/components/List/Notifications/NotificationPlaceholder'),
+        ListPlaceholder: () => import('~/components/Placeholder/ListPlaceholder'),
     },
     computed: {
         ...mapState('notifications', {

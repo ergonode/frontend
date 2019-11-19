@@ -6,11 +6,11 @@
     <ContentBaseFooter
         :small="true"
         :space-between="true">
-        <BaseButton
+        <Button
             :size="tinySize"
             title="OK"
             @click.native="onApply" />
-        <BaseButton
+        <Button
             :theme="secondaryTheme"
             :size="tinySize"
             title="CLEAR ALL"
@@ -21,13 +21,13 @@
 <script>
 import { SIZES, THEMES } from '~/defaults/buttons';
 import ContentBaseFooter from '~/components/Inputs/Select/Contents/Footers/ContentBaseFooter';
-import BaseButton from '~/components/Buttons/BaseButton';
+import Button from '~/components/Buttons/Button';
 
 export default {
     name: 'MultiselectContentFooter',
     components: {
         ContentBaseFooter,
-        BaseButton,
+        Button,
     },
     methods: {
         onApply() {

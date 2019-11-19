@@ -36,6 +36,15 @@ export default {
             type: Object,
             default: () => {},
         },
+        isAdditionFormVisible: {
+            type: Boolean,
+            default: false,
+        },
+    },
+    watch: {
+        isAdditionFormVisible(newVal) {
+            if (newVal === true) this.showEditingForm = false;
+        },
     },
     methods: {
         toggleState() {

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseButton
+    <Button
         v-bind="$attrs">
         <template #prepend="{ color }">
             <div :class="prependClasses">
@@ -13,16 +13,16 @@
             </div>
         </template>
         <slot />
-    </BaseButton>
+    </Button>
 </template>
 <script>
-import BaseButton from '~/components/Buttons/BaseButton';
+import Button from '~/components/Buttons/Button';
 
 export default {
     name: 'PrependIconButton',
     inheritAttrs: false,
     components: {
-        BaseButton,
+        Button,
     },
     computed: {
         prependClasses() {
