@@ -6,24 +6,25 @@
     <GridList :is-placeholder="!!commentList.length">
         <template #header>
             <PrependIconButton
-                v-if="!showAdditionForm"
+                v-if="!showForm"
                 title="ADD COMMENT"
                 :disabled="!$hasAccess('PRODUCT_UPDATE')"
-                @click.native="toggleForm(false)">
+                @click.native="openForm">
                 <template #prepend="{ color }">
                     <IconAdd
                         :fill-color="color" />
                 </template>
             </PrependIconButton>
             <EditableComment
-                v-if="showAdditionForm"
+                v-if="showForm"
                 :is-edit="false"
-                @close="toggleForm" />
+                @close="closeForm" />
         </template>
         <template #content>
             <CommentStateChanger
                 v-for="comment in commentList"
                 :key="comment.id"
+                :is-addition-form-visible="showForm"
                 :comment="comment"
                 @close="closeForm" />
         </template>
@@ -38,7 +39,7 @@
             v-if="isMoreButtonVisible"
             #footer>
             <Loader v-if="loading" />
-            <BaseButton
+            <Button
                 :title="showMoreText"
                 @click.native="showMore" />
         </template>
@@ -50,7 +51,7 @@ import { mapState, mapActions } from 'vuex';
 import { DATA_LIMIT } from '~/defaults/grid';
 import { LayoutOrientation } from '~/defaults/layout';
 import PrependIconButton from '~/components/Buttons/PrependIconButton';
-import BaseButton from '~/components/Buttons/BaseButton';
+import Button from '~/components/Buttons/Button';
 import Loader from '~/components/Loader/Loader';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import GridList from '~/components/GridList/GridList';
@@ -62,7 +63,7 @@ export default {
     name: 'ProductBaseCard',
     components: {
         PrependIconButton,
-        BaseButton,
+        Button,
         Loader,
         IconAdd,
         GridList,
@@ -72,7 +73,7 @@ export default {
     },
     data() {
         return {
-            showAdditionForm: false,
+            showForm: false,
             loading: false,
         };
     },
@@ -105,10 +106,10 @@ export default {
             'getMoreComments',
         ]),
         closeForm() {
-            this.showAdditionForm = false;
+            this.showForm = false;
         },
-        toggleForm() {
-            this.showAdditionForm = !this.showAdditionForm;
+        openForm() {
+            this.showForm = true;
         },
         showMore() {
             const params = {

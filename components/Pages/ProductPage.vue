@@ -32,8 +32,8 @@
                     :size="smallSize"
                     :disabled="!$hasAccess('PRODUCT_UPDATE')"
                     :options="optionTitle"
-                    @input="(e) => optionAction(e, statusesButtons.more)" />
-                <BaseButton
+                    @input="optionAction" />
+                <Button
                     v-for="button in statusesButtons.statuses"
                     :key="button.code"
                     :theme="secondaryTheme"
@@ -49,7 +49,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { SIZES, THEMES } from '~/defaults/buttons';
-import BaseButton from '~/components/Buttons/BaseButton';
+import Button from '~/components/Buttons/Button';
 import MultiButton from '~/components/Buttons/MultiButton';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
@@ -57,7 +57,7 @@ export default {
     name: 'ProductPage',
     mixins: [categoryManagementPageBaseMixin],
     components: {
-        BaseButton,
+        Button,
         MultiButton,
     },
     created() {
@@ -166,17 +166,17 @@ export default {
                 more: hiddenStatuses.map((status) => status),
             };
         },
+        optionTitle() {
+            return this.statusesButtons.more.map((option) => option.code);
+        },
     },
     methods: {
         ...mapActions('productsDraft', [
             'updateProductStatus',
             'getProduct',
         ]),
-        optionTitle() {
-            return this.statusesButtons.more.map((option) => option.name || option.code);
-        },
-        optionAction(value, options) {
-            return options.forEach((option) => {
+        optionAction(value) {
+            return this.statusesButtons.more.forEach((option) => {
                 if (option.code === value) this.updateStatus(option.code);
             });
         },

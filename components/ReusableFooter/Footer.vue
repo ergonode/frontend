@@ -4,7 +4,7 @@
  */
 <template>
     <div class="footer">
-        <BaseButton
+        <Button
             :title="button.title"
             :theme="button.theme"
             :disabled="button.disabled"
@@ -13,12 +13,12 @@
 </template>
 
 <script>
-import BaseButton from '~/components/Buttons/BaseButton';
+import Button from '~/components/Buttons/Button';
 
 export default {
     name: 'Footer',
     components: {
-        BaseButton,
+        Button,
     },
     props: {
         button: {

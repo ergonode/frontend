@@ -13,7 +13,7 @@
                             :key="notification.id"
                             :notification="notification" />
                         <NotificationListFooter>
-                            <BaseButton
+                            <Button
                                 :title="buttonTitle"
                                 @click.native="onLoadMoreNotifications" />
                         </NotificationListFooter>
@@ -43,7 +43,7 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
         BaseForm,
-        BaseButton: () => import('~/components/Buttons/BaseButton'),
+        Button: () => import('~/components/Buttons/Button'),
         List: () => import('~/components/List/List'),
         NotificationListElement: () => import('~/components/List/Notifications/NotificationListElement'),
         NotificationListFooter: () => import('~/components/List/Notifications/NotificationListFooter'),

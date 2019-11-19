@@ -18,7 +18,7 @@
                         :key="notification.id"
                         :notification="notification" />
                     <NotificationListFooter>
-                        <BaseButton
+                        <Button
                             title="SEE ALL NOTIFICATIONS"
                             @click.native="navigateToAllNotifications" />
                     </NotificationListFooter>
@@ -44,7 +44,7 @@ export default {
         NavigationBarSelectButton: () => import('~/components/Navigation/NavigationBar/NavigationBarSelectButton'),
         IconBell: () => import('~/components/Icon/Menu/IconBell'),
         NotificationBadge: () => import('~/components/Badges/NotificationBadge'),
-        BaseButton: () => import('~/components/Buttons/BaseButton'),
+        Button: () => import('~/components/Buttons/Button'),
         List: () => import('~/components/List/List'),
         NotificationListElement: () => import('~/components/List/Notifications/NotificationListElement'),
         NotificationListFooter: () => import('~/components/List/Notifications/NotificationListFooter'),

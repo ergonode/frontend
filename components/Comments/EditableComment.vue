@@ -21,11 +21,11 @@
                 @input="setCommentValue" />
         </template>
         <template #footer>
-            <BaseButton
+            <Button
                 :size="smallSize"
                 :title="`${isEdit ? 'SAVE' : 'ADD'} COMMENT`"
                 @click.native="saveComment" />
-            <BaseButton
+            <Button
                 :theme="secondaryTheme"
                 :size="smallSize"
                 title="CANCEL"
@@ -38,14 +38,14 @@ import { mapActions } from 'vuex';
 import { THEMES, SIZES } from '~/defaults/buttons';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import CommentWrapper from '~/components/Comments/CommentWrapper';
-import BaseButton from '~/components/Buttons/BaseButton';
+import Button from '~/components/Buttons/Button';
 import TextArea from '~/components/Inputs/TextArea';
 
 export default {
     name: 'EditableComment',
     components: {
         CommentWrapper,
-        BaseButton,
+        Button,
         TextArea,
     },
     mixins: [errorValidationMixin],

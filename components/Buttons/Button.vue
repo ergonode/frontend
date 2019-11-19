@@ -29,7 +29,7 @@ import {
 import buttonPropsMixin from '~/mixins/buttons/buttonPropsMixin';
 
 export default {
-    name: 'BaseButton',
+    name: 'Button',
     mixins: [buttonPropsMixin],
     computed: {
         foregroundColor() {

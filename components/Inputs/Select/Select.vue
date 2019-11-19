@@ -89,12 +89,12 @@
                         <ContentBaseFooter
                             :small="small"
                             :space-between="multiselect">
-                            <BaseButton
+                            <Button
                                 v-if="multiselect"
                                 :size="tinySize"
                                 title="OK"
                                 @click.native="onDismiss" />
-                            <BaseButton
+                            <Button
                                 :size="tinySize"
                                 :title="multiselect ? 'CLEAR ALL' : 'CLEAR'"
                                 :theme="secondaryTheme"
@@ -133,7 +133,7 @@ export default {
         InfoHint: () => import('~/components/Inputs/Hint/InfoHint'),
         ErrorHint: () => import('~/components/Inputs/Hint/ErrorHint'),
         ContentBaseFooter: () => import('~/components/Inputs/Select/Contents/Footers/ContentBaseFooter'),
-        BaseButton: () => import('~/components/Buttons/BaseButton'),
+        Button: () => import('~/components/Buttons/Button'),
     },
     props: {
         value: {

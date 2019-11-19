@@ -18,7 +18,7 @@
                 <span
                     class="item-title font--medium-24-32"
                     v-text="item.title" />
-                <BaseButton
+                <Button
                     :title="item.actionTitle "
                     @click.native="$router.push(item.action)" />
             </div>
@@ -30,7 +30,7 @@
 export default {
     name: 'SimpleGrid',
     components: {
-        BaseButton: () => import('~/components/Buttons/BaseButton'),
+        Button: () => import('~/components/Buttons/Button'),
     },
     props: {
         items: {

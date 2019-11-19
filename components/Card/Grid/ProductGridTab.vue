@@ -35,7 +35,7 @@
                 :value="currentPage"
                 :max-page="numberOfPages"
                 @input="onPageChanged" />
-            <BaseButton
+            <Button
                 title="SAVE CHANGES"
                 :disabled="!isUserAllowedToUpdate"
                 @click.native="saveDrafts" />
@@ -47,7 +47,7 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
 import VerticalTabBar from '~/components/Tab/VerticalTabBar';
-import BaseButton from '~/components/Buttons/BaseButton';
+import Button from '~/components/Buttons/Button';
 import GridViewTemplate from '~/components/Layout/GridViewTemplate';
 
 export default {
@@ -55,7 +55,7 @@ export default {
     components: {
         GridViewTemplate,
         VerticalTabBar,
-        BaseButton,
+        Button,
         Grid: () => import('~/components/Grid/Grid'),
         GridAdvancedFilters: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilters'),
         GridPagination: () => import('~/components/Grid/GridPagination'),

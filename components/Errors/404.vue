@@ -16,7 +16,7 @@
                     class="navigation-section__description font--medium-16-24">
                     The link you clicked may be broken or the page may have been removed.
                 </p>
-                <BaseButton
+                <Button
                     title="Go to dashboard"
                     @click.native="$router.push('/dashboard')" />
             </div>
@@ -33,7 +33,7 @@
 export default {
     name: 'Error404',
     components: {
-        BaseButton: () => import('~/components/Buttons/BaseButton'),
+        Button: () => import('~/components/Buttons/Button'),
     },
 };
 </script>

@@ -24,7 +24,7 @@
                     underline
                     label="Password"
                     @keyup.13="onSubmit" />
-                <BaseButton
+                <Button
                     title="Log in"
                     type="submit"
                     @click.stop.prevent.native="onSubmit" />
@@ -49,7 +49,7 @@ export default {
     name: 'Login',
     components: {
         TextField: () => import('~/components/Inputs/TextField'),
-        BaseButton: () => import('~/components/Buttons/BaseButton'),
+        Button: () => import('~/components/Buttons/Button'),
         Typer: () => import('~/components/Inputs/Typer'),
     },
     data: () => ({

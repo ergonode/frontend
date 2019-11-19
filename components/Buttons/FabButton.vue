@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseButton
+    <Button
         class="btn--fab"
         :disabled="disabled"
         :title="title"
@@ -18,7 +18,7 @@
                 name="icon"
                 :color="iconFillColor" />
         </template>
-    </BaseButton>
+    </Button>
 </template>
 <script>
 import { THEMES } from '~/defaults/buttons';
@@ -26,13 +26,13 @@ import {
     GREEN, GRAPHITE, WHITE, GREY_DARK,
 } from '~/assets/scss/_variables/_colors.scss';
 import buttonPropsMixin from '~/mixins/buttons/buttonPropsMixin';
-import BaseButton from '~/components/Buttons/BaseButton';
+import Button from '~/components/Buttons/Button';
 
 export default {
     name: 'FabButton',
     mixins: [buttonPropsMixin],
     components: {
-        BaseButton,
+        Button,
     },
     props: {
         isStateable: {
