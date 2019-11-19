@@ -23,7 +23,7 @@
                             @click.native="navigateToAllNotifications" />
                     </NotificationListFooter>
                 </List>
-                <GridListPlaceholder
+                <ListPlaceholder
                     v-else
                     title="Nothing to see here"
                     subtitle="This is where you will see
@@ -48,7 +48,7 @@ export default {
         List: () => import('~/components/List/List'),
         NotificationListElement: () => import('~/components/List/Notifications/NotificationListElement'),
         NotificationListFooter: () => import('~/components/List/Notifications/NotificationListFooter'),
-        GridListPlaceholder: () => import('~/components/Placeholder/GridListPlaceholder'),
+        ListPlaceholder: () => import('~/components/Placeholder/ListPlaceholder'),
     },
     computed: {
         ...mapState('notifications', {

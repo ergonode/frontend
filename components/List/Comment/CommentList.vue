@@ -30,7 +30,7 @@
 
 <script>
 export default {
-    name: 'GridList',
+    name: 'CommentList',
     components: {
         List: () => import('~/components/List/List'),
     },

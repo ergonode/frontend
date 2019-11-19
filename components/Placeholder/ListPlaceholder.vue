@@ -21,7 +21,7 @@
 import { LayoutOrientation } from '~/defaults/layout';
 
 export default {
-    name: 'GridListPlaceholder',
+    name: 'ListPlaceholder',
     props: {
         layoutOrientation: {
             type: String,

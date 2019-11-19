@@ -18,7 +18,7 @@
                                 @click.native="onLoadMoreNotifications" />
                         </NotificationListFooter>
                     </List>
-                    <GridListPlaceholder
+                    <ListPlaceholder
                         v-else
                         :layout-orientation="horizontalOrientation"
                         title="Nothing to see here"
@@ -47,7 +47,7 @@ export default {
         List: () => import('~/components/List/List'),
         NotificationListElement: () => import('~/components/List/Notifications/NotificationListElement'),
         NotificationListFooter: () => import('~/components/List/Notifications/NotificationListFooter'),
-        GridListPlaceholder: () => import('~/components/Placeholder/GridListPlaceholder'),
+        ListPlaceholder: () => import('~/components/Placeholder/ListPlaceholder'),
     },
     computed: {
         ...mapState('notifications', {

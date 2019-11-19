@@ -31,6 +31,7 @@
                         <ListElement
                             v-for="(option, index) in options"
                             :key="index"
+                            :small="true"
                             @click.native="onSelectedValue(index)">
                             <ListElementDescription>
                                 <ListElementTitle :title="option" />

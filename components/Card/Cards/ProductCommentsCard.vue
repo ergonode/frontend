@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridList :is-placeholder="!!commentList.length">
+    <CommentList :is-placeholder="!!commentList.length">
         <template #header>
             <PrependIconButton
                 v-if="!showForm"
@@ -29,7 +29,7 @@
                 @close="closeForm" />
         </template>
         <template #placeholder>
-            <GridListPlaceholder
+            <ListPlaceholder
                 :layout-orientation="horizontalOrientation"
                 title="Nothing to see here"
                 subtitle="Here you can share information about the product with other people"
@@ -43,7 +43,7 @@
                 :title="showMoreText"
                 @click.native="showMore" />
         </template>
-    </GridList>
+    </CommentList>
 </template>
 
 <script>
@@ -54,7 +54,7 @@ import PrependIconButton from '~/components/Buttons/PrependIconButton';
 import Button from '~/components/Buttons/Button';
 import Loader from '~/components/Loader/Loader';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
-import GridList from '~/components/GridList/GridList';
+import CommentList from '~/components/List/Comment/CommentList';
 import CommentStateChanger from '~/components/Comments/CommentStateChanger';
 import EditableComment from '~/components/Comments/EditableComment';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
@@ -66,10 +66,10 @@ export default {
         Button,
         Loader,
         IconAdd,
-        GridList,
+        CommentList,
         CommentStateChanger,
         EditableComment,
-        GridListPlaceholder: () => import('~/components/Placeholder/GridListPlaceholder'),
+        ListPlaceholder: () => import('~/components/Placeholder/ListPlaceholder'),
     },
     data() {
         return {
