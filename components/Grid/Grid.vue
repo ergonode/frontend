@@ -64,7 +64,7 @@
                     :column="column"
                     :path="routeEdit.getData"
                     @focus="onHeaderFocus" />
-                <GridWrapperHeaderActionCell
+                <GridFilterCell
                     v-if="basicFilters"
                     :namespace="namespace"
                     :column-index="colIndex + columnsOffset"
@@ -79,7 +79,7 @@
                     :row-index="(rowIndex + rowsOffset) * gridState.currentPage"
                     :column-index="colIndex + columnsOffset"
                     :cell-data="gridState.cellValues[id][column.id]">
-                    <GridWrapperCell
+                    <GridDataCell
                         :key="id"
                         :namespace="namespace"
                         :column-index="colIndex + columnsOffset"
@@ -144,8 +144,8 @@ export default {
         GridColumnData: () => import('~/components/Grid/Columns/GridColumnData'),
         GridColumnSentinel: () => import('~/components/Grid/Columns/GridColumnSentinel'),
         GridColumnEdit: () => import('~/components/Grid/Columns/GridColumnEdit'),
-        GridWrapperCell: () => import('~/components/Grid/Wrappers/GridWrapperCell'),
-        GridWrapperHeaderActionCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderActionCell'),
+        GridDataCell: () => import('~/components/Grid/GridDataCell'),
+        GridFilterCell: () => import('~/components/Grid/GridFilterCell'),
         GridWrapperHeaderCell: () => import('~/components/Grid/Wrappers/GridWrapperHeaderCell'),
         GridPlaceholder: () => import('~/components/Grid/GridPlaceholder'),
     },

@@ -19,8 +19,8 @@
                 <ListElementDescription>
                     <ListElementTitle
                         :small="true"
-                        :title="option.value || 'No translation'" />
-                    <ListElementHint :title="option.key" />
+                        :hint="option.value ? `#${option.key} ${languageCode}` : ''"
+                        :title="option.value || `#${option.key}`" />
                 </ListElementDescription>
             </ListElement>
         </List>
@@ -35,7 +35,6 @@ import ListElement from '~/components/List/ListElement';
 import ListElementAction from '~/components/List/ListElementAction';
 import ListElementDescription from '~/components/List/ListElementDescription';
 import ListElementTitle from '~/components/List/ListElementTitle';
-import ListElementHint from '~/components/List/ListElementHint';
 import CheckBox from '~/components/Inputs/CheckBox';
 
 export default {
@@ -47,7 +46,6 @@ export default {
         ListElementAction,
         ListElementDescription,
         ListElementTitle,
-        ListElementHint,
         CheckBox,
     },
     props: {
@@ -58,6 +56,10 @@ export default {
         options: {
             type: Array,
             default: () => [],
+        },
+        languageCode: {
+            type: String,
+            default: '',
         },
     },
     data() {

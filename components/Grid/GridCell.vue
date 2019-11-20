@@ -84,7 +84,7 @@ export default {
     },
     methods: {
         onFocus() {
-            if (!this.editing && !this.actionCell) {
+            if (!this.editing && !this.actionCell && !this.locked) {
                 this.$emit('edit', false);
             }
         },

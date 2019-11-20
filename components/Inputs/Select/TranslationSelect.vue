@@ -4,28 +4,36 @@
  */
 <template>
     <Select
+        :value="parsedValue"
         v-bind="$attrs"
         @focus="onFocus"
         @input="onClear">
+        <template #prepend>
+            <slot name="prepend" />
+        </template>
         <template #option="{ option, index }">
             <ListElement
                 :key="index"
                 :large="!$attrs.small && $attrs.regular"
                 :selected="index === selectedOptionIndex"
                 @click.native="onSelectValue(option, index)">
-                <ListElementAction
-                    v-if="$attrs.multiselect"
-                    :small="$attrs.small">
-                    <CheckBox
-                        :value="isSelected(index)"
-                        @input="onSelectValue(option, index)" />
-                </ListElementAction>
-                <ListElementDescription>
-                    <ListElementTitle
-                        :small="$attrs.small"
-                        :title="option.value || 'No translation'" />
-                    <ListElementHint :title="option.key" />
-                </ListElementDescription>
+                <slot
+                    name="option"
+                    :option="option">
+                    <ListElementAction
+                        v-if="$attrs.multiselect"
+                        :small="$attrs.small">
+                        <CheckBox
+                            :value="isSelected(index)"
+                            @input="onSelectValue(option, index)" />
+                    </ListElementAction>
+                    <ListElementDescription>
+                        <ListElementTitle
+                            :small="$attrs.small"
+                            :hint="option.value ? `#${option.key} ${languageCode}` : ''"
+                            :title="option.value || `#${option.key}`" />
+                    </ListElementDescription>
+                </slot>
             </ListElement>
         </template>
     </Select>
@@ -41,8 +49,13 @@ export default {
         ListElementAction: () => import('~/components/List/ListElementAction'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
-        ListElementHint: () => import('~/components/List/ListElementHint'),
         CheckBox: () => import('~/components/Inputs/CheckBox'),
+    },
+    props: {
+        languageCode: {
+            type: String,
+            default: '',
+        },
     },
     data() {
         return {
@@ -52,6 +65,15 @@ export default {
     },
     created() {
         this.initSelectedOptions();
+    },
+    computed: {
+        parsedValue() {
+            if (Array.isArray(this.$attrs.value)) {
+                return this.$attrs.value.map((val) => val.value || `#${val.key}`);
+            }
+
+            return this.$attrs.value.value || this.$attrs.value.key;
+        },
     },
     methods: {
         isSelected(index) {
@@ -64,21 +86,24 @@ export default {
             this.selectedOptionIndex = -1;
             this.selectedOptions = {};
 
-            this.$emit('input', this.$attrs.multiselect ? [] : '');
-            this.$emit('focus', false);
+            this.$emit('input', this.$attrs.multiselect ? [] : { key: '', value: '' });
         },
         initSelectedOptions() {
-            if (!this.$attrs.multiselect) {
-                this.selectedOptionIndex = this.$attrs.options
-                    .findIndex((option) => option.key === this.$attrs.value);
-            } else {
-                const { length } = this.$attrs.value;
+            if (this.$attrs.value) {
+                if (!this.$attrs.multiselect) {
+                    this.selectedOptionIndex = this.$attrs.options.findIndex(
+                        (option) => option.key === this.$attrs.value.key,
+                    );
+                } else {
+                    const { length } = this.$attrs.value;
 
-                for (let i = 0; i < length; i += 1) {
-                    const optionIndex = this.$attrs.options
-                        .findIndex((option) => option.key === this.$attrs.value[i]);
+                    for (let i = 0; i < length; i += 1) {
+                        const optionIndex = this.$attrs.options.findIndex(
+                            (option) => option.key === this.$attrs.value[i].key,
+                        );
 
-                    this.selectedOptions[optionIndex] = this.$attrs.value[i];
+                        this.selectedOptions[optionIndex] = this.$attrs.value[i];
+                    }
                 }
             }
         },
@@ -93,7 +118,7 @@ export default {
             if (typeof this.selectedOptions[index] !== 'undefined') {
                 delete this.selectedOptions[index];
             } else {
-                this.selectedOptions[index] = value.key;
+                this.selectedOptions[index] = value;
             }
 
             this.$emit('input', Object.values(this.selectedOptions));

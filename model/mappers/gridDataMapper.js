@@ -15,13 +15,8 @@ const getMappedColumnHeaderType = ({ filter, type }) => {
     return GRID_HEADER_TYPE.PLAIN;
 };
 
-const getMappedColumnHeader = ({
-    id,
-    label,
-    language = '',
-    parameters,
-    filter,
-    type,
+export const getMappedColumnHeaderTitle = ({
+    id, label, parameters, language,
 }) => {
     let suffix = '';
     const [code] = id.split(':');
@@ -32,9 +27,22 @@ const getMappedColumnHeader = ({
         title: label || `#${code}`,
         hint: label ? `${code} ${language}` : null,
         suffix,
-        type: getMappedColumnHeaderType({ filter, type }),
     };
 };
+
+export const getMappedColumnHeader = ({
+    id,
+    label,
+    language = '',
+    parameters,
+    filter,
+    type,
+}) => ({
+    ...getMappedColumnHeaderTitle({
+        id, label, parameters, language,
+    }),
+    type: getMappedColumnHeaderType({ filter, type }),
+});
 
 export function getSortedColumnsByIDs(columns, columnsID) {
     return columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id));
@@ -77,6 +85,19 @@ export function getMappedColumns(columns) {
     };
 }
 
+export function getMappedArrayValue(value, options) {
+    const parsedKey = value !== null && value.length > 0 ? value : '';
+
+    if (Array.isArray(value)) {
+        return value.map((val) => ({
+            key: val,
+            value: options[val],
+        }));
+    }
+
+    return { key: parsedKey, value: options[value] || '' };
+}
+
 export function getMappedCellValues(columns, rows, rowIds) {
     const { length: columnsNumber } = columns;
     const { length: rowsNumber } = rows;
@@ -94,21 +115,11 @@ export function getMappedCellValues(columns, rows, rowIds) {
             if (!values[rowId]) values[rowId] = {};
 
             if (filter && filter.options) {
-                const { options } = filter;
-
-                if (Array.isArray(value)) {
-                    values[rowId][columnId] = { key: value, value: value.map((key) => options[key] || 'No translation').join(', ') };
-                } else if (typeof options[value] !== 'undefined') {
-                    values[rowId][columnId] = { key: value, value: options[value] || 'No translation' };
-                } else {
-                    values[rowId][columnId] = { key: '', value: '' };
-                }
-            } else if (typeof value === 'undefined' || value === null) {
-                values[rowId][columnId] = { value: '' };
+                values[rowId][columnId] = getMappedArrayValue(value, filter.options);
             } else if (typeof value === 'boolean' && column.type !== COLUMN_TYPE.CHECK_CELL) {
                 values[rowId][columnId] = { value: value ? 'Yes' : 'No' };
             } else {
-                values[rowId][columnId] = { value };
+                values[rowId][columnId] = { value: value || '' };
             }
         }
     }

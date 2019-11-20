@@ -7,6 +7,7 @@
         :style="{width: `${fixedWidth}px`, height: `${fixedHeight}px`}"
         :value="parsedDate"
         solid
+        regular
         :placeholder="parameters.format"
         :format="parameters.format"
         :error-messages="errorMessages"

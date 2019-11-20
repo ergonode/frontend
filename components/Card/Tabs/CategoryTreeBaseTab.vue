@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
             <BaseForm>
-                <CategoryTreeBaseCard slot="content" />
+                <CategoryTreeBaseCard />
             </BaseForm>
         </template>
         <template #footer>

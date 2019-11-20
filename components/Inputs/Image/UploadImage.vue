@@ -144,7 +144,7 @@ export default {
 
         &--elevator {
             #{$parent}__wrapper, #{$parent}__container {
-                box-shadow: $ELEVATOR_2_DP;
+                box-shadow: $ELEVATOR_6_DP;
             }
         }
 
@@ -204,7 +204,7 @@ export default {
             align-items: center;
             background-color: $WHITE;
             border-radius: 50%;
-            box-shadow: $ELEVATOR_2_DP;
+            box-shadow: $ELEVATOR_6_DP;
         }
 
         &__description {

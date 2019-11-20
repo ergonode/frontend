@@ -4,14 +4,14 @@
  */
 <template functional>
     <span
-        class="info-cell font--medium-12-16"
+        class="presentation-cell"
         v-text="props.value" />
 </template>
 
 <script>
 
 export default {
-    name: 'GridInfoCell',
+    name: 'GridPresentationCell',
     props: {
         value: {
             type: [String, Number],
@@ -22,11 +22,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .info-cell {
+    .presentation-cell {
         flex: 1;
         width: 0;
         padding: 8px;
         color: $GRAPHITE_DARK;
+        font: $FONT_MEDIUM_12_16;
         user-select: none;
         text-overflow: ellipsis;
         overflow: hidden;

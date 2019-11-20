@@ -12,15 +12,17 @@
             <Component :is="typeIconComponent" />
         </ListElementHintIcon>
         <ListElementDescription>
-            <ListElementTitle :title="item.label || 'No translation'" />
-            <ListElementHint :title="item.code" />
+            <ListElementTitle
+                :title="item.label || `#${item.code}`"
+                :hint="item.label ? `#${item.code} ${languageCode}`: ''" />
+            <ListElementHint :title="formattedAttributeType" />
         </ListElementDescription>
     </ListDraggableElement>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getIcon } from '~/model/attributes/AttributeTypes';
+import { capitalizeAndConcatenationArray } from '~/model/stringWrapper';
 
 export default {
     name: 'AttributeListElement',
@@ -49,7 +51,7 @@ export default {
             return () => import(`~/components/Icon/Attributes/Icon${this.formattedAttributeType}`);
         },
         formattedAttributeType() {
-            return getIcon(this.item.type);
+            return capitalizeAndConcatenationArray(this.item.type.split('_'));
         },
     },
     methods: {
