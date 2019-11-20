@@ -7,30 +7,26 @@
         <template #content>
             <Grid
                 namespace="privilegesGrid"
-                :is-draft="false"
                 :route-edit="routeEdit"
-                :basic-filters="false"
-                :extender-column="false"
+                :editing-privilege-allowed="false"
                 :edit-column="false"
                 :select-column="false"
-                title="Role privileges">
+                title="Privileges">
                 <template #cell="{ column, columnIndex, rowId, rowIndex, cellData }">
                     <GridCell
                         :key="rowId"
-                        :row="rowIndex"
-                        :column="columnIndex"
-                        :locked="true"
                         :editing-allowed="false"
-                        :is-selected="cellData"
-                        :editing="false"
-                        :disabled="true">
+                        :action-cell="false"
+                        :column="columnIndex"
+                        :row="rowIndex"
+                        :locked="true">
                         <Component
                             :is="getCellComponent(column.type, rowId)"
+                            :style="{ justifyContent: 'start' }"
                             :row="rowIndex"
                             :value="cellData.value"
                             :hint="descriptions[rowId]"
-                            :disabled="true"
-                            @input="onValueChange(rowId, column.id, cellData)" />
+                            :disabled="true" />
                     </GridCell>
                 </template>
             </Grid>
@@ -39,7 +35,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
 import { getMappedGridData } from '~/model/mappers/privilegesMapper';
 import { COLUMN_TYPE } from '~/defaults/grid';
@@ -49,28 +45,19 @@ import GridCell from '~/components/Grid/GridCell';
 import GridInfoHintCell from '~/components/Grid/GridInfoHintCell';
 import GridInfoCell from '~/components/Grid/GridInfoCell';
 import GridCheckCell from '~/components/Grid/GridCheckCell';
-import Footer from '~/components/ReusableFooter/Footer';
 import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
 
 export default {
-    name: 'UserRolesPrivilegeTab',
-    props: {
-        updateButton: {
-            type: Object,
-            required: true,
-        },
-    },
+    name: 'UserPrivilegesGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
         GridCell,
         GridCheckCell,
         GridInfoCell,
         Grid,
-        Footer,
     },
     data() {
         return {
-            isSelectedAllRows: STATE.UNCHECK,
             selectedRows: {},
             descriptions: {},
         };
@@ -80,7 +67,6 @@ export default {
             getData: '',
             name: '',
         };
-        this.isEditingAllowed = this.$hasAccess('USER_ROLE_UPDATE');
         this.$registerStore({
             module: gridModule,
             moduleName: 'privilegesGrid',
@@ -88,7 +74,7 @@ export default {
         });
 
         const { privileges: privilegesDictionary } = this.$store.state.data;
-        const { privileges } = this.$store.state.roles;
+        const { privileges } = this.$store.state.authentication.user;
         const {
             rows, columns, columnWidths, descriptions,
         } = getMappedGridData(privilegesDictionary, privileges);
@@ -102,67 +88,17 @@ export default {
         this.$store.unregisterModule('privilegesGrid');
 
         delete this.routeEdit;
-        delete this.isEditingAllowed;
     },
     computed: {
         ...mapState('privilegesGrid', {
             rowIds: (state) => state.rowIds,
             cellValues: (state) => state.cellValues,
         }),
-        rowsSelectionState() {
-            if (this.rowsAreDeselected) {
-                return STATE.UNCHECK;
-            }
-
-            if (this.rowsAreSelected) {
-                return STATE.CHECK;
-            }
-
-            return STATE.CHECK_ANY;
-        },
-        selectedRowsValues() {
-            return Object.values(this.selectedRows);
-        },
-        rowsAreDeselected() {
-            return this.selectedRowsValues.every((rowState) => rowState === STATE.UNCHECK);
-        },
-        rowsAreSelected() {
-            return this.selectedRowsValues.every((rowState) => rowState === STATE.CHECK);
-        },
     },
     mounted() {
         this.initializeRowsSelections();
     },
     methods: {
-        ...mapActions('privilegesGrid', [
-            'updateDataCellValue',
-        ]),
-        onSelectRow({ row, value }) {
-            this.selectedRows[row] = +value;
-            this.selectedRows = { ...this.selectedRows };
-
-            this.updateDataCellValues(row, value);
-        },
-        onSelectAllRows(value) {
-            this.selectEveryRowValues(value);
-        },
-        onValueChange(rowId, columnId, cellData) {
-            const value = !cellData.value;
-
-            if (columnId !== 'read' && value) {
-                this.updateDataCellValue({ rowId, columnId, value: true });
-                this.updateDataCellValue({ rowId, columnId: 'read', value: true });
-            }
-
-            if (columnId === 'read') {
-                this.updateDataCellValue({ rowId, columnId: 'create', value: false });
-                this.updateDataCellValue({ rowId, columnId: 'update', value: false });
-                this.updateDataCellValue({ rowId, columnId: 'delete', value: false });
-            }
-
-            this.updateDataCellValue({ rowId, columnId, value });
-            this.selectRowValues(rowId);
-        },
         initializeRowsSelections() {
             this.rowIds.forEach((rowId) => {
                 this.selectRowValues(rowId);
@@ -188,20 +124,6 @@ export default {
                 this.selectedRows[rowId] = STATE.CHECK_ANY;
             }
         },
-        updateDataCellValues(rowId, isSelected) {
-            this.updateDataCellValue({ rowId, columnId: 'read', value: isSelected });
-            this.updateDataCellValue({ rowId, columnId: 'create', value: isSelected });
-            this.updateDataCellValue({ rowId, columnId: 'update', value: isSelected });
-            this.updateDataCellValue({ rowId, columnId: 'delete', value: isSelected });
-        },
-        selectEveryRowValues(isSelected) {
-            this.rowIds.forEach((rowId) => {
-                this.updateDataCellValues(rowId, isSelected);
-                this.selectedRows[rowId] = +isSelected;
-            });
-
-            this.selectedRows = { ...this.selectedRows };
-        },
         getCellComponent(type, rowId) {
             if (type === COLUMN_TYPE.TEXT) {
                 if (this.descriptions[rowId]) return GridInfoHintCell;
@@ -209,9 +131,6 @@ export default {
             }
 
             return GridCheckCell;
-        },
-        isColumnTypeText(type) {
-            return type === COLUMN_TYPE.TEXT;
         },
     },
     async fetch({ app, store }) {
