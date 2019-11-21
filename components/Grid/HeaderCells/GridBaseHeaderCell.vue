@@ -5,6 +5,7 @@
 <template functional>
     <span
         class="header-cell font--bold-12-16"
+        :title="props.hint"
         v-text="props.header" />
 </template>
 
@@ -16,18 +17,21 @@ export default {
             type: String,
             default: 'Header',
         },
+        hint: {
+            type: String,
+            default: '',
+        },
+        suffix: {
+            type: String,
+            default: '',
+        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
     .header-cell {
-        display: flex;
-        flex: 1 1 auto;
-        align-items: center;
-        width: min-content;
         padding: 8px;
-        background-color: $WHITESMOKE;
         color: $GRAPHITE_DARK;
         user-select: none;
         text-overflow: ellipsis;

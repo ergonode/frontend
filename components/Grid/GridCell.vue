@@ -173,6 +173,7 @@ export default {
     .grid-cell {
         position: relative;
         display: flex;
+        align-items: center;
         outline: none;
         box-sizing: border-box;
         border-bottom: 1px solid $GREY;
@@ -187,7 +188,7 @@ export default {
 
         &:not(&--error):not(&--locked) {
             &:focus {
-                box-shadow: inset -0.5px 0 0 2px $GREEN;
+                box-shadow: inset 0 0 0 2px $GREEN;
             }
         }
 
@@ -199,12 +200,12 @@ export default {
             background-color: $RED_LIGHT;
 
             &:focus {
-                box-shadow: inset -0.5px 0 0 2px $RED;
+                box-shadow: inset 0 0 0 2px $RED;
             }
         }
 
         &--locked:focus {
-            box-shadow: inset -0.5px 0 0 2px $GRAPHITE_LIGHT;
+            box-shadow: inset 0 0 0 2px $GRAPHITE_LIGHT;
         }
 
         &:focus {

@@ -18,20 +18,23 @@
             :is="infoComponent"
             v-if="!isEditingCell"
             v-bind="infoComponentProps" />
-        <GridEditActivatorCell
-            v-else
-            :namespace="namespace"
-            :row-id="rowId"
-            :is-multi-select="isMultiSelect"
-            :type="column.type"
-            :value="editValue"
-            :options="options"
-            :colors="column.colors || null"
-            :parameters="parameters"
-            :error-messages="errorValue"
-            :fixed-width="$el.offsetWidth"
-            :fixed-height="$el.offsetHeight"
-            @updateValue="onUpdateDraft" />
+        <GridEditActivatorCell v-else>
+            <GridEditDataCell
+                :row-id="rowId"
+                :multiselect="isMultiSelect"
+                :type="column.type"
+                :value="editValue"
+                :language-code="column.language"
+                :options="options"
+                :clearable="false"
+                :colors="column.colors || null"
+                :parameters="parameters"
+                :error-messages="errorValue"
+                :fixed-width="$el.offsetWidth"
+                :fixed-height="$el.offsetHeight"
+                @focus="onFocus"
+                @updateValue="onUpdateDraft" />
+        </GridEditActivatorCell>
     </GridCell>
 </template>
 
@@ -43,10 +46,11 @@ import { getKeyByValue } from '~/model/objectWrapper';
 import { COLUMN_TYPE } from '~/defaults/grid';
 
 export default {
-    name: 'GridWrapperCell',
+    name: 'GridDataCell',
     components: {
         GridCell: () => import('~/components/Grid/GridCell'),
         GridEditActivatorCell: () => import('~/components/Grid/EditCells/GridEditActivatorCell'),
+        GridEditDataCell: () => import('~/components/Grid/EditCells/GridEditDataCell'),
     },
     props: {
         namespace: {
@@ -74,7 +78,7 @@ export default {
             required: true,
         },
         cellData: {
-            type: Object,
+            type: [Array, Object],
             required: true,
         },
         isSelected: {
@@ -137,9 +141,9 @@ export default {
                 return () => import('~/components/Grid/EditCells/GridEditSelectRowCell');
             case COLUMN_TYPE.SELECT:
             case COLUMN_TYPE.MULTI_SELECT:
-                return () => import('~/components/Grid/GridSelectInfoCell');
+                return () => import('~/components/Grid/PresentationCells/GridPresentationSelectCell');
             default:
-                return () => import('~/components/Grid/GridInfoCell');
+                return () => import('~/components/Grid/PresentationCells/GridPresentationCell');
             }
         },
         infoComponentProps() {
@@ -174,7 +178,16 @@ export default {
                     colors: this.column.colors,
                 };
             default:
-                if (this.parsedDraftValue === null) return { value: this.cellData.value };
+                if (this.parsedDraftValue === null) {
+                    if (Array.isArray(this.cellData)) {
+                        return {
+                            value: this.cellData.map((data) => data.value || `#${data.key}`).join(', '),
+                        };
+                    }
+
+                    return { value: this.cellData.value !== null ? this.cellData.value : `#${this.cellData.key}` };
+                }
+
                 return { value: this.parsedDraftValue };
             }
         },
@@ -195,14 +208,17 @@ export default {
 
                 if (filter && filter.options) {
                     const { options } = filter;
-                    const value = this.draft[this.column.id][languageCode];
+                    const draftValue = this.draft[this.column.id][languageCode];
 
-                    if (Array.isArray(value)) {
-                        return value.map((val) => options[val] || 'No translation').join(', ');
+                    if (Array.isArray(draftValue)) {
+                        return draftValue.map((val) => options[val.key] || `#${val.key}`).join(', ');
                     }
-                    if (typeof options[value] !== 'undefined') {
-                        return options[value] || 'No translation';
+
+                    if (draftValue.key) {
+                        return options[draftValue.key] || `#${draftValue.key}`;
                     }
+
+                    return '';
                 }
 
                 return this.draft[this.column.id][languageCode];
@@ -211,7 +227,7 @@ export default {
             return null;
         },
         editValue() {
-            return this.draftValue || (this.isSelectKind ? this.cellData.key : this.cellData.value);
+            return this.draftValue || (this.isSelectKind ? this.cellData : this.cellData.value);
         },
         errorValue() {
             const { element_id: elementId } = this.column;
@@ -242,6 +258,12 @@ export default {
             'updateDraftValue',
             'addDraftValue',
         ]),
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
+                this.$el.focus();
+            }
+        },
         onEdit(isEditing) {
             if (isEditing) {
                 this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, { column: this.columnIndex, row: this.rowIndex });
@@ -255,11 +277,20 @@ export default {
                 this.removeDraftValue({ productId: this.rowId, attributeId: this.column.id });
             }
 
-            if ((this.isSelectKind
-                && ((isValueArray && isArrayEqualToArray(value, this.cellData.key))
-                    || this.cellData.key === value))
-                || this.cellData.value === value
-            ) return;
+            if (this.isSelectKind) {
+                if (isValueArray) {
+                    if (this.draftValue
+                        && isArrayEqualToArray(
+                            value.map((val) => val.key),
+                            this.draftValue.map((val) => val.key),
+                        )) return;
+                    if (this.draftValue === null
+                        && isArrayEqualToArray(
+                            value.map((val) => val.key),
+                            this.cellData.map((val) => val.key),
+                        )) return;
+                } else if (this.cellData.key === value.key) return;
+            } else if (this.cellData.value === value) return;
 
             this.updateDraftValue({
                 productId: this.rowId,

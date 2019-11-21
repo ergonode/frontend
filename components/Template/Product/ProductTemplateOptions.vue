@@ -14,7 +14,7 @@
         :disabled="disabled"
         :error-messages="isError ? [' '] : null"
         :required="required"
-        :options="parsedOptions"
+        :options="options"
         @focus="onFocusChange"
         @input="onValueChange" />
 </template>
@@ -31,7 +31,7 @@ export default {
     },
     props: {
         options: {
-            type: Object,
+            type: Array,
             required: true,
         },
         multiselect: {
@@ -53,28 +53,30 @@ export default {
             },
         },
     },
-    computed: {
-        parsedOptions() {
-            const optionKeys = Object.keys(this.options);
-
-            return optionKeys.map((key) => ({ key, value: this.options[key] }));
-        },
-    },
     methods: {
         initializeValues(value) {
-            this.localValue = value;
+            if (Array.isArray(value)) {
+                this.localValue = value.map((val) => ({
+                    key: val,
+                    value: this.options.find((option) => option.key === val).value,
+                }));
+            } else if (value) {
+                this.localValue = this.options.find((option) => option.key === value);
+            } else {
+                this.localValue = { key: '', value: '' };
+            }
         },
         onFocusChange(isFocused) {
             this.isFocused = isFocused;
         },
         onValueChange(value) {
-            if (Array.isArray(value)) {
-                this.localValue = value;
-            } else {
-                this.localValue = value.key;
-            }
+            this.localValue = value;
 
-            this.debounceFunc(this.localValue);
+            if (Array.isArray(value)) {
+                this.debounceFunc(value.map((val) => val.key));
+            } else {
+                this.debounceFunc(value.key);
+            }
         },
     },
 };

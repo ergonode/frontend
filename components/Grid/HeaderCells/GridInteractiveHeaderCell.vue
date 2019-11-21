@@ -7,13 +7,17 @@
         :class="['header-cell',
                  { 'draggable': isColumnEditable && !isCellEditing }
         ]">
-        <GridBaseHeaderCell :header="column.header.title" />
+        <GridBaseHeaderCell
+            :header="column.header.title"
+            :hint="column.header.hint"
+            :suffix="column.header.suffix" />
         <div
             :class="[
-                'horizontal-wrapper',
+                'header-cell__actions',
                 {
-                    'horizontal-wrapper--active': isContextualMenuActive,
-                    'horizontal-wrapper--sorted': isSorted,
+                    'header-cell__actions--sorted': isSorted,
+                    'header-cell__actions--focused': isMenuSelected,
+                    'header-cell__actions--hovered': isColumnHovered,
                 }
             ]">
             <IconArrowSort
@@ -34,9 +38,12 @@
                         <ListElement
                             v-for="option in contextualMenuItems"
                             :key="option.text"
+                            :small="true"
                             @click.native="() => onSelectOption(option)">
                             <ListElementDescription>
-                                <ListElementTitle :title="option.text" />
+                                <ListElementTitle
+                                    :small="true"
+                                    :title="option.text" />
                             </ListElementDescription>
                             <CheckBox
                                 v-if="option.text !== 'Remove'"
@@ -74,6 +81,7 @@ export default {
     },
     props: {
         namespace: {
+
             type: String,
             required: true,
         },
@@ -87,7 +95,6 @@ export default {
         },
         isColumnEditable: {
             type: Boolean,
-            required: false,
             default: false,
         },
     },
@@ -96,8 +103,8 @@ export default {
             contextualMenuItems: [
                 { text: 'Remove' },
             ],
-            isContextualMenuActive: false,
-            isMouseOver: false,
+            isMenuSelected: false,
+            isColumnHovered: false,
         };
     },
     mounted() {
@@ -136,13 +143,6 @@ export default {
             return this.gridState.sortedByColumn.orderState;
         },
     },
-    watch: {
-        isSorted() {
-            if (!this.isMouseOver) {
-                this.setHorizontalWrapperOpacityIfNeeded(+this.isSorted);
-            }
-        },
-    },
     methods: {
         onClickSort() {
             let orderState = SORTING_ORDER.ASC;
@@ -159,11 +159,11 @@ export default {
             this.$emit('sort');
         },
         onSelectFocus(isFocused) {
-            this.isContextualMenuActive = isFocused;
-            if (!this.isContextualMenuActive && !this.isMouseOver) {
+            if (!isFocused) {
                 this.removeColumnHover();
             }
 
+            this.isMenuSelected = isFocused;
             this.$emit('focus', isFocused);
         },
         onSelectOption(option) {
@@ -186,38 +186,32 @@ export default {
             return children[index];
         },
         onMouseEnter() {
-            if (this.draggedElementOnGrid || this.isMenuSelected() || this.isCellEditing) return;
+            if (this.draggedElementOnGrid || this.isHeaderFocused() || this.isCellEditing) return;
+            this.addColumnHover();
+        },
+        onMouseLeave() {
+            if (this.draggedElementOnGrid || this.isHeaderFocused() || this.isCellEditing) return;
+            this.removeColumnHover();
+        },
+        isHeaderFocused() {
+            const contentGrid = document.querySelector('.grid__content');
+            const headerEls = contentGrid.querySelectorAll('.header-cell__actions--focused');
+
+            return headerEls.length;
+        },
+        addColumnHover() {
+            this.isColumnHovered = true;
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
             columnElement.classList.add('column--hovered');
-            this.isMouseOver = true;
-            this.setHorizontalWrapperOpacityIfNeeded(1);
-        },
-        onMouseLeave() {
-            this.isMouseOver = false;
-
-            if (this.draggedElementOnGrid || this.isMenuSelected() || this.isCellEditing) return;
-
-            this.removeColumnHover();
-        },
-        setHorizontalWrapperOpacityIfNeeded(opacity) {
-            if (!this.isSorted) {
-                const horizontalWrapperElement = this.$el.querySelector('.horizontal-wrapper');
-                horizontalWrapperElement.style.opacity = opacity;
-            }
-        },
-        isMenuSelected() {
-            const contentGrid = document.querySelector('.grid__content');
-            const headerEls = contentGrid.querySelectorAll('.horizontal-wrapper--active');
-
-            return headerEls.length;
         },
         removeColumnHover() {
+            this.isColumnHovered = false;
+
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
             columnElement.classList.remove('column--hovered');
-            this.setHorizontalWrapperOpacityIfNeeded(0);
         },
     },
 };
@@ -232,7 +226,7 @@ export default {
         flex: 1;
         justify-content: space-between;
         align-items: center;
-        background-color: $WHITESMOKE;
+        width: 0;
         user-select: none;
         pointer-events: auto;
 
@@ -240,19 +234,13 @@ export default {
             cursor: grab;
         }
 
-        .horizontal-wrapper {
+        &__actions {
             display: flex;
             align-items: center;
+            opacity: 0;
+            cursor: pointer;
 
-            & > i, & > svg {
-                cursor: pointer;
-            }
-
-            &:not(&--active) {
-                opacity: 0;
-            }
-
-            &--active, &--sorted {
+            &--focused, &--sorted, &--hovered {
                 opacity: 1;
             }
         }

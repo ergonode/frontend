@@ -28,6 +28,8 @@ export default {
 <style lang="scss" scoped>
     .image-cell {
         flex: 1;
-        margin: 8px;
+        height: 100%;
+        padding: 8px;
+        box-sizing: border-box;
     }
 </style>

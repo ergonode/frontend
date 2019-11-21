@@ -2,12 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template functional>
+<template>
     <span
-        :class="['element-title', props.color, {
-            'element-title--small': props.small
+        :class="['element-title', {
+            'element-title--small': small
         }]"
-        v-text="props.title" />
+        :title="hint"
+        v-text="title" />
 </template>
 
 <script>
@@ -18,18 +19,13 @@ export default {
             type: String,
             required: true,
         },
+        hint: {
+            type: String,
+            default: '',
+        },
         small: {
             type: Boolean,
             default: false,
-        },
-        color: {
-            type: String,
-            default: 'txt--dark-graphite',
-        },
-    },
-    computed: {
-        font() {
-            return this.small ? 'font--medium-12-16' : 'font--medium-14-20';
         },
     },
 };
@@ -38,6 +34,7 @@ export default {
 <style lang="scss" scoped>
     .element-title {
         width: 100%;
+        text-align: left;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;

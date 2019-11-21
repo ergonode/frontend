@@ -134,11 +134,9 @@ export default {
                 x: headerXPos, y: headerYPos, height: headerHeight, width: headerWidth,
             } = header.getBoundingClientRect();
             const xOffset = 2.5;
-            const contentGrid = this.getGridContentElement();
             const isMouseAboveColumnHeader = headerYPos <= pageY
                 && headerYPos + headerHeight >= pageY;
             const isMouseAboveLeftBorderLimit = pageX - headerXPos < xOffset;
-            const neighbourIndex = this.index === 0 ? this.index : this.index - 1;
 
             if (!isMouseAboveColumnHeader
                 || isMouseAboveLeftBorderLimit
@@ -152,7 +150,6 @@ export default {
 
             addElementCopyToDocumentBody(event, headerWidth, this.column.id);
             this.removeColumnHover();
-            this.addBorderToRightNeighbour(contentGrid.children[neighbourIndex]);
             this.setGhostIndex(this.index);
             this.setDraggedElIndex(this.index);
             this.setDraggedElement({ ...this.column, index: this.index });
@@ -303,9 +300,6 @@ export default {
                 false,
             );
         },
-        addBorderToRightNeighbour(neighbour) {
-            neighbour.classList.add('border-right');
-        },
         getColumnFixedIndex() {
             if (this.$el.style.transform) {
                 const xTransform = this.getElementTransform();
@@ -448,15 +442,7 @@ export default {
             }
         },
         removeColumnHover() {
-            const contentGrid = this.getGridContentElement();
-            const { children: columns } = contentGrid;
-
             this.$el.classList.remove('column--hovered');
-
-            if (this.index - 1 > -1) {
-                columns[this.index - 1].classList.add('border-right');
-                columns[this.index].classList.add('border-right');
-            }
         },
         resetDraggedElementCache() {
             this.setGhostIndex();
@@ -484,7 +470,7 @@ export default {
             position: absolute;
             top: 0;
             right: 1.25px;
-            z-index: 9;
+            z-index: 2;
             width: 2.5px;
             height: 100%;
             cursor: col-resize;

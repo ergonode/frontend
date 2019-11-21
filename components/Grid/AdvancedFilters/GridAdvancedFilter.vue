@@ -8,7 +8,6 @@
             'advanced-filter',
             {
                 'advanced-filter--selected': isFocused,
-                'advanced-filter--error': isError,
             }
         ]"
         :draggable="true"
@@ -23,30 +22,26 @@
             <label
                 class="advanced-filter__label font--bold-12-16"
                 :for="associatedLabel"
-                v-text="data.id" />
+                v-text="filterHeader.title" />
             <input
                 :id="associatedLabel"
                 ref="input"
                 class="advanced-filter__input"
                 readonly
+                :title="filterHeader.hint"
                 @focus="onFocus"
                 @blur="onBlur">
             <div class="advanced-filter__details">
                 <span
                     v-if="!filterValue"
                     class="advanced-filter__placeholder font--medium-12-16">
-                    Select
+                    Select...
                 </span>
                 <span
                     v-else
                     class="advanced-filter__value font--medium-12-16"
                     v-text="filterValue" />
                 <IconArrowDropDown :state="arrowIconState" />
-            </div>
-            <div class="icon-error-container">
-                <IconError
-                    v-if="isError"
-                    size="16" />
             </div>
         </div>
         <DropDown
@@ -59,6 +54,7 @@
                     :is="selectBodyComponent"
                     :filter="filter || {}"
                     :options="options"
+                    :language-code="data.language"
                     @emptyRecord="onEmptyRecordChange"
                     @input="onValueChange" />
             </template>
@@ -84,20 +80,16 @@ import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT } from '~/defaults/grid';
 import {
     getDraggedColumnPositionState,
 } from '~/model/drag_and_drop/helpers';
+import { getMappedColumnHeaderTitle } from '~/model/mappers/gridDataMapper';
 import DropDown from '~/components/Inputs/Select/Contents/DropDown';
 
 export default {
     name: 'GridAdvancedFilter',
     components: {
         IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
-        IconError: () => import('~/components/Icon/Feedback/IconError'),
         DropDown,
     },
     props: {
-        isError: {
-            type: Boolean,
-            default: false,
-        },
         index: {
             type: Number,
             required: true,
@@ -144,6 +136,9 @@ export default {
             ghostFilterIndex: (state) => state.ghostFilterIndex,
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
+        filterHeader() {
+            return getMappedColumnHeaderTitle(this.data);
+        },
         filterValue() {
             if (this.filter) {
                 if (this.filter.isEmptyRecord) return 'Empty records';
@@ -466,19 +461,5 @@ export default {
                 padding: 0 1px 0 8px;
             }
         }
-
-        &--error {
-            #{$filter}__details {
-                background-color: $RED_LIGHT;
-            }
-        }
-    }
-
-    .icon-error-container {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 16px;
-        height: 16px;
     }
 </style>

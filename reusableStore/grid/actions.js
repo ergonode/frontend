@@ -290,23 +290,8 @@ export default {
     setEditingCellCoordinates({ commit }, editingCellCoordinates = {}) {
         commit(types.SET_EDITING_CELL_COORDINATES, editingCellCoordinates);
     },
-    addDraftToProduct({ commit, state }, { columnId, productId, value }) {
-        const { columns } = state;
-        const column = columns.find((col) => col.id === columnId);
-        const parsedValue = { value };
-
-        if (column.filter && column.filter.options) {
-            const { options } = column.filter;
-
-            if (Array.isArray(value)) {
-                parsedValue.value = value.map((key) => options[key] || 'No translation').join(', ');
-                parsedValue.key = value;
-            }
-            if (typeof options[value] !== 'undefined') {
-                parsedValue.value = options[value] || 'No translation';
-                parsedValue.key = value;
-            }
-        }
+    addDraftToProduct({ commit }, { columnId, productId, value }) {
+        const parsedValue = !Array.isArray(value) && typeof value !== 'object' ? { value } : value;
 
         commit(types.ADD_PRODUCT_VALUE, {
             productId,
