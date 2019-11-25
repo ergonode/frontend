@@ -6,7 +6,7 @@
     <button
         type="button"
         :class="btnClasses"
-        :disabled="disabled"
+        :disabled="disabled || !loaded"
         :aria-label="title">
         <slot
             name="prepend"

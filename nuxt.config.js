@@ -47,6 +47,7 @@ module.exports = {
         '~plugins/axios',
         '~plugins/register-store',
         '~plugins/privilege',
+        '~plugins/core',
         {mode: 'client', src: '~plugins/alerts'},
     ],
     modules: [

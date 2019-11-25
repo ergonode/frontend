@@ -24,6 +24,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        loaded: {
+            type: Boolean,
+            default: true,
+        },
         plain: {
             type: Boolean,
             default: false,

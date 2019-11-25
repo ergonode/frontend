@@ -37,6 +37,7 @@
                 @input="onPageChanged" />
             <Button
                 title="SAVE CHANGES"
+                :loaded="$isLoaded('footerDraftButton')"
                 :disabled="!isUserAllowedToUpdate"
                 @click.native="saveDrafts" />
         </template>

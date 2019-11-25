@@ -142,7 +142,7 @@ export default {
             });
         }).catch(onDefaultError);
     },
-    createProduct(
+    async createProduct(
         { commit, rootState },
         {
             data,
@@ -151,12 +151,15 @@ export default {
         },
     ) {
         const { authentication: { user: { language } } } = rootState;
-        return this.app.$axios.$post(`${language}/products`, data).then(({ id }) => {
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$post(`${language}/products`, data).then(({ id }) => {
             commit(types.SET_PRODUCT_ID, id);
             onSuccess(id);
         }).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
-    applyDraft(
+    async applyDraft(
         { rootState },
         {
             id,
@@ -164,9 +167,12 @@ export default {
         },
     ) {
         const { authentication: { user: { language } } } = rootState;
-        return this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {}).then(() => onSuccess()).catch(onDefaultError);
+
+        await this.$setLoader('footerDraftButton');
+        await this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {}).then(() => onSuccess()).catch(onDefaultError);
+        await this.$removeLoader('footerDraftButton');
     },
-    updateProduct(
+    async updateProduct(
         { rootState },
         {
             id,
@@ -175,11 +181,15 @@ export default {
         },
     ) {
         const { authentication: { user: { language } } } = rootState;
-        return this.app.$axios.$put(`${language}/products/${id}`, data).then(onSuccess).catch(onDefaultError);
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$put(`${language}/products/${id}`, data).then(onSuccess).catch(onDefaultError);
+        await this.$removeLoader('footerButton');
     },
     removeProduct({ state, rootState }, { onSuccess }) {
         const { id } = state;
         const { language: userLanguageCode } = rootState.authentication.user;
+
         return this.app.$axios.$delete(`${userLanguageCode}/products/${id}`).then(() => onSuccess()).catch(onDefaultError);
     },
     clearStorage: ({ commit }) => {

@@ -43,7 +43,7 @@ export default {
             }
         }).catch(onDefaultError);
     },
-    createSegment(
+    async createSegment(
         { commit, rootState },
         {
             data,
@@ -52,12 +52,15 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$post(`${userLanguageCode}/segments`, data).then(({ id }) => {
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$post(`${userLanguageCode}/segments`, data).then(({ id }) => {
             commit(types.SET_SEGMENT_ID, id);
             onSuccess(id);
         }).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
-    updateSegment(
+    async updateSegment(
         { rootState },
         {
             id,
@@ -67,7 +70,10 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/segments/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$put(`${userLanguageCode}/segments/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
     removeSegment({ state, rootState }, { onSuccess }) {
         const { id, conditionSetId } = state;
