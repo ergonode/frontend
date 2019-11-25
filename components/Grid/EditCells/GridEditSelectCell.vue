@@ -6,6 +6,7 @@
     <TranslationSelect
         :style="{width: `${fixedWidth}px`, height: `${fixedHeight}px`}"
         :value="value"
+        :language-code="languageCode"
         :solid="true"
         :small="true"
         :clearable="true"
@@ -28,8 +29,12 @@ export default {
     },
     props: {
         value: {
-            type: [Array, String],
+            type: [Array, Object],
             required: true,
+        },
+        languageCode: {
+            type: String,
+            default: '',
         },
         multiselect: {
             type: Boolean,
@@ -57,11 +62,7 @@ export default {
             this.$emit('focus', isFocused);
         },
         onValueChange(value) {
-            if (value) {
-                this.$emit('input', Array.isArray(value) ? value : value.key);
-            } else {
-                this.$emit('input', value);
-            }
+            this.$emit('input', value);
         },
     },
 };

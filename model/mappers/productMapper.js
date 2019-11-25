@@ -8,16 +8,16 @@ function getParsedOptions(options) {
     // BE needs to unify options for select / multiselect - when those attrs does not have options they are returning [], but whenever they do - returning { key: value }
 
     if (!options) return null;
-    if (Array.isArray(options)) return {};
+    if (Array.isArray(options)) return [];
 
     const optionKeys = Object.keys(options);
     const { length } = optionKeys;
-    const parsedOptions = {};
+    const parsedOptions = [];
 
     for (let i = 0; i < length; i += 1) {
         const key = optionKeys[i];
 
-        parsedOptions[key] = options[key] || 'No translation';
+        parsedOptions.push({ key, value: options[key] });
     }
 
     return parsedOptions;

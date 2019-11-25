@@ -10,6 +10,7 @@ export default {
     }) {
         const { drafts } = state;
         const path = `${languageCode}/products/${productId}/draft/${elementId}/value`;
+        let parsedValue = '';
 
         if (!drafts[productId]) {
             commit('initializeProductDraft', productId);
@@ -23,7 +24,15 @@ export default {
             productId, columnId, languageCode, value,
         });
 
-        await this.app.$axios.$put(path, { value }).then(() => {
+        if (Array.isArray(value)) {
+            parsedValue = value.map((val) => val.key);
+        } else if (typeof value === 'object') {
+            parsedValue = value.key;
+        } else {
+            parsedValue = value;
+        }
+
+        await this.app.$axios.$put(path, { value: parsedValue }).then(() => {
             // Clear validation error if exist
             commit('validations/removeValidationError', `${productId}/${elementId}`, { root: true });
         }).catch((e) => {

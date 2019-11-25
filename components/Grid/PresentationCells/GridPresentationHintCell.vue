@@ -4,19 +4,19 @@
  */
 <template>
     <div class="info-hint-cell">
-        <GridInfoCell :value="value" />
+        <GridPresentationCell :value="value" />
         <InfoHint :hint="hint" />
     </div>
 </template>
 
 <script>
-import GridInfoCell from '~/components/Grid/GridInfoCell';
+import GridPresentationCell from '~/components/Grid/PresentationCells/GridPresentationCell';
 import InfoHint from '~/components/Inputs/Hint/InfoHint';
 
 export default {
-    name: 'GridInfoHintCell',
+    name: 'GridPresentationHintCell',
     components: {
-        GridInfoCell,
+        GridPresentationCell,
         InfoHint,
     },
     props: {
@@ -27,10 +27,6 @@ export default {
         hint: {
             type: String,
             required: true,
-        },
-        fixedWidth: {
-            type: Boolean,
-            default: false,
         },
     },
 };

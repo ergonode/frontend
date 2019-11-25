@@ -11,7 +11,6 @@
             :left-alignment="true"
             :error-messages="errorMessages"
             small
-            @focus="onFocusChange"
             @input="onValueChange" />
     </GridEditTextBaseCell>
 </template>
@@ -40,9 +39,6 @@ export default {
     methods: {
         onValueChange(value) {
             this.$emit('input', value);
-        },
-        onFocusChange(focus) {
-            this.$emit('focus', focus);
         },
     },
 };

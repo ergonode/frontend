@@ -61,7 +61,12 @@ export default {
             return () => import('~/components/Grid/HeaderCells/GridInteractiveHeaderCell');
         },
         headerComponentProps() {
-            const { type, title } = this.column.header;
+            const {
+                title,
+                hint,
+                type,
+                suffix,
+            } = this.column.header;
 
             if (type === GRID_HEADER_TYPE.INTERACTIVE) {
                 return {
@@ -72,7 +77,9 @@ export default {
             }
 
             return {
-                header: title,
+                title,
+                hint,
+                suffix,
             };
         },
     },

@@ -3,43 +3,54 @@
  * See LICENSE for license details.
  */
 <template>
-    <Select
+    <TranslationSelect
         :style="{width: `${fixedWidth}px`, height: `${fixedHeight}px`}"
         :value="value"
         solid
         small
-        clearable
+        :clearable="clearable"
         :dismissible="false"
         :error-messages="errorMessages"
         autofocus
         :options="rowId ? workflowOptions : options"
         @focus="onFocus"
-        @input="onValueChange"
+        @input="onSelectValue"
         @apply="onApply">
-        <template #selectContent>
-            <StatusSelectListContent
-                :options="rowId ? workflowOptions : options"
-                :selected-option="value"
-                :colors="rowId ? workflowColors : colors"
-                @value="onValueChange" />
+        <template #prepend>
+            <div
+                v-if="value && value.key"
+                class="selected-badge">
+                <StatusBadge :color="getColor(value.key)" />
+            </div>
         </template>
-    </Select>
+        <template #option="{ option }">
+            <ListElementAction>
+                <StatusBadge :color="getColor(option.key)" />
+            </ListElementAction>
+            <ListElementDescription>
+                <ListElementTitle
+                    small
+                    :title="option.value || `#${option.key}`" />
+            </ListElementDescription>
+        </template>
+    </TranslationSelect>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import Select from '~/components/Inputs/Select/Select';
-import StatusSelectListContent from '~/components/Inputs/Select/Contents/StatusSelectListContent';
 
 export default {
     name: 'GridEditStatusSelectCell',
     components: {
-        Select,
-        StatusSelectListContent,
+        TranslationSelect: () => import('~/components/Inputs/Select/TranslationSelect'),
+        ListElementDescription: () => import('~/components/List/ListElementDescription'),
+        ListElementTitle: () => import('~/components/List/ListElementTitle'),
+        ListElementAction: () => import('~/components/List/ListElementAction'),
+        StatusBadge: () => import('~/components/Badges/StatusBadge'),
     },
     props: {
         value: {
-            type: String,
+            type: Object,
             required: true,
         },
         options: {
@@ -50,9 +61,13 @@ export default {
             type: Object,
             default: null,
         },
+        clearable: {
+            type: Boolean,
+            default: true,
+        },
         rowId: {
             type: [String, Number],
-            required: true,
+            default: '',
         },
         errorMessages: {
             type: [String, Array],
@@ -96,15 +111,28 @@ export default {
         }),
     },
     methods: {
+        getColor(key) {
+            return this.colors[key];
+        },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);
         },
         onApply() {
             this.$emit('focus', false);
         },
-        onValueChange(value) {
-            this.$emit('input', value.key || value);
+        onSelectValue(value) {
+            this.$emit('input', value);
         },
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .selected-badge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-left: 6px;
+        margin-right: 2px;
+    }
+</style>

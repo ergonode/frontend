@@ -15,8 +15,8 @@
                 <ListElementDescription>
                     <ListElementTitle
                         :small="true"
-                        :title="option.value || 'No translation'" />
-                    <ListElementHint :title="option.key" />
+                        :hint="option.value ? `#${option.key} ${languageCode}` : ''"
+                        :title="option.value || `#${option.key}`" />
                 </ListElementDescription>
             </ListElement>
         </List>
@@ -30,7 +30,6 @@ import List from '~/components/List/List';
 import ListElement from '~/components/List/ListElement';
 import ListElementDescription from '~/components/List/ListElementDescription';
 import ListElementTitle from '~/components/List/ListElementTitle';
-import ListElementHint from '~/components/List/ListElementHint';
 
 export default {
     name: 'GridAdvancedFilterSelectContent',
@@ -40,7 +39,6 @@ export default {
         ListElement,
         ListElementDescription,
         ListElementTitle,
-        ListElementHint,
     },
     props: {
         filter: {
@@ -50,6 +48,10 @@ export default {
         options: {
             type: Array,
             default: () => [],
+        },
+        languageCode: {
+            type: String,
+            default: '',
         },
     },
     data() {

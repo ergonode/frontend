@@ -45,31 +45,6 @@ export function getParamsOptionsForType(type, data) {
     }
 }
 
-export function getIcon(type) {
-    switch (type) {
-    case TYPES.TEXT:
-        return 'Text';
-    case TYPES.TEXTAREA:
-        return 'Textarea';
-    case TYPES.NUMERIC:
-        return 'Numeric';
-    case TYPES.SELECT:
-        return 'Select';
-    case TYPES.MULTI_SELECT:
-        return 'MultiSelect';
-    case TYPES.IMAGE:
-        return 'Image';
-    case TYPES.PRICE:
-        return 'Price';
-    case TYPES.UNIT:
-        return 'Unit';
-    case TYPES.DATE:
-        return 'Date';
-    default:
-        return '';
-    }
-}
-
 export function getTypeTranslation(type) {
     switch (type) {
     case TYPES.TEXT:

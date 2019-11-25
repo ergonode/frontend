@@ -3,23 +3,23 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="status-info-cell">
+    <div class="status-presentation-cell">
         <StatusBadge
             v-if="colors[cellData.key]"
             :color="colors[cellData.key]" />
-        <GridInfoCell :value="cellData.value" />
+        <GridPresentationCell :value="cellData.value" />
     </div>
 </template>
 
 <script>
 import StatusBadge from '~/components/Badges/StatusBadge';
-import GridInfoCell from '~/components/Grid/GridInfoCell';
+import GridPresentationCell from '~/components/Grid/PresentationCells/GridPresentationCell';
 
 export default {
     name: 'GridStatusInfoCell',
     components: {
         StatusBadge,
-        GridInfoCell,
+        GridPresentationCell,
     },
     props: {
         cellData: {
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .status-info-cell {
+    .status-presentation-cell {
         display: flex;
         flex: 1;
         align-items: center;

@@ -61,27 +61,6 @@ describe('AttributeTypes/hasParamsWithMultiSelect', () => {
     });
 });
 
-describe('AttributeTypes/getIcon', () => {
-    it.each([
-        ['TEXT', 'Text'],
-        ['TEXTAREA', 'Textarea'],
-        ['NUMERIC', 'Numeric'],
-        ['SELECT', 'Select'],
-        ['MULTI_SELECT', 'MultiSelect'],
-        ['IMAGE', 'Image'],
-        ['PRICE', 'Price'],
-        ['UNIT', 'Unit'],
-        ['DATE', 'Date'],
-        ['OTHER_TYPE', ''],
-    ])(
-        ' Set type (%s) get class (%s)',
-        (type, expected) => {
-            const fun = getIcon(type);
-            expect(fun).toBe(expected);
-        },
-    );
-});
-
 describe('AttributeTypes/getTypeTranslation', () => {
     it.each([
         ['TEXT', 'TEXT'],

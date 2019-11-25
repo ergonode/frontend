@@ -14,29 +14,33 @@
             :is="infoComponent"
             v-if="!isEditingCell"
             :value="filterParsedValue" />
-        <GridEditActivatorCell
-            v-else
-            :namespace="namespace"
-            :is-multi-select="isMultiSelect"
-            :type="filterType"
-            :value="filterValue"
-            :options="options"
-            :colors="column.colors || null"
-            :fixed-width="$el.offsetWidth"
-            :fixed-height="$el.offsetHeight"
-            @updateValue="onUpdateFilter" />
+        <GridEditActivatorCell v-else>
+            <GridEditFilterCell
+                :multiselect="isMultiSelect"
+                :type="filterType"
+                :language-code="column.language"
+                :value="filterValue"
+                :options="options"
+                :colors="column.colors || null"
+                :fixed-width="$el.offsetWidth"
+                :fixed-height="$el.offsetHeight"
+                @focus="onFocus"
+                @updateValue="onUpdateFilter" />
+        </GridEditActivatorCell>
     </GridCell>
 </template>
 
 <script>
 import { FILTER_OPERATOR } from '~/defaults/operators';
 import { COLUMN_TYPE } from '~/defaults/grid';
+import { getMappedArrayValue } from '~/model/mappers/gridDataMapper';
 
 export default {
-    name: 'GridWrapperHeaderActionCell',
+    name: 'GridFilterCell',
     components: {
         GridCell: () => import('~/components/Grid/GridCell'),
         GridEditActivatorCell: () => import('~/components/Grid/EditCells/GridEditActivatorCell'),
+        GridEditFilterCell: () => import('~/components/Grid/EditCells/GridEditFilterCell'),
     },
     props: {
         namespace: {
@@ -90,6 +94,11 @@ export default {
 
             return type === COLUMN_TYPE.MULTI_SELECT;
         },
+        isSelect() {
+            const { filter: { type } } = this.column;
+
+            return type === COLUMN_TYPE.SELECT;
+        },
         filterType() {
             if (this.column.colors) return this.column.type;
 
@@ -98,31 +107,34 @@ export default {
         filterValue() {
             if (!this.filter) {
                 if (this.isMultiSelect) return [];
+                if (this.isSelect) return { key: '', value: '' };
 
                 return '';
+            }
+
+            if (this.isSelectKind) {
+                return getMappedArrayValue(
+                    this.filter.value,
+                    this.column.filter.options,
+                );
             }
 
             return this.filter.value;
         },
         filterParsedValue() {
-            if (!this.column.filter) return '';
+            if (!this.column.filter || !this.filter) return '';
 
-            if (this.filter) {
-                if (Array.isArray(this.filter.value)) {
-                    return this.filter.value
-                        .map((val) => this.column.filter.options[val] || 'No translation')
-                        .join(', ');
-                }
-                if (this.column.filter.options && typeof this.column.filter.options[this.filter.value] !== 'undefined') {
-                    return this.column.filter.options[this.filter.value] || 'No translation';
-                }
-
-                return this.filter.value;
+            if (Array.isArray(this.filter.value)) {
+                return this.filter.value
+                    .map((val) => this.column.filter.options[val] || `#${val}`)
+                    .join(', ');
             }
 
-            if (this.options) return 'Select...';
+            if (this.column.filter.options && typeof this.column.filter.options[this.filter.value] !== 'undefined') {
+                return this.column.filter.options[this.filter.value] || `#${this.filter.value}`;
+            }
 
-            return 'Search...';
+            return this.filter.value;
         },
         options() {
             const { filter } = this.column;
@@ -140,13 +152,19 @@ export default {
             switch (type) {
             case COLUMN_TYPE.SELECT:
             case COLUMN_TYPE.MULTI_SELECT:
-                return () => import('~/components/Grid/GridSelectInfoCell');
+                return () => import('~/components/Grid/PresentationCells/GridPresentationFilterSelectCell');
             default:
-                return () => import('~/components/Grid/GridInfoCell');
+                return () => import('~/components/Grid/PresentationCells/GridPresentationFilterCell');
             }
         },
     },
     methods: {
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
+                this.$el.focus();
+            }
+        },
         onEdit(isEditing) {
             if (isEditing) {
                 this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, { column: this.columnIndex, row: this.rowIndex });
@@ -156,9 +174,16 @@ export default {
         },
         onUpdateFilter(value) {
             const { id } = this.column;
+            let parsedValue = value;
 
-            if (this.gridState.filters[id] !== value) {
-                this.$store.dispatch(`${this.namespace}/setFilter`, { id, filter: value, operator: FILTER_OPERATOR.EQUAL });
+            if (Array.isArray(value)) {
+                parsedValue = value.map((val) => val.key);
+            } else if (typeof value === 'object') {
+                parsedValue = value.key;
+            }
+
+            if (this.gridState.filters[id] !== parsedValue) {
+                this.$store.dispatch(`${this.namespace}/setFilter`, { id, filter: parsedValue, operator: FILTER_OPERATOR.EQUAL });
                 this.$store.dispatch(`${this.namespace}/getData`, { path: this.path });
                 this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
             }

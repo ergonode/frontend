@@ -8,25 +8,6 @@ import {
     COLUMN_WIDTH,
 } from '~/defaults/grid';
 
-const getMappedColumnHeaderTitle = ({
-    id,
-    type,
-    label,
-    language,
-    parameter,
-}) => {
-    let suffix = '';
-    const columnIDs = id.split(':');
-
-    if (type === COLUMN_TYPE.PRICE) suffix = parameter.currency;
-    if (!language) return `${label} ${suffix}`;
-    if (columnIDs.length > 1) return `${label || id} ${suffix}`;
-
-    return label
-        ? `${label} ${language} ${suffix}`
-        : `${id} ${language} ${suffix}`;
-};
-
 const getMappedColumnHeaderType = ({ filter, type }) => {
     if (type === COLUMN_TYPE.CHECK) return GRID_HEADER_TYPE.CHECK;
     if (filter || type === COLUMN_TYPE.IMAGE) return GRID_HEADER_TYPE.INTERACTIVE;
@@ -34,9 +15,33 @@ const getMappedColumnHeaderType = ({ filter, type }) => {
     return GRID_HEADER_TYPE.PLAIN;
 };
 
-const getMappedColumnHeader = (column) => ({
-    title: getMappedColumnHeaderTitle(column),
-    type: getMappedColumnHeaderType(column),
+export const getMappedColumnHeaderTitle = ({
+    id, label, parameters, language,
+}) => {
+    let suffix = '';
+    const [code] = id.split(':');
+
+    if (parameters) suffix = Object.keys(parameters).map((key) => parameters[key]).join(', ');
+
+    return {
+        title: label || `#${code}`,
+        hint: label ? `${code} ${language}` : null,
+        suffix,
+    };
+};
+
+export const getMappedColumnHeader = ({
+    id,
+    label,
+    language = '',
+    parameters,
+    filter,
+    type,
+}) => ({
+    ...getMappedColumnHeaderTitle({
+        id, label, parameters, language,
+    }),
+    type: getMappedColumnHeaderType({ filter, type }),
 });
 
 export function getSortedColumnsByIDs(columns, columnsID) {
@@ -80,6 +85,19 @@ export function getMappedColumns(columns) {
     };
 }
 
+export function getMappedArrayValue(value, options) {
+    const parsedKey = value !== null && value.length > 0 ? value : '';
+
+    if (Array.isArray(value)) {
+        return value.map((val) => ({
+            key: val,
+            value: options[val],
+        }));
+    }
+
+    return { key: parsedKey, value: options[value] || '' };
+}
+
 export function getMappedCellValues(columns, rows, rowIds) {
     const { length: columnsNumber } = columns;
     const { length: rowsNumber } = rows;
@@ -97,21 +115,11 @@ export function getMappedCellValues(columns, rows, rowIds) {
             if (!values[rowId]) values[rowId] = {};
 
             if (filter && filter.options) {
-                const { options } = filter;
-
-                if (Array.isArray(value)) {
-                    values[rowId][columnId] = { key: value, value: value.map((key) => options[key] || 'No translation').join(', ') };
-                } else if (typeof options[value] !== 'undefined') {
-                    values[rowId][columnId] = { key: value, value: options[value] || 'No translation' };
-                } else {
-                    values[rowId][columnId] = { key: '', value: '' };
-                }
-            } else if (typeof value === 'undefined' || value === null) {
-                values[rowId][columnId] = { value: '' };
+                values[rowId][columnId] = getMappedArrayValue(value, filter.options);
             } else if (typeof value === 'boolean' && column.type !== COLUMN_TYPE.CHECK_CELL) {
                 values[rowId][columnId] = { value: value ? 'Yes' : 'No' };
             } else {
-                values[rowId][columnId] = { value };
+                values[rowId][columnId] = { value: value || '' };
             }
         }
     }

@@ -3,20 +3,21 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="info-select-cell">
-        <GridInfoCell :value="value" />
+    <div
+        class="presentation-select-cell">
+        <GridPresentationFilterCell :value="value" />
         <IconArrowDropDown />
     </div>
 </template>
 
 <script>
-import GridInfoCell from '~/components/Grid/GridInfoCell';
+import GridPresentationFilterCell from '~/components/Grid/PresentationCells/GridPresentationFilterCell';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
 
 export default {
-    name: 'GridSelectInfoCell',
+    name: 'GridPresentationFilterSelectCell',
     components: {
-        GridInfoCell,
+        GridPresentationFilterCell,
         IconArrowDropDown,
     },
     props: {
@@ -24,20 +25,16 @@ export default {
             type: [String, Number],
             required: true,
         },
-        fixedWidth: {
-            type: Boolean,
-            default: false,
-        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .info-select-cell {
+    .presentation-select-cell {
         display: flex;
         flex: 1;
         justify-content: space-between;
         align-items: center;
-        padding-right: 5px;
+        padding-right: 6px;
     }
 </style>
