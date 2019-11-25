@@ -42,8 +42,8 @@ import { COLUMN_TYPE } from '~/defaults/grid';
 import { STATE } from '~/defaults/inputs/checkbox';
 import Grid from '~/components/Grid/Grid';
 import GridCell from '~/components/Grid/GridCell';
-import GridInfoHintCell from '~/components/Grid/GridInfoHintCell';
-import GridInfoCell from '~/components/Grid/GridInfoCell';
+import GridPresentationHintCell from '~/components/Grid/PresentationCells/GridPresentationHintCell';
+import GridPresentationCell from '~/components/Grid/PresentationCells/GridPresentationCell';
 import GridCheckCell from '~/components/Grid/GridCheckCell';
 import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
 
@@ -53,7 +53,7 @@ export default {
         ResponsiveCenteredViewTemplate,
         GridCell,
         GridCheckCell,
-        GridInfoCell,
+        GridPresentationCell,
         Grid,
     },
     data() {
@@ -126,8 +126,8 @@ export default {
         },
         getCellComponent(type, rowId) {
             if (type === COLUMN_TYPE.TEXT) {
-                if (this.descriptions[rowId]) return GridInfoHintCell;
-                return GridInfoCell;
+                if (this.descriptions[rowId]) return GridPresentationHintCell;
+                return GridPresentationCell;
             }
 
             return GridCheckCell;
