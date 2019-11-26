@@ -100,7 +100,7 @@ export default {
             button: {
                 title: 'SAVE TEMPLATE',
                 action: this.updateButton.action,
-                disabled: !this.$hasAccess('TEMPLATE_DESIGNER_UPDATE'),
+                disabled: !this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']),
             },
             verticalTabs: [
                 {
@@ -108,16 +108,14 @@ export default {
                     component: () => import('~/components/Card/Lists/AttributesListTab'),
                     props: {
                         isSelectLanguage: false,
-                        disabled: !this.$hasAccess('TEMPLATE_DESIGNER_UPDATE'),
+                        disabled: !this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']),
                     },
                     iconPath: 'Menu/IconAttributes',
-                    active: true,
                 },
                 {
                     title: 'Widgets',
                     component: () => import('~/components/Card/Tabs/WidgetsListTab'),
                     iconPath: 'Widgets/IconWidget',
-                    active: false,
                 },
             ],
         };
@@ -149,7 +147,7 @@ export default {
             isListElementDragging: (state) => state.isListElementDragging,
         }),
         isUserAllowedToUpdate() {
-            return this.$hasAccess('TEMPLATE_DESIGNER_UPDATE');
+            return this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']);
         },
         errorMessages() {
             return this.titleValidationError ? [this.titleValidationError] : null;

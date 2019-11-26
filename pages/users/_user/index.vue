@@ -4,7 +4,7 @@
  */
 <template>
     <UserPage
-        title="New user"
+        title="New User"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>

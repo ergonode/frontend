@@ -13,7 +13,7 @@
             :disabled="isDisabled || isDisabledByPrivileges"
             label="Code"
             hint="Tree code must be unique"
-            @input="setTreeCode($event)"
+            @input="setTreeCode"
         />
     </BaseCard>
 </template>
@@ -39,8 +39,8 @@ export default {
             return Boolean(this.treeID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess('CATEGORY_TREE_UPDATE'))
-            || (!this.isDisabled && !this.$hasAccess('CATEGORY_TREE_CREATE'));
+            return (this.isDisabled && !this.$hasAccess(['CATEGORY_TREE_UPDATE']))
+            || (!this.isDisabled && !this.$hasAccess(['CATEGORY_TREE_CREATE']));
         },
         errorCodeMessage() {
             const codeIndex = 'code';

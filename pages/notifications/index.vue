@@ -28,7 +28,6 @@ export default {
                 {
                     title: 'Notifications',
                     route: { name: 'notifications-grid' },
-                    active: true,
                 },
             ];
         },

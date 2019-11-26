@@ -15,7 +15,6 @@ export default {
             { stateProp: 'currencies', requestPath: `${userLanguageCode}/dictionary/currencies` },
             { stateProp: 'units', requestPath: `${userLanguageCode}/dictionary/units` },
             { stateProp: 'attrTypes', requestPath: `${userLanguageCode}/dictionary/attributes/types` },
-            { stateProp: 'attrGroups', requestPath: `${userLanguageCode}/dictionary/attributes/groups` },
             { stateProp: 'dateFormats', requestPath: `${userLanguageCode}/dictionary/date_format` },
             { stateProp: 'imageFormats', requestPath: `${userLanguageCode}/dictionary/image_format` },
             { stateProp: 'privileges', requestPath: `${userLanguageCode}/dictionary/privileges` },

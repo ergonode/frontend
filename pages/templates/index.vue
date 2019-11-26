@@ -8,11 +8,11 @@
             title="Templates"
             :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')"
             icon="Templates">
-            <template #buttons>
+            <template #mainAction>
                 <PrependIconButton
-                    title="CREATE TEMPLATE"
+                    title="NEW TEMPLATE"
                     :size="smallSize"
-                    :disabled="!$hasAccess('TEMPLATE_DESIGNER_CREATE')"
+                    :disabled="!$hasAccess(['TEMPLATE_DESIGNER_CREATE'])"
                     @click.native="onCreate">
                     <template #prepend="{ color }">
                         <IconAdd

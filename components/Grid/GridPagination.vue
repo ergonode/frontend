@@ -4,9 +4,7 @@
  */
 <template>
     <div class="pagination">
-        <Transition
-            name="fade"
-            mode="out-in">
+        <FadeTransition>
             <FabButton
                 :class="{'non-visible': !isLeftArrowVisible}"
                 :theme="secondaryTheme"
@@ -15,7 +13,7 @@
                     <IconArrowPointer :fill-color="color" />
                 </template>
             </FabButton>
-        </Transition>
+        </FadeTransition>
         <span class="pagination__text font--medium-12-16">
             Page
         </span>
@@ -33,7 +31,7 @@
         <span
             class="pagination__number font--medium-12-16"
             v-text="maxPage" />
-        <Transition name="fade">
+        <FadeTransition>
             <FabButton
                 :class="{'non-visible': !isRightArrowVisible}"
                 :theme="secondaryTheme"
@@ -44,7 +42,7 @@
                         :state="rightArrow" />
                 </template>
             </FabButton>
-        </Transition>
+        </FadeTransition>
     </div>
 </template>
 
@@ -58,6 +56,7 @@ export default {
         TextField: () => import('~/components/Inputs/TextField'),
         FabButton: () => import('~/components/Buttons/FabButton'),
         IconArrowPointer: () => import('~/components/Icon/Arrows/IconArrowPointer'),
+        FadeTransition: () => import('~/components/Transitions/FadeTransition'),
     },
     props: {
         value: {
@@ -119,5 +118,4 @@ export default {
 
 <style lang="scss" scoped>
     @import "~assets/scss/grid/pagination.scss";
-    @import "~assets/scss/fade.scss";
 </style>

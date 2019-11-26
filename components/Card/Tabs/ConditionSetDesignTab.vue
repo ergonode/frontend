@@ -39,7 +39,6 @@ export default {
                 title: 'Conditions',
                 component: () => import('~/components/Card/Tabs/ConditionsListTab'),
                 iconPath: 'Menu/IconCategory',
-                active: true,
             },
         ],
     }),

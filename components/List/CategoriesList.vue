@@ -4,13 +4,13 @@
  */
 <template>
     <List>
-        <div class="elements-wrapper">
+        <ListScrollableContainer>
             <CategoryListElement
                 v-for="element in elementsByLanguageCode"
                 :key="element.id"
                 :item="element"
                 :language-code="languageCode" />
-        </div>
+        </ListScrollableContainer>
     </List>
 </template>
 
@@ -21,6 +21,7 @@ export default {
     name: 'CategoriesList',
     components: {
         List: () => import('~/components/List/List'),
+        ListScrollableContainer: () => import('~/components/List/ListScrollableContainer'),
         CategoryListElement: () => import('~/components/List/CategoryListElement'),
     },
     props: {
@@ -42,9 +43,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .elements-wrapper {
-        height: 0;
-    }
-</style>

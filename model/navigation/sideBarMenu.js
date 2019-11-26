@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-const unassignedToSectionItems = [
+const getUnassignedToSectionItems = () => [
     {
         title: 'Dashboard',
         routing: '/dashboard',
@@ -11,7 +11,7 @@ const unassignedToSectionItems = [
     },
 ];
 
-const manageSectionItems = [
+const getManageSectionItems = () => [
     {
         title: 'Products catalog',
         routing: '/products',
@@ -56,12 +56,12 @@ const manageSectionItems = [
     },
 ];
 
-const collectAndDistributeSectionItems = [
+const getCollectAndDistributeSectionItems = () => [
     {
         title: 'Export',
         routing: '/placeholder/export',
         icon: 'Export',
-        privileges: [''],
+        privileges: [],
     },
     {
         title: 'Channels',
@@ -71,7 +71,7 @@ const collectAndDistributeSectionItems = [
     },
 ];
 
-const systemSectionItems = [
+const getSystemSectionItems = () => [
     {
         title: 'Users',
         routing: '/users',
@@ -92,48 +92,51 @@ const systemSectionItems = [
     },
 ];
 
-const sections = [
+const getSections = () => [
     {
         key: null,
-        items: unassignedToSectionItems,
+        items: getUnassignedToSectionItems(),
     },
     {
         key: 'MANAGE',
-        items: manageSectionItems,
+        items: getManageSectionItems(),
     },
     {
         key: 'COLLECT & DISTRIBUTE',
-        items: collectAndDistributeSectionItems,
+        items: getCollectAndDistributeSectionItems(),
     },
     {
         key: 'SYSTEM',
-        items: systemSectionItems,
+        items: getSystemSectionItems(),
     },
 ];
 
-const extendSections = (modulesMenu) => {
-    const newSections = JSON.parse(JSON.stringify(sections)); // deep array clone hack
+const getExtendSections = (modulesMenu) => {
+    const menuSections = getSections();
+
     for (let i = 0; i < modulesMenu.length; i += 1) {
-        const index = newSections.findIndex((e) => e.key === modulesMenu[i].key);
+        const index = menuSections.findIndex((e) => e.key === modulesMenu[i].key);
+
         if (index >= 0) {
-            newSections[index].items.push(...modulesMenu[i].items);
+            menuSections[index].items.push(...modulesMenu[i].items);
         } else {
-            newSections.push(modulesMenu[i]);
+            menuSections.push(modulesMenu[i]);
         }
     }
-    return newSections;
+    return menuSections;
 };
 
 export const getValidatedMenuData = (hasAccess, modulesMenu) => {
     const menu = [];
-    const extendedSections = extendSections(modulesMenu);
+    const extendedSections = getExtendSections(modulesMenu);
     const { length: sectionsNumber } = extendedSections;
 
     for (let i = 0; i < sectionsNumber; i += 1) {
         const { key, items } = extendedSections[i];
         const filteredItems = items.filter((e) => !e.privileges
-          || (e.privileges && !e.privileges.length)
-          || e.privileges.every((privilege) => hasAccess(privilege)));
+                || !e.privileges.length
+                || hasAccess(e.privileges));
+
         menu.push({
             key,
             items: filteredItems,

@@ -12,12 +12,12 @@
             @navigateback="onDismiss">
             <template
                 v-if="isEdit"
-                #buttons>
+                #mainAction>
                 <PrependIconButton
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE SEGMENT"
-                    :disabled="!$hasAccess('SEGMENT_DELETE')"
+                    :disabled="!$hasAccess(['SEGMENT_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete
@@ -58,7 +58,7 @@ export default {
                 route: { name: 'segments-grid' },
             },
         ];
-        this.isUserAllowedToUpdateSegments = this.$hasAccess('SEGMENT_UPDATE');
+        this.isUserAllowedToUpdateSegments = this.$hasAccess(['SEGMENT_UPDATE']);
         if (this.isEdit) {
             const translationRoute = { name: 'segment-edit-id-translations', params: this.$route.params };
             const designerRoute = { name: 'segment-edit-id-designer', params: this.$route.params };
@@ -68,9 +68,8 @@ export default {
 
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} SEGMENT`,
@@ -107,9 +106,8 @@ export default {
         } else {
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} SEGMENT`,

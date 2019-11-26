@@ -78,11 +78,7 @@ export default {
             store,
         });
 
-        const groupsRequest = store.dispatch('list/getGroups', {
-            languageCode: userLanguageCode,
-        });
-
-        return Promise.all([groupsRequest, getTypesRequest]);
+        return Promise.all([getTypesRequest]);
     },
 };
 </script>

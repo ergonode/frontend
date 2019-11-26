@@ -4,9 +4,7 @@
  */
 <template>
     <li class="comment-list__element">
-        <Transition
-            name="fade"
-            mode="out-in">
+        <FadeTransition>
             <EditableComment
                 v-if="showEditingForm"
                 :comment-value="comment.content"
@@ -16,7 +14,7 @@
                 v-else
                 :comment="comment"
                 @edit="toggleState" />
-        </Transition>
+        </FadeTransition>
     </li>
 </template>
 <script>
@@ -25,6 +23,7 @@ export default {
     components: {
         Comment: () => import('~/components/Comments/Comment'),
         EditableComment: () => import('~/components/Comments/EditableComment'),
+        FadeTransition: () => import('~/components/Transitions/FadeTransition'),
     },
     data() {
         return {

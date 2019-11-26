@@ -7,29 +7,42 @@
         <TitleBar
             title="Users"
             icon="User"
-            :is-read-only="$isReadOnly(titleBarData.isReadOnly)">
-            <template
-                v-if="titleBarData.button"
-                #buttons>
+            :is-read-only="$isReadOnly($route.meta.isReadOnly)">
+            <template #mainAction>
                 <PrependIconButton
-                    :title="titleBarData.button.title"
+                    title="NEW USER"
                     :size="smallSize"
-                    :disabled="!$hasAccess(titleBarData.button.access)"
-                    @click.native="addNew(titleBarData.button.path)">
+                    :disabled="!$hasAccess(['USER_CREATE'])"
+                    @click.native="addUser">
                     <template #prepend="{ color }">
-                        <IconAdd
-                            :fill-color="color" />
+                        <IconAdd :fill-color="color" />
                     </template>
                 </PrependIconButton>
             </template>
+            <template
+                v-if="isUserRolesTab"
+                #subActions>
+                <TitleBarSubActions>
+                    <PrependIconButton
+                        title="NEW ROLE"
+                        :size="smallSize"
+                        :theme="secondaryTheme"
+                        :disabled="!$hasAccess(['USER_ROLE_CREATE'])"
+                        @click.native="addUserRole">
+                        <template #prepend="{ color }">
+                            <IconAdd :fill-color="color" />
+                        </template>
+                    </PrependIconButton>
+                </TitleBarSubActions>
+            </template>
         </TitleBar>
-        <HorizontalTabBar
-            :items="tabs" />
+        <HorizontalTabBar :items="tabs" />
     </BasePage>
 </template>
 
 <script>
-import { SIZES } from '~/defaults/buttons';
+import { THEMES, SIZES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import PrependIconButton from '~/components/Buttons/PrependIconButton';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 
@@ -39,73 +52,32 @@ export default {
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         TitleBar: () => import('~/components/TitleBar/TitleBar'),
+        TitleBarSubActions: () => import('~/components/TitleBar/TitleBarSubActions'),
         BasePage: () => import('~/components/Layout/BasePage'),
         PrependIconButton,
         IconAdd,
     },
-    beforeCreate() {
-        this.tabs = [];
-        if (this.$hasAccess('USER_READ')) {
-            this.tabs.push({
-                title: 'Users',
-                route: { name: 'users-grid' },
-                active: true,
-            });
-        }
-        if (this.$hasAccess('USER_ROLE_READ')) {
-            this.tabs.push({
-                title: 'Roles',
-                route: { name: 'users-roles' },
-                active: true,
-            });
-        }
-        // TODO: BE need to decide if the new privilege is needed - fill the condition with correct equation
-        this.tabs.push({
-            title: 'Users activity logs',
-            route: { name: 'users-activity-logs' },
-            active: true,
-        });
-    },
     computed: {
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
         smallSize() {
             return SIZES.SMALL;
         },
-        titleBarData() {
-            switch (true) {
-            case /grid/.test(this.$route.path):
-                return {
-                    button: {
-                        title: 'CREATE USER',
-                        access: 'USER_CREATE',
-                        path: '/users/user/new',
-                    },
-                    isReadOnly: 'USER',
-                };
-            case /roles/.test(this.$route.path):
-                return {
-                    button: {
-                        title: 'CREATE ROLE',
-                        access: 'USER_ROLE_CREATE',
-                        path: '/users/role/new',
-                    },
-                    isReadOnly: 'USER_ROLE',
-                };
-            case /logs/.test(this.$route.path):
-                return {
-                    isReadOnly: 'USER',
-                };
-            default:
-                return null;
-            }
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
+        isUserRolesTab() {
+            return /roles/.test(this.$route.path);
         },
     },
     methods: {
-        addNew(path) {
-            this.$router.push(path);
+        addUser() {
+            this.$router.push('/users/user/new/general');
         },
-    },
-    beforeDestroy() {
-        delete this.tabs;
+        addUserRole() {
+            this.$router.push('/users/role/new/general');
+        },
     },
 };
 </script>

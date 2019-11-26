@@ -6,14 +6,14 @@
     <span
         class="header-cell font--bold-12-16"
         :title="props.hint"
-        v-text="props.header" />
+        v-text="props.title" />
 </template>
 
 <script>
 export default {
-    name: 'GridBaseHeaderCell',
+    name: 'GridPresentationHeaderCell',
     props: {
-        header: {
+        title: {
             type: String,
             default: 'Header',
         },

@@ -45,7 +45,7 @@
 <script>
 import { mapState } from 'vuex';
 import { hasPlaceholder, hasOptions } from '~/model/attributes/AttributeTypes';
-import { getMappedType } from '~/model/mappers/attributeMapper';
+import { getParsedType } from '~/model/mappers/attributeMapper';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
 import TextField from '~/components/Inputs/TextField';
@@ -75,7 +75,7 @@ export default {
         }),
         hasPlaceholder() {
             return hasPlaceholder(
-                getMappedType(
+                getParsedType(
                     this.attrTypes,
                     this.type,
                 ),
@@ -83,14 +83,14 @@ export default {
         },
         hasOptions() {
             return hasOptions(
-                getMappedType(
+                getParsedType(
                     this.attrTypes,
                     this.type,
                 ),
             );
         },
         isUserAllowedToUpdate() {
-            return this.$hasAccess('ATTRIBUTE_UPDATE');
+            return this.$hasAccess(['ATTRIBUTE_UPDATE']);
         },
         errorLabelMessage() {
             const labelIndex = `label_${this.languageCode}`;

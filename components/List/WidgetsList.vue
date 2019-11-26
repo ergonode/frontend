@@ -4,12 +4,12 @@
  */
 <template>
     <List>
-        <div class="elements-wrapper">
+        <ListScrollableContainer>
             <WidgetListElement
                 v-for="(widget, index) in widgets"
                 :key="index"
                 :item="widget" />
-        </div>
+        </ListScrollableContainer>
     </List>
 </template>
 
@@ -20,6 +20,7 @@ export default {
     name: 'WidgetsList',
     components: {
         List: () => import('~/components/List/List'),
+        ListScrollableContainer: () => import('~/components/List/ListScrollableContainer'),
         WidgetListElement: () => import('~/components/List/WidgetListElement'),
     },
     computed: {
@@ -32,9 +33,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .elements-wrapper {
-        height: 0;
-    }
-</style>

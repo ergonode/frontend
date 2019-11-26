@@ -8,7 +8,7 @@
             <Grid
                 namespace="attributeGrid"
                 :route-edit="routeEdit"
-                :editing-privilege-allowed="$hasAccess('ATTRIBUTE_UPDATE')"
+                :editing-privilege-allowed="$hasAccess(['ATTRIBUTE_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
                 title="Attributes"
@@ -70,7 +70,7 @@ export default {
         routeEdit() {
             return {
                 getData: `${this.userLanguageCode}/attributes`,
-                name: 'attribute-edit-id',
+                name: 'attribute-edit-id-general',
             };
         },
         visibleRowsInPageCount: {

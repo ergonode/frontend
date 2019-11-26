@@ -49,8 +49,8 @@ export default {
             return Boolean(this.roleID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess('USER_ROLE_UPDATE'))
-            || (!this.isDisabled && !this.$hasAccess('USER_ROLE_CREATE'));
+            return (this.isDisabled && !this.$hasAccess(['USER_ROLE_UPDATE']))
+            || (!this.isDisabled && !this.$hasAccess(['USER_ROLE_CREATE']));
         },
         errorNameMessage() {
             const nameIndex = 'name';

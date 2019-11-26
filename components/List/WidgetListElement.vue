@@ -4,12 +4,12 @@
  */
 <template>
     <ListDraggableElement
-        :is-draggable="$hasAccess('TEMPLATE_DESIGNER_UPDATE')"
+        :is-draggable="$hasAccess(['TEMPLATE_DESIGNER_UPDATE'])"
         :draggable-id="item.type"
         @drag="onDrag">
-        <ListElementHintIcon hint="Title">
+        <ListElementIcon>
             <Component :is="widgetIconComponent" />
-        </ListElementHintIcon>
+        </ListElementIcon>
         <ListElementDescription>
             <ListElementTitle :title="item.label" />
             <ListElementHint :title="item.code" />
@@ -24,7 +24,7 @@ export default {
     name: 'AttributeListElement',
     components: {
         ListDraggableElement: () => import('~/components/List/ListDraggableElement'),
-        ListElementHintIcon: () => import('~/components/List/ListElementHintIcon'),
+        ListElementIcon: () => import('~/components/List/ListElementIcon'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
         ListElementHint: () => import('~/components/List/ListElementHint'),

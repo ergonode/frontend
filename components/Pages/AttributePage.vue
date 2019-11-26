@@ -12,12 +12,12 @@
             @navigateback="onDismiss">
             <template
                 v-if="isEdit"
-                #buttons>
+                #mainAction>
                 <PrependIconButton
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE ATTRIBUTE"
-                    :disabled="!$hasAccess('ATTRIBUTE_DELETE')"
+                    :disabled="!$hasAccess(['ATTRIBUTE_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete
@@ -46,7 +46,7 @@ export default {
             },
         ];
 
-        this.isUserAllowedToUpdateAttribute = this.$hasAccess('ATTRIBUTE_UPDATE');
+        this.isUserAllowedToUpdateAttribute = this.$hasAccess(['ATTRIBUTE_UPDATE']);
         let generalRoute = { name: 'attribute-new-general' };
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
@@ -59,9 +59,8 @@ export default {
 
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} ATTRIBUTE`,
@@ -86,9 +85,8 @@ export default {
         } else {
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} ATTRIBUTE`,

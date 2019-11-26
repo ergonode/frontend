@@ -7,8 +7,8 @@
         :class="['header-cell',
                  { 'draggable': isColumnEditable && !isCellEditing }
         ]">
-        <GridBaseHeaderCell
-            :header="column.header.title"
+        <GridPresentationHeaderCell
+            :title="column.header.title"
             :hint="column.header.hint"
             :suffix="column.header.suffix" />
         <div
@@ -77,7 +77,7 @@ export default {
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
         CheckBox: () => import('~/components/Inputs/CheckBox'),
-        GridBaseHeaderCell: () => import('~/components/Grid/HeaderCells/GridBaseHeaderCell'),
+        GridPresentationHeaderCell: () => import('~/components/Grid/HeaderCells/GridPresentationHeaderCell'),
     },
     props: {
         namespace: {

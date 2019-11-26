@@ -19,6 +19,7 @@ const getNameColumn = () => ({
     label: '',
     type: COLUMN_TYPE.TEXT,
     width: '1fr',
+    editable: false,
 });
 
 export function getMappedGridData(privileges, rolePrivileges) {

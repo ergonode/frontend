@@ -22,7 +22,7 @@ context('Attribute add', () => {
         });
 
         it('Visit /attributes/attribute/new', () => {
-            cy.get('button').contains('CREATE ATTRIBUTE').click({ force: true });
+            cy.get('button').contains('NEW ATTRIBUTE').click({ force: true });
             cy.url().should('include', '/attributes/attribute/new/general');
         });
     });
@@ -34,7 +34,7 @@ context('Attribute add', () => {
       });
       it('Create attribute', () => {
           cy.wait(500);
-          cy.get('button').contains('CREATE ATTRIBUTE').click({ force: true });
+          cy.get('button').contains('NEW ATTRIBUTE').click({ force: true });
           cy.wait('@attrRoute').its('status').should('eq', 400);
           cy.url().should('include', '/attributes/attribute/new');
       });
@@ -75,7 +75,7 @@ context('Attribute add', () => {
         it('Create attribute', () => {
             cy.server();
             cy.route('POST', '/api/v1/EN/attributes').as('attrRoute');
-            cy.get('button').contains('CREATE ATTRIBUTE').click({ force: true });
+            cy.get('button').contains('NEW ATTRIBUTE').click({ force: true });
             cy.wait('@attrRoute').its('status').should('eq', 201);
             cy.url().should('include', '/attributes/attribute/edit');
         });

@@ -8,12 +8,12 @@
             :title="title"
             :icon="icon"
             :is-read-only="$isReadOnly('CATEGORY')">
-            <template #buttons>
+            <template #mainAction>
                 <PrependIconButton
-                    title="CREATE CATEGORY"
+                    title="NEW CATEGORY"
                     :size="smallSize"
-                    :disabled="!$hasAccess('CATEGORY_CREATE')"
-                    @click.native="addNewCategory">
+                    :disabled="!$hasAccess(['CATEGORY_CREATE'])"
+                    @click.native="addCategory">
                     <template #prepend="{ color }">
                         <IconAdd
                             :fill-color="color" />
@@ -57,16 +57,15 @@ export default {
     },
     beforeCreate() {
         this.tabs = [];
-        if (this.$hasAccess('CATEGORY_READ')) {
+        if (this.$hasAccess(['CATEGORY_READ'])) {
             this.tabs.push({
                 title: 'Categories',
                 route: { name: 'categories-grid' },
-                active: true,
             });
         }
     },
     methods: {
-        addNewCategory() {
+        addCategory() {
             this.$router.push('/categories/category/new');
         },
     },

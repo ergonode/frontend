@@ -13,7 +13,7 @@
         :options="hasOptions ? Object.values(parameter.options) : []"
         :value="getConditionValue"
         :multiselect="parameter.type === 'MULTI_SELECT'"
-        :disabled="!$hasAccess('CONDITION_UPDATE')"
+        :disabled="!$hasAccess(['CONDITION_UPDATE'])"
         :error-messages="errorParamsMessage"
         @input="setConditionValueByType" />
 </template>

@@ -8,7 +8,7 @@
             <Grid
                 namespace="rolesGrid"
                 :route-edit="routeEdit"
-                :editing-privilege-allowed="$hasAccess('USER_ROLE_UPDATE')"
+                :editing-privilege-allowed="$hasAccess(['USER_ROLE_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
                 title="User roles"

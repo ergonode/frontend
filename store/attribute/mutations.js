@@ -2,6 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import defaultState from './state';
+
 export const types = {
     SET_ATTRIBUTE_ID: 'SET_ATTRIBUTE_ID',
     INITIALIZE_OPTION_KEYS: 'INITIALIZE_OPTION_KEYS',
@@ -17,6 +19,7 @@ export const types = {
     SET_ATTRIBUTE_CODE: 'SET_ATTRIBUTE_CODE',
     SET_ATTRIBUTE_PARAMETER: 'SET_ATTRIBUTE_PARAMETER',
     SET_ATTRIBUTE_GROUPS: 'SET_ATTRIBUTE_GROUPS',
+    SET_ATTRIBUTE_GROUPS_OPTIONS: 'SET_ATTRIBUTE_GROUPS_OPTIONS',
     SET_ATTRIBUTE_TYPE: 'SET_ATTRIBUTE_TYPE',
     CLEAR_STATE: 'CLEAR_STATE',
 };
@@ -71,17 +74,16 @@ export default {
     [types.SET_ATTRIBUTE_GROUPS](state, groups) {
         state.groups = groups;
     },
+    [types.SET_ATTRIBUTE_GROUPS_OPTIONS](state, groupOptions) {
+        state.groupOptions = groupOptions;
+    },
     [types.SET_ATTRIBUTE_TYPE](state, type) {
         state.type = type;
     },
     [types.CLEAR_STATE](state) {
-        state.id = null;
-        state.code = '';
-        state.groups = [];
-        state.type = '';
-        state.parameter = '';
-        state.optionKeys = [];
-        state.optionValues = [];
-        state.isMultilingual = true;
+        const states = defaultState();
+        Object.keys(states).forEach((key) => {
+            state[key] = states[key];
+        });
     },
 };
