@@ -4,8 +4,10 @@
  */
 <template>
     <div
-        :class="['header-cell',
-                 { 'draggable': isColumnEditable && !isCellEditing }
+        :class="['header-cell', {
+            'header-cell--exists': isColumnExists,
+            'header-cell--draggable': isColumnEditable && !isCellEditing,
+        }
         ]">
         <GridPresentationHeaderCell
             :title="column.header.title"
@@ -81,7 +83,6 @@ export default {
     },
     props: {
         namespace: {
-
             type: String,
             required: true,
         },
@@ -118,6 +119,7 @@ export default {
     computed: {
         ...mapState('draggable', {
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
+            draggedElement: (state) => state.draggedElement,
         }),
         smallSize() {
             return SIZES.SMALL;
@@ -130,6 +132,9 @@ export default {
         },
         gridState() {
             return this.$store.state[this.namespace];
+        },
+        isColumnExists() {
+            return this.draggedElement === this.column.id;
         },
         isCellEditing() {
             return Object.keys(this.gridState.editingCellCoordinates).length;
@@ -227,10 +232,20 @@ export default {
         justify-content: space-between;
         align-items: center;
         width: 0;
+        height: 100%;
         user-select: none;
         pointer-events: auto;
 
-        &.draggable {
+        &--exists {
+            background-color: $GREEN;
+            box-shadow: $ELEVATOR_HOLE;
+
+            span {
+                color: $WHITE;
+            }
+        }
+
+        &--draggable {
             cursor: grab;
         }
 

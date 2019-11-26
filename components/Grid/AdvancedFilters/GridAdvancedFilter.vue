@@ -8,6 +8,7 @@
             'advanced-filter',
             {
                 'advanced-filter--selected': isFocused,
+                'advanced-filter--exists': isFilterExists,
             }
         ]"
         :draggable="true"
@@ -20,7 +21,7 @@
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
             <label
-                class="advanced-filter__label font--bold-12-16"
+                class="advanced-filter__label"
                 :for="associatedLabel"
                 v-text="filterHeader.title" />
             <input
@@ -34,12 +35,12 @@
             <div class="advanced-filter__details">
                 <span
                     v-if="!filterValue"
-                    class="advanced-filter__placeholder font--medium-12-16">
+                    class="advanced-filter__placeholder">
                     Select...
                 </span>
                 <span
                     v-else
-                    class="advanced-filter__value font--medium-12-16"
+                    class="advanced-filter__value"
                     v-text="filterValue" />
                 <IconArrowDropDown :state="arrowIconState" />
             </div>
@@ -135,7 +136,11 @@ export default {
         ...mapState('draggable', {
             ghostFilterIndex: (state) => state.ghostFilterIndex,
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
+            draggedElement: (state) => state.draggedElement,
         }),
+        isFilterExists() {
+            return this.draggedElement === this.data.id;
+        },
         filterHeader() {
             return getMappedColumnHeaderTitle(this.data);
         },
@@ -428,6 +433,7 @@ export default {
             box-sizing: border-box;
             background-color: $WHITESMOKE;
             color: $GRAPHITE_DARK;
+            font: $FONT_BOLD_12_16;
         }
 
         &__details {
@@ -446,6 +452,18 @@ export default {
 
         &__value {
             color: $GRAPHITE_DARK;
+        }
+
+        &__placeholder, &__value {
+            font: $FONT_MEDIUM_12_16;
+        }
+
+        &--exists {
+            #{$filter}__label {
+                background-color: $GREEN;
+                box-shadow: $ELEVATOR_HOLE;
+                color: $WHITE;
+            }
         }
 
         &--selected {
