@@ -259,7 +259,6 @@ export default {
             'addDraftValue',
         ]),
         onFocus(isFocused) {
-            console.log(isFocused);
             if (!isFocused) {
                 this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
                 this.$el.focus();
