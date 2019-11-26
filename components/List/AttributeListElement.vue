@@ -5,16 +5,15 @@
 <template>
     <ListDraggableElement
         :draggable-id="`${item.code}:${languageCode}`"
-        :is-draggable="$hasAccess('ATTRIBUTE_UPDATE')"
+        :is-draggable="$hasAccess(['ATTRIBUTE_UPDATE'])"
         :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
+        :hint="item.label ? `#${item.code} ${languageCode}`: ''"
         @drag="onDrag">
-        <ListElementHintIcon :hint="formattedAttributeType">
+        <ListElementIcon>
             <Component :is="typeIconComponent" />
-        </ListElementHintIcon>
+        </ListElementIcon>
         <ListElementDescription>
-            <ListElementTitle
-                :title="item.label || `#${item.code}`"
-                :hint="item.label ? `#${item.code} ${languageCode}`: ''" />
+            <ListElementTitle :title="item.label || `#${item.code}`" />
             <ListElementHint :title="formattedAttributeType" />
         </ListElementDescription>
     </ListDraggableElement>
@@ -28,7 +27,7 @@ export default {
     name: 'AttributeListElement',
     components: {
         ListDraggableElement: () => import('~/components/List/ListDraggableElement'),
-        ListElementHintIcon: () => import('~/components/List/ListElementHintIcon'),
+        ListElementIcon: () => import('~/components/List/ListElementIcon'),
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
         ListElementHint: () => import('~/components/List/ListElementHint'),

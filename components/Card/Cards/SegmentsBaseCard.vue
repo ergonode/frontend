@@ -43,8 +43,8 @@ export default {
             return Boolean(this.segmentId);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess('SEGMENT_UPDATE'))
-            || (!this.isDisabled && !this.$hasAccess('SEGMENT_CREATE'));
+            return (this.isDisabled && !this.$hasAccess(['SEGMENT_UPDATE']))
+            || (!this.isDisabled && !this.$hasAccess(['SEGMENT_CREATE']));
         },
         errorCodeMessage() {
             const codeIndex = 'code';

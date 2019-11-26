@@ -24,6 +24,8 @@ export const Pages = {
     Attributes: () => import('~/pages/attributes/index').then((m) => m.default || m),
     AttributeNew: () => import('~/pages/attributes/_attribute/index').then((m) => m.default || m),
     AttributeEdit: () => import('~/pages/attributes/_attribute/_id').then((m) => m.default || m),
+    AttributeGroupNew: () => import('~/pages/attributes/_group/index').then((m) => m.default || m),
+    AttributeGroupEdit: () => import('~/pages/attributes/_group/_id').then((m) => m.default || m),
     Users: () => import('~/pages/users/index').then((m) => m.default || m),
     UserNew: () => import('~/pages/users/_user/index').then((m) => m.default || m),
     UserEdit: () => import('~/pages/users/_user/_id').then((m) => m.default || m),
@@ -42,7 +44,9 @@ export const Pages = {
 
 export const Tabs = {
     AttributeBaseTab: () => import('~/components/Card/Tabs/AttributeBaseTab').then((m) => m.default || m),
+    AttributeGroupBaseTab: () => import('~/components/Card/Tabs/AttributeGroupBaseTab').then((m) => m.default || m),
     AttributeTranslationsTab: () => import('~/components/Card/Tabs/AttributeTranslationsTab').then((m) => m.default || m),
+    AttributeGroupTranslationsTab: () => import('~/components/Card/Tabs/AttributeGroupTranslationsTab').then((m) => m.default || m),
     TemplateDesignerBaseTab: () => import('~/components/Card/Tabs/TemplateDesignerBaseTab').then((m) => m.default || m),
     TemplateDesignerTab: () => import('~/components/Card/Tabs/TemplateDesignerTab').then((m) => m.default || m),
     UserBaseTab: () => import('~/components/Card/Tabs/UserBaseTab').then((m) => m.default || m),
@@ -73,6 +77,7 @@ export const GridTabs = {
     CategoryGridTab: () => import('~/components/Card/Grid/CategoryGridTab').then((m) => m.default || m),
     CategoryTreesGridTab: () => import('~/components/Card/Grid/CategoryTreesGridTab').then((m) => m.default || m),
     AttributeGridTab: () => import('~/components/Card/Grid/AttributeGridTab').then((m) => m.default || m),
+    AttributeGroupGridTab: () => import('~/components/Card/Grid/AttributeGroupGridTab').then((m) => m.default || m),
     RolesGridTab: () => import('~/components/Card/Grid/RolesGridTab').then((m) => m.default || m),
     UsersGridTab: () => import('~/components/Card/Grid/UsersGridTab').then((m) => m.default || m),
     UserActivityLogsGridTab: () => import('~/components/Card/Grid/UserActivityLogsGridTab').then((m) => m.default || m),

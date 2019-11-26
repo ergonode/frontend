@@ -16,9 +16,4 @@ describe('TitleBar/TitleBar', () => {
         expect(typeof TitleBar.name).toBe('string');
         expect(TitleBar.name).toEqual('TitleBar');
     });
-
-    it('WHEN title props is set THEN show text', () => {
-        expect(wrapper.contains('.details__title')).toBeTruthy();
-        expect(wrapper.find('.details__title').text()).toBe('test');
-    });
 });

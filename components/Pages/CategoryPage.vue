@@ -12,12 +12,12 @@
             @navigateback="onDismiss">
             <template
                 v-if="isEdit"
-                #buttons>
+                #mainAction>
                 <PrependIconButton
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE CATEGORY"
-                    :disabled="!$hasAccess('CATEGORY_DELETE')"
+                    :disabled="!$hasAccess(['CATEGORY_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete
@@ -49,7 +49,7 @@ export default {
                 route: { name: 'categories-grid' },
             },
         ];
-        this.isUserAllowedToUpdateCategory = this.$hasAccess('CATEGORY_UPDATE');
+        this.isUserAllowedToUpdateCategory = this.$hasAccess(['CATEGORY_UPDATE']);
 
         if (this.isEdit) {
             const translationRoute = { name: 'category-edit-id-translations', params: this.$route.params };
@@ -59,9 +59,8 @@ export default {
 
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} CATEGORY`,
@@ -86,9 +85,8 @@ export default {
         } else {
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} CATEGORY`,

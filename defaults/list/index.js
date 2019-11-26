@@ -3,4 +3,4 @@
  * See LICENSE for license details.
  */
 
-export const UNASSIGNED_GROUP_ID = 'unassigned';
+export const UNASSIGNED_GROUP_ID = null;

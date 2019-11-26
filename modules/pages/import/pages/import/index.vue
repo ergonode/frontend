@@ -25,11 +25,10 @@ export default {
     },
     beforeCreate() {
         this.tabs = [];
-        if (this.$hasAccess('IMPORT_READ')) {
+        if (this.$hasAccess(['IMPORT_READ'])) {
             this.tabs.push({
                 title: 'Imports',
                 route: { name: 'imports-grid' },
-                active: true,
             });
         }
     },

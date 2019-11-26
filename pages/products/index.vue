@@ -34,9 +34,14 @@ export default {
         } = store.state.authentication;
 
         await store.dispatch('list/clearStorage');
-        await store.dispatch('list/getGroups', {
-            languageCode: userLanguageCode,
-        });
+        await Promise.all([
+            store.dispatch('list/getGroups', userLanguageCode),
+            store.dispatch('list/getElementsForGroup', {
+                listType: 'attributes',
+                groupId: null,
+                languageCode: userLanguageCode,
+            }),
+        ]);
     },
 };
 </script>

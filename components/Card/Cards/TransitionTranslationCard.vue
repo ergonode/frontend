@@ -50,7 +50,7 @@ export default {
     mixins: [errorValidationMixin, translationCardMixin],
     computed: {
         isUserAllowedToUpdate() {
-            return this.$hasAccess('WORKFLOW_UPDATE');
+            return this.$hasAccess(['WORKFLOW_UPDATE']);
         },
         errorDescriptionMessage() {
             const placeholderIndex = `description_${this.languageCode}`;

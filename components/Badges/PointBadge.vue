@@ -10,7 +10,7 @@
 
 <script>
 export default {
-    name: 'StatusBadge',
+    name: 'PointBadge',
     props: {
         color: {
             type: String,

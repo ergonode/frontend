@@ -20,9 +20,7 @@
                     :fill-color="color" />
             </slot>
         </template>
-        <Transition
-            v-if="isSelectButton"
-            name="fade">
+        <FadeTransition v-if="isSelectButton">
             <div
                 class="btn__select-content"
                 :style="contentPositionStyle">
@@ -40,7 +38,7 @@
                     </List>
                 </slot>
             </div>
-        </Transition>
+        </FadeTransition>
     </AppendIconButton>
 </template>
 <script>
@@ -57,6 +55,7 @@ export default {
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
         IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
+        FadeTransition: () => import('~/components/Transitions/FadeTransition'),
     },
     props: {
         options: {

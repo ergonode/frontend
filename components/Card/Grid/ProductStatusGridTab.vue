@@ -8,7 +8,7 @@
             <Grid
                 namespace="statusesGrid"
                 :route-edit="routeEdit"
-                :editing-privilege-allowed="$hasAccess('WORKFLOW_UPDATE')"
+                :editing-privilege-allowed="$hasAccess(['WORKFLOW_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
                 title="Product statuses"

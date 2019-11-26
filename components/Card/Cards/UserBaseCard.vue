@@ -130,7 +130,7 @@ export default {
             roleId: (state) => state.roleId,
         }),
         isUserAllowedToUpdate() {
-            return this.$hasAccess('USER_UPDATE');
+            return this.$hasAccess(['USER_UPDATE']);
         },
         parsedLanguage() {
             return getValueByKey(this.languages, this.language);
@@ -145,8 +145,8 @@ export default {
             return Boolean(this.userID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess('USER_UPDATE'))
-            || (!this.isDisabled && !this.$hasAccess('USER_CREATE'));
+            return (this.isDisabled && !this.$hasAccess(['USER_UPDATE']))
+            || (!this.isDisabled && !this.$hasAccess(['USER_CREATE']));
         },
         statusValues() {
             return Object.keys(this.activityStatuses);

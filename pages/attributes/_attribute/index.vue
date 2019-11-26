@@ -4,7 +4,7 @@
  */
 <template>
     <AttributePage
-        title="New attribute"
+        title="New Attribute"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>
@@ -13,10 +13,10 @@
 
 import { mapState, mapActions } from 'vuex';
 import {
-    getMappedType,
-    getMappedGroupIDs,
-    getMappedParameterKeys,
-    getMappedOptions,
+    getParsedType,
+    getParsedGroups,
+    getParsedParameterKeys,
+    getParsedOptions,
 } from '~/model/mappers/attributeMapper';
 
 export default {
@@ -37,37 +37,30 @@ export default {
         }),
         ...mapState('data', {
             attrTypes: (state) => state.attrTypes,
-            attrGroups: (state) => state.attrGroups,
         }),
-    },
-    created() {
-        this.clearStorage();
     },
     methods: {
         ...mapActions('attribute', [
             'createAttribute',
-            'clearStorage',
         ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
         ]),
         onDismiss() {
-            this.$router.push('/attributes');
+            this.$router.push('/attributes/grid');
         },
         onAttributeCreated(id) {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Attribute created' });
             this.$router.push({
-                name: 'attribute-edit-id',
+                name: 'attribute-edit-id-general',
                 params: {
                     id,
                 },
             });
         },
         onCreate() {
-            this.removeValidationErrors();
-
             if (this.optionKeys.length > 0 && this.optionKeys.some((key) => key === '')) {
                 this.$addAlert({ type: 'warning', message: 'Options cannot have an empty keys' });
                 return;
@@ -75,23 +68,23 @@ export default {
 
             const attribute = {
                 code: this.code,
-                type: getMappedType(
+                type: getParsedType(
                     this.attrTypes,
                     this.type,
                 ),
-                groups: getMappedGroupIDs(
-                    this.attrGroups,
-                    this.groups,
-                ),
-                options: getMappedOptions(
-                    this.optionKeys,
-                    this.optionValues,
-                ),
+                groups: getParsedGroups(this.groups),
                 multilingual: this.multilingual,
             };
 
-            if (this.parameter !== '') {
-                attribute.parameters = getMappedParameterKeys(
+            if (this.optionKeys.length > 0) {
+                attribute.options = getParsedOptions(
+                    this.optionKeys,
+                    this.optionValues,
+                );
+            }
+
+            if (this.parameter) {
+                attribute.parameters = getParsedParameterKeys(
                     this.attrTypes,
                     this.type,
                     this.parameter,
@@ -105,6 +98,12 @@ export default {
                 onError: this.onError,
             });
         },
+    },
+    async fetch({ store }) {
+        await store.dispatch('attribute/clearStorage');
+        await store.dispatch('translations/clearStorage');
+
+        await store.dispatch('attribute/getAttributeGroups');
     },
 };
 </script>

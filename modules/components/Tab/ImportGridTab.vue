@@ -8,7 +8,7 @@
             <Grid
                 namespace="importGrid"
                 :route-edit="routeEdit"
-                :editing-privilege-allowed="$hasAccess('IMPORT_UPDATE')"
+                :editing-privilege-allowed="$hasAccess(['IMPORT_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
                 title="Imports"

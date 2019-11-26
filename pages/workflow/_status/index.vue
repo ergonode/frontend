@@ -4,7 +4,7 @@
  */
 <template>
     <ProductStatusPage
-        title="New status"
+        title="New Status"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>

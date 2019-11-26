@@ -7,8 +7,8 @@
         <template #header>
             <PrependIconButton
                 v-if="!showForm"
-                title="ADD COMMENT"
-                :disabled="!$hasAccess('PRODUCT_UPDATE')"
+                title="NEW COMMENT"
+                :disabled="!$hasAccess(['PRODUCT_UPDATE'])"
                 @click.native="openForm">
                 <template #prepend="{ color }">
                     <IconAdd

@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template functional>
+<template>
     <span
         class="font--semi-bold-10-12"
-        v-text="props.label" />
+        v-text="label" />
 </template>
 
 <script>

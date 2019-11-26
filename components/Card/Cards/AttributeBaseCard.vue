@@ -14,14 +14,14 @@
             label="Code"
             hint="Attribute code must be unique"
             @input="setAttributeCode" />
-        <Select
+        <TranslationSelect
             :value="groups"
-            solid
-            :options="attrGroupValues"
-            label="Group"
-            regular
-            multiselect
-            clearable
+            :solid="true"
+            :options="groupOptions"
+            label="Groups"
+            :regular="true"
+            :multiselect="true"
+            :clearable="true"
             :disabled="isDisabledByPrivileges"
             :error-messages="errorGroupsMessage"
             @input="setAttributeGroups" />
@@ -78,6 +78,7 @@ export default {
         MultilingualToggler: () => import('~/components/Inputs/Toggler/MultilingualToggler'),
         TextField: () => import('~/components/Inputs/TextField'),
         Select: () => import('~/components/Inputs/Select/Select'),
+        TranslationSelect: () => import('~/components/Inputs/Select/TranslationSelect'),
         Divider: () => import('~/components/Dividers/Divider'),
     },
     mixins: [errorValidationMixin],
@@ -91,12 +92,12 @@ export default {
             attrID: (state) => state.id,
             code: (state) => state.code,
             groups: (state) => state.groups,
+            groupOptions: (state) => state.groupOptions,
             type: (state) => state.type,
             parameter: (state) => state.parameter,
             isMultilingual: (state) => state.isMultilingual,
         }),
         ...mapState('data', {
-            attrGroups: (state) => state.attrGroups,
             attrTypes: (state) => state.attrTypes,
         }),
         paramsLabel() {
@@ -111,8 +112,8 @@ export default {
             return Boolean(this.attrID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess('ATTRIBUTE_UPDATE'))
-            || (!this.isDisabled && !this.$hasAccess('ATTRIBUTE_CREATE'));
+            return (this.isDisabled && !this.$hasAccess(['ATTRIBUTE_UPDATE']))
+            || (!this.isDisabled && !this.$hasAccess(['ATTRIBUTE_CREATE']));
         },
         currentTypeKey() {
             return getKeyByValue(this.attrTypes, this.type);
@@ -134,9 +135,6 @@ export default {
         },
         attrTypeValues() {
             return Object.values(this.attrTypes);
-        },
-        attrGroupValues() {
-            return this.attrGroups.filter((group) => group.id !== null).map((group) => group.label);
         },
         attrParamValues() {
             return Array.isArray(this.params)

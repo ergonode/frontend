@@ -59,8 +59,8 @@ export default {
             isDefaultStatus: (state) => state.isDefaultStatus,
         }),
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess('WORKFLOW_UPDATE'))
-            || (!this.isDisabled && !this.$hasAccess('WORKFLOW_CREATE'));
+            return (this.isDisabled && !this.$hasAccess(['WORKFLOW_UPDATE']))
+            || (!this.isDisabled && !this.$hasAccess(['WORKFLOW_CREATE']));
         },
         isDisabled() {
             return Boolean(this.id);

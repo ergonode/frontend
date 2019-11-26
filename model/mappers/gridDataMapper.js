@@ -119,7 +119,7 @@ export function getMappedCellValues(columns, rows, rowIds) {
             } else if (typeof value === 'boolean' && column.type !== COLUMN_TYPE.CHECK_CELL) {
                 values[rowId][columnId] = { value: value ? 'Yes' : 'No' };
             } else {
-                values[rowId][columnId] = { value: value || '' };
+                values[rowId][columnId] = { value: value !== null && typeof value !== 'undefined' ? value : '' };
             }
         }
     }
@@ -200,32 +200,4 @@ export function getMappedAdvancedFilters(filters) {
     });
 
     return mappedFilter.join(';');
-}
-
-export function getMappedElementsToGroups(elements) {
-    const { length } = elements;
-    const groupedElements = {};
-    const unassignedElements = [];
-
-    for (let i = 0; i < length; i += 1) {
-        const element = elements[i];
-        const { groups } = element;
-        const { length: groupsNumber } = groups;
-
-        if (groupsNumber) {
-            for (let j = 0; j < groupsNumber; j += 1) {
-                const group = groups[j];
-
-                if (groupedElements[group]) {
-                    groupedElements[group].push(element);
-                } else {
-                    groupedElements[group] = [];
-                }
-            }
-        } else {
-            unassignedElements.push(element);
-        }
-    }
-
-    return { unassignedElements, groupedElements };
 }

@@ -4,19 +4,14 @@
  */
 <template>
     <div class="grid-list">
-        <Transition
-            name="fade"
-            mode="out-in">
+        <FadeTransition>
             <slot name="header" />
-        </Transition>
-        <Transition
-            v-if="isPlaceholder"
-            name="fade"
-            mode="out-in">
+        </FadeTransition>
+        <FadeTransition v-if="isPlaceholder">
             <List>
                 <slot name="content" />
             </List>
-        </Transition>
+        </FadeTransition>
         <div
             v-else
             class="grid-list__placeholder">
@@ -33,6 +28,7 @@ export default {
     name: 'CommentList',
     components: {
         List: () => import('~/components/List/List'),
+        FadeTransition: () => import('~/components/Transitions/FadeTransition'),
     },
     props: {
         isPlaceholder: {
@@ -56,14 +52,6 @@ export default {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-        }
-
-        .fade-enter-active, .fade-leave-active {
-            transition: opacity 0.3s;
-        }
-
-        .fade-enter, .fade-leave-to {
-            opacity: 0;
         }
     }
 </style>

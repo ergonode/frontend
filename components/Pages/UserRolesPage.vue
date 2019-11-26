@@ -12,12 +12,12 @@
             @navigateback="onDismiss">
             <template
                 v-if="isEdit"
-                #buttons>
+                #mainAction>
                 <PrependIconButton
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE ROLE"
-                    :disabled="!$hasAccess('USER_ROLE_DELETE')"
+                    :disabled="!$hasAccess(['USER_ROLE_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete
@@ -49,7 +49,7 @@ export default {
                 route: { name: 'users-roles' },
             },
         ];
-        this.isUserAllowedToUpdateRole = this.$hasAccess('USER_ROLE_UPDATE');
+        this.isUserAllowedToUpdateRole = this.$hasAccess(['USER_ROLE_UPDATE']);
 
         if (this.isEdit) {
             const privilegesRoute = { name: 'users-role-edit-id-privileges', params: this.$route.params };
@@ -59,9 +59,8 @@ export default {
 
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} ROLE`,
@@ -86,9 +85,8 @@ export default {
         } else {
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} ROLE`,

@@ -250,6 +250,16 @@ export const pages = [
                 component: GridTabs.AttributeGridTab,
                 meta: {
                     privileges: ['ATTRIBUTE_READ'],
+                    title: 'Attributes',
+                },
+            },
+            {
+                name: 'attributes-group-grid',
+                path: 'groups',
+                component: GridTabs.AttributeGroupGridTab,
+                meta: {
+                    privileges: ['ATTRIBUTE_READ'],
+                    title: 'Attribute Groups',
                 },
             },
         ],
@@ -302,6 +312,41 @@ export const pages = [
         },
     },
     {
+        name: 'attribute-group-new',
+        path: '/attributes/group/new',
+        component: Pages.AttributeGroupNew,
+        children: [
+            {
+                name: 'attribute-group-new-general',
+                path: 'general',
+                component: Tabs.AttributeGroupBaseTab,
+            },
+        ],
+        meta: {
+            privileges: ['ATTRIBUTE_READ'],
+        },
+    },
+    {
+        name: 'attribute-group-edit-id',
+        path: '/attributes/group/edit/:id',
+        component: Pages.AttributeGroupEdit,
+        children: [
+            {
+                name: 'attribute-group-edit-id-general',
+                path: 'general',
+                component: Tabs.AttributeGroupBaseTab,
+            },
+            {
+                name: 'attribute-group-edit-id-translations',
+                path: 'translations',
+                component: Tabs.AttributeGroupTranslationsTab,
+            },
+        ],
+        meta: {
+            privileges: ['ATTRIBUTE_READ'],
+        },
+    },
+    {
         name: 'users',
         path: '/users',
         component: Pages.Users,
@@ -311,7 +356,9 @@ export const pages = [
                 path: 'grid',
                 component: GridTabs.UsersGridTab,
                 meta: {
+                    title: 'Users',
                     privileges: ['USER_READ'],
+                    isReadOnly: 'USER',
                 },
             },
             {
@@ -319,13 +366,20 @@ export const pages = [
                 path: 'roles',
                 component: GridTabs.RolesGridTab,
                 meta: {
+                    title: 'Roles',
                     privileges: ['USER_ROLE_READ'],
+                    isReadOnly: 'USER_ROLE',
                 },
             },
             {
                 name: 'users-activity-logs',
                 path: 'logs',
                 component: GridTabs.UsersActivityLogsGridTab,
+                meta: {
+                    title: 'Activity logs',
+                    privileges: [],
+                    isReadOnly: 'USER',
+                },
             },
         ],
         meta: {
