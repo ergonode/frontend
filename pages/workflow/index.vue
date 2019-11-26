@@ -10,7 +10,7 @@
             :is-read-only="$isReadOnly(titleBarData.isReadOnly)">
             <template
                 v-if="titleBarData.button"
-                #buttons>
+                #mainAction>
                 <PrependIconButton
                     :title="titleBarData.button.title"
                     :size="smallSize"
@@ -45,16 +45,14 @@ export default {
     },
     beforeCreate() {
         this.tabs = [];
-        if (this.$hasAccess('WORKFLOW_READ')) {
+        if (this.$hasAccess(['WORKFLOW_READ'])) {
             this.tabs.push({
                 title: 'Product statuses',
                 route: { name: 'workflow-statuses' },
-                active: true,
             });
             this.tabs.push({
                 title: 'Transitions',
                 route: { name: 'workflow-transitions' },
-                active: true,
             });
         }
     },
@@ -67,8 +65,8 @@ export default {
             case /statuses/.test(this.$route.path):
                 return {
                     button: {
-                        title: 'CREATE STATUS',
-                        access: 'WORKFLOW_CREATE',
+                        title: 'NEW STATUS',
+                        access: ['WORKFLOW_CREATE'],
                         path: '/workflow/status/new',
                     },
                     isReadOnly: 'WORKFLOW',
@@ -76,8 +74,8 @@ export default {
             case /transitions/.test(this.$route.path):
                 return {
                     button: {
-                        title: 'CREATE TRANSITIONS',
-                        access: 'WORKFLOW_CREATE',
+                        title: 'NEW TRANSITIONS',
+                        access: ['WORKFLOW_CREATE'],
                         path: '/workflow/transition/new',
                     },
                     isReadOnly: 'WORKFLOW',

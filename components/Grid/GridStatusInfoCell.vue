@@ -4,7 +4,7 @@
  */
 <template>
     <div class="status-presentation-cell">
-        <StatusBadge
+        <PointBadge
             v-if="colors[cellData.key]"
             :color="colors[cellData.key]" />
         <GridPresentationCell :value="cellData.value" />
@@ -12,13 +12,13 @@
 </template>
 
 <script>
-import StatusBadge from '~/components/Badges/StatusBadge';
+import PointBadge from '~/components/Badges/PointBadge';
 import GridPresentationCell from '~/components/Grid/PresentationCells/GridPresentationCell';
 
 export default {
     name: 'GridStatusInfoCell',
     components: {
-        StatusBadge,
+        PointBadge,
         GridPresentationCell,
     },
     props: {

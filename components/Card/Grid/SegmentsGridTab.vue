@@ -8,7 +8,7 @@
             <Grid
                 namespace="segmentsGrid"
                 :route-edit="routeEdit"
-                :editing-privilege-allowed="$hasAccess('SEGMENT_UPDATE')"
+                :editing-privilege-allowed="$hasAccess(['SEGMENT_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
                 title="Segments"

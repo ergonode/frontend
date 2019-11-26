@@ -6,7 +6,7 @@
     <TemplateGridWrapper
         :columns="columns"
         :row-height="rowHeight"
-        :is-dragging-enabled="$hasAccess('CATEGORY_TREE_UPDATE')">
+        :is-dragging-enabled="$hasAccess(['CATEGORY_TREE_UPDATE'])">
         <template #gridHeader>
             <TemplateGridHeader
                 :style="gridStyles"

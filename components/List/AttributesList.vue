@@ -4,15 +4,15 @@
  */
 <template>
     <List>
-        <div class="group-wrapper">
+        <ListScrollableContainer>
             <AttributeListGroup
                 v-for="(group, index) in groups[languageCode]"
                 :key="index"
                 :group="group"
                 :language-code="languageCode"
-                :is-expanded="expendedGroupId === group.id"
-                @expandedGroup="setExpandedGroupID" />
-        </div>
+                :is-expanded="expendedGroup === group.key"
+                @expandGroup="setExpandedGroup" />
+        </ListScrollableContainer>
     </List>
 </template>
 
@@ -23,6 +23,7 @@ export default {
     name: 'AttributesList',
     components: {
         List: () => import('~/components/List/List'),
+        ListScrollableContainer: () => import('~/components/List/ListScrollableContainer'),
         AttributeListGroup: () => import('~/components/List/AttributeListGroup'),
     },
     props: {
@@ -33,12 +34,15 @@ export default {
     },
     data() {
         return {
-            expendedGroupId: '',
+            expendedGroup: '',
         };
+    },
+    created() {
+        this.setDefaultExpandedGroup();
     },
     watch: {
         languageCode() {
-            this.expendedGroupId = '';
+            this.expendedGroup = '';
         },
     },
     computed: {
@@ -47,15 +51,16 @@ export default {
         }),
     },
     methods: {
-        setExpandedGroupID(id) {
-            this.expendedGroupId = id;
+        setExpandedGroup(key) {
+            this.expendedGroup = key;
+        },
+        setDefaultExpandedGroup() {
+            const { length } = this.groups[this.languageCode];
+
+            if (length) {
+                this.expendedGroup = this.groups[this.languageCode][length - 1].key;
+            }
         },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .group-wrapper {
-        height: 0;
-    }
-</style>

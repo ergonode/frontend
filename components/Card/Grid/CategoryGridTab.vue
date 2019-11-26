@@ -8,7 +8,7 @@
             <Grid
                 namespace="categoryGrid"
                 :route-edit="routeEdit"
-                :editing-privilege-allowed="$hasAccess('CATEGORY_UPDATE')"
+                :editing-privilege-allowed="$hasAccess(['CATEGORY_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
                 title="Categories"

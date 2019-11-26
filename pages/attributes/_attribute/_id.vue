@@ -14,14 +14,14 @@
 <script>
 
 import { mapState, mapActions } from 'vuex';
-import { getMappedGroupIDs, getMappedOptions, getMappedParameterKeys } from '~/model/mappers/attributeMapper';
+import { getParsedGroups, getParsedOptions, getParsedParameterKeys } from '~/model/mappers/attributeMapper';
 import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 
 export default {
     validate({ params }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
-    name: 'NewAttribute',
+    name: 'EditAttribute',
     middleware: ['tab/redirectToAttributeGeneral'],
     components: {
         AttributePage: () => import('~/components/Pages/AttributePage'),
@@ -38,27 +38,34 @@ export default {
             isMultilingual: (state) => state.isMultilingual,
         }),
         ...mapState('data', {
-            attrGroups: (state) => state.attrGroups,
             attrTypes: (state) => state.attrTypes,
         }),
         ...mapState('translations', {
             translations: (state) => state.translations,
         }),
     },
+    destroyed() {
+        this.clearStorage();
+        this.clearTranslationsStorage();
+        this.removeValidationErrors();
+    },
     methods: {
         ...mapActions('attribute', [
             'updateAttribute',
             'removeAttribute',
+            'clearStorage',
         ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
         ]),
+        ...mapActions('translations', {
+            clearTranslationsStorage: 'clearStorage',
+        }),
         onDismiss() {
             this.$router.push('/attributes/grid');
         },
         onUpdateAttributeSuccess() {
-            this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Attribute updated' });
             this.$router.push('/attributes/grid');
         },
@@ -84,23 +91,19 @@ export default {
 
             const { label, placeholder, hint } = this.translations;
             const propertiesToUpdate = {
-                groups: getMappedGroupIDs(
-                    this.attrGroups,
-                    this.groups,
-                ),
+                groups: getParsedGroups(this.groups),
             };
 
             if (this.optionKeys.length > 0) {
-                propertiesToUpdate.options = getMappedOptions(
+                propertiesToUpdate.options = getParsedOptions(
                     this.optionKeys,
                     this.optionValues,
                     this.isMultilingual,
                 );
             }
 
-            // Parameters exist
             if (this.parameter) {
-                propertiesToUpdate.parameters = getMappedParameterKeys(
+                propertiesToUpdate.parameters = getParsedParameterKeys(
                     this.attrTypes,
                     this.type,
                     this.parameter,
@@ -129,10 +132,7 @@ export default {
         },
     },
     async fetch({ store, params }) {
-        await Promise.all([
-            store.dispatch('translations/clearStorage'),
-            store.dispatch('attribute/clearStorage'),
-        ]);
+        await store.dispatch('attribute/getAttributeGroups');
         await store.dispatch('attribute/getAttributeById', {
             attributeId: params.id,
         });

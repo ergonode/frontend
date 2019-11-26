@@ -14,7 +14,7 @@
                 v-for="(element, index) in layoutElements"
                 :key="index"
                 :style="getItemPosition(element)"
-                :value="getElementValueByCode(element.code, element.type)"
+                :value="getElementValueByCode(element.code)"
                 :multiselect="element.type === 'MULTI_SELECT'"
                 :disabled="!isUserAllowedToUpdate"
                 v-bind="element" />
@@ -69,7 +69,7 @@ export default {
             return maxVisibleRows;
         },
         isUserAllowedToUpdate() {
-            return this.$hasAccess('PRODUCT_UPDATE');
+            return this.$hasAccess(['PRODUCT_UPDATE']);
         },
         gridStyle() {
             return {
@@ -108,14 +108,11 @@ export default {
                 return null;
             }
         },
-        getElementValueByCode(code, type) {
+        getElementValueByCode(code) {
             if (!this.draft.attributes[code]) return '';
 
-            if (type === 'SELECT' || type === 'MULTI_SELECT') {
-                return this.draft.attributes[code].value;
-            }
-
-            return this.draft.attributes[code].value[this.languageCode] || '';
+            return this.draft.attributes[code].value[this.languageCode]
+                || this.draft.attributes[code].value;
         },
     },
 };

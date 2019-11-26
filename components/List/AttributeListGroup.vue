@@ -4,9 +4,10 @@
  */
 <template>
     <ListGroupElement
-        :index="group.id"
-        :title="group.label"
-        :subtitle="groupSubtitle"
+        :index="group.key"
+        :title="group.value"
+        :subtitle="elementsCount"
+        :hint="group.value ? `${group.key} ${languageCode}` : ''"
         :is-expanded="isExpanded"
         @group="getElementsForGroupWrapper">
         <template #item>
@@ -46,8 +47,8 @@ export default {
     computed: {
         ...mapState('list', {
             groups: (state) => state.groups,
+            groupsElementsCount: (state) => state.groupsElementsCount,
             elements: (state) => state.elements,
-            groupElementsCount: (state) => state.groupElementsCount,
         }),
         elementsByGroupInLanguage() {
             if (!this.elements[this.languageCode]
@@ -58,8 +59,8 @@ export default {
                     || element.groups.some((group) => group === this.group.id),
             );
         },
-        groupSubtitle() {
-            return `${this.groupElementsCount[this.group.id]} Attributes`;
+        elementsCount() {
+            return `${this.groupsElementsCount[this.group.id] || 0} Attributes`;
         },
     },
     methods: {
@@ -71,12 +72,11 @@ export default {
                 this.getElementsForGroup({
                     listType: 'attributes',
                     groupId: this.group.id,
-                    elementsCount: this.group.elementsCount,
                     languageCode: this.languageCode,
                 });
             }
 
-            this.$emit('expandedGroup', id);
+            this.$emit('expandGroup', id);
         },
     },
 };

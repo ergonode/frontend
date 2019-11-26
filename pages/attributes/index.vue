@@ -8,26 +8,42 @@
             title="Attributes"
             icon="Attributes"
             :is-read-only="$isReadOnly('ATTRIBUTE')">
-            <template #buttons>
+            <template #mainAction>
                 <PrependIconButton
-                    title="CREATE ATTRIBUTE"
+                    title="NEW ATTRIBUTE"
                     :size="smallSize"
-                    :disabled="!$hasAccess('ATTRIBUTE_CREATE')"
-                    @click.native="addNewAttribute">
+                    :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
+                    @click.native="addAttribute">
                     <template #prepend="{ color }">
                         <IconAdd
                             :fill-color="color" />
                     </template>
                 </PrependIconButton>
             </template>
+            <template
+                v-if="isAttributeGroupsTab"
+                #subActions>
+                <TitleBarSubActions>
+                    <PrependIconButton
+                        title="NEW GROUP"
+                        :size="smallSize"
+                        :theme="secondaryTheme"
+                        :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
+                        @click.native="addAttributeGroup">
+                        <template #prepend="{ color }">
+                            <IconAdd :fill-color="color" />
+                        </template>
+                    </PrependIconButton>
+                </TitleBarSubActions>
+            </template>
         </TitleBar>
-        <HorizontalTabBar
-            :items="tabs" />
+        <HorizontalTabBar :items="tabs" />
     </BasePage>
 </template>
 
 <script>
-import { SIZES } from '~/defaults/buttons';
+import { THEMES, SIZES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import PrependIconButton from '~/components/Buttons/PrependIconButton';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 
@@ -37,32 +53,32 @@ export default {
     components: {
         HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
         TitleBar: () => import('~/components/TitleBar/TitleBar'),
+        TitleBarSubActions: () => import('~/components/TitleBar/TitleBarSubActions'),
         BasePage: () => import('~/components/Layout/BasePage'),
         PrependIconButton,
         IconAdd,
     },
-    beforeCreate() {
-        this.tabs = [];
-        if (this.$hasAccess('ATTRIBUTE_READ')) {
-            this.tabs.push({
-                title: 'Attributes',
-                route: { name: 'attributes-grid' },
-                active: true,
-            });
-        }
-    },
     computed: {
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
         smallSize() {
             return SIZES.SMALL;
         },
-    },
-    methods: {
-        addNewAttribute() {
-            this.$router.push('/attributes/attribute/new/general');
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
+        isAttributeGroupsTab() {
+            return /group/.test(this.$route.path);
         },
     },
-    beforeDestroy() {
-        delete this.tabs;
+    methods: {
+        addAttribute() {
+            this.$router.push('/attributes/attribute/new/general');
+        },
+        addAttributeGroup() {
+            this.$router.push('/attributes/group/new/general');
+        },
     },
 };
 </script>

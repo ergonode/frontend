@@ -73,8 +73,8 @@ export default {
             return Boolean(this.productID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess('PRODUCT_UPDATE'))
-            || (!this.isDisabled && !this.$hasAccess('PRODUCT_CREATE'));
+            return (this.isDisabled && !this.$hasAccess(['PRODUCT_UPDATE']))
+            || (!this.isDisabled && !this.$hasAccess(['PRODUCT_CREATE']));
         },
         errorSkuMessage() {
             const skuIndex = 'sku';

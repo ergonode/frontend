@@ -4,7 +4,7 @@
  */
 <template>
     <ListDraggableElement
-        :is-draggable="$hasAccess('SEGMENT_UPDATE')"
+        :is-draggable="$hasAccess(['SEGMENT_UPDATE'])"
         :draggable-id="item.id"
         @drag="onDrag">
         <ListElementDescription>

@@ -8,7 +8,7 @@
             <Grid
                 namespace="usersGrid"
                 :route-edit="routeEdit"
-                :editing-privilege-allowed="$hasAccess('USER_UPDATE')"
+                :editing-privilege-allowed="$hasAccess(['USER_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
                 title="Users"

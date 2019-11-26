@@ -12,7 +12,7 @@
             @navigateback="onDismiss">
             <!-- <template
                 v-if="isEdit"
-                #buttons>
+                #mainAction>
                 <PrependIconButton
                     :theme="secondaryTheme"
                     :size="smallSize"
@@ -49,7 +49,7 @@ export default {
                 route: { name: 'users-grid' },
             },
         ];
-        this.isUserAllowedToUpdateUser = this.$hasAccess('USER_UPDATE');
+        this.isUserAllowedToUpdateUser = this.$hasAccess(['USER_UPDATE']);
 
         if (this.isEdit) {
             const avatarRoute = { name: 'user-edit-id-avatar', params: this.$route.params };
@@ -59,9 +59,8 @@ export default {
 
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} USER`,
@@ -86,9 +85,8 @@ export default {
         } else {
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} USER`,

@@ -20,12 +20,12 @@
             <div
                 v-if="value && value.key"
                 class="selected-badge">
-                <StatusBadge :color="getColor(value.key)" />
+                <PointBadge :color="getColor(value.key)" />
             </div>
         </template>
         <template #option="{ option }">
             <ListElementAction>
-                <StatusBadge :color="getColor(option.key)" />
+                <PointBadge :color="getColor(option.key)" />
             </ListElementAction>
             <ListElementDescription>
                 <ListElementTitle
@@ -46,7 +46,7 @@ export default {
         ListElementDescription: () => import('~/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
         ListElementAction: () => import('~/components/List/ListElementAction'),
-        StatusBadge: () => import('~/components/Badges/StatusBadge'),
+        PointBadge: () => import('~/components/Badges/PointBadge'),
     },
     props: {
         value: {

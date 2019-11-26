@@ -9,20 +9,20 @@ export const GRID_ITEMS = [
         actionTitle: 'Create categories',
         icon: 'add_category.svg',
         action: '/categories',
-        privileges: 'CATEGORY_READ',
+        privileges: ['CATEGORY_READ'],
     },
     {
         title: 'Template designer',
         actionTitle: 'Create template',
         icon: 'add_template.svg',
         action: '/templates',
-        privileges: 'TEMPLATE_DESIGNER_READ',
+        privileges: ['TEMPLATE_DESIGNER_READ'],
     },
     {
         title: 'Product',
         actionTitle: 'Create product',
         icon: 'add_template.svg',
         action: '/products',
-        privileges: 'PRODUCT_READ',
+        privileges: ['PRODUCT_READ'],
     },
 ];

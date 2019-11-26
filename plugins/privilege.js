@@ -10,13 +10,13 @@ export default ({ app }, inject) => {
         DELETE: `${prefix}_DELETE`,
     });
     const hasAccess = (privileges) => {
-        const privilegesArray = Array.isArray(privileges) ? privileges : [privileges];
         const { user } = app.store.state.authentication;
-        return user && privilegesArray.every((privilege) => user.privileges.includes(privilege));
+
+        return user && privileges.every((privilege) => user.privileges.includes(privilege));
     };
     const isReadOnly = (prefix) => {
         const types = privilegesTypes(prefix);
-        return hasAccess(types.READ)
+        return hasAccess([types.READ])
           && !hasAccess([types.UPDATE, types.CREATE, types.DELETE]);
     };
 

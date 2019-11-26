@@ -4,7 +4,7 @@
  */
 <template>
     <CategoryPage
-        :title="title"
+        title="New Category"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>
@@ -18,9 +18,6 @@ export default {
     components: {
         CategoryPage: () => import('~/components/Pages/CategoryPage'),
     },
-    data: () => ({
-        title: 'New Category',
-    }),
     computed: {
         ...mapState('categories', {
             code: (state) => state.code,

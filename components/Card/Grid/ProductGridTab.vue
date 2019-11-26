@@ -69,10 +69,9 @@ export default {
                     title: 'Attributes',
                     component: () => import('~/components/Card/Lists/AttributesListTab'),
                     props: {
-                        disabled: !this.$hasAccess('PRODUCT_READ'),
+                        disabled: !this.$hasAccess(['PRODUCT_READ']),
                     },
                     iconPath: 'Menu/IconAttributes',
-                    active: true,
                 },
             ],
         };
@@ -116,7 +115,7 @@ export default {
             return draggedElIndex !== -1;
         },
         isUserAllowedToUpdate() {
-            return this.$hasAccess('PRODUCT_UPDATE');
+            return this.$hasAccess(['PRODUCT_UPDATE']);
         },
         routeEdit() {
             return {

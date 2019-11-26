@@ -3,14 +3,14 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import StatusBadge from '~/components/Badges/StatusBadge.vue';
+import PointBadge from '~/components/Badges/PointBadge.vue';
 import { WHITE, GRAPHITE_DARK } from '~/assets/scss/_variables/_colors.scss';
 
 
-describe('Badges/StatusBadge', () => {
+describe('Badges/PointBadge', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(StatusBadge, {
+        wrapper = shallowMount(PointBadge, {
             propsData: {
                 color: '#000000',
             }
@@ -18,8 +18,8 @@ describe('Badges/StatusBadge', () => {
     });
 
     it('Component is named well', () => {
-        expect(typeof StatusBadge.name).toBe('string');
-        expect(StatusBadge.name).toEqual('StatusBadge');
+        expect(typeof PointBadge.name).toBe('string');
+        expect(PointBadge.name).toEqual('PointBadge');
     });
 
 

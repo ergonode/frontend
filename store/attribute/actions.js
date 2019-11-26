@@ -3,12 +3,9 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { getMappedGroupLabels, getMappedOptionKeysValues, getMappedParameterValues } from '~/model/mappers/attributeMapper';
+import { getMappedGroups, getMappedOptionKeysValues, getMappedParameterValues } from '~/model/mappers/attributeMapper';
 
 export default {
-    setAttributeID({ commit }, id) {
-        commit(types.SET_ATTRIBUTE_ID, id);
-    },
     addAttributeOptionKey({ commit }, key) {
         commit(types.ADD_ATTRIBUTE_OPTION_KEY, key);
     },
@@ -46,6 +43,9 @@ export default {
             commit(types.SET_OPTION_VALUE, { index, value });
         }
     },
+    setAttributeID({ commit }, id) {
+        commit(types.SET_ATTRIBUTE_ID, id);
+    },
     setAttributeCode({ commit }, code) {
         commit(types.SET_ATTRIBUTE_CODE, code);
     },
@@ -58,8 +58,23 @@ export default {
     setAttributeType({ commit }, type) {
         commit(types.SET_ATTRIBUTE_TYPE, type);
     },
+    setMultilingualAttribute({ commit }, isMultilingual) {
+        commit(types.SET_MULTILINGUAL_ATTRIBUTE, isMultilingual);
+    },
+    getAttributeGroups({ commit, rootState }) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+
+        return this.app.$axios.$get(`${userLanguageCode}/attributes/groups`).then(({ collection }) => {
+            commit(types.SET_ATTRIBUTE_GROUPS_OPTIONS, collection.map((group) => ({
+                key: group.id,
+                value: group.name || `#${group.code}`,
+            })));
+        });
+    },
     getAttributeById(
-        { dispatch, commit, rootState },
+        {
+            dispatch, commit, state, rootState,
+        },
         { attributeId, onError = () => {} },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
@@ -86,9 +101,9 @@ export default {
             commit(types.SET_ATTRIBUTE_CODE, code);
             commit(types.SET_ATTRIBUTE_TYPE, rootState.data.attrTypes[type]);
             commit(types.SET_MULTILINGUAL_ATTRIBUTE, multilingual);
-            commit(types.SET_ATTRIBUTE_GROUPS, getMappedGroupLabels(
-                rootState.data.attrGroups,
+            commit(types.SET_ATTRIBUTE_GROUPS, getMappedGroups(
                 groups,
+                state.groupOptions,
             ));
 
             dispatch('translations/setTabTranslations', translations, { root: true });
@@ -109,9 +124,6 @@ export default {
                 commit(types.INITIALIZE_OPTION_VALUES, optionValues);
             }
         }).catch((e) => onError(e.data));
-    },
-    setMultilingualAttribute({ commit }, isMultilingual) {
-        commit(types.SET_MULTILINGUAL_ATTRIBUTE, isMultilingual);
     },
     async createAttribute(
         { commit, rootState },

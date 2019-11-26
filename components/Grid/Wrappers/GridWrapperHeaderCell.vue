@@ -56,7 +56,7 @@ export default {
         headerComponent() {
             const { type } = this.column.header;
 
-            if (type === GRID_HEADER_TYPE.PLAIN) return () => import('~/components/Grid/HeaderCells/GridBaseHeaderCell');
+            if (type === GRID_HEADER_TYPE.PLAIN) return () => import('~/components/Grid/HeaderCells/GridPresentationHeaderCell');
 
             return () => import('~/components/Grid/HeaderCells/GridInteractiveHeaderCell');
         },

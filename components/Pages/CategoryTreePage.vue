@@ -12,12 +12,12 @@
             @navigateback="onDismiss">
             <template
                 v-if="isEdit"
-                #buttons>
+                #mainAction>
                 <PrependIconButton
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE CATEGORY TREE"
-                    :disabled="!$hasAccess('CATEGORY_TREE_DELETE')"
+                    :disabled="!$hasAccess(['CATEGORY_TREE_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete
@@ -58,7 +58,7 @@ export default {
                 route: { name: 'category-trees-grid' },
             },
         ];
-        this.isUserAllowedToUpdateCategoryTree = this.$hasAccess('CATEGORY_TREE_UPDATE');
+        this.isUserAllowedToUpdateCategoryTree = this.$hasAccess(['CATEGORY_TREE_UPDATE']);
         if (this.isEdit) {
             const translationRoute = { name: 'category-tree-edit-id-translations', params: this.$route.params };
             const designerRoute = { name: 'category-tree-edit-id-designer', params: this.$route.params };
@@ -69,9 +69,8 @@ export default {
 
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} TREE`,
@@ -108,9 +107,8 @@ export default {
         } else {
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} TREE`,

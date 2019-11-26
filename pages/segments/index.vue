@@ -10,7 +10,7 @@
             :is-read-only="$isReadOnly(titleBarData.isReadOnly)">
             <template
                 v-if="titleBarData.button"
-                #buttons>
+                #mainAction>
                 <PrependIconButton
                     :title="titleBarData.button.title"
                     :size="smallSize"
@@ -45,11 +45,10 @@ export default {
     },
     beforeCreate() {
         this.tabs = [];
-        if (this.$hasAccess('SEGMENT_READ')) {
+        if (this.$hasAccess(['SEGMENT_READ'])) {
             this.tabs.push({
                 title: 'Segments',
                 route: { name: 'segments-grid' },
-                active: true,
             });
         }
     },
@@ -62,8 +61,8 @@ export default {
             case /grid/.test(this.$route.path):
                 return {
                     button: {
-                        title: 'CREATE SEGMENT',
-                        access: 'SEGMENT_CREATE',
+                        title: 'NEW SEGMENT',
+                        access: ['SEGMENT_CREATE'],
                         path: '/segments/segment/new',
                     },
                     isReadOnly: 'SEGMENT',
