@@ -90,7 +90,6 @@ export default {
         grid-gap: 8px;
 
         &__badge {
-            border-radius: 7px;
             display: flex;
             justify-content: center;
             align-items: center;
