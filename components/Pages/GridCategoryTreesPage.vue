@@ -8,12 +8,12 @@
             :title="title"
             :icon="icon"
             :is-read-only="$isReadOnly('CATEGORY_TREE')">
-            <template #buttons>
+            <template #mainAction>
                 <PrependIconButton
-                    title="CREATE TREE"
+                    title="NEW TREE"
                     :size="smallSize"
-                    :disabled="!$hasAccess('CATEGORY_TREE_CREATE')"
-                    @click.native="addNewTree">
+                    :disabled="!$hasAccess(['CATEGORY_TREE_CREATE'])"
+                    @click.native="addTree">
                     <template #prepend="{ color }">
                         <IconAdd
                             :fill-color="color" />
@@ -57,16 +57,15 @@ export default {
     },
     beforeCreate() {
         this.tabs = [];
-        if (this.$hasAccess('CATEGORY_TREE_READ')) {
+        if (this.$hasAccess(['CATEGORY_TREE_READ'])) {
             this.tabs.push({
                 title: 'Category trees',
                 route: { name: 'category-trees-grid' },
-                active: true,
             });
         }
     },
     methods: {
-        addNewTree() {
+        addTree() {
             this.$router.push('/category-trees/tree/new');
         },
     },

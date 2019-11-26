@@ -4,13 +4,14 @@
  */
 import { getKeyByValue, getKeysByValues, getValuesByKeys } from '~/model/objectWrapper';
 import { getParamsKeyForType, getParamsOptionsForType } from '~/model/attributes/AttributeTypes';
+import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
 
-export function getMappedType(types, selectedType) {
+export function getParsedType(types, selectedType) {
     return getKeyByValue(types, selectedType);
 }
 
 export function getMappedParameterKey(types, selectedType) {
-    const typeKey = getMappedType(types, selectedType);
+    const typeKey = getParsedType(types, selectedType);
     return getParamsKeyForType(typeKey);
 }
 
@@ -28,13 +29,13 @@ export function getMappedParameterValues(type, parameters, data) {
     return typeParameters[parsedParameters];
 }
 
-export function getMappedParameterKeys(
+export function getParsedParameterKeys(
     types,
     selectedType,
     selectedParam,
     data,
 ) {
-    const typeKey = getMappedType(types, selectedType);
+    const typeKey = getParsedType(types, selectedType);
     const paramKey = getParamsKeyForType(typeKey);
     const typeParameters = getParamsOptionsForType(
         typeKey,
@@ -48,28 +49,50 @@ export function getMappedParameterKeys(
     return { [paramKey]: getKeyByValue(typeParameters, selectedParam) };
 }
 
-export function getMappedGroupIDs(groups, selectedGroups) {
-    const mappedGroups = [];
-
-    groups.forEach((group) => {
-        if (selectedGroups.some((grp) => grp === group.label)) {
-            mappedGroups.push(group.id);
-        }
-    });
-
-    return mappedGroups;
+export function getParsedGroups(groups) {
+    return groups.map((group) => group.key);
 }
 
-export function getMappedGroupLabels(groups, selectedGroups) {
-    const mappedGroups = [];
+export function getMappedGroups(groupIds, groupOptions) {
+    const groups = [];
 
-    groups.forEach((group) => {
-        if (selectedGroups.some((grp) => grp === group.id)) {
-            mappedGroups.push(group.label);
+    groupIds.forEach((id) => {
+        const groupOption = groupOptions.find((option) => option.key === id);
+
+        if (groupOption) {
+            groups.push(groupOption);
         }
     });
 
-    return mappedGroups;
+    return groups;
+}
+
+export function getMappedGroupsElementsCount(elements) {
+    const groupsElementsCount = {};
+    const { length } = elements;
+
+    for (let i = 0; i < length; i += 1) {
+        const { groups } = elements[i];
+        const { length: groupsCount } = groups;
+
+        if (groupsCount === 0) {
+            if (typeof groupsElementsCount[UNASSIGNED_GROUP_ID] === 'undefined') {
+                groupsElementsCount[UNASSIGNED_GROUP_ID] = 1;
+            } else {
+                groupsElementsCount[UNASSIGNED_GROUP_ID] += 1;
+            }
+        } else {
+            for (let j = 0; j < groupsCount; j += 1) {
+                if (typeof groupsElementsCount[groups[j]] === 'undefined') {
+                    groupsElementsCount[groups[j]] = 1;
+                } else {
+                    groupsElementsCount[groups[j]] += 1;
+                }
+            }
+        }
+    }
+
+    return groupsElementsCount;
 }
 
 export function getMappedOptionKeysValues(options, isMultilingual) {
@@ -97,7 +120,7 @@ export function getMappedOptionKeysValues(options, isMultilingual) {
     return { optionKeys, optionValues };
 }
 
-export function getMappedOptions(optionKeys, optionValues, isMultilingual) {
+export function getParsedOptions(optionKeys, optionValues, isMultilingual) {
     const options = [];
 
     optionKeys.forEach((key, optIndex) => {

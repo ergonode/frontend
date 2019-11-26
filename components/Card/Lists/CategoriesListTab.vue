@@ -12,8 +12,8 @@
         <CategoriesList :language-code="userLanguageCode" />
         <div class="add-btn-wrapper">
             <FabButton
-                :disabled="!$hasAccess('CATEGORY_CREATE')"
-                @click.native="addNewCategory">
+                :disabled="!$hasAccess(['CATEGORY_CREATE'])"
+                @click.native="addCategory">
                 <template #icon="{ color }">
                     <IconAdd :fill-color="color" />
                 </template>
@@ -65,7 +65,7 @@ export default {
                 languageCode: this.userLanguageCode,
             });
         },
-        addNewCategory() {
+        addCategory() {
             this.$router.push('/categories/category/new');
         },
     },

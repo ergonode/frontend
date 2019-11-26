@@ -12,12 +12,12 @@
             @navigateback="onDismiss">
             <template
                 v-if="isEdit"
-                #buttons>
+                #mainAction>
                 <PrependIconButton
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE TRANSITION"
-                    :disabled="!$hasAccess('WORKFLOW_DELETE')"
+                    :disabled="!$hasAccess(['WORKFLOW_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete
@@ -59,7 +59,7 @@ export default {
                 route: { name: 'workflow-transitions' },
             },
         ];
-        this.isUserAllowedToUpdateTransitions = this.$hasAccess('WORKFLOW_UPDATE');
+        this.isUserAllowedToUpdateTransitions = this.$hasAccess(['WORKFLOW_UPDATE']);
         if (this.isEdit) {
             generalRoute = { name: 'workflow-transition-edit-id-general', params: this.$route.params };
             designerRoute = { name: 'workflow-transition-edit-id-designer', params: this.$route.params };
@@ -68,9 +68,8 @@ export default {
 
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} TRANSITION`,
@@ -82,7 +81,6 @@ export default {
                 {
                     title: 'Conditions',
                     route: designerRoute,
-                    active: this.isEdit,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} TRANSITION`,
@@ -95,9 +93,8 @@ export default {
         } else {
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} TRANSITION`,

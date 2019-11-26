@@ -64,14 +64,15 @@ export default {
         display: flex;
         align-items: center;
         border-radius: 4px;
-        margin: 0 8px;
 
         &--small {
-            padding: 2px 4px;
+            height: 16px;
+            padding: 0 4px;
         }
 
         &--regular {
-            padding: 6px 8px;
+            height: 24px;
+            padding: 0 8px;
         }
     }
 </style>

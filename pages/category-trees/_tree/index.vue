@@ -4,7 +4,7 @@
  */
 <template>
     <CategoryTreePage
-        title="New tree"
+        title="New Tree"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>

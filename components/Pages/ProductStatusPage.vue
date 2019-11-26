@@ -12,12 +12,12 @@
             @navigateback="onDismiss">
             <template
                 v-if="isEdit"
-                #buttons>
+                #mainAction>
                 <PrependIconButton
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE STATUS"
-                    :disabled="!$hasAccess('WORKFLOW_DELETE')"
+                    :disabled="!$hasAccess(['WORKFLOW_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete
@@ -42,7 +42,7 @@ export default {
         let tabAction = this.onCreate;
         let buttonPrefix = 'CREATE';
 
-        this.isUserAllowedToUpdateStatus = this.$hasAccess('WORKFLOW_UPDATE');
+        this.isUserAllowedToUpdateStatus = this.$hasAccess(['WORKFLOW_UPDATE']);
         this.breadcrumbs = [
             {
                 title: 'Workflow',
@@ -59,9 +59,8 @@ export default {
 
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} STATUS`,
@@ -86,9 +85,8 @@ export default {
         } else {
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} STATUS`,

@@ -32,7 +32,7 @@ export default {
             grid-auto-flow: column;
             grid-template-columns: max-content;
             column-gap: 24px;
-            margin: 24px 0 24px 24px;
+            margin: 24px 0 0 24px;
 
             &::after {
                 content: "";

@@ -12,12 +12,12 @@
             @navigateback="onDismiss">
             <template
                 v-if="isEdit"
-                #buttons>
+                #mainAction>
                 <PrependIconButton
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE TEMPLATE"
-                    :disabled="!$hasAccess('TEMPLATE_DESIGNER_DELETE')"
+                    :disabled="!$hasAccess(['TEMPLATE_DESIGNER_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete
@@ -50,7 +50,7 @@ export default {
                 route: { name: 'templates' },
             },
         ];
-        this.isUserAllowedToUpdateTemplate = this.$hasAccess('TEMPLATE_DESIGNER_UPDATE');
+        this.isUserAllowedToUpdateTemplate = this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']);
         if (this.isEdit) {
             const templateRoute = { name: 'template-edit-id-template', params: this.$route.params };
             generalRoute = { name: 'template-edit-id-general', params: this.$route.params };
@@ -59,9 +59,8 @@ export default {
 
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} TEMPLATE`,
@@ -86,9 +85,8 @@ export default {
         } else {
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} TEMPLATE`,

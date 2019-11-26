@@ -22,8 +22,8 @@
         <AttributesList :language-code="languageCode" />
         <div class="add-btn-wrapper">
             <FabButton
-                :disabled="!$hasAccess('ATTRIBUTE_CREATE')"
-                @click.native="addNewAttribute">
+                :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
+                @click.native="addAttribute">
                 <template #icon="{ color }">
                     <IconAdd :fill-color="color" />
                 </template>
@@ -85,23 +85,24 @@ export default {
         ...mapActions('list', [
             'setFilter',
             'getGroups',
-            'getFilteredGroupElements',
+            'getElements',
         ]),
         onExpand(isExpanded) {
             this.$emit('expand', isExpanded);
         },
         onSearch(value) {
             this.setFilter(value);
-            this.getFilteredGroupElements({ listType: 'attributes', languageCode: this.languageCode });
+            this.getElements({ listType: 'attributes', languageCode: this.languageCode });
         },
         onSelect(option) {
             this.attributesLanguageCode = option;
 
-            this.getGroups({
-                languageCode: this.languageCode,
-            });
+            Promise.all([
+                this.getGroups(this.languageCode),
+                this.getElements({ listType: 'attributes', languageCode: this.languageCode }),
+            ]);
         },
-        addNewAttribute() {
+        addAttribute() {
             this.$router.push('/attributes/attribute/new');
         },
     },

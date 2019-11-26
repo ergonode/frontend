@@ -8,7 +8,7 @@
             <Grid
                 namespace="categoryTreesGrid"
                 :route-edit="routeEdit"
-                :editing-privilege-allowed="$hasAccess('CATEGORY_TREE_UPDATE')"
+                :editing-privilege-allowed="$hasAccess(['CATEGORY_TREE_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
                 title="Category trees"

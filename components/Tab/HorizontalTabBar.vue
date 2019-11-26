@@ -47,6 +47,8 @@ export default {
     methods: {
         onSelectTabBarItem(index) {
             this.selectedTabIndex = index;
+
+            this.$emit('selectTabAtIndex', index);
         },
     },
 };

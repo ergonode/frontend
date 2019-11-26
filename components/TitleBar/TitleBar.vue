@@ -4,7 +4,7 @@
  */
 <template>
     <div class="title-bar">
-        <TitleBarDetails
+        <TitleBarHeader
             :title="title"
             :icon="icon"
             :is-breadcrumb="isBreadcrumb"
@@ -16,54 +16,43 @@
                     :breadcrumb="breadcrumb" />
             </template>
             <template #badge>
-                <InformationBadge
-                    v-if="isStatus"
-                    :background="status.color"
-                    :color="statusTextContrastRation"
-                    :title="status.name || status.code" />
-                <InformationBadge
+                <slot name="prependBadge" />
+                <InformationIconBadge
                     v-if="isReadOnly"
                     :background="blueColor"
                     :color="whiteColor"
                     title="READ ONLY">
-                    <template #prepend>
+                    <template #icon>
                         <IconLock
-                            class="badge__icon"
                             size="24"
                             :fill-color="whiteColor" />
                     </template>
-                </InformationBadge>
+                </InformationIconBadge>
             </template>
-        </TitleBarDetails>
-        <div class="title-bar__actions">
-            <slot name="buttons" />
-        </div>
+        </TitleBarHeader>
+        <TitleBarActions>
+            <slot name="subActions" />
+            <slot name="mainAction" />
+        </TitleBarActions>
     </div>
 </template>
 
 <script>
-import { isEmpty } from '~/model/objectWrapper';
-import { WHITE, BLUE, GRAPHITE_DARK } from '~/assets/scss/_variables/_colors.scss';
-import {
-    hexToRGB, calculateRelativeLuminance, calculateContrastRatio,
-} from '~/model/color/ColorContrast';
+import { WHITE, BLUE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'TitleBar',
     components: {
-        TitleBarDetails: () => import('~/components/TitleBar/TitleBarDetails'),
+        TitleBarHeader: () => import('~/components/TitleBar/TitleBarHeader'),
         TitleBarBreadcrumb: () => import('~/components/TitleBar/TitleBarBreadcrumb'),
-        InformationBadge: () => import('~/components/Badges/InformationBadge'),
+        TitleBarActions: () => import('~/components/TitleBar/TitleBarActions'),
+        InformationIconBadge: () => import('~/components/Badges/InformationIconBadge'),
         IconLock: () => import('~/components/Icon/Feedback/IconLock'),
     },
     props: {
         title: {
             type: String,
             required: true,
-        },
-        status: {
-            type: Object,
-            default: () => {},
         },
         icon: {
             type: String,
@@ -85,24 +74,8 @@ export default {
         blueColor() {
             return BLUE;
         },
-        isStatus() {
-            return !isEmpty(this.status);
-        },
         isBreadcrumb() {
             return this.breadcrumbs.length > 0;
-        },
-        statusTextContrastRation() {
-            if (!this.isStatus) return null;
-            const convertedRgbText = hexToRGB(WHITE);
-            const convertedRgbBg = hexToRGB(this.status.color);
-            const relativeLuminance = calculateRelativeLuminance(convertedRgbText);
-            const relativeLuminanceBackground = calculateRelativeLuminance(convertedRgbBg);
-            const contrastRatio = calculateContrastRatio(
-                relativeLuminance,
-                relativeLuminanceBackground,
-            );
-
-            return contrastRatio > 4.5 ? WHITE : GRAPHITE_DARK;
         },
     },
     methods: {
@@ -121,23 +94,5 @@ export default {
         align-items: center;
         min-height: 32px;
         padding: 24px;
-
-        .badge__icon {
-            margin: -6px 0 -6px -8px;
-        }
-
-        &__actions {
-            display: flex;
-            flex-direction: row-reverse;
-
-            & > * {
-                margin-left: 8px;
-            }
-
-            & > .btn--primary:first-of-type {
-                margin-left: 16px;
-            }
-        }
     }
-
 </style>

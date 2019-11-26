@@ -42,7 +42,7 @@ export default {
             },
         },
         isUserAllowedToUpdate() {
-            return this.$hasAccess('CATEGORY_TREE_UPDATE');
+            return this.$hasAccess(['CATEGORY_TREE_UPDATE']);
         },
         errorNameMessage() {
             const nameIndex = `name_${this.languageCode}`;

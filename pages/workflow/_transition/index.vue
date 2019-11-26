@@ -4,7 +4,7 @@
  */
 <template>
     <TransitionPage
-        title="New transition"
+        title="New Transition"
         @dismiss="onDismiss"
         @create="onCreate" />
 </template>

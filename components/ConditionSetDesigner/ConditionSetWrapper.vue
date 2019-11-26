@@ -8,7 +8,7 @@
         :row-height="rowHeight"
         :is-connections-visible="false"
         :grid-gap="15"
-        :is-dragging-enabled="$hasAccess('SEGMENT_UPDATE')"
+        :is-dragging-enabled="$hasAccess(['SEGMENT_UPDATE'])"
         :is-multi-draggable="true"
         :dragged-element-size="{ width: 600, height: 60 }"
         @afterDrop="onGetConditionConfigurationById"

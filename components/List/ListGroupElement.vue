@@ -8,7 +8,9 @@
             large
             @click.native="expandGroup">
             <ListElementDescription>
-                <ListElementTitle :title="title" />
+                <ListElementTitle
+                    :title="title"
+                    :hint="hint" />
                 <ListElementHint :title="subtitle" />
             </ListElementDescription>
             <ListElementAction>
@@ -16,7 +18,9 @@
             </ListElementAction>
         </ListElement>
         <div v-if="isExpanded">
-            <slot name="item" />
+            <FadeGroupTransition>
+                <slot name="item" />
+            </FadeGroupTransition>
         </div>
     </div>
 </template>
@@ -33,6 +37,7 @@ export default {
         ListElementTitle: () => import('~/components/List/ListElementTitle'),
         ListElementHint: () => import('~/components/List/ListElementHint'),
         IconArrowSingle: () => import('~/components/Icon/Arrows/IconArrowSingle'),
+        FadeGroupTransition: () => import('~/components/Transitions/FadeGroupTransition'),
     },
     props: {
         index: {
@@ -46,6 +51,10 @@ export default {
         subtitle: {
             type: String,
             required: true,
+        },
+        hint: {
+            type: String,
+            default: '',
         },
         isExpanded: {
             type: Boolean,

@@ -8,12 +8,12 @@
             :title="title"
             :icon="icon"
             :is-read-only="$isReadOnly('PRODUCT')">
-            <template #buttons>
+            <template #mainAction>
                 <PrependIconButton
-                    title="CREATE PRODUCT"
+                    title="NEW PRODUCT"
                     :size="smallSize"
-                    :disabled="!$hasAccess('PRODUCT_CREATE')"
-                    @click.native="addNewProduct">
+                    :disabled="!$hasAccess(['PRODUCT_CREATE'])"
+                    @click.native="addProduct">
                     <template #prepend="{ color }">
                         <IconAdd
                             :fill-color="color" />
@@ -61,7 +61,6 @@ export default {
             {
                 title: 'Products',
                 route: { name: 'products-grid' },
-                active: true,
             },
         ];
     },
@@ -93,7 +92,7 @@ export default {
         },
     },
     methods: {
-        addNewProduct() {
+        addProduct() {
             this.$router.push('/products/product/new');
         },
     },

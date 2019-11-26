@@ -42,8 +42,8 @@ export default {
         }),
         isDisabledByPrivileges() {
             const isEdit = /edit/.test(this.$route.path);
-            return (isEdit && !this.$hasAccess('TEMPLATE_DESIGNER_UPDATE'))
-            || (!isEdit && !this.$hasAccess('TEMPLATE_DESIGNER_CREATE'));
+            return (isEdit && !this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']))
+            || (!isEdit && !this.$hasAccess(['TEMPLATE_DESIGNER_CREATE']));
         },
         errorNameMessage() {
             const typeIndex = 'name';

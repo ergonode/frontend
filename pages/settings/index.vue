@@ -29,7 +29,6 @@ export default {
                 {
                     title: 'Language',
                     route: { name: 'settings-language' },
-                    active: true,
                     props: {
                         updateButton: {
                             title: 'SAVE SETTINGS',

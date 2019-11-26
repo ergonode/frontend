@@ -60,8 +60,8 @@ export default {
             return false;
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess('WORKFLOW_UPDATE'))
-            || (!this.isDisabled && !this.$hasAccess('WORKFLOW_CREATE'));
+            return (this.isDisabled && !this.$hasAccess(['WORKFLOW_UPDATE']))
+            || (!this.isDisabled && !this.$hasAccess(['WORKFLOW_CREATE']));
         },
         errorSourceMessage() {
             const sourceIndex = 'source';

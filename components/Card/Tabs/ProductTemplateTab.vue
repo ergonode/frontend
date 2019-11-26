@@ -59,7 +59,7 @@ export default {
                 {
                     title: 'SAVE CHANGES',
                     action: this.updateButton.action,
-                    disabled: !this.$hasAccess('PRODUCT_UPDATE'),
+                    disabled: !this.$hasAccess(['PRODUCT_UPDATE']),
                 },
             ],
         };

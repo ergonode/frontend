@@ -6,6 +6,7 @@
     <li
         :class="elementClasses"
         :draggable="!isDragged && isDraggable"
+        :title="hint"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
         <slot v-if="!isDragged" />
@@ -27,6 +28,10 @@ export default {
             default: true,
         },
         draggableId: {
+            type: String,
+            default: '',
+        },
+        hint: {
             type: String,
             default: '',
         },

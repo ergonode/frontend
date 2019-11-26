@@ -3,23 +3,20 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="title-bar__details">
+    <div class="title-bar-header">
         <Component
             :is="headerIconComponent"
             v-if="icon && !isBreadcrumb"
             :fill-color="greenColor" />
         <FabButton
             v-if="isBreadcrumb"
-            class="details__back-btn"
             @click.native="onClick">
             <template #icon="{ color }">
                 <IconArrowPointer :fill-color="color" />
             </template>
         </FabButton>
-        <div class="vertical-wrapper">
-            <span
-                class="details__title font--medium-24-32"
-                v-text="title" />
+        <div class="title-bar-header__title">
+            <span v-text="title" />
             <slot name="badge" />
         </div>
         <slot name="breadcrumb" />
@@ -30,7 +27,7 @@
 import { GREEN, WHITE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
-    name: 'TitleBarDetails',
+    name: 'TitleBarHeader',
     components: {
         IconArrowPointer: () => import('~/components/Icon/Arrows/IconArrowPointer'),
         FabButton: () => import('~/components/Buttons/FabButton'),
@@ -69,27 +66,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .title-bar__details {
+    .title-bar-header {
         display: grid;
         align-items: center;
         grid-column-gap: 8px;
 
-        .details__back-btn {
+        button {
             grid-column: 1 / 2;
             grid-row: 1 / 3;
         }
 
-        .details__title {
-            margin-right: 8px;
-            color: $GRAPHITE_DARK;
-        }
-
-        .vertical-wrapper {
-            display: flex;
+        &__title {
+            display: grid;
             align-items: center;
+            grid-auto-flow: column;
+            column-gap: 16px;
             grid-column: 2 / 3;
             grid-row: 1 / 2;
             margin-left: 8px;
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_24_32;
         }
     }
 </style>

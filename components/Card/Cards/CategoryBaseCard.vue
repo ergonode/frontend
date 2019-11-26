@@ -13,7 +13,7 @@
             :disabled="isDisabled || isDisabledByPrivileges"
             label="Code"
             hint="Category code must be unique"
-            @input="setCategoryCode($event)" />
+            @input="setCategoryCode" />
     </BaseCard>
 </template>
 
@@ -38,8 +38,8 @@ export default {
             return Boolean(this.categoryID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess('CATEGORY_UPDATE'))
-            || (!this.isDisabled && !this.$hasAccess('CATEGORY_CREATE'));
+            return (this.isDisabled && !this.$hasAccess(['CATEGORY_UPDATE']))
+            || (!this.isDisabled && !this.$hasAccess(['CATEGORY_CREATE']));
         },
         errorCodeMessage() {
             const codeIndex = 'code';

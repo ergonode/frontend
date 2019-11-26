@@ -29,7 +29,7 @@ export default {
             avatarId: (state) => state.avatarId,
         }),
         isUserAllowedToUpdate() {
-            return this.$hasAccess('USER_UPDATE');
+            return this.$hasAccess(['USER_UPDATE']);
         },
     },
     methods: {

@@ -6,41 +6,49 @@
     <BasePage>
         <TitleBar
             :title="title"
-            :status="status"
             :breadcrumbs="breadcrumbs"
             icon="Document"
             :is-read-only="!isUserAllowedToUpdateProduct && isEdit"
             @navigateback="onDismiss">
+            <template #prependBadge>
+                <ProductStatusBadge
+                    v-if="status"
+                    :status="status" />
+            </template>
             <template
                 v-if="isEdit"
-                #buttons>
+                #mainAction>
                 <PrependIconButton
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE PRODUCT"
-                    :disabled="!$hasAccess('PRODUCT_DELETE')"
+                    :disabled="!$hasAccess(['PRODUCT_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
                         <IconDelete
                             :fill-color="color" />
                     </template>
                 </PrependIconButton>
-                <MultiButton
-                    v-if="statusesButtons.more && statusesButtons.more.length"
-                    title="more"
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    :disabled="!$hasAccess('PRODUCT_UPDATE')"
-                    :options="optionTitle"
-                    @input="optionAction" />
-                <Button
-                    v-for="button in statusesButtons.statuses"
-                    :key="button.code"
-                    :theme="secondaryTheme"
-                    :size="smallSize"
-                    :title="button.name || button.code"
-                    :disabled="!$hasAccess('PRODUCT_UPDATE')"
-                    @click.native="updateStatus(button.code)" />
+            </template>
+            <template #subActions>
+                <TitleBarSubActions>
+                    <MultiButton
+                        v-if="statusesButtons.more && statusesButtons.more.length"
+                        title="more"
+                        :theme="secondaryTheme"
+                        :size="smallSize"
+                        :disabled="!$hasAccess(['PRODUCT_UPDATE'])"
+                        :options="optionTitle"
+                        @input="optionAction" />
+                    <Button
+                        v-for="button in statusesButtons.statuses"
+                        :key="button.code"
+                        :theme="secondaryTheme"
+                        :size="smallSize"
+                        :title="button.name || button.code"
+                        :disabled="!$hasAccess(['PRODUCT_UPDATE'])"
+                        @click.native="updateStatus(button.code)" />
+                </TitleBarSubActions>
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
@@ -59,6 +67,8 @@ export default {
     components: {
         Button,
         MultiButton,
+        TitleBarSubActions: () => import('~/components/TitleBar/TitleBarSubActions'),
+        ProductStatusBadge: () => import('~/components/Badges/ProductStatusBadge'),
     },
     created() {
         let generalRoute = { name: 'product-new-general' };
@@ -73,7 +83,7 @@ export default {
             },
         ];
 
-        this.isUserAllowedToUpdateProduct = this.$hasAccess('PRODUCT_UPDATE');
+        this.isUserAllowedToUpdateProduct = this.$hasAccess(['PRODUCT_UPDATE']);
 
         if (this.isEdit) {
             const templateRoute = { name: 'product-edit-id-template', params: this.$route.params };
@@ -84,9 +94,8 @@ export default {
 
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} PRODUCT`,
@@ -123,9 +132,8 @@ export default {
         } else {
             this.tabs = [
                 {
-                    title: 'General options',
+                    title: 'General Options',
                     route: generalRoute,
-                    active: true,
                     props: {
                         updateButton: {
                             title: `${buttonPrefix} PRODUCT`,
