@@ -162,5 +162,6 @@ export default {
         max-height: 200px;
         min-width: 130px;
         max-width: 170px;
+        text-transform: none;
     }
 </style>

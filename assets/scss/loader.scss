@@ -2,84 +2,146 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-
-@import "_variables/loader";
-@import "_mixins/loader";
-
-.loader {
-    position: relative;
-    left: $leftPos;
-
-    @include dot;
-
-    margin: 24px;
-    box-shadow: $x2 0 0 -5px $GREEN;
-    animation: dotPulse 1.5s infinite linear;
-    animation-delay: 0.25s;
-
-    &::before, &::after {
-        position: absolute;
-        top: 0;
-        display: inline-block;
-        content: "";
-
-        @include dot;
-    }
-
-    &::before {
-        box-shadow: $x1 0 0 -5px $GREEN;
-        animation: dotPulseBefore 1.5s infinite linear;
-        animation-delay: 0s;
-    }
-
-    &::after {
-        box-shadow: $x3 0 0 -5px $GREEN;
-        animation: dotPulseAfter 1.5s infinite linear;
-        animation-delay: 0.5s;
+.loader-wrapper {
+    .loader {
+        position: relative;
+        width: 1em;
+        height: 1em;
+        animation:
+            loader 1.7s infinite ease,
+            round 1.7s infinite ease;
+        text-indent: -9999em;
+        border-radius: 50%;
+        transform: translateZ(0);
+        overflow: hidden;
     }
 }
 
-@keyframes dotPulseBefore {
+@-webkit-keyframes loader {
     0% {
-        box-shadow: $x1 0 0 -5px $GREEN;
+        box-shadow:
+            0 -0.83em 0 -0.4em,
+            0 -0.83em 0 -0.42em,
+            0 -0.83em 0 -0.44em,
+            0 -0.83em 0 -0.46em,
+            0 -0.83em 0 -0.477em;
     }
 
-    30% {
-        box-shadow: $x1 0 0 2px $GREEN;
+    5%, 95% {
+        box-shadow:
+            0 -0.83em 0 -0.4em,
+            0 -0.83em 0 -0.42em,
+            0 -0.83em 0 -0.44em,
+            0 -0.83em 0 -0.46em,
+            0 -0.83em 0 -0.477em;
     }
 
-    60%,
+    10%, 59% {
+        box-shadow:
+            0 -0.83em 0 -0.4em,
+            -0.087em -0.825em 0 -0.42em,
+            -0.173em -0.812em 0 -0.44em,
+            -0.256em -0.789em 0 -0.46em,
+            -0.297em -0.775em 0 -0.477em;
+    }
+
+    20% {
+        box-shadow:
+            0 -0.83em 0 -0.4em,
+            -0.338em -0.758em 0 -0.42em,
+            -0.555em -0.617em 0 -0.44em,
+            -0.671em -0.488em 0 -0.46em,
+            -0.749em -0.34em 0 -0.477em;
+    }
+
+    38% {
+        box-shadow:
+            0 -0.83em 0 -0.4em,
+            -0.377em -0.74em 0 -0.42em,
+            -0.645em -0.522em 0 -0.44em,
+            -0.775em -0.297em 0 -0.46em,
+            -0.82em -0.09em 0 -0.477em;
+    }
+
     100% {
-        box-shadow: $x1 0 0 -5px $GREEN;
+        box-shadow:
+            0 -0.83em 0 -0.4em,
+            0 -0.83em 0 -0.42em,
+            0 -0.83em 0 -0.44em,
+            0 -0.83em 0 -0.46em,
+            0 -0.83em 0 -0.477em;
     }
 }
-
-@keyframes dotPulse {
+@keyframes loader {
     0% {
-        box-shadow: $x2 0 0 -5px $GREEN;
+        box-shadow:
+            0 -0.83em 0 -0.4em,
+            0 -0.83em 0 -0.42em,
+            0 -0.83em 0 -0.44em,
+            0 -0.83em 0 -0.46em,
+            0 -0.83em 0 -0.477em;
     }
 
-    30% {
-        box-shadow: $x2 0 0 2px $GREEN;
+    5%, 95% {
+        box-shadow:
+            0 -0.83em 0 -0.4em,
+            0 -0.83em 0 -0.42em,
+            0 -0.83em 0 -0.44em,
+            0 -0.83em 0 -0.46em,
+            0 -0.83em 0 -0.477em;
     }
 
-    60%,
+    10%, 59% {
+        box-shadow:
+            0 -0.83em 0 -0.4em,
+            -0.087em -0.825em 0 -0.42em,
+            -0.173em -0.812em 0 -0.44em,
+            -0.256em -0.789em 0 -0.46em,
+            -0.297em -0.775em 0 -0.477em;
+    }
+
+    20% {
+        box-shadow:
+            0 -0.83em 0 -0.4em,
+            -0.338em -0.758em 0 -0.42em,
+            -0.555em -0.617em 0 -0.44em,
+            -0.671em -0.488em 0 -0.46em,
+            -0.749em -0.34em 0 -0.477em;
+    }
+
+    38% {
+        box-shadow:
+            0 -0.83em 0 -0.4em,
+            -0.377em -0.74em 0 -0.42em,
+            -0.645em -0.522em 0 -0.44em,
+            -0.775em -0.297em 0 -0.46em,
+            -0.82em -0.09em 0 -0.477em;
+    }
+
     100% {
-        box-shadow: $x2 0 0 -5px $GREEN;
+        box-shadow:
+            0 -0.83em 0 -0.4em,
+            0 -0.83em 0 -0.42em,
+            0 -0.83em 0 -0.44em,
+            0 -0.83em 0 -0.46em,
+            0 -0.83em 0 -0.477em;
     }
 }
-
-@keyframes dotPulseAfter {
+@-webkit-keyframes round {
     0% {
-        box-shadow: $x3 0 0 -5px $GREEN;
+        transform: rotate(0deg);
     }
 
-    30% {
-        box-shadow: $x3 0 0 2px $GREEN;
-    }
-
-    60%,
     100% {
-        box-shadow: $x3 0 0 -5px $GREEN;
+        transform: rotate(360deg);
+    }
+}
+@keyframes round {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }
