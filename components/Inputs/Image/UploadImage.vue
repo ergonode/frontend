@@ -4,48 +4,48 @@
  */
 <template>
     <div
-        :class="['upload-image', {
-            'upload-image--disabled': disabled,
-            'upload-image--elevator': elevator,
-            'upload-image--fixed-height': fixedHeight,
-        }]">
-        <span
-            v-if="title"
-            class="upload-image__title font--medium-12-16"
-            v-text="title" />
-        <div
-            v-if="!selectedFileID"
-            class="upload-image__wrapper">
+        :class="['upload-image', { 'upload-image--required': required }]"
+        :style="{ height }">
+        <div class="upload-image__activator">
+            <label
+                class="upload-image__label"
+                :for="associatedLabel"
+                v-text="label" />
             <input
-                class="upload-image__activator"
                 type="file"
                 accept="image/*"
-                :value="selectedFileID"
-                @input="e => onUpload(e)">
-            <img
-                :src="require('~/assets/images/placeholders/upload_file.svg')"
-                alt="placeholder">
-            <span class="upload-image__description font--medium-12-16">
-                Drag image here or browse
-            </span>
-        </div>
-        <div
-            v-else
-            class="upload-image__container">
-            <div class="upload-image__remove-btn">
-                <FabButton
-                    :theme="secondaryTheme"
-                    @select="onRemove">
-                    <template #icon="{ color }">
-                        <IconDelete :fill-color="color" />
-                    </template>
-                </FabButton>
-            </div>
-            <Picture :image-id="selectedFileID" />
+                :disabled="disabled"
+                @input="onUpload">
+            <template v-if="!image">
+                <div class="upload-image__placeholder">
+                    <img
+                        :src="require('~/assets/images/placeholders/upload_file.svg')"
+                        alt="Place to drag or browse file">
+                    <span class="upload-image__description">
+                        Drag image here or browse
+                    </span>
+                </div>
+            </template>
+            <template v-else>
+                <div class="upload-image__container">
+                    <img
+                        :src="image"
+                        alt="Uploaded file">
+                </div>
+                <div class="upload-image__remove-btn">
+                    <FabButton
+                        :theme="secondaryTheme"
+                        @select="onRemove">
+                        <template #icon="{ color }">
+                            <IconDelete :fill-color="color" />
+                        </template>
+                    </FabButton>
+                </div>
+            </template>
         </div>
         <span
             v-if="uploadError"
-            class="upload-image__error-label font--medium-12-16"
+            class="upload-image__error-label"
             v-text="uploadError.join(', ')" />
     </div>
 </template>
@@ -54,11 +54,12 @@
 import { mapState, mapActions } from 'vuex';
 import { THEMES } from '~/defaults/buttons';
 import { GRAPHITE, GREEN } from '~/assets/scss/_variables/_colors.scss';
+import { getImageData } from '~/model/multimedia';
 
 export default {
     name: 'UploadImage',
     props: {
-        title: {
+        label: {
             type: String,
             default: '',
         },
@@ -66,30 +67,36 @@ export default {
             type: String,
             default: '',
         },
+        required: {
+            type: Boolean,
+            default: false,
+        },
         disabled: {
             type: Boolean,
             default: false,
         },
-        fixedHeight: {
-            type: Boolean,
-            default: true,
-        },
-        elevator: {
-            type: Boolean,
-            default: true,
+        height: {
+            type: String,
+            default: '150px',
         },
     },
     components: {
-        Picture: () => import('~/components/Inputs/Image/Picture'),
         FabButton: () => import('~/components/Buttons/FabButton'),
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
     data() {
         return {
-            selectedFileID: this.value,
-            localImage: null,
+            image: null,
             deleteIconFillColor: GRAPHITE,
+            associatedLabel: '',
         };
+    },
+    mounted() {
+        if (this.value) {
+            this.getImageById(this.value);
+        }
+
+        this.associatedLabel = `input-${this._uid}`;
     },
     computed: {
         ...mapState('validations', {
@@ -111,24 +118,33 @@ export default {
             this.deleteIconFillColor = GRAPHITE;
         },
         onRemove() {
-            this.selectedFileID = '';
-            this.localImage = null;
+            this.image = null;
             this.$emit('remove');
         },
         onUpload(event) {
             const [file] = event.target.files;
-            const { name } = file;
 
-            const formData = new FormData();
-            formData.append('upload', file, name);
+            if (file) {
+                const { name } = file;
 
-            this.$axios.$post('multimedia/upload', formData).then(({ id }) => {
-                this.selectedFileID = id;
-                this.$emit('upload', id);
+                const formData = new FormData();
+                formData.append('upload', file, name);
 
-                this.$addAlert({ type: 'success', message: 'File uploaded' });
-                this.removeValidationError('upload');
-            }).catch((e) => this.onError(e.data));
+                this.$axios.$post('multimedia/upload', formData).then(({ id }) => {
+                    this.getImageById(id);
+                    this.$emit('upload', id);
+
+                    this.$addAlert({ type: 'success', message: 'File uploaded' });
+                    this.removeValidationError('upload');
+                }).catch((e) => this.onError(e.data));
+            }
+        },
+        getImageById(id) {
+            this.$axios.$get(`multimedia/${id}`, {
+                responseType: 'arraybuffer',
+            }).then((response) => {
+                this.image = getImageData(response);
+            });
         },
     },
 };
@@ -136,56 +152,22 @@ export default {
 
 <style lang="scss" scoped>
     .upload-image {
-        $parent: &;
+        $upload: &;
 
-        position: relative;
         display: flex;
         flex-direction: column;
 
-        &--elevator {
-            #{$parent}__wrapper, #{$parent}__container {
-                box-shadow: $ELEVATOR_6_DP;
-            }
-        }
-
-        &--disabled::after {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: $WHITESMOKE;
-            opacity: 0.5;
-            content: "";
-            cursor: not-allowed;
-        }
-
-        &__wrapper {
+        &__activator {
             position: relative;
             display: flex;
             flex: 1;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: $WHITE;
-
-            &::before {
-                position: absolute;
-                width: calc(100% - 32px);
-                height: calc(100% - 32px);
-                border: $BORDER_DASHED_GREY;
-                content: "";
-            }
+            border: $BORDER_1_GREY;
+            padding: 12px;
+            box-sizing: border-box;
         }
 
-        &__container {
-            position: relative;
-            display: flex;
-            max-height: 100%;
-            background-color: $WHITE;
-        }
-
-        &__activator {
+        input {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -195,43 +177,73 @@ export default {
             opacity: 0;
         }
 
-        &__remove-btn {
+        &__label {
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: -9px;
+            left: 9px;
+            padding: 0 2px;
+            background-color: $WHITE;
+            color: $GRAPHITE_LIGHT;
+        }
+
+        &__placeholder {
             display: flex;
+            flex: 1;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: $WHITE;
-            border-radius: 50%;
-            box-shadow: $ELEVATOR_6_DP;
+            border: $BORDER_DASHED_GREY;
         }
 
         &__description {
             margin-top: 16px;
-            text-align: center;
-        }
-
-        &__title {
-            margin-bottom: 8px;
-        }
-
-        &__description, &__title {
-            color: $GRAPHITE;
+            color: $GRAPHITE_DARK;
         }
 
         &__error-label {
+            margin: 2px 0 0 12px;
             color: $RED;
-            margin-top: 8px;
         }
 
-        &--fixed-height {
-            #{$parent}__wrapper {
-                min-height: 150px;
-            }
+        &__description, &__label, &__error-label {
+            font: $FONT_MEDIUM_12_16;
+        }
 
-            #{$parent}__container {
-                height: 150px;
+        &__remove-btn {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background-color: $WHITE;
+            border-radius: 999px;
+        }
+
+        &__container {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
+            height: 0;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+                max-width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transform: scale(1);
+                transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        &--required {
+            #{$upload}__label::after {
+                position: absolute;
+                color: $RED;
+                content: "*";
             }
         }
     }

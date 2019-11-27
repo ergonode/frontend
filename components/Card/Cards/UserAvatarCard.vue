@@ -6,7 +6,7 @@
     <BaseCard>
         <UploadImage
             :value="avatarId"
-            title="Profile picture"
+            label="Profile picture"
             :disabled="!isUserAllowedToUpdate"
             @upload="uploadValue"
             @remove="uploadValue" />

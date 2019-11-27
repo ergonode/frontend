@@ -3,10 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['image-cell', {'image-cell--has-value': hasValue}]">
+    <div class="image-cell">
         <UploadImage
             :value="value"
-            :elevator="!hasValue"
             @upload="updateValue"
             @remove="updateValue" />
     </div>
@@ -34,11 +33,6 @@ export default {
             this.$emit('imageid', this.imageId);
         }
     },
-    computed: {
-        hasValue() {
-            return this.imageId !== '';
-        },
-    },
     methods: {
         updateValue(value) {
             this.imageId = value || '';
@@ -51,10 +45,6 @@ export default {
     .image-cell {
         width: 300px;
         background-color: $WHITE;
-
-        &--has-value {
-            padding: 12px;
-            box-shadow: $ELEVATOR_2_DP;
-        }
+        box-shadow: $ELEVATOR_2_DP;
     }
 </style>

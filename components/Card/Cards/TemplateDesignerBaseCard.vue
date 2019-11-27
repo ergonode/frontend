@@ -15,7 +15,7 @@
             @input="(title) => setTemplateDesignerTitle(title)" />
         <UploadImage
             :value="templateImage"
-            title="Template cover image"
+            label="Template cover image"
             :disabled="isDisabledByPrivileges"
             @upload="uploadValue"
             @remove="uploadValue" />
