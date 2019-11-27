@@ -28,6 +28,10 @@ export default {
                     title: 'Activity log',
                     route: { name: 'profile-activity-log-grid' },
                 },
+                {
+                    title: 'Privileges',
+                    route: { name: 'profile-privileges-grid' },
+                },
             ],
         };
     },

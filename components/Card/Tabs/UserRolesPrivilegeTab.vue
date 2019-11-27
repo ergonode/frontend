@@ -51,6 +51,7 @@
                         @edit="onValueChange(rowId, column.id, cellData)">
                         <Component
                             :is="getCellComponent(column.type, rowId)"
+                            :style="{ justifyContent: 'start' }"
                             :row="rowIndex"
                             :value="cellData.value"
                             :hint="descriptions[rowId]"
