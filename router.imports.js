@@ -74,6 +74,7 @@ export const GridTabs = {
     ProductStatusGridTab: () => import('~/components/Card/Grid/ProductStatusGridTab').then((m) => m.default || m),
     TransitionsGridTab: () => import('~/components/Card/Grid/TransitionsGridTab').then((m) => m.default || m),
     ProductGridTab: () => import('~/components/Card/Grid/ProductGridTab').then((m) => m.default || m),
+    ProductHistoryGridTab: () => import('~/components/Card/Grid/ProductHistoryGridTab').then((m) => m.default || m),
     CategoryGridTab: () => import('~/components/Card/Grid/CategoryGridTab').then((m) => m.default || m),
     CategoryTreesGridTab: () => import('~/components/Card/Grid/CategoryTreesGridTab').then((m) => m.default || m),
     AttributeGridTab: () => import('~/components/Card/Grid/AttributeGridTab').then((m) => m.default || m),

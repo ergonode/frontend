@@ -88,6 +88,7 @@ export default {
         if (this.isEdit) {
             const templateRoute = { name: 'product-edit-id-template', params: this.$route.params };
             const commentsRoute = { name: 'product-edit-id-comments', params: this.$route.params };
+            const historyRoute = { name: 'product-edit-id-history', params: this.$route.params };
             generalRoute = { name: 'product-edit-id-general', params: this.$route.params };
             tabAction = this.onSave;
             buttonPrefix = 'SAVE';
@@ -119,6 +120,18 @@ export default {
                 {
                     title: 'Comments',
                     route: commentsRoute,
+                    active: this.isEdit,
+                    props: {
+                        updateButton: {
+                            title: `${buttonPrefix} PRODUCT`,
+                            action: tabAction,
+                            disabled: !this.isUserAllowedToUpdateProduct,
+                        },
+                    },
+                },
+                {
+                    title: 'History',
+                    route: historyRoute,
                     active: this.isEdit,
                     props: {
                         updateButton: {

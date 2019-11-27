@@ -188,6 +188,11 @@ export const pages = [
                 path: 'comments',
                 component: Tabs.ProductCommentsTab,
             },
+            {
+                name: 'product-edit-id-history',
+                path: 'history',
+                component: GridTabs.ProductHistoryGridTab,
+            },
         ],
         meta: {
             privileges: ['PRODUCT_READ'],
