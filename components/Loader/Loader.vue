@@ -5,9 +5,9 @@
  */
 <template>
     <div
-        class="loader-wrapper"
+        class="loader"
         :style="loaderStyles">
-        <div class="loader" />
+        <div class="spinner" />
     </div>
 </template>
 <script>
