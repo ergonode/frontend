@@ -70,7 +70,7 @@ export default {
             const { params: { id } } = this.$route;
             return {
                 getData: `${this.userLanguageCode}/products/${id}/history`,
-                name: 'product-edit-id-history',
+                name: '',
             };
         },
         visibleRowsInPageCount: {
@@ -99,7 +99,6 @@ export default {
         },
         getDataWrapper() {
             const { getData: path } = this.routeEdit;
-            console.log(path);
             this.getData(
                 {
                     path,
@@ -115,7 +114,6 @@ export default {
         });
         const { id } = params;
         const gridPath = `${store.state.authentication.user.language}/products/${id}/history`;
-        console.log(gridPath);
 
         await store.dispatch('productHistoryGrid/getData', { path: gridPath });
     },
