@@ -7,6 +7,7 @@
         <Button
             :title="button.title"
             :theme="button.theme"
+            :loaded="$isLoaded('footerButton')"
             :disabled="button.disabled"
             @click.native="button.action" />
     </div>

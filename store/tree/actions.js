@@ -33,7 +33,7 @@ export default {
             commit('translations/setTabTranslations', translations, { root: true });
         }).catch(onDefaultError);
     },
-    createTree(
+    async createTree(
         { commit, rootState },
         {
             data,
@@ -42,21 +42,27 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$post(`${userLanguageCode}/trees`, data).then(({ id }) => {
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$post(`${userLanguageCode}/trees`, data).then(({ id }) => {
             commit(types.SET_TREE_ID, id);
             onSuccess(id);
         }).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
-    updateTree(
+    async updateTree(
         { rootState },
         {
             id, data, onSuccess,
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/trees/${id}`, data).then(() => {
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$put(`${userLanguageCode}/trees/${id}`, data).then(() => {
             onSuccess();
         }).catch(onDefaultError);
+        await this.$removeLoader('footerButton');
     },
     setTreeCode({ commit }, code) {
         commit(types.SET_CODE, code);

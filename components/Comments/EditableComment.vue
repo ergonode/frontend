@@ -24,6 +24,7 @@
             <Button
                 :size="smallSize"
                 :title="`${isEdit ? 'SAVE' : 'ADD'} COMMENT`"
+                :loaded="$isLoaded('commentButton')"
                 @click.native="saveComment" />
             <Button
                 :theme="secondaryTheme"

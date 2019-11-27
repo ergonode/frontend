@@ -28,7 +28,7 @@ export default {
             commit('translations/setTabTranslations', translations, { root: true });
         }).catch(onError);
     },
-    createCategory(
+    async createCategory(
         { commit, rootState },
         {
             data,
@@ -37,12 +37,15 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$post(`${userLanguageCode}/categories`, data).then(({ id }) => {
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$post(`${userLanguageCode}/categories`, data).then(({ id }) => {
             commit(types.SET_ID, id);
             onSuccess(id);
         }).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
-    updateCategory(
+    async updateCategory(
         { rootState },
         {
             id,
@@ -52,7 +55,10 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/categories/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$put(`${userLanguageCode}/categories/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
     removeCategory({ state, rootState }, { onSuccess }) {
         const { id } = state;

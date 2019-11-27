@@ -14,17 +14,6 @@ export default {
     setColor({ commit }, color) {
         commit(types.SET_COLOR, color);
     },
-    createProductStatus({ commit, state, rootState }, { onSuccess, onError }) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-        const data = {
-            code: state.code,
-            color: state.color,
-        };
-        return this.app.$axios.$post(`${userLanguageCode}/status`, data).then(({ id }) => {
-            commit(types.SET_STATUS_ID, id);
-            onSuccess(id);
-        }).catch((e) => onError(e.data));
-    },
     getProductStatuses({ commit, rootState }, params) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$get(`${userLanguageCode}/status`, { params }).then(({ collection: statuses }) => {
@@ -64,7 +53,21 @@ export default {
         }
         return null;
     },
-    updateProductStatus({ commit, state, rootState }, { onError }) {
+    async createProductStatus({ commit, state, rootState }, { onSuccess, onError }) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+        const data = {
+            code: state.code,
+            color: state.color,
+        };
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$post(`${userLanguageCode}/status`, data).then(({ id }) => {
+            commit(types.SET_STATUS_ID, id);
+            onSuccess(id);
+        }).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
+    },
+    async updateProductStatus({ commit, state, rootState }, { onError }) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { translations } = rootState.translations;
 
@@ -84,7 +87,9 @@ export default {
             description,
         };
 
-        return this.app.$axios.$put(`${userLanguageCode}/status/${state.id}`, data).catch((e) => onError(e.data));
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$put(`${userLanguageCode}/status/${state.id}`, data).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
     setStatusAsDefault({ commit }, isDefault) {
         commit(types.SET_AS_DEFAULT_STATUS, isDefault);

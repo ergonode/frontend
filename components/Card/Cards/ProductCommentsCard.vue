@@ -38,7 +38,7 @@
         <template
             v-if="isMoreButtonVisible"
             #footer>
-            <Loader v-if="loading" />
+            <Loader v-if="!$isLoaded('moreComments')" />
             <Button
                 :title="showMoreText"
                 @click.native="showMore" />
@@ -74,7 +74,6 @@ export default {
     data() {
         return {
             showForm: false,
-            loading: false,
         };
     },
     computed: {
@@ -119,12 +118,8 @@ export default {
                 field: 'created_at',
             };
 
-            this.loading = true;
             this.getMoreComments({
                 params,
-                onSuccess: () => {
-                    this.loading = false;
-                },
             });
         },
     },
