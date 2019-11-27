@@ -13,7 +13,7 @@
             :is="headerComponent"
             v-bind="headerComponentProps"
             :namespace="namespace"
-            @sort="() => getData({ path })"
+            @sort="getData({ path })"
             @focus="onFocus" />
     </GridCell>
 </template>
