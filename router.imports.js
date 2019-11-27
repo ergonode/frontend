@@ -81,6 +81,7 @@ export const GridTabs = {
     RolesGridTab: () => import('~/components/Card/Grid/RolesGridTab').then((m) => m.default || m),
     UsersGridTab: () => import('~/components/Card/Grid/UsersGridTab').then((m) => m.default || m),
     UserActivityLogsGridTab: () => import('~/components/Card/Grid/UserActivityLogsGridTab').then((m) => m.default || m),
+    UserPrivilegesGridTab: () => import('~/components/Card/Grid/UserPrivilegesGridTab').then((m) => m.default || m),
     UsersActivityLogsGridTab: () => import('~/components/Card/Grid/UsersActivityLogsGridTab').then((m) => m.default || m),
     SegmentsGridTab: () => import('~/components/Card/Grid/SegmentsGridTab').then((m) => m.default || m),
     NotificationGridTab: () => import('~/components/Card/Grid/NotificationGridTab').then((m) => m.default || m),

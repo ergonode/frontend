@@ -125,7 +125,7 @@ export default {
             }
         }).catch((e) => onError(e.data));
     },
-    createAttribute(
+    async createAttribute(
         { commit, rootState },
         {
             data,
@@ -134,12 +134,15 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$post(`${userLanguageCode}/attributes`, data).then(({ id }) => {
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$post(`${userLanguageCode}/attributes`, data).then(({ id }) => {
             commit(types.SET_ATTRIBUTE_ID, id);
             onSuccess(id);
         }).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
-    updateAttribute(
+    async updateAttribute(
         { rootState },
         {
             id,
@@ -149,9 +152,12 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/attributes/${id}`, data).then(() => {
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$put(`${userLanguageCode}/attributes/${id}`, data).then(() => {
             onSuccess();
         }).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
     removeAttribute({ state, rootState }, { onSuccess }) {
         const { id } = state;

@@ -52,7 +52,7 @@ export default {
             });
         }).catch(onDefaultError);
     },
-    updateTemplateDesigner(
+    async updateTemplateDesigner(
         { rootState },
         {
             id,
@@ -62,9 +62,12 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/templates/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$put(`${userLanguageCode}/templates/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
-    createTemplateDesigner(
+    async createTemplateDesigner(
         { commit, rootState },
         {
             data,
@@ -73,9 +76,12 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$post(`${userLanguageCode}/templates`, data).then(({ id }) => {
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$post(`${userLanguageCode}/templates`, data).then(({ id }) => {
             onSuccess(id);
         }).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
     getTypes({ commit }, {
         path, params,
