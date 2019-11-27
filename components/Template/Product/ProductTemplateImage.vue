@@ -5,8 +5,10 @@
 <template>
     <UploadImage
         :value="value"
+        :label="label"
+        :required="required"
         :disabled="disabled"
-        :fixed-height="false"
+        height="unset"
         @upload="onValueChange"
         @remove="onValueChange" />
 </template>

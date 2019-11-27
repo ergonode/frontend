@@ -147,7 +147,6 @@ export default {
         &__progress, &__tracker {
             position: absolute;
             height: 2px;
-            border-radius: 1px;
         }
 
         &__progress {

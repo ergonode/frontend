@@ -85,7 +85,6 @@ export default {
             left: 0;
             border: 1px solid $GREY;
             box-sizing: border-box;
-            border-radius: 2px;
             cursor: pointer;
 
             &::after {

@@ -63,7 +63,6 @@ export default {
     .badge {
         display: flex;
         align-items: center;
-        border-radius: 4px;
 
         &--small {
             height: 16px;

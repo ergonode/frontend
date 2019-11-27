@@ -4,9 +4,7 @@
  */
 <template>
     <div class="progress-bar">
-        <div
-            class="progress-bar__progress"
-            :style="progressStyle" />
+        <div :style="progressStyle" />
     </div>
 </template>
 
@@ -38,11 +36,6 @@ export default {
     .progress-bar {
         display: flex;
         height: 4px;
-        border-radius: 2px;
         background: $GREY_LIGHT;
-
-        &__progress {
-            border-radius: 2px;
-        }
     }
 </style>
