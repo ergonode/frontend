@@ -31,7 +31,6 @@ export default {
                 {
                     title: 'Privileges',
                     route: { name: 'profile-privileges-grid' },
-                    active: true,
                 },
             ],
         };
