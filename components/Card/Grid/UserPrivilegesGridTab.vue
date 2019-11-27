@@ -7,7 +7,7 @@
         <template #content>
             <Grid
                 namespace="privilegesGrid"
-                :route-edit="routeEdit"
+                :edit-route="editRoute"
                 :editing-privilege-allowed="false"
                 :edit-column="false"
                 :select-column="false"
@@ -63,8 +63,8 @@ export default {
         };
     },
     async beforeCreate() {
-        this.routeEdit = {
-            getData: '',
+        this.editRoute = {
+            path: '',
             name: '',
         };
         this.$registerStore({
@@ -87,7 +87,7 @@ export default {
     beforeDestroy() {
         this.$store.unregisterModule('privilegesGrid');
 
-        delete this.routeEdit;
+        delete this.editRoute;
     },
     computed: {
         ...mapState('privilegesGrid', {

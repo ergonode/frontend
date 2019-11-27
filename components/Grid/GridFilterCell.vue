@@ -184,7 +184,7 @@ export default {
 
             if (this.gridState.filters[id] !== parsedValue) {
                 this.$store.dispatch(`${this.namespace}/setFilter`, { id, filter: parsedValue, operator: FILTER_OPERATOR.EQUAL });
-                this.$store.dispatch(`${this.namespace}/getData`, { path: this.path });
+                this.$store.dispatch(`${this.namespace}/getData`, this.path);
                 this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
             }
         },

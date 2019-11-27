@@ -42,7 +42,7 @@ describe('Grid/Grid', () => {
             propsData: {
                 namespace: 'productGrid',
                 title: 'Products',
-                routeEdit: { getData: 'api/v1/products' },
+                editRoute: { path: 'api/v1/products' },
             },
         });
     });

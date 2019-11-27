@@ -13,7 +13,7 @@
             :is="headerComponent"
             v-bind="headerComponentProps"
             :namespace="namespace"
-            @sort="getData({ path })"
+            @sort="getData(path)"
             @focus="onFocus" />
     </GridCell>
 </template>
@@ -84,8 +84,8 @@ export default {
         },
     },
     methods: {
-        getData({ path }) {
-            this.$store.dispatch(`${this.namespace}/getData`, { path });
+        getData(path) {
+            this.$store.dispatch(`${this.namespace}/getData`, path);
         },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);

@@ -7,7 +7,7 @@
         <template #content>
             <Grid
                 namespace="categoryTreesGrid"
-                :route-edit="routeEdit"
+                :edit-route="editRoute"
                 :editing-privilege-allowed="$hasAccess(['CATEGORY_TREE_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
@@ -67,9 +67,9 @@ export default {
         ...mapGetters('categoryTreesGrid', {
             numberOfPages: 'numberOfPages',
         }),
-        routeEdit() {
+        editRoute() {
             return {
-                getData: `${this.userLanguageCode}/trees`,
+                path: `${this.userLanguageCode}/trees`,
                 name: 'category-tree-edit-id',
             };
         },
@@ -81,7 +81,7 @@ export default {
                 const number = Math.trunc(value);
 
                 if (number !== this.numberOfDisplayedElements) {
-                    this.changeNumberOfDisplayingElements({ number });
+                    this.changeNumberOfDisplayingElements(number);
                     this.getDataWrapper();
                 }
             },
@@ -104,13 +104,7 @@ export default {
             this.getDataWrapper();
         },
         getDataWrapper() {
-            const { getData: path } = this.routeEdit;
-
-            this.getData(
-                {
-                    path,
-                },
-            );
+            this.getData(this.editRoute.path);
         },
     },
     async fetch({ app, store }) {
@@ -121,7 +115,7 @@ export default {
             moduleName: 'categoryTreesGrid',
             store,
         });
-        await store.dispatch('categoryTreesGrid/getData', { path: gridPath });
+        await store.dispatch('categoryTreesGrid/getData', gridPath);
     },
 };
 </script>

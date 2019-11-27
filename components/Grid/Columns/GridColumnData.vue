@@ -32,7 +32,8 @@ import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '~/model/layout/ElementCopy';
-import { removeColumnCookieByID } from '~/model/grid/cookies/GridLayoutConfiguration';
+import { removeCookieById } from '~/model/cookies';
+import { COLUMNS_IDS } from '~/defaults/grid/cookies';
 import { getDraggedColumnPositionState } from '~/model/drag_and_drop/helpers';
 import { DRAGGED_ELEMENT, COLUMN_TYPE } from '~/defaults/grid';
 
@@ -126,6 +127,9 @@ export default {
             'setDraggedElIndex',
             'setGhostElXTranslation',
             'setGhostIndex',
+        ]),
+        ...mapActions('list', [
+            'setDisabledElement',
         ]),
         onDragStart(event) {
             const { pageX, pageY } = event;
@@ -320,10 +324,20 @@ export default {
             return document.documentElement.querySelector('.grid__content');
         },
         removeColumnWrapper(index) {
-            removeColumnCookieByID(this.$cookies, this.draggedElement.id);
-
+            if (this.column.element_id) {
+                this.setDisabledElement({
+                    languageCode: this.column.language,
+                    elementId: this.column.element_id,
+                    disabled: false,
+                });
+            }
             this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, index);
             this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, index);
+            removeCookieById({
+                cookies: this.$cookies,
+                cookieName: COLUMNS_IDS,
+                id: this.draggedElement.id,
+            });
         },
         changeColumnPositionWrapper() {
             this.$store.dispatch(`${this.namespace}/changeColumnPosition`, {

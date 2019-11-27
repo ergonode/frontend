@@ -60,11 +60,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { SIZES, THEMES } from '~/defaults/buttons';
-import {
-    removeColumnCookieByID,
-} from '~/model/grid/cookies/GridLayoutConfiguration';
+import { removeCookieById } from '~/model/cookies';
+import { COLUMNS_IDS } from '~/defaults/grid/cookies';
 import { SORTING_ORDER } from '~/defaults/icons';
 import { GRAPHITE_LIGHT } from '~/assets/scss/_variables/_colors.scss';
 
@@ -149,6 +148,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions('list', [
+            'setDisabledElement',
+        ]),
         onClickSort() {
             let orderState = SORTING_ORDER.ASC;
             if (this.isSorted) {
@@ -174,10 +176,21 @@ export default {
         onSelectOption(option) {
             switch (option.text) {
             case 'Remove': {
-                // We are hovering element while removing it
+                if (this.column.element_id) {
+                    this.setDisabledElement({
+                        languageCode: this.column.language,
+                        elementId: this.column.element_id,
+                        disabled: false,
+                    });
+                }
+
                 this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, this.columnIndex - 1);
                 this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, this.columnIndex - 1);
-                removeColumnCookieByID(this.$cookies, this.column.id);
+                removeCookieById({
+                    cookies: this.$cookies,
+                    cookieName: COLUMNS_IDS,
+                    id: this.column.id,
+                });
                 this.$emit('focus', false);
                 break;
             }

@@ -81,8 +81,10 @@ import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT } from '~/defaults/grid';
 import {
     getDraggedColumnPositionState,
 } from '~/model/drag_and_drop/helpers';
+import { changeCookiePosition } from '~/model/cookies';
 import { getMappedColumnHeaderTitle } from '~/model/mappers/gridDataMapper';
 import DropDown from '~/components/Inputs/Select/Contents/DropDown';
+import { ADV_FILTERS_IDS } from '~/defaults/grid/cookies';
 
 export default {
     name: 'GridAdvancedFilter',
@@ -240,6 +242,12 @@ export default {
                     index: this.ghostFilterIndex,
                     filter: this.data,
                 });
+                changeCookiePosition({
+                    cookies: this.$cookies,
+                    cookieName: ADV_FILTERS_IDS,
+                    from: this.index,
+                    to: this.ghostFilterIndex,
+                });
             }
 
             removeElementCopyFromDocumentBody(event);
@@ -293,7 +301,7 @@ export default {
         },
         onClear() {
             this.$store.dispatch(`${this.namespace}/removeAdvancedFilter`, this.data.id);
-            this.$store.dispatch(`${this.namespace}/getData`, { path: this.path });
+            this.$store.dispatch(`${this.namespace}/getData`, this.path);
             this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
         },
         onApply() {
@@ -301,7 +309,7 @@ export default {
 
             this.deactivateFilter();
 
-            this.$store.dispatch(`${this.namespace}/getData`, { path: this.path });
+            this.$store.dispatch(`${this.namespace}/getData`, this.path);
             this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
         },
         onFocus() {
@@ -369,7 +377,7 @@ export default {
             if (this.isClickedOutside) {
                 this.deactivateFilter();
 
-                this.$store.dispatch(`${this.namespace}/getData`, { path: this.path });
+                this.$store.dispatch(`${this.namespace}/getData`, this.path);
                 this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
             }
         },

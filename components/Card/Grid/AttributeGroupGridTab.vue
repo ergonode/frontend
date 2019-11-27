@@ -7,7 +7,7 @@
         <template #content>
             <Grid
                 namespace="attributeGroupGrid"
-                :route-edit="routeEdit"
+                :edit-route="editRoute"
                 :editing-privilege-allowed="$hasAccess(['ATTRIBUTE_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
@@ -67,9 +67,9 @@ export default {
         ...mapGetters('attributeGroupGrid', {
             numberOfPages: 'numberOfPages',
         }),
-        routeEdit() {
+        editRoute() {
             return {
-                getData: `${this.userLanguageCode}/attributes/groups`,
+                path: `${this.userLanguageCode}/attributes/groups`,
                 name: 'attribute-group-edit-id',
             };
         },
@@ -81,7 +81,7 @@ export default {
                 const number = Math.trunc(value);
 
                 if (number !== this.numberOfDisplayedElements) {
-                    this.changeNumberOfDisplayingElements({ number });
+                    this.changeNumberOfDisplayingElements(number);
                     this.getDataWrapper();
                 }
             },
@@ -104,12 +104,7 @@ export default {
             this.getDataWrapper();
         },
         getDataWrapper() {
-            const { getData: path } = this.routeEdit;
-            this.getData(
-                {
-                    path,
-                },
-            );
+            this.getData(this.editRoute.path);
         },
     },
     async fetch({ app, store }) {
@@ -119,7 +114,7 @@ export default {
             store,
         });
         const gridPath = `${store.state.authentication.user.language}/attributes/groups`;
-        await store.dispatch('attributeGroupGrid/getData', { path: gridPath });
+        await store.dispatch('attributeGroupGrid/getData', gridPath);
     },
 };
 </script>
