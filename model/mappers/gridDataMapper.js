@@ -8,6 +8,78 @@ import {
     COLUMN_WIDTH,
 } from '~/defaults/grid';
 
+export function getParsedFilters(filters) {
+    const entries = Object.entries(filters);
+    const { length: entriesLength } = entries;
+
+    let mappedFilter = '';
+
+    for (let i = 0; i < entriesLength; i += 1) {
+        const [key, filter] = entries[i];
+
+        if (filter) {
+            const { value, operator } = filter;
+
+            mappedFilter += i === 0 ? key : `;${key}`;
+            mappedFilter += operator;
+            mappedFilter += Array.isArray(value) ? value.join(',') : value;
+        }
+    }
+
+    return mappedFilter;
+}
+
+export function getParsedAdvancedFilters(filters) {
+    const mappedFilter = [];
+
+    Object.keys(filters).forEach((id) => {
+        Object.keys(filters[id]).forEach((operator) => {
+            if (operator === 'isEmptyRecord') {
+                mappedFilter.push(`${id}=`);
+            } else {
+                mappedFilter.push(`${id}${operator}${filters[id][operator]}`);
+            }
+        });
+    });
+
+    return mappedFilter.join(';');
+}
+
+export const getParsedRequestDataParams = ({
+    sortedByColumn,
+    currentPage,
+    numberOfDisplayedElements,
+    filters,
+    advancedFilters,
+}, columns) => {
+    const parsedFilter = getParsedFilters(filters);
+    const parsedAdvcFilter = getParsedAdvancedFilters(advancedFilters);
+
+    let filter = parsedFilter;
+
+    if (parsedFilter && parsedAdvcFilter) {
+        filter += `${parsedFilter};${parsedAdvcFilter}`;
+    } else if (parsedAdvcFilter) {
+        filter = parsedAdvcFilter;
+    }
+
+    const params = {
+        columns,
+        offset: (currentPage - 1) * numberOfDisplayedElements,
+        limit: numberOfDisplayedElements,
+        filter,
+    };
+
+    if (Object.keys(sortedByColumn).length) {
+        const { index: colSortID, orderState } = sortedByColumn;
+
+        params.field = colSortID;
+        params.order = orderState;
+    }
+
+    return params;
+};
+
 const getMappedColumnHeaderType = ({ filter, type }) => {
     if (type === COLUMN_TYPE.CHECK) return GRID_HEADER_TYPE.CHECK;
     if (filter || type === COLUMN_TYPE.IMAGE) return GRID_HEADER_TYPE.INTERACTIVE;
@@ -153,51 +225,4 @@ export function getMappedRowLinks(rows) {
     }
 
     return rowLinks;
-}
-
-export function getMappedFilters(filters) {
-    const entries = Object.entries(filters);
-    const { length: entriesLength } = entries;
-
-    let mappedFilter = '';
-
-    for (let i = 0; i < entriesLength; i += 1) {
-        const [key, filter] = entries[i];
-
-        if (filter) {
-            const { value, operator } = filter;
-
-            if (i === 0) {
-                mappedFilter += `${key}`;
-            } else {
-                mappedFilter += `;${key}`;
-            }
-
-            mappedFilter += operator;
-
-            if (Array.isArray(value)) {
-                mappedFilter += value.join(',');
-            } else {
-                mappedFilter += value;
-            }
-        }
-    }
-
-    return mappedFilter;
-}
-
-export function getMappedAdvancedFilters(filters) {
-    const mappedFilter = [];
-
-    Object.keys(filters).forEach((id) => {
-        Object.keys(filters[id]).forEach((operator) => {
-            if (operator === 'isEmptyRecord') {
-                mappedFilter.push(`${id}=`);
-            } else {
-                mappedFilter.push(`${id}${operator}${filters[id][operator]}`);
-            }
-        });
-    });
-
-    return mappedFilter.join(';');
 }

@@ -12,6 +12,7 @@ export const types = {
     SET_GROUPS_ELEMENTS_COUNT_FOR_UNASSIGNED_ELEMENTS: 'SET_GROUPS_ELEMENTS_COUNT_FOR_UNASSIGNED_ELEMENTS',
     SET_FILTER: 'SET_FILTER',
     SET_DISABLED_ELEMENT: 'SET_DISABLED_ELEMENT',
+    SET_DISABLED_ELEMENTS: 'SET_DISABLED_ELEMENTS',
     SET_GROUP_ELEMENTS_COUNT: 'SET_GROUP_ELEMENTS_COUNT',
     REMOVE_DISABLED_ELEMENT: 'REMOVE_DISABLED_ELEMENT',
     CLEAR_STATE: 'CLEAR_STATE',
@@ -40,6 +41,9 @@ export default {
             ...state.disabledElements[languageCode], [elementId]: disabled,
         };
         state.disabledElements = { ...state.disabledElements };
+    },
+    [types.SET_DISABLED_ELEMENTS](state, setDisabledElements) {
+        state.disabledElements = setDisabledElements;
     },
     [types.REMOVE_DISABLED_ELEMENT](state, { languageCode, elementId }) {
         delete state.disabledElements[languageCode][elementId];

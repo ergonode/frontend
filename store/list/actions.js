@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { getMappedFilters } from '~/model/mappers/gridDataMapper';
+import { getParsedFilters } from '~/model/mappers/gridDataMapper';
 import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
 import { FILTER_OPERATOR } from '~/defaults/operators';
 import { getUUID } from '~/model/stringWrapper';
@@ -67,7 +67,7 @@ export default {
         listType, groupId, languageCode,
     }) {
         const path = `${languageCode}/${listType}`;
-        const groupFilter = groupId ? getMappedFilters({ groups: { value: groupId, operator: FILTER_OPERATOR.EQUAL } }) : 'groups=';
+        const groupFilter = groupId ? getParsedFilters({ groups: { value: groupId, operator: FILTER_OPERATOR.EQUAL } }) : 'groups=';
         const params = {
             limit: 9999,
             offset: 0,
@@ -95,10 +95,8 @@ export default {
     setDisabledElement: ({ commit }, payload) => {
         commit(types.SET_DISABLED_ELEMENT, payload);
     },
-    setDisabledElements: ({ commit }, elements) => {
-        elements.forEach((element) => {
-            commit(types.SET_DISABLED_ELEMENT, element);
-        });
+    setDisabledElements: ({ commit }, disabledElements) => {
+        commit(types.SET_DISABLED_ELEMENTS, disabledElements);
     },
     removeDisabledElement: ({ commit }, payload) => {
         commit(types.REMOVE_DISABLED_ELEMENT, payload);

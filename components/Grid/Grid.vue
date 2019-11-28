@@ -62,7 +62,7 @@
                     :namespace="namespace"
                     :column-index="colIndex + columnsOffset"
                     :column="column"
-                    :path="routeEdit.getData"
+                    :path="editRoute.path"
                     @focus="onHeaderFocus" />
                 <GridFilterCell
                     v-if="basicFilters"
@@ -70,7 +70,7 @@
                     :column-index="colIndex + columnsOffset"
                     :column="column"
                     :filter="gridState.filters[column.id]"
-                    :path="routeEdit.getData" />
+                    :path="editRoute.path" />
                 <slot
                     v-for="(id, rowIndex) in gridState.rowIds"
                     name="cell"
@@ -88,7 +88,7 @@
                         :cell-data="gridState.cellValues[id][column.id] || { value: ''}"
                         :column="column"
                         :draft="drafts[id]"
-                        :edit-routing-path="routeEdit.name"
+                        :edit-routing-path="editRoute.name"
                         :is-selected="isSelectedAllRows
                             || selectedRows[(rowIndex + rowsOffset) * gridState.currentPage]"
                         :editing-privilege-allowed="editingPrivilegeAllowed" />
@@ -104,7 +104,7 @@
                 :column-index="editColumnIndex"
                 :basic-filters="basicFilters"
                 :row-links="gridState.rowLinks"
-                :route-path="routeEdit.name"
+                :route-path="editRoute.name"
                 :is-pinned="isEditColumnPinned"
                 @rowEdit="onRowEdit" />
             <GridColumnSentinel
@@ -158,7 +158,7 @@ export default {
             type: String,
             required: true,
         },
-        routeEdit: {
+        editRoute: {
             type: Object,
             required: true,
         },

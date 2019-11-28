@@ -21,6 +21,8 @@ import { mapState, mapActions } from 'vuex';
 import {
     WHITE, GRAPHITE,
 } from '~/assets/scss/_variables/_colors.scss';
+import { insertCookieAtIndex } from '~/model/cookies';
+import { ADV_FILTERS_IDS } from '~/defaults/grid/cookies';
 
 export default {
     name: 'GridAdvancedFilterGhost',
@@ -92,6 +94,17 @@ export default {
                     index,
                     filter: attribute,
                 });
+
+                try {
+                    insertCookieAtIndex({
+                        cookies: this.$cookies,
+                        cookieName: ADV_FILTERS_IDS,
+                        index,
+                        data: attribute.id,
+                    });
+                } catch {
+                    this.$cookies.set(ADV_FILTERS_IDS, attribute.id);
+                }
                 this.setDisabledElement({
                     languageCode, elementId: attribute.element_id, disabled: columnIndex !== -1,
                 });

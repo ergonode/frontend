@@ -7,7 +7,7 @@
         <template #content>
             <Grid
                 namespace="transitionsGrid"
-                :route-edit="routeEdit"
+                :edit-route="editRoute"
                 :editing-privilege-allowed="$hasAccess(['WORKFLOW_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
@@ -67,9 +67,9 @@ export default {
         ...mapGetters('transitionsGrid', {
             numberOfPages: 'numberOfPages',
         }),
-        routeEdit() {
+        editRoute() {
             return {
-                getData: `${this.userLanguageCode}/workflow/default/transitions`,
+                path: `${this.userLanguageCode}/workflow/default/transitions`,
                 name: 'transition-edit-source-destination',
             };
         },
@@ -81,7 +81,7 @@ export default {
                 const number = Math.trunc(value);
 
                 if (number !== this.numberOfDisplayedElements) {
-                    this.changeNumberOfDisplayingElements({ number });
+                    this.changeNumberOfDisplayingElements(number);
                     this.getDataWrapper();
                 }
             },
@@ -108,12 +108,7 @@ export default {
             this.getDataWrapper();
         },
         getDataWrapper() {
-            const { getData: path } = this.routeEdit;
-            this.getData(
-                {
-                    path,
-                },
-            );
+            this.getData(this.editRoute.path);
         },
     },
     async fetch({ app, store }) {
@@ -123,7 +118,7 @@ export default {
             store,
         });
         const gridPath = `${store.state.authentication.user.language}/workflow/default/transitions`;
-        await store.dispatch('transitionsGrid/getData', { path: gridPath });
+        await store.dispatch('transitionsGrid/getData', gridPath);
     },
 };
 </script>

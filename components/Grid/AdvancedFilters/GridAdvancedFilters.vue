@@ -80,6 +80,7 @@ import { ARROW } from '~/defaults/icons';
 import { GHOST_ID } from '~/defaults/grid';
 import GridAdvancedFilterPlaceholder from '~/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder';
 import GridAdvancedFilterGhost from '~/components/Grid/AdvancedFilters/GridAdvancedFilterGhost';
+import { ADV_FILTERS_IDS } from '~/defaults/grid/cookies';
 
 export default {
     name: 'GridAdvancedFilters',
@@ -170,12 +171,13 @@ export default {
                         { languageCode, elementId, isDisabled: false }
                     )),
             );
+            this.$cookies.remove(ADV_FILTERS_IDS);
             this.$store.dispatch(`${this.namespace}/removeAllAdvancedFilters`);
             this.onClearAll();
         },
         onClearAll() {
             this.$store.dispatch(`${this.namespace}/clearAllAdvancedFilters`);
-            this.$store.dispatch(`${this.namespace}/getData`, { path: this.path });
+            this.$store.dispatch(`${this.namespace}/getData`, this.path);
             this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
         },
     },
