@@ -26,10 +26,6 @@ export function hasParams(type) {
     );
 }
 
-export function hasParamsWithMultiSelect(type) {
-    return type === TYPES.IMAGE;
-}
-
 export function getParamsOptionsForType(type, data) {
     switch (type) {
     case TYPES.UNIT:

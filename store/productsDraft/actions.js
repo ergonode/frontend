@@ -64,6 +64,7 @@ export default {
 
             if (templateId) {
                 const template = getMappedTemplateName(templates, templateId);
+
                 commit(types.SET_PRODUCT_TEMPLATE, template);
             }
 
@@ -82,12 +83,14 @@ export default {
     },
     getTemplates({ commit, rootState }) {
         const { authentication: { user: { language } } } = rootState;
+
         return this.app.$axios.$get(`${language}/templates?limit=5000&offset=0`).then(({ collection: templates }) => {
             commit(types.SET_TEMPLATES, templates);
         }).catch(onDefaultError);
     },
     getCategories({ commit, rootState }) {
         const { authentication: { user: { language } } } = rootState;
+
         return this.app.$axios.$get(`${language}/categories?limit=5000&offset=0`).then(({ collection: categories }) => {
             commit(types.SET_CATEGORIES, categories);
         }).catch(onDefaultError);
@@ -135,6 +138,7 @@ export default {
     }) {
         const { id } = state;
         const { authentication: { user: { language } } } = rootState;
+
         return this.app.$axios.$put(`${language}/products/${id}/draft/${attributeId}/value`, { value }).then(() => {
             dispatch('applyDraft', {
                 id,
