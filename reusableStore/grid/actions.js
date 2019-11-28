@@ -22,7 +22,7 @@ export default {
             columns: stateColumns,
             columnWidths: stateColumnWidths,
         } = state;
-        const isProductGrid = path.includes('products') && !path.includes('history ');
+        const isProductGrid = path.includes('products') && !path.includes('history');
         const columnIDs = isProductGrid
             ? this.$cookies.get(COLUMNS_IDS) || stateColumns.map((col) => col.id).join(',')
             : null;
