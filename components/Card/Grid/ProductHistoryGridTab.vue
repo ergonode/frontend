@@ -7,7 +7,7 @@
         <template #content>
             <Grid
                 namespace="productHistoryGrid"
-                :route-edit="routeEdit"
+                :edit-route="editRoute"
                 :basic-filters="true"
                 :edit-column="false"
                 :select-column="false"
@@ -66,10 +66,11 @@ export default {
         ...mapGetters('productHistoryGrid', {
             numberOfPages: 'numberOfPages',
         }),
-        routeEdit() {
+        editRoute() {
             const { params: { id } } = this.$route;
+
             return {
-                getData: `${this.userLanguageCode}/products/${id}/history`,
+                path: `${this.userLanguageCode}/products/${id}/history`,
                 name: '',
             };
         },
@@ -98,12 +99,7 @@ export default {
             this.getDataWrapper();
         },
         getDataWrapper() {
-            const { getData: path } = this.routeEdit;
-            this.getData(
-                {
-                    path,
-                },
-            );
+            this.getData(this.editRoute.path);
         },
     },
     async fetch({ app, store, params }) {
@@ -115,7 +111,7 @@ export default {
         const { id } = params;
         const gridPath = `${store.state.authentication.user.language}/products/${id}/history`;
 
-        await store.dispatch('productHistoryGrid/getData', { path: gridPath });
+        await store.dispatch('productHistoryGrid/getData', gridPath);
     },
 };
 </script>
