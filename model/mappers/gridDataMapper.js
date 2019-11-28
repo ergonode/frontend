@@ -20,19 +20,9 @@ export function getParsedFilters(filters) {
         if (filter) {
             const { value, operator } = filter;
 
-            if (i === 0) {
-                mappedFilter += `${key}`;
-            } else {
-                mappedFilter += `;${key}`;
-            }
-
+            mappedFilter += i === 0 ? key : `;${key}`;
             mappedFilter += operator;
-
-            if (Array.isArray(value)) {
-                mappedFilter += value.join(',');
-            } else {
-                mappedFilter += value;
-            }
+            mappedFilter += Array.isArray(value) ? value.join(',') : value;
         }
     }
 

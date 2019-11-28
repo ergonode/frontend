@@ -6,6 +6,8 @@ import { insertValueAtIndex, swapItemPosition } from '~/model/arrayWrapper';
 
 export const removeCookieById = ({ cookies, cookieName, id }) => {
     const cookiesData = cookies.get(cookieName);
+    if (!cookiesData) throw new Error('Cookies are not set');
+
     const parsedData = cookiesData.split(',');
 
     cookies.set(cookieName, parsedData.filter((value) => value !== id).join(','));
@@ -27,6 +29,7 @@ export const changeCookiePosition = ({
     cookies, cookieName, from, to,
 }) => {
     const cookiesData = cookies.get(cookieName);
+    if (!cookiesData) throw new Error('Cookies are not set');
 
     cookies.set(cookieName, [
         ...swapItemPosition(cookiesData.split(','), from, to),
