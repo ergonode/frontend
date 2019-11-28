@@ -62,19 +62,20 @@ export default {
                 });
             }
         },
-        onSave() {
+        async onSave() {
+            const { params: { id } } = this.$route;
             const categoryIds = getMappedCategoryID(
                 this.categories,
                 this.selectedCategories,
             );
-            const { params: { id } } = this.$route;
-            this.updateProduct({
+
+            await this.updateProduct({
                 id,
                 data: {
                     categoryIds,
                 },
             });
-            this.applyDraft({
+            await this.applyDraft({
                 id: this.id,
                 onSuccess: this.onDraftAppliedSuccess,
             });

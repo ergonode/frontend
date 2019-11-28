@@ -6,7 +6,6 @@ import {
     hasOptions,
     hasPlaceholder,
     hasParams,
-    hasParamsWithMultiSelect,
     getIcon,
     getParamsOptionsForType,
     getParamsKeyForType,
@@ -45,18 +44,6 @@ describe('AttributeTypes/hasParams', () => {
 
     it('Attribute has not params', () => {
         const fun = hasParams('TEXT');
-        expect(fun).toBeFalsy();
-    });
-});
-
-describe('AttributeTypes/hasParamsWithMultiSelect', () => {
-    it('Attribute has params with multiselect', () => {
-        const fun = hasParamsWithMultiSelect('IMAGE');
-        expect(fun).toBeTruthy();
-    });
-
-    it('Attribute has not params with multiselect', () => {
-        const fun = hasParamsWithMultiSelect('TEXT');
         expect(fun).toBeFalsy();
     });
 });

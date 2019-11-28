@@ -18,7 +18,7 @@
                 :value="translations.placeholder[languageCode]"
                 solid
                 label="Placeholder"
-                resize="vertical"
+                resize="none"
                 :style="{height: '150px'}"
                 :error-messages="errorPlaceholderMessage"
                 :disabled="!isUserAllowedToUpdate"

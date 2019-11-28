@@ -8,7 +8,7 @@ export function getMappedCategoryValues(categories, selectedCategories) {
         (category) => selectedCategories.some(
             (selectedCategory) => category.code === selectedCategory,
         ),
-    ).map((category) => category.code);
+    ).map((category) => ({ key: category.code, value: category.name }));
 }
 
 export function getMappedTemplateName(templates, selectedTemplate) {
@@ -18,7 +18,7 @@ export function getMappedTemplateName(templates, selectedTemplate) {
 export function getMappedCategoryID(categories, selectedCategories) {
     return categories.filter(
         (category) => selectedCategories.some(
-            (selectedCategory) => category.code === selectedCategory,
+            (selectedCategory) => category.code === selectedCategory.key,
         ),
     ).map((category) => category.id);
 }
