@@ -8,7 +8,7 @@
             <Grid
                 namespace="privilegesGrid"
                 :is-draft="false"
-                :route-edit="routeEdit"
+                :edit-route="editRoute"
                 :basic-filters="false"
                 :extender-column="false"
                 :edit-column="false"
@@ -105,8 +105,8 @@ export default {
         };
     },
     async beforeCreate() {
-        this.routeEdit = {
-            getData: '',
+        this.editRoute = {
+            path: '',
             name: '',
         };
         this.isEditingAllowed = this.$hasAccess(['USER_ROLE_UPDATE']);
@@ -130,7 +130,7 @@ export default {
     beforeDestroy() {
         this.$store.unregisterModule('privilegesGrid');
 
-        delete this.routeEdit;
+        delete this.editRoute;
         delete this.isEditingAllowed;
     },
     computed: {

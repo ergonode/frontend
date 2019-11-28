@@ -9,7 +9,7 @@
                 :filters-data="advancedFiltersData"
                 :filters="advancedFilters"
                 namespace="productsGrid"
-                :path="routeEdit.getData"
+                :path="editRoute.path"
                 :disabled="isFilterExists"
                 @focus="onAdvancedFilterFocus" />
         </template>
@@ -19,7 +19,7 @@
         <template #grid>
             <Grid
                 namespace="productsGrid"
-                :route-edit="routeEdit"
+                :edit-route="editRoute"
                 :editing-privilege-allowed="isUserAllowedToUpdate"
                 :advanced-filters="true"
                 :basic-filters="true"
@@ -117,9 +117,9 @@ export default {
         isUserAllowedToUpdate() {
             return this.$hasAccess(['PRODUCT_UPDATE']);
         },
-        routeEdit() {
+        editRoute() {
             return {
-                getData: `${this.userLanguageCode}/products`,
+                path: `${this.userLanguageCode}/products`,
                 name: 'product-edit-id',
             };
         },
@@ -131,7 +131,7 @@ export default {
                 const number = Math.trunc(value);
 
                 if (number !== this.numberOfDisplayedElements) {
-                    this.changeNumberOfDisplayingElements({ number });
+                    this.changeNumberOfDisplayingElements(number);
                     this.getDataWrapper();
                 }
             },
@@ -166,12 +166,7 @@ export default {
             this.getDataWrapper();
         },
         getDataWrapper() {
-            const { getData: path } = this.routeEdit;
-            this.getData(
-                {
-                    path,
-                },
-            );
+            this.getData(this.editRoute.path);
         },
         saveDrafts() {
             const promises = [];
@@ -203,9 +198,47 @@ export default {
             moduleName: 'productsGrid',
             store,
         });
-
         const gridPath = `${store.state.authentication.user.language}/products`;
-        await store.dispatch('productsGrid/getData', { path: gridPath });
+
+        await Promise.all([
+            store.dispatch('productsGrid/getData', gridPath),
+            store.dispatch('productsGrid/getAdvancedFiltersData', gridPath),
+        ]).then(() => {
+            const { columns, advancedFiltersData } = store.state.productsGrid;
+            const disabledElements = {};
+            const getAttributeElements = (array) => {
+                const { length } = array;
+                const elements = [];
+
+                for (let i = 0; i < length; i += 1) {
+                    const { language, element_id: elementId } = array[i];
+                    if (elementId && language) {
+                        if (!elements[language]) elements[language] = [];
+
+                        elements[language].push(elementId);
+                    }
+                }
+
+                return elements;
+            };
+            const columnElements = getAttributeElements(columns);
+            const filterElements = getAttributeElements(advancedFiltersData);
+            const languages = [...columnElements, ...filterElements];
+            const languagesSet = new Set(languages);
+
+            languagesSet.forEach((language) => {
+                const ids = [...columnElements[language], ...filterElements[language]];
+                const idsSet = new Set(ids);
+
+                idsSet.forEach((id) => {
+                    disabledElements[language] = {
+                        ...disabledElements[language], [id]: true,
+                    };
+                });
+            });
+
+            store.dispatch('list/setDisabledElements', disabledElements);
+        });
     },
 };
 </script>
