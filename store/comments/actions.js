@@ -14,7 +14,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$get(`${userLanguageCode}/comments`, { params }).then(({ collection: comments, info }) => {
             commit(types.SET_COMMENTS, comments);
-            commit(types.SET_COUNT, info.count);
+            commit(types.SET_COUNT, info.filtered);
         }).catch(onDefaultError);
     },
     async getMoreComments(
@@ -27,7 +27,7 @@ export default {
         await this.$setLoader('moreComments');
         await this.app.$axios.$get(`${userLanguageCode}/comments`, { params }).then(({ collection: comments, info }) => {
             commit(types.SET_CURRENT_PAGE, currentPage += 1);
-            commit(types.SET_COUNT, info.count);
+            commit(types.SET_COUNT, info.filtered);
             commit(types.INSERT_MORE_COMMENTS, comments);
         }).catch(onDefaultError);
         await this.$removeLoader('moreComments');
