@@ -6,7 +6,9 @@
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
             <VerticalFixedScroll>
-                <ProductCommentsCard />
+                <VerticalCenteredView>
+                    <ProductCommentsCard />
+                </VerticalCenteredView>
             </VerticalFixedScroll>
         </template>
     </ResponsiveCenteredViewTemplate>
@@ -17,10 +19,12 @@ import { DATA_LIMIT } from '~/defaults/grid';
 import ProductCommentsCard from '~/components/Card/Cards/ProductCommentsCard';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
+import VerticalCenteredView from '~/core/components/Layout/VerticalCenteredView';
 
 export default {
     name: 'ProductCommentsTab',
     components: {
+        VerticalCenteredView,
         VerticalFixedScroll,
         ProductCommentsCard,
         ResponsiveCenteredViewTemplate,

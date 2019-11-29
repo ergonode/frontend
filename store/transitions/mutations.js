@@ -8,6 +8,7 @@ export const types = {
     SET_SOURCE: 'SET_SOURCE',
     SET_DESTINATION: 'SET_DESTINATION',
     SET_CONDITION_SET_ID: 'SET_CONDITION_SET_ID',
+    SET_ROLES: 'SET_ROLES',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 
@@ -17,6 +18,9 @@ export default {
     },
     [types.SET_DESTINATION](state, value) {
         state.destination = value;
+    },
+    [types.SET_ROLES](state, value) {
+        state.roles = value;
     },
     [types.SET_CONDITION_SET_ID](state, value) {
         state.conditionSetId = value;

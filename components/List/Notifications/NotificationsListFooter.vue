@@ -17,6 +17,7 @@ export default {
 <style lang="scss" scoped>
     .notification-list-footer {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         padding: 24px 0;

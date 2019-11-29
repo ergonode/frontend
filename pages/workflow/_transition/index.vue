@@ -25,6 +25,7 @@ export default {
         ...mapState('transitions', {
             source: (state) => state.source,
             destination: (state) => state.destination,
+            roles: (state) => state.roles,
         }),
     },
     methods: {
@@ -40,6 +41,7 @@ export default {
             const transition = {
                 source: this.source,
                 destination: this.destination,
+                roles: this.roles,
             };
 
             this.removeValidationErrors();
@@ -68,6 +70,10 @@ export default {
     }) {
         await Promise.all([
             store.dispatch('productStatus/getProductStatuses', {
+                limit: 9999,
+                offset: 0,
+            }),
+            store.dispatch('roles/getRoles', {
                 limit: 9999,
                 offset: 0,
             }),
