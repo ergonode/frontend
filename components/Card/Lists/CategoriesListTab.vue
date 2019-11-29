@@ -31,10 +31,10 @@ import {
 export default {
     name: 'CategoriesListTab',
     components: {
-        ListSearchHeader: () => import('~/components/List/ListSearchHeader'),
-        CategoriesList: () => import('~/components/List/CategoriesList'),
+        ListSearchHeader: () => import('~/core/components/List/ListSearchHeader'),
+        CategoriesList: () => import('~/components/List/Categories/CategoriesList'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
-        FabButton: () => import('~/components/Buttons/FabButton'),
+        FabButton: () => import('~/core/components/Buttons/FabButton'),
     },
     props: {
         isExpanded: {

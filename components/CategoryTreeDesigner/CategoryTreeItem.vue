@@ -41,8 +41,8 @@ import { SIZES, THEMES } from '~/defaults/buttons';
 import { ACTION } from '~/defaults/icons';
 import IconDots from '~/components/Icon/Others/IconDots';
 import IconPlusMinus from '~/components/Icon/Actions/IconPlusMinus';
-import MultiButton from '~/components/Buttons/MultiButton';
-import NumericBadge from '~/components/Badges/NumericBadge';
+import MultiButton from '~/core/components/Buttons/MultiButton';
+import NumericBadge from '~/core/components/Badges/NumericBadge';
 
 export default {
     name: 'CategoryTreeItem',

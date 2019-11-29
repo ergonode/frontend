@@ -29,15 +29,15 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
-import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
 
 export default {
     name: 'RolesGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        Grid: () => import('~/components/Grid/Grid'),
-        GridPageSelector: () => import('~/components/Grid/GridPageSelector'),
-        GridPagination: () => import('~/components/Grid/GridPagination'),
+        Grid: () => import('~/core/components/Grid/Grid'),
+        GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
+        GridPagination: () => import('~/core/components/Grid/GridPagination'),
     },
     data() {
         return {

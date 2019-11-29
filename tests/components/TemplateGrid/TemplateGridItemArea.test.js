@@ -25,7 +25,7 @@ describe('TemplateGrid/TemplateGridItemArea', () => {
     });
     it('Component has main class', () => {
         expect(wrapper.contains('.grid__item-area')).toBeTruthy();
-        expect(wrapper.vm.$el).toMatchSnapshot();
+        expect(wrapper).toMatchSnapshot();
     });
     it('Check item data', () => {
         expect(wrapper.vm.item).toStrictEqual({

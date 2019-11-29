@@ -26,7 +26,7 @@ export default {
     name: 'AttributeGroupBaseCard',
     components: {
         BaseCard,
-        TextField: () => import('~/components/Inputs/TextField'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
     },
     mixins: [errorValidationMixin],
     computed: {

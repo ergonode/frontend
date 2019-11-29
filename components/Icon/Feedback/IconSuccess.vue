@@ -3,24 +3,24 @@
  * See LICENSE for license details.
  */
 <template>
-    <IconBase
+    <BaseIcon
         :width="size"
         :height="size"
         :icon-color="fillColor">
         <path
             :d="drawingCommands"
             :transform="transform" />
-    </IconBase>
+    </BaseIcon>
 </template>
 
 <script>
-import IconBase from '~/components/Icon/IconBase';
+import BaseIcon from '~/components/Icon/BaseIcon';
 import { GREEN } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'IconSuccess',
     components: {
-        IconBase,
+        BaseIcon,
     },
     props: {
         fillColor: {

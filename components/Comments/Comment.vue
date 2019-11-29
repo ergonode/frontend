@@ -6,7 +6,7 @@
     <CommentWrapper>
         <template #header>
             <div class="header__user">
-                <UserPicture
+                <UserAvatar
                     :image-id="comment.avatar_id"
                     :user-name="comment.author"
                     :picture-size="32" />
@@ -62,10 +62,9 @@ import {
     GREEN, RED, WHITE,
 } from '~/assets/scss/_variables/_colors.scss';
 import CommentWrapper from '~/components/Comments/CommentWrapper';
-import FabButton from '~/components/Buttons/FabButton';
+import FabButton from '~/core/components/Buttons/FabButton';
 import IconEdit from '~/components/Icon/Actions/IconEdit';
 import IconDelete from '~/components/Icon/Actions/IconDelete';
-import UserPicture from '~/components/Inputs/Image/UserPicture';
 
 export default {
     name: 'Comment',
@@ -74,7 +73,7 @@ export default {
         FabButton,
         IconEdit,
         IconDelete,
-        UserPicture,
+        UserAvatar: () => import('~/components/Multimedia/UserAvatar'),
     },
     props: {
         comment: {

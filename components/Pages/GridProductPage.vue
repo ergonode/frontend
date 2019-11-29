@@ -30,16 +30,16 @@
 import { mapState } from 'vuex';
 import { SIZES } from '~/defaults/buttons';
 import { DRAGGED_ELEMENT } from '~/defaults/grid';
-import PrependIconButton from '~/components/Buttons/PrependIconButton';
+import PrependIconButton from '~/core/components/Buttons/PrependIconButton';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 
 
 export default {
     name: 'GridProductPage',
     components: {
-        HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
-        TitleBar: () => import('~/components/TitleBar/TitleBar'),
-        BasePage: () => import('~/components/Layout/BasePage'),
+        HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
+        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
+        BasePage: () => import('~/core/components/Layout/BasePage'),
         TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
         PrependIconButton,
         IconAdd,

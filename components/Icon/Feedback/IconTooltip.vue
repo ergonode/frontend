@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <IconBase
+    <BaseIcon
         :width="size"
         :height="size"
         :icon-color="ovalFillColor">
@@ -11,17 +11,17 @@
         <path
             :fill="questionMarkFillColor"
             :d="questionMarkDrawingCommands" />
-    </IconBase>
+    </BaseIcon>
 </template>
 
 <script>
-import IconBase from '~/components/Icon/IconBase';
+import BaseIcon from '~/components/Icon/BaseIcon';
 import { GRAPHITE, WHITE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'IconTooltip',
     components: {
-        IconBase,
+        BaseIcon,
     },
     props: {
         size: {

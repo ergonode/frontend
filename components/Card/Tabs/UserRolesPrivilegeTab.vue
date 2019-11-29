@@ -21,7 +21,7 @@
                         :column="column"
                         :editing="Boolean(rowsSelectionState)"
                         @edit="onSelectAllRows">
-                        <GridCheckCell
+                        <GridPresentationCheckCell
                             :value="rowsSelectionState"
                             @input="onSelectAllRows" />
                     </GridCell>
@@ -34,7 +34,7 @@
                         :column="column"
                         :editing="Boolean(selectedRows[row - 1])"
                         @edit="(value) => onSelectRow({ row: row - 1, value })">
-                        <GridCheckCell
+                        <GridPresentationCheckCell
                             :value="selectedRows[row - 1]"
                             @input="(value) => onSelectRow({ row: row - 1, value })" />
                     </GridCell>
@@ -73,13 +73,13 @@ import gridModule from '~/reusableStore/grid/state';
 import { getMappedGridData } from '~/model/mappers/privilegesMapper';
 import { COLUMN_TYPE } from '~/defaults/grid';
 import { STATE } from '~/defaults/inputs/checkbox';
-import Grid from '~/components/Grid/Grid';
-import GridCell from '~/components/Grid/GridCell';
-import GridPresentationHintCell from '~/components/Grid/PresentationCells/GridPresentationHintCell';
-import GridPresentationCell from '~/components/Grid/PresentationCells/GridPresentationCell';
-import GridCheckCell from '~/components/Grid/GridCheckCell';
+import Grid from '~/core/components/Grid/Grid';
+import GridCell from '~/core/components/Grid/GridCell';
+import GridPresentationHintCell from '~/core/components/Grid/PresentationCells/GridPresentationHintCell';
+import GridPresentationCell from '~/core/components/Grid/PresentationCells/GridPresentationCell';
+import GridPresentationCheckCell from '~/core/components/Grid/PresentationCells/GridPresentationCheckCell';
 import Footer from '~/components/ReusableFooter/Footer';
-import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
 
 export default {
     name: 'UserRolesPrivilegeTab',
@@ -92,7 +92,7 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
         GridCell,
-        GridCheckCell,
+        GridPresentationCheckCell,
         GridPresentationCell,
         Grid,
         Footer,
@@ -237,7 +237,7 @@ export default {
                 return GridPresentationCell;
             }
 
-            return GridCheckCell;
+            return GridPresentationCheckCell;
         },
         isColumnTypeText(type) {
             return type === COLUMN_TYPE.TEXT;

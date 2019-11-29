@@ -50,7 +50,7 @@ export default {
     name: 'TransitionBaseCard',
     components: {
         BaseCard,
-        Select: () => import('~/components/Inputs/Select/Select'),
+        Select: () => import('~/core/components/Inputs/Select/Select'),
         Headline: () => import('~/components/Form/Headline'),
     },
     mixins: [errorValidationMixin],

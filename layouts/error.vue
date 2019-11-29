@@ -15,7 +15,7 @@
 export default {
     name: 'NuxtError',
     components: {
-        BasePage: () => import('~/components/Layout/BasePage'),
+        BasePage: () => import('~/core/components/Layout/BasePage'),
     },
     props: {
         error: {
@@ -27,11 +27,11 @@ export default {
         errorPage() {
             switch (this.error.statusCode) {
             case 403:
-                return () => import('~/components/Errors/403');
+                return () => import('~/core/components/Layout/Errors/403');
             case 404:
-                return () => import('~/components/Errors/404');
+                return () => import('~/core/components/Layout/Errors/404');
             default:
-                return () => import('~/components/Errors/500');
+                return () => import('~/core/components/Layout/Errors/500');
             }
         },
     },

@@ -3,23 +3,23 @@
  * See LICENSE for license details.
  */
 <template>
-    <IconBase
+    <BaseIcon
         :width="size"
         :height="size"
         :icon-color="fillColor">
         <polygon :points="iconPoints" />
-    </IconBase>
+    </BaseIcon>
 </template>
 
 <script>
 import { ACTION } from '~/defaults/icons';
 import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
-import IconBase from '~/components/Icon/IconBase';
+import BaseIcon from '~/components/Icon/BaseIcon';
 
 export default {
     name: 'IconPlusMinus',
     components: {
-        IconBase,
+        BaseIcon,
     },
     props: {
         fillColor: {

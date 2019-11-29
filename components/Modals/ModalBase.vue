@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import FadeTransition from '~/components/Transitions/FadeTransition';
+import FadeTransition from '~/core/components/Transitions/FadeTransition';
 
 export default {
     name: 'ModalBase',

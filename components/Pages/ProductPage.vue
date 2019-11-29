@@ -57,8 +57,8 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { SIZES, THEMES } from '~/defaults/buttons';
-import Button from '~/components/Buttons/Button';
-import MultiButton from '~/components/Buttons/MultiButton';
+import Button from '~/core/components/Buttons/Button';
+import MultiButton from '~/core/components/Buttons/MultiButton';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
@@ -67,7 +67,7 @@ export default {
     components: {
         Button,
         MultiButton,
-        TitleBarSubActions: () => import('~/components/TitleBar/TitleBarSubActions'),
+        TitleBarSubActions: () => import('~/core/components/TitleBar/TitleBarSubActions'),
         ProductStatusBadge: () => import('~/components/Badges/ProductStatusBadge'),
     },
     created() {

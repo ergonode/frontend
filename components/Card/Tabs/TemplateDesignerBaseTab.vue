@@ -17,7 +17,7 @@
 
 <script>
 import TemplateDesignerBaseCard from '~/components/Card/Cards/TemplateDesignerBaseCard';
-import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
 import Footer from '~/components/ReusableFooter/Footer';
 import BaseForm from '~/components/Form/BaseForm';
 

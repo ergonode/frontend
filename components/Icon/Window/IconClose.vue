@@ -3,22 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <IconBase
+    <BaseIcon
         :width="size"
         :height="size"
         :icon-color="fillColor">
         <polygon :points="points" />
-    </IconBase>
+    </BaseIcon>
 </template>
 
 <script>
-import IconBase from '~/components/Icon/IconBase';
+import BaseIcon from '~/components/Icon/BaseIcon';
 import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'IconClose',
     components: {
-        IconBase,
+        BaseIcon,
     },
     props: {
         fillColor: {

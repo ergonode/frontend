@@ -44,17 +44,17 @@
 <script>
 import { THEMES, SIZES } from '~/defaults/buttons';
 import { getNestedTabRoutes } from '~/model/navigation/tabs';
-import PrependIconButton from '~/components/Buttons/PrependIconButton';
+import PrependIconButton from '~/core/components/Buttons/PrependIconButton';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 
 export default {
     name: 'AttributeTabs',
     middleware: ['tab/redirectToAttributeGrid'],
     components: {
-        HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
-        TitleBar: () => import('~/components/TitleBar/TitleBar'),
-        TitleBarSubActions: () => import('~/components/TitleBar/TitleBarSubActions'),
-        BasePage: () => import('~/components/Layout/BasePage'),
+        HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
+        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
+        TitleBarSubActions: () => import('~/core/components/TitleBar/TitleBarSubActions'),
+        BasePage: () => import('~/core/components/Layout/BasePage'),
         PrependIconButton,
         IconAdd,
     },
