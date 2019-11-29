@@ -26,6 +26,7 @@ export default {
         ...mapState('transitions', {
             source: (state) => state.source,
             destination: (state) => state.destination,
+            roles: (state) => state.roles,
             conditionSetId: (state) => state.conditionSetId,
         }),
         ...mapState('gridDesigner', {
@@ -62,21 +63,28 @@ export default {
             if (!this.conditionSetId) {
                 this.createConditionSet({
                     data: propertiesToUpdate,
-                    onSuccess: this.onUpdateTransition,
+                    onSuccess: this.onConditionCreated,
                     onError: this.onError,
                 });
             } else {
                 this.updateConditionSet({
                     id: this.conditionSetId,
                     data: propertiesToUpdate,
+                    onError: this.onError,
+                });
+                this.updateTransition({
+                    data: {
+                        roles: this.roles,
+                    },
                     onSuccess: this.onTransitionUpdated,
                     onError: this.onError,
                 });
             }
         },
-        onUpdateTransition(conditionSetId) {
+        onConditionCreated(conditionSetId) {
             const propertiesToUpdate = {
                 condition_set: conditionSetId,
+                roles: this.roles,
             };
 
             this.updateTransition({
@@ -119,6 +127,10 @@ export default {
         await Promise.all([
             store.dispatch('transitions/clearStorage'),
             store.dispatch('productStatus/getProductStatuses', {
+                limit: 9999,
+                offset: 0,
+            }),
+            store.dispatch('roles/getRoles', {
                 limit: 9999,
                 offset: 0,
             }),

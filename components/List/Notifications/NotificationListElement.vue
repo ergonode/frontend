@@ -7,12 +7,10 @@
         :class="['notification-element', {
             'notification-element--unread': notification.read_at === null,
         }]">
-        <div class="notification-element__picture">
-            <UserPicture
-                :image-id="notification.avatar_id"
-                :picture-size="40"
-                :placeholder-picture-color="graphiteColor" />
-        </div>
+        <UserPicture
+            :image-id="notification.avatar_id"
+            :user-name="notification.author"
+            :picture-size="40" />
         <span class="notification-element__message">
             <strong>{{ notification.author }}</strong>
             {{ notification.message }}
@@ -47,18 +45,22 @@ export default {
 
 <style lang="scss" scoped>
     .notification-element {
+        position: relative;
+        z-index: 0;
         display: grid;
         align-items: center;
         grid-template-columns: max-content auto;
         grid-template-rows: max-content;
         column-gap: 12px;
         padding: 12px 16px 12px 12px;
+        cursor: pointer;
 
         &--unread {
             background-color: $GREEN_LIGHT;
         }
 
         &:hover {
+            z-index: 5;
             background-color: $WHITESMOKE;
             box-shadow: $ELEVATOR_2_DP;
         }
@@ -74,16 +76,18 @@ export default {
             grid-area: 2 / 2 / 3 / 3;
             color: $GRAPHITE;
             font: $FONT_MEDIUM_12_16;
+            margin-top: 4px;
         }
 
         &__message, &__date {
             text-align: left;
         }
 
-        &__picture {
+        .user-avatar {
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: center;
+            align-items: center;
             grid-row: 1 / 3;
             height: 100%;
         }

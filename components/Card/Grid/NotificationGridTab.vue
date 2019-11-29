@@ -12,7 +12,8 @@
                             v-for="notification in notifications"
                             :key="notification.id"
                             :notification="notification" />
-                        <NotificationListFooter>
+                        <NotificationListFooter v-if="isMoreButtonVisible">
+                            <Loader v-if="!$isLoaded('moreNotifications')" />
                             <Button
                                 :title="buttonTitle"
                                 @click.native="onLoadMoreNotifications" />
@@ -45,6 +46,7 @@ export default {
         BaseForm,
         Button: () => import('~/components/Buttons/Button'),
         List: () => import('~/components/List/List'),
+        Loader: () => import('~/components/Loader/Loader'),
         NotificationListElement: () => import('~/components/List/Notifications/NotificationListElement'),
         NotificationListFooter: () => import('~/components/List/Notifications/NotificationListFooter'),
         ListPlaceholder: () => import('~/components/Placeholder/ListPlaceholder'),
@@ -59,11 +61,17 @@ export default {
             return LayoutOrientation.HORIZONTAL;
         },
         buttonTitle() {
-            const notificationsNumber = this.limit + DATA_LIMIT < this.count
-                ? DATA_LIMIT
-                : this.count - this.limit + DATA_LIMIT;
+            const { length: listLength } = this.notifications;
+            const notificationsNumber = this.count - listLength;
 
             return `LOAD MORE NOTIFICATIONS (${notificationsNumber})`;
+        },
+        isMoreButtonVisible() {
+            const { length: listLength } = this.notifications;
+
+            return listLength
+                && listLength < this.count
+                && this.count > DATA_LIMIT;
         },
     },
     methods: {
@@ -82,5 +90,9 @@ export default {
 <style lang="scss">
     .notifications-list {
         width: 560px;
+
+        .list {
+            padding: 3px;
+        }
     }
 </style>

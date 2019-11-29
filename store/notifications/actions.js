@@ -8,18 +8,20 @@ export default {
     setNotificationsLimit({ commit }, limit) {
         commit(types.SET_NOTIFICATIONS_LIMIT, limit);
     },
-    requestForNotifications({ commit, dispatch, state }) {
+    async requestForNotifications({ commit, dispatch, state }) {
         const params = {
             limit: state.limit,
             offset: 0,
         };
 
-        return this.app.$axios.$get('profile/notifications', { params }).then(({ collection, info }) => {
+        await this.$setLoader('moreNotifications');
+        await this.app.$axios.$get('profile/notifications', { params }).then(({ collection, info }) => {
             dispatch('increaseRequestTimeInterval');
             dispatch('setRequestTimeout');
             commit(types.SET_NOTIFICATIONS, collection);
             commit(types.SET_NOTIFICATIONS_COUNT, info.count);
         });
+        await this.$removeLoader('moreNotifications');
     },
     increaseRequestTimeInterval({ commit, state }) {
         const { requestTimeInterval } = state;

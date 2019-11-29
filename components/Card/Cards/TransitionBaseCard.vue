@@ -25,12 +25,24 @@
             :disabled="isDisabled || isDisabledByPrivileges"
             :error-messages="errorDestinationMessage"
             @input="onSetDestination" />
+        <Headline title="Action" />
+        <Select
+            :value="parsedRole"
+            solid
+            regular
+            clearable
+            multiselect
+            label="Role"
+            :options="roleValues"
+            :disabled="isDisabledByPrivileges"
+            :error-messages="errorRoleMessage"
+            @input="onSetRoles" />
     </BaseCard>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { isEmpty } from '~/model/objectWrapper';
+import { isEmpty, getKeysByValues, getValuesByKeys } from '~/model/objectWrapper';
 import BaseCard from '~/components/Card/BaseCard';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
@@ -46,9 +58,13 @@ export default {
         ...mapState('transitions', {
             source: (state) => state.source,
             destination: (state) => state.destination,
+            transitionRoles: (state) => state.roles,
         }),
         ...mapState('productStatus', {
             statuses: (state) => state.statuses,
+        }),
+        ...mapState('roles', {
+            roles: (state) => state.roles,
         }),
         isDisabled() {
             if (!isEmpty(this.$route.params)) {
@@ -58,6 +74,12 @@ export default {
                 return Boolean(source) && Boolean(destination);
             }
             return false;
+        },
+        parsedRole() {
+            return getValuesByKeys(this.roles, this.transitionRoles);
+        },
+        roleValues() {
+            return Object.values(this.roles);
         },
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['WORKFLOW_UPDATE']))
@@ -71,11 +93,16 @@ export default {
             const destinationIndex = 'destination';
             return this.elementIsValidate(destinationIndex);
         },
+        errorRoleMessage() {
+            const roleIndex = 'roleId';
+            return this.elementIsValidate(roleIndex);
+        },
     },
     methods: {
         ...mapActions('transitions', [
             'setSource',
             'setDestination',
+            'setRoles',
         ]),
         ...mapActions('validations', [
             'setErrorForKey',
@@ -95,6 +122,10 @@ export default {
                 this.setErrorForKey({ key: 'destination', error: ['Destination must be different then source'] });
             }
             this.setDestination(value);
+        },
+        onSetRoles(roles) {
+            const parsedRoles = getKeysByValues(this.roles, roles);
+            this.setRoles(parsedRoles);
         },
     },
 };

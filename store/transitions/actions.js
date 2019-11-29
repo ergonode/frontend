@@ -16,6 +16,9 @@ export default {
     setConditionSetId({ commit }, value) {
         commit(types.SET_CONDITION_SET_ID, value);
     },
+    setRoles({ commit }, value) {
+        commit(types.SET_ROLES, value);
+    },
     async getTransitionById(
         { commit, dispatch, rootState },
         { id },
@@ -25,10 +28,12 @@ export default {
 
         await this.app.$axios.$get(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`).then(async ({
             condition_set_id: conditionSetId,
+            role_ids: rolesIds,
         }) => {
             commit(types.SET_SOURCE, source.replace(/%20/g, ' '));
             commit(types.SET_DESTINATION, destination.replace(/%20/g, ' '));
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
+            commit(types.SET_ROLES, rolesIds);
             if (conditionSetId) {
                 await dispatch('conditions/getConditionSetById', {
                     conditionSetId,

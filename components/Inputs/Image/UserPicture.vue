@@ -4,30 +4,31 @@
  */
 <template>
     <div
-        class="user-picture"
-        :style="{ width: `${pictureSize}px`, height: `${pictureSize}px`}">
+        class="user-avatar"
+        :style="avatarStyles">
         <Picture
             v-if="imageId"
             fab
             :image-id="imageId" />
-        <IconUser
+        <span
             v-else
-            :fill-color="placeholderPictureColor"
-            :size="pictureSize" />
+            class="user-avatar__placeholder font--medium-14-20"
+            v-text="avatarInitial" />
     </div>
 </template>
 
 <script>
-import { WHITE } from '~/assets/scss/_variables/_colors.scss';
-
 export default {
     name: 'UserPicture',
     components: {
         Picture: () => import('~/components/Inputs/Image/Picture'),
-        IconUser: () => import('~/components/Icon/Menu/IconUser'),
     },
     props: {
         imageId: {
+            type: String,
+            default: '',
+        },
+        userName: {
             type: String,
             default: '',
         },
@@ -35,21 +36,33 @@ export default {
             type: Number,
             default: 24,
         },
-        placeholderPictureColor: {
-            type: String,
-            default: WHITE,
+    },
+    computed: {
+        avatarInitial() {
+            return this.userName.length ? this.userName[0] : '';
+        },
+        avatarStyles() {
+            return {
+                width: `${this.pictureSize}px`,
+                height: `${this.pictureSize}px`,
+            };
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .user-picture {
+    .user-avatar {
         display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $WHITE;
+        border-radius: 50%;
+        box-shadow: $ELEVATOR_2_DP;
 
-        & > img {
-            object-fit: contain;
-            box-shadow: $ELEVATOR_2_DP;
+        &__placeholder {
+            color: $GRAPHITE_DARK;
+            text-transform: uppercase;
         }
     }
 </style>

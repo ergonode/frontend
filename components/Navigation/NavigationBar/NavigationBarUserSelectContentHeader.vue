@@ -6,8 +6,8 @@
     <div class="header">
         <UserPicture
             :image-id="avatarId"
-            :placeholder-picture-color="graphiteColor"
-            :picture-size="72" />
+            :user-name="initials"
+            :picture-size="64" />
         <span
             class="header__initials font--medium-16-24"
             v-text="initials" />
@@ -73,7 +73,7 @@ export default {
             color: $GREY_DARK;
         }
 
-        .user-picture {
+        .user-avatar {
             grid-row: 1 / 3;
         }
     }

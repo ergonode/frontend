@@ -7,7 +7,9 @@
         data-cy="user-select"
         @focus="onFocus">
         <template #input>
-            <UserPicture :image-id="user.avatar_id" />
+            <UserPicture
+                :image-id="user.avatar_id"
+                :user-name="user.first_name" />
             <span
                 class="title"
                 v-text="capitalizedUserFirstName || capitalizedUserLastName" />
