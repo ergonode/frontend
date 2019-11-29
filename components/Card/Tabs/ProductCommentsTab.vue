@@ -15,7 +15,7 @@
 <script>
 import { DATA_LIMIT } from '~/defaults/grid';
 import ProductCommentsCard from '~/components/Card/Cards/ProductCommentsCard';
-import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
 import BaseForm from '~/components/Form/BaseForm';
 
 export default {

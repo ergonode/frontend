@@ -23,7 +23,7 @@ export default {
     components: {
         Comment: () => import('~/components/Comments/Comment'),
         EditableComment: () => import('~/components/Comments/EditableComment'),
-        FadeTransition: () => import('~/components/Transitions/FadeTransition'),
+        FadeTransition: () => import('~/core/components/Transitions/FadeTransition'),
     },
     data() {
         return {

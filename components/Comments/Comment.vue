@@ -68,10 +68,10 @@ import {
     GREEN, RED, WHITE,
 } from '~/assets/scss/_variables/_colors.scss';
 import CommentWrapper from '~/components/Comments/CommentWrapper';
-import FabButton from '~/components/Buttons/FabButton';
+import FabButton from '~/core/components/Buttons/FabButton';
 import IconEdit from '~/components/Icon/Actions/IconEdit';
 import IconDelete from '~/components/Icon/Actions/IconDelete';
-import Picture from '~/components/Inputs/Image/Picture';
+import Picture from '~/core/components/Multimedia/Picture';
 
 export default {
     name: 'Comment',

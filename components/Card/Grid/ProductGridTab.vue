@@ -47,9 +47,9 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
-import VerticalTabBar from '~/components/Tab/VerticalTabBar';
-import Button from '~/components/Buttons/Button';
-import GridViewTemplate from '~/components/Layout/GridViewTemplate';
+import VerticalTabBar from '~/core/components/Tab/VerticalTabBar';
+import Button from '~/core/components/Buttons/Button';
+import GridViewTemplate from '~/core/components/Layout/GridViewTemplate';
 
 export default {
     name: 'ProductGridTab',
@@ -57,10 +57,10 @@ export default {
         GridViewTemplate,
         VerticalTabBar,
         Button,
-        Grid: () => import('~/components/Grid/Grid'),
-        GridAdvancedFilters: () => import('~/components/Grid/AdvancedFilters/GridAdvancedFilters'),
-        GridPagination: () => import('~/components/Grid/GridPagination'),
-        GridPageSelector: () => import('~/components/Grid/GridPageSelector'),
+        Grid: () => import('~/core/components/Grid/Grid'),
+        GridAdvancedFilters: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFilters'),
+        GridPagination: () => import('~/core/components/Grid/GridPagination'),
+        GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
     },
     data() {
         return {

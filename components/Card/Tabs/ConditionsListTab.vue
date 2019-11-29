@@ -25,8 +25,8 @@ export default {
         },
     },
     components: {
-        ConditionsList: () => import('~/components/List/ConditionsList'),
-        ListSearchHeader: () => import('~/components/List/ListSearchHeader'),
+        ConditionsList: () => import('~/components/List/Conditions/ConditionsList'),
+        ListSearchHeader: () => import('~/core/components/List/ListSearchHeader'),
     },
     computed: {
         ...mapState('authentication', {

@@ -26,12 +26,15 @@
             :error-messages="errorGroupsMessage"
             @input="setAttributeGroups" />
         <Divider />
-        <MultilingualToggler
+        <Toggler
             :value="isMultilingual"
             :disabled="isDisabled || isDisabledByPrivileges"
             label="Multilingual attribute"
-            :hint="multilingualHint"
-            @input="setMultilingualAttribute" />
+            @input="setMultilingualAttribute">
+            <template #append>
+                <InfoHint :hint="multilingualHint" />
+            </template>
+        </Toggler>
         <Select
             :value="type"
             solid
@@ -75,10 +78,11 @@ export default {
     components: {
         BaseCard,
         AttributeOptionKeyValues: () => import('~/components/Card/AttributeOptionKeyValues'),
-        MultilingualToggler: () => import('~/components/Inputs/Toggler/MultilingualToggler'),
-        TextField: () => import('~/components/Inputs/TextField'),
-        Select: () => import('~/components/Inputs/Select/Select'),
-        TranslationSelect: () => import('~/components/Inputs/Select/TranslationSelect'),
+        Toggler: () => import('~/core/components/Inputs/Toggler/Toggler'),
+        InfoHint: () => import('~/core/components/Inputs/Hint/InfoHint'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
+        Select: () => import('~/core/components/Inputs/Select/Select'),
+        TranslationSelect: () => import('~/core/components/Inputs/Select/TranslationSelect'),
         Divider: () => import('~/components/Dividers/Divider'),
     },
     mixins: [errorValidationMixin],

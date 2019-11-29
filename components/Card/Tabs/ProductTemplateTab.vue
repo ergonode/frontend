@@ -33,14 +33,14 @@
 import { mapState, mapActions } from 'vuex';
 import { getKeyByValue, getValueByKey } from '~/model/objectWrapper';
 import Footer from '~/components/ReusableFooter/Footer';
-import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
 import BaseForm from '~/components/Form/BaseForm';
 
 export default {
     name: 'ProductTemplateTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        Select: () => import('~/components/Inputs/Select/Select'),
+        Select: () => import('~/core/components/Inputs/Select/Select'),
         ProductCompleteness: () => import('~/components/Progress/ProductCompleteness'),
         ProductTemplateCard: () => import('~/components/Card/Cards/ProductTemplateCard'),
         Footer,

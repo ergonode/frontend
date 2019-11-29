@@ -3,22 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <IconBase
+    <BaseIcon
         :width="size"
         :height="size"
         :icon-color="fillColor">
         <polygon :points="points" />
-    </IconBase>
+    </BaseIcon>
 </template>
 
 <script>
 import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
-import IconBase from '~/components/Icon/IconBase';
+import BaseIcon from '~/components/Icon/BaseIcon';
 
 export default {
     name: 'IconAdd',
     components: {
-        IconBase,
+        BaseIcon,
     },
     props: {
         fillColor: {

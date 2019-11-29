@@ -18,7 +18,7 @@
 <script>
 import AttributeBaseCard from '~/components/Card/Cards/AttributeBaseCard';
 import Footer from '~/components/ReusableFooter/Footer';
-import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
 import BaseForm from '~/components/Form/BaseForm';
 
 export default {

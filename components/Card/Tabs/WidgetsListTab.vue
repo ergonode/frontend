@@ -13,7 +13,7 @@
 export default {
     name: 'WidgetsListTab',
     components: {
-        WidgetsList: () => import('~/components/List/WidgetsList'),
+        WidgetsList: () => import('~/components/List/Widgets/WidgetsList'),
     },
 };
 </script>

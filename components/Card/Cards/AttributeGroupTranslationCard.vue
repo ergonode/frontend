@@ -20,7 +20,7 @@
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
 import BaseCard from '~/components/Card/BaseCard';
-import TextField from '~/components/Inputs/TextField';
+import TextField from '~/core/components/Inputs/TextField';
 import BaseModalCard from '~/components/Card/BaseModalCard';
 
 export default {

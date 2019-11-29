@@ -18,7 +18,7 @@
 <script>
 import languageSettingsModule from '~/reusableStore/languageSettings/state';
 import LanguageSettingsCard from '~/components/Card/Cards/LanguageSettingsCard';
-import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
 import BaseForm from '~/components/Form/BaseForm';
 
 export default {

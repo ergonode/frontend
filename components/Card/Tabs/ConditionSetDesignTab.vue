@@ -17,13 +17,13 @@
 </template>
 
 <script>
-import GridViewTemplate from '~/components/Layout/GridViewTemplate';
+import GridViewTemplate from '~/core/components/Layout/GridViewTemplate';
 
 export default {
     name: 'ConditionSetDesignTab',
     components: {
         GridViewTemplate,
-        VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
+        VerticalTabBar: () => import('~/core/components/Tab/VerticalTabBar'),
         ConditionSetWrapper: () => import('~/components/ConditionSetDesigner/ConditionSetWrapper'),
         Footer: () => import('~/components/ReusableFooter/Footer'),
     },

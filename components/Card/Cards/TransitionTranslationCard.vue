@@ -32,8 +32,8 @@
 <script>
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
-import TextField from '~/components/Inputs/TextField';
-import TextArea from '~/components/Inputs/TextArea';
+import TextField from '~/core/components/Inputs/TextField';
+import TextArea from '~/core/components/Inputs/TextArea';
 import Divider from '~/components/Dividers/Divider';
 import BaseCard from '~/components/Card/BaseCard';
 import BaseModalCard from '~/components/Card/BaseModalCard';

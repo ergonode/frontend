@@ -39,8 +39,8 @@ import { mapActions } from 'vuex';
 import { THEMES, SIZES } from '~/defaults/buttons';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import CommentWrapper from '~/components/Comments/CommentWrapper';
-import Button from '~/components/Buttons/Button';
-import TextArea from '~/components/Inputs/TextArea';
+import Button from '~/core/components/Buttons/Button';
+import TextArea from '~/core/components/Inputs/TextArea';
 
 export default {
     name: 'EditableComment',

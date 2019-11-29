@@ -26,8 +26,8 @@ import {
     getValuesByKeys,
 } from '~/model/objectWrapper';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
-import TextField from '~/components/Inputs/TextField';
-import Select from '~/components/Inputs/Select/Select';
+import TextField from '~/core/components/Inputs/TextField';
+import Select from '~/core/components/Inputs/Select/Select';
 
 export default {
     name: 'ConditionSetParameters',

@@ -47,9 +47,9 @@ export default {
     name: 'ProductBaseCard',
     components: {
         BaseCard,
-        TextField: () => import('~/components/Inputs/TextField'),
-        Select: () => import('~/components/Inputs/Select/Select'),
-        TranslationSelect: () => import('~/components/Inputs/Select/TranslationSelect'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
+        Select: () => import('~/core/components/Inputs/Select/Select'),
+        TranslationSelect: () => import('~/core/components/Inputs/Select/TranslationSelect'),
     },
     mixins: [errorValidationMixin],
     computed: {

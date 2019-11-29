@@ -18,9 +18,9 @@ export default {
     name: 'NotificationTabs',
     middleware: ['tab/redirectToNotificationGrid'],
     components: {
-        HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
-        TitleBar: () => import('~/components/TitleBar/TitleBar'),
-        BasePage: () => import('~/components/Layout/BasePage'),
+        HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
+        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
+        BasePage: () => import('~/core/components/Layout/BasePage'),
     },
     computed: {
         tabs() {

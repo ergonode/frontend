@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Button from '~/components/Buttons/Button';
+import Button from '~/core/components/Buttons/Button';
 
 export default {
     name: 'Footer',

@@ -35,17 +35,17 @@ import { mapState, mapActions } from 'vuex';
 export default {
     middleware: ['setDictionaries', 'authenticated'],
     components: {
-        App: () => import('~/components/Layout/App'),
-        AppContent: () => import('~/components/Layout/AppContent'),
-        BasePage: () => import('~/components/Layout/BasePage'),
-        SideBar: () => import('~/components/Navigation//SideBar/SideBar'),
-        NavigationBar: () => import('~/components/Navigation/NavigationBar/NavigationBar'),
-        NavigationBarMenuButton: () => import('~/components/Navigation/NavigationBar/NavigationBarMenuButton'),
-        NavigationBarUserButton: () => import('~/components/Navigation/NavigationBar/NavigationBarUserButton'),
-        NavigationBarDashboardButton: () => import('~/components/Navigation/NavigationBar/NavigationBarDashboardButton'),
-        NavigationBarSynchronizationButton: () => import('~/components/Navigation/NavigationBar/NavigationBarSynchronizationButton'),
-        NavigationBarNotificationButton: () => import('~/components/Navigation/NavigationBar/NavigationBarNotificationButton'),
-        FlashMessage: () => import('~/components/Alerts/FlashMessage'),
+        App: () => import('~/core/components/Layout/App'),
+        AppContent: () => import('~/core/components/Layout/AppContent'),
+        BasePage: () => import('~/core/components/Layout/BasePage'),
+        SideBar: () => import('~/core/components/SideBar/SideBar'),
+        NavigationBar: () => import('~/core/components/NavigationBar/NavigationBar'),
+        NavigationBarMenuButton: () => import('~/core/components/NavigationBar/NavigationBarMenuButton'),
+        NavigationBarUserButton: () => import('~/components/NavigationBar/NavigationBarUserButton'),
+        NavigationBarDashboardButton: () => import('~/components/NavigationBar/NavigationBarDashboardButton'),
+        NavigationBarSynchronizationButton: () => import('~/components/NavigationBar/NavigationBarSynchronizationButton'),
+        NavigationBarNotificationButton: () => import('~/components/NavigationBar/NavigationBarNotificationButton'),
+        FlashMessage: () => import('~/core/components/Alerts/FlashMessage'),
     },
     data() {
         return {

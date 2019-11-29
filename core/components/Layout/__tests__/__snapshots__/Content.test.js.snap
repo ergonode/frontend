@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout/AppContent Component is named well 1`] = `<main class="app-content"></main>`;

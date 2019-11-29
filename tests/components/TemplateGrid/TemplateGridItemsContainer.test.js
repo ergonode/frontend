@@ -17,6 +17,6 @@ describe('TemplateGrid/TemplateGridItemsContainer', () => {
     });
     it('Component has main class', () => {
         expect(wrapper.contains('.grid-items-container')).toBeTruthy();
-        expect(wrapper.vm.$el).toMatchSnapshot();
+        expect(wrapper).toMatchSnapshot();
     });
 });

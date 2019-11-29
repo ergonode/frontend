@@ -34,8 +34,8 @@
 import { mapActions } from 'vuex';
 import { THEMES } from '~/defaults/buttons';
 import ModalActionBase from '~/components/Modals/ModalActionBase';
-import TextField from '~/components/Inputs/TextField';
-import Button from '~/components/Buttons/Button';
+import TextField from '~/core/components/Inputs/TextField';
+import Button from '~/core/components/Buttons/Button';
 
 export default {
     name: 'ModalSectionTitleTemplate',

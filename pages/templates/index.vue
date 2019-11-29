@@ -47,11 +47,11 @@ import { SIZES } from '~/defaults/buttons';
 export default {
     name: 'Templates',
     components: {
-        TitleBar: () => import('~/components/TitleBar/TitleBar'),
+        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         TemplateElement: () => import('~/components/Template/TemplateElement'),
-        BasePage: () => import('~/components/Layout/BasePage'),
+        BasePage: () => import('~/core/components/Layout/BasePage'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
-        PrependIconButton: () => import('~/components/Buttons/PrependIconButton'),
+        PrependIconButton: () => import('~/core/components/Buttons/PrependIconButton'),
     },
     computed: {
         ...mapState('templateLists', {
