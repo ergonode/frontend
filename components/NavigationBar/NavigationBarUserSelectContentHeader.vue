@@ -4,10 +4,10 @@
  */
 <template>
     <div class="header">
-        <UserPicture
+        <UserAvatar
             :image-id="avatarId"
-            :placeholder-picture-color="graphiteColor"
-            :picture-size="72" />
+            :name="initials"
+            :avatar-size="64" />
         <span
             class="header__initials font--medium-16-24"
             v-text="initials" />
@@ -37,7 +37,7 @@ export default {
         },
     },
     components: {
-        UserPicture: () => import('~/components/Multimedia/UserPicture'),
+        UserAvatar: () => import('~/components/Multimedia/UserAvatar'),
     },
     computed: {
         graphiteColor() {
@@ -73,7 +73,7 @@ export default {
             color: $GREY_DARK;
         }
 
-        .user-picture {
+        .user-avatar {
             grid-row: 1 / 3;
         }
     }

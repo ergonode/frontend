@@ -20,6 +20,7 @@ export default function ({
             auth: /401/,
             access: /403/,
             notFound: /404/,
+            conflict: /409/,
         };
 
         const { response: { data: { message }, status } } = errorResponse;
@@ -41,12 +42,15 @@ export default function ({
             msg = 'Page not found';
             error({ statusCode: 404, message: msg });
             break;
+        case regExp.conflict.test(status):
+            msg = 'Data inconsistency';
+            break;
         default:
             msg = message || 'Unsupported message, please contact with support with reproduction steps';
         }
 
         if (process.client) {
-            store.dispatch('alerts/addAlert', { type: 'error', message: dev ? message : msg });
+            store.dispatch('alerts/addAlert', { type: 'error', message: msg });
         }
         if (dev) console.error(errorResponse.response);
 

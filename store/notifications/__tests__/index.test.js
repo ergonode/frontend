@@ -21,10 +21,11 @@ jest.mock('axios', () => ({
     $post: jest.fn(() => Promise.resolve(mockAxiosGetResult)),
     $patch: jest.fn(() => Promise.resolve(mockAxiosGetResult)),
 }));
-
 let action;
+const $setLoader = jest.fn();
+const $removeLoader = jest.fn();
 const testedAction = (context = {}, payload = {}) => actions[action]
-    .bind({ app: { $axios: axios } })(context, payload);
+    .bind({ app: { $axios: axios }, $setLoader, $removeLoader })(context, payload);
 
 describe('Notifications', () => {
     beforeEach(() => {
