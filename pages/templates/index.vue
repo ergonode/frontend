@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <BasePage>
+    <Page>
         <TitleBar
             title="Templates"
             :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')"
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-    </BasePage>
+    </Page>
 </template>
 
 <script>
@@ -49,7 +49,7 @@ export default {
     components: {
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         TemplateElement: () => import('~/components/Template/TemplateElement'),
-        BasePage: () => import('~/core/components/Layout/BasePage'),
+        Page: () => import('~/core/components/Layout/Page'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
         PrependIconButton: () => import('~/core/components/Buttons/PrependIconButton'),
     },

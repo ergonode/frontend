@@ -67,7 +67,7 @@ import {
 } from '~/model/template_designer/layout/LayoutCalculations';
 import TemplateGridDesigner from '~/components/Template/Base/TemplateGridDesigner';
 import TemplateGridDraggableLayer from '~/components/Template/Base/TemplateGridDraggableLayer';
-import GridViewTemplate from '~/core/components/Layout/GridViewTemplate';
+import GridViewTemplate from '~/core/components/Layout/Templates/GridViewTemplate';
 
 export default {
     name: 'TemplateDesignerTab',

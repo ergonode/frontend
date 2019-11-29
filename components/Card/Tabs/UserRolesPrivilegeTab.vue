@@ -79,7 +79,7 @@ import GridPresentationHintCell from '~/core/components/Grid/PresentationCells/G
 import GridPresentationCell from '~/core/components/Grid/PresentationCells/GridPresentationCell';
 import GridPresentationCheckCell from '~/core/components/Grid/PresentationCells/GridPresentationCheckCell';
 import Footer from '~/components/ReusableFooter/Footer';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
     name: 'UserRolesPrivilegeTab',

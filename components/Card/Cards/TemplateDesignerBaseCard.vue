@@ -3,34 +3,36 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseCard>
-        <TextField
-            :value="templateTitle"
-            solid
-            required
-            regular
-            :error-messages="errorNameMessage"
-            label="Template name"
-            :disabled="isDisabledByPrivileges"
-            @input="(title) => setTemplateDesignerTitle(title)" />
-        <UploadImage
-            :value="templateImage"
-            label="Template cover image"
-            :disabled="isDisabledByPrivileges"
-            @upload="uploadValue"
-            @remove="uploadValue" />
-    </BaseCard>
+    <Form>
+        <FormGroup>
+            <TextField
+                :value="templateTitle"
+                solid
+                required
+                regular
+                :error-messages="errorNameMessage"
+                label="Template name"
+                :disabled="isDisabledByPrivileges"
+                @input="(title) => setTemplateDesignerTitle(title)" />
+            <UploadImage
+                :value="templateImage"
+                label="Template cover image"
+                :disabled="isDisabledByPrivileges"
+                @upload="uploadValue"
+                @remove="uploadValue" />
+        </FormGroup>
+    </Form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import BaseCard from '~/components/Card/BaseCard';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
     name: 'TemplateDesignerBaseCard',
     components: {
-        BaseCard,
+        Form: () => import('~/core/components/Form/Form'),
+        FormGroup: () => import('~/core/components/Form/FormGroup'),
         TextField: () => import('~/core/components/Inputs/TextField'),
         UploadImage: () => import('~/core/components/Inputs/Image/UploadImage'),
     },

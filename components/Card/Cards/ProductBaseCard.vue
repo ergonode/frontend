@@ -3,50 +3,51 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseCard>
-        <TextField
-            :value="sku"
-            hint="Products SKU must be unique"
-            solid
-            regular
-            label="Sku"
-            required
-            :error-messages="errorSkuMessage"
-            :disabled="isDisabled || isDisabledByPrivileges"
-            @input="setProductSku" />
-        <Select
-            :value="template"
-            solid
-            required
-            regular
-            label="Template"
-            :error-messages="errorTemplateMessage"
-            :options="templateValues"
-            :disabled="isDisabled || isDisabledByPrivileges"
-            @input="setProductTemplate" />
-        <TranslationSelect
-            :value="selectedCategories"
-            :solid="true"
-            :regular="true"
-            :multiselect="true"
-            label="Category"
-            :clearable="true"
-            :options="categoryOptions"
-            :disabled="isDisabledByPrivileges"
-            @input="setProductCategories" />
-        <slot />
-    </BaseCard>
+    <Form>
+        <FormGroup>
+            <TextField
+                :value="sku"
+                hint="Products SKU must be unique"
+                solid
+                regular
+                label="Sku"
+                required
+                :error-messages="errorSkuMessage"
+                :disabled="isDisabled || isDisabledByPrivileges"
+                @input="setProductSku" />
+            <Select
+                :value="template"
+                solid
+                required
+                regular
+                label="Template"
+                :error-messages="errorTemplateMessage"
+                :options="templateValues"
+                :disabled="isDisabled || isDisabledByPrivileges"
+                @input="setProductTemplate" />
+            <TranslationSelect
+                :value="selectedCategories"
+                :solid="true"
+                :regular="true"
+                :multiselect="true"
+                label="Category"
+                :clearable="true"
+                :options="categoryOptions"
+                :disabled="isDisabledByPrivileges"
+                @input="setProductCategories" />
+        </FormGroup>
+    </Form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import BaseCard from '~/components/Card/BaseCard';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
     name: 'ProductBaseCard',
     components: {
-        BaseCard,
+        Form: () => import('~/core/components/Form/Form'),
+        FormGroup: () => import('~/core/components/Form/FormGroup'),
         TextField: () => import('~/core/components/Inputs/TextField'),
         Select: () => import('~/core/components/Inputs/Select/Select'),
         TranslationSelect: () => import('~/core/components/Inputs/Select/TranslationSelect'),

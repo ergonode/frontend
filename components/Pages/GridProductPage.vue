@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <BasePage>
+    <Page>
         <TitleBar
             :title="title"
             :icon="icon"
@@ -23,7 +23,7 @@
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
         <TrashCan v-show="draggedElementOnGrid" />
-    </BasePage>
+    </Page>
 </template>
 
 <script>
@@ -39,7 +39,7 @@ export default {
     components: {
         HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
-        BasePage: () => import('~/core/components/Layout/BasePage'),
+        Page: () => import('~/core/components/Layout/Page'),
         TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
         PrependIconButton,
         IconAdd,

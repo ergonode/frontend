@@ -5,9 +5,9 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <BaseForm>
+            <VerticalFixedScroll>
                 <UserAvatarCard />
-            </BaseForm>
+            </VerticalFixedScroll>
         </template>
         <template #footer>
             <Footer :button="updateButton" />
@@ -16,18 +16,18 @@
 </template>
 
 <script>
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import UserAvatarCard from '~/components/Card/Cards/UserAvatarCard';
 import Footer from '~/components/ReusableFooter/Footer';
-import BaseForm from '~/components/Form/BaseForm';
+import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'UserAvatarTab',
     components: {
+        VerticalFixedScroll,
         Footer,
         UserAvatarCard,
         ResponsiveCenteredViewTemplate,
-        BaseForm,
     },
     props: {
         updateButton: {

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <BasePage>
+    <Page>
         <TitleBar
             :title="title"
             :breadcrumbs="breadcrumbs"
@@ -27,7 +27,7 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
-    </BasePage>
+    </Page>
 </template>
 
 <script>

@@ -3,11 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <BasePage>
+    <Page>
         <Component
             :is="errorPage"
             :error="error" />
-    </BasePage>
+    </Page>
 </template>
 
 <script>
@@ -15,7 +15,7 @@
 export default {
     name: 'NuxtError',
     components: {
-        BasePage: () => import('~/core/components/Layout/BasePage'),
+        Page: () => import('~/core/components/Layout/Page'),
     },
     props: {
         error: {

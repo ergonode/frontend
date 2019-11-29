@@ -3,24 +3,21 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="base-page">
+    <div class="vertical-fixed-scroll">
         <slot />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'BasePage',
+    name: 'VerticalFixedScroll',
 };
 </script>
 
 <style lang="scss" scoped>
-    .base-page {
-        position: relative;
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        background-color: $WHITESMOKE;
-        overflow: hidden;
+    .vertical-fixed-scroll {
+        flex: 1 1 auto;
+        height: 0;
+        overflow: auto;
     }
 </style>

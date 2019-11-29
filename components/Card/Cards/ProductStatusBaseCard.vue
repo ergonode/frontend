@@ -3,49 +3,51 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseCard>
-        <TextField
-            :value="code"
-            solid
-            required
-            :error-messages="errorCodeMessage"
-            :disabled="isDisabled || isDisabledByPrivileges"
-            regular
-            label="Code"
-            hint="Status code must be unique"
-            @input="setCode" />
-        <div class="horizontal-wrapper">
-            <CheckBox
-                :value="isDefaultStatus"
-                @input="setStatusAsDefault" />
-            <span class="font--medium-12-16">
-                The starting status
-            </span>
-        </div>
-        <ColorPicker
-            :value="color"
-            solid
-            required
-            :error-messages="errorColorMessage"
-            regular
-            clearable
-            :fixed-content-width="false"
-            label="Badge color"
-            hint="Badge color is needed for presentation purpose"
-            :disabled="isDisabledByPrivileges"
-            @input="setColor" />
-    </BaseCard>
+    <Form>
+        <FormGroup>
+            <TextField
+                :value="code"
+                solid
+                required
+                :error-messages="errorCodeMessage"
+                :disabled="isDisabled || isDisabledByPrivileges"
+                regular
+                label="Code"
+                hint="Status code must be unique"
+                @input="setCode" />
+            <div class="horizontal-wrapper">
+                <CheckBox
+                    :value="isDefaultStatus"
+                    @input="setStatusAsDefault" />
+                <span class="font--medium-12-16">
+                    The initial status
+                </span>
+            </div>
+            <ColorPicker
+                :value="color"
+                solid
+                required
+                :error-messages="errorColorMessage"
+                regular
+                clearable
+                :fixed-content-width="false"
+                label="Badge color"
+                hint="Badge color is needed for presentation purpose"
+                :disabled="isDisabledByPrivileges"
+                @input="setColor" />
+        </FormGroup>
+    </Form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
-import BaseCard from '~/components/Card/BaseCard';
 
 export default {
     name: 'ProductStatusBaseCard',
     components: {
-        BaseCard,
+        Form: () => import('~/core/components/Form/Form'),
+        FormGroup: () => import('~/core/components/Form/FormGroup'),
         TextField: () => import('~/core/components/Inputs/TextField'),
         ColorPicker: () => import('~/core/components/Inputs/Color/ColorPicker'),
         CheckBox: () => import('~/core/components/Inputs/CheckBox'),

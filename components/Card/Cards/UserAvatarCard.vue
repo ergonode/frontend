@@ -3,25 +3,27 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseCard>
-        <UploadImage
-            :value="avatarId"
-            label="Profile picture"
-            :disabled="!isUserAllowedToUpdate"
-            @upload="uploadValue"
-            @remove="uploadValue" />
-    </BaseCard>
+    <Form>
+        <FormGroup>
+            <UploadImage
+                :value="avatarId"
+                label="Profile picture"
+                :disabled="!isUserAllowedToUpdate"
+                @upload="uploadValue"
+                @remove="uploadValue" />
+        </FormGroup>
+    </Form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import BaseCard from '~/components/Card/BaseCard';
 import UploadImage from '~/core/components/Inputs/Image/UploadImage';
 
 export default {
     name: 'UserAvatarCard',
     components: {
-        BaseCard,
+        Form: () => import('~/core/components/Form/Form'),
+        FormGroup: () => import('~/core/components/Form/FormGroup'),
         UploadImage,
     },
     computed: {

@@ -20,9 +20,9 @@
             </NavigationBar>
             <AppContent>
                 <SideBar :value="sideBarState" />
-                <BasePage>
+                <Page>
                     <nuxt />
-                </BasePage>
+                </Page>
             </AppContent>
             <FlashMessage />
         </template>
@@ -37,7 +37,7 @@ export default {
     components: {
         App: () => import('~/core/components/Layout/App'),
         AppContent: () => import('~/core/components/Layout/AppContent'),
-        BasePage: () => import('~/core/components/Layout/BasePage'),
+        Page: () => import('~/core/components/Layout/Page'),
         SideBar: () => import('~/core/components/SideBar/SideBar'),
         NavigationBar: () => import('~/core/components/NavigationBar/NavigationBar'),
         NavigationBarMenuButton: () => import('~/core/components/NavigationBar/NavigationBarMenuButton'),

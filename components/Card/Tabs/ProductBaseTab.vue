@@ -5,9 +5,9 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <BaseForm>
+            <VerticalFixedScroll>
                 <ProductBaseCard />
-            </BaseForm>
+            </VerticalFixedScroll>
         </template>
         <template #footer>
             <Footer :button="updateButton" />
@@ -17,17 +17,17 @@
 
 <script>
 import ProductBaseCard from '~/components/Card/Cards/ProductBaseCard';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import Footer from '~/components/ReusableFooter/Footer';
-import BaseForm from '~/components/Form/BaseForm';
+import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'ProductBaseTab',
     components: {
+        VerticalFixedScroll,
         Footer,
         ProductBaseCard,
         ResponsiveCenteredViewTemplate,
-        BaseForm,
     },
     props: {
         updateButton: {

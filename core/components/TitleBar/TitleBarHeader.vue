@@ -16,7 +16,7 @@
             </template>
         </FabButton>
         <div class="title-bar-header__title">
-            <span v-text="title" />
+            <h1 v-text="title" />
             <slot name="badge" />
         </div>
         <slot name="breadcrumb" />

@@ -5,9 +5,9 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <BaseForm>
+            <VerticalFixedScroll>
                 <CategoryTreeBaseCard />
-            </BaseForm>
+            </VerticalFixedScroll>
         </template>
         <template #footer>
             <Footer :button="updateButton" />
@@ -17,17 +17,17 @@
 
 <script>
 import CategoryTreeBaseCard from '~/components/Card/Cards/CategoryTreeBaseCard';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import Footer from '~/components/ReusableFooter/Footer';
-import BaseForm from '~/components/Form/BaseForm';
+import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'CategoryTreeBaseTab',
     components: {
+        VerticalFixedScroll,
         Footer,
         CategoryTreeBaseCard,
         ResponsiveCenteredViewTemplate,
-        BaseForm,
     },
     props: {
         updateButton: {

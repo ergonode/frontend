@@ -3,28 +3,30 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseCard>
-        <Select
-            :value="selectedLanguageNames"
-            :options="languageNames"
-            solid
-            label="Languages"
-            regular
-            multiselect
-            clearable
-            @input="setSelectedLanguages" />
-    </BaseCard>
+    <Form>
+        <FormGroup>
+            <Select
+                :value="selectedLanguageNames"
+                :options="languageNames"
+                solid
+                label="Languages"
+                regular
+                multiselect
+                clearable
+                @input="setSelectedLanguages" />
+        </FormGroup>
+    </Form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
-import BaseCard from '~/components/Card/BaseCard';
 
 export default {
     name: 'LanguageSettingsCard',
     components: {
-        BaseCard,
+        Form: () => import('~/core/components/Form/Form'),
+        FormGroup: () => import('~/core/components/Form/FormGroup'),
         Select: () => import('~/core/components/Inputs/Select/Select'),
     },
     mixins: [errorValidationMixin],

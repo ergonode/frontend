@@ -29,7 +29,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
     name: 'AttributeGroupGridTab',

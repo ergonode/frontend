@@ -5,9 +5,9 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <BaseForm>
+            <VerticalFixedScroll>
                 <SegmentsBaseCard />
-            </BaseForm>
+            </VerticalFixedScroll>
         </template>
         <template #footer>
             <Footer :button="updateButton" />
@@ -17,17 +17,17 @@
 
 <script>
 import SegmentsBaseCard from '~/components/Card/Cards/SegmentsBaseCard';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import Footer from '~/components/ReusableFooter/Footer';
-import BaseForm from '~/components/Form/BaseForm';
+import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'SegmentsBaseTab',
     components: {
+        VerticalFixedScroll,
         SegmentsBaseCard,
         Footer,
         ResponsiveCenteredViewTemplate,
-        BaseForm,
     },
     props: {
         updateButton: {

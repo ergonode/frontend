@@ -49,7 +49,7 @@ import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
 import VerticalTabBar from '~/core/components/Tab/VerticalTabBar';
 import Button from '~/core/components/Buttons/Button';
-import GridViewTemplate from '~/core/components/Layout/GridViewTemplate';
+import GridViewTemplate from '~/core/components/Layout/Templates/GridViewTemplate';
 
 export default {
     name: 'ProductGridTab',

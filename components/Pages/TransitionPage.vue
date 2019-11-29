@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <BasePage>
+    <Page>
         <TitleBar
             :title="title"
             :breadcrumbs="breadcrumbs"
@@ -31,7 +31,7 @@
             v-show="isBlurVisible"
             :style="blurZIndex" />
         <TrashCan v-show="draggedElementOnGrid" />
-    </BasePage>
+    </Page>
 </template>
 
 <script>
