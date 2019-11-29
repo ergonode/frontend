@@ -97,7 +97,7 @@ import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import { getValueByKey, getKeyByValue } from '~/model/objectWrapper';
 
 export default {
-    name: 'UserBaseCard',
+    name: 'UserForm',
     components: {
         Form: () => import('~/core/components/Form/Form'),
         FormGroup: () => import('~/core/components/Form/FormGroup'),

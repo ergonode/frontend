@@ -10,7 +10,7 @@
                     v-model="nameValue"
                     solid
                     regular
-                    label="Category name"
+                    label="Tree name"
                     :disabled="!isUserAllowedToUpdate"
                     :error-messages="errorNameMessage" />
             </FormGroup>
@@ -23,15 +23,15 @@ import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
 import TextField from '~/core/components/Inputs/TextField';
 import Modal from '~/core/components/Modal/Modal';
-import FormGroup from '~/core/components/Form/FormGroup';
 import Form from '~/core/components/Form/Form';
+import FormGroup from '~/core/components/Form/FormGroup';
 
 export default {
-    name: 'CategoryTranslationCard',
+    name: 'CategoryTreeTranslationForm',
     mixins: [errorValidationMixin, translationCardMixin],
     components: {
-        Form,
         FormGroup,
+        Form,
         Modal,
         TextField,
     },
@@ -46,7 +46,7 @@ export default {
             },
         },
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['CATEGORY_UPDATE']);
+            return this.$hasAccess(['CATEGORY_TREE_UPDATE']);
         },
         errorNameMessage() {
             const nameIndex = `name_${this.languageCode}`;

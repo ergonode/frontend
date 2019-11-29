@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
             <VerticalFixedScroll>
-                <SegmentsBaseCard />
+                <SegmentsForm />
             </VerticalFixedScroll>
         </template>
         <template #footer>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import SegmentsBaseCard from '~/components/Card/Cards/SegmentsBaseCard';
+import SegmentsForm from '~/components/Forms/SegmentsForm';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import Footer from '~/components/ReusableFooter/Footer';
 import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
@@ -25,7 +25,7 @@ export default {
     name: 'SegmentsBaseTab',
     components: {
         VerticalFixedScroll,
-        SegmentsBaseCard,
+        SegmentsForm,
         Footer,
         ResponsiveCenteredViewTemplate,
     },

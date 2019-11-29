@@ -9,7 +9,7 @@
                 <TextField
                     :value="translations.name[languageCode]"
                     solid
-                    label="Status name"
+                    label="Transition name"
                     regular
                     :error-messages="errorNameMessage"
                     :disabled="!isUserAllowedToUpdate"
@@ -17,7 +17,7 @@
                 <TextArea
                     :value="translations.description[languageCode]"
                     solid
-                    label="Status description"
+                    label="Transition description"
                     resize="none"
                     :style="{height: '150px'}"
                     :error-messages="errorDescriptionMessage"
@@ -38,7 +38,7 @@ import Form from '~/core/components/Form/Form';
 import FormGroup from '~/core/components/Form/FormGroup';
 
 export default {
-    name: 'ProductStatusTranslationCard',
+    name: 'TransitionTranslationForm',
     components: {
         FormGroup,
         Form,

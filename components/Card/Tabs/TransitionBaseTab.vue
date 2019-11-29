@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
             <VerticalFixedScroll>
-                <TransitionBaseCard />
+                <TransitionForm />
             </VerticalFixedScroll>
         </template>
         <template #footer>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import TransitionBaseCard from '~/components/Card/Cards/TransitionBaseCard';
+import TransitionForm from '~/components/Forms/TransitionForm';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import Footer from '~/components/ReusableFooter/Footer';
 import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
@@ -25,7 +25,7 @@ export default {
     name: 'TransitionBaseTab',
     components: {
         VerticalFixedScroll,
-        TransitionBaseCard,
+        TransitionForm,
         Footer,
         ResponsiveCenteredViewTemplate,
     },

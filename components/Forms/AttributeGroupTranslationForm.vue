@@ -27,7 +27,7 @@ import Form from '~/core/components/Form/Form';
 import FormGroup from '~/core/components/Form/FormGroup';
 
 export default {
-    name: 'AttributeGroupTranslationCard',
+    name: 'AttributeGroupTranslationForm',
     mixins: [errorValidationMixin, translationCardMixin],
     components: {
         FormGroup,

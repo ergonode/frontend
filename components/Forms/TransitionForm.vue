@@ -48,7 +48,7 @@ import { isEmpty, getKeysByValues, getValuesByKeys } from '~/model/objectWrapper
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
-    name: 'TransitionBaseCard',
+    name: 'TransitionForm',
     components: {
         Form: () => import('~/core/components/Form/Form'),
         FormGroup: () => import('~/core/components/Form/FormGroup'),

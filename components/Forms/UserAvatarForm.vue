@@ -20,7 +20,7 @@ import { mapState, mapActions } from 'vuex';
 import UploadImage from '~/core/components/Inputs/Image/UploadImage';
 
 export default {
-    name: 'UserAvatarCard',
+    name: 'UserAvatarForm',
     components: {
         Form: () => import('~/core/components/Form/Form'),
         FormGroup: () => import('~/core/components/Form/FormGroup'),

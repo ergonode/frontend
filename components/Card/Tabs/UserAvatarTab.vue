@@ -17,7 +17,7 @@
 
 <script>
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import UserAvatarCard from '~/components/Card/Cards/UserAvatarCard';
+import UserAvatarCard from '~/components/Forms/UserAvatarCard';
 import Footer from '~/components/ReusableFooter/Footer';
 import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
 

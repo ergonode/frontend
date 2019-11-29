@@ -34,7 +34,7 @@ import ProductTemplateOptions from '~/components/Template/Product/ProductTemplat
 import ProductTemplateSingleLine from '~/components/Template/Product/ProductTemplateSingleLine';
 
 export default {
-    name: 'ProductTemplateCard',
+    name: 'ProductTemplateForm',
     components: {
         TemplateGridDesigner,
     },

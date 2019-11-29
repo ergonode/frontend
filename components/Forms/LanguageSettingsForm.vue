@@ -23,7 +23,7 @@ import { mapState, mapActions } from 'vuex';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
-    name: 'LanguageSettingsCard',
+    name: 'LanguageSettingsForm',
     components: {
         Form: () => import('~/core/components/Form/Form'),
         FormGroup: () => import('~/core/components/Form/FormGroup'),

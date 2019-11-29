@@ -17,7 +17,7 @@
 
 <script>
 import languageSettingsModule from '~/reusableStore/languageSettings/state';
-import LanguageSettingsCard from '~/components/Card/Cards/LanguageSettingsCard';
+import LanguageSettingsCard from '~/components/Forms/LanguageSettingsCard';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
 

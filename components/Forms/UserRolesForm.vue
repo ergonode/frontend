@@ -33,7 +33,7 @@ import { mapState, mapActions } from 'vuex';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
-    name: 'UserRolesBaseCard',
+    name: 'UserRolesForm',
     components: {
         Form: () => import('~/core/components/Form/Form'),
         FormGroup: () => import('~/core/components/Form/FormGroup'),

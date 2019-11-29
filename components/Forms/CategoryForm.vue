@@ -13,8 +13,8 @@
                 :error-messages="errorCodeMessage"
                 :disabled="isDisabled || isDisabledByPrivileges"
                 label="Code"
-                hint="Attribute group code must be unique"
-                @input="setAttributeGroupCode" />
+                hint="Category code must be unique"
+                @input="setCategoryCode" />
         </FormGroup>
     </Form>
 </template>
@@ -24,7 +24,7 @@ import { mapState, mapActions } from 'vuex';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
-    name: 'AttributeGroupBaseCard',
+    name: 'CategoryForm',
     components: {
         Form: () => import('~/core/components/Form/Form'),
         FormGroup: () => import('~/core/components/Form/FormGroup'),
@@ -32,16 +32,16 @@ export default {
     },
     mixins: [errorValidationMixin],
     computed: {
-        ...mapState('attributeGroup', {
-            attributeID: (state) => state.id,
+        ...mapState('categories', {
+            categoryID: (state) => state.id,
             code: (state) => state.code,
         }),
         isDisabled() {
-            return Boolean(this.attributeID);
+            return Boolean(this.categoryID);
         },
         isDisabledByPrivileges() {
-            return (this.isDisabled && !this.$hasAccess(['ATTRIBUTE_UPDATE']))
-            || (!this.isDisabled && !this.$hasAccess(['ATTRIBUTE_CREATE']));
+            return (this.isDisabled && !this.$hasAccess(['CATEGORY_UPDATE']))
+            || (!this.isDisabled && !this.$hasAccess(['CATEGORY_CREATE']));
         },
         errorCodeMessage() {
             const codeIndex = 'code';
@@ -49,7 +49,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('attributeGroup', ['setAttributeGroupCode']),
+        ...mapActions('categories', ['setCategoryCode']),
     },
 };
 </script>

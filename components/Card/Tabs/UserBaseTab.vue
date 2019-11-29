@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
             <VerticalFixedScroll>
-                <UserBaseCard />
+                <UserForm />
             </VerticalFixedScroll>
         </template>
         <template #footer>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import UserBaseCard from '~/components/Card/Cards/UserBaseCard';
+import UserForm from '~/components/Forms/UserForm';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import Footer from '~/components/ReusableFooter/Footer';
 import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
@@ -27,7 +27,7 @@ export default {
         VerticalFixedScroll,
         Footer,
         ResponsiveCenteredViewTemplate,
-        UserBaseCard,
+        UserForm,
     },
     props: {
         updateButton: {

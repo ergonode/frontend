@@ -47,7 +47,7 @@ export default {
         ResponsiveCenteredViewTemplate,
         Select: () => import('~/core/components/Inputs/Select/Select'),
         ProductCompleteness: () => import('~/components/Progress/ProductCompleteness'),
-        ProductTemplateCard: () => import('~/components/Card/Cards/ProductTemplateCard'),
+        ProductTemplateCard: () => import('~/components/Forms/ProductTemplateCard'),
         Footer,
     },
     props: {

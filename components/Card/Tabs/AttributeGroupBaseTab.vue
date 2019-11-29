@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
             <VerticalFixedScroll>
-                <AttributeGroupBaseCard />
+                <AttributeGroupForm />
             </VerticalFixedScroll>
         </template>
         <template #footer>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import AttributeGroupBaseCard from '~/components/Card/Cards/AttributeGroupBaseCard';
+import AttributeGroupForm from '~/components/Forms/AttributeGroupForm';
 import Footer from '~/components/ReusableFooter/Footer';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
@@ -27,7 +27,7 @@ export default {
         VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
         Footer,
-        AttributeGroupBaseCard,
+        AttributeGroupForm,
     },
     props: {
         updateButton: {
