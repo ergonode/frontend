@@ -36,7 +36,7 @@
 <script>
 import { THEMES } from '~/defaults/buttons';
 import ModalBase from '~/components/Modals/ModalBase';
-import FabButton from '~/components/Buttons/FabButton';
+import FabButton from '~/core/components/Buttons/FabButton';
 import Divider from '~/components/Dividers/Divider';
 import IconClose from '~/components/Icon/Window/IconClose';
 

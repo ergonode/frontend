@@ -34,7 +34,7 @@ import { mapState, mapActions } from 'vuex';
 export default {
     name: 'AttributeOptionKeyValues',
     components: {
-        TextField: () => import('~/components/Inputs/TextField'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
     },

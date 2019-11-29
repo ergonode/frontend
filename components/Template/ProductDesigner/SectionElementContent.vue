@@ -41,7 +41,7 @@ import { mapActions } from 'vuex';
 import { SIZES, THEMES } from '~/defaults/buttons';
 import ElementContentBase from '~/components/Template/ProductDesigner/ElementContentBase';
 import IconFontSize from '~/components/Icon/Editor/IconFontSize';
-import MultiButton from '~/components/Buttons/MultiButton';
+import MultiButton from '~/core/components/Buttons/MultiButton';
 import IconDots from '~/components/Icon/Others/IconDots';
 
 export default {

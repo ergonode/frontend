@@ -35,7 +35,9 @@
                 The first human - centric <br>designed PIM
             </h1>
             <h2 class="login__background__subheader">
-                <Typer :value="['Simple', 'Ergonomic', 'Efficient', 'For people.']" />
+                <ClientOnly>
+                    <Typer :value="['Simple', 'Ergonomic', 'Efficient', 'For people.']" />
+                </ClientOnly>
             </h2>
         </section>
     </main>
@@ -48,9 +50,9 @@ export default {
     layout: 'login',
     name: 'Login',
     components: {
-        TextField: () => import('~/components/Inputs/TextField'),
-        Button: () => import('~/components/Buttons/Button'),
-        Typer: () => import('~/components/Inputs/Typer'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
+        Button: () => import('~/core/components/Buttons/Button'),
+        Typer: () => import('~/core/components/Inputs/Typer'),
     },
     data: () => ({
         userAuthData: {

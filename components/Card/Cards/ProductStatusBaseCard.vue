@@ -46,9 +46,9 @@ export default {
     name: 'ProductStatusBaseCard',
     components: {
         BaseCard,
-        TextField: () => import('~/components/Inputs/TextField'),
-        ColorPicker: () => import('~/components/Inputs/Color/ColorPicker'),
-        CheckBox: () => import('~/components/Inputs/CheckBox'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
+        ColorPicker: () => import('~/core/components/Inputs/Color/ColorPicker'),
+        CheckBox: () => import('~/core/components/Inputs/CheckBox'),
     },
     mixins: [errorValidationMixin],
     computed: {

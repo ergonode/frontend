@@ -8,15 +8,15 @@
             <BaseForm>
                 <div class="notifications-list">
                     <List v-if="notifications.length">
-                        <NotificationListElement
+                        <NotificationsListElement
                             v-for="notification in notifications"
                             :key="notification.id"
                             :notification="notification" />
-                        <NotificationListFooter>
+                        <NotificationsListFooter>
                             <Button
                                 :title="buttonTitle"
                                 @click.native="onLoadMoreNotifications" />
-                        </NotificationListFooter>
+                        </NotificationsListFooter>
                     </List>
                     <ListPlaceholder
                         v-else
@@ -35,7 +35,7 @@
 import { mapState, mapActions } from 'vuex';
 import { LayoutOrientation } from '~/defaults/layout';
 import { DATA_LIMIT } from '~/defaults/grid';
-import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
 import BaseForm from '~/components/Form/BaseForm';
 
 export default {
@@ -43,10 +43,10 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
         BaseForm,
-        Button: () => import('~/components/Buttons/Button'),
-        List: () => import('~/components/List/List'),
-        NotificationListElement: () => import('~/components/List/Notifications/NotificationListElement'),
-        NotificationListFooter: () => import('~/components/List/Notifications/NotificationListFooter'),
+        Button: () => import('~/core/components/Buttons/Button'),
+        List: () => import('~/core/components/List/List'),
+        NotificationsListElement: () => import('~/components/List/Notifications/NotificationsListElement'),
+        NotificationsListFooter: () => import('~/components/List/Notifications/NotificationsListFooter'),
         ListPlaceholder: () => import('~/components/Placeholder/ListPlaceholder'),
     },
     computed: {

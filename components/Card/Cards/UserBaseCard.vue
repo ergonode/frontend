@@ -99,8 +99,8 @@ export default {
     name: 'UserBaseCard',
     components: {
         BaseCard,
-        TextField: () => import('~/components/Inputs/TextField'),
-        Select: () => import('~/components/Inputs/Select/Select'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
+        Select: () => import('~/core/components/Inputs/Select/Select'),
     },
     mixins: [errorValidationMixin],
     data() {

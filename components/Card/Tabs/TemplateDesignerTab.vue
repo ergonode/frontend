@@ -67,7 +67,7 @@ import {
 } from '~/model/template_designer/layout/LayoutCalculations';
 import TemplateGridDesigner from '~/components/Template/Base/TemplateGridDesigner';
 import TemplateGridDraggableLayer from '~/components/Template/Base/TemplateGridDraggableLayer';
-import GridViewTemplate from '~/components/Layout/GridViewTemplate';
+import GridViewTemplate from '~/core/components/Layout/GridViewTemplate';
 
 export default {
     name: 'TemplateDesignerTab',
@@ -75,7 +75,7 @@ export default {
         GridViewTemplate,
         TemplateGridDesigner,
         TemplateGridDraggableLayer,
-        VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
+        VerticalTabBar: () => import('~/core/components/Tab/VerticalTabBar'),
         Footer: () => import('~/components/ReusableFooter/Footer'),
         ModalSectionTitleTemplate: () => import('~/components/Modals/ModalSectionTitleTemplate'),
         LayoutElement: () => import('~/components/Template/ProductDesigner/LayoutElement'),

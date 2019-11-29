@@ -18,12 +18,12 @@
 
 <script>
 import Footer from '~/components/ReusableFooter/Footer';
-import GridViewTemplate from '~/components/Layout/GridViewTemplate';
+import GridViewTemplate from '~/core/components/Layout/GridViewTemplate';
 
 export default {
     name: 'CategoryTreeDesignTab',
     components: {
-        VerticalTabBar: () => import('~/components/Tab/VerticalTabBar'),
+        VerticalTabBar: () => import('~/core/components/Tab/VerticalTabBar'),
         CategoryTreeWrapper: () => import('~/components/CategoryTreeDesigner/CategoryTreeWrapper'),
         Footer,
         GridViewTemplate,

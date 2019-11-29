@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <IconBase
+    <BaseIcon
         class="sort-icon"
         :width="size"
         :height="size"
@@ -17,18 +17,18 @@
             :points="upperArrow.points"
             :fill="upperArrowFill"
             :transform="upperArrow.transform" />
-    </IconBase>
+    </BaseIcon>
 </template>
 
 <script>
 import { SORTING_ORDER } from '~/defaults/icons';
 import { GRAPHITE, GREY, GREEN } from '~/assets/scss/_variables/_colors.scss';
-import IconBase from '~/components/Icon/IconBase';
+import BaseIcon from '~/components/Icon/BaseIcon';
 
 export default {
     name: 'IconArrowSort',
     components: {
-        IconBase,
+        BaseIcon,
     },
     props: {
         sortingOrder: {

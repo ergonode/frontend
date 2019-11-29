@@ -21,7 +21,7 @@
 
 <script>
 import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
-import TranslationSelect from '~/components/Inputs/Select/TranslationSelect';
+import TranslationSelect from '~/core/components/Inputs/Select/TranslationSelect';
 
 export default {
     name: 'ProductTemplateOptions',

@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Grid/PresentationCells/GridPresentationCell Component is displaying text 1`] = `<span class="presentation-cell">Test</span>`;

@@ -31,8 +31,8 @@ export default {
     name: 'TemplateDesignerBaseCard',
     components: {
         BaseCard,
-        TextField: () => import('~/components/Inputs/TextField'),
-        UploadImage: () => import('~/components/Inputs/Image/UploadImage'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
+        UploadImage: () => import('~/core/components/Inputs/Image/UploadImage'),
     },
     mixins: [errorValidationMixin],
     computed: {

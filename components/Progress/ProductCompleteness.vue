@@ -22,7 +22,7 @@ import {
 export default {
     name: 'ProductCompleteness',
     components: {
-        ProgressBar: () => import('~/components/Inputs/ProgressBar'),
+        ProgressBar: () => import('~/core/components/Inputs/ProgressBar'),
     },
     props: {
         language: {

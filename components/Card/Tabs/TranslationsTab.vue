@@ -30,9 +30,9 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getKeysByValues, getValuesByKeys } from '~/model/objectWrapper';
-import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
 import Footer from '~/components/ReusableFooter/Footer';
-import Select from '~/components/Inputs/Select/Select';
+import Select from '~/core/components/Inputs/Select/Select';
 import BaseForm from '~/components/Form/BaseForm';
 
 export default {

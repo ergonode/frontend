@@ -16,7 +16,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import BaseCard from '~/components/Card/BaseCard';
-import UploadImage from '~/components/Inputs/Image/UploadImage';
+import UploadImage from '~/core/components/Inputs/Image/UploadImage';
 
 export default {
     name: 'UserAvatarCard',

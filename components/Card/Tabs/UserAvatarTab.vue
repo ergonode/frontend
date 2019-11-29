@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
 import UserAvatarCard from '~/components/Card/Cards/UserAvatarCard';
 import Footer from '~/components/ReusableFooter/Footer';
 import BaseForm from '~/components/Form/BaseForm';

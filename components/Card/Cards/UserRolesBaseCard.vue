@@ -35,8 +35,8 @@ export default {
     name: 'UserRolesBaseCard',
     components: {
         BaseCard,
-        TextField: () => import('~/components/Inputs/TextField'),
-        TextArea: () => import('~/components/Inputs/TextArea'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
+        TextArea: () => import('~/core/components/Inputs/TextArea'),
     },
     mixins: [errorValidationMixin],
     computed: {

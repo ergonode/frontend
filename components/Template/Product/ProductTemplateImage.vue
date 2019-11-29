@@ -20,7 +20,7 @@ export default {
     name: 'ProductTemplateImage',
     mixins: [productTemplateElementMixin],
     components: {
-        UploadImage: () => import('~/components/Inputs/Image/UploadImage'),
+        UploadImage: () => import('~/core/components/Inputs/Image/UploadImage'),
     },
 };
 </script>

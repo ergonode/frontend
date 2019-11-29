@@ -40,19 +40,19 @@ import gridModule from '~/reusableStore/grid/state';
 import { getMappedGridData } from '~/model/mappers/privilegesMapper';
 import { COLUMN_TYPE } from '~/defaults/grid';
 import { STATE } from '~/defaults/inputs/checkbox';
-import Grid from '~/components/Grid/Grid';
-import GridCell from '~/components/Grid/GridCell';
-import GridPresentationHintCell from '~/components/Grid/PresentationCells/GridPresentationHintCell';
-import GridPresentationCell from '~/components/Grid/PresentationCells/GridPresentationCell';
-import GridCheckCell from '~/components/Grid/GridCheckCell';
-import ResponsiveCenteredViewTemplate from '~/components/Layout/ResponsiveCenteredViewTemplate';
+import Grid from '~/core/components/Grid/Grid';
+import GridCell from '~/core/components/Grid/GridCell';
+import GridPresentationHintCell from '~/core/components/Grid/PresentationCells/GridPresentationHintCell';
+import GridPresentationCell from '~/core/components/Grid/PresentationCells/GridPresentationCell';
+import GridPresentationCheckCell from '~/core/components/Grid/PresentationCells/GridPresentationCheckCell';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
 
 export default {
     name: 'UserPrivilegesGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
         GridCell,
-        GridCheckCell,
+        GridPresentationCheckCell,
         GridPresentationCell,
         Grid,
     },
@@ -130,7 +130,7 @@ export default {
                 return GridPresentationCell;
             }
 
-            return GridCheckCell;
+            return GridPresentationCheckCell;
         },
     },
     async fetch({ app, store }) {

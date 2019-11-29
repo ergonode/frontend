@@ -4,10 +4,10 @@
  */
 export default {
     components: {
-        BasePage: () => import('~/components/Layout/BasePage'),
-        TitleBar: () => import('~/components/TitleBar/TitleBar'),
-        HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
-        PrependIconButton: () => import('~/components/Buttons/PrependIconButton'),
+        BasePage: () => import('~/core/components/Layout/BasePage'),
+        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
+        HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
+        PrependIconButton: () => import('~/core/components/Buttons/PrependIconButton'),
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
     props: {

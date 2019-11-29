@@ -19,7 +19,9 @@
                     src="~assets/images/placeholders/error-pages/delorean.svg">
                 <div class="section__info">
                     <h1 class="info__header font--medium-24-32">
-                        <Typer :value="['Future', 'Feature']" />
+                        <ClientOnly>
+                            <Typer :value="['Future', 'Feature']" />
+                        </ClientOnly>
                     </h1>
                     <p class="info__text font--medium-16-24">
                         This feature will be implemented in the near future!
@@ -57,8 +59,8 @@
 export default {
     name: 'Placeholder',
     components: {
-        Button: () => import('~/components/Buttons/Button'),
-        Typer: () => import('~/components/Inputs/Typer'),
+        Button: () => import('~/core/components/Buttons/Button'),
+        Typer: () => import('~/core/components/Inputs/Typer'),
     },
 };
 </script>

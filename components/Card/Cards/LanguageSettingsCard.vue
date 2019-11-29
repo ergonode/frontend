@@ -25,7 +25,7 @@ export default {
     name: 'LanguageSettingsCard',
     components: {
         BaseCard,
-        Select: () => import('~/components/Inputs/Select/Select'),
+        Select: () => import('~/core/components/Inputs/Select/Select'),
     },
     mixins: [errorValidationMixin],
     computed: {

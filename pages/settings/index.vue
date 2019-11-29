@@ -19,9 +19,9 @@ export default {
     name: 'SettingsTabs',
     middleware: ['tab/redirectToLanguageSettings'],
     components: {
-        HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
-        TitleBar: () => import('~/components/TitleBar/TitleBar'),
-        BasePage: () => import('~/components/Layout/BasePage'),
+        HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
+        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
+        BasePage: () => import('~/core/components/Layout/BasePage'),
     },
     data() {
         return {

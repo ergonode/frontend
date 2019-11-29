@@ -40,10 +40,10 @@ import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 export default {
     name: 'AttributesListTab',
     components: {
-        AttributesList: () => import('~/components/List/AttributesList'),
-        ListSearchSelectHeader: () => import('~/components/List/ListSearchSelectHeader'),
-        ListSearchHeader: () => import('~/components/List/ListSearchHeader'),
-        FabButton: () => import('~/components/Buttons/FabButton'),
+        AttributesList: () => import('~/components/List/Attributes/AttributesList'),
+        ListSearchSelectHeader: () => import('~/core/components/List/ListSearchSelectHeader'),
+        ListSearchHeader: () => import('~/core/components/List/ListSearchHeader'),
+        FabButton: () => import('~/core/components/Buttons/FabButton'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
     },
     props: {

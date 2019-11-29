@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <CommentList :is-placeholder="!!commentList.length">
+    <CommentsList :is-placeholder="!!commentList.length">
         <template #header>
             <PrependIconButton
                 v-if="!showForm"
@@ -43,18 +43,18 @@
                 :title="showMoreText"
                 @click.native="showMore" />
         </template>
-    </CommentList>
+    </CommentsList>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import { DATA_LIMIT } from '~/defaults/grid';
 import { LayoutOrientation } from '~/defaults/layout';
-import PrependIconButton from '~/components/Buttons/PrependIconButton';
-import Button from '~/components/Buttons/Button';
+import PrependIconButton from '~/core/components/Buttons/PrependIconButton';
+import Button from '~/core/components/Buttons/Button';
 import Loader from '~/components/Loader/Loader';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
-import CommentList from '~/components/List/Comment/CommentList';
+import CommentsList from '~/components/List/Comments/CommentsList';
 import CommentStateChanger from '~/components/Comments/CommentStateChanger';
 import EditableComment from '~/components/Comments/EditableComment';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
@@ -66,7 +66,7 @@ export default {
         Button,
         Loader,
         IconAdd,
-        CommentList,
+        CommentsList,
         CommentStateChanger,
         EditableComment,
         ListPlaceholder: () => import('~/components/Placeholder/ListPlaceholder'),

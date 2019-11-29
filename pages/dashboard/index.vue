@@ -17,7 +17,7 @@ import { GRID_ITEMS } from '~/defaults/dashboard';
 export default {
     name: 'Dashboard',
     components: {
-        SimpleGrid: () => import('~/components/Grid/SimpleGrid'),
+        SimpleGrid: () => import('~/components/SimpleGrid'),
     },
     data() {
         return {
