@@ -6,8 +6,8 @@
     <div class="header">
         <UserAvatar
             :image-id="avatarId"
-            :user-name="initials"
-            :picture-size="64" />
+            :name="initials"
+            :avatar-size="64" />
         <span
             class="header__initials font--medium-16-24"
             v-text="initials" />

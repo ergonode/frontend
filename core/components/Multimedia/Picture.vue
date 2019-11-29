@@ -4,7 +4,7 @@
  */
 <template>
     <img
-        :class="['image', { 'image--fab': fab, 'image--broke': brokenImage }]"
+        :class="['image', { 'image--fab': fab, 'image--broken': brokenImage }]"
         :src="image"
         alt="picture">
 </template>
@@ -66,7 +66,7 @@ export default {
         max-height: 100%;
         object-fit: cover;
 
-        &--broke {
+        &--broken {
             flex: 0 0 auto;
             width: 50%;
             height: 50%;

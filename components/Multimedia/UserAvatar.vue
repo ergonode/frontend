@@ -28,23 +28,23 @@ export default {
             type: String,
             default: '',
         },
-        userName: {
+        name: {
             type: String,
             default: '',
         },
-        pictureSize: {
+        avatarSize: {
             type: Number,
             default: 24,
         },
     },
     computed: {
         avatarInitial() {
-            return this.userName.length ? this.userName[0] : '';
+            return this.name.length ? this.name[0] : '';
         },
         avatarStyles() {
             return {
-                width: `${this.pictureSize}px`,
-                height: `${this.pictureSize}px`,
+                width: `${this.avatarSize}px`,
+                height: `${this.avatarSize}px`,
             };
         },
     },

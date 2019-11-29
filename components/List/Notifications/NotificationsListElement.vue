@@ -9,8 +9,8 @@
         }]">
         <UserAvatar
             :image-id="notification.avatar_id"
-            :user-name="notification.author"
-            :picture-size="40" />
+            :name="notification.author"
+            :avatar-size="40" />
         <span class="notification-element__message">
             <strong>{{ notification.author }}</strong>
             {{ notification.message }}

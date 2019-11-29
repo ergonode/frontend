@@ -9,7 +9,7 @@
         <template #input>
             <UserAvatar
                 :image-id="user.avatar_id"
-                :user-name="user.first_name" />
+                :name="user.first_name" />
             <span
                 class="title"
                 v-text="capitalizedUserFirstName || capitalizedUserLastName" />

@@ -8,8 +8,8 @@
             <div class="header__user">
                 <UserAvatar
                     :image-id="comment.avatar_id"
-                    :user-name="comment.author"
-                    :picture-size="32" />
+                    :name="comment.author"
+                    :avatar-size="32" />
                 <span
                     class="font--medium-16-24"
                     v-text="comment.author" />
