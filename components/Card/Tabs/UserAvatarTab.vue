@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
             <VerticalFixedScroll>
-                <UserAvatarCard />
+                <UserAvatarForm />
             </VerticalFixedScroll>
         </template>
         <template #footer>
@@ -17,7 +17,7 @@
 
 <script>
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import UserAvatarCard from '~/components/Forms/UserAvatarCard';
+import UserAvatarForm from '~/components/Forms/UserAvatarForm';
 import Footer from '~/components/ReusableFooter/Footer';
 import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
 
@@ -26,7 +26,7 @@ export default {
     components: {
         VerticalFixedScroll,
         Footer,
-        UserAvatarCard,
+        UserAvatarForm,
         ResponsiveCenteredViewTemplate,
     },
     props: {

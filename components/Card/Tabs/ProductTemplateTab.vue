@@ -21,7 +21,7 @@
         <template #content>
             <VerticalFixedScroll>
                 <VerticalCenteredView>
-                    <ProductTemplateCard :language-code="languageCode" />
+                    <ProductTemplateForm :language-code="languageCode" />
                 </VerticalCenteredView>
             </VerticalFixedScroll>
         </template>
@@ -47,7 +47,7 @@ export default {
         ResponsiveCenteredViewTemplate,
         Select: () => import('~/core/components/Inputs/Select/Select'),
         ProductCompleteness: () => import('~/components/Progress/ProductCompleteness'),
-        ProductTemplateCard: () => import('~/components/Forms/ProductTemplateCard'),
+        ProductTemplateForm: () => import('~/components/Forms/ProductTemplateForm'),
         Footer,
     },
     props: {

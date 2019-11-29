@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
             <VerticalFixedScroll>
-                <LanguageSettingsCard />
+                <LanguageSettingsForm />
             </VerticalFixedScroll>
         </template>
         <template #footer>
@@ -17,7 +17,7 @@
 
 <script>
 import languageSettingsModule from '~/reusableStore/languageSettings/state';
-import LanguageSettingsCard from '~/components/Forms/LanguageSettingsCard';
+import LanguageSettingsForm from '~/components/Forms/LanguageSettingsForm';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
 
@@ -26,7 +26,7 @@ export default {
     components: {
         VerticalFixedScroll,
         Footer: () => import('~/components/ReusableFooter/Footer'),
-        LanguageSettingsCard,
+        LanguageSettingsForm,
         ResponsiveCenteredViewTemplate,
     },
     props: {
