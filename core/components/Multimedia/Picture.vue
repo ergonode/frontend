@@ -4,7 +4,7 @@
  */
 <template>
     <img
-        :class="['image', { 'image--fab': fab }]"
+        :class="['image', { 'image--fab': fab, 'image--broke': brokenImage }]"
         :src="image"
         alt="picture">
 </template>
@@ -35,6 +35,7 @@ export default {
     },
     data() {
         return {
+            brokenImage: false,
             image: null,
         };
     },
@@ -45,10 +46,14 @@ export default {
         async getImageById() {
             await this.$axios.$get(`multimedia/${this.imageId}`, {
                 responseType: 'arraybuffer',
-            }).then((response) => this.onSuccess(response));
+            }).then((response) => this.onSuccess(response)).catch(this.imageLoadOnError);
         },
         onSuccess(response) {
             this.image = getImageData(response);
+        },
+        imageLoadOnError() {
+            this.brokenImage = true;
+            this.image = require('~/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
     },
 };
@@ -60,6 +65,12 @@ export default {
         width: 100%;
         max-height: 100%;
         object-fit: cover;
+
+        &--broke {
+            flex: 0 0 auto;
+            width: 50%;
+            height: 50%;
+        }
 
         &--fab {
             border-radius: 50%;
