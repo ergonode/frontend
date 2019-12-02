@@ -6,11 +6,8 @@
     <FadeTransition>
         <div
             v-if="value"
-            class="overlay">
-            <div
-                class="modal">
-                <slot name="content" />
-            </div>
+            class="dialog-overlay">
+            <slot />
         </div>
     </FadeTransition>
 </template>
@@ -19,37 +16,30 @@
 import FadeTransition from '~/core/components/Transitions/FadeTransition';
 
 export default {
-    name: 'ModalBase',
-    components: { FadeTransition },
+    name: 'ModalOverlay',
+    components: {
+        FadeTransition,
+    },
     props: {
         value: {
             type: Boolean,
-            default: true,
+            required: true,
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .overlay {
+    .dialog-overlay {
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 9999999;
+        z-index: 99999;
         display: flex;
         justify-content: center;
         align-items: center;
         width: 100%;
         height: 100%;
-
-        .modal {
-            display: flex;
-            flex-direction: column;
-            max-height: 100%;
-            width: 400px;
-            background-color: $WHITE;
-            box-shadow: $ELEVATOR_12_DP;
-            overflow: auto;
-        }
+        background-color: transparentize($GRAPHITE_COAL, 0.8);
     }
 </style>

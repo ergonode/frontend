@@ -34,8 +34,8 @@ export default {
         bottom: -1px;
         display: flex;
         justify-content: center;
-        align-items: center;
         width: 176px;
+        padding-top: 6px;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_14_20;
         text-align: center;

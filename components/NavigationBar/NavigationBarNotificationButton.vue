@@ -48,7 +48,7 @@ export default {
         List: () => import('~/core/components/List/List'),
         NotificationsListElement: () => import('~/components/List/Notifications/NotificationsListElement'),
         NotificationsListFooter: () => import('~/components/List/Notifications/NotificationsListFooter'),
-        ListPlaceholder: () => import('~/components/Placeholder/ListPlaceholder'),
+        ListPlaceholder: () => import('~/core/components/List/ListPlaceholder'),
     },
     computed: {
         ...mapState('notifications', {

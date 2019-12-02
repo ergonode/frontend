@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <Modal :title="selectedLanguage">
+    <Card :title="selectedLanguage">
         <Form>
             <FormGroup>
                 <TextField
@@ -41,7 +41,7 @@
                 </template>
             </FormGroup>
         </Form>
-    </Modal>
+    </Card>
 </template>
 
 <script>
@@ -52,16 +52,16 @@ import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
 import TextField from '~/core/components/Inputs/TextField';
 import TextArea from '~/core/components/Inputs/TextArea';
-import Divider from '~/components/Dividers/Divider';
+import Divider from '~/core/components/Dividers/Divider';
 import AttributeOptionValues from '~/components/Card/AttributeOptionValues';
-import Modal from '~/core/components/Modal/Modal';
+import Card from '~/core/components/Card/Card';
 import Form from '~/core/components/Form/Form';
 import FormGroup from '~/core/components/Form/FormGroup';
 
 export default {
     name: 'AttributeTranslationForm',
     components: {
-        Modal,
+        Card,
         Form,
         FormGroup,
         Divider,

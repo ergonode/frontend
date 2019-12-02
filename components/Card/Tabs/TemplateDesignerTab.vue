@@ -45,7 +45,7 @@
                         </LayoutElement>
                     </template>
                 </TemplateGridDraggableLayer>
-                <ModalSectionTitleTemplate
+                <SectionTemplateModalForm
                     :value="isSectionAdded"
                     :section-position="sectionPosition"
                     :section-title="sectionTitle"
@@ -77,7 +77,7 @@ export default {
         TemplateGridDraggableLayer,
         VerticalTabBar: () => import('~/core/components/Tab/VerticalTabBar'),
         Footer: () => import('~/components/ReusableFooter/Footer'),
-        ModalSectionTitleTemplate: () => import('~/components/Modals/ModalSectionTitleTemplate'),
+        SectionTemplateModalForm: () => import('~/components/Modals/SectionTemplateModalForm'),
         LayoutElement: () => import('~/components/Template/ProductDesigner/LayoutElement'),
         AttributeElementContent: () => import('~/components/Template/ProductDesigner/AttributeElementContent'),
         SectionElementContent: () => import('~/components/Template/ProductDesigner/SectionElementContent'),

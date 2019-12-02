@@ -16,7 +16,7 @@
 <script>
 import { format as formatDate, parse as parseDate } from 'date-fns';
 import GridAdvancedFilterBaseContent from '~/core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
-import DateRangePickerContent from '~/core/components/Inputs/Date/DateRangePickerContent';
+import DateRangePickerContent from '~/core/components/Inputs/DatePicker/DateRangePickerContent';
 import { FILTER_OPERATOR } from '~/defaults/operators';
 
 export default {

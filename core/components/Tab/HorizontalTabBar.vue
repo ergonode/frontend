@@ -63,7 +63,7 @@ export default {
         &__items {
             position: relative;
             display: flex;
-            height: 48px;
+            height: 40px;
             box-sizing: border-box;
             background-image: linear-gradient($WHITESMOKE, $WHITE);
         }

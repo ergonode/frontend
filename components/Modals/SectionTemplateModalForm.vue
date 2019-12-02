@@ -3,20 +3,24 @@
  * See LICENSE for license details.
  */
 <template>
-    <ModalActionBase
+    <ModalForm
         :value="value"
         title="Section title settings"
-        icon-path="Editor/IconFontSize"
         @input="onClose">
+        <template #headerPrepend>
+            <IconFontSize />
+        </template>
         <template #body>
-            <TextField
-                :value="title"
-                solid
-                label="Section title"
-                regular
-                required
-                :error-messages="error"
-                @input="onTitleChange" />
+            <FormGroup>
+                <TextField
+                    :value="title"
+                    solid
+                    label="Section title"
+                    regular
+                    required
+                    :error-messages="error"
+                    @input="onTitleChange" />
+            </FormGroup>
         </template>
         <template #footer>
             <Button
@@ -27,19 +31,27 @@
                 title="CANCEL"
                 @click.native="onClose" />
         </template>
-    </ModalActionBase>
+    </ModalForm>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import { THEMES } from '~/defaults/buttons';
-import ModalActionBase from '~/components/Modals/ModalActionBase';
+import ModalForm from '~/core/components/Modal/ModalForm';
 import TextField from '~/core/components/Inputs/TextField';
 import Button from '~/core/components/Buttons/Button';
+import FormGroup from '~/core/components/Form/FormGroup';
+import IconFontSize from '~/components/Icon/Editor/IconFontSize';
 
 export default {
-    name: 'ModalSectionTitleTemplate',
-    components: { TextField, ModalActionBase, Button },
+    name: 'SectionTemplateModalForm',
+    components: {
+        IconFontSize,
+        FormGroup,
+        TextField,
+        ModalForm,
+        Button,
+    },
     props: {
         value: {
             type: Boolean,
@@ -87,6 +99,8 @@ export default {
             else this.error = null;
         },
         onClose() {
+            this.title = '';
+            this.error = null;
             this.$emit('input', false);
         },
         onSave() {

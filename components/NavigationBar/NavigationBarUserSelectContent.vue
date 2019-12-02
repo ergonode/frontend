@@ -31,7 +31,7 @@ import navigationBarUserMenu from '~/model/navigation/navigationBarUserMenu';
 export default {
     name: 'NavigationBarUserSelectContent',
     components: {
-        Divider: () => import('~/components/Dividers/Divider'),
+        Divider: () => import('~/core/components/Dividers/Divider'),
         NavigationBarUserSelectContentHeader: () => import('~/components/NavigationBar/NavigationBarUserSelectContentHeader'),
         MenuList: () => import('~/core/components/MenuList/MenuList'),
         Button: () => import('~/core/components/Buttons/Button'),

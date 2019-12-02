@@ -80,11 +80,11 @@ export default {
         FormGroup: () => import('~/core/components/Form/FormGroup'),
         AttributeOptionKeyValues: () => import('~/components/Card/AttributeOptionKeyValues'),
         Toggler: () => import('~/core/components/Inputs/Toggler/Toggler'),
-        InfoHint: () => import('~/core/components/Inputs/Hint/InfoHint'),
+        InfoHint: () => import('~/core/components/Hints/InfoHint'),
         TextField: () => import('~/core/components/Inputs/TextField'),
         Select: () => import('~/core/components/Inputs/Select/Select'),
         TranslationSelect: () => import('~/core/components/Inputs/Select/TranslationSelect'),
-        Divider: () => import('~/components/Dividers/Divider'),
+        Divider: () => import('~/core/components/Dividers/Divider'),
     },
     mixins: [errorValidationMixin],
     data() {

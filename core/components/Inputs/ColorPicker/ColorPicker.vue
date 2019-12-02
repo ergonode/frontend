@@ -101,12 +101,12 @@ import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
 export default {
     name: 'ColorPicker',
     components: {
-        ColorPickerContent: () => import('~/core/components/Inputs/Color/ColorPickerContent'),
+        ColorPickerContent: () => import('~/core/components/Inputs/ColorPicker/ColorPickerContent'),
         FadeTransition,
         DropDown,
         IconArrowDropDown,
-        InfoHint: () => import('~/core/components/Inputs/Hint/InfoHint'),
-        ErrorHint: () => import('~/core/components/Inputs/Hint/ErrorHint'),
+        InfoHint: () => import('~/core/components/Hints/InfoHint'),
+        ErrorHint: () => import('~/core/components/Hints/ErrorHint'),
         ContentBaseFooter: () => import('~/core/components/Inputs/Select/Contents/Footers/ContentBaseFooter'),
         Button: () => import('~/core/components/Buttons/Button'),
 

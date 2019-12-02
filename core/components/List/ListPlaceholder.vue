@@ -38,15 +38,15 @@ export default {
         },
         bgUrl: {
             type: String,
-            default: null,
+            required: true,
         },
     },
     computed: {
         placeholderStyles() {
-            const url = this.bgUrl ? require(`~/assets/images/${this.bgUrl}`) : null;
+            if (!this.bgUrl) return null;
 
             return {
-                background: url ? `url(${url}) no-repeat right bottom` : 'unset',
+                background: `url(${require(`~/assets/images/${this.bgUrl}`)}) no-repeat right bottom`,
             };
         },
     },

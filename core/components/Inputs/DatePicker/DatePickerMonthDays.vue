@@ -20,7 +20,7 @@
 import {
     isSameDay,
 } from '~/model/calendar/calendar';
-import DatePickerCalendarNode from '~/core/components/Inputs/Date/DatePickerCalendarNode';
+import DatePickerCalendarNode from '~/core/components/Inputs/DatePicker/DatePickerCalendarNode';
 
 export default {
     name: 'DatePickerMonthDays',

@@ -31,10 +31,10 @@
 </template>
 
 <script>
-import DatePickerMonthDays from '~/core/components/Inputs/Date/DatePickerMonthDays';
-import DatePickerContentHeader from '~/core/components/Inputs/Date/DatePickerContentHeader';
-import DatePickerMonths from '~/core/components/Inputs/Date/DatePickerMonths';
-import DatePickerYears from '~/core/components/Inputs/Date/DatePickerYears';
+import DatePickerMonthDays from '~/core/components/Inputs/DatePicker/DatePickerMonthDays';
+import DatePickerContentHeader from '~/core/components/Inputs/DatePicker/DatePickerContentHeader';
+import DatePickerMonths from '~/core/components/Inputs/DatePicker/DatePickerMonths';
+import DatePickerYears from '~/core/components/Inputs/DatePicker/DatePickerYears';
 import calendar, {
     getHeaderForCalendarDaysType,
     getMonthIndex,

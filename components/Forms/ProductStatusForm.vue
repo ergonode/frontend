@@ -49,7 +49,7 @@ export default {
         Form: () => import('~/core/components/Form/Form'),
         FormGroup: () => import('~/core/components/Form/FormGroup'),
         TextField: () => import('~/core/components/Inputs/TextField'),
-        ColorPicker: () => import('~/core/components/Inputs/Color/ColorPicker'),
+        ColorPicker: () => import('~/core/components/Inputs/ColorPicker/ColorPicker'),
         CheckBox: () => import('~/core/components/Inputs/CheckBox'),
     },
     mixins: [errorValidationMixin],

@@ -3,10 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="modal">
+    <div class="card">
         <section v-if="title">
             <h2
-                class="modal__header"
+                class="card__header"
                 v-text="title" />
         </section>
         <section>
@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .modal {
+    .card {
         display: flex;
         flex-direction: column;
         box-shadow: $ELEVATOR_2_DP;

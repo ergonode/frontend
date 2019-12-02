@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <Modal :title="selectedLanguage">
+    <Card :title="selectedLanguage">
         <Form>
             <FormGroup>
                 <TextField
@@ -15,14 +15,14 @@
                     :error-messages="errorNameMessage" />
             </FormGroup>
         </Form>
-    </Modal>
+    </Card>
 </template>
 
 <script>
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
 import TextField from '~/core/components/Inputs/TextField';
-import Modal from '~/core/components/Modal/Modal';
+import Card from '~/core/components/Card/Card';
 import Form from '~/core/components/Form/Form';
 import FormGroup from '~/core/components/Form/FormGroup';
 
@@ -32,7 +32,7 @@ export default {
     components: {
         FormGroup,
         Form,
-        Modal,
+        Card,
         TextField,
     },
     computed: {
