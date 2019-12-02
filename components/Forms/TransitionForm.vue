@@ -3,55 +3,56 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseCard>
-        <Headline title="Status change" />
-        <Select
-            :value="source"
-            solid
-            regular
-            required
-            label="From"
-            :options="statuses"
-            :disabled="isDisabled || isDisabledByPrivileges"
-            :error-messages="errorSourceMessage"
-            @input="onSetSource" />
-        <Select
-            :value="destination"
-            solid
-            regular
-            required
-            label="To"
-            :options="statuses"
-            :disabled="isDisabled || isDisabledByPrivileges"
-            :error-messages="errorDestinationMessage"
-            @input="onSetDestination" />
-        <Headline title="Action" />
-        <Select
-            :value="parsedRole"
-            solid
-            regular
-            clearable
-            multiselect
-            label="Role"
-            :options="roleValues"
-            :disabled="isDisabledByPrivileges"
-            :error-messages="errorRoleMessage"
-            @input="onSetRoles" />
-    </BaseCard>
+    <Form>
+        <FormGroup title="Status change">
+            <Select
+                :value="source"
+                solid
+                regular
+                required
+                label="From"
+                :options="statuses"
+                :disabled="isDisabled || isDisabledByPrivileges"
+                :error-messages="errorSourceMessage"
+                @input="onSetSource" />
+            <Select
+                :value="destination"
+                solid
+                regular
+                required
+                label="To"
+                :options="statuses"
+                :disabled="isDisabled || isDisabledByPrivileges"
+                :error-messages="errorDestinationMessage"
+                @input="onSetDestination" />
+        </FormGroup>
+        <FormGroup title="Actions">
+            <Select
+                :value="parsedRole"
+                solid
+                regular
+                clearable
+                multiselect
+                label="Role"
+                :options="roleValues"
+                :disabled="isDisabledByPrivileges"
+                :error-messages="errorRoleMessage"
+                @input="onSetRoles" />
+        </FormGroup>
+    </Form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import { isEmpty, getKeysByValues, getValuesByKeys } from '~/model/objectWrapper';
-import BaseCard from '~/components/Card/BaseCard';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
-    name: 'TransitionBaseCard',
+    name: 'TransitionForm',
     components: {
-        BaseCard,
+        Form: () => import('~/core/components/Form/Form'),
+        FormGroup: () => import('~/core/components/Form/FormGroup'),
         Select: () => import('~/core/components/Inputs/Select/Select'),
-        Headline: () => import('~/components/Form/Headline'),
     },
     mixins: [errorValidationMixin],
     computed: {

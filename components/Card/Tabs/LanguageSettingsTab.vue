@@ -5,9 +5,9 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <BaseForm>
-                <LanguageSettingsCard />
-            </BaseForm>
+            <VerticalFixedScroll>
+                <LanguageSettingsForm />
+            </VerticalFixedScroll>
         </template>
         <template #footer>
             <Footer :button="updateButton" />
@@ -17,17 +17,17 @@
 
 <script>
 import languageSettingsModule from '~/reusableStore/languageSettings/state';
-import LanguageSettingsCard from '~/components/Card/Cards/LanguageSettingsCard';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
-import BaseForm from '~/components/Form/BaseForm';
+import LanguageSettingsForm from '~/components/Forms/LanguageSettingsForm';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'LanguageSettingsTab',
     components: {
+        VerticalFixedScroll,
         Footer: () => import('~/components/ReusableFooter/Footer'),
-        LanguageSettingsCard,
+        LanguageSettingsForm,
         ResponsiveCenteredViewTemplate,
-        BaseForm,
     },
     props: {
         updateButton: {

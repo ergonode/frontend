@@ -5,29 +5,31 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <BaseForm>
-                <div class="notifications-list">
-                    <List v-if="notifications.length">
-                        <NotificationsListElement
-                            v-for="notification in notifications"
-                            :key="notification.id"
-                            :notification="notification" />
-                        <NotificationsListFooter v-if="isMoreButtonVisible">
-                            <Loader v-if="!$isLoaded('moreNotifications')" />
-                            <Button
-                                :title="buttonTitle"
-                                @click.native="onLoadMoreNotifications" />
-                        </NotificationsListFooter>
-                    </List>
-                    <ListPlaceholder
-                        v-else
-                        :layout-orientation="horizontalOrientation"
-                        title="Nothing to see here"
-                        subtitle="This is where you will see
+            <VerticalFixedScroll>
+                <VerticalCenteredView>
+                    <div class="notifications-list">
+                        <List v-if="notifications.length">
+                            <NotificationsListElement
+                                v-for="notification in notifications"
+                                :key="notification.id"
+                                :notification="notification" />
+                            <NotificationsListFooter v-if="isMoreButtonVisible">
+                                <Loader v-if="!$isLoaded('moreNotifications')" />
+                                <Button
+                                    :title="buttonTitle"
+                                    @click.native="onLoadMoreNotifications" />
+                            </NotificationsListFooter>
+                        </List>
+                        <ListPlaceholder
+                            v-else
+                            :layout-orientation="horizontalOrientation"
+                            title="Nothing to see here"
+                            subtitle="This is where you will see
                         important notifications for product updates"
-                        bg-url="placeholders/notify.svg" />
-                </div>
-            </BaseForm>
+                            bg-url="placeholders/notify.svg" />
+                    </div>
+                </VerticalCenteredView>
+            </VerticalFixedScroll>
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -36,14 +38,16 @@
 import { mapState, mapActions } from 'vuex';
 import { LayoutOrientation } from '~/defaults/layout';
 import { DATA_LIMIT } from '~/defaults/grid';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
-import BaseForm from '~/components/Form/BaseForm';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
+import VerticalCenteredView from '~/core/components/Layout/VerticalCenteredView';
 
 export default {
     name: 'AttributeGridTab',
     components: {
+        VerticalCenteredView,
+        VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
-        BaseForm,
         Loader: () => import('~/components/Loader/Loader'),
         Button: () => import('~/core/components/Buttons/Button'),
         List: () => import('~/core/components/List/List'),

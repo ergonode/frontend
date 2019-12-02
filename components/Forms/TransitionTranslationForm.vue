@@ -3,10 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseModalCard>
-        <BaseCard :title="selectedLanguage">
-            <Divider />
-            <template #modal>
+    <Modal :title="selectedLanguage">
+        <Form>
+            <FormGroup>
                 <TextField
                     :value="translations.name[languageCode]"
                     solid
@@ -24,9 +23,9 @@
                     :error-messages="errorDescriptionMessage"
                     :disabled="!isUserAllowedToUpdate"
                     @input="(value) => setTranslationPropertyValue(value, 'description')" />
-            </template>
-        </BaseCard>
-    </BaseModalCard>
+            </FormGroup>
+        </Form>
+    </Modal>
 </template>
 
 <script>
@@ -34,18 +33,18 @@ import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
 import TextField from '~/core/components/Inputs/TextField';
 import TextArea from '~/core/components/Inputs/TextArea';
-import Divider from '~/components/Dividers/Divider';
-import BaseCard from '~/components/Card/BaseCard';
-import BaseModalCard from '~/components/Card/BaseModalCard';
+import Modal from '~/core/components/Modal/Modal';
+import Form from '~/core/components/Form/Form';
+import FormGroup from '~/core/components/Form/FormGroup';
 
 export default {
-    name: 'TransitionTranslationCard',
+    name: 'TransitionTranslationForm',
     components: {
-        Divider,
+        FormGroup,
+        Form,
+        Modal,
         TextField,
         TextArea,
-        BaseCard,
-        BaseModalCard,
     },
     mixins: [errorValidationMixin, translationCardMixin],
     computed: {

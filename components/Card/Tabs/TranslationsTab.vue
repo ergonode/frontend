@@ -17,9 +17,11 @@
             </div>
         </template>
         <template #content>
-            <BaseForm>
-                <slot />
-            </BaseForm>
+            <VerticalFixedScroll>
+                <VerticalCenteredView>
+                    <slot />
+                </VerticalCenteredView>
+            </VerticalFixedScroll>
         </template>
         <template #footer>
             <Footer :button="updateButton" />
@@ -30,18 +32,20 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getKeysByValues, getValuesByKeys } from '~/model/objectWrapper';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import Footer from '~/components/ReusableFooter/Footer';
 import Select from '~/core/components/Inputs/Select/Select';
-import BaseForm from '~/components/Form/BaseForm';
+import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
+import VerticalCenteredView from '~/core/components/Layout/VerticalCenteredView';
 
 export default {
     name: 'TranslationsTab',
     components: {
+        VerticalCenteredView,
+        VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
         Footer,
         Select,
-        BaseForm,
     },
     props: {
         updateButton: {

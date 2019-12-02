@@ -60,7 +60,7 @@ import EditableComment from '~/components/Comments/EditableComment';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
-    name: 'ProductBaseCard',
+    name: 'ProductCommentsForm',
     components: {
         PrependIconButton,
         Button,

@@ -3,30 +3,31 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseCard>
-        <TextField
-            :value="code"
-            solid
-            regular
-            required
-            label="Code"
-            :disabled="isDisabled || isDisabledByPrivileges"
-            :error-messages="errorCodeMessage"
-            hint="Code must be unique"
-            @input="setCode"
-        />
-    </BaseCard>
+    <Form>
+        <FormGroup>
+            <TextField
+                :value="code"
+                solid
+                regular
+                required
+                label="Code"
+                :disabled="isDisabled || isDisabledByPrivileges"
+                :error-messages="errorCodeMessage"
+                hint="Code must be unique"
+                @input="setCode" />
+        </FormGroup>
+    </Form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import BaseCard from '~/components/Card/BaseCard';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
-    name: 'SegmentsBaseCard',
+    name: 'SegmentsForm',
     components: {
-        BaseCard,
+        Form: () => import('~/core/components/Form/Form'),
+        FormGroup: () => import('~/core/components/Form/FormGroup'),
         TextField: () => import('~/core/components/Inputs/TextField'),
     },
     mixins: [errorValidationMixin],

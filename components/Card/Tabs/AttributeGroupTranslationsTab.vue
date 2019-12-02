@@ -5,7 +5,7 @@
 <template>
     <TranslationsTab
         :update-button="updateButton">
-        <AttributeGroupTranslationCard
+        <AttributeGroupTranslationForm
             v-for="(languageCode, index) in cardsLanguageCodes"
             :key="index"
             :language-code="languageCode" />
@@ -19,7 +19,7 @@ export default {
     name: 'AttributeGroupTranslationsTab',
     components: {
         TranslationsTab: () => import('~/components/Card/Tabs/TranslationsTab'),
-        AttributeGroupTranslationCard: () => import('~/components/Card/Cards/AttributeGroupTranslationCard'),
+        AttributeGroupTranslationForm: () => import('~/components/Forms/AttributeGroupTranslationForm'),
     },
     props: {
         updateButton: {

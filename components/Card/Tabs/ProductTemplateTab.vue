@@ -19,9 +19,11 @@
             </div>
         </template>
         <template #content>
-            <BaseForm>
-                <ProductTemplateCard :language-code="languageCode" />
-            </BaseForm>
+            <VerticalFixedScroll>
+                <VerticalCenteredView>
+                    <ProductTemplateForm :language-code="languageCode" />
+                </VerticalCenteredView>
+            </VerticalFixedScroll>
         </template>
         <template #footer>
             <Footer :button="updateButton" />
@@ -33,18 +35,20 @@
 import { mapState, mapActions } from 'vuex';
 import { getKeyByValue, getValueByKey } from '~/model/objectWrapper';
 import Footer from '~/components/ReusableFooter/Footer';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
-import BaseForm from '~/components/Form/BaseForm';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
+import VerticalCenteredView from '~/core/components/Layout/VerticalCenteredView';
 
 export default {
     name: 'ProductTemplateTab',
     components: {
+        VerticalCenteredView,
+        VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
         Select: () => import('~/core/components/Inputs/Select/Select'),
         ProductCompleteness: () => import('~/components/Progress/ProductCompleteness'),
-        ProductTemplateCard: () => import('~/components/Card/Cards/ProductTemplateCard'),
+        ProductTemplateForm: () => import('~/components/Forms/ProductTemplateForm'),
         Footer,
-        BaseForm,
     },
     props: {
         updateButton: {

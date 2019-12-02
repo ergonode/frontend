@@ -115,7 +115,6 @@ export default {
             const isConfirm = confirm('Are you sure you want to delete this role?'); /* eslint-disable-line no-restricted-globals */
             if (isConfirm) {
                 const { id } = this.comment;
-
                 this.removeComment({
                     id,
                     onSuccess: this.onRemoveSuccess,
@@ -131,7 +130,6 @@ export default {
         },
         formatDate(date) {
             if (!date) return null;
-
             return formatDate(new Date(date), COMMENT_FORMAT);
         },
     },

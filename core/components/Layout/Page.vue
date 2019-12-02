@@ -3,21 +3,24 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="base-modal-card">
+    <div class="page">
         <slot />
     </div>
 </template>
 
 <script>
 export default {
-    name: 'BaseModalCard',
+    name: 'Page',
 };
 </script>
 
 <style lang="scss" scoped>
-    .base-modal-card {
+    .page {
+        position: relative;
         display: flex;
+        flex: 1;
         flex-direction: column;
-        box-shadow: $ELEVATOR_2_DP;
+        background-color: $WHITESMOKE;
+        overflow: hidden;
     }
 </style>

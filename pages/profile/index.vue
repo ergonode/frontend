@@ -3,13 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <BasePage>
+    <Page>
         <TitleBar
             title="Profile"
             icon="User" />
         <HorizontalTabBar
             :items="tabs" />
-    </BasePage>
+    </Page>
 </template>
 
 <script>
@@ -19,7 +19,7 @@ export default {
     components: {
         HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
-        BasePage: () => import('~/core/components/Layout/BasePage'),
+        Page: () => import('~/core/components/Layout/Page'),
     },
     data() {
         return {

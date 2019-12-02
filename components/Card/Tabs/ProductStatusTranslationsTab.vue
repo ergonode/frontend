@@ -5,7 +5,7 @@
 <template>
     <TranslationsTab
         :update-button="updateButton">
-        <ProductStatusTranslationCard
+        <ProductStatusTranslationForm
             v-for="(languageCode, index) in cardsLanguageCodes"
             :key="index"
             :language-code="languageCode" />
@@ -19,7 +19,7 @@ export default {
     name: 'ProductStatusTranslationsTab',
     components: {
         TranslationsTab: () => import('~/components/Card/Tabs/TranslationsTab'),
-        ProductStatusTranslationCard: () => import('~/components/Card/Cards/ProductStatusTranslationCard'),
+        ProductStatusTranslationForm: () => import('~/components/Forms/ProductStatusTranslationForm'),
     },
     props: {
         updateButton: {

@@ -3,65 +3,66 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseCard>
-        <TextField
-            :value="code"
-            solid
-            required
-            :error-messages="errorCodeMessage"
-            :disabled="isDisabled || isDisabledByPrivileges"
-            regular
-            label="Code"
-            hint="Attribute code must be unique"
-            @input="setAttributeCode" />
-        <TranslationSelect
-            :value="groups"
-            :solid="true"
-            :options="groupOptions"
-            label="Groups"
-            :regular="true"
-            :multiselect="true"
-            :clearable="true"
-            :disabled="isDisabledByPrivileges"
-            :error-messages="errorGroupsMessage"
-            @input="setAttributeGroups" />
-        <Divider />
-        <Toggler
-            :value="isMultilingual"
-            :disabled="isDisabled || isDisabledByPrivileges"
-            label="Multilingual attribute"
-            @input="setMultilingualAttribute">
-            <template #append>
-                <InfoHint :hint="multilingualHint" />
-            </template>
-        </Toggler>
-        <Select
-            :value="type"
-            solid
-            required
-            label="Type"
-            regular
-            :disabled="isDisabled || isDisabledByPrivileges"
-            :options="attrTypeValues"
-            :error-messages="errorTypeMessage"
-            @input="onTypeChange" />
-        <Select
-            v-if="hasParams"
-            :value="parameter"
-            solid
-            required
-            regular
-            :multiselect="hasParamsWithMultiChoice"
-            :label="paramsLabel"
-            :options="attrParamValues"
-            :error-messages="errorParamsMessage"
-            :disabled="isDisabledByPrivileges"
-            @input="(parameter) => setAttributeParameter(parameter)" />
-        <AttributeOptionKeyValues
-            v-show="hasOptions"
-            :disabled="isDisabledByPrivileges" />
-        <slot />
-    </BaseCard>
+    <Form>
+        <FormGroup>
+            <TextField
+                :value="code"
+                solid
+                required
+                :error-messages="errorCodeMessage"
+                :disabled="isDisabled || isDisabledByPrivileges"
+                regular
+                label="Code"
+                hint="Attribute code must be unique"
+                @input="setAttributeCode" />
+            <TranslationSelect
+                :value="groups"
+                :solid="true"
+                :options="groupOptions"
+                label="Groups"
+                :regular="true"
+                :multiselect="true"
+                :clearable="true"
+                :disabled="isDisabledByPrivileges"
+                :error-messages="errorGroupsMessage"
+                @input="setAttributeGroups" />
+            <Divider />
+            <Toggler
+                :value="isMultilingual"
+                :disabled="isDisabled || isDisabledByPrivileges"
+                label="Multilingual attribute"
+                @input="setMultilingualAttribute">
+                <template #append>
+                    <InfoHint :hint="multilingualHint" />
+                </template>
+            </Toggler>
+            <Select
+                :value="type"
+                solid
+                required
+                label="Type"
+                regular
+                :disabled="isDisabled || isDisabledByPrivileges"
+                :options="attrTypeValues"
+                :error-messages="errorTypeMessage"
+                @input="onTypeChange" />
+            <Select
+                v-if="hasParams"
+                :value="parameter"
+                solid
+                required
+                regular
+                :multiselect="hasParamsWithMultiChoice"
+                :label="paramsLabel"
+                :options="attrParamValues"
+                :error-messages="errorParamsMessage"
+                :disabled="isDisabledByPrivileges"
+                @input="(parameter) => setAttributeParameter(parameter)" />
+            <AttributeOptionKeyValues
+                v-show="hasOptions"
+                :disabled="isDisabledByPrivileges" />
+        </FormGroup>
+    </Form>
 </template>
 
 <script>
@@ -71,12 +72,12 @@ import { hasParams, hasOptions, getParamsOptionsForType } from '~/model/attribut
 import { getMappedParameterKey } from '~/model/mappers/attributeMapper';
 import { getKeyByValue } from '~/model/objectWrapper';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
-import BaseCard from '~/components/Card/BaseCard';
 
 export default {
-    name: 'AttributeBaseCard',
+    name: 'AttributeForm',
     components: {
-        BaseCard,
+        Form: () => import('~/core/components/Form/Form'),
+        FormGroup: () => import('~/core/components/Form/FormGroup'),
         AttributeOptionKeyValues: () => import('~/components/Card/AttributeOptionKeyValues'),
         Toggler: () => import('~/core/components/Inputs/Toggler/Toggler'),
         InfoHint: () => import('~/core/components/Inputs/Hint/InfoHint'),

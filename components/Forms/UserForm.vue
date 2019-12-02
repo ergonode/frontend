@@ -3,102 +3,104 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseCard>
-        <TextField
-            :value="email"
-            solid
-            required
-            regular
-            label="Email"
-            :error-messages="errorEmailMessage"
-            :disabled="isDisabled || isDisabledByPrivileges"
-            @input="(email) => setAction({ key: 'email', value: email })" />
-        <TextField
-            :value="firstName"
-            solid
-            required
-            regular
-            label="First name"
-            :error-messages="errorFirstNameMessage"
-            :disabled="isDisabledByPrivileges"
-            @input="(firstName) => setAction({ key: 'firstName', value: firstName })" />
-        <TextField
-            :value="lastName"
-            solid
-            required
-            regular
-            label="Last name"
-            :error-messages="errorLastNameMessage"
-            :disabled="isDisabledByPrivileges"
-            @input="(lastName) => setAction({ key: 'lastName', value: lastName })" />
-        <TextField
-            :value="password"
-            solid
-            required
-            regular
-            type="password"
-            label="Password"
-            :input="{ type: 'password' }"
-            :error-messages="errorPasswordMessage"
-            :disabled="isDisabledByPrivileges"
-            @input="(password) => setAction({ key: 'password', value: password })" />
-        <TextField
-            :value="passwordRepeat"
-            solid
-            required
-            regular
-            type="password"
-            label="Password repeat"
-            :input="{ type: 'password' }"
-            :error-messages="errorPasswordRepeatMessage"
-            :disabled="isDisabledByPrivileges"
-            @input="(passwordRepeat) => setAction({
-                key: 'passwordRepeat',
-                value: passwordRepeat
-            })" />
-        <Select
-            :value="parsedStatus"
-            solid
-            required
-            regular
-            label="Activity status"
-            :options="statusValues"
-            :error-messages="errorStatusMessage"
-            :disabled="isDisabledByPrivileges"
-            @input="onStatusChange" />
-        <Select
-            :value="parsedLanguage"
-            solid
-            required
-            regular
-            label="Language"
-            :options="languageValues"
-            :disabled="isDisabledByPrivileges"
-            :error-messages="errorLanguageMessage"
-            @input="onLanguageChange" />
-        <Select
-            :value="parsedRole"
-            solid
-            required
-            regular
-            label="Role"
-            :options="roleValues"
-            :disabled="isDisabledByPrivileges"
-            :error-messages="errorRoleMessage"
-            @input="onRoleChange" />
-    </BaseCard>
+    <Form>
+        <FormGroup>
+            <TextField
+                :value="email"
+                solid
+                required
+                regular
+                label="Email"
+                :error-messages="errorEmailMessage"
+                :disabled="isDisabled || isDisabledByPrivileges"
+                @input="(email) => setAction({ key: 'email', value: email })" />
+            <TextField
+                :value="firstName"
+                solid
+                required
+                regular
+                label="First name"
+                :error-messages="errorFirstNameMessage"
+                :disabled="isDisabledByPrivileges"
+                @input="(firstName) => setAction({ key: 'firstName', value: firstName })" />
+            <TextField
+                :value="lastName"
+                solid
+                required
+                regular
+                label="Last name"
+                :error-messages="errorLastNameMessage"
+                :disabled="isDisabledByPrivileges"
+                @input="(lastName) => setAction({ key: 'lastName', value: lastName })" />
+            <TextField
+                :value="password"
+                solid
+                required
+                regular
+                type="password"
+                label="Password"
+                :input="{ type: 'password' }"
+                :error-messages="errorPasswordMessage"
+                :disabled="isDisabledByPrivileges"
+                @input="(password) => setAction({ key: 'password', value: password })" />
+            <TextField
+                :value="passwordRepeat"
+                solid
+                required
+                regular
+                type="password"
+                label="Password repeat"
+                :input="{ type: 'password' }"
+                :error-messages="errorPasswordRepeatMessage"
+                :disabled="isDisabledByPrivileges"
+                @input="(passwordRepeat) => setAction({
+                    key: 'passwordRepeat',
+                    value: passwordRepeat
+                })" />
+            <Select
+                :value="parsedStatus"
+                solid
+                required
+                regular
+                label="Activity status"
+                :options="statusValues"
+                :error-messages="errorStatusMessage"
+                :disabled="isDisabledByPrivileges"
+                @input="onStatusChange" />
+            <Select
+                :value="parsedLanguage"
+                solid
+                required
+                regular
+                label="Language"
+                :options="languageValues"
+                :disabled="isDisabledByPrivileges"
+                :error-messages="errorLanguageMessage"
+                @input="onLanguageChange" />
+            <Select
+                :value="parsedRole"
+                solid
+                required
+                regular
+                label="Role"
+                :options="roleValues"
+                :disabled="isDisabledByPrivileges"
+                :error-messages="errorRoleMessage"
+                @input="onRoleChange" />
+        </FormGroup>
+    </Form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
-import BaseCard from '~/components/Card/BaseCard';
 import { getValueByKey, getKeyByValue } from '~/model/objectWrapper';
 
 export default {
-    name: 'UserBaseCard',
+    name: 'UserForm',
     components: {
-        BaseCard,
+        Form: () => import('~/core/components/Form/Form'),
+        FormGroup: () => import('~/core/components/Form/FormGroup'),
         TextField: () => import('~/core/components/Inputs/TextField'),
         Select: () => import('~/core/components/Inputs/Select/Select'),
     },

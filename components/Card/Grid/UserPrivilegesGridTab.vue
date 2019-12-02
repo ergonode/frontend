@@ -45,7 +45,7 @@ import GridCell from '~/core/components/Grid/GridCell';
 import GridPresentationHintCell from '~/core/components/Grid/PresentationCells/GridPresentationHintCell';
 import GridPresentationCell from '~/core/components/Grid/PresentationCells/GridPresentationCell';
 import GridPresentationCheckCell from '~/core/components/Grid/PresentationCells/GridPresentationCheckCell';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
     name: 'UserPrivilegesGridTab',

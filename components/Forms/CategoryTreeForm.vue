@@ -3,30 +3,31 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseCard>
-        <TextField
-            :value="code"
-            solid
-            regular
-            required
-            :error-messages="errorCodeMessage"
-            :disabled="isDisabled || isDisabledByPrivileges"
-            label="Code"
-            hint="Tree code must be unique"
-            @input="setTreeCode"
-        />
-    </BaseCard>
+    <Form>
+        <FormGroup>
+            <TextField
+                :value="code"
+                solid
+                regular
+                required
+                :error-messages="errorCodeMessage"
+                :disabled="isDisabled || isDisabledByPrivileges"
+                label="Code"
+                hint="Tree code must be unique"
+                @input="setTreeCode" />
+        </FormGroup>
+    </Form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import BaseCard from '~/components/Card/BaseCard';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
-    name: 'CategoryTreeBaseCard',
+    name: 'CategoryTreeForm',
     components: {
-        BaseCard,
+        Form: () => import('~/core/components/Form/Form'),
+        FormGroup: () => import('~/core/components/Form/FormGroup'),
         TextField: () => import('~/core/components/Inputs/TextField'),
     },
     mixins: [errorValidationMixin],

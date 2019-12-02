@@ -5,25 +5,29 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <BaseForm>
-                <ProductCommentsCard />
-            </BaseForm>
+            <VerticalFixedScroll>
+                <VerticalCenteredView>
+                    <ProductCommentsForm />
+                </VerticalCenteredView>
+            </VerticalFixedScroll>
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
 import { DATA_LIMIT } from '~/defaults/grid';
-import ProductCommentsCard from '~/components/Card/Cards/ProductCommentsCard';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/ResponsiveCenteredViewTemplate';
-import BaseForm from '~/components/Form/BaseForm';
+import ProductCommentsForm from '~/components/Forms/ProductCommentsForm';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
+import VerticalCenteredView from '~/core/components/Layout/VerticalCenteredView';
 
 export default {
     name: 'ProductCommentsTab',
     components: {
-        ProductCommentsCard,
+        VerticalCenteredView,
+        VerticalFixedScroll,
+        ProductCommentsForm,
         ResponsiveCenteredViewTemplate,
-        BaseForm,
     },
     props: {
         updateButton: {

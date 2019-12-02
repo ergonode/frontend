@@ -3,33 +3,37 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseModalCard>
-        <BaseCard :title="selectedLanguage">
-            <TextField
-                v-model="nameValue"
-                solid
-                regular
-                label="Group name"
-                :disabled="!isUserAllowedToUpdate"
-                :error-messages="errorNameMessage" />
-        </BaseCard>
-    </BaseModalCard>
+    <Modal :title="selectedLanguage">
+        <Form>
+            <FormGroup>
+                <TextField
+                    v-model="nameValue"
+                    solid
+                    regular
+                    label="Group name"
+                    :disabled="!isUserAllowedToUpdate"
+                    :error-messages="errorNameMessage" />
+            </FormGroup>
+        </Form>
+    </Modal>
 </template>
 
 <script>
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
-import BaseCard from '~/components/Card/BaseCard';
 import TextField from '~/core/components/Inputs/TextField';
-import BaseModalCard from '~/components/Card/BaseModalCard';
+import Modal from '~/core/components/Modal/Modal';
+import Form from '~/core/components/Form/Form';
+import FormGroup from '~/core/components/Form/FormGroup';
 
 export default {
-    name: 'AttributeGroupTranslationCard',
+    name: 'AttributeGroupTranslationForm',
     mixins: [errorValidationMixin, translationCardMixin],
     components: {
-        BaseCard,
+        FormGroup,
+        Form,
+        Modal,
         TextField,
-        BaseModalCard,
     },
     computed: {
         nameValue: {

@@ -18,7 +18,7 @@
 
 <script>
 import Footer from '~/components/ReusableFooter/Footer';
-import GridViewTemplate from '~/core/components/Layout/GridViewTemplate';
+import GridViewTemplate from '~/core/components/Layout/Templates/GridViewTemplate';
 
 export default {
     name: 'CategoryTreeDesignTab',
