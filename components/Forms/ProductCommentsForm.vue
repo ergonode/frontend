@@ -52,7 +52,7 @@ import { DATA_LIMIT } from '~/defaults/grid';
 import { LayoutOrientation } from '~/defaults/layout';
 import PrependIconButton from '~/core/components/Buttons/PrependIconButton';
 import Button from '~/core/components/Buttons/Button';
-import Loader from '~/components/Loader/Loader';
+import Loader from '~/core/components/Loader/Loader';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import CommentsList from '~/components/List/Comments/CommentsList';
 import CommentStateChanger from '~/components/Comments/CommentStateChanger';
@@ -69,7 +69,7 @@ export default {
         CommentsList,
         CommentStateChanger,
         EditableComment,
-        ListPlaceholder: () => import('~/components/Placeholder/ListPlaceholder'),
+        ListPlaceholder: () => import('~/core/components/List/ListPlaceholder'),
     },
     data() {
         return {

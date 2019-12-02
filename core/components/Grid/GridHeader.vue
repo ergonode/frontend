@@ -79,7 +79,7 @@ import { ROW_HEIGHT, GRID_LAYOUT } from '~/defaults/grid';
 export default {
     name: 'GridHeader',
     components: {
-        Divider: () => import('~/components/Dividers/Divider'),
+        Divider: () => import('~/core/components/Dividers/Divider'),
         FabButton: () => import('~/core/components/Buttons/FabButton'),
         IconGrid: () => import('~/components/Icon/Others/IconGrid'),
         IconTable: () => import('~/components/Icon/Others/IconTable'),

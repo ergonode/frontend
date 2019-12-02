@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
-    <div :class="['divider', {'divider--vertical': vertical}]" />
+<template functional>
+    <div :class="['divider', {'divider--vertical': props.vertical}]" />
 </template>
 
 <script>

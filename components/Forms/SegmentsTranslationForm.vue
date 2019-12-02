@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <Modal :title="selectedLanguage">
+    <Card :title="selectedLanguage">
         <Form>
             <FormGroup>
                 <TextField
@@ -25,7 +25,7 @@
                     @input="(value) => setTranslationPropertyValue(value, 'description')" />
             </FormGroup>
         </Form>
-    </Modal>
+    </Card>
 </template>
 
 <script>
@@ -33,7 +33,7 @@ import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
 import TextField from '~/core/components/Inputs/TextField';
 import TextArea from '~/core/components/Inputs/TextArea';
-import Modal from '~/core/components/Modal/Modal';
+import Card from '~/core/components/Card/Card';
 import FormGroup from '~/core/components/Form/FormGroup';
 import Form from '~/core/components/Form/Form';
 
@@ -42,7 +42,7 @@ export default {
     components: {
         Form,
         FormGroup,
-        Modal,
+        Card,
         TextField,
         TextArea,
     },

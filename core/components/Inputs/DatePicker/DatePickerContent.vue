@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import DatePickerHeader from '~/core/components/Inputs/Date/DatePickerHeader';
-import DatePickerNavigationHeader from '~/core/components/Inputs/Date/DatePickerNavigationHeader';
-import DatePickerCalendarContent from '~/core/components/Inputs/Date/DatePickerCalendarContent';
+import DatePickerHeader from '~/core/components/Inputs/DatePicker/DatePickerHeader';
+import DatePickerNavigationHeader from '~/core/components/Inputs/DatePicker/DatePickerNavigationHeader';
+import DatePickerCalendarContent from '~/core/components/Inputs/DatePicker/DatePickerCalendarContent';
 import {
     getNextYear,
     getPreviousYear,

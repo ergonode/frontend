@@ -48,12 +48,12 @@ export default {
         VerticalCenteredView,
         VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
-        Loader: () => import('~/components/Loader/Loader'),
+        Loader: () => import('~/core/components/Loader/Loader'),
         Button: () => import('~/core/components/Buttons/Button'),
         List: () => import('~/core/components/List/List'),
         NotificationsListElement: () => import('~/components/List/Notifications/NotificationsListElement'),
         NotificationsListFooter: () => import('~/components/List/Notifications/NotificationsListFooter'),
-        ListPlaceholder: () => import('~/components/Placeholder/ListPlaceholder'),
+        ListPlaceholder: () => import('~/core/components/List/ListPlaceholder'),
     },
     computed: {
         ...mapState('notifications', {

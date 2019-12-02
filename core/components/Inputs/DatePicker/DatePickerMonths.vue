@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import DatePickerCalendarNode from '~/core/components/Inputs/Date/DatePickerCalendarNode';
+import DatePickerCalendarNode from '~/core/components/Inputs/DatePicker/DatePickerCalendarNode';
 
 export default {
     name: 'DatePickerMonths',

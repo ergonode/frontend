@@ -14,7 +14,7 @@
 
 <script>
 import GridAdvancedFilterShowOnly from '~/core/components/Grid/AdvancedFilters/GridAdvancedFilterShowOnly';
-import Divider from '~/components/Dividers/Divider';
+import Divider from '~/core/components/Dividers/Divider';
 
 export default {
     name: 'GridAdvancedFilterBaseContent',

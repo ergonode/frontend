@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import InfoHint from '~/core/components/Inputs/Hint/InfoHint';
-import ErrorHint from '~/core/components/Inputs/Hint/ErrorHint';
+import InfoHint from '~/core/components/Hints/InfoHint';
+import ErrorHint from '~/core/components/Hints/ErrorHint';
 
 export default {
     name: 'ProductTemplateDetailsContent',

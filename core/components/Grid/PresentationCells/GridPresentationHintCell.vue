@@ -11,7 +11,7 @@
 
 <script>
 import GridPresentationCell from '~/core/components/Grid/PresentationCells/GridPresentationCell';
-import InfoHint from '~/core/components/Inputs/Hint/InfoHint';
+import InfoHint from '~/core/components/Hints/InfoHint';
 
 export default {
     name: 'GridPresentationHintCell',

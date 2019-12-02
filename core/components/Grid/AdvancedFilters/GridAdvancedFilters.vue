@@ -85,7 +85,7 @@ import { ADV_FILTERS_IDS } from '~/defaults/grid/cookies';
 export default {
     name: 'GridAdvancedFilters',
     components: {
-        Divider: () => import('~/components/Dividers/Divider'),
+        Divider: () => import('~/core/components/Dividers/Divider'),
         NumericBadge: () => import('~/core/components/Badges/NumericBadge'),
         FabButton: () => import('~/core/components/Buttons/FabButton'),
         IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),

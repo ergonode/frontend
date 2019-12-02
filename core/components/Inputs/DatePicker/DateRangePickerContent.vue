@@ -87,12 +87,12 @@ import calendar, {
 } from '~/model/calendar/calendar';
 import FabButton from '~/core/components/Buttons/FabButton';
 import IconArrowSingle from '~/components/Icon/Arrows/IconArrowSingle';
-import DatePickerMonthDays from '~/core/components/Inputs/Date/DatePickerMonthDays';
-import DatePickerContentHeader from '~/core/components/Inputs/Date/DatePickerContentHeader';
-import DatePickerNavigationHeader from '~/core/components/Inputs/Date/DatePickerNavigationHeader';
-import Divider from '~/components/Dividers/Divider';
-import DatePickerHeader from '~/core/components/Inputs/Date/DatePickerHeader';
-import DatePickerInteractiveHeader from '~/core/components/Inputs/Date/DatePickerInteractiveHeader';
+import DatePickerMonthDays from '~/core/components/Inputs/DatePicker/DatePickerMonthDays';
+import DatePickerContentHeader from '~/core/components/Inputs/DatePicker/DatePickerContentHeader';
+import DatePickerNavigationHeader from '~/core/components/Inputs/DatePicker/DatePickerNavigationHeader';
+import Divider from '~/core/components/Dividers/Divider';
+import DatePickerHeader from '~/core/components/Inputs/DatePicker/DatePickerHeader';
+import DatePickerInteractiveHeader from '~/core/components/Inputs/DatePicker/DatePickerInteractiveHeader';
 
 export default {
     name: 'DateRangePickerContent',

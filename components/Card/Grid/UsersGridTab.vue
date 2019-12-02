@@ -82,7 +82,7 @@ export default {
 
                 if (number !== this.numberOfDisplayedElements) {
                     this.changeNumberOfDisplayingElements(number);
-                    this.getDataWrapper();
+                    this.getData(this.editRoute.path);
                 }
             },
         },
@@ -101,9 +101,6 @@ export default {
         },
         onPageChanged(page) {
             this.setCurrentPage(page);
-            this.getDataWrapper();
-        },
-        getDataWrapper() {
             this.getData(this.editRoute.path);
         },
     },

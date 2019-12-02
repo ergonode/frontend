@@ -50,7 +50,7 @@ export default {
     name: 'DatePicker',
     components: {
         Select,
-        DatePickerContent: () => import('~/core/components/Inputs/Date/DatePickerContent'),
+        DatePickerContent: () => import('~/core/components/Inputs/DatePicker/DatePickerContent'),
         SelectContentApplyFooter: () => import('~/core/components/Inputs/Select/Contents/Footers/SelectContentApplyFooter'),
     },
     props: {
