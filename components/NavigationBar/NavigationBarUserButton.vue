@@ -7,7 +7,9 @@
         data-cy="user-select"
         @focus="onFocus">
         <template #input>
-            <UserPicture :image-id="user.avatar_id" />
+            <UserAvatar
+                :image-id="user.avatar_id"
+                :name="user.first_name" />
             <span
                 class="title"
                 v-text="capitalizedUserFirstName || capitalizedUserLastName" />
@@ -38,7 +40,7 @@ export default {
         NavigationBarSelectButton: () => import('~/core/components/NavigationBar/NavigationBarSelectButton'),
         NavigationBarUserSelectContent: () => import('~/components/NavigationBar/NavigationBarUserSelectContent'),
         IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
-        UserPicture: () => import('~/components/Multimedia/UserPicture'),
+        UserAvatar: () => import('~/components/Multimedia/UserAvatar'),
     },
     data() {
         return {

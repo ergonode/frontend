@@ -6,16 +6,10 @@
     <CommentWrapper>
         <template #header>
             <div class="header__user">
-                <div class="user__avatar">
-                    <Picture
-                        v-if="comment.avatar_id"
-                        fab
-                        :image-id="comment.avatar_id" />
-                    <span
-                        v-else
-                        class="avatar__placeholder font--medium-14-20"
-                        v-text="avatarInitial" />
-                </div>
+                <UserAvatar
+                    :image-id="comment.avatar_id"
+                    :name="comment.author"
+                    :avatar-size="32" />
                 <span
                     class="font--medium-16-24"
                     v-text="comment.author" />
@@ -71,7 +65,6 @@ import CommentWrapper from '~/components/Comments/CommentWrapper';
 import FabButton from '~/core/components/Buttons/FabButton';
 import IconEdit from '~/components/Icon/Actions/IconEdit';
 import IconDelete from '~/components/Icon/Actions/IconDelete';
-import Picture from '~/core/components/Multimedia/Picture';
 
 export default {
     name: 'Comment',
@@ -80,7 +73,7 @@ export default {
         FabButton,
         IconEdit,
         IconDelete,
-        Picture,
+        UserAvatar: () => import('~/components/Multimedia/UserAvatar'),
     },
     props: {
         comment: {
@@ -110,9 +103,6 @@ export default {
         isAbleToDelete() {
             return this.comment._links.delete;
         },
-        avatarInitial() {
-            return this.comment.author[0];
-        },
     },
     methods: {
         ...mapActions('comments', [
@@ -125,7 +115,6 @@ export default {
             const isConfirm = confirm('Are you sure you want to delete this role?'); /* eslint-disable-line no-restricted-globals */
             if (isConfirm) {
                 const { id } = this.comment;
-
                 this.removeComment({
                     id,
                     onSuccess: this.onRemoveSuccess,
@@ -141,7 +130,6 @@ export default {
         },
         formatDate(date) {
             if (!date) return null;
-
             return formatDate(new Date(date), COMMENT_FORMAT);
         },
     },
@@ -152,21 +140,8 @@ export default {
         display: flex;
         align-items: center;
 
-        .user__avatar {
+        .user-avatar {
             margin-right: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            box-shadow: $ELEVATOR_2_DP;
-
-            .avatar__placeholder {
-                margin: 1px 0 0 1px;
-                color: $GRAPHITE_DARK;
-                text-transform: uppercase;
-            }
         }
     }
 
