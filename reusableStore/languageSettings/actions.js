@@ -25,6 +25,8 @@ export default {
         const params = {
             limit: 9999,
             offset: 0,
+            order: 'ASC',
+            field: 'name',
         };
 
         function getLanguage(language) {

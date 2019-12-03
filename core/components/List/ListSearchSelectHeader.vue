@@ -83,7 +83,7 @@ export default {
         return {
             isSearchBtnClicked: false,
             isSearchFocused: false,
-            searchResult: '',
+            searchResult: null,
         };
     },
     created() {

@@ -13,6 +13,8 @@
                 regular
                 multiselect
                 clearable
+                searchable
+                :drop-down-height="400"
                 @input="setSelectedLanguages" />
         </FormGroup>
     </Form>
