@@ -39,7 +39,7 @@
         </template>
         <template #content>
             <span
-                class="font--medium-14-20"
+                class="comment__content font--medium-14-20"
                 v-text="comment.content" />
         </template>
         <template #footer>
@@ -152,5 +152,9 @@ export default {
         & > button {
             margin-left: 8px;
         }
+    }
+
+    .comment__content {
+        white-space: pre-wrap;
     }
 </style>
