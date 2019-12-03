@@ -40,7 +40,7 @@ export default {
 </script>
 <style lang="scss" scoped>
     .grid-list {
-        min-width: 560px;
+        width: 560px;
         padding: 24px;
 
         &__placeholder {
