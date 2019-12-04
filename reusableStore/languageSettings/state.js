@@ -7,7 +7,7 @@ import mutations from './mutations';
 
 const state = () => ({
     languages: [],
-    selectedLanguageNames: [],
+    selectedLanguageNames: {},
 });
 
 export default {

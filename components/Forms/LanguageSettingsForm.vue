@@ -7,7 +7,7 @@
         <FormGroup>
             <Select
                 :value="selectedLanguageNames"
-                :options="languageNames"
+                :options="languageOptions"
                 solid
                 label="Languages"
                 regular
@@ -15,7 +15,19 @@
                 clearable
                 searchable
                 :drop-down-height="400"
-                @input="setSelectedLanguages" />
+                @input="setSelectedLanguages"
+                @search="onSearch" />
+
+            <Select
+                :value="'xxx'"
+                :options="[{code: 'xxx', name: 'name'}, {code: 'yyy', name: 'nam2'}]"
+                solid
+                label="new"
+                regular
+                searchable
+                :drop-down-height="400"
+                @input="getInput"
+                @search="onSearch2" />
         </FormGroup>
     </Form>
 </template>
@@ -37,14 +49,24 @@ export default {
             languages: (state) => state.languages,
             selectedLanguageNames: (state) => state.selectedLanguageNames,
         }),
-        languageNames() {
-            return this.$store.state.languageSettings.languages.map((language) => language.name);
+        languageOptions() {
+            return this.languages.map((language) => ({ code: language.code, name: language.name }));
         },
     },
     methods: {
         ...mapActions('languageSettings', [
             'setSelectedLanguages',
+            'getData',
         ]),
+        onSearch(filter) {
+            this.getData(filter);
+        },
+        onSearch2(filter) {
+            console.log(filter);
+        },
+        getInput(x) {
+            console.log(x);
+        },
     },
 };
 </script>

@@ -69,28 +69,26 @@
                                     </template>
                                 </TextField>
                             </ListElement>
-                            <template v-for="(option, index) in filteredOptions">
+                            <template v-for="option in options">
                                 <slot
                                     name="option"
                                     :option="option"
-                                    :index="index">
+                                    :index="option.code">
                                     <ListElement
-                                        v-if="isOptionValid(option)"
-                                        :key="index"
+                                        v-if="isOptionValid(option.name)"
+                                        :key="option.code"
                                         :small="small"
-                                        :selected="index === selectedOptionIndex"
-                                        @click.native="onSelectValue(option, index)">
+                                        :selected="option.code === selectedOptionIndex"
+                                    >
                                         <ListElementAction v-if="multiselect">
                                             <CheckBox
-                                                :value="
-                                                    typeof selectedOptions[index] !== 'undefined'
-                                                "
-                                                @input="onSelectValue(option, index)" />
+                                                :value="isChecked(option.code)"
+                                                @input.native="onSelectValue(option)" />
                                         </ListElementAction>
                                         <ListElementDescription>
                                             <ListElementTitle
                                                 :small="small"
-                                                :title="String(option)" />
+                                                :title="String(option.name)" />
                                         </ListElementDescription>
                                     </ListElement>
                                 </slot>
@@ -137,6 +135,7 @@ import { ARROW } from '~/defaults/icons';
 import {
     GREEN, GRAPHITE,
 } from '~/assets/scss/_variables/_colors.scss';
+import { isEmpty, removeFromObjectByKey } from '~/model/objectWrapper';
 import FadeTransition from '~/core/components/Transitions/FadeTransition';
 import DropDown from '~/core/components/Inputs/Select/Contents/DropDown';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
@@ -162,7 +161,7 @@ export default {
     },
     props: {
         value: {
-            type: [Array, String, Number],
+            type: [Object, String, Number],
             default: null,
         },
         options: {
@@ -252,8 +251,8 @@ export default {
     },
     data() {
         return {
-            selectedOptions: {},
-            selectedOptionIndex: -1,
+            selectedOptions: this.multiselect ? this.value : null,
+            selectedOptionIndex: this.multiselect ? null : this.value,
             selectBoundingBox: null,
             isFocused: false,
             isMounted: false,
@@ -268,7 +267,6 @@ export default {
     },
     mounted() {
         this.debouncedSearch = debounce(this.onSearch, 500);
-        this.initSelectedOptions();
 
         if (this.autofocus) {
             this.$nextTick(() => {
@@ -291,14 +289,7 @@ export default {
             return THEMES.SECONDARY;
         },
         parsedInputValue() {
-            return Array.isArray(this.value) ? this.value.join(', ') : this.value;
-        },
-        filteredOptions() {
-            if (this.searchable && this.searchResult) {
-                const regExp = new RegExp(this.searchResult, 'i');
-                return this.options.filter((name) => regExp.test(name));
-            }
-            return this.options;
+            return this.multiselect ? Object.values(this.selectedOptions).join(', ') : this.selectedOptionIndex;
         },
         searchIconFillColor() {
             return this.isSearchFocused
@@ -310,8 +301,8 @@ export default {
                 ? ARROW.UP
                 : ARROW.DOWN;
         },
-        isEmpty() {
-            return this.value === '' || this.value === null || this.value.length === 0;
+        isEmptyOptions() {
+            return this.multiselect ? isEmpty(this.value) : (this.value === '' || this.value === null);
         },
         isFloatingLabel() {
             return this.label !== '' && this.label !== null;
@@ -352,7 +343,7 @@ export default {
         floatingLabelTransforms() {
             if (!this.isMounted) return null;
 
-            if (this.isFocused || !this.isEmpty) {
+            if (this.isFocused || !this.isEmptyOptions) {
                 const { activator } = this.$refs;
                 const transform = `translateY(-${activator.offsetHeight / 2}px)`;
 
@@ -368,7 +359,7 @@ export default {
         floatingLabelClasses() {
             return [
                 'input__label',
-                this.isEmpty && !this.isFocused ? 'font--medium-14-20' : 'font--medium-12-16',
+                this.isEmptyOptions && !this.isFocused ? 'font--medium-14-20' : 'font--medium-12-16',
                 { 'input__label--required': this.required },
             ];
         },
@@ -393,48 +384,41 @@ export default {
         isOptionValid(option) {
             return typeof option === 'string' || typeof option === 'number';
         },
-        initSelectedOptions() {
-            if (!this.multiselect) {
-                this.selectedOptionIndex = this.filteredOptions
-                    .findIndex((option) => option === this.value);
-            } else {
-                const { length } = this.value;
-
-                for (let i = 0; i < length; i += 1) {
-                    const optionIndex = this.filteredOptions
-                        .findIndex((option) => option === this.value[i]);
-
-                    this.selectedOptions[optionIndex] = this.value[i];
-                }
-            }
+        isChecked(code) {
+            return typeof this.selectedOptions[code] !== 'undefined';
         },
         onSearch(value) {
             this.searchResult = value;
+            if (this.searchable) {
+                this.$emit('search', this.searchResult);
+            }
         },
         onSearchFocus(isFocused) {
             this.isSearchFocused = isFocused;
         },
         onClear() {
-            this.selectedOptionIndex = -1;
+            this.selectedOptionIndex = null;
             this.selectedOptions = {};
 
             this.$emit('input', this.multiselect ? [] : '');
         },
-        onSelectValue(value, index) {
+        onSelectValue({ name, code }) {
             if (!this.multiselect) {
-                this.selectedOptionIndex = index;
-                this.$emit('input', value);
+                this.selectedOptionIndex = code;
+                this.$emit('input', code);
 
                 return false;
             }
 
-            if (typeof this.selectedOptions[index] !== 'undefined') {
-                delete this.selectedOptions[index];
+            if (typeof this.selectedOptions[code] !== 'undefined') {
+                this.selectedOptions = removeFromObjectByKey(this.selectedOptions, code);
             } else {
-                this.selectedOptions[index] = value;
+                this.selectedOptions = {
+                    ...this.selectedOptions,
+                    [code]: name,
+                };
             }
-
-            this.$emit('input', Object.values(this.selectedOptions));
+            this.$emit('input', this.selectedOptions);
 
             return true;
         },

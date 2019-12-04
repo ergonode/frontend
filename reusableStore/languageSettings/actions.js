@@ -19,7 +19,7 @@ export default {
             this.$addAlert({ type: 'success', message: 'Languages updated' });
         });
     },
-    getData({ commit, rootState }) {
+    getData({ commit, rootState }, filter = null) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const path = `/${userLanguageCode}/languages`;
         const params = {
@@ -29,16 +29,18 @@ export default {
             field: 'name',
         };
 
+        if (filter) {
+            params.filter = `name=${filter}`;
+        }
+
         function getLanguage(language) {
             return { code: language.code, name: language.name };
         }
 
-        function getLanguageName(language) {
-            return language.name;
-        }
-
-        function getActiveLanguage(language) {
-            return language.active;
+        function getActiveLanguages(acc, current) {
+            const newObject = acc;
+            newObject[current.code] = current.name;
+            return newObject;
         }
 
         return this.app.$axios.$get(path, { params }).then(({
@@ -46,11 +48,12 @@ export default {
         }) => {
             commit(types.SET_LANGUAGES, collection.map(getLanguage));
             commit(types.SET_SELECTED_LANGUAGE_NAMES, collection
-                .filter(getActiveLanguage)
-                .map(getLanguageName));
+                .filter((language) => language.active)
+                .reduce(getActiveLanguages, {}));
         });
     },
     setSelectedLanguages({ commit }, selectedLanguageNames) {
+        console.log(selectedLanguageNames);
         commit(types.SET_SELECTED_LANGUAGE_NAMES, selectedLanguageNames);
     },
 };
