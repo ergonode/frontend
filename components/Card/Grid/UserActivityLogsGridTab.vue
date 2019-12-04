@@ -15,8 +15,9 @@
         </template>
         <template #footer>
             <GridPageSelector
-                v-model="visibleRowsInPageCount"
-                :rows-number="numberOfDataElements" />
+                :value="numberOfDisplayedElements"
+                :rows-number="numberOfDataElements"
+                @input="onRowsCountUpdate" />
             <GridPagination
                 :value="currentPage"
                 :max-page="numberOfPages"
@@ -37,12 +38,6 @@ export default {
         Grid: () => import('~/core/components/Grid/Grid'),
         GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
         GridPagination: () => import('~/core/components/Grid/GridPagination'),
-    },
-    data() {
-        return {
-            filtersNumber: 0,
-            filtersExpanded: true,
-        };
     },
     beforeCreate() {
         this.$registerStore({
@@ -72,19 +67,6 @@ export default {
                 name: 'users-logs-edit-id',
             };
         },
-        visibleRowsInPageCount: {
-            get() {
-                return this.numberOfDisplayedElements;
-            },
-            set(value) {
-                const number = Math.trunc(value);
-
-                if (number !== this.numberOfDisplayedElements) {
-                    this.changeNumberOfDisplayingElements(number);
-                    this.getData(this.editRoute.path);
-                }
-            },
-        },
     },
     methods: {
         ...mapActions('userActivityLogsGrid', [
@@ -92,6 +74,14 @@ export default {
             'setCurrentPage',
             'changeNumberOfDisplayingElements',
         ]),
+        onRowsCountUpdate(value) {
+            const number = Math.trunc(value);
+
+            if (number !== this.numberOfDisplayedElements) {
+                this.changeNumberOfDisplayingElements({ number });
+                this.getData(this.editRoute.path);
+            }
+        },
         onPageChanged(page) {
             this.setCurrentPage(page);
             this.getData(this.editRoute.path);

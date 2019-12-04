@@ -5,7 +5,7 @@
 export default function ({ route, redirect }) {
     const { name } = route;
 
-    if (name === 'workflow-status-new' || name === 'workflow-status-edit-id') {
+    if (name === 'product-status-new' || name === 'product-status-edit-id') {
         return redirect(`${route.path}/general`);
     }
 

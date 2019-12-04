@@ -2,7 +2,7 @@
 
 exports[`NavigationBar Has no items 1`] = `
 <nav class="navigation-bar">
-  <section class="navigation-bar__section"></section>
-  <section class="navigation-bar__section"></section>
+  <section class="navigation-bar__breadcrumbs"></section>
+  <section class="navigation-bar__actions"></section>
 </nav>
 `;

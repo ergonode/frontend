@@ -4,11 +4,11 @@
  */
 <template>
     <nav class="navigation-bar">
-        <section class="navigation-bar__section">
-            <slot name="leftSection" />
+        <section class="navigation-bar__breadcrumbs">
+            <slot name="breadcrumbs" />
         </section>
-        <section class="navigation-bar__section">
-            <slot name="rightSection" />
+        <section class="navigation-bar__actions">
+            <slot name="actions" />
         </section>
     </nav>
 </template>
@@ -20,5 +20,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/scss/navigation/navigationbar.scss";
+    .navigation-bar {
+        display: flex;
+        justify-content: space-between;
+        height: 48px;
+        background-color: $GRAPHITE_COAL;
+
+        &__breadcrumbs {
+            display: grid;
+            grid-auto-flow: column;
+            grid-column-gap: 8px;
+            align-items: center;
+            padding: 0 16px;
+            box-sizing: border-box;
+        }
+
+        &__actions {
+            display: grid;
+            grid-auto-flow: column;
+            grid-column-gap: 1px;
+            background-color: $GRAPHITE_DARK;
+            border-left: 1px solid $GRAPHITE_DARK;
+        }
+    }
 </style>

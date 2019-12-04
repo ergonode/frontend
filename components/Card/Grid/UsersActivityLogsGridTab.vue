@@ -15,8 +15,9 @@
         </template>
         <template #footer>
             <GridPageSelector
-                v-model="visibleRowsInPageCount"
-                :rows-number="numberOfDataElements" />
+                :value="numberOfDisplayedElements"
+                :rows-number="numberOfDataElements"
+                @input="onRowsCountUpdate" />
             <GridPagination
                 :value="currentPage"
                 :max-page="numberOfPages"
@@ -27,7 +28,6 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import gridModule from '~/reusableStore/grid/state';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
@@ -37,22 +37,6 @@ export default {
         Grid: () => import('~/core/components/Grid/Grid'),
         GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
         GridPagination: () => import('~/core/components/Grid/GridPagination'),
-    },
-    data() {
-        return {
-            filtersNumber: 0,
-            filtersExpanded: true,
-        };
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'usersActivityLogsGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('usersActivityLogsGrid');
     },
     computed: {
         ...mapState('authentication', {
@@ -72,19 +56,6 @@ export default {
                 name: 'users-logs-edit-id',
             };
         },
-        visibleRowsInPageCount: {
-            get() {
-                return this.numberOfDisplayedElements;
-            },
-            set(value) {
-                const number = Math.trunc(value);
-
-                if (number !== this.numberOfDisplayedElements) {
-                    this.changeNumberOfDisplayingElements(number);
-                    this.getData(this.editRoute.path);
-                }
-            },
-        },
     },
     methods: {
         ...mapActions('usersActivityLogsGrid', [
@@ -92,19 +63,18 @@ export default {
             'setCurrentPage',
             'changeNumberOfDisplayingElements',
         ]),
+        onRowsCountUpdate(value) {
+            const number = Math.trunc(value);
+
+            if (number !== this.numberOfDisplayedElements) {
+                this.changeNumberOfDisplayingElements({ number });
+                this.getData(this.editRoute.path);
+            }
+        },
         onPageChanged(page) {
             this.setCurrentPage(page);
             this.getData(this.editRoute.path);
         },
-    },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'usersActivityLogsGrid',
-            store,
-        });
-        const gridPath = `${store.state.authentication.user.language}/accounts/log`;
-        await store.dispatch('usersActivityLogsGrid/getData', gridPath);
     },
 };
 </script>

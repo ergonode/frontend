@@ -39,14 +39,16 @@ const scrollBehavior = (to, from, savedPosition) => {
     });
 };
 
-function getRouters() {
-  const { router } = getPagesConfig;
-  let filteredPages = pages;
-  for (let i = 0; i < router.length; i += 1) {
-      filteredPages = filteredPages.filter(e => e.name !== router[i].name);
-  }
-  return filteredPages.concat(router);
-}
+const getRoutes = () => {
+    const { router } = getPagesConfig;
+    let filteredPages = pages;
+    for (let i = 0; i < router.length; i += 1) {
+        filteredPages = filteredPages.filter(e => e.name !== router[i].name);
+    }
+
+    //filteredPages.concat(router)
+    return pages;
+};
 
 export function createRouter() {
     return new Router({
@@ -55,7 +57,7 @@ export function createRouter() {
         linkActiveClass: 'nuxt-link-active',
         linkExactActiveClass: 'nuxt-link-exact-active',
         scrollBehavior,
-        routes: getRouters(),
+        routes: getRoutes(),
         fallback: false,
     });
 }

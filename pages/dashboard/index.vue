@@ -39,6 +39,7 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        height: 100%;
         background-color: $WHITESMOKE;
     }
 </style>

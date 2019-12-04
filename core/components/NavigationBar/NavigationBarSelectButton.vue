@@ -73,7 +73,7 @@ export default {
         position: absolute;
         top: $toolBarHeight;
         right: 0;
-        z-index: 1;
+        z-index: 2;
         display: flex;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_2_DP;

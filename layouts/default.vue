@@ -4,28 +4,31 @@
  */
 <template>
     <App>
-        <template v-if="user">
-            <NavigationBar>
-                <template #leftSection>
-                    <NavigationBarMenuButton
-                        :value="sideBarState"
-                        @state="onStateChange" />
-                    <NavigationBarDashboardButton />
-                </template>
-                <template #rightSection>
-                    <NavigationBarUserButton />
-                    <NavigationBarSynchronizationButton />
-                    <NavigationBarNotificationButton />
-                </template>
-            </NavigationBar>
-            <AppContent>
-                <SideBar :value="sideBarState" />
-                <Page>
-                    <nuxt />
-                </Page>
-            </AppContent>
-            <FlashMessage />
-        </template>
+        <div
+            v-if="user"
+            class="app-content">
+            <div class="app-content__navigation-bar">
+                <NavigationBar>
+                    <template #breadcrumbs>
+                        <NavigationBarBreadcrumb
+                            v-for="(breadcrumb, index) in breadcrumbs"
+                            :key="index"
+                            :breadcrumb="breadcrumb" />
+                    </template>
+                    <template #actions>
+                        <NavigationBarUserButton />
+                        <NavigationBarNotificationButton />
+                    </template>
+                </NavigationBar>
+            </div>
+            <div class="app-content__navigation-side-bar">
+                <SideBar />
+            </div>
+            <div class="app-content__body">
+                <nuxt />
+                <FlashMessage />
+            </div>
+        </div>
     </App>
 </template>
 
@@ -36,27 +39,31 @@ export default {
     middleware: ['setDictionaries', 'authenticated'],
     components: {
         App: () => import('~/core/components/Layout/App'),
-        AppContent: () => import('~/core/components/Layout/AppContent'),
-        Page: () => import('~/core/components/Layout/Page'),
         SideBar: () => import('~/core/components/SideBar/SideBar'),
         NavigationBar: () => import('~/core/components/NavigationBar/NavigationBar'),
-        NavigationBarMenuButton: () => import('~/core/components/NavigationBar/NavigationBarMenuButton'),
+        NavigationBarBreadcrumb: () => import('~/core/components/NavigationBar/NavigationBarBreadcrumb'),
         NavigationBarUserButton: () => import('~/components/NavigationBar/NavigationBarUserButton'),
-        NavigationBarDashboardButton: () => import('~/components/NavigationBar/NavigationBarDashboardButton'),
-        NavigationBarSynchronizationButton: () => import('~/components/NavigationBar/NavigationBarSynchronizationButton'),
         NavigationBarNotificationButton: () => import('~/components/NavigationBar/NavigationBarNotificationButton'),
         FlashMessage: () => import('~/core/components/Alerts/FlashMessage'),
     },
     data() {
         return {
-            sideBarState: 2,
+            breadcrumbs: [],
         };
+    },
+    created() {
+        this.breadcrumbs = this.$route.meta.breadcrumbs || [];
     },
     mounted() {
         this.setRequestTimeout();
     },
     destroyed() {
         this.invalidateRequestTimeout();
+    },
+    watch: {
+        $route() {
+            this.breadcrumbs = this.$route.meta.breadcrumbs || [];
+        },
     },
     computed: {
         ...mapState('authentication', {
@@ -74,3 +81,24 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .app-content {
+        display: grid;
+        grid-template-columns: max-content auto;
+        grid-template-rows: max-content auto;
+        flex: 1;
+
+        &__navigation-bar {
+            grid-area: 1 / 2 / 1 / 3;
+        }
+
+        &__navigation-side-bar {
+            grid-row: 1 / 3;
+        }
+
+        &__body {
+            grid-area: 2 / 2 / 3 / 3;
+        }
+    }
+</style>
