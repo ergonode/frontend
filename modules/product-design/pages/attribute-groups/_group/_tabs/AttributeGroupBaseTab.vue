@@ -18,7 +18,7 @@ import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/R
 import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
-    name: 'AttributeBaseTab',
+    name: 'AttributeGroupBaseTab',
     components: {
         VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,

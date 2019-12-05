@@ -6,13 +6,14 @@
     <TemplatePage
         :title="templateTitle"
         is-edit
-        @dismiss="onCancel"
+        @dismiss="onDismiss"
         @remove="onRemove"
         @save="onCreate" />
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { getParentRoutePath } from '~/model/navigation/tabs';
 
 export default {
     validate({ params }) {
@@ -47,8 +48,8 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
-        onCancel() {
-            this.$router.push('/templates');
+        onDismiss() {
+            this.$router.push(getParentRoutePath(this.$route));
         },
         onUpdateTemplateDesignerSuccess() {
             this.removeValidationErrors();

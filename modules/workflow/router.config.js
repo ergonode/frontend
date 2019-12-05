@@ -24,7 +24,6 @@ export const routing = [
         path: '/product-statuses',
         component: Pages.ProductStatuses,
         meta: {
-            access: true,
             title: 'Product statuses',
             group: {
                 title: 'Workflow',
@@ -68,7 +67,7 @@ export const routing = [
     },
     {
         name: 'product-status-edit-id',
-        path: '/workflow/status/edit/:id',
+        path: '/product-statuses/status/edit/:id',
         component: Pages.ProductStatusEdit,
         children: [
             {

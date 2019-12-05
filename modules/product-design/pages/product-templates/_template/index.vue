@@ -5,13 +5,14 @@
 <template>
     <TemplatePage
         :title="templateTitle"
-        @dismiss="onCancel"
+        @dismiss="onDismiss"
         @create="onCreate" />
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import { asyncRequestWrapper } from '~/model/wrappers/asyncRequestWrapper';
+import { getParentRoutePath } from '~/model/navigation/tabs';
 
 export default {
     name: 'New',
@@ -33,8 +34,8 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
-        onCancel() {
-            this.$router.back();
+        onDismiss() {
+            this.$router.push(getParentRoutePath(this.$route));
         },
         onCreateTemplateDesignerSuccess(id) {
             this.removeValidationErrors();
