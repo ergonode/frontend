@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedParameterKey,
     getMappedParameterValues,
     getMappedGroups,
     getMappedGroupsElementsCount,
@@ -300,15 +299,6 @@ describe('attributeMapper/getMappedParameterValues', () => {
             // const result = 'Euro';
             //
             // expect(getMappedParameterValues(type, param, data)).toStrictEqual(result);
-        });
-    });
-});
-
-describe('attributeMapper/getMappedParameterKey', () => {
-    describe('Based on API data, data is mapped into data structure', () => {
-        // TODO: Finish tests!!
-        it('', () => {
-            expect().toStrictEqual();
         });
     });
 });

@@ -13,7 +13,6 @@
 
 import { mapState, mapActions } from 'vuex';
 import {
-    getParsedType,
     getParsedGroups,
     getParsedParameterKeys,
     getParsedOptions,
@@ -34,9 +33,6 @@ export default {
             parameter: (state) => state.parameter,
             optionKeys: (state) => state.optionKeys,
             optionValues: (state) => state.optionValues,
-        }),
-        ...mapState('data', {
-            attrTypes: (state) => state.attrTypes,
         }),
     },
     methods: {
@@ -68,10 +64,7 @@ export default {
 
             const attribute = {
                 code: this.code,
-                type: getParsedType(
-                    this.attrTypes,
-                    this.type,
-                ),
+                type: this.type,
                 groups: getParsedGroups(this.groups),
                 multilingual: this.multilingual,
             };
@@ -84,12 +77,10 @@ export default {
             }
 
             if (this.parameter) {
-                attribute.parameters = getParsedParameterKeys(
-                    this.attrTypes,
-                    this.type,
-                    this.parameter,
-                    this.$store.state.data,
-                );
+                attribute.parameters = getParsedParameterKeys({
+                    selectedType: this.type,
+                    selectedParam: this.parameter,
+                });
             }
 
             this.createAttribute({

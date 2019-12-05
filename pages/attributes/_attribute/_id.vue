@@ -37,9 +37,6 @@ export default {
             optionValues: (state) => state.optionValues,
             isMultilingual: (state) => state.isMultilingual,
         }),
-        ...mapState('data', {
-            attrTypes: (state) => state.attrTypes,
-        }),
         ...mapState('translations', {
             translations: (state) => state.translations,
         }),
@@ -103,12 +100,10 @@ export default {
             }
 
             if (this.parameter) {
-                propertiesToUpdate.parameters = getParsedParameterKeys(
-                    this.attrTypes,
-                    this.type,
-                    this.parameter,
-                    this.$store.state.data,
-                );
+                propertiesToUpdate.parameters = getParsedParameterKeys({
+                    selectedType: this.type,
+                    selectedParam: this.parameter,
+                });
             }
 
             if (isThereAnyTranslation(label)) {

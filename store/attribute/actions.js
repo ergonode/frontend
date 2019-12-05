@@ -49,7 +49,7 @@ export default {
     setAttributeCode({ commit }, code) {
         commit(types.SET_ATTRIBUTE_CODE, code);
     },
-    setAttributeParameter({ commit }, parameter) {
+    setAttributeParameter({ commit }, parameter = null) {
         commit(types.SET_ATTRIBUTE_PARAMETER, parameter);
     },
     setAttributeGroups({ commit }, groups) {
@@ -99,7 +99,7 @@ export default {
 
             commit(types.SET_ATTRIBUTE_ID, id);
             commit(types.SET_ATTRIBUTE_CODE, code);
-            commit(types.SET_ATTRIBUTE_TYPE, rootState.data.attrTypes[type]);
+            commit(types.SET_ATTRIBUTE_TYPE, type);
             commit(types.SET_MULTILINGUAL_ATTRIBUTE, multilingual);
             commit(types.SET_ATTRIBUTE_GROUPS, getMappedGroups(
                 groups,

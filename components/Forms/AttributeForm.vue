@@ -43,7 +43,7 @@
                 label="Type"
                 regular
                 :disabled="isDisabled || isDisabledByPrivileges"
-                :options="attrTypeValues"
+                :options="attributeTypeOptions"
                 :error-messages="errorTypeMessage"
                 @input="onTypeChange" />
             <Select
@@ -52,12 +52,11 @@
                 solid
                 required
                 regular
-                :multiselect="hasParamsWithMultiChoice"
                 :label="paramsLabel"
-                :options="attrParamValues"
+                :options="attributeParametersOptions"
                 :error-messages="errorParamsMessage"
                 :disabled="isDisabledByPrivileges"
-                @input="(parameter) => setAttributeParameter(parameter)" />
+                @input="setAttributeParameter" />
             <AttributeOptionKeyValues
                 v-show="hasOptions"
                 :disabled="isDisabledByPrivileges" />
@@ -68,9 +67,9 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { toCapitalize } from '~/model/stringWrapper';
-import { hasParams, hasOptions, getParamsOptionsForType } from '~/model/attributes/AttributeTypes';
-import { getMappedParameterKey } from '~/model/mappers/attributeMapper';
-import { getKeyByValue } from '~/model/objectWrapper';
+import {
+    hasParams, hasOptions, getParamsKeyForType, getParamsOptionsForType,
+} from '~/model/attributes/AttributeTypes';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
@@ -106,10 +105,7 @@ export default {
             attrTypes: (state) => state.attrTypes,
         }),
         paramsLabel() {
-            const paramsKey = getMappedParameterKey(
-                this.attrTypes,
-                this.type,
-            );
+            const paramsKey = getParamsKeyForType(this.type);
 
             return toCapitalize(paramsKey);
         },
@@ -120,31 +116,27 @@ export default {
             return (this.isDisabled && !this.$hasAccess(['ATTRIBUTE_UPDATE']))
             || (!this.isDisabled && !this.$hasAccess(['ATTRIBUTE_CREATE']));
         },
-        currentTypeKey() {
-            return getKeyByValue(this.attrTypes, this.type);
-        },
-        hasParamsWithMultiChoice() {
-            return this.currentTypeKey === 'IMAGE';
-        },
         hasParams() {
-            return hasParams(this.currentTypeKey);
+            return hasParams(this.type);
         },
         params() {
             return getParamsOptionsForType(
-                this.currentTypeKey,
+                this.type,
                 this.$store.state.data,
             );
         },
         hasOptions() {
-            return hasOptions(this.currentTypeKey);
+            return hasOptions(this.type);
         },
-        attrTypeValues() {
-            return Object.values(this.attrTypes);
+        attributeTypeOptions() {
+            return Object.keys(this.attrTypes).map(
+                (type) => ({ code: type, name: this.attrTypes[type] }),
+            );
         },
-        attrParamValues() {
-            return Array.isArray(this.params)
-                ? this.params.map((param) => param.label)
-                : Object.values(this.params);
+        attributeParametersOptions() {
+            return Object.keys(this.params).map(
+                (param) => ({ code: param, name: this.params[param] }),
+            );
         },
         errorCodeMessage() {
             const codeIndex = 'code';
@@ -175,11 +167,7 @@ export default {
         ]),
         onTypeChange(type) {
             this.setAttributeType(type);
-
-            // Clear chosen params
-            if (this.hasParams) {
-                this.setAttributeParameter('');
-            }
+            this.setAttributeParameter();
 
             if (!this.hasOptions) {
                 this.removeAttributeOptions();

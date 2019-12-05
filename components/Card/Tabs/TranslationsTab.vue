@@ -7,8 +7,8 @@
         <template #header>
             <div class="language-selection-header">
                 <Select
-                    :value="selectedLanguageCards"
-                    :options="languagesValues"
+                    :value="selectedLanguages"
+                    :options="languageOptions"
                     solid
                     regular
                     label="Translations"
@@ -31,7 +31,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getKeysByValues, getValuesByKeys } from '~/model/objectWrapper';
+import { getValueByKey } from '~/model/objectWrapper';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import Footer from '~/components/ReusableFooter/Footer';
 import Select from '~/core/components/Inputs/Select/Select';
@@ -68,17 +68,17 @@ export default {
         ...mapState('translations', {
             cardsLanguageCodes: (state) => state.cardsLanguageCodes,
         }),
-        languagesValues() {
-            return Object.values(this.languages);
-        },
-        selectedLanguageCards() {
-            const languageNames = getValuesByKeys(this.languages, this.cardsLanguageCodes);
-
-            return this.languagesValues.filter(
-                (language) => languageNames.some(
-                    (name) => name === language,
-                ),
+        languageOptions() {
+            return Object.keys(this.languages).map(
+                (language) => ({ code: language, name: this.languages[language] }),
             );
+        },
+        selectedLanguages() {
+            return this.cardsLanguageCodes.reduce((acc, current) => {
+                const newObject = acc;
+                newObject[current] = getValueByKey(this.languages, current);
+                return newObject;
+            }, {});
         },
     },
     methods: {
@@ -87,10 +87,8 @@ export default {
             'setVisibleCardTranslations',
         ]),
         onLanguageCardSelected(languageCode) {
-            const languageCodes = getKeysByValues(this.languages, languageCode);
-
             this.setVisibleCardTranslations({
-                languages: languageCodes,
+                languages: Object.keys(languageCode),
             });
         },
     },

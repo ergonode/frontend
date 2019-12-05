@@ -17,17 +17,6 @@
                 :drop-down-height="400"
                 @input="setSelectedLanguages"
                 @search="onSearch" />
-
-            <Select
-                :value="'xxx'"
-                :options="[{code: 'xxx', name: 'name'}, {code: 'yyy', name: 'nam2'}]"
-                solid
-                label="new"
-                regular
-                searchable
-                :drop-down-height="400"
-                @input="getInput"
-                @search="onSearch2" />
         </FormGroup>
     </Form>
 </template>
@@ -60,12 +49,6 @@ export default {
         ]),
         onSearch(filter) {
             this.getData(filter);
-        },
-        onSearch2(filter) {
-            console.log(filter);
-        },
-        getInput(x) {
-            console.log(x);
         },
     },
 };

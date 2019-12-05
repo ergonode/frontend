@@ -2,17 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getKeyByValue, getKeysByValues, getValuesByKeys } from '~/model/objectWrapper';
+import {
+    isObject, getKeyByValue, getValueByKey,
+} from '~/model/objectWrapper';
 import { getParamsKeyForType, getParamsOptionsForType } from '~/model/attributes/AttributeTypes';
 import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
 
 export function getParsedType(types, selectedType) {
     return getKeyByValue(types, selectedType);
-}
-
-export function getMappedParameterKey(types, selectedType) {
-    const typeKey = getParsedType(types, selectedType);
-    return getParamsKeyForType(typeKey);
 }
 
 export function getMappedParameterValues(type, parameters, data) {
@@ -23,30 +20,27 @@ export function getMappedParameterValues(type, parameters, data) {
     const [parsedParameters] = Object.values(parameters);
 
     if (Array.isArray(parsedParameters)) {
-        return getValuesByKeys(typeParameters, parsedParameters);
+        return parsedParameters.reduce((acc, current) => {
+            const newObject = acc;
+            newObject[current] = getValueByKey(typeParameters, current);
+            return newObject;
+        }, {});
     }
 
-    return typeParameters[parsedParameters];
+    return parsedParameters;
 }
 
-export function getParsedParameterKeys(
-    types,
+export function getParsedParameterKeys({
     selectedType,
     selectedParam,
-    data,
-) {
-    const typeKey = getParsedType(types, selectedType);
-    const paramKey = getParamsKeyForType(typeKey);
-    const typeParameters = getParamsOptionsForType(
-        typeKey,
-        data,
-    );
+}) {
+    const paramKey = getParamsKeyForType(selectedType);
 
-    if (Array.isArray(selectedParam)) {
-        return { [paramKey]: getKeysByValues(typeParameters, selectedParam) };
+    if (isObject(selectedParam)) {
+        return { [paramKey]: Object.keys(selectedParam) };
     }
 
-    return { [paramKey]: getKeyByValue(typeParameters, selectedParam) };
+    return { [paramKey]: selectedParam };
 }
 
 export function getParsedGroups(groups) {

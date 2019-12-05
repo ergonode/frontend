@@ -8,11 +8,11 @@
             <div class="product-template-header">
                 <div class="product-template-header__language-selection">
                     <Select
-                        :value="language"
+                        :value="languageCode"
                         solid
                         regular
                         label="Edit language"
-                        :options="languagesValues"
+                        :options="languageOptions"
                         @input="onLanguageChange" />
                 </div>
                 <ProductCompleteness :language="language" />
@@ -33,7 +33,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getKeyByValue, getValueByKey } from '~/model/objectWrapper';
+import { getValueByKey } from '~/model/objectWrapper';
 import Footer from '~/components/ReusableFooter/Footer';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
@@ -84,6 +84,11 @@ export default {
             languageCode: (state) => state.languageCode,
             completeness: (state) => state.completeness,
         }),
+        languageOptions() {
+            return Object.keys(this.languages).map(
+                (language) => ({ code: language, name: this.languages[language] }),
+            );
+        },
         languagesValues() {
             return Object.values(this.languages);
         },
@@ -93,9 +98,9 @@ export default {
             'setDraftLanguageCode',
         ]),
         onLanguageChange(value) {
-            this.language = value;
+            this.language = getValueByKey(this.languages, value);
 
-            this.setDraftLanguageCode(getKeyByValue(this.languages, value));
+            this.setDraftLanguageCode(value);
         },
     },
 };

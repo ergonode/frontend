@@ -19,8 +19,7 @@ export function hasPlaceholder(type) {
 
 export function hasParams(type) {
     return (
-        type === TYPES.IMAGE
-        || type === TYPES.PRICE
+        type === TYPES.PRICE
         || type === TYPES.UNIT
         || type === TYPES.DATE
     );
@@ -34,8 +33,6 @@ export function getParamsOptionsForType(type, data) {
         return data.dateFormats;
     case TYPES.PRICE:
         return data.currencies;
-    case TYPES.IMAGE:
-        return data.imageFormats;
     default:
         return [];
     }
@@ -74,8 +71,6 @@ export function getParamsKeyForType(type) {
         return 'unit';
     case TYPES.PRICE:
         return 'currency';
-    case TYPES.IMAGE:
-        return 'formats';
     default:
         return '';
     }

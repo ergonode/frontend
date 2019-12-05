@@ -78,8 +78,8 @@
                                         v-if="isOptionValid(option.name)"
                                         :key="option.code"
                                         :small="small"
-                                        :selected="option.code === selectedOptionIndex"
-                                    >
+                                        :selected="isSelected(option.code)"
+                                        @click.native="onSelectValue(option)">
                                         <ListElementAction v-if="multiselect">
                                             <CheckBox
                                                 :value="isChecked(option.code)"
@@ -251,8 +251,7 @@ export default {
     },
     data() {
         return {
-            selectedOptions: this.multiselect ? this.value : null,
-            selectedOptionIndex: this.multiselect ? null : this.value,
+            selectedOptions: this.value || null,
             selectBoundingBox: null,
             isFocused: false,
             isMounted: false,
@@ -289,7 +288,10 @@ export default {
             return THEMES.SECONDARY;
         },
         parsedInputValue() {
-            return this.multiselect ? Object.values(this.selectedOptions).join(', ') : this.selectedOptionIndex;
+            if (!this.selectedOptions) return null;
+            return this.multiselect
+                ? Object.values(this.selectedOptions).join(', ')
+                : this.options.find((option) => option.code === this.selectedOptions).name;
         },
         searchIconFillColor() {
             return this.isSearchFocused
@@ -312,6 +314,9 @@ export default {
         },
         isDescription() {
             return this.description !== '' && this.description !== null;
+        },
+        isSelected(code) {
+            return this.multiselect ? false : code === this.selectedOptions;
         },
         inputClasses() {
             return [
@@ -388,23 +393,22 @@ export default {
             return typeof this.selectedOptions[code] !== 'undefined';
         },
         onSearch(value) {
+            const clearValue = value.startsWith('#') ? value.substring(1) : value;
+
             this.searchResult = value;
-            if (this.searchable) {
-                this.$emit('search', this.searchResult);
-            }
+            this.$emit('search', clearValue);
         },
         onSearchFocus(isFocused) {
             this.isSearchFocused = isFocused;
         },
         onClear() {
-            this.selectedOptionIndex = null;
-            this.selectedOptions = {};
+            this.selectedOptions = null;
 
-            this.$emit('input', this.multiselect ? [] : '');
+            this.$emit('input', this.multiselect ? [] : null);
         },
         onSelectValue({ name, code }) {
             if (!this.multiselect) {
-                this.selectedOptionIndex = code;
+                this.selectedOptions = code;
                 this.$emit('input', code);
 
                 return false;
@@ -505,8 +509,11 @@ export default {
             this.isClickedOutside = !isClickedInsideMenu
                 && !isClickedInsideActivator;
 
-            if (this.isClickedOutside
-                || (isClickedInsideMenu && !this.multiselect && this.dismissible)) {
+            if (this.isClickedOutside || (isClickedInsideMenu
+                && !this.multiselect
+                && this.dismissible
+                && !this.isSearchFocused)
+            ) {
                 this.isFocused = false;
                 this.isMenuActive = false;
 
