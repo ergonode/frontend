@@ -6,10 +6,9 @@
     <Page>
         <TitleBar
             :title="title"
-            :breadcrumbs="breadcrumbs"
-            :is-read-only="!isUserAllowedToUpdateCategoryTree && isEdit"
-            icon="Tree"
-            @navigateback="onDismiss">
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('CATEGORY_TREE')"
+            @navigateBack="onDismiss">
             <template
                 v-if="isEdit"
                 #mainAction>
@@ -27,6 +26,12 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE TREE' : 'CREATE TREE'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
         <Blur
             v-show="isBlurVisible"
             :style="blurZIndex" />
@@ -37,6 +42,7 @@
 <script>
 import { mapState } from 'vuex';
 import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
@@ -46,89 +52,14 @@ export default {
         TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
         Blur: () => import('~/components/Blur/Blur'),
     },
-    created() {
-        let generalRoute = { name: 'category-tree-new-general' };
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        this.breadcrumbs = [
-            {
-                title: 'Category trees',
-                icon: 'Tree',
-                route: { name: 'category-trees-grid' },
-            },
-        ];
-        this.isUserAllowedToUpdateCategoryTree = this.$hasAccess(['CATEGORY_TREE_UPDATE']);
-        if (this.isEdit) {
-            const translationRoute = { name: 'category-tree-edit-id-translations', params: this.$route.params };
-            const designerRoute = { name: 'category-tree-edit-id-designer', params: this.$route.params };
-
-            generalRoute = { name: 'category-tree-edit-id-general', params: this.$route.params };
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} TREE`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateCategoryTree,
-                        },
-                    },
-                },
-                {
-                    title: 'Translations',
-                    route: translationRoute,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} TREE`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateCategoryTree,
-                        },
-                    },
-                },
-                {
-                    title: 'Designer',
-                    route: designerRoute,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} TREE`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateCategoryTree,
-                        },
-                    },
-                },
-            ];
-        } else {
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} TREE`,
-                            action: tabAction,
-                            disabled: false,
-                        },
-                    },
-                },
-            ];
-        }
-    },
-    beforeDestroy() {
-        delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateCategoryTree;
-    },
     computed: {
         ...mapState('draggable', {
             isListElementDragging: (state) => state.isListElementDragging,
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
         smallSize() {
             return SIZES.SMALL;
         },

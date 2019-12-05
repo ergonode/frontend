@@ -6,10 +6,9 @@
     <Page>
         <TitleBar
             :title="title"
-            :breadcrumbs="breadcrumbs"
-            icon="Attributes"
-            :is-read-only="!isUserAllowedToUpdateAttribute && isEdit"
-            @navigateback="onDismiss">
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('ATTRIBUTE')"
+            @navigateBack="onDismiss">
             <template
                 v-if="isEdit"
                 #mainAction>
@@ -27,88 +26,33 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE ATTRIBUTE' : 'CREATE ATTRIBUTE'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
     </Page>
 </template>
 
 <script>
 import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'AttributePage',
     mixins: [categoryManagementPageBaseMixin],
-    created() {
-        this.breadcrumbs = [
-            {
-                title: 'Attributes',
-                icon: 'Attributes',
-                route: { name: 'attributes-grid' },
-            },
-        ];
-
-        this.isUserAllowedToUpdateAttribute = this.$hasAccess(['ATTRIBUTE_UPDATE']);
-        let generalRoute = { name: 'attribute-new-general' };
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        if (this.isEdit) {
-            const translationRoute = { name: 'attribute-edit-id-translations', params: this.$route.params };
-            generalRoute = { name: 'attribute-edit-id-general', params: this.$route.params };
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} ATTRIBUTE`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateAttribute,
-                        },
-                    },
-                },
-                {
-                    title: 'Translations',
-                    route: translationRoute,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} ATTRIBUTE`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateAttribute,
-                        },
-                    },
-                },
-            ];
-        } else {
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} ATTRIBUTE`,
-                            action: tabAction,
-                            disabled: false,
-                        },
-                    },
-                },
-            ];
-        }
-    },
     computed: {
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
         smallSize() {
             return SIZES.SMALL;
         },
         secondaryTheme() {
             return THEMES.SECONDARY;
         },
-    },
-    beforeDestroy() {
-        delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateAttribute;
     },
 };
 </script>

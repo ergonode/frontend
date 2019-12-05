@@ -6,10 +6,9 @@
     <Page>
         <TitleBar
             :title="title"
-            :breadcrumbs="breadcrumbs"
-            icon="User"
-            :is-read-only="!isUserAllowedToUpdateRole && isEdit"
-            @navigateback="onDismiss">
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('USER_ROLE')"
+            @navigateBack="onDismiss">
             <template
                 v-if="isEdit"
                 #mainAction>
@@ -27,88 +26,33 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE ROLE' : 'CREATE ROLE'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
     </Page>
 </template>
 
 <script>
 import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'UserRolesPage',
     mixins: [categoryManagementPageBaseMixin],
-    created() {
-        let generalRoute = { name: 'users-role-new-general' };
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        this.breadcrumbs = [
-            {
-                title: 'Users/Roles',
-                icon: 'User',
-                route: { name: 'users-roles' },
-            },
-        ];
-        this.isUserAllowedToUpdateRole = this.$hasAccess(['USER_ROLE_UPDATE']);
-
-        if (this.isEdit) {
-            const privilegesRoute = { name: 'users-role-edit-id-privileges', params: this.$route.params };
-            generalRoute = { name: 'users-role-edit-id-general', params: this.$route.params };
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} ROLE`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateRole,
-                        },
-                    },
-                },
-                {
-                    title: 'Privileges',
-                    route: privilegesRoute,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} PRIVILEGES`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateRole,
-                        },
-                    },
-                },
-            ];
-        } else {
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} ROLE`,
-                            action: tabAction,
-                            disabled: false,
-                        },
-                    },
-                },
-            ];
-        }
-    },
     computed: {
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
         smallSize() {
             return SIZES.SMALL;
         },
         secondaryTheme() {
             return THEMES.SECONDARY;
         },
-    },
-    beforeDestroy() {
-        delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateRole;
     },
 };
 </script>

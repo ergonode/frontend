@@ -32,7 +32,9 @@ export default {
         grid-template-rows: max-content auto max-content;
         grid-template-columns: min-content;
         column-gap: 24px;
+        box-sizing: border-box;
         background-color: $WHITE;
+        border-top: $BORDER_1_GREY;
 
         &__filters {
             grid-area: 1 / 2 / 2 / 3;

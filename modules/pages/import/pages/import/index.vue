@@ -6,7 +6,6 @@
     <Page>
         <TitleBar
             title="Imports"
-            icon="Import"
             :is-read-only="$isReadOnly('IMPORT')" />
         <HorizontalTabBar
             :items="tabs" />
@@ -17,7 +16,6 @@
 
 export default {
     name: 'Import',
-    middleware: ['tab/redirectToImportGrid'],
     components: {
         HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),

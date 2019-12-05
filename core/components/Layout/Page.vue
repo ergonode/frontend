@@ -18,8 +18,8 @@ export default {
     .page {
         position: relative;
         display: flex;
-        flex: 1;
         flex-direction: column;
+        height: 100%;
         background-color: $WHITESMOKE;
         overflow: hidden;
     }

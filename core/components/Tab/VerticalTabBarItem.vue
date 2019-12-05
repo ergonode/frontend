@@ -69,6 +69,7 @@ export default {
         color: $GRAPHITE;
         outline: none;
         text-align: center;
+        cursor: pointer;
 
         &--selected {
             background-image: linear-gradient(to left, $WHITE, $WHITESMOKE);

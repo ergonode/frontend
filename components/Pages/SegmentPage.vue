@@ -6,10 +6,9 @@
     <Page>
         <TitleBar
             :title="title"
-            :breadcrumbs="breadcrumbs"
-            :is-read-only="!isUserAllowedToUpdateSegments && isEdit"
-            icon="Templates"
-            @navigateback="onDismiss">
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('SEGMENT')"
+            @navigateBack="onDismiss">
             <template
                 v-if="isEdit"
                 #mainAction>
@@ -27,6 +26,12 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE SEGMENT' : 'CREATE SEGMENT'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
         <Blur
             v-show="isBlurVisible"
             :style="blurZIndex" />
@@ -37,6 +42,7 @@
 <script>
 import { mapState } from 'vuex';
 import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
@@ -46,84 +52,14 @@ export default {
         TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
         Blur: () => import('~/components/Blur/Blur'),
     },
-    created() {
-        let generalRoute = { name: 'segment-new-general' };
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        this.breadcrumbs = [
-            {
-                title: 'Segments',
-                icon: 'Templates',
-                route: { name: 'segments-grid' },
-            },
-        ];
-        this.isUserAllowedToUpdateSegments = this.$hasAccess(['SEGMENT_UPDATE']);
-        if (this.isEdit) {
-            const translationRoute = { name: 'segment-edit-id-translations', params: this.$route.params };
-            const designerRoute = { name: 'segment-edit-id-designer', params: this.$route.params };
-            generalRoute = { name: 'segment-edit-id-general', params: this.$route.params };
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} SEGMENT`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateSegments,
-                        },
-                    },
-                },
-                {
-                    title: 'Translations',
-                    route: translationRoute,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} SEGMENT`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateSegments,
-                        },
-                    },
-                },
-                {
-                    title: 'Conditions',
-                    route: designerRoute,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} SEGMENT`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateSegments,
-                        },
-                    },
-                },
-            ];
-        } else {
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} SEGMENT`,
-                            action: tabAction,
-                            disabled: false,
-                        },
-                    },
-                },
-            ];
-        }
-    },
     computed: {
         ...mapState('draggable', {
             isListElementDragging: (state) => state.isListElementDragging,
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
         smallSize() {
             return SIZES.SMALL;
         },
@@ -139,10 +75,6 @@ export default {
             }
             return null;
         },
-    },
-    beforeDestroy() {
-        delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateSegments;
     },
 };
 </script>

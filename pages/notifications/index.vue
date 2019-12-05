@@ -4,9 +4,7 @@
  */
 <template>
     <Page>
-        <TitleBar
-            title="Notifications"
-            icon="Bell" />
+        <TitleBar title="Notifications" />
         <HorizontalTabBar
             :items="tabs" />
     </Page>

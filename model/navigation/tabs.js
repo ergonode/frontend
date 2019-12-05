@@ -27,3 +27,5 @@ export const getNestedTabRoutes = (hasAccess, routes, currentRoute) => {
 
     return [];
 };
+
+export const getParentRoutePath = (currentRoute) => `/${currentRoute.path.split('/')[1]}`;

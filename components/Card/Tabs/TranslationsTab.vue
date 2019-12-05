@@ -23,9 +23,6 @@
                 </VerticalCenteredView>
             </VerticalFixedScroll>
         </template>
-        <template #footer>
-            <Footer :button="updateButton" />
-        </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
@@ -33,7 +30,6 @@
 import { mapState, mapActions } from 'vuex';
 import { getKeysByValues, getValuesByKeys } from '~/model/objectWrapper';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import Footer from '~/components/ReusableFooter/Footer';
 import Select from '~/core/components/Inputs/Select/Select';
 import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
 import VerticalCenteredView from '~/core/components/Layout/VerticalCenteredView';
@@ -44,14 +40,7 @@ export default {
         VerticalCenteredView,
         VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
-        Footer,
         Select,
-    },
-    props: {
-        updateButton: {
-            type: Object,
-            required: true,
-        },
     },
     created() {
         if (!this.cardsLanguageCodes.find((langCode) => langCode === this.userLanguageCode)) {

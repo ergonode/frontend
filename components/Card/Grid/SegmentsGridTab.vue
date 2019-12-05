@@ -16,8 +16,9 @@
         </template>
         <template #footer>
             <GridPageSelector
-                v-model="visibleRowsInPageCount"
-                :rows-number="numberOfDataElements" />
+                :value="numberOfDisplayedElements"
+                :rows-number="numberOfDataElements"
+                @input="onRowsCountUpdate" />
             <GridPagination
                 :value="currentPage"
                 :max-page="numberOfPages"
@@ -28,7 +29,6 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import gridModule from '~/reusableStore/grid/state';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
@@ -38,22 +38,6 @@ export default {
         Grid: () => import('~/core/components/Grid/Grid'),
         GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
         GridPagination: () => import('~/core/components/Grid/GridPagination'),
-    },
-    data() {
-        return {
-            filtersNumber: 0,
-            filtersExpanded: true,
-        };
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'segmentsGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('segmentsGrid');
     },
     computed: {
         ...mapState('authentication', {
@@ -70,21 +54,8 @@ export default {
         editRoute() {
             return {
                 path: `${this.userLanguageCode}/segments`,
-                name: 'segment-edit-id',
+                name: 'segment-edit-id-general',
             };
-        },
-        visibleRowsInPageCount: {
-            get() {
-                return this.numberOfDisplayedElements;
-            },
-            set(value) {
-                const number = Math.trunc(value);
-
-                if (number !== this.numberOfDisplayedElements) {
-                    this.changeNumberOfDisplayingElements(number);
-                    this.getData(this.editRoute.path);
-                }
-            },
         },
     },
     methods: {
@@ -93,6 +64,14 @@ export default {
             'setCurrentPage',
             'changeNumberOfDisplayingElements',
         ]),
+        onRowsCountUpdate(value) {
+            const number = Math.trunc(value);
+
+            if (number !== this.numberOfDisplayedElements) {
+                this.changeNumberOfDisplayingElements({ number });
+                this.getData(this.editRoute.path);
+            }
+        },
         onRowEdit({ links: { edit } }) {
             const args = edit.href.split('/');
             const lastIndex = args.length - 1;
@@ -103,16 +82,6 @@ export default {
             this.setCurrentPage(page);
             this.getData(this.editRoute.path);
         },
-    },
-    async fetch({ app, store }) {
-        const gridPath = `${store.state.authentication.user.language}/segments`;
-
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'segmentsGrid',
-            store,
-        });
-        await store.dispatch('segmentsGrid/getData', gridPath);
     },
 };
 </script>

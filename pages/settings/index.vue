@@ -6,9 +6,8 @@
     <Page>
         <TitleBar
             title="Settings"
-            icon="Settings" />
-        <HorizontalTabBar
-            :items="tabs" />
+            :is-read-only="$isReadOnly('USER')" />
+        <HorizontalTabBar :items="tabs" />
     </Page>
 </template>
 
@@ -17,7 +16,6 @@ import { mapActions } from 'vuex';
 
 export default {
     name: 'SettingsTabs',
-    middleware: ['tab/redirectToLanguageSettings'],
     components: {
         HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),

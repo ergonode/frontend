@@ -29,8 +29,9 @@
         </template>
         <template #footer>
             <GridPageSelector
-                v-model="visibleRowsInPageCount"
-                :rows-number="numberOfDataElements" />
+                :value="numberOfDisplayedElements"
+                :rows-number="numberOfDataElements"
+                @input="onRowsCountUpdate" />
             <GridPagination
                 :value="currentPage"
                 :max-page="numberOfPages"
@@ -46,7 +47,6 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import gridModule from '~/reusableStore/grid/state';
 import VerticalTabBar from '~/core/components/Tab/VerticalTabBar';
 import Button from '~/core/components/Buttons/Button';
 import GridViewTemplate from '~/core/components/Layout/Templates/GridViewTemplate';
@@ -75,16 +75,6 @@ export default {
                 },
             ],
         };
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'productsGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('productsGrid');
     },
     computed: {
         ...mapState('draggable', {
@@ -123,19 +113,6 @@ export default {
                 name: 'product-edit-id',
             };
         },
-        visibleRowsInPageCount: {
-            get() {
-                return this.numberOfDisplayedElements;
-            },
-            set(value) {
-                const number = Math.trunc(value);
-
-                if (number !== this.numberOfDisplayedElements) {
-                    this.changeNumberOfDisplayingElements(number);
-                    this.getData(this.editRoute.path);
-                }
-            },
-        },
     },
     methods: {
         ...mapActions('productsGrid', [
@@ -151,6 +128,14 @@ export default {
             'removeDraft',
             'forceDraftsMutation',
         ]),
+        onRowsCountUpdate(value) {
+            const number = Math.trunc(value);
+
+            if (number !== this.numberOfDisplayedElements) {
+                this.changeNumberOfDisplayingElements({ number });
+                this.getData(this.editRoute.path);
+            }
+        },
         onAdvancedFilterFocus(isFocused) {
             // TODO: Solve it
             this.isAdvancedFilterFocused = isFocused;
@@ -188,54 +173,6 @@ export default {
                 this.$addAlert({ type: 'success', message: 'Product changes saved' });
             });
         },
-    },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'productsGrid',
-            store,
-        });
-        const gridPath = `${store.state.authentication.user.language}/products`;
-
-        await Promise.all([
-            store.dispatch('productsGrid/getData', gridPath),
-            store.dispatch('productsGrid/getAdvancedFiltersData', gridPath),
-        ]).then(() => {
-            const { columns, advancedFiltersData } = store.state.productsGrid;
-            const disabledElements = {};
-            const getAttributeElements = (array) => {
-                const { length } = array;
-                const elements = [];
-
-                for (let i = 0; i < length; i += 1) {
-                    const { language, element_id: elementId } = array[i];
-                    if (elementId && language) {
-                        if (!elements[language]) elements[language] = [];
-
-                        elements[language].push(elementId);
-                    }
-                }
-
-                return elements;
-            };
-            const columnElements = getAttributeElements(columns);
-            const filterElements = getAttributeElements(advancedFiltersData);
-            const languages = [...columnElements, ...filterElements];
-            const languagesSet = new Set(languages);
-
-            languagesSet.forEach((language) => {
-                const ids = [...columnElements[language], ...filterElements[language]];
-                const idsSet = new Set(ids);
-
-                idsSet.forEach((id) => {
-                    disabledElements[language] = {
-                        ...disabledElements[language], [id]: true,
-                    };
-                });
-            });
-
-            store.dispatch('list/setDisabledElements', disabledElements);
-        });
     },
 };
 </script>

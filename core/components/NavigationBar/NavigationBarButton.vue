@@ -28,12 +28,12 @@ export default {
         align-items: center;
         border: none;
         padding: 0 24px;
-        background-color: $GRAPHITE_DARK;
+        background-color: $GRAPHITE_COAL;
         cursor: pointer;
         outline: none;
 
         &:hover, &--selected {
-            background-color: rgba($GRAPHITE, 0.5);
+            background-color: $GRAPHITE_DARK;
         }
     }
 </style>

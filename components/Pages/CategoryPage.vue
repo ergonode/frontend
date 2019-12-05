@@ -6,10 +6,9 @@
     <Page>
         <TitleBar
             :title="title"
-            :breadcrumbs="breadcrumbs"
-            icon="Category"
-            :is-read-only="!isUserAllowedToUpdateCategory && isEdit"
-            @navigateback="onDismiss">
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('CATEGORY')"
+            @navigateBack="onDismiss">
             <template
                 v-if="isEdit"
                 #mainAction>
@@ -27,88 +26,33 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE CATEGORY' : 'CREATE CATEGORY'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
     </Page>
 </template>
 
 <script>
 import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'CategoryPage',
     mixins: [categoryManagementPageBaseMixin],
-    created() {
-        let generalRoute = { name: 'category-new-general' };
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        this.breadcrumbs = [
-            {
-                title: 'Categories',
-                icon: 'Category',
-                route: { name: 'categories-grid' },
-            },
-        ];
-        this.isUserAllowedToUpdateCategory = this.$hasAccess(['CATEGORY_UPDATE']);
-
-        if (this.isEdit) {
-            const translationRoute = { name: 'category-edit-id-translations', params: this.$route.params };
-            generalRoute = { name: 'category-edit-id-general', params: this.$route.params };
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} CATEGORY`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateCategory,
-                        },
-                    },
-                },
-                {
-                    title: 'Translations',
-                    route: translationRoute,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} CATEGORY`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateCategory,
-                        },
-                    },
-                },
-            ];
-        } else {
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} CATEGORY`,
-                            action: tabAction,
-                            disabled: false,
-                        },
-                    },
-                },
-            ];
-        }
-    },
     computed: {
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
         smallSize() {
             return SIZES.SMALL;
         },
         secondaryTheme() {
             return THEMES.SECONDARY;
         },
-    },
-    beforeDestroy() {
-        delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateCategory;
     },
 };
 </script>

@@ -17,7 +17,7 @@ context('Page access denied', () => {
     describe('Navigate to User creation page', () => {
         it('Visit /users/grid', () => {
             cy.get('.header-title__title').should('contain', 'Users');
-            cy.url().should('include', '/users/grid');
+            cy.url().should('include', '/users');
         });
 
         it('Visit /users/new/general', () => {

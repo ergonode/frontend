@@ -6,10 +6,9 @@
     <Page>
         <TitleBar
             :title="title"
-            :breadcrumbs="breadcrumbs"
-            :is-read-only="!isUserAllowedToUpdateTransitions && isEdit"
-            icon="Flow"
-            @navigateback="onDismiss">
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('WORKFLOW')"
+            @navigateBack="onDismiss">
             <template
                 v-if="isEdit"
                 #mainAction>
@@ -20,13 +19,18 @@
                     :disabled="!$hasAccess(['WORKFLOW_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
-                        <IconDelete
-                            :fill-color="color" />
+                        <IconDelete :fill-color="color" />
                     </template>
                 </PrependIconButton>
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE TRANSITION' : 'CREATE TRANSITION'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
         <Blur
             v-show="isBlurVisible"
             :style="blurZIndex" />
@@ -37,6 +41,7 @@
 <script>
 import { mapState } from 'vuex';
 import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
@@ -46,71 +51,14 @@ export default {
         TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
         Blur: () => import('~/components/Blur/Blur'),
     },
-    created() {
-        let generalRoute = { name: 'workflow-transition-new-general' };
-        let designerRoute = { name: 'workflow-transition-new-designer' };
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        this.breadcrumbs = [
-            {
-                title: 'Workflow',
-                icon: 'Flow',
-                route: { name: 'workflow-transitions' },
-            },
-        ];
-        this.isUserAllowedToUpdateTransitions = this.$hasAccess(['WORKFLOW_UPDATE']);
-        if (this.isEdit) {
-            generalRoute = { name: 'workflow-transition-edit-id-general', params: this.$route.params };
-            designerRoute = { name: 'workflow-transition-edit-id-designer', params: this.$route.params };
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} TRANSITION`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateTransitions,
-                        },
-                    },
-                },
-                {
-                    title: 'Conditions',
-                    route: designerRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} TRANSITION`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateTransitions,
-                        },
-                    },
-                },
-            ];
-        } else {
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} TRANSITION`,
-                            action: tabAction,
-                            disabled: false,
-                        },
-                    },
-                },
-            ];
-        }
-    },
     computed: {
         ...mapState('draggable', {
             isListElementDragging: (state) => state.isListElementDragging,
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
         smallSize() {
             return SIZES.SMALL;
         },
@@ -126,10 +74,6 @@ export default {
             }
             return null;
         },
-    },
-    beforeDestroy() {
-        delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateTransitions;
     },
 };
 </script>
