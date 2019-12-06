@@ -7,7 +7,7 @@
         <template #header>
             <div class="language-selection-header">
                 <Select
-                    :value="selectedLanguages"
+                    :value="cardsLanguageCodes"
                     :options="languageOptions"
                     solid
                     regular
@@ -31,7 +31,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getValueByKey } from '~/model/objectWrapper';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import Footer from '~/components/ReusableFooter/Footer';
 import Select from '~/core/components/Inputs/Select/Select';
@@ -70,16 +69,9 @@ export default {
         }),
         languageOptions() {
             return Object.keys(this.languages).map((language) => ({
-                key: language,
-                value: this.languages[language],
+                id: language,
+                name: this.languages[language],
             }));
-        },
-        selectedLanguages() {
-            return this.cardsLanguageCodes.reduce((acc, current) => {
-                const newObject = acc;
-                newObject[current] = getValueByKey(this.languages, current);
-                return newObject;
-            }, {});
         },
     },
     methods: {
@@ -89,7 +81,7 @@ export default {
         ]),
         onLanguageCardSelected(languageCode) {
             this.setVisibleCardTranslations({
-                languages: Object.keys(languageCode),
+                languages: languageCode,
             });
         },
     },

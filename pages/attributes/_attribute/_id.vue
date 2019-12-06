@@ -14,7 +14,7 @@
 <script>
 
 import { mapState, mapActions } from 'vuex';
-import { getParsedGroups, getParsedOptions, getParsedParameterKeys } from '~/model/mappers/attributeMapper';
+import { getParsedOptions, getParsedParameterKeys } from '~/model/mappers/attributeMapper';
 import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 
 export default {
@@ -88,7 +88,7 @@ export default {
 
             const { label, placeholder, hint } = this.translations;
             const propertiesToUpdate = {
-                groups: getParsedGroups(this.groups),
+                groups: this.groups,
             };
 
             if (this.optionKeys.length > 0) {

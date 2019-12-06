@@ -40,18 +40,18 @@ export default {
         }),
         languageOptions() {
             return this.languages.map((language) => ({
-                key: language.code,
-                value: language.name,
+                id: language.code,
+                name: language.name,
             }));
         },
     },
     methods: {
         ...mapActions('languageSettings', [
             'setSelectedLanguages',
-            'getData',
+            'getFilteredData',
         ]),
         onSearch(filter) {
-            this.getData(filter);
+            this.getFilteredData(filter);
         },
     },
 };

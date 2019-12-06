@@ -74,9 +74,10 @@ export default {
             return WHITE;
         },
         languageOptions() {
-            return Object.keys(this.languages).map(
-                (language) => ({ code: language, name: this.languages[language] }),
-            );
+            return Object.keys(this.languages).map((language) => ({
+                id: language,
+                name: this.languages[language],
+            }));
         },
     },
     methods: {

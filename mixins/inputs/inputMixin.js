@@ -109,6 +109,7 @@ export default {
                 : this.errorMessages;
         },
         placeholderValue() {
+            if (!this.value && this.label && !this.isFocused) return null;
             return !this.value ? this.placeholder : null;
         },
     },

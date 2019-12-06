@@ -12,13 +12,15 @@ export default {
     updateData({ state, rootState }) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { selectedLanguageNames } = state;
-        const data = Object.keys(selectedLanguageNames);
+        const data = {
+            collection: selectedLanguageNames,
+        };
 
         return this.app.$axios.$put(`${userLanguageCode}/languages`, data).then(() => {
             this.$addAlert({ type: 'success', message: 'Languages updated' });
         });
     },
-    getData({ commit, rootState }, filter = null) {
+    getData({ commit, rootState }) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const path = `/${userLanguageCode}/languages`;
         const params = {
@@ -29,10 +31,6 @@ export default {
             field: 'name',
         };
 
-        if (filter) {
-            params.filter = `name=${filter}`;
-        }
-
         return this.app.$axios.$get(path, { params }).then(({
             collection,
         }) => {
@@ -42,14 +40,14 @@ export default {
                 .map((language) => language.code));
         });
     },
-    getFilteredData({ commit, rootState }, filter = null) {
+    getFilteredData({ commit, rootState }, filter = '') {
         const { language: userLanguageCode } = rootState.authentication.user;
-        const path = `/${userLanguageCode}/languages/autocomplite?${filter}`;
-
-        return this.app.$axios.$get(path).then(({
-            collection,
-        }) => {
-            commit(types.SET_LANGUAGES, collection.map(getLanguage));
+        const path = `/${userLanguageCode}/language/autocomplete`;
+        const params = {
+            search: filter,
+        };
+        return this.app.$axios.$get(path, { params }).then((data) => {
+            commit(types.SET_LANGUAGES, data.map(getLanguage));
         });
     },
     setSelectedLanguages({ commit }, selectedLanguageNames) {

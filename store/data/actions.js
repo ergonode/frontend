@@ -16,7 +16,6 @@ export default {
             { stateProp: 'units', requestPath: `${userLanguageCode}/dictionary/units` },
             { stateProp: 'attrTypes', requestPath: `${userLanguageCode}/dictionary/attributes/types` },
             { stateProp: 'dateFormats', requestPath: `${userLanguageCode}/dictionary/date_format` },
-            { stateProp: 'imageFormats', requestPath: `${userLanguageCode}/dictionary/image_format` },
             { stateProp: 'privileges', requestPath: `${userLanguageCode}/dictionary/privileges` },
             { stateProp: 'conditions', requestPath: `${userLanguageCode}/dictionary/conditions` },
         ];

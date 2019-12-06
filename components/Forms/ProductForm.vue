@@ -27,11 +27,13 @@
                 @input="setProductTemplate" />
             <Select
                 :value="selectedCategories"
-                :solid="true"
-                :regular="true"
-                :multiselect="true"
+                solid
+                regular
+                multiselect
+                clearable
+                is-list-element-hint
+                :language-code="userLanguageCode"
                 label="Category"
-                :clearable="true"
                 :options="categoryOptions"
                 :disabled="isDisabledByPrivileges"
                 @input="setProductCategories" />
@@ -53,6 +55,9 @@ export default {
     },
     mixins: [errorValidationMixin],
     computed: {
+        ...mapState('authentication', {
+            userLanguageCode: (state) => state.user.language,
+        }),
         ...mapState('productsDraft', {
             productID: (state) => state.id,
             sku: (state) => state.sku,
@@ -63,15 +68,15 @@ export default {
         }),
         templateOptions() {
             return this.templates.map((language) => ({
-                key: language.id,
-                value: language.name,
+                id: language.id,
+                name: language.name,
             }));
         },
         categoryOptions() {
             return this.categories.map(
                 (category) => ({
-                    key: category.id,
-                    value: category.name,
+                    id: category.id,
+                    name: category.name,
                     code: category.code,
                 }),
             );

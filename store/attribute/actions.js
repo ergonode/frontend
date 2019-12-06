@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { getMappedGroups, getMappedOptionKeysValues, getMappedParameterValues } from '~/model/mappers/attributeMapper';
+import { getMappedOptionKeysValues, getMappedParameterValues } from '~/model/mappers/attributeMapper';
 
 export default {
     addAttributeOptionKey({ commit }, key) {
@@ -66,14 +66,15 @@ export default {
 
         return this.app.$axios.$get(`${userLanguageCode}/attributes/groups`).then(({ collection }) => {
             commit(types.SET_ATTRIBUTE_GROUPS_OPTIONS, collection.map((group) => ({
-                key: group.id,
-                value: group.name || `#${group.code}`,
+                id: group.id,
+                name: group.name,
+                code: group.code,
             })));
         });
     },
     getAttributeById(
         {
-            dispatch, commit, state, rootState,
+            dispatch, commit, rootState,
         },
         { attributeId, onError = () => {} },
     ) {
@@ -101,10 +102,7 @@ export default {
             commit(types.SET_ATTRIBUTE_CODE, code);
             commit(types.SET_ATTRIBUTE_TYPE, type);
             commit(types.SET_MULTILINGUAL_ATTRIBUTE, multilingual);
-            commit(types.SET_ATTRIBUTE_GROUPS, getMappedGroups(
-                groups,
-                state.groupOptions,
-            ));
+            commit(types.SET_ATTRIBUTE_GROUPS, groups);
 
             dispatch('translations/setTabTranslations', translations, { root: true });
 

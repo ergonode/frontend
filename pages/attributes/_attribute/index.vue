@@ -13,7 +13,6 @@
 
 import { mapState, mapActions } from 'vuex';
 import {
-    getParsedGroups,
     getParsedParameterKeys,
     getParsedOptions,
 } from '~/model/mappers/attributeMapper';
@@ -65,7 +64,7 @@ export default {
             const attribute = {
                 code: this.code,
                 type: this.type,
-                groups: getParsedGroups(this.groups),
+                groups: this.groups,
                 multilingual: this.multilingual,
             };
 
@@ -93,7 +92,6 @@ export default {
     async fetch({ store }) {
         await store.dispatch('attribute/clearStorage');
         await store.dispatch('translations/clearStorage');
-
         await store.dispatch('attribute/getAttributeGroups');
     },
 };

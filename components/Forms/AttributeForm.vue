@@ -15,14 +15,16 @@
                 label="Code"
                 hint="Attribute code must be unique"
                 @input="setAttributeCode" />
-            <TranslationSelect
+            <Select
                 :value="groups"
-                :solid="true"
-                :options="groupOptions"
                 label="Groups"
-                :regular="true"
-                :multiselect="true"
-                :clearable="true"
+                solid
+                regular
+                multiselect
+                clearable
+                is-list-element-hint
+                :language-code="userLanguageCode"
+                :options="groupOptions"
                 :disabled="isDisabledByPrivileges"
                 :error-messages="errorGroupsMessage"
                 @input="setAttributeGroups" />
@@ -82,7 +84,6 @@ export default {
         InfoHint: () => import('~/core/components/Hints/InfoHint'),
         TextField: () => import('~/core/components/Inputs/TextField'),
         Select: () => import('~/core/components/Inputs/Select/Select'),
-        TranslationSelect: () => import('~/core/components/Inputs/Select/TranslationSelect'),
         Divider: () => import('~/core/components/Dividers/Divider'),
     },
     mixins: [errorValidationMixin],
@@ -92,6 +93,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('authentication', {
+            userLanguageCode: (state) => state.user.language,
+        }),
         ...mapState('attribute', {
             attrID: (state) => state.id,
             code: (state) => state.code,
@@ -130,14 +134,14 @@ export default {
         },
         attributeTypeOptions() {
             return Object.keys(this.attrTypes).map((type) => ({
-                key: type,
-                value: this.attrTypes[type],
+                id: type,
+                name: this.attrTypes[type],
             }));
         },
         attributeParametersOptions() {
             return Object.keys(this.params).map((param) => ({
-                key: param,
-                value: this.params[param],
+                id: param,
+                name: this.params[param],
             }));
         },
         errorCodeMessage() {

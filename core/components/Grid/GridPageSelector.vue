@@ -43,7 +43,7 @@ export default {
             return `of ${this.rowsNumber}`;
         },
         rowIntervalOptions() {
-            return ROW_INTERWALS.map((item) => ({ code: item, name: item }));
+            return ROW_INTERWALS.map((item) => ({ id: item, name: item }));
         },
     },
     methods: {

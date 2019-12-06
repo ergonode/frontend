@@ -17,7 +17,11 @@ export default {
     getProductStatuses({ commit, rootState }, params) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$get(`${userLanguageCode}/status`, { params }).then(({ collection: statuses }) => {
-            commit(types.SET_STATUSES, statuses.map((status) => status.code));
+            commit(types.SET_STATUSES, statuses.map((status) => ({
+                id: status.id,
+                name: status.name,
+                code: status.code,
+            })));
         }).catch(onDefaultError);
     },
     getProductStatus({ commit }, path) {

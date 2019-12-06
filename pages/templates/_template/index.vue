@@ -4,7 +4,7 @@
  */
 <template>
     <TemplatePage
-        :title="templateTitle"
+        title="New Template"
         @dismiss="onCancel"
         @create="onCreate" />
 </template>

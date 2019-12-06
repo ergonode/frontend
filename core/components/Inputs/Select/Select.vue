@@ -74,17 +74,17 @@
                                     name="option"
                                     :option="option">
                                     <ListElement
-                                        v-if="isOptionValid(option.value || option.code)"
-                                        :key="option.key"
+                                        v-if="isOptionValid(option.name || option.code)"
+                                        :key="option.id"
                                         :small="small"
                                         :large="!small && regular"
-                                        :selected="isSelected(option.key)"
+                                        :selected="isSelected(option.id)"
                                         @click.native="onSelectValue(option)">
                                         <ListElementAction
                                             v-if="multiselect"
                                             :small="small">
                                             <CheckBox
-                                                :value="isChecked(option.key)"
+                                                :value="isChecked(option.id)"
                                                 @input.native="onSelectValue(option)" />
                                         </ListElementAction>
                                         <ListElementDescription>
@@ -138,8 +138,7 @@ import { ARROW } from '~/defaults/icons';
 import {
     GREEN, GRAPHITE,
 } from '~/assets/scss/_variables/_colors.scss';
-import { isEmpty } from '~/model/objectWrapper';
-import { removeValueAtIndex } from '~/model/arrayWrapper';
+import { removeFromObjectByKey } from '~/model/objectWrapper';
 import FadeTransition from '~/core/components/Transitions/FadeTransition';
 import DropDown from '~/core/components/Inputs/Select/Contents/DropDown';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
@@ -165,7 +164,7 @@ export default {
     },
     props: {
         value: {
-            type: [Array, String, Number],
+            type: [Array, String, Number, Boolean],
             default: null,
         },
         options: {
@@ -263,7 +262,7 @@ export default {
     },
     data() {
         return {
-            selectedOptions: this.value || null,
+            selectedOptions: {},
             selectBoundingBox: null,
             isFocused: false,
             isMounted: false,
@@ -278,6 +277,7 @@ export default {
     },
     mounted() {
         this.debouncedSearch = debounce(this.onSearch, 500);
+        this.initSelectedOptions();
 
         if (this.autofocus) {
             this.$nextTick(() => {
@@ -300,24 +300,14 @@ export default {
             return THEMES.SECONDARY;
         },
         parsedInputValue() {
-            let parsedValue = null;
-            if (!this.selectedOptions) return null;
+            if (!this.selectedOptions) return '';
             if (!this.multiselect) {
-                parsedValue = this.options.find(
-                    (option) => option.key.toString() === this.selectedOptions.toString(),
-                );
-                return parsedValue ? parsedValue.value || `#${parsedValue.code}` : '';
+                return this.selectedOptions.name || `#${this.selectedOptions.code}`;
             }
 
-            parsedValue = this.selectedOptions.map((option) => {
-                const parsedOption = this.options.find(
-                    (o) => o.key.toString() === option.toString(),
-                );
-
-                if (!parsedOption) return null;
-                return parsedOption.value || `#${parsedOption.code}`;
-            });
-            return parsedValue ? parsedValue.join(', ') : '';
+            return Object.values(this.selectedOptions).map(
+                ({ name = null, code = null }) => name || `#${code}`,
+            ).join(', ');
         },
         searchIconFillColor() {
             return this.isSearchFocused
@@ -330,7 +320,7 @@ export default {
                 : ARROW.DOWN;
         },
         isEmptyOptions() {
-            return this.multiselect ? isEmpty(this.value) : (this.value === '' || this.value === null);
+            return this.multiselect ? !this.value.length : (this.value === '' || this.value === null);
         },
         isFloatingLabel() {
             return this.label !== '' && this.label !== null;
@@ -409,14 +399,31 @@ export default {
         },
     },
     methods: {
+        initSelectedOptions() {
+            if (!this.multiselect) {
+                this.selectedOptions = this.options.find(
+                    (option) => option.id === this.value,
+                );
+            } else {
+                this.selectedOptions = this.value.reduce((acc, currentKey) => {
+                    const newObject = acc;
+                    newObject[currentKey] = this.options.find(
+                        (option) => option.id === currentKey,
+                    );
+                    return newObject;
+                }, {});
+            }
+        },
         isOptionValid(option) {
             return typeof option === 'string' || typeof option === 'number';
         },
-        isSelected(key) {
-            return this.multiselect ? false : key === this.selectedOptions;
+        isSelected(id) {
+            return this.multiselect || !this.selectedOptions
+                ? false
+                : id === this.selectedOptions.id;
         },
-        isChecked(key) {
-            return this.selectedOptions.includes(key);
+        isChecked(id) {
+            return this.multiselect ? typeof this.selectedOptions[id] !== 'undefined' : false;
         },
         onSearch(value) {
             const clearValue = value.startsWith('#') ? value.substring(1) : value;
@@ -428,35 +435,36 @@ export default {
             this.isSearchFocused = isFocused;
         },
         onClear() {
-            this.selectedOptions = null;
+            this.selectedOptions = {};
 
-            this.$emit('input', this.multiselect ? [] : null);
+            this.$emit('input', this.multiselect ? [] : '');
         },
-        listTitleHint({ value, code }) {
+        listTitleHint({ name, code }) {
             if (!this.isListElementHint) return '';
-            return value ? `#${code} ${this.languageCode}` : '';
+            return name && code ? `#${code} ${this.languageCode}` : '';
         },
-        listTitle({ value, code }) {
-            return String(value || `#${code}`);
+        listTitle({ name, code }) {
+            return String(name || `#${code}`);
         },
-        onSelectValue({ key }) {
+        onSelectValue(optionValue) {
+            const { id, code, name } = optionValue;
+
             if (!this.multiselect) {
-                this.selectedOptions = key;
-                this.$emit('input', key);
+                this.selectedOptions = { id, name, code };
+                this.$emit('input', id);
 
                 return false;
             }
 
-            if (this.isChecked(key)) {
-                const index = this.selectedOptions.findIndex((option) => option === key);
-                this.selectedOptions = removeValueAtIndex(this.selectedOptions, index);
+            if (this.isChecked(id)) {
+                this.selectedOptions = removeFromObjectByKey(this.selectedOptions, id);
             } else {
-                this.selectedOptions = [
-                    key,
+                this.selectedOptions = {
+                    [id]: { name, code },
                     ...this.selectedOptions,
-                ];
+                };
             }
-            this.$emit('input', this.selectedOptions);
+            this.$emit('input', Object.keys(this.selectedOptions));
 
             return true;
         },
@@ -563,10 +571,15 @@ export default {
                 height,
                 width,
             } = this.$el.getBoundingClientRect();
+            let hintHeight = 0;
+            const hint = this.$el.querySelector('.input__information-label');
             const { innerHeight } = window;
             const maxHeight = this.dropDownHeight;
-
             const position = { left: `${x}px` };
+
+            if (hint) {
+                hintHeight = hint.getBoundingClientRect().height;
+            }
 
             if (this.fixedContentWidth) {
                 position.maxHeight = `${maxHeight}px`;
@@ -580,8 +593,7 @@ export default {
 
                 return position;
             }
-
-            position.top = `${y + height + 2}px`;
+            position.top = hint ? `${y + height - hintHeight - 2}px` : `${y + height + 2}px`;
 
             return position;
         },

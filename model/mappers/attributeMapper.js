@@ -43,24 +43,6 @@ export function getParsedParameterKeys({
     return { [paramKey]: selectedParam };
 }
 
-export function getParsedGroups(groups) {
-    return groups.map((group) => group.key);
-}
-
-export function getMappedGroups(groupIds, groupOptions) {
-    const groups = [];
-
-    groupIds.forEach((id) => {
-        const groupOption = groupOptions.find((option) => option.key === id);
-
-        if (groupOption) {
-            groups.push(groupOption);
-        }
-    });
-
-    return groups;
-}
-
 export function getMappedGroupsElementsCount(elements) {
     const groupsElementsCount = {};
     const { length } = elements;
