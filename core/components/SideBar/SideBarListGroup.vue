@@ -157,7 +157,7 @@ export default {
             display: grid;
             grid-template-columns: 32px auto max-content;
             grid-column-gap: 8px;
-            flex: 1;
+            flex: 1 1 48px;
             align-items: center;
             height: 48px;
             padding: 0 16px 0 24px;
