@@ -86,7 +86,7 @@ export default {
     .app-content {
         display: grid;
         grid-template-columns: max-content auto;
-        grid-template-rows: max-content auto;
+        grid-template-rows: 48px auto;
         flex: 1;
 
         &__navigation-bar {
