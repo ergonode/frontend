@@ -11,8 +11,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getMappedTemplateID } from '~/model/mappers/productMapper';
-import { getMappedCategoryID } from '~/model/mappers/categoryMapper';
 
 export default {
     name: 'Settings',
@@ -26,7 +24,6 @@ export default {
             template: (state) => state.template,
             templates: (state) => state.templates,
             selectedCategories: (state) => state.selectedCategories,
-            categories: (state) => state.categories,
         }),
     },
     methods: {
@@ -54,16 +51,10 @@ export default {
             this.removeValidationErrors();
             const data = {
                 sku: this.sku,
-                templateId: getMappedTemplateID(
-                    this.templates,
-                    this.template,
-                ),
+                templateId: this.template,
             };
             if (this.selectedCategories.length > 0) {
-                data.categoryIds = getMappedCategoryID(
-                    this.categories,
-                    this.selectedCategories,
-                );
+                data.categoryIds = this.selectedCategories;
             }
             this.createProduct({
                 data,

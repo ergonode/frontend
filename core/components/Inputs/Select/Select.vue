@@ -72,23 +72,26 @@
                             <template v-for="option in options">
                                 <slot
                                     name="option"
-                                    :option="option"
-                                    :index="option.code">
+                                    :option="option">
                                     <ListElement
-                                        v-if="isOptionValid(option.name)"
-                                        :key="option.code"
+                                        v-if="isOptionValid(option.value || option.code)"
+                                        :key="option.key"
                                         :small="small"
-                                        :selected="isSelected(option.code)"
+                                        :large="!small && regular"
+                                        :selected="isSelected(option.key)"
                                         @click.native="onSelectValue(option)">
-                                        <ListElementAction v-if="multiselect">
+                                        <ListElementAction
+                                            v-if="multiselect"
+                                            :small="small">
                                             <CheckBox
-                                                :value="isChecked(option.code)"
+                                                :value="isChecked(option.key)"
                                                 @input.native="onSelectValue(option)" />
                                         </ListElementAction>
                                         <ListElementDescription>
                                             <ListElementTitle
                                                 :small="small"
-                                                :title="String(option.name)" />
+                                                :hint="listTitleHint(option)"
+                                                :title="listTitle(option)" />
                                         </ListElementDescription>
                                     </ListElement>
                                 </slot>
@@ -135,7 +138,8 @@ import { ARROW } from '~/defaults/icons';
 import {
     GREEN, GRAPHITE,
 } from '~/assets/scss/_variables/_colors.scss';
-import { isEmpty, removeFromObjectByKey } from '~/model/objectWrapper';
+import { isEmpty } from '~/model/objectWrapper';
+import { removeValueAtIndex } from '~/model/arrayWrapper';
 import FadeTransition from '~/core/components/Transitions/FadeTransition';
 import DropDown from '~/core/components/Inputs/Select/Contents/DropDown';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
@@ -161,7 +165,7 @@ export default {
     },
     props: {
         value: {
-            type: [Object, String, Number],
+            type: [Array, String, Number],
             default: null,
         },
         options: {
@@ -240,6 +244,14 @@ export default {
             type: Boolean,
             default: false,
         },
+        languageCode: {
+            type: String,
+            default: '',
+        },
+        isListElementHint: {
+            type: Boolean,
+            default: false,
+        },
         dropDownHeight: {
             type: Number,
             default: 200,
@@ -288,10 +300,24 @@ export default {
             return THEMES.SECONDARY;
         },
         parsedInputValue() {
+            let parsedValue = null;
             if (!this.selectedOptions) return null;
-            return this.multiselect
-                ? Object.values(this.selectedOptions).join(', ')
-                : this.options.find((option) => option.code === this.selectedOptions).name;
+            if (!this.multiselect) {
+                parsedValue = this.options.find(
+                    (option) => option.key.toString() === this.selectedOptions.toString(),
+                );
+                return parsedValue ? parsedValue.value || `#${parsedValue.code}` : '';
+            }
+
+            parsedValue = this.selectedOptions.map((option) => {
+                const parsedOption = this.options.find(
+                    (o) => o.key.toString() === option.toString(),
+                );
+
+                if (!parsedOption) return null;
+                return parsedOption.value || `#${parsedOption.code}`;
+            });
+            return parsedValue ? parsedValue.join(', ') : '';
         },
         searchIconFillColor() {
             return this.isSearchFocused
@@ -314,9 +340,6 @@ export default {
         },
         isDescription() {
             return this.description !== '' && this.description !== null;
-        },
-        isSelected(code) {
-            return this.multiselect ? false : code === this.selectedOptions;
         },
         inputClasses() {
             return [
@@ -389,8 +412,11 @@ export default {
         isOptionValid(option) {
             return typeof option === 'string' || typeof option === 'number';
         },
-        isChecked(code) {
-            return typeof this.selectedOptions[code] !== 'undefined';
+        isSelected(key) {
+            return this.multiselect ? false : key === this.selectedOptions;
+        },
+        isChecked(key) {
+            return this.selectedOptions.includes(key);
         },
         onSearch(value) {
             const clearValue = value.startsWith('#') ? value.substring(1) : value;
@@ -406,21 +432,29 @@ export default {
 
             this.$emit('input', this.multiselect ? [] : null);
         },
-        onSelectValue({ name, code }) {
+        listTitleHint({ value, code }) {
+            if (!this.isListElementHint) return '';
+            return value ? `#${code} ${this.languageCode}` : '';
+        },
+        listTitle({ value, code }) {
+            return String(value || `#${code}`);
+        },
+        onSelectValue({ key }) {
             if (!this.multiselect) {
-                this.selectedOptions = code;
-                this.$emit('input', code);
+                this.selectedOptions = key;
+                this.$emit('input', key);
 
                 return false;
             }
 
-            if (typeof this.selectedOptions[code] !== 'undefined') {
-                this.selectedOptions = removeFromObjectByKey(this.selectedOptions, code);
+            if (this.isChecked(key)) {
+                const index = this.selectedOptions.findIndex((option) => option === key);
+                this.selectedOptions = removeValueAtIndex(this.selectedOptions, index);
             } else {
-                this.selectedOptions = {
+                this.selectedOptions = [
+                    key,
                     ...this.selectedOptions,
-                    [code]: name,
-                };
+                ];
             }
             this.$emit('input', this.selectedOptions);
 

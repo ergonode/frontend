@@ -22,10 +22,10 @@
                 regular
                 label="Template"
                 :error-messages="errorTemplateMessage"
-                :options="templateValues"
+                :options="templateOptions"
                 :disabled="isDisabled || isDisabledByPrivileges"
                 @input="setProductTemplate" />
-            <TranslationSelect
+            <Select
                 :value="selectedCategories"
                 :solid="true"
                 :regular="true"
@@ -50,7 +50,6 @@ export default {
         FormGroup: () => import('~/core/components/Form/FormGroup'),
         TextField: () => import('~/core/components/Inputs/TextField'),
         Select: () => import('~/core/components/Inputs/Select/Select'),
-        TranslationSelect: () => import('~/core/components/Inputs/Select/TranslationSelect'),
     },
     mixins: [errorValidationMixin],
     computed: {
@@ -62,12 +61,19 @@ export default {
             selectedCategories: (state) => state.selectedCategories,
             categories: (state) => state.categories,
         }),
-        templateValues() {
-            return this.templates.map((template) => template.name);
+        templateOptions() {
+            return this.templates.map((language) => ({
+                key: language.id,
+                value: language.name,
+            }));
         },
         categoryOptions() {
             return this.categories.map(
-                (category) => ({ key: category.code, value: category.name }),
+                (category) => ({
+                    key: category.id,
+                    value: category.name,
+                    code: category.code,
+                }),
             );
         },
         isDisabled() {

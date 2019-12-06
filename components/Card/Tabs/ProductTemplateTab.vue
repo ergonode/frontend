@@ -85,9 +85,10 @@ export default {
             completeness: (state) => state.completeness,
         }),
         languageOptions() {
-            return Object.keys(this.languages).map(
-                (language) => ({ code: language, name: this.languages[language] }),
-            );
+            return Object.keys(this.languages).map((language) => ({
+                key: language,
+                value: this.languages[language],
+            }));
         },
         languagesValues() {
             return Object.values(this.languages);

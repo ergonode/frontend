@@ -8,12 +8,6 @@ function getLanguage(language) {
     return { code: language.code, name: language.name };
 }
 
-function getActiveLanguages(acc, current) {
-    const newObject = acc;
-    newObject[current.code] = current.name;
-    return newObject;
-}
-
 export default {
     updateData({ state, rootState }) {
         const { language: userLanguageCode } = rootState.authentication.user;
@@ -45,7 +39,7 @@ export default {
             commit(types.SET_LANGUAGES, collection.map(getLanguage));
             commit(types.SET_SELECTED_LANGUAGE_NAMES, collection
                 .filter((language) => language.active)
-                .reduce(getActiveLanguages, {}));
+                .map((language) => language.code));
         });
     },
     getFilteredData({ commit, rootState }, filter = null) {

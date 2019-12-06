@@ -14,7 +14,6 @@
 <script>
 
 import { mapState, mapActions } from 'vuex';
-import { getMappedCategoryID } from '~/model/mappers/categoryMapper';
 
 export default {
     validate({ params }) {
@@ -30,7 +29,6 @@ export default {
             id: (state) => state.id,
             sku: (state) => state.sku,
             selectedCategories: (state) => state.selectedCategories,
-            categories: (state) => state.categories,
         }),
     },
     destroyed() {
@@ -64,15 +62,11 @@ export default {
         },
         async onSave() {
             const { params: { id } } = this.$route;
-            const categoryIds = getMappedCategoryID(
-                this.categories,
-                this.selectedCategories,
-            );
 
             await this.updateProduct({
                 id,
                 data: {
-                    categoryIds,
+                    categoryIds: this.selectedCategories,
                 },
             });
             await this.applyDraft({

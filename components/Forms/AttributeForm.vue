@@ -129,14 +129,16 @@ export default {
             return hasOptions(this.type);
         },
         attributeTypeOptions() {
-            return Object.keys(this.attrTypes).map(
-                (type) => ({ code: type, name: this.attrTypes[type] }),
-            );
+            return Object.keys(this.attrTypes).map((type) => ({
+                key: type,
+                value: this.attrTypes[type],
+            }));
         },
         attributeParametersOptions() {
-            return Object.keys(this.params).map(
-                (param) => ({ code: param, name: this.params[param] }),
-            );
+            return Object.keys(this.params).map((param) => ({
+                key: param,
+                value: this.params[param],
+            }));
         },
         errorCodeMessage() {
             const codeIndex = 'code';

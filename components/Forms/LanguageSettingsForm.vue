@@ -39,7 +39,10 @@ export default {
             selectedLanguageNames: (state) => state.selectedLanguageNames,
         }),
         languageOptions() {
-            return this.languages.map((language) => ({ code: language.code, name: language.name }));
+            return this.languages.map((language) => ({
+                key: language.code,
+                value: language.name,
+            }));
         },
     },
     methods: {

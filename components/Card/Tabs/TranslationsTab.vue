@@ -69,9 +69,10 @@ export default {
             cardsLanguageCodes: (state) => state.cardsLanguageCodes,
         }),
         languageOptions() {
-            return Object.keys(this.languages).map(
-                (language) => ({ code: language, name: this.languages[language] }),
-            );
+            return Object.keys(this.languages).map((language) => ({
+                key: language,
+                value: this.languages[language],
+            }));
         },
         selectedLanguages() {
             return this.cardsLanguageCodes.reduce((acc, current) => {
