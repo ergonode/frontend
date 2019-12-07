@@ -4,18 +4,17 @@
  */
 <template>
     <div class="title-bar">
-        <TitleBarHeader
-            :title="title"
-            :icon="icon"
-            :is-breadcrumb="isBreadcrumb"
-            @navigateback="onClick">
-            <template #breadcrumb>
-                <TitleBarBreadcrumb
-                    v-for="(breadcrumb, index) in breadcrumbs"
-                    :key="index"
-                    :breadcrumb="breadcrumb" />
+        <TitleBarHeader :title="title">
+            <template #prepend>
+                <FabButton
+                    v-if="isNavigationBack"
+                    @click.native="onClick">
+                    <template #icon="{ color }">
+                        <IconArrowPointer :fill-color="color" />
+                    </template>
+                </FabButton>
             </template>
-            <template #badge>
+            <template #append>
                 <slot name="prependBadge" />
                 <InformationIconBadge
                     v-if="isReadOnly"
@@ -38,16 +37,17 @@
 </template>
 
 <script>
-import { WHITE, BLUE } from '~/assets/scss/_variables/_colors.scss';
+import { WHITE, BLUE, GREEN } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'TitleBar',
     components: {
         TitleBarHeader: () => import('~/core/components/TitleBar/TitleBarHeader'),
-        TitleBarBreadcrumb: () => import('~/core/components/TitleBar/TitleBarBreadcrumb'),
         TitleBarActions: () => import('~/core/components/TitleBar/TitleBarActions'),
         InformationIconBadge: () => import('~/core/components/Badges/InformationIconBadge'),
         IconLock: () => import('~/components/Icon/Feedback/IconLock'),
+        IconArrowPointer: () => import('~/components/Icon/Arrows/IconArrowPointer'),
+        FabButton: () => import('~/core/components/Buttons/FabButton'),
     },
     props: {
         title: {
@@ -58,9 +58,9 @@ export default {
             type: String,
             default: null,
         },
-        breadcrumbs: {
-            type: Array,
-            default: () => [],
+        isNavigationBack: {
+            type: Boolean,
+            default: false,
         },
         isReadOnly: {
             type: Boolean,
@@ -74,13 +74,13 @@ export default {
         blueColor() {
             return BLUE;
         },
-        isBreadcrumb() {
-            return this.breadcrumbs.length > 0;
+        greenColor() {
+            return GREEN;
         },
     },
     methods: {
         onClick() {
-            this.$emit('navigateback');
+            this.$emit('navigateBack');
         },
     },
 };

@@ -6,10 +6,9 @@
     <Page>
         <TitleBar
             :title="title"
-            :breadcrumbs="breadcrumbs"
-            icon="Document"
-            :is-read-only="!isUserAllowedToUpdateProduct && isEdit"
-            @navigateback="onDismiss">
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('PRODUCT')"
+            @navigateBack="onDismiss">
             <template #prependBadge>
                 <ProductStatusBadge
                     v-if="status"
@@ -25,8 +24,7 @@
                     :disabled="!$hasAccess(['PRODUCT_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
-                        <IconDelete
-                            :fill-color="color" />
+                        <IconDelete :fill-color="color" />
                     </template>
                 </PrependIconButton>
             </template>
@@ -52,11 +50,18 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
+        <Footer v-if="!$route.path.includes('history')">
+            <Button
+                :title="isEdit ? 'SAVE PRODUCT' : 'CREATE PRODUCT'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
     </Page>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
 import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import Button from '~/core/components/Buttons/Button';
 import MultiButton from '~/core/components/Buttons/MultiButton';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
@@ -70,94 +75,6 @@ export default {
         TitleBarSubActions: () => import('~/core/components/TitleBar/TitleBarSubActions'),
         ProductStatusBadge: () => import('~/components/Badges/ProductStatusBadge'),
     },
-    created() {
-        let generalRoute = { name: 'product-new-general' };
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        this.breadcrumbs = [
-            {
-                title: 'Products',
-                icon: 'Document',
-                route: { name: 'products-grid' },
-            },
-        ];
-
-        this.isUserAllowedToUpdateProduct = this.$hasAccess(['PRODUCT_UPDATE']);
-
-        if (this.isEdit) {
-            const templateRoute = { name: 'product-edit-id-template', params: this.$route.params };
-            const commentsRoute = { name: 'product-edit-id-comments', params: this.$route.params };
-            const historyRoute = { name: 'product-edit-id-history', params: this.$route.params };
-            generalRoute = { name: 'product-edit-id-general', params: this.$route.params };
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} PRODUCT`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateProduct,
-                        },
-                    },
-                },
-                {
-                    title: 'Product template',
-                    route: templateRoute,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} PRODUCT`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateProduct,
-                        },
-                    },
-                },
-                {
-                    title: 'Comments',
-                    route: commentsRoute,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} PRODUCT`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateProduct,
-                        },
-                    },
-                },
-                {
-                    title: 'History',
-                    route: historyRoute,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} PRODUCT`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateProduct,
-                        },
-                    },
-                },
-            ];
-        } else {
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} PRODUCT`,
-                            action: tabAction,
-                            disabled: false,
-                        },
-                    },
-                },
-            ];
-        }
-    },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
@@ -166,6 +83,9 @@ export default {
             status: (state) => state.status,
             workflow: (state) => state.workflow,
         }),
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
         smallSize() {
             return SIZES.SMALL;
         },
@@ -215,10 +135,6 @@ export default {
                 });
             }
         },
-    },
-    beforeDestroy() {
-        delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateProduct;
     },
 };
 </script>

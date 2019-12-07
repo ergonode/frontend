@@ -4,9 +4,7 @@
  */
 <template>
     <Page>
-        <TitleBar
-            title="Profile"
-            icon="User" />
+        <TitleBar title="Profile" />
         <HorizontalTabBar
             :items="tabs" />
     </Page>
@@ -15,7 +13,6 @@
 <script>
 export default {
     name: 'UserProfileTabs',
-    middleware: ['tab/redirectToUserActivityLogGrid'],
     components: {
         HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),

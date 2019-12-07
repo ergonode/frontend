@@ -102,7 +102,7 @@ export default {
             ]);
         },
         addAttribute() {
-            this.$router.push('/attributes/attribute/new');
+            this.$router.push('/attributes/attribute/new/general');
         },
     },
 };

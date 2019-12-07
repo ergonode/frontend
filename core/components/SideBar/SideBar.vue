@@ -3,51 +3,180 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['side-bar-wrapper', menuStateClass]">
-        <aside :class="['side-bar', menuStateClass]">
-            <div class="side-bar__content">
-                <MenuList
-                    v-for="(item, index) in menu"
+    <aside
+        :class="['side-bar', {'side-bar--expanded': isExpanded}]"
+        @click="onSelect">
+        <ol class="side-bar__menu">
+            <li>
+                <SideBarLogo :is-expanded="isExpanded" />
+            </li>
+            <template v-for="(route, index) in routes">
+                <SideBarListGroup
+                    v-if="route.group"
                     :key="index"
-                    :section-title="item.key"
-                    :section-menu="item.items" />
-            </div>
-        </aside>
-    </div>
+                    :route="route"
+                    :is-expanded="isExpanded"
+                    :is-selected="isGroupSelected(route.group.title)"
+                    @select="onGroupSelect" />
+                <SideBarListElement
+                    v-else
+                    :key="index"
+                    :route="route"
+                    :is-expanded="isExpanded" />
+            </template>
+        </ol>
+        <div class="expand-btn-wrapper">
+            <FabButton
+                is-transparent
+                @click.native="onExpanded">
+                <template #icon="{ color }">
+                    <IconArrowDouble
+                        :fill-color="color"
+                        :state="expendStateIcon" />
+                </template>
+            </FabButton>
+        </div>
+    </aside>
 </template>
 
 <script>
-import { getValidatedMenuData } from '~/model/navigation/sideBarMenu';
+import { THEMES } from '~/defaults/buttons';
+import { ARROW } from '~/defaults/icons';
+import { GREEN } from '~/assets/scss/_variables/_colors.scss';
+import IconArrowDouble from '~/components/Icon/Arrows/IconArrowDouble';
+import FabButton from '~/core/components/Buttons/FabButton';
+import SideBarLogo from '~/core/components/SideBar/SideBarLogo';
+import SideBarListElement from './SideBarListElement';
+import SideBarListGroup from './SideBarListGroup';
 
 export default {
     name: 'SideBar',
     components: {
-        MenuList: () => import('~/core/components/MenuList/MenuList'),
+        SideBarLogo,
+        SideBarListElement,
+        SideBarListGroup,
+        IconArrowDouble,
+        FabButton,
     },
-    props: {
-        value: {
-            type: Number,
-            default: 2,
-        },
+    data() {
+        return {
+            isSelected: true,
+            isExpanded: true,
+            selectedGroup: null,
+        };
     },
-    beforeCreate() {
-        const { menu: modulesMenu } = this.$modulesConfiguration;
-        this.menu = getValidatedMenuData(this.$hasAccess, modulesMenu);
-    },
-    beforeDestroy() {
-        delete this.menu;
+    destroyed() {
+        window.removeEventListener('click', this.onClickOutside);
     },
     computed: {
-        menuStateClass() {
-            let state = 'full';
-            if (this.value === 0) state = 'hidden';
-            if (this.value === 1) state = 'icons';
-            return `menu--${state}`;
+        expendStateIcon() {
+            return this.isExpanded ? ARROW.LEFT : ARROW.RIGHT;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
+        greenColor() {
+            return GREEN;
+        },
+        routes() {
+            const routes = [];
+            const groups = {};
+
+            this.$router.options.routes.forEach((route) => {
+                if (route.meta && route.meta.isMenu && (!route.meta.privileges
+                    || this.$hasAccess([route.meta.privileges.read]))) {
+                    if (route.meta.group && !groups[route.meta.group.title]) {
+                        routes.push({
+                            group: { ...route.meta.group },
+                            routes: [route],
+                        });
+                        groups[route.meta.group.title] = true;
+                    } else if (route.meta.group && groups[route.meta.group.title]) {
+                        const index = routes
+                            .findIndex((r) => r.group && r.group.title === route.meta.group.title);
+
+                        routes[index].routes.push({ ...route });
+                    } else {
+                        routes.push({ ...route });
+                    }
+                }
+            });
+
+            return routes;
+        },
+    },
+    methods: {
+        onExpanded() {
+            this.isExpanded = !this.isExpanded;
+        },
+        onGroupSelect(group) {
+            console.log(group);
+            this.selectedGroup = group;
+        },
+        onSelect() {
+            if (!this.isExpanded) {
+                window.addEventListener('click', this.onClickOutside);
+            }
+        },
+        isGroupSelected(groupTitle) {
+            if (this.selectedGroup === groupTitle && this.isSelected) return true;
+            return false;
+        },
+        onClickOutside(event) {
+            const { target } = event;
+
+            if (!this.$el.contains(target)) {
+                this.isSelected = false;
+            } else {
+                this.isSelected = true;
+            }
+
+            if (this.isExpanded) {
+                this.isSelected = true;
+                window.removeEventListener('click', this.onClickOutside);
+            }
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    @import "~/assets/scss/navigation/sidebar.scss";
+    .side-bar {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100vh;
+        background-color: $GRAPHITE_DARK;
+        transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        &--expanded {
+            width: 256px;
+
+            .expand-btn-wrapper {
+                align-self: flex-end;
+                transform: translateX(-12px);
+            }
+        }
+
+        &:not(&--expanded) {
+            width: 80px;
+
+            .expand-btn-wrapper {
+                align-self: center;
+            }
+        }
+
+        &__menu {
+            margin-bottom: 24px;
+        }
+
+        .expand-btn-wrapper {
+            position: sticky;
+            bottom: 12px;
+            z-index: 1;
+        }
+    }
 </style>

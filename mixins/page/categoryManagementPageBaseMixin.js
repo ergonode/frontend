@@ -7,6 +7,8 @@ export default {
         Page: () => import('~/core/components/Layout/Page'),
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
+        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Button: () => import('~/core/components/Buttons/Button'),
         PrependIconButton: () => import('~/core/components/Buttons/PrependIconButton'),
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
@@ -32,6 +34,10 @@ export default {
         },
         onSave() {
             this.$emit('save');
+        },
+        onUpdate() {
+            if (this.isEdit) this.onSave();
+            else this.onCreate();
         },
     },
 };

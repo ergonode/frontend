@@ -1,0 +1,36 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <GridViewTemplate>
+        <template #sidebar>
+            <VerticalTabBar :items="verticalTabs" />
+        </template>
+        <template #grid>
+            <ConditionSetWrapper />
+        </template>
+    </GridViewTemplate>
+</template>
+
+<script>
+import GridViewTemplate from '~/core/components/Layout/Templates/GridViewTemplate';
+
+export default {
+    name: 'ConditionSetDesignTab',
+    components: {
+        GridViewTemplate,
+        VerticalTabBar: () => import('~/core/components/Tab/VerticalTabBar'),
+        ConditionSetWrapper: () => import('~/components/ConditionSetDesigner/ConditionSetWrapper'),
+    },
+    data: () => ({
+        verticalTabs: [
+            {
+                title: 'Conditions',
+                component: () => import('~/components/Card/Tabs/ConditionsListTab'),
+                iconPath: 'Menu/IconCategory',
+            },
+        ],
+    }),
+};
+</script>

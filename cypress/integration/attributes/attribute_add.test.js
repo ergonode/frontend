@@ -16,7 +16,7 @@ context('Add Attribute', () => {
     describe('Navigate to Attribute creation page', () => {
         it('Visit /attributes/grid', () => {
             cy.get('.header-title__title').should('contain', 'Attributes');
-            cy.url().should('include', '/attributes/grid');
+            cy.url().should('include', '/attributes');
         });
 
         it('Visit /attributes/attribute/new/general', () => {

@@ -4,7 +4,7 @@
  */
 <template>
     <Button
-        class="btn--fab"
+        :class="btnFabClasses"
         :disabled="disabled"
         :title="title"
         :size="size"
@@ -47,6 +47,10 @@ export default {
             type: String,
             default: null,
         },
+        isTransparent: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
@@ -54,6 +58,14 @@ export default {
         };
     },
     computed: {
+        btnFabClasses() {
+            return [
+                'btn--fab',
+                {
+                    'btn--fab__transparent': this.isTransparent,
+                },
+            ];
+        },
         iconFillColor() {
             if (this.theme === THEMES.SECONDARY) {
                 if (this.disabled) {
@@ -89,5 +101,13 @@ export default {
         height: 32px;
         padding: 0;
         border-radius: 50%;
+
+        &__transparent {
+            background-color: transparent;
+
+            &:hover {
+                box-shadow: none !important;
+            }
+        }
     }
 </style>

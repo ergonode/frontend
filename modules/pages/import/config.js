@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 const Import = () => import('./pages/import/index').then((m) => m.default || m);
-const ImportGridTab = () => import('../../components/Tab/ImportGridTab').then((m) => m.default || m);
+const ImportGridTab = () => import('./components/Tab/ImportGridTab').then((m) => m.default || m);
 
 const privileges = {
     IMPORT: ['IMPORT_READ'],

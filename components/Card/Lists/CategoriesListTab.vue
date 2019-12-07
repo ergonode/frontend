@@ -66,7 +66,7 @@ export default {
             });
         },
         addCategory() {
-            this.$router.push('/categories/category/new');
+            this.$router.push('/categories/category/new/general');
         },
     },
 };

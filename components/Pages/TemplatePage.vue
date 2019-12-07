@@ -6,10 +6,9 @@
     <Page>
         <TitleBar
             :title="title"
-            :breadcrumbs="breadcrumbs"
-            :is-read-only="!isUserAllowedToUpdateTemplate && isEdit"
-            icon="Templates"
-            @navigateback="onDismiss">
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')"
+            @navigateBack="onDismiss">
             <template
                 v-if="isEdit"
                 #mainAction>
@@ -27,93 +26,33 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE TEMPLATE' : 'CREATE TEMPLATE'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
     </Page>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'TemplatePage',
     mixins: [categoryManagementPageBaseMixin],
-    created() {
-        let generalRoute = { name: 'template-new-general' };
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        this.breadcrumbs = [
-            {
-                title: 'Templates',
-                icon: 'Templates',
-                route: { name: 'templates' },
-            },
-        ];
-        this.isUserAllowedToUpdateTemplate = this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']);
-        if (this.isEdit) {
-            const templateRoute = { name: 'template-edit-id-template', params: this.$route.params };
-            generalRoute = { name: 'template-edit-id-general', params: this.$route.params };
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} TEMPLATE`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateTemplate,
-                        },
-                    },
-                },
-                {
-                    title: 'Template designer',
-                    route: templateRoute,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} TEMPLATE`,
-                            action: tabAction,
-                            disabled: !this.isUserAllowedToUpdateTemplate,
-                        },
-                    },
-                },
-            ];
-        } else {
-            this.tabs = [
-                {
-                    title: 'General Options',
-                    route: generalRoute,
-                    props: {
-                        updateButton: {
-                            title: `${buttonPrefix} TEMPLATE`,
-                            action: tabAction,
-                            disabled: false,
-                        },
-                    },
-                },
-            ];
-        }
-    },
     computed: {
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
         smallSize() {
             return SIZES.SMALL;
         },
         secondaryTheme() {
             return THEMES.SECONDARY;
         },
-    },
-    methods: {
-        ...mapActions('list', {
-            setConfigurationForList: 'setConfigurationForList',
-        }),
-    },
-    beforeDestroy() {
-        delete this.isUserAllowedToUpdateTemplate;
-        delete this.breadcrumbs;
     },
 };
 </script>

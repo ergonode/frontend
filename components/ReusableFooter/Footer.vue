@@ -4,37 +4,25 @@
  */
 <template>
     <div class="footer">
-        <Button
-            :title="button.title"
-            :theme="button.theme"
-            :loaded="$isLoaded('footerButton')"
-            :disabled="button.disabled"
-            @click.native="button.action" />
+        <slot />
     </div>
 </template>
 
 <script>
-import Button from '~/core/components/Buttons/Button';
 
 export default {
     name: 'Footer',
-    components: {
-        Button,
-    },
-    props: {
-        button: {
-            type: Object,
-            required: true,
-        },
-    },
 };
 </script>
 
 <style lang="scss" scoped>
     .footer {
         display: flex;
-        flex: 1;
         justify-content: flex-end;
         align-items: center;
+        padding: 12px 24px;
+        min-height: 40px;
+        background-color: $WHITE;
+        box-shadow: $ELEVATOR_6_DP;
     }
 </style>
