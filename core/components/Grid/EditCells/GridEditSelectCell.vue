@@ -3,30 +3,29 @@
  * See LICENSE for license details.
  */
 <template>
-    <Select
+    <TranslationSelect
         :style="{width: `${fixedWidth}px`, height: `${fixedHeight}px`}"
         :value="value"
         :language-code="languageCode"
-        solid
-        small
-        clearable
-        autofocus
-        dismissible
-        is-list-element-hint
+        :solid="true"
+        :small="true"
+        :clearable="true"
+        :autofocus="true"
         :multiselect="multiselect"
+        :dismissible="false"
         :error-messages="errorMessages"
-        :options="selectOptions"
+        :options="options"
         @focus="onFocus"
         @input="onValueChange" />
 </template>
 
 <script>
-import Select from '~/core/components/Inputs/Select/Select';
+import TranslationSelect from '~/core/components/Inputs/Select/TranslationSelect';
 
 export default {
     name: 'GridEditSelectCell',
     components: {
-        Select,
+        TranslationSelect,
     },
     props: {
         value: {
@@ -57,17 +56,6 @@ export default {
             type: Number,
             required: true,
         },
-    },
-    data() {
-        return {
-            selectOptions: [],
-        };
-    },
-    created() {
-        this.selectOptions = this.options.map((option) => ({
-            id: option.key,
-            name: option.value,
-        }));
     },
     methods: {
         onFocus(isFocused) {

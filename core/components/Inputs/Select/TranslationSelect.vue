@@ -5,6 +5,7 @@
 <template>
     <Select
         :value="parsedValue"
+        :options="options"
         v-bind="$attrs"
         @focus="onFocus"
         @input="onClear">
@@ -62,10 +63,18 @@ export default {
     data() {
         return {
             selectedOptions: this.$attrs.value || null,
+            options: [],
         };
+    },
+    created() {
+        this.options = this.$attrs.options.map((option) => ({
+            id: option.key,
+            name: option.value,
+        }));
     },
     computed: {
         parsedValue() {
+            console.log(this.options, this.selectedOptions);
             return 'xxxx';
             // let parsedValue = null;
             // if (!this.selectedOptions) return null;
