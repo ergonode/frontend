@@ -30,6 +30,7 @@ export default {
         };
     },
     destroyed() {
+        console.log(`destroy ${this.localValue}`);
         this.$emit('updateValue', this.localValue);
     },
     computed: {

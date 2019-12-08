@@ -89,7 +89,7 @@ export default {
 
         &__state {
             position: relative;
-            z-index: 1;
+            z-index: $Z_INDEX_LVL_1;
             display: flex;
             width: 16px;
             height: 16px;

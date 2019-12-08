@@ -42,7 +42,7 @@ export default {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Category created' });
             this.$router.push({
-                name: 'category-edit-id',
+                name: 'category-edit-id-general',
                 params: {
                     id,
                 },

@@ -136,7 +136,7 @@ export default {
         }
 
         &__sphere {
-            z-index: 1;
+            z-index: $Z_INDEX_LVL_1;
             width: 16px;
             height: 16px;
             background-color: $GREEN;

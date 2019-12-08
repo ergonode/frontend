@@ -15,7 +15,7 @@
             <input
                 :id="associatedLabel"
                 ref="input"
-                :style="{backgroundColor: value}"
+                :style="{color: value}"
                 :value="parsedInputValue"
                 :placeholder="placeholderValue"
                 :disabled="disabled"

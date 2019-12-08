@@ -80,7 +80,7 @@ export default {
             const number = Math.trunc(value);
 
             if (number !== this.numberOfDisplayedElements) {
-                this.changeNumberOfDisplayingElements({ number });
+                this.changeNumberOfDisplayingElements(number);
                 this.getData(this.editRoute.path);
             }
         },

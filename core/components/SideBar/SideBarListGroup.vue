@@ -159,7 +159,6 @@ export default {
 
             #{$element}__items {
                 position: fixed;
-                z-index: 1;
                 transform: translateX(80px);
             }
         }

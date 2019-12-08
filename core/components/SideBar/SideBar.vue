@@ -110,7 +110,6 @@ export default {
             this.isExpanded = !this.isExpanded;
         },
         onGroupSelect(group) {
-            console.log(group);
             this.selectedGroup = group;
         },
         onSelect() {
@@ -143,6 +142,7 @@ export default {
 <style lang="scss" scoped>
     .side-bar {
         position: relative;
+        z-index: $Z_INDEX_NAV;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -176,7 +176,6 @@ export default {
         .expand-btn-wrapper {
             position: sticky;
             bottom: 12px;
-            z-index: 1;
         }
     }
 </style>

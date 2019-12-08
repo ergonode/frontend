@@ -53,7 +53,7 @@ export default {
         position: absolute;
         left: 5%;
         bottom: -324px;
-        z-index: 9999;
+        z-index: $Z_INDEX_TRASH;
         width: 480px;
         height: 480px;
         background-color: $GRAPHITE_DARK;

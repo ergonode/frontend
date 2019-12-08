@@ -120,7 +120,6 @@ export default {
             position: absolute;
             bottom: 12px;
             right: 12px;
-            z-index: 3;
         }
     }
 </style>

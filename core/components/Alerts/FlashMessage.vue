@@ -36,7 +36,7 @@ export default {
         position: fixed;
         bottom: 88px;
         right: 12px;
-        z-index: 999999;
+        z-index: $Z_INDEX_ALERT;
     }
 
     .slide-enter-active {

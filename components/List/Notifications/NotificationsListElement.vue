@@ -46,7 +46,7 @@ export default {
 <style lang="scss" scoped>
     .notification-element {
         position: relative;
-        z-index: 0;
+        z-index: $Z_INDEX_LVL_0;
         display: grid;
         align-items: center;
         grid-template-columns: max-content auto;
@@ -60,7 +60,7 @@ export default {
         }
 
         &:hover {
-            z-index: 5;
+            z-index: $Z_INDEX_LVL_1;
             background-color: $WHITESMOKE;
             box-shadow: $ELEVATOR_2_DP;
         }

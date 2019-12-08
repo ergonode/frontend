@@ -71,9 +71,9 @@ export default {
 <style lang="scss" scoped>
     .select-content {
         position: absolute;
-        top: $toolBarHeight;
+        top: 48px;
         right: 0;
-        z-index: 2;
+        z-index: $Z_INDEX_NAV;
         display: flex;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_2_DP;

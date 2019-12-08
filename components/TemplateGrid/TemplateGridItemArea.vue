@@ -52,7 +52,7 @@ export default {
 
         .item-area__line {
             position: absolute;
-            z-index: -1;
+            z-index: $Z_INDEX_NEGATIVE;
             display: flex;
             width: 100%;
             grid-column: 1 / 1;

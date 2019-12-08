@@ -117,7 +117,6 @@ export default {
                     ...this.selectedOptions,
                 ];
             }
-            console.log(this.selectedOptions);
             this.$emit('input', this.selectedOptions);
 
             return true;

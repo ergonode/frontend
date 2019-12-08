@@ -110,7 +110,7 @@ export default {
         }
 
         &__footer {
-            z-index: 3;
+            z-index: $Z_INDEX_LVL_1;
             display: flex;
             flex: 0;
             justify-content: space-between;

@@ -14,4 +14,5 @@ coverage/
 assets/scss/_variables/_colors.scss
 assets/scss/_variables/_borders.scss
 assets/scss/_variables/_elevators.scss
+assets/scss/_variables/_indexes.scss
 

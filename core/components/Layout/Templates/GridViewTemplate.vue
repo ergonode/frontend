@@ -13,7 +13,9 @@
         <div class="grid-view-template__grid">
             <slot name="grid" />
         </div>
-        <div class="grid-view-template__footer">
+        <div
+            v-if="isFooterSlotVisible"
+            class="grid-view-template__footer">
             <slot name="footer" />
         </div>
     </div>
@@ -22,6 +24,11 @@
 <script>
 export default {
     name: 'GridViewTemplate',
+    computed: {
+        isFooterSlotVisible() {
+            return !!this.$slots.footer;
+        },
+    },
 };
 </script>
 
