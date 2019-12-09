@@ -262,7 +262,7 @@ export default {
     },
     data() {
         return {
-            selectedOptions: {},
+            selectedOptions: null,
             selectBoundingBox: null,
             isFocused: false,
             isMounted: false,
@@ -300,7 +300,7 @@ export default {
             return THEMES.SECONDARY;
         },
         parsedInputValue() {
-            if (!this.selectedOptions) return '';
+            if (!this.selectedOptions) return this.value;
             if (!this.multiselect) {
                 return this.selectedOptions.name || `#${this.selectedOptions.code}`;
             }
@@ -400,6 +400,10 @@ export default {
     },
     methods: {
         initSelectedOptions() {
+            if (!this.options) {
+                this.selectedOptions = this.value;
+                return;
+            }
             if (!this.multiselect) {
                 this.selectedOptions = this.options.find(
                     (option) => option.id === this.value,
@@ -435,7 +439,7 @@ export default {
             this.isSearchFocused = isFocused;
         },
         onClear() {
-            this.selectedOptions = {};
+            this.selectedOptions = null;
 
             this.$emit('input', this.multiselect ? [] : '');
         },
