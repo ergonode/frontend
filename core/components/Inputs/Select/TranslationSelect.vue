@@ -4,9 +4,10 @@
  */
 <template>
     <Select
+        v-bind="$attrs"
         :value="parsedValue"
         :options="options"
-        v-bind="$attrs"
+        grid
         @focus="onFocus"
         @input="onClear">
         <template #prepend>
@@ -14,9 +15,9 @@
         </template>
         <template #option="{ option }">
             <ListElement
-                :key="option.key"
+                :key="option.id"
                 :large="!$attrs.small && $attrs.regular"
-                :selected="isSelected(option.key)"
+                :selected="isSelected(option.id)"
                 @click.native="onSelectValue(option)">
                 <slot
                     name="option"
@@ -25,14 +26,14 @@
                         v-if="$attrs.multiselect"
                         :small="$attrs.small">
                         <CheckBox
-                            :value="isChecked(option.key)"
+                            :value="isChecked(option.id)"
                             @input="onSelectValue(option)" />
                     </ListElementAction>
                     <ListElementDescription>
                         <ListElementTitle
                             :small="$attrs.small"
-                            :hint="option.value ? `#${option.key} ${languageCode}` : ''"
-                            :title="option.value || `#${option.key}`" />
+                            :hint="option.name ? `#${option.id} ${languageCode}` : ''"
+                            :title="option.name || `#${option.code}`" />
                     </ListElementDescription>
                 </slot>
             </ListElement>
@@ -41,7 +42,7 @@
 </template>
 
 <script>
-import { removeValueAtIndex } from '~/model/arrayWrapper';
+import { isEmpty, removeFromObjectByKey } from '~/model/objectWrapper';
 
 export default {
     name: 'TranslationSelect',
@@ -62,71 +63,85 @@ export default {
     },
     data() {
         return {
-            selectedOptions: this.$attrs.value || null,
+            selectedOptions: {},
             options: [],
         };
     },
     created() {
-        this.options = this.$attrs.options.map((option) => ({
-            id: option.key,
-            name: option.value,
-        }));
+        this.initSelectedOptions();
     },
     computed: {
         parsedValue() {
-            console.log(this.options, this.selectedOptions);
-            return 'xxxx';
-            // let parsedValue = null;
-            // if (!this.selectedOptions) return null;
-            // if (!this.$attrs.multiselect) {
-            //     parsedValue = this.$attrs.options.find(
-            //         (option) => option.key.toString() === this.selectedOptions.toString(),
-            //     );
-            //     return parsedValue ? parsedValue.value : `#${this.selectedOptions}`;
-            // }
-            // parsedValue = this.selectedOptions.map((option) => {
-            //     const parsedOption = this.$attrs.options.find(
-            //         (o) => o.key.toString() === option.toString(),
-            //     );
-            //     return parsedOption.value || `#${parsedOption.key}`;
-            // });
-
-            // return parsedValue.join(', ');
+            if (!this.selectedOptions || isEmpty(this.selectedOptions)) return this.$attrs.multiselect ? [] : '';
+            if (!this.$attrs.multiselect) {
+                return this.selectedOptions.name || `#${this.selectedOptions.code || this.selectedOptions.id}`;
+            }
+            return this.selectedOptions;
         },
     },
     methods: {
-        isSelected(key) {
-            return this.$attrs.multiselect ? false : key === this.selectedOptions;
+        isSelected(id) {
+            return this.$attrs.multiselect || !this.selectedOptions
+                ? false
+                : id === this.selectedOptions.id;
         },
-        isChecked(key) {
-            return this.selectedOptions.includes(key);
+        isChecked(id) {
+            return this.$attrs.multiselect ? typeof this.selectedOptions[id] !== 'undefined' : false;
         },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);
         },
         onClear() {
-            this.selectedOptions = null;
+            this.selectedOptions = {};
 
-            this.$emit('input', this.$attrs.multiselect ? [] : null);
+            this.$emit('input', this.$attrs.multiselect ? [] : {});
         },
-        onSelectValue({ key }) {
+        initSelectedOptions() {
+            this.options = this.$attrs.options.map((option) => ({
+                id: option.key,
+                name: option.value,
+                code: option.code || option.key,
+            }));
+            if (this.$attrs.value) {
+                if (!this.$attrs.multiselect) {
+                    this.selectedOptions = this.options.find(
+                        (option) => option.id === this.$attrs.value.key,
+                    );
+                } else {
+                    this.selectedOptions = this.$attrs.value.reduce((acc, currentKey) => {
+                        const newObject = acc;
+                        newObject[currentKey.key] = this.options.find(
+                            (option) => option.id === currentKey.key,
+                        );
+                        return newObject;
+                    }, {});
+                }
+            }
+        },
+        onSelectValue(optionValue) {
+            const { id, code, name } = optionValue;
+
             if (!this.$attrs.multiselect) {
-                this.selectedOptions = key;
-                this.$emit('input', key);
+                this.selectedOptions = { id, name, code };
+                this.$emit('input', { key: id, value: name });
 
                 return false;
             }
 
-            if (this.isChecked(key)) {
-                const index = this.selectedOptions.findIndex((option) => option === key);
-                this.selectedOptions = removeValueAtIndex(this.selectedOptions, index);
+            if (this.isChecked(id)) {
+                this.selectedOptions = removeFromObjectByKey(this.selectedOptions, id);
             } else {
-                this.selectedOptions = [
-                    key,
+                this.selectedOptions = {
+                    [id]: { name, code },
                     ...this.selectedOptions,
-                ];
+                };
             }
-            this.$emit('input', this.selectedOptions);
+            this.$emit('input', Object.keys(this.selectedOptions).map(
+                (key) => ({
+                    key,
+                    value: this.selectedOptions[key].name || this.selectedOptions[key].code,
+                }),
+            ));
 
             return true;
         },

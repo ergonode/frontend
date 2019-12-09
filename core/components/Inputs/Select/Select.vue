@@ -138,7 +138,7 @@ import { ARROW } from '~/defaults/icons';
 import {
     GREEN, GRAPHITE,
 } from '~/assets/scss/_variables/_colors.scss';
-import { removeFromObjectByKey } from '~/model/objectWrapper';
+import { isObject, removeFromObjectByKey } from '~/model/objectWrapper';
 import FadeTransition from '~/core/components/Transitions/FadeTransition';
 import DropDown from '~/core/components/Inputs/Select/Contents/DropDown';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
@@ -164,7 +164,7 @@ export default {
     },
     props: {
         value: {
-            type: [Array, String, Number, Boolean],
+            type: [Object, Array, String, Number, Boolean],
             default: null,
         },
         options: {
@@ -259,6 +259,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        grid: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
@@ -300,12 +304,17 @@ export default {
             return THEMES.SECONDARY;
         },
         parsedInputValue() {
-            if (!this.selectedOptions) return this.value;
+            let parsedInput = this.selectedOptions;
+
+            if (this.grid && isObject(this.value)) {
+                parsedInput = this.value;
+            }
+            if (!parsedInput) return this.value;
             if (!this.multiselect) {
-                return this.selectedOptions.name || `#${this.selectedOptions.code}`;
+                return parsedInput.name || `#${parsedInput.code}`;
             }
 
-            return Object.values(this.selectedOptions).map(
+            return Object.values(parsedInput).map(
                 ({ name = null, code = null }) => name || `#${code}`,
             ).join(', ');
         },
@@ -409,6 +418,10 @@ export default {
                     (option) => option.id === this.value,
                 );
             } else {
+                if (this.grid && isObject(this.value)) {
+                    this.selectedOptions = this.value;
+                    return;
+                }
                 this.selectedOptions = this.value.reduce((acc, currentKey) => {
                     const newObject = acc;
                     newObject[currentKey] = this.options.find(
@@ -439,9 +452,9 @@ export default {
             this.isSearchFocused = isFocused;
         },
         onClear() {
-            this.selectedOptions = null;
+            this.selectedOptions = this.multiselect ? {} : '';
 
-            this.$emit('input', this.multiselect ? [] : '');
+            this.$emit('input', this.multiselect ? [] : {});
         },
         listTitleHint({ name, code }) {
             if (!this.isListElementHint) return '';

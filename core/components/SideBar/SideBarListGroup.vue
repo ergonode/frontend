@@ -128,15 +128,7 @@ export default {
         flex-direction: column;
         cursor: pointer;
 
-        &--selected {
-            #{$element}__title {
-                color: $WHITE;
-            }
-        }
-
-        &--activated {
-            background-color: $GREEN;
-
+        &--selected, &--activated {
             #{$element}__title {
                 color: $WHITE;
             }
