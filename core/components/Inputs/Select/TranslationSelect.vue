@@ -7,7 +7,7 @@
         v-bind="$attrs"
         :value="parsedValue"
         :options="options"
-        grid
+        is-grid
         @focus="onFocus"
         @input="onClear">
         <template #prepend>

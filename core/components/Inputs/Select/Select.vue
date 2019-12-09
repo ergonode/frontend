@@ -259,7 +259,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        grid: {
+        isGrid: {
             type: Boolean,
             default: false,
         },
@@ -306,7 +306,7 @@ export default {
         parsedInputValue() {
             let parsedInput = this.selectedOptions;
 
-            if (this.grid && isObject(this.value)) {
+            if (this.isGrid && isObject(this.value)) {
                 parsedInput = this.value;
             }
             if (!parsedInput) return this.value;
@@ -418,7 +418,7 @@ export default {
                     (option) => option.id === this.value,
                 );
             } else {
-                if (this.grid && isObject(this.value)) {
+                if (this.isGrid && isObject(this.value)) {
                     this.selectedOptions = this.value;
                     return;
                 }
