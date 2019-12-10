@@ -4,7 +4,7 @@
  */
 <template>
     <Form>
-        <FormGroup>
+        <FormGroup title="General options">
             <TextField
                 :value="code"
                 solid
@@ -28,16 +28,6 @@
                 :disabled="isDisabledByPrivileges"
                 :error-messages="errorGroupsMessage"
                 @input="setAttributeGroups" />
-            <Divider />
-            <Toggler
-                :value="isMultilingual"
-                :disabled="isDisabled || isDisabledByPrivileges"
-                label="Multilingual attribute"
-                @input="setMultilingualAttribute">
-                <template #append>
-                    <InfoHint :hint="multilingualHint" />
-                </template>
-            </Toggler>
             <Select
                 :value="type"
                 solid
@@ -48,20 +38,39 @@
                 :options="attributeTypeOptions"
                 :error-messages="errorTypeMessage"
                 @input="onTypeChange" />
-            <Select
-                v-if="hasParams"
-                :value="parameter"
-                solid
-                required
-                regular
-                :label="paramsLabel"
-                :options="attributeParametersOptions"
-                :error-messages="errorParamsMessage"
-                :disabled="isDisabledByPrivileges"
-                @input="setAttributeParameter" />
-            <AttributeOptionKeyValues
-                v-show="hasOptions"
-                :disabled="isDisabledByPrivileges" />
+        </FormGroup>
+        <FormGroup
+            v-if="isMultilingual || hasParams"
+            title="Configuration">
+            <FadeGroupTransition>
+                <Toggler
+                    v-if="isMultilingual"
+                    key="attrMultilingual"
+                    :value="multilingual"
+                    :disabled="isDisabled || isDisabledByPrivileges"
+                    label="Multilingual attribute"
+                    @input="setMultilingualAttribute">
+                    <template #append>
+                        <InfoHint :hint="multilingualHint" />
+                    </template>
+                </Toggler>
+                <Select
+                    v-if="hasParams"
+                    key="attrHasParams"
+                    :value="parameter"
+                    solid
+                    required
+                    regular
+                    :label="paramsLabel"
+                    :options="attributeParametersOptions"
+                    :error-messages="errorParamsMessage"
+                    :disabled="isDisabledByPrivileges"
+                    @input="setAttributeParameter" />
+                <AttributeOptionKeyValues
+                    v-show="hasOptions"
+                    key="attrHasOptions"
+                    :disabled="isDisabledByPrivileges" />
+            </FadeGroupTransition>
         </FormGroup>
     </Form>
 </template>
@@ -70,7 +79,7 @@
 import { mapState, mapActions } from 'vuex';
 import { toCapitalize } from '~/model/stringWrapper';
 import {
-    hasParams, hasOptions, getParamsKeyForType, getParamsOptionsForType,
+    hasParams, hasOptions, isMultilingual, getParamsKeyForType, getParamsOptionsForType,
 } from '~/model/attributes/AttributeTypes';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
@@ -84,7 +93,7 @@ export default {
         InfoHint: () => import('~/core/components/Hints/InfoHint'),
         TextField: () => import('~/core/components/Inputs/TextField'),
         Select: () => import('~/core/components/Inputs/Select/Select'),
-        Divider: () => import('~/core/components/Dividers/Divider'),
+        FadeGroupTransition: () => import('~/core/components/Transitions/FadeGroupTransition'),
     },
     mixins: [errorValidationMixin],
     data() {
@@ -103,7 +112,7 @@ export default {
             groupOptions: (state) => state.groupOptions,
             type: (state) => state.type,
             parameter: (state) => state.parameter,
-            isMultilingual: (state) => state.isMultilingual,
+            multilingual: (state) => state.isMultilingual,
         }),
         ...mapState('data', {
             attrTypes: (state) => state.attrTypes,
@@ -115,6 +124,9 @@ export default {
         },
         isDisabled() {
             return Boolean(this.attrID);
+        },
+        isMultilingual() {
+            return isMultilingual(this.type);
         },
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['ATTRIBUTE_UPDATE']))

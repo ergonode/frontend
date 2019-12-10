@@ -9,6 +9,13 @@ export function hasOptions(type) {
     return type === TYPES.SELECT || type === TYPES.MULTI_SELECT;
 }
 
+export function isMultilingual(type) {
+    return type === TYPES.TEXT
+        || type === TYPES.TEXTAREA
+        || type === TYPES.SELECT
+        || type === TYPES.MULTI_SELECT;
+}
+
 export function hasPlaceholder(type) {
     return (
         type === TYPES.TEXT

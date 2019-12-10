@@ -16,6 +16,7 @@ import {
     getParsedParameterKeys,
     getParsedOptions,
 } from '~/model/mappers/attributeMapper';
+import { isMultilingual } from '~/model/attributes/AttributeTypes';
 import { getParentRoutePath } from '~/model/navigation/tabs';
 
 export default {
@@ -65,8 +66,11 @@ export default {
                 code: this.code,
                 type: this.type,
                 groups: this.groups,
-                multilingual: this.multilingual,
             };
+
+            if (isMultilingual(this.type)) {
+                attribute.multilingual = this.multilingual;
+            }
 
             if (this.optionKeys.length > 0) {
                 attribute.options = getParsedOptions(

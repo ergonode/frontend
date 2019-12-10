@@ -6,8 +6,8 @@ export default {
     setTabTranslations: ({ commit }, translation) => {
         commit('setTabTranslations', translation);
     },
-    setMultilingualTranslationPropertyValue: ({ commit }, value) => {
-        commit('setMultilingualTranslationPropertyValue', value);
+    setMultilingualTranslationPropertyValue: ({ commit }, params) => {
+        commit('setMultilingualTranslationPropertyValue', params);
     },
     addCardLanguageCode: ({ commit }, language) => commit('addCardLanguageCode', language),
     setVisibleCardTranslations: ({ commit, state }, { languages }) => {

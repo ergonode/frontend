@@ -8,6 +8,7 @@
             :id="associatedLabel"
             :value="value"
             :disabled="disabled"
+            :checked="value"
             type="checkbox"
             @input="onValueChange">
         <label :for="associatedLabel">

@@ -7,32 +7,35 @@
         <Form>
             <FormGroup>
                 <TextField
-                    :value="translations.label[languageCode]"
+                    :value="parsedValue('label')"
                     solid
                     label="Attribute name"
                     regular
                     :error-messages="errorLabelMessage"
                     :disabled="!isUserAllowedToUpdate"
-                    @input="(value) => setTranslationPropertyValue(value, 'label')" />
+                    @input="(value) =>
+                        setTranslationPropertyValue(value, 'label', isMultilingual)" />
                 <TextArea
                     v-if="hasPlaceholder"
-                    :value="translations.placeholder[languageCode]"
+                    :value="parsedValue('placeholder')"
                     solid
                     label="Placeholder"
                     resize="none"
                     :style="{height: '150px'}"
                     :error-messages="errorPlaceholderMessage"
                     :disabled="!isUserAllowedToUpdate"
-                    @input="(value) => setTranslationPropertyValue(value, 'placeholder')" />
+                    @input="(value) =>
+                        setTranslationPropertyValue(value, 'placeholder', isMultilingual)" />
                 <TextArea
-                    :value="translations.hint[languageCode]"
+                    :value="parsedValue('hint')"
                     solid
                     label="Tooltip for writers"
                     resize="none"
                     :style="{height: '150px'}"
                     :error-messages="errorHintMessage"
                     :disabled="!isUserAllowedToUpdate"
-                    @input="(value) => setTranslationPropertyValue(value, 'hint')" />
+                    @input="(value) =>
+                        setTranslationPropertyValue(value, 'hint', isMultilingual)" />
                 <template v-if="hasOptions">
                     <Divider />
                     <AttributeOptionValues
@@ -47,7 +50,6 @@
 <script>
 import { mapState } from 'vuex';
 import { hasPlaceholder, hasOptions } from '~/model/attributes/AttributeTypes';
-import { getParsedType } from '~/model/mappers/attributeMapper';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
 import TextField from '~/core/components/Inputs/TextField';
@@ -76,22 +78,13 @@ export default {
         }),
         ...mapState('attribute', {
             type: (state) => state.type,
+            isMultilingual: (state) => state.isMultilingual,
         }),
         hasPlaceholder() {
-            return hasPlaceholder(
-                getParsedType(
-                    this.attrTypes,
-                    this.type,
-                ),
-            );
+            return hasPlaceholder(this.type);
         },
         hasOptions() {
-            return hasOptions(
-                getParsedType(
-                    this.attrTypes,
-                    this.type,
-                ),
-            );
+            return hasOptions(this.type);
         },
         isUserAllowedToUpdate() {
             return this.$hasAccess(['ATTRIBUTE_UPDATE']);

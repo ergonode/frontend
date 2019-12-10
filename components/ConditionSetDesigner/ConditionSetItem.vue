@@ -28,6 +28,7 @@ import {
     getValueByKey,
     getValuesByKeys,
 } from '~/model/objectWrapper';
+import { hasOptions } from '~/model/attributes/AttributeTypes';
 import ConditionSetParameters from '~/components/ConditionSetDesigner/ConditionSetParameters';
 
 export default {
@@ -74,8 +75,8 @@ export default {
         replacePlaceholderOnPhrase(placeholders) {
             const { phrase, parameters } = this.condition;
             const findKeyWhenSelect = (clearedKey) => parameters.findIndex(
-                (p) => p.name === clearedKey
-                && (p.type === 'SELECT' || p.type === 'MULTI_SELECT'),
+                (parameter) => parameter.name === clearedKey
+                && hasOptions(parameter.type),
             );
 
             return phrase.replace(/\[\w+\]/g, (placeholder) => {

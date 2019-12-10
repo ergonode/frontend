@@ -47,7 +47,6 @@ export default {
     computed: {
         ...mapState('attribute', {
             optionKeys: (state) => state.optionKeys,
-            isMultilingual: (state) => state.isMultilingual,
         }),
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
@@ -78,6 +77,7 @@ export default {
 <style lang="scss" scoped>
     .options {
         display: grid;
+        padding: 16px 0;
         grid-gap: 8px;
 
         &--disabled {

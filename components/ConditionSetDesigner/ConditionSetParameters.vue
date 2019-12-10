@@ -10,7 +10,7 @@
         required
         clearable
         :label="parameter.name"
-        :options="hasOptions ? Object.values(parameter.options) : []"
+        :options="hasOptions ? getConditionOptions : []"
         :value="getConditionValue"
         :multiselect="parameter.type === 'MULTI_SELECT'"
         :disabled="!$hasAccess(['CONDITION_UPDATE'])"
@@ -20,11 +20,11 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import {
-    getKeyByValue,
     getValueByKey,
-    getKeysByValues,
     getValuesByKeys,
 } from '~/model/objectWrapper';
+import { hasOptions } from '~/model/conditions/ConditionTypes';
+import { TYPES } from '~/defaults/conditions';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import TextField from '~/core/components/Inputs/TextField';
 import Select from '~/core/components/Inputs/Select/Select';
@@ -51,21 +51,28 @@ export default {
             conditionsValues: (state) => state.conditionsValues,
         }),
         hasOptions() {
-            return this.parameter.options || false;
+            return hasOptions(this.parameter.type);
         },
         getComponentViaType() {
             switch (this.parameter.type) {
-            case 'SELECT':
-            case 'MULTI_SELECT':
+            case TYPES.SELECT:
+            case TYPES.MULTI_SELECT:
                 return Select;
-            case 'NUMERIC':
-            case 'TEXT':
-            case 'UNIT':
-            case 'PRICE':
+            case TYPES.TEXT:
+            case TYPES.UNIT:
+            case TYPES.NUMERIC:
                 return TextField;
             default:
                 return null;
             }
+        },
+        getConditionOptions() {
+            const options = Object.keys(this.parameter.options);
+
+            return options.map((option) => ({
+                id: option,
+                name: this.parameter.options[option],
+            }));
         },
         getConditionValue() {
             const { name, options } = this.parameter;
@@ -90,13 +97,9 @@ export default {
             'setConditionValue',
         ]),
         setConditionValueByType(value) {
-            let tmpValue = value;
-            const { name, options } = this.parameter;
-            if (this.hasOptions) {
-                tmpValue = Array.isArray(value)
-                    ? getKeysByValues(options, value)
-                    : getKeyByValue(options, value) || null;
-            }
+            const tmpValue = value;
+            const { name } = this.parameter;
+
             this.setConditionValue({
                 conditionId: this.itemId,
                 parameterName: name,

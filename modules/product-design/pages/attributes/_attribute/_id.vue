@@ -40,6 +40,9 @@ export default {
         ...mapState('translations', {
             translations: (state) => state.translations,
         }),
+        ...mapState('authentication', {
+            userLanguageCode: (state) => state.user.language,
+        }),
     },
     destroyed() {
         this.clearStorage();
@@ -79,6 +82,13 @@ export default {
             }
         },
         onSave() {
+            const setTranslation = (value) => {
+                const translation = this.isMultilingual
+                    ? getParsedTranslations(value)
+                    : { [this.userLanguageCode]: getParsedTranslations(value) };
+                return translation;
+            };
+
             this.removeValidationErrors();
             // Select / Multi select key values cannot be empty
             if (this.optionKeys.length > 0 && this.optionKeys.some((key) => key === '')) {
@@ -107,15 +117,15 @@ export default {
             }
 
             if (isThereAnyTranslation(label)) {
-                propertiesToUpdate.label = getParsedTranslations(label);
+                propertiesToUpdate.label = setTranslation(label);
             }
 
             if (isThereAnyTranslation(hint)) {
-                propertiesToUpdate.hint = getParsedTranslations(hint);
+                propertiesToUpdate.hint = setTranslation(hint);
             }
 
             if (isThereAnyTranslation(placeholder)) {
-                propertiesToUpdate.placeholder = getParsedTranslations(placeholder);
+                propertiesToUpdate.placeholder = setTranslation(placeholder);
             }
 
             this.updateAttribute({

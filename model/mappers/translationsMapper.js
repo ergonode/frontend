@@ -2,14 +2,21 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export function isThereAnyTranslation(obj) {
-    return !!Object.keys(obj).find((key) => obj[key] !== '');
+import { isObject } from '~/model/objectWrapper';
+
+export function isThereAnyTranslation(translation) {
+    if (!isObject(translation) && typeof translation !== 'string') return false;
+    if (!isObject(translation)) {
+        return translation !== '';
+    }
+    return !!Object.keys(translation).find((key) => translation[key] !== '');
 }
 
-export function getParsedTranslations(obj) {
-    return Object.keys(obj).reduce((response, property) => {
-        if (obj[property] !== '') {
-            return { ...response, [property]: obj[property] };
+export function getParsedTranslations(translation) {
+    if (!isObject(translation)) return translation;
+    return Object.keys(translation).reduce((response, property) => {
+        if (translation[property] !== '') {
+            return { ...response, [property]: translation[property] };
         }
         return { ...response };
     }, {});
