@@ -13,11 +13,11 @@
                 'side-bar-list-group--expanded': !isExpanded && isSelected,
             }
         ]"
-        @mouseenter="onMouseEnter"
-        @mouseleave="onMouseLeave">
+        @mouseenter="() => isExpanded ? onMouseEnter() : onGroupSelect()"
+        @mouseleave="() => isExpanded ? onMouseLeave() : onGroupSelect()">
         <div
             class="side-bar-list-group__activator"
-            @click="onGroupSelect">
+            @click="() => isExpanded ? onGroupSelect() : null">
             <div class="side-bar-list-group__icon">
                 <Component
                     :is="listIcon"
