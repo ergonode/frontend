@@ -67,11 +67,11 @@ export default {
         },
         onUpdateAttributeSuccess() {
             this.$addAlert({ type: 'success', message: 'Attribute updated' });
-            this.$router.push('/attributes');
+            this.$router.push({ name: 'attributes' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Attribute removed' });
-            this.$router.push('/attributes');
+            this.$router.push({ name: 'attributes' });
         },
         onRemove() {
             const isConfirm = confirm('Are you sure you want to delete this attribute?'); /* eslint-disable-line no-restricted-globals */

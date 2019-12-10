@@ -60,7 +60,7 @@ export default {
     },
     methods: {
         addAttribute() {
-            this.$router.push('/attributes/attribute/new/general');
+            this.$router.push({ name: 'attribute-new-general' });
         },
     },
     async fetch({ app, store }) {

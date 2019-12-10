@@ -54,11 +54,11 @@ export default {
         onUpdateTemplateDesignerSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Template updated' });
-            this.$router.push('/product-templates');
+            this.$router.push({ name: 'product-templates' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Template removed' });
-            this.$router.push('/product-templates');
+            this.$router.push({ name: 'product-templates' });
         },
         onRemove() {
             const isConfirm = confirm('Are you sure you want to delete this template?'); /* eslint-disable-line no-restricted-globals */

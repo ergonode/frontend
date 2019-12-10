@@ -55,7 +55,7 @@ export default {
     },
     methods: {
         addCategory() {
-            this.$router.push('/categories/category/new/general');
+            this.$router.push({ name: 'category-new-general' });
         },
     },
     async fetch({ app, store }) {

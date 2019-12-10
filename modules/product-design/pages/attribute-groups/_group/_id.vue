@@ -69,11 +69,11 @@ export default {
         onUpdateAttributeGroupSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Attribute Group updated' });
-            this.$router.push('/attribute-groups');
+            this.$router.push({ name: 'attribute-groups' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Attribute Group removed' });
-            this.$router.push('/attributes-groups');
+            this.$router.push({ name: 'attribute-groups' });
         },
     },
     async fetch({ store, params }) {

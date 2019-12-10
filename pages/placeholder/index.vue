@@ -29,7 +29,7 @@
                     <Button
                         class="info__button"
                         title="Back to the… Dashboard"
-                        @click.native="$router.push('/dashboard');" />
+                        @click.native="$router.push({ name: 'dashboard' });" />
                 </div>
             </div>
             <div class="wrapper__section">

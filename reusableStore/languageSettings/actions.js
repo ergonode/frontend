@@ -45,6 +45,8 @@ export default {
         const path = `/${userLanguageCode}/language/autocomplete`;
         const params = {
             search: filter,
+            order: 'ASC',
+            field: 'name',
         };
         return this.app.$axios.$get(path, { params }).then((data) => {
             commit(types.SET_LANGUAGES, data.map(getLanguage));

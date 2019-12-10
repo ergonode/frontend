@@ -42,11 +42,11 @@ export default {
         ]),
         onDraftAppliedSuccess() {
             this.$addAlert({ type: 'success', message: 'Product updated' });
-            this.$router.push('/catalog');
+            this.$router.push({ name: 'catalog' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Product removed' });
-            this.$router.push('/catalog');
+            this.$router.push({ name: 'catalog' });
         },
         onDismiss() {
             this.$router.push(getParentRoutePath(this.$route));

@@ -115,11 +115,11 @@ export default {
         },
         onUpdateSegmentsSuccess() {
             this.$addAlert({ type: 'success', message: 'Segment updated' });
-            this.$router.push('/segments');
+            this.$router.push({ name: 'segments' });
         },
         onRemoveSegmentSuccess() {
             this.$addAlert({ type: 'success', message: 'Segment removed' });
-            this.$router.push('/segments');
+            this.$router.push({ name: 'segments' });
         },
     },
     beforeDestroy() {

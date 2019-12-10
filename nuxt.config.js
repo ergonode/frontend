@@ -41,7 +41,7 @@ module.exports = {
         '~assets/scss/typography.scss',
     ],
     router: {
-        middleware: 'privilegeRoutingCheck',
+        middleware: ['privilegeRoutingCheck', 'redirectToPath'],
     },
     plugins: [
         '~plugins/axios',

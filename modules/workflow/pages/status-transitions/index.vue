@@ -32,7 +32,6 @@ import TransitionsGridTab from '~/components/Card/Grid/TransitionsGridTab';
 
 export default {
     name: 'WorkflowTabs',
-    middleware: ['tab/redirectToStatusesGrid'],
     components: {
         TransitionsGridTab,
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
@@ -57,7 +56,7 @@ export default {
     },
     methods: {
         addStatusTransition() {
-            this.$router.push('/status-transitions/transition/new/general');
+            this.$router.push({ name: 'transition-new-general' });
         },
     },
     async fetch({ app, store }) {

@@ -63,6 +63,7 @@ export const routing = [
         ],
         meta: {
             isMenu: false,
+            redirectTo: 'general',
         },
     },
     {
@@ -111,6 +112,7 @@ export const routing = [
         ],
         meta: {
             isMenu: false,
+            redirectTo: 'general',
         },
     },
     {
@@ -159,6 +161,7 @@ export const routing = [
         ],
         meta: {
             isMenu: false,
+            redirectTo: 'general',
         },
     },
     {
@@ -207,6 +210,7 @@ export const routing = [
         ],
         meta: {
             isMenu: false,
+            redirectTo: 'general',
         },
     },
 ];

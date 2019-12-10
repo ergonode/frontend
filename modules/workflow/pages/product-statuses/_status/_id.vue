@@ -65,12 +65,12 @@ export default {
         },
         onRemoveProductStatusSuccess() {
             this.$addAlert({ type: 'success', message: 'Product status removed' });
-            this.$router.push('/product-statuses');
+            this.$router.push({ name: 'product-statuses' });
         },
         onProductStatusUpdated() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Product status updated' });
-            this.$router.push('/product-statuses');
+            this.$router.push({ name: 'product-statuses' });
         },
     },
     async fetch({

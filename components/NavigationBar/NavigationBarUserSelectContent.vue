@@ -66,7 +66,7 @@ export default {
         ]),
         onLogout() {
             this.logout();
-            this.$router.push('/');
+            this.$router.push({ name: 'index' });
         },
     },
 };
