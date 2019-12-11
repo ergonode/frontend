@@ -32,5 +32,18 @@ export default {
             },
         ],
     }),
+    async fetch({
+        store,
+    }) {
+        await Promise.all([
+            store.dispatch('gridDesigner/clearStorage'),
+            store.dispatch('list/clearStorage'),
+            store.dispatch('conditions/clearStorage'),
+            store.dispatch('conditions/getConditions', { group: 'workflow' }),
+        ]);
+        const { conditionsDictionary } = store.state.conditions;
+
+        await store.dispatch('list/setElementsForLanguage', conditionsDictionary);
+    },
 };
 </script>

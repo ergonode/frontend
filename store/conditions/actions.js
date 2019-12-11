@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
+import { objectToArrayWithPropsName } from '~/model/objectWrapper';
 import { getParsedConditionSetData } from '~/model/mappers/conditionSetMapper';
 
 const onDefaultError = () => {};
@@ -10,6 +11,12 @@ const onDefaultError = () => {};
 export default {
     setId({ commit }, value) {
         commit(types.SET_CONDITION_SET_ID, value);
+    },
+    getConditions({ commit, rootState }, params = {}) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$get(`${userLanguageCode}/dictionary/conditions`, { params }).then((data) => {
+            commit(types.SET_CONDITIONS_DICTIONARY, objectToArrayWithPropsName(data));
+        }).catch(onDefaultError);
     },
     async getConditionSetById(
         {

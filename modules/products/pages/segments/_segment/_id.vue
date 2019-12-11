@@ -14,7 +14,6 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getMappedConditionSetData } from '~/model/mappers/conditionSetMapper';
-import { objectToArrayWithPropsName } from '~/model/objectWrapper';
 import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 import { getParentRoutePath } from '~/model/navigation/tabs';
 
@@ -131,16 +130,9 @@ export default {
         store,
         params,
     }) {
-        const { conditions } = store.state.data;
-        const conditionsList = objectToArrayWithPropsName(conditions);
-
         await Promise.all([
             store.dispatch('translations/clearStorage'),
             store.dispatch('segments/clearStorage'),
-            store.dispatch('gridDesigner/clearStorage'),
-            store.dispatch('list/clearStorage'),
-            store.dispatch('conditions/clearStorage'),
-            store.dispatch('list/setElementsForLanguage', conditionsList),
         ]);
         await store.dispatch('segments/getSegmentById', {
             segmentId: params.id,
