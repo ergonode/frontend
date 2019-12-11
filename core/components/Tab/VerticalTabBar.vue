@@ -19,7 +19,6 @@
         <VerticalTabContent
             v-if="isExpanded"
             :tab-item="items[selectedTabIndex]"
-            :selected-tab-index="selectedTabIndex"
             :is-expanded="isExpanded"
             @expand="onExpandTab" />
     </div>
@@ -53,6 +52,7 @@ export default {
         onSelectTabBarItem(index) {
             this.selectedTabIndex = index;
             this.isExpanded = true;
+            this.$emit('select', index);
         },
         onExpandTab(isExpanded) {
             this.isExpanded = isExpanded;

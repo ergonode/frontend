@@ -22,7 +22,7 @@ export default {
 
         return this.app.$axios.$get(path, { params }).then(({ collection }) => {
             commit(types.SET_ELEMENTS_FOR_LANGUAGE, { languageCode, elements: collection });
-            if (listType === 'attributes' || listType === 'attributes/system') {
+            if (listType === 'attributes') {
                 commit(types.SET_GROUPS_ELEMENTS_COUNT, getMappedGroupsElementsCount(collection));
             }
         });

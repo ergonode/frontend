@@ -38,10 +38,6 @@ export default {
             type: Boolean,
             default: true,
         },
-        isSelected: {
-            type: Boolean,
-            required: true,
-        },
         isExpanded: {
             type: Boolean,
             required: true,
@@ -49,12 +45,12 @@ export default {
     },
     data() {
         return {
+            listDataType: 'attributes/system',
             attributesLanguageCode: null,
         };
     },
     created() {
         this.attributesLanguageCode = this.userLanguageCode;
-        this.getElements({ listType: 'attributes/system', languageCode: this.attributesLanguageCode });
     },
     computed: {
         ...mapState('authentication', {
@@ -80,14 +76,17 @@ export default {
         },
         onSearch(value) {
             this.setFilter(value);
-            this.getElements({ listType: 'attributes/system', languageCode: this.attributesLanguageCode });
+            this.getElements({
+                listType: this.listDataType,
+                languageCode: this.attributesLanguageCode,
+            });
         },
         onSelect(option) {
             this.attributesLanguageCode = option;
-
-            Promise.all([
-                this.getElements({ listType: 'attributes/system', languageCode: this.attributesLanguageCode }),
-            ]);
+            this.getElements({
+                listType: this.listDataType,
+                languageCode: option,
+            });
         },
     },
 };

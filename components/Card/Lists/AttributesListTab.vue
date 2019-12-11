@@ -54,13 +54,10 @@ export default {
             type: Boolean,
             required: true,
         },
-        isSelected: {
-            type: Boolean,
-            required: true,
-        },
     },
     data() {
         return {
+            listDataType: 'attributes',
             attributesLanguageCode: null,
         };
     },
@@ -95,14 +92,20 @@ export default {
         },
         onSearch(value) {
             this.setFilter(value);
-            this.getElements({ listType: 'attributes', languageCode: this.attributesLanguageCode });
+            this.getElements({
+                listType: this.listDataType,
+                languageCode: this.attributesLanguageCode,
+            });
         },
         onSelect(option) {
             this.attributesLanguageCode = option;
 
             Promise.all([
                 this.getGroups(this.attributesLanguageCode),
-                this.getElements({ listType: 'attributes', languageCode: this.attributesLanguageCode }),
+                this.getElements({
+                    listType: this.listDataType,
+                    languageCode: this.attributesLanguageCode,
+                }),
             ]);
         },
         addAttribute() {

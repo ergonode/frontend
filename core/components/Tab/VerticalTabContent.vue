@@ -8,7 +8,6 @@
             :is="tabItem.component"
             v-bind="tabItem.props"
             :is-expanded="isExpanded"
-            :is-selected="selectedTabIndex === tabItem.id"
             @expand="onExpand" />
     </KeepAlive>
 </template>
@@ -23,10 +22,6 @@ export default {
         },
         isExpanded: {
             type: Boolean,
-            required: true,
-        },
-        selectedTabIndex: {
-            type: Number,
             required: true,
         },
     },

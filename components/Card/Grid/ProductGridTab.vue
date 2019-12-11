@@ -14,7 +14,9 @@
                 @focus="onAdvancedFilterFocus" />
         </template>
         <template #sidebar>
-            <VerticalTabBar :items="verticalTabs" />
+            <VerticalTabBar
+                :items="verticalTabs"
+                @select="onSelectTabBarItem" />
         </template>
         <template #grid>
             <Grid
@@ -66,22 +68,22 @@ export default {
         return {
             verticalTabs: [
                 {
-                    id: 0,
                     title: 'Attributes',
                     component: () => import('~/components/Card/Lists/AttributesListTab'),
                     props: {
                         disabled: !this.$hasAccess(['PRODUCT_READ']),
                     },
                     iconPath: 'Menu/IconAttributes',
+                    listDataType: 'attributes',
                 },
                 {
-                    id: 1,
                     title: 'System Attributes',
                     component: () => import('~/components/Card/Lists/SystemAttributesListTab'),
                     props: {
                         disabled: !this.$hasAccess(['PRODUCT_READ']),
                     },
                     iconPath: 'Menu/IconSettings',
+                    listDataType: 'attributes/system',
                 },
             ],
         };
@@ -134,10 +136,21 @@ export default {
         ...mapActions('productsDraft', [
             'applyDraft',
         ]),
+        ...mapActions('list', [
+            'getElements',
+        ]),
         ...mapActions('gridDraft', [
             'removeDraft',
             'forceDraftsMutation',
         ]),
+        onSelectTabBarItem(index) {
+            const { listDataType } = this.verticalTabs[index];
+
+            this.getElements({
+                listType: listDataType,
+                languageCode: this.userLanguageCode,
+            });
+        },
         onRowsCountUpdate(value) {
             const number = Math.trunc(value);
 
