@@ -279,8 +279,10 @@ export default {
             searchResult: '',
         };
     },
-    mounted() {
+    created() {
         this.debouncedSearch = debounce(this.onSearch, 500);
+    },
+    mounted() {
         this.initSelectedOptions();
 
         if (this.autofocus) {
