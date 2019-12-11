@@ -8,19 +8,26 @@
             title="Settings"
             :is-read-only="$isReadOnly('USER')" />
         <LanguageSettingsTab />
+        <Footer>
+            <Button
+                title="SAVE SETTINGS"
+                :loaded="$isLoaded('saveSettings')"
+                @click.native="onSave" />
+        </Footer>
     </Page>
 </template>
 
 <script>
-import { THEMES, SIZES } from '~/defaults/buttons';
+import { mapActions } from 'vuex';
 import languageSettingsModule from '~/reusableStore/languageSettings/state';
-import LanguageSettingsTab from '~/components/Card/Tabs/LanguageSettingsTab';
 
 export default {
-    name: 'UsersTabs',
+    name: 'Settings',
     components: {
-        LanguageSettingsTab,
+        LanguageSettingsTab: () => import('~/components/Card/Tabs/LanguageSettingsTab'),
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
+        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Button: () => import('~/core/components/Buttons/Button'),
         Page: () => import('~/core/components/Layout/Page'),
     },
     beforeCreate() {
@@ -33,12 +40,18 @@ export default {
     beforeDestroy() {
         this.$store.unregisterModule('languageSettings');
     },
-    computed: {
-        smallSize() {
-            return SIZES.SMALL;
-        },
-        secondaryTheme() {
-            return THEMES.SECONDARY;
+    methods: {
+        ...mapActions('languageSettings', [
+            'updateData',
+        ]),
+        ...mapActions('data', [
+            'getLanguagesDictionary',
+        ]),
+        async onSave() {
+            await this.$setLoader('saveSettings');
+            await this.updateData();
+            await this.getLanguagesDictionary();
+            await this.$removeLoader('saveSettings');
         },
     },
     async fetch({ app, store }) {

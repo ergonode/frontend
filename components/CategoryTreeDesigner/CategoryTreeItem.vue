@@ -123,7 +123,7 @@ export default {
     .grid-item {
         $item: &;
 
-        z-index: 5;
+        z-index: $Z_INDEX_LVL_1;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -136,11 +136,11 @@ export default {
         overflow: hidden;
 
         &--menu-active {
-            z-index: 15;
+            z-index: $Z_INDEX_LVL_3;
         }
 
         &:hover {
-            z-index: 10;
+            z-index: $Z_INDEX_LVL_2;
             border: none;
             box-shadow: $ELEVATOR_6_DP;
         }

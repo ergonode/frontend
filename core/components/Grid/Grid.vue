@@ -419,7 +419,7 @@ export default {
 
             &::after {
                 position: absolute;
-                z-index: -1;
+                z-index: $Z_INDEX_NEGATIVE;
                 width: 100%;
                 height: 100%;
                 content: "";

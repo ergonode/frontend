@@ -28,13 +28,13 @@
         </FormGroup>
         <FormGroup title="Actions">
             <Select
-                :value="parsedRole"
+                :value="transitionRoles"
                 solid
                 regular
                 clearable
                 multiselect
                 label="Role"
-                :options="roleValues"
+                :options="roles"
                 :disabled="isDisabledByPrivileges"
                 :error-messages="errorRoleMessage"
                 @input="onSetRoles" />
@@ -44,7 +44,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { isEmpty, getKeysByValues, getValuesByKeys } from '~/model/objectWrapper';
+import { isEmpty } from '~/model/objectWrapper';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
@@ -75,12 +75,6 @@ export default {
                 return Boolean(source) && Boolean(destination);
             }
             return false;
-        },
-        parsedRole() {
-            return getValuesByKeys(this.roles, this.transitionRoles);
-        },
-        roleValues() {
-            return Object.values(this.roles);
         },
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['WORKFLOW_UPDATE']))
@@ -125,8 +119,7 @@ export default {
             this.setDestination(value);
         },
         onSetRoles(roles) {
-            const parsedRoles = getKeysByValues(this.roles, roles);
-            this.setRoles(parsedRoles);
+            this.setRoles(roles);
         },
     },
 };

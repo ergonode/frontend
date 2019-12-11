@@ -34,7 +34,7 @@ export default {
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 99999;
+        z-index: $Z_INDEX_MODAL;
         display: flex;
         justify-content: center;
         align-items: center;

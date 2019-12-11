@@ -10,7 +10,7 @@
         <Select
             :value="value"
             style="width: 72px;"
-            :options="rowIntervals"
+            :options="rowIntervalOptions"
             solid
             small
             @input="onValueChange" />
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { ROW_INTERWALS } from '~/defaults/grid';
+
 export default {
     name: 'GridPageSelector',
     components: {
@@ -36,14 +38,12 @@ export default {
             default: null,
         },
     },
-    data() {
-        return {
-            rowIntervals: [25, 50, 100, 200],
-        };
-    },
     computed: {
         infoText() {
             return `of ${this.rowsNumber}`;
+        },
+        rowIntervalOptions() {
+            return ROW_INTERWALS.map((item) => ({ id: item, name: item }));
         },
     },
     methods: {

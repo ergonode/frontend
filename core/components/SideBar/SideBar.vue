@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <aside :class="['side-bar', {'side-bar--expanded': isExpanded}]">
+    <aside
+        :class="['side-bar', {'side-bar--expanded': isExpanded}]"
+        @click="onSelect">
         <ol class="side-bar__menu">
             <li>
                 <SideBarLogo :is-expanded="isExpanded" />
@@ -14,7 +16,7 @@
                     :key="index"
                     :route="route"
                     :is-expanded="isExpanded"
-                    :is-selected="route.group.title === selectedGroup"
+                    :is-selected="isGroupSelected(route.group.title)"
                     @select="onGroupSelect" />
                 <SideBarListElement
                     v-else
@@ -24,7 +26,9 @@
             </template>
         </ol>
         <div class="expand-btn-wrapper">
-            <FabButton @click.native="onExpanded">
+            <FabButton
+                is-transparent
+                @click.native="onExpanded">
                 <template #icon="{ color }">
                     <IconArrowDouble
                         :fill-color="color"
@@ -56,9 +60,13 @@ export default {
     },
     data() {
         return {
+            isSelected: true,
             isExpanded: true,
-            selectedGroup: '',
+            selectedGroup: null,
         };
+    },
+    destroyed() {
+        window.removeEventListener('click', this.onClickOutside);
     },
     computed: {
         expendStateIcon() {
@@ -104,6 +112,29 @@ export default {
         onGroupSelect(group) {
             this.selectedGroup = group;
         },
+        onSelect() {
+            if (!this.isExpanded) {
+                window.addEventListener('click', this.onClickOutside);
+            }
+        },
+        isGroupSelected(groupTitle) {
+            if (this.selectedGroup === groupTitle && this.isSelected) return true;
+            return false;
+        },
+        onClickOutside(event) {
+            const { target } = event;
+
+            if (!this.$el.contains(target)) {
+                this.isSelected = false;
+            } else {
+                this.isSelected = true;
+            }
+
+            if (this.isExpanded) {
+                this.isSelected = true;
+                window.removeEventListener('click', this.onClickOutside);
+            }
+        },
     },
 };
 </script>
@@ -111,6 +142,7 @@ export default {
 <style lang="scss" scoped>
     .side-bar {
         position: relative;
+        z-index: $Z_INDEX_NAV;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -144,7 +176,6 @@ export default {
         .expand-btn-wrapper {
             position: sticky;
             bottom: 12px;
-            z-index: 1;
         }
     }
 </style>

@@ -7,7 +7,7 @@
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
             header="Attributes"
-            :options="formattedLanguages"
+            :options="languageOptions"
             :selected-option="attributesLanguageCode"
             :is-expanded="isExpanded"
             @searchResult="onSearch"
@@ -19,7 +19,7 @@
             :is-expanded="isExpanded"
             @searchResult="onSearch"
             @expand="onExpand" />
-        <AttributesList :language-code="languageCode" />
+        <AttributesList :language-code="attributesLanguageCode" />
         <div class="add-btn-wrapper">
             <FabButton
                 :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
@@ -34,7 +34,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getValueByKey, getKeyByValue } from '~/model/objectWrapper';
 import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
@@ -62,7 +61,7 @@ export default {
         };
     },
     created() {
-        this.attributesLanguageCode = getValueByKey(this.languages, this.userLanguageCode);
+        this.attributesLanguageCode = this.userLanguageCode;
     },
     computed: {
         ...mapState('authentication', {
@@ -74,11 +73,11 @@ export default {
         whiteColor() {
             return WHITE;
         },
-        languageCode() {
-            return getKeyByValue(this.languages, this.attributesLanguageCode);
-        },
-        formattedLanguages() {
-            return Object.values(this.languages);
+        languageOptions() {
+            return Object.keys(this.languages).map((language) => ({
+                id: language,
+                name: this.languages[language],
+            }));
         },
     },
     methods: {
@@ -92,18 +91,18 @@ export default {
         },
         onSearch(value) {
             this.setFilter(value);
-            this.getElements({ listType: 'attributes', languageCode: this.languageCode });
+            this.getElements({ listType: 'attributes', languageCode: this.attributesLanguageCode });
         },
         onSelect(option) {
             this.attributesLanguageCode = option;
 
             Promise.all([
-                this.getGroups(this.languageCode),
-                this.getElements({ listType: 'attributes', languageCode: this.languageCode }),
+                this.getGroups(this.attributesLanguageCode),
+                this.getElements({ listType: 'attributes', languageCode: this.attributesLanguageCode }),
             ]);
         },
         addAttribute() {
-            this.$router.push('/attributes/attribute/new/general');
+            this.$router.push({ name: 'attribute-new-general' });
         },
     },
 };
@@ -121,7 +120,6 @@ export default {
             position: absolute;
             bottom: 12px;
             right: 12px;
-            z-index: 3;
         }
     }
 </style>

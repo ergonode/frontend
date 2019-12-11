@@ -5,16 +5,11 @@
 // Available only SCSS varibales and mixins, but not css styles
 
 // variables
-@import "_variables/layout";
 @import "_variables/colors";
 @import "_variables/borders";
 @import "_variables/elevators";
 @import "_variables/typography";
-@import "_variables/measures";
-@import "_variables/fonts";
-
-//extends
-@import "_extends/fonts";
+@import "_variables/indexes";
 
 //mixins
 @import "_mixins/fonts";

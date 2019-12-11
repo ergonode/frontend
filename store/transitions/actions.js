@@ -24,14 +24,19 @@ export default {
         { id },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
+        const { statuses: statusOptions } = rootState.productStatus;
         const [source, destination] = id.split('--');
 
         await this.app.$axios.$get(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`).then(async ({
             condition_set_id: conditionSetId,
             role_ids: rolesIds,
         }) => {
-            commit(types.SET_SOURCE, source.replace(/%20/g, ' '));
-            commit(types.SET_DESTINATION, destination.replace(/%20/g, ' '));
+            commit(types.SET_SOURCE, statusOptions.find(
+                (status) => status.code === source.replace(/%20/g, ' '),
+            ).id);
+            commit(types.SET_DESTINATION, statusOptions.find(
+                (status) => status.code === destination.replace(/%20/g, ' '),
+            ).id);
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
             commit(types.SET_ROLES, rolesIds);
             if (conditionSetId) {

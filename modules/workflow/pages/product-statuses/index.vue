@@ -57,7 +57,7 @@ export default {
     },
     methods: {
         addStatus() {
-            this.$router.push('/product-statuses/status/new/general');
+            this.$router.push({ name: 'product-status-new-general' });
         },
     },
     async fetch({ app, store }) {

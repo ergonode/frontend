@@ -8,7 +8,6 @@ export default () => ({
     units: {},
     attrTypes: {},
     dateFormats: {},
-    imageFormats: {},
     privileges: {},
     conditions: {},
 });

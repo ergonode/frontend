@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { mapState, mapActions } from 'vuex';
-import { getValueByKey } from '~/model/objectWrapper';
+import { isObject, getValueByKey } from '~/model/objectWrapper';
 
 export default {
     props: {
@@ -28,11 +28,16 @@ export default {
         ...mapActions('translations', [
             'setMultilingualTranslationPropertyValue',
         ]),
-        setTranslationPropertyValue(value, propertyName) {
+        parsedValue(propertyName) {
+            const property = this.translations[propertyName];
+            return isObject(property) ? property[this.languageCode] : property;
+        },
+        setTranslationPropertyValue(value, propertyName, isMultilingual = true) {
             this.setMultilingualTranslationPropertyValue({
                 languageCode: this.languageCode,
                 propertyName,
                 value,
+                isMultilingual,
             });
         },
     },

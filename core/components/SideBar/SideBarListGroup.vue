@@ -8,15 +8,16 @@
             'side-bar-list-group',
             {
                 'side-bar-list-group--selected': isSelected,
+                'side-bar-list-group--activated': isGroupActivated && !isSelected,
                 'side-bar-list-group--hovered': isHovered,
                 'side-bar-list-group--expanded': !isExpanded && isSelected,
             }
         ]"
-        @mouseenter="onMouseEnter"
-        @mouseleave="onMouseLeave">
+        @mouseenter="() => isExpanded ? onMouseEnter() : onGroupSelect()"
+        @mouseleave="() => isExpanded ? onMouseLeave() : onGroupSelect()">
         <div
             class="side-bar-list-group__activator"
-            @click="onGroupSelect">
+            @click="() => isExpanded ? onGroupSelect() : null">
             <div class="side-bar-list-group__icon">
                 <Component
                     :is="listIcon"
@@ -87,12 +88,12 @@ export default {
         },
         listIconFillColor() {
             return this.isSelected
-            || this.isHovered
+            || this.isHovered || this.isGroupActivated
                 ? WHITE : GREEN;
         },
         dropdownIconFillColor() {
             return this.isSelected
-            || this.isHovered
+            || this.isHovered || this.isGroupActivated
                 ? WHITE : GREY_DARK;
         },
         dropDownState() {
@@ -100,10 +101,13 @@ export default {
                 ? ARROW.UP
                 : ARROW.DOWN;
         },
+        isGroupActivated() {
+            return this.route.routes.some((route) => this.$route.path.includes(route.path));
+        },
     },
     methods: {
         onGroupSelect() {
-            this.$emit('select', this.isSelected ? '' : this.route.group.title);
+            this.$emit('select', this.isSelected ? null : this.route.group.title);
         },
         onMouseEnter() {
             this.isHovered = true;
@@ -124,13 +128,13 @@ export default {
         flex-direction: column;
         cursor: pointer;
 
-        &--selected {
+        &--selected, &--activated {
             #{$element}__title {
                 color: $WHITE;
             }
         }
 
-        &:not(&--selected):not(&--hovered) {
+        &:not(&--selected):not(&--hovered):not(&--activated) {
             #{$element}__title {
                 color: $GREY_DARK;
             }
@@ -147,7 +151,6 @@ export default {
 
             #{$element}__items {
                 position: fixed;
-                z-index: 1;
                 transform: translateX(80px);
             }
         }

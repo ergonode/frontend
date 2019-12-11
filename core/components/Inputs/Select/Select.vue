@@ -51,28 +51,47 @@
                 <template #body>
                     <slot name="selectContent">
                         <List>
-                            <template v-for="(option, index) in options">
+                            <ListElement
+                                v-if="searchable"
+                                search
+                                :small="small">
+                                <TextField
+                                    :value="searchResult"
+                                    class="search-text-field"
+                                    small
+                                    solid
+                                    :no-border="true"
+                                    placeholder="Search..."
+                                    @input="debouncedSearch"
+                                    @focus="onSearchFocus">
+                                    <template #append>
+                                        <IconSearch :fill-color="searchIconFillColor" />
+                                    </template>
+                                </TextField>
+                            </ListElement>
+                            <template v-for="option in options">
                                 <slot
                                     name="option"
-                                    :option="option"
-                                    :index="index">
+                                    :option="option">
                                     <ListElement
-                                        v-if="isOptionValid(option)"
-                                        :key="index"
+                                        v-if="isOptionValid(option.name || option.code)"
+                                        :key="option.id"
                                         :small="small"
-                                        :selected="index === selectedOptionIndex"
-                                        @click.native="onSelectValue(option, index)">
-                                        <ListElementAction v-if="multiselect">
+                                        :large="!small && regular"
+                                        :selected="isSelected(option.id)"
+                                        @click.native="onSelectValue(option)">
+                                        <ListElementAction
+                                            v-if="multiselect"
+                                            :small="small">
                                             <CheckBox
-                                                :value="
-                                                    typeof selectedOptions[index] !== 'undefined'
-                                                "
-                                                @input="onSelectValue(option, index)" />
+                                                :value="isChecked(option.id)"
+                                                @input.native="onSelectValue(option)" />
                                         </ListElementAction>
                                         <ListElementDescription>
                                             <ListElementTitle
                                                 :small="small"
-                                                :title="String(option)" />
+                                                :hint="listTitleHint(option)"
+                                                :title="listTitle(option)" />
                                         </ListElementDescription>
                                     </ListElement>
                                 </slot>
@@ -113,8 +132,13 @@
 </template>
 
 <script>
+import { debounce } from 'debounce';
 import { SIZES, THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
+import {
+    GREEN, GRAPHITE,
+} from '~/assets/scss/_variables/_colors.scss';
+import { isObject, removeFromObjectByKey } from '~/model/objectWrapper';
 import FadeTransition from '~/core/components/Transitions/FadeTransition';
 import DropDown from '~/core/components/Inputs/Select/Contents/DropDown';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
@@ -135,10 +159,12 @@ export default {
         ErrorHint: () => import('~/core/components/Hints/ErrorHint'),
         ContentBaseFooter: () => import('~/core/components/Inputs/Select/Contents/Footers/ContentBaseFooter'),
         Button: () => import('~/core/components/Buttons/Button'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
+        IconSearch: () => import('~/components/Icon/Actions/IconSearch'),
     },
     props: {
         value: {
-            type: [Array, String, Number],
+            type: [Object, Array, String, Number, Boolean],
             default: null,
         },
         options: {
@@ -217,11 +243,30 @@ export default {
             type: Boolean,
             default: false,
         },
+        languageCode: {
+            type: String,
+            default: '',
+        },
+        isListElementHint: {
+            type: Boolean,
+            default: false,
+        },
+        dropDownHeight: {
+            type: Number,
+            default: 200,
+        },
+        searchable: {
+            type: Boolean,
+            default: false,
+        },
+        isGrid: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
-            selectedOptions: {},
-            selectedOptionIndex: -1,
+            selectedOptions: null,
             selectBoundingBox: null,
             isFocused: false,
             isMounted: false,
@@ -230,9 +275,12 @@ export default {
             isClickedOutside: false,
             hasMouseDown: false,
             associatedLabel: '',
+            isSearchFocused: false,
+            searchResult: '',
         };
     },
     mounted() {
+        this.debouncedSearch = debounce(this.onSearch, 500);
         this.initSelectedOptions();
 
         if (this.autofocus) {
@@ -245,6 +293,7 @@ export default {
         this.associatedLabel = `input-${this._uid}`;
     },
     destroyed() {
+        delete this.debouncedSearch;
         window.removeEventListener('click', this.onClickOutside);
     },
     computed: {
@@ -255,15 +304,32 @@ export default {
             return THEMES.SECONDARY;
         },
         parsedInputValue() {
-            return Array.isArray(this.value) ? this.value.join(', ') : this.value;
+            let parsedInput = this.selectedOptions;
+
+            if (this.isGrid && isObject(this.value)) {
+                parsedInput = this.value;
+            }
+            if (!parsedInput) return this.value;
+            if (!this.multiselect) {
+                return parsedInput.name || `#${parsedInput.code}`;
+            }
+
+            return Object.values(parsedInput).map(
+                ({ name = null, code = null }) => name || `#${code}`,
+            ).join(', ');
+        },
+        searchIconFillColor() {
+            return this.isSearchFocused
+                ? GREEN
+                : GRAPHITE;
         },
         dropDownState() {
             return this.isFocused
                 ? ARROW.UP
                 : ARROW.DOWN;
         },
-        isEmpty() {
-            return this.value === '' || this.value === null || this.value.length === 0;
+        isEmptyOptions() {
+            return this.multiselect ? !this.value.length : (this.value === '' || this.value === null);
         },
         isFloatingLabel() {
             return this.label !== '' && this.label !== null;
@@ -304,7 +370,7 @@ export default {
         floatingLabelTransforms() {
             if (!this.isMounted) return null;
 
-            if (this.isFocused || !this.isEmpty) {
+            if (this.isFocused || !this.isEmptyOptions) {
                 const { activator } = this.$refs;
                 const transform = `translateY(-${activator.offsetHeight / 2}px)`;
 
@@ -320,7 +386,7 @@ export default {
         floatingLabelClasses() {
             return [
                 'input__label',
-                this.isEmpty && !this.isFocused ? 'font--medium-14-20' : 'font--medium-12-16',
+                this.isEmptyOptions && !this.isFocused ? 'font--medium-14-20' : 'font--medium-12-16',
                 { 'input__label--required': this.required },
             ];
         },
@@ -342,45 +408,80 @@ export default {
         },
     },
     methods: {
+        initSelectedOptions() {
+            if (!this.options) {
+                this.selectedOptions = this.value;
+                return;
+            }
+            if (!this.multiselect) {
+                this.selectedOptions = this.options.find(
+                    (option) => option.id === this.value,
+                );
+            } else {
+                if (this.isGrid && isObject(this.value)) {
+                    this.selectedOptions = this.value;
+                    return;
+                }
+                this.selectedOptions = this.value.reduce((acc, currentKey) => {
+                    const newObject = acc;
+                    newObject[currentKey] = this.options.find(
+                        (option) => option.id === currentKey,
+                    );
+                    return newObject;
+                }, {});
+            }
+        },
         isOptionValid(option) {
             return typeof option === 'string' || typeof option === 'number';
         },
-        initSelectedOptions() {
-            if (!this.multiselect) {
-                this.selectedOptionIndex = this.options
-                    .findIndex((option) => option === this.value);
-            } else {
-                const { length } = this.value;
+        isSelected(id) {
+            return this.multiselect || !this.selectedOptions
+                ? false
+                : id === this.selectedOptions.id;
+        },
+        isChecked(id) {
+            return this.multiselect ? typeof this.selectedOptions[id] !== 'undefined' : false;
+        },
+        onSearch(value) {
+            const clearValue = value.startsWith('#') ? value.substring(1) : value;
 
-                for (let i = 0; i < length; i += 1) {
-                    const optionIndex = this.options
-                        .findIndex((option) => option === this.value[i]);
-
-                    this.selectedOptions[optionIndex] = this.value[i];
-                }
-            }
+            this.searchResult = value;
+            this.$emit('search', clearValue);
+        },
+        onSearchFocus(isFocused) {
+            this.isSearchFocused = isFocused;
         },
         onClear() {
-            this.selectedOptionIndex = -1;
-            this.selectedOptions = {};
+            this.selectedOptions = this.multiselect ? {} : '';
 
-            this.$emit('input', this.multiselect ? [] : '');
+            this.$emit('input', this.multiselect ? [] : {});
         },
-        onSelectValue(value, index) {
+        listTitleHint({ name, code }) {
+            if (!this.isListElementHint) return '';
+            return name && code ? `#${code} ${this.languageCode}` : '';
+        },
+        listTitle({ name, code }) {
+            return String(name || `#${code}`);
+        },
+        onSelectValue(optionValue) {
+            const { id, code, name } = optionValue;
+
             if (!this.multiselect) {
-                this.selectedOptionIndex = index;
-                this.$emit('input', value);
+                this.selectedOptions = { id, name, code };
+                this.$emit('input', id);
 
                 return false;
             }
 
-            if (typeof this.selectedOptions[index] !== 'undefined') {
-                delete this.selectedOptions[index];
+            if (this.isChecked(id)) {
+                this.selectedOptions = removeFromObjectByKey(this.selectedOptions, id);
             } else {
-                this.selectedOptions[index] = value;
+                this.selectedOptions = {
+                    [id]: { name, code },
+                    ...this.selectedOptions,
+                };
             }
-
-            this.$emit('input', Object.values(this.selectedOptions));
+            this.$emit('input', Object.keys(this.selectedOptions));
 
             return true;
         },
@@ -467,8 +568,11 @@ export default {
             this.isClickedOutside = !isClickedInsideMenu
                 && !isClickedInsideActivator;
 
-            if (this.isClickedOutside
-                || (isClickedInsideMenu && !this.multiselect && this.dismissible)) {
+            if (this.isClickedOutside || (isClickedInsideMenu
+                && !this.multiselect
+                && this.dismissible
+                && !this.isSearchFocused)
+            ) {
                 this.isFocused = false;
                 this.isMenuActive = false;
 
@@ -484,12 +588,18 @@ export default {
                 height,
                 width,
             } = this.$el.getBoundingClientRect();
+            let hintHeight = 0;
+            const hint = this.$el.querySelector('.input__information-label');
             const { innerHeight } = window;
-            const maxHeight = 200;
-
+            const maxHeight = this.dropDownHeight;
             const position = { left: `${x}px` };
 
+            if (hint) {
+                hintHeight = hint.getBoundingClientRect().height;
+            }
+
             if (this.fixedContentWidth) {
+                position.maxHeight = `${maxHeight}px`;
                 position.width = `${width}px`;
             }
 
@@ -500,8 +610,7 @@ export default {
 
                 return position;
             }
-
-            position.top = `${y + height + 2}px`;
+            position.top = hint ? `${y + height - hintHeight - 2}px` : `${y + height + 2}px`;
 
             return position;
         },

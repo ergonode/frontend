@@ -8,6 +8,10 @@ export const GHOST_ELEMENT_MODEL = {
     id: GHOST_ID,
 };
 
+export const ROW_INTERWALS = [
+    25, 50, 100, 200,
+];
+
 export const COLUMN_WIDTH = {
     ACTION: '40px',
     DEFAULT: 'minmax(150px, 1fr)',

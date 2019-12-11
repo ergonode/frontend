@@ -14,7 +14,6 @@
 
 export default {
     name: 'NotificationTabs',
-    middleware: ['tab/redirectToNotificationGrid'],
     components: {
         HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),

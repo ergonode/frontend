@@ -61,6 +61,7 @@ export default {
                     'input--error': this.isError,
                     'input--focused': this.isFocused,
                     'input--disabled': this.disabled,
+                    'input--no-border': this.noBorder,
                 },
             ];
         },
@@ -108,7 +109,8 @@ export default {
                 : this.errorMessages;
         },
         placeholderValue() {
-            return this.isFocused && !this.value ? this.placeholder : null;
+            if (!this.value && this.label && !this.isFocused) return null;
+            return !this.value ? this.placeholder : null;
         },
     },
     methods: {

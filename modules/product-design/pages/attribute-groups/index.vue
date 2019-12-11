@@ -59,7 +59,7 @@ export default {
     },
     methods: {
         addAttributeGroup() {
-            this.$router.push('/attributes/group/new/general');
+            this.$router.push({ name: 'attribute-group-new-general' });
         },
     },
     async fetch({ app, store }) {

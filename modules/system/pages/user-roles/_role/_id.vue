@@ -56,11 +56,11 @@ export default {
         onUpdateRoleSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Role updated' });
-            this.$router.push('/user-roles');
+            this.$router.push({ name: 'user-roles' });
         },
         onRemoveRoleSuccess() {
             this.$addAlert({ type: 'success', message: 'Role removed' });
-            this.$router.push('/user-roles');
+            this.$router.push({ name: 'user-roles' });
         },
         onRemoveRoleError({ message }) {
             this.$addAlert({ type: 'error', message });

@@ -66,7 +66,7 @@ export default {
             });
         },
         addCategory() {
-            this.$router.push('/categories/category/new/general');
+            this.$router.push({ name: 'category-new-general' });
         },
     },
 };
@@ -84,7 +84,6 @@ export default {
             position: absolute;
             bottom: 12px;
             right: 12px;
-            z-index: 3;
         }
     }
 </style>

@@ -3,17 +3,18 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { getParsedData, getLanguageCodesBasedOnNames } from '~/model/mappers/languageMapper';
+
+function getLanguage(language) {
+    return { code: language.code, name: language.name };
+}
 
 export default {
     updateData({ state, rootState }) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        const { languages: activeLanguages } = rootState.data;
-        const { selectedLanguageNames, languages } = state;
-        const selectedLanguageCodes = getLanguageCodesBasedOnNames(
-            selectedLanguageNames, languages,
-        );
-        const data = getParsedData(activeLanguages, selectedLanguageCodes);
+        const { selectedLanguageNames } = state;
+        const data = {
+            collection: selectedLanguageNames,
+        };
 
         return this.app.$axios.$put(`${userLanguageCode}/languages`, data).then(() => {
             this.$addAlert({ type: 'success', message: 'Languages updated' });
@@ -25,27 +26,30 @@ export default {
         const params = {
             limit: 9999,
             offset: 0,
+            view: 'list',
+            order: 'ASC',
+            field: 'name',
         };
-
-        function getLanguage(language) {
-            return { code: language.code, name: language.name };
-        }
-
-        function getLanguageName(language) {
-            return language.name;
-        }
-
-        function getActiveLanguage(language) {
-            return language.active;
-        }
 
         return this.app.$axios.$get(path, { params }).then(({
             collection,
         }) => {
             commit(types.SET_LANGUAGES, collection.map(getLanguage));
             commit(types.SET_SELECTED_LANGUAGE_NAMES, collection
-                .filter(getActiveLanguage)
-                .map(getLanguageName));
+                .filter((language) => language.active)
+                .map((language) => language.code));
+        });
+    },
+    getFilteredData({ commit, rootState }, filter = '') {
+        const { language: userLanguageCode } = rootState.authentication.user;
+        const path = `/${userLanguageCode}/language/autocomplete`;
+        const params = {
+            search: filter,
+            order: 'ASC',
+            field: 'name',
+        };
+        return this.app.$axios.$get(path, { params }).then((data) => {
+            commit(types.SET_LANGUAGES, data.map(getLanguage));
         });
     },
     setSelectedLanguages({ commit }, selectedLanguageNames) {

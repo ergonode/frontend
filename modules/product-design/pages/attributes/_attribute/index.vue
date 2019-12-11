@@ -13,11 +13,10 @@
 
 import { mapState, mapActions } from 'vuex';
 import {
-    getParsedType,
-    getParsedGroups,
     getParsedParameterKeys,
     getParsedOptions,
 } from '~/model/mappers/attributeMapper';
+import { isMultilingual } from '~/model/attributes/AttributeTypes';
 import { getParentRoutePath } from '~/model/navigation/tabs';
 
 export default {
@@ -34,9 +33,6 @@ export default {
             parameter: (state) => state.parameter,
             optionKeys: (state) => state.optionKeys,
             optionValues: (state) => state.optionValues,
-        }),
-        ...mapState('data', {
-            attrTypes: (state) => state.attrTypes,
         }),
     },
     methods: {
@@ -68,13 +64,13 @@ export default {
 
             const attribute = {
                 code: this.code,
-                type: getParsedType(
-                    this.attrTypes,
-                    this.type,
-                ),
-                groups: getParsedGroups(this.groups),
-                multilingual: this.multilingual,
+                type: this.type,
+                groups: this.groups,
             };
+
+            if (isMultilingual(this.type)) {
+                attribute.multilingual = this.multilingual;
+            }
 
             if (this.optionKeys.length > 0) {
                 attribute.options = getParsedOptions(
@@ -84,12 +80,10 @@ export default {
             }
 
             if (this.parameter) {
-                attribute.parameters = getParsedParameterKeys(
-                    this.attrTypes,
-                    this.type,
-                    this.parameter,
-                    this.$store.state.data,
-                );
+                attribute.parameters = getParsedParameterKeys({
+                    selectedType: this.type,
+                    selectedParam: this.parameter,
+                });
             }
 
             this.createAttribute({
@@ -102,7 +96,6 @@ export default {
     async fetch({ store }) {
         await store.dispatch('attribute/clearStorage');
         await store.dispatch('translations/clearStorage');
-
         await store.dispatch('attribute/getAttributeGroups');
     },
 };

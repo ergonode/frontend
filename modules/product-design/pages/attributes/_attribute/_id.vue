@@ -14,7 +14,7 @@
 <script>
 
 import { mapState, mapActions } from 'vuex';
-import { getParsedGroups, getParsedOptions, getParsedParameterKeys } from '~/model/mappers/attributeMapper';
+import { getParsedOptions, getParsedParameterKeys } from '~/model/mappers/attributeMapper';
 import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 import { getParentRoutePath } from '~/model/navigation/tabs';
 
@@ -37,11 +37,11 @@ export default {
             optionValues: (state) => state.optionValues,
             isMultilingual: (state) => state.isMultilingual,
         }),
-        ...mapState('data', {
-            attrTypes: (state) => state.attrTypes,
-        }),
         ...mapState('translations', {
             translations: (state) => state.translations,
+        }),
+        ...mapState('authentication', {
+            userLanguageCode: (state) => state.user.language,
         }),
     },
     destroyed() {
@@ -67,11 +67,11 @@ export default {
         },
         onUpdateAttributeSuccess() {
             this.$addAlert({ type: 'success', message: 'Attribute updated' });
-            this.$router.push('/attributes');
+            this.$router.push({ name: 'attributes' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Attribute removed' });
-            this.$router.push('/attributes');
+            this.$router.push({ name: 'attributes' });
         },
         onRemove() {
             const isConfirm = confirm('Are you sure you want to delete this attribute?'); /* eslint-disable-line no-restricted-globals */
@@ -82,6 +82,13 @@ export default {
             }
         },
         onSave() {
+            const setTranslation = (value) => {
+                const translation = this.isMultilingual
+                    ? getParsedTranslations(value)
+                    : { [this.userLanguageCode]: getParsedTranslations(value) };
+                return translation;
+            };
+
             this.removeValidationErrors();
             // Select / Multi select key values cannot be empty
             if (this.optionKeys.length > 0 && this.optionKeys.some((key) => key === '')) {
@@ -91,7 +98,7 @@ export default {
 
             const { label, placeholder, hint } = this.translations;
             const propertiesToUpdate = {
-                groups: getParsedGroups(this.groups),
+                groups: this.groups,
             };
 
             if (this.optionKeys.length > 0) {
@@ -103,24 +110,22 @@ export default {
             }
 
             if (this.parameter) {
-                propertiesToUpdate.parameters = getParsedParameterKeys(
-                    this.attrTypes,
-                    this.type,
-                    this.parameter,
-                    this.$store.state.data,
-                );
+                propertiesToUpdate.parameters = getParsedParameterKeys({
+                    selectedType: this.type,
+                    selectedParam: this.parameter,
+                });
             }
 
             if (isThereAnyTranslation(label)) {
-                propertiesToUpdate.label = getParsedTranslations(label);
+                propertiesToUpdate.label = setTranslation(label);
             }
 
             if (isThereAnyTranslation(hint)) {
-                propertiesToUpdate.hint = getParsedTranslations(hint);
+                propertiesToUpdate.hint = setTranslation(hint);
             }
 
             if (isThereAnyTranslation(placeholder)) {
-                propertiesToUpdate.placeholder = getParsedTranslations(placeholder);
+                propertiesToUpdate.placeholder = setTranslation(placeholder);
             }
 
             this.updateAttribute({

@@ -7,13 +7,16 @@
         <FormGroup>
             <Select
                 :value="selectedLanguageNames"
-                :options="languageNames"
+                :options="languageOptions"
                 solid
                 label="Languages"
                 regular
                 multiselect
                 clearable
-                @input="setSelectedLanguages" />
+                searchable
+                :drop-down-height="400"
+                @input="setSelectedLanguages"
+                @search="onSearch" />
         </FormGroup>
     </Form>
 </template>
@@ -35,14 +38,21 @@ export default {
             languages: (state) => state.languages,
             selectedLanguageNames: (state) => state.selectedLanguageNames,
         }),
-        languageNames() {
-            return this.$store.state.languageSettings.languages.map((language) => language.name);
+        languageOptions() {
+            return this.languages.map((language) => ({
+                id: language.code,
+                name: language.name,
+            }));
         },
     },
     methods: {
         ...mapActions('languageSettings', [
             'setSelectedLanguages',
+            'getFilteredData',
         ]),
+        onSearch(filter) {
+            this.getFilteredData(filter);
+        },
     },
 };
 </script>

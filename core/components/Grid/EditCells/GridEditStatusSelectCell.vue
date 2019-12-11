@@ -3,37 +3,42 @@
  * See LICENSE for license details.
  */
 <template>
-    <TranslationSelect
+    <Select
         :style="{width: `${fixedWidth}px`, height: `${fixedHeight}px`}"
-        :value="value"
+        :value="parsedValue.name"
         solid
         small
         :clearable="clearable"
         :dismissible="false"
         :error-messages="errorMessages"
         autofocus
-        :options="rowId ? workflowOptions : options"
+        :options="workflowOptions"
         @focus="onFocus"
         @input="onSelectValue"
         @apply="onApply">
         <template #prepend>
             <div
-                v-if="value && value.key"
+                v-if="parsedValue && parsedValue.id"
                 class="selected-badge">
-                <PointBadge :color="getColor(value.key)" />
+                <PointBadge :color="getColor(parsedValue.id)" />
             </div>
         </template>
         <template #option="{ option }">
-            <ListElementAction>
-                <PointBadge :color="getColor(option.key)" />
-            </ListElementAction>
-            <ListElementDescription>
-                <ListElementTitle
-                    small
-                    :title="option.value || `#${option.key}`" />
-            </ListElementDescription>
+            <ListElement
+                :key="option.id"
+                :selected="isSelected(option.id)"
+                @click.native="onSelectValue(option)">
+                <ListElementAction>
+                    <PointBadge :color="getColor(option.id)" />
+                </ListElementAction>
+                <ListElementDescription>
+                    <ListElementTitle
+                        small
+                        :title="option.name || `#${option.code}`" />
+                </ListElementDescription>
+            </ListElement>
         </template>
-    </TranslationSelect>
+    </Select>
 </template>
 
 <script>
@@ -42,7 +47,8 @@ import { mapState } from 'vuex';
 export default {
     name: 'GridEditStatusSelectCell',
     components: {
-        TranslationSelect: () => import('~/core/components/Inputs/Select/TranslationSelect'),
+        Select: () => import('~/core/components/Inputs/Select/Select'),
+        ListElement: () => import('~/core/components/List/ListElement'),
         ListElementDescription: () => import('~/core/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/core/components/List/ListElementTitle'),
         ListElementAction: () => import('~/core/components/List/ListElementAction'),
@@ -85,7 +91,7 @@ export default {
     data() {
         return {
             workflowOptions: [],
-            workflowColors: {},
+            selectedOptions: {},
         };
     },
     async created() {
@@ -94,14 +100,13 @@ export default {
                 workflow = [],
             }) => {
                 this.workflowOptions = workflow.map((e) => ({
-                    key: e.code,
-                    value: e.name,
+                    id: e.code,
+                    name: e.name,
+                    code: e.code,
                 }));
-                this.workflowColors = workflow.reduce((acc, current) => {
-                    const newObject = acc;
-                    newObject[current.code] = current.color;
-                    return newObject;
-                }, {});
+                this.selectedOptions = this.workflowOptions.find(
+                    (option) => option.id === this.value.key,
+                );
             });
         }
     },
@@ -109,8 +114,16 @@ export default {
         ...mapState('authentication', {
             languageCode: (state) => state.user.language,
         }),
+        parsedValue() {
+            if (!this.selectedOptions) return { id: this.value.key, name: this.value.value };
+
+            return this.selectedOptions;
+        },
     },
     methods: {
+        isSelected(id) {
+            return id === this.value;
+        },
         getColor(key) {
             return this.colors[key];
         },
@@ -120,8 +133,11 @@ export default {
         onApply() {
             this.$emit('focus', false);
         },
-        onSelectValue(value) {
-            this.$emit('input', value);
+        onSelectValue(optionValue) {
+            const { id, code, name } = optionValue;
+
+            this.selectedOptions = { id, name, code };
+            this.$emit('input', { key: id, value: name });
         },
     },
 };

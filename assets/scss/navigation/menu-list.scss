@@ -40,7 +40,7 @@
 
         & .list-element {
             position: relative;
-            z-index: 0;
+            z-index: $Z_INDEX_LVL_0;
             width: 100%;
             height: 48px;
             background-color: $WHITE;
@@ -48,7 +48,7 @@
 
             &:not(.list-element--selected) {
                 &:hover {
-                    z-index: 100;
+                    z-index: $Z_INDEX_NAV;
                     background-color: $WHITESMOKE;
                     box-shadow: $ELEVATOR_2_DP;
 

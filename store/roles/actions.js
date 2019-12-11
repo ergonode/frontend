@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { arrayToObject } from '~/model/arrayWrapper';
 
 const onDefaultError = () => {};
 
@@ -23,7 +22,10 @@ export default {
     getRoles({ commit, rootState }, params) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$get(`${userLanguageCode}/roles`, { params }).then(({ collection: roles }) => {
-            commit(types.SET_ROLES, arrayToObject(roles, 'id', 'name'));
+            commit(types.SET_ROLES, roles.map((role) => ({
+                id: role.id,
+                name: role.name,
+            })));
         }).catch(onDefaultError);
     },
     getRoleById(

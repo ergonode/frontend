@@ -174,11 +174,11 @@ export default {
         }
 
         &__lower-sphere {
-            z-index: 1;
+            z-index: $Z_INDEX_LVL_1;
         }
 
         &__upper-sphere {
-            z-index: 2;
+            z-index: $Z_INDEX_LVL_2;
         }
     }
 </style>

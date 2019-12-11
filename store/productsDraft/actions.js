@@ -4,9 +4,6 @@
  */
 import { types } from './mutations';
 import {
-    getMappedCategoryValues, getMappedTemplateName,
-} from '~/model/mappers/categoryMapper';
-import {
     getMappedLayoutElements,
 } from '~/model/mappers/productMapper';
 
@@ -44,6 +41,9 @@ export default {
     getProduct({ commit, state }, { languageCode, id }) {
         commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
 
+        const { categories } = state;
+        const parseCategoryIds = (category) => categories.find((c) => c.code === category).id;
+
         return this.app.$axios.$get(`${languageCode}/products/${id}`).then(({
             design_template_id: templateId,
             categories: categoryIds,
@@ -51,21 +51,12 @@ export default {
             status,
             workflow = [],
         }) => {
-            const { categories, templates } = state;
-
             if (categoryIds) {
-                const selectedCategories = getMappedCategoryValues(
-                    categories,
-                    categoryIds,
-                );
-
-                commit(types.SET_PRODUCT_CATEGORIES, selectedCategories);
+                commit(types.SET_PRODUCT_CATEGORIES, categoryIds.map(parseCategoryIds));
             }
 
             if (templateId) {
-                const template = getMappedTemplateName(templates, templateId);
-
-                commit(types.SET_PRODUCT_TEMPLATE, template);
+                commit(types.SET_PRODUCT_TEMPLATE, templateId);
             }
 
             commit(types.SET_PRODUCT_ID, id);

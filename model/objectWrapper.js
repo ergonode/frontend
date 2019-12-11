@@ -125,13 +125,23 @@ export function getMaxKeyValue(object) {
 }
 
 /**
+ * Check if object
+ * @function
+ * @param {Object} object
+ * @returns {boolean}
+ */
+export function isObject(object) {
+    return typeof object === 'object' && object !== null;
+}
+
+/**
  * Check if object is empty
  * @function
  * @param {Object} object
  * @returns {boolean}
  */
 export function isEmpty(obj) {
-    return (typeof obj === 'object' && obj !== null)
+    return isObject(obj)
         ? !(Object.keys(obj).length)
         : true;
 }

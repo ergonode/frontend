@@ -75,6 +75,14 @@ export default {
             'setCurrentPage',
             'changeNumberOfDisplayingElements',
         ]),
+        onRowsCountUpdate(value) {
+            const number = Math.trunc(value);
+
+            if (number !== this.numberOfDisplayedElements) {
+                this.changeNumberOfDisplayingElements(number);
+                this.getData(this.editRoute.path);
+            }
+        },
         onRowEdit({ links: { edit } }) {
             const args = edit.href.split('/');
             const lastIndex = args.length - 1;

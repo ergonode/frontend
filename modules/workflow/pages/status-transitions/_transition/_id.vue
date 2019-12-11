@@ -4,7 +4,7 @@
  */
 <template>
     <TransitionPage
-        :title="`${source} -> ${destination}`"
+        :title="`${getParamId[0]} -> ${getParamId[1]}`"
         is-edit
         @dismiss="onDismiss"
         @remove="onRemove"
@@ -35,6 +35,10 @@ export default {
         ...mapState('conditions', {
             conditionsValues: (state) => state.conditionsValues,
         }),
+        getParamId() {
+            const { id } = this.$route.params;
+            return id.split('--');
+        },
     },
     methods: {
         ...mapActions('gridDesigner', {
@@ -95,7 +99,7 @@ export default {
         },
         onTransitionUpdated() {
             this.$addAlert({ type: 'success', message: 'Transition updated' });
-            this.$router.push('/status-transitions');
+            this.$router.push({ name: 'status-transitions' });
         },
         onDismiss() {
             this.$router.push(getParentRoutePath(this.$route));
@@ -110,7 +114,7 @@ export default {
         },
         onRemoveTransitionSuccess() {
             this.$addAlert({ type: 'success', message: 'Transition removed' });
-            this.$router.push('/status-transitions');
+            this.$router.push({ name: 'status-transitions' });
         },
     },
     beforeDestroy() {

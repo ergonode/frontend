@@ -58,32 +58,32 @@
                     value: passwordRepeat
                 })" />
             <Select
-                :value="parsedStatus"
+                :value="isActive"
                 solid
                 required
                 regular
                 label="Activity status"
-                :options="statusValues"
+                :options="activityStatuses"
                 :error-messages="errorStatusMessage"
                 :disabled="isDisabledByPrivileges"
                 @input="onStatusChange" />
             <Select
-                :value="parsedLanguage"
+                :value="language"
                 solid
                 required
                 regular
                 label="Language"
-                :options="languageValues"
+                :options="languageOptions"
                 :disabled="isDisabledByPrivileges"
                 :error-messages="errorLanguageMessage"
                 @input="onLanguageChange" />
             <Select
-                :value="parsedRole"
+                :value="roleId"
                 solid
                 required
                 regular
                 label="Role"
-                :options="roleValues"
+                :options="roles"
                 :disabled="isDisabledByPrivileges"
                 :error-messages="errorRoleMessage"
                 @input="onRoleChange" />
@@ -94,7 +94,6 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
-import { getValueByKey, getKeyByValue } from '~/model/objectWrapper';
 
 export default {
     name: 'UserForm',
@@ -107,10 +106,10 @@ export default {
     mixins: [errorValidationMixin],
     data() {
         return {
-            activityStatuses: {
-                Active: true,
-                Inactive: false,
-            },
+            activityStatuses: [
+                { id: true, name: 'Active' },
+                { id: false, name: 'Inactive' },
+            ],
         };
     },
     computed: {
@@ -134,15 +133,6 @@ export default {
         isUserAllowedToUpdate() {
             return this.$hasAccess(['USER_UPDATE']);
         },
-        parsedLanguage() {
-            return getValueByKey(this.languages, this.language);
-        },
-        parsedRole() {
-            return getValueByKey(this.roles, this.roleId);
-        },
-        parsedStatus() {
-            return getKeyByValue(this.activityStatuses, this.isActive);
-        },
         isDisabled() {
             return Boolean(this.userID);
         },
@@ -150,14 +140,11 @@ export default {
             return (this.isDisabled && !this.$hasAccess(['USER_UPDATE']))
             || (!this.isDisabled && !this.$hasAccess(['USER_CREATE']));
         },
-        statusValues() {
-            return Object.keys(this.activityStatuses);
-        },
-        languageValues() {
-            return Object.values(this.languages);
-        },
-        roleValues() {
-            return Object.values(this.roles);
+        languageOptions() {
+            return Object.keys(this.languages).map((language) => ({
+                id: language,
+                name: this.languages[language],
+            }));
         },
         errorEmailMessage() {
             const emailIndex = 'email';
@@ -197,13 +184,13 @@ export default {
             'setAction',
         ]),
         onLanguageChange(language) {
-            this.setAction({ key: 'language', value: getKeyByValue(this.languages, language) });
+            this.setAction({ key: 'language', value: language });
         },
         onRoleChange(role) {
-            this.setAction({ key: 'roleId', value: getKeyByValue(this.roles, role) });
+            this.setAction({ key: 'roleId', value: role });
         },
         onStatusChange(isActive) {
-            this.setAction({ key: 'isActive', value: getValueByKey(this.activityStatuses, isActive) });
+            this.setAction({ key: 'isActive', value: isActive });
         },
     },
 };

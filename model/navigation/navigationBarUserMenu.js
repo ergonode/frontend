@@ -18,7 +18,7 @@ export default [
             },
             {
                 title: 'Settings',
-                routing: '/placeholder/settings',
+                routing: '/settings',
                 icon: 'Settings',
             },
         ],

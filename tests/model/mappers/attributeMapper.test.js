@@ -3,14 +3,11 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedParameterKey,
     getMappedParameterValues,
-    getMappedGroups,
     getMappedGroupsElementsCount,
     getMappedOptionKeysValues,
     getParsedType,
     getParsedParameterKeys,
-    getParsedGroups,
     getParsedOptions,
 } from '~/model/mappers/attributeMapper';
 import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
@@ -153,69 +150,6 @@ describe('attributeMapper/getMappedGroupsElementsCount', () => {
     });
 });
 
-describe('attributeMapper/getMappedGroups', () => {
-    describe('Based on API data, data is mapped into data structure', () => {
-        it('Looking for groups based on all groups in app', () => {
-            const groupIds = [1, 2];
-            const groupOptions = [
-                {
-                    key: 1,
-                    value: 'first',
-                },
-                {
-                    key: 2,
-                    value: 'second',
-                },
-                {
-                    key: 3,
-                    value: 'third',
-                },
-            ];
-            const result = [
-                {
-                    key: 1,
-                    value: 'first',
-                },
-                {
-                    key: 2,
-                    value: 'second',
-                },
-            ];
-
-            expect(getMappedGroups(groupIds, groupOptions)).toStrictEqual(result);
-        });
-    });
-});
-
-describe('attributeMapper/getParsedGroups', () => {
-    describe('Based on attribute groups data, data is mapped into API structure', () => {
-        it('Parsing attribute groups keys', () => {
-            const groups = [
-                {
-                    key: 1,
-                    value: 'first',
-                },
-                {
-                    key: 2,
-                    value: 'second',
-                },
-                {
-                    key: 3,
-                    value: 'third',
-                },
-            ];
-
-            const result = [
-                1,
-                2,
-                3,
-            ];
-
-            expect(getParsedGroups(groups)).toStrictEqual(result);
-        });
-    });
-});
-
 describe('attributeMapper/getParsedParameterKeys', () => {
     describe('Based on attribute parameters data, data is mapped into API structure', () => {
         describe('Parsing parameter keys into key values data structure', () => {
@@ -300,15 +234,6 @@ describe('attributeMapper/getMappedParameterValues', () => {
             // const result = 'Euro';
             //
             // expect(getMappedParameterValues(type, param, data)).toStrictEqual(result);
-        });
-    });
-});
-
-describe('attributeMapper/getMappedParameterKey', () => {
-    describe('Based on API data, data is mapped into data structure', () => {
-        // TODO: Finish tests!!
-        it('', () => {
-            expect().toStrictEqual();
         });
     });
 });

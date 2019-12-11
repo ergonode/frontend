@@ -22,16 +22,18 @@
                 regular
                 label="Template"
                 :error-messages="errorTemplateMessage"
-                :options="templateValues"
+                :options="templateOptions"
                 :disabled="isDisabled || isDisabledByPrivileges"
                 @input="setProductTemplate" />
-            <TranslationSelect
+            <Select
                 :value="selectedCategories"
-                :solid="true"
-                :regular="true"
-                :multiselect="true"
+                solid
+                regular
+                multiselect
+                clearable
+                is-list-element-hint
+                :language-code="userLanguageCode"
                 label="Category"
-                :clearable="true"
                 :options="categoryOptions"
                 :disabled="isDisabledByPrivileges"
                 @input="setProductCategories" />
@@ -50,10 +52,12 @@ export default {
         FormGroup: () => import('~/core/components/Form/FormGroup'),
         TextField: () => import('~/core/components/Inputs/TextField'),
         Select: () => import('~/core/components/Inputs/Select/Select'),
-        TranslationSelect: () => import('~/core/components/Inputs/Select/TranslationSelect'),
     },
     mixins: [errorValidationMixin],
     computed: {
+        ...mapState('authentication', {
+            userLanguageCode: (state) => state.user.language,
+        }),
         ...mapState('productsDraft', {
             productID: (state) => state.id,
             sku: (state) => state.sku,
@@ -62,12 +66,19 @@ export default {
             selectedCategories: (state) => state.selectedCategories,
             categories: (state) => state.categories,
         }),
-        templateValues() {
-            return this.templates.map((template) => template.name);
+        templateOptions() {
+            return this.templates.map((language) => ({
+                id: language.id,
+                name: language.name,
+            }));
         },
         categoryOptions() {
             return this.categories.map(
-                (category) => ({ key: category.code, value: category.name }),
+                (category) => ({
+                    id: category.id,
+                    name: category.name,
+                    code: category.code,
+                }),
             );
         },
         isDisabled() {

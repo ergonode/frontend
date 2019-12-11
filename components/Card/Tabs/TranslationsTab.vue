@@ -7,8 +7,8 @@
         <template #header>
             <div class="language-selection-header">
                 <Select
-                    :value="selectedLanguageCards"
-                    :options="languagesValues"
+                    :value="cardsLanguageCodes"
+                    :options="languageOptions"
                     solid
                     regular
                     label="Translations"
@@ -28,7 +28,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getKeysByValues, getValuesByKeys } from '~/model/objectWrapper';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import Select from '~/core/components/Inputs/Select/Select';
 import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
@@ -57,17 +56,11 @@ export default {
         ...mapState('translations', {
             cardsLanguageCodes: (state) => state.cardsLanguageCodes,
         }),
-        languagesValues() {
-            return Object.values(this.languages);
-        },
-        selectedLanguageCards() {
-            const languageNames = getValuesByKeys(this.languages, this.cardsLanguageCodes);
-
-            return this.languagesValues.filter(
-                (language) => languageNames.some(
-                    (name) => name === language,
-                ),
-            );
+        languageOptions() {
+            return Object.keys(this.languages).map((language) => ({
+                id: language,
+                name: this.languages[language],
+            }));
         },
     },
     methods: {
@@ -76,10 +69,8 @@ export default {
             'setVisibleCardTranslations',
         ]),
         onLanguageCardSelected(languageCode) {
-            const languageCodes = getKeysByValues(this.languages, languageCode);
-
             this.setVisibleCardTranslations({
-                languages: languageCodes,
+                languages: languageCode,
             });
         },
     },

@@ -12,11 +12,17 @@ export default {
     setTabTranslations: (state, translations) => {
         state.translations = { ...translations };
     },
-    setMultilingualTranslationPropertyValue: (state, { languageCode, propertyName, value }) => {
-        state.translations[propertyName] = {
-            ...state.translations[propertyName],
-            [languageCode]: value,
-        };
+    setMultilingualTranslationPropertyValue: (state, {
+        languageCode, propertyName, value, isMultilingual,
+    }) => {
+        if (isMultilingual) {
+            state.translations[propertyName] = {
+                ...state.translations[propertyName],
+                [languageCode]: value,
+            };
+        } else {
+            state.translations[propertyName] = value;
+        }
     },
     clearStorage: (state) => {
         state.translations = {};

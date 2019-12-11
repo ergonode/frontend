@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { getMappedGroups, getMappedOptionKeysValues, getMappedParameterValues } from '~/model/mappers/attributeMapper';
+import { getMappedOptionKeysValues, getMappedParameterValues } from '~/model/mappers/attributeMapper';
 
 export default {
     addAttributeOptionKey({ commit }, key) {
@@ -49,7 +49,7 @@ export default {
     setAttributeCode({ commit }, code) {
         commit(types.SET_ATTRIBUTE_CODE, code);
     },
-    setAttributeParameter({ commit }, parameter) {
+    setAttributeParameter({ commit }, parameter = null) {
         commit(types.SET_ATTRIBUTE_PARAMETER, parameter);
     },
     setAttributeGroups({ commit }, groups) {
@@ -66,14 +66,15 @@ export default {
 
         return this.app.$axios.$get(`${userLanguageCode}/attributes/groups`).then(({ collection }) => {
             commit(types.SET_ATTRIBUTE_GROUPS_OPTIONS, collection.map((group) => ({
-                key: group.id,
-                value: group.name || `#${group.code}`,
+                id: group.id,
+                name: group.name,
+                code: group.code,
             })));
         });
     },
     getAttributeById(
         {
-            dispatch, commit, state, rootState,
+            dispatch, commit, rootState,
         },
         { attributeId, onError = () => {} },
     ) {
@@ -92,19 +93,16 @@ export default {
             multilingual,
         }) => {
             const translations = {
-                hint,
-                label,
-                placeholder,
+                hint: multilingual ? hint : Object.values(hint)[0],
+                label: multilingual ? label : Object.values(label)[0],
+                placeholder: multilingual ? placeholder : Object.values(placeholder)[0],
             };
 
             commit(types.SET_ATTRIBUTE_ID, id);
             commit(types.SET_ATTRIBUTE_CODE, code);
-            commit(types.SET_ATTRIBUTE_TYPE, rootState.data.attrTypes[type]);
+            commit(types.SET_ATTRIBUTE_TYPE, type);
             commit(types.SET_MULTILINGUAL_ATTRIBUTE, multilingual);
-            commit(types.SET_ATTRIBUTE_GROUPS, getMappedGroups(
-                groups,
-                state.groupOptions,
-            ));
+            commit(types.SET_ATTRIBUTE_GROUPS, groups);
 
             dispatch('translations/setTabTranslations', translations, { root: true });
 

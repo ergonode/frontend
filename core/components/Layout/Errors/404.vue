@@ -18,7 +18,7 @@
                 </p>
                 <Button
                     title="Go to dashboard"
-                    @click.native="$router.push('/dashboard')" />
+                    @click.native="$router.push({ name: 'dashboard' })" />
             </div>
         </div>
         <span

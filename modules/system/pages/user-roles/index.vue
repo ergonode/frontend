@@ -59,7 +59,7 @@ export default {
     },
     methods: {
         addUserRole() {
-            this.$router.push('/user-roles/role/new/general');
+            this.$router.push({ name: 'user-role-new-general' });
         },
     },
     async fetch({ app, store }) {

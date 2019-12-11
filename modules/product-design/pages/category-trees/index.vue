@@ -56,7 +56,7 @@ export default {
     },
     methods: {
         addTree() {
-            this.$router.push('/category-trees/tree/new/general');
+            this.$router.push({ name: 'category-tree-new' });
         },
     },
     async fetch({ app, store }) {

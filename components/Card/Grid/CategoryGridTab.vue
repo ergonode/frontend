@@ -54,7 +54,7 @@ export default {
         editRoute() {
             return {
                 path: `${this.userLanguageCode}/categories`,
-                name: 'category-edit-id',
+                name: 'category-edit-id-general',
             };
         },
     },
@@ -68,7 +68,7 @@ export default {
             const number = Math.trunc(value);
 
             if (number !== this.numberOfDisplayedElements) {
-                this.changeNumberOfDisplayingElements({ number });
+                this.changeNumberOfDisplayingElements(number);
                 this.getData(this.editRoute.path);
             }
         },

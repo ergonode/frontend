@@ -81,6 +81,7 @@ export const routing = [
         ],
         meta: {
             isMenu: false,
+            redirectTo: 'general',
         },
     },
     {
@@ -129,6 +130,7 @@ export const routing = [
         ],
         meta: {
             isMenu: false,
+            redirectTo: 'general',
         },
     },
     {
@@ -151,7 +153,7 @@ export const routing = [
     },
     {
         name: 'attribute-group-new',
-        path: '/attributes/group/new',
+        path: '/attribute-groups/group/new',
         component: Pages.AttributeGroupNew,
         children: [
             {
@@ -176,11 +178,12 @@ export const routing = [
         ],
         meta: {
             isMenu: false,
+            redirectTo: 'general',
         },
     },
     {
         name: 'attribute-group-edit-id',
-        path: '/attributes/group/edit/:id',
+        path: '/attribute-groups/group/edit/:id',
         component: Pages.AttributeGroupEdit,
         children: [
             {
@@ -224,6 +227,7 @@ export const routing = [
         ],
         meta: {
             isMenu: false,
+            redirectTo: 'general',
         },
     },
     {
@@ -271,6 +275,7 @@ export const routing = [
         ],
         meta: {
             isMenu: false,
+            redirectTo: 'general',
         },
     },
     {
@@ -319,6 +324,7 @@ export const routing = [
         ],
         meta: {
             isMenu: false,
+            redirectTo: 'general',
         },
     },
     {
@@ -366,6 +372,7 @@ export const routing = [
         ],
         meta: {
             isMenu: false,
+            redirectTo: 'general',
         },
     },
     {
@@ -433,6 +440,7 @@ export const routing = [
         ],
         meta: {
             isMenu: false,
+            redirectTo: 'general',
         },
     },
     {
@@ -480,6 +488,7 @@ export const routing = [
         ],
         meta: {
             isMenu: false,
+            redirectTo: 'general',
         },
     },
     {
@@ -528,6 +537,7 @@ export const routing = [
         ],
         meta: {
             isMenu: false,
+            redirectTo: 'general',
         },
     },
 ];

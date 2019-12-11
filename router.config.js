@@ -103,7 +103,10 @@ export const pages = [
                 component: GridTabs.UserPrivilegesGridTab,
             },
         ],
-        meta: { isMenu: false },
+        meta: {
+            isMenu: false,
+            redirectTo: 'activity-log-grid',
+        },
     },
     {
         name: 'notifications',
@@ -116,7 +119,10 @@ export const pages = [
                 component: GridTabs.NotificationGridTab,
             },
         ],
-        meta: { isMenu: false },
+        meta: {
+            isMenu: false,
+            redirectTo: 'grid',
+        },
     },
     {
         name: 'placeholder',

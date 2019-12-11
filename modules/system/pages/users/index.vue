@@ -59,7 +59,7 @@ export default {
     },
     methods: {
         addUser() {
-            this.$router.push('/users/user/new/general');
+            this.$router.push({ name: 'user-new-general' });
         },
     },
     async fetch({ app, store }) {

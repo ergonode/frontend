@@ -75,11 +75,11 @@ export default {
         onUpdateSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Tree updated' });
-            this.$router.push('/category-trees');
+            this.$router.push({ name: 'category-trees' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Category tree removed' });
-            this.$router.push('/category-trees');
+            this.$router.push({ name: 'category-trees' });
         },
     },
     async fetch({ store, params }) {

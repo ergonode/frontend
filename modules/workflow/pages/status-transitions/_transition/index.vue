@@ -22,6 +22,9 @@ export default {
         this.clearStorage();
     },
     computed: {
+        ...mapState('productStatus', {
+            statuses: (state) => state.statuses,
+        }),
         ...mapState('transitions', {
             source: (state) => state.source,
             destination: (state) => state.destination,
@@ -37,10 +40,15 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
+        statusCode(id) {
+            return this.statuses.find(
+                (status) => status.id === id,
+            ).code;
+        },
         onCreate() {
             const transition = {
-                source: this.source,
-                destination: this.destination,
+                source: this.source ? this.statusCode(this.source) : null,
+                destination: this.destination ? this.statusCode(this.destination) : null,
                 roles: this.roles,
             };
 
@@ -60,7 +68,7 @@ export default {
             this.$router.push({
                 name: 'transition-edit-id-general',
                 params: {
-                    id: `${this.source}--${this.destination}`,
+                    id: `${this.statusCode(this.source)}--${this.statusCode(this.destination)}`,
                 },
             });
         },

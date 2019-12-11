@@ -72,6 +72,6 @@ export default {
         flex: 1;
         flex-direction: column;
         width: 400px;
-        height: calc(100vh - #{$toolBarHeight});
+        height: calc(100vh - 48px);
     }
 </style>

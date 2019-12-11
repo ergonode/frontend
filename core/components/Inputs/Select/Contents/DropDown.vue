@@ -25,7 +25,7 @@ export default {
 <style lang="scss" scoped>
     .drop-down {
         position: fixed;
-        z-index: 999;
+        z-index: $Z_INDEX_DROP_DOWN;
         display: flex;
         flex-direction: column;
         background-color: $WHITE;

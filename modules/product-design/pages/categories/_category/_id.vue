@@ -69,11 +69,11 @@ export default {
         onUpdateCategorySuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Category updated' });
-            this.$router.push('/categories');
+            this.$router.push({ name: 'categories' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Category removed' });
-            this.$router.push('/categories');
+            this.$router.push({ name: 'categories' });
         },
     },
     async fetch({
