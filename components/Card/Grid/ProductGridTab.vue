@@ -66,12 +66,22 @@ export default {
         return {
             verticalTabs: [
                 {
+                    id: 0,
                     title: 'Attributes',
                     component: () => import('~/components/Card/Lists/AttributesListTab'),
                     props: {
                         disabled: !this.$hasAccess(['PRODUCT_READ']),
                     },
                     iconPath: 'Menu/IconAttributes',
+                },
+                {
+                    id: 1,
+                    title: 'System Attributes',
+                    component: () => import('~/components/Card/Lists/SystemAttributesListTab'),
+                    props: {
+                        disabled: !this.$hasAccess(['PRODUCT_READ']),
+                    },
+                    iconPath: 'Menu/IconSettings',
                 },
             ],
         };

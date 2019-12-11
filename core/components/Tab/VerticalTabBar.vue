@@ -19,6 +19,7 @@
         <VerticalTabContent
             v-if="isExpanded"
             :tab-item="items[selectedTabIndex]"
+            :selected-tab-index="selectedTabIndex"
             :is-expanded="isExpanded"
             @expand="onExpandTab" />
     </div>

@@ -21,6 +21,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { TYPES } from '~/defaults/attributes';
 import { capitalizeAndConcatenationArray } from '~/model/stringWrapper';
 
 export default {
@@ -47,6 +48,9 @@ export default {
             disabledElements: (state) => state.disabledElements,
         }),
         typeIconComponent() {
+            if (typeof TYPES[this.item.type] === 'undefined') {
+                return () => import('~/components/Icon/Attributes/IconText');
+            }
             return () => import(`~/components/Icon/Attributes/Icon${this.formattedAttributeType}`);
         },
         formattedAttributeType() {
