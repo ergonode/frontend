@@ -8,7 +8,7 @@ export const GHOST_ELEMENT_MODEL = {
     id: GHOST_ID,
 };
 
-export const ROW_INTERWALS = [
+export const ROW_INTERVALS = [
     25, 50, 100, 200,
 ];
 

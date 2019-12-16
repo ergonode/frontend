@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { ROW_INTERWALS } from '~/defaults/grid';
+import { ROW_INTERVALS } from '~/defaults/grid';
 
 export default {
     name: 'GridPageSelector',
@@ -43,7 +43,7 @@ export default {
             return `of ${this.rowsNumber}`;
         },
         rowIntervalOptions() {
-            return ROW_INTERWALS.map((item) => ({ id: item, name: item }));
+            return ROW_INTERVALS.map((item) => ({ id: item, name: item }));
         },
     },
     methods: {

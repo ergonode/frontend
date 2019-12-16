@@ -8,5 +8,6 @@ export default () => ({
     columns: 1,
     rowHeight: 120,
     conditions: {},
+    conditionsDictionary: [],
     conditionsValues: {},
 });
