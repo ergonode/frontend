@@ -13,11 +13,11 @@
                 'side-bar-list-group--expanded': !isExpanded && isSelected,
             }
         ]"
-        @mouseenter="() => isExpanded ? onMouseEnter() : onGroupSelect()"
-        @mouseleave="() => isExpanded ? onMouseLeave() : onGroupSelect()">
+        @mouseenter="onMouse"
+        @mouseleave="onMouse">
         <div
             class="side-bar-list-group__activator"
-            @click="() => isExpanded ? onGroupSelect() : null">
+            @click="onGroupSelect">
             <div class="side-bar-list-group__icon">
                 <Component
                     :is="listIcon"
@@ -107,13 +107,16 @@ export default {
     },
     methods: {
         onGroupSelect() {
-            this.$emit('select', this.isSelected ? null : this.route.group.title);
+            if (this.isExpanded) {
+                this.$emit('select', this.isSelected ? null : this.route.group.title);
+            }
         },
-        onMouseEnter() {
-            this.isHovered = true;
-        },
-        onMouseLeave() {
-            this.isHovered = false;
+        onMouse() {
+            if (this.isExpanded) {
+                this.isHovered = !this.isHovered;
+            } else {
+                this.$emit('select', this.isSelected ? null : this.route.group.title);
+            }
         },
     },
 };

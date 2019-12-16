@@ -14,7 +14,6 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getMappedConditionSetData } from '~/model/mappers/conditionSetMapper';
-import { objectToArrayWithPropsName } from '~/model/objectWrapper';
 import { getParentRoutePath } from '~/model/navigation/tabs';
 
 export default {
@@ -125,9 +124,6 @@ export default {
     async fetch({
         store, params,
     }) {
-        const { conditions } = store.state.data;
-        const conditionsList = objectToArrayWithPropsName(conditions);
-
         await Promise.all([
             store.dispatch('transitions/clearStorage'),
             store.dispatch('productStatus/getProductStatuses', {
@@ -138,10 +134,6 @@ export default {
                 limit: 9999,
                 offset: 0,
             }),
-            store.dispatch('gridDesigner/clearStorage'),
-            store.dispatch('list/clearStorage'),
-            store.dispatch('conditions/clearStorage'),
-            store.dispatch('list/setElementsForLanguage', conditionsList),
         ]);
         await store.dispatch('transitions/getTransitionById', params);
     },
