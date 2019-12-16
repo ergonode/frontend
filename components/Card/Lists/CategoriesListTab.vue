@@ -3,23 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="tab-wrapper">
+    <VerticalTabBarListWrapper>
         <ListSearchHeader
             header="Categories"
             :is-expanded="isExpanded"
             @expand="onExpand"
             @searchResult="onSearch" />
         <CategoriesList :language-code="userLanguageCode" />
-        <div class="add-btn-wrapper">
-            <FabButton
-                :disabled="!$hasAccess(['CATEGORY_CREATE'])"
-                @click.native="addCategory">
-                <template #icon="{ color }">
-                    <IconAdd :fill-color="color" />
-                </template>
-            </FabButton>
-        </div>
-    </div>
+        <FabButton
+            class="list-wrapper__btn"
+            :disabled="!$hasAccess(['CATEGORY_CREATE'])"
+            @click.native="addCategory">
+            <template #icon="{ color }">
+                <IconAdd :fill-color="color" />
+            </template>
+        </FabButton>
+    </VerticalTabBarListWrapper>
 </template>
 
 <script>
@@ -31,6 +30,7 @@ import {
 export default {
     name: 'CategoriesListTab',
     components: {
+        VerticalTabBarListWrapper: () => import('~/core/components/Tab/VerticalTabBarListWrapper'),
         ListSearchHeader: () => import('~/core/components/List/ListSearchHeader'),
         CategoriesList: () => import('~/components/List/Categories/CategoriesList'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
@@ -71,19 +71,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .tab-wrapper {
-        position: relative;
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        width: 275px;
-
-        .add-btn-wrapper {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-        }
-    }
-</style>

@@ -6,7 +6,7 @@
     <VerticalTabBarListWrapper>
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
-            header="Attributes"
+            header="System Attributes"
             :options="languageOptions"
             :selected-option="attributesLanguageCode"
             :is-expanded="isExpanded"
@@ -15,35 +15,24 @@
             @expand="onExpand" />
         <ListSearchHeader
             v-else
-            header="Attributes"
+            header="System Attributes"
             :is-expanded="isExpanded"
             @searchResult="onSearch"
             @expand="onExpand" />
-        <AttributesList :language-code="attributesLanguageCode" />
-        <FabButton
-            class="list-wrapper__btn"
-            :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
-            @click.native="addAttribute">
-            <template #icon="{ color }">
-                <IconAdd :fill-color="color" />
-            </template>
-        </FabButton>
+        <SystemAttributesList :language-code="attributesLanguageCode" />
     </VerticalTabBarListWrapper>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
-    name: 'AttributesListTab',
+    name: 'SystemAttributesListTab',
     components: {
         VerticalTabBarListWrapper: () => import('~/core/components/Tab/VerticalTabBarListWrapper'),
-        AttributesList: () => import('~/components/List/Attributes/AttributesList'),
+        SystemAttributesList: () => import('~/components/List/Attributes/SystemAttributesList'),
         ListSearchSelectHeader: () => import('~/core/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('~/core/components/List/ListSearchHeader'),
-        FabButton: () => import('~/core/components/Buttons/FabButton'),
-        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
     },
     props: {
         isSelectLanguage: {
@@ -57,7 +46,7 @@ export default {
     },
     data() {
         return {
-            listDataType: 'attributes',
+            listDataType: 'attributes/system',
             attributesLanguageCode: null,
         };
     },
@@ -71,9 +60,6 @@ export default {
         ...mapState('data', {
             languages: (state) => state.languages,
         }),
-        whiteColor() {
-            return WHITE;
-        },
         languageOptions() {
             return Object.keys(this.languages).map((language) => ({
                 id: language,
@@ -84,7 +70,6 @@ export default {
     methods: {
         ...mapActions('list', [
             'setFilter',
-            'getGroups',
             'getElements',
         ]),
         onExpand(isExpanded) {
@@ -99,34 +84,11 @@ export default {
         },
         onSelect(option) {
             this.attributesLanguageCode = option;
-
-            Promise.all([
-                this.getGroups(this.attributesLanguageCode),
-                this.getElements({
-                    listType: this.listDataType,
-                    languageCode: this.attributesLanguageCode,
-                }),
-            ]);
-        },
-        addAttribute() {
-            this.$router.push({ name: 'attribute-new-general' });
+            this.getElements({
+                listType: this.listDataType,
+                languageCode: option,
+            });
         },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .tab-wrapper {
-        position: relative;
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        width: 275px;
-
-        .add-btn-wrapper {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-        }
-    }
-</style>

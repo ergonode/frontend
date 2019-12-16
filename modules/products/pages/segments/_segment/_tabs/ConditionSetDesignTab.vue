@@ -27,7 +27,7 @@ export default {
         verticalTabs: [
             {
                 title: 'Conditions',
-                component: () => import('~/components/Card/Tabs/ConditionsListTab'),
+                component: () => import('~/components/Card/Lists/ConditionsListTab'),
                 iconPath: 'Menu/IconCategory',
             },
         ],

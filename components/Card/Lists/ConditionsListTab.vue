@@ -3,14 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="tab-wrapper">
+    <VerticalTabBarListWrapper>
         <ListSearchHeader
             header="Conditions"
             :is-expanded="isExpanded"
             @searchResults="onSearch"
             @expand="onExpand" />
         <ConditionsList :language-code="userLanguageCode" />
-    </div>
+    </VerticalTabBarListWrapper>
 </template>
 
 <script>
@@ -25,6 +25,7 @@ export default {
         },
     },
     components: {
+        VerticalTabBarListWrapper: () => import('~/core/components/Tab/VerticalTabBarListWrapper'),
         ConditionsList: () => import('~/components/List/Conditions/ConditionsList'),
         ListSearchHeader: () => import('~/core/components/List/ListSearchHeader'),
     },
@@ -43,13 +44,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .tab-wrapper {
-        position: relative;
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        width: 275px;
-    }
-</style>
