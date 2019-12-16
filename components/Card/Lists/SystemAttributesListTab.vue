@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="tab-wrapper">
+    <VerticalTabBarListWrapper>
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
             header="System Attributes"
@@ -20,7 +20,7 @@
             @searchResult="onSearch"
             @expand="onExpand" />
         <SystemAttributesList :language-code="attributesLanguageCode" />
-    </div>
+    </VerticalTabBarListWrapper>
 </template>
 
 <script>
@@ -29,6 +29,7 @@ import { mapState, mapActions } from 'vuex';
 export default {
     name: 'SystemAttributesListTab',
     components: {
+        VerticalTabBarListWrapper: () => import('~/core/components/Tab/VerticalTabBarListWrapper'),
         SystemAttributesList: () => import('~/components/List/Attributes/SystemAttributesList'),
         ListSearchSelectHeader: () => import('~/core/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('~/core/components/List/ListSearchHeader'),
@@ -91,19 +92,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .tab-wrapper {
-        position: relative;
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        width: 275px;
-
-        .add-btn-wrapper {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-        }
-    }
-</style>

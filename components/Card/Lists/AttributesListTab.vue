@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="tab-wrapper">
+    <VerticalTabBarListWrapper>
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
             header="Attributes"
@@ -20,16 +20,15 @@
             @searchResult="onSearch"
             @expand="onExpand" />
         <AttributesList :language-code="attributesLanguageCode" />
-        <div class="add-btn-wrapper">
-            <FabButton
-                :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
-                @click.native="addAttribute">
-                <template #icon="{ color }">
-                    <IconAdd :fill-color="color" />
-                </template>
-            </FabButton>
-        </div>
-    </div>
+        <FabButton
+            class="list-wrapper__btn"
+            :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
+            @click.native="addAttribute">
+            <template #icon="{ color }">
+                <IconAdd :fill-color="color" />
+            </template>
+        </FabButton>
+    </VerticalTabBarListWrapper>
 </template>
 
 <script>
@@ -39,6 +38,7 @@ import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 export default {
     name: 'AttributesListTab',
     components: {
+        VerticalTabBarListWrapper: () => import('~/core/components/Tab/VerticalTabBarListWrapper'),
         AttributesList: () => import('~/components/List/Attributes/AttributesList'),
         ListSearchSelectHeader: () => import('~/core/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('~/core/components/List/ListSearchHeader'),

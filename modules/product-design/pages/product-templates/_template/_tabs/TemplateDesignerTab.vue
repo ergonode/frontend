@@ -99,7 +99,7 @@ export default {
                 },
                 {
                     title: 'Widgets',
-                    component: () => import('~/components/Card/Tabs/WidgetsListTab'),
+                    component: () => import('~/components/Card/Lists/WidgetsListTab'),
                     iconPath: 'Widgets/IconWidget',
                 },
             ],
