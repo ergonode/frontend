@@ -21,10 +21,9 @@ class ModuleLoader {
     }
 
     install(_Vue) {
-        const { router, menu } = this.pagesConfig;
+        const { router } = this.pagesConfig;
         _Vue.prototype.$modulesConfiguration = {
             router,
-            menu,
         };
     }
 
@@ -73,7 +72,7 @@ class ModuleLoader {
 
             switch (source) {
             case 'local':
-                config = require(`@Modules/${pageName}/config`).default;
+                config = require(`@Modules/${pageName}`).default;
                 break;
             // TODO: uncomment when npm modules ready
             // case 'npm':

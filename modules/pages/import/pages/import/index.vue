@@ -7,8 +7,7 @@
         <TitleBar
             title="Imports"
             :is-read-only="$isReadOnly('IMPORT')" />
-        <HorizontalTabBar
-            :items="tabs" />
+        <ImportGridTab />
     </Page>
 </template>
 
@@ -17,7 +16,7 @@
 export default {
     name: 'Import',
     components: {
-        HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
+        ImportGridTab: () => import('./components/Tabs/ImportGridTab'),
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         Page: () => import('~/core/components/Layout/Page'),
     },

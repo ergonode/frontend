@@ -32,24 +32,6 @@ export const pages = [
     ...productsRouting,
     ...productDesignRouting,
     {
-        name: 'imports',
-        path: '/imports',
-        component: Pages.Placeholder,
-        meta: {
-            access: true,
-            title: 'Imports',
-            group: {
-                title: 'Sources',
-                icon: 'Export',
-            },
-            isMenu: true,
-            privileges: {
-                namespace: 'IMPORT',
-                read: 'IMPORT_READ',
-            },
-        },
-    },
-    {
         name: 'exports',
         path: '/exports',
         component: Pages.Placeholder,
