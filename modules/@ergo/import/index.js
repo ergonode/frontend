@@ -11,6 +11,8 @@ const privileges = {
 };
 
 export default {
+    name: '@ergo/import',
+    type: 'page',
     privileges,
     router: [
         {

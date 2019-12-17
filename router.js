@@ -46,8 +46,7 @@ const getRoutes = () => {
         filteredPages = filteredPages.filter(e => e.name !== router[i].name);
     }
 
-    //filteredPages.concat(router)
-    return pages;
+    return filteredPages.concat(router);
 };
 
 export function createRouter() {

@@ -27,67 +27,44 @@ class ModuleLoader {
         };
     }
 
-    getDefaultModuleConfig() {
-        try {
-            return require('@Root/config/modules');
-        } catch (e) {
-            return false;
-        }
-    }
-
     setModulesConfiguration() {
-        let summaryConfig = { pages: [], components: [] };
-        const modulesConfig = this.getDefaultModuleConfig();
-        const additionalConfig = require('@Root/modules.config');
+        const baseConfig = require('@Root/modules.config');
 
-        if (modulesConfig) {
-            const { pages: modulePages, components: moduleComponents } = modulesConfig.default;
-
-            summaryConfig = {
-                pages: [...modulePages],
-                components: [...moduleComponents],
+        if (baseConfig) {
+            return {
+                pages: baseConfig.default.filter((e) => e.type === 'page'),
+                components: baseConfig.default.filter((e) => e.type === 'component'),
             };
         }
 
-        if (additionalConfig) {
-            const {
-                pages: additionalConfigPages,
-                components: additionalConfigComponents,
-            } = additionalConfig.default;
-
-            summaryConfig.pages.push(...additionalConfigPages);
-            summaryConfig.components.push(...additionalConfigComponents);
-        }
-        return summaryConfig;
+        return {};
     }
 
     setPagesConfiguration({ pages }) {
-        const pagesConfiguration = { router: [], menu: [], store: [] };
-        const filteredPages = pages.filter((page) => page.isActive);
+        const pagesConfiguration = { router: [], store: [] };
+        const filteredPages = pages.filter((page) => page.active);
 
         for (let i = 0; i < filteredPages.length; i += 1) {
             let config = null;
             const { name, source } = filteredPages[i];
-            const pageName = `pages/${name}`;
 
             switch (source) {
             case 'local':
-                config = require(`@Modules/${pageName}`).default;
+                config = require(`@Modules/${name}`).default;
                 break;
             // TODO: uncomment when npm modules ready
             // case 'npm':
-            //     config = require(`@NodeModules/${pageName}/config`).default;
+            //     config = require(`@NodeModules/${pageName}`).default;
             //     break;
             default:
                 config = null;
             }
             if (config) {
                 if (config.router) pagesConfiguration.router.push(...config.router);
-                if (config.menu) pagesConfiguration.menu.push(...config.menu);
                 if (config.store) {
                     pagesConfiguration.store.push({
                         source,
-                        moduleName: pageName,
+                        moduleName: name,
                         store: [...config.store],
                     });
                 }

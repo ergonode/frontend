@@ -16,21 +16,9 @@
 export default {
     name: 'Import',
     components: {
-        ImportGridTab: () => import('./components/Tabs/ImportGridTab'),
+        ImportGridTab: () => import('@Modules/@ergo/import/components/Tabs/ImportGridTab'),
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         Page: () => import('~/core/components/Layout/Page'),
-    },
-    beforeCreate() {
-        this.tabs = [];
-        if (this.$hasAccess(['IMPORT_READ'])) {
-            this.tabs.push({
-                title: 'Imports',
-                route: { name: 'imports-grid' },
-            });
-        }
-    },
-    beforeDestroy() {
-        delete this.tabs;
     },
 };
 </script>
