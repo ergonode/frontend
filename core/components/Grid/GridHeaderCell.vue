@@ -5,6 +5,7 @@
 <template>
     <GridCell
         :editing-allowed="false"
+        :current-page="currentPage"
         :row="rowIndex"
         :column="columnIndex"
         :locked="true"
@@ -29,6 +30,10 @@ export default {
     props: {
         namespace: {
             type: String,
+            required: true,
+        },
+        currentPage: {
+            type: Number,
             required: true,
         },
         columnIndex: {

@@ -61,6 +61,7 @@
                 <GridHeaderCell
                     :namespace="namespace"
                     :column-index="colIndex + columnsOffset"
+                    :current-page="gridState.currentPage"
                     :column="column"
                     :path="editRoute.path"
                     @focus="onHeaderFocus" />
@@ -68,6 +69,7 @@
                     v-if="basicFilters"
                     :namespace="namespace"
                     :column-index="colIndex + columnsOffset"
+                    :row-index="gridState.currentPage"
                     :column="column"
                     :filter="gridState.filters[column.id]"
                     :path="editRoute.path" />

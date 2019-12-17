@@ -4,6 +4,7 @@
  */
 <template>
     <GridCell
+        :current-page="currentPage"
         :column="0"
         :row="row"
         editing-allowed
@@ -27,6 +28,10 @@ export default {
     },
     props: {
         row: {
+            type: Number,
+            required: true,
+        },
+        currentPage: {
             type: Number,
             required: true,
         },

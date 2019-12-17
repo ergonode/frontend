@@ -19,7 +19,6 @@ export default {
     .list-wrapper {
         position: relative;
         display: flex;
-        flex: 1;
         flex-direction: column;
         width: 275px;
 

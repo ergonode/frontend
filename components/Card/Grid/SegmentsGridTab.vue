@@ -44,7 +44,7 @@ export default {
             userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('segmentsGrid', {
-            numberOfDataElements: (state) => state.count,
+            numberOfDataElements: (state) => state.filtered,
             currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),

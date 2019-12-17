@@ -54,7 +54,7 @@ export default {
             userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('userActivityLogsGrid', {
-            numberOfDataElements: (state) => state.count,
+            numberOfDataElements: (state) => state.filtered,
             currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
