@@ -11,6 +11,7 @@
                 :editing-privilege-allowed="$hasAccess(['WORKFLOW_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
+                :is-column-editable="false"
                 title="Transitions"
                 @rowEdit="onRowEdit" />
         </template>

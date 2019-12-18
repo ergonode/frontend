@@ -62,6 +62,11 @@ export default {
                 return;
             }
 
+            if (this.optionKeys.length !== [...new Set(this.optionKeys)].length) {
+                this.$addAlert({ type: 'warning', message: 'Options code must be unique' });
+                return;
+            }
+
             const attribute = {
                 code: this.code,
                 type: this.type,

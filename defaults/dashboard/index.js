@@ -15,14 +15,14 @@ export const GRID_ITEMS = [
         title: 'Template designer',
         actionTitle: 'Create template',
         icon: 'add_template.svg',
-        action: '/templates',
+        action: '/product-templates',
         privileges: ['TEMPLATE_DESIGNER_READ'],
     },
     {
         title: 'Product',
         actionTitle: 'Create product',
         icon: 'add_template.svg',
-        action: '/products',
+        action: '/catalog',
         privileges: ['PRODUCT_READ'],
     },
 ];

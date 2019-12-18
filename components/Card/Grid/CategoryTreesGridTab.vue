@@ -11,6 +11,7 @@
                 :editing-privilege-allowed="$hasAccess(['CATEGORY_TREE_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
+                :is-column-editable="false"
                 title="Category trees"
                 @rowEdit="onRowEdit" />
         </template>

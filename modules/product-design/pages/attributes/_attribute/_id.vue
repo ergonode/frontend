@@ -96,6 +96,11 @@ export default {
                 return;
             }
 
+            if (this.optionKeys.length !== [...new Set(this.optionKeys)].length) {
+                this.$addAlert({ type: 'warning', message: 'Option code must be unique' });
+                return;
+            }
+
             const { label, placeholder, hint } = this.translations;
             const propertiesToUpdate = {
                 groups: this.groups,

@@ -153,53 +153,17 @@ describe('attributeMapper/getMappedGroupsElementsCount', () => {
 describe('attributeMapper/getParsedParameterKeys', () => {
     describe('Based on attribute parameters data, data is mapped into API structure', () => {
         describe('Parsing parameter keys into key values data structure', () => {
-            const types = {
-                TEXT: 'TEXT',
-                SELECT: 'SELECT',
-                UNIT: 'UNIT',
-                PRICE: 'PRICE',
-                IMAGE: 'IMAGE',
-            };
-            const data = {
-                imageFormats: {
-                    JPG: 'Jpg',
-                    PNG: 'Png',
-                    TIFF: 'Tiff',
-                },
-                currencies: {
-                    EURO: 'Euro',
-                    PLN: 'Zloty',
-                },
-            };
-
-            it('Selected parameters are array', () => {
-                const selectedType = 'IMAGE';
-                const selectedParam = ['Jpg', 'Png'];
-                const result = {
-                    formats: ['JPG', 'PNG'],
-                };
-
-                expect(getParsedParameterKeys(
-                    types,
-                    selectedType,
-                    selectedParam,
-                    data,
-                )).toStrictEqual(result);
-            });
-
             it('Selected parameters are an object', () => {
                 const selectedType = 'PRICE';
                 const selectedParam = 'Euro';
                 const result = {
-                    currency: 'EURO',
+                    currency: 'Euro',
                 };
 
-                expect(getParsedParameterKeys(
-                    types,
+                expect(getParsedParameterKeys({
                     selectedType,
                     selectedParam,
-                    data,
-                )).toStrictEqual(result);
+                })).toStrictEqual(result);
             });
         });
     });

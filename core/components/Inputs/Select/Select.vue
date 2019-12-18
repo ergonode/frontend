@@ -308,6 +308,7 @@ export default {
         parsedInputValue() {
             let parsedInput = this.selectedOptions;
 
+            if (!process.client) return '';
             if (this.isGrid && isObject(this.value)) {
                 parsedInput = this.value;
             }

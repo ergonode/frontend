@@ -6,7 +6,6 @@ import {
     hasOptions,
     hasPlaceholder,
     hasParams,
-    getIcon,
     getParamsOptionsForType,
     getParamsKeyForType,
     getTypeElement,
@@ -74,10 +73,8 @@ describe('AttributeTypes/getParamsOptionsForType', () => {
         units: ['Kg'],
         dateFormats: ['YYYY-MM-DD'],
         currencies: ['PLN'],
-        imageFormats: ['jpg'],
     };
     it.each([
-        ['IMAGE', data.imageFormats],
         ['PRICE', data.currencies],
         ['UNIT', data.units],
         ['DATE', data.dateFormats],
@@ -94,7 +91,6 @@ describe('AttributeTypes/getParamsOptionsForType', () => {
 
 describe('AttributeTypes/getParamsKeyForType', () => {
     it.each([
-        ['IMAGE', 'formats'],
         ['PRICE', 'currency'],
         ['UNIT', 'unit'],
         ['DATE', 'format'],

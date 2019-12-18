@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import Divider from '~/components/Dividers/Divider.vue';
+import Divider from '~/core/components/Dividers/Divider.vue';
 
 
 describe('Dividers/Divider', () => {

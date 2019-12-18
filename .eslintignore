@@ -4,6 +4,7 @@ router.js
 node_modules/
 cypress/
 tests/
+__tests__/
 build/
 coverage/
 lib/

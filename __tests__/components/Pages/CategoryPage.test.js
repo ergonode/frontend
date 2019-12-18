@@ -3,21 +3,28 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import UserPage from '~/components/Pages/UserPage';
+import CategoryPage from '~/components/Pages/CategoryPage';
 
 const mocks = {
     $hasAccess: jest.fn(),
+    $isReadOnly: jest.fn(),
+    $isLoaded: jest.fn(),
     $route: {
         params: {
             id: '12345',
+            name: 'categories',
+        },
+    },
+    $router: {
+        options: {
+            routes: 'categories',
         },
     },
 };
-
-describe('Pages/UserPage', () => {
+describe('Pages/CategoryPage', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(UserPage, {
+        wrapper = shallowMount(CategoryPage, {
             mocks,
             propsData: {
                 title: '',
@@ -31,7 +38,7 @@ describe('Pages/UserPage', () => {
     });
 
     it('Check if component is named correctly', () => {
-        expect(typeof UserPage.name).toBe('string');
-        expect(UserPage.name).toEqual('UserPage');
+        expect(typeof CategoryPage.name).toBe('string');
+        expect(CategoryPage.name).toEqual('CategoryPage');
     });
 });

@@ -9,6 +9,19 @@ const localVue = createLocalVue();
 
 const mocks = {
     $hasAccess: jest.fn(),
+    $isReadOnly: jest.fn(),
+    $isLoaded: jest.fn(),
+    $route: {
+        params: {
+            id: '12345',
+            name: 'attributes',
+        },
+    },
+    $router: {
+        options: {
+            routes: 'attributes',
+        },
+    },
 };
 describe('Pages/AttributePage', () => {
     let wrapper;

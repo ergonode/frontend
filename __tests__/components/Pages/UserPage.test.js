@@ -3,34 +3,42 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import CategoryPage from '~/components/Pages/CategoryPage';
+import UserPage from '~/components/Pages/UserPage';
 
 const mocks = {
     $hasAccess: jest.fn(),
+    $isReadOnly: jest.fn(),
+    $isLoaded: jest.fn(),
     $route: {
         params: {
             id: '12345',
+            name: 'users',
+        },
+    },
+    $router: {
+        options: {
+            routes: 'users',
         },
     },
 };
-describe('Pages/CategoryPage', () => {
+
+describe('Pages/UserPage', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(CategoryPage, {
+        wrapper = shallowMount(UserPage, {
             mocks,
             propsData: {
                 title: '',
             },
             stubs: {
                 NuxtLink: true,
-                Button: true,
-                HorizontalTabBar: true,
+                NuxtChild: true,
             },
         });
     });
 
     it('Check if component is named correctly', () => {
-        expect(typeof CategoryPage.name).toBe('string');
-        expect(CategoryPage.name).toEqual('CategoryPage');
+        expect(typeof UserPage.name).toBe('string');
+        expect(UserPage.name).toEqual('UserPage');
     });
 });

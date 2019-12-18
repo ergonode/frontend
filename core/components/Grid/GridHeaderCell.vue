@@ -48,6 +48,10 @@ export default {
             type: String,
             required: true,
         },
+        isColumnEditable: {
+            type: Boolean,
+            default: true,
+        },
     },
     data() {
         return {
@@ -77,7 +81,7 @@ export default {
                 return {
                     columnIndex: this.columnIndex,
                     column: this.column,
-                    isColumnEditable: true,
+                    isColumnEditable: this.isColumnEditable,
                 };
             }
 

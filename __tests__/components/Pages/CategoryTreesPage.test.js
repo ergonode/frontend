@@ -16,6 +16,19 @@ const store = new Store({
 });
 const mocks = {
     $hasAccess: jest.fn(),
+    $isReadOnly: jest.fn(),
+    $isLoaded: jest.fn(),
+    $route: {
+        params: {
+            id: '12345',
+            name: 'category-trees',
+        },
+    },
+    $router: {
+        options: {
+            routes: 'category-trees',
+        },
+    },
     $store: store,
 };
 afterEach(() => store.reset());
@@ -45,14 +58,6 @@ describe('Pages/CategoryTreePage', () => {
         wrapper.vm.$nextTick(() => {
             store.state.draggable.isListElementDragging = true;
             expect(wrapper.vm.isBlurVisible).toBeTruthy();
-        });
-    });
-
-    it('Check if z-index is set up', () => {
-        expect(wrapper.vm.blurZIndex).toBeNull();
-        wrapper.vm.$nextTick(() => {
-            store.state.draggable.isListElementDragging = true;
-            expect(wrapper.vm.blurZIndex).toEqual({ zIndex: '10' });
         });
     });
 });
