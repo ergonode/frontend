@@ -105,9 +105,11 @@ export default {
         }
 
         &--expanded {
+            height: 40px;
+
             #{$element}__link {
                 width: 208px;
-                transform: translateX(-20px);
+                transform: translateX(-16px);
             }
         }
 

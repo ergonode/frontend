@@ -21,19 +21,25 @@
                     :is="listIcon"
                     :fill-color="listIconFillColor" />
             </div>
-            <span
-                v-if="isExpanded"
-                class="side-bar-list-element__title"
-                v-text="route.meta.title" />
+            <FadeSideBarTextTransition>
+                <span
+                    v-if="isExpanded"
+                    class="side-bar-list-element__title"
+                    v-text="route.meta.title" />
+            </FadeSideBarTextTransition>
         </NuxtLink>
     </li>
 </template>
 
 <script>
 import { GREEN, WHITE } from '~/assets/scss/_variables/_colors.scss';
+import FadeSideBarTextTransition from '~/core/components/Transitions/FadeSideBarTextTransition';
 
 export default {
     name: 'SideBarListElement',
+    components: {
+        FadeSideBarTextTransition,
+    },
     props: {
         route: {
             type: Object,
@@ -120,6 +126,9 @@ export default {
 
         &__title {
             font: $FONT_MEDIUM_14_20;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
     }
 </style>
