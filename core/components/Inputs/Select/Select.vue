@@ -243,6 +243,7 @@ export default {
     },
     data() {
         return {
+            tmpOptions: this.options,
             selectedOptions: null,
             selectBoundingBox: null,
             isFocused: false,
@@ -255,9 +256,10 @@ export default {
             isSearchFocused: false,
         };
     },
-    mounted() {
+    created() {
         this.initSelectedOptions();
-
+    },
+    mounted() {
         if (this.autofocus) {
             this.$nextTick(() => {
                 this.$refs.input.focus();
@@ -278,30 +280,17 @@ export default {
             return THEMES.SECONDARY;
         },
         parsedInputValue() {
-            let parsedInput = this.selectedOptions;
+            if (!this.value || (Array.isArray(this.value) && !this.value.length)) return '';
+            this.initSelectedOptions();
 
-            if (!this.value || !this.value.length) return '';
-            if (!this.selectedOptions || isEmpty(this.selectedOptions)) {
-                if (!this.multiselect) {
-                    parsedInput = this.options.find(
-                        (option) => option.id === this.value,
-                    );
-                } else {
-                    parsedInput = this.value.reduce((acc, currentKey) => {
-                        const newObject = acc;
-                        newObject[currentKey] = this.options.find(
-                            (option) => option.id === currentKey,
-                        );
-                        return newObject;
-                    }, {});
-                }
-            }
             if (!this.multiselect) {
-                return parsedInput.name || `#${parsedInput.code}`;
+                return this.selectedOptions.name || `#${this.selectedOptions.code}`;
             }
 
-            return Object.values(parsedInput).map(
-                ({ name = null, code = null }) => name || `#${code}`,
+            return Object.values(this.selectedOptions).map(
+                (option) => (isEmpty(option)
+                    ? ''
+                    : option.name || `#${option.code}`),
             ).join(', ');
         },
         dropDownState() {
@@ -390,18 +379,14 @@ export default {
     },
     methods: {
         initSelectedOptions() {
-            if (!this.options) {
-                this.selectedOptions = this.value;
-                return;
-            }
             if (!this.multiselect) {
-                this.selectedOptions = this.options.find(
+                this.selectedOptions = this.tmpOptions.find(
                     (option) => option.id === this.value,
                 );
             } else {
                 this.selectedOptions = this.value.reduce((acc, currentKey) => {
                     const newObject = acc;
-                    newObject[currentKey] = this.options.find(
+                    newObject[currentKey] = this.tmpOptions.find(
                         (option) => option.id === currentKey,
                     );
                     return newObject;
@@ -412,7 +397,7 @@ export default {
             return typeof option === 'string' || typeof option === 'number';
         },
         isSelected(id) {
-            return this.multiselect || !this.selectedOptions
+            return this.multiselect || isEmpty(this.selectedOptions)
                 ? false
                 : id === this.selectedOptions.id;
         },

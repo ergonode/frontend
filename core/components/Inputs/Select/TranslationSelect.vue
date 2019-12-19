@@ -82,7 +82,7 @@ export default {
     },
     methods: {
         isSelected(id) {
-            return this.$attrs.multiselect || !this.selectedOptions
+            return this.$attrs.multiselect || isEmpty(this.selectedOptions)
                 ? false
                 : id === this.selectedOptions.id;
         },
@@ -95,7 +95,7 @@ export default {
         onClear() {
             this.selectedOptions = {};
 
-            this.$emit('input', this.$attrs.multiselect ? [] : {});
+            this.$emit('input', this.$attrs.multiselect ? [] : { key: null });
         },
         initSelectedOptions() {
             this.options = this.$attrs.options.map((option) => ({
@@ -103,6 +103,7 @@ export default {
                 name: option.value,
                 code: option.code || option.key,
             }));
+
             if (this.$attrs.value) {
                 if (!this.$attrs.multiselect) {
                     this.selectedOptions = this.options.find(
@@ -119,9 +120,7 @@ export default {
                 }
             }
         },
-        onSelectValue(optionValue) {
-            const { id, code, name } = optionValue;
-
+        onSelectValue({ id, code = null, name = null }) {
             if (!this.$attrs.multiselect) {
                 this.selectedOptions = { id, name, code };
                 this.$emit('input', { key: id, value: name });

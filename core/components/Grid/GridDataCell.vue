@@ -187,7 +187,11 @@ export default {
                         };
                     }
 
-                    return { value: this.cellData.value !== null ? this.cellData.value : `#${this.cellData.key}` };
+                    return {
+                        value: !this.cellData.value && !this.cellData.key
+                            ? ''
+                            : this.cellData.value || `#${this.cellData.key}`,
+                    };
                 }
 
                 return { value: this.parsedDraftValue };
