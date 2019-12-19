@@ -23,9 +23,8 @@ const mocks = {
 };
 
 describe('Pages/UserPage', () => {
-    let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(UserPage, {
+        shallowMount(UserPage, {
             mocks,
             propsData: {
                 title: '',

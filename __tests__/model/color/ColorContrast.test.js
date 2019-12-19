@@ -47,7 +47,10 @@ describe('Color contrast conversion', () => {
         const relativeLuminance = calculateRelativeLuminance(textRgb);
         const relativeLuminanceBackground = calculateRelativeLuminance(backgroundRgb);
 
-        const contrastRatio = calculateContrastRatio(relativeLuminance, relativeLuminanceBackground);
+        const contrastRatio = calculateContrastRatio(
+            relativeLuminance,
+            relativeLuminanceBackground,
+        );
 
         expect(contrastRatio).toBeGreaterThan(4.5);
     });

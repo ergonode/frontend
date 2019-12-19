@@ -19,7 +19,7 @@ describe('String operations', () => {
         expect(fun).toBe('');
     });
 
-    it('Capitalize first letter', () => {
+    it('Capitalize and concatenation array', () => {
         const strings = ['test', 'jest'];
         const fun = capitalizeAndConcatenationArray(strings);
         expect(fun).toBe('TestJest');

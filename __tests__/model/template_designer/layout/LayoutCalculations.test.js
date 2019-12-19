@@ -20,17 +20,20 @@ test('Element has correct number of obstacle points', () => {
         height: 1,
     };
 
-    expect(getObstaclePositionsForElement(elementBounds).length).toEqual(elementBounds.width * elementBounds.height);
+    expect(getObstaclePositionsForElement(elementBounds).length)
+        .toEqual(elementBounds.width * elementBounds.height);
 
     elementBounds.width = 5;
     elementBounds.height = 2;
 
-    expect(getObstaclePositionsForElement(elementBounds).length).toEqual(elementBounds.width * elementBounds.height);
+    expect(getObstaclePositionsForElement(elementBounds).length)
+        .toEqual(elementBounds.width * elementBounds.height);
 
     elementBounds.width = 0;
     elementBounds.height = 0;
 
-    expect(getObstaclePositionsForElement(elementBounds).length).toEqual(elementBounds.width * elementBounds.height);
+    expect(getObstaclePositionsForElement(elementBounds).length)
+        .toEqual(elementBounds.width * elementBounds.height);
 
     elementBounds.width = -1;
     elementBounds.height = -1;
@@ -68,7 +71,8 @@ test('Based on theme elements getting number of elements to highlight', () => {
 
     let highlightingPositions = getHighlightingPositions(elementPosition, layoutElements);
 
-    expect(highlightingPositions.length).toEqual(elementPosition.maxWidth * elementPosition.maxHeight);
+    expect(highlightingPositions.length)
+        .toEqual(elementPosition.maxWidth * elementPosition.maxHeight);
 
     layoutElements = [
         {
@@ -114,7 +118,8 @@ test('Based on theme elements getting number of elements to highlight', () => {
 
     highlightingPositions = getHighlightingPositions(elementPosition, []);
 
-    expect(highlightingPositions.length).toEqual(elementPosition.maxWidth * elementPosition.maxHeight);
+    expect(highlightingPositions.length)
+        .toEqual(elementPosition.maxWidth * elementPosition.maxHeight);
 });
 
 test('Getting max column (limited by obstacles - first obstacle met at column breaks iteration) for given row', () => {

@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedParameterValues,
     getMappedGroupsElementsCount,
     getMappedOptionKeysValues,
     getParsedType,
@@ -64,7 +63,7 @@ describe('attributeMapper/getParsedOptions', () => {
                 ];
 
                 expect(getParsedOptions(optionKeys, optionValues, true)).toStrictEqual(result);
-            })
+            });
         });
     });
 });
@@ -74,41 +73,41 @@ describe('attributeMapper/getMappedOptionKeysValues', () => {
         it('Non multilingual attribute', () => {
             const apiData = [
                 {
-                    key: "key1",
+                    key: 'key1',
                     value: 'val1',
                 },
                 {
-                    key: "key2",
+                    key: 'key2',
                     value: null,
-                }
+                },
             ];
             const result = {
                 optionKeys: ['key1', 'key2'],
-                optionValues: ['val1'],
+                optionValues: ['val1', null],
             };
-            expect(getMappedOptionKeysValues(apiData, false));
+            expect(getMappedOptionKeysValues(apiData, false)).toStrictEqual(result);
         });
 
         it('Multilingual attribute', () => {
             const apiData = [
                 {
-                    key: "key1",
+                    key: 'key1',
                     value: {
-                        EN: "val1",
-                    }
+                        EN: 'val1',
+                    },
                 },
                 {
-                    key: "key2",
+                    key: 'key2',
                     value: null,
-                }
+                },
             ];
             const result = {
                 optionKeys: ['key1', 'key2'],
                 optionValues: {
-                    value: { EN: 'val1' },
+                    EN: ['val1'],
                 },
             };
-            expect(getMappedOptionKeysValues(apiData, true));
+            expect(getMappedOptionKeysValues(apiData, true)).toStrictEqual(result);
         });
     });
 });
@@ -171,17 +170,17 @@ describe('attributeMapper/getParsedParameterKeys', () => {
 
 describe('attributeMapper/getMappedParameterValues', () => {
     describe('Based on API data, data is mapped into data structure', () => {
-        const data = {
-            imageFormats: {
-                JPG: 'Jpg',
-                PNG: 'Png',
-                TIFF: 'Tiff',
-            },
-            currencies: {
-                EURO: 'Euro',
-                PLN: 'Zloty',
-            },
-        };
+        // const data = {
+        //     imageFormats: {
+        //         JPG: 'Jpg',
+        //         PNG: 'Png',
+        //         TIFF: 'Tiff',
+        //     },
+        //     currencies: {
+        //         EURO: 'Euro',
+        //         PLN: 'Zloty',
+        //     },
+        // };
 
         // TODO: Finish tests!!
         it('Selected parameters are array', () => {
@@ -210,7 +209,6 @@ describe('attributeMapper/getParsedType', () => {
                 SELECT: 'select',
             };
             const selectedType = 'text';
-            const result = types.TEXT;
 
             expect(getParsedType(types, selectedType)).toEqual('TEXT');
         });

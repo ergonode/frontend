@@ -24,9 +24,8 @@ const mocks = {
     },
 };
 describe('Pages/AttributePage', () => {
-    let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(AttributePage, {
+        shallowMount(AttributePage, {
             localVue,
             mocks,
             propsData: {

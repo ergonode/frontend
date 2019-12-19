@@ -118,7 +118,7 @@ describe('arrayWrapper/arrayToObject', () => {
             1: 'Maciek',
             2: 'Adam',
             3: 'Piotrek',
-        })
+        });
     });
 });
 
@@ -157,11 +157,11 @@ describe('arrayWrapper/sumIntegers', () => {
         const result = sumIntegers(null);
 
         expect(result).toEqual(0);
-    })
+    });
 });
 
 describe('arrayWrapper/insertValueAtIndex', () => {
-    it('Inserting value at given index', function () {
+    it('Inserting value at given index', () => {
         const array = [1, 2, 3, 0, -2, {}, 'ads'];
         const result = insertValueAtIndex(array, 5, 3);
 
@@ -170,30 +170,29 @@ describe('arrayWrapper/insertValueAtIndex', () => {
 });
 
 describe('objectWrapper/lastElementInList', () => {
-  it('Get last element from array', () => {
-      const array = ['a', 't', 'p', 'q'];
-      const fun = lastElementInList(array);
-      expect(fun).toBe('q');
-  });
+    it('Get last element from array', () => {
+        const array = ['a', 't', 'p', 'q'];
+        const fun = lastElementInList(array);
+        expect(fun).toBe('q');
+    });
 
-  it('Get null from empty array', () => {
-      const array = [];
-      const fun = lastElementInList(array);
-      expect(fun).toBeNull();
-  });
+    it('Get null from empty array', () => {
+        const array = [];
+        const fun = lastElementInList(array);
+        expect(fun).toBeNull();
+    });
 });
 
 describe('objectWrapper/firstElementInList', () => {
-  it('Get last element from array', () => {
-      const array = ['a', 't', 'p', 'q'];
-      const fun = firstElementInList(array);
-      expect(fun).toBe('a');
-  });
+    it('Get last element from array', () => {
+        const array = ['a', 't', 'p', 'q'];
+        const fun = firstElementInList(array);
+        expect(fun).toBe('a');
+    });
 
-  it('Get null from empty array', () => {
-      const array = [];
-      const fun = firstElementInList(array);
-      expect(fun).toBeNull();
-  });
+    it('Get null from empty array', () => {
+        const array = [];
+        const fun = firstElementInList(array);
+        expect(fun).toBeNull();
+    });
 });
-

@@ -17,24 +17,24 @@ describe('TreeCalculations/getCoordinatesForHiddenCategories', () => {
     it('New positions for hidden elements (col: 2, row: 3)', () => {
         const expectedData = [
             {
-                id: "fb471778-cbe7-56ca-ace7-0edd936092d7",
-                code: "code_3",
+                id: 'fb471778-cbe7-56ca-ace7-0edd936092d7',
+                code: 'code_3',
                 column: 3,
                 row: 4,
                 children: 0,
                 expanded: false,
                 name: null,
-                parent: "4c59d19f-e569-576b-a67f-e2d2094b19f5",
+                parent: '4c59d19f-e569-576b-a67f-e2d2094b19f5',
             },
             {
-                id: "f9e4f5a5-7a87-5efc-a680-cfbdb68b869f",
-                code: "code_4",
+                id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f',
+                code: 'code_4',
                 column: 3,
                 row: 5,
                 children: 0,
                 expanded: false,
                 name: null,
-                parent: "4c59d19f-e569-576b-a67f-e2d2094b19f5",
+                parent: '4c59d19f-e569-576b-a67f-e2d2094b19f5',
             },
         ];
         const column = 2;
@@ -47,24 +47,24 @@ describe('TreeCalculations/getCoordinatesForHiddenCategories', () => {
     it('New positions for hidden elements (col: null, row: null)', () => {
         const expectedData = [
             {
-                id: "fb471778-cbe7-56ca-ace7-0edd936092d7",
-                code: "code_3",
+                id: 'fb471778-cbe7-56ca-ace7-0edd936092d7',
+                code: 'code_3',
                 column: 1,
                 row: 1,
                 children: 0,
                 expanded: false,
                 name: null,
-                parent: "4c59d19f-e569-576b-a67f-e2d2094b19f5",
+                parent: '4c59d19f-e569-576b-a67f-e2d2094b19f5',
             },
             {
-                id: "f9e4f5a5-7a87-5efc-a680-cfbdb68b869f",
-                code: "code_4",
+                id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f',
+                code: 'code_4',
                 column: 1,
                 row: 2,
                 children: 0,
                 expanded: false,
                 name: null,
-                parent: "4c59d19f-e569-576b-a67f-e2d2094b19f5",
+                parent: '4c59d19f-e569-576b-a67f-e2d2094b19f5',
             },
         ];
         const column = null;
@@ -144,44 +144,44 @@ describe('TreeCalculations/getTreeWhenElementRemoved', () => {
     it('New tree when remove first element', () => {
         const expectedTree = [
             {
-                id: "4c59d19f-e569-576b-a67f-e2d2094b19f5",
-                code: "code_2",
+                id: '4c59d19f-e569-576b-a67f-e2d2094b19f5',
+                code: 'code_2',
                 column: 1,
                 row: 0,
                 children: 2,
                 expanded: false,
                 name: null,
-                parent: "a72bdcce-6bd6-5663-99ae-7bad19307aa6",
+                parent: 'a72bdcce-6bd6-5663-99ae-7bad19307aa6',
             },
             {
-                id: "fb471778-cbe7-56ca-ace7-0edd936092d7",
-                code: "code_3",
+                id: 'fb471778-cbe7-56ca-ace7-0edd936092d7',
+                code: 'code_3',
                 column: 2,
                 row: 1,
                 children: 0,
                 expanded: false,
                 name: null,
-                parent: "4c59d19f-e569-576b-a67f-e2d2094b19f5",
+                parent: '4c59d19f-e569-576b-a67f-e2d2094b19f5',
             },
             {
-                id: "f9e4f5a5-7a87-5efc-a680-cfbdb68b869f",
-                code: "code_4",
+                id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f',
+                code: 'code_4',
                 column: 2,
                 row: 2,
                 children: 0,
                 expanded: false,
                 name: null,
-                parent: "4c59d19f-e569-576b-a67f-e2d2094b19f5",
+                parent: '4c59d19f-e569-576b-a67f-e2d2094b19f5',
             },
             {
-                id: "b07154ca-3e19-5d69-9238-8fe2b0c5e49e",
-                code: "code_5",
+                id: 'b07154ca-3e19-5d69-9238-8fe2b0c5e49e',
+                code: 'code_5',
                 column: 0,
                 row: 3,
                 children: 0,
                 expanded: false,
                 name: null,
-                parent: "root",
+                parent: 'root',
             },
         ];
         const removedIndex = 0;
@@ -191,42 +191,42 @@ describe('TreeCalculations/getTreeWhenElementRemoved', () => {
 });
 
 describe('TreeCalculations/getTreeWhenGhostElementRemoved', () => {
-  it('New tree when remove not existing ghost element (id:100)', () => {
-      const removedIndex = 100;
-      const result = getTreeWhenGhostElementRemoved(mappingTree, removedIndex);
-      expect(result).toStrictEqual(mappingTree);
-  });
+    it('New tree when remove not existing ghost element (id:100)', () => {
+        const removedIndex = 100;
+        const result = getTreeWhenGhostElementRemoved(mappingTree, removedIndex);
+        expect(result).toStrictEqual(mappingTree);
+    });
 
-  it('New tree when remove ghost element (id:0)', () => {
-      const removedIndex = 0;
-      const result = getTreeWhenGhostElementRemoved(mappingTree, removedIndex);
-      expect(result).toStrictEqual(mappingTree);
-  });
+    it('New tree when remove ghost element (id:0)', () => {
+        const removedIndex = 0;
+        const result = getTreeWhenGhostElementRemoved(mappingTree, removedIndex);
+        expect(result).toStrictEqual(mappingTree);
+    });
 
-  it('New tree when remove ghost element (id:3.5)', () => {
-      const expectedTree = JSON.parse(JSON.stringify(mappingTree)); // deep array clone hack
-      expectedTree.splice(expectedTree.length - 1, 1, {
-          id: "b07154ca-3e19-5d69-9238-8fe2b0c5e49e",
-          code: "code_5",
-          column: 0,
-          row: 5,
-          children: 0,
-          expanded: false,
-          name: null,
-          parent: "root",
-      });
-      const removedIndex = 3.5;
-      const result = getTreeWhenGhostElementRemoved(mappingTree, removedIndex);
-      expect(result).toStrictEqual(expectedTree);
-  });
+    it('New tree when remove ghost element (id:3.5)', () => {
+        const expectedTree = JSON.parse(JSON.stringify(mappingTree)); // deep array clone hack
+        expectedTree.splice(expectedTree.length - 1, 1, {
+            id: 'b07154ca-3e19-5d69-9238-8fe2b0c5e49e',
+            code: 'code_5',
+            column: 0,
+            row: 5,
+            children: 0,
+            expanded: false,
+            name: null,
+            parent: 'root',
+        });
+        const removedIndex = 3.5;
+        const result = getTreeWhenGhostElementRemoved(mappingTree, removedIndex);
+        expect(result).toStrictEqual(expectedTree);
+    });
 });
 
 describe('TreeCalculations/getTreeWhenElementCollapse', () => {
-    const visibleCategories =[
+    const visibleCategories = [
         { id: 'fb471778-cbe7-56ca-ace7-0edd936092d7', column: 1, row: 0 },
         { id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f', column: 2, row: 1 },
         { id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f', column: 2, row: 3 },
-      ];
+    ];
     it('New tree when collapse not existing element (id:100)', () => {
         const collapsedIndex = 100;
         const result = getTreeWhenElementCollapse(visibleCategories, collapsedIndex);

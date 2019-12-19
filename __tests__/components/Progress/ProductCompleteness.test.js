@@ -8,17 +8,17 @@ import ProductCompleteness from '~/components/Progress/ProductCompleteness.vue';
 
 const localVue = createLocalVue();
 const store = new Store({
-  state: {
-    productsDraft: {
-      completeness: {
-        filled: 1,
-        required: 1,
-      }
+    state: {
+        productsDraft: {
+            completeness: {
+                filled: 1,
+                required: 1,
+            },
+        },
     },
-  },
 });
 const mocks = {
-  $store: store,
+    $store: store,
 };
 afterEach(() => store.reset());
 describe('Badges/ProductCompleteness', () => {
@@ -31,11 +31,11 @@ describe('Badges/ProductCompleteness', () => {
                 language: 'PL',
             },
             computed: {
-              color() {
-                return '';
-              }
+                color() {
+                    return '';
+                },
             },
-      });
+        });
     });
 
     it('Component is named well', () => {
@@ -50,5 +50,4 @@ describe('Badges/ProductCompleteness', () => {
     it('Check progress', () => {
         expect(wrapper.vm.progress).toBe(100);
     });
-
 });

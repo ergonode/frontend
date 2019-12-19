@@ -43,7 +43,7 @@ describe('objectWrapper/getNestedObjectByKeyWithValue', () => {
 
     it('Get nested object by key and value - exist object ', () => {
         const fun = getNestedObjectByKeyWithValue(localObj, 'z', 'zz');
-        expect(fun).toEqual({z: 'zz', q: 'qq'});
+        expect(fun).toEqual({ z: 'zz', q: 'qq' });
     });
 
     it('Get nested object by key and value - does not exist object ', () => {
@@ -60,15 +60,15 @@ describe('objectWrapper/objectToArray', () => {
 });
 
 describe('objectWrapper/objectToArrayWithPropsName', () => {
-  it('Convert object to array of objects - default ', () => {
-      const fun = objectToArrayWithPropsName(obj);
-      expect(fun).toEqual([{ id: 'test', name: 1 }, { id: 'jest', name: 2 }]);
-  });
+    it('Convert object to array of objects - default ', () => {
+        const fun = objectToArrayWithPropsName(obj);
+        expect(fun).toEqual([{ id: 'test', name: 1 }, { id: 'jest', name: 2 }]);
+    });
 
-  it('Convert object to array of objects - own props', () => {
-      const fun = objectToArrayWithPropsName(obj, 'value', 'key');
-      expect(fun).toEqual([{ key: 'test', value: 1 }, { key: 'jest', value: 2 }]);
-  });
+    it('Convert object to array of objects - own props', () => {
+        const fun = objectToArrayWithPropsName(obj, 'value', 'key');
+        expect(fun).toEqual([{ key: 'test', value: 1 }, { key: 'jest', value: 2 }]);
+    });
 });
 
 describe('objectWrapper/getValueByKey', () => {
@@ -118,8 +118,8 @@ describe('objectWrapper/getMaxKeyValue', () => {
     });
 
     it('Get max key from number keys', () => {
-        const obj = { 5: 'a', 3: 'r', 9: 'w' };
-        const fun = getMaxKeyValue(obj);
+        const localObj = { 5: 'a', 3: 'r', 9: 'w' };
+        const fun = getMaxKeyValue(localObj);
         expect(fun).toBe(10);
     });
 });
@@ -132,14 +132,14 @@ describe('objectWrapper/isEmpty', () => {
     });
 
     it('Get true when object is empty', () => {
-        const obj = {};
-        const fun = isEmpty(obj);
+        const localObj = {};
+        const fun = isEmpty(localObj);
         expect(fun).toBeTruthy();
     });
 
     it('Get true when not object', () => {
-        const obj = null;
-        const fun = isEmpty(obj);
+        const localObj = null;
+        const fun = isEmpty(localObj);
         expect(fun).toBeTruthy();
     });
 });

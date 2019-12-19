@@ -61,5 +61,4 @@ describe('CategoryTreeDesigner/CategoryTreeItem', () => {
         });
         expect(wrapper.vm.btnExpanderIconState).toBe(ACTION.MINUS);
     });
-
 });

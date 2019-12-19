@@ -1,3 +1,7 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
 import { conditionsTree, conditionValues, mappedData } from '../__mocks__/conditions.mock';
 import { getMappedConditionSetData, getParsedConditionSetData } from '~/model/mappers/conditionSetMapper';
 
@@ -23,7 +27,6 @@ describe('conditionSetMapper/getMappedConditionSetData', () => {
 });
 
 describe('conditionSetMapper/getParsedConditionSetData', () => {
-
     it('Tree parsing with input data', () => {
         const result = getParsedConditionSetData(mappedData);
         expect(result.conditionsTree.length).toStrictEqual(mappedData.length);
@@ -31,9 +34,9 @@ describe('conditionSetMapper/getParsedConditionSetData', () => {
     });
     it('Tree parsing without data', () => {
         const expected = {
-            'conditionsTree': [],
-            'conditionsData': {},
-        }
+            conditionsTree: [],
+            conditionsData: {},
+        };
         const result = getParsedConditionSetData([]);
         expect(result).toStrictEqual(expected);
     });
