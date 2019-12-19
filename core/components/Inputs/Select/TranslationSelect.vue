@@ -7,7 +7,6 @@
         v-bind="$attrs"
         :value="parsedValue"
         :options="options"
-        is-grid
         @focus="onFocus"
         @input="onClear">
         <template #prepend>
@@ -72,11 +71,13 @@ export default {
     },
     computed: {
         parsedValue() {
-            if (!this.selectedOptions || isEmpty(this.selectedOptions)) return this.$attrs.multiselect ? [] : '';
-            if (!this.$attrs.multiselect) {
-                return this.selectedOptions.name || `#${this.selectedOptions.code || this.selectedOptions.id}`;
+            if (!this.selectedOptions || isEmpty(this.selectedOptions)) {
+                return this.$attrs.multiselect ? [] : null;
             }
-            return this.selectedOptions;
+            if (!this.$attrs.multiselect) {
+                return this.selectedOptions.id;
+            }
+            return Object.keys(this.selectedOptions);
         },
     },
     methods: {

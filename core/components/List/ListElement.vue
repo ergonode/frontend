@@ -5,7 +5,6 @@
 <template>
     <li
         :class="['element', {
-            'element--search': search,
             'element--small': small,
             'element--large': large,
             'element--selected': selected,
@@ -30,10 +29,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        search: {
-            type: Boolean,
-            default: false,
-        },
     },
 };
 </script>
@@ -44,7 +39,7 @@ export default {
         box-sizing: border-box;
         cursor: pointer;
 
-        &:not(&--small):not(&--large):not(&--search) {
+        &:not(&--small):not(&--large) {
             height: 40px;
             padding: 0 8px;
         }
@@ -63,11 +58,7 @@ export default {
             background-color: $GREEN_LIGHT;
         }
 
-        &--search {
-            padding: 0;
-        }
-
-        &:hover:not(&--search) {
+        &:hover {
             background-color: $WHITESMOKE;
             box-shadow: $ELEVATOR_2_DP;
         }

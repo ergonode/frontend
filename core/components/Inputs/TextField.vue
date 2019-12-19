@@ -78,10 +78,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        noBorder: {
-            type: Boolean,
-            default: false,
-        },
         leftAlignment: {
             type: Boolean,
             default: false,

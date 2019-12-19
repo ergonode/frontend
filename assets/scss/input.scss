@@ -336,10 +336,4 @@
             }
         }
     }
-
-    &--no-border {
-        #{$input}__activator {
-            border: none !important;
-        }
-    }
 }
