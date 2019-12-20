@@ -2,7 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-
 import { GridTabs, Pages } from './router.imports';
 import { routing as productsRouting } from '~/modules/products/router.config';
 import { routing as productDesignRouting } from '~/modules/product-design/router.config';
@@ -18,55 +17,8 @@ export const pages = [
             isMenu: false,
         },
     },
-    {
-        name: 'dashboard',
-        path: '/dashboard',
-        component: Pages.Dashboard,
-        meta: {
-            access: true,
-            title: 'Dashboard',
-            icon: () => import('@Core/components/Icons/Menu/IconDashboard'),
-            isMenu: true,
-        },
-    },
     ...productsRouting,
     ...productDesignRouting,
-    {
-        name: 'exports',
-        path: '/exports',
-        component: Pages.Placeholder,
-        meta: {
-            access: true,
-            title: 'Exports',
-            group: {
-                title: 'Channels',
-                icon: () => import('@Core/components/Icons/Menu/IconChannels'),
-            },
-            isMenu: true,
-            // privileges: {
-            //     namespace: 'EXPORT',
-            //     read: 'EXPORT_READ',
-            // },
-        },
-    },
-    {
-        name: 'media',
-        path: '/media',
-        component: Pages.Placeholder,
-        meta: {
-            access: true,
-            title: 'Media',
-            group: {
-                title: 'Resources',
-                icon: () => import('@Core/components/Icons/Menu/IconMedia'),
-            },
-            isMenu: true,
-            privileges: {
-                namespace: 'MULTIMEDIA',
-                read: 'MULTIMEDIA_READ',
-            },
-        },
-    },
     ...workflowRouting,
     ...systemRouting,
     {
@@ -105,11 +57,5 @@ export const pages = [
             isMenu: false,
             redirectTo: 'grid',
         },
-    },
-    {
-        name: 'placeholder',
-        path: '/placeholder/:placeholder',
-        component: Pages.Placeholder,
-        meta: { isMenu: false },
     },
 ];

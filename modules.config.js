@@ -5,20 +5,32 @@
 export default [
     {
         active: true,
-        type: 'page',
         source: 'local', // types [npm, local]
         name: '@ergo/core', // name that same as module page directory name
     },
     {
         active: true,
-        type: 'page',
         source: 'local',
-        name: '@ergo/activity-logs',
+        name: '@ergo/dashboard',
     },
     {
         active: true,
-        type: 'page',
+        source: 'local',
+        name: '@ergo/media',
+    },
+    {
+        active: true,
+        source: 'local',
+        name: '@ergo/export',
+    },
+    {
+        active: true,
         source: 'local',
         name: '@ergo/import',
+    },
+    {
+        active: true,
+        source: 'local',
+        name: '@ergo/activity-logs',
     },
 ];

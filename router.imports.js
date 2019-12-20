@@ -4,9 +4,7 @@
  */
 export const Pages = {
     Login: () => import('~/pages/index').then((m) => m.default || m),
-    Dashboard: () => import('~/pages/dashboard/index').then((m) => m.default || m),
     Profile: () => import('~/pages/profile/index').then((m) => m.default || m),
-    Placeholder: () => import('~/pages/placeholder/index').then((m) => m.default || m),
     Notifications: () => import('~/pages/notifications/index').then((m) => m.default || m),
 };
 

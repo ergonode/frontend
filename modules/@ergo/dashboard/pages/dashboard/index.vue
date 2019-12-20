@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import { GRID_ITEMS } from '~/defaults/dashboard';
+import { GRID_ITEMS } from '@Dashboard/defaults/dashboard';
 
 export default {
     name: 'Dashboard',
     components: {
-        SimpleGrid: () => import('~/components/SimpleGrid'),
+        SimpleGrid: () => import('@Dashboard/components/SimpleGrid'),
     },
     data() {
         return {

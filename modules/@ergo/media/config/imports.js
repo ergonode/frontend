@@ -5,3 +5,7 @@
 export const Pages = {
     Placeholder: () => import('@Core/pages/placeholder/index').then((m) => m.default || m),
 };
+
+export const Icons = {
+    Media: () => import('@Core/components/Icons/Menu/IconMedia'),
+};
