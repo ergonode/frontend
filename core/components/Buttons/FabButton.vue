@@ -3,22 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <Button
+    <button
+        type="button"
         :class="btnFabClasses"
         :disabled="disabled"
-        :title="title"
-        :size="size"
-        :plain="plain"
-        :theme="theme"
-        @click.native="onClick"
-        @mouseenter.native="onMouseEnter"
-        @mouseleave.native="onMouseLeave">
-        <template #append>
-            <slot
-                name="icon"
-                :color="iconFillColor" />
-        </template>
-    </Button>
+        :aria-label="title"
+        @click="onClick"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave">
+        <slot
+            name="icon"
+            :color="iconFillColor" />
+    </button>
 </template>
 <script>
 import { THEMES } from '~/defaults/buttons';
@@ -26,14 +22,10 @@ import {
     GREEN, GRAPHITE, WHITE, GREY_DARK,
 } from '~/assets/scss/_variables/_colors.scss';
 import buttonPropsMixin from '~/mixins/buttons/buttonPropsMixin';
-import Button from '~/core/components/Buttons/Button';
 
 export default {
     name: 'FabButton',
     mixins: [buttonPropsMixin],
-    components: {
-        Button,
-    },
     props: {
         isStateable: {
             type: Boolean,
@@ -60,9 +52,13 @@ export default {
     computed: {
         btnFabClasses() {
             return [
+                'btn',
                 'btn--fab',
+                `btn--${this.theme}`,
+                `btn--${this.size}`,
                 {
                     'btn--fab__transparent': this.isTransparent,
+                    'btn--plain': this.plain,
                 },
             ];
         },
@@ -96,6 +92,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+    @import "~assets/scss/button.scss";
+
     .btn--fab {
         width: 32px;
         height: 32px;

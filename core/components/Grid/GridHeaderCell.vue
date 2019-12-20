@@ -5,6 +5,7 @@
 <template>
     <GridCell
         :editing-allowed="false"
+        :current-page="currentPage"
         :row="rowIndex"
         :column="columnIndex"
         :locked="true"
@@ -31,6 +32,10 @@ export default {
             type: String,
             required: true,
         },
+        currentPage: {
+            type: Number,
+            required: true,
+        },
         columnIndex: {
             type: Number,
             required: true,
@@ -42,6 +47,10 @@ export default {
         path: {
             type: String,
             required: true,
+        },
+        isColumnEditable: {
+            type: Boolean,
+            default: true,
         },
     },
     data() {
@@ -72,7 +81,7 @@ export default {
                 return {
                     columnIndex: this.columnIndex,
                     column: this.column,
-                    isColumnEditable: true,
+                    isColumnEditable: this.isColumnEditable,
                 };
             }
 

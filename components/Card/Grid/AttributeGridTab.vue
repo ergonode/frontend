@@ -11,6 +11,7 @@
                 :editing-privilege-allowed="$hasAccess(['ATTRIBUTE_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
+                :is-column-editable="false"
                 title="Attributes"
                 @rowEdit="onRowEdit" />
         </template>
@@ -44,7 +45,7 @@ export default {
             userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('attributeGrid', {
-            numberOfDataElements: (state) => state.count,
+            numberOfDataElements: (state) => state.filtered,
             currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),

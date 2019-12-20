@@ -11,6 +11,7 @@
                 :basic-filters="true"
                 :edit-column="false"
                 :select-column="false"
+                :is-column-editable="false"
                 title="Product history" />
         </template>
         <template #footer>
@@ -54,7 +55,7 @@ export default {
             userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('productHistoryGrid', {
-            numberOfDataElements: (state) => state.count,
+            numberOfDataElements: (state) => state.filtered,
             currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),

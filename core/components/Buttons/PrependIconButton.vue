@@ -16,13 +16,12 @@
     </Button>
 </template>
 <script>
-import Button from '~/core/components/Buttons/Button';
 
 export default {
     name: 'PrependIconButton',
     inheritAttrs: false,
     components: {
-        Button,
+        Button: () => import('~/core/components/Buttons/Button'),
     },
     computed: {
         prependClasses() {
