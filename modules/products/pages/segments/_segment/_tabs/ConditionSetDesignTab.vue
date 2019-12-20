@@ -28,7 +28,7 @@ export default {
             {
                 title: 'Conditions',
                 component: () => import('~/components/Card/Lists/ConditionsListTab'),
-                iconPath: 'Menu/IconCategory',
+                iconComponent: () => import('@Core/components/Icons/Menu/IconCategory'),
             },
         ],
     }),

@@ -45,7 +45,7 @@ export const routing = [
             title: 'Attributes',
             group: {
                 title: 'Product design',
-                icon: 'Templates',
+                icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
             },
             isMenu: true,
             privileges: {
@@ -68,7 +68,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Attributes',
@@ -98,7 +98,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Attributes',
@@ -117,7 +117,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Attributes',
@@ -142,7 +142,7 @@ export const routing = [
             title: 'Attribute groups',
             group: {
                 title: 'Product design',
-                icon: 'Templates',
+                icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
             },
             isMenu: true,
             privileges: {
@@ -165,7 +165,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Attribute groups',
@@ -195,7 +195,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Attribute groups',
@@ -214,7 +214,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Attribute groups',
@@ -239,7 +239,7 @@ export const routing = [
             title: 'Categories',
             group: {
                 title: 'Product design',
-                icon: 'Templates',
+                icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
             },
             isMenu: true,
             privileges: {
@@ -262,7 +262,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Categories',
@@ -292,7 +292,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Categories',
@@ -311,7 +311,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Categories',
@@ -336,7 +336,7 @@ export const routing = [
             title: 'Category trees',
             group: {
                 title: 'Product design',
-                icon: 'Templates',
+                icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
             },
             isMenu: true,
             privileges: {
@@ -359,7 +359,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Category trees',
@@ -389,7 +389,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Category trees',
@@ -408,7 +408,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Category trees',
@@ -427,7 +427,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Category trees',
@@ -452,7 +452,7 @@ export const routing = [
             title: 'Product templates',
             group: {
                 title: 'Product design',
-                icon: 'Templates',
+                icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
             },
             isMenu: true,
             privileges: {
@@ -475,7 +475,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Product templates',
@@ -505,7 +505,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Product templates',
@@ -524,7 +524,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Product design',
-                            icon: 'Templates',
+                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
                         },
                         {
                             title: 'Product templates',

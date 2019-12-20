@@ -86,9 +86,7 @@ export default {
     },
     computed: {
         listIcon() {
-            if (!this.route.group.icon) return null;
-
-            return () => import(`~/components/Icon/Menu/Icon${this.route.group.icon}`);
+            return this.route.group.icon || null;
         },
         listIconFillColor() {
             return this.isSelected

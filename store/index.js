@@ -1,10 +1,8 @@
-/* eslint-disable import/no-dynamic-require */
-/* eslint-disable global-require */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getPagesConfig } from '~/plugins/moduleLoader';
+import { getModulesConfig } from '~/plugins/moduleLoader';
 import { JWT_KEY } from '~/defaults/authenticate/cookies';
 
 export const actions = {
@@ -17,7 +15,9 @@ export const actions = {
             await dispatch('authentication/getUser');
         }
     },
-    resetState({ dispatch, commit }) {
+    resetState({ dispatch }) {
+        const { store: modulesStore } = getModulesConfig;
+
         dispatch('categories/clearStorage');
         dispatch('attribute/clearStorage');
         dispatch('authentication/clearStorage');
@@ -37,11 +37,19 @@ export const actions = {
         dispatch('validations/clearStorage');
         dispatch('translations/clearStorage');
         dispatch('gridDraft/clearStorage');
+
+        for (let i = 0; i < modulesStore.length; i += 1) {
+            const { store } = modulesStore[i];
+            for (let j = 0; j < store.length; j += 1) {
+                const { name } = store[j];
+                dispatch(`${name}/clearStorage`);
+            }
+        }
     },
 };
 
 function getModulesStore() {
-    const { store: modulesStore } = getPagesConfig;
+    const { store: modulesStore } = getModulesConfig;
     const newStore = {};
     for (let i = 0; i < modulesStore.length; i += 1) {
         const { moduleName, store, source } = modulesStore[i];
@@ -50,10 +58,10 @@ function getModulesStore() {
             switch (source) {
             // TODO: uncomment when npm modules ready
             // case 'npm':
-            //     newStore[`module<${name}>`] = require(`@NodeModules/${moduleName}/store/${directory}`).default;
+            //     newStore[name] = require(`@NodeModules/${moduleName}/store/${directory}`).default;
             //     break;
             default:
-                newStore[`module<${name}>`] = require(`@Modules/${moduleName}/store/${directory}`).default;
+                newStore[name] = require(`@Modules/${moduleName}/store/${directory}`).default;
                 break;
             }
         }

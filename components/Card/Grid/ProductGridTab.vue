@@ -73,7 +73,7 @@ export default {
                     props: {
                         disabled: !this.$hasAccess(['PRODUCT_READ']),
                     },
-                    iconPath: 'Menu/IconAttributes',
+                    iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
                     listDataType: 'attributes',
                 },
                 {
@@ -82,7 +82,7 @@ export default {
                     props: {
                         disabled: !this.$hasAccess(['PRODUCT_READ']),
                     },
-                    iconPath: 'Menu/IconSettings',
+                    iconComponent: () => import('@Core/components/Icons/Menu/IconSettings'),
                     listDataType: 'attributes/system',
                 },
             ],

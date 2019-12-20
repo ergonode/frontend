@@ -25,7 +25,7 @@ export const pages = [
         meta: {
             access: true,
             title: 'Dashboard',
-            icon: 'Dashboard',
+            icon: () => import('@Core/components/Icons/Menu/IconDashboard'),
             isMenu: true,
         },
     },
@@ -40,13 +40,13 @@ export const pages = [
             title: 'Exports',
             group: {
                 title: 'Channels',
-                icon: 'Channels',
+                icon: () => import('@Core/components/Icons/Menu/IconChannels'),
             },
             isMenu: true,
-            privileges: {
-                namespace: 'EXPORT',
-                read: 'EXPORT_READ',
-            },
+            // privileges: {
+            //     namespace: 'EXPORT',
+            //     read: 'EXPORT_READ',
+            // },
         },
     },
     {
@@ -58,7 +58,7 @@ export const pages = [
             title: 'Media',
             group: {
                 title: 'Resources',
-                icon: 'Media',
+                icon: () => import('@Core/components/Icons/Menu/IconMedia'),
             },
             isMenu: true,
             privileges: {

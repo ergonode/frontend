@@ -6,35 +6,32 @@ import { Pages, Icons } from './config/imports';
 import Privileges from './config/privileges';
 
 export default {
-    name: '@ergo/import',
+    name: '@ergo/activity-logs',
     type: 'page',
+    moduleRelations: [
+        '@ergo/users',
+    ],
     privileges: Privileges,
     nuxt: {
         aliases: {
-            '@Import': '/modules/@ergo/import',
+            '@ActivityLogs': '/modules/@ergo/activity-logs',
         },
     },
     router: [
         {
-            name: 'imports',
-            path: '/imports',
-            component: Pages.Import,
+            name: 'activity-logs',
+            path: '/activity-logs',
+            component: Pages.UsersActivityLogs,
             meta: {
                 access: true,
-                title: 'Imports',
+                title: 'Activity logs',
                 group: {
-                    title: 'Sources',
-                    icon: Icons.Export,
+                    title: 'System',
+                    icon: Icons.Settings,
                 },
                 isMenu: true,
-                privileges: Privileges.IMPORT,
+                privileges: Privileges.USER,
             },
-        },
-    ],
-    store: [
-        {
-            directory: 'import',
-            name: 'import',
         },
     ],
 };

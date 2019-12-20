@@ -37,7 +37,7 @@ export default {
             return GREEN;
         },
         breadcrumbIcon() {
-            return () => import(`~/components/Icon/Menu/Icon${this.breadcrumb.icon}`);
+            return () => import(`@Core/components/Icons/Menu/Icon${this.breadcrumb.icon}`);
         },
     },
 };

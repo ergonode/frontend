@@ -45,7 +45,7 @@ export default {
             return iconColor;
         },
         iconComponent() {
-            return () => import(`~/components/Icon/Menu/Icon${this.item.icon}`);
+            return () => import(`@Core/components/Icons/Menu/Icon${this.item.icon}`);
         },
         isSelected() {
             return this.$route.path.includes(this.item.routing);

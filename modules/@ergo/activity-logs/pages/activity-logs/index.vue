@@ -14,12 +14,11 @@
 <script>
 import { THEMES, SIZES } from '~/defaults/buttons';
 import gridModule from '~/reusableStore/grid/state';
-import UsersActivityLogsGridTab from '~/components/Card/Grid/UsersActivityLogsGridTab';
 
 export default {
     name: 'UsersTabs',
     components: {
-        UsersActivityLogsGridTab,
+        UsersActivityLogsGridTab: () => import('@ActivityLogs/components/Tabs/UsersActivityLogsGridTab'),
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         Page: () => import('~/core/components/Layout/Page'),
     },

@@ -28,7 +28,7 @@ export default {
             {
                 title: 'Categories',
                 component: () => import('~/components/Card/Lists/CategoriesListTab'),
-                iconPath: 'Menu/IconCategory',
+                iconComponent: () => import('@Core/components/Icons/Menu/IconCategory'),
             },
         ],
     }),

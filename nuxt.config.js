@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 require('dotenv').config({path: '.env'});
+const { getModulesConfig } = require('./plugins/moduleLoader');
 const path = require('path');
 const pkg = require('./package');
 
@@ -69,9 +70,14 @@ module.exports = {
         cssSourceMap: false,
         extend(config, ctx) {
             const alias = config.resolve.alias || {};
+            const { aliases } = getModulesConfig.nuxt;
+
             alias['@Root'] = path.join(__dirname, './');
             alias['@Modules'] = path.join(__dirname, '/modules');
             alias['@NodeModules'] = path.join(__dirname, '/node_modules');
+            Object.keys(aliases).map((key) => {
+                alias[key] = path.join(__dirname, aliases[key]);
+            });
         },
         optimization: {
             splitChunks: {

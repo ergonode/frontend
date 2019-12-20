@@ -59,7 +59,7 @@ export default {
         listIcon() {
             if (!(this.route.meta && this.route.meta.icon)) return null;
 
-            return () => import(`~/components/Icon/Menu/Icon${this.route.meta.icon}`);
+            return this.route.meta.icon;
         },
         isSelected() {
             return this.$route.name === this.route.name;

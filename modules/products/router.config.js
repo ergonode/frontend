@@ -35,7 +35,7 @@ export const routing = [
             title: 'Catalog',
             group: {
                 title: 'Products',
-                icon: 'Document',
+                icon: () => import('@Core/components/Icons/Menu/IconDocument'),
             },
             isMenu: true,
             privileges: {
@@ -58,7 +58,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Products',
-                            icon: 'Document',
+                            icon: () => import('@Core/components/Icons/Menu/IconDocument'),
                         },
                         {
                             title: 'Catalog',
@@ -88,7 +88,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Products',
-                            icon: 'Document',
+                            icon: () => import('@Core/components/Icons/Menu/IconDocument'),
                         },
                         {
                             title: 'Catalog',
@@ -107,7 +107,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Products',
-                            icon: 'Document',
+                            icon: () => import('@Core/components/Icons/Menu/IconDocument'),
                         },
                         {
                             title: 'Catalog',
@@ -126,7 +126,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Products',
-                            icon: 'Document',
+                            icon: () => import('@Core/components/Icons/Menu/IconDocument'),
                         },
                         {
                             title: 'Catalog',
@@ -145,7 +145,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Products',
-                            icon: 'Document',
+                            icon: () => import('@Core/components/Icons/Menu/IconDocument'),
                         },
                         {
                             title: 'Catalog',
@@ -171,7 +171,7 @@ export const routing = [
             icon: 'Templates',
             group: {
                 title: 'Products',
-                icon: 'Document',
+                icon: () => import('@Core/components/Icons/Menu/IconDocument'),
             },
             isMenu: true,
             privileges: {
@@ -194,7 +194,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Products',
-                            icon: 'Document',
+                            icon: () => import('@Core/components/Icons/Menu/IconDocument'),
                         },
                         {
                             title: 'Segments',
@@ -224,7 +224,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Products',
-                            icon: 'Document',
+                            icon: () => import('@Core/components/Icons/Menu/IconDocument'),
                         },
                         {
                             title: 'Segments',
@@ -243,7 +243,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Products',
-                            icon: 'Document',
+                            icon: () => import('@Core/components/Icons/Menu/IconDocument'),
                         },
                         {
                             title: 'Segments',
@@ -262,7 +262,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Products',
-                            icon: 'Document',
+                            icon: () => import('@Core/components/Icons/Menu/IconDocument'),
                         },
                         {
                             title: 'Segments',

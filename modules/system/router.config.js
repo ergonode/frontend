@@ -10,7 +10,6 @@ const Pages = {
     UserRoleNew: () => import('~/modules/system/pages/user-roles/_role/index').then((m) => m.default || m),
     UserRoleEdit: () => import('~/modules/system/pages/user-roles/_role/_id').then((m) => m.default || m),
     Settings: () => import('~/modules/system/pages/settings/index').then((m) => m.default || m),
-    UsersActivityLogs: () => import('~/modules/system/pages/activity-logs/index').then((m) => m.default || m),
 };
 
 const Tabs = {
@@ -30,7 +29,7 @@ export const routing = [
             title: 'Users',
             group: {
                 title: 'System',
-                icon: 'Settings',
+                icon: () => import('@Core/components/Icons/Menu/IconSettings'),
             },
             isMenu: true,
             privileges: {
@@ -53,7 +52,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'System',
-                            icon: 'Settings',
+                            icon: () => import('@Core/components/Icons/Menu/IconSettings'),
                         },
                         {
                             title: 'Users',
@@ -83,7 +82,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'System',
-                            icon: 'Settings',
+                            icon: () => import('@Core/components/Icons/Menu/IconSettings'),
                         },
                         {
                             title: 'Users',
@@ -102,7 +101,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'System',
-                            icon: 'Settings',
+                            icon: () => import('@Core/components/Icons/Menu/IconSettings'),
                         },
                         {
                             title: 'Users',
@@ -127,7 +126,7 @@ export const routing = [
             title: 'User roles',
             group: {
                 title: 'System',
-                icon: 'Settings',
+                icon: () => import('@Core/components/Icons/Menu/IconSettings'),
             },
             isMenu: true,
             privileges: {
@@ -150,7 +149,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'System',
-                            icon: 'Settings',
+                            icon: () => import('@Core/components/Icons/Menu/IconSettings'),
                         },
                         {
                             title: 'User roles',
@@ -180,7 +179,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'System',
-                            icon: 'Settings',
+                            icon: () => import('@Core/components/Icons/Menu/IconSettings'),
                         },
                         {
                             title: 'User roles',
@@ -199,7 +198,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'System',
-                            icon: 'Settings',
+                            icon: () => import('@Core/components/Icons/Menu/IconSettings'),
                         },
                         {
                             title: 'User roles',
@@ -216,24 +215,6 @@ export const routing = [
         },
     },
     {
-        name: 'activity-logs',
-        path: '/activity-logs',
-        component: Pages.UsersActivityLogs,
-        meta: {
-            access: true,
-            title: 'Activity logs',
-            group: {
-                title: 'System',
-                icon: 'Settings',
-            },
-            isMenu: true,
-            privileges: {
-                namespace: 'USER',
-                read: 'USER_READ',
-            },
-        },
-    },
-    {
         name: 'settings',
         path: '/settings',
         component: Pages.Settings,
@@ -242,7 +223,7 @@ export const routing = [
             title: 'Settings',
             group: {
                 title: 'System',
-                icon: 'Settings',
+                icon: () => import('@Core/components/Icons/Menu/IconSettings'),
             },
             isMenu: true,
             privileges: {

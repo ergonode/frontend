@@ -27,7 +27,7 @@ export const routing = [
             title: 'Product statuses',
             group: {
                 title: 'Workflow',
-                icon: 'Flow',
+                icon: () => import('@Core/components/Icons/Menu/IconFlow'),
             },
             isMenu: true,
             privileges: {
@@ -50,7 +50,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Workflow',
-                            icon: 'Flow',
+                            icon: () => import('@Core/components/Icons/Menu/IconFlow'),
                         },
                         {
                             title: 'Product statuses',
@@ -80,7 +80,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Workflow',
-                            icon: 'Flow',
+                            icon: () => import('@Core/components/Icons/Menu/IconFlow'),
                         },
                         {
                             title: 'Product statuses',
@@ -99,7 +99,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Workflow',
-                            icon: 'Flow',
+                            icon: () => import('@Core/components/Icons/Menu/IconFlow'),
                         },
                         {
                             title: 'Product statuses',
@@ -124,7 +124,7 @@ export const routing = [
             title: 'Status transitions',
             group: {
                 title: 'Workflow',
-                icon: 'Flow',
+                icon: () => import('@Core/components/Icons/Menu/IconFlow'),
             },
             isMenu: true,
             privileges: {
@@ -148,7 +148,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Workflow',
-                            icon: 'Flow',
+                            icon: () => import('@Core/components/Icons/Menu/IconFlow'),
                         },
                         {
                             title: 'Status transitions',
@@ -178,7 +178,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Workflow',
-                            icon: 'Flow',
+                            icon: () => import('@Core/components/Icons/Menu/IconFlow'),
                         },
                         {
                             title: 'Status transitions',
@@ -197,7 +197,7 @@ export const routing = [
                     breadcrumbs: [
                         {
                             title: 'Workflow',
-                            icon: 'Flow',
+                            icon: () => import('@Core/components/Icons/Menu/IconFlow'),
                         },
                         {
                             title: 'Status transitions',

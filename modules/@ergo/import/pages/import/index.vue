@@ -16,7 +16,7 @@
 export default {
     name: 'Import',
     components: {
-        ImportGridTab: () => import('@Modules/@ergo/import/components/Tabs/ImportGridTab'),
+        ImportGridTab: () => import('@Import/components/Tabs/ImportGridTab'),
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         Page: () => import('~/core/components/Layout/Page'),
     },

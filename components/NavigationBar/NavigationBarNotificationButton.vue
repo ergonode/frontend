@@ -42,7 +42,7 @@ export default {
     name: 'NavigationBarNotificationButton',
     components: {
         NavigationBarSelectButton: () => import('~/core/components/NavigationBar/NavigationBarSelectButton'),
-        IconBell: () => import('~/components/Icon/Menu/IconBell'),
+        IconBell: () => import('@Core/components/Icons/Menu/IconBell'),
         NotificationBadge: () => import('~/core/components/Badges/NotificationBadge'),
         Button: () => import('~/core/components/Buttons/Button'),
         List: () => import('~/core/components/List/List'),

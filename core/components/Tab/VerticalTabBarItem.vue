@@ -32,14 +32,10 @@ export default {
     mixins: [tabBarItemMixin],
     computed: {
         tabIconComponent() {
-            if (!this.item.iconPath) {
-                return null;
-            }
-
-            return () => import(`~/components/Icon/${this.item.iconPath}`);
+            return this.item.iconComponent || null;
         },
         tabIconFillColor() {
-            if (!this.item.iconPath) {
+            if (!this.item.iconComponent) {
                 return null;
             }
 

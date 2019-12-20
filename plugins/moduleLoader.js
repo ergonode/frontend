@@ -5,78 +5,64 @@
 /* eslint-disable no-param-reassign */
 import Vue from 'vue'; // eslint-disable-line import/no-extraneous-dependencies
 
+const deepmerge = require('deepmerge');
+
 class ModuleLoader {
     constructor() {
-        this.config = this.setModulesConfiguration();
-        this.pagesConfig = this.setPagesConfiguration(this.config);
-        this.componentsConfig = this.setComponentsConfiguration(this.config);
+        this.config = this.getActiveModules();
+        this.modulesConfig = this.getModules(this.config);
     }
 
-    get getPagesConfig() {
-        return this.pagesConfig;
+    get getModulesConfig() {
+        return this.modulesConfig;
     }
 
-    get getComponentsConfig() {
-        return this.componentsConfig;
-    }
-
-    install(_Vue) {
-        const { router } = this.pagesConfig;
-        _Vue.prototype.$modulesConfiguration = {
-            router,
-        };
-    }
-
-    setModulesConfiguration() {
-        const baseConfig = require('@Root/modules.config');
+    getActiveModules() {
+        const baseConfig = require('../modules.config');
 
         if (baseConfig) {
-            return {
-                pages: baseConfig.default.filter((e) => e.type === 'page'),
-                components: baseConfig.default.filter((e) => e.type === 'component'),
-            };
+            return baseConfig.default.filter((e) => e.active);
         }
 
-        return {};
+        return [];
     }
 
-    setPagesConfiguration({ pages }) {
-        const pagesConfiguration = { router: [], store: [] };
-        const filteredPages = pages.filter((page) => page.active);
-
-        for (let i = 0; i < filteredPages.length; i += 1) {
+    getModules(modules) {
+        return modules.reduce((acc, module) => {
+            const modulesConfig = acc;
+            const { name, source } = module;
             let config = null;
-            const { name, source } = filteredPages[i];
 
             switch (source) {
             case 'local':
-                config = require(`@Modules/${name}`).default;
+                config = require(`../modules/${name}`).default;
                 break;
             // TODO: uncomment when npm modules ready
             // case 'npm':
-            //     config = require(`@NodeModules/${pageName}`).default;
+            //     config = require(`${name}`).default;
             //     break;
             default:
                 config = null;
             }
+
             if (config) {
-                if (config.router) pagesConfiguration.router.push(...config.router);
+                if (config.router) modulesConfig.router.push(...config.router);
                 if (config.store) {
-                    pagesConfiguration.store.push({
+                    modulesConfig.store.push({
                         source,
                         moduleName: name,
                         store: [...config.store],
                     });
                 }
+                if (config.nuxt) {
+                    modulesConfig.nuxt = deepmerge(modulesConfig.nuxt, config.nuxt);
+                }
             }
-        }
-        return pagesConfiguration;
+
+            return modulesConfig;
+        }, { router: [], store: [], nuxt: {} });
     }
 
-    // TODO: complete when components modules ready
-    setComponentsConfiguration({ components }) {
-        return components;
-    }
     // TODO: old methods to refactor, don't remove
     // getComponent(componentPath, module = null) {
     //     const name = componentPath.split('/').pop();
@@ -101,6 +87,5 @@ class ModuleLoader {
 const Modules = new ModuleLoader();
 Vue.use(Modules);
 export const {
-    getPagesConfig,
-    getComponentsConfig,
+    getModulesConfig,
 } = Modules;

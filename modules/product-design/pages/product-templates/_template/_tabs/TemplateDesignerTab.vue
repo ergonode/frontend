@@ -95,12 +95,12 @@ export default {
                         isSelectLanguage: false,
                         disabled: !this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']),
                     },
-                    iconPath: 'Menu/IconAttributes',
+                    iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
                 },
                 {
                     title: 'Widgets',
                     component: () => import('~/components/Card/Lists/WidgetsListTab'),
-                    iconPath: 'Widgets/IconWidget',
+                    iconComponent: () => import('@Core/components/Icons/Widgets/IconWidget'),
                 },
             ],
         };
