@@ -61,7 +61,6 @@ export default {
                     'input--error': this.isError,
                     'input--focused': this.isFocused,
                     'input--disabled': this.disabled,
-                    'input--no-border': this.noBorder,
                 },
             ];
         },

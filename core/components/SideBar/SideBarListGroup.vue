@@ -10,11 +10,11 @@
                 'side-bar-list-group--selected': isSelected,
                 'side-bar-list-group--activated': isGroupActivated && !isSelected,
                 'side-bar-list-group--hovered': isHovered,
-                'side-bar-list-group--expanded': !isExpanded && isSelected,
+                'side-bar-list-group--expanded': !isExpanded && isHovered,
             }
         ]"
-        @mouseenter="onMouse"
-        @mouseleave="onMouse">
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave">
         <div
             class="side-bar-list-group__activator"
             @click="onGroupSelect">
@@ -23,20 +23,22 @@
                     :is="listIcon"
                     :fill-color="listIconFillColor" />
             </div>
-            <template v-if="isExpanded">
+            <FadeSideBarTextTransition>
                 <span
+                    v-if="isExpanded"
                     class="side-bar-list-group__title"
                     v-text="route.group.title" />
-                <IconArrowDropDown
-                    :state="dropDownState"
-                    :fill-color="dropdownIconFillColor" />
-            </template>
+            </FadeSideBarTextTransition>
+            <IconArrowDropDown
+                v-if="isExpanded"
+                :state="dropDownState"
+                :fill-color="dropdownIconFillColor" />
         </div>
         <ul
-            v-if="isSelected"
+            v-if="isSelected || (!isExpanded && isHovered)"
             class="side-bar-list-group__items">
             <div
-                v-if="!isExpanded && isSelected"
+                v-if="!isExpanded && isHovered"
                 class="side-bar-list-group__expanded-title">
                 <span
                     class="side-bar-list-group__title"
@@ -46,7 +48,7 @@
                 v-for="(child, index) in route.routes"
                 :key="index"
                 :route="child"
-                :is-expanded="!isExpanded && isSelected" />
+                :is-expanded="!isExpanded && isHovered" />
         </ul>
     </li>
 </template>
@@ -56,11 +58,13 @@ import { GREEN, WHITE, GREY_DARK } from '~/assets/scss/_variables/_colors.scss';
 import { ARROW } from '~/defaults/icons';
 import IconArrowDropDown from '../../../components/Icon/Arrows/IconArrowDropDown';
 import SideBarListGroupElement from './SideBarListGroupElement';
-import FadeTransition from '~/core/components/Transitions/FadeTransition';
+import FadeSideBarTextTransition from '~/core/components/Transitions/FadeSideBarTextTransition';
 
 export default {
     name: 'SideBarListGroup',
-    components: { SideBarListGroupElement, IconArrowDropDown, FadeTransition },
+    components: {
+        FadeSideBarTextTransition, SideBarListGroupElement, IconArrowDropDown,
+    },
     props: {
         route: {
             type: Object,
@@ -111,12 +115,11 @@ export default {
                 this.$emit('select', this.isSelected ? null : this.route.group.title);
             }
         },
-        onMouse() {
-            if (this.isExpanded) {
-                this.isHovered = !this.isHovered;
-            } else {
-                this.$emit('select', this.isSelected ? null : this.route.group.title);
-            }
+        onMouseEnter() {
+            this.isHovered = true;
+        },
+        onMouseLeave() {
+            this.isHovered = false;
         },
     },
 };
@@ -186,6 +189,9 @@ export default {
 
         &__title {
             font: $FONT_MEDIUM_14_20;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
         &__items {

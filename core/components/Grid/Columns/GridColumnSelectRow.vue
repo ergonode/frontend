@@ -11,6 +11,7 @@
             <GridCell
                 editing-allowed
                 action-cell
+                :current-page="currentPage"
                 :row="0"
                 :column="0"
                 :editing="isSelectedAllRows"
@@ -25,7 +26,8 @@
             :locked="true"
             :editing-allowed="false"
             :action-cell="false"
-            :row="1"
+            :current-page="currentPage"
+            :row="currentPage"
             :column="0">
             <GridCheckPlaceholderCell />
         </GridCell>
@@ -36,6 +38,7 @@
                 :row="(rowIndex + rowsOffset) * currentPage">
                 <GridEditSelectRowCell
                     :key="id"
+                    :current-page="currentPage"
                     :column="0"
                     :row="(rowIndex + rowsOffset) * currentPage"
                     :is-selected="isSelectedAllRows
@@ -119,7 +122,7 @@ export default {
     .pinned-column {
         position: sticky;
         left: 0;
-        z-index: 3;
+        z-index: $Z_INDEX_LVL_2;
         display: grid;
         box-sizing: border-box;
 

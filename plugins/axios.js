@@ -22,8 +22,7 @@ export default function ({
             notFound: /404/,
             conflict: /409/,
         };
-
-        const { response: { data: { message }, status } } = errorResponse;
+        const { response: { data: { message }, status, config } } = errorResponse;
 
         switch (true) {
         case regExp.errors.test(status):
@@ -39,6 +38,10 @@ export default function ({
             error({ statusCode: 403, message: msg });
             break;
         case regExp.notFound.test(status):
+            if (config.url.includes('multimedia')) {
+                msg = 'Media not found';
+                break;
+            }
             msg = 'Page not found';
             error({ statusCode: 404, message: msg });
             break;

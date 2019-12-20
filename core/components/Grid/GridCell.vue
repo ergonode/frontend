@@ -33,6 +33,10 @@ export default {
             type: Number,
             required: true,
         },
+        currentPage: {
+            type: Number,
+            default: 1,
+        },
         disabled: {
             type: Boolean,
             default: false,
@@ -132,7 +136,7 @@ export default {
                 break;
             case 38:
                 // Key: UP
-                element = document.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
+                element = document.querySelector(`.coordinates-${this.column}-${this.row - this.currentPage}`);
                 break;
             case 39:
             case 9:
@@ -145,7 +149,7 @@ export default {
                 break;
             case 40:
                 // Key: DOWN
-                element = document.querySelector(`.coordinates-${this.column}-${this.row + 1}`);
+                element = document.querySelector(`.coordinates-${this.column}-${this.row + this.currentPage}`);
                 break;
             default: break;
             }
@@ -182,7 +186,7 @@ export default {
         &:nth-child(1) {
             position: sticky;
             top: 0;
-            z-index: 1;
+            z-index: $Z_INDEX_LVL_2;
             background-color: $WHITESMOKE;
         }
 
@@ -209,7 +213,7 @@ export default {
         }
 
         &:focus {
-            z-index: 7;
+            z-index: $Z_INDEX_LVL_1;
         }
     }
 </style>

@@ -125,6 +125,9 @@ export default {
         store, params,
     }) {
         await Promise.all([
+            store.dispatch('gridDesigner/clearStorage'),
+            store.dispatch('list/clearStorage'),
+            store.dispatch('conditions/clearStorage'),
             store.dispatch('transitions/clearStorage'),
             store.dispatch('productStatus/getProductStatuses', {
                 limit: 9999,

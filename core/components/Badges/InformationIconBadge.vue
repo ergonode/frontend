@@ -11,11 +11,13 @@
 </template>
 
 <script>
+import InformationBadge from '~/core/components/Badges/InformationBadge';
+
 export default {
     name: 'InformationIconBadge',
     inheritAttrs: false,
     components: {
-        InformationBadge: () => import('~/core/components/Badges/InformationBadge'),
+        InformationBadge,
     },
 };
 </script>

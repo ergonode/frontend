@@ -11,6 +11,7 @@
                 :basic-filters="true"
                 :edit-column="false"
                 :select-column="false"
+                :is-column-editable="false"
                 title="Users activity logs" />
         </template>
         <template #footer>
@@ -43,7 +44,7 @@ export default {
             userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('usersActivityLogsGrid', {
-            numberOfDataElements: (state) => state.count,
+            numberOfDataElements: (state) => state.filtered,
             currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),

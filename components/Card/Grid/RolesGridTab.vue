@@ -11,6 +11,7 @@
                 :editing-privilege-allowed="$hasAccess(['USER_ROLE_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
+                :is-column-editable="false"
                 title="User roles"
                 @rowEdit="onRowEdit" />
         </template>
@@ -44,7 +45,7 @@ export default {
             userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('rolesGrid', {
-            numberOfDataElements: (state) => state.count,
+            numberOfDataElements: (state) => state.filtered,
             currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),

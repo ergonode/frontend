@@ -82,26 +82,32 @@ export default {
             }
         },
         onSave() {
+            this.removeValidationErrors();
+
             const setTranslation = (value) => {
                 const translation = this.isMultilingual
                     ? getParsedTranslations(value)
                     : { [this.userLanguageCode]: getParsedTranslations(value) };
                 return translation;
             };
-
-            this.removeValidationErrors();
-            // Select / Multi select key values cannot be empty
-            if (this.optionKeys.length > 0 && this.optionKeys.some((key) => key === '')) {
-                this.$addAlert({ type: 'warning', message: 'Options cannot have an empty keys' });
-                return;
-            }
-
             const { label, placeholder, hint } = this.translations;
             const propertiesToUpdate = {
                 groups: this.groups,
             };
 
             if (this.optionKeys.length > 0) {
+                const uniqueOptions = new Set(this.optionKeys);
+
+                if (this.optionKeys.some((key) => key === '')) {
+                    this.$addAlert({ type: 'warning', message: 'Options cannot have an empty keys' });
+                    return;
+                }
+
+                if (this.optionKeys.length !== uniqueOptions.size) {
+                    this.$addAlert({ type: 'warning', message: 'Option code must be unique' });
+                    return;
+                }
+
                 propertiesToUpdate.options = getParsedOptions(
                     this.optionKeys,
                     this.optionValues,

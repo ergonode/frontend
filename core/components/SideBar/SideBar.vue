@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <aside
-        :class="['side-bar', {'side-bar--expanded': isExpanded}]"
-        @click="onSelect">
+    <aside :class="['side-bar', {'side-bar--expanded': isExpanded}]">
         <ol class="side-bar__menu">
             <li>
                 <SideBarLogo :is-expanded="isExpanded" />
@@ -28,7 +26,7 @@
         <div class="expand-btn-wrapper">
             <FabButton
                 is-transparent
-                @click.native="onExpanded">
+                @click.native="onExpand">
                 <template #icon="{ color }">
                     <IconArrowDouble
                         :fill-color="color"
@@ -106,34 +104,14 @@ export default {
         },
     },
     methods: {
-        onExpanded() {
+        onExpand() {
             this.isExpanded = !this.isExpanded;
         },
         onGroupSelect(group) {
             this.selectedGroup = group;
         },
-        onSelect() {
-            if (!this.isExpanded) {
-                window.addEventListener('click', this.onClickOutside);
-            }
-        },
         isGroupSelected(groupTitle) {
-            if (this.selectedGroup === groupTitle && this.isSelected) return true;
-            return false;
-        },
-        onClickOutside(event) {
-            const { target } = event;
-
-            if (!this.$el.contains(target)) {
-                this.isSelected = false;
-            } else {
-                this.isSelected = true;
-            }
-
-            if (this.isExpanded) {
-                this.isSelected = true;
-                window.removeEventListener('click', this.onClickOutside);
-            }
+            return this.selectedGroup === groupTitle && this.isExpanded;
         },
     },
 };

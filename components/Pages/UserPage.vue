@@ -16,11 +16,10 @@
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE USER"
-                    :disabled="!$hasAccess('USER_DELETE')"
+                    :disabled="!$hasAccess(['USER_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
-                        <IconDelete
-                            :fill-color="color" />
+                        <IconDelete :fill-color="color" />
                     </template>
                 </PrependIconButton>
             </template> -->

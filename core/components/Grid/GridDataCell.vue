@@ -5,6 +5,7 @@
 <template>
     <GridCell
         :editing-allowed="isEditingAllowed"
+        :current-page="gridState.currentPage"
         :row="rowIndex"
         :column="columnIndex"
         :locked="!isEditingAllowed"
@@ -161,6 +162,7 @@ export default {
                 return {
                     namespace: this.namespace,
                     row: this.rowIndex,
+                    currentPage: this.gridState.currentPage,
                 };
             case COLUMN_TYPE.LABEL:
                 if (this.parsedDraftValue === null) {
@@ -185,7 +187,11 @@ export default {
                         };
                     }
 
-                    return { value: this.cellData.value !== null ? this.cellData.value : `#${this.cellData.key}` };
+                    return {
+                        value: !this.cellData.value && !this.cellData.key
+                            ? ''
+                            : this.cellData.value || `#${this.cellData.key}`,
+                    };
                 }
 
                 return { value: this.parsedDraftValue };
