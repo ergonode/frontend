@@ -2,15 +2,19 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { types } from './mutations';
+
 export default {
-    setTabTranslations: ({ commit }, translation) => {
-        commit('setTabTranslations', translation);
+    setTabTranslations({ commit }, translation) {
+        commit(types.SET_TAB_TRANSLATIONS, translation);
     },
-    setMultilingualTranslationPropertyValue: ({ commit }, params) => {
-        commit('setMultilingualTranslationPropertyValue', params);
+    setMultilingualTranslationPropertyValue({ commit }, params) {
+        commit(types.SET_MULTILINGUAL_TRANSLATION_PROPERTY_VALUE, params);
     },
-    addCardLanguageCode: ({ commit }, language) => commit('addCardLanguageCode', language),
-    setVisibleCardTranslations: ({ commit, state }, { languages }) => {
+    addCardLanguageCode({ commit }, language) {
+        commit(types.ADD_CARD_LANGUAGE_CODE, language);
+    },
+    setVisibleCardTranslations({ commit, state }, { languages }) {
         const { cardsLanguageCodes, translations } = state;
         const { length: numberOfCards } = cardsLanguageCodes;
         const { length: numberOfSelectedLanguages } = languages;
@@ -27,7 +31,7 @@ export default {
                 const indexToRemove = cardsLanguageCodes.findIndex(
                     (cardLanguageCode) => cardLanguageCode === languageCode,
                 );
-                commit('removeCardLanguageCode', {
+                commit(types.REMOVE_CARD_LANGUAGE_CODE, {
                     index: indexToRemove,
                 });
             });
@@ -39,14 +43,13 @@ export default {
                 ),
             );
             languageCodesToAdd.forEach((languageCode) => {
-                commit('addCardLanguageCode', { languageCode });
+                commit(types.ADD_CARD_LANGUAGE_CODE, { languageCode });
             });
 
-            commit('setTabTranslations', translations);
+            commit(types.SET_TAB_TRANSLATIONS, translations);
         }
     },
-    addOptionTranslation: ({ commit }, option) => commit('addOptionTranslation', option),
-    clearStorage: ({ commit }) => {
-        commit('clearStorage');
+    clearStorage({ commit }) {
+        commit(types.CLEAR_STATE);
     },
 };

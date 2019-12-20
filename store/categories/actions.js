@@ -8,7 +8,7 @@ const onDefaultError = () => {};
 
 export default {
     getCategoryById(
-        { commit, rootState },
+        { commit, dispatch, rootState },
         { categoryId, onError = () => {} },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
@@ -25,7 +25,7 @@ export default {
             commit(types.SET_CODE, code);
             commit(types.SET_NAME, name);
 
-            commit('translations/setTabTranslations', translations, { root: true });
+            dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onError);
     },
     async createCategory(

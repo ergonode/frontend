@@ -6,7 +6,7 @@ import { types } from './mutations';
 
 export default {
     getAttributeGroupById(
-        { commit, rootState },
+        { commit, dispatch, rootState },
         { groupId, onError = () => {} },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
@@ -23,7 +23,7 @@ export default {
             commit(types.SET_CODE, code);
             commit(types.SET_NAME, name);
 
-            commit('translations/setTabTranslations', translations, { root: true });
+            dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onError);
     },
     createAttributeGroup(

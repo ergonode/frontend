@@ -24,7 +24,7 @@ export default {
             })));
         }).catch(onDefaultError);
     },
-    getProductStatus({ commit }, path) {
+    getProductStatus({ commit, dispatch }, path) {
         return this.app.$axios.$get(path).then(({
             id, code, color, name, description,
         }) => {
@@ -37,7 +37,7 @@ export default {
             commit(types.SET_CODE, code);
             commit(types.SET_COLOR, color);
 
-            commit('translations/setTabTranslations', translations, { root: true });
+            dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onDefaultError);
     },
     getDefaultStatus({ commit, state, rootState }) {

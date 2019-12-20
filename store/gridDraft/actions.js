@@ -2,6 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { types } from './mutations';
+
 export default {
     async updateDraftValue({
         commit, state, dispatch,
@@ -13,14 +15,14 @@ export default {
         let parsedValue = '';
 
         if (!drafts[productId]) {
-            commit('initializeProductDraft', productId);
+            commit(types.INITIALIZE_PRODUCT_DRAFT, productId);
         }
 
         if (!drafts[productId][columnId]) {
-            commit('initializeColumnProductDraft', { productId, columnId });
+            commit(types.INITIALIZE_COLUMN_PRODUCT_DRAFT, { productId, columnId });
         }
 
-        commit('addDraftValueForLanguageCode', {
+        commit(types.ADD_DRAFT_VALUE_FOR_LANGUAGE_CODE, {
             productId, columnId, languageCode, value,
         });
 
@@ -34,7 +36,7 @@ export default {
 
         await this.app.$axios.$put(path, { value: parsedValue }).then(() => {
             // Clear validation error if exist
-            commit('validations/removeValidationError', `${productId}/${elementId}`, { root: true });
+            dispatch('validations/removeValidationError', `${productId}/${elementId}`, { root: true });
         }).catch((e) => {
             const { code, errors } = e.data;
             if (errors) {
@@ -50,18 +52,27 @@ export default {
         const { drafts } = state;
 
         if (!drafts[rowId]) {
-            commit('initializeProductDraft', rowId);
+            commit(types.INITIALIZE_PRODUCT_DRAFT, rowId);
         }
 
         if (!drafts[rowId][columnId]) {
-            commit('initializeColumnProductDraft', { productId: rowId, columnId });
+            commit(types.INITIALIZE_COLUMN_PRODUCT_DRAFT, { productId: rowId, columnId });
         }
 
-        commit('addDraftValueForLanguageCode', {
+        commit(types.ADD_DRAFT_VALUE_FOR_LANGUAGE_CODE, {
             productId: rowId, columnId, languageCode: userLanguageCode, value,
         });
     },
-    removeDraft: ({ commit }, productId) => commit('removeDraft', productId),
-    removeDraftValue: ({ commit }, payload) => commit('removeDraftValue', payload),
-    forceDraftsMutation: ({ commit }) => commit('forceDraftsMutation'),
+    removeDraft({ commit }, productId) {
+        commit(types.REMOVE_DRAFT, productId);
+    },
+    removeDraftValue({ commit }, payload) {
+        commit(types.REMOVE_DRAFT_VALUE, payload);
+    },
+    forceDraftsMutation({ commit }) {
+        commit(types.FORCE_DRAFT_MUTATION);
+    },
+    clearStorage({ commit }) {
+        commit(types.CLEAR_STATE);
+    },
 };

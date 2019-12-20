@@ -30,12 +30,13 @@ export const actions = {
         dispatch('productsDraft/clearStorage');
         dispatch('productStatus/clearStorage');
         dispatch('templateDesigner/clearStorage');
+        dispatch('templateLists/clearStorage');
         dispatch('list/clearStorage');
         dispatch('roles/clearStorage');
         dispatch('users/clearStorage');
-        commit('gridDraft/clearStorage');
-        commit('translations/clearStorage');
-        commit('validations/clearStorage');
+        dispatch('validations/clearStorage');
+        dispatch('translations/clearStorage');
+        dispatch('gridDraft/clearStorage');
     },
 };
 

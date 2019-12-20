@@ -7,10 +7,10 @@ import { types } from './mutations';
 import { getKeyByValue } from '~/model/objectWrapper';
 
 export default {
-    setAction: ({ commit }, payload) => {
+    setAction({ commit }, payload) {
         commit(types.SET_STATE, payload);
     },
-    setUserLanguage: ({ commit, rootState }, { language }) => {
+    setUserLanguage({ commit, rootState }, { language }) {
         const { languages } = rootState.data;
         const lang = getKeyByValue(languages, language);
         commit(types.SET_STATE, { key: 'language', value: lang });
