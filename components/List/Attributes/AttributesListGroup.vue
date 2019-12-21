@@ -27,7 +27,7 @@ import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
 export default {
     name: 'AttributesListGroup',
     components: {
-        ListGroupElement: () => import('~/core/components/List/ListGroupElement'),
+        ListGroupElement: () => import('@Core/components/List/ListGroupElement'),
         AttributesListElement: () => import('~/components/List/Attributes/AttributesListElement'),
     },
     props: {

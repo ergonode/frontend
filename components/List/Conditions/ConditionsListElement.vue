@@ -20,9 +20,9 @@ import { getUUID } from '~/model/stringWrapper';
 export default {
     name: 'ConditionsListElement',
     components: {
-        ListDraggableElement: () => import('~/core/components/List/ListDraggableElement'),
-        ListElementDescription: () => import('~/core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('~/core/components/List/ListElementTitle'),
+        ListDraggableElement: () => import('@Core/components/List/ListDraggableElement'),
+        ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
+        ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
     },
     props: {
         item: {

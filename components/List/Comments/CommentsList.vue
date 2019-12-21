@@ -27,8 +27,8 @@
 export default {
     name: 'CommentsList',
     components: {
-        List: () => import('~/core/components/List/List'),
-        FadeTransition: () => import('~/core/components/Transitions/FadeTransition'),
+        List: () => import('@Core/components/List/List'),
+        FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
     },
     props: {
         isPlaceholder: {

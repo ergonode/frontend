@@ -23,11 +23,11 @@ import { mapActions } from 'vuex';
 export default {
     name: 'WidgetsListElement',
     components: {
-        ListDraggableElement: () => import('~/core/components/List/ListDraggableElement'),
-        ListElementIcon: () => import('~/core/components/List/ListElementIcon'),
-        ListElementDescription: () => import('~/core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('~/core/components/List/ListElementTitle'),
-        ListElementHint: () => import('~/core/components/List/ListElementHint'),
+        ListDraggableElement: () => import('@Core/components/List/ListDraggableElement'),
+        ListElementIcon: () => import('@Core/components/List/ListElementIcon'),
+        ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
+        ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
+        ListElementHint: () => import('@Core/components/List/ListElementHint'),
     },
     props: {
         item: {

@@ -36,11 +36,11 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
-import { THEMES, SIZES } from '~/defaults/buttons';
+import { THEMES, SIZES } from '@Core/defaults/buttons';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import CommentWrapper from '~/components/Comments/CommentWrapper';
-import Button from '~/core/components/Buttons/Button';
-import TextArea from '~/core/components/Inputs/TextArea';
+import Button from '@Core/components/Buttons/Button';
+import TextArea from '@Core/components/Inputs/TextArea';
 
 export default {
     name: 'EditableComment',

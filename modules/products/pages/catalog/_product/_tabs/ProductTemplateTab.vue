@@ -31,9 +31,9 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getValueByKey } from '~/model/objectWrapper';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
-import VerticalCenteredView from '~/core/components/Layout/VerticalCenteredView';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
+import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';
 
 export default {
     name: 'ProductTemplateTab',
@@ -41,7 +41,7 @@ export default {
         VerticalCenteredView,
         VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
-        Select: () => import('~/core/components/Inputs/Select/Select'),
+        Select: () => import('@Core/components/Inputs/Select/Select'),
         ProductCompleteness: () => import('~/components/Progress/ProductCompleteness'),
         ProductTemplateForm: () => import('~/components/Forms/ProductTemplateForm'),
     },

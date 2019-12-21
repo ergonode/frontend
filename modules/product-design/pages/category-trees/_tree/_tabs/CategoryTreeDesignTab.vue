@@ -14,12 +14,12 @@
 </template>
 
 <script>
-import GridViewTemplate from '~/core/components/Layout/Templates/GridViewTemplate';
+import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 
 export default {
     name: 'CategoryTreeDesignTab',
     components: {
-        VerticalTabBar: () => import('~/core/components/Tab/VerticalTabBar'),
+        VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
         CategoryTreeWrapper: () => import('~/components/CategoryTreeDesigner/CategoryTreeWrapper'),
         GridViewTemplate,
     },

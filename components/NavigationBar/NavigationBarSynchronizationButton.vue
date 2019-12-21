@@ -14,7 +14,7 @@ import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 export default {
     name: 'NavigationBarSynchronizationButton',
     components: {
-        NavigationBarButton: () => import('~/core/components/NavigationBar/NavigationBarButton'),
+        NavigationBarButton: () => import('@Core/components/NavigationBar/NavigationBarButton'),
         IconProcessing: () => import('~/components/Icon/Others/IconProcessing'),
     },
     computed: {

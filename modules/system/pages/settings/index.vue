@@ -25,10 +25,10 @@ export default {
     name: 'Settings',
     components: {
         LanguageSettingsTab: () => import('~/components/Card/Tabs/LanguageSettingsTab'),
-        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
+        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Footer: () => import('~/components/ReusableFooter/Footer'),
-        Button: () => import('~/core/components/Buttons/Button'),
-        Page: () => import('~/core/components/Layout/Page'),
+        Button: () => import('@Core/components/Buttons/Button'),
+        Page: () => import('@Core/components/Layout/Page'),
     },
     beforeCreate() {
         this.$registerStore({

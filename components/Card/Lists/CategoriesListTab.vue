@@ -30,11 +30,11 @@ import {
 export default {
     name: 'CategoriesListTab',
     components: {
-        VerticalTabBarListWrapper: () => import('~/core/components/Tab/VerticalTabBarListWrapper'),
-        ListSearchHeader: () => import('~/core/components/List/ListSearchHeader'),
+        VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
+        ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         CategoriesList: () => import('~/components/List/Categories/CategoriesList'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
-        FabButton: () => import('~/core/components/Buttons/FabButton'),
+        FabButton: () => import('@Core/components/Buttons/FabButton'),
     },
     props: {
         isExpanded: {

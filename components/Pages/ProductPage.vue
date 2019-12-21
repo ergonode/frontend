@@ -60,12 +60,12 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
-import { SIZES, THEMES } from '~/defaults/buttons';
+import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { getNestedTabRoutes } from '~/model/navigation/tabs';
-import Button from '~/core/components/Buttons/Button';
-import MultiButton from '~/core/components/Buttons/MultiButton';
+import Button from '@Core/components/Buttons/Button';
+import MultiButton from '@Core/components/Buttons/MultiButton';
 import ProductStatusBadge from '~/components/Badges/ProductStatusBadge';
-import TitleBarSubActions from '~/core/components/TitleBar/TitleBarSubActions';
+import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {

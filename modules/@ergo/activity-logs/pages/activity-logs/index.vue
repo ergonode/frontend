@@ -12,15 +12,15 @@
 </template>
 
 <script>
-import { THEMES, SIZES } from '~/defaults/buttons';
+import { THEMES, SIZES } from '@Core/defaults/buttons';
 import gridModule from '~/reusableStore/grid/state';
 
 export default {
     name: 'UsersTabs',
     components: {
         UsersActivityLogsGridTab: () => import('@ActivityLogs/components/Tabs/UsersActivityLogsGridTab'),
-        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
-        Page: () => import('~/core/components/Layout/Page'),
+        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
+        Page: () => import('@Core/components/Layout/Page'),
     },
     beforeCreate() {
         this.$registerStore({

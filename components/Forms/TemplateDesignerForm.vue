@@ -31,10 +31,10 @@ import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 export default {
     name: 'TemplateDesignerForm',
     components: {
-        Form: () => import('~/core/components/Form/Form'),
-        FormGroup: () => import('~/core/components/Form/FormGroup'),
-        TextField: () => import('~/core/components/Inputs/TextField'),
-        UploadImage: () => import('~/core/components/Inputs/Image/UploadImage'),
+        Form: () => import('@Core/components/Form/Form'),
+        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        TextField: () => import('@Core/components/Inputs/TextField'),
+        UploadImage: () => import('@Core/components/Inputs/Image/UploadImage'),
     },
     mixins: [errorValidationMixin],
     computed: {

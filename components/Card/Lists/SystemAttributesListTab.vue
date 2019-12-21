@@ -29,10 +29,10 @@ import { mapState, mapActions } from 'vuex';
 export default {
     name: 'SystemAttributesListTab',
     components: {
-        VerticalTabBarListWrapper: () => import('~/core/components/Tab/VerticalTabBarListWrapper'),
+        VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
         SystemAttributesList: () => import('~/components/List/Attributes/SystemAttributesList'),
-        ListSearchSelectHeader: () => import('~/core/components/List/ListSearchSelectHeader'),
-        ListSearchHeader: () => import('~/core/components/List/ListSearchHeader'),
+        ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
+        ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
     },
     props: {
         isSelectLanguage: {

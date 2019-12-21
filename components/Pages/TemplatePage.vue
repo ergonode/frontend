@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { SIZES, THEMES } from '~/defaults/buttons';
+import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 

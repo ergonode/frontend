@@ -50,9 +50,9 @@ import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 export default {
     name: 'TransitionForm',
     components: {
-        Form: () => import('~/core/components/Form/Form'),
-        FormGroup: () => import('~/core/components/Form/FormGroup'),
-        Select: () => import('~/core/components/Inputs/Select/Select'),
+        Form: () => import('@Core/components/Form/Form'),
+        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        Select: () => import('@Core/components/Inputs/Select/Select'),
     },
     mixins: [errorValidationMixin],
     computed: {

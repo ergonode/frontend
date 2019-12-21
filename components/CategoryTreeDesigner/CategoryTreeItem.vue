@@ -37,12 +37,12 @@
     </div>
 </template>
 <script>
-import { SIZES, THEMES } from '~/defaults/buttons';
+import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { ACTION } from '~/defaults/icons';
 import IconDots from '~/components/Icon/Others/IconDots';
 import IconPlusMinus from '~/components/Icon/Actions/IconPlusMinus';
-import MultiButton from '~/core/components/Buttons/MultiButton';
-import NumericBadge from '~/core/components/Badges/NumericBadge';
+import MultiButton from '@Core/components/Buttons/MultiButton';
+import NumericBadge from '@Core/components/Badges/NumericBadge';
 
 export default {
     name: 'CategoryTreeItem',

@@ -46,11 +46,11 @@ import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 export default {
     name: 'ProductStatusForm',
     components: {
-        Form: () => import('~/core/components/Form/Form'),
-        FormGroup: () => import('~/core/components/Form/FormGroup'),
-        TextField: () => import('~/core/components/Inputs/TextField'),
-        ColorPicker: () => import('~/core/components/Inputs/ColorPicker/ColorPicker'),
-        CheckBox: () => import('~/core/components/Inputs/CheckBox'),
+        Form: () => import('@Core/components/Form/Form'),
+        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        TextField: () => import('@Core/components/Inputs/TextField'),
+        ColorPicker: () => import('@Core/components/Inputs/ColorPicker/ColorPicker'),
+        CheckBox: () => import('@Core/components/Inputs/CheckBox'),
     },
     mixins: [errorValidationMixin],
     computed: {

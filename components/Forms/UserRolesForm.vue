@@ -35,10 +35,10 @@ import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 export default {
     name: 'UserRolesForm',
     components: {
-        Form: () => import('~/core/components/Form/Form'),
-        FormGroup: () => import('~/core/components/Form/FormGroup'),
-        TextField: () => import('~/core/components/Inputs/TextField'),
-        TextArea: () => import('~/core/components/Inputs/TextArea'),
+        Form: () => import('@Core/components/Form/Form'),
+        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        TextField: () => import('@Core/components/Inputs/TextField'),
+        TextArea: () => import('@Core/components/Inputs/TextArea'),
     },
     mixins: [errorValidationMixin],
     computed: {

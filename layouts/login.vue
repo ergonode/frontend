@@ -14,8 +14,8 @@
 export default {
     middleware: ['notAuthenticated'],
     components: {
-        App: () => import('~/core/components/Layout/App'),
-        FlashMessage: () => import('~/core/components/Alerts/FlashMessage'),
+        App: () => import('@Core/components/Layout/App'),
+        FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),
     },
 };
 </script>

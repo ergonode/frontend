@@ -2,13 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
     components: {
         ResponsiveCenteredViewTemplate,
-        Grid: () => import('~/core/components/Grid/Grid'),
-        GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
-        GridPagination: () => import('~/core/components/Grid/GridPagination'),
+        Grid: () => import('@Core/components/Grid/Grid'),
+        GridPageSelector: () => import('@Core/components/Grid/GridPageSelector'),
+        GridPagination: () => import('@Core/components/Grid/GridPagination'),
     },
 };

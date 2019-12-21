@@ -24,17 +24,17 @@
 </template>
 
 <script>
-import { THEMES, SIZES } from '~/defaults/buttons';
+import { THEMES, SIZES } from '@Core/defaults/buttons';
 import gridModule from '~/reusableStore/grid/state';
-import PrependIconButton from '~/core/components/Buttons/PrependIconButton';
+import PrependIconButton from '@Core/components/Buttons/PrependIconButton';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import RolesGridTab from '~/components/Card/Grid/RolesGridTab';
 
 export default {
     name: 'UsersTabs',
     components: {
-        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
-        Page: () => import('~/core/components/Layout/Page'),
+        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
+        Page: () => import('@Core/components/Layout/Page'),
         RolesGridTab,
         PrependIconButton,
         IconAdd,

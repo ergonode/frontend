@@ -26,8 +26,8 @@ import {
 import { hasOptions } from '~/model/conditions/ConditionTypes';
 import { TYPES } from '~/defaults/conditions';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
-import TextField from '~/core/components/Inputs/TextField';
-import Select from '~/core/components/Inputs/Select/Select';
+import TextField from '@Core/components/Inputs/TextField';
+import Select from '@Core/components/Inputs/Select/Select';
 
 export default {
     name: 'ConditionSetParameters',

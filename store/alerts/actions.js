@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { SUCCESS, ALERT_TIME_TO_LEAVE } from '~/defaults/alerts';
+import { SUCCESS, ALERT_TIME_TO_LEAVE } from '@Core/defaults/alerts';
 import { getUUID } from '~/model/stringWrapper';
 
 export default {

@@ -86,14 +86,14 @@ import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 export default {
     name: 'AttributeForm',
     components: {
-        Form: () => import('~/core/components/Form/Form'),
-        FormGroup: () => import('~/core/components/Form/FormGroup'),
+        Form: () => import('@Core/components/Form/Form'),
+        FormGroup: () => import('@Core/components/Form/FormGroup'),
         AttributeOptionKeyValues: () => import('~/components/Card/AttributeOptionKeyValues'),
-        Toggler: () => import('~/core/components/Inputs/Toggler/Toggler'),
-        InfoHint: () => import('~/core/components/Hints/InfoHint'),
-        TextField: () => import('~/core/components/Inputs/TextField'),
-        Select: () => import('~/core/components/Inputs/Select/Select'),
-        FadeGroupTransition: () => import('~/core/components/Transitions/FadeGroupTransition'),
+        Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
+        InfoHint: () => import('@Core/components/Hints/InfoHint'),
+        TextField: () => import('@Core/components/Inputs/TextField'),
+        Select: () => import('@Core/components/Inputs/Select/Select'),
+        FadeGroupTransition: () => import('@Core/components/Transitions/FadeGroupTransition'),
     },
     mixins: [errorValidationMixin],
     data() {

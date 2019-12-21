@@ -22,8 +22,8 @@ import { mapState } from 'vuex';
 export default {
     name: 'AttributesList',
     components: {
-        List: () => import('~/core/components/List/List'),
-        ListScrollableContainer: () => import('~/core/components/List/ListScrollableContainer'),
+        List: () => import('@Core/components/List/List'),
+        ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         AttributesListGroup: () => import('~/components/List/Attributes/AttributesListGroup'),
     },
     props: {

@@ -26,9 +26,9 @@ import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 export default {
     name: 'CategoryTreeForm',
     components: {
-        Form: () => import('~/core/components/Form/Form'),
-        FormGroup: () => import('~/core/components/Form/FormGroup'),
-        TextField: () => import('~/core/components/Inputs/TextField'),
+        Form: () => import('@Core/components/Form/Form'),
+        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        TextField: () => import('@Core/components/Inputs/TextField'),
     },
     mixins: [errorValidationMixin],
     computed: {

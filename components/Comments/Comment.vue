@@ -56,13 +56,13 @@
 <script>
 import { mapActions } from 'vuex';
 import { format as formatDate } from 'date-fns';
-import { THEMES, SIZES } from '~/defaults/buttons';
-import { COMMENT_FORMAT } from '~/defaults/date';
+import { THEMES, SIZES } from '@Core/defaults/buttons';
+import { DEFAULT_DATA_HOUR_FORMAT } from '@Core/defaults/date';
 import {
     GREEN, RED, WHITE,
 } from '~/assets/scss/_variables/_colors.scss';
 import CommentWrapper from '~/components/Comments/CommentWrapper';
-import FabButton from '~/core/components/Buttons/FabButton';
+import FabButton from '@Core/components/Buttons/FabButton';
 import IconEdit from '~/components/Icon/Actions/IconEdit';
 import IconDelete from '~/components/Icon/Actions/IconDelete';
 
@@ -130,7 +130,7 @@ export default {
         },
         formatDate(date) {
             if (!date) return null;
-            return formatDate(new Date(date), COMMENT_FORMAT);
+            return formatDate(new Date(date), DEFAULT_DATA_HOUR_FORMAT);
         },
     },
 };

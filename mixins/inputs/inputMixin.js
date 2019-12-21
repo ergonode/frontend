@@ -4,8 +4,8 @@
  */
 export default {
     components: {
-        InfoHint: () => import('~/core/components/Hints/InfoHint'),
-        ErrorHint: () => import('~/core/components/Hints/ErrorHint'),
+        InfoHint: () => import('@Core/components/Hints/InfoHint'),
+        ErrorHint: () => import('@Core/components/Hints/ErrorHint'),
     },
     data() {
         return {

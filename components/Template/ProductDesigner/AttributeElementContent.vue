@@ -55,17 +55,17 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { SIZES, THEMES } from '~/defaults/buttons';
+import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { capitalizeAndConcatenationArray } from '~/model/stringWrapper';
-import MultiButton from '~/core/components/Buttons/MultiButton';
+import MultiButton from '@Core/components/Buttons/MultiButton';
 import IconDots from '~/components/Icon/Others/IconDots';
-import CheckBox from '~/core/components/Inputs/CheckBox';
+import CheckBox from '@Core/components/Inputs/CheckBox';
 import ElementContentBase from '~/components/Template/ProductDesigner/ElementContentBase';
-import List from '~/core/components/List/List';
-import ListElement from '~/core/components/List/ListElement';
-import ListElementAction from '~/core/components/List/ListElementAction';
-import ListElementDescription from '~/core/components/List/ListElementDescription';
-import ListElementTitle from '~/core/components/List/ListElementTitle';
+import List from '@Core/components/List/List';
+import ListElement from '@Core/components/List/ListElement';
+import ListElementAction from '@Core/components/List/ListElementAction';
+import ListElementDescription from '@Core/components/List/ListElementDescription';
+import ListElementTitle from '@Core/components/List/ListElementTitle';
 
 export default {
     name: 'AttributeElementContent',

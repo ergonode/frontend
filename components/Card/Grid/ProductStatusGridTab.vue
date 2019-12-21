@@ -30,15 +30,15 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
     name: 'ProductStatusGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        Grid: () => import('~/core/components/Grid/Grid'),
-        GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
-        GridPagination: () => import('~/core/components/Grid/GridPagination'),
+        Grid: () => import('@Core/components/Grid/Grid'),
+        GridPageSelector: () => import('@Core/components/Grid/GridPageSelector'),
+        GridPagination: () => import('@Core/components/Grid/GridPagination'),
     },
     computed: {
         ...mapState('authentication', {

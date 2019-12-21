@@ -18,7 +18,7 @@ import { mapState, mapActions } from 'vuex';
 export default {
     name: 'AttributeOptionValue',
     components: {
-        TextField: () => import('~/core/components/Inputs/TextField'),
+        TextField: () => import('@Core/components/Inputs/TextField'),
     },
     props: {
         languageCode: {

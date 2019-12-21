@@ -30,15 +30,15 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
     name: 'ProductHistoryGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        Grid: () => import('~/core/components/Grid/Grid'),
-        GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
-        GridPagination: () => import('~/core/components/Grid/GridPagination'),
+        Grid: () => import('@Core/components/Grid/Grid'),
+        GridPageSelector: () => import('@Core/components/Grid/GridPageSelector'),
+        GridPagination: () => import('@Core/components/Grid/GridPagination'),
     },
     beforeCreate() {
         this.$registerStore({

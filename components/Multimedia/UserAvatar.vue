@@ -21,7 +21,7 @@
 export default {
     name: 'UserAvatar',
     components: {
-        Picture: () => import('~/core/components/Multimedia/Picture'),
+        Picture: () => import('@Core/components/Multimedia/Picture'),
     },
     props: {
         imageId: {

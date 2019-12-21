@@ -37,7 +37,7 @@ import { ARROW } from '~/defaults/icons';
 export default {
     name: 'NavigationBarUserButton',
     components: {
-        NavigationBarSelectButton: () => import('~/core/components/NavigationBar/NavigationBarSelectButton'),
+        NavigationBarSelectButton: () => import('@Core/components/NavigationBar/NavigationBarSelectButton'),
         NavigationBarUserSelectContent: () => import('~/components/NavigationBar/NavigationBarUserSelectContent'),
         IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
         UserAvatar: () => import('~/components/Multimedia/UserAvatar'),

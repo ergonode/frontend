@@ -20,8 +20,8 @@ import { mapState } from 'vuex';
 export default {
     name: 'CategoriesList',
     components: {
-        List: () => import('~/core/components/List/List'),
-        ListScrollableContainer: () => import('~/core/components/List/ListScrollableContainer'),
+        List: () => import('@Core/components/List/List'),
+        ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         CategoriesListElement: () => import('~/components/List/Categories/CategoriesListElement'),
     },
     props: {

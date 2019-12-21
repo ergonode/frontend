@@ -38,11 +38,11 @@ import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 export default {
     name: 'AttributesListTab',
     components: {
-        VerticalTabBarListWrapper: () => import('~/core/components/Tab/VerticalTabBarListWrapper'),
+        VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
         AttributesList: () => import('~/components/List/Attributes/AttributesList'),
-        ListSearchSelectHeader: () => import('~/core/components/List/ListSearchSelectHeader'),
-        ListSearchHeader: () => import('~/core/components/List/ListSearchHeader'),
-        FabButton: () => import('~/core/components/Buttons/FabButton'),
+        ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
+        ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
+        FabButton: () => import('@Core/components/Buttons/FabButton'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
     },
     props: {

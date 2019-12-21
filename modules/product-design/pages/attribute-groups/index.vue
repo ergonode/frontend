@@ -25,16 +25,16 @@
 
 <script>
 import gridModule from '~/reusableStore/grid/state';
-import { THEMES, SIZES } from '~/defaults/buttons';
-import PrependIconButton from '~/core/components/Buttons/PrependIconButton';
+import { THEMES, SIZES } from '@Core/defaults/buttons';
+import PrependIconButton from '@Core/components/Buttons/PrependIconButton';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import AttributeGroupGridTab from '~/components/Card/Grid/AttributeGroupGridTab';
 
 export default {
     name: 'AttributeTabs',
     components: {
-        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
-        Page: () => import('~/core/components/Layout/Page'),
+        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
+        Page: () => import('@Core/components/Layout/Page'),
         AttributeGroupGridTab,
         PrependIconButton,
         IconAdd,

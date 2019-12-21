@@ -30,7 +30,7 @@
 export default {
     name: 'SimpleGrid',
     components: {
-        Button: () => import('~/core/components/Buttons/Button'),
+        Button: () => import('@Core/components/Buttons/Button'),
     },
     props: {
         items: {

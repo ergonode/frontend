@@ -40,13 +40,13 @@ import { mapState } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
 import { getMappedGridData } from '~/model/mappers/privilegesMapper';
 import { COLUMN_TYPE } from '~/defaults/grid';
-import { STATE } from '~/defaults/inputs/checkbox';
-import Grid from '~/core/components/Grid/Grid';
-import GridCell from '~/core/components/Grid/GridCell';
-import GridPresentationHintCell from '~/core/components/Grid/PresentationCells/GridPresentationHintCell';
-import GridPresentationCell from '~/core/components/Grid/PresentationCells/GridPresentationCell';
-import GridPresentationCheckCell from '~/core/components/Grid/PresentationCells/GridPresentationCheckCell';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import { STATE } from '@Core/defaults/inputs/checkbox';
+import Grid from '@Core/components/Grid/Grid';
+import GridCell from '@Core/components/Grid/GridCell';
+import GridPresentationHintCell from '@Core/components/Grid/PresentationCells/GridPresentationHintCell';
+import GridPresentationCell from '@Core/components/Grid/PresentationCells/GridPresentationCell';
+import GridPresentationCheckCell from '@Core/components/Grid/PresentationCells/GridPresentationCheckCell';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
     name: 'UserPrivilegesGridTab',

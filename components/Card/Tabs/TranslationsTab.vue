@@ -28,10 +28,10 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import Select from '~/core/components/Inputs/Select/Select';
-import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
-import VerticalCenteredView from '~/core/components/Layout/VerticalCenteredView';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import Select from '@Core/components/Inputs/Select/Select';
+import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
+import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';
 
 export default {
     name: 'TranslationsTab',

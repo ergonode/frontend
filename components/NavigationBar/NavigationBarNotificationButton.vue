@@ -41,14 +41,14 @@ import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 export default {
     name: 'NavigationBarNotificationButton',
     components: {
-        NavigationBarSelectButton: () => import('~/core/components/NavigationBar/NavigationBarSelectButton'),
+        NavigationBarSelectButton: () => import('@Core/components/NavigationBar/NavigationBarSelectButton'),
         IconBell: () => import('@Core/components/Icons/Menu/IconBell'),
-        NotificationBadge: () => import('~/core/components/Badges/NotificationBadge'),
-        Button: () => import('~/core/components/Buttons/Button'),
-        List: () => import('~/core/components/List/List'),
+        NotificationBadge: () => import('@Core/components/Badges/NotificationBadge'),
+        Button: () => import('@Core/components/Buttons/Button'),
+        List: () => import('@Core/components/List/List'),
         NotificationsListElement: () => import('~/components/List/Notifications/NotificationsListElement'),
         NotificationsListFooter: () => import('~/components/List/Notifications/NotificationsListFooter'),
-        ListPlaceholder: () => import('~/core/components/List/ListPlaceholder'),
+        ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
     },
     computed: {
         ...mapState('notifications', {

@@ -15,9 +15,9 @@
 export default {
     name: 'NotificationTabs',
     components: {
-        HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
-        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
-        Page: () => import('~/core/components/Layout/Page'),
+        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
+        Page: () => import('@Core/components/Layout/Page'),
     },
     computed: {
         tabs() {

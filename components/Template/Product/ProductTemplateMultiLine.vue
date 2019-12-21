@@ -22,7 +22,7 @@ export default {
     name: 'ProductTemplateMultiLine',
     mixins: [productTemplateElementMixin],
     components: {
-        TextArea: () => import('~/core/components/Inputs/TextArea'),
+        TextArea: () => import('@Core/components/Inputs/TextArea'),
     },
     watch: {
         value() {

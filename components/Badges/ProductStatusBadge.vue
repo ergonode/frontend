@@ -18,7 +18,7 @@ import { WHITE, GRAPHITE_DARK } from '~/assets/scss/_variables/_colors.scss';
 export default {
     name: 'ProductStatusBadge',
     components: {
-        InformationBadge: () => import('~/core/components/Badges/InformationBadge'),
+        InformationBadge: () => import('@Core/components/Badges/InformationBadge'),
     },
     props: {
         status: {

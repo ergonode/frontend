@@ -1,6 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`TitleBar/TitleBarBreadcrumb Renders breadcrumb with category 1`] = `
-<nuxtlink-stub class="breadcrumb">
-  <!----> <span class="breadcrumb__title">Categories</span></nuxtlink-stub>
-`;

@@ -38,9 +38,9 @@
 import { mapState, mapActions } from 'vuex';
 import { LayoutOrientation } from '~/defaults/layout';
 import { DATA_LIMIT } from '~/defaults/grid';
-import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
-import VerticalCenteredView from '~/core/components/Layout/VerticalCenteredView';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
+import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';
 
 export default {
     name: 'AttributeGridTab',
@@ -48,12 +48,12 @@ export default {
         VerticalCenteredView,
         VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
-        Loader: () => import('~/core/components/Loader/Loader'),
-        Button: () => import('~/core/components/Buttons/Button'),
-        List: () => import('~/core/components/List/List'),
+        Loader: () => import('@Core/components/Loader/Loader'),
+        Button: () => import('@Core/components/Buttons/Button'),
+        List: () => import('@Core/components/List/List'),
         NotificationsListElement: () => import('~/components/List/Notifications/NotificationsListElement'),
         NotificationsListFooter: () => import('~/components/List/Notifications/NotificationsListFooter'),
-        ListPlaceholder: () => import('~/core/components/List/ListPlaceholder'),
+        ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
     },
     computed: {
         ...mapState('notifications', {

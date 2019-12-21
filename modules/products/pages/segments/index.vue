@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import { SIZES } from '~/defaults/buttons';
+import { SIZES } from '@Core/defaults/buttons';
 import gridModule from '~/reusableStore/grid/state';
-import PrependIconButton from '~/core/components/Buttons/PrependIconButton';
+import PrependIconButton from '@Core/components/Buttons/PrependIconButton';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import SegmentsGridTab from '~/components/Card/Grid/SegmentsGridTab';
 
@@ -34,8 +34,8 @@ export default {
     name: 'SegmentsPage',
     components: {
         SegmentsGridTab,
-        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
-        Page: () => import('~/core/components/Layout/Page'),
+        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
+        Page: () => import('@Core/components/Layout/Page'),
         PrependIconButton,
         IconAdd,
     },

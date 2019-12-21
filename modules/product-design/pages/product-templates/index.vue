@@ -41,16 +41,16 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import { SIZES } from '~/defaults/buttons';
+import { SIZES } from '@Core/defaults/buttons';
 
 export default {
     name: 'Templates',
     components: {
-        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
+        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         TemplateElement: () => import('~/components/Template/TemplateElement'),
-        Page: () => import('~/core/components/Layout/Page'),
+        Page: () => import('@Core/components/Layout/Page'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
-        PrependIconButton: () => import('~/core/components/Buttons/PrependIconButton'),
+        PrependIconButton: () => import('@Core/components/Buttons/PrependIconButton'),
     },
     computed: {
         ...mapState('templateLists', {

@@ -50,9 +50,9 @@
 import { mapState, mapActions } from 'vuex';
 import { DATA_LIMIT } from '~/defaults/grid';
 import { LayoutOrientation } from '~/defaults/layout';
-import PrependIconButton from '~/core/components/Buttons/PrependIconButton';
-import Button from '~/core/components/Buttons/Button';
-import Loader from '~/core/components/Loader/Loader';
+import PrependIconButton from '@Core/components/Buttons/PrependIconButton';
+import Button from '@Core/components/Buttons/Button';
+import Loader from '@Core/components/Loader/Loader';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import CommentsList from '~/components/List/Comments/CommentsList';
 import CommentStateChanger from '~/components/Comments/CommentStateChanger';
@@ -69,7 +69,7 @@ export default {
         CommentsList,
         CommentStateChanger,
         EditableComment,
-        ListPlaceholder: () => import('~/core/components/List/ListPlaceholder'),
+        ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
     },
     data() {
         return {

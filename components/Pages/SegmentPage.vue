@@ -41,7 +41,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { SIZES, THEMES } from '~/defaults/buttons';
+import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { Z_INDEX_LVL_0 } from '~/assets/scss/_variables/_indexes.scss';
 import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';

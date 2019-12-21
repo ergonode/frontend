@@ -30,7 +30,7 @@ export default {
     name: 'ProductTemplateSingleLine',
     mixins: [productTemplateElementMixin],
     components: {
-        TextField: () => import('~/core/components/Inputs/TextField'),
+        TextField: () => import('@Core/components/Inputs/TextField'),
     },
     computed: {
         suffix() {

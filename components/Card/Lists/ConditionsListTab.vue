@@ -25,9 +25,9 @@ export default {
         },
     },
     components: {
-        VerticalTabBarListWrapper: () => import('~/core/components/Tab/VerticalTabBarListWrapper'),
+        VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
         ConditionsList: () => import('~/components/List/Conditions/ConditionsList'),
-        ListSearchHeader: () => import('~/core/components/List/ListSearchHeader'),
+        ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
     },
     computed: {
         ...mapState('authentication', {

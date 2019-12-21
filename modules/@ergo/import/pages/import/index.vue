@@ -17,8 +17,8 @@ export default {
     name: 'Import',
     components: {
         ImportGridTab: () => import('@Import/components/Tabs/ImportGridTab'),
-        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
-        Page: () => import('~/core/components/Layout/Page'),
+        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
+        Page: () => import('@Core/components/Layout/Page'),
     },
 };
 </script>

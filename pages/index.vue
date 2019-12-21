@@ -50,9 +50,9 @@ export default {
     layout: 'login',
     name: 'Login',
     components: {
-        TextField: () => import('~/core/components/Inputs/TextField'),
-        Button: () => import('~/core/components/Buttons/Button'),
-        Typer: () => import('~/core/components/Inputs/Typer'),
+        TextField: () => import('@Core/components/Inputs/TextField'),
+        Button: () => import('@Core/components/Buttons/Button'),
+        Typer: () => import('@Core/components/Inputs/Typer'),
     },
     data: () => ({
         userAuthData: {

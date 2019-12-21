@@ -13,7 +13,7 @@
 export default {
     name: 'WidgetsListTab',
     components: {
-        VerticalTabBarListWrapper: () => import('~/core/components/Tab/VerticalTabBarListWrapper'),
+        VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
         WidgetsList: () => import('~/components/List/Widgets/WidgetsList'),
     },
 };

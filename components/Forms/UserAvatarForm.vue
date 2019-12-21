@@ -17,13 +17,13 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import UploadImage from '~/core/components/Inputs/Image/UploadImage';
+import UploadImage from '@Core/components/Inputs/Image/UploadImage';
 
 export default {
     name: 'UserAvatarForm',
     components: {
-        Form: () => import('~/core/components/Form/Form'),
-        FormGroup: () => import('~/core/components/Form/FormGroup'),
+        Form: () => import('@Core/components/Form/Form'),
+        FormGroup: () => import('@Core/components/Form/FormGroup'),
         UploadImage,
     },
     computed: {

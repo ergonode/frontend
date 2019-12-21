@@ -21,7 +21,7 @@
 <script>
 import { format as formatDate, parse as parseDate } from 'date-fns';
 import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
-import DatePicker from '~/core/components/Inputs/DatePicker/DatePicker';
+import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 
 export default {
     name: 'ProductTemplateDate',

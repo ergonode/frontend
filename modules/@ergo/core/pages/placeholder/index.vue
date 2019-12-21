@@ -59,8 +59,8 @@
 export default {
     name: 'Placeholder',
     components: {
-        Button: () => import('~/core/components/Buttons/Button'),
-        Typer: () => import('~/core/components/Inputs/Typer'),
+        Button: () => import('@Core/components/Buttons/Button'),
+        Typer: () => import('@Core/components/Inputs/Typer'),
     },
 };
 </script>

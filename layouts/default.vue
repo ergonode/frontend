@@ -38,13 +38,13 @@ import { mapState, mapActions } from 'vuex';
 export default {
     middleware: ['setDictionaries', 'authenticated'],
     components: {
-        App: () => import('~/core/components/Layout/App'),
-        SideBar: () => import('~/core/components/SideBar/SideBar'),
-        NavigationBar: () => import('~/core/components/NavigationBar/NavigationBar'),
-        NavigationBarBreadcrumb: () => import('~/core/components/NavigationBar/NavigationBarBreadcrumb'),
+        App: () => import('@Core/components/Layout/App'),
+        SideBar: () => import('@Core/components/SideBar/SideBar'),
+        NavigationBar: () => import('@Core/components/NavigationBar/NavigationBar'),
+        NavigationBarBreadcrumb: () => import('@Core/components/NavigationBar/NavigationBarBreadcrumb'),
         NavigationBarUserButton: () => import('~/components/NavigationBar/NavigationBarUserButton'),
         NavigationBarNotificationButton: () => import('~/components/NavigationBar/NavigationBarNotificationButton'),
-        FlashMessage: () => import('~/core/components/Alerts/FlashMessage'),
+        FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),
     },
     data() {
         return {

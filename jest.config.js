@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+
 module.exports = {
     verbose: true,
     moduleFileExtensions: [
@@ -15,6 +16,7 @@ module.exports = {
     ],
     moduleNameMapper: {
         '^~/(.*)$': '<rootDir>/$1',
+        '@Core/(.*)$': '<rootDir>/modules/@ergo/core/$1',
     },
     transform: {
         '^.+\\.(js|jsx)?$': 'babel-jest',

@@ -25,16 +25,16 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { THEMES } from '~/defaults/buttons';
+import { THEMES } from '@Core/defaults/buttons';
 import navigationBarUserMenu from '~/model/navigation/navigationBarUserMenu';
 
 export default {
     name: 'NavigationBarUserSelectContent',
     components: {
-        Divider: () => import('~/core/components/Dividers/Divider'),
+        Divider: () => import('@Core/components/Dividers/Divider'),
         NavigationBarUserSelectContentHeader: () => import('~/components/NavigationBar/NavigationBarUserSelectContentHeader'),
-        MenuList: () => import('~/core/components/MenuList/MenuList'),
-        Button: () => import('~/core/components/Buttons/Button'),
+        MenuList: () => import('@Core/components/MenuList/MenuList'),
+        Button: () => import('@Core/components/Buttons/Button'),
     },
     props: {
         avatarId: {

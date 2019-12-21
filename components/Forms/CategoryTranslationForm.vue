@@ -21,10 +21,10 @@
 <script>
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
-import TextField from '~/core/components/Inputs/TextField';
-import Card from '~/core/components/Card/Card';
-import FormGroup from '~/core/components/Form/FormGroup';
-import Form from '~/core/components/Form/Form';
+import TextField from '@Core/components/Inputs/TextField';
+import Card from '@Core/components/Card/Card';
+import FormGroup from '@Core/components/Form/FormGroup';
+import Form from '@Core/components/Form/Form';
 
 export default {
     name: 'CategoryTranslationForm',
