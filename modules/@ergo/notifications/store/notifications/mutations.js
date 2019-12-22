@@ -13,7 +13,7 @@ export const types = {
     CLEAR_STATE: 'CLEAR_STATE',
 };
 
-export const mutations = {
+export default {
     [types.SET_NOTIFICATIONS](state, notifications) {
         state.notifications = notifications;
     },
@@ -36,5 +36,3 @@ export const mutations = {
         });
     },
 };
-
-export default mutations;

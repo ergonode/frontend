@@ -46,8 +46,8 @@ export default {
         NotificationBadge: () => import('@Core/components/Badges/NotificationBadge'),
         Button: () => import('@Core/components/Buttons/Button'),
         List: () => import('@Core/components/List/List'),
-        NotificationsListElement: () => import('~/components/List/Notifications/NotificationsListElement'),
-        NotificationsListFooter: () => import('~/components/List/Notifications/NotificationsListFooter'),
+        NotificationsListElement: () => import('@Notifications/components/List/NotificationsListElement'),
+        NotificationsListFooter: () => import('@Notifications/components/List/NotificationsListFooter'),
         ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
     },
     computed: {

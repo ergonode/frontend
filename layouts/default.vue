@@ -17,7 +17,12 @@
                     </template>
                     <template #actions>
                         <NavigationBarUserButton />
-                        <NavigationBarNotificationButton />
+                        <template v-for="(component, index) in getComponentsForExtended">
+                            <ExtendWithModulesComponents
+                                :key="index"
+                                :component="component"
+                            />
+                        </template>
                     </template>
                 </NavigationBar>
             </div>
@@ -34,6 +39,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { TYPES } from '~/defaults/extends';
 
 export default {
     middleware: ['setDictionaries', 'authenticated'],
@@ -43,7 +49,7 @@ export default {
         NavigationBar: () => import('@Core/components/NavigationBar/NavigationBar'),
         NavigationBarBreadcrumb: () => import('@Core/components/NavigationBar/NavigationBarBreadcrumb'),
         NavigationBarUserButton: () => import('~/components/NavigationBar/NavigationBarUserButton'),
-        NavigationBarNotificationButton: () => import('~/components/NavigationBar/NavigationBarNotificationButton'),
+        ExtendWithModulesComponents: () => import('~/components/ExtendWithModulesComponents'),
         FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),
     },
     data() {
@@ -69,6 +75,9 @@ export default {
         ...mapState('authentication', {
             user: (state) => state.user,
         }),
+        getComponentsForExtended() {
+            return this.$getComponentsForExtended(TYPES.NAVIGATION_BAR);
+        },
     },
     methods: {
         ...mapActions('notifications', [

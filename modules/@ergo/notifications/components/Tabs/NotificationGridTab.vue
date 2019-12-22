@@ -43,7 +43,7 @@ import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScr
 import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';
 
 export default {
-    name: 'AttributeGridTab',
+    name: 'NotificationGridTab',
     components: {
         VerticalCenteredView,
         VerticalFixedScroll,
@@ -51,9 +51,9 @@ export default {
         Loader: () => import('@Core/components/Loader/Loader'),
         Button: () => import('@Core/components/Buttons/Button'),
         List: () => import('@Core/components/List/List'),
-        NotificationsListElement: () => import('~/components/List/Notifications/NotificationsListElement'),
-        NotificationsListFooter: () => import('~/components/List/Notifications/NotificationsListFooter'),
         ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
+        NotificationsListElement: () => import('@Notifications/components/List/NotificationsListElement'),
+        NotificationsListFooter: () => import('@Notifications/components/List/NotificationsListFooter'),
     },
     computed: {
         ...mapState('notifications', {

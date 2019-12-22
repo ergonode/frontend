@@ -10,12 +10,12 @@ export default {
     type: 'page',
     moduleRelations: [
         '@ergo/core',
-        '@ergo/users',
+        // '@ergo/users',
     ],
     privileges: Privileges,
     nuxt: {
         aliases: {
-            '@ActivityLogs': '/modules/@ergo/activity-logs',
+            '@ActivityLogs': '/',
         },
     },
     router: [

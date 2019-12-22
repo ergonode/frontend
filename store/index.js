@@ -58,7 +58,7 @@ function getModulesStore() {
             switch (source) {
             // TODO: uncomment when npm modules ready
             // case 'npm':
-            //     newStore[name] = require(`@NodeModules/${moduleName}/store/${directory}`).default;
+            //     newStore[name] = require(`${moduleName}/store/${directory}`).default;
             //     break;
             default:
                 newStore[name] = require(`@Modules/${moduleName}/store/${directory}`).default;

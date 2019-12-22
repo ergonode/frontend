@@ -14,7 +14,7 @@ export default {
     privileges: Privileges,
     nuxt: {
         aliases: {
-            '@Media': '/modules/@ergo/media',
+            '@Media': '/',
         },
     },
     router: [

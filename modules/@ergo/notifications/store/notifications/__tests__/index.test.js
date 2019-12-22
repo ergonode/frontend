@@ -9,7 +9,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import defaultState from '../state';
 import actions from '../actions';
-import { mutations, types } from '../mutations';
+import mutations, { types } from '../mutations';
 
 let store;
 let mockAxiosGetResult;

@@ -11,7 +11,8 @@ export default {
     Privileges,
     nuxt: {
         aliases: {
-            '@Core': '/modules/@ergo/core',
+            '@Core': '/',
+            '@CorePages': '/pages',
         },
     },
     router: [
@@ -21,7 +22,5 @@ export default {
             component: Pages.Placeholder,
             meta: { isMenu: false },
         },
-    ],
-    store: [
     ],
 };

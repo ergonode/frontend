@@ -9,12 +9,38 @@ const deepmerge = require('deepmerge');
 
 class ModuleLoader {
     constructor() {
-        this.config = this.getActiveModules();
-        this.modulesConfig = this.getModules(this.config);
+        this.modules = this.getActiveModules();
+        this.modulesConfig = this.getModules(this.modules);
+        this.checkModuleRelations();
+    }
+
+    install(_Vue) {
+        const { extendComponents } = this.modulesConfig;
+
+        _Vue.prototype.$getComponentsForExtended = (type) => extendComponents.filter(
+            (component) => component.type === type,
+        );
     }
 
     get getModulesConfig() {
         return this.modulesConfig;
+    }
+
+    checkModuleRelations() {
+        const { relations } = this.modulesConfig;
+        const checkRelation = (relation) => this.modules.find(
+            (module) => relation === module.name && module.active,
+        );
+
+        relations.forEach((relation) => {
+            const { moduleName, relations: moduleRealtions } = relation;
+
+            moduleRealtions.forEach((r) => {
+                if (!checkRelation(r)) {
+                    throw Error(`Module [${moduleName}] has relation with [${r}].\n Module [${r}] does not exist.`);
+                }
+            });
+        });
     }
 
     getActiveModules() {
@@ -37,9 +63,8 @@ class ModuleLoader {
             case 'local':
                 config = require(`../modules/${name}`).default;
                 break;
-            // TODO: uncomment when npm modules ready
             // case 'npm':
-            //     config = require(`${name}`).default;
+            //     config = require(`${name}`);
             //     break;
             default:
                 config = null;
@@ -51,16 +76,36 @@ class ModuleLoader {
                     modulesConfig.store.push({
                         source,
                         moduleName: name,
-                        store: [...config.store],
+                        store: config.store,
                     });
                 }
                 if (config.nuxt) {
+                    if (config.nuxt.aliases) {
+                        const modulePath = source === 'local'
+                            ? `/modules/${name}`
+                            : name;
+                        const { aliases } = config.nuxt;
+
+                        Object.keys(aliases).forEach((alias) => {
+                            config.nuxt.aliases[alias] = `${modulePath}${aliases[alias]}`;
+                        });
+                    }
                     modulesConfig.nuxt = deepmerge(modulesConfig.nuxt, config.nuxt);
                 }
+                if (config.moduleRelations) {
+                    modulesConfig.relations.push({
+                        moduleName: name,
+                        relations: config.moduleRelations,
+                    });
+                }
+                if (config.extendComponents) {
+                    modulesConfig.extendComponents.push(...config.extendComponents);
+                }
             }
-
             return modulesConfig;
-        }, { router: [], store: [], nuxt: {} });
+        }, {
+            router: [], store: [], nuxt: {}, relations: [], extendComponents: [],
+        });
     }
 
     // TODO: old methods to refactor, don't remove

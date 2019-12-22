@@ -42,20 +42,4 @@ export const pages = [
             redirectTo: 'activity-log-grid',
         },
     },
-    {
-        name: 'notifications',
-        path: '/notifications',
-        component: Pages.Notifications,
-        children: [
-            {
-                name: 'notifications-grid',
-                path: 'grid',
-                component: GridTabs.NotificationGridTab,
-            },
-        ],
-        meta: {
-            isMenu: false,
-            redirectTo: 'grid',
-        },
-    },
 ];

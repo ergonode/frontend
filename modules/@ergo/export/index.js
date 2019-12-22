@@ -14,7 +14,7 @@ export default {
     privileges: Privileges,
     nuxt: {
         aliases: {
-            '@Export': '/modules/@ergo/export',
+            '@Export': '/',
         },
     },
     router: [

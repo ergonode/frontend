@@ -33,4 +33,9 @@ export default [
         source: 'local',
         name: '@ergo/activity-logs',
     },
+    {
+        active: true,
+        source: 'local',
+        name: '@ergo/notifications',
+    },
 ];

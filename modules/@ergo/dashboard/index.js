@@ -13,7 +13,7 @@ export default {
     privileges: {},
     nuxt: {
         aliases: {
-            '@Dashboard': '/modules/@ergo/dashboard',
+            '@Dashboard': '/',
         },
     },
     router: [
