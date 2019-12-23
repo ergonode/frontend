@@ -2,95 +2,97 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { generateProductLayout } from '~/model/template_designer/layout/LayoutGenerator';
-import { getMappedCategoryValues } from '~/model/mappers/categoryMapper';
+import { types } from './mutations';
+import {
+    getMappedLayoutElements,
+} from '~/model/mappers/productMapper';
+
+const onDefaultError = () => {};
 
 export default {
-    setProductSku: ({ commit }, payload) => commit('setProductSku', payload),
-    setProductTemplate: ({ commit }, payload) => commit('setProductTemplate', payload),
-    setProductCategories: ({ commit }, payload) => commit('setProductCategories', payload),
-    async setDraftLanguageCode({ commit, state }, { languageCode }) {
-        const { id } = state;
-        commit('setDraftLanguageCode', { languageCode });
-
-        await this.app.$axios.$get(`${languageCode}/drafts/${id}/template`).then(({ elements }) => {
-            const templateLayout = generateProductLayout(elements);
-
-            commit('setTemplateLayout', { templateLayout });
-        }).catch(e => console.log(e));
-
-        await this.app.$axios.$get(`${languageCode}/drafts/${id}/completeness`).then((completeness) => {
-            commit('setProductCompleteness', { completeness });
-        }).catch(e => console.log(e));
+    setProductSku: ({ commit }, sku) => commit(types.SET_PRODUCT_SKU, sku),
+    setProductStatus: ({ commit }, status) => commit(types.SET_PRODUCT_STATUS, status),
+    setProductTemplate: ({ commit }, template) => commit(types.SET_PRODUCT_TEMPLATE, template),
+    setProductCategories: ({ commit }, categories = []) => {
+        commit(types.SET_PRODUCT_CATEGORIES, categories);
     },
-    getProductDraft({ commit }, {
+    async setDraftLanguageCode({ commit, state, dispatch }, languageCode) {
+        const { id } = state;
+        commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
+
+        const data = { id, languageCode };
+        const productTemplateRequest = dispatch('getProductTemplate', data);
+        const completenessRequest = dispatch('getProductCompleteness', data);
+        const productDraftRequest = dispatch('getProductDraft', data);
+
+        await Promise.all([
+            completenessRequest,
+            productTemplateRequest,
+            productDraftRequest,
+        ]);
+    },
+    getProductDraft({ commit }, { languageCode, id }) {
+        commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
+
+        return this.app.$axios.$get(`${languageCode}/products/${id}/draft`).then((draft) => {
+            commit(types.SET_PRODUCT_DRAFT, draft);
+        }).catch(onDefaultError);
+    },
+    getProduct({ commit, state }, { languageCode, id }) {
+        commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
+
+        const { categories } = state;
+        const parseCategoryIds = (category) => categories.find((c) => c.code === category).id;
+
+        return this.app.$axios.$get(`${languageCode}/products/${id}`).then(({
+            design_template_id: templateId,
+            categories: categoryIds,
+            sku,
+            status,
+            workflow = [],
+        }) => {
+            if (categoryIds) {
+                commit(types.SET_PRODUCT_CATEGORIES, categoryIds.map(parseCategoryIds));
+            }
+
+            if (templateId) {
+                commit(types.SET_PRODUCT_TEMPLATE, templateId);
+            }
+
+            commit(types.SET_PRODUCT_ID, id);
+            commit(types.SET_PRODUCT_SKU, sku);
+            commit(types.SET_PRODUCT_STATUS, status);
+            commit(types.SET_PRODUCT_WORKFLOW, workflow);
+        }).catch(onDefaultError);
+    },
+    getProductTemplate({ commit }, { languageCode, id }) {
+        commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
+
+        return this.app.$axios.$get(`${languageCode}/products/${id}/template`).then(({ elements }) => {
+            commit(types.SET_LAYOUT_ELEMENTS, getMappedLayoutElements(elements));
+        }).catch(onDefaultError);
+    },
+    getTemplates({ commit, rootState }) {
+        const { authentication: { user: { language } } } = rootState;
+
+        return this.app.$axios.$get(`${language}/templates?limit=5000&offset=0`).then(({ collection: templates }) => {
+            commit(types.SET_TEMPLATES, templates);
+        }).catch(onDefaultError);
+    },
+    getCategories({ commit, rootState }) {
+        const { authentication: { user: { language } } } = rootState;
+
+        return this.app.$axios.$get(`${language}/categories?limit=5000&offset=0`).then(({ collection: categories }) => {
+            commit(types.SET_CATEGORIES, categories);
+        }).catch(onDefaultError);
+    },
+    getProductCompleteness({ commit }, {
         id,
         languageCode,
-        onError,
     }) {
-        commit('setDraftLanguageCode', { languageCode });
-
-        return this.app.$axios.$get(`${languageCode}/drafts/product/${id}`).then(({
-            template_id: templateId,
-            draft_id: draftId,
-            category_ids: categoryIds,
-            sku,
-        }) => {
-            commit('setProductId', { id: draftId });
-            commit('setProductSku', { sku });
-
-            return this.app.$axios.$get(`${languageCode}/templates?limit=5000&offset=0`).then(({ collection: templates }) => {
-                commit('setTemplates', { templates });
-                if (templateId) {
-                    const template = templates.find(tmp => tmp.id === templateId).name;
-                    commit('setProductTemplate', { template });
-                }
-
-                return this.app.$axios.$get(`${languageCode}/drafts/${draftId}/template`).then(({ elements }) => {
-                    const templateLayout = generateProductLayout(elements);
-
-                    commit('setTemplateLayout', { templateLayout });
-
-                    return this.app.$axios.$get(`${languageCode}/drafts/${draftId}/completeness`).then(({ data: completeness }) => {
-                        commit('setProductCompleteness', { completeness });
-                        return this.app.$axios.$get(`${languageCode}/categories?limit=5000&offset=0&show=DATA`).then(({ collection: categories }) => {
-                            commit('setCategories', { categories });
-                            if (categoryIds) {
-                                const selectedCategories = getMappedCategoryValues(
-                                    categories,
-                                    categoryIds,
-                                );
-                                commit('setProductCategories', { selectedCategories });
-                            }
-                        }).catch(e => onError(e.data));
-                    }).catch(e => onError(e.data));
-                }).catch(e => onError(e.data));
-            }).catch(e => onError(e.data));
-        }).catch(e => onError(e.data));
-    },
-    getTemplates({ commit, rootState }, { onError }) {
-        const { authentication: { user: { language } } } = rootState;
-        return this.app.$axios.$get(`${language}/templates?limit=5000&offset=0`).then(({ collection: templates }) => {
-            commit('setTemplates', { templates });
-        }).catch(e => onError(e.data));
-    },
-    getCategories({ commit, rootState }, { onError }) {
-        const { authentication: { user: { language } } } = rootState;
-        return this.app.$axios.$get(`${language}/categories?limit=5000&offset=0`).then(({ collection: categories }) => {
-            commit('setCategories', { categories });
-        }).catch(e => onError(e.data));
-    },
-    getProductCompleteness(
-        { commit },
-        {
-            id,
-            languageCode,
-            onError,
-        },
-    ) {
-        return this.app.$axios.$get(`${languageCode}/drafts/${id}/completeness`).then((completeness) => {
-            commit('setProductCompleteness', { completeness });
-        }).catch(e => onError(e.data));
+        return this.app.$axios.$get(`${languageCode}/products/${id}/draft/completeness`).then((completeness) => {
+            commit(types.SET_PRODUCT_COMPLETENESS, completeness);
+        }).catch(onDefaultError);
     },
     async setProductTemplateElementValue({ commit, state, dispatch }, {
         attributeId,
@@ -104,26 +106,38 @@ export default {
             id,
             languageCode,
         } = state;
-        const index = state.templateLayout.findIndex(
-            element => element.attributeId === attributeId,
+        const index = state.layoutElements.findIndex(
+            (element) => element.id === attributeId,
         );
-        await this.app.$axios.$put(`${languageCode}/drafts/${id}/${attributeId}/value`, { value }).then(() => {
-            commit('setProductTemplateElementValue', { index, value });
+
+        await this.app.$axios.$put(`${languageCode}/products/${id}/draft/${attributeId}/value`, { value }).then(() => {
+            commit(types.SET_PRODUCT_TEMPLATE_ELEMENT_VALUE, { index, value });
             // Update completeness only for required elements
             if (required) {
                 dispatch('getProductCompleteness', {
                     id,
                     languageCode,
-                    onError: () => {},
                 });
             }
             onSuccess(name);
-        }).catch(e => onError({ errors: e.data.errors, name }));
+        }).catch((e) => onError({ errors: e.data.errors, name }));
     },
-    clearStorage: ({ commit }) => {
-        commit('clearStorage');
+    updateProductStatus({ state, rootState, dispatch }, {
+        attributeId,
+        value,
+        onSuccess,
+    }) {
+        const { id } = state;
+        const { authentication: { user: { language } } } = rootState;
+
+        return this.app.$axios.$put(`${language}/products/${id}/draft/${attributeId}/value`, { value }).then(() => {
+            dispatch('applyDraft', {
+                id,
+                onSuccess,
+            });
+        }).catch(onDefaultError);
     },
-    createProduct(
+    async createProduct(
         { commit, rootState },
         {
             data,
@@ -132,32 +146,48 @@ export default {
         },
     ) {
         const { authentication: { user: { language } } } = rootState;
-        return this.app.$axios.$post(`${language}/products`, data).then(({ id }) => {
-            commit('setProductId', { id });
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$post(`${language}/products`, data).then(({ id }) => {
+            commit(types.SET_PRODUCT_ID, id);
             onSuccess(id);
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
-    applyDraft(
+    async applyDraft(
         { rootState },
         {
             id,
             onSuccess,
-            onError,
         },
     ) {
         const { authentication: { user: { language } } } = rootState;
-        return this.app.$axios.$put(`${language}/drafts/${id}/persist`, {}).then(() => onSuccess).catch(e => onError(e.data));
+
+        await this.$setLoader('footerDraftButton');
+        await this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {}).then(() => onSuccess()).catch(onDefaultError);
+        await this.$removeLoader('footerDraftButton');
     },
-    updateProduct(
+    async updateProduct(
         { rootState },
         {
             id,
             data,
-            onSuccess,
-            onError,
+            onSuccess = () => {},
         },
     ) {
         const { authentication: { user: { language } } } = rootState;
-        return this.app.$axios.$put(`${language}/products/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$put(`${language}/products/${id}`, data).then(onSuccess).catch(onDefaultError);
+        await this.$removeLoader('footerButton');
+    },
+    removeProduct({ state, rootState }, { onSuccess }) {
+        const { id } = state;
+        const { language: userLanguageCode } = rootState.authentication.user;
+
+        return this.app.$axios.$delete(`${userLanguageCode}/products/${id}`).then(() => onSuccess()).catch(onDefaultError);
+    },
+    clearStorage: ({ commit }) => {
+        commit(types.CLEAR_STATE);
     },
 };

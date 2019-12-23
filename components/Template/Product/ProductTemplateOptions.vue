@@ -3,72 +3,81 @@
  * See LICENSE for license details.
  */
 <template>
-    <Select
+    <TranslationSelect
         :value="localValue"
-        solid
-        :label="name"
+        :solid="true"
+        :clearable="true"
+        :regular="true"
+        :label="label"
         :placeholder="placeholder"
-        :options="options"
+        :multiselect="multiselect"
+        :disabled="disabled"
         :error-messages="isError ? [' '] : null"
         :required="required"
-        @focus="onFocusChange">
-        <div
-            slot="appendIcon"
-            class="horizontal-wrapper">
-            <Icon :icon="appendStateIcon" />
-            <InfoHint
-                v-if="hint && !isError"
-                :hint="hint" />
-            <ErrorHint v-if="isError" />
-        </div>
-        <TranslationSelectListContent
-            slot="selectContent"
-            :options="options"
-            @value="onValueChange" />
-    </Select>
+        :options="options"
+        @focus="onFocusChange"
+        @input="onValueChange" />
 </template>
 
 <script>
-import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
+import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
+import TranslationSelect from '~/core/components/Inputs/Select/TranslationSelect';
 
 export default {
     name: 'ProductTemplateOptions',
-    mixins: [baseProductTemplateElementMixin],
+    mixins: [productTemplateElementMixin],
     components: {
-        Select: () => import('~/components/Inputs/Select/Select'),
-        TranslationSelectListContent: () => import('~/components/Inputs/Select/Contents/TranslationSelectListContent'),
-        Icon: () => import('~/components/Icon/Icon'),
+        TranslationSelect,
     },
     props: {
         options: {
             type: Array,
-            required: false,
-            default: () => [],
+            required: true,
+        },
+        multiselect: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
         return {
             isFocused: false,
+            parsedValue: '',
         };
     },
-    computed: {
-        appendStateIcon() {
-            return this.isFocused
-                ? 'arrow-triangle trans-half'
-                : 'arrow-triangle';
+    watch: {
+        parsedOptions: {
+            immediate: true,
+            handler() {
+                this.initializeValues(this.value);
+            },
         },
     },
     methods: {
+        initializeValues(value) {
+            if (Array.isArray(value)) {
+                this.localValue = value.map((val) => ({
+                    key: val,
+                    value: this.options.find((option) => option.key === val).value,
+                }));
+            } else if (value) {
+                this.localValue = this.options.find((option) => option.key === value);
+            } else {
+                this.localValue = { key: '', value: '' };
+            }
+        },
         onFocusChange(isFocused) {
             this.isFocused = isFocused;
+        },
+        onValueChange(value) {
+            this.localValue = value;
+
+            if (Array.isArray(value)) {
+                this.debounceFunc(value.map((val) => val.key));
+            } else {
+                this.debounceFunc(value.key);
+            }
         },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .horizontal-wrapper {
-        display: flex;
-        align-items: center;
-    }
-</style>

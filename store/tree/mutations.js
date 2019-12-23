@@ -2,38 +2,25 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { removeFromObjectByKey } from '~/model/objectWrapper';
+import defaultState from './state';
+
+export const types = {
+    SET_TREE_ID: 'SET_TREE_ID',
+    SET_CODE: 'SET_CODE',
+    CLEAR_STATE: 'CLEAR_STATE',
+};
 
 export default {
-    setState: (state, { key, value }) => {
-        state[key] = value;
+    [types.SET_TREE_ID](state, value) {
+        state.treeId = value;
     },
-    addTreeItem: (state, { item }) => {
-        state.treeData.push(item);
-        state.treeData.sort((a, b) => a.row - b.row);
+    [types.SET_CODE](state, value) {
+        state.code = value;
     },
-    setTreeItem: (state, { index, item }) => {
-        state.treeData[index] = item;
-        state.treeData.sort((a, b) => a.row - b.row);
-    },
-    removeTreeItem: (state, { index }) => {
-        state.treeData.splice(index, 1);
-    },
-    rebuildTree: (state, { tree }) => {
-        state.treeData = tree;
-    },
-    setHiddenItem: (state, { key, value }) => {
-        state.hiddenItems = { ...state.hiddenItems, [key]: value };
-        // state.hiddenItems[key] = value;
-    },
-    removeHiddenItem: (state, key) => {
-        state.hiddenItems = removeFromObjectByKey(state.hiddenItems, key);
-    },
-    clearStorage: (state) => {
-        state.treeLevels = 5;
-        state.rowsHeight = 50;
-        state.rowsCount = 0;
-        state.treeData = [];
-        state.hiddenItems = {};
+    [types.CLEAR_STATE](state) {
+        const states = defaultState();
+        Object.keys(states).forEach((key) => {
+            state[key] = states[key];
+        });
     },
 };

@@ -2,17 +2,15 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { setTransaltion } from '~/model/mappers/translationMapper';
-
 export default {
-    setTabTranslations: ({ commit }, payload) => {
-        commit('setTabTranslations', payload);
+    setTabTranslations: ({ commit }, translation) => {
+        commit('setTabTranslations', translation);
     },
-    setTabTranslationPropertyValue: ({ commit }, payload) => {
-        commit('setTabTranslationPropertyValue', payload);
+    setMultilingualTranslationPropertyValue: ({ commit }, params) => {
+        commit('setMultilingualTranslationPropertyValue', params);
     },
-    addCardLanguageCode: ({ commit }, payload) => commit('addCardLanguageCode', payload),
-    setTabVisibleCardTranslations: ({ commit, state }, { languages, defaultTranslation }) => {
+    addCardLanguageCode: ({ commit }, language) => commit('addCardLanguageCode', language),
+    setVisibleCardTranslations: ({ commit, state }, { languages }) => {
         const { cardsLanguageCodes, translations } = state;
         const { length: numberOfCards } = cardsLanguageCodes;
         const { length: numberOfSelectedLanguages } = languages;
@@ -20,14 +18,14 @@ export default {
         if (numberOfCards > numberOfSelectedLanguages) {
             // Remove unselected cards
             const languageCodesToRemove = cardsLanguageCodes.filter(
-                cardLanguageCode => !languages.some(
+                (cardLanguageCode) => !languages.some(
                     selectedLanguageCode => cardLanguageCode === selectedLanguageCode, // eslint-disable-line
                 ),
             );
 
             languageCodesToRemove.forEach((languageCode) => {
                 const indexToRemove = cardsLanguageCodes.findIndex(
-                    cardLanguageCode => cardLanguageCode === languageCode,
+                    (cardLanguageCode) => cardLanguageCode === languageCode,
                 );
                 commit('removeCardLanguageCode', {
                     index: indexToRemove,
@@ -36,25 +34,19 @@ export default {
         } else {
             // Add new cards
             const languageCodesToAdd = languages.filter(
-                selectedLanguageCode => !cardsLanguageCodes.some(
-                    cardLanguageCode => selectedLanguageCode === cardLanguageCode,
+                (selectedLanguageCode) => !cardsLanguageCodes.some(
+                    (cardLanguageCode) => selectedLanguageCode === cardLanguageCode,
                 ),
             );
             languageCodesToAdd.forEach((languageCode) => {
-                const translation = setTransaltion(
-                    translations,
-                    defaultTranslation,
-                    languageCode,
-                );
-                commit('setTabTranslations', {
-                    translations: translation,
-                });
                 commit('addCardLanguageCode', { languageCode });
             });
+
+            commit('setTabTranslations', translations);
         }
     },
-    addOptionTranslation: ({ commit }, payload) => commit('addOptionTranslation', payload),
-    clearTranslations: ({ commit }) => {
+    addOptionTranslation: ({ commit }, option) => commit('addOptionTranslation', option),
+    clearStorage: ({ commit }) => {
         commit('clearStorage');
     },
 };

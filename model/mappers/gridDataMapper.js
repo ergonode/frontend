@@ -2,132 +2,227 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { toCapitalize } from '~/model/stringOperations';
+import {
+    GRID_HEADER_TYPE,
+    COLUMN_TYPE,
+    COLUMN_WIDTH,
+} from '~/defaults/grid';
 
-// From whole rows in grid we have to find only those from whose we did fetch draft value
-const getRowsBasedOnDrafts = ({ drafts, rows }) => {
-    const rowsBasedOnDrafts = [];
+export function getParsedFilters(filters) {
+    const entries = Object.entries(filters);
+    const { length: entriesLength } = entries;
 
-    Object.keys(drafts).forEach((key) => {
-        const rowByDraftId = rows.find(row => row.id === key);
-        if (rowByDraftId) {
-            rowsBasedOnDrafts.push(rowByDraftId);
+    let mappedFilter = '';
+
+    for (let i = 0; i < entriesLength; i += 1) {
+        const [key, filter] = entries[i];
+
+        if (filter) {
+            const { value, operator } = filter;
+
+            mappedFilter += i === 0 ? key : `;${key}`;
+            mappedFilter += operator;
+            mappedFilter += Array.isArray(value) ? value.join(',') : value;
         }
+    }
+
+    return mappedFilter;
+}
+
+export function getParsedAdvancedFilters(filters) {
+    const mappedFilter = [];
+
+    Object.keys(filters).forEach((id) => {
+        Object.keys(filters[id]).forEach((operator) => {
+            if (operator === 'isEmptyRecord') {
+                mappedFilter.push(`${id}=`);
+            } else {
+                mappedFilter.push(`${id}${operator}${filters[id][operator]}`);
+            }
+        });
     });
 
-    return rowsBasedOnDrafts;
+    return mappedFilter.join(';');
+}
+
+export const getParsedRequestDataParams = ({
+    sortedByColumn,
+    currentPage,
+    numberOfDisplayedElements,
+    filters,
+    advancedFilters,
+}, columns) => {
+    const parsedFilter = getParsedFilters(filters);
+    const parsedAdvcFilter = getParsedAdvancedFilters(advancedFilters);
+
+    let filter = parsedFilter;
+
+    if (parsedFilter && parsedAdvcFilter) {
+        filter += `${parsedFilter};${parsedAdvcFilter}`;
+    } else if (parsedAdvcFilter) {
+        filter = parsedAdvcFilter;
+    }
+
+    const params = {
+        columns,
+        offset: (currentPage - 1) * numberOfDisplayedElements,
+        limit: numberOfDisplayedElements,
+        filter,
+    };
+
+    if (Object.keys(sortedByColumn).length) {
+        const { index: colSortID, orderState } = sortedByColumn;
+
+        params.field = colSortID;
+        params.order = orderState;
+    }
+
+    return params;
 };
 
-const isDraftValueEqualRowValue = (
-    { drafts, rows, draftValue },
-) => {
-    const draftRows = getRowsBasedOnDrafts({ drafts, rows });
+const getMappedColumnHeaderType = ({ filter, type }) => {
+    if (type === COLUMN_TYPE.CHECK) return GRID_HEADER_TYPE.CHECK;
+    if (filter || type === COLUMN_TYPE.IMAGE) return GRID_HEADER_TYPE.INTERACTIVE;
 
-    return Object.keys(draftValue).some(
-        draftKey => draftRows.some(row => row[draftKey] === draftValue[draftKey]),
-    );
+    return GRID_HEADER_TYPE.PLAIN;
 };
 
-export function areAnyDraftsInGrid({ drafts, rows }) {
-    const draftsEntries = Object.entries(drafts);
+export const getMappedColumnHeaderTitle = ({
+    id, label, parameters, language,
+}) => {
+    let suffix = '';
+    const [code] = id.split(':');
 
-    return draftsEntries.some((
-        [, draftValue],
-    ) => !isDraftValueEqualRowValue({ drafts, rows, draftValue }));
-}
+    if (parameters) suffix = Object.keys(parameters).map((key) => parameters[key]).join(', ');
 
-export function insertExtendingColumn(columns) {
-    const { length } = columns;
-    return [
-        ...columns.slice(0, length - 1),
-        {
-            id: 'extender',
-            label: '',
-            type: '',
-            editable: false,
-            width: 'auto',
-        },
-        ...columns.slice(length - 1),
-    ];
-}
+    return {
+        title: label || `#${code}`,
+        hint: label ? `${code} ${language}` : null,
+        suffix,
+    };
+};
 
-export function getMappedColumnWidth({ width }) {
-    return width
-        ? `minmax(max-content, ${width}px)`
-        : 'minmax(auto, 200px)';
-}
+export const getMappedColumnHeader = ({
+    id,
+    label,
+    language = '',
+    parameters,
+    filter,
+    type,
+}) => ({
+    ...getMappedColumnHeaderTitle({
+        id, label, parameters, language,
+    }),
+    type: getMappedColumnHeaderType({ filter, type }),
+});
 
 export function getSortedColumnsByIDs(columns, columnsID) {
     return columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id));
 }
 
+export function getMappedColumn(column) {
+    const mappedColumn = {
+        ...column,
+        header: getMappedColumnHeader(column),
+    };
+    const columnWidth = COLUMN_WIDTH.DEFAULT;
+
+    return { mappedColumn, columnWidth };
+}
+
 export function getMappedColumns(columns) {
-    const unchangedColumns = columns;
-    const { length } = unchangedColumns;
-    let actionColumnIndex = length - 1;
+    const mappedColumns = [];
+    const columnWidths = [];
+    const pinnedColumns = [];
+    const { length } = columns;
 
     for (let i = 0; i < length; i += 1) {
-        unchangedColumns[i].width = getMappedColumnWidth(unchangedColumns[i]);
-        if (unchangedColumns[i].type === 'CHECK') {
-            unchangedColumns[i].isLeftPinned = true;
-        }
+        const column = columns[i];
 
-        if (unchangedColumns[i].type === 'ACTION') {
-            unchangedColumns[i].isRightPinned = true;
-            actionColumnIndex = i;
+        // TODO:
+        // Backend have to remove column with type CHECK
+        if (column.type !== COLUMN_TYPE.CHECK) {
+            columnWidths.push(COLUMN_WIDTH.DEFAULT);
+            mappedColumns.push({
+                ...column,
+                header: getMappedColumnHeader(column),
+            });
         }
     }
-    if (actionColumnIndex !== length - 1) {
-        unchangedColumns.push(unchangedColumns.splice(actionColumnIndex, 1)[0]);
-    }
 
-    return insertExtendingColumn(unchangedColumns);
+    return {
+        mappedColumns,
+        pinnedColumns,
+        columnWidths,
+    };
 }
 
-export function getMappedGridConfiguration(configuration) {
-    const mappedConfiguration = {};
-    const configurationKeys = Object.keys(configuration);
-    const configurationValues = Object.values(configuration);
-    const { length } = configurationKeys;
+export function getMappedArrayValue(value, options) {
+    const parsedKey = value !== null && value.length > 0 ? value : '';
 
-
-    for (let i = 0; i < length; i += 1) {
-        const splittedKeys = configurationKeys[i].split('_');
-        const { length: splittedKeysLength } = splittedKeys;
-        if (splittedKeysLength > 0) {
-            const capitalizedFirstLetterKey = toCapitalize(
-                splittedKeys[splittedKeysLength - 1],
-            );
-
-            mappedConfiguration[`isColumn${capitalizedFirstLetterKey}able`] = configurationValues[i];
-        }
+    if (Array.isArray(value)) {
+        return value.map((val) => ({
+            key: val,
+            value: options[val],
+        }));
     }
 
-    return mappedConfiguration;
+    return { key: parsedKey, value: options[value] || '' };
 }
 
-export function getMappedFilter(filter) {
-    const entries = Object.entries(filter);
-    const { length: entriesLength } = entries;
+export function getMappedCellValues(columns, rows, rowIds) {
+    const { length: columnsNumber } = columns;
+    const { length: rowsNumber } = rows;
+    const values = {};
 
-    let mappedFilter = '';
+    for (let i = 0; i < columnsNumber; i += 1) {
+        const column = columns[i];
+        const { id: columnId, filter } = column;
 
-    for (let j = 0; j < entriesLength; j += 1) {
-        const [key, value] = entries[j];
-        if (value !== null) {
-            if (j === 0) {
-                mappedFilter += `${key}=`;
+        for (let j = 0; j < rowsNumber; j += 1) {
+            const row = rows[j];
+            const rowId = rowIds[j];
+            const value = row[column.id];
+
+            if (!values[rowId]) values[rowId] = {};
+
+            if (filter && filter.options) {
+                values[rowId][columnId] = getMappedArrayValue(value, filter.options);
+            } else if (typeof value === 'boolean' && column.type !== COLUMN_TYPE.CHECK_CELL) {
+                values[rowId][columnId] = { value: value ? 'Yes' : 'No' };
             } else {
-                mappedFilter += `;${key}=`;
-            }
-
-            if (Array.isArray(value)) {
-                mappedFilter += value.join(',');
-            } else {
-                mappedFilter += value;
+                values[rowId][columnId] = { value: value !== null && typeof value !== 'undefined' ? value : '' };
             }
         }
     }
 
-    return mappedFilter;
+    return values;
+}
+
+export function getMappedRowIds(rows) {
+    const rowIds = [];
+    const { length } = rows;
+
+    for (let i = 0; i < length; i += 1) {
+        const { id } = rows[i];
+
+        if (typeof id === 'undefined') rowIds.push(i + 1);
+        else rowIds.push(id);
+    }
+
+    return rowIds;
+}
+
+export function getMappedRowLinks(rows) {
+    const rowLinks = [];
+    const { length } = rows;
+
+    for (let i = 0; i < length; i += 1) {
+        const { id, _links } = rows[i];
+
+        if (typeof id === 'undefined') rowLinks.push({ id: i + 1, links: _links });
+        else rowLinks.push({ id, links: _links });
+    }
+
+    return rowLinks;
 }

@@ -5,22 +5,14 @@
 // browser configurations
 @import "_mixins/scroll";
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px $white inset !important;
-    -webkit-text-fill-color: $graphite !important;
-}
+//input:-webkit-autofill,
+//input:-webkit-autofill:hover,
+//input:-webkit-autofill:focus,
+//input:-webkit-autofill:active {
+//    -webkit-box-shadow: 0 0 0 30px $WHITE inset !important;
+//    -webkit-text-fill-color: $GRAPHITE !important;
+//}
 
 * {
-    @include scrollbars(4px, $grey);
-}
-
-html, body {
-    @include scrollbars(4px, $darkGraphite);
-}
-
-.grid-scroll {
-    @include scrollbars(0, $grey);
+    //@include scrollbars(4px, $GREY_DARK);
 }

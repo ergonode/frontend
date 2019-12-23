@@ -3,9 +3,8 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    treeLevels: 5,
-    rowsHeight: 50,
-    rowsCount: 0,
-    treeData: [],
-    hiddenItems: {},
+    treeId: null,
+    code: '',
+    treeLevels: 10,
+    rowHeight: 50,
 });

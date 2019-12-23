@@ -2,36 +2,41 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { types } from './mutations';
+
+const onError = () => {};
+
 export default {
     getDictionaries({ commit, rootState }) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        const callPaths = [
-            { mutation: 'languages', path: `${userLanguageCode}/dictionary/languages` },
-            { mutation: 'currencies', path: `${userLanguageCode}/dictionary/currencies` },
-            { mutation: 'units', path: `${userLanguageCode}/dictionary/units` },
-            { mutation: 'attrTypes', path: `${userLanguageCode}/dictionary/attributes/types` },
-            { mutation: 'attrGroups', path: `${userLanguageCode}/dictionary/attributes/groups` },
-            { mutation: 'dateFormats', path: `${userLanguageCode}/dictionary/date_format` },
-            { mutation: 'imageFormats', path: `${userLanguageCode}/dictionary/image_format` },
-        ];
-        const promises = [];
 
-        callPaths.forEach(({ mutation, path }) => {
-            promises.push(this.app.$axios.$get(path).then(response => new Promise(((resolve) => {
-                resolve([response, mutation]);
-            }))));
+        const requestConfigs = [
+            { stateProp: 'languages', requestPath: `${userLanguageCode}/dictionary/languages` },
+            { stateProp: 'currencies', requestPath: `${userLanguageCode}/dictionary/currencies` },
+            { stateProp: 'units', requestPath: `${userLanguageCode}/dictionary/units` },
+            { stateProp: 'attrTypes', requestPath: `${userLanguageCode}/dictionary/attributes/types` },
+            { stateProp: 'dateFormats', requestPath: `${userLanguageCode}/dictionary/date_format` },
+            { stateProp: 'privileges', requestPath: `${userLanguageCode}/dictionary/privileges` },
+        ];
+
+        const promises = requestConfigs.map(({ stateProp, requestPath }) => {
+            const requestPromise = this.app.$axios.$get(requestPath).then((response) => {
+                commit(types.SET_CUSTOM_STATE_PROPERTY, { stateProp, value: response });
+            });
+
+            return requestPromise;
         });
 
-        return Promise.all(promises).then((data) => {
-            data.forEach((element) => {
-                if (element) {
-                    const [value, key] = element;
-                    commit('setState', { key, value });
-                }
-            });
-        }).catch(e => console.log(e));
+        return Promise.all(promises).catch(onError);
     },
-    clearAllData: ({ commit }) => {
-        commit('clearStorage');
+    getLanguagesDictionary({ commit, rootState }) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+
+        return this.app.$axios.$get(`${userLanguageCode}/dictionary/languages`).then((response) => {
+            commit(types.SET_CUSTOM_STATE_PROPERTY, { stateProp: 'languages', value: response });
+        });
+    },
+    clearStorage({ commit }) {
+        commit(types.CLEAR_STATE);
     },
 };

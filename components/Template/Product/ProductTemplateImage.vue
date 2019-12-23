@@ -5,34 +5,22 @@
 <template>
     <UploadImage
         :value="value"
-        @upload="updateValue"
-        @remove="updateValue" />
+        :label="label"
+        :required="required"
+        :disabled="disabled"
+        height="unset"
+        @upload="onValueChange"
+        @remove="onValueChange" />
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
+import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
 
 export default {
     name: 'ProductTemplateImage',
+    mixins: [productTemplateElementMixin],
     components: {
-        UploadImage: () => import('~/components/Inputs/Image/UploadImage'),
-    },
-    mixins: [baseProductTemplateElementMixin],
-    methods: {
-        ...mapActions('productsDraft', [
-            'setProductTemplateElementValue',
-        ]),
-        updateValue(value = '') {
-            this.setProductTemplateElementValue({
-                value,
-                attributeId: this.attributeId,
-                required: this.required,
-                name: this.name,
-                onSuccess: this.onSuccess,
-                onError: this.onError,
-            });
-        },
+        UploadImage: () => import('~/core/components/Inputs/Image/UploadImage'),
     },
 };
 </script>

@@ -7,24 +7,27 @@
         <SimpleGrid
             class="grid"
             :title="title"
-            :items="items" />
+            :items="filteredItems()" />
     </div>
 </template>
 
 <script>
-
-import GridItems from '~/model/dashboard_grid_columns';
+import { GRID_ITEMS } from '~/defaults/dashboard';
 
 export default {
     name: 'Dashboard',
     components: {
-        SimpleGrid: () => import('~/components/Grid/SimpleGrid'),
+        SimpleGrid: () => import('~/components/SimpleGrid'),
     },
     data() {
         return {
             title: 'Take an action',
-            items: GridItems,
         };
+    },
+    methods: {
+        filteredItems() {
+            return GRID_ITEMS.filter((e) => this.$hasAccess(e.privileges));
+        },
     },
 };
 </script>
@@ -32,9 +35,11 @@ export default {
 <style lang="scss" scoped>
     .grid-wrapper {
         display: flex;
+        flex: 1;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: $background;
+        height: 100%;
+        background-color: $WHITESMOKE;
     }
 </style>

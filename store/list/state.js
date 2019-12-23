@@ -4,8 +4,8 @@
  */
 export default () => ({
     groups: {},
+    groupsElementsCount: {},
     elements: {},
-    elementsAreMultiDraggable: true,
-    isListMultilingual: true,
-    draggedElementsStore: {},
+    disabledElements: {},
+    filter: '',
 });

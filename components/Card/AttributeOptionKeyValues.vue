@@ -3,19 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="options-wrapper">
+    <div :class="['options', {'options--disabled': disabled}]">
         <div
             v-for="(key, index) in optionKeys"
             :key="index"
-            class="option-wrapper">
-            <Icon
-                icon="sprite-system system-trash--deactive"
-                size="medium"
-                @click.native="removeOptionKey(index)" />
+            class="option">
+            <IconDelete @click.native="removeOptionKey(index)" />
             <TextField
                 :value="key"
                 solid
                 required
+                small
+                :disabled="disabled"
                 label="Option code"
                 @input="e => updateOptionKey(index, e)"
                 @click:append-outer="removeOptionKey(index)" />
@@ -23,10 +22,8 @@
         <div
             class="add-option-wrapper"
             @click="addOptionKey">
-            <Icon
-                icon="sprite-button button-add-grey"
-                size="medium" />
-            <label class="txt--graphite typo-btn--xs">Add option</label>
+            <IconAdd />
+            <span class="font--medium-12-16">Add option</span>
         </div>
     </div>
 </template>
@@ -37,12 +34,22 @@ import { mapState, mapActions } from 'vuex';
 export default {
     name: 'AttributeOptionKeyValues',
     components: {
-        TextField: () => import('~/components/Inputs/TextField'),
-        Icon: () => import('~/components/Icon/Icon'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
+        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
+        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
+    },
+    props: {
+        disabled: {
+            type: Boolean,
+            required: true,
+        },
     },
     computed: {
         ...mapState('attribute', {
-            optionKeys: state => state.optionKeys,
+            optionKeys: (state) => state.optionKeys,
+        }),
+        ...mapState('authentication', {
+            userLanguageCode: (state) => state.user.language,
         }),
     },
     methods: {
@@ -51,42 +58,47 @@ export default {
             'removeAttributeOptionKey',
             'setAttributeOptionKey',
         ]),
+        ...mapActions('translations', [
+            'addMultilingualOptionTranslation',
+        ]),
         updateOptionKey(index, key) {
             this.setAttributeOptionKey({ index, key });
         },
         addOptionKey() {
-            this.addAttributeOptionKey({ key: '' });
+            this.addAttributeOptionKey('');
         },
         removeOptionKey(index) {
-            this.removeAttributeOptionKey({ index });
+            this.removeAttributeOptionKey(index);
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .options-wrapper {
+    .options {
         display: grid;
+        padding: 16px 0;
         grid-gap: 8px;
 
-        .option-wrapper {
-            display: flex;
-            align-items: center;
+        &--disabled {
+            pointer-events: none;
+        }
 
-            & > i {
-                margin-left: 8px;
-                margin-right: 12px;
-            }
+        .option {
+            display: grid;
+            grid-template-columns: 32px auto;
+            align-items: center;
         }
 
         .add-option-wrapper {
             display: flex;
             align-items: center;
-            margin-left: 40px;
+            margin-left: 28px;
             cursor: pointer;
 
             & > label {
                 margin-left: 4px;
+                color: $GRAPHITE;
                 cursor: pointer;
             }
         }

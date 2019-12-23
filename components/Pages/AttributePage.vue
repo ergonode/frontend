@@ -3,71 +3,56 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
-        <NavigationHeader
+    <Page>
+        <TitleBar
             :title="title"
-            :buttons="buttons"
-            :breadcrumbs="breadcrumbs"
-            icon="sprite-menu menu-puzzel--selected"
-            @navigateback="onDismiss" />
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('ATTRIBUTE')"
+            @navigateBack="onDismiss">
+            <template
+                v-if="isEdit"
+                #mainAction>
+                <Button
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE ATTRIBUTE"
+                    :disabled="!$hasAccess(['ATTRIBUTE_DELETE'])"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </Button>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
-    </PageWrapper>
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE ATTRIBUTE' : 'CREATE ATTRIBUTE'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
+    </Page>
 </template>
 
 <script>
+import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'AttributePage',
     mixins: [categoryManagementPageBaseMixin],
-    data() {
-        return {
-            breadcrumbs: [
-                {
-                    title: 'Attributes',
-                    icon: 'sprite-menu menu-puzzel--deactive',
-                },
-            ],
-            buttons: [],
-            tabs: [
-                {
-                    title: 'General options',
-                    path: `/attributes/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/general`,
-                    active: true,
-                    props: {
-                        updateButton: {
-                            title: this.isEdit ? 'SAVE ATTRIBUTE' : 'CREATE ATTRIBUTE',
-                            action: this.isEdit ? this.onSave : this.onCreate,
-                        },
-                    },
-                },
-                {
-                    title: 'Translations',
-                    path: `/attributes/${this.isEdit ? `edit/${this.$route.params.id}` : 'add'}/translations`,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE ATTRIBUTE',
-                            action: this.onSave,
-                        },
-                    },
-                },
-            ],
-        };
-    },
-    created() {
-        if (this.isEdit) {
-            this.buttons = [
-                // uncomment when we create removal options
-                // {
-                //     title: 'REMOVE ATTRIBUTE',
-                //     color: 'transparent',
-                //     action: this.onRemove,
-                //     theme: 'dark',
-                //     icon: 'sprite-system system-trash--deactive',
-                // },
-            ];
-        }
+    computed: {
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
 };
 </script>

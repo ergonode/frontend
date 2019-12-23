@@ -9,7 +9,7 @@ export default function ({ store }) {
 
     if (authentication.jwt && authentication.user) {
         let emptyState = 0;
-        Object.entries(data).forEach(([, value]) => {
+        Object.values(data).forEach((value) => {
             if (Array.isArray(value) && value.length === 0) {
                 emptyState += 1;
             }
@@ -17,7 +17,6 @@ export default function ({ store }) {
                 emptyState += 1;
             }
         });
-        // TODO: downloading data when the dictionary does not exist, not for all dictionary.
         if (emptyState > 0) {
             return store.dispatch('data/getDictionaries');
         }

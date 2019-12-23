@@ -3,119 +3,56 @@
  * See LICENSE for license details.
  */
 <template>
-    <Select
-        :value="value"
+    <DatePicker
+        :value="localValue"
         solid
-        :label="name"
+        regular
+        clearable
+        :label="label"
         :placeholder="parameters.format"
+        :format="parameters.format"
         :error-messages="errorMessages"
-        :dismissible="false"
         :required="required"
-        @focus="onSelectFocus">
-        <div
-            slot="appendIcon"
-            class="horizontal-wrapper">
-            <Icon :icon="appendStateIcon" />
-            <InfoHint
-                v-if="hint && !isError"
-                :hint="hint" />
-            <ErrorHint
-                v-if="isError"
-                :hint="errorMessages" />
-        </div>
-        <DatePickerContent
-            slot="select"
-            slot-scope="{ dismissSelect }"
-            :style="selectBoundingBox"
-            :selected-date="new Date(value)"
-            @apply="e => onApplyDate(e, dismissSelect)"
-            @clear="onClearDate" />
-    </Select>
+        :disabled="disabled"
+        @focus="onFocusChange"
+        @input="onValueChange" />
 </template>
 
 <script>
-
-import Select from '~/components/Inputs/Select/Select';
-import DatePickerContent from '~/components/Inputs/Select/Contents/DatePickerContent';
-import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
-import moment from 'moment';
+import { format as formatDate, parse as parseDate } from 'date-fns';
+import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
+import DatePicker from '~/core/components/Inputs/DatePicker/DatePicker';
 
 export default {
     name: 'ProductTemplateDate',
-    mixins: [baseProductTemplateElementMixin],
+    mixins: [productTemplateElementMixin],
     components: {
-        Select,
-        DatePickerContent,
-        Icon: () => import('~/components/Icon/Icon'),
+        DatePicker,
     },
     data() {
         return {
-            selectBoundingBox: {},
             isFocused: false,
         };
     },
-    computed: {
-        appendStateIcon() {
-            return this.isFocused
-                ? 'arrow-triangle trans-half'
-                : 'arrow-triangle';
-        },
+    created() {
+        if (!this.value) this.localValue = null;
+        else this.localValue = parseDate(this.value, this.parameters.format, new Date());
     },
     methods: {
         onFocusChange(isFocused) {
             this.isFocused = isFocused;
         },
-        onApplyDate(date, dismissSelect) {
-            dismissSelect();
+        onValueChange(date) {
+            this.localValue = date;
 
             this.debounceFunc(this.formatDate(date));
-        },
-        onClearDate() {
-            this.debounceFunc('');
         },
         formatDate(date) {
             if (!date) return null;
             const { format } = this.parameters;
 
-            return moment(date).format(format);
-        },
-        onSelectFocus(isFocused) {
-            if (isFocused) {
-                this.selectBoundingBox = this.getSelectBoundingBox();
-            }
-        },
-        getSelectBoundingBox() {
-            const { $el } = this;
-            const boundingRect = $el.getBoundingClientRect();
-            const {
-                top,
-                left,
-                height,
-            } = boundingRect;
-            const { innerHeight } = window;
-            const maxHeight = 300;
-
-            if (innerHeight - top < maxHeight) {
-                const offsetBottom = innerHeight - top;
-
-                return {
-                    left: `${left}px`,
-                    bottom: `${offsetBottom + 1}px`,
-                };
-            }
-
-            return {
-                left: `${left}px`,
-                top: `${top + height + 2}px`,
-            };
+            return formatDate(date, format);
         },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .horizontal-wrapper {
-        display: flex;
-        align-items: center;
-    }
-</style>

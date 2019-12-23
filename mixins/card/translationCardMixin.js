@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mapState } from 'vuex';
-import { getValueByKey } from '~/model/objectWrapper';
+import { mapState, mapActions } from 'vuex';
+import { isObject, getValueByKey } from '~/model/objectWrapper';
 
 export default {
     props: {
@@ -12,28 +12,32 @@ export default {
             required: false,
             default: '',
         },
-        translations: {
-            type: Object,
-            required: true,
-        },
     },
     computed: {
         ...mapState('data', {
-            languages: state => state.languages,
+            languages: (state) => state.languages,
+        }),
+        ...mapState('translations', {
+            translations: (state) => state.translations,
         }),
         selectedLanguage() {
             return getValueByKey(this.languages, this.languageCode);
         },
-        isTranslationChosen() {
-            return this.languageCode !== '';
-        },
     },
     methods: {
-        setTranslationPropertyValue(value, propertyName) {
-            this.$store.dispatch('translations/setTabTranslationPropertyValue', {
+        ...mapActions('translations', [
+            'setMultilingualTranslationPropertyValue',
+        ]),
+        parsedValue(propertyName) {
+            const property = this.translations[propertyName];
+            return isObject(property) ? property[this.languageCode] : property;
+        },
+        setTranslationPropertyValue(value, propertyName, isMultilingual = true) {
+            this.setMultilingualTranslationPropertyValue({
                 languageCode: this.languageCode,
                 propertyName,
                 value,
+                isMultilingual,
             });
         },
     },

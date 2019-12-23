@@ -4,31 +4,31 @@
  */
 .theme {
     &--dark > * {
-        color: $graphite;
+        color: $GRAPHITE;
     }
 
     &--light > * {
-        color: $white;
+        color: $WHITE;
     }
 
     &.primary {
-        background-color: $primary;
+        background-color: $GREEN;
     }
 
     &.information {
-        background-color: $information;
+        background-color: $BLUE;
     }
 
     &.error {
-        background-color: $error;
+        background-color: $RED;
     }
 
     &.warning {
-        background-color: $warning;
+        background-color: $YELLOW;
     }
 
     &.success {
-        background-color: $success;
+        background-color: $GREEN;
     }
 
     &.transparent {

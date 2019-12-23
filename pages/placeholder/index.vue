@@ -4,63 +4,63 @@
  */
 <template>
     <div class="placeholder-wrapper">
-        <no-ssr>
+        <client-only>
             <div class="wrapper__section">
                 <img
                     class="comet"
-                    src="~assets/images/placeholders/comet.svg">
+                    src="~assets/images/placeholders/error-pages/comet.svg">
                 <img
                     class="air"
-                    src="~assets/images/placeholders/air.svg">
+                    src="~assets/images/placeholders/error-pages/air.svg">
             </div>
             <div class="wrapper__section">
                 <img
                     class="delorean"
-                    src="~assets/images/placeholders/delorean.svg">
+                    src="~assets/images/placeholders/error-pages/delorean.svg">
                 <div class="section__info">
-                    <h1 class="info__header txt--success">
-                        <Typer :value="['Future', 'Feature']" />
+                    <h1 class="info__header font--medium-24-32">
+                        <ClientOnly>
+                            <Typer :value="['Future', 'Feature']" />
+                        </ClientOnly>
                     </h1>
-                    <p class="info__text txt--dark-graphite typo-list">
+                    <p class="info__text font--medium-16-24">
                         This feature will be implemented in the near future!
                     </p>
                     <Button
                         class="info__button"
-                        large
-                        color="success"
                         title="Back to the… Dashboard"
-                        @click.native="$router.push('/dashboard');" />
+                        @click.native="$router.push({ name: 'dashboard' });" />
                 </div>
             </div>
             <div class="wrapper__section">
-                <q class="typo-list txt--graphite section__quotation">
+                <q class="font--medium-16-24 section__quotation">
                     „Time traveling is just too dangerous. Better that I devote myself<br>
                     to study the other great mystery of the universe: women!”
                 </q>
                 <a
-                    class="section__video-link typo-list"
+                    class="section__video-link font--medium-16-24"
                     href="https://www.youtube.com/watch?v=Dylp3c3_OBQ"
                     target="_blank">
                     Dr. Emmett „Doc” Brown
                 </a>
             </div>
-            <img
-                slot="placeholder"
-                class="preloader"
-                width="24"
-                src="~assets/images/preloader.gif"
-                alt="Loading...">
-        </no-ssr>
+            <template #placeholder>
+                <img
+                    class="preloader"
+                    width="24"
+                    src="~assets/images/preloader.gif"
+                    alt="Loading...">
+            </template>
+        </client-only>
     </div>
 </template>
 
 <script>
-
 export default {
     name: 'Placeholder',
     components: {
-        Button: () => import('~/components/Buttons/Button'),
-        Typer: () => import('~/components/Inputs/Typer'),
+        Button: () => import('~/core/components/Buttons/Button'),
+        Typer: () => import('~/core/components/Inputs/Typer'),
     },
 };
 </script>
@@ -104,13 +104,14 @@ export default {
                 margin-top: 24px;
 
                 .info__header {
-                    @include setFont(extraBold, 56, 56);
                     height: 56px;
                     min-width: 1px;
+                    color: $GREEN;
                 }
 
                 .info__text {
                     margin-top: 24px;
+                    color: $GRAPHITE_DARK;
                 }
 
                 .info__button {
@@ -122,6 +123,7 @@ export default {
                 max-width: 700px;
                 min-width: 370px;
                 width: 100%;
+                color: $GRAPHITE;
             }
 
             .section__video-link {

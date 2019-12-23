@@ -4,41 +4,30 @@
  */
 <template>
     <TextArea
-        :value="value"
+        :value="localValue"
         solid
-        :label="name"
+        :label="label"
         :placeholder="placeholder"
         :required="required"
-        :error-messages="errorMessages"
-        @input="onValueChange">
-        <div
-            slot="appendIcon"
-            class="horizontal-wrapper">
-            <InfoHint
-                v-if="hint && !isError"
-                :hint="hint" />
-            <ErrorHint
-                v-if="isError"
-                :hint="errorMessages" />
-        </div>
-    </TextArea>
+        :error-messages="isError ? [' '] : null"
+        :disabled="disabled"
+        resize="none"
+        @input="onValueChange" />
 </template>
 
 <script>
-import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
+import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
 
 export default {
     name: 'ProductTemplateMultiLine',
-    mixins: [baseProductTemplateElementMixin],
+    mixins: [productTemplateElementMixin],
     components: {
-        TextArea: () => import('~/components/Inputs/TextArea'),
+        TextArea: () => import('~/core/components/Inputs/TextArea'),
+    },
+    watch: {
+        value() {
+            this.localValue = this.value;
+        },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .horizontal-wrapper {
-        display: flex;
-        align-items: center;
-    }
-</style>

@@ -2,78 +2,86 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-/*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
- * See LICENSE for license details.
- */
 .btn {
+    $btn: &;
+
     position: relative;
     display: flex;
     flex-shrink: 0;
     justify-content: center;
     align-items: center;
-    height: 32px;
     border: none;
-    padding: 0 16px;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+    text-transform: uppercase;
     cursor: pointer;
     outline: none;
-    border-radius: 4px;
 
-    & > * {
-        cursor: pointer;
-        pointer-events: none;
+    &:not(&--small):not(&--tiny):not(&--fab) {
+        height: 40px;
+        padding: 0 16px 0 12px;
+        font: $FONT_SEMI_BOLD_14_20;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled):not(&--plain) {
+        box-shadow: $ELEVATOR_2_DP;
+    }
+
+    &__title {
+        margin-left: 4px;
+        color: $WHITE;
+        letter-spacing: 0.5px;
+    }
+
+    &--primary {
+        background-color: $GREEN;
+
+        &:disabled {
+            background-color: $GREY;
+        }
+    }
+
+    &--secondary {
+        background-color: transparent;
+
+        #{$btn}__title {
+            color: $GRAPHITE;
+        }
+
+        &:disabled {
+            #{$btn}__title {
+                color: $GREY_DARK;
+            }
+        }
+
+        &:hover:not(:disabled):not(#{$btn}--plain) {
+            background-color: $WHITE;
+        }
+    }
+
+    &--small {
+        height: 32px;
+        padding: 0 12px 0 8px;
+    }
+
+    &--tiny {
+        height: 24px;
+        padding: 0 8px 0 4px;
     }
 
     &--fab {
         width: 32px;
+        height: 32px;
+        border-radius: 16px;
         padding: 0;
-        border-radius: 50%;
     }
 
-    &--rounded {
-        border-radius: 999px;
-    }
-
-    &--small {
-        height: 24px;
-        padding: 0 8px;
-    }
-
-    &--large {
-        height: 40px;
-    }
-
-    &__icon {
-        z-index: 2;
-        margin-right: 8px;
-    }
-
-    &--fab &--small {
-        width: 24px;
-    }
-
-    &--fab &--large {
-        width: 40px;
-    }
-
-    &--fab > &__icon {
-        margin-right: 0;
-    }
-
-    &:hover {
-        box-shadow:
-            0 2px 2px 0 rgba(0, 0, 0, 0.14),
-            0 3px 1px -2px rgba(0, 0, 0, 0.12),
-            0 1px 5px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    &:disabled {
-        background: $grey !important;
-        color: $white !important;
-
-        &:hover {
-            box-shadow: none;
+    &--tiny, &--small {
+        #{$btn}__title {
+            font: $FONT_SEMI_BOLD_12_16;
         }
     }
 }

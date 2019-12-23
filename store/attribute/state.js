@@ -6,8 +6,10 @@ export default () => ({
     id: null,
     code: '',
     groups: [],
-    type: '',
-    parameter: '',
+    type: null,
+    parameter: null,
     optionKeys: [],
+    groupOptions: [],
+    optionValues: {},
     isMultilingual: true,
 });

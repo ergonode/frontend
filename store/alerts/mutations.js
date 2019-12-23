@@ -2,11 +2,16 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+export const types = {
+    ADD_ALERT: 'ADD_ALERT',
+    REMOVE_ALERT: 'REMOVE_ALERT',
+};
+
 export default {
-    appendAlert: (state, payload) => {
+    [types.ADD_ALERT](state, payload) {
         state.alerts.push(payload);
     },
-    removeAlert: (state, index) => {
+    [types.REMOVE_ALERT](state, index) {
         state.alerts.splice(index, 1);
     },
 };

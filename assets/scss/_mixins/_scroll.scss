@@ -6,11 +6,11 @@
 /// @author Piotr (bleto) Bletek
 /// @param {Length} $size - Horizontal scrollbar's height and vertical scrollbar's width
 /// @param {Color} $color - Scrollbar's color
-/// @param {Color} $background [mix($color, white, 50%)] - Scrollbar's color
+/// @param {Color} $WHITESMOKE [mix($color, white, 50%)] - Scrollbar's color
 /// @example scss - Scrollbar styling
 ///   @include scrollbars(.5em, #000);
 
-@mixin scrollbars($size, $color, $background: mix($color, white,  50%)) {
+@mixin scrollbars($size, $color, $WHITESMOKE: mix($color, white,  50%)) {
     // For Google Chrome
     &::-webkit-scrollbar {
         width: $size;
@@ -23,11 +23,11 @@
     }
 
     &::-webkit-scrollbar-track {
-        background: $background;
+        background: $WHITESMOKE;
     }
 
     body { // For Internet Explorer
         scrollbar-face-color: $color;
-        scrollbar-track-color: $background;
+        scrollbar-track-color: $WHITESMOKE;
     }
 }

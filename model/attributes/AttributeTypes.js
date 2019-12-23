@@ -2,78 +2,69 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-const types = {
-    TEXT: 'TEXT',
-    TEXTAREA: 'TEXTAREA',
-    NUMERIC: 'NUMERIC',
-    SELECT: 'SELECT',
-    MULTI_SELECT: 'MULTI_SELECT',
-    IMAGE: 'IMAGE',
-    PRICE: 'PRICE',
-    UNIT: 'UNIT',
-    DATE: 'DATE',
-};
+
+import { TYPES } from '~/defaults/attributes';
 
 export function hasOptions(type) {
-    return type === types.SELECT || type === types.MULTI_SELECT;
+    return type === TYPES.SELECT || type === TYPES.MULTI_SELECT;
+}
+
+export function isMultilingual(type) {
+    return type === TYPES.TEXT
+        || type === TYPES.TEXTAREA
+        || type === TYPES.SELECT
+        || type === TYPES.MULTI_SELECT;
 }
 
 export function hasPlaceholder(type) {
     return (
-        type === types.TEXT
-        || type === types.TEXTAREA
-        || type === types.NUMERIC
+        type === TYPES.TEXT
+        || type === TYPES.TEXTAREA
+        || type === TYPES.NUMERIC
     );
 }
 
 export function hasParams(type) {
     return (
-        type === types.IMAGE
-        || type === types.PRICE
-        || type === types.UNIT
-        || type === types.DATE
+        type === TYPES.PRICE
+        || type === TYPES.UNIT
+        || type === TYPES.DATE
     );
-}
-
-export function hasParamsWithMultiSelect(type) {
-    return type === types.IMAGE;
 }
 
 export function getParamsOptionsForType(type, data) {
     switch (type) {
-    case types.UNIT:
+    case TYPES.UNIT:
         return data.units;
-    case types.DATE:
+    case TYPES.DATE:
         return data.dateFormats;
-    case types.PRICE:
+    case TYPES.PRICE:
         return data.currencies;
-    case types.IMAGE:
-        return data.imageFormats;
     default:
         return [];
     }
 }
 
-export function getIcon(type) {
+export function getTypeTranslation(type) {
     switch (type) {
-    case types.TEXT:
-        return 'text';
-    case types.TEXTAREA:
-        return 'text_area';
-    case types.NUMERIC:
-        return 'text';
-    case types.SELECT:
-        return 'select';
-    case types.MULTI_SELECT:
-        return 'select';
-    case types.IMAGE:
-        return 'image';
-    case types.PRICE:
-        return 'price';
-    case types.UNIT:
-        return 'unit';
-    case types.DATE:
-        return 'date';
+    case TYPES.TEXT:
+        return 'TEXT';
+    case TYPES.TEXTAREA:
+        return 'TEXT AREA';
+    case TYPES.NUMERIC:
+        return 'NUMERIC';
+    case TYPES.SELECT:
+        return 'SELECT';
+    case TYPES.MULTI_SELECT:
+        return 'MULTI SELECT';
+    case TYPES.IMAGE:
+        return 'IMAGE';
+    case TYPES.PRICE:
+        return 'PRICE';
+    case TYPES.UNIT:
+        return 'UNIT';
+    case TYPES.DATE:
+        return 'DATE';
     default:
         return '';
     }
@@ -81,14 +72,12 @@ export function getIcon(type) {
 
 export function getParamsKeyForType(type) {
     switch (type) {
-    case types.DATE:
+    case TYPES.DATE:
         return 'format';
-    case types.UNIT:
+    case TYPES.UNIT:
         return 'unit';
-    case types.PRICE:
+    case TYPES.PRICE:
         return 'currency';
-    case types.IMAGE:
-        return 'formats';
     default:
         return '';
     }
@@ -96,27 +85,25 @@ export function getParamsKeyForType(type) {
 
 export function getTypeElement(type) {
     switch (type) {
-    case types.TEXT:
+    case TYPES.TEXT:
         return 'SingleLine';
-    case types.TEXTAREA:
+    case TYPES.TEXTAREA:
         return 'MultiLine';
-    case types.NUMERIC:
+    case TYPES.NUMERIC:
         return 'SingleLine';
-    case types.SELECT:
+    case TYPES.SELECT:
         return 'Options';
-    case types.MULTI_SELECT:
+    case TYPES.MULTI_SELECT:
         return 'Options';
-    case types.IMAGE:
+    case TYPES.IMAGE:
         return 'Image';
-    case types.PRICE:
+    case TYPES.PRICE:
         return 'SingleLine';
-    case types.UNIT:
+    case TYPES.UNIT:
         return 'SingleLine';
-    case types.DATE:
+    case TYPES.DATE:
         return 'Date';
     default:
         return 'SingleLine';
     }
 }
-
-export default types;

@@ -4,8 +4,8 @@
  */
 <template>
     <span
-        class="section"
-        v-text="title" />
+        class="section font--medium-24-32"
+        v-text="label" />
 </template>
 
 <script>
@@ -13,7 +13,7 @@
 export default {
     name: 'ProductTemplateSection',
     props: {
-        title: {
+        label: {
             type: String,
             required: true,
         },
@@ -23,6 +23,8 @@ export default {
 
 <style lang="scss" scoped>
     .section {
-        @include setFont(medium, huge, regular, $darkGraphite);
+        display: flex;
+        align-items: center;
+        color: $GRAPHITE_DARK;
     }
 </style>

@@ -8,40 +8,38 @@
         @dragover="dragOver"
         @drop="drop">
         <div class="vertical-wrapper">
-            <Icon
-                icon="sprite-system system-trash--active"
-                size="large" />
-            <Label
-                class="typo-btn txt--white txt--upper l-spacing--half"
-                text="drop here to remove" />
+            <IconDelete
+                :fill-color="whiteColor"
+                size="48" />
+            <span class="trash-can__label font--semi-bold-14-16">drop here to remove</span>
         </div>
     </div>
 </template>
 
 <script>
-
-import { mapState, mapActions, mapGetters } from 'vuex';
+import {
+    WHITE,
+} from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'TrashCan',
     components: {
-        Label: () => import('~/components/Label/Label'),
-        Icon: () => import('~/components/Icon/Icon'),
+        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
     computed: {
-        ...mapState('draggable', {
-            isColumnDragging: state => state.isColumnDragging,
-        }),
-        ...mapGetters('grid', [
-            'columnIndexByID',
-        ]),
+        whiteColor() {
+            return WHITE;
+        },
     },
     methods: {
-        ...mapActions('draggable', [
-            'setDraggableState',
-        ]),
         drop(event) {
-            event.dataTransfer.clearData();
+            event.preventDefault();
+
+            if (navigator.userAgent.toLowerCase().indexOf('firefox') === -1) {
+                // TODO: Only Firefox Error: Modifications are not allowed for this document
+                // check why firefox does not support clearData
+                event.dataTransfer.clearData();
+            }
         },
         dragOver(event) {
             event.preventDefault();
@@ -53,17 +51,13 @@ export default {
 <style lang="scss" scoped>
     .trash-can {
         position: absolute;
-        left: 50%;
+        left: 5%;
         bottom: -324px;
-        z-index: 30;
+        z-index: $Z_INDEX_TRASH;
         width: 480px;
         height: 480px;
-        transform: translate(-50%, 0);
-        background-color: $darkGraphite;
-        box-shadow:
-            0 12px 17px 2px rgba(0, 0, 0, 0.14),
-            0 5px 22px 4px rgba(0, 0, 0, 0.12),
-            0 7px 8px -4px rgba(0, 0, 0, 0.2);
+        background-color: $GRAPHITE_DARK;
+        box-shadow: $ELEVATOR_12_DP;
         border-radius: 240px;
 
         & > * {
@@ -79,6 +73,11 @@ export default {
             & > * {
                 margin-bottom: 12px;
             }
+        }
+
+        &__label {
+            color: $WHITE;
+            text-transform: uppercase;
         }
     }
 </style>

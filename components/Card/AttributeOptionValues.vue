@@ -5,58 +5,39 @@
 <template>
     <div class="option-values-container">
         <span>Option values</span>
-        <TextField
+        <AttributeOptionValue
             v-for="(key, index) in optionKeys"
             :key="index"
-            :value="optionTranslationsValues[languageCode][index]"
+            :index="index"
             :label="key"
-            solid
-            @input="e => updateOptionValue(index, e)" />
+            :disabled="disabled"
+            :language-code="languageCode" />
     </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import TextField from '~/components/Inputs/TextField';
+import { mapState } from 'vuex';
 
 export default {
     name: 'AttributeOptionValues',
     components: {
-        TextField,
+        AttributeOptionValue: () => import('~/components/Card/AttributeOptionValue'),
     },
     props: {
         languageCode: {
             type: String,
             required: true,
         },
+        disabled: {
+            type: Boolean,
+            required: true,
+        },
     },
     computed: {
         ...mapState('attribute', {
-            optionKeys: state => state.optionKeys,
+            optionKeys: (state) => state.optionKeys,
+            optionValues: (state) => state.optionValues,
         }),
-        ...mapState('translations', {
-            optionTranslationsValues: state => state.optionTranslationsValues,
-        }),
-    },
-    created() {
-        if (!this.optionTranslationsValues[this.languageCode]) {
-            this.addOptionTranslation({ languageCode: this.languageCode });
-        }
-    },
-    methods: {
-        ...mapActions('attribute', [
-            'setAttributeOptionKeyValue',
-        ]),
-        ...mapActions('translations', [
-            'addOptionTranslation',
-        ]),
-        updateOptionValue(index, value) {
-            this.setAttributeOptionKeyValue({
-                languageCode: this.languageCode,
-                index,
-                value,
-            });
-        },
     },
 };
 </script>

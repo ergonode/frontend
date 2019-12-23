@@ -1,30 +1,63 @@
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export const actions = {
-    async nuxtServerInit({ commit }) {
-        const token = this.$cookies.get('jwt') || null;
-        const user = this.$cookies.get('user') || null;
+import { getPagesConfig } from '~/plugins/moduleLoader';
+import { JWT_KEY } from '~/defaults/authenticate/cookies';
 
-        commit('authentication/setAction', { key: 'jwt', value: token });
-        commit('authentication/setAction', { key: 'user', value: user });
+export const actions = {
+    async nuxtServerInit({ dispatch }) {
+        const token = this.$cookies.get(JWT_KEY) || null;
+
+        await dispatch('authentication/setAuth', token);
+
+        if (token) {
+            await dispatch('authentication/getUser');
+        }
     },
-    resetState({ commit }) {
-        commit('attribute/clearStorage');
-        commit('authentication/clearStorage');
-        commit('data/clearStorage');
-        commit('categories/clearStorage');
-        commit('draggable/clearStorage');
-        commit('grid/clearStorage');
+    resetState({ dispatch, commit }) {
+        dispatch('categories/clearStorage');
+        dispatch('attribute/clearStorage');
+        dispatch('authentication/clearStorage');
+        dispatch('data/clearStorage');
+        dispatch('draggable/clearStorage');
+        dispatch('tree/clearStorage');
+        dispatch('segments/clearStorage');
+        dispatch('conditions/clearStorage');
+        dispatch('gridDesigner/clearStorage');
+        dispatch('productsDraft/clearStorage');
+        dispatch('productStatus/clearStorage');
+        dispatch('templateDesigner/clearStorage');
+        dispatch('list/clearStorage');
+        dispatch('roles/clearStorage');
+        dispatch('users/clearStorage');
         commit('gridDraft/clearStorage');
-        commit('list/clearStorage');
-        commit('productsDraft/clearStorage');
-        commit('settings/clearStorage');
-        commit('templateDesigner/clearStorage');
         commit('translations/clearStorage');
-        commit('tree/clearStorage');
-        commit('users/clearStorage');
         commit('validations/clearStorage');
     },
 };
+
+function getModulesStore() {
+    const { store: modulesStore } = getPagesConfig;
+    const newStore = {};
+    for (let i = 0; i < modulesStore.length; i += 1) {
+        const { moduleName, store, source } = modulesStore[i];
+        for (let j = 0; j < store.length; j += 1) {
+            const { directory, name } = store[j];
+            switch (source) {
+            // TODO: uncomment when npm modules ready
+            // case 'npm':
+            //     newStore[`module<${name}>`] = require(`@NodeModules/${moduleName}/store/${directory}`).default;
+            //     break;
+            default:
+                newStore[`module<${name}>`] = require(`@Modules/${moduleName}/store/${directory}`).default;
+                break;
+            }
+        }
+    }
+    return newStore;
+}
+
+export const modules = getModulesStore();

@@ -8,10 +8,10 @@
         :style="gridItemStyles"
         class="grid__item-area">
         <slot />
+        <slot name="connection" />
     </div>
 </template>
 <script>
-
 export default {
     name: 'TemplateGridItemArea',
     props: {
@@ -23,13 +23,20 @@ export default {
             type: Number,
             required: true,
         },
+        gridGap: {
+            type: Number,
+            default: 0,
+        },
     },
     computed: {
         gridItemStyles() {
-            const { ghost, column } = this.item;
+            const { column } = this.item;
             return {
                 gridColumn: `${column + 1} / ${this.columns + 1}`,
-                padding: ghost ? '0 1px 1px' : '5px',
+                marginLeft: `${this.gridGap}px`,
+                padding: `${this.gridGap}px 0`,
+                gridTemplateColumns: `repeat(${this.columns - column}, 1fr)`,
+                gridGap: `${this.gridGap}px`,
             };
         },
     },
@@ -39,9 +46,30 @@ export default {
 <style lang="scss" scoped>
     .grid__item-area {
         position: relative;
-        display: flex;
-        justify-content: center;
+        display: grid;
+        justify-content: flex-start;
         align-items: center;
+
+        .item-area__line {
+            position: absolute;
+            z-index: $Z_INDEX_NEGATIVE;
+            display: flex;
+            width: 100%;
+            grid-column: 1 / 1;
+            border-left: $BORDER_2_GREEN;
+            border-bottom: $BORDER_2_GREEN;
+            transition: width 0.3s;
+
+            &::before {
+                position: absolute;
+                bottom: -4px;
+                right: 0;
+                width: 7px;
+                height: 6px;
+                background-color: $GREEN;
+                content: "";
+            }
+        }
     }
 
     .expand-enter-active, .expand-leave-active {

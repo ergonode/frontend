@@ -3,12 +3,13 @@
  * See LICENSE for license details.
  */
 .page-selector {
-    display: flex;
+    display: grid;
     align-items: center;
+    grid-auto-flow: column;
+    column-gap: 8px;
 
     &__text {
-        @include setFont(medium, small, regular, $lightGraphite);
         flex: 0 0 auto;
-        margin: 0 4px;
+        color: $GRAPHITE_DARK;
     }
 }

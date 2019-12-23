@@ -3,86 +3,64 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
-        <NavigationHeader
+    <Page>
+        <TitleBar
             :title="title"
-            :buttons="buttons"
-            :breadcrumbs="breadcrumbs"
-            icon="sprite-menu menu-puzzel--selected"
-            @navigateback="onDismiss" />
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')"
+            @navigateBack="onDismiss">
+            <template
+                v-if="isEdit"
+                #mainAction>
+                <Button
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE TEMPLATE"
+                    :disabled="!$hasAccess(['TEMPLATE_DESIGNER_DELETE'])"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </Button>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
-    </PageWrapper>
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE TEMPLATE' : 'CREATE TEMPLATE'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
+        <TrashCan v-show="draggedElementOnGrid" />
+    </Page>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
-import { mapActions } from 'vuex';
 
 export default {
     name: 'TemplatePage',
     mixins: [categoryManagementPageBaseMixin],
-    data() {
-        return {
-            breadcrumbs: [
-                {
-                    title: 'Templates',
-                    icon: 'sprite-menu menu-puzzel--deactive',
-                },
-            ],
-            buttons: [],
-            tabs: [
-                {
-                    title: 'General options',
-                    path: `/templates/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/general`,
-                    active: true,
-                    props: {
-                        updateButton: {
-                            title: this.isEdit ? 'SAVE TEMPLATE' : 'CREATE TEMPLATE',
-                            action: this.isEdit ? this.onSave : this.onCreate,
-                        },
-                    },
-                },
-                {
-                    title: 'Template design',
-                    path: `/templates/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/template`,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE TEMPLATE',
-                            action: this.onSave,
-                        },
-                    },
-                },
-            ],
-        };
+    components: {
+        TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
     },
-    created() {
-        if (this.isEdit) {
-            // uncomment when we create removal options
-            // this.buttons = [
-            //     {
-            //         title: 'REMOVE TEMPLATE',
-            //         color: 'transparent',
-            //         action: this.onRemove,
-            //         theme: 'dark',
-            //         icon: 'sprite-system system-trash--deactive',
-            //     },
-            // ];
-        }
-        this.setConfigurationForList({
-            elementsAreMultiDraggable: false,
-            isListMultilingual: false,
-            draggedElementsStore: {
-                storeName: 'templateDesigner',
-                stateName: 'templateLayout',
-                idName: ['data', 'id'],
-            },
-        });
-    },
-    methods: {
-        ...mapActions('list', {
-            setConfigurationForList: 'setConfigurationForList',
+    computed: {
+        ...mapState('draggable', {
+            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
 };
 </script>

@@ -4,12 +4,11 @@
  */
 <template>
     <div
-        class="grid-header"
-        :style="gridStyles">
+        class="grid-header">
         <label
             v-for="index in columns"
             :key="index"
-            class="grid-header__title txt-fixed typo-label--strong txt--graphite">
+            class="grid-header__title font--bold-12-16">
             {{ addOrdinalNumberSuffix(index) }} {{ headerName }}
         </label>
     </div>
@@ -20,10 +19,6 @@ export default {
     props: {
         columns: {
             type: Number,
-            required: true,
-        },
-        gridStyles: {
-            type: Object,
             required: true,
         },
         headerName: {
@@ -52,9 +47,10 @@ export default {
 <style lang="scss" scoped>
     .grid-header {
         display: grid;
-        border: 1px solid $grey;
+        border: 1px solid $GREY;
         border-left: none;
-        background-color: $background;
+        background-color: $WHITESMOKE;
+        padding-right: 4px;
 
         &__title {
             display: flex;
@@ -62,7 +58,11 @@ export default {
             justify-content: space-between;
             align-items: center;
             padding: 8px;
-            border-left: 1px solid $grey;
+            border-left: 1px solid $GREY;
+            color: $GRAPHITE;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
     }
 </style>

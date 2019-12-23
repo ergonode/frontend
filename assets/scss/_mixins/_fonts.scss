@@ -15,40 +15,6 @@
         font-display: swap;
         font-style: $style;
         font-weight: $weight;
-        src:
-            url("~assets/fonts/intern/Inter-UI-#{$name}.woff2") format("woff2"),
-            url("~assets/fonts/intern/Inter-UI-#{$name}.woff") format("woff");
-    }
-}
-
-/// Mixin to set font styles
-/// @param {Number | Variable} $weight - Font weight
-/// @param {Number | Variable} $size - Font size
-/// @param {Number | Variable} $lh - Line height
-/// @param {Color} $color - Font color
-/// @example scss - setFont loader
-///   @include setFont(400, 12, 15, #000);
-///   @include setFont(regular, medium, medium, red);
-
-@mixin setFont($weight: false, $size: false, $lh: false, $color: false, $ls: false) {
-    font-family:
-        $baseFontFamily,
-        Helvetica,
-        Arial,
-        sans-serif;
-    @if $weight {
-        font-weight: fontWeight($weight);
-    }
-    @if $size {
-        font-size: fontSize($size) +px;
-    }
-    @if $lh {
-        line-height: lineHeight($lh) +px;
-    }
-    @if $color {
-        color: $color;
-    }
-    @if $ls {
-        letter-spacing: $ls + px;
+        src: url("~assets/fonts/intern/Inter-UI-#{$name}.woff2") format("woff2");
     }
 }

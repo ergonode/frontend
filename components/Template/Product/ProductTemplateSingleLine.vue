@@ -5,55 +5,63 @@
 <template>
     <TextField
         :value="localValue"
+        :input="inputType"
         solid
-        :label="name"
+        regular
+        :label="label"
         :placeholder="placeholder"
         :error-messages="isError ? [' '] : null"
         :required="required"
+        :disabled="disabled"
+        :description="hint"
         @input="onValueChange">
-        <div
-            slot="appendIcon"
-            class="horizontal-wrapper">
-            <span>{{ suffix }}</span>
-            <InfoHint
-                v-if="hint && !isError"
-                :hint="hint" />
-            <ErrorHint
-                v-if="isError"
-                :hint="errorMessages" />
-        </div>
+        <template #append>
+            <span
+                class="suffix font--medium-14-20"
+                v-text="suffix" />
+        </template>
     </TextField>
 </template>
 
 <script>
-import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
+import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
 
 export default {
     name: 'ProductTemplateSingleLine',
-    mixins: [baseProductTemplateElementMixin],
+    mixins: [productTemplateElementMixin],
     components: {
-        TextField: () => import('~/components/Inputs/TextField'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
     },
     computed: {
         suffix() {
             if (this.parameters) {
-                if (this.parameters.code) {
-                    return this.parameters.code;
-                }
-                if (this.parameters.currency) {
-                    return this.parameters.currency;
-                }
-                return '';
+                return Object.values(this.parameters).join(', ');
             }
-            return '';
+
+            return null;
+        },
+        inputType() {
+            if (this.parameters) {
+                return { type: 'number' };
+            }
+
+            return { type: 'text' };
+        },
+    },
+    watch: {
+        value() {
+            this.localValue = this.value;
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .horizontal-wrapper {
+    .suffix {
         display: flex;
+        justify-content: flex-end;
         align-items: center;
+        color: $GRAPHITE_DARK;
+        margin-right: 4px;
     }
 </style>

@@ -12,38 +12,32 @@
             <form class="login-form__content">
                 <TextField
                     v-model="userAuthData.username"
-                    class="content__input"
                     left-alignment
+                    regular
                     underline
-                    label="User name" />
+                    label="E-mail address" />
                 <TextField
                     v-model="userAuthData.password"
-                    class="content__input"
                     :input="{ type: 'password' }"
                     left-alignment
+                    regular
                     underline
                     label="Password"
                     @keyup.13="onSubmit" />
-                <div class="content__checkbox">
-                    <CheckBox v-model="rememberCredentials" />
-                    <span class="checkbox-description txt--graphite">
-                        Remember me
-                    </span>
-                </div>
                 <Button
-                    class="content__button"
-                    large
-                    color="success"
                     title="Log in"
-                    @click.native="onSubmit" />
+                    type="submit"
+                    @click.stop.prevent.native="onSubmit" />
             </form>
         </section>
         <section class="login__background">
             <h1 class="login__background__header">
                 The first human - centric <br>designed PIM
             </h1>
-            <h2 class="login__background__subheader txt--white">
-                <Typer :value="['Simple', 'Ergonomic', 'Efficient', 'For people.']" />
+            <h2 class="login__background__subheader">
+                <ClientOnly>
+                    <Typer :value="['Simple', 'Ergonomic', 'Efficient', 'For people.']" />
+                </ClientOnly>
             </h2>
         </section>
     </main>
@@ -56,10 +50,9 @@ export default {
     layout: 'login',
     name: 'Login',
     components: {
-        TextField: () => import('~/components/Inputs/TextField'),
-        CheckBox: () => import('~/components/Inputs/CheckBox'),
-        Button: () => import('~/components/Buttons/Button'),
-        Typer: () => import('~/components/Inputs/Typer'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
+        Button: () => import('~/core/components/Buttons/Button'),
+        Typer: () => import('~/core/components/Inputs/Typer'),
     },
     data: () => ({
         userAuthData: {
@@ -67,19 +60,18 @@ export default {
             password: '',
         },
         loginError: false,
-        rememberCredentials: false,
     }),
     methods: {
         ...mapActions('authentication', [
             'authenticateUser',
+            'getUser',
         ]),
         ...mapActions([
             'resetState',
         ]),
         async onSubmit() {
             await this.authenticateUser({ data: this.userAuthData });
-
-            this.$router.push('/dashboard');
+            this.$router.push({ name: 'dashboard' });
         },
     },
     created() {

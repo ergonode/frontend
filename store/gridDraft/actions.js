@@ -9,15 +9,30 @@ export default {
         productId, columnId, elementId, value, languageCode,
     }) {
         const { drafts } = state;
-        const { [productId]: { draftId } } = drafts;
-        const path = `${languageCode}/drafts/${draftId}/${elementId}/value`;
+        const path = `${languageCode}/products/${productId}/draft/${elementId}/value`;
+        let parsedValue = '';
+
+        if (!drafts[productId]) {
+            commit('initializeProductDraft', productId);
+        }
 
         if (!drafts[productId][columnId]) {
-            commit('addColumnKey', { productId, columnId });
+            commit('initializeColumnProductDraft', { productId, columnId });
         }
-        commit('addColumnKeyValue', { productId, columnId, value });
 
-        await this.app.$axios.$put(path, { value }).then(() => {
+        commit('addDraftValueForLanguageCode', {
+            productId, columnId, languageCode, value,
+        });
+
+        if (Array.isArray(value)) {
+            parsedValue = value.map((val) => val.key);
+        } else if (typeof value === 'object') {
+            parsedValue = value.key;
+        } else {
+            parsedValue = value;
+        }
+
+        await this.app.$axios.$put(path, { value: parsedValue }).then(() => {
             // Clear validation error if exist
             commit('validations/removeValidationError', `${productId}/${elementId}`, { root: true });
         }).catch((e) => {
@@ -30,25 +45,23 @@ export default {
             }
         });
     },
-    getDraft({ commit, state }, {
-        id, languageCode, onError,
-    }) {
-        if (state.drafts[id]) return null;
-
-        return this.app.$axios.$get(`${languageCode}/drafts/product/${id}`).then(({
-            draft_id: draftId,
-            product_id: productId,
-        }) => {
-            commit('addRowKey', { productId });
-            commit('addDraftKey', { productId, draftId });
-        }).catch(e => onError(e.data));
-    },
-    applyDraft({ rootState }, {
-        id, onSuccess, onError,
-    }) {
+    addDraftValue({ commit, state, rootState }, { columnId, rowId, value }) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/drafts/${id}/persist`, {}).then(response => onSuccess(response)).catch(e => onError(e.data));
+        const { drafts } = state;
+
+        if (!drafts[rowId]) {
+            commit('initializeProductDraft', rowId);
+        }
+
+        if (!drafts[rowId][columnId]) {
+            commit('initializeColumnProductDraft', { productId: rowId, columnId });
+        }
+
+        commit('addDraftValueForLanguageCode', {
+            productId: rowId, columnId, languageCode: userLanguageCode, value,
+        });
     },
-    removeDraft: ({ commit }, { productId }) => commit('removeDraft', { productId }),
+    removeDraft: ({ commit }, productId) => commit('removeDraft', productId),
+    removeDraftValue: ({ commit }, payload) => commit('removeDraftValue', payload),
     forceDraftsMutation: ({ commit }) => commit('forceDraftsMutation'),
 };

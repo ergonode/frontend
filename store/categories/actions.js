@@ -2,16 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { setDefaultTranslation } from '~/model/mappers/translationMapper';
-import Translation from '~/model/categories/Translation';
+import { types } from './mutations';
+
+const onDefaultError = () => {};
 
 export default {
-    setAction: ({ commit }, payload) => {
-        commit('setState', payload);
-    },
     getCategoryById(
         { commit, rootState },
-        { categoryId, onError },
+        { categoryId, onError = () => {} },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$get(`${userLanguageCode}/categories/${categoryId}`).then(({
@@ -23,19 +21,14 @@ export default {
                 name,
             };
 
-            commit('setState', { key: 'id', value: id });
-            commit('setState', { key: 'code', value: code });
-            commit('setState', { key: 'name', value: name });
+            commit(types.SET_ID, id);
+            commit(types.SET_CODE, code);
+            commit(types.SET_NAME, name);
 
-            const newTranslations = translations || setDefaultTranslation(
-                new Translation(),
-                userLanguageCode,
-            );
-
-            commit('translations/setTabTranslations', { translations: newTranslations }, { root: true });
-        }).catch(e => onError(e.data));
+            commit('translations/setTabTranslations', translations, { root: true });
+        }).catch(onError);
     },
-    createCategory(
+    async createCategory(
         { commit, rootState },
         {
             data,
@@ -44,12 +37,15 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$post(`${userLanguageCode}/categories`, data).then(({ id }) => {
-            commit('setState', { key: 'id', value: id });
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$post(`${userLanguageCode}/categories`, data).then(({ id }) => {
+            commit(types.SET_ID, id);
             onSuccess(id);
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
-    updateCategory(
+    async updateCategory(
         { rootState },
         {
             id,
@@ -59,9 +55,20 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/categories/${id}`, data).then(response => onSuccess(response)).catch(e => onError(e.data));
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$put(`${userLanguageCode}/categories/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
-    clearStorage: ({ commit }) => {
-        commit('clearStorage');
+    removeCategory({ state, rootState }, { onSuccess }) {
+        const { id } = state;
+        const { language: userLanguageCode } = rootState.authentication.user;
+        return this.app.$axios.$delete(`${userLanguageCode}/categories/${id}`).then(() => onSuccess()).catch(onDefaultError);
+    },
+    setCategoryCode({ commit }, code) {
+        commit(types.SET_CODE, code);
+    },
+    clearStorage({ commit }) {
+        commit(types.CLEAR_STATE);
     },
 };

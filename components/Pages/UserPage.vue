@@ -3,70 +3,56 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
-        <NavigationHeader
+    <Page>
+        <TitleBar
             :title="title"
-            :buttons="buttons"
-            :breadcrumbs="breadcrumbs"
-            icon="sprite-menu menu-user--selected"
-            @navigateback="onDismiss" />
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('USER')"
+            @navigateBack="onDismiss">
+            <!-- <template
+                v-if="isEdit"
+                #mainAction>
+                <Button
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE USER"
+                    :disabled="!$hasAccess('USER_DELETE')"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </Button>
+            </template> -->
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
-    </PageWrapper>
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE USER' : 'CREATE USER'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
+    </Page>
 </template>
 
 <script>
+import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'UserPage',
     mixins: [categoryManagementPageBaseMixin],
-    data() {
-        return {
-            breadcrumbs: [
-                {
-                    title: 'Users',
-                    icon: 'sprite-menu menu-user--deactive',
-                },
-            ],
-            buttons: [],
-            tabs: [
-                {
-                    title: 'General options',
-                    path: `/users/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/general`,
-                    active: true,
-                    props: {
-                        updateButton: {
-                            title: this.isEdit ? 'SAVE USER' : 'CREATE USER',
-                            action: this.isEdit ? this.onSave : this.onCreate,
-                        },
-                    },
-                },
-                {
-                    title: 'Avatar',
-                    path: `/users/${this.isEdit ? `edit/${this.$route.params.id}` : 'new'}/avatar`,
-                    active: this.isEdit,
-                    props: {
-                        updateButton: {
-                            title: 'SAVE AVATAR',
-                            action: this.onSave,
-                        },
-                    },
-                },
-            ],
-        };
-    },
-    created() {
-        if (this.isEdit) {
-            this.buttons = [
-                {
-                    title: 'REMOVE USER',
-                    color: 'transparent',
-                    action: this.onRemove,
-                    theme: 'dark',
-                    icon: 'sprite-system system-trash--deactive',
-                },
-            ];
-        }
+    computed: {
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
 };
 </script>

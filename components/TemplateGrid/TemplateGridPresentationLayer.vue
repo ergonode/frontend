@@ -4,8 +4,7 @@
  */
 <template>
     <div
-        :class="['presentation-layer', {'presentation-layer__border-top': !isHeader}]"
-        :style="gridStyles">
+        :class="['presentation-layer', {'presentation-layer__border-top': !isHeader}]">
         <TemplateGridShadowItem
             v-for="index in numberOfItems"
             :key="index"
@@ -23,10 +22,6 @@ export default {
         TemplateGridShadowItem,
     },
     props: {
-        gridStyles: {
-            type: Object,
-            required: true,
-        },
         columns: {
             type: Number,
             required: true,
@@ -56,16 +51,13 @@ export default {
 
 <style lang="scss" scoped>
     .presentation-layer {
-        position: absolute;
-        top: 0;
-        left: 0;
         display: grid;
-        width: 100%;
         height: auto;
-        border-right: 1px dashed $grey;
+        border-left: $BORDER_DASHED_GREY;
+        border-right: $BORDER_DASHED_GREY;
 
         &__border-top {
-            border-top: 1px dashed $grey;
+            border-top: $BORDER_DASHED_GREY;
         }
     }
 </style>
