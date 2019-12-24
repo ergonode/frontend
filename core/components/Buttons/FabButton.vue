@@ -24,7 +24,7 @@ import {
 import Button from '~/core/components/Buttons/Button';
 
 export default {
-    name: 'Fab',
+    name: 'FabButton',
     inheritAttrs: false,
     components: {
         Button,

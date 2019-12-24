@@ -33,13 +33,13 @@
                         alt="Uploaded file">
                 </div>
                 <div class="upload-image__remove-btn">
-                    <Fab
+                    <FabButton
                         :theme="secondaryTheme"
                         @click.native="onRemove">
                         <template #icon="{ fillColor, isHovered }">
                             <IconDelete :fill-color="isHovered ? redColor : fillColor" />
                         </template>
-                    </Fab>
+                    </FabButton>
                 </div>
             </template>
         </div>
@@ -81,7 +81,7 @@ export default {
         },
     },
     components: {
-        Fab: () => import('~/core/components/Buttons/Fab'),
+        FabButton: () => import('~/core/components/Buttons/FabButton'),
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
     data() {

@@ -24,7 +24,7 @@
             </template>
         </ol>
         <div class="side-bar__expand-btn">
-            <Fab
+            <FabButton
                 :theme="secondaryTheme"
                 :plain="true"
                 @click.native="onExpand">
@@ -33,7 +33,7 @@
                         :fill-color="whiteColor"
                         :state="expendStateIcon" />
                 </template>
-            </Fab>
+            </FabButton>
         </div>
     </aside>
 </template>
@@ -43,7 +43,7 @@ import { THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
 import { GREEN, WHITE } from '~/assets/scss/_variables/_colors.scss';
 import IconArrowDouble from '~/components/Icon/Arrows/IconArrowDouble';
-import Fab from '~/core/components/Buttons/Fab';
+import FabButton from '~/core/components/Buttons/FabButton';
 import SideBarLogo from '~/core/components/SideBar/SideBarLogo';
 import SideBarListElement from './SideBarListElement';
 import SideBarListGroup from './SideBarListGroup';
@@ -55,7 +55,7 @@ export default {
         SideBarListElement,
         SideBarListGroup,
         IconArrowDouble,
-        Fab,
+        FabButton,
     },
     data() {
         return {

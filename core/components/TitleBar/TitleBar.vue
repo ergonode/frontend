@@ -6,13 +6,13 @@
     <div class="title-bar">
         <TitleBarHeader :title="title">
             <template #prepend>
-                <Fab
+                <FabButton
                     v-if="isNavigationBack"
                     @click.native="onClick">
                     <template #icon="{ fillColor }">
                         <IconArrowPointer :fill-color="fillColor" />
                     </template>
-                </Fab>
+                </FabButton>
             </template>
             <template #append>
                 <slot name="prependBadge" />
@@ -47,7 +47,7 @@ export default {
         InformationIconBadge: () => import('~/core/components/Badges/InformationIconBadge'),
         IconLock: () => import('~/components/Icon/Feedback/IconLock'),
         IconArrowPointer: () => import('~/components/Icon/Arrows/IconArrowPointer'),
-        Fab: () => import('~/core/components/Buttons/Fab'),
+        FabButton: () => import('~/core/components/Buttons/FabButton'),
     },
     props: {
         title: {

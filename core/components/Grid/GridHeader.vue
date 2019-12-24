@@ -17,7 +17,7 @@
                 <Divider vertical />
             </div>
             <div class="actions-container">
-                <Fab
+                <FabButton
                     :theme="secondaryTheme"
                     @click.native="onSelectLayout(gridLayouts.GRID)">
                     <template #icon="{ fillColor }">
@@ -26,8 +26,8 @@
                                 ? greenColor
                                 : fillColor" />
                     </template>
-                </Fab>
-                <Fab
+                </FabButton>
+                <FabButton
                     :theme="secondaryTheme"
                     @click.native="onSelectLayout(gridLayouts.TABLE)">
                     <template #icon="{ fillColor }">
@@ -36,13 +36,13 @@
                                 ? greenColor
                                 : fillColor" />
                     </template>
-                </Fab>
+                </FabButton>
             </div>
             <div class="divider-container">
                 <Divider vertical />
             </div>
             <div class="actions-container">
-                <Fab
+                <FabButton
                     :theme="secondaryTheme"
                     @click.native="onSelectRowHeight(rowHeights.SMALL)">
                     <template #icon="{ fillColor }">
@@ -51,8 +51,8 @@
                                 ? greenColor
                                 : fillColor" />
                     </template>
-                </Fab>
-                <Fab
+                </FabButton>
+                <FabButton
                     :theme="secondaryTheme"
                     @click.native="onSelectRowHeight(rowHeights.MEDIUM)">
                     <template #icon="{ fillColor }">
@@ -61,8 +61,8 @@
                                 ? greenColor
                                 : fillColor" />
                     </template>
-                </Fab>
-                <Fab
+                </FabButton>
+                <FabButton
                     :theme="secondaryTheme"
                     @click.native="onSelectRowHeight(rowHeights.LARGE)">
                     <template #icon="{ fillColor }">
@@ -71,7 +71,7 @@
                                 ? greenColor
                                 : fillColor" />
                     </template>
-                </Fab>
+                </FabButton>
             </div>
         </div>
     </div>
@@ -86,7 +86,7 @@ export default {
     name: 'GridHeader',
     components: {
         Divider: () => import('~/core/components/Dividers/Divider'),
-        Fab: () => import('~/core/components/Buttons/Fab'),
+        FabButton: () => import('~/core/components/Buttons/FabButton'),
         IconGrid: () => import('~/components/Icon/Others/IconGrid'),
         IconTable: () => import('~/components/Icon/Others/IconTable'),
         IconListSmall: () => import('~/components/Icon/Others/IconListSmall'),

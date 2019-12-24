@@ -5,7 +5,7 @@
 <template>
     <div class="list-header">
         <div class="vertical-wrapper">
-            <Fab
+            <FabButton
                 :theme="secondaryTheme"
                 @click.native="onExpand">
                 <template #icon="{ fillColor }">
@@ -13,7 +13,7 @@
                         :fill-color="fillColor"
                         :state="expendStateIcon" />
                 </template>
-            </Fab>
+            </FabButton>
             <span
                 class="list-header__title font--medium-16-24"
                 v-text="header" />
@@ -29,7 +29,7 @@ import { ARROW } from '~/defaults/icons';
 export default {
     name: 'ListHeader',
     components: {
-        Fab: () => import('~/core/components/Buttons/Fab'),
+        FabButton: () => import('~/core/components/Buttons/FabButton'),
         IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),
     },
     props: {

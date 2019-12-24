@@ -33,7 +33,7 @@
                     <Divider vertical />
                 </div>
             </div>
-            <Fab
+            <FabButton
                 :theme="secondaryTheme"
                 @click.native="onExpandFilters">
                 <template #icon="{ fillColor }">
@@ -41,7 +41,7 @@
                         :fill-color="fillColor"
                         :state="iconExpanderState" />
                 </template>
-            </Fab>
+            </FabButton>
         </div>
         <FadeTransition>
             <GridAdvancedFiltersContainer
@@ -86,7 +86,7 @@ export default {
     components: {
         Divider: () => import('~/core/components/Dividers/Divider'),
         NumericBadge: () => import('~/core/components/Badges/NumericBadge'),
-        Fab: () => import('~/core/components/Buttons/Fab'),
+        FabButton: () => import('~/core/components/Buttons/FabButton'),
         IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),
         GridAdvancedFiltersContainer: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFiltersContainer'),
         GridAdvancedFilter: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFilter'),
