@@ -6,7 +6,7 @@
     <div :class="pinnedColumnClass">
         <GridCell
             :column="columnIndex"
-            :row="0"
+            :row="getRowIndex(0)"
             :editing-allowed="false"
             :action-cell="false"
             :locked="true">
@@ -15,7 +15,7 @@
         <GridCell
             v-if="basicFilters"
             :column="columnIndex"
-            :row="1"
+            :row="getRowIndex(1)"
             :editing-allowed="false"
             :action-cell="false"
             :locked="true" />
@@ -23,11 +23,11 @@
             v-for="(rowLink, index) in rowLinks"
             :key="rowLink.id"
             :column="columnIndex"
-            :row="index + rowsOffset"
+            :row="getRowIndex(index + rowsOffset)"
             :editing-allowed="true"
             :action-cell="true"
             :selected="isSelectedAllRows
-                || selectedRows[(index + rowsOffset) * currentPage]"
+                || selectedRows[getRowIndex(index + rowsOffset)]"
             @edit="onEdit(rowLink)">
             <GridEditRowCell
                 :params="rowLink"
@@ -77,6 +77,10 @@ export default {
             type: Number,
             required: true,
         },
+        numberOfDisplayedElements: {
+            type: Number,
+            required: true,
+        },
     },
     computed: {
         pinnedColumnClass() {
@@ -91,6 +95,10 @@ export default {
     methods: {
         onEdit(route) {
             this.$emit('rowEdit', route);
+        },
+        getRowIndex(index) {
+            return index
+                + ((this.currentPage - 1) * this.numberOfDisplayedElements);
         },
     },
 };

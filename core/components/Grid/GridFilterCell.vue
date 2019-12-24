@@ -47,6 +47,10 @@ export default {
             type: String,
             required: true,
         },
+        rowIndex: {
+            type: Number,
+            required: true,
+        },
         columnIndex: {
             type: Number,
             required: true,
@@ -63,11 +67,6 @@ export default {
             type: String,
             required: true,
         },
-    },
-    data() {
-        return {
-            rowIndex: 1,
-        };
     },
     computed: {
         gridState() {

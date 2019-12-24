@@ -29,6 +29,7 @@
                 :selected-rows="selectedRows"
                 :basic-filters="basicFilters"
                 :current-page="gridState.currentPage"
+                :number-of-displayed-elements="gridState.numberOfDisplayedElements"
                 :is-pinned="isSelectColumnPinned"
                 @rowSelect="onSelectRow"
                 @rowsSelect="onSelectAllRows">
@@ -63,11 +64,13 @@
                     :column-index="colIndex + columnsOffset"
                     :column="column"
                     :path="editRoute.path"
+                    :row-index="getRowIndex(0)"
                     @focus="onHeaderFocus" />
                 <GridFilterCell
                     v-if="basicFilters"
                     :namespace="namespace"
                     :column-index="colIndex + columnsOffset"
+                    :row-index="getRowIndex(1)"
                     :column="column"
                     :filter="gridState.filters[column.id]"
                     :path="editRoute.path" />
@@ -76,21 +79,21 @@
                     name="cell"
                     :column="column"
                     :row-id="id"
-                    :row-index="(rowIndex + rowsOffset) * gridState.currentPage"
+                    :row-index="getRowIndex(rowIndex + rowsOffset)"
                     :column-index="colIndex + columnsOffset"
                     :cell-data="gridState.cellValues[id][column.id]">
                     <GridDataCell
                         :key="id"
                         :namespace="namespace"
                         :column-index="colIndex + columnsOffset"
-                        :row-index="(rowIndex + rowsOffset) * gridState.currentPage"
+                        :row-index="getRowIndex(rowIndex + rowsOffset)"
                         :row-id="id"
                         :cell-data="gridState.cellValues[id][column.id] || { value: ''}"
                         :column="column"
                         :draft="drafts[id]"
                         :edit-routing-path="editRoute.name"
                         :is-selected="isSelectedAllRows
-                            || selectedRows[(rowIndex + rowsOffset) * gridState.currentPage]"
+                            || selectedRows[getRowIndex(rowIndex + rowsOffset)]"
                         :editing-privilege-allowed="editingPrivilegeAllowed" />
                 </slot>
             </GridColumnData>
@@ -100,6 +103,7 @@
                 :is-selected-all-rows="isSelectedAllRows"
                 :selected-rows="selectedRows"
                 :current-page="gridState.currentPage"
+                :number-of-displayed-elements="gridState.numberOfDisplayedElements"
                 :rows-offset="rowsOffset"
                 :column-index="editColumnIndex"
                 :basic-filters="basicFilters"
@@ -289,6 +293,10 @@ export default {
             'setGhostIndex',
             'setGhostFilterIndex',
         ]),
+        getRowIndex(index) {
+            return index
+                + ((this.gridState.currentPage - 1) * this.gridState.numberOfDisplayedElements);
+        },
         onStickyChange({
             isSticky, state,
         }) {

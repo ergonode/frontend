@@ -7,11 +7,11 @@
         <slot
             name="headerCheckCell"
             :column="0"
-            :row="0">
+            :row="getRowIndex(0)">
             <GridCell
                 editing-allowed
                 action-cell
-                :row="0"
+                :row="getRowIndex(0)"
                 :column="0"
                 :editing="isSelectedAllRows"
                 @edit="onRowsSelect">
@@ -25,7 +25,7 @@
             :locked="true"
             :editing-allowed="false"
             :action-cell="false"
-            :row="1"
+            :row="getRowIndex(1)"
             :column="0">
             <GridCheckPlaceholderCell />
         </GridCell>
@@ -33,13 +33,13 @@
             <slot
                 name="checkCell"
                 :column="0"
-                :row="(rowIndex + rowsOffset) * currentPage">
+                :row="getRowIndex(rowIndex + rowsOffset)">
                 <GridEditSelectRowCell
                     :key="id"
                     :column="0"
-                    :row="(rowIndex + rowsOffset) * currentPage"
+                    :row="getRowIndex(rowIndex + rowsOffset)"
                     :is-selected="isSelectedAllRows
-                        || selectedRows[(rowIndex + rowsOffset) * currentPage]"
+                        || selectedRows[getRowIndex(rowIndex + rowsOffset)]"
                     @select="onSelectRow" />
             </slot>
         </template>
@@ -84,6 +84,10 @@ export default {
             type: Number,
             required: true,
         },
+        numberOfDisplayedElements: {
+            type: Number,
+            required: true,
+        },
     },
     computed: {
         pinnedColumnClass() {
@@ -105,6 +109,10 @@ export default {
         },
     },
     methods: {
+        getRowIndex(index) {
+            return index
+                + ((this.currentPage - 1) * this.numberOfDisplayedElements);
+        },
         onRowsSelect() {
             this.$emit('rowsSelect', !this.isSelectedAllRows);
         },

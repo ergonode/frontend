@@ -94,20 +94,6 @@ export default {
             default: '',
         },
     },
-    beforeCreate() {
-        const { type, editable } = this.$options.propsData.column;
-
-        this.isSelectKind = type === COLUMN_TYPE.SELECT
-            || type === COLUMN_TYPE.MULTI_SELECT
-            || type === COLUMN_TYPE.LABEL;
-        this.isMultiSelect = type === COLUMN_TYPE.MULTI_SELECT;
-        this.isEditingAllowed = (editable && this.$options.propsData.editingPrivilegeAllowed);
-    },
-    beforeDestroy() {
-        delete this.isSelectKind;
-        delete this.isMultiSelect;
-        delete this.isEditingAllowed;
-    },
     computed: {
         ...mapState('validations', {
             validationErrors: (state) => state.validationErrors,
@@ -117,6 +103,17 @@ export default {
         }),
         gridState() {
             return this.$store.state[this.namespace];
+        },
+        isSelectKind() {
+            return this.column.type === COLUMN_TYPE.SELECT
+                || this.column.type === COLUMN_TYPE.MULTI_SELECT
+                || this.column.type === COLUMN_TYPE.LABEL;
+        },
+        isMultiSelect() {
+            return this.column.type === COLUMN_TYPE.MULTI_SELECT;
+        },
+        isEditingAllowed() {
+            return this.column.editable && this.editingPrivilegeAllowed;
         },
         isEditingCell() {
             const { row, column } = this.gridState.editingCellCoordinates;
