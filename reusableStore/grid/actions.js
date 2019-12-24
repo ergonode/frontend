@@ -126,7 +126,7 @@ export default {
         commit(types.SET_ROW_IDS, rowIds);
     },
     setFilter({ commit }, { filter, id, operator }) {
-        if (!filter.length) {
+        if (!filter || !filter.length) {
             commit(types.REMOVE_FILTER, id);
         } else {
             commit(types.SET_FILTER, { id, filter, operator });

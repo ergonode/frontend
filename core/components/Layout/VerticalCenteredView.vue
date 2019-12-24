@@ -18,6 +18,7 @@ export default {
     .vertical-centered-view {
         position: relative;
         display: grid;
+        flex: 1;
         justify-content: center;
         align-items: baseline;
         grid-auto-flow: column;

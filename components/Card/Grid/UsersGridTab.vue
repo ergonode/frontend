@@ -11,6 +11,7 @@
                 :editing-privilege-allowed="$hasAccess(['USER_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
+                :is-column-editable="false"
                 title="Users"
                 @rowEdit="onRowEdit" />
         </template>

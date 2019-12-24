@@ -62,6 +62,7 @@
                 <GridHeaderCell
                     :namespace="namespace"
                     :column-index="colIndex + columnsOffset"
+                    :is-column-editable="isColumnEditable"
                     :column="column"
                     :path="editRoute.path"
                     :row-index="getRowIndex(0)"
@@ -183,6 +184,10 @@ export default {
             default: true,
         },
         editColumn: {
+            type: Boolean,
+            default: true,
+        },
+        isColumnEditable: {
             type: Boolean,
             default: true,
         },

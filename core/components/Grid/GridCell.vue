@@ -182,7 +182,7 @@ export default {
         &:nth-child(1) {
             position: sticky;
             top: 0;
-            z-index: 1;
+            z-index: $Z_INDEX_LVL_2;
             background-color: $WHITESMOKE;
         }
 
@@ -209,7 +209,7 @@ export default {
         }
 
         &:focus {
-            z-index: 7;
+            z-index: $Z_INDEX_LVL_1;
         }
     }
 </style>

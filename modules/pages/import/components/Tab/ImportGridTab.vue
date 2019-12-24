@@ -11,6 +11,7 @@
                 :editing-privilege-allowed="$hasAccess(['IMPORT_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
+                :is-column-editable="false"
                 title="Imports"
                 @rowEdit="onRowEdit" />
         </template>

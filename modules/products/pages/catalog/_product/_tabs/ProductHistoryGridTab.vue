@@ -11,6 +11,7 @@
                 :basic-filters="true"
                 :edit-column="false"
                 :select-column="false"
+                :is-column-editable="false"
                 title="Product history" />
         </template>
         <template #footer>

@@ -241,7 +241,7 @@ export default {
 
         position: relative;
         display: flex;
-        flex: 1;
+        flex: 1 1 auto;
         justify-content: space-between;
         align-items: center;
         width: 0;

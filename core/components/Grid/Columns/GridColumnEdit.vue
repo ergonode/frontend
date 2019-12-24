@@ -108,7 +108,7 @@ export default {
     .pinned-column {
         position: sticky;
         right: 0;
-        z-index: 3;
+        z-index: $Z_INDEX_LVL_2;
         display: grid;
         box-sizing: border-box;
 

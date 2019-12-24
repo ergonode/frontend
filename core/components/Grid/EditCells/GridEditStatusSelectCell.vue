@@ -125,7 +125,7 @@ export default {
             return id === this.value;
         },
         getColor(key) {
-            return this.colors[key];
+            return this.colors[key] || '';
         },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);

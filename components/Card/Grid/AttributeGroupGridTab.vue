@@ -11,6 +11,7 @@
                 :editing-privilege-allowed="$hasAccess(['ATTRIBUTE_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
+                :is-column-editable="false"
                 title="Attribute Groups"
                 @rowEdit="onRowEdit" />
         </template>

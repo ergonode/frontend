@@ -64,6 +64,8 @@ import { SIZES, THEMES } from '~/defaults/buttons';
 import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import Button from '~/core/components/Buttons/Button';
 import MenuButton from '~/core/components/Buttons/MenuButton';
+import ProductStatusBadge from '~/components/Badges/ProductStatusBadge';
+import TitleBarSubActions from '~/core/components/TitleBar/TitleBarSubActions';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
@@ -72,8 +74,8 @@ export default {
     components: {
         Button,
         MenuButton,
-        TitleBarSubActions: () => import('~/core/components/TitleBar/TitleBarSubActions'),
-        ProductStatusBadge: () => import('~/components/Badges/ProductStatusBadge'),
+        TitleBarSubActions,
+        ProductStatusBadge,
     },
     computed: {
         ...mapState('authentication', {

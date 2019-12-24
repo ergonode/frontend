@@ -151,8 +151,8 @@ export const routing = [
                             icon: 'Flow',
                         },
                         {
-                            title: 'Product statuses',
-                            routePath: '/product-statuses',
+                            title: 'Status transitions',
+                            routePath: '/status-transitions',
                         },
                     ],
                     privileges: [],
@@ -181,8 +181,8 @@ export const routing = [
                             icon: 'Flow',
                         },
                         {
-                            title: 'Product statuses',
-                            routePath: '/product-statuses',
+                            title: 'Status transitions',
+                            routePath: '/status-transitions',
                         },
                     ],
                     privileges: [],
@@ -200,8 +200,8 @@ export const routing = [
                             icon: 'Flow',
                         },
                         {
-                            title: 'Product statuses',
-                            routePath: '/product-statuses',
+                            title: 'Status transitions',
+                            routePath: '/status-transitions',
                         },
                     ],
                     privileges: [],

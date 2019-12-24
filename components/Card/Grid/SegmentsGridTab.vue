@@ -11,6 +11,7 @@
                 :editing-privilege-allowed="$hasAccess(['SEGMENT_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
+                :is-column-editable="false"
                 title="Segments"
                 @rowEdit="onRowEdit" />
         </template>

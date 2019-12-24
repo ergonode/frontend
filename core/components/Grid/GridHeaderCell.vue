@@ -47,6 +47,10 @@ export default {
             type: String,
             required: true,
         },
+        isColumnEditable: {
+            type: Boolean,
+            default: true,
+        },
     },
     computed: {
         gridState() {
@@ -71,7 +75,7 @@ export default {
                 return {
                     columnIndex: this.columnIndex,
                     column: this.column,
-                    isColumnEditable: true,
+                    isColumnEditable: this.isColumnEditable,
                 };
             }
 
