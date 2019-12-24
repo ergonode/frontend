@@ -3,21 +3,21 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import Blur from '~/components/Blur/Blur.vue';
+import Divider from '~/core/components/Dividers/Divider.vue';
 
 
-describe('Blur/Blur', () => {
+describe('Dividers/Divider', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(Blur);
+        wrapper = shallowMount(Divider);
     });
 
     it('Component is named well', () => {
-        expect(typeof Blur.name).toBe('string');
-        expect(Blur.name).toEqual('Blur');
+        expect(typeof Divider.name).toBe('string');
+        expect(Divider.name).toEqual('Divider');
     });
 
     it('Check class', () => {
-        expect(wrapper.classes()).toContain('blur');
+        expect(wrapper.classes()).toContain('divider');
     });
 });
