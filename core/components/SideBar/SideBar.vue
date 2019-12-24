@@ -141,7 +141,7 @@ export default {
 
             #{$sidebar}__expand-btn {
                 align-self: flex-end;
-                transform: translateX(-12px);
+                transform: translateX(-20px);
             }
         }
 
@@ -159,7 +159,7 @@ export default {
 
         &__expand-btn {
             position: sticky;
-            bottom: 12px;
+            bottom: 20px;
             border-radius: 16px;
 
             &:hover {

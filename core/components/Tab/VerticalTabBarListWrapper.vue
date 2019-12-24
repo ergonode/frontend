@@ -22,11 +22,5 @@ export default {
         flex: 1;
         flex-direction: column;
         width: 275px;
-
-        &__btn {
-            position: absolute;
-            bottom: 16px;
-            right: 16px;
-        }
     }
 </style>

@@ -10,14 +10,15 @@
             @expand="onExpand"
             @searchResult="onSearch" />
         <CategoriesList :language-code="userLanguageCode" />
-        <Fab
-            class="list-wrapper__btn"
-            :disabled="!$hasAccess(['CATEGORY_CREATE'])"
-            @click.native="addCategory">
-            <template #icon="{ fillColor }">
-                <IconAdd :fill-color="fillColor" />
-            </template>
-        </Fab>
+        <div class="add-fab-btn">
+            <Fab
+                :disabled="!$hasAccess(['CATEGORY_CREATE'])"
+                @click.native="addCategory">
+                <template #icon="{ fillColor }">
+                    <IconAdd :fill-color="fillColor" />
+                </template>
+            </Fab>
+        </div>
     </VerticalTabBarListWrapper>
 </template>
 
@@ -71,3 +72,11 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .add-fab-btn {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+    }
+</style>
