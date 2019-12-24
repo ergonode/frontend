@@ -8,6 +8,9 @@ export default {
     setDraggableState({ commit }, { propName, value }) {
         commit(types.SET_DRAGGABLE_STATE, { propName, value });
     },
+    setResizingElement({ commit }, element) {
+        commit(types.SET_RESIZING_ELEMENT, element);
+    },
     setDraggedElIndex({ commit }, index) {
         commit(types.SET_DRAGGED_EL_INDEX, index);
     },

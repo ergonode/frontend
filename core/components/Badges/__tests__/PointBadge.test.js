@@ -4,13 +4,15 @@
  */
 import { shallowMount } from '@vue/test-utils';
 import PointBadge from '~/core/components/Badges/PointBadge.vue';
+import { GRAPHITE_DARK } from '~/assets/scss/_variables/_colors.scss';
+
 
 describe('Badges/PointBadge', () => {
     let wrapper;
     beforeEach(() => {
         wrapper = shallowMount(PointBadge, {
             propsData: {
-                color: '#ffffff',
+                color: GRAPHITE_DARK,
             },
         });
     });

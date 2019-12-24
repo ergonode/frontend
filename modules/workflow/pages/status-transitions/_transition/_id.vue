@@ -40,9 +40,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('gridDesigner', {
-            clearDesignerStorage: 'clearStorage',
-        }),
         ...mapActions('conditions', {
             createConditionSet: 'createConditionSet',
             updateConditionSet: 'updateConditionSet',
@@ -119,15 +116,11 @@ export default {
     beforeDestroy() {
         this.clearTransitionStorage();
         this.clearConditionSetStorage();
-        this.clearDesignerStorage();
     },
     async fetch({
         store, params,
     }) {
         await Promise.all([
-            store.dispatch('gridDesigner/clearStorage'),
-            store.dispatch('list/clearStorage'),
-            store.dispatch('conditions/clearStorage'),
             store.dispatch('transitions/clearStorage'),
             store.dispatch('productStatus/getProductStatuses', {
                 limit: 9999,

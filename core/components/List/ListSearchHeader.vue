@@ -23,10 +23,10 @@
         <FabButton
             class="search-btn"
             @click.native="onSearchBtnClick">
-            <template #icon="{ color }">
+            <template #icon="{ fillColor }">
                 <Component
                     :is="searchBtnIconComponent"
-                    :fill-color="color" />
+                    :fill-color="fillColor" />
             </template>
         </FabButton>
     </ListHeader>

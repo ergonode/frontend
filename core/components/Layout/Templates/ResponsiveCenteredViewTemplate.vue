@@ -93,7 +93,7 @@ export default {
 
         &__footer {
             grid-area: 3 / 1 / 4 / 4;
-            z-index: 3;
+            z-index: $Z_INDEX_LVL_3;
             box-shadow: $ELEVATOR_6_DP;
             min-height: 40px;
         }

@@ -19,20 +19,22 @@
             <div class="actions-container">
                 <FabButton
                     :theme="secondaryTheme"
-                    :is-stateable="true"
-                    :is-selected="layout === gridLayouts.GRID"
-                    @select="() => onSelectLayout(gridLayouts.GRID)">
-                    <template #icon="{ color }">
-                        <IconGrid :fill-color="color" />
+                    @click.native="onSelectLayout(gridLayouts.GRID)">
+                    <template #icon="{ fillColor }">
+                        <IconGrid
+                            :fill-color="layout === gridLayouts.GRID
+                                ? greenColor
+                                : fillColor" />
                     </template>
                 </FabButton>
                 <FabButton
                     :theme="secondaryTheme"
-                    :is-stateable="true"
-                    :is-selected="layout === gridLayouts.TABLE"
-                    @select="() => onSelectLayout(gridLayouts.TABLE)">
-                    <template #icon="{ color }">
-                        <IconTable :fill-color="color" />
+                    @click.native="onSelectLayout(gridLayouts.TABLE)">
+                    <template #icon="{ fillColor }">
+                        <IconTable
+                            :fill-color="layout === gridLayouts.TABLE
+                                ? greenColor
+                                : fillColor" />
                     </template>
                 </FabButton>
             </div>
@@ -42,29 +44,32 @@
             <div class="actions-container">
                 <FabButton
                     :theme="secondaryTheme"
-                    :is-stateable="true"
-                    :is-selected="rowHeight === rowHeights.SMALL"
-                    @select="() => onSelectRowHeight(rowHeights.SMALL)">
-                    <template #icon="{ color }">
-                        <IconListSmall :fill-color="color" />
+                    @click.native="onSelectRowHeight(rowHeights.SMALL)">
+                    <template #icon="{ fillColor }">
+                        <IconListSmall
+                            :fill-color="rowHeight === rowHeights.SMALL
+                                ? greenColor
+                                : fillColor" />
                     </template>
                 </FabButton>
                 <FabButton
                     :theme="secondaryTheme"
-                    :is-stateable="true"
-                    :is-selected="rowHeight === rowHeights.MEDIUM"
-                    @select="() => onSelectRowHeight(rowHeights.MEDIUM)">
-                    <template #icon="{ color }">
-                        <IconListMedium :fill-color="color" />
+                    @click.native="onSelectRowHeight(rowHeights.MEDIUM)">
+                    <template #icon="{ fillColor }">
+                        <IconListMedium
+                            :fill-color="rowHeight === rowHeights.MEDIUM
+                                ? greenColor
+                                : fillColor" />
                     </template>
                 </FabButton>
                 <FabButton
                     :theme="secondaryTheme"
-                    :is-stateable="true"
-                    :is-selected="rowHeight === rowHeights.LARGE"
-                    @select="() => onSelectRowHeight(rowHeights.LARGE)">
-                    <template #icon="{ color }">
-                        <IconListLarge :fill-color="color" />
+                    @click.native="onSelectRowHeight(rowHeights.LARGE)">
+                    <template #icon="{ fillColor }">
+                        <IconListLarge
+                            :fill-color="rowHeight === rowHeights.LARGE
+                                ? greenColor
+                                : fillColor" />
                     </template>
                 </FabButton>
             </div>
@@ -75,6 +80,7 @@
 <script>
 import { THEMES } from '~/defaults/buttons';
 import { ROW_HEIGHT, GRID_LAYOUT } from '~/defaults/grid';
+import { GREEN } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'GridHeader',
@@ -104,6 +110,9 @@ export default {
     computed: {
         secondaryTheme() {
             return THEMES.SECONDARY;
+        },
+        greenColor() {
+            return GREEN;
         },
         rowHeights() {
             return ROW_HEIGHT;

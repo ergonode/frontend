@@ -17,7 +17,7 @@
             <div
                 v-if="!isCheckColumn && !isHeaderFocused"
                 :class="['column__resizer', {
-                    'column__resizer--resizing': isResizing
+                    'column__resizer--resizing': resizingElement && resizingElement.index === index
                 }]"
                 @mousedown="initResizeDrag" />
         </template>
@@ -75,7 +75,6 @@ export default {
     },
     data() {
         return {
-            isResizing: false,
             minWidth: 150,
         };
     },
@@ -95,6 +94,7 @@ export default {
         }),
         ...mapState('draggable', {
             draggedElement: (state) => state.draggedElement,
+            resizingElement: (state) => state.resizingElement,
             ghostIndex: (state) => state.ghostIndex,
             bounds: (state) => state.bounds,
             draggedElIndex: (state) => state.draggedElIndex,
@@ -123,6 +123,7 @@ export default {
     methods: {
         ...mapActions('draggable', [
             'setDraggableState',
+            'setResizingElement',
             'setDraggedElement',
             'setDraggedElIndex',
             'setGhostElXTranslation',
@@ -145,7 +146,7 @@ export default {
             if (!isMouseAboveColumnHeader
                 || isMouseAboveLeftBorderLimit
                 || this.isPinnedColumn
-                || this.isResizing) {
+                || this.resizingElement) {
                 event.preventDefault();
                 event.stopPropagation();
 
@@ -243,7 +244,7 @@ export default {
             return true;
         },
         initResizeDrag(event) {
-            this.isResizing = true;
+            this.setResizingElement({ index: this.index });
             this.initMousePosition(event);
             this.initElementWidth();
             this.updateElementWidth(`${this.startWidth}px`);
@@ -262,7 +263,7 @@ export default {
         },
         stopResizeDrag() {
             this.removeEventListenersForResizeState();
-            this.isResizing = false;
+            this.setResizingElement(null);
         },
         initMousePosition({ pageX }) {
             this.startX = pageX;

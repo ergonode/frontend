@@ -8,9 +8,9 @@
             <FabButton
                 :theme="secondaryTheme"
                 @click.native="onExpand">
-                <template #icon="{ color }">
+                <template #icon="{ fillColor }">
                     <IconArrowDouble
-                        :fill-color="color"
+                        :fill-color="fillColor"
                         :state="expendStateIcon" />
                 </template>
             </FabButton>

@@ -9,8 +9,8 @@
                 :class="{'non-visible': !isLeftArrowVisible}"
                 :theme="secondaryTheme"
                 @click.native="decrementPage">
-                <template #icon="{ color }">
-                    <IconArrowPointer :fill-color="color" />
+                <template #icon="{ fillColor }">
+                    <IconArrowPointer :fill-color="fillColor" />
                 </template>
             </FabButton>
         </FadeTransition>
@@ -36,9 +36,9 @@
                 :class="{'non-visible': !isRightArrowVisible}"
                 :theme="secondaryTheme"
                 @click.native="incrementPage">
-                <template #icon="{ color }">
+                <template #icon="{ fillColor }">
                     <IconArrowPointer
-                        :fill-color="color"
+                        :fill-color="fillColor"
                         :state="rightArrow" />
                 </template>
             </FabButton>

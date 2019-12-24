@@ -11,9 +11,9 @@
         <FabButton
             :theme="secondaryTheme"
             :plain="true"
-            @click.native="() => removeAlert(alert)">
-            <template #icon="{ color }">
-                <IconClose :fill-color="color" />
+            @click.native="removeAlert(alert)">
+            <template #icon="{ fillColor }">
+                <IconClose :fill-color="fillColor" />
             </template>
         </FabButton>
     </div>

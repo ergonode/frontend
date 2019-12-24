@@ -5,7 +5,6 @@
 <template>
     <GridCell
         :editing-allowed="false"
-        :current-page="currentPage"
         :row="rowIndex"
         :column="columnIndex"
         :locked="true"
@@ -14,7 +13,7 @@
             :is="headerComponent"
             v-bind="headerComponentProps"
             :namespace="namespace"
-            @sort="getData(path)"
+            @sort="getData"
             @focus="onFocus" />
     </GridCell>
 </template>
@@ -32,11 +31,11 @@ export default {
             type: String,
             required: true,
         },
-        currentPage: {
+        columnIndex: {
             type: Number,
             required: true,
         },
-        columnIndex: {
+        rowIndex: {
             type: Number,
             required: true,
         },
@@ -52,11 +51,6 @@ export default {
             type: Boolean,
             default: true,
         },
-    },
-    data() {
-        return {
-            rowIndex: 0,
-        };
     },
     computed: {
         gridState() {
@@ -93,8 +87,8 @@ export default {
         },
     },
     methods: {
-        getData(path) {
-            this.$store.dispatch(`${this.namespace}/getData`, path);
+        getData() {
+            this.$store.dispatch(`${this.namespace}/getData`, this.path);
         },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);

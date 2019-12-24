@@ -23,13 +23,14 @@
                     :is-expanded="isExpanded" />
             </template>
         </ol>
-        <div class="expand-btn-wrapper">
+        <div class="side-bar__expand-btn">
             <FabButton
-                is-transparent
+                :theme="secondaryTheme"
+                :plain="true"
                 @click.native="onExpand">
-                <template #icon="{ color }">
+                <template #icon>
                     <IconArrowDouble
-                        :fill-color="color"
+                        :fill-color="whiteColor"
                         :state="expendStateIcon" />
                 </template>
             </FabButton>
@@ -40,7 +41,7 @@
 <script>
 import { THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
-import { GREEN } from '~/assets/scss/_variables/_colors.scss';
+import { GREEN, WHITE } from '~/assets/scss/_variables/_colors.scss';
 import IconArrowDouble from '~/components/Icon/Arrows/IconArrowDouble';
 import FabButton from '~/core/components/Buttons/FabButton';
 import SideBarLogo from '~/core/components/SideBar/SideBarLogo';
@@ -75,6 +76,9 @@ export default {
         },
         greenColor() {
             return GREEN;
+        },
+        whiteColor() {
+            return WHITE;
         },
         routes() {
             const routes = [];
@@ -119,6 +123,8 @@ export default {
 
 <style lang="scss" scoped>
     .side-bar {
+        $sidebar: &;
+
         position: relative;
         z-index: $Z_INDEX_NAV;
         display: flex;
@@ -133,16 +139,16 @@ export default {
         &--expanded {
             width: 256px;
 
-            .expand-btn-wrapper {
+            #{$sidebar}__expand-btn {
                 align-self: flex-end;
-                transform: translateX(-12px);
+                transform: translateX(-20px);
             }
         }
 
         &:not(&--expanded) {
             width: 80px;
 
-            .expand-btn-wrapper {
+            #{$sidebar}__expand-btn {
                 align-self: center;
             }
         }
@@ -151,9 +157,14 @@ export default {
             margin-bottom: 24px;
         }
 
-        .expand-btn-wrapper {
+        &__expand-btn {
             position: sticky;
-            bottom: 12px;
+            bottom: 20px;
+            border-radius: 16px;
+
+            &:hover {
+                background-color: $GREEN;
+            }
         }
     }
 </style>

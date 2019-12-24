@@ -17,7 +17,7 @@
             <template
                 v-if="isEdit"
                 #mainAction>
-                <PrependIconButton
+                <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE PRODUCT"
@@ -26,11 +26,11 @@
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
             <template #subActions>
                 <TitleBarSubActions>
-                    <MultiButton
+                    <MenuButton
                         v-if="statusesButtons.more && statusesButtons.more.length"
                         title="more"
                         :theme="secondaryTheme"
@@ -63,7 +63,7 @@ import { mapState, mapActions } from 'vuex';
 import { SIZES, THEMES } from '~/defaults/buttons';
 import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import Button from '~/core/components/Buttons/Button';
-import MultiButton from '~/core/components/Buttons/MultiButton';
+import MenuButton from '~/core/components/Buttons/MenuButton';
 import ProductStatusBadge from '~/components/Badges/ProductStatusBadge';
 import TitleBarSubActions from '~/core/components/TitleBar/TitleBarSubActions';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
@@ -73,9 +73,9 @@ export default {
     mixins: [categoryManagementPageBaseMixin],
     components: {
         Button,
-        MultiButton,
-        ProductStatusBadge,
+        MenuButton,
         TitleBarSubActions,
+        ProductStatusBadge,
     },
     computed: {
         ...mapState('authentication', {

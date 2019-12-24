@@ -71,7 +71,7 @@ export default {
 <style lang="scss" scoped>
     .draggable-layer {
         position: relative;
-        z-index: 3;
+        z-index: $Z_INDEX_LVL_3;
         display: grid;
         height: 0;
         flex-grow: 1;

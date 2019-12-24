@@ -18,21 +18,17 @@
                 <FabButton
                     v-if="isAbleToEdit"
                     :theme="secondaryTheme"
-                    :size="regularSize"
-                    :hover-color="colorGreen"
                     @click.native="editComment">
-                    <template #icon="{ color }">
-                        <IconEdit :fill-color="color" />
+                    <template #icon="{ fillColor, isHovered }">
+                        <IconEdit :fill-color="isHovered ? colorGreen : fillColor" />
                     </template>
                 </FabButton>
                 <FabButton
                     v-if="isAbleToDelete"
                     :theme="secondaryTheme"
-                    :size="regularSize"
-                    :hover-color="colorRed"
                     @click.native="onRemove">
-                    <template #icon="{ color }">
-                        <IconDelete :fill-color="color" />
+                    <template #icon="{ fillColor, isHovered }">
+                        <IconDelete :fill-color="isHovered ? colorRed : fillColor" />
                     </template>
                 </FabButton>
             </div>
@@ -56,7 +52,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { format as formatDate } from 'date-fns';
-import { THEMES, SIZES } from '~/defaults/buttons';
+import { THEMES } from '~/defaults/buttons';
 import { COMMENT_FORMAT } from '~/defaults/date';
 import {
     GREEN, RED, WHITE,
@@ -84,9 +80,6 @@ export default {
     computed: {
         secondaryTheme() {
             return THEMES.SECONDARY;
-        },
-        regularSize() {
-            return SIZES.REGULAR;
         },
         colorGreen() {
             return GREEN;

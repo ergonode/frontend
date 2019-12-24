@@ -230,7 +230,6 @@ export default {
         flex-direction: column;
         justify-content: space-between;
         height: 0;
-        padding: 0 12px;
     }
 
     .bounce-enter-active, .bounce-leave-active {

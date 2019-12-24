@@ -37,10 +37,6 @@ describe('Buttons/Button', () => {
         expect(wrapper.vm.title).toBe('paper');
     });
 
-    it('Check title classes', () => {
-        expect(wrapper.vm.titleClasses).toStrictEqual(['btn__title', { 'font--semi-bold-12-16': false, 'font--semi-bold-14-16': true }]);
-    });
-
     it('Check button classes if no props', () => {
         expect(wrapper.vm.btnClasses).toStrictEqual([
             'btn',
@@ -48,6 +44,7 @@ describe('Buttons/Button', () => {
             'btn--regular',
             {
                 'btn--plain': false,
+                'btn--fab': false,
             },
         ]);
     });
@@ -64,6 +61,7 @@ describe('Buttons/Button', () => {
             'btn--small',
             {
                 'btn--plain': true,
+                'btn--fab': false,
             },
         ]);
     });

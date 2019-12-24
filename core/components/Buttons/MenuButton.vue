@@ -3,18 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <AppendIconButton
-        :class="multiButtonClasses"
-        :disabled="disabled"
-        :title="title"
-        :theme="theme"
-        :size="size"
-        :plain="plain"
+    <Button
+        :class="menuBtnClasses"
+        v-bind="$attrs"
         @click.native="onClick">
         <template #append="{ color }">
             <slot
                 name="icon"
-                :color="color">
+                :fillColor="color">
                 <IconArrowDropDown
                     :state="iconArrowState"
                     :fill-color="color" />
@@ -22,13 +18,13 @@
         </template>
         <FadeTransition>
             <div
-                v-if="isSelectButton"
+                v-if="isFocused"
                 class="btn__select-content"
                 :style="contentPositionStyle">
                 <slot name="content">
                     <List>
                         <ListElement
-                            v-for="(option, index) in options"
+                            v-for="(option, index) in $attrs.options"
                             :key="index"
                             :small="true"
                             @click.native="onSelectedValue(index)">
@@ -40,17 +36,17 @@
                 </slot>
             </div>
         </FadeTransition>
-    </AppendIconButton>
+    </Button>
 </template>
 <script>
 import { ARROW } from '~/defaults/icons';
-import buttonPropsMixin from '~/mixins/buttons/buttonPropsMixin';
+import Button from '~/core/components/Buttons/Button';
 
 export default {
-    name: 'MultiButton',
-    mixins: [buttonPropsMixin],
+    name: 'MenuButton',
+    inheritAttrs: false,
     components: {
-        AppendIconButton: () => import('~/core/components/Buttons/AppendIconButton'),
+        Button,
         List: () => import('~/core/components/List/List'),
         ListElement: () => import('~/core/components/List/ListElement'),
         ListElementDescription: () => import('~/core/components/List/ListElementDescription'),
@@ -71,14 +67,13 @@ export default {
         };
     },
     computed: {
-        multiButtonClasses() {
-            return !this.title ? 'btn--multi' : null;
-        },
-        isSelectButton() {
-            return this.isFocused;
+        menuBtnClasses() {
+            return {
+                'btn--menu-title': Boolean(this.$attrs.title),
+            };
         },
         iconArrowState() {
-            return this.isSelectButton ? ARROW.UP : ARROW.DOWN;
+            return this.isFocused ? ARROW.UP : ARROW.DOWN;
         },
     },
     watch: {
@@ -145,11 +140,22 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+    .btn {
+        $btn: &;
 
-    .btn--multi {
-        width: 24px;
-        height: 24px;
-        padding: 0;
+        &:not(&--menu-title) {
+            width: 24px;
+            height: 24px;
+            padding: 0;
+        }
+
+        &--menu-title {
+            padding: 0 8px;
+
+            #{$btn}__title {
+                margin: 0;
+            }
+        }
     }
 
     .btn__select-content {

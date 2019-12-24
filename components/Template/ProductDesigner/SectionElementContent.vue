@@ -21,17 +21,17 @@
         <div
             v-if="!disabled"
             :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
-            <MultiButton
+            <MenuButton
                 :theme="secondaryTheme"
                 :size="smallSize"
                 :plain="true"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
                 @focus="onSelectFocus">
-                <template #icon="{ color }">
-                    <IconDots :fill-color="color" />
+                <template #icon="{ fillColor }">
+                    <IconDots :fill-color="fillColor" />
                 </template>
-            </MultiButton>
+            </MenuButton>
         </div>
     </ElementContentBase>
 </template>
@@ -41,14 +41,14 @@ import { mapActions } from 'vuex';
 import { SIZES, THEMES } from '~/defaults/buttons';
 import ElementContentBase from '~/components/Template/ProductDesigner/ElementContentBase';
 import IconFontSize from '~/components/Icon/Editor/IconFontSize';
-import MultiButton from '~/core/components/Buttons/MultiButton';
+import MenuButton from '~/core/components/Buttons/MenuButton';
 import IconDots from '~/components/Icon/Others/IconDots';
 
 export default {
     name: 'SectionElementContent',
     components: {
         IconFontSize,
-        MultiButton,
+        MenuButton,
         IconDots,
         ElementContentBase,
     },

@@ -33,10 +33,6 @@ export default {
             type: Number,
             required: true,
         },
-        currentPage: {
-            type: Number,
-            default: 1,
-        },
         disabled: {
             type: Boolean,
             default: false,
@@ -136,7 +132,7 @@ export default {
                 break;
             case 38:
                 // Key: UP
-                element = document.querySelector(`.coordinates-${this.column}-${this.row - this.currentPage}`);
+                element = document.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
                 break;
             case 39:
             case 9:
@@ -149,7 +145,7 @@ export default {
                 break;
             case 40:
                 // Key: DOWN
-                element = document.querySelector(`.coordinates-${this.column}-${this.row + this.currentPage}`);
+                element = document.querySelector(`.coordinates-${this.column}-${this.row + 1}`);
                 break;
             default: break;
             }

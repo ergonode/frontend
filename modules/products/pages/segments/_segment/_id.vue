@@ -43,9 +43,6 @@ export default {
         }),
     },
     methods: {
-        ...mapActions('gridDesigner', {
-            clearDesignerStorage: 'clearStorage',
-        }),
         ...mapActions('conditions', {
             createConditionSet: 'createConditionSet',
             updateConditionSet: 'updateConditionSet',
@@ -87,7 +84,7 @@ export default {
                 this.updateConditionSet({
                     id: this.conditionSetId,
                     data: propertiesToUpdate,
-                    onSuccess: this.onUpdateSegmentsSuccess,
+                    onSuccess: this.onUpdateSegment,
                     onError: this.onError,
                 });
             }
@@ -121,10 +118,9 @@ export default {
             this.$router.push({ name: 'segments' });
         },
     },
-    beforeDestroy() {
+    destroyed() {
         this.clearSegmentStorage();
         this.clearConditionSetStorage();
-        this.clearDesignerStorage();
     },
     async fetch({
         store,

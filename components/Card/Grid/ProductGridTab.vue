@@ -64,30 +64,6 @@ export default {
         GridPagination: () => import('~/core/components/Grid/GridPagination'),
         GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
     },
-    data() {
-        return {
-            verticalTabs: [
-                {
-                    title: 'Attributes',
-                    component: () => import('~/components/Card/Lists/AttributesListTab'),
-                    props: {
-                        disabled: !this.$hasAccess(['PRODUCT_READ']),
-                    },
-                    iconPath: 'Menu/IconAttributes',
-                    listDataType: 'attributes',
-                },
-                {
-                    title: 'System Attributes',
-                    component: () => import('~/components/Card/Lists/SystemAttributesListTab'),
-                    props: {
-                        disabled: !this.$hasAccess(['PRODUCT_READ']),
-                    },
-                    iconPath: 'Menu/IconSettings',
-                    listDataType: 'attributes/system',
-                },
-            ],
-        };
-    },
     computed: {
         ...mapState('draggable', {
             isListElementDragging: (state) => state.isListElementDragging,
@@ -109,6 +85,28 @@ export default {
         ...mapGetters('productsGrid', {
             numberOfPages: 'numberOfPages',
         }),
+        verticalTabs() {
+            return [
+                {
+                    title: 'Attributes',
+                    component: () => import('~/components/Card/Lists/AttributesListTab'),
+                    props: {
+                        disabled: !this.$hasAccess(['PRODUCT_READ']),
+                    },
+                    iconPath: 'Menu/IconAttributes',
+                    listDataType: 'attributes',
+                },
+                {
+                    title: 'System Attributes',
+                    component: () => import('~/components/Card/Lists/SystemAttributesListTab'),
+                    props: {
+                        disabled: !this.$hasAccess(['PRODUCT_READ']),
+                    },
+                    iconPath: 'Menu/IconSettings',
+                    listDataType: 'attributes/system',
+                },
+            ];
+        },
         isFilterExists() {
             const draggedElIndex = this.advancedFiltersData.findIndex(
                 (filter) => filter.id === this.draggedElement,

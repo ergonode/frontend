@@ -12,7 +12,7 @@
             <template
                 v-if="isEdit"
                 #mainAction>
-                <PrependIconButton
+                <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE TEMPLATE"
@@ -22,7 +22,7 @@
                         <IconDelete
                             :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
@@ -32,10 +32,12 @@
                 :loaded="$isLoaded('footerButton')"
                 @click.native="onUpdate" />
         </Footer>
+        <TrashCan v-show="draggedElementOnGrid" />
     </Page>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { SIZES, THEMES } from '~/defaults/buttons';
 import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
@@ -43,7 +45,13 @@ import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPag
 export default {
     name: 'TemplatePage',
     mixins: [categoryManagementPageBaseMixin],
+    components: {
+        TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
+    },
     computed: {
+        ...mapState('draggable', {
+            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
+        }),
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },

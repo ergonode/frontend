@@ -9,5 +9,4 @@ export default () => ({
     attrTypes: {},
     dateFormats: {},
     privileges: {},
-    conditions: {},
 });

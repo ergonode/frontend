@@ -36,6 +36,7 @@ import {
     addLayoutElementCopyToDocumentBody,
     removeLayoutElementCopyFromDocumentBody,
 } from '~/model/template_designer/layout/LayoutElementCopy';
+import { DRAGGED_ELEMENT } from '~/defaults/grid';
 
 export default {
     name: 'LayoutElement',
@@ -103,11 +104,13 @@ export default {
         ]),
         ...mapActions('draggable', [
             'setDraggedElement',
+            'setDraggableState',
         ]),
         onDragStart(event) {
             const { id, width, height } = this.element;
 
             this.setDraggedElement({ ...this.element, index: this.index });
+            this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.TEMPLATE });
             window.requestAnimationFrame(() => { this.isDragged = true; });
             addLayoutElementCopyToDocumentBody(event);
             this.highlightingPositions = getHighlightingLayoutDropPositions({
@@ -121,7 +124,28 @@ export default {
             this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
         onDragEnd(event) {
-            this.isDragged = false;
+            let xPos = null;
+            let yPos = null;
+
+            // Firefox does not support pageX, pageY...
+            if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+                xPos = event.screenX;
+                yPos = event.screenY;
+            } else {
+                xPos = event.pageX;
+                yPos = event.pageY;
+            }
+
+            const elementBelowMouse = document.elementFromPoint(xPos, yPos);
+            const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
+
+            if (isTrashBelowMouse) {
+                this.removeLayoutElementAtIndex(this.index);
+                this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
+            } else {
+                this.isDragged = false;
+            }
+
             this.highlightingPositions = [];
             this.setDraggedElement();
             removeLayoutElementCopyFromDocumentBody(event);

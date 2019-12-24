@@ -23,14 +23,16 @@ export default {
         CategoryTreeWrapper: () => import('~/components/CategoryTreeDesigner/CategoryTreeWrapper'),
         GridViewTemplate,
     },
-    data: () => ({
-        verticalTabs: [
-            {
-                title: 'Categories',
-                component: () => import('~/components/Card/Lists/CategoriesListTab'),
-                iconPath: 'Menu/IconCategory',
-            },
-        ],
-    }),
+    computed: {
+        verticalTabs() {
+            return [
+                {
+                    title: 'Categories',
+                    component: () => import('~/components/Card/Lists/CategoriesListTab'),
+                    iconPath: 'Menu/IconCategory',
+                },
+            ];
+        },
+    },
 };
 </script>

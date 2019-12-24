@@ -8,7 +8,7 @@
             title="Attribute groups"
             :is-read-only="$isReadOnly('ATTRIBUTE')">
             <template #mainAction>
-                <PrependIconButton
+                <Button
                     title="NEW ATTRIBUTE GROUP"
                     :size="smallSize"
                     :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
@@ -16,7 +16,7 @@
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
         </TitleBar>
         <AttributeGroupGridTab />
@@ -26,7 +26,7 @@
 <script>
 import gridModule from '~/reusableStore/grid/state';
 import { THEMES, SIZES } from '~/defaults/buttons';
-import PrependIconButton from '~/core/components/Buttons/PrependIconButton';
+import Button from '~/core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import AttributeGroupGridTab from '~/components/Card/Grid/AttributeGroupGridTab';
 
@@ -36,7 +36,7 @@ export default {
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         Page: () => import('~/core/components/Layout/Page'),
         AttributeGroupGridTab,
-        PrependIconButton,
+        Button,
         IconAdd,
     },
     beforeCreate() {
