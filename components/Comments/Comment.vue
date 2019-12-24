@@ -15,26 +15,22 @@
                     v-text="comment.author" />
             </div>
             <div class="header__actions">
-                <FabButton
+                <Fab
                     v-if="isAbleToEdit"
                     :theme="secondaryTheme"
-                    :size="regularSize"
-                    :hover-color="colorGreen"
                     @click.native="editComment">
-                    <template #icon="{ color }">
-                        <IconEdit :fill-color="color" />
+                    <template #icon="{ fillColor, isHovered }">
+                        <IconEdit :fill-color="isHovered ? colorGreen : fillColor" />
                     </template>
-                </FabButton>
-                <FabButton
+                </Fab>
+                <Fab
                     v-if="isAbleToDelete"
                     :theme="secondaryTheme"
-                    :size="regularSize"
-                    :hover-color="colorRed"
                     @click.native="onRemove">
-                    <template #icon="{ color }">
-                        <IconDelete :fill-color="color" />
+                    <template #icon="{ fillColor, isHovered }">
+                        <IconDelete :fill-color="isHovered ? colorRed : fillColor" />
                     </template>
-                </FabButton>
+                </Fab>
             </div>
         </template>
         <template #content>
@@ -56,13 +52,13 @@
 <script>
 import { mapActions } from 'vuex';
 import { format as formatDate } from 'date-fns';
-import { THEMES, SIZES } from '~/defaults/buttons';
+import { THEMES } from '~/defaults/buttons';
 import { COMMENT_FORMAT } from '~/defaults/date';
 import {
     GREEN, RED, WHITE,
 } from '~/assets/scss/_variables/_colors.scss';
 import CommentWrapper from '~/components/Comments/CommentWrapper';
-import FabButton from '~/core/components/Buttons/FabButton';
+import Fab from '~/core/components/Buttons/Fab';
 import IconEdit from '~/components/Icon/Actions/IconEdit';
 import IconDelete from '~/components/Icon/Actions/IconDelete';
 
@@ -70,7 +66,7 @@ export default {
     name: 'Comment',
     components: {
         CommentWrapper,
-        FabButton,
+        Fab,
         IconEdit,
         IconDelete,
         UserAvatar: () => import('~/components/Multimedia/UserAvatar'),
@@ -84,9 +80,6 @@ export default {
     computed: {
         secondaryTheme() {
             return THEMES.SECONDARY;
-        },
-        regularSize() {
-            return SIZES.REGULAR;
         },
         colorGreen() {
             return GREEN;

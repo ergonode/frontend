@@ -8,7 +8,7 @@
             title="Product statuses"
             :is-read-only="$isReadOnly('WORKFLOW')">
             <template #mainAction>
-                <PrependIconButton
+                <Button
                     title="NEW STATUS"
                     :size="smallSize"
                     :disabled="!$hasAccess(['WORKFLOW_CREATE'])"
@@ -17,7 +17,7 @@
                         <IconAdd
                             :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
         </TitleBar>
         <ProductStatusGridTab />
@@ -27,7 +27,7 @@
 <script>
 import { SIZES } from '~/defaults/buttons';
 import gridModule from '~/reusableStore/grid/state';
-import PrependIconButton from '~/core/components/Buttons/PrependIconButton';
+import Button from '~/core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import ProductStatusGridTab from '~/components/Card/Grid/ProductStatusGridTab';
 
@@ -37,7 +37,7 @@ export default {
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         Page: () => import('~/core/components/Layout/Page'),
         ProductStatusGridTab,
-        PrependIconButton,
+        Button,
         IconAdd,
     },
     beforeCreate() {

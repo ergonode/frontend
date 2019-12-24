@@ -33,13 +33,13 @@
                         alt="Uploaded file">
                 </div>
                 <div class="upload-image__remove-btn">
-                    <FabButton
+                    <Fab
                         :theme="secondaryTheme"
-                        @select="onRemove">
-                        <template #icon="{ color }">
-                            <IconDelete :fill-color="color" />
+                        @click.native="onRemove">
+                        <template #icon="{ fillColor, isHovered }">
+                            <IconDelete :fill-color="isHovered ? redColor : fillColor" />
                         </template>
-                    </FabButton>
+                    </Fab>
                 </div>
             </template>
         </div>
@@ -53,7 +53,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { THEMES } from '~/defaults/buttons';
-import { GRAPHITE, GREEN } from '~/assets/scss/_variables/_colors.scss';
+import { GRAPHITE, GREEN, RED } from '~/assets/scss/_variables/_colors.scss';
 import { getImageData } from '~/model/multimedia';
 
 export default {
@@ -81,7 +81,7 @@ export default {
         },
     },
     components: {
-        FabButton: () => import('~/core/components/Buttons/FabButton'),
+        Fab: () => import('~/core/components/Buttons/Fab'),
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
     data() {
@@ -104,6 +104,9 @@ export default {
         }),
         secondaryTheme() {
             return THEMES.SECONDARY;
+        },
+        redColor() {
+            return RED;
         },
     },
     methods: {

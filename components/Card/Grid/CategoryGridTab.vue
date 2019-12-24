@@ -11,7 +11,6 @@
                 :editing-privilege-allowed="$hasAccess(['CATEGORY_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
-                :is-column-editable="false"
                 title="Categories"
                 @rowEdit="onRowEdit" />
         </template>
@@ -45,7 +44,7 @@ export default {
             userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('categoryGrid', {
-            numberOfDataElements: (state) => state.filtered,
+            numberOfDataElements: (state) => state.count,
             currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),

@@ -5,7 +5,6 @@
 <template>
     <GridCell
         :editing-allowed="isFilterCell"
-        :current-page="rowIndex"
         :row="rowIndex"
         :column="columnIndex"
         :action-cell="false"
@@ -52,10 +51,6 @@ export default {
             type: Number,
             required: true,
         },
-        rowIndex: {
-            type: Number,
-            required: true,
-        },
         column: {
             type: Object,
             required: true,
@@ -68,6 +63,11 @@ export default {
             type: String,
             required: true,
         },
+    },
+    data() {
+        return {
+            rowIndex: 1,
+        };
     },
     computed: {
         gridState() {

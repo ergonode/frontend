@@ -7,6 +7,7 @@
         v-bind="$attrs"
         :value="parsedValue"
         :options="options"
+        is-grid
         @focus="onFocus"
         @input="onClear">
         <template #prepend>
@@ -71,18 +72,16 @@ export default {
     },
     computed: {
         parsedValue() {
-            if (!this.selectedOptions || isEmpty(this.selectedOptions)) {
-                return this.$attrs.multiselect ? [] : null;
-            }
+            if (!this.selectedOptions || isEmpty(this.selectedOptions)) return this.$attrs.multiselect ? [] : '';
             if (!this.$attrs.multiselect) {
-                return this.selectedOptions.id;
+                return this.selectedOptions.name || `#${this.selectedOptions.code || this.selectedOptions.id}`;
             }
-            return Object.keys(this.selectedOptions);
+            return this.selectedOptions;
         },
     },
     methods: {
         isSelected(id) {
-            return this.$attrs.multiselect || isEmpty(this.selectedOptions)
+            return this.$attrs.multiselect || !this.selectedOptions
                 ? false
                 : id === this.selectedOptions.id;
         },
@@ -95,7 +94,7 @@ export default {
         onClear() {
             this.selectedOptions = {};
 
-            this.$emit('input', this.$attrs.multiselect ? [] : { key: null });
+            this.$emit('input', this.$attrs.multiselect ? [] : {});
         },
         initSelectedOptions() {
             this.options = this.$attrs.options.map((option) => ({
@@ -103,7 +102,6 @@ export default {
                 name: option.value,
                 code: option.code || option.key,
             }));
-
             if (this.$attrs.value) {
                 if (!this.$attrs.multiselect) {
                     this.selectedOptions = this.options.find(
@@ -120,7 +118,9 @@ export default {
                 }
             }
         },
-        onSelectValue({ id, code = null, name = null }) {
+        onSelectValue(optionValue) {
+            const { id, code, name } = optionValue;
+
             if (!this.$attrs.multiselect) {
                 this.selectedOptions = { id, name, code };
                 this.$emit('input', { key: id, value: name });

@@ -87,22 +87,6 @@ export default {
             sectionTitle: '',
             columnsNumber: 4,
             maxRow: 0,
-            verticalTabs: [
-                {
-                    title: 'Attributes',
-                    component: () => import('~/components/Card/Lists/AttributesListTab'),
-                    props: {
-                        isSelectLanguage: false,
-                        disabled: !this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']),
-                    },
-                    iconPath: 'Menu/IconAttributes',
-                },
-                {
-                    title: 'Widgets',
-                    component: () => import('~/components/Card/Lists/WidgetsListTab'),
-                    iconPath: 'Widgets/IconWidget',
-                },
-            ],
         };
     },
     watch: {
@@ -131,6 +115,24 @@ export default {
             draggedElement: (state) => state.draggedElement,
             isListElementDragging: (state) => state.isListElementDragging,
         }),
+        verticalTabs() {
+            return [
+                {
+                    title: 'Attributes',
+                    component: () => import('~/components/Card/Lists/AttributesListTab'),
+                    props: {
+                        isSelectLanguage: false,
+                        disabled: !this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']),
+                    },
+                    iconPath: 'Menu/IconAttributes',
+                },
+                {
+                    title: 'Widgets',
+                    component: () => import('~/components/Card/Lists/WidgetsListTab'),
+                    iconPath: 'Widgets/IconWidget',
+                },
+            ];
+        },
         isUserAllowedToUpdate() {
             return this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']);
         },

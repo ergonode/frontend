@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <form class="form">
+    <form
+        class="form"
+        @submit.prevent>
         <slot />
     </form>
 </template>

@@ -26,14 +26,14 @@
                 :sorting-order="sortingOrder"
                 :fill-color="graphiteLightColor"
                 @click.native="onClickSort" />
-            <MultiButton
+            <MenuButton
                 v-if="isColumnEditable"
                 :theme="secondaryTheme"
-                :size="smallSize"
+                :size="tinySize"
                 :plain="true"
                 @focus="onSelectFocus">
-                <template #icon="{ color }">
-                    <IconDots :fill-color="color" />
+                <template #icon="{ fillColor }">
+                    <IconDots :fill-color="fillColor" />
                 </template>
                 <template #content>
                     <List>
@@ -41,7 +41,7 @@
                             v-for="option in contextualMenuItems"
                             :key="option.text"
                             :small="true"
-                            @click.native="() => onSelectOption(option)">
+                            @click.native="onSelectOption(option)">
                             <ListElementDescription>
                                 <ListElementTitle
                                     :small="true"
@@ -54,7 +54,7 @@
                         </ListElement>
                     </List>
                 </template>
-            </MultiButton>
+            </MenuButton>
         </div>
     </div>
 </template>
@@ -70,7 +70,7 @@ import { GRAPHITE_LIGHT } from '~/assets/scss/_variables/_colors.scss';
 export default {
     name: 'GridPresentationInteractiveHeaderCell',
     components: {
-        MultiButton: () => import('~/core/components/Buttons/MultiButton'),
+        MenuButton: () => import('~/core/components/Buttons/MenuButton'),
         IconArrowSort: () => import('~/components/Icon/Arrows/IconArrowSort'),
         IconDots: () => import('~/components/Icon/Others/IconDots'),
         List: () => import('~/core/components/List/List'),
@@ -120,8 +120,8 @@ export default {
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
             draggedElement: (state) => state.draggedElement,
         }),
-        smallSize() {
-            return SIZES.SMALL;
+        tinySize() {
+            return SIZES.TINY;
         },
         secondaryTheme() {
             return THEMES.SECONDARY;
@@ -241,7 +241,7 @@ export default {
 
         position: relative;
         display: flex;
-        flex: 1 1 auto;
+        flex: 1;
         justify-content: space-between;
         align-items: center;
         width: 0;

@@ -51,10 +51,24 @@
                 <template #body>
                     <slot name="selectContent">
                         <List>
-                            <DropDownListSearch
+                            <ListElement
                                 v-if="searchable"
-                                @search="onSearch"
-                                @searchFocused="onSearchFocused" />
+                                search
+                                :small="small">
+                                <TextField
+                                    :value="searchResult"
+                                    class="search-text-field"
+                                    small
+                                    solid
+                                    :no-border="true"
+                                    placeholder="Search..."
+                                    @input="debouncedSearch"
+                                    @focus="onSearchFocus">
+                                    <template #append>
+                                        <IconSearch :fill-color="searchIconFillColor" />
+                                    </template>
+                                </TextField>
+                            </ListElement>
                             <template v-for="option in options">
                                 <slot
                                     name="option"
@@ -118,9 +132,13 @@
 </template>
 
 <script>
+import { debounce } from 'debounce';
 import { SIZES, THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
-import { isEmpty, removeFromObjectByKey } from '~/model/objectWrapper';
+import {
+    GREEN, GRAPHITE,
+} from '~/assets/scss/_variables/_colors.scss';
+import { isObject, removeFromObjectByKey } from '~/model/objectWrapper';
 import FadeTransition from '~/core/components/Transitions/FadeTransition';
 import DropDown from '~/core/components/Inputs/Select/Contents/DropDown';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
@@ -136,12 +154,13 @@ export default {
         ListElementAction: () => import('~/core/components/List/ListElementAction'),
         ListElementDescription: () => import('~/core/components/List/ListElementDescription'),
         ListElementTitle: () => import('~/core/components/List/ListElementTitle'),
-        DropDownListSearch: () => import('~/core/components/Inputs/Select/Contents/DropDownListSearch'),
         CheckBox: () => import('~/core/components/Inputs/CheckBox'),
         InfoHint: () => import('~/core/components/Hints/InfoHint'),
         ErrorHint: () => import('~/core/components/Hints/ErrorHint'),
         ContentBaseFooter: () => import('~/core/components/Inputs/Select/Contents/Footers/ContentBaseFooter'),
         Button: () => import('~/core/components/Buttons/Button'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
+        IconSearch: () => import('~/components/Icon/Actions/IconSearch'),
     },
     props: {
         value: {
@@ -240,10 +259,13 @@ export default {
             type: Boolean,
             default: false,
         },
+        isGrid: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
-            tmpOptions: this.options,
             selectedOptions: null,
             selectBoundingBox: null,
             isFocused: false,
@@ -254,12 +276,15 @@ export default {
             hasMouseDown: false,
             associatedLabel: '',
             isSearchFocused: false,
+            searchResult: '',
         };
     },
     created() {
-        this.initSelectedOptions();
+        this.debouncedSearch = debounce(this.onSearch, 500);
     },
     mounted() {
+        this.initSelectedOptions();
+
         if (this.autofocus) {
             this.$nextTick(() => {
                 this.$refs.input.focus();
@@ -270,6 +295,7 @@ export default {
         this.associatedLabel = `input-${this._uid}`;
     },
     destroyed() {
+        delete this.debouncedSearch;
         window.removeEventListener('click', this.onClickOutside);
     },
     computed: {
@@ -280,18 +306,24 @@ export default {
             return THEMES.SECONDARY;
         },
         parsedInputValue() {
-            if (!this.value || (Array.isArray(this.value) && !this.value.length)) return '';
-            this.initSelectedOptions();
+            let parsedInput = this.selectedOptions;
 
+            if (this.isGrid && isObject(this.value)) {
+                parsedInput = this.value;
+            }
+            if (!parsedInput) return this.value;
             if (!this.multiselect) {
-                return this.selectedOptions.name || `#${this.selectedOptions.code}`;
+                return parsedInput.name || `#${parsedInput.code}`;
             }
 
-            return Object.values(this.selectedOptions).map(
-                (option) => (isEmpty(option)
-                    ? ''
-                    : option.name || `#${option.code}`),
+            return Object.values(parsedInput).map(
+                ({ name = null, code = null }) => name || `#${code}`,
             ).join(', ');
+        },
+        searchIconFillColor() {
+            return this.isSearchFocused
+                ? GREEN
+                : GRAPHITE;
         },
         dropDownState() {
             return this.isFocused
@@ -379,14 +411,22 @@ export default {
     },
     methods: {
         initSelectedOptions() {
+            if (!this.options) {
+                this.selectedOptions = this.value;
+                return;
+            }
             if (!this.multiselect) {
-                this.selectedOptions = this.tmpOptions.find(
+                this.selectedOptions = this.options.find(
                     (option) => option.id === this.value,
                 );
             } else {
+                if (this.isGrid && isObject(this.value)) {
+                    this.selectedOptions = this.value;
+                    return;
+                }
                 this.selectedOptions = this.value.reduce((acc, currentKey) => {
                     const newObject = acc;
-                    newObject[currentKey] = this.tmpOptions.find(
+                    newObject[currentKey] = this.options.find(
                         (option) => option.id === currentKey,
                     );
                     return newObject;
@@ -397,7 +437,7 @@ export default {
             return typeof option === 'string' || typeof option === 'number';
         },
         isSelected(id) {
-            return this.multiselect || isEmpty(this.selectedOptions)
+            return this.multiselect || !this.selectedOptions
                 ? false
                 : id === this.selectedOptions.id;
         },
@@ -405,9 +445,12 @@ export default {
             return this.multiselect ? typeof this.selectedOptions[id] !== 'undefined' : false;
         },
         onSearch(value) {
-            this.$emit('search', value);
+            const clearValue = value.startsWith('#') ? value.substring(1) : value;
+
+            this.searchResult = value;
+            this.$emit('search', clearValue);
         },
-        onSearchFocused(isFocused) {
+        onSearchFocus(isFocused) {
             this.isSearchFocused = isFocused;
         },
         onClear() {

@@ -8,7 +8,7 @@
             title="Segments"
             :is-read-only="$isReadOnly('SEGMENT')">
             <template #mainAction>
-                <PrependIconButton
+                <Button
                     title="NEW SEGMENT"
                     :size="smallSize"
                     :disabled="!$hasAccess(['SEGMENT_CREATE'])"
@@ -16,7 +16,7 @@
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
         </TitleBar>
         <SegmentsGridTab />
@@ -26,7 +26,7 @@
 <script>
 import { SIZES } from '~/defaults/buttons';
 import gridModule from '~/reusableStore/grid/state';
-import PrependIconButton from '~/core/components/Buttons/PrependIconButton';
+import Button from '~/core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import SegmentsGridTab from '~/components/Card/Grid/SegmentsGridTab';
 
@@ -36,7 +36,7 @@ export default {
         SegmentsGridTab,
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         Page: () => import('~/core/components/Layout/Page'),
-        PrependIconButton,
+        Button,
         IconAdd,
     },
     beforeCreate() {

@@ -22,7 +22,7 @@
     </button>
 </template>
 <script>
-import { THEMES, SIZES } from '~/defaults/buttons';
+import { THEMES } from '~/defaults/buttons';
 import {
     GRAPHITE, GREY_DARK, WHITE,
 } from '~/assets/scss/_variables/_colors.scss';
@@ -49,16 +49,13 @@ export default {
                 `btn--${this.size}`,
                 {
                     'btn--plain': this.plain,
+                    'btn--fab': this.fab,
                 },
             ];
         },
         titleClasses() {
             return [
                 'btn__title',
-                {
-                    'font--semi-bold-14-16': this.size === SIZES.REGULAR,
-                    'font--semi-bold-12-16': this.size === SIZES.SMALL || this.size === SIZES.TINY,
-                },
             ];
         },
     },

@@ -23,16 +23,17 @@
                     :is-expanded="isExpanded" />
             </template>
         </ol>
-        <div class="expand-btn-wrapper">
-            <FabButton
-                is-transparent
+        <div class="side-bar__expand-btn">
+            <Fab
+                :theme="secondaryTheme"
+                :plain="true"
                 @click.native="onExpand">
-                <template #icon="{ color }">
+                <template #icon>
                     <IconArrowDouble
-                        :fill-color="color"
+                        :fill-color="whiteColor"
                         :state="expendStateIcon" />
                 </template>
-            </FabButton>
+            </Fab>
         </div>
     </aside>
 </template>
@@ -40,9 +41,9 @@
 <script>
 import { THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
-import { GREEN } from '~/assets/scss/_variables/_colors.scss';
+import { GREEN, WHITE } from '~/assets/scss/_variables/_colors.scss';
 import IconArrowDouble from '~/components/Icon/Arrows/IconArrowDouble';
-import FabButton from '~/core/components/Buttons/FabButton';
+import Fab from '~/core/components/Buttons/Fab';
 import SideBarLogo from '~/core/components/SideBar/SideBarLogo';
 import SideBarListElement from './SideBarListElement';
 import SideBarListGroup from './SideBarListGroup';
@@ -54,7 +55,7 @@ export default {
         SideBarListElement,
         SideBarListGroup,
         IconArrowDouble,
-        FabButton,
+        Fab,
     },
     data() {
         return {
@@ -75,6 +76,9 @@ export default {
         },
         greenColor() {
             return GREEN;
+        },
+        whiteColor() {
+            return WHITE;
         },
         routes() {
             const routes = [];
@@ -119,6 +123,8 @@ export default {
 
 <style lang="scss" scoped>
     .side-bar {
+        $sidebar: &;
+
         position: relative;
         z-index: $Z_INDEX_NAV;
         display: flex;
@@ -133,7 +139,7 @@ export default {
         &--expanded {
             width: 256px;
 
-            .expand-btn-wrapper {
+            #{$sidebar}__expand-btn {
                 align-self: flex-end;
                 transform: translateX(-12px);
             }
@@ -142,7 +148,7 @@ export default {
         &:not(&--expanded) {
             width: 80px;
 
-            .expand-btn-wrapper {
+            #{$sidebar}__expand-btn {
                 align-self: center;
             }
         }
@@ -151,9 +157,14 @@ export default {
             margin-bottom: 24px;
         }
 
-        .expand-btn-wrapper {
+        &__expand-btn {
             position: sticky;
             bottom: 12px;
+            border-radius: 16px;
+
+            &:hover {
+                background-color: $GREEN;
+            }
         }
     }
 </style>

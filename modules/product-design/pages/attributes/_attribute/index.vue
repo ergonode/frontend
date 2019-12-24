@@ -57,6 +57,11 @@ export default {
             });
         },
         onCreate() {
+            if (this.optionKeys.length > 0 && this.optionKeys.some((key) => key === '')) {
+                this.$addAlert({ type: 'warning', message: 'Options cannot have an empty keys' });
+                return;
+            }
+
             const attribute = {
                 code: this.code,
                 type: this.type,
@@ -68,18 +73,6 @@ export default {
             }
 
             if (this.optionKeys.length > 0) {
-                const uniqueOptions = new Set(this.optionKeys);
-
-                if (this.optionKeys.some((key) => key === '')) {
-                    this.$addAlert({ type: 'warning', message: 'Options cannot have an empty keys' });
-                    return;
-                }
-
-                if (this.optionKeys.length !== uniqueOptions.size) {
-                    this.$addAlert({ type: 'warning', message: 'Option code must be unique' });
-                    return;
-                }
-
                 attribute.options = getParsedOptions(
                     this.optionKeys,
                     this.optionValues,

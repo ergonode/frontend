@@ -7,7 +7,7 @@ import { getUUID } from '~/model/stringWrapper';
 export function getMappedLayoutElement(
     elementID,
     elementData,
-    elementCode,
+    elementLabel,
     position,
     required = false,
     size = { width: 1, height: 1 },
@@ -33,7 +33,7 @@ export function getMappedLayoutElement(
         minHeight,
         maxHeight,
         type,
-        label: elementCode,
+        label: elementLabel,
         required,
     };
 }
@@ -76,10 +76,14 @@ export function getMappedLayoutElements(elements, elementsDescription, elementDa
         const { attribute_id: attrID, required, label } = properties;
         const { x: column, y: row } = position;
         if (type !== 'SECTION') {
+            const {
+                code: descCode, label: descLabel,
+            } = elementsDescription.find((el) => el.id === attrID);
+
             return getMappedLayoutElement(
                 attrID,
                 elementDataByType(type),
-                elementsDescription.find((el) => el.id === attrID).code,
+                descLabel || descCode,
                 { row: row + 1, column: column + 1 },
                 required,
                 size,

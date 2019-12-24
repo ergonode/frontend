@@ -8,7 +8,7 @@
             title="Templates"
             :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')">
             <template #mainAction>
-                <PrependIconButton
+                <Button
                     title="NEW TEMPLATE"
                     :size="smallSize"
                     :disabled="!$hasAccess(['TEMPLATE_DESIGNER_CREATE'])"
@@ -17,7 +17,7 @@
                         <IconAdd
                             :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
         </TitleBar>
         <div class="templates">
@@ -50,7 +50,7 @@ export default {
         TemplateElement: () => import('~/components/Template/TemplateElement'),
         Page: () => import('~/core/components/Layout/Page'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
-        PrependIconButton: () => import('~/core/components/Buttons/PrependIconButton'),
+        Button: () => import('~/core/components/Buttons/Button'),
     },
     computed: {
         ...mapState('templateLists', {

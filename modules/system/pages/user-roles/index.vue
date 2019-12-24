@@ -8,7 +8,7 @@
             title="User roles"
             :is-read-only="$isReadOnly('USER')">
             <template #mainAction>
-                <PrependIconButton
+                <Button
                     title="NEW ROLE"
                     :size="smallSize"
                     :disabled="!$hasAccess(['USER_CREATE'])"
@@ -16,7 +16,7 @@
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
         </TitleBar>
         <RolesGridTab />
@@ -26,7 +26,7 @@
 <script>
 import { THEMES, SIZES } from '~/defaults/buttons';
 import gridModule from '~/reusableStore/grid/state';
-import PrependIconButton from '~/core/components/Buttons/PrependIconButton';
+import Button from '~/core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import RolesGridTab from '~/components/Card/Grid/RolesGridTab';
 
@@ -36,7 +36,7 @@ export default {
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         Page: () => import('~/core/components/Layout/Page'),
         RolesGridTab,
-        PrependIconButton,
+        Button,
         IconAdd,
     },
     beforeCreate() {

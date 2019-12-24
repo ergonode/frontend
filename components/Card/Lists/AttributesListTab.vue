@@ -20,14 +20,14 @@
             @searchResult="onSearch"
             @expand="onExpand" />
         <AttributesList :language-code="attributesLanguageCode" />
-        <FabButton
+        <Fab
             class="list-wrapper__btn"
             :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
             @click.native="addAttribute">
-            <template #icon="{ color }">
-                <IconAdd :fill-color="color" />
+            <template #icon="{ fillColor }">
+                <IconAdd :fill-color="fillColor" />
             </template>
-        </FabButton>
+        </Fab>
     </VerticalTabBarListWrapper>
 </template>
 
@@ -42,7 +42,7 @@ export default {
         AttributesList: () => import('~/components/List/Attributes/AttributesList'),
         ListSearchSelectHeader: () => import('~/core/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('~/core/components/List/ListSearchHeader'),
-        FabButton: () => import('~/core/components/Buttons/FabButton'),
+        Fab: () => import('~/core/components/Buttons/Fab'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
     },
     props: {

@@ -6,7 +6,7 @@
     <div class="status-presentation-cell">
         <PointBadge
             v-if="colors[cellData.key]"
-            :color="colors[cellData.key] || ''" />
+            :color="colors[cellData.key]" />
         <GridPresentationCell :value="cellData.value" />
     </div>
 </template>

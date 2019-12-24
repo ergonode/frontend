@@ -12,7 +12,6 @@
                 :basic-filters="false"
                 :extender-column="false"
                 :edit-column="false"
-                :is-column-editable="false"
                 title="Role privileges">
                 <template #headerSelectAllRowsCell="{ row, column }">
                     <GridCell

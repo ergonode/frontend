@@ -15,7 +15,7 @@
                 :item="item"
                 @select="onSelectTabBarItem" />
         </div>
-        <HorizontalTabContent :item="items[selectedTabIndex] || {}" />
+        <HorizontalTabContent :item="items[selectedTabIndex]" />
     </div>
 </template>
 

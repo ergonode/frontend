@@ -33,16 +33,15 @@
                     <Divider vertical />
                 </div>
             </div>
-            <FabButton
+            <Fab
                 :theme="secondaryTheme"
-                :is-selected="isExpanded"
-                @select="onExpandFilters">
-                <template #icon="{ color }">
+                @click.native="onExpandFilters">
+                <template #icon="{ fillColor }">
                     <IconArrowDouble
-                        :fill-color="color"
+                        :fill-color="fillColor"
                         :state="iconExpanderState" />
                 </template>
-            </FabButton>
+            </Fab>
         </div>
         <FadeTransition>
             <GridAdvancedFiltersContainer
@@ -87,7 +86,7 @@ export default {
     components: {
         Divider: () => import('~/core/components/Dividers/Divider'),
         NumericBadge: () => import('~/core/components/Badges/NumericBadge'),
-        FabButton: () => import('~/core/components/Buttons/FabButton'),
+        Fab: () => import('~/core/components/Buttons/Fab'),
         IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),
         GridAdvancedFiltersContainer: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFiltersContainer'),
         GridAdvancedFilter: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFilter'),
@@ -155,8 +154,8 @@ export default {
         onFilterFocus(isFocused) {
             this.$emit('focus', isFocused);
         },
-        onExpandFilters(isExpanded) {
-            this.isExpanded = isExpanded;
+        onExpandFilters() {
+            this.isExpanded = !this.isExpanded;
 
             if (this.isExpanded) {
                 this.iconExpanderState = ARROW.UP;

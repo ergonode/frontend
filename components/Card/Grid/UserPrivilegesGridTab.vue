@@ -11,7 +11,6 @@
                 :editing-privilege-allowed="false"
                 :edit-column="false"
                 :select-column="false"
-                :is-column-editable="false"
                 title="Privileges">
                 <template #cell="{ column, columnIndex, rowId, rowIndex, cellData }">
                     <GridCell

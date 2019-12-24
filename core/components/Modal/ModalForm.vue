@@ -10,13 +10,13 @@
                     <slot name="headerPrepend" />
                     <span v-text="title" />
                 </div>
-                <FabButton
+                <Fab
                     :theme="secondaryTheme"
                     @click.native="onClose">
-                    <template #icon="{ color }">
-                        <IconClose :fill-color="color" />
+                    <template #icon="{ fillColor }">
+                        <IconClose :fill-color="fillColor" />
                     </template>
-                </FabButton>
+                </Fab>
             </div>
             <Divider />
             <div class="modal__body">
@@ -37,7 +37,7 @@ import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 import ModalOverlay from '~/core/components/Modal/ModalOverlay';
 import Form from '~/core/components/Form/Form';
 import Divider from '~/core/components/Dividers/Divider';
-import FabButton from '~/core/components/Buttons/FabButton';
+import Fab from '~/core/components/Buttons/Fab';
 import IconClose from '~/components/Icon/Window/IconClose';
 
 export default {
@@ -46,7 +46,7 @@ export default {
         ModalOverlay,
         Form,
         Divider,
-        FabButton,
+        Fab,
         IconClose,
     },
     props: {

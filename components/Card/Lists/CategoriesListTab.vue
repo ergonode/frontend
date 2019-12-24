@@ -10,14 +10,14 @@
             @expand="onExpand"
             @searchResult="onSearch" />
         <CategoriesList :language-code="userLanguageCode" />
-        <FabButton
+        <Fab
             class="list-wrapper__btn"
             :disabled="!$hasAccess(['CATEGORY_CREATE'])"
             @click.native="addCategory">
-            <template #icon="{ color }">
-                <IconAdd :fill-color="color" />
+            <template #icon="{ fillColor }">
+                <IconAdd :fill-color="fillColor" />
             </template>
-        </FabButton>
+        </Fab>
     </VerticalTabBarListWrapper>
 </template>
 
@@ -34,7 +34,7 @@ export default {
         ListSearchHeader: () => import('~/core/components/List/ListSearchHeader'),
         CategoriesList: () => import('~/components/List/Categories/CategoriesList'),
         IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
-        FabButton: () => import('~/core/components/Buttons/FabButton'),
+        Fab: () => import('~/core/components/Buttons/Fab'),
     },
     props: {
         isExpanded: {

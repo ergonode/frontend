@@ -25,6 +25,9 @@ export default {
     components: {
         CategoryTreePage: () => import('~/components/Pages/CategoryTreePage'),
     },
+    destroyed() {
+        this.clearGridDesignerStorage();
+    },
     computed: {
         ...mapState('tree', {
             treeId: (state) => state.treeId,
@@ -42,6 +45,9 @@ export default {
             'updateTree',
             'removeCategoryTree',
         ]),
+        ...mapActions('gridDesigner', {
+            clearGridDesignerStorage: 'clearStorage',
+        }),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
@@ -88,8 +94,6 @@ export default {
         } = store.state.authentication;
 
         await Promise.all([
-            store.dispatch('gridDesigner/clearStorage'),
-            store.dispatch('list/clearStorage'),
             store.dispatch('tree/clearStorage'),
             store.dispatch('translations/clearStorage'),
             store.dispatch('list/getElements', {

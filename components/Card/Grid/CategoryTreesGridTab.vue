@@ -11,7 +11,6 @@
                 :editing-privilege-allowed="$hasAccess(['CATEGORY_TREE_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
-                :is-column-editable="false"
                 title="Category trees"
                 @rowEdit="onRowEdit" />
         </template>
@@ -45,7 +44,7 @@ export default {
             userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('categoryTreesGrid', {
-            numberOfDataElements: (state) => state.filtered,
+            numberOfDataElements: (state) => state.count,
             currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),

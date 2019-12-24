@@ -12,7 +12,7 @@
             <template
                 v-if="isEdit"
                 #mainAction>
-                <PrependIconButton
+                <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE ROLE"
@@ -22,7 +22,7 @@
                         <IconDelete
                             :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />

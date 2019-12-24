@@ -6,7 +6,6 @@
     <div :class="pinnedColumnClass">
         <GridCell
             :column="columnIndex"
-            :current-page="currentPage"
             :row="0"
             :editing-allowed="false"
             :action-cell="false"
@@ -15,18 +14,16 @@
         </GridCell>
         <GridCell
             v-if="basicFilters"
-            :current-page="currentPage"
             :column="columnIndex"
-            :row="currentPage"
+            :row="1"
             :editing-allowed="false"
             :action-cell="false"
             :locked="true" />
         <GridCell
             v-for="(rowLink, index) in rowLinks"
             :key="rowLink.id"
-            :current-page="currentPage"
             :column="columnIndex"
-            :row="(index + rowsOffset) * currentPage"
+            :row="index + rowsOffset"
             :editing-allowed="true"
             :action-cell="true"
             :selected="isSelectedAllRows
@@ -103,7 +100,7 @@ export default {
     .pinned-column {
         position: sticky;
         right: 0;
-        z-index: $Z_INDEX_LVL_2;
+        z-index: 3;
         display: grid;
         box-sizing: border-box;
 

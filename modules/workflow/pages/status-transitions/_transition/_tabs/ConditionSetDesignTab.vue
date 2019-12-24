@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import GridViewTemplate from '~/core/components/Layout/Templates/GridViewTemplate';
 
 export default {
@@ -23,15 +24,29 @@ export default {
         VerticalTabBar: () => import('~/core/components/Tab/VerticalTabBar'),
         ConditionSetWrapper: () => import('~/components/ConditionSetDesigner/ConditionSetWrapper'),
     },
-    data: () => ({
-        verticalTabs: [
-            {
-                title: 'Conditions',
-                component: () => import('~/components/Card/Lists/ConditionsListTab'),
-                iconPath: 'Menu/IconCategory',
-            },
-        ],
-    }),
+    destroyed() {
+        this.clearGridDesignerStorage();
+        this.clearConditionsStorage();
+    },
+    computed: {
+        verticalTabs() {
+            return [
+                {
+                    title: 'Conditions',
+                    component: () => import('~/components/Card/Lists/ConditionsListTab'),
+                    iconPath: 'Menu/IconCategory',
+                },
+            ];
+        },
+    },
+    methods: {
+        ...mapActions('gridDesigner', {
+            clearGridDesignerStorage: 'clearStorage',
+        }),
+        ...mapActions('conditions', {
+            clearConditionsStorage: 'clearStorage',
+        }),
+    },
     async fetch({
         store,
     }) {

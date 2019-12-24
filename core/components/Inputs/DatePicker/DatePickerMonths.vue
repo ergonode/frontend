@@ -10,7 +10,7 @@
             :selected="isSelectedMonth(month)"
             :current="isCurrentMonth(month)"
             :title="month"
-            @click.native="() => onClick(month)" />
+            @click.native="onClick(month)" />
     </div>
 </template>
 

@@ -18,13 +18,12 @@ export default {
     .vertical-centered-view {
         position: relative;
         display: grid;
-        flex: 1;
         justify-content: center;
         align-items: baseline;
         grid-auto-flow: column;
         grid-template-columns: max-content;
         column-gap: 24px;
-        margin: 24px 0 0 24px;
+        margin: 24px;
 
         &::after {
             content: "";

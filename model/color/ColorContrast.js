@@ -8,9 +8,7 @@ function calculateRGBColor(color) {
 }
 
 export function hexToRGB(hex) {
-    let decimalHex = hex.replace('#', '0x');
-
-    if (hex.length === 4) decimalHex = `${hex.replace('#', '0x')}${hex[1].repeat(3)}`;
+    const decimalHex = hex.replace('#', '0x');
     const bigint = parseInt(decimalHex, 16);
     const r = (bigint >> 16) & 255;
     const g = (bigint >> 8) & 255;

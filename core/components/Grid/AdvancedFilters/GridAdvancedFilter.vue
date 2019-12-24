@@ -241,6 +241,7 @@ export default {
                 this.setDisabledElement({
                     languageCode: language, elementId, disabled: false,
                 });
+                this.onClear();
             } else {
                 this.$store.dispatch(`${this.namespace}/setAdvancedFilterAtIndex`, {
                     index: this.ghostFilterIndex,

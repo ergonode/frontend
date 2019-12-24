@@ -93,7 +93,6 @@ export default {
         const { id } = params;
 
         await Promise.all([
-            store.dispatch('list/clearStorage'),
             store.dispatch('templateDesigner/getTypes', {
                 path: `${userLanguageCode}/templates/types`,
             }),

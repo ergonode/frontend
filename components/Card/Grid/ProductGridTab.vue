@@ -64,9 +64,29 @@ export default {
         GridPagination: () => import('~/core/components/Grid/GridPagination'),
         GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
     },
-    data() {
-        return {
-            verticalTabs: [
+    computed: {
+        ...mapState('draggable', {
+            isListElementDragging: (state) => state.isListElementDragging,
+            draggedElement: (state) => state.draggedElement,
+        }),
+        ...mapState('authentication', {
+            userLanguageCode: (state) => state.user.language,
+        }),
+        ...mapState('productsGrid', {
+            numberOfDataElements: (state) => state.count,
+            currentPage: (state) => state.currentPage,
+            numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
+            advancedFiltersData: (state) => state.advancedFiltersData,
+            advancedFilters: (state) => state.advancedFilters,
+        }),
+        ...mapState('gridDraft', {
+            drafts: (state) => state.drafts,
+        }),
+        ...mapGetters('productsGrid', {
+            numberOfPages: 'numberOfPages',
+        }),
+        verticalTabs() {
+            return [
                 {
                     title: 'Attributes',
                     component: () => import('~/components/Card/Lists/AttributesListTab'),
@@ -85,30 +105,8 @@ export default {
                     iconPath: 'Menu/IconSettings',
                     listDataType: 'attributes/system',
                 },
-            ],
-        };
-    },
-    computed: {
-        ...mapState('draggable', {
-            isListElementDragging: (state) => state.isListElementDragging,
-            draggedElement: (state) => state.draggedElement,
-        }),
-        ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
-        }),
-        ...mapState('productsGrid', {
-            numberOfDataElements: (state) => state.filtered,
-            currentPage: (state) => state.currentPage,
-            numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
-            advancedFiltersData: (state) => state.advancedFiltersData,
-            advancedFilters: (state) => state.advancedFilters,
-        }),
-        ...mapState('gridDraft', {
-            drafts: (state) => state.drafts,
-        }),
-        ...mapGetters('productsGrid', {
-            numberOfPages: 'numberOfPages',
-        }),
+            ];
+        },
         isFilterExists() {
             const draggedElIndex = this.advancedFiltersData.findIndex(
                 (filter) => filter.id === this.draggedElement,

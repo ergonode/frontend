@@ -11,7 +11,6 @@
                 :editing-privilege-allowed="$hasAccess(['IMPORT_UPDATE'])"
                 :basic-filters="true"
                 :select-column="false"
-                :is-column-editable="false"
                 title="Imports"
                 @rowEdit="onRowEdit" />
         </template>
@@ -56,7 +55,7 @@ export default {
             userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('importGrid', {
-            numberOfDataElements: (state) => state.filtered,
+            numberOfDataElements: (state) => state.count,
             currentPage: (state) => state.currentPage,
             numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
