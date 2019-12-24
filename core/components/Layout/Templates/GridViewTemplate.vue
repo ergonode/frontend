@@ -62,7 +62,7 @@ export default {
 
         &__footer {
             grid-area: 3 / 1 / 3 / 3;
-            z-index: 3;
+            z-index: $Z_INDEX_LVL_3;
             display: flex;
             align-items: center;
             padding: 12px 24px;
