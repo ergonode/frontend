@@ -101,10 +101,18 @@ class ModuleLoader {
                 if (config.extendComponents) {
                     modulesConfig.extendComponents.push(...config.extendComponents);
                 }
+                if (config.extendTabs) {
+                    modulesConfig.extendTabs.push(...config.extendTabs);
+                }
             }
             return modulesConfig;
         }, {
-            router: [], store: [], nuxt: {}, relations: [], extendComponents: [],
+            router: [],
+            store: [],
+            nuxt: {},
+            relations: [],
+            extendComponents: [],
+            extendTabs: [],
         });
     }
 

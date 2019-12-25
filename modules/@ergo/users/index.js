@@ -212,6 +212,35 @@ export default {
                 redirectTo: 'general',
             },
         },
+        {
+            name: 'profile',
+            path: '/profile',
+            component: Pages.Profile,
+            children: [
+                {
+                    name: 'profile-activity-log-grid',
+                    path: 'activity-log-grid',
+                    component: Tabs.UserActivityLogsGridTab,
+                    meta: {
+                        title: 'Activity log',
+                        privileges: [],
+                    },
+                },
+                {
+                    name: 'profile-privileges-grid',
+                    path: 'privileges-grid',
+                    component: Tabs.UserPrivilegesGridTab,
+                    meta: {
+                        title: 'Privileges',
+                        privileges: [],
+                    },
+                },
+            ],
+            meta: {
+                isMenu: false,
+                redirectTo: 'activity-log-grid',
+            },
+        },
     ],
     store: [
         {
@@ -226,5 +255,21 @@ export default {
             directory: 'roles',
             name: 'roles',
         },
+    ],
+    extendTabs: [
+        // {
+        //     name: 'settings',
+        //     children: [
+        //         {
+        //             name: 'settings-user',
+        //             path: 'user',
+        //             component: Tabs.UserSettingsTab,
+        //             meta: {
+        //                 title: 'User settings',
+        //                 privileges: [],
+        //             },
+        //         },
+        //     ],
+        // },
     ],
 };

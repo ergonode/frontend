@@ -43,9 +43,4 @@ export default [
         source: 'local',
         name: '@ergo/notifications',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/profile',
-    },
 ];

@@ -9,6 +9,7 @@ export const Pages = {
     Roles: () => import('@Users/pages/roles/index').then((m) => m.default || m),
     RoleNew: () => import('@Users/pages/roles/_role/index').then((m) => m.default || m),
     RoleEdit: () => import('@Users/pages/roles/_role/_id').then((m) => m.default || m),
+    Profile: () => import('@Users/pages/profile/index').then((m) => m.default || m),
 };
 
 
@@ -17,6 +18,8 @@ export const Tabs = {
     UserAvatarTab: () => import('@Users/components/Tabs/UserAvatarTab').then((m) => m.default || m),
     RoleBaseTab: () => import('@Users/components/Tabs/RoleBaseTab').then((m) => m.default || m),
     RolePrivilegesTab: () => import('@Users/components/Tabs/RolePrivilegesTab').then((m) => m.default || m),
+    UserActivityLogsGridTab: () => import('@Users/components/Tabs/UserActivityLogsGridTab').then((m) => m.default || m),
+    UserPrivilegesGridTab: () => import('@Users/components/Tabs/UserPrivilegesGridTab').then((m) => m.default || m),
 };
 
 export const Icons = {

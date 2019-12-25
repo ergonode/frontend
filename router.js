@@ -40,13 +40,23 @@ const scrollBehavior = (to, from, savedPosition) => {
 };
 
 const getRoutes = () => {
-    const { router } = getModulesConfig;
-    let filteredPages = pages;
-    for (let i = 0; i < router.length; i += 1) {
-        filteredPages = filteredPages.filter(e => e.name !== router[i].name);
+    const { router, extendTabs } = getModulesConfig;
+
+    for (let i = 0; i < extendTabs.length; i += 1) {
+        const index = router.findIndex(e => e.name === extendTabs[i].name);
+
+        if (index !== -1) {
+            router[index] = {
+                ...router[index],
+                children: [
+                  ...router[index].children,
+                  ...extendTabs[i].children,
+                ],
+            };
+        }
     }
 
-    return filteredPages.concat(router);
+    return pages.concat(router);
 };
 
 export function createRouter() {

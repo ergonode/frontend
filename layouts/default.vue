@@ -39,7 +39,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { TYPES } from '~/defaults/extends';
+import { COMPONENTS } from '@Core/defaults/extends';
 
 export default {
     middleware: ['setDictionaries', 'authenticated'],
@@ -76,7 +76,7 @@ export default {
             user: (state) => state.user,
         }),
         getComponentsForExtended() {
-            return this.$getComponentsForExtended(TYPES.NAVIGATION_BAR);
+            return this.$getComponentsForExtended(COMPONENTS.NAVIGATION_BAR);
         },
     },
     methods: {

@@ -3,6 +3,6 @@
  * See LICENSE for license details.
  */
 
-export const TYPES = {
+export const COMPONENTS = {
     NAVIGATION_BAR: 'NAVIGATION_BAR',
 };

@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+
 export default {
     name: 'UserProfileTabs',
     components: {
@@ -18,19 +20,10 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
     },
-    data() {
-        return {
-            tabs: [
-                {
-                    title: 'Activity log',
-                    route: { name: 'profile-activity-log-grid' },
-                },
-                {
-                    title: 'Privileges',
-                    route: { name: 'profile-privileges-grid' },
-                },
-            ],
-        };
+    computed: {
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
     },
 };
 </script>

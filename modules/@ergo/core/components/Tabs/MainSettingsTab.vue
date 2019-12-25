@@ -3,32 +3,40 @@
  * See LICENSE for license details.
  */
 <template>
-    <Page>
-        <TitleBar
-            title="Settings"
-            :is-read-only="$isReadOnly('USER')" />
-        <LanguageSettingsTab />
-        <Footer>
-            <Button
-                title="SAVE SETTINGS"
-                :loaded="$isLoaded('saveSettings')"
-                @click.native="onSave" />
-        </Footer>
-    </Page>
+    <ResponsiveCenteredViewTemplate :fixed="true">
+        <template #content>
+            <VerticalFixedScroll>
+                <MainSettingsForm />
+            </VerticalFixedScroll>
+        </template>
+        <template #footer>
+            <FooterActions>
+                <Button
+                    title="SAVE SETTINGS"
+                    :loaded="$isLoaded('saveSettings')"
+                    @click.native="onSave" />
+            </FooterActions>
+        </template>
+    </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import languageSettingsModule from '@Core/reusableStore/languageSettings/state';
+import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
+import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
+import FooterActions from '@Core/components/ReusableFooter/FooterActions';
+import Button from '@Core/components/Buttons/Button';
 
 export default {
-    name: 'Settings',
+    name: 'MainSettingsTab',
     components: {
-        LanguageSettingsTab: () => import('~/components/Card/Tabs/LanguageSettingsTab'),
-        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Footer: () => import('@Core/components/ReusableFooter/Footer'),
-        Button: () => import('@Core/components/Buttons/Button'),
-        Page: () => import('@Core/components/Layout/Page'),
+        VerticalFixedScroll,
+        MainSettingsForm,
+        ResponsiveCenteredViewTemplate,
+        FooterActions,
+        Button,
     },
     beforeCreate() {
         this.$registerStore({

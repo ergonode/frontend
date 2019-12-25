@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Pages } from './config/imports';
+import { Pages, Tabs, Icons } from './config/imports';
 import Privileges from './config/privileges';
 
 export default {
@@ -30,6 +30,32 @@ export default {
             component: Pages.Placeholder,
             meta: {
                 isMenu: false,
+            },
+        },
+        {
+            name: 'settings',
+            path: '/settings',
+            component: Pages.Settings,
+            children: [
+                {
+                    name: 'settings-main',
+                    path: 'main',
+                    component: Tabs.MainSettingsTab,
+                    meta: {
+                        title: 'Main settings',
+                        privileges: [],
+                    },
+                },
+            ],
+            meta: {
+                access: true,
+                title: 'Settings',
+                group: {
+                    title: 'System',
+                    icon: Icons.Settings,
+                },
+                isMenu: true,
+                redirectTo: 'main',
             },
         },
     ],

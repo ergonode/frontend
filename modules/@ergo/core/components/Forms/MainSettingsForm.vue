@@ -26,7 +26,7 @@ import { mapState, mapActions } from 'vuex';
 import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 
 export default {
-    name: 'LanguageSettingsForm',
+    name: 'MainSettingsForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
         FormGroup: () => import('@Core/components/Form/FormGroup'),
