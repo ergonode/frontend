@@ -24,7 +24,7 @@ import {
 export default {
     name: 'TrashCan',
     components: {
-        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
+        IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
     },
     computed: {
         whiteColor() {

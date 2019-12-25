@@ -27,7 +27,7 @@ import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 export default {
     name: 'GridAdvancedFilterGhost',
     components: {
-        IconAddFilter: () => import('~/components/Icon/Actions/IconAddFilter'),
+        IconAddFilter: () => import('@Core/components/Icons/Actions/IconAddFilter'),
     },
     props: {
         isMouseOverFilters: {

@@ -38,7 +38,7 @@
 <script>
 import { mapState } from 'vuex';
 import gridModule from '@Core/reusableStore/grid/state';
-import { getMappedGridData } from '~/model/mappers/privilegesMapper';
+import { getMappedGridData } from '@Users/models/privilegesMapper';
 import { COLUMN_TYPE } from '@Core/defaults/grid';
 import { STATE } from '@Core/defaults/inputs/checkbox';
 import Grid from '@Core/components/Grid/Grid';

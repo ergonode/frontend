@@ -33,4 +33,22 @@ export default {
             },
         },
     ],
+    store: [
+        {
+            directory: 'core',
+            name: 'core',
+        },
+        {
+            directory: 'validations',
+            name: 'validations',
+        },
+        {
+            directory: 'translations',
+            name: 'translations',
+        },
+        {
+            directory: 'alerts',
+            name: 'alerts',
+        },
+    ],
 };

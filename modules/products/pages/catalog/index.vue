@@ -29,7 +29,7 @@ import { mapState } from 'vuex';
 import gridModule from '@Core/reusableStore/grid/state';
 import { SIZES } from '@Core/defaults/buttons';
 import Button from '@Core/components/Buttons/Button';
-import IconAdd from '~/components/Icon/Actions/IconAdd';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import ProductGridTab from '~/components/Card/Grid/ProductGridTab';
 
 export default {

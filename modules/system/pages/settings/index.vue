@@ -26,7 +26,7 @@ export default {
     components: {
         LanguageSettingsTab: () => import('~/components/Card/Tabs/LanguageSettingsTab'),
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
-        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Footer: () => import('@Core/components/ReusableFooter/Footer'),
         Button: () => import('@Core/components/Buttons/Button'),
         Page: () => import('@Core/components/Layout/Page'),
     },

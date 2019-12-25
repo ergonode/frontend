@@ -17,7 +17,7 @@ import {
     getParsedOptions,
 } from '~/model/mappers/attributeMapper';
 import { isMultilingual } from '~/model/attributes/AttributeTypes';
-import { getParentRoutePath } from '~/model/navigation/tabs';
+import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
     name: 'NewAttribute',

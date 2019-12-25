@@ -30,7 +30,10 @@ export default {
                     icon: Icons.Media,
                 },
                 isMenu: true,
-                privileges: Privileges.MULTIMEDIA,
+                privileges: {
+                    namespace: Privileges.MULTIMEDIA.namespace,
+                    read: Privileges.MULTIMEDIA.read,
+                },
             },
         },
     ],

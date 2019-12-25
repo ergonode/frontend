@@ -45,7 +45,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { isEmpty } from '@Core/models/objectWrapper';
-import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
+import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 
 export default {
     name: 'TransitionForm',

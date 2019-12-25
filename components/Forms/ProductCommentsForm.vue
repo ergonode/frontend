@@ -52,11 +52,11 @@ import { DATA_LIMIT } from '@Core/defaults/grid';
 import { LayoutOrientation } from '@Core/defaults/layout';
 import Button from '@Core/components/Buttons/Button';
 import Loader from '@Core/components/Loader/Loader';
-import IconAdd from '~/components/Icon/Actions/IconAdd';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import CommentsList from '~/components/List/Comments/CommentsList';
 import CommentStateChanger from '~/components/Comments/CommentStateChanger';
 import EditableComment from '~/components/Comments/EditableComment';
-import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
+import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 
 export default {
     name: 'ProductCommentsForm',

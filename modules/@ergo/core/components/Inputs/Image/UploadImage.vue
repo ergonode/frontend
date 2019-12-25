@@ -82,7 +82,7 @@ export default {
     },
     components: {
         FabButton: () => import('@Core/components/Buttons/FabButton'),
-        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
+        IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
     },
     data() {
         return {

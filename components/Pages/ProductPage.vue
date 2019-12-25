@@ -61,12 +61,12 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { SIZES, THEMES } from '@Core/defaults/buttons';
-import { getNestedTabRoutes } from '~/model/navigation/tabs';
+import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import Button from '@Core/components/Buttons/Button';
 import MenuButton from '@Core/components/Buttons/MenuButton';
 import ProductStatusBadge from '~/components/Badges/ProductStatusBadge';
 import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
-import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
+import categoryManagementPageBaseMixin from '@Core/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'ProductPage',

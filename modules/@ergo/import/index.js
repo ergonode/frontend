@@ -30,7 +30,10 @@ export default {
                     icon: Icons.Export,
                 },
                 isMenu: true,
-                privileges: Privileges.IMPORT,
+                privileges: {
+                    namespace: Privileges.IMPORT.namespace,
+                    read: Privileges.IMPORT.read,
+                },
             },
         },
     ],

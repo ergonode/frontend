@@ -26,7 +26,7 @@ import { THEMES } from '@Core/defaults/buttons';
 import {
     GRAPHITE, GREY_DARK, WHITE,
 } from '~/assets/scss/_variables/_colors.scss';
-import buttonPropsMixin from '~/mixins/buttons/buttonPropsMixin';
+import buttonPropsMixin from '@Core/mixins/buttons/buttonPropsMixin';
 
 export default {
     name: 'Button',

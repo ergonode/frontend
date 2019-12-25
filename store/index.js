@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { getModulesConfig } from '~/plugins/moduleLoader';
-import { JWT_KEY } from '~/defaults/authenticate/cookies';
+import { JWT_KEY } from '@Core/defaults/authenticate/cookies';
 
 export const actions = {
     async nuxtServerInit({ dispatch }) {
@@ -20,7 +20,6 @@ export const actions = {
 
         dispatch('categories/clearStorage');
         dispatch('attribute/clearStorage');
-        dispatch('authentication/clearStorage');
         dispatch('data/clearStorage');
         dispatch('draggable/clearStorage');
         dispatch('tree/clearStorage');
@@ -32,9 +31,6 @@ export const actions = {
         dispatch('templateDesigner/clearStorage');
         dispatch('templateLists/clearStorage');
         dispatch('list/clearStorage');
-        dispatch('roles/clearStorage');
-        dispatch('users/clearStorage');
-        dispatch('validations/clearStorage');
         dispatch('translations/clearStorage');
         dispatch('gridDraft/clearStorage');
 

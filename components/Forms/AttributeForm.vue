@@ -81,7 +81,7 @@ import { toCapitalize } from '@Core/models/stringWrapper';
 import {
     hasParams, hasOptions, isMultilingual, getParamsKeyForType, getParamsOptionsForType,
 } from '~/model/attributes/AttributeTypes';
-import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
+import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 
 export default {
     name: 'AttributeForm',

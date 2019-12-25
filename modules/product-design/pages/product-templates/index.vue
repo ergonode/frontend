@@ -49,7 +49,7 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         TemplateElement: () => import('~/components/Template/TemplateElement'),
         Page: () => import('@Core/components/Layout/Page'),
-        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
+        IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
         Button: () => import('@Core/components/Buttons/Button'),
     },
     computed: {

@@ -15,7 +15,7 @@
 import { mapState, mapActions } from 'vuex';
 import { getMappedTreeData } from '~/model/mappers/treeMapper';
 import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
-import { getParentRoutePath } from '~/model/navigation/tabs';
+import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
     validate({ params }) {

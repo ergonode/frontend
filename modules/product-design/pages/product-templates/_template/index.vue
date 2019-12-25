@@ -12,7 +12,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { asyncRequestWrapper } from '~/model/wrappers/asyncRequestWrapper';
-import { getParentRoutePath } from '~/model/navigation/tabs';
+import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
     name: 'New',

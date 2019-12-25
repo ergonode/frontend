@@ -2,7 +2,7 @@
 
 exports[`Errors/500 Component is named well 1`] = `
 <div class="placeholder">
-  <div class="horizontal-wrapper"><img src="~/assets/images/placeholders/error-pages/socket.svg" class="image">
+  <div class="horizontal-wrapper"><img src="@Core/assets/images/placeholders/error-pages/socket.svg" class="image">
     <div class="navigation-section">
       <h1 class="navigation-section__header">
         Error
@@ -12,7 +12,7 @@ exports[`Errors/500 Component is named well 1`] = `
       </p>
     </div>
   </div>
-  <div class="plug-wrapper"><img src="~assets/images/placeholders/error-pages/plug.svg" class="plug">
+  <div class="plug-wrapper"><img src="@Core/assets/images/placeholders/error-pages/plug.svg" class="plug">
     <div class="cable"></div>
   </div>
 </div>

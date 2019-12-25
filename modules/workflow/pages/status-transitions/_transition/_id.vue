@@ -14,7 +14,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getMappedConditionSetData } from '~/model/mappers/conditionSetMapper';
-import { getParentRoutePath } from '~/model/navigation/tabs';
+import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
     name: 'TransitionEdit',

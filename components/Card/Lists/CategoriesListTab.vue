@@ -34,7 +34,7 @@ export default {
         VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         CategoriesList: () => import('~/components/List/Categories/CategoriesList'),
-        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
+        IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
         FabButton: () => import('@Core/components/Buttons/FabButton'),
     },
     props: {

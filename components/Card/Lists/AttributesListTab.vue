@@ -44,7 +44,7 @@ export default {
         ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         FabButton: () => import('@Core/components/Buttons/FabButton'),
-        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
+        IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
     },
     props: {
         isSelectLanguage: {

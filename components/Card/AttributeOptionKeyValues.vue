@@ -35,8 +35,8 @@ export default {
     name: 'AttributeOptionKeyValues',
     components: {
         TextField: () => import('@Core/components/Inputs/TextField'),
-        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
-        IconAdd: () => import('~/components/Icon/Actions/IconAdd'),
+        IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
+        IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
     },
     props: {
         disabled: {

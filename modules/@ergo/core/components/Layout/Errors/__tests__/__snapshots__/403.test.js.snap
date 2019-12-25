@@ -2,7 +2,7 @@
 
 exports[`Errors/403 Component is named well 1`] = `
 <div class="placeholder">
-  <div class="horizontal-wrapper"><img src="~/assets/images/placeholders/error-pages/404.svg" class="image">
+  <div class="horizontal-wrapper"><img src="@Core/assets/images/placeholders/error-pages/404.svg" class="image">
     <div class="navigation-section">
       <h1 class="navigation-section__header">
         Access denied

@@ -23,7 +23,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
+import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 
 export default {
     name: 'LanguageSettingsForm',

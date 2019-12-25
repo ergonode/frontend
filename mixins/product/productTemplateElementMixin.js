@@ -4,7 +4,7 @@
  */
 import { mapActions } from 'vuex';
 import { debounce } from 'debounce';
-import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
+import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 import ProductTemplateDetailsContent from '~/components/Template/Product/ProductTemplateDetailsContent';
 
 export default {

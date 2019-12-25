@@ -12,7 +12,7 @@
 export default {
     name: 'GridPresentationEditHeaderCell',
     components: {
-        IconEdit: () => import('~/components/Icon/Actions/IconEdit'),
+        IconEdit: () => import('@Core/components/Icons/Actions/IconEdit'),
     },
 };
 </script>

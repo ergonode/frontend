@@ -26,7 +26,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
-import navigationBarUserMenu from '~/model/navigation/navigationBarUserMenu';
+import navigationBarUserMenu from '@Core/models/navigation/navigationBarUserMenu';
 
 export default {
     name: 'NavigationBarUserSelectContent',

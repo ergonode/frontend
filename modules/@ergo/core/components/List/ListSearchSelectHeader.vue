@@ -50,7 +50,7 @@ import ListHeader from '@Core/components/List/ListHeader';
 import FabButton from '@Core/components/Buttons/FabButton';
 import Select from '@Core/components/Inputs/Select/Select';
 import TextField from '@Core/components/Inputs/TextField';
-import IconSearch from '~/components/Icon/Actions/IconSearch';
+import IconSearch from '@Core/components/Icons/Actions/IconSearch';
 
 export default {
     name: 'ListSearchSelectHeader',

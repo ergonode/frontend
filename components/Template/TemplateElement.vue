@@ -29,7 +29,7 @@
 export default {
     name: 'TemplateElement',
     components: {
-        IconEdit: () => import('~/components/Icon/Actions/IconEdit'),
+        IconEdit: () => import('@Core/components/Icons/Actions/IconEdit'),
         Picture: () => import('@Core/components/Multimedia/Picture'),
     },
     props: {

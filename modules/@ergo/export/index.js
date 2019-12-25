@@ -30,7 +30,10 @@ export default {
                     icon: Icons.Channels,
                 },
                 isMenu: true,
-                // privileges: Privileges.EXPORT,
+                // privileges: {
+                //     namespace: Privileges.EXPORT.namespace,
+                //     read: Privileges.EXPORT.read,
+                // },
             },
         },
     ],

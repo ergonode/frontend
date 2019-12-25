@@ -27,7 +27,7 @@
 import gridModule from '@Core/reusableStore/grid/state';
 import { THEMES, SIZES } from '@Core/defaults/buttons';
 import Button from '@Core/components/Buttons/Button';
-import IconAdd from '~/components/Icon/Actions/IconAdd';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import AttributeGroupGridTab from '~/components/Card/Grid/AttributeGroupGridTab';
 
 export default {

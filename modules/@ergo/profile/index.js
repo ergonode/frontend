@@ -10,8 +10,7 @@ export default {
     type: 'page',
     moduleRelations: [
         '@ergo/core',
-        // '@ergo/users',
-        // '@ergo/roles',
+        '@ergo/users',
     ],
     privileges: Privileges,
     nuxt: {

@@ -25,7 +25,7 @@ import {
 } from '@Core/models/objectWrapper';
 import { hasOptions } from '~/model/conditions/ConditionTypes';
 import { TYPES } from '~/defaults/conditions';
-import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
+import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 import TextField from '@Core/components/Inputs/TextField';
 import Select from '@Core/components/Inputs/Select/Select';
 

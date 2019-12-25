@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import inputMixin from '~/mixins/inputs/inputMixin';
+import inputMixin from '@Core/mixins/inputs/inputMixin';
 
 export default {
     name: 'TextArea',

@@ -59,8 +59,8 @@ import {
 } from '~/assets/scss/_variables/_colors.scss';
 import CommentWrapper from '~/components/Comments/CommentWrapper';
 import FabButton from '@Core/components/Buttons/FabButton';
-import IconEdit from '~/components/Icon/Actions/IconEdit';
-import IconDelete from '~/components/Icon/Actions/IconDelete';
+import IconEdit from '@Core/components/Icons/Actions/IconEdit';
+import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 
 export default {
     name: 'Comment',

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
+import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 import translationCardMixin from '~/mixins/card/translationCardMixin';
 import TextField from '@Core/components/Inputs/TextField';
 import Card from '@Core/components/Card/Card';

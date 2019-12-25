@@ -36,8 +36,8 @@
 
 <script>
 import { SIZES, THEMES } from '@Core/defaults/buttons';
-import { getNestedTabRoutes } from '~/model/navigation/tabs';
-import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
+import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import categoryManagementPageBaseMixin from '@Core/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'AttributeGroupPage',

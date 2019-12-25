@@ -37,7 +37,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { THEMES, SIZES } from '@Core/defaults/buttons';
-import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
+import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 import CommentWrapper from '~/components/Comments/CommentWrapper';
 import Button from '@Core/components/Buttons/Button';
 import TextArea from '@Core/components/Inputs/TextArea';

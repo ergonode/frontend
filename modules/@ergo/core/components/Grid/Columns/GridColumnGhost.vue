@@ -25,7 +25,7 @@ export default {
         },
     },
     components: {
-        IconAddColumn: () => import('~/components/Icon/Actions/IconAddColumn'),
+        IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
     },
     computed: {
         addIconFillColor() {
