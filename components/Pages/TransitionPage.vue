@@ -12,7 +12,7 @@
             <template
                 v-if="isEdit"
                 #mainAction>
-                <PrependIconButton
+                <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE TRANSITION"
@@ -21,7 +21,7 @@
                     <template #prepend="{ color }">
                         <IconDelete :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />

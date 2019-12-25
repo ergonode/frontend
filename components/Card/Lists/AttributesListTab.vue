@@ -20,14 +20,15 @@
             @searchResult="onSearch"
             @expand="onExpand" />
         <AttributesList :language-code="attributesLanguageCode" />
-        <FabButton
-            class="list-wrapper__btn"
-            :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
-            @click.native="addAttribute">
-            <template #icon="{ color }">
-                <IconAdd :fill-color="color" />
-            </template>
-        </FabButton>
+        <div class="add-fab-btn">
+            <FabButton
+                :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
+                @click.native="addAttribute">
+                <template #icon="{ fillColor }">
+                    <IconAdd :fill-color="fillColor" />
+                </template>
+            </FabButton>
+        </div>
     </VerticalTabBarListWrapper>
 </template>
 
@@ -116,17 +117,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .tab-wrapper {
-        position: relative;
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        width: 275px;
-
-        .add-btn-wrapper {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-        }
+    .add-fab-btn {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
     }
 </style>

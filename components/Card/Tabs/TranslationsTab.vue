@@ -18,9 +18,11 @@
         </template>
         <template #content>
             <VerticalFixedScroll>
-                <VerticalCenteredView>
-                    <slot />
-                </VerticalCenteredView>
+                <div class="container">
+                    <VerticalCenteredView>
+                        <slot />
+                    </VerticalCenteredView>
+                </div>
             </VerticalFixedScroll>
         </template>
     </ResponsiveCenteredViewTemplate>
@@ -83,5 +85,9 @@ export default {
         flex: 0 0 196px;
         align-items: center;
         min-height: 55px;
+    }
+
+    .container {
+        display: grid;
     }
 </style>

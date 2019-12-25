@@ -8,7 +8,7 @@
             title="Category trees"
             :is-read-only="$isReadOnly('CATEGORY_TREE')">
             <template #mainAction>
-                <PrependIconButton
+                <Button
                     title="NEW TREE"
                     :size="smallSize"
                     :disabled="!$hasAccess(['CATEGORY_TREE_CREATE'])"
@@ -16,7 +16,7 @@
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
         </TitleBar>
         <CategoryTreesGridTab />
@@ -26,7 +26,7 @@
 <script>
 import { SIZES } from '@Core/defaults/buttons';
 import gridModule from '~/reusableStore/grid/state';
-import PrependIconButton from '@Core/components/Buttons/PrependIconButton';
+import Button from '@Core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import CategoryTreesGridTab from '~/components/Card/Grid/CategoryTreesGridTab';
 
@@ -36,7 +36,7 @@ export default {
         CategoryTreesGridTab,
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
-        PrependIconButton,
+        Button,
         IconAdd,
     },
     beforeCreate() {

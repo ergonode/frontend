@@ -8,10 +8,9 @@
             <template #prepend>
                 <FabButton
                     v-if="isNavigationBack"
-                    title="Back"
                     @click.native="onClick">
-                    <template #icon="{ color }">
-                        <IconArrowPointer :fill-color="color" />
+                    <template #icon="{ fillColor }">
+                        <IconArrowPointer :fill-color="fillColor" />
                     </template>
                 </FabButton>
             </template>

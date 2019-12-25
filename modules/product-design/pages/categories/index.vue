@@ -8,7 +8,7 @@
             title="Categories"
             :is-read-only="$isReadOnly('CATEGORY')">
             <template #mainAction>
-                <PrependIconButton
+                <Button
                     title="NEW CATEGORY"
                     :size="smallSize"
                     :disabled="!$hasAccess(['CATEGORY_CREATE'])"
@@ -16,7 +16,7 @@
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
         </TitleBar>
         <CategoryGridTab />
@@ -25,7 +25,7 @@
 <script>
 import { SIZES } from '@Core/defaults/buttons';
 import gridModule from '~/reusableStore/grid/state';
-import PrependIconButton from '@Core/components/Buttons/PrependIconButton';
+import Button from '@Core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import CategoryGridTab from '~/components/Card/Grid/CategoryGridTab';
 
@@ -34,7 +34,7 @@ export default {
     components: {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
-        PrependIconButton,
+        Button,
         IconAdd,
         CategoryGridTab,
     },

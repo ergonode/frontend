@@ -18,7 +18,11 @@ export default {
         },
         title: {
             type: String,
-            default: null,
+            default: '',
+        },
+        fab: {
+            type: Boolean,
+            default: false,
         },
         disabled: {
             type: Boolean,

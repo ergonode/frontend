@@ -9,7 +9,6 @@
         }]">
         <TextField
             :value="searchResult"
-            class="search-element__text-field"
             :small="small"
             solid
             placeholder="Search..."
@@ -28,11 +27,12 @@ import {
     GREEN, GRAPHITE,
 } from '~/assets/scss/_variables/_colors.scss';
 import IconSearch from '~/components/Icon/Actions/IconSearch';
+import TextField from '@Core/components/Inputs/TextField';
 
 export default {
     name: 'DropDownListSearch',
     components: {
-        TextField: () => import('@Core/components/Inputs/TextField'),
+        TextField,
         IconSearch,
     },
     props: {
@@ -85,12 +85,6 @@ export default {
 
         &--small {
             height: 32px;
-        }
-
-        &__text-field {
-            .input__activator {
-                border: none !important;
-            }
         }
     }
 </style>

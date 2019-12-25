@@ -22,17 +22,17 @@
             theme="transparent" />
         <div
             :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
-            <MultiButton
+            <MenuButton
                 :theme="secondaryTheme"
                 :size="smallSize"
                 :plain="true"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
                 @focus="onSelectFocus">
-                <template #icon="{ color }">
-                    <IconDots :fill-color="color" />
+                <template #icon="{ fillColor }">
+                    <IconDots :fill-color="fillColor" />
                 </template>
-            </MultiButton>
+            </MenuButton>
         </div>
     </div>
 </template>
@@ -41,7 +41,7 @@ import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { ACTION } from '~/defaults/icons';
 import IconDots from '~/components/Icon/Others/IconDots';
 import IconPlusMinus from '~/components/Icon/Actions/IconPlusMinus';
-import MultiButton from '@Core/components/Buttons/MultiButton';
+import MenuButton from '@Core/components/Buttons/MenuButton';
 import NumericBadge from '@Core/components/Badges/NumericBadge';
 
 export default {
@@ -49,7 +49,7 @@ export default {
     components: {
         IconDots,
         IconPlusMinus,
-        MultiButton,
+        MenuButton,
         NumericBadge,
     },
     data() {

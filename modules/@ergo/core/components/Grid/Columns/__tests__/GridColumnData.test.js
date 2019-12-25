@@ -44,7 +44,6 @@ describe('Grid/GridColumnData', () => {
                 index: 1,
                 column: { width: 100 },
                 columnOffset: 0,
-                draggable: true,
             },
         });
     });

@@ -35,11 +35,10 @@
             </div>
             <FabButton
                 :theme="secondaryTheme"
-                :is-selected="isExpanded"
-                @select="onExpandFilters">
-                <template #icon="{ color }">
+                @click.native="onExpandFilters">
+                <template #icon="{ fillColor }">
                     <IconArrowDouble
-                        :fill-color="color"
+                        :fill-color="fillColor"
                         :state="iconExpanderState" />
                 </template>
             </FabButton>
@@ -155,8 +154,8 @@ export default {
         onFilterFocus(isFocused) {
             this.$emit('focus', isFocused);
         },
-        onExpandFilters(isExpanded) {
-            this.isExpanded = isExpanded;
+        onExpandFilters() {
+            this.isExpanded = !this.isExpanded;
 
             if (this.isExpanded) {
                 this.iconExpanderState = ARROW.UP;

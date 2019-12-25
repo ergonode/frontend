@@ -10,7 +10,7 @@
             :selected="isSelectedYear(year)"
             :current="isCurrentYear(year)"
             :title="year"
-            @click.native="() => onClick(year)" />
+            @click.native="onClick(year)" />
     </div>
 </template>
 

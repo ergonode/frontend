@@ -32,7 +32,7 @@ export default {
 
             return this.app.$axios.$get(`${languageCode}/attributes`, { params }).then(({ collection }) => {
                 const elementsDescription = collection.map(
-                    ({ id, code }) => ({ id, code }),
+                    ({ id, code, label }) => ({ id, code, label }),
                 );
                 const { elementDataByType } = getters;
                 const layoutElements = getMappedLayoutElements(
@@ -101,7 +101,7 @@ export default {
         const layoutElement = getMappedLayoutElement(
             element.id,
             elementDataByType(element.type),
-            element.code,
+            element.label || element.code,
             position,
         );
 

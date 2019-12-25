@@ -8,7 +8,7 @@
             title="Status transition"
             :is-read-only="$isReadOnly('WORKFLOW')">
             <template #mainAction>
-                <PrependIconButton
+                <Button
                     title="NEW TRANSITION"
                     :size="smallSize"
                     :disabled="!$hasAccess(['WORKFLOW_CREATE'])"
@@ -16,7 +16,7 @@
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
         </TitleBar>
         <TransitionsGridTab />
@@ -26,7 +26,7 @@
 <script>
 import { SIZES } from '@Core/defaults/buttons';
 import gridModule from '~/reusableStore/grid/state';
-import PrependIconButton from '@Core/components/Buttons/PrependIconButton';
+import Button from '@Core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import TransitionsGridTab from '~/components/Card/Grid/TransitionsGridTab';
 
@@ -36,7 +36,7 @@ export default {
         TransitionsGridTab,
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
-        PrependIconButton,
+        Button,
         IconAdd,
     },
     beforeCreate() {

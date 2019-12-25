@@ -12,7 +12,7 @@
             :disabled="date.disabled"
             :current="isToday(date)"
             :title="date.day"
-            @click.native="() => onSelectDate(date)" />
+            @click.native="onSelectDate(date)" />
     </div>
 </template>
 

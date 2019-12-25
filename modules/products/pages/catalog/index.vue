@@ -8,7 +8,7 @@
             title="Catalog"
             :is-read-only="$isReadOnly('PRODUCT')">
             <template #mainAction>
-                <PrependIconButton
+                <Button
                     title="NEW PRODUCT"
                     :size="smallSize"
                     :disabled="!$hasAccess(['PRODUCT_CREATE'])"
@@ -16,7 +16,7 @@
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
         </TitleBar>
         <ProductGridTab />
@@ -28,7 +28,7 @@
 import { mapState } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
 import { SIZES } from '@Core/defaults/buttons';
-import PrependIconButton from '@Core/components/Buttons/PrependIconButton';
+import Button from '@Core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import ProductGridTab from '~/components/Card/Grid/ProductGridTab';
 
@@ -39,7 +39,7 @@ export default {
         Page: () => import('@Core/components/Layout/Page'),
         TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
         ProductGridTab,
-        PrependIconButton,
+        Button,
         IconAdd,
     },
     beforeCreate() {
@@ -76,7 +76,6 @@ export default {
         } = store.state.authentication;
         const gridPath = `${userLanguageCode}/products`;
 
-        await store.dispatch('list/clearStorage');
         await Promise.all([
             store.dispatch('list/getGroups', userLanguageCode),
             store.dispatch('list/getElementsForGroup', {
@@ -93,7 +92,7 @@ export default {
             const disabledElements = {};
             const getAttributeElements = (array) => {
                 const { length } = array;
-                const elements = [];
+                const elements = {};
 
                 for (let i = 0; i < length; i += 1) {
                     const { language, element_id: elementId } = array[i];
@@ -108,18 +107,19 @@ export default {
             };
             const columnElements = getAttributeElements(columns);
             const filterElements = getAttributeElements(advancedFiltersData);
-            const languages = [...columnElements, ...filterElements];
-            const languagesSet = new Set(languages);
+            const languagesSet = new Set(Object.keys(columnElements), Object.keys(filterElements));
 
             languagesSet.forEach((language) => {
-                const ids = [...columnElements[language], ...filterElements[language]];
-                const idsSet = new Set(ids);
+                if (columnElements[language] && filterElements[language]) {
+                    const ids = [...columnElements[language], ...filterElements[language]];
+                    const idsSet = new Set(ids);
 
-                idsSet.forEach((id) => {
-                    disabledElements[language] = {
-                        ...disabledElements[language], [id]: true,
-                    };
-                });
+                    idsSet.forEach((id) => {
+                        disabledElements[language] = {
+                            ...disabledElements[language], [id]: true,
+                        };
+                    });
+                }
             });
 
             store.dispatch('list/setDisabledElements', disabledElements);

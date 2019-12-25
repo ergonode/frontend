@@ -17,7 +17,7 @@
                 @select="onSelectTabBarItem" />
         </div>
         <VerticalTabContent
-            v-if="isExpanded"
+            v-show="isExpanded"
             :tab-item="items[selectedTabIndex]"
             :is-expanded="isExpanded"
             @expand="onExpandTab" />

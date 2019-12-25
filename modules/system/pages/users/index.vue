@@ -8,7 +8,7 @@
             title="Users"
             :is-read-only="$isReadOnly('USER')">
             <template #mainAction>
-                <PrependIconButton
+                <Button
                     title="NEW USER"
                     :size="smallSize"
                     :disabled="!$hasAccess(['USER_CREATE'])"
@@ -16,7 +16,7 @@
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
         </TitleBar>
         <UsersGridTab />
@@ -26,7 +26,7 @@
 <script>
 import { THEMES, SIZES } from '@Core/defaults/buttons';
 import gridModule from '~/reusableStore/grid/state';
-import PrependIconButton from '@Core/components/Buttons/PrependIconButton';
+import Button from '@Core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import UsersGridTab from '~/components/Card/Grid/UsersGridTab';
 
@@ -36,7 +36,7 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         UsersGridTab,
-        PrependIconButton,
+        Button,
         IconAdd,
     },
     beforeCreate() {

@@ -8,7 +8,7 @@
             title="Attributes"
             :is-read-only="$isReadOnly('ATTRIBUTE')">
             <template #mainAction>
-                <PrependIconButton
+                <Button
                     title="NEW ATTRIBUTE"
                     :size="smallSize"
                     :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
@@ -17,7 +17,7 @@
                         <IconAdd
                             :fill-color="color" />
                     </template>
-                </PrependIconButton>
+                </Button>
             </template>
         </TitleBar>
         <AttributeGridTab />
@@ -27,7 +27,7 @@
 <script>
 import gridModule from '~/reusableStore/grid/state';
 import { THEMES, SIZES } from '@Core/defaults/buttons';
-import PrependIconButton from '@Core/components/Buttons/PrependIconButton';
+import Button from '@Core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import AttributeGridTab from '~/components/Card/Grid/AttributeGridTab';
 
@@ -37,7 +37,7 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         AttributeGridTab,
-        PrependIconButton,
+        Button,
         IconAdd,
     },
     beforeCreate() {

@@ -4,6 +4,7 @@
  */
 export default () => ({
     isListElementDragging: false,
+    resizingElement: null,
     draggedElementOnGrid: null,
     draggedElement: null,
     ghostIndex: -1,

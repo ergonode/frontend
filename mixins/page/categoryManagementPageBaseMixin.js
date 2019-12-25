@@ -2,14 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import PrependIconButton from '@Core/components/Buttons/PrependIconButton';
-import TitleBar from '@Core/components/TitleBar/TitleBar';
-
 export default {
     components: {
-        PrependIconButton,
-        TitleBar,
         Page: () => import('@Core/components/Layout/Page'),
+        TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
         Footer: () => import('~/components/ReusableFooter/Footer'),
         Button: () => import('@Core/components/Buttons/Button'),

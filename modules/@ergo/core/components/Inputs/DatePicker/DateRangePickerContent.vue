@@ -21,9 +21,9 @@
                     <FabButton
                         :theme="secondaryTheme"
                         @click.native="previousMonth">
-                        <template #icon="{ color }">
+                        <template #icon="{ fillColor }">
                             <IconArrowSingle
-                                :fill-color="color"
+                                :fill-color="fillColor"
                                 :state="leftArrow" />
                         </template>
                     </FabButton>
@@ -59,9 +59,9 @@
                     <FabButton
                         :theme="secondaryTheme"
                         @click.native="nextMonth">
-                        <template #icon="{ color }">
+                        <template #icon="{ fillColor }">
                             <IconArrowSingle
-                                :fill-color="color"
+                                :fill-color="fillColor"
                                 :state="rightArrow" />
                         </template>
                     </FabButton>

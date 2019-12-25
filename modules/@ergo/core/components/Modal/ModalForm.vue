@@ -13,8 +13,8 @@
                 <FabButton
                     :theme="secondaryTheme"
                     @click.native="onClose">
-                    <template #icon="{ color }">
-                        <IconClose :fill-color="color" />
+                    <template #icon="{ fillColor }">
+                        <IconClose :fill-color="fillColor" />
                     </template>
                 </FabButton>
             </div>
