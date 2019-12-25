@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 
-import { toCapitalize } from '~/model/stringWrapper';
-import { COLUMN_TYPE } from '~/defaults/grid';
+import { toCapitalize } from '@Core/models/stringWrapper';
+import { COLUMN_TYPE } from '@Core/defaults/grid';
 
 const getCheckColumn = (privilegeType) => ({
     id: privilegeType,

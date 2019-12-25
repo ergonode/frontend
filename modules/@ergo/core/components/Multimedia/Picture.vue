@@ -53,7 +53,7 @@ export default {
         },
         imageLoadOnError() {
             this.brokenImage = true;
-            this.image = require('~/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
+            this.image = require('@Core/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
     },
 };

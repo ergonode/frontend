@@ -4,7 +4,7 @@
  */
 import { types } from './mutations';
 import { JWT_KEY } from '~/defaults/authenticate/cookies';
-import { COLUMNS_IDS, ADV_FILTERS_IDS } from '~/defaults/grid/cookies';
+import { COLUMNS_IDS, ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 
 const onError = () => {};
 

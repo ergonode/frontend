@@ -36,7 +36,7 @@ import {
     addLayoutElementCopyToDocumentBody,
     removeLayoutElementCopyFromDocumentBody,
 } from '~/model/template_designer/layout/LayoutElementCopy';
-import { DRAGGED_ELEMENT } from '~/defaults/grid';
+import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
 
 export default {
     name: 'LayoutElement',

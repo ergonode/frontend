@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { mapState, mapActions } from 'vuex';
-import { isEmpty } from '~/model/objectWrapper';
+import { isEmpty } from '@Core/models/objectWrapper';
 
 export default {
     destroyed() {

@@ -13,7 +13,7 @@
             class="grid-item">
             <div class="item-wrapper">
                 <img
-                    :src="require(`~/assets/images/dashboard/${item.icon}`)"
+                    :src="require(`@Dashboard/assets/images/${item.icon}`)"
                     :alt="`${item.title} icon`">
                 <span
                     class="item-title font--medium-24-32"

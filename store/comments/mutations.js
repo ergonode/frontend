@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import defaultState from './state';
-import { removeValueAtIndex } from '~/model/arrayWrapper';
+import { removeValueAtIndex } from '@Core/models/arrayWrapper';
 
 export const types = {
     SET_OBJECT_ID: 'SET_OBJECT_ID',

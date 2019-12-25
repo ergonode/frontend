@@ -76,10 +76,10 @@
 import { mapState, mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
-import { GHOST_ID } from '~/defaults/grid';
+import { GHOST_ID } from '@Core/defaults/grid';
 import GridAdvancedFilterPlaceholder from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder';
 import GridAdvancedFilterGhost from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilterGhost';
-import { ADV_FILTERS_IDS } from '~/defaults/grid/cookies';
+import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 
 export default {
     name: 'GridAdvancedFilters',

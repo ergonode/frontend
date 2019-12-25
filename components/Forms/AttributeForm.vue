@@ -77,7 +77,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { toCapitalize } from '~/model/stringWrapper';
+import { toCapitalize } from '@Core/models/stringWrapper';
 import {
     hasParams, hasOptions, isMultilingual, getParamsKeyForType, getParamsOptionsForType,
 } from '~/model/attributes/AttributeTypes';

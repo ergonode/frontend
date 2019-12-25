@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import defaultState from './state';
-import { removeFromObjectByKey } from '~/model/objectWrapper';
+import { removeFromObjectByKey } from '@Core/models/objectWrapper';
 
 export const types = {
     ADD_GRID_ITEM: 'ADD_GRID_ITEM',

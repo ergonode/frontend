@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { insertValueAtIndex } from '~/model/arrayWrapper';
+import { insertValueAtIndex } from '@Core/models/arrayWrapper';
 
 export const types = {
     SET_EDITING_CELL_COORDINATES: 'SET_EDITING_CELL_COORDINATES',

@@ -58,7 +58,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
+import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
 import {
     getHighlightingLayoutDropPositions,
 } from '~/model/template_designer/layout/LayoutCalculations';

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { LayoutOrientation } from '~/defaults/layout';
+import { LayoutOrientation } from '@Core/defaults/layout';
 
 export default {
     name: 'ListPlaceholder',
@@ -46,7 +46,7 @@ export default {
             if (!this.bgUrl) return null;
 
             return {
-                background: `url(${require(`~/assets/images/${this.bgUrl}`)}) no-repeat right bottom`,
+                background: `url(${this.bgUrl}) no-repeat right bottom`,
             };
         },
     },

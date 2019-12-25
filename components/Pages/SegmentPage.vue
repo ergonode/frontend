@@ -51,7 +51,7 @@ export default {
     mixins: [categoryManagementPageBaseMixin],
     components: {
         TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
-        Blur: () => import('~/components/Blur/Blur'),
+        Blur: () => import('@Core/components/Blur/Blur'),
     },
     computed: {
         ...mapState('draggable', {

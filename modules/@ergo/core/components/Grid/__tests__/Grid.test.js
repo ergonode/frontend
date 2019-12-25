@@ -5,7 +5,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
 import Grid from '@Core/components/Grid/Grid';
-import gridMutations from '~/reusableStore/grid/mutations';
+import gridMutations from '@Core/reusableStore/grid/mutations';
 
 const localVue = createLocalVue();
 const store = new Store({

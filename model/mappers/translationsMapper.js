@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { isObject } from '~/model/objectWrapper';
+import { isObject } from '@Core/models/objectWrapper';
 
 export function isThereAnyTranslation(translation) {
     if (!isObject(translation) && typeof translation !== 'string') return false;

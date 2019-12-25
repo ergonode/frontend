@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import defaultState from './state';
-import { removeFromObjectByKey } from '~/model/objectWrapper';
+import { removeFromObjectByKey } from '@Core/models/objectWrapper';
 
 export const types = {
     SET_LOADER: 'SET_LOADER',

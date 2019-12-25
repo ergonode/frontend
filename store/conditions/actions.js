@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { objectToArrayWithPropsName } from '~/model/objectWrapper';
+import { objectToArrayWithPropsName } from '@Core/models/objectWrapper';
 import { getParsedConditionSetData } from '~/model/mappers/conditionSetMapper';
 
 const onDefaultError = () => {};

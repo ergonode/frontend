@@ -26,7 +26,7 @@
                             title="Nothing to see here"
                             subtitle="This is where you will see
                         important notifications for product updates"
-                            bg-url="placeholders/notify.svg" />
+                            :bg-url="require('@Core/assets/images/placeholders/notify.svg')" />
                     </div>
                 </VerticalCenteredView>
             </VerticalFixedScroll>
@@ -36,8 +36,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { LayoutOrientation } from '~/defaults/layout';
-import { DATA_LIMIT } from '~/defaults/grid';
+import { LayoutOrientation } from '@Core/defaults/layout';
+import { DATA_LIMIT } from '@Core/defaults/grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';

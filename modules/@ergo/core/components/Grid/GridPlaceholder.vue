@@ -27,7 +27,7 @@ export default {
         flex: 1 1 auto;
         flex-direction: column;
         align-items: center;
-        background: $WHITESMOKE url("~assets/images/placeholders/noresults.svg") no-repeat;
+        background: $WHITESMOKE url("~@Core/assets/images/placeholders/noresults.svg") no-repeat;
         padding-top: 80px;
         border-left: 1px solid $GREY;
         border-right: 1px solid $GREY;

@@ -33,7 +33,7 @@
                 :layout-orientation="horizontalOrientation"
                 title="Nothing to see here"
                 subtitle="Here you can share information about the product with other people"
-                bg-url="placeholders/comments.svg" />
+                :bg-url="require('~/assets/images/placeholders/comments.svg')" />
         </template>
         <template
             v-if="isMoreButtonVisible"
@@ -48,8 +48,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { DATA_LIMIT } from '~/defaults/grid';
-import { LayoutOrientation } from '~/defaults/layout';
+import { DATA_LIMIT } from '@Core/defaults/grid';
+import { LayoutOrientation } from '@Core/defaults/layout';
 import Button from '@Core/components/Buttons/Button';
 import Loader from '@Core/components/Loader/Loader';
 import IconAdd from '~/components/Icon/Actions/IconAdd';

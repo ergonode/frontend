@@ -56,7 +56,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { SIZES, THEMES } from '@Core/defaults/buttons';
-import { capitalizeAndConcatenationArray } from '~/model/stringWrapper';
+import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
 import MenuButton from '@Core/components/Buttons/MenuButton';
 import IconDots from '~/components/Icon/Others/IconDots';
 import CheckBox from '@Core/components/Inputs/CheckBox';

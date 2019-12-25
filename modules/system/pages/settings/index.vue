@@ -19,7 +19,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import languageSettingsModule from '~/reusableStore/languageSettings/state';
+import languageSettingsModule from '@Core/reusableStore/languageSettings/state';
 
 export default {
     name: 'Settings',

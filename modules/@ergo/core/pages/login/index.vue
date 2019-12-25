@@ -7,7 +7,7 @@
         <section class="login__form">
             <img
                 class="login-form__logo"
-                src="~/assets/images/login/logo_black.svg"
+                src="@Core/assets/images/login/logo_black.svg"
                 alt="ergonode">
             <form class="login-form__content">
                 <TextField
@@ -81,5 +81,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~assets/scss/login.scss";
+    @import "@Core/assets/scss/login.scss";
 </style>

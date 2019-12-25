@@ -11,10 +11,10 @@ import {
     getSortedColumnsByIDs,
     getParsedRequestDataParams,
 } from '~/model/mappers/gridDataMapper';
-import { swapItemPosition, insertValueAtIndex } from '~/model/arrayWrapper';
-import { COLUMNS_IDS, ADV_FILTERS_IDS } from '~/defaults/grid/cookies';
+import { swapItemPosition, insertValueAtIndex } from '@Core/models/arrayWrapper';
+import { COLUMNS_IDS, ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 import { types } from './mutations';
-import { GHOST_ID } from '~/defaults/grid';
+import { GHOST_ID } from '@Core/defaults/grid';
 
 export default {
     getData({ commit, state }, path) {

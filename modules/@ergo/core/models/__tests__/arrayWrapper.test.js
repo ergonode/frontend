@@ -12,7 +12,7 @@ import {
     insertValueAtIndex,
     lastElementInList,
     firstElementInList,
-} from '~/model/arrayWrapper';
+} from '@Core/models/arrayWrapper';
 
 describe('arrayWrapper/swapItemPosition', () => {
     it('Change array items position. Pos1 bigger then pos2', () => {

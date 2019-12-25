@@ -5,8 +5,8 @@
 import { types } from './mutations';
 import { getParsedFilters } from '~/model/mappers/gridDataMapper';
 import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
-import { FILTER_OPERATOR } from '~/defaults/operators';
-import { getUUID } from '~/model/stringWrapper';
+import { FILTER_OPERATOR } from '@Core/defaults/operators';
+import { getUUID } from '@Core/models/stringWrapper';
 import { getMappedGroupsElementsCount } from '~/model/mappers/attributeMapper';
 
 export default {

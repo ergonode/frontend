@@ -6,7 +6,7 @@ import {
     toCapitalize,
     capitalizeAndConcatenationArray,
     getUUID,
-} from '~/model/stringWrapper';
+} from '@Core/models/stringWrapper';
 
 describe('String operations', () => {
     it('Capitalize first letter', () => {

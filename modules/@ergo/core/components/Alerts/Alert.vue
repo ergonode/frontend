@@ -22,7 +22,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
-import { toCapitalize } from '~/model/stringWrapper';
+import { toCapitalize } from '@Core/models/stringWrapper';
 import FabButton from '@Core/components/Buttons/FabButton';
 import IconClose from '~/components/Icon/Window/IconClose';
 

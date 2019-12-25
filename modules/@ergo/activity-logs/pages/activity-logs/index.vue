@@ -13,7 +13,7 @@
 
 <script>
 import { THEMES, SIZES } from '@Core/defaults/buttons';
-import gridModule from '~/reusableStore/grid/state';
+import gridModule from '@Core/reusableStore/grid/state';
 
 export default {
     name: 'UsersTabs',

@@ -39,7 +39,7 @@
         align-items: flex-end;
         align-content: flex-end;
         padding: 0 2% 10% 5%;
-        background: url("~assets/images/login/login_background.jpg") top right / cover no-repeat border-box;
+        background: url("~@Core/assets/images/login/login_background.jpg") top right / cover no-repeat border-box;
 
         @media only screen and (max-width: 1024px) {
             background-position: right 30% top;

@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { FILTER_OPERATOR } from '~/defaults/operators';
+import { FILTER_OPERATOR } from '@Core/defaults/operators';
 import GridAdvancedFilterBaseContent from '@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';

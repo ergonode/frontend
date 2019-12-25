@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { isEmpty } from '~/model/objectWrapper';
+import { isEmpty } from '@Core/models/objectWrapper';
 
 export default ({
     route, redirect,

@@ -28,7 +28,7 @@
                     title="Nothing to see here"
                     subtitle="This is where you will see
                     important notifications for product updates"
-                    bg-url="placeholders/notify.svg" />
+                    :bg-url="require('@Core/assets/images/placeholders/notify.svg')" />
             </div>
         </template>
     </NavigationBarSelectButton>

@@ -8,15 +8,15 @@
             <div class="wrapper__section">
                 <img
                     class="comet"
-                    src="~assets/images/placeholders/error-pages/comet.svg">
+                    src="@Core/assets/images/placeholders/error-pages/comet.svg">
                 <img
                     class="air"
-                    src="~assets/images/placeholders/error-pages/air.svg">
+                    src="@Core/assets/images/placeholders/error-pages/air.svg">
             </div>
             <div class="wrapper__section">
                 <img
                     class="delorean"
-                    src="~assets/images/placeholders/error-pages/delorean.svg">
+                    src="@Core/assets/images/placeholders/error-pages/delorean.svg">
                 <div class="section__info">
                     <h1 class="info__header font--medium-24-32">
                         <ClientOnly>
@@ -48,7 +48,7 @@
                 <img
                     class="preloader"
                     width="24"
-                    src="~assets/images/preloader.gif"
+                    src="@Core/assets/images/preloader.gif"
                     alt="Loading...">
             </template>
         </client-only>
@@ -66,77 +66,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .placeholder-wrapper {
-        display: flex;
-        flex: 1 1 auto;
-        flex-flow: column wrap;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-
-        .wrapper__section {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-items: center;
-            max-width: 700px;
-            min-width: 370px;
-            margin-top: 24px;
-
-            .comet {
-                margin: 24px 48px 0 0;
-            }
-
-            .air {
-                margin-top: 24px;
-            }
-
-            .delorean {
-                margin: 24px 48px 0 0;
-            }
-
-            .section__info {
-                display: flex;
-                flex-flow: column wrap;
-                justify-content: center;
-                align-items: center;
-                width: 260px;
-                margin-top: 24px;
-
-                .info__header {
-                    height: 56px;
-                    min-width: 1px;
-                    color: $GREEN;
-                }
-
-                .info__text {
-                    margin-top: 24px;
-                    color: $GRAPHITE_DARK;
-                }
-
-                .info__button {
-                    margin-top: 24px;
-                }
-            }
-
-            .section__quotation {
-                max-width: 700px;
-                min-width: 370px;
-                width: 100%;
-                color: $GRAPHITE;
-            }
-
-            .section__video-link {
-                margin: 24px 0 48px;
-            }
-        }
-
-        .item-content__preloader {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-    }
-
+    @import "@Core/assets/scss/placeholder.scss";
 </style>

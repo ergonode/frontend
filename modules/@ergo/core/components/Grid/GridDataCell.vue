@@ -40,10 +40,10 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { isArrayEqualToArray } from '~/model/arrayWrapper';
+import { isArrayEqualToArray } from '@Core/models/arrayWrapper';
 import { hasParams } from '~/model/attributes/AttributeTypes';
-import { getKeyByValue } from '~/model/objectWrapper';
-import { COLUMN_TYPE } from '~/defaults/grid';
+import { getKeyByValue } from '@Core/models/objectWrapper';
+import { COLUMN_TYPE } from '@Core/defaults/grid';
 
 export default {
     name: 'GridDataCell',

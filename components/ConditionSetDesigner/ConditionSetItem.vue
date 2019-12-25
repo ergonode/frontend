@@ -27,7 +27,7 @@ import {
     isEmpty,
     getValueByKey,
     getValuesByKeys,
-} from '~/model/objectWrapper';
+} from '@Core/models/objectWrapper';
 import { hasOptions } from '~/model/attributes/AttributeTypes';
 import ConditionSetParameters from '~/components/ConditionSetDesigner/ConditionSetParameters';
 

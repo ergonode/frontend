@@ -4,7 +4,7 @@
  */
 import {
     isObject, getKeyByValue, getValueByKey,
-} from '~/model/objectWrapper';
+} from '@Core/models/objectWrapper';
 import { getParamsKeyForType, getParamsOptionsForType } from '~/model/attributes/AttributeTypes';
 import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
 

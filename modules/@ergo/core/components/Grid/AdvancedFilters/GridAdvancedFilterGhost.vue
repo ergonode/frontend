@@ -22,7 +22,7 @@ import {
     WHITE, GRAPHITE,
 } from '~/assets/scss/_variables/_colors.scss';
 import { insertCookieAtIndex } from '~/model/cookies';
-import { ADV_FILTERS_IDS } from '~/defaults/grid/cookies';
+import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 
 export default {
     name: 'GridAdvancedFilterGhost',

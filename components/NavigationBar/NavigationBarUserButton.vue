@@ -31,7 +31,7 @@
 <script>
 import { mapState } from 'vuex';
 import { WHITE } from '~/assets/scss/_variables/_colors.scss';
-import { toCapitalize } from '~/model/stringWrapper';
+import { toCapitalize } from '@Core/models/stringWrapper';
 import { ARROW } from '~/defaults/icons';
 
 export default {

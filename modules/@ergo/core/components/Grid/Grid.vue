@@ -135,7 +135,7 @@ import {
     GHOST_ID,
     PINNED_COLUMN_STATE,
     COLUMN_WIDTH,
-} from '~/defaults/grid';
+} from '@Core/defaults/grid';
 import {
     isMouseOutOfBoundsElement,
 } from '~/model/drag_and_drop/helpers';

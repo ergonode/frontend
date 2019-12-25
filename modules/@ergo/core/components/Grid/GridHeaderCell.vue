@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { GRID_HEADER_TYPE } from '~/defaults/grid';
+import { GRID_HEADER_TYPE } from '@Core/defaults/grid';
 
 export default {
     name: 'GridHeaderCell',

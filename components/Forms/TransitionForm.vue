@@ -44,7 +44,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { isEmpty } from '~/model/objectWrapper';
+import { isEmpty } from '@Core/models/objectWrapper';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {

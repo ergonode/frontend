@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { isEmpty, removeFromObjectByKey } from '~/model/objectWrapper';
+import { isEmpty, removeFromObjectByKey } from '@Core/models/objectWrapper';
 
 export default {
     name: 'TranslationSelect',

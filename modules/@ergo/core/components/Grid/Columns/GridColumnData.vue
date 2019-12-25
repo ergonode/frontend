@@ -33,9 +33,9 @@ import {
     removeElementCopyFromDocumentBody,
 } from '~/model/layout/ElementCopy';
 import { removeCookieById } from '~/model/cookies';
-import { COLUMNS_IDS } from '~/defaults/grid/cookies';
+import { COLUMNS_IDS } from '@Core/defaults/grid/cookies';
 import { getDraggedColumnPositionState } from '~/model/drag_and_drop/helpers';
-import { DRAGGED_ELEMENT, COLUMN_TYPE } from '~/defaults/grid';
+import { DRAGGED_ELEMENT, COLUMN_TYPE } from '@Core/defaults/grid';
 
 export default {
     name: 'GridColumnData',

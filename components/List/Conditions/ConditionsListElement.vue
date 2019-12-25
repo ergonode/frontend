@@ -15,7 +15,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { getUUID } from '~/model/stringWrapper';
+import { getUUID } from '@Core/models/stringWrapper';
 
 export default {
     name: 'ConditionsListElement',

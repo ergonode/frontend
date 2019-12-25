@@ -13,7 +13,7 @@ import {
     getMaxKeyValue,
     isEmpty,
     removeFromObjectByKey,
-} from '~/model/objectWrapper';
+} from '@Core/models/objectWrapper';
 
 const obj = { test: 1, jest: 2 };
 

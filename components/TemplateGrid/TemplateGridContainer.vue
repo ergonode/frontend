@@ -26,9 +26,9 @@ import {
     getRowBounds,
     getRowBellowMouse,
 } from '~/model/tree/TreeCalculations';
-import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
+import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
 import { isMouseOutOfBoundsElement } from '~/model/drag_and_drop/helpers';
-import { DRAGGED_ELEMENT } from '~/defaults/grid';
+import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
 
 export default {
     name: 'TemplateGridContainer',

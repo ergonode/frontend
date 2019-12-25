@@ -79,7 +79,7 @@
 
 <script>
 import { THEMES } from '@Core/defaults/buttons';
-import { ROW_HEIGHT, GRID_LAYOUT } from '~/defaults/grid';
+import { ROW_HEIGHT, GRID_LAYOUT } from '@Core/defaults/grid';
 import { GREEN } from '~/assets/scss/_variables/_colors.scss';
 
 export default {

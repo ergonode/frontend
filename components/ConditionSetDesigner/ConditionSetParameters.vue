@@ -22,7 +22,7 @@ import { mapState, mapActions } from 'vuex';
 import {
     getValueByKey,
     getValuesByKeys,
-} from '~/model/objectWrapper';
+} from '@Core/models/objectWrapper';
 import { hasOptions } from '~/model/conditions/ConditionTypes';
 import { TYPES } from '~/defaults/conditions';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';

@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import { FILTER_OPERATOR } from '~/defaults/operators';
-import { COLUMN_TYPE } from '~/defaults/grid';
+import { FILTER_OPERATOR } from '@Core/defaults/operators';
+import { COLUMN_TYPE } from '@Core/defaults/grid';
 import { getMappedArrayValue } from '~/model/mappers/gridDataMapper';
 
 export default {

@@ -24,7 +24,7 @@
 </template>
 <script>
 import { SIZES } from '@Core/defaults/buttons';
-import gridModule from '~/reusableStore/grid/state';
+import gridModule from '@Core/reusableStore/grid/state';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
 import CategoryGridTab from '~/components/Card/Grid/CategoryGridTab';

@@ -24,7 +24,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { getObjectWithMaxValueInArrayByObjectKey } from '~/model/arrayWrapper';
+import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
 import TemplateGridDesigner from '~/components/Template/Base/TemplateGridDesigner';
 import ProductTemplateSection from '~/components/Template/Product/ProductTemplateSection';
 import ProductTemplateDate from '~/components/Template/Product/ProductTemplateDate';

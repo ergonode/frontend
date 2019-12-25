@@ -12,15 +12,25 @@ export default {
     nuxt: {
         aliases: {
             '@Core': '/',
-            '@CorePages': '/pages',
+            '@CoreComponents': '/components',
         },
     },
     router: [
         {
+            name: 'index',
+            path: '/',
+            component: Pages.Login,
+            meta: {
+                isMenu: false,
+            },
+        },
+        {
             name: 'placeholder',
             path: '/placeholder/:placeholder',
             component: Pages.Placeholder,
-            meta: { isMenu: false },
+            meta: {
+                isMenu: false,
+            },
         },
     ],
 };

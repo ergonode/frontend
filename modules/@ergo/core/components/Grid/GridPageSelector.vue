@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { ROW_INTERVALS } from '~/defaults/grid';
+import { ROW_INTERVALS } from '@Core/defaults/grid';
 
 export default {
     name: 'GridPageSelector',

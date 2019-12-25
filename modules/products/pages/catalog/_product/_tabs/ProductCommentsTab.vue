@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { DATA_LIMIT } from '~/defaults/grid';
+import { DATA_LIMIT } from '@Core/defaults/grid';
 import ProductCommentsForm from '~/components/Forms/ProductCommentsForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';

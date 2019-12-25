@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { insertValueAtIndex, swapItemPosition } from '~/model/arrayWrapper';
+import { insertValueAtIndex, swapItemPosition } from '@Core/models/arrayWrapper';
 
 export const removeCookieById = ({ cookies, cookieName, id }) => {
     const cookiesData = cookies.get(cookieName);

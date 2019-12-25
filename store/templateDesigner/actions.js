@@ -8,7 +8,7 @@ import {
     getMappedLayoutElement,
     getMappedLayoutSectionElement,
 } from '~/model/mappers/templateMapper';
-import { getNestedObjectByKeyWithValue } from '~/model/objectWrapper';
+import { getNestedObjectByKeyWithValue } from '@Core/models/objectWrapper';
 
 const onDefaultError = () => {};
 

@@ -4,7 +4,7 @@
  */
 /* eslint-disable camelcase */
 import { types } from './mutations';
-import { getKeyByValue } from '~/model/objectWrapper';
+import { getKeyByValue } from '@Core/models/objectWrapper';
 
 export default {
     setAction({ commit }, payload) {

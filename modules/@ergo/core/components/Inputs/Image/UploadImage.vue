@@ -19,7 +19,7 @@
             <template v-if="!image">
                 <div class="upload-image__placeholder">
                     <img
-                        :src="require('~/assets/images/placeholders/upload_file.svg')"
+                        :src="require('@Core/assets/images/placeholders/upload_file.svg')"
                         alt="Place to drag or browse file">
                     <span class="upload-image__description">
                         Drag image here or browse

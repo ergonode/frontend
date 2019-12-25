@@ -4,7 +4,7 @@
  */
 import { types } from './mutations';
 import { SUCCESS, ALERT_TIME_TO_LEAVE } from '@Core/defaults/alerts';
-import { getUUID } from '~/model/stringWrapper';
+import { getUUID } from '@Core/models/stringWrapper';
 
 export default {
     addAlert({ commit, dispatch }, alert) {
