@@ -13,7 +13,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
+import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {

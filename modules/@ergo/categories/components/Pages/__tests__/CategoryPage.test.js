@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import CategoryPage from '~/components/Pages/CategoryPage';
+import CategoryPage from '../CategoryPage';
 
 const mocks = {
     $hasAccess: jest.fn(),

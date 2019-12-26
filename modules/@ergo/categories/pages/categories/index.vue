@@ -27,7 +27,7 @@ import { SIZES } from '@Core/defaults/buttons';
 import gridModule from '@Core/reusableStore/grid/state';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import CategoryGridTab from '~/components/Card/Grid/CategoryGridTab';
+import CategoryGridTab from '@Categories/components/Tabs/CategoryGridTab';
 
 export default {
     name: 'Categories',

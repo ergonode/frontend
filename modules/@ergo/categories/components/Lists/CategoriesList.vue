@@ -22,7 +22,7 @@ export default {
     components: {
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
-        CategoriesListElement: () => import('~/components/List/Categories/CategoriesListElement'),
+        CategoriesListElement: () => import('@Categories/components/Lists/CategoriesListElement'),
     },
     props: {
         languageCode: {

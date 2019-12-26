@@ -16,6 +16,11 @@ export default [
     {
         active: true,
         source: 'local',
+        name: '@ergo/categories',
+    },
+    {
+        active: true,
+        source: 'local',
         name: '@ergo/dashboard',
     },
     {

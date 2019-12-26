@@ -17,7 +17,7 @@ import { mapState } from 'vuex';
 export default {
     name: 'SegmentTranslationsTab',
     components: {
-        TranslationsTab: () => import('~/components/Card/Tabs/TranslationsTab'),
+        TranslationsTab: () => import('@Core/components/Card/Tabs/TranslationsTab'),
         SegmentsTranslationForm: () => import('~/components/Forms/SegmentsTranslationForm'),
     },
     computed: {

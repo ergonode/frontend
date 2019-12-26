@@ -18,7 +18,6 @@ export const actions = {
     resetState({ dispatch }) {
         const { store: modulesStore } = getModulesConfig;
 
-        dispatch('categories/clearStorage');
         dispatch('attribute/clearStorage');
         dispatch('data/clearStorage');
         dispatch('draggable/clearStorage');
@@ -31,7 +30,6 @@ export const actions = {
         dispatch('templateDesigner/clearStorage');
         dispatch('templateLists/clearStorage');
         dispatch('list/clearStorage');
-        dispatch('translations/clearStorage');
         dispatch('gridDraft/clearStorage');
 
         for (let i = 0; i < modulesStore.length; i += 1) {

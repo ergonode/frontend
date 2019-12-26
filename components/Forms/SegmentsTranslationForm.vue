@@ -30,7 +30,7 @@
 
 <script>
 import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
-import translationCardMixin from '~/mixins/card/translationCardMixin';
+import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import TextField from '@Core/components/Inputs/TextField';
 import TextArea from '@Core/components/Inputs/TextArea';
 import Card from '@Core/components/Card/Card';

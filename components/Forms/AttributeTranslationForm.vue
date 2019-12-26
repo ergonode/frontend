@@ -51,7 +51,7 @@
 import { mapState } from 'vuex';
 import { hasPlaceholder, hasOptions } from '~/model/attributes/AttributeTypes';
 import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
-import translationCardMixin from '~/mixins/card/translationCardMixin';
+import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import TextField from '@Core/components/Inputs/TextField';
 import TextArea from '@Core/components/Inputs/TextArea';
 import Divider from '@Core/components/Dividers/Divider';

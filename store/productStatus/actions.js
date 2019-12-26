@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
+import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
 
 const onDefaultError = () => {};
 
