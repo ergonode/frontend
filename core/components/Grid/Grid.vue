@@ -192,12 +192,18 @@ export default {
             default: true,
         },
     },
+    provide() {
+        return {
+            setEditingCellCoordinates: this.setEditingCellCoordinates,
+        };
+    },
     data() {
         return {
             isHeaderFocused: false,
             isMouseOverGrid: false,
             isSelectColumnPinned: false,
             isEditColumnPinned: false,
+            editingCellCoordinates: { row: null, column: null },
             rowHeight: ROW_HEIGHT.MEDIUM,
             layout: GRID_LAYOUT.TABLE,
         };
@@ -298,6 +304,9 @@ export default {
             'setGhostIndex',
             'setGhostFilterIndex',
         ]),
+        setEditingCellCoordinates(coordinates = { row: null, column: null }) {
+            this.editingCellCoordinates = coordinates;
+        },
         getRowIndex(index) {
             return index
                 + ((this.gridState.currentPage - 1) * this.gridState.numberOfDisplayedElements);

@@ -77,6 +77,7 @@ export default {
         const gridPath = `${userLanguageCode}/products`;
 
         await Promise.all([
+            store.dispatch('list/clearStorage'),
             store.dispatch('list/getGroups', userLanguageCode),
             store.dispatch('list/getElementsForGroup', {
                 listType: 'attributes',

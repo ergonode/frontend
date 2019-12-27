@@ -7,7 +7,12 @@
         :tabindex="-1"
         :class="gridCellClasses"
         @keydown="onKeyDown"
-        @focus="onFocus">
+        @focus="onFocus"
+        @blur="onBlur">
+        <div
+            v-if="isResizing"
+            class="grid-cell__resizer"
+            @mousedown="initResizeDrag" />
         <slot />
     </div>
 </template>
@@ -16,6 +21,7 @@
 
 export default {
     name: 'GridCell',
+    inject: ['setEditingCellCoordinates'],
     props: {
         editingAllowed: {
             type: Boolean,
@@ -58,6 +64,11 @@ export default {
             default: false,
         },
     },
+    data() {
+        return {
+            isResizing: false,
+        };
+    },
     mounted() {
         if (this.editingAllowed) {
             this.$el.addEventListener('dblclick', this.onDblcClick);
@@ -84,9 +95,13 @@ export default {
     },
     methods: {
         onFocus() {
-            if (!this.editing && !this.actionCell && !this.locked) {
-                this.$emit('edit', false);
+            if (!this.actionCell) {
+                this.isResizing = true;
+                this.setEditingCellCoordinates();
             }
+        },
+        onBlur() {
+            this.isResizing = false;
         },
         onKeyDown(event) {
             const { keyCode } = event;
@@ -152,10 +167,8 @@ export default {
 
             event.preventDefault();
 
-            if (keyCode !== 13) {
-                if (element) {
-                    element.focus();
-                }
+            if (keyCode !== 13 && element) {
+                element.focus();
             }
 
             return true;
@@ -164,6 +177,40 @@ export default {
             if (this.editingAllowed && !this.actionCell) {
                 this.$emit('edit', true);
             }
+        },
+        initResizeDrag() {
+            this.addEventListenersForResizeState();
+        },
+        doResizeDrag(event) {
+            console.log('dragging');
+        },
+        stopResizeDrag(event) {
+            console.log('end');
+            this.removeEventListenersForResizeState();
+        },
+        addEventListenersForResizeState() {
+            document.documentElement.addEventListener(
+                'mousemove',
+                this.doResizeDrag,
+                false,
+            );
+            document.documentElement.addEventListener(
+                'mouseup',
+                this.stopResizeDrag,
+                false,
+            );
+        },
+        removeEventListenersForResizeState() {
+            document.documentElement.removeEventListener(
+                'mousemove',
+                this.doResizeDrag,
+                false,
+            );
+            document.documentElement.removeEventListener(
+                'mouseup',
+                this.stopResizeDrag,
+                false,
+            );
         },
     },
 };
@@ -210,6 +257,17 @@ export default {
 
         &:focus {
             z-index: $Z_INDEX_LVL_1;
+        }
+
+        &__resizer {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 4px;
+            height: 4px;
+            border: solid 2px $WHITE;
+            background-color: #00BC87;
+            cursor: row-resize;
         }
     }
 </style>

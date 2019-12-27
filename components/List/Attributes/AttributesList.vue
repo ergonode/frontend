@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
     name: 'AttributesList',
@@ -40,9 +40,6 @@ export default {
     created() {
         this.setDefaultExpandedGroup();
     },
-    destroyed() {
-        this.clearStorage();
-    },
     watch: {
         languageCode() {
             this.expendedGroup = '';
@@ -54,9 +51,6 @@ export default {
         }),
     },
     methods: {
-        ...mapActions('list', [
-            'clearStorage',
-        ]),
         setExpandedGroup(key) {
             this.expendedGroup = key;
         },
