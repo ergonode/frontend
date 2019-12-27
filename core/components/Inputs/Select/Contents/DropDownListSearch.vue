@@ -8,9 +8,9 @@
             'search-element--small': small,
         }]">
         <TextField
+            class="search-element__text-field"
             :value="searchResult"
             :small="small"
-            solid
             placeholder="Search..."
             @input="debouncedSearch"
             @focus="onSearchFocused">
@@ -85,6 +85,12 @@ export default {
 
         &--small {
             height: 32px;
+        }
+
+        &__text-field {
+            .input__activator {
+                border: none !important;
+            }
         }
     }
 </style>
