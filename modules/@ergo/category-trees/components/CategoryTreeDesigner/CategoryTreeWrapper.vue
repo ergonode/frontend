@@ -28,7 +28,7 @@
 import { mapState, mapGetters } from 'vuex';
 import TemplateGridWrapper from '~/components/TemplateGrid/TemplateGridWrapper';
 import TemplateGridHeader from '~/components/TemplateGrid/TemplateGridHeader';
-import CategoryTreeItem from '~/components/CategoryTreeDesigner/CategoryTreeItem';
+import CategoryTreeItem from '@Trees/components/CategoryTreeDesigner/CategoryTreeItem';
 
 export default {
     name: 'CategoryTreeWrapper',

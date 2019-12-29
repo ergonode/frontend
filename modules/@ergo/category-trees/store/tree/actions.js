@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { getParsedTreeData } from '~/model/mappers/treeMapper';
+import { getParsedTreeData } from '@Trees/models/treeMapper';
 
 const onDefaultError = () => {};
 

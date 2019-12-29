@@ -21,6 +21,11 @@ export default [
     {
         active: true,
         source: 'local',
+        name: '@ergo/category-trees',
+    },
+    {
+        active: true,
+        source: 'local',
         name: '@ergo/dashboard',
     },
     {

@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import CategoryTreeForm from '~/components/Forms/CategoryTreeForm';
+import CategoryTreeForm from '@Trees/components/Forms/CategoryTreeForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 

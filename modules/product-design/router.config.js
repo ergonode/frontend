@@ -10,9 +10,6 @@ const Pages = {
     AttributeGroups: () => import('~/modules/product-design/pages/attribute-groups/index').then((m) => m.default || m),
     AttributeGroupNew: () => import('~/modules/product-design/pages/attribute-groups/_group/index').then((m) => m.default || m),
     AttributeGroupEdit: () => import('~/modules/product-design/pages/attribute-groups/_group/_id').then((m) => m.default || m),
-    CategoryTrees: () => import('~/modules/product-design/pages/category-trees/index').then((m) => m.default || m),
-    CategoryTreesNew: () => import('~/modules/product-design/pages/category-trees/_tree/index').then((m) => m.default || m),
-    CategoryTreesEdit: () => import('~/modules/product-design/pages/category-trees/_tree/_id').then((m) => m.default || m),
     ProductTemplates: () => import('~/modules/product-design/pages/product-templates/index').then((m) => m.default || m),
     ProductTemplateNew: () => import('~/modules/product-design/pages/product-templates/_template/index').then((m) => m.default || m),
     ProductTemplateEdit: () => import('~/modules/product-design/pages/product-templates/_template/_id').then((m) => m.default || m),
@@ -23,9 +20,6 @@ const Tabs = {
     AttributeTranslationsTab: () => import('~/modules/product-design/pages/attributes/_attribute/_tabs/AttributeTranslationsTab').then((m) => m.default || m),
     AttributeGroupBaseTab: () => import('~/modules/product-design/pages/attribute-groups/_group/_tabs/AttributeGroupBaseTab').then((m) => m.default || m),
     AttributeGroupTranslationsTab: () => import('~/modules/product-design/pages/attribute-groups/_group/_tabs/AttributeGroupTranslationsTab').then((m) => m.default || m),
-    CategoryTreeBaseTab: () => import('~/modules/product-design/pages/category-trees/_tree/_tabs/CategoryTreeBaseTab').then((m) => m.default || m),
-    CategoryTreeTranslationsTab: () => import('~/modules/product-design/pages/category-trees/_tree/_tabs/CategoryTreeTranslationsTab').then((m) => m.default || m),
-    CategoryTreeDesignTab: () => import('~/modules/product-design/pages/category-trees/_tree/_tabs/CategoryTreeDesignTab').then((m) => m.default || m),
     TemplateDesignerBaseTab: () => import('~/modules/product-design/pages/product-templates/_template/_tabs/TemplateDesignerBaseTab').then((m) => m.default || m),
     TemplateDesignerTab: () => import('~/modules/product-design/pages/product-templates/_template/_tabs/TemplateDesignerTab').then((m) => m.default || m),
 };
@@ -214,122 +208,6 @@ export const routing = [
                         {
                             title: 'Attribute groups',
                             routePath: '/attribute-groups',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-        ],
-        meta: {
-            isMenu: false,
-            redirectTo: 'general',
-        },
-    },
-    {
-        name: 'category-trees',
-        path: '/category-trees',
-        component: Pages.CategoryTrees,
-        meta: {
-            access: true,
-            title: 'Category trees',
-            group: {
-                title: 'Product design',
-                icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
-            },
-            isMenu: true,
-            privileges: {
-                namespace: 'CATEGORY_TREE',
-                read: 'CATEGORY_TREE_READ',
-            },
-        },
-    },
-    {
-        name: 'category-tree-new',
-        path: '/category-trees/tree/new',
-        component: Pages.CategoryTreesNew,
-        children: [
-            {
-                name: 'category-tree-new-general',
-                path: 'general',
-                component: Tabs.CategoryTreeBaseTab,
-                meta: {
-                    title: 'General options',
-                    breadcrumbs: [
-                        {
-                            title: 'Product design',
-                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
-                        },
-                        {
-                            title: 'Category trees',
-                            routePath: '/category-trees',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-        ],
-        meta: {
-            isMenu: false,
-            redirectTo: 'general',
-        },
-    },
-    {
-        name: 'category-tree-edit-id',
-        path: '/category-trees/tree/edit/:id',
-        component: Pages.CategoryTreesEdit,
-        children: [
-            {
-                name: 'category-tree-edit-id-general',
-                path: 'general',
-                component: Tabs.CategoryTreeBaseTab,
-                meta: {
-                    title: 'General options',
-                    breadcrumbs: [
-                        {
-                            title: 'Product design',
-                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
-                        },
-                        {
-                            title: 'Category trees',
-                            routePath: '/category-trees',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-            {
-                name: 'category-tree-edit-id-translations',
-                path: 'translations',
-                component: Tabs.CategoryTreeTranslationsTab,
-                meta: {
-                    title: 'Translations',
-                    breadcrumbs: [
-                        {
-                            title: 'Product design',
-                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
-                        },
-                        {
-                            title: 'Category trees',
-                            routePath: '/category-trees',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-            {
-                name: 'category-tree-edit-id-designer',
-                path: 'designer',
-                component: Tabs.CategoryTreeDesignTab,
-                meta: {
-                    title: 'Designer',
-                    breadcrumbs: [
-                        {
-                            title: 'Product design',
-                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
-                        },
-                        {
-                            title: 'Category trees',
-                            routePath: '/category-trees',
                         },
                     ],
                     privileges: [],

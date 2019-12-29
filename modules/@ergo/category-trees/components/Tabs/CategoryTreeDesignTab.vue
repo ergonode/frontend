@@ -20,7 +20,7 @@ export default {
     name: 'CategoryTreeDesignTab',
     components: {
         VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
-        CategoryTreeWrapper: () => import('~/components/CategoryTreeDesigner/CategoryTreeWrapper'),
+        CategoryTreeWrapper: () => import('@Trees/components/CategoryTreeDesigner/CategoryTreeWrapper'),
         GridViewTemplate,
     },
     computed: {

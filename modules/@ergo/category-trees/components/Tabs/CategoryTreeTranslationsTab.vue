@@ -18,7 +18,7 @@ export default {
     name: 'CategoryTreeTranslationsTab',
     components: {
         TranslationsTab: () => import('@Core/components/Card/Tabs/TranslationsTab'),
-        CategoryTreeTranslationForm: () => import('~/components/Forms/CategoryTreeTranslationForm'),
+        CategoryTreeTranslationForm: () => import('@Trees/components/Forms/CategoryTreeTranslationForm'),
     },
     computed: {
         ...mapState('translations', {

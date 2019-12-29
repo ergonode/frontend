@@ -2,9 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { parsingTree, mappingTree } from '../__mocks__/categoryTree.mock';
-import { categoryList } from '../__mocks__/categories.mock';
-import { getParsedTreeData, getMappedTreeData } from '~/model/mappers/treeMapper';
+import { parsingTree, mappingTree } from '../../__tests__/__mocks__/categoryTree.mock';
+import { categoryList } from '../../__tests__/__mocks__/categories.mock';
+import { getParsedTreeData, getMappedTreeData } from '../treeMapper';
 
 describe('treeMapper/getParsedTreeData', () => {
     it('Tree parsing with valid input data', () => {

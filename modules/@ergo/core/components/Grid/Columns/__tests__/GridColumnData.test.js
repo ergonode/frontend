@@ -5,7 +5,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
 import GridColumnData from '@Core/components/Grid/Columns/GridColumnData';
-import draggableMutations from '~/store/draggable/mutations';
+import draggableMutations from '@Core/store/draggable/mutations';
 
 const localVue = createLocalVue();
 const store = new Store({

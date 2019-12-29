@@ -76,5 +76,9 @@ export default {
             directory: 'alerts',
             name: 'alerts',
         },
+        {
+            directory: 'draggable',
+            name: 'draggable',
+        },
     ],
 };

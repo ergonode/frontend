@@ -16,7 +16,7 @@ import { getParentRoutePath } from '@Core/models/navigation/tabs';
 export default {
     name: 'NewCategoryTree',
     components: {
-        CategoryTreePage: () => import('~/components/Pages/CategoryTreePage'),
+        CategoryTreePage: () => import('@Trees/components/Pages/CategoryTreePage'),
     },
     computed: {
         ...mapState('tree', {

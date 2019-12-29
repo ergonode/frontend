@@ -13,7 +13,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getMappedTreeData } from '~/model/mappers/treeMapper';
+import { getMappedTreeData } from '@Trees/models/treeMapper';
 import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
@@ -23,7 +23,7 @@ export default {
     },
     name: 'EditCategoryTree',
     components: {
-        CategoryTreePage: () => import('~/components/Pages/CategoryTreePage'),
+        CategoryTreePage: () => import('@Trees/components/Pages/CategoryTreePage'),
     },
     destroyed() {
         this.clearGridDesignerStorage();

@@ -4,7 +4,7 @@
  */
 import { shallowMount } from '@vue/test-utils';
 
-import CategoryTreeItem from '~/components/CategoryTreeDesigner/CategoryTreeItem';
+import CategoryTreeItem from '../CategoryTreeItem';
 import { ACTION } from '~/defaults/icons';
 
 describe('CategoryTreeDesigner/CategoryTreeItem', () => {

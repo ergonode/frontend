@@ -4,7 +4,7 @@
  */
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
-import CategoryTreePage from '~/components/Pages/CategoryTreePage';
+import CategoryTreePage from '../CategoryTreePage';
 
 const localVue = createLocalVue();
 const store = new Store({
