@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { TYPES } from '~/defaults/attributes';
+import { TYPES } from '@Attributes/defaults/attributes';
 
 export default {
     name: 'GridEditFilterCell',

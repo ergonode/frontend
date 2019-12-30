@@ -18,7 +18,6 @@ export const actions = {
     resetState({ dispatch }) {
         const { store: modulesStore } = getModulesConfig;
 
-        dispatch('attribute/clearStorage');
         dispatch('data/clearStorage');
         dispatch('segments/clearStorage');
         dispatch('conditions/clearStorage');

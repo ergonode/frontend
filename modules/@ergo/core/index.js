@@ -12,7 +12,6 @@ export default {
     nuxt: {
         aliases: {
             '@Core': '/',
-            '@CoreComponents': '/components',
         },
     },
     router: [

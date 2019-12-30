@@ -30,6 +30,9 @@ class ModuleLoader {
             (module) => relation === module.name && module.active,
         );
 
+        if (!checkRelation('@ergo/core')) {
+            throw Error('Module [@ergo/core] does not exist.');
+        }
         relations.forEach((relation) => {
             const { moduleName, relations: moduleRealtions } = relation;
 

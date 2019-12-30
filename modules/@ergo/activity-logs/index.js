@@ -9,7 +9,6 @@ export default {
     name: '@ergo/activity-logs',
     type: 'page',
     moduleRelations: [
-        '@ergo/core',
         '@ergo/users',
     ],
     privileges: Privileges,

@@ -74,7 +74,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { ARROW } from '@Core/defaults/icons';
-import { TYPES } from '~/defaults/attributes';
+import { TYPES } from '@Attributes/defaults/attributes';
 import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,

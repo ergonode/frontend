@@ -8,9 +8,7 @@ import Privileges from './config/privileges';
 export default {
     name: '@ergo/notifications',
     type: 'page',
-    moduleRelations: [
-        '@ergo/core',
-    ],
+    moduleRelations: [],
     privileges: Privileges,
     nuxt: {
         aliases: {

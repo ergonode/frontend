@@ -9,7 +9,6 @@ export default {
     name: '@ergo/product-templates',
     type: 'page',
     moduleRelations: [
-        '@ergo/core',
         // '@ergo/products',
     ],
     privileges: Privileges,

@@ -28,7 +28,7 @@ import {
     getValueByKey,
     getValuesByKeys,
 } from '@Core/models/objectWrapper';
-import { hasOptions } from '~/model/attributes/AttributeTypes';
+import { hasOptions } from '@Attributes/models/attributeTypes';
 import ConditionSetParameters from '~/components/ConditionSetDesigner/ConditionSetParameters';
 
 export default {

@@ -9,7 +9,6 @@ export default {
     name: '@ergo/category-trees',
     type: 'page',
     moduleRelations: [
-        '@ergo/core',
         '@ergo/categories',
     ],
     privileges: Privileges,

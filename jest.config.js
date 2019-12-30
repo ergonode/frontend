@@ -18,6 +18,7 @@ module.exports = {
         '^~/(.*)$': '<rootDir>/$1',
         '@Core/(.*)$': '<rootDir>/modules/@ergo/core/$1',
         '@Templates/(.*)$': '<rootDir>/modules/@ergo/product-templates/$1',
+        '@Attributes/(.*)$': '<rootDir>/modules/@ergo/attributes/$1',
     },
     transform: {
         '^.+\\.(js|jsx)?$': 'babel-jest',

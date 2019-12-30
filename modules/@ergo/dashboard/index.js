@@ -7,9 +7,7 @@ import { Pages, Icons } from './config/imports';
 export default {
     name: '@ergo/dashboard',
     type: 'page',
-    moduleRelations: [
-        '@ergo/core',
-    ],
+    moduleRelations: [],
     privileges: {},
     nuxt: {
         aliases: {

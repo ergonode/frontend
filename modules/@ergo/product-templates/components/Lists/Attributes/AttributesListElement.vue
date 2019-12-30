@@ -21,7 +21,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { TYPES } from '~/defaults/attributes';
+import { TYPES } from '@Attributes/defaults/attributes';
 import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
 
 export default {

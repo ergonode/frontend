@@ -11,7 +11,17 @@ export default [
     {
         active: true,
         source: 'local',
+        name: '@ergo/dashboard',
+    },
+    {
+        active: true,
+        source: 'local',
         name: '@ergo/users',
+    },
+    {
+        active: true,
+        source: 'local',
+        name: '@ergo/attributes',
     },
     {
         active: true,
@@ -22,11 +32,6 @@ export default [
         active: true,
         source: 'local',
         name: '@ergo/category-trees',
-    },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/dashboard',
     },
     {
         active: true,
