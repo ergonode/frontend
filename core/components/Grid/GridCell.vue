@@ -74,20 +74,10 @@ export default {
         if (this.editingAllowed) {
             this.$el.addEventListener('dblclick', this.onDblcClick);
         }
-
-        if (!this.locked) {
-            this.$el.addEventListener('mouseover', this.onMouseOver);
-            this.$el.addEventListener('mouseout', this.onMouseOut);
-        }
     },
     destroyed() {
         if (this.editingAllowed) {
             this.$el.removeEventListener('dblclick', this.onDblcClick);
-        }
-
-        if (!this.locked) {
-            this.$el.addEventListener('mouseover', this.onMouseOver);
-            this.$el.addEventListener('mouseout', this.onMouseOut);
         }
     },
     computed: {
@@ -166,6 +156,9 @@ export default {
             case 38:
                 // Key: UP
                 element = document.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
+                if (element) {
+                    element.scrollIntoView(false);
+                }
                 break;
             case 39:
             case 9:
@@ -174,11 +167,15 @@ export default {
                 if (!element) {
                     // We get out of bounds - go to the next line
                     element = document.querySelector(`.coordinates-0-${this.row + 1}`);
+                    element.scrollIntoView(false);
                 }
                 break;
             case 40:
                 // Key: DOWN
                 element = document.querySelector(`.coordinates-${this.column}-${this.row + 1}`);
+                if (element) {
+                    element.scrollIntoView(false);
+                }
                 break;
             default: break;
             }
@@ -218,6 +215,7 @@ export default {
             }
         },
         stopResizeDrag() {
+            // TODO: Emit copy event
             this.isResizing = false;
             this.$refs.resizerBorder.style.height = null;
             this.$refs.resizerBorder.classList.remove('grid-cell__resizer-border--negative-height');
