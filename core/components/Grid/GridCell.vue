@@ -138,15 +138,23 @@ export default {
                 if (this.editingAllowed) {
                     element = this.$el;
 
-                    this.isEditing = !this.isEditing;
-                    this.$emit('edit', this.isEditing);
+                    if (this.actionCell) {
+                        this.$emit('edit', !this.selected);
+                    } else {
+                        this.isEditing = !this.isEditing;
+                        this.$emit('edit', this.isEditing);
+                    }
                 }
                 break;
             case 32:
                 // Key: SPACE BAR
                 if (this.editingAllowed && this.actionCell) {
-                    this.isEditing = !this.isEditing;
-                    this.$emit('edit', this.isEditing);
+                    if (this.actionCell) {
+                        this.$emit('edit', !this.selected);
+                    } else {
+                        this.isEditing = !this.isEditing;
+                        this.$emit('edit', this.isEditing);
+                    }
                 }
                 break;
             case 37:
@@ -156,9 +164,6 @@ export default {
             case 38:
                 // Key: UP
                 element = document.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
-                if (element) {
-                    element.scrollIntoView(false);
-                }
                 break;
             case 39:
             case 9:
@@ -167,20 +172,20 @@ export default {
                 if (!element) {
                     // We get out of bounds - go to the next line
                     element = document.querySelector(`.coordinates-0-${this.row + 1}`);
-                    element.scrollIntoView(false);
                 }
                 break;
             case 40:
                 // Key: DOWN
                 element = document.querySelector(`.coordinates-${this.column}-${this.row + 1}`);
-                if (element) {
-                    element.scrollIntoView(false);
-                }
                 break;
             default: break;
             }
 
             event.preventDefault();
+
+            if (element && (keyCode === 9 || keyCode === 40 || keyCode === 38)) {
+                element.scrollIntoView(false);
+            }
 
             if ((keyCode === 13 && !this.isEditing && element) || (keyCode !== 13 && element)) {
                 element.focus();
@@ -213,6 +218,11 @@ export default {
                 this.$refs.resizerBorder.style.height = `${fixedHeight - 4}px`;
                 this.$refs.resizerBorder.classList.remove('grid-cell__resizer-border--negative-height');
             }
+
+            // const element = document.querySelector(`.coordinates-${this.column}-${this.row + factor}`);
+            // if (element) {
+            //     element.scrollIntoView(false);
+            // }
         },
         stopResizeDrag() {
             // TODO: Emit copy event
