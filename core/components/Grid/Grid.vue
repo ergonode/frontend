@@ -304,7 +304,6 @@ export default {
             'setGhostFilterIndex',
         ]),
         setEditingCellCoordinates(coordinates = { row: null, column: null }) {
-            console.log('dupa', coordinates);
             this.editingCellCoordinates = coordinates;
         },
         getEditingCellCoordinates() {

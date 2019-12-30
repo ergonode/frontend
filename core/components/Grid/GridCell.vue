@@ -6,13 +6,15 @@
     <div
         :tabindex="-1"
         :class="gridCellClasses"
-        @keydown="onKeyDown"
-        @focus="onFocus"
-        @blur="onBlur">
+        @mousedown="onMouseDown"
+        @keydown="onKeyDown">
         <div
-            v-if="isResizing"
             class="grid-cell__resizer"
             @mousedown="initResizeDrag" />
+        <div
+            v-if="isResizing"
+            ref="resizerBorder"
+            class="grid-cell__resizer-border" />
         <slot :is-editing="isEditing" />
     </div>
 </template>
@@ -63,16 +65,29 @@ export default {
     data() {
         return {
             isResizing: false,
+            isFocused: false,
+            startY: 0,
+            startHeight: 0,
         };
     },
     mounted() {
         if (this.editingAllowed) {
             this.$el.addEventListener('dblclick', this.onDblcClick);
         }
+
+        if (!this.locked) {
+            this.$el.addEventListener('mouseover', this.onMouseOver);
+            this.$el.addEventListener('mouseout', this.onMouseOut);
+        }
     },
     destroyed() {
         if (this.editingAllowed) {
             this.$el.removeEventListener('dblclick', this.onDblcClick);
+        }
+
+        if (!this.locked) {
+            this.$el.addEventListener('mouseover', this.onMouseOver);
+            this.$el.addEventListener('mouseout', this.onMouseOut);
         }
     },
     computed: {
@@ -107,14 +122,11 @@ export default {
         },
     },
     methods: {
-        onFocus() {
+        onMouseDown() {
             if (!this.actionCell && !this.isEditing) {
-                this.isResizing = true;
                 this.isEditing = false;
+                this.$emit('edit', this.isEditing);
             }
-        },
-        onBlur() {
-            this.isResizing = false;
         },
         onKeyDown(event) {
             const { keyCode } = event;
@@ -137,12 +149,14 @@ export default {
                     element = this.$el;
 
                     this.isEditing = !this.isEditing;
+                    this.$emit('edit', this.isEditing);
                 }
                 break;
             case 32:
                 // Key: SPACE BAR
                 if (this.editingAllowed && this.actionCell) {
                     this.isEditing = !this.isEditing;
+                    this.$emit('edit', this.isEditing);
                 }
                 break;
             case 37:
@@ -180,16 +194,33 @@ export default {
         onDblcClick() {
             if (this.editingAllowed && !this.actionCell) {
                 this.isEditing = true;
+                this.$emit('edit', this.isEditing);
             }
         },
-        initResizeDrag() {
+        initResizeDrag(event) {
+            const { pageY } = event;
+            this.isResizing = true;
+            this.startY = pageY;
+            this.startHeight = parseInt(this.$el.getBoundingClientRect().height, 10);
             this.addEventListenersForResizeState();
         },
         doResizeDrag(event) {
-            console.log('dragging');
+            const { pageY } = event;
+            const height = this.startHeight + pageY - this.startY;
+            const factor = Math.ceil(height / this.startHeight);
+            const fixedHeight = factor * this.startHeight;
+            if (height < 0) {
+                this.$refs.resizerBorder.style.height = `${-1 * fixedHeight - 4 + this.startHeight}px`;
+                this.$refs.resizerBorder.classList.add('grid-cell__resizer-border--negative-height');
+            } else {
+                this.$refs.resizerBorder.style.height = `${fixedHeight - 4}px`;
+                this.$refs.resizerBorder.classList.remove('grid-cell__resizer-border--negative-height');
+            }
         },
-        stopResizeDrag(event) {
-            console.log('end');
+        stopResizeDrag() {
+            this.isResizing = false;
+            this.$refs.resizerBorder.style.height = null;
+            this.$refs.resizerBorder.classList.remove('grid-cell__resizer-border--negative-height');
             this.removeEventListenersForResizeState();
         },
         addEventListenersForResizeState() {
@@ -222,6 +253,8 @@ export default {
 
 <style lang="scss" scoped>
     .grid-cell {
+        $cell: &;
+
         position: relative;
         display: flex;
         align-items: center;
@@ -259,19 +292,41 @@ export default {
             box-shadow: inset 0 0 0 2px $GRAPHITE_LIGHT;
         }
 
-        &:focus {
-            z-index: $Z_INDEX_LVL_1;
-        }
-
         &__resizer {
             position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 4px;
-            height: 4px;
-            border: solid 2px $WHITE;
+            left: 50%;
+            bottom: -3px;
+            transform: translate(-50%, 0);
+            z-index: $Z_INDEX_LVL_1;
+            display: none;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
             background-color: #00BC87;
             cursor: row-resize;
+        }
+
+        &__resizer-border {
+            position: absolute;
+            left: 0;
+            right: 0;
+            z-index: $Z_INDEX_LVL_1;
+            height: 100%;
+            border: $BORDER_2_DASHED_GREEN;
+
+            &--negative-height {
+                bottom: 0;
+            }
+
+            &:not(&--negative-height) {
+                top: 0;
+            }
+        }
+
+        &:focus {
+            #{$cell}__resizer {
+                display: inline-block;
+            }
         }
     }
 </style>
