@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Pages, Tabs, Extend } from './config/imports';
+import { Pages, Tabs, Components } from './config/imports';
 import Privileges from './config/privileges';
 
 export default {
@@ -41,11 +41,12 @@ export default {
             name: 'notifications',
         },
     ],
-    extendComponents: [
-        {
-            type: 'NAVIGATION_BAR',
-            component: Extend.NavigationBarNotificationButton,
-            props: {},
-        },
-    ],
+    extendComponents: {
+        NAVIGATION_BAR: [
+            {
+                component: Components.NavigationBarNotificationButton,
+                props: {},
+            },
+        ],
+    },
 };

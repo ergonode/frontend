@@ -82,7 +82,7 @@ import {
 import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT } from '@Core/defaults/grid';
 import {
     getDraggedColumnPositionState,
-} from '~/model/drag_and_drop/helpers';
+} from '@Core/models/drag_and_drop/helpers';
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 import { changeCookiePosition } from '~/model/cookies';
 import { getMappedColumnHeaderTitle } from '@Core/models/mappers/gridDataMapper';

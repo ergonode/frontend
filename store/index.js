@@ -24,8 +24,6 @@ export const actions = {
         dispatch('conditions/clearStorage');
         dispatch('productsDraft/clearStorage');
         dispatch('productStatus/clearStorage');
-        dispatch('templateDesigner/clearStorage');
-        dispatch('templateLists/clearStorage');
         dispatch('gridDraft/clearStorage');
 
         for (let i = 0; i < modulesStore.length; i += 1) {

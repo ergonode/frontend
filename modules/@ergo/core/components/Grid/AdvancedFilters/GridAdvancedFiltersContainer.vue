@@ -14,7 +14,7 @@
 <script>
 import {
     isMouseOutOfBoundsElement,
-} from '~/model/drag_and_drop/helpers';
+} from '@Core/models/drag_and_drop/helpers';
 
 export default {
     name: 'GridAdvancedFiltersContainer',

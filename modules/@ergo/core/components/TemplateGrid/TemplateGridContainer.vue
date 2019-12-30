@@ -21,13 +21,13 @@ import { debounce } from 'debounce';
 import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
-} from '~/model/tree/TreeElementCopy';
+} from '@Core/models/template_grid/TreeElementCopy';
 import {
     getRowBounds,
     getRowBellowMouse,
-} from '~/model/tree/TreeCalculations';
+} from '@Core/models/template_grid/TreeCalculations';
 import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
-import { isMouseOutOfBoundsElement } from '~/model/drag_and_drop/helpers';
+import { isMouseOutOfBoundsElement } from '@Core/models/drag_and_drop/helpers';
 import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
 
 export default {

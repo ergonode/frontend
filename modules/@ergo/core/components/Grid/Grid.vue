@@ -138,7 +138,7 @@ import {
 } from '@Core/defaults/grid';
 import {
     isMouseOutOfBoundsElement,
-} from '~/model/drag_and_drop/helpers';
+} from '@Core/models/drag_and_drop/helpers';
 import selectedRowMixin from '~/mixins/grid/selectedRowMixin';
 
 export default {

@@ -12,7 +12,7 @@
 <script>
 import {
     hexToRGB, calculateRelativeLuminance, calculateContrastRatio,
-} from '~/model/color/ColorContrast';
+} from '@Core/models/color/ColorContrast';
 import { WHITE, GRAPHITE_DARK } from '~/assets/scss/_variables/_colors.scss';
 
 export default {

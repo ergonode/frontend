@@ -9,7 +9,7 @@ import {
     getTreeWhenElementCollapse,
     getTreeWhenElementExpand,
     getFullTree,
-} from '~/model/tree/TreeCalculations';
+} from '@Core/models/template_grid/TreeCalculations';
 
 export default {
     setRowsCount: ({ commit }, value) => {

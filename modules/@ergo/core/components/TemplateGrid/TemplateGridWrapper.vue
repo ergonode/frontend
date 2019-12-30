@@ -52,7 +52,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getNearestNeighborRowId } from '~/model/tree/TreeCalculations';
+import { getNearestNeighborRowId } from '@Core/models/template_grid/TreeCalculations';
 import TemplateGridPresentationLayer from '@Core/components/TemplateGrid/TemplateGridPresentationLayer';
 import TemplateGridItemsContainer from '@Core/components/TemplateGrid/TemplateGridItemsContainer';
 import TemplateGridContainer from '@Core/components/TemplateGrid/TemplateGridContainer';

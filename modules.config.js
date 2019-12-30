@@ -31,6 +31,11 @@ export default [
     {
         active: true,
         source: 'local',
+        name: '@ergo/product-templates',
+    },
+    {
+        active: true,
+        source: 'local',
         name: '@ergo/media',
     },
     {

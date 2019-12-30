@@ -17,9 +17,7 @@ class ModuleLoader {
     install(_Vue) {
         const { extendComponents } = this.modulesConfig;
 
-        _Vue.prototype.$getComponentsForExtended = (type) => extendComponents.filter(
-            (component) => component.type === type,
-        );
+        _Vue.prototype.$getComponentsForExtended = (type) => extendComponents[type];
     }
 
     get getModulesConfig() {
@@ -99,7 +97,10 @@ class ModuleLoader {
                     });
                 }
                 if (config.extendComponents) {
-                    modulesConfig.extendComponents.push(...config.extendComponents);
+                    modulesConfig.extendComponents = deepmerge(
+                        modulesConfig.extendComponents,
+                        config.extendComponents,
+                    );
                 }
                 if (config.extendTabs) {
                     modulesConfig.extendTabs.push(...config.extendTabs);
@@ -111,7 +112,7 @@ class ModuleLoader {
             store: [],
             nuxt: {},
             relations: [],
-            extendComponents: [],
+            extendComponents: {},
             extendTabs: [],
         });
     }

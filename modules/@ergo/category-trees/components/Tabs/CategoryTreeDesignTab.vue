@@ -28,7 +28,7 @@ export default {
             return [
                 {
                     title: 'Categories',
-                    component: () => import('@Categories/components/Tabs/List/CategoriesListTab'),
+                    component: () => import('@Trees/components/Tabs/List/CategoriesListTab'),
                     iconComponent: () => import('@Core/components/Icons/Menu/IconCategory'),
                 },
             ];

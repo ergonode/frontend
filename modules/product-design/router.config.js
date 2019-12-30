@@ -10,9 +10,6 @@ const Pages = {
     AttributeGroups: () => import('~/modules/product-design/pages/attribute-groups/index').then((m) => m.default || m),
     AttributeGroupNew: () => import('~/modules/product-design/pages/attribute-groups/_group/index').then((m) => m.default || m),
     AttributeGroupEdit: () => import('~/modules/product-design/pages/attribute-groups/_group/_id').then((m) => m.default || m),
-    ProductTemplates: () => import('~/modules/product-design/pages/product-templates/index').then((m) => m.default || m),
-    ProductTemplateNew: () => import('~/modules/product-design/pages/product-templates/_template/index').then((m) => m.default || m),
-    ProductTemplateEdit: () => import('~/modules/product-design/pages/product-templates/_template/_id').then((m) => m.default || m),
 };
 
 const Tabs = {
@@ -20,8 +17,6 @@ const Tabs = {
     AttributeTranslationsTab: () => import('~/modules/product-design/pages/attributes/_attribute/_tabs/AttributeTranslationsTab').then((m) => m.default || m),
     AttributeGroupBaseTab: () => import('~/modules/product-design/pages/attribute-groups/_group/_tabs/AttributeGroupBaseTab').then((m) => m.default || m),
     AttributeGroupTranslationsTab: () => import('~/modules/product-design/pages/attribute-groups/_group/_tabs/AttributeGroupTranslationsTab').then((m) => m.default || m),
-    TemplateDesignerBaseTab: () => import('~/modules/product-design/pages/product-templates/_template/_tabs/TemplateDesignerBaseTab').then((m) => m.default || m),
-    TemplateDesignerTab: () => import('~/modules/product-design/pages/product-templates/_template/_tabs/TemplateDesignerTab').then((m) => m.default || m),
 };
 
 export const routing = [
@@ -208,103 +203,6 @@ export const routing = [
                         {
                             title: 'Attribute groups',
                             routePath: '/attribute-groups',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-        ],
-        meta: {
-            isMenu: false,
-            redirectTo: 'general',
-        },
-    },
-    {
-        name: 'product-templates',
-        path: '/product-templates',
-        component: Pages.ProductTemplates,
-        meta: {
-            access: true,
-            title: 'Product templates',
-            group: {
-                title: 'Product design',
-                icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
-            },
-            isMenu: true,
-            privileges: {
-                namespace: 'TEMPLATE_DESIGNER',
-                read: 'TEMPLATE_DESIGNER_READ',
-            },
-        },
-    },
-    {
-        name: 'product-template-new',
-        path: '/product-templates/template/new',
-        component: Pages.ProductTemplateNew,
-        children: [
-            {
-                name: 'product-template-new-general',
-                path: 'general',
-                component: Tabs.TemplateDesignerBaseTab,
-                meta: {
-                    title: 'General options',
-                    breadcrumbs: [
-                        {
-                            title: 'Product design',
-                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
-                        },
-                        {
-                            title: 'Product templates',
-                            routePath: '/product-templates',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-        ],
-        meta: {
-            isMenu: false,
-            redirectTo: 'general',
-        },
-    },
-    {
-        name: 'product-template-edit-id',
-        path: '/product-templates/template/edit/:id',
-        component: Pages.ProductTemplateEdit,
-        children: [
-            {
-                name: 'product-template-edit-id-general',
-                path: 'general',
-                component: Tabs.TemplateDesignerBaseTab,
-                meta: {
-                    title: 'General options',
-                    breadcrumbs: [
-                        {
-                            title: 'Product design',
-                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
-                        },
-                        {
-                            title: 'Product templates',
-                            routePath: '/product-templates',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-            {
-                name: 'product-template-edit-id-template',
-                path: 'template',
-                component: Tabs.TemplateDesignerTab,
-                meta: {
-                    title: 'Designer',
-                    breadcrumbs: [
-                        {
-                            title: 'Product design',
-                            icon: () => import('@Core/components/Icons/Menu/IconTemplates'),
-                        },
-                        {
-                            title: 'Product templates',
-                            routePath: '/product-templates',
                         },
                     ],
                     privileges: [],

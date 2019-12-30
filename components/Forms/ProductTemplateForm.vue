@@ -25,13 +25,13 @@
 <script>
 import { mapState } from 'vuex';
 import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
-import TemplateGridDesigner from '~/components/Template/Base/TemplateGridDesigner';
-import ProductTemplateSection from '~/components/Template/Product/ProductTemplateSection';
-import ProductTemplateDate from '~/components/Template/Product/ProductTemplateDate';
-import ProductTemplateImage from '~/components/Template/Product/ProductTemplateImage';
-import ProductTemplateMultiLine from '~/components/Template/Product/ProductTemplateMultiLine';
-import ProductTemplateOptions from '~/components/Template/Product/ProductTemplateOptions';
-import ProductTemplateSingleLine from '~/components/Template/Product/ProductTemplateSingleLine';
+import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
+import ProductTemplateSection from '@Templates/components/Template/Product/ProductTemplateSection';
+import ProductTemplateDate from '@Templates/components/Template/Product/ProductTemplateDate';
+import ProductTemplateImage from '@Templates/components/Template/Product/ProductTemplateImage';
+import ProductTemplateMultiLine from '@Templates/components/Template/Product/ProductTemplateMultiLine';
+import ProductTemplateOptions from '@Templates/components/Template/Product/ProductTemplateOptions';
+import ProductTemplateSingleLine from '@Templates/components/Template/Product/ProductTemplateSingleLine';
 
 export default {
     name: 'ProductTemplateForm',

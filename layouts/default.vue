@@ -18,10 +18,10 @@
                     <template #actions>
                         <NavigationBarUserButton />
                         <template v-for="(component, index) in getComponentsForExtended">
-                            <ExtendWithModulesComponents
+                            <Component
+                                :is="component.component"
                                 :key="index"
-                                :component="component"
-                            />
+                                v-bind="component.props" />
                         </template>
                     </template>
                 </NavigationBar>
@@ -49,7 +49,6 @@ export default {
         NavigationBar: () => import('@Core/components/NavigationBar/NavigationBar'),
         NavigationBarBreadcrumb: () => import('@Core/components/NavigationBar/NavigationBarBreadcrumb'),
         NavigationBarUserButton: () => import('~/components/NavigationBar/NavigationBarUserButton'),
-        ExtendWithModulesComponents: () => import('~/components/ExtendWithModulesComponents'),
         FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),
     },
     data() {

@@ -10,6 +10,6 @@ export const Tabs = {
     NotificationGridTab: () => import('@Notifications/components/Tabs/NotificationGridTab').then((m) => m.default || m),
 };
 
-export const Extend = {
+export const Components = {
     NavigationBarNotificationButton: () => import('@Notifications/components/NavigationBar/NavigationBarNotificationButton'),
 };
