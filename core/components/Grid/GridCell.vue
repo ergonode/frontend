@@ -13,7 +13,7 @@
             v-if="isResizing"
             class="grid-cell__resizer"
             @mousedown="initResizeDrag" />
-        <slot />
+        <slot :is-editing="isEditing" />
     </div>
 </template>
 
@@ -21,7 +21,7 @@
 
 export default {
     name: 'GridCell',
-    inject: ['setEditingCellCoordinates'],
+    inject: ['getEditingCellCoordinates', 'setEditingCellCoordinates'],
     props: {
         editingAllowed: {
             type: Boolean,
@@ -44,10 +44,6 @@ export default {
             default: false,
         },
         selected: {
-            type: Boolean,
-            default: false,
-        },
-        editing: {
             type: Boolean,
             default: false,
         },
@@ -92,12 +88,29 @@ export default {
                 },
             ];
         },
+        isEditing: {
+            get() {
+                const { row, column } = this.getEditingCellCoordinates();
+
+                return row === this.row && column === this.column;
+            },
+            set(value) {
+                if (value) {
+                    this.setEditingCellCoordinates({
+                        row: this.row,
+                        column: this.column,
+                    });
+                } else {
+                    this.setEditingCellCoordinates();
+                }
+            },
+        },
     },
     methods: {
         onFocus() {
-            if (!this.actionCell) {
+            if (!this.actionCell && !this.isEditing) {
                 this.isResizing = true;
-                this.setEditingCellCoordinates();
+                this.isEditing = false;
             }
         },
         onBlur() {
@@ -108,7 +121,7 @@ export default {
 
             let element;
 
-            if (this.editing && !this.actionCell && keyCode !== 13) {
+            if (this.isEditing && !this.actionCell && keyCode !== 13) {
                 if (keyCode === 9) {
                     event.preventDefault();
                     event.stopPropagation();
@@ -123,22 +136,13 @@ export default {
                 if (this.editingAllowed) {
                     element = this.$el;
 
-                    if (this.editing) {
-                        element.focus();
-                        this.$emit('edit', false);
-                    } else {
-                        this.$emit('edit', true);
-                    }
+                    this.isEditing = !this.isEditing;
                 }
                 break;
             case 32:
                 // Key: SPACE BAR
                 if (this.editingAllowed && this.actionCell) {
-                    if (this.editing) {
-                        this.$emit('edit', false);
-                    } else {
-                        this.$emit('edit', true);
-                    }
+                    this.isEditing = !this.isEditing;
                 }
                 break;
             case 37:
@@ -167,7 +171,7 @@ export default {
 
             event.preventDefault();
 
-            if (keyCode !== 13 && element) {
+            if ((keyCode === 13 && !this.isEditing && element) || (keyCode !== 13 && element)) {
                 element.focus();
             }
 
@@ -175,7 +179,7 @@ export default {
         },
         onDblcClick() {
             if (this.editingAllowed && !this.actionCell) {
-                this.$emit('edit', true);
+                this.isEditing = true;
             }
         },
         initResizeDrag() {

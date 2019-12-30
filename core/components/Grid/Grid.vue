@@ -85,14 +85,12 @@
                     :cell-data="gridState.cellValues[id][column.id]">
                     <GridDataCell
                         :key="id"
-                        :namespace="namespace"
                         :column-index="colIndex + columnsOffset"
                         :row-index="getRowIndex(rowIndex + rowsOffset)"
                         :row-id="id"
                         :cell-data="gridState.cellValues[id][column.id] || { value: ''}"
                         :column="column"
                         :draft="drafts[id]"
-                        :edit-routing-path="editRoute.name"
                         :is-selected="isSelectedAllRows
                             || selectedRows[getRowIndex(rowIndex + rowsOffset)]"
                         :editing-privilege-allowed="editingPrivilegeAllowed" />
@@ -195,6 +193,7 @@ export default {
     provide() {
         return {
             setEditingCellCoordinates: this.setEditingCellCoordinates,
+            getEditingCellCoordinates: this.getEditingCellCoordinates,
         };
     },
     data() {
@@ -305,7 +304,11 @@ export default {
             'setGhostFilterIndex',
         ]),
         setEditingCellCoordinates(coordinates = { row: null, column: null }) {
+            console.log('dupa', coordinates);
             this.editingCellCoordinates = coordinates;
+        },
+        getEditingCellCoordinates() {
+            return this.editingCellCoordinates;
         },
         getRowIndex(index) {
             return index
@@ -331,7 +334,8 @@ export default {
 
             if (!gridContent.contains(event.target) && isVisible) {
                 // Dismiss editable cell mode
-                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
+
+                this.setEditingCellCoordinates();
             }
         },
         onRowEdit(route) {

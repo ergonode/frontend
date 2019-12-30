@@ -136,7 +136,8 @@ export default {
             return this.draggedElement === this.column.id;
         },
         isCellEditing() {
-            return Object.keys(this.gridState.editingCellCoordinates).length;
+            // return Object.keys(this.gridState.editingCellCoordinates).length;
+            return false;
         },
         isSorted() {
             return this.gridState.sortedByColumn.index === this.column.id;

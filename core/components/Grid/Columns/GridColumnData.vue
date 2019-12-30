@@ -112,7 +112,7 @@ export default {
         },
         isColumnDraggable() {
             return this.draggable
-                && Object.keys(this.gridState.editingCellCoordinates).length === 0
+                // && Object.keys(this.gridState.editingCellCoordinates).length === 0
                 && !this.isHeaderFocused
                 && !this.isCheckColumn;
         },
