@@ -41,7 +41,7 @@ import ModalForm from '@Core/components/Modal/ModalForm';
 import TextField from '@Core/components/Inputs/TextField';
 import Button from '@Core/components/Buttons/Button';
 import FormGroup from '@Core/components/Form/FormGroup';
-import IconFontSize from '~/components/Icon/Editor/IconFontSize';
+import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
 
 export default {
     name: 'SectionTemplateModalForm',

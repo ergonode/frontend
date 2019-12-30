@@ -119,11 +119,11 @@
 
 <script>
 import { SIZES, THEMES } from '@Core/defaults/buttons';
-import { ARROW } from '~/defaults/icons';
+import { ARROW } from '@Core/defaults/icons';
 import { isEmpty, removeFromObjectByKey } from '@Core/models/objectWrapper';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import DropDown from '@Core/components/Inputs/Select/Contents/DropDown';
-import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
+import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 
 export default {
     name: 'Select',

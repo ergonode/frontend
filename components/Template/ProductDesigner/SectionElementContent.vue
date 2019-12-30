@@ -40,9 +40,9 @@
 import { mapActions } from 'vuex';
 import { SIZES, THEMES } from '@Core/defaults/buttons';
 import ElementContentBase from '~/components/Template/ProductDesigner/ElementContentBase';
-import IconFontSize from '~/components/Icon/Editor/IconFontSize';
+import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
 import MenuButton from '@Core/components/Buttons/MenuButton';
-import IconDots from '~/components/Icon/Others/IconDots';
+import IconDots from '@Core/components/Icons/Others/IconDots';
 
 export default {
     name: 'SectionElementContent',

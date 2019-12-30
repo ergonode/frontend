@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { ARROW } from '~/defaults/icons';
+import { ARROW } from '@Core/defaults/icons';
 
 export default {
     name: 'ListGroupElement',
@@ -36,7 +36,7 @@ export default {
         ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
         ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
         ListElementHint: () => import('@Core/components/List/ListElementHint'),
-        IconArrowSingle: () => import('~/components/Icon/Arrows/IconArrowSingle'),
+        IconArrowSingle: () => import('@Core/components/Icons/Arrows/IconArrowSingle'),
         FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
     },
     props: {

@@ -87,11 +87,11 @@ export default {
     components: {
         Divider: () => import('@Core/components/Dividers/Divider'),
         FabButton: () => import('@Core/components/Buttons/FabButton'),
-        IconGrid: () => import('~/components/Icon/Others/IconGrid'),
-        IconTable: () => import('~/components/Icon/Others/IconTable'),
-        IconListSmall: () => import('~/components/Icon/Others/IconListSmall'),
-        IconListMedium: () => import('~/components/Icon/Others/IconListMedium'),
-        IconListLarge: () => import('~/components/Icon/Others/IconListLarge'),
+        IconGrid: () => import('@Core/components/Icons/Others/IconGrid'),
+        IconTable: () => import('@Core/components/Icons/Others/IconTable'),
+        IconListSmall: () => import('@Core/components/Icons/Others/IconListSmall'),
+        IconListMedium: () => import('@Core/components/Icons/Others/IconListMedium'),
+        IconListLarge: () => import('@Core/components/Icons/Others/IconListLarge'),
     },
     props: {
         title: {

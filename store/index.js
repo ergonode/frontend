@@ -20,15 +20,12 @@ export const actions = {
 
         dispatch('attribute/clearStorage');
         dispatch('data/clearStorage');
-        dispatch('draggable/clearStorage');
         dispatch('segments/clearStorage');
         dispatch('conditions/clearStorage');
-        dispatch('gridDesigner/clearStorage');
         dispatch('productsDraft/clearStorage');
         dispatch('productStatus/clearStorage');
         dispatch('templateDesigner/clearStorage');
         dispatch('templateLists/clearStorage');
-        dispatch('list/clearStorage');
         dispatch('gridDraft/clearStorage');
 
         for (let i = 0; i < modulesStore.length; i += 1) {

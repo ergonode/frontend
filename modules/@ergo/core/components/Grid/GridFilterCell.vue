@@ -33,7 +33,7 @@
 <script>
 import { FILTER_OPERATOR } from '@Core/defaults/operators';
 import { COLUMN_TYPE } from '@Core/defaults/grid';
-import { getMappedArrayValue } from '~/model/mappers/gridDataMapper';
+import { getMappedArrayValue } from '@Core/models/mappers/gridDataMapper';
 
 export default {
     name: 'GridFilterCell',

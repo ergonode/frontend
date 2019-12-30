@@ -11,7 +11,7 @@
 
 <script>
 import GridPresentationCell from '@Core/components/Grid/PresentationCells/GridPresentationCell';
-import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
+import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 
 export default {
     name: 'GridPresentationSelectCell',

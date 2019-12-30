@@ -48,14 +48,14 @@
 
 <script>
 import { THEMES } from '@Core/defaults/buttons';
-import { ARROW } from '~/defaults/icons';
+import { ARROW } from '@Core/defaults/icons';
 
 export default {
     name: 'GridPagination',
     components: {
         TextField: () => import('@Core/components/Inputs/TextField'),
         FabButton: () => import('@Core/components/Buttons/FabButton'),
-        IconArrowPointer: () => import('~/components/Icon/Arrows/IconArrowPointer'),
+        IconArrowPointer: () => import('@Core/components/Icons/Arrows/IconArrowPointer'),
         FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
     },
     props: {

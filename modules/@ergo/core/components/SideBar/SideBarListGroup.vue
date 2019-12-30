@@ -55,8 +55,8 @@
 
 <script>
 import { GREEN, WHITE, GREY_DARK } from '~/assets/scss/_variables/_colors.scss';
-import { ARROW } from '~/defaults/icons';
-import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
+import { ARROW } from '@Core/defaults/icons';
+import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 import SideBarListGroupElement from './SideBarListGroupElement';
 import FadeSideBarTextTransition from '@Core/components/Transitions/FadeSideBarTextTransition';
 

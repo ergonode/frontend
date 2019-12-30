@@ -26,8 +26,8 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import TemplateGridWrapper from '~/components/TemplateGrid/TemplateGridWrapper';
-import TemplateGridHeader from '~/components/TemplateGrid/TemplateGridHeader';
+import TemplateGridWrapper from '@Core/components/TemplateGrid/TemplateGridWrapper';
+import TemplateGridHeader from '@Core/components/TemplateGrid/TemplateGridHeader';
 import CategoryTreeItem from '@Trees/components/CategoryTreeDesigner/CategoryTreeItem';
 
 export default {

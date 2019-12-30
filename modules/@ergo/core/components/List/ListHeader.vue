@@ -24,13 +24,13 @@
 
 <script>
 import { THEMES } from '@Core/defaults/buttons';
-import { ARROW } from '~/defaults/icons';
+import { ARROW } from '@Core/defaults/icons';
 
 export default {
     name: 'ListHeader',
     components: {
         FabButton: () => import('@Core/components/Buttons/FabButton'),
-        IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),
+        IconArrowDouble: () => import('@Core/components/Icons/Arrows/IconArrowDouble'),
     },
     props: {
         header: {

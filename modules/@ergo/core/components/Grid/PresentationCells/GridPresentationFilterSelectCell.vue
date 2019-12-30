@@ -12,7 +12,7 @@
 
 <script>
 import GridPresentationFilterCell from '@Core/components/Grid/PresentationCells/GridPresentationFilterCell';
-import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
+import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 
 export default {
     name: 'GridPresentationFilterSelectCell',

@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import tabBarItemMixin from '~/mixins/tabBar/tabBarItemMixin';
+import tabBarItemMixin from '@Core/mixins/tabBar/tabBarItemMixin';
 import { GRAPHITE, GREEN } from '~/assets/scss/_variables/_colors.scss';
 
 export default {

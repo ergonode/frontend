@@ -22,7 +22,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
+import { UNASSIGNED_GROUP_ID } from '@Core/defaults/list';
 
 export default {
     name: 'AttributesListGroup',

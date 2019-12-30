@@ -10,7 +10,7 @@ import {
     getMappedColumns,
     getSortedColumnsByIDs,
     getParsedRequestDataParams,
-} from '~/model/mappers/gridDataMapper';
+} from '@Core/models/mappers/gridDataMapper';
 import { swapItemPosition, insertValueAtIndex } from '@Core/models/arrayWrapper';
 import { COLUMNS_IDS, ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 import { types } from './mutations';

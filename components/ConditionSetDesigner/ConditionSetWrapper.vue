@@ -30,8 +30,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import TemplateGridWrapper from '~/components/TemplateGrid/TemplateGridWrapper';
-import TemplateGridHeader from '~/components/TemplateGrid/TemplateGridHeader';
+import TemplateGridWrapper from '@Core/components/TemplateGrid/TemplateGridWrapper';
+import TemplateGridHeader from '@Core/components/TemplateGrid/TemplateGridHeader';
 
 export default {
     name: 'ConditionSetWrapper',

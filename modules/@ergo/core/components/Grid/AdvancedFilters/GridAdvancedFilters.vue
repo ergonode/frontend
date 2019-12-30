@@ -75,7 +75,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
-import { ARROW } from '~/defaults/icons';
+import { ARROW } from '@Core/defaults/icons';
 import { GHOST_ID } from '@Core/defaults/grid';
 import GridAdvancedFilterPlaceholder from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder';
 import GridAdvancedFilterGhost from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilterGhost';
@@ -87,7 +87,7 @@ export default {
         Divider: () => import('@Core/components/Dividers/Divider'),
         NumericBadge: () => import('@Core/components/Badges/NumericBadge'),
         FabButton: () => import('@Core/components/Buttons/FabButton'),
-        IconArrowDouble: () => import('~/components/Icon/Arrows/IconArrowDouble'),
+        IconArrowDouble: () => import('@Core/components/Icons/Arrows/IconArrowDouble'),
         GridAdvancedFiltersContainer: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFiltersContainer'),
         GridAdvancedFilter: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFilter'),
         FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),

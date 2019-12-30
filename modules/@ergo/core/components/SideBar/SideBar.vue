@@ -40,9 +40,9 @@
 
 <script>
 import { THEMES } from '@Core/defaults/buttons';
-import { ARROW } from '~/defaults/icons';
+import { ARROW } from '@Core/defaults/icons';
 import { GREEN, WHITE } from '~/assets/scss/_variables/_colors.scss';
-import IconArrowDouble from '~/components/Icon/Arrows/IconArrowDouble';
+import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
 import FabButton from '@Core/components/Buttons/FabButton';
 import SideBarLogo from '@Core/components/SideBar/SideBarLogo';
 import SideBarListElement from './SideBarListElement';

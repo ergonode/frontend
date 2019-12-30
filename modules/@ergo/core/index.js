@@ -73,12 +73,20 @@ export default {
             name: 'translations',
         },
         {
+            directory: 'list',
+            name: 'list',
+        },
+        {
             directory: 'alerts',
             name: 'alerts',
         },
         {
             directory: 'draggable',
             name: 'draggable',
+        },
+        {
+            directory: 'gridDesigner',
+            name: 'gridDesigner',
         },
     ],
 };

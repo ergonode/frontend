@@ -50,7 +50,7 @@ export default {
     name: 'SegmentPage',
     mixins: [categoryManagementPageBaseMixin],
     components: {
-        TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
+        TrashCan: () => import('@Core/components/DragAndDrop/TrashCan'),
         Blur: () => import('@Core/components/Blur/Blur'),
     },
     computed: {

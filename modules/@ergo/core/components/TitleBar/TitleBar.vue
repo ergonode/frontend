@@ -41,8 +41,8 @@ import { WHITE, BLUE, GREEN } from '~/assets/scss/_variables/_colors.scss';
 import TitleBarHeader from '@Core/components/TitleBar/TitleBarHeader';
 import TitleBarActions from '@Core/components/TitleBar/TitleBarActions';
 import InformationIconBadge from '@Core/components/Badges/InformationIconBadge';
-import IconLock from '~/components/Icon/Feedback/IconLock';
-import IconArrowPointer from '~/components/Icon/Arrows/IconArrowPointer';
+import IconLock from '@Core/components/Icons/Feedback/IconLock';
+import IconArrowPointer from '@Core/components/Icons/Arrows/IconArrowPointer';
 import FabButton from '@Core/components/Buttons/FabButton';
 
 export default {

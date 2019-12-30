@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import BaseIcon from '~/components/Icon/BaseIcon';
+import BaseIcon from '@Core/components/Icons/BaseIcon';
 import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {

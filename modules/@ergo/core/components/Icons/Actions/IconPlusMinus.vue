@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import { ACTION } from '~/defaults/icons';
+import { ACTION } from '@Core/defaults/icons';
 import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
-import BaseIcon from '~/components/Icon/BaseIcon';
+import BaseIcon from '@Core/components/Icons/BaseIcon';
 
 export default {
     name: 'IconPlusMinus',

@@ -73,7 +73,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { ARROW } from '~/defaults/icons';
+import { ARROW } from '@Core/defaults/icons';
 import { TYPES } from '~/defaults/attributes';
 import {
     addElementCopyToDocumentBody,
@@ -85,14 +85,14 @@ import {
 } from '~/model/drag_and_drop/helpers';
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 import { changeCookiePosition } from '~/model/cookies';
-import { getMappedColumnHeaderTitle } from '~/model/mappers/gridDataMapper';
+import { getMappedColumnHeaderTitle } from '@Core/models/mappers/gridDataMapper';
 import DropDown from '@Core/components/Inputs/Select/Contents/DropDown';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 
 export default {
     name: 'GridAdvancedFilter',
     components: {
-        IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
+        IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
         DropDown,
         FadeTransition,
     },

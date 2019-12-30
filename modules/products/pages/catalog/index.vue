@@ -37,7 +37,7 @@ export default {
     components: {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
-        TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
+        TrashCan: () => import('@Core/components/DragAndDrop/TrashCan'),
         ProductGridTab,
         Button,
         IconAdd,
@@ -77,7 +77,10 @@ export default {
         const gridPath = `${userLanguageCode}/products`;
 
         await Promise.all([
-            store.dispatch('list/getGroups', userLanguageCode),
+            store.dispatch('list/getGroups', {
+                listType: 'attributes',
+                languageCode: userLanguageCode,
+            }),
             store.dispatch('list/getElementsForGroup', {
                 listType: 'attributes',
                 groupId: null,

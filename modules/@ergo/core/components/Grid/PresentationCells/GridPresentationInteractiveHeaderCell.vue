@@ -64,15 +64,15 @@ import { mapState, mapActions } from 'vuex';
 import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { removeCookieById } from '~/model/cookies';
 import { COLUMNS_IDS } from '@Core/defaults/grid/cookies';
-import { SORTING_ORDER } from '~/defaults/icons';
+import { SORTING_ORDER } from '@Core/defaults/icons';
 import { GRAPHITE_LIGHT } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'GridPresentationInteractiveHeaderCell',
     components: {
         MenuButton: () => import('@Core/components/Buttons/MenuButton'),
-        IconArrowSort: () => import('~/components/Icon/Arrows/IconArrowSort'),
-        IconDots: () => import('~/components/Icon/Others/IconDots'),
+        IconArrowSort: () => import('@Core/components/Icons/Arrows/IconArrowSort'),
+        IconDots: () => import('@Core/components/Icons/Others/IconDots'),
         List: () => import('@Core/components/List/List'),
         ListElement: () => import('@Core/components/List/ListElement'),
         ListElementDescription: () => import('@Core/components/List/ListElementDescription'),

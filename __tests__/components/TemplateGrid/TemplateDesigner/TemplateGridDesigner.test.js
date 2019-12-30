@@ -4,7 +4,7 @@
  */
 import { shallowMount } from '@vue/test-utils';
 import TemplateGridDesigner from '~/components/Template/Base/TemplateGridDesigner';
-import TemplateGridPresentationLayer from '~/components/TemplateGrid/TemplateGridPresentationLayer';
+import TemplateGridPresentationLayer from '@Core/components/TemplateGrid/TemplateGridPresentationLayer';
 
 const columnsNumber = 4;
 const maxRows = 0;

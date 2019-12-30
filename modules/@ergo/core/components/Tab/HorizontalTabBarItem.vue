@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import tabBarItemMixin from '~/mixins/tabBar/tabBarItemMixin';
+import tabBarItemMixin from '@Core/mixins/tabBar/tabBarItemMixin';
 
 export default {
     name: 'HorizontalTabBarItem',

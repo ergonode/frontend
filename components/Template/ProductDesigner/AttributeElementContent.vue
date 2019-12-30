@@ -58,7 +58,7 @@ import { mapActions } from 'vuex';
 import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
 import MenuButton from '@Core/components/Buttons/MenuButton';
-import IconDots from '~/components/Icon/Others/IconDots';
+import IconDots from '@Core/components/Icons/Others/IconDots';
 import CheckBox from '@Core/components/Inputs/CheckBox';
 import ElementContentBase from '~/components/Template/ProductDesigner/ElementContentBase';
 import List from '@Core/components/List/List';
@@ -123,7 +123,7 @@ export default {
             const types = this.element.type.split('_');
             const attributeName = capitalizeAndConcatenationArray(types);
 
-            return () => import(`~/components/Icon/Attributes/Icon${attributeName}`);
+            return () => import(`@Core/components/Icons/Attributes/Icon${attributeName}`);
         },
         contextualMenuHoveStateClasses() {
             return { 'element-content__contextual-menu--hovered': this.isHovered };

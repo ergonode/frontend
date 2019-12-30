@@ -3,13 +3,11 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedGroupsElementsCount,
     getMappedOptionKeysValues,
     getParsedType,
     getParsedParameterKeys,
     getParsedOptions,
 } from '~/model/mappers/attributeMapper';
-import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
 
 describe('attributeMapper/getParsedOptions', () => {
     describe('Based on form data, data is mapped into API structure', () => {
@@ -108,43 +106,6 @@ describe('attributeMapper/getMappedOptionKeysValues', () => {
                 },
             };
             expect(getMappedOptionKeysValues(apiData, true)).toStrictEqual(result);
-        });
-    });
-});
-
-describe('attributeMapper/getMappedGroupsElementsCount', () => {
-    describe('Based on API data, data is mapped into data structure', () => {
-        it('Counting elements for each group', () => {
-            const allGroups = ['first', 'second'];
-            const oneGroup = ['first'];
-            const noneGroup = [];
-            const elements = [
-                {
-                    groups: allGroups,
-                },
-                {
-                    groups: oneGroup,
-                },
-                {
-                    groups: allGroups,
-                },
-                {
-                    groups: noneGroup,
-                },
-                {
-                    groups: noneGroup,
-                },
-                {
-                    groups: noneGroup,
-                },
-            ];
-            const result = {
-                first: 3,
-                second: 2,
-                [UNASSIGNED_GROUP_ID]: 3,
-            };
-
-            expect(getMappedGroupsElementsCount(elements)).toStrictEqual(result);
         });
     });
 });

@@ -35,9 +35,9 @@
 
 <script>
 import { THEMES } from '@Core/defaults/buttons';
-import { ARROW } from '~/defaults/icons';
+import { ARROW } from '@Core/defaults/icons';
 import FabButton from '@Core/components/Buttons/FabButton';
-import IconArrowSingle from '~/components/Icon/Arrows/IconArrowSingle';
+import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
 
 export default {
     name: 'DatePickerNavigationHeader',

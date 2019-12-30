@@ -24,7 +24,7 @@ import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
 import { toCapitalize } from '@Core/models/stringWrapper';
 import FabButton from '@Core/components/Buttons/FabButton';
-import IconClose from '~/components/Icon/Window/IconClose';
+import IconClose from '@Core/components/Icons/Window/IconClose';
 
 export default {
     name: 'Alert',
@@ -50,7 +50,7 @@ export default {
             return toCapitalize(this.alert.type);
         },
         feedbackIconComponent() {
-            return () => import(`~/components/Icon/Feedback/Icon${this.capitalizedAlertType}`);
+            return () => import(`@Core/components/Icons/Feedback/Icon${this.capitalizedAlertType}`);
         },
     },
     methods: {

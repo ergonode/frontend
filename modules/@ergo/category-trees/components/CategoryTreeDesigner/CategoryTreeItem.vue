@@ -38,8 +38,8 @@
 </template>
 <script>
 import { SIZES, THEMES } from '@Core/defaults/buttons';
-import { ACTION } from '~/defaults/icons';
-import IconDots from '~/components/Icon/Others/IconDots';
+import { ACTION } from '@Core/defaults/icons';
+import IconDots from '@Core/components/Icons/Others/IconDots';
 import IconPlusMinus from '@Core/components/Icons/Actions/IconPlusMinus';
 import MenuButton from '@Core/components/Buttons/MenuButton';
 import NumericBadge from '@Core/components/Badges/NumericBadge';

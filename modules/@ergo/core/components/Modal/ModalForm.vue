@@ -38,7 +38,7 @@ import ModalOverlay from '@Core/components/Modal/ModalOverlay';
 import Form from '@Core/components/Form/Form';
 import Divider from '@Core/components/Dividers/Divider';
 import FabButton from '@Core/components/Buttons/FabButton';
-import IconClose from '~/components/Icon/Window/IconClose';
+import IconClose from '@Core/components/Icons/Window/IconClose';
 
 export default {
     name: 'Modal',

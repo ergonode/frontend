@@ -78,7 +78,7 @@
 
 <script>
 import { THEMES } from '@Core/defaults/buttons';
-import { ARROW } from '~/defaults/icons';
+import { ARROW } from '@Core/defaults/icons';
 import calendar, {
     getNextMonth,
     getPreviousMonth,
@@ -86,7 +86,7 @@ import calendar, {
     CALENDAR_MONTHS,
 } from '~/model/calendar/calendar';
 import FabButton from '@Core/components/Buttons/FabButton';
-import IconArrowSingle from '~/components/Icon/Arrows/IconArrowSingle';
+import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
 import DatePickerMonthDays from '@Core/components/Inputs/DatePicker/DatePickerMonthDays';
 import DatePickerContentHeader from '@Core/components/Inputs/DatePicker/DatePickerContentHeader';
 import DatePickerNavigationHeader from '@Core/components/Inputs/DatePicker/DatePickerNavigationHeader';

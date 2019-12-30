@@ -47,7 +47,7 @@ export default {
     name: 'TemplatePage',
     mixins: [categoryManagementPageBaseMixin],
     components: {
-        TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
+        TrashCan: () => import('@Core/components/DragAndDrop/TrashCan'),
     },
     computed: {
         ...mapState('draggable', {

@@ -49,9 +49,9 @@ export default {
         }),
         typeIconComponent() {
             if (typeof TYPES[this.item.type] === 'undefined') {
-                return () => import('~/components/Icon/Attributes/IconText');
+                return () => import('@Core/components/Icons/Attributes/IconText');
             }
-            return () => import(`~/components/Icon/Attributes/Icon${this.formattedAttributeType}`);
+            return () => import(`@Core/components/Icons/Attributes/Icon${this.formattedAttributeType}`);
         },
         formattedAttributeType() {
             return capitalizeAndConcatenationArray(this.item.type.split('_'));

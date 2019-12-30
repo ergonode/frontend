@@ -15,7 +15,7 @@ export default {
     name: 'NavigationBarSynchronizationButton',
     components: {
         NavigationBarButton: () => import('@Core/components/NavigationBar/NavigationBarButton'),
-        IconProcessing: () => import('~/components/Icon/Others/IconProcessing'),
+        IconProcessing: () => import('@Core/components/Icons/Others/IconProcessing'),
     },
     computed: {
         whiteColor() {

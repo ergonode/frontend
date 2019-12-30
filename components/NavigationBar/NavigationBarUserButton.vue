@@ -32,14 +32,14 @@
 import { mapState } from 'vuex';
 import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 import { toCapitalize } from '@Core/models/stringWrapper';
-import { ARROW } from '~/defaults/icons';
+import { ARROW } from '@Core/defaults/icons';
 
 export default {
     name: 'NavigationBarUserButton',
     components: {
         NavigationBarSelectButton: () => import('@Core/components/NavigationBar/NavigationBarSelectButton'),
         NavigationBarUserSelectContent: () => import('~/components/NavigationBar/NavigationBarUserSelectContent'),
-        IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
+        IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
         UserAvatar: () => import('~/components/Multimedia/UserAvatar'),
     },
     data() {

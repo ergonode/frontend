@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import IconTooltip from '~/components/Icon/Feedback/IconTooltip';
+import IconTooltip from '@Core/components/Icons/Feedback/IconTooltip';
 
 export default {
     name: 'InfoHint',

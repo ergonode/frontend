@@ -98,7 +98,7 @@ export default {
         },
         searchBtnIconComponent() {
             return this.isSearchBtnClicked
-                ? () => import('~/components/Icon/Window/IconClose')
+                ? () => import('@Core/components/Icons/Window/IconClose')
                 : IconSearch;
         },
         searchIconFillColor() {

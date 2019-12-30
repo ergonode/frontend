@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import IconError from '~/components/Icon/Feedback/IconError';
+import IconError from '@Core/components/Icons/Feedback/IconError';
 
 export default {
     name: 'ErrorHint',

@@ -12,7 +12,7 @@
 export default {
     name: 'GridCheckPlaceholderCell',
     components: {
-        IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
+        IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
     },
 };
 </script>

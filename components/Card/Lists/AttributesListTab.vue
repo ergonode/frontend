@@ -102,7 +102,10 @@ export default {
             this.attributesLanguageCode = option;
 
             Promise.all([
-                this.getGroups(this.attributesLanguageCode),
+                this.getGroups({
+                    listType: this.listDataType,
+                    languageCode: this.attributesLanguageCode,
+                }),
                 this.getElements({
                     listType: this.listDataType,
                     languageCode: this.attributesLanguageCode,

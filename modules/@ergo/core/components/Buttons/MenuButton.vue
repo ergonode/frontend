@@ -39,7 +39,7 @@
     </Button>
 </template>
 <script>
-import { ARROW } from '~/defaults/icons';
+import { ARROW } from '@Core/defaults/icons';
 import Button from '@Core/components/Buttons/Button';
 
 export default {
@@ -51,7 +51,7 @@ export default {
         ListElement: () => import('@Core/components/List/ListElement'),
         ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
         ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
-        IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
+        IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
         FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
     },
     props: {
