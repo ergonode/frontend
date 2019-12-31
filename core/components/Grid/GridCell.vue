@@ -201,7 +201,7 @@ export default {
             const fixedHeight = factor * this.startHeight;
 
             if (height < 0) {
-                this.$refs.resizerBorder.style.height = `${-1 * fixedHeight + this.startHeight}px`;
+                this.$refs.resizerBorder.style.height = `${-1 * fixedHeight + 2 * this.startHeight}px`;
                 this.$refs.resizerBorder.classList.add('grid-cell__resizer-border--negative-height');
             } else {
                 this.$refs.resizerBorder.style.height = `${fixedHeight}px`;
