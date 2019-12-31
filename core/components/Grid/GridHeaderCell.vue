@@ -4,7 +4,6 @@
  */
 <template>
     <GridCell
-        :editing-allowed="false"
         :row="rowIndex"
         :column="columnIndex"
         :locked="true"

@@ -25,10 +25,6 @@ export default {
     name: 'GridCell',
     inject: ['getEditingCellCoordinates', 'setEditingCellCoordinates'],
     props: {
-        editingAllowed: {
-            type: Boolean,
-            required: true,
-        },
         actionCell: {
             type: Boolean,
             required: true,
@@ -71,12 +67,12 @@ export default {
         };
     },
     mounted() {
-        if (this.editingAllowed) {
+        if (!this.locked) {
             this.$el.addEventListener('dblclick', this.onDblcClick);
         }
     },
     destroyed() {
-        if (this.editingAllowed) {
+        if (!this.locked) {
             this.$el.removeEventListener('dblclick', this.onDblcClick);
         }
     },
@@ -135,26 +131,18 @@ export default {
             switch (keyCode) {
             case 13:
                 // Key: ENTER
-                if (this.editingAllowed) {
+                if (!this.locked) {
                     element = this.$el;
 
-                    if (this.actionCell) {
-                        this.$emit('edit', !this.selected);
-                    } else {
-                        this.isEditing = !this.isEditing;
-                        this.$emit('edit', this.isEditing);
-                    }
+                    this.isEditing = !this.isEditing;
+                    this.$emit('edit', this.isEditing);
                 }
                 break;
             case 32:
                 // Key: SPACE BAR
-                if (this.editingAllowed && this.actionCell) {
-                    if (this.actionCell) {
-                        this.$emit('edit', !this.selected);
-                    } else {
-                        this.isEditing = !this.isEditing;
-                        this.$emit('edit', this.isEditing);
-                    }
+                if (!this.locked && this.actionCell) {
+                    this.isEditing = !this.isEditing;
+                    this.$emit('edit', this.isEditing);
                 }
                 break;
             case 37:
@@ -194,7 +182,7 @@ export default {
             return true;
         },
         onDblcClick() {
-            if (this.editingAllowed && !this.actionCell) {
+            if (!this.locked && !this.actionCell) {
                 this.isEditing = true;
                 this.$emit('edit', this.isEditing);
             }

@@ -4,7 +4,6 @@
  */
 <template>
     <GridCell
-        :editing-allowed="isEditingAllowed"
         :row="rowIndex"
         :column="columnIndex"
         :locked="!isEditingAllowed"
@@ -236,7 +235,6 @@ export default {
             }
         },
         onUpdateDraft(value) {
-            console.log(value);
             const isValueArray = Array.isArray(value);
             if ((value === '' || (isValueArray && value.length === 0)) && this.draft) {
                 this.removeDraftValue({ productId: this.rowId, attributeId: this.column.id });

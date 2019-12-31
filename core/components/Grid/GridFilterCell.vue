@@ -4,7 +4,7 @@
  */
 <template>
     <GridCell
-        :editing-allowed="isFilterCell"
+        :locked="!isFilterCell"
         :row="rowIndex"
         :column="columnIndex"
         :action-cell="false">

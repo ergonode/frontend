@@ -7,7 +7,6 @@
         <GridCell
             :column="columnIndex"
             :row="getRowIndex(0)"
-            :editing-allowed="false"
             :action-cell="false"
             :locked="true">
             <GridPresentationEditHeaderCell />
@@ -16,7 +15,6 @@
             v-if="basicFilters"
             :column="columnIndex"
             :row="getRowIndex(1)"
-            :editing-allowed="false"
             :action-cell="false"
             :locked="true" />
         <GridCell
@@ -24,7 +22,6 @@
             :key="rowLink.id"
             :column="columnIndex"
             :row="getRowIndex(index + rowsOffset)"
-            :editing-allowed="true"
             :action-cell="true"
             :selected="isSelectedAllRows
                 || selectedRows[getRowIndex(index + rowsOffset)]"
