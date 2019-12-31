@@ -25,7 +25,7 @@ export default {
     name: 'GridCell',
     inject: ['getEditingCellCoordinates', 'setEditingCellCoordinates'],
     props: {
-        actionCell: {
+        spacebarEdition: {
             type: Boolean,
             required: true,
         },
@@ -109,7 +109,7 @@ export default {
     },
     methods: {
         onMouseDown() {
-            if (!this.actionCell && !this.isEditing) {
+            if (!this.spacebarEdition && !this.isEditing) {
                 this.isEditing = false;
                 this.$emit('edit', this.isEditing);
             }
@@ -119,7 +119,7 @@ export default {
 
             let element;
 
-            if (this.isEditing && !this.actionCell && keyCode !== 13) {
+            if (this.isEditing && !this.spacebarEdition && keyCode !== 13) {
                 if (keyCode === 9) {
                     event.preventDefault();
                     event.stopPropagation();
@@ -140,7 +140,7 @@ export default {
                 break;
             case 32:
                 // Key: SPACE BAR
-                if (!this.locked && this.actionCell) {
+                if (!this.locked && this.spacebarEdition) {
                     this.isEditing = !this.isEditing;
                     this.$emit('edit', this.isEditing);
                 }
@@ -182,7 +182,7 @@ export default {
             return true;
         },
         onDblcClick() {
-            if (!this.locked && !this.actionCell) {
+            if (!this.locked && !this.spacebarEdition) {
                 this.isEditing = true;
                 this.$emit('edit', this.isEditing);
             }

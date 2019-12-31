@@ -9,7 +9,7 @@
         :locked="!isEditingAllowed"
         :error="isErrorCell"
         :draft="isDraftCell"
-        :action-cell="false"
+        :spacebar-edition="false"
         :selected="isSelected">
         <template #default="{ isEditing }">
             <Component

@@ -7,7 +7,7 @@
         <GridCell
             :column="columnIndex"
             :row="getRowIndex(0)"
-            :action-cell="false"
+            :spacebar-edition="false"
             :locked="true">
             <GridPresentationEditHeaderCell />
         </GridCell>
@@ -15,14 +15,14 @@
             v-if="basicFilters"
             :column="columnIndex"
             :row="getRowIndex(1)"
-            :action-cell="false"
+            :spacebar-edition="false"
             :locked="true" />
         <GridCell
             v-for="(rowLink, index) in rowLinks"
             :key="rowLink.id"
             :column="columnIndex"
             :row="getRowIndex(index + rowsOffset)"
-            :action-cell="true"
+            :spacebar-edition="true"
             :selected="isSelectedAllRows
                 || selectedRows[getRowIndex(index + rowsOffset)]"
             @edit="onEdit(rowLink)">

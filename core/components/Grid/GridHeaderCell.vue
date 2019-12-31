@@ -7,7 +7,7 @@
         :row="rowIndex"
         :column="columnIndex"
         :locked="true"
-        :action-cell="false">
+        :spacebar-edition="false">
         <Component
             :is="headerComponent"
             v-bind="headerComponentProps"

@@ -16,7 +16,7 @@
                 <template #cell="{ column, columnIndex, rowId, rowIndex, cellData }">
                     <GridCell
                         :key="rowId"
-                        :action-cell="false"
+                        :spacebar-edition="false"
                         :column="columnIndex"
                         :row="rowIndex"
                         :locked="true">

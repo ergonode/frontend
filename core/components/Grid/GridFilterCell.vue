@@ -7,7 +7,7 @@
         :locked="!isFilterCell"
         :row="rowIndex"
         :column="columnIndex"
-        :action-cell="false">
+        :spacebar-edition="false">
         <template #default="{ isEditing }">
             <Component
                 :is="infoComponent"
