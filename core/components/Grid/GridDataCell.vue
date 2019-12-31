@@ -7,8 +7,8 @@
         :row="rowIndex"
         :column="columnIndex"
         :locked="!isEditingAllowed"
-        :error="isErrorCell"
-        :draft="isDraftCell"
+        :error="errorValue !== null"
+        :draft="draftValue !== null"
         :spacebar-edition="false"
         :selected="isSelected">
         <template #default="{ isEditing }">
@@ -104,12 +104,6 @@ export default {
         isEditingAllowed() {
             return this.column.editable && this.editingPrivilegeAllowed;
         },
-        isErrorCell() {
-            return typeof this.errorValue !== 'undefined';
-        },
-        isDraftCell() {
-            return this.draftValue !== null;
-        },
         infoComponent() {
             const { type } = this.column;
 
@@ -203,7 +197,7 @@ export default {
             const { element_id: elementId } = this.column;
             const { [`${this.rowId}/${elementId}`]: errors } = this.validationErrors;
 
-            return errors;
+            return errors || null;
         },
         options() {
             const { filter } = this.column;
