@@ -199,11 +199,12 @@ export default {
             const height = this.startHeight + pageY - this.startY;
             const factor = Math.ceil(height / this.startHeight);
             const fixedHeight = factor * this.startHeight;
+
             if (height < 0) {
-                this.$refs.resizerBorder.style.height = `${-1 * fixedHeight - 4 + this.startHeight}px`;
+                this.$refs.resizerBorder.style.height = `${-1 * fixedHeight + this.startHeight}px`;
                 this.$refs.resizerBorder.classList.add('grid-cell__resizer-border--negative-height');
             } else {
-                this.$refs.resizerBorder.style.height = `${fixedHeight - 4}px`;
+                this.$refs.resizerBorder.style.height = `${fixedHeight}px`;
                 this.$refs.resizerBorder.classList.remove('grid-cell__resizer-border--negative-height');
             }
 
@@ -214,10 +215,24 @@ export default {
         },
         stopResizeDrag() {
             // TODO: Emit copy event
+            const height = parseInt(this.$refs.resizerBorder.getBoundingClientRect().height, 10);
+            const factor = Math.ceil(height / this.startHeight) - 1;
+
             this.isResizing = false;
             this.$refs.resizerBorder.style.height = null;
             this.$refs.resizerBorder.classList.remove('grid-cell__resizer-border--negative-height');
+
             this.removeEventListenersForResizeState();
+            this.$emit('copy', {
+                from: {
+                    row: this.row,
+                    column: this.column,
+                },
+                to: {
+                    row: this.row + factor,
+                    column: this.column,
+                },
+            });
         },
         addEventListenersForResizeState() {
             document.documentElement.addEventListener(
@@ -309,6 +324,7 @@ export default {
             z-index: $Z_INDEX_LVL_1;
             height: 100%;
             border: $BORDER_2_DASHED_GREEN;
+            box-sizing: border-box;
 
             &--negative-height {
                 bottom: 0;
