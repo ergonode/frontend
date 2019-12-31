@@ -84,7 +84,7 @@ import calendar, {
     getPreviousMonth,
     WEEK_DAYS,
     CALENDAR_MONTHS,
-} from '~/model/calendar/calendar';
+} from '@Core/models/calendar/calendar';
 import FabButton from '@Core/components/Buttons/FabButton';
 import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
 import DatePickerMonthDays from '@Core/components/Inputs/DatePicker/DatePickerMonthDays';

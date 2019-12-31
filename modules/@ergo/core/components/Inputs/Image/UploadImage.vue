@@ -54,7 +54,7 @@
 import { mapState, mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
 import { GRAPHITE, GREEN, RED } from '~/assets/scss/_variables/_colors.scss';
-import { getImageData } from '~/model/multimedia';
+import { getImageData } from '@Core/models/multimedia';
 
 export default {
     name: 'UploadImage',

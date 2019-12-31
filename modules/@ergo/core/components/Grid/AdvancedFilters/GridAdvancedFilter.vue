@@ -78,13 +78,13 @@ import { TYPES } from '@Attributes/defaults/attributes';
 import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
-} from '~/model/layout/ElementCopy';
+} from '@Core/models/layout/ElementCopy';
 import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT } from '@Core/defaults/grid';
 import {
     getDraggedColumnPositionState,
 } from '@Core/models/drag_and_drop/helpers';
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
-import { changeCookiePosition } from '~/model/cookies';
+import { changeCookiePosition } from '@Core/models/cookies';
 import { getMappedColumnHeaderTitle } from '@Core/models/mappers/gridDataMapper';
 import DropDown from '@Core/components/Inputs/Select/Contents/DropDown';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';

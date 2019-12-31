@@ -19,8 +19,6 @@ export const actions = {
         const { store: modulesStore } = getModulesConfig;
 
         dispatch('data/clearStorage');
-        dispatch('segments/clearStorage');
-        dispatch('conditions/clearStorage');
         dispatch('productsDraft/clearStorage');
         dispatch('productStatus/clearStorage');
         dispatch('gridDraft/clearStorage');

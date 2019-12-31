@@ -31,8 +31,8 @@ import { mapState, mapActions } from 'vuex';
 import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
-} from '~/model/layout/ElementCopy';
-import { removeCookieById } from '~/model/cookies';
+} from '@Core/models/layout/ElementCopy';
+import { removeCookieById } from '@Core/models/cookies';
 import { COLUMNS_IDS } from '@Core/defaults/grid/cookies';
 import { getDraggedColumnPositionState } from '@Core/models/drag_and_drop/helpers';
 import { DRAGGED_ELEMENT, COLUMN_TYPE } from '@Core/defaults/grid';

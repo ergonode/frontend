@@ -56,6 +56,21 @@ export default [
     {
         active: true,
         source: 'local',
+        name: '@ergo/conditions',
+    },
+    {
+        active: true,
+        source: 'local',
+        name: '@ergo/segments',
+    },
+    {
+        active: true,
+        source: 'local',
+        name: '@ergo/status-transitions',
+    },
+    {
+        active: true,
+        source: 'local',
         name: '@ergo/activity-logs',
     },
     {

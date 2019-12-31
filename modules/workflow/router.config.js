@@ -6,16 +6,11 @@ const Pages = {
     ProductStatuses: () => import('~/modules/workflow/pages/product-statuses/index').then((m) => m.default || m),
     ProductStatusNew: () => import('~/modules/workflow/pages/product-statuses/_status/index').then((m) => m.default || m),
     ProductStatusEdit: () => import('~/modules/workflow/pages/product-statuses/_status/_id').then((m) => m.default || m),
-    StatusTransitions: () => import('~/modules/workflow/pages/status-transitions/index').then((m) => m.default || m),
-    StatusTransitionNew: () => import('~/modules/workflow/pages/status-transitions/_transition/index').then((m) => m.default || m),
-    StatusTransitionEdit: () => import('~/modules/workflow/pages/status-transitions/_transition/_id').then((m) => m.default || m),
 };
 
 const Tabs = {
     ProductStatusBaseTab: () => import('~/modules/workflow/pages/product-statuses/_status/_tabs/ProductStatusBaseTab').then((m) => m.default || m),
     ProductStatusTranslationsTab: () => import('~/modules/workflow/pages/product-statuses/_status/_tabs/ProductStatusTranslationsTab').then((m) => m.default || m),
-    StatusTransitionBaseTab: () => import('~/modules/workflow/pages/status-transitions/_transition/_tabs/TransitionBaseTab').then((m) => m.default || m),
-    ConditionSetDesignTab: () => import('~/modules/workflow/pages/status-transitions/_transition/_tabs/ConditionSetDesignTab').then((m) => m.default || m),
 };
 
 export const routing = [
@@ -104,104 +99,6 @@ export const routing = [
                         {
                             title: 'Product statuses',
                             routePath: '/product-statuses',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-        ],
-        meta: {
-            isMenu: false,
-            redirectTo: 'general',
-        },
-    },
-    {
-        name: 'status-transitions',
-        path: '/status-transitions',
-        component: Pages.StatusTransitions,
-        meta: {
-            access: true,
-            title: 'Status transitions',
-            group: {
-                title: 'Workflow',
-                icon: () => import('@Core/components/Icons/Menu/IconFlow'),
-            },
-            isMenu: true,
-            privileges: {
-                namespace: 'WORKFLOW',
-                read: 'WORKFLOW_READ',
-            },
-        },
-    },
-
-    {
-        name: 'transition-new',
-        path: '/status-transitions/transition/new',
-        component: Pages.StatusTransitionNew,
-        children: [
-            {
-                name: 'transition-new-general',
-                path: 'general',
-                component: Tabs.StatusTransitionBaseTab,
-                meta: {
-                    title: 'General options',
-                    breadcrumbs: [
-                        {
-                            title: 'Workflow',
-                            icon: () => import('@Core/components/Icons/Menu/IconFlow'),
-                        },
-                        {
-                            title: 'Status transitions',
-                            routePath: '/status-transitions',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-        ],
-        meta: {
-            isMenu: false,
-            redirectTo: 'general',
-        },
-    },
-    {
-        name: 'transition-edit-source-destination',
-        path: '/status-transitions/transition/edit/:id',
-        component: Pages.StatusTransitionEdit,
-        children: [
-            {
-                name: 'transition-edit-id-general',
-                path: 'general',
-                component: Tabs.StatusTransitionBaseTab,
-                meta: {
-                    title: 'General options',
-                    breadcrumbs: [
-                        {
-                            title: 'Workflow',
-                            icon: () => import('@Core/components/Icons/Menu/IconFlow'),
-                        },
-                        {
-                            title: 'Status transitions',
-                            routePath: '/status-transitions',
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
-            {
-                name: 'transition-edit-id-designer',
-                path: 'designer',
-                component: Tabs.ConditionSetDesignTab,
-                meta: {
-                    title: 'Designer',
-                    breadcrumbs: [
-                        {
-                            title: 'Workflow',
-                            icon: () => import('@Core/components/Icons/Menu/IconFlow'),
-                        },
-                        {
-                            title: 'Status transitions',
-                            routePath: '/status-transitions',
                         },
                     ],
                     privileges: [],

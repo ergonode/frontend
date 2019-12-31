@@ -62,7 +62,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { SIZES, THEMES } from '@Core/defaults/buttons';
-import { removeCookieById } from '~/model/cookies';
+import { removeCookieById } from '@Core/models/cookies';
 import { COLUMNS_IDS } from '@Core/defaults/grid/cookies';
 import { SORTING_ORDER } from '@Core/defaults/icons';
 import { GRAPHITE_LIGHT } from '~/assets/scss/_variables/_colors.scss';

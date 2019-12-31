@@ -40,8 +40,8 @@ import calendar, {
     getMonthIndex,
     WEEK_DAYS,
     CALENDAR_MONTHS,
-} from '~/model/calendar/calendar';
-import { CalendarType } from '~/model/calendar/CalendarType';
+} from '@Core/models/calendar/calendar';
+import { CalendarType } from '@Core/models/calendar/CalendarType';
 
 export default {
     name: 'DatePickerCalendarContent',

@@ -11,7 +11,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { getImageData } from '~/model/multimedia';
+import { getImageData } from '@Core/models/multimedia';
 
 export default {
     name: 'Picture',

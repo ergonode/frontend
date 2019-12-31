@@ -19,7 +19,7 @@
 <script>
 import {
     isSameDay,
-} from '~/model/calendar/calendar';
+} from '@Core/models/calendar/calendar';
 import DatePickerCalendarNode from '@Core/components/Inputs/DatePicker/DatePickerCalendarNode';
 
 export default {
