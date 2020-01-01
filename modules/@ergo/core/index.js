@@ -87,5 +87,9 @@ export default {
             directory: 'gridDesigner',
             name: 'gridDesigner',
         },
+        {
+            directory: 'gridDraft',
+            name: 'gridDraft',
+        },
     ],
 };

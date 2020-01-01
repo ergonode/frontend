@@ -48,7 +48,7 @@ export default {
         SideBar: () => import('@Core/components/SideBar/SideBar'),
         NavigationBar: () => import('@Core/components/NavigationBar/NavigationBar'),
         NavigationBarBreadcrumb: () => import('@Core/components/NavigationBar/NavigationBarBreadcrumb'),
-        NavigationBarUserButton: () => import('~/components/NavigationBar/NavigationBarUserButton'),
+        NavigationBarUserButton: () => import('@Core/components/NavigationBar/NavigationBarUserButton'),
         FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),
     },
     data() {

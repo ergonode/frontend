@@ -6,26 +6,22 @@ import { Pages, Tabs, Icons } from './config/imports';
 import Privileges from './config/privileges';
 
 export default {
-    name: '@ergo/status-transitions',
+    name: '@ergo/product-statuses',
     type: 'page',
-    moduleRelations: [
-        '@ergo/conditions',
-        '@ergo/product-statuses',
-    ],
+    moduleRelations: [],
     privileges: Privileges,
     nuxt: {
         aliases: {
-            '@Transitions': '/',
+            '@Statuses': '/',
         },
     },
     router: [
         {
-            name: 'status-transitions',
-            path: '/status-transitions',
-            component: Pages.StatusTransitions,
+            name: 'product-statuses',
+            path: '/product-statuses',
+            component: Pages.ProductStatuses,
             meta: {
-                access: true,
-                title: 'Status transitions',
+                title: 'Product statuses',
                 group: {
                     title: 'Workflow',
                     icon: Icons.Flow,
@@ -37,16 +33,15 @@ export default {
                 },
             },
         },
-
         {
-            name: 'transition-new',
-            path: '/status-transitions/transition/new',
-            component: Pages.StatusTransitionNew,
+            name: 'product-status-new',
+            path: '/product-statuses/status/new',
+            component: Pages.ProductStatusNew,
             children: [
                 {
-                    name: 'transition-new-general',
+                    name: 'product-status-new-general',
                     path: 'general',
-                    component: Tabs.StatusTransitionBaseTab,
+                    component: Tabs.ProductStatusBaseTab,
                     meta: {
                         title: 'General options',
                         breadcrumbs: [
@@ -55,8 +50,8 @@ export default {
                                 icon: Icons.Flow,
                             },
                             {
-                                title: 'Status transitions',
-                                routePath: '/status-transitions',
+                                title: 'Product statuses',
+                                routePath: '/product-statuses',
                             },
                         ],
                         privileges: [],
@@ -69,14 +64,14 @@ export default {
             },
         },
         {
-            name: 'transition-edit-source-destination',
-            path: '/status-transitions/transition/edit/:id',
-            component: Pages.StatusTransitionEdit,
+            name: 'product-status-edit-id',
+            path: '/product-statuses/status/edit/:id',
+            component: Pages.ProductStatusEdit,
             children: [
                 {
-                    name: 'transition-edit-id-general',
+                    name: 'product-status-edit-id-general',
                     path: 'general',
-                    component: Tabs.StatusTransitionBaseTab,
+                    component: Tabs.ProductStatusBaseTab,
                     meta: {
                         title: 'General options',
                         breadcrumbs: [
@@ -85,27 +80,27 @@ export default {
                                 icon: Icons.Flow,
                             },
                             {
-                                title: 'Status transitions',
-                                routePath: '/status-transitions',
+                                title: 'Product statuses',
+                                routePath: '/product-statuses',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'transition-edit-id-designer',
-                    path: 'designer',
-                    component: Tabs.ConditionSetDesignTab,
+                    name: 'product-status-edit-id-general-translations',
+                    path: 'translations',
+                    component: Tabs.ProductStatusTranslationsTab,
                     meta: {
-                        title: 'Designer',
+                        title: 'Translations',
                         breadcrumbs: [
                             {
                                 title: 'Workflow',
                                 icon: Icons.Flow,
                             },
                             {
-                                title: 'Status transitions',
-                                routePath: '/status-transitions',
+                                title: 'Product statuses',
+                                routePath: '/product-statuses',
                             },
                         ],
                         privileges: [],
@@ -120,8 +115,8 @@ export default {
     ],
     store: [
         {
-            directory: 'transitions',
-            name: 'transitions',
+            directory: 'productStatus',
+            name: 'productStatus',
         },
     ],
 };

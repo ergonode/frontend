@@ -27,7 +27,7 @@ import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
 export default {
     name: 'NotificationsListElement',
     components: {
-        UserAvatar: () => import('~/components/Multimedia/UserAvatar'),
+        UserAvatar: () => import('@Core/components/Multimedia/UserAvatar'),
     },
     props: {
         notification: {

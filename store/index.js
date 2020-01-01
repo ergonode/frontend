@@ -19,9 +19,6 @@ export const actions = {
         const { store: modulesStore } = getModulesConfig;
 
         dispatch('data/clearStorage');
-        dispatch('productsDraft/clearStorage');
-        dispatch('productStatus/clearStorage');
-        dispatch('gridDraft/clearStorage');
 
         for (let i = 0; i < modulesStore.length; i += 1) {
             const { store } = modulesStore[i];

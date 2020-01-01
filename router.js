@@ -5,7 +5,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import { getModulesConfig } from '~/plugins/moduleLoader';
-import { pages } from '~/router.config';
 
 Vue.use(Router);
 
@@ -56,7 +55,7 @@ const getRoutes = () => {
         }
     }
 
-    return pages.concat(router);
+    return router;
 };
 
 export function createRouter() {

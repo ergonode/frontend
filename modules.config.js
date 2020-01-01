@@ -36,7 +36,22 @@ export default [
     {
         active: true,
         source: 'local',
+        name: '@ergo/comments',
+    },
+    {
+        active: true,
+        source: 'local',
+        name: '@ergo/products',
+    },
+    {
+        active: true,
+        source: 'local',
         name: '@ergo/product-templates',
+    },
+    {
+        active: true,
+        source: 'local',
+        name: '@ergo/product-statuses',
     },
     {
         active: true,
