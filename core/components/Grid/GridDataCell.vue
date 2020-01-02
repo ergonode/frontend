@@ -10,6 +10,7 @@
         :error="errorValue !== null"
         :draft="draftValue !== null"
         :spacebar-edition="false"
+        :copyable="isEditingAllowed"
         :selected="isSelected">
         <template #default="{ isEditing }">
             <Component

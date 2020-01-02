@@ -15,7 +15,7 @@
         <template v-if="!isDraggedColumn">
             <slot />
             <div
-                v-if="!isCheckColumn && !isHeaderFocused"
+                v-if="!isHeaderFocused"
                 :class="['column__resizer', {
                     'column__resizer--resizing': resizingElement && resizingElement.index === index
                 }]"
@@ -35,7 +35,7 @@ import {
 import { removeCookieById } from '~/model/cookies';
 import { COLUMNS_IDS } from '~/defaults/grid/cookies';
 import { getDraggedColumnPositionState } from '~/model/drag_and_drop/helpers';
-import { DRAGGED_ELEMENT, COLUMN_TYPE } from '~/defaults/grid';
+import { DRAGGED_ELEMENT } from '~/defaults/grid';
 
 export default {
     name: 'GridColumnData',
@@ -100,20 +100,9 @@ export default {
             draggedElIndex: (state) => state.draggedElIndex,
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
-        gridState() {
-            return this.$store.state[this.namespace];
-        },
-        isCheckColumn() {
-            return this.column.type === COLUMN_TYPE.CHECK;
-        },
-        isPinnedColumn() {
-            return this.gridState.pinnedColumns
-                .findIndex((col) => col.id === this.column.id) > -1;
-        },
         isColumnDraggable() {
             return this.draggable
-                && !this.isHeaderFocused
-                && !this.isCheckColumn;
+                && !this.isHeaderFocused;
         },
         isDraggedColumn() {
             return this.draggedElIndex === this.index;
@@ -144,7 +133,6 @@ export default {
 
             if (!isMouseAboveColumnHeader
                 || isMouseAboveLeftBorderLimit
-                || this.isPinnedColumn
                 || this.resizingElement) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -227,7 +215,6 @@ export default {
             if ((this.index === this.draggedElIndex && this.ghostIndex !== -1)
                 || (isBefore && this.ghostIndex === fixedIndex - 1)
                 || (!isBefore && this.ghostIndex === fixedIndex + 1)
-                || this.isPinnedColumn
                 || this.draggedElementOnGrid === DRAGGED_ELEMENT.FILTER) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -262,7 +249,7 @@ export default {
         },
         stopResizeDrag() {
             this.removeEventListenersForResizeState();
-            this.setResizingElement(null);
+            this.setResizingElement();
         },
         initMousePosition({ pageX }) {
             this.startX = pageX;
@@ -484,7 +471,7 @@ export default {
             position: absolute;
             top: 0;
             right: 1.25px;
-            z-index: 2;
+            z-index: $Z_INDEX_LVL_3;
             width: 2.5px;
             height: 100%;
             cursor: col-resize;

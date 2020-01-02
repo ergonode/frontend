@@ -8,13 +8,15 @@
         :class="gridCellClasses"
         @mousedown="onMouseDown"
         @keydown="onKeyDown">
-        <div
-            class="grid-cell__resizer"
-            @mousedown="initResizeDrag" />
-        <div
-            v-if="isResizing"
-            ref="resizerBorder"
-            class="grid-cell__resizer-border" />
+        <template v-if="copyable">
+            <div
+                class="grid-cell__resizer"
+                @mousedown="initResizeDrag" />
+            <div
+                v-if="isResizing"
+                ref="resizerBorder"
+                class="grid-cell__resizer-border" />
+        </template>
         <slot :is-editing="isEditing" />
     </div>
 </template>
@@ -49,6 +51,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        copyable: {
+            type: Boolean,
+            default: false,
+        },
         locked: {
             type: Boolean,
             default: false,
@@ -64,6 +70,7 @@ export default {
             isFocused: false,
             startY: 0,
             startHeight: 0,
+            currentHeight: 0,
         };
     },
     mounted() {
@@ -192,6 +199,7 @@ export default {
             this.isResizing = true;
             this.startY = pageY;
             this.startHeight = parseInt(this.$el.getBoundingClientRect().height, 10);
+            this.currentHeight = this.startHeight;
             this.addEventListenersForResizeState();
         },
         doResizeDrag(event) {
@@ -200,21 +208,24 @@ export default {
             const factor = Math.ceil(height / this.startHeight);
             const fixedHeight = factor * this.startHeight;
 
-            if (height < 0) {
-                this.$refs.resizerBorder.style.height = `${-1 * fixedHeight + 2 * this.startHeight}px`;
-                this.$refs.resizerBorder.classList.add('grid-cell__resizer-border--negative-height');
-            } else {
-                this.$refs.resizerBorder.style.height = `${fixedHeight}px`;
-                this.$refs.resizerBorder.classList.remove('grid-cell__resizer-border--negative-height');
-            }
+            if (fixedHeight !== this.currentHeight) {
+                if (height < 0) {
+                    this.$refs.resizerBorder.style.height = `${-1 * fixedHeight + 2 * this.startHeight}px`;
+                    this.$refs.resizerBorder.classList.add('grid-cell__resizer-border--negative-height');
+                } else {
+                    this.$refs.resizerBorder.style.height = `${fixedHeight}px`;
+                    this.$refs.resizerBorder.classList.remove('grid-cell__resizer-border--negative-height');
+                }
 
-            // const element = document.querySelector(`.coordinates-${this.column}-${this.row + factor}`);
-            // if (element) {
-            //     element.scrollIntoView(false);
-            // }
+                this.currentHeight = fixedHeight;
+
+                // const element = document.querySelector(`.coordinates-${this.column}-${this.row + factor}`);
+                // if (element) {
+                //     element.scrollIntoView(false);
+                // }
+            }
         },
         stopResizeDrag() {
-            // TODO: Emit copy event
             const height = parseInt(this.$refs.resizerBorder.getBoundingClientRect().height, 10);
             const factor = Math.ceil(height / this.startHeight) - 1;
 
