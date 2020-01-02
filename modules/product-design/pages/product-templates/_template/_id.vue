@@ -96,6 +96,7 @@ export default {
             store.dispatch('templateDesigner/getTypes', {
                 path: `${userLanguageCode}/templates/types`,
             }),
+            store.dispatch('list/clearStorage'),
             store.dispatch('list/getGroups', userLanguageCode),
             store.dispatch('list/getElementsForGroup', {
                 listType: 'attributes',

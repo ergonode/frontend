@@ -17,7 +17,7 @@
                 <template #headerSelectAllRowsCell="{ row, column }">
                     <GridCell
                         editing-allowed
-                        action-cell
+                        spacebar-edition
                         :row="row"
                         :column="column"
                         :editing="Boolean(rowsSelectionState)"
@@ -30,14 +30,13 @@
                 <template #selectRowCell="{ row, column }">
                     <GridCell
                         editing-allowed
-                        action-cell
+                        spacebar-edition
                         :row="row"
                         :column="column"
-                        :editing="Boolean(selectedRows[row - 1])"
-                        @edit="(value) => onSelectRow({ row: row - 1, value })">
+                        @edit="onSelectRow(row - 1)">
                         <GridPresentationCheckCell
                             :value="selectedRows[row - 1]"
-                            @input="(value) => onSelectRow({ row: row - 1, value })" />
+                            @input="onSelectRow(row - 1)" />
                     </GridCell>
                 </template>
                 <template #cell="{ column, columnIndex, rowId, rowIndex, cellData }">
@@ -46,9 +45,7 @@
                         :row="rowIndex"
                         :column="columnIndex"
                         :locked="isColumnTypeText(column.type) || !isEditingAllowed"
-                        :action-cell="!isColumnTypeText(column.type)"
-                        :editing-allowed="!isColumnTypeText(column.type) && isEditingAllowed"
-                        :is-selected="cellData"
+                        :spacebar-edition="!isColumnTypeText(column.type)"
                         @edit="onValueChange(rowId, column.id, cellData)">
                         <Component
                             :is="getCellComponent(column.type, rowId)"
@@ -156,31 +153,35 @@ export default {
         ...mapActions('privilegesGrid', [
             'updateDataCellValue',
         ]),
-        onSelectRow({ row, value }) {
+        onSelectRow(row) {
+            const value = !this.selectedRows[row];
+
             this.selectedRows[row] = +value;
             this.selectedRows = { ...this.selectedRows };
 
-            this.updateDataCellValues(row, value);
+            this.updateDataCellValues(row, +value);
         },
         onSelectAllRows(value) {
             this.selectEveryRowValues(value);
         },
         onValueChange(rowId, columnId, cellData) {
-            const value = !cellData.value;
+            if (columnId !== 'name') {
+                const value = !cellData.value;
 
-            if (columnId !== 'read' && value) {
-                this.updateDataCellValue({ rowId, columnId, value: true });
-                this.updateDataCellValue({ rowId, columnId: 'read', value: true });
+                if (columnId !== 'read' && value) {
+                    this.updateDataCellValue({ rowId, columnId, value: true });
+                    this.updateDataCellValue({ rowId, columnId: 'read', value: true });
+                }
+
+                if (columnId === 'read') {
+                    this.updateDataCellValue({ rowId, columnId: 'create', value: false });
+                    this.updateDataCellValue({ rowId, columnId: 'update', value: false });
+                    this.updateDataCellValue({ rowId, columnId: 'delete', value: false });
+                }
+
+                this.updateDataCellValue({ rowId, columnId, value });
+                this.selectRowValues(rowId);
             }
-
-            if (columnId === 'read') {
-                this.updateDataCellValue({ rowId, columnId: 'create', value: false });
-                this.updateDataCellValue({ rowId, columnId: 'update', value: false });
-                this.updateDataCellValue({ rowId, columnId: 'delete', value: false });
-            }
-
-            this.updateDataCellValue({ rowId, columnId, value });
-            this.selectRowValues(rowId);
         },
         initializeRowsSelections() {
             this.rowIds.forEach((rowId) => {

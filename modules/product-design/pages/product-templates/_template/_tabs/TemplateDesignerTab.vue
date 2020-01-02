@@ -14,9 +14,7 @@
                     :rows-number="maxLayoutRow"
                     :columns-number="columnsNumber"
                     :highlighted-positions="highlightedPositions"
-                    @addListElementToLayout="updateLayoutElement"
-                    @editSectionTitle="onEditSectionTitle"
-                    @resizingElMaxRow="onResizingElMaxRow">
+                    @addListElementToLayout="updateLayoutElement">
                     <template #elements>
                         <LayoutElement
                             v-for="(element, index) in layoutElements"

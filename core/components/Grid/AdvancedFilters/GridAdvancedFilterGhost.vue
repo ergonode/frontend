@@ -43,9 +43,6 @@ export default {
         ...mapState('draggable', {
             ghostFilterIndex: (state) => state.ghostFilterIndex,
         }),
-        ...mapState('list', {
-            elements: (state) => state.elements,
-        }),
         addIconFillColor() {
             return this.isMouseOverFilters ? WHITE : GRAPHITE;
         },

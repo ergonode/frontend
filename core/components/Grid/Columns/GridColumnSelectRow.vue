@@ -10,10 +10,9 @@
             :row="getRowIndex(0)">
             <GridCell
                 editing-allowed
-                action-cell
+                spacebar-edition
                 :row="getRowIndex(0)"
                 :column="0"
-                :editing="isSelectedAllRows"
                 @edit="onRowsSelect">
                 <GridPresentationCheckCell
                     :value="rowsSelectionState"
@@ -23,8 +22,7 @@
         <GridCell
             v-if="basicFilters"
             :locked="true"
-            :editing-allowed="false"
-            :action-cell="false"
+            :spacebar-edition="false"
             :row="getRowIndex(1)"
             :column="0">
             <GridCheckPlaceholderCell />
