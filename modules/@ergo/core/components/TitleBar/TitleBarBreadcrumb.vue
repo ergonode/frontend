@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { GREEN } from '~/assets/scss/_variables/_colors.scss';
+import { GREEN } from '@Core/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'TitleBarBreadcrumb',

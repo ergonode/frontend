@@ -53,7 +53,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
-import { GRAPHITE, GREEN, RED } from '~/assets/scss/_variables/_colors.scss';
+import { GRAPHITE, GREEN, RED } from '@Core/assets/scss/_variables/_colors.scss';
 import { getImageData } from '@Core/models/multimedia';
 
 export default {

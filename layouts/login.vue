@@ -3,19 +3,17 @@
  * See LICENSE for license details.
  */
 <template>
-    <App>
+    <LoginLayout>
         <nuxt />
-        <FlashMessage />
-    </App>
+    </LoginLayout>
 </template>
 
 <script>
 
 export default {
-    middleware: ['notAuthenticated'],
+    name: 'NuxtLoginLayout',
     components: {
-        App: () => import('@Core/components/Layout/App'),
-        FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),
+        LoginLayout: () => import('@Core/layouts/login'),
     },
 };
 </script>

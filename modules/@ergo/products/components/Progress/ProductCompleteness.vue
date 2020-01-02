@@ -17,7 +17,7 @@
 import { mapState } from 'vuex';
 import {
     GREEN, RED, YELLOW,
-} from '~/assets/scss/_variables/_colors.scss';
+} from '@Core/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'ProductCompleteness',

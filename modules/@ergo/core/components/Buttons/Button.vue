@@ -25,7 +25,7 @@
 import { THEMES } from '@Core/defaults/buttons';
 import {
     GRAPHITE, GREY_DARK, WHITE,
-} from '~/assets/scss/_variables/_colors.scss';
+} from '@Core/assets/scss/_variables/_colors.scss';
 import buttonPropsMixin from '@Core/mixins/buttons/buttonPropsMixin';
 
 export default {

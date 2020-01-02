@@ -33,7 +33,7 @@
 
 <script>
 import { THEMES } from '@Core/defaults/buttons';
-import { WHITE } from '~/assets/scss/_variables/_colors.scss';
+import { WHITE } from '@Core/assets/scss/_variables/_colors.scss';
 import ModalOverlay from '@Core/components/Modal/ModalOverlay';
 import Form from '@Core/components/Form/Form';
 import Divider from '@Core/components/Dividers/Divider';

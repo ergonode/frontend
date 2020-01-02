@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
+import productTemplateElementMixin from '@Templates/mixins/productTemplateElementMixin';
 
 export default {
     name: 'ProductTemplateImage',

@@ -13,6 +13,22 @@ export default {
         aliases: {
             '@Core': '/',
         },
+        plugins: [
+            '/plugins/axios',
+            '/plugins/register-store',
+            '/plugins/core',
+            { mode: 'client', src: '/plugins/alerts' },
+        ],
+        css: [
+            '/assets/scss/reset.scss',
+            '/assets/scss/plugins-config.scss',
+            '/assets/scss/font-inter-ui.scss',
+            '/assets/scss/theme.scss',
+            '/assets/scss/typography.scss',
+        ],
+        styleResources: {
+            scss: '/assets/scss/main.scss',
+        },
     },
     router: [
         {

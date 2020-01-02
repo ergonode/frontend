@@ -36,7 +36,7 @@
 import { debounce } from 'debounce';
 import {
     GREEN, GRAPHITE, WHITE,
-} from '~/assets/scss/_variables/_colors.scss';
+} from '@Core/assets/scss/_variables/_colors.scss';
 import ListHeader from '@Core/components/List/ListHeader';
 import FabButton from '@Core/components/Buttons/FabButton';
 import TextField from '@Core/components/Inputs/TextField';

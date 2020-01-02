@@ -7,6 +7,12 @@ const { getModulesConfig } = require('./plugins/moduleLoader');
 const path = require('path');
 const pkg = require('./package');
 
+const nuxtConfig = {
+    css: getModulesConfig.nuxt.css || [],
+    styleResources: getModulesConfig.nuxt.styleResources || {},
+    plugins: getModulesConfig.nuxt.plugins || [],
+};
+
 module.exports = {
     mode: 'universal',
     head: {
@@ -35,22 +41,12 @@ module.exports = {
         ],
     },
     loading: { color: '#00BC87', height: '3px' },
-    css: [
-        '~assets/scss/plugins-config.scss',
-        '~assets/scss/font-inter-ui.scss',
-        '~assets/scss/theme.scss',
-        '~assets/scss/typography.scss',
-    ],
     router: {
         middleware: ['privilegeRoutingCheck', 'redirectToPath'],
     },
-    plugins: [
-        '~plugins/axios',
-        '~plugins/register-store',
-        '~plugins/privilege',
-        '~plugins/core',
-        {mode: 'client', src: '~plugins/alerts'},
-    ],
+    css: nuxtConfig.css,
+    plugins: nuxtConfig.plugins,
+    styleResources: nuxtConfig.styleResources,
     modules: [
         '@nuxtjs/router',
         '@nuxtjs/axios',
@@ -58,9 +54,6 @@ module.exports = {
         '@nuxtjs/style-resources',
         ['@nuxtjs/component-cache', {maxAge: 1000 * 60 * 60}],
     ],
-    styleResources: {
-        scss: '~assets/scss/main.scss'
-    },
     axios: {
         credentials: false,
         baseURL: `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_PREFIX}`,

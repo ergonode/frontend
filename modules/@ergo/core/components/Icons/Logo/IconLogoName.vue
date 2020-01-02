@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { WHITE, GREEN } from '~/assets/scss/_variables/_colors.scss';
+import { WHITE, GREEN } from '@Core/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'IconLogoName',

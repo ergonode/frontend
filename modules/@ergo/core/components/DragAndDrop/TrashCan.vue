@@ -19,7 +19,7 @@
 <script>
 import {
     WHITE,
-} from '~/assets/scss/_variables/_colors.scss';
+} from '@Core/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'TrashCan',

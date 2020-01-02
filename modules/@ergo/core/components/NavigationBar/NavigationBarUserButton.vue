@@ -30,7 +30,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { WHITE } from '~/assets/scss/_variables/_colors.scss';
+import { WHITE } from '@Core/assets/scss/_variables/_colors.scss';
 import { toCapitalize } from '@Core/models/stringWrapper';
 import { ARROW } from '@Core/defaults/icons';
 

@@ -14,7 +14,7 @@
 <script>
 import {
     WHITE, GRAPHITE,
-} from '~/assets/scss/_variables/_colors.scss';
+} from '@Core/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'GridColumnGhost',

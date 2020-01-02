@@ -14,6 +14,9 @@ export default {
         aliases: {
             '@Users': '/',
         },
+        plugins: [
+            '/plugins/privilege',
+        ],
     },
     router: [
         {
@@ -241,10 +244,6 @@ export default {
         },
     ],
     store: [
-        {
-            directory: 'authentication',
-            name: 'authentication',
-        },
         {
             directory: 'users',
             name: 'users',

@@ -15,7 +15,7 @@
 
 <script>
 import { SIZES } from '@Core/defaults/badge';
-import { WHITE, GRAPHITE_DARK } from '~/assets/scss/_variables/_colors.scss';
+import { WHITE, GRAPHITE_DARK } from '@Core/assets/scss/_variables/_colors.scss';
 import BadgeLabel from '@Core/components/Badges/BadgeLabel';
 
 export default {

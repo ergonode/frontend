@@ -13,7 +13,7 @@
 import {
     hexToRGB, calculateRelativeLuminance, calculateContrastRatio,
 } from '@Core/models/color/ColorContrast';
-import { WHITE, GRAPHITE_DARK } from '~/assets/scss/_variables/_colors.scss';
+import { WHITE, GRAPHITE_DARK } from '@Core/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'ProductStatusBadge',

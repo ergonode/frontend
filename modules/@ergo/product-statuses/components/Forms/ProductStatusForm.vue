@@ -30,6 +30,7 @@
                 :error-messages="errorColorMessage"
                 regular
                 clearable
+                :options="colorOptions"
                 :fixed-content-width="false"
                 label="Badge color"
                 hint="Badge color is needed for presentation purpose"
@@ -41,6 +42,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { STATUS as COLOR_STATUS } from '@Statuses/defaults/colors';
 import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 
 export default {
@@ -66,6 +68,9 @@ export default {
         },
         isDisabled() {
             return Boolean(this.id);
+        },
+        colorOptions() {
+            return COLOR_STATUS;
         },
         errorCodeMessage() {
             const codeIndex = 'code';

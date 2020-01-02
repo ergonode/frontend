@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
+import productTemplateElementMixin from '@Templates/mixins/productTemplateElementMixin';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 
 export default {

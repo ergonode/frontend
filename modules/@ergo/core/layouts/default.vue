@@ -1,0 +1,113 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <App>
+        <div
+            v-if="user"
+            class="app-content">
+            <div class="app-content__navigation-bar">
+                <NavigationBar>
+                    <template #breadcrumbs>
+                        <NavigationBarBreadcrumb
+                            v-for="(breadcrumb, index) in breadcrumbs"
+                            :key="index"
+                            :breadcrumb="breadcrumb" />
+                    </template>
+                    <template #actions>
+                        <NavigationBarUserButton />
+                        <template v-for="(component, index) in getComponentsForExtended">
+                            <Component
+                                :is="component.component"
+                                :key="index"
+                                v-bind="component.props" />
+                        </template>
+                    </template>
+                </NavigationBar>
+            </div>
+            <div class="app-content__navigation-side-bar">
+                <SideBar />
+            </div>
+            <div class="app-content__body">
+                <slot />
+                <FlashMessage />
+            </div>
+        </div>
+    </App>
+</template>
+
+<script>
+import { mapState, mapActions } from 'vuex';
+import { COMPONENTS } from '@Core/defaults/extends';
+
+export default {
+    name: 'DefaultLayout',
+    middleware: ['setDictionaries', 'authenticated'],
+    components: {
+        App: () => import('@Core/components/Layout/App'),
+        SideBar: () => import('@Core/components/SideBar/SideBar'),
+        NavigationBar: () => import('@Core/components/NavigationBar/NavigationBar'),
+        NavigationBarBreadcrumb: () => import('@Core/components/NavigationBar/NavigationBarBreadcrumb'),
+        NavigationBarUserButton: () => import('@Core/components/NavigationBar/NavigationBarUserButton'),
+        FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),
+    },
+    data() {
+        return {
+            breadcrumbs: [],
+        };
+    },
+    created() {
+        this.breadcrumbs = this.$route.meta.breadcrumbs || [];
+    },
+    mounted() {
+        this.setRequestTimeout();
+    },
+    destroyed() {
+        this.invalidateRequestTimeout();
+    },
+    watch: {
+        $route() {
+            this.breadcrumbs = this.$route.meta.breadcrumbs || [];
+        },
+    },
+    computed: {
+        ...mapState('authentication', {
+            user: (state) => state.user,
+        }),
+        getComponentsForExtended() {
+            return this.$getComponentsForExtended(COMPONENTS.NAVIGATION_BAR);
+        },
+    },
+    methods: {
+        ...mapActions('notifications', [
+            'setRequestTimeout',
+            'invalidateRequestTimeout',
+        ]),
+        onStateChange(value) {
+            this.sideBarState = value;
+        },
+    },
+};
+</script>
+
+<style lang="scss" scoped>
+    .app-content {
+        display: grid;
+        grid-template-columns: max-content auto;
+        grid-template-rows: 48px auto;
+        flex: 1;
+
+        &__navigation-bar {
+            grid-area: 1 / 2 / 1 / 3;
+        }
+
+        &__navigation-side-bar {
+            grid-row: 1 / 3;
+        }
+
+        &__body {
+            grid-area: 2 / 2 / 3 / 3;
+        }
+    }
+</style>

@@ -92,7 +92,6 @@
 
 <script>
 import { SIZES, THEMES } from '@Core/defaults/buttons';
-import { STATUS as COLOR_STATUS } from '~/defaults/colors';
 import { ARROW } from '@Core/defaults/icons';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import DropDown from '@Core/components/Inputs/Select/Contents/DropDown';
@@ -118,7 +117,7 @@ export default {
         },
         options: {
             type: Array,
-            default: () => COLOR_STATUS,
+            default: () => [],
         },
         solid: {
             type: Boolean,

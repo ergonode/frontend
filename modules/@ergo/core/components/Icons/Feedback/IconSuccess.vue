@@ -15,7 +15,7 @@
 
 <script>
 import BaseIcon from '@Core/components/Icons/BaseIcon';
-import { GREEN } from '~/assets/scss/_variables/_colors.scss';
+import { GREEN } from '@Core/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'IconSuccess',

@@ -13,7 +13,7 @@
 
 <script>
 import BaseIcon from '@Core/components/Icons/BaseIcon';
-import { RED } from '~/assets/scss/_variables/_colors.scss';
+import { RED } from '@Core/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'IconError',

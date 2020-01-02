@@ -11,6 +11,11 @@ export default [
     {
         active: true,
         source: 'local',
+        name: '@ergo/authentication',
+    },
+    {
+        active: true,
+        source: 'local',
         name: '@ergo/dashboard',
     },
     {

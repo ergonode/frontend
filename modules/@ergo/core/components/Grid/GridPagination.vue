@@ -117,5 +117,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import "~assets/scss/grid/pagination.scss";
+    @import "@Core/assets/scss/grid/pagination.scss";
 </style>

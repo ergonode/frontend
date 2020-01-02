@@ -9,7 +9,9 @@
                 class="login-form__logo"
                 src="@Core/assets/images/login/logo_black.svg"
                 alt="ergonode">
-            <form class="login-form__content">
+            <form
+                class="login-form__content"
+                @submit.prevent>
                 <TextField
                     v-model="userAuthData.username"
                     left-alignment
@@ -64,7 +66,6 @@ export default {
     methods: {
         ...mapActions('authentication', [
             'authenticateUser',
-            'getUser',
         ]),
         ...mapActions([
             'resetState',

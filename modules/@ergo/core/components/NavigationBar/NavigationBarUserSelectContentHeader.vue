@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
+import { GRAPHITE } from '@Core/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'NavigationBarUserSelectContentHeader',

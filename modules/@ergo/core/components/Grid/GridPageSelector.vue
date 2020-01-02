@@ -55,5 +55,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import "~assets/scss/grid/page-selector.scss";
+    @import "@Core/assets/scss/grid/page-selector.scss";
 </style>

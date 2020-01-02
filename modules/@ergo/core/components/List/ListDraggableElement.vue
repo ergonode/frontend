@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { WHITE } from '~/assets/scss/_variables/_colors.scss';
+import { WHITE } from '@Core/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'ListDraggableElement',

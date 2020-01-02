@@ -20,7 +20,7 @@
 import { mapState, mapActions } from 'vuex';
 import {
     WHITE, GRAPHITE,
-} from '~/assets/scss/_variables/_colors.scss';
+} from '@Core/assets/scss/_variables/_colors.scss';
 import { insertCookieAtIndex } from '@Core/models/cookies';
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 

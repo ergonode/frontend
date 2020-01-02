@@ -4,13 +4,16 @@
  */
 /* eslint-disable no-param-reassign */
 import Vue from 'vue'; // eslint-disable-line import/no-extraneous-dependencies
+import { REQUIRED_MODULES } from '../defaults/modules';
 
 const deepmerge = require('deepmerge');
+
 
 class ModuleLoader {
     constructor() {
         this.modules = this.getActiveModules();
         this.modulesConfig = this.getModules(this.modules);
+        this.checkRequiredModules();
         this.checkModuleRelations();
     }
 
@@ -24,20 +27,28 @@ class ModuleLoader {
         return this.modulesConfig;
     }
 
-    checkModuleRelations() {
-        const { relations } = this.modulesConfig;
-        const checkRelation = (relation) => this.modules.find(
+    checkRelation(relation) {
+        return this.modules.find(
             (module) => relation === module.name && module.active,
         );
+    }
 
-        if (!checkRelation('@ergo/core')) {
-            throw Error('Module [@ergo/core] does not exist.');
-        }
+    checkRequiredModules() {
+        REQUIRED_MODULES.forEach((module) => {
+            if (!this.checkRelation(module)) {
+                throw Error(`Module [${module}] does not exist.`);
+            }
+        });
+    }
+
+    checkModuleRelations() {
+        const { relations } = this.modulesConfig;
+
         relations.forEach((relation) => {
             const { moduleName, relations: moduleRealtions } = relation;
 
             moduleRealtions.forEach((r) => {
-                if (!checkRelation(r)) {
+                if (!this.checkRelation(r)) {
                     throw Error(`Module [${moduleName}] has relation with [${r}].\n Module [${r}] does not exist.`);
                 }
             });
@@ -81,14 +92,43 @@ class ModuleLoader {
                     });
                 }
                 if (config.nuxt) {
+                    const modulePath = source === 'local'
+                        ? `modules/${name}`
+                        : name;
+
                     if (config.nuxt.aliases) {
-                        const modulePath = source === 'local'
-                            ? `/modules/${name}`
-                            : name;
                         const { aliases } = config.nuxt;
 
                         Object.keys(aliases).forEach((alias) => {
-                            config.nuxt.aliases[alias] = `${modulePath}${aliases[alias]}`;
+                            config.nuxt.aliases[alias] = `/${modulePath}${aliases[alias]}`;
+                        });
+                    }
+                    if (config.nuxt.css) {
+                        const { css } = config.nuxt;
+
+                        css.forEach((style, index) => {
+                            config.nuxt.css[index] = `~${modulePath}${style}`;
+                        });
+                    }
+                    if (config.nuxt.styleResources) {
+                        const { styleResources } = config.nuxt;
+
+                        Object.keys(styleResources).forEach((resource) => {
+                            config.nuxt.styleResources[resource] = `~${modulePath}${styleResources[resource]}`;
+                        });
+                    }
+                    if (config.nuxt.plugins) {
+                        const { plugins } = config.nuxt;
+
+                        plugins.forEach((plugin, index) => {
+                            if (typeof plugin === 'string') {
+                                config.nuxt.plugins[index] = `~${modulePath}${plugin}`;
+                            } else {
+                                config.nuxt.plugins[index] = {
+                                    src: `~${modulePath}${plugin.src}`,
+                                    mode: plugin.mode,
+                                };
+                            }
                         });
                     }
                     modulesConfig.nuxt = deepmerge(modulesConfig.nuxt, config.nuxt);

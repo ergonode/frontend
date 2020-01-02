@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { GREEN, WHITE, GREY_DARK } from '~/assets/scss/_variables/_colors.scss';
+import { GREEN, WHITE, GREY_DARK } from '@Core/assets/scss/_variables/_colors.scss';
 import { ARROW } from '@Core/defaults/icons';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 import SideBarListGroupElement from './SideBarListGroupElement';

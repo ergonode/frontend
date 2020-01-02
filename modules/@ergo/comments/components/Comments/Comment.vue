@@ -56,7 +56,7 @@ import { THEMES } from '@Core/defaults/buttons';
 import { DEFAULT_DATA_HOUR_FORMAT } from '@Core/defaults/date';
 import {
     GREEN, RED, WHITE,
-} from '~/assets/scss/_variables/_colors.scss';
+} from '@Core/assets/scss/_variables/_colors.scss';
 import CommentWrapper from '@Comments/components/Comments/CommentWrapper';
 import FabButton from '@Core/components/Buttons/FabButton';
 import IconEdit from '@Core/components/Icons/Actions/IconEdit';

@@ -20,7 +20,7 @@
 import { THEMES } from '@Core/defaults/buttons';
 import {
     GREEN, GRAPHITE, WHITE, GREY_DARK,
-} from '~/assets/scss/_variables/_colors.scss';
+} from '@Core/assets/scss/_variables/_colors.scss';
 import Button from '@Core/components/Buttons/Button';
 
 export default {
