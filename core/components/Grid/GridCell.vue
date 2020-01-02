@@ -219,6 +219,7 @@ export default {
 
                 this.currentHeight = fixedHeight;
 
+                // TODO: It's not optimized form - gotta think about better solution
                 // const element = document.querySelector(`.coordinates-${this.column}-${this.row + factor}`);
                 // if (element) {
                 //     element.scrollIntoView(false);
