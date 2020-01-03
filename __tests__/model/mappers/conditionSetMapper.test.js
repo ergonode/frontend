@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+// eslint-disable-next-line jest/no-mocks-import
 import { conditionsTree, conditionValues, mappedData } from '../__mocks__/conditions.mock';
 import { getMappedConditionSetData, getParsedConditionSetData } from '~/model/mappers/conditionSetMapper';
 

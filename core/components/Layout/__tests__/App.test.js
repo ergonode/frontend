@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
+// eslint-disable-next-line import/extensions
 import App from '~/core/components/Layout/App.vue';
 
 

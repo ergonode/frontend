@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
+// eslint-disable-next-line import/extensions
 import Error404 from '~/core/components/Layout/Errors/404.vue';
 
 

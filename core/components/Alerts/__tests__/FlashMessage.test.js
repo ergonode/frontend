@@ -4,6 +4,7 @@
  */
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
+// eslint-disable-next-line import/extensions
 import FlashMessage from '~/core/components/Alerts/FlashMessage.vue';
 
 const localVue = createLocalVue();

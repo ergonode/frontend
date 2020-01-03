@@ -5,6 +5,7 @@
 import { shallowMount } from '@vue/test-utils';
 import { WHITE, GRAPHITE_DARK } from '~/assets/scss/_variables/_colors.scss';
 import { SIZES } from '~/defaults/badge';
+// eslint-disable-next-line import/extensions
 import InformationBadge from '~/core/components/Badges/InformationBadge.vue';
 
 describe('Badges/InformationBadge', () => {

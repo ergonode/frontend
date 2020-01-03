@@ -8,14 +8,3 @@ exports[`TemplateGrid/TemplateGridPresentationLayer Check main classes witch def
   <div shadow-id="3" class="shadow-grid-item shadow-grid-item--last-row"></div>
 </div>
 `;
-
-exports[`TemplateGrid/TemplateGridPresentationLayer Check main classes witch new props 1`] = `
-<div class="presentation-layer">
-  <div shadow-id="0" class="shadow-grid-item"></div>
-  <div shadow-id="1" class="shadow-grid-item"></div>
-  <div shadow-id="2" class="shadow-grid-item"></div>
-  <div shadow-id="3" class="shadow-grid-item shadow-grid-item--last-row"></div>
-  <div shadow-id="4" class="shadow-grid-item shadow-grid-item--last-row"></div>
-  <div shadow-id="5" class="shadow-grid-item shadow-grid-item--last-row"></div>
-</div>
-`;

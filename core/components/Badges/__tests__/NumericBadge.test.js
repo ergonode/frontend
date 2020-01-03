@@ -4,6 +4,7 @@
  */
 import { shallowMount } from '@vue/test-utils';
 import { THEME } from '~/defaults/theme';
+// eslint-disable-next-line import/extensions
 import NumericBadge from '~/core/components/Badges/NumericBadge.vue';
 
 describe('Badges/NumericBadge', () => {

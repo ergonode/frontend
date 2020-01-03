@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { shallowMount, createLocalVue } from '@vue/test-utils';
+// eslint-disable-next-line import/extensions
 import Alert from '~/core/components/Alerts/Alert.vue';
 
 const localVue = createLocalVue();
