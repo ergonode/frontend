@@ -11,7 +11,7 @@ export default {
     [types.SET_LANGUAGES](state, languages) {
         state.languages = languages;
     },
-    [types.SET_SELECTED_LANGUAGE_NAMES](state, selectedLanguageNames) {
-        state.selectedLanguageNames = selectedLanguageNames;
+    [types.SET_SELECTED_LANGUAGE_NAMES](state, selectedLanguages) {
+        state.selectedLanguages = selectedLanguages;
     },
 };

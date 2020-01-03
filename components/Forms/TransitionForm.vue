@@ -5,39 +5,39 @@
 <template>
     <Form>
         <FormGroup title="Status change">
-            <Select
+            <TranslationSelect
                 :value="source"
-                solid
-                regular
-                required
+                :solid="true"
+                :regular="true"
+                :required="true"
                 label="From"
-                :options="statuses"
+                :options="sourceOptions"
                 :disabled="isDisabled || isDisabledByPrivileges"
                 :error-messages="errorSourceMessage"
-                @input="onSetSource" />
-            <Select
+                @input="setSource" />
+            <TranslationSelect
                 :value="destination"
-                solid
-                regular
-                required
+                :solid="true"
+                :regular="true"
+                :required="true"
                 label="To"
-                :options="statuses"
+                :options="destinationOptions"
                 :disabled="isDisabled || isDisabledByPrivileges"
                 :error-messages="errorDestinationMessage"
-                @input="onSetDestination" />
+                @input="setDestination" />
         </FormGroup>
         <FormGroup title="Actions">
-            <Select
+            <TranslationSelect
                 :value="transitionRoles"
-                solid
-                regular
-                clearable
-                multiselect
+                :solid="true"
+                :regular="true"
+                :clearable="true"
+                :multiselect="true"
                 label="Role"
                 :options="roles"
                 :disabled="isDisabledByPrivileges"
                 :error-messages="errorRoleMessage"
-                @input="onSetRoles" />
+                @input="setRoles" />
         </FormGroup>
     </Form>
 </template>
@@ -52,7 +52,7 @@ export default {
     components: {
         Form: () => import('~/core/components/Form/Form'),
         FormGroup: () => import('~/core/components/Form/FormGroup'),
-        Select: () => import('~/core/components/Inputs/Select/Select'),
+        TranslationSelect: () => import('~/core/components/Inputs/Select/TranslationSelect'),
     },
     mixins: [errorValidationMixin],
     computed: {
@@ -75,6 +75,12 @@ export default {
                 return Boolean(source) && Boolean(destination);
             }
             return false;
+        },
+        sourceOptions() {
+            return this.statuses.filter((status) => status.id !== this.destination.id);
+        },
+        destinationOptions() {
+            return this.statuses.filter((status) => status.id !== this.source.id);
         },
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['WORKFLOW_UPDATE']))
@@ -102,25 +108,6 @@ export default {
         ...mapActions('validations', [
             'setErrorForKey',
         ]),
-        onSetSource(source) {
-            let value = source;
-            if (source === this.destination) {
-                value = null;
-                this.setErrorForKey({ key: 'source', error: ['Source must be different then destination'] });
-            }
-            this.setSource(value);
-        },
-        onSetDestination(destination) {
-            let value = destination;
-            if (destination === this.source) {
-                value = null;
-                this.setErrorForKey({ key: 'destination', error: ['Destination must be different then source'] });
-            }
-            this.setDestination(value);
-        },
-        onSetRoles(roles) {
-            this.setRoles(roles);
-        },
     },
 };
 </script>

@@ -25,20 +25,27 @@ export default {
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { statuses: statusOptions } = rootState.productStatus;
+        const { roles } = rootState.roles;
         const [source, destination] = id.split('--');
 
         await this.app.$axios.$get(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`).then(async ({
             condition_set_id: conditionSetId,
             role_ids: rolesIds,
         }) => {
-            commit(types.SET_SOURCE, statusOptions.find(
-                (status) => status.code === source.replace(/%20/g, ' '),
-            ).id);
-            commit(types.SET_DESTINATION, statusOptions.find(
-                (status) => status.code === destination.replace(/%20/g, ' '),
-            ).id);
+            const sourceOption = statusOptions.find(
+                (status) => status.key === source.replace(/%20/g, ' '),
+            );
+            const destinationOption = statusOptions.find(
+                (status) => status.key === destination.replace(/%20/g, ' '),
+            );
+
+            commit(types.SET_SOURCE, sourceOption);
+            commit(types.SET_DESTINATION, destinationOption);
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
-            commit(types.SET_ROLES, rolesIds);
+            commit(types.SET_ROLES, roles.filter(
+                (role) => rolesIds.some((roleId) => role.id === roleId),
+            ));
+
             if (conditionSetId) {
                 await dispatch('conditions/getConditionSetById', {
                     conditionSetId,
@@ -72,7 +79,7 @@ export default {
         const { source, destination } = state;
 
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+        await this.app.$axios.$put(`${userLanguageCode}/workflow/default/transitions/${source.id}/${destination.id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     removeTransition({ state, rootState }, { onSuccess }) {

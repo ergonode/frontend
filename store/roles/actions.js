@@ -22,9 +22,11 @@ export default {
     getRoles({ commit, rootState }, params) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$get(`${userLanguageCode}/roles`, { params }).then(({ collection: roles }) => {
-            commit(types.SET_ROLES, roles.map((role) => ({
-                id: role.id,
-                name: role.name,
+            commit(types.SET_ROLES, roles.map(({ id, name, description }) => ({
+                id,
+                key: id,
+                value: name,
+                hint: description,
             })));
         }).catch(onDefaultError);
     },

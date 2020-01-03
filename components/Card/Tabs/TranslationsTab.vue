@@ -6,21 +6,21 @@
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #header>
             <div class="language-selection-header">
-                <Select
-                    :value="cardsLanguageCodes"
+                <TranslationSelect
+                    v-model="selectedLanguages"
                     :options="languageOptions"
-                    solid
-                    regular
-                    label="Translations"
-                    multiselect
-                    @input="onLanguageCardSelected" />
+                    :solid="true"
+                    :regular="true"
+                    :multiselect="true"
+                    :clearable="true"
+                    label="Translations" />
             </div>
         </template>
         <template #content>
             <VerticalFixedScroll>
                 <div class="container">
                     <VerticalCenteredView>
-                        <slot />
+                        <slot :language-codes="selectedLanguageCodes" />
                     </VerticalCenteredView>
                 </div>
             </VerticalFixedScroll>
@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import Select from '~/core/components/Inputs/Select/Select';
+import TranslationSelect from '~/core/components/Inputs/Select/TranslationSelect';
 import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
 import VerticalCenteredView from '~/core/components/Layout/VerticalCenteredView';
 
@@ -41,12 +41,21 @@ export default {
         VerticalCenteredView,
         VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
-        Select,
+        TranslationSelect,
+    },
+    data() {
+        return {
+            selectedLanguages: [],
+        };
     },
     created() {
-        if (!this.cardsLanguageCodes.find((langCode) => langCode === this.userLanguageCode)) {
-            this.addCardLanguageCode({ languageCode: this.userLanguageCode });
-        }
+        this.selectedLanguages = [
+            {
+                id: this.userLanguageCode,
+                key: this.userLanguageCode,
+                value: this.languages[this.userLanguageCode],
+            },
+        ];
     },
     computed: {
         ...mapState('authentication', {
@@ -55,25 +64,13 @@ export default {
         ...mapState('data', {
             languages: (state) => state.languages,
         }),
-        ...mapState('translations', {
-            cardsLanguageCodes: (state) => state.cardsLanguageCodes,
-        }),
         languageOptions() {
-            return Object.keys(this.languages).map((language) => ({
-                id: language,
-                name: this.languages[language],
+            return Object.keys(this.languages).map((key) => ({
+                id: key, key, value: this.languages[key],
             }));
         },
-    },
-    methods: {
-        ...mapActions('translations', [
-            'addCardLanguageCode',
-            'setVisibleCardTranslations',
-        ]),
-        onLanguageCardSelected(languageCode) {
-            this.setVisibleCardTranslations({
-                languages: languageCode,
-            });
+        selectedLanguageCodes() {
+            return this.selectedLanguages.map((language) => language.id);
         },
     },
 };

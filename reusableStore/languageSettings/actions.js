@@ -4,16 +4,16 @@
  */
 import { types } from './mutations';
 
-function getLanguage(language) {
-    return { code: language.code, name: language.name };
+function mappedLanguage({ id, code, name }) {
+    return { id, key: code, value: name };
 }
 
 export default {
     updateData({ state, rootState }) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        const { selectedLanguageNames } = state;
+        const { selectedLanguages } = state;
         const data = {
-            collection: selectedLanguageNames,
+            collection: selectedLanguages.map((language) => language.key),
         };
 
         return this.app.$axios.$put(`${userLanguageCode}/languages`, data).then(() => {
@@ -34,13 +34,14 @@ export default {
         return this.app.$axios.$get(path, { params }).then(({
             collection,
         }) => {
-            commit(types.SET_LANGUAGES, collection.map(getLanguage));
+            commit(types.SET_LANGUAGES, collection.map(mappedLanguage));
             commit(types.SET_SELECTED_LANGUAGE_NAMES, collection
                 .filter((language) => language.active)
-                .map((language) => language.code));
+                .map(mappedLanguage));
         });
     },
     getFilteredData({ commit, rootState }, filter = '') {
+        console.log(filter);
         const { language: userLanguageCode } = rootState.authentication.user;
         const path = `/${userLanguageCode}/language/autocomplete`;
         const params = {
@@ -49,10 +50,10 @@ export default {
             field: 'name',
         };
         return this.app.$axios.$get(path, { params }).then((data) => {
-            commit(types.SET_LANGUAGES, data.map(getLanguage));
+            commit(types.SET_LANGUAGES, data.map(mappedLanguage));
         });
     },
-    setSelectedLanguages({ commit }, selectedLanguageNames) {
-        commit(types.SET_SELECTED_LANGUAGE_NAMES, selectedLanguageNames);
+    setSelectedLanguages({ commit }, selectedLanguages) {
+        commit(types.SET_SELECTED_LANGUAGE_NAMES, selectedLanguages);
     },
 };

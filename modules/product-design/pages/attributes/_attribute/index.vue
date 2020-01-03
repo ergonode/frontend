@@ -16,8 +16,9 @@ import {
     getParsedParameterKeys,
     getParsedOptions,
 } from '~/model/mappers/attributeMapper';
-import { isMultilingual } from '~/model/attributes/AttributeTypes';
+import { isMultilingual, getParamsOptionsForType } from '~/model/attributes/AttributeTypes';
 import { getParentRoutePath } from '~/model/navigation/tabs';
+import { getKeyByValue } from '~/model/objectWrapper';
 
 export default {
     name: 'NewAttribute',
@@ -33,6 +34,9 @@ export default {
             parameter: (state) => state.parameter,
             optionKeys: (state) => state.optionKeys,
             optionValues: (state) => state.optionValues,
+        }),
+        ...mapState('data', {
+            attrTypes: (state) => state.attrTypes,
         }),
     },
     methods: {
@@ -57,13 +61,14 @@ export default {
             });
         },
         onCreate() {
+            const typeKey = getKeyByValue(this.attrTypes, this.type);
             const attribute = {
                 code: this.code,
-                type: this.type,
-                groups: this.groups,
+                type: typeKey,
+                groups: this.groups.map((group) => group.id),
             };
 
-            if (isMultilingual(this.type)) {
+            if (isMultilingual(typeKey)) {
                 attribute.multilingual = this.multilingual;
             }
 
@@ -87,9 +92,14 @@ export default {
             }
 
             if (this.parameter) {
+                const paramKey = getKeyByValue(getParamsOptionsForType(
+                    typeKey,
+                    this.$store.state.data,
+                ), this.parameter);
+
                 attribute.parameters = getParsedParameterKeys({
-                    selectedType: this.type,
-                    selectedParam: this.parameter,
+                    selectedType: typeKey,
+                    selectedParam: paramKey,
                 });
             }
 

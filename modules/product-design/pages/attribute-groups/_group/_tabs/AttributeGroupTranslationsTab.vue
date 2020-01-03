@@ -4,26 +4,21 @@
  */
 <template>
     <TranslationsTab>
-        <AttributeGroupTranslationForm
-            v-for="(languageCode, index) in cardsLanguageCodes"
-            :key="index"
-            :language-code="languageCode" />
+        <template #default="{ languageCodes }">
+            <AttributeGroupTranslationForm
+                v-for="(languageCode, index) in languageCodes"
+                :key="index"
+                :language-code="languageCode" />
+        </template>
     </TranslationsTab>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
 export default {
     name: 'AttributeGroupTranslationsTab',
     components: {
         TranslationsTab: () => import('~/components/Card/Tabs/TranslationsTab'),
         AttributeGroupTranslationForm: () => import('~/components/Forms/AttributeGroupTranslationForm'),
-    },
-    computed: {
-        ...mapState('translations', {
-            cardsLanguageCodes: (state) => state.cardsLanguageCodes,
-        }),
     },
 };
 </script>

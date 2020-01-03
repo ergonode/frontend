@@ -7,7 +7,7 @@
         :columns="columns"
         :row-height="rowHeight"
         :is-connections-visible="false"
-        :grid-gap="15"
+        :grid-gap="16"
         :is-dragging-enabled="$hasAccess(['SEGMENT_UPDATE'])"
         :is-multi-draggable="true"
         :dragged-element-size="{ width: 600, height: 60 }"
@@ -15,8 +15,7 @@
         @afterRemove="removeConditionFromSet">
         <template #gridHeader>
             <TemplateGridHeader
-                :style="gridStyles"
-                header-name="condition level"
+                header="condition level"
                 :columns="columns" />
         </template>
         <template #gridItem="{item}">
@@ -50,12 +49,6 @@ export default {
             conditions: (state) => state.conditions,
             conditionsValues: (state) => state.conditionsValues,
         }),
-        gridStyles() {
-            return {
-                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                gridAutoRows: '50px',
-            };
-        },
     },
     methods: {
         ...mapActions('conditions', [

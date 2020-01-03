@@ -15,15 +15,13 @@
                 label="Code"
                 hint="Attribute code must be unique"
                 @input="setAttributeCode" />
-            <Select
+            <TranslationSelect
                 :value="groups"
                 label="Groups"
-                solid
-                regular
-                multiselect
-                clearable
-                is-list-element-hint
-                :language-code="userLanguageCode"
+                :solid="true"
+                :regular="true"
+                :multiselect="true"
+                :clearable="true"
                 :options="groupOptions"
                 :disabled="isDisabledByPrivileges"
                 :error-messages="errorGroupsMessage"
@@ -81,6 +79,7 @@ import { toCapitalize } from '~/model/stringWrapper';
 import {
     hasParams, hasOptions, isMultilingual, getParamsKeyForType, getParamsOptionsForType,
 } from '~/model/attributes/AttributeTypes';
+import { getKeyByValue } from '~/model/objectWrapper';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
@@ -93,6 +92,7 @@ export default {
         InfoHint: () => import('~/core/components/Hints/InfoHint'),
         TextField: () => import('~/core/components/Inputs/TextField'),
         Select: () => import('~/core/components/Inputs/Select/Select'),
+        TranslationSelect: () => import('~/core/components/Inputs/Select/TranslationSelect'),
         FadeGroupTransition: () => import('~/core/components/Transitions/FadeGroupTransition'),
     },
     mixins: [errorValidationMixin],
@@ -118,7 +118,7 @@ export default {
             attrTypes: (state) => state.attrTypes,
         }),
         paramsLabel() {
-            const paramsKey = getParamsKeyForType(this.type);
+            const paramsKey = getParamsKeyForType(this.typeKey);
 
             return toCapitalize(paramsKey);
         },
@@ -126,35 +126,32 @@ export default {
             return Boolean(this.attrID);
         },
         isMultilingual() {
-            return isMultilingual(this.type);
+            return isMultilingual(this.typeKey);
         },
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['ATTRIBUTE_UPDATE']))
             || (!this.isDisabled && !this.$hasAccess(['ATTRIBUTE_CREATE']));
         },
         hasParams() {
-            return hasParams(this.type);
+            return hasParams(this.typeKey);
+        },
+        typeKey() {
+            return getKeyByValue(this.attrTypes, this.type);
         },
         params() {
             return getParamsOptionsForType(
-                this.type,
+                this.typeKey,
                 this.$store.state.data,
             );
         },
         hasOptions() {
-            return hasOptions(this.type);
+            return hasOptions(this.typeKey);
         },
         attributeTypeOptions() {
-            return Object.keys(this.attrTypes).map((type) => ({
-                id: type,
-                name: this.attrTypes[type],
-            }));
+            return Object.values(this.attrTypes);
         },
         attributeParametersOptions() {
-            return Object.keys(this.params).map((param) => ({
-                id: param,
-                name: this.params[param],
-            }));
+            return Object.values(this.params);
         },
         errorCodeMessage() {
             const codeIndex = 'code';

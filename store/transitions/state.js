@@ -3,8 +3,12 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    source: null,
-    destination: null,
+    source: {
+        id: '', key: '', value: '', hint: '',
+    },
+    destination: {
+        id: '', key: '', value: '', hint: '',
+    },
     roles: [],
     conditionSetId: null,
 });

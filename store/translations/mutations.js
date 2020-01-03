@@ -3,12 +3,6 @@
  * See LICENSE for license details.
  */
 export default {
-    addCardLanguageCode: (state, { languageCode }) => {
-        state.cardsLanguageCodes.push(languageCode);
-    },
-    removeCardLanguageCode: (state, { index }) => {
-        state.cardsLanguageCodes.splice(index, 1);
-    },
     setTabTranslations: (state, translations) => {
         state.translations = { ...translations };
     },
@@ -26,6 +20,5 @@ export default {
     },
     clearStorage: (state) => {
         state.translations = {};
-        state.cardsLanguageCodes = [];
     },
 };

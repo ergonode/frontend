@@ -15,24 +15,22 @@
                 :error-messages="errorSkuMessage"
                 :disabled="isDisabled || isDisabledByPrivileges"
                 @input="setProductSku" />
-            <Select
+            <TranslationSelect
                 :value="template"
-                solid
-                required
-                regular
+                :solid="true"
+                :required="true"
+                :regular="true"
                 label="Template"
                 :error-messages="errorTemplateMessage"
                 :options="templateOptions"
                 :disabled="isDisabled || isDisabledByPrivileges"
                 @input="setProductTemplate" />
-            <Select
+            <TranslationSelect
                 :value="selectedCategories"
-                solid
-                regular
-                multiselect
-                clearable
-                is-list-element-hint
-                :language-code="userLanguageCode"
+                :solid="true"
+                :regular="true"
+                :multiselect="true"
+                :clearable="true"
                 label="Category"
                 :options="categoryOptions"
                 :disabled="isDisabledByPrivileges"
@@ -51,7 +49,7 @@ export default {
         Form: () => import('~/core/components/Form/Form'),
         FormGroup: () => import('~/core/components/Form/FormGroup'),
         TextField: () => import('~/core/components/Inputs/TextField'),
-        Select: () => import('~/core/components/Inputs/Select/Select'),
+        TranslationSelect: () => import('~/core/components/Inputs/Select/TranslationSelect'),
     },
     mixins: [errorValidationMixin],
     computed: {
@@ -67,19 +65,14 @@ export default {
             categories: (state) => state.categories,
         }),
         templateOptions() {
-            return this.templates.map((language) => ({
-                id: language.id,
-                name: language.name,
+            return this.templates.map(({ id, name }) => ({
+                id, key: '', value: name, hint: '',
             }));
         },
         categoryOptions() {
-            return this.categories.map(
-                (category) => ({
-                    id: category.id,
-                    name: category.name,
-                    code: category.code,
-                }),
-            );
+            return this.categories.map(({ id, code, name }) => ({
+                id, key: code, value: name, hint: name ? `#${code} ${this.userLanguageCode}` : '',
+            }));
         },
         isDisabled() {
             return Boolean(this.productID);

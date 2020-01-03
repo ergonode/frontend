@@ -23,7 +23,6 @@
                     :multiselect="isMultiSelect"
                     :type="column.type"
                     :value="editValue"
-                    :language-code="column.language"
                     :options="options"
                     :clearable="false"
                     :colors="column.colors || null"
@@ -207,7 +206,9 @@ export default {
             const { options } = filter;
             const optionKeys = Object.keys(options);
 
-            return optionKeys.map((key) => ({ key, value: options[key] }));
+            return optionKeys.map((key) => ({
+                id: key, key, value: options[key], hint: options[key] ? `#${key} ${this.column.language}` : '',
+            }));
         },
         parameters() {
             if (hasParams(this.column.type)) {
@@ -230,13 +231,13 @@ export default {
             }
         },
         onUpdateDraft(value) {
-            const isValueArray = Array.isArray(value);
-            if ((value === '' || (isValueArray && value.length === 0)) && this.draft) {
+            if ((value.id === '' || value.length === 0) && this.draft !== null) {
                 this.removeDraftValue({ productId: this.rowId, attributeId: this.column.id });
+                return;
             }
 
             if (this.isSelectKind) {
-                if (isValueArray) {
+                if (Array.isArray(value)) {
                     if (this.draftValue
                         && isArrayEqualToArray(
                             value.map((val) => val.key),

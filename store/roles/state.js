@@ -7,5 +7,5 @@ export default () => ({
     name: '',
     description: '',
     privileges: [],
-    roles: {},
+    roles: [],
 });

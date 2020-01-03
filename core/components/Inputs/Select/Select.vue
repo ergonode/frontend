@@ -15,7 +15,7 @@
             <input
                 :id="associatedLabel"
                 ref="input"
-                :value="parsedInputValue"
+                :value="multiselect ? value.join(', ') : value"
                 :placeholder="placeholderValue"
                 :disabled="disabled"
                 :aria-label="label || 'no description'"
@@ -55,29 +55,29 @@
                                 v-if="searchable"
                                 @search="onSearch"
                                 @searchFocused="onSearchFocused" />
-                            <template v-for="option in options">
+                            <template v-for="(option, index) in options">
                                 <slot
                                     name="option"
-                                    :option="option">
+                                    :option="option"
+                                    :index="index">
                                     <ListElement
-                                        v-if="isOptionValid(option.name || option.code)"
+                                        v-if="isOptionsValid"
                                         :key="option.id"
                                         :small="small"
                                         :large="!small && regular"
-                                        :selected="isSelected(option.id)"
+                                        :selected="selectedOptions[option]"
                                         @click.native="onSelectValue(option)">
                                         <ListElementAction
                                             v-if="multiselect"
                                             :small="small">
                                             <CheckBox
-                                                :value="isChecked(option.id)"
+                                                :value="selectedOptions[option]"
                                                 @input.native="onSelectValue(option)" />
                                         </ListElementAction>
                                         <ListElementDescription>
                                             <ListElementTitle
                                                 :small="small"
-                                                :hint="listTitleHint(option)"
-                                                :title="listTitle(option)" />
+                                                :title="option" />
                                         </ListElementDescription>
                                     </ListElement>
                                 </slot>
@@ -120,7 +120,6 @@
 <script>
 import { SIZES, THEMES } from '~/defaults/buttons';
 import { ARROW } from '~/defaults/icons';
-import { isEmpty, removeFromObjectByKey } from '~/model/objectWrapper';
 import FadeTransition from '~/core/components/Transitions/FadeTransition';
 import DropDown from '~/core/components/Inputs/Select/Contents/DropDown';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
@@ -145,8 +144,8 @@ export default {
     },
     props: {
         value: {
-            type: [Object, Array, String, Number, Boolean],
-            default: null,
+            type: [Array, String, Number],
+            default: '',
         },
         options: {
             type: Array,
@@ -224,14 +223,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        languageCode: {
-            type: String,
-            default: '',
-        },
-        isListElementHint: {
-            type: Boolean,
-            default: false,
-        },
         dropDownHeight: {
             type: Number,
             default: 200,
@@ -243,8 +234,7 @@ export default {
     },
     data() {
         return {
-            tmpOptions: this.options,
-            selectedOptions: null,
+            selectedOptions: {},
             selectBoundingBox: null,
             isFocused: false,
             isMounted: false,
@@ -257,7 +247,15 @@ export default {
         };
     },
     created() {
-        this.initSelectedOptions();
+        if (this.isOptionsValid) {
+            if (this.multiselect) {
+                this.value.forEach(({ id }) => {
+                    this.selectedOptions[id] = true;
+                });
+            } else if (this.value || this.value === 0) {
+                this.selectedOptions = { [this.value]: true };
+            }
+        }
     },
     mounted() {
         if (this.autofocus) {
@@ -279,19 +277,8 @@ export default {
         secondaryTheme() {
             return THEMES.SECONDARY;
         },
-        parsedInputValue() {
-            if (!this.value || (Array.isArray(this.value) && !this.value.length)) return '';
-            this.initSelectedOptions();
-
-            if (!this.multiselect) {
-                return this.selectedOptions.name || `#${this.selectedOptions.code}`;
-            }
-
-            return Object.values(this.selectedOptions).map(
-                (option) => (isEmpty(option)
-                    ? ''
-                    : option.name || `#${option.code}`),
-            ).join(', ');
+        isOptionsValid() {
+            return this.options.length && typeof this.options[0] !== 'object';
         },
         dropDownState() {
             return this.isFocused
@@ -378,31 +365,8 @@ export default {
         },
     },
     methods: {
-        initSelectedOptions() {
-            if (!this.multiselect) {
-                this.selectedOptions = this.tmpOptions.find(
-                    (option) => option.id === this.value,
-                );
-            } else {
-                this.selectedOptions = this.value.reduce((acc, currentKey) => {
-                    const newObject = acc;
-                    newObject[currentKey] = this.tmpOptions.find(
-                        (option) => option.id === currentKey,
-                    );
-                    return newObject;
-                }, {});
-            }
-        },
         isOptionValid(option) {
-            return typeof option === 'string' || typeof option === 'number';
-        },
-        isSelected(id) {
-            return this.multiselect || isEmpty(this.selectedOptions)
-                ? false
-                : id === this.selectedOptions.id;
-        },
-        isChecked(id) {
-            return this.multiselect ? typeof this.selectedOptions[id] !== 'undefined' : false;
+            return typeof option !== 'object';
         },
         onSearch(value) {
             this.$emit('search', value);
@@ -411,38 +375,24 @@ export default {
             this.isSearchFocused = isFocused;
         },
         onClear() {
-            this.selectedOptions = this.multiselect ? {} : '';
+            this.selectedOptions = {};
 
             this.$emit('input', this.multiselect ? [] : {});
         },
-        listTitleHint({ name, code }) {
-            if (!this.isListElementHint) return '';
-            return name && code ? `#${code} ${this.languageCode}` : '';
-        },
-        listTitle({ name, code }) {
-            return String(name || `#${code}`);
-        },
-        onSelectValue(optionValue) {
-            const { id, code, name } = optionValue;
+        onSelectValue(value) {
+            if (this.multiselect) {
+                if (typeof this.selectedOptions[value] !== 'undefined') {
+                    delete this.selectedOptions[value];
+                } else {
+                    this.selectedOptions[value] = true;
+                }
 
-            if (!this.multiselect) {
-                this.selectedOptions = { id, name, code };
-                this.$emit('input', id);
-
-                return false;
-            }
-
-            if (this.isChecked(id)) {
-                this.selectedOptions = removeFromObjectByKey(this.selectedOptions, id);
+                this.$emit('input', this.options.filter((option) => typeof this.selectedOptions[option] !== 'undefined'));
             } else {
-                this.selectedOptions = {
-                    [id]: { name, code },
-                    ...this.selectedOptions,
-                };
-            }
-            this.$emit('input', Object.keys(this.selectedOptions));
+                this.selectedOptions = { [value]: true };
 
-            return true;
+                this.$emit('input', value);
+            }
         },
         onDismiss() {
             this.isClickedOutside = true;

@@ -67,18 +67,21 @@ export default {
         return this.app.$axios.$get(`${userLanguageCode}/attributes/groups`).then(({ collection }) => {
             commit(types.SET_ATTRIBUTE_GROUPS_OPTIONS, collection.map((group) => ({
                 id: group.id,
-                name: group.name,
-                code: group.code,
+                key: group.code,
+                value: group.name,
+                hint: group.name ? `#${group.code}` : '',
             })));
         });
     },
     getAttributeById(
         {
-            dispatch, commit, rootState,
+            dispatch, commit, state, rootState,
         },
         { attributeId, onError = () => {} },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
+        const { attrTypes } = rootState.data;
+        const { groupOptions } = state;
 
         return this.app.$axios.$get(`${userLanguageCode}/attributes/${attributeId}`).then(({
             id,
@@ -86,7 +89,7 @@ export default {
             type,
             hint = '',
             label = '',
-            groups,
+            groups: groupIds,
             options,
             parameters,
             placeholder = '',
@@ -100,9 +103,11 @@ export default {
 
             commit(types.SET_ATTRIBUTE_ID, id);
             commit(types.SET_ATTRIBUTE_CODE, code);
-            commit(types.SET_ATTRIBUTE_TYPE, type);
+            commit(types.SET_ATTRIBUTE_TYPE, attrTypes[type]);
             commit(types.SET_MULTILINGUAL_ATTRIBUTE, multilingual);
-            commit(types.SET_ATTRIBUTE_GROUPS, groups);
+            commit(types.SET_ATTRIBUTE_GROUPS, groupOptions.filter(
+                (group) => groupIds.some((groupId) => group.id === groupId),
+            ));
 
             dispatch('translations/setTabTranslations', translations, { root: true });
 

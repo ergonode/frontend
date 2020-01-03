@@ -138,7 +138,9 @@ export default {
             const { options } = filter;
             const optionKeys = Object.keys(options);
 
-            return optionKeys.map((key) => ({ key, value: options[key] }));
+            return optionKeys.map((key) => ({
+                id: key, key, value: options[key], hint: options[key] ? `#${key} ${this.column.language}` : '',
+            }));
         },
         infoComponent() {
             const { filter } = this.column;
