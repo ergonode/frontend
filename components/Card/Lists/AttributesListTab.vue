@@ -8,7 +8,7 @@
             v-if="isSelectLanguage"
             header="Attributes"
             :options="languageOptions"
-            :selected-option="attributesLanguageCode"
+            :selected-option="language.value"
             :is-expanded="isExpanded"
             @searchResult="onSearch"
             @selectOption="onSelect"
@@ -19,7 +19,7 @@
             :is-expanded="isExpanded"
             @searchResult="onSearch"
             @expand="onExpand" />
-        <AttributesList :language-code="attributesLanguageCode" />
+        <AttributesList :language-code="language.key" />
         <div class="add-fab-btn">
             <FabButton
                 :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
@@ -35,6 +35,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { WHITE } from '~/assets/scss/_variables/_colors.scss';
+import { getKeyByValue } from '~/model/objectWrapper';
 
 export default {
     name: 'AttributesListTab',
@@ -58,12 +59,14 @@ export default {
     },
     data() {
         return {
-            listDataType: 'attributes',
-            attributesLanguageCode: null,
+            language: {},
         };
     },
     created() {
-        this.attributesLanguageCode = this.userLanguageCode;
+        this.language = {
+            key: this.userLanguageCode,
+            value: this.languages[this.userLanguageCode],
+        };
     },
     computed: {
         ...mapState('authentication', {
@@ -76,10 +79,10 @@ export default {
             return WHITE;
         },
         languageOptions() {
-            return Object.keys(this.languages).map((language) => ({
-                id: language,
-                name: this.languages[language],
-            }));
+            return Object.values(this.languages);
+        },
+        listDataType() {
+            return 'attributes';
         },
     },
     methods: {
@@ -95,17 +98,20 @@ export default {
             this.setFilter(value);
             this.getElements({
                 listType: this.listDataType,
-                languageCode: this.attributesLanguageCode,
+                languageCode: this.language.key,
             });
         },
-        onSelect(option) {
-            this.attributesLanguageCode = option;
+        onSelect(value) {
+            this.language = {
+                key: getKeyByValue(this.languages, value),
+                value,
+            };
 
             Promise.all([
-                this.getGroups(this.attributesLanguageCode),
+                this.getGroups(this.language.key),
                 this.getElements({
                     listType: this.listDataType,
-                    languageCode: this.attributesLanguageCode,
+                    languageCode: this.language.key,
                 }),
             ]);
         },

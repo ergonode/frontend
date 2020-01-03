@@ -35,7 +35,7 @@ export default {
         },
         value: {
             type: Number,
-            default: null,
+            required: true,
         },
     },
     computed: {
@@ -43,7 +43,7 @@ export default {
             return `of ${this.rowsNumber}`;
         },
         rowIntervalOptions() {
-            return ROW_INTERVALS.map((item) => ({ id: item, name: item }));
+            return ROW_INTERVALS;
         },
     },
     methods: {

@@ -75,7 +75,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .search-element {
         display: flex;
         height: 40px;

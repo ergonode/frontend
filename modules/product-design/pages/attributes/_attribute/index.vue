@@ -18,6 +18,7 @@ import {
 } from '~/model/mappers/attributeMapper';
 import { isMultilingual } from '~/model/attributes/AttributeTypes';
 import { getParentRoutePath } from '~/model/navigation/tabs';
+import { getKeyByValue } from '~/model/objectWrapper';
 
 export default {
     name: 'NewAttribute',
@@ -33,6 +34,9 @@ export default {
             parameter: (state) => state.parameter,
             optionKeys: (state) => state.optionKeys,
             optionValues: (state) => state.optionValues,
+        }),
+        ...mapState('data', {
+            attrTypes: (state) => state.attrTypes,
         }),
     },
     methods: {
@@ -59,8 +63,8 @@ export default {
         onCreate() {
             const attribute = {
                 code: this.code,
-                type: this.type,
-                groups: this.groups,
+                type: getKeyByValue(this.attrTypes, this.type),
+                groups: this.groups.map((group) => group.id),
             };
 
             if (isMultilingual(this.type)) {

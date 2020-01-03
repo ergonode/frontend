@@ -65,7 +65,7 @@ export default {
             await this.updateProduct({
                 id,
                 data: {
-                    categoryIds: this.selectedCategories,
+                    categoryIds: this.selectedCategories.map((category) => category.id),
                 },
             });
             await this.applyDraft({

@@ -15,15 +15,13 @@
                 label="Code"
                 hint="Attribute code must be unique"
                 @input="setAttributeCode" />
-            <Select
+            <TranslationSelect
                 :value="groups"
                 label="Groups"
-                solid
-                regular
-                multiselect
-                clearable
-                is-list-element-hint
-                :language-code="userLanguageCode"
+                :solid="true"
+                :regular="true"
+                :multiselect="true"
+                :clearable="true"
                 :options="groupOptions"
                 :disabled="isDisabledByPrivileges"
                 :error-messages="errorGroupsMessage"
@@ -93,6 +91,7 @@ export default {
         InfoHint: () => import('~/core/components/Hints/InfoHint'),
         TextField: () => import('~/core/components/Inputs/TextField'),
         Select: () => import('~/core/components/Inputs/Select/Select'),
+        TranslationSelect: () => import('~/core/components/Inputs/Select/TranslationSelect'),
         FadeGroupTransition: () => import('~/core/components/Transitions/FadeGroupTransition'),
     },
     mixins: [errorValidationMixin],
@@ -145,16 +144,10 @@ export default {
             return hasOptions(this.type);
         },
         attributeTypeOptions() {
-            return Object.keys(this.attrTypes).map((type) => ({
-                id: type,
-                name: this.attrTypes[type],
-            }));
+            return Object.values(this.attrTypes);
         },
         attributeParametersOptions() {
-            return Object.keys(this.params).map((param) => ({
-                id: param,
-                name: this.params[param],
-            }));
+            return Object.values(this.params);
         },
         errorCodeMessage() {
             const codeIndex = 'code';

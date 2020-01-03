@@ -17,9 +17,9 @@ export default {
         commit(types.SET_PRODUCT_CATEGORIES, categories);
     },
     async setDraftLanguageCode({ commit, state, dispatch }, languageCode) {
-        const { id } = state;
         commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
 
+        const { id } = state;
         const data = { id, languageCode };
         const productTemplateRequest = dispatch('getProductTemplate', data);
         const completenessRequest = dispatch('getProductCompleteness', data);
@@ -41,22 +41,35 @@ export default {
     getProduct({ commit, state }, { languageCode, id }) {
         commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
 
-        const { categories } = state;
-        const parseCategoryIds = (category) => categories.find((c) => c.code === category).id;
+        const { categories, templates } = state;
+        const parseCategories = (category) => {
+            const { id: categoryId, name, code } = categories.find((c) => c.code === category);
+
+            return {
+                id: categoryId, key: code, value: name, hint: name ? `#${code} ${this.userLanguageCode}` : '',
+            };
+        };
+        const parseTemplate = (templateId) => {
+            const { name } = templates.find((t) => t.id === templateId);
+
+            return {
+                id: templateId, key: '', value: name, hint: '',
+            };
+        };
 
         return this.app.$axios.$get(`${languageCode}/products/${id}`).then(({
             design_template_id: templateId,
-            categories: categoryIds,
+            categories: categoryCodes,
             sku,
             status,
             workflow = [],
         }) => {
-            if (categoryIds) {
-                commit(types.SET_PRODUCT_CATEGORIES, categoryIds.map(parseCategoryIds));
+            if (categoryCodes) {
+                commit(types.SET_PRODUCT_CATEGORIES, categoryCodes.map(parseCategories));
             }
 
             if (templateId) {
-                commit(types.SET_PRODUCT_TEMPLATE, templateId);
+                commit(types.SET_PRODUCT_TEMPLATE, parseTemplate(templateId));
             }
 
             commit(types.SET_PRODUCT_ID, id);
