@@ -16,7 +16,7 @@
                     :item-row="itemRow" />
             </div>
             <span
-                class="condition__phrase font--semi-bold-12-16"
+                class="condition__phrase"
                 v-text="conditionPhrase" />
         </template>
     </div>
@@ -85,9 +85,7 @@ export default {
 
                 if (foundKey !== -1) {
                     if (!placeholders[clearedKey]) return placeholder;
-                    return Array.isArray(placeholders[clearedKey])
-                        ? getValuesByKeys(parameters[foundKey].options, placeholders[clearedKey])
-                        : getValueByKey(parameters[foundKey].options, placeholders[clearedKey]);
+                    return placeholders[clearedKey];
                 }
                 return placeholders[clearedKey] || placeholder;
             });
@@ -100,7 +98,6 @@ export default {
     .condition {
         display: flex;
         flex-direction: column;
-        height: 100%;
         border: 1px solid $GREY;
         background-color: $WHITESMOKE;
         cursor: move;
@@ -113,7 +110,8 @@ export default {
             padding: 0 8px;
             transform: translateX(-50%);
             background-color: $WHITE;
-            color: $GRAPHITE_LIGHT;
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_14_20;
             content: "AND";
         }
 
@@ -126,16 +124,19 @@ export default {
             display: grid;
             grid-gap: 6%;
             grid-template-rows: 1fr;
-            flex: 0 1 100%;
-            padding: 4px 6% 6px;
+            flex: 1;
             background-color: $WHITE;
         }
 
         &__phrase {
-            padding: 6px 8px;
+            flex: 0;
             border-top: $BORDER_DASHED_GREY;
-            letter-spacing: 1px;
             color: $GRAPHITE;
+            font: $FONT_BOLD_12_16;
+        }
+
+        &__phrase, &__parameters {
+            padding: 8px;
         }
     }
 </style>

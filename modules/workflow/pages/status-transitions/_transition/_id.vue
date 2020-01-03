@@ -28,11 +28,9 @@ export default {
             roles: (state) => state.roles,
             conditionSetId: (state) => state.conditionSetId,
         }),
-        ...mapState('gridDesigner', {
-            fullGridData: (state) => state.fullGridData,
-        }),
         ...mapState('conditions', {
             conditionsValues: (state) => state.conditionsValues,
+            conditions: (state) => state.conditions,
         }),
         getParamId() {
             const { id } = this.$route.params;
@@ -56,7 +54,7 @@ export default {
         ]),
         onSave() {
             const propertiesToUpdate = {
-                conditions: getMappedConditionSetData(this.fullGridData, this.conditionsValues),
+                conditions: getMappedConditionSetData(this.conditionsValues, this.conditions),
             };
 
             this.removeValidationErrors();

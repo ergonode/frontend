@@ -33,8 +33,7 @@ export default {
             const { column } = this.item;
             return {
                 gridColumn: `${column + 1} / ${this.columns + 1}`,
-                marginLeft: `${this.gridGap}px`,
-                padding: `${this.gridGap}px 0`,
+                padding: `${this.gridGap}px`,
                 gridTemplateColumns: `repeat(${this.columns - column}, 1fr)`,
                 gridGap: `${this.gridGap}px`,
             };
