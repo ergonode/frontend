@@ -17,6 +17,8 @@ import { mapState, mapActions } from 'vuex';
 import { getParsedOptions, getParsedParameterKeys } from '~/model/mappers/attributeMapper';
 import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 import { getParentRoutePath } from '~/model/navigation/tabs';
+import { getKeyByValue } from '~/model/objectWrapper';
+import { getParamsOptionsForType } from '~/model/attributes/AttributeTypes';
 
 export default {
     validate({ params }) {
@@ -42,6 +44,9 @@ export default {
         }),
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
+        }),
+        ...mapState('data', {
+            attrTypes: (state) => state.attrTypes,
         }),
     },
     destroyed() {
@@ -83,7 +88,7 @@ export default {
         },
         onSave() {
             this.removeValidationErrors();
-
+            const typeKey = getKeyByValue(this.attrTypes, this.type);
             const getTranslation = (value) => (this.isMultilingual
                 ? getParsedTranslations(value)
                 : { [this.userLanguageCode]: getParsedTranslations(value) });
@@ -113,9 +118,14 @@ export default {
             }
 
             if (this.parameter) {
+                const paramKey = getKeyByValue(getParamsOptionsForType(
+                    typeKey,
+                    this.$store.state.data,
+                ), this.parameter);
+
                 propertiesToUpdate.parameters = getParsedParameterKeys({
-                    selectedType: this.type,
-                    selectedParam: this.parameter,
+                    selectedType: typeKey,
+                    selectedParam: paramKey,
                 });
             }
 

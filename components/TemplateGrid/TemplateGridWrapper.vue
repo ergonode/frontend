@@ -79,7 +79,7 @@ export default {
         },
         gridGap: {
             type: Number,
-            default: 10,
+            default: 8,
         },
         isConnectionsVisible: {
             type: Boolean,

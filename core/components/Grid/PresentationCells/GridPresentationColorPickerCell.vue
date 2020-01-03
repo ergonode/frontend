@@ -7,7 +7,7 @@
         <PointBadge
             v-if="colors[cellData.key]"
             :color="colors[cellData.key] || ''" />
-        <GridPresentationCell :value="cellData.value" />
+        <GridPresentationCell :value="cellData.value || `#${cellData.key}`" />
     </div>
 </template>
 

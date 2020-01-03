@@ -46,9 +46,6 @@ export function getParsedConditionSetData(conditions, conditionsData) {
             }
         });
 
-
-        console.log(parameters);
-
         parsedData.conditionsData[uniqId] = parameters;
         parsedData.conditionsTree.push({
             id: uniqId,

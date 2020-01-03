@@ -40,16 +40,11 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
-        statusCode(id) {
-            return this.statuses.find(
-                (status) => status.id === id,
-            ).code;
-        },
         onCreate() {
             const transition = {
-                source: this.source ? this.statusCode(this.source) : null,
-                destination: this.destination ? this.statusCode(this.destination) : null,
-                roles: this.roles,
+                source: this.source.key,
+                destination: this.destination.key,
+                roles: this.roles.map((role) => role.key),
             };
 
             this.removeValidationErrors();
@@ -68,7 +63,7 @@ export default {
             this.$router.push({
                 name: 'transition-edit-id-general',
                 params: {
-                    id: `${this.statusCode(this.source)}--${this.statusCode(this.destination)}`,
+                    id: `${this.source.key}--${this.destination.key}`,
                 },
             });
         },

@@ -15,7 +15,7 @@
             <input
                 :id="associatedLabel"
                 ref="input"
-                :value="value"
+                :value="multiselect ? value.join(', ') : value"
                 :placeholder="placeholderValue"
                 :disabled="disabled"
                 :aria-label="label || 'no description'"

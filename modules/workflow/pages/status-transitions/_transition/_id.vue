@@ -72,7 +72,7 @@ export default {
                 });
                 this.updateTransition({
                     data: {
-                        roles: this.roles,
+                        roles: this.roles.map((role) => role.key),
                     },
                     onSuccess: this.onTransitionUpdated,
                     onError: this.onError,
@@ -82,7 +82,7 @@ export default {
         onConditionCreated(conditionSetId) {
             const propertiesToUpdate = {
                 condition_set: conditionSetId,
-                roles: this.roles,
+                roles: this.roles.map((role) => role.key),
             };
 
             this.updateTransition({

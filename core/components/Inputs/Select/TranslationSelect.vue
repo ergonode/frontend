@@ -6,6 +6,7 @@
     <Select
         :value="parsedValue"
         v-bind="$attrs"
+        @search="onSearch"
         @focus="onFocus"
         @input="onClear">
         <template #prepend>
@@ -76,6 +77,9 @@ export default {
     methods: {
         onFocus(isFocused) {
             this.$emit('focus', isFocused);
+        },
+        onSearch(value) {
+            this.$emit('search', value);
         },
         onClear() {
             this.selectedOptions = {};

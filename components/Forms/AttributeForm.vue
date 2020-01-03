@@ -79,6 +79,7 @@ import { toCapitalize } from '~/model/stringWrapper';
 import {
     hasParams, hasOptions, isMultilingual, getParamsKeyForType, getParamsOptionsForType,
 } from '~/model/attributes/AttributeTypes';
+import { getKeyByValue } from '~/model/objectWrapper';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
 
 export default {
@@ -117,7 +118,7 @@ export default {
             attrTypes: (state) => state.attrTypes,
         }),
         paramsLabel() {
-            const paramsKey = getParamsKeyForType(this.type);
+            const paramsKey = getParamsKeyForType(this.typeKey);
 
             return toCapitalize(paramsKey);
         },
@@ -125,23 +126,26 @@ export default {
             return Boolean(this.attrID);
         },
         isMultilingual() {
-            return isMultilingual(this.type);
+            return isMultilingual(this.typeKey);
         },
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['ATTRIBUTE_UPDATE']))
             || (!this.isDisabled && !this.$hasAccess(['ATTRIBUTE_CREATE']));
         },
         hasParams() {
-            return hasParams(this.type);
+            return hasParams(this.typeKey);
+        },
+        typeKey() {
+            return getKeyByValue(this.attrTypes, this.type);
         },
         params() {
             return getParamsOptionsForType(
-                this.type,
+                this.typeKey,
                 this.$store.state.data,
             );
         },
         hasOptions() {
-            return hasOptions(this.type);
+            return hasOptions(this.typeKey);
         },
         attributeTypeOptions() {
             return Object.values(this.attrTypes);

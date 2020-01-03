@@ -25,8 +25,6 @@
 import { mapState } from 'vuex';
 import {
     isEmpty,
-    getValueByKey,
-    getValuesByKeys,
 } from '~/model/objectWrapper';
 import { hasOptions } from '~/model/attributes/AttributeTypes';
 import ConditionSetParameters from '~/components/ConditionSetDesigner/ConditionSetParameters';

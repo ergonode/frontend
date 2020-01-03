@@ -18,7 +18,7 @@ module.exports = {
         // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
         // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
         'airbnb-base',
-        'plugin:vue/recommended',
+        'plugin:vue/strongly-recommended',
         'plugin:jest/recommended',
         'plugin:cypress/recommended'
     ],
@@ -39,6 +39,7 @@ module.exports = {
             }
           },
         ],
+        'import/extensions': 'off',
         'no-console': 'off',
         'no-alert': 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',

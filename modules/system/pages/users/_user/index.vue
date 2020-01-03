@@ -13,6 +13,7 @@
 
 import { mapState, mapActions } from 'vuex';
 import { getParentRoutePath } from '~/model/navigation/tabs';
+import { getKeyByValue } from '~/model/objectWrapper';
 
 export default {
     name: 'NewUser',
@@ -20,6 +21,9 @@ export default {
         UserPage: () => import('~/components/Pages/UserPage'),
     },
     computed: {
+        ...mapState('data', {
+            languages: (state) => state.languages,
+        }),
         ...mapState('users', {
             email: (state) => state.email,
             firstName: (state) => state.firstName,
@@ -28,7 +32,7 @@ export default {
             password: (state) => state.password,
             passwordRepeat: (state) => state.passwordRepeat,
             isActive: (state) => state.isActive,
-            roleId: (state) => state.roleId,
+            role: (state) => state.role,
         }),
     },
     created() {
@@ -63,8 +67,8 @@ export default {
                 lastName: this.lastName,
                 password: this.password,
                 passwordRepeat: this.passwordRepeat,
-                language: this.language,
-                roleId: this.roleId,
+                language: getKeyByValue(this.languages, this.language),
+                roleId: this.role.id,
                 isActive: this.isActive,
             };
             this.createUser({

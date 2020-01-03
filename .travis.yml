@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - 11
+  - 11.15.0
 
 install:
   - npm install
