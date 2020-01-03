@@ -7,17 +7,17 @@ import { types } from './mutations';
 const onError = () => {};
 
 export default {
-    getDictionaries({ commit, rootState }) {
+    getDictionaries({ commit, rootState }, dictionariesConfig = []) {
         const { language: userLanguageCode } = rootState.authentication.user;
 
         const requestConfigs = [
             { stateProp: 'languages', requestPath: `${userLanguageCode}/dictionary/languages` },
             { stateProp: 'currencies', requestPath: `${userLanguageCode}/dictionary/currencies` },
             { stateProp: 'units', requestPath: `${userLanguageCode}/dictionary/units` },
-            { stateProp: 'attrTypes', requestPath: `${userLanguageCode}/dictionary/attributes/types` },
             { stateProp: 'dateFormats', requestPath: `${userLanguageCode}/dictionary/date_format` },
+            { stateProp: 'attrTypes', requestPath: `${userLanguageCode}/dictionary/attributes/types` },
             { stateProp: 'privileges', requestPath: `${userLanguageCode}/dictionary/privileges` },
-        ];
+        ].concat(dictionariesConfig);
 
         const promises = requestConfigs.map(({ stateProp, requestPath }) => {
             const requestPromise = this.app.$axios.$get(requestPath).then((response) => {

@@ -10,10 +10,8 @@
 </template>
 
 <script>
-
 export default {
     name: 'LoginLayout',
-    middleware: ['notAuthenticated'],
     components: {
         App: () => import('@Core/components/Layout/App'),
         FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),

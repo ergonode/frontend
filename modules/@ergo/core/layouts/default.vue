@@ -43,7 +43,6 @@ import { COMPONENTS } from '@Core/defaults/extends';
 
 export default {
     name: 'DefaultLayout',
-    middleware: ['setDictionaries', 'authenticated'],
     components: {
         App: () => import('@Core/components/Layout/App'),
         SideBar: () => import('@Core/components/SideBar/SideBar'),

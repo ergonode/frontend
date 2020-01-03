@@ -8,7 +8,6 @@ import { REQUIRED_MODULES } from '../defaults/modules';
 
 const deepmerge = require('deepmerge');
 
-
 class ModuleLoader {
     constructor() {
         this.modules = this.getActiveModules();
@@ -130,6 +129,17 @@ class ModuleLoader {
                                 };
                             }
                         });
+                    }
+                    if (config.nuxt.middleware) {
+                        const { middleware } = config.nuxt;
+
+                        config.nuxt.middleware = async (ctx) => {
+                            for (let i = 0; i < middleware.length; i += 1) {
+                                const importedMiddleware = require(`../modules/${name}${middleware[i]}`).default;
+
+                                importedMiddleware(ctx);
+                            }
+                        };
                     }
                     modulesConfig.nuxt = deepmerge(modulesConfig.nuxt, config.nuxt);
                 }

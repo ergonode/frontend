@@ -18,8 +18,6 @@ export const actions = {
     resetState({ dispatch }) {
         const { store: modulesStore } = getModulesConfig;
 
-        dispatch('data/clearStorage');
-
         for (let i = 0; i < modulesStore.length; i += 1) {
             const { store } = modulesStore[i];
             for (let j = 0; j < store.length; j += 1) {

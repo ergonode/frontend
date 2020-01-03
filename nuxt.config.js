@@ -42,7 +42,7 @@ module.exports = {
     },
     loading: { color: '#00BC87', height: '3px' },
     router: {
-        middleware: ['privilegeRoutingCheck', 'redirectToPath'],
+        middleware: ['modules'],
     },
     css: nuxtConfig.css,
     plugins: nuxtConfig.plugins,

@@ -13,6 +13,10 @@ export default {
         aliases: {
             '@Core': '/',
         },
+        middleware: [
+            '/middleware/privilegeRoutingCheck',
+            '/middleware/redirectToPath',
+        ],
         plugins: [
             '/plugins/axios',
             '/plugins/register-store',
@@ -75,6 +79,10 @@ export default {
         },
     ],
     store: [
+        {
+            directory: 'data',
+            name: 'data',
+        },
         {
             directory: 'core',
             name: 'core',
