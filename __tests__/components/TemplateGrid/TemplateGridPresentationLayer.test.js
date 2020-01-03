@@ -51,6 +51,7 @@ describe('TemplateGrid/TemplateGridPresentationLayer', () => {
             columns: 3,
             isHeader: true,
         });
+
         const children = wrapper.findAll('.presentation-layer > div');
         expect(wrapper.find('.presentation-layer').exists()).toBeTruthy();
         expect(wrapper.contains('.presentation-layer__border-top')).toBeFalsy();
