@@ -141,7 +141,6 @@ export default {
 
             if (isTrashBelowMouse) {
                 this.removeLayoutElementAtIndex(this.index);
-                this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
             } else {
                 this.isDragged = false;
             }
@@ -149,6 +148,7 @@ export default {
             this.highlightingPositions = [];
             this.setDraggedElement();
             removeLayoutElementCopyFromDocumentBody(event);
+            this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
 
             this.$emit('highlightedPositionChange', []);
         },
