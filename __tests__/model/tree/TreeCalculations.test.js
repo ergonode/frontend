@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+// eslint-disable-next-line jest/no-mocks-import
 import { mappingTree, hiddenItems } from '../__mocks__/categoryTree.mock';
 import {
     getCoordinatesForHiddenCategories,

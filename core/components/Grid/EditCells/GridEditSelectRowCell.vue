@@ -7,8 +7,7 @@
         :column="0"
         :row="row"
         editing-allowed
-        action-cell
-        :editing="isSelected"
+        spacebar-edition
         :selected="isSelected"
         @edit="onSelect">
         <GridPresentationCheckCell
@@ -36,8 +35,8 @@ export default {
         },
     },
     methods: {
-        onSelect(isSelected) {
-            this.$emit('select', { row: this.row, isSelected });
+        onSelect() {
+            this.$emit('select', { row: this.row, isSelected: !this.isSelected });
         },
     },
 };

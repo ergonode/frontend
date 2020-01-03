@@ -2,7 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+// eslint-disable-next-line jest/no-mocks-import
 import { parsingTree, mappingTree } from '../__mocks__/categoryTree.mock';
+// eslint-disable-next-line jest/no-mocks-import
 import { categoryList } from '../__mocks__/categories.mock';
 import { getParsedTreeData, getMappedTreeData } from '~/model/mappers/treeMapper';
 

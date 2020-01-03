@@ -224,7 +224,7 @@ export default {
 
 <style lang="scss" scoped>
     .template-grid-wrapper {
-        z-index: 20;
+        z-index: $Z_INDEX_LVL_2;
         display: flex;
         flex: 1 1 auto;
         flex-direction: column;

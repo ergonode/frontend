@@ -69,6 +69,7 @@ import { GRAPHITE_LIGHT } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'GridPresentationInteractiveHeaderCell',
+    inject: ['getEditingCellCoordinates'],
     components: {
         MenuButton: () => import('~/core/components/Buttons/MenuButton'),
         IconArrowSort: () => import('~/components/Icon/Arrows/IconArrowSort'),
@@ -136,7 +137,9 @@ export default {
             return this.draggedElement === this.column.id;
         },
         isCellEditing() {
-            return Object.keys(this.gridState.editingCellCoordinates).length;
+            const { row, column } = this.getEditingCellCoordinates();
+
+            return row !== null && column !== null;
         },
         isSorted() {
             return this.gridState.sortedByColumn.index === this.column.id;

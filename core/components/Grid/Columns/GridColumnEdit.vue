@@ -7,8 +7,7 @@
         <GridCell
             :column="columnIndex"
             :row="getRowIndex(0)"
-            :editing-allowed="false"
-            :action-cell="false"
+            :spacebar-edition="false"
             :locked="true">
             <GridPresentationEditHeaderCell />
         </GridCell>
@@ -16,16 +15,14 @@
             v-if="basicFilters"
             :column="columnIndex"
             :row="getRowIndex(1)"
-            :editing-allowed="false"
-            :action-cell="false"
+            :spacebar-edition="false"
             :locked="true" />
         <GridCell
             v-for="(rowLink, index) in rowLinks"
             :key="rowLink.id"
             :column="columnIndex"
             :row="getRowIndex(index + rowsOffset)"
-            :editing-allowed="true"
-            :action-cell="true"
+            :spacebar-edition="true"
             :selected="isSelectedAllRows
                 || selectedRows[getRowIndex(index + rowsOffset)]"
             @edit="onEdit(rowLink)">
@@ -108,7 +105,6 @@ export default {
     .pinned-column {
         position: sticky;
         right: 0;
-        z-index: $Z_INDEX_LVL_2;
         display: grid;
         box-sizing: border-box;
 

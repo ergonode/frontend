@@ -22,7 +22,6 @@ const state = () => ({
     advancedFiltersData: [],
     currentPage: 1,
     sortedByColumn: {},
-    editingCellCoordinates: {},
 });
 
 export default {

@@ -18,7 +18,6 @@ export default {
     .fade {
         &-enter {
             opacity: 0;
-            transform: translateX(48px) scaleX(0.1);
 
             &-active {
                 transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
@@ -27,9 +26,8 @@ export default {
 
         &-leave {
             &-active {
-                transition: 0.2s cubic-bezier(0.25, 0.8, 0.5, 1);
+                transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
                 opacity: 0;
-                transform: translateX(48px) scaleX(0.1);
             }
         }
     }
