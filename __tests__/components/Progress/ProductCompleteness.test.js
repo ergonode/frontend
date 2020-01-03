@@ -4,7 +4,6 @@
  */
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
-// eslint-disable-next-line import/extensions
 import ProductCompleteness from '~/components/Progress/ProductCompleteness.vue';
 
 const localVue = createLocalVue();
