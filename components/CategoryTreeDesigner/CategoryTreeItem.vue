@@ -17,6 +17,7 @@
             {{ itemName }}
         </span>
         <NumericBadge
+            class="grid-item__categories-length"
             v-if="hasChildren"
             :number="numberOfChildren"
             theme="transparent" />
