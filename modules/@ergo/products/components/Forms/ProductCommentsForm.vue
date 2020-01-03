@@ -33,7 +33,7 @@
                 :layout-orientation="horizontalOrientation"
                 title="Nothing to see here"
                 subtitle="Here you can share information about the product with other people"
-                :bg-url="require('~/assets/images/placeholders/comments.svg')" />
+                :bg-url="require('@Core/assets/images/placeholders/comments.svg')" />
         </template>
         <template
             v-if="isMoreButtonVisible"

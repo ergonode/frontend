@@ -42,7 +42,7 @@
 <script>
 
 import { mapState } from 'vuex';
-import { Z_INDEX_LVL_0 } from '@Core/assets/scss/js-variables/indexes.scss';
+import { Z_INDEX_LVL_0 } from '@Core/assets/scss/_js-variables/indexes.scss';
 import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import categoryManagementPageBaseMixin from '@Core/mixins/page/categoryManagementPageBaseMixin';

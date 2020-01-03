@@ -66,5 +66,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import "@Core/assets/scss/placeholder.scss";
+    @import "@Core/assets/scss/placeholder/placeholder.scss";
 </style>

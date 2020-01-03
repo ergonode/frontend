@@ -80,7 +80,7 @@
 <script>
 import { THEMES } from '@Core/defaults/buttons';
 import { ROW_HEIGHT, GRID_LAYOUT } from '@Core/defaults/grid';
-import { GREEN } from '@Core/assets/scss/_variables/_colors.scss';
+import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'GridHeader',

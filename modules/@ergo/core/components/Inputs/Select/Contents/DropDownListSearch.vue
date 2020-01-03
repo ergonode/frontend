@@ -25,7 +25,7 @@
 import { debounce } from 'debounce';
 import {
     GREEN, GRAPHITE,
-} from '@Core/assets/scss/_variables/_colors.scss';
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import IconSearch from '@Core/components/Icons/Actions/IconSearch';
 import TextField from '@Core/components/Inputs/TextField';
 

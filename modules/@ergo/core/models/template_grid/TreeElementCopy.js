@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { WHITE } from '@Core/assets/scss/_variables/_colors.scss';
+import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export function addElementCopyToDocumentBody(event, { element, width, height }) {
     const elementId = element.getAttribute('item-id');

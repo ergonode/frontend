@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { GREEN, WHITE } from '@Core/assets/scss/_variables/_colors.scss';
+import { GREEN, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import FadeSideBarTextTransition from '@Core/components/Transitions/FadeSideBarTextTransition';
 
 export default {

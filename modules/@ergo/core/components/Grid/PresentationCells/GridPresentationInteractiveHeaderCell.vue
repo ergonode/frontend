@@ -65,7 +65,7 @@ import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { removeCookieById } from '@Core/models/cookies';
 import { COLUMNS_IDS } from '@Core/defaults/grid/cookies';
 import { SORTING_ORDER } from '@Core/defaults/icons';
-import { GRAPHITE_LIGHT } from '@Core/assets/scss/_variables/_colors.scss';
+import { GRAPHITE_LIGHT } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'GridPresentationInteractiveHeaderCell',

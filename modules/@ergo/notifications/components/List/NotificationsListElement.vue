@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { GRAPHITE } from '@Core/assets/scss/_variables/_colors.scss';
+import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'NotificationsListElement',

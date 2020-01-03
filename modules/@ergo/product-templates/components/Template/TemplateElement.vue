@@ -49,7 +49,7 @@ export default {
     },
     computed: {
         getImage() {
-            return require('~/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
+            return require('@Core/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
     },
     methods: {

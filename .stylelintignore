@@ -11,9 +11,4 @@ build/
 docker/
 static/
 coverage/
-modules/@ergo/core/assets/scss/_variables/_colors.scss
-modules/@ergo/core/assets/scss/_variables/_borders.scss
-modules/@ergo/core/assets/scss/_variables/_elevators.scss
-modules/@ergo/core/assets/scss/_variables/_indexes.scss
-modules/@ergo/core/assets/scss/js-variables/indexes.scss
 

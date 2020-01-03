@@ -37,5 +37,5 @@ export default {
 </script>
 
 <style lang="scss">
-    @import "~/assets/scss/navigation/menu-list.scss";
+    @import "@Core/assets/scss/navigation/menu-list.scss";
 </style>

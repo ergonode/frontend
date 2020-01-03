@@ -26,7 +26,7 @@
 import { mapState, mapActions } from 'vuex';
 import {
     WHITE,
-} from '@Core/assets/scss/_variables/_colors.scss';
+} from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'CategoriesListTab',

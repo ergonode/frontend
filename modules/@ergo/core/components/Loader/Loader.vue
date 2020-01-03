@@ -13,7 +13,7 @@
 <script>
 import {
     GREEN,
-} from '@Core/assets/scss/_variables/_colors.scss';
+} from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'Loader',
@@ -38,5 +38,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-    @import "~assets/scss/loader.scss";
+    @import "@Core/assets/scss/loader/loader.scss";
 </style>

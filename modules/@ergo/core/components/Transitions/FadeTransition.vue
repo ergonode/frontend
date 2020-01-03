@@ -17,5 +17,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import "~assets/scss/fade.scss";
+    @import "@Core/assets/scss/fade/fade.scss";
 </style>

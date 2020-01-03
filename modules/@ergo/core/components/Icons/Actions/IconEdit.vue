@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { GRAPHITE } from '@Core/assets/scss/_variables/_colors.scss';
+import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import BaseIcon from '@Core/components/Icons/BaseIcon';
 
 export default {

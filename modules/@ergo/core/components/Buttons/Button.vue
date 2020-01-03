@@ -25,7 +25,7 @@
 import { THEMES } from '@Core/defaults/buttons';
 import {
     GRAPHITE, GREY_DARK, WHITE,
-} from '@Core/assets/scss/_variables/_colors.scss';
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import buttonPropsMixin from '@Core/mixins/buttons/buttonPropsMixin';
 
 export default {
@@ -63,5 +63,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import "~assets/scss/button.scss";
+    @import "@Core/assets/scss/button/button.scss";
 </style>

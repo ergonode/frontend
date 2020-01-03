@@ -469,5 +469,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import "~assets/scss/input.scss";
+    @import "@Core/assets/scss/input/input.scss";
 </style>

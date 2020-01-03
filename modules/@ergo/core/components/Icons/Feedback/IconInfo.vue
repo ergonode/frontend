@@ -15,7 +15,7 @@
 
 <script>
 import BaseIcon from '@Core/components/Icons/BaseIcon';
-import { BLUE } from '@Core/assets/scss/_variables/_colors.scss';
+import { BLUE } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'IconInfo',

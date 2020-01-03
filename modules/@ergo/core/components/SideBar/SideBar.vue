@@ -41,7 +41,7 @@
 <script>
 import { THEMES } from '@Core/defaults/buttons';
 import { ARROW } from '@Core/defaults/icons';
-import { GREEN, WHITE } from '@Core/assets/scss/_variables/_colors.scss';
+import { GREEN, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
 import FabButton from '@Core/components/Buttons/FabButton';
 import SideBarLogo from '@Core/components/SideBar/SideBarLogo';

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import { WHITE, GRAPHITE_DARK } from '@Core/assets/scss/_variables/_colors.scss';
+import { WHITE, GRAPHITE_DARK } from '@Core/assets/scss/_js-variables/colors.scss';
 import { SIZES } from '@Core/defaults/badge';
 import InformationBadge from '@Core/components/Badges/InformationBadge.vue';
 

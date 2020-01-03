@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { WHITE, BLUE, GREEN } from '@Core/assets/scss/_variables/_colors.scss';
+import { WHITE, BLUE, GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
 import TitleBarHeader from '@Core/components/TitleBar/TitleBarHeader';
 import TitleBarActions from '@Core/components/TitleBar/TitleBarActions';
 import InformationIconBadge from '@Core/components/Badges/InformationIconBadge';

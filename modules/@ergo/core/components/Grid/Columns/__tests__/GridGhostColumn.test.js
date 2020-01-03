@@ -6,7 +6,7 @@ import { shallowMount } from '@vue/test-utils';
 import GridColumnGhost from '@Core/components/Grid/Columns/GridColumnGhost';
 import {
     WHITE, GRAPHITE,
-} from '@Core/assets/scss/_variables/_colors.scss';
+} from '@Core/assets/scss/_js-variables/colors.scss';
 
 describe('Grid/GridColumnGhost', () => {
     let wrapper;

@@ -16,7 +16,7 @@
 
 <script>
 import BaseIcon from '@Core/components/Icons/BaseIcon';
-import { GRAPHITE, WHITE } from '@Core/assets/scss/_variables/_colors.scss';
+import { GRAPHITE, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'IconTooltip',

@@ -34,7 +34,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { WHITE } from '@Core/assets/scss/_variables/_colors.scss';
+import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'AttributesListTab',

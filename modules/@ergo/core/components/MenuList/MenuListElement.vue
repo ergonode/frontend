@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { GRAPHITE, GREEN, WHITE } from '@Core/assets/scss/_variables/_colors.scss';
+import { GRAPHITE, GREEN, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'MenuListElement',
