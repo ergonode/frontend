@@ -25,9 +25,11 @@ export default {
                 title: 'Media',
                 group: {
                     title: 'Resources',
+                    menuPosition: 6,
                     icon: Icons.Media,
                 },
                 isMenu: true,
+                menuPosition: 1,
                 privileges: {
                     namespace: Privileges.MULTIMEDIA.namespace,
                     read: Privileges.MULTIMEDIA.read,

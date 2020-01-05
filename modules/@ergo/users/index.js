@@ -18,6 +18,13 @@ export default {
             '/plugins/privilege',
         ],
     },
+    dictionaries: [
+        {
+            stateProp: 'privileges',
+            dataFormat: {},
+            requestPath: '/dictionary/privileges',
+        },
+    ],
     router: [
         {
             name: 'users',
@@ -28,9 +35,11 @@ export default {
                 title: 'Users',
                 group: {
                     title: 'System',
+                    menuPosition: 1000,
                     icon: Icons.Settings,
                 },
                 isMenu: true,
+                menuPosition: 1,
                 privileges: {
                     namespace: Privileges.USER.namespace,
                     read: Privileges.USER.read,
@@ -125,9 +134,11 @@ export default {
                 title: 'User roles',
                 group: {
                     title: 'System',
+                    menuPosition: 1000,
                     icon: Icons.Settings,
                 },
                 isMenu: true,
+                menuPosition: 2,
                 privileges: {
                     namespace: Privileges.USER_ROLE.namespace,
                     read: Privileges.USER_ROLE.read,

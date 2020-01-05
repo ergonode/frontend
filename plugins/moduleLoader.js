@@ -41,12 +41,12 @@ class ModuleLoader {
     }
 
     checkModuleRelations() {
-        const { relations } = this.modulesConfig;
+        const { moduleRelations } = this.modulesConfig;
 
-        relations.forEach((relation) => {
-            const { moduleName, relations: moduleRealtions } = relation;
+        moduleRelations.forEach((relation) => {
+            const { moduleName, relations } = relation;
 
-            moduleRealtions.forEach((r) => {
+            relations.forEach((r) => {
                 if (!this.checkRelation(r)) {
                     throw Error(`Module [${moduleName}] has relation with [${r}].\n Module [${r}] does not exist.`);
                 }
@@ -83,6 +83,7 @@ class ModuleLoader {
 
             if (config) {
                 if (config.router) modulesConfig.router.push(...config.router);
+                if (config.dictionaries) modulesConfig.dictionaries.push(...config.dictionaries);
                 if (config.store) {
                     modulesConfig.store.push({
                         source,
@@ -144,7 +145,7 @@ class ModuleLoader {
                     modulesConfig.nuxt = deepmerge(modulesConfig.nuxt, config.nuxt);
                 }
                 if (config.moduleRelations) {
-                    modulesConfig.relations.push({
+                    modulesConfig.moduleRelations.push({
                         moduleName: name,
                         relations: config.moduleRelations,
                     });
@@ -163,8 +164,9 @@ class ModuleLoader {
         }, {
             router: [],
             store: [],
+            dictionaries: [],
             nuxt: {},
-            relations: [],
+            moduleRelations: [],
             extendComponents: {},
             extendTabs: [],
         });

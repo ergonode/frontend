@@ -27,9 +27,11 @@ export default {
                 title: 'Category trees',
                 group: {
                     title: 'Product design',
+                    menuPosition: 3,
                     icon: Icons.Templates,
                 },
                 isMenu: true,
+                menuPosition: 5,
                 privileges: {
                     namespace: 'CATEGORY_TREE',
                     read: 'CATEGORY_TREE_READ',

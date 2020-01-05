@@ -2,25 +2,17 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { getModulesConfig } from '~/plugins/moduleLoader';
 import { types } from './mutations';
 
 const onError = () => {};
 
 export default {
-    getDictionaries({ commit, rootState }, dictionariesConfig = []) {
+    getDictionaries({ commit, rootState }) {
+        const { dictionaries: modulesDictionaries } = getModulesConfig;
         const { language: userLanguageCode } = rootState.authentication.user;
-
-        const requestConfigs = [
-            { stateProp: 'languages', requestPath: `${userLanguageCode}/dictionary/languages` },
-            { stateProp: 'currencies', requestPath: `${userLanguageCode}/dictionary/currencies` },
-            { stateProp: 'units', requestPath: `${userLanguageCode}/dictionary/units` },
-            { stateProp: 'dateFormats', requestPath: `${userLanguageCode}/dictionary/date_format` },
-            { stateProp: 'attrTypes', requestPath: `${userLanguageCode}/dictionary/attributes/types` },
-            { stateProp: 'privileges', requestPath: `${userLanguageCode}/dictionary/privileges` },
-        ].concat(dictionariesConfig);
-
-        const promises = requestConfigs.map(({ stateProp, requestPath }) => {
-            const requestPromise = this.app.$axios.$get(requestPath).then((response) => {
+        const promises = modulesDictionaries.map(({ stateProp, requestPath }) => {
+            const requestPromise = this.app.$axios.$get(`${userLanguageCode}${requestPath}`).then((response) => {
                 commit(types.SET_CUSTOM_STATE_PROPERTY, { stateProp, value: response });
             });
 

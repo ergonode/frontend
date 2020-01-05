@@ -52,7 +52,7 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
         }),
-        ...mapState('data', {
+        ...mapState('dictionaries', {
             languages: (state) => state.languages,
         }),
         ...mapState('translations', {

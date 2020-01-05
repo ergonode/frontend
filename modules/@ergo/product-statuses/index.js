@@ -24,9 +24,11 @@ export default {
                 title: 'Product statuses',
                 group: {
                     title: 'Workflow',
+                    menuPosition: 7,
                     icon: Icons.Flow,
                 },
                 isMenu: true,
+                menuPosition: 1,
                 privileges: {
                     namespace: Privileges.WORKFLOW.namespace,
                     read: Privileges.WORKFLOW.read,

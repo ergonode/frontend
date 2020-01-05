@@ -28,9 +28,11 @@ export default {
                 icon: 'Templates',
                 group: {
                     title: 'Products',
+                    menuPosition: 2,
                     icon: Icons.Document,
                 },
                 isMenu: true,
+                menuPosition: 2,
                 privileges: {
                     namespace: Privileges.SEGMENT.namespace,
                     read: Privileges.SEGMENT.read,

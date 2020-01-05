@@ -25,9 +25,11 @@ export default {
                 title: 'Exports',
                 group: {
                     title: 'Channels',
+                    menuPosition: 5,
                     icon: Icons.Channels,
                 },
                 isMenu: true,
+                menuPosition: 1,
                 // privileges: {
                 //     namespace: Privileges.EXPORT.namespace,
                 //     read: Privileges.EXPORT.read,

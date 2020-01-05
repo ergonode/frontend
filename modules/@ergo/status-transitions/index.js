@@ -28,9 +28,11 @@ export default {
                 title: 'Status transitions',
                 group: {
                     title: 'Workflow',
+                    menuPosition: 7,
                     icon: Icons.Flow,
                 },
                 isMenu: true,
+                menuPosition: 2,
                 privileges: {
                     namespace: Privileges.WORKFLOW.namespace,
                     read: Privileges.WORKFLOW.read,

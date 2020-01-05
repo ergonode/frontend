@@ -27,9 +27,11 @@ export default {
                 title: 'Product templates',
                 group: {
                     title: 'Product design',
+                    menuPosition: 3,
                     icon: Icons.Templates,
                 },
                 isMenu: true,
+                menuPosition: 3,
                 privileges: {
                     namespace: Privileges.TEMPLATE_DESIGNER.namespace,
                     read: Privileges.TEMPLATE_DESIGNER.read,

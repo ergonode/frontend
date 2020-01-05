@@ -25,9 +25,11 @@ export default {
                 title: 'Imports',
                 group: {
                     title: 'Sources',
+                    menuPosition: 4,
                     icon: Icons.Export,
                 },
                 isMenu: true,
+                menuPosition: 1,
                 privileges: {
                     namespace: Privileges.IMPORT.namespace,
                     read: Privileges.IMPORT.read,

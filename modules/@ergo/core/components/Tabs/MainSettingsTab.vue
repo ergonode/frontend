@@ -52,7 +52,7 @@ export default {
         ...mapActions('languageSettings', [
             'updateData',
         ]),
-        ...mapActions('data', [
+        ...mapActions('dictionaries', [
             'getLanguagesDictionary',
         ]),
         async onSave() {

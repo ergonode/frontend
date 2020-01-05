@@ -73,7 +73,7 @@ export default {
     },
     mixins: [errorValidationMixin, translationCardMixin],
     computed: {
-        ...mapState('data', {
+        ...mapState('dictionaries', {
             attrTypes: (state) => state.attrTypes,
         }),
         ...mapState('attribute', {

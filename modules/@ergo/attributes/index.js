@@ -15,6 +15,28 @@ export default {
             '@Attributes': '/',
         },
     },
+    dictionaries: [
+        {
+            stateProp: 'currencies',
+            dataFormat: {},
+            requestPath: '/dictionary/currencies',
+        },
+        {
+            stateProp: 'units',
+            dataFormat: {},
+            requestPath: '/dictionary/units',
+        },
+        {
+            stateProp: 'dateFormats',
+            dataFormat: {},
+            requestPath: '/dictionary/date_format',
+        },
+        {
+            stateProp: 'attrTypes',
+            dataFormat: {},
+            requestPath: '/dictionary/attributes/types',
+        },
+    ],
     router: [
         {
             name: 'attributes',
@@ -25,9 +47,11 @@ export default {
                 title: 'Attributes',
                 group: {
                     title: 'Product design',
+                    menuPosition: 3,
                     icon: Icons.Templates,
                 },
                 isMenu: true,
+                menuPosition: 1,
                 privileges: {
                     namespace: Privileges.ATTRIBUTE.namespace,
                     read: Privileges.ATTRIBUTE.read,
@@ -122,9 +146,11 @@ export default {
                 title: 'Attribute groups',
                 group: {
                     title: 'Product design',
+                    menuPosition: 3,
                     icon: Icons.Templates,
                 },
                 isMenu: true,
+                menuPosition: 2,
                 privileges: {
                     namespace: Privileges.ATTRIBUTE.namespace,
                     read: Privileges.ATTRIBUTE.read,

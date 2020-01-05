@@ -27,9 +27,11 @@ export default {
                 title: 'Activity logs',
                 group: {
                     title: 'System',
+                    menuPosition: 1000,
                     icon: Icons.Settings,
                 },
                 isMenu: true,
+                menuPosition: 3,
                 privileges: Privileges.USER,
             },
         },

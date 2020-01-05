@@ -74,7 +74,7 @@ export default {
             store: this.$store,
         });
 
-        const { privileges: privilegesDictionary } = this.$store.state.data;
+        const { privileges: privilegesDictionary } = this.$store.state.dictionaries;
         const { privileges } = this.$store.state.authentication.user;
         const {
             rows, columns, columnWidths, descriptions,

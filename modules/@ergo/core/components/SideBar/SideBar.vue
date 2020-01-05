@@ -88,10 +88,14 @@ export default {
                 if (route.meta && route.meta.isMenu && (!route.meta.privileges
                     || this.$hasAccess([route.meta.privileges.read]))) {
                     if (route.meta.group && !groups[route.meta.group.title]) {
-                        routes.push({
+                        const routeData = {
                             group: { ...route.meta.group },
                             routes: [route],
-                        });
+                        };
+                        if (route.meta.group.menuPosition) {
+                            routeData.menuPosition = route.meta.group.menuPosition;
+                        }
+                        routes.push(routeData);
                         groups[route.meta.group.title] = true;
                     } else if (route.meta.group && groups[route.meta.group.title]) {
                         const index = routes
@@ -99,15 +103,39 @@ export default {
 
                         routes[index].routes.push({ ...route });
                     } else {
-                        routes.push({ ...route });
+                        routes.push({ ...route, menuPosition: route.meta.menuPosition });
                     }
                 }
             });
+            const subMenuSorted = routes.map((route) => {
+                if (route.routes) {
+                    return {
+                        ...route,
+                        routes: this.sortRoutes(route.routes, true),
+                    };
+                }
+                return route;
+            });
 
-            return routes;
+            return this.sortRoutes(subMenuSorted);
         },
     },
     methods: {
+        sortRoutes(routes, subMenu = false) {
+            const unsetPosition = 999;
+
+            return routes.sort((a, b) => {
+                let routeA = a.menuPosition || unsetPosition;
+                let routeB = b.menuPosition || unsetPosition;
+
+                if (subMenu) {
+                    routeA = a.meta.menuPosition || unsetPosition;
+                    routeB = b.meta.menuPosition || unsetPosition;
+                }
+
+                return routeA - routeB;
+            });
+        },
         onExpand() {
             this.isExpanded = !this.isExpanded;
         },

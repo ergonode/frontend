@@ -28,9 +28,11 @@ export default {
                 title: 'Catalog',
                 group: {
                     title: 'Products',
+                    menuPosition: 2,
                     icon: Icons.Document,
                 },
                 isMenu: true,
+                menuPosition: 1,
                 privileges: {
                     namespace: Privileges.PRODUCT.namespace,
                     read: Privileges.PRODUCT.read,

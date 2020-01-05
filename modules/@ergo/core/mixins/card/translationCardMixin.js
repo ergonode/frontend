@@ -14,7 +14,7 @@ export default {
         },
     },
     computed: {
-        ...mapState('data', {
+        ...mapState('dictionaries', {
             languages: (state) => state.languages,
         }),
         ...mapState('translations', {

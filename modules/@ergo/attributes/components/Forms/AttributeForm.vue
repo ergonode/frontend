@@ -114,7 +114,7 @@ export default {
             parameter: (state) => state.parameter,
             multilingual: (state) => state.isMultilingual,
         }),
-        ...mapState('data', {
+        ...mapState('dictionaries', {
             attrTypes: (state) => state.attrTypes,
         }),
         paramsLabel() {
@@ -138,7 +138,7 @@ export default {
         params() {
             return getParamsOptionsForType(
                 this.type,
-                this.$store.state.data,
+                this.$store.state.dictionaries,
             );
         },
         hasOptions() {

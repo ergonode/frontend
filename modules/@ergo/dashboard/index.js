@@ -24,6 +24,7 @@ export default {
                 title: 'Dashboard',
                 icon: Icons.Dashboard,
                 isMenu: true,
+                menuPosition: -1000,
             },
         },
     ],

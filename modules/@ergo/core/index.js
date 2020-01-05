@@ -34,6 +34,13 @@ export default {
             scss: '/assets/scss/main.scss',
         },
     },
+    dictionaries: [
+        {
+            stateProp: 'languages',
+            dataFormat: {},
+            requestPath: '/dictionary/languages',
+        },
+    ],
     router: [
         {
             name: 'index',
@@ -71,17 +78,19 @@ export default {
                 title: 'Settings',
                 group: {
                     title: 'System',
+                    menuPosition: 1000,
                     icon: Icons.Settings,
                 },
                 isMenu: true,
+                menuPosition: 1000,
                 redirectTo: 'main',
             },
         },
     ],
     store: [
         {
-            directory: 'data',
-            name: 'data',
+            directory: 'dictionaries',
+            name: 'dictionaries',
         },
         {
             directory: 'core',

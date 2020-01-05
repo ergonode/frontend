@@ -30,7 +30,7 @@ export default {
             name: (state) => state.name,
             description: (state) => state.description,
         }),
-        ...mapState('data', {
+        ...mapState('dictionaries', {
             privileges: (state) => state.privileges,
         }),
         ...mapState('authentication', {

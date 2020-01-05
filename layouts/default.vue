@@ -14,14 +14,14 @@ import { isEmpty } from '@Core/models/objectWrapper';
 export default {
     name: 'NuxtDefaultLayout',
     middleware({ store, redirect }) {
-        const { data, authentication } = store.state;
+        const { dictionaries, authentication } = store.state;
         let emptyState = 0;
 
         if (!(authentication.jwt && authentication.user)) {
             return redirect('/');
         }
 
-        Object.values(data).forEach((value) => {
+        Object.values(dictionaries).forEach((value) => {
             if (Array.isArray(value) && value.length === 0) {
                 emptyState += 1;
             }
@@ -30,7 +30,7 @@ export default {
             }
         });
         if (emptyState > 0) {
-            return store.dispatch('data/getDictionaries');
+            return store.dispatch('dictionaries/getDictionaries');
         }
 
         return null;
