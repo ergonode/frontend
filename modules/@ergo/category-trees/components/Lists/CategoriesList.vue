@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
     name: 'CategoriesList',
@@ -30,9 +30,6 @@ export default {
             required: true,
         },
     },
-    destroyed() {
-        this.clearStorage();
-    },
     computed: {
         ...mapState('list', {
             elements: (state) => state.elements,
@@ -43,11 +40,6 @@ export default {
 
             return language;
         },
-    },
-    methods: {
-        ...mapActions('list', [
-            'clearStorage',
-        ]),
     },
 };
 </script>

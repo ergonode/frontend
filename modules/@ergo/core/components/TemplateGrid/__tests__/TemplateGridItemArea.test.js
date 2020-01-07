@@ -39,8 +39,7 @@ describe('TemplateGrid/TemplateGridItemArea', () => {
             gridColumn: '2 / 3',
             gridGap: '0px',
             gridTemplateColumns: 'repeat(1, 1fr)',
-            marginLeft: '0px',
-            padding: '0px 0',
+            padding: '0px',
         });
     });
     it('Check item style with new props', () => {
@@ -56,8 +55,7 @@ describe('TemplateGrid/TemplateGridItemArea', () => {
             gridColumn: '4 / 7',
             gridGap: '10px',
             gridTemplateColumns: 'repeat(3, 1fr)',
-            marginLeft: '10px',
-            padding: '10px 0',
+            padding: '10px',
         });
     });
 });

@@ -5,13 +5,13 @@
 <template>
     <Component
         :is="getComponentViaType"
-        solid
-        regular
-        required
-        clearable
+        :solid="true"
+        :regular="true"
+        :required="true"
+        :clearable="true"
         :label="parameter.name"
-        :options="hasOptions ? getConditionOptions : []"
-        :value="getConditionValue"
+        :options="conditionOptions"
+        :value="conditionValue"
         :multiselect="parameter.type === 'MULTI_SELECT'"
         :disabled="!$hasAccess(['CONDITION_UPDATE'])"
         :error-messages="errorParamsMessage"
@@ -19,15 +19,8 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
-import {
-    getValueByKey,
-    getValuesByKeys,
-} from '@Core/models/objectWrapper';
-import { hasOptions } from '@Conditions/models/conditionTypes';
 import { TYPES } from '@Conditions/defaults/conditions';
 import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
-import TextField from '@Core/components/Inputs/TextField';
-import Select from '@Core/components/Inputs/Select/Select';
 
 export default {
     name: 'ConditionSetParameters',
@@ -50,41 +43,26 @@ export default {
         ...mapState('conditions', {
             conditionsValues: (state) => state.conditionsValues,
         }),
-        hasOptions() {
-            return hasOptions(this.parameter.type);
-        },
         getComponentViaType() {
             switch (this.parameter.type) {
             case TYPES.SELECT:
             case TYPES.MULTI_SELECT:
-                return Select;
+                return () => import('@Core/components/Inputs/Select/Select');
             case TYPES.TEXT:
             case TYPES.UNIT:
             case TYPES.NUMERIC:
-                return TextField;
+                return () => import('@Core/components/Inputs/TextField');
             default:
                 return null;
             }
         },
-        getConditionOptions() {
-            const options = Object.keys(this.parameter.options);
-
-            return options.map((option) => ({
-                id: option,
-                name: this.parameter.options[option],
-            }));
+        conditionValue() {
+            return this.conditionsValues[this.itemId]
+                ? this.conditionsValues[this.itemId][this.parameter.name]
+                : '';
         },
-        getConditionValue() {
-            const { name, options } = this.parameter;
-            const condition = this.conditionsValues[this.itemId];
-
-            if (!condition) return '';
-            if (this.hasOptions) {
-                return Array.isArray(condition[name])
-                    ? getValuesByKeys(options, condition[name])
-                    : getValueByKey(options, condition[name]);
-            }
-            return condition[name] || '';
+        conditionOptions() {
+            return this.parameter.options ? Object.values(this.parameter.options) : [];
         },
         errorParamsMessage() {
             const { name } = this.parameter;

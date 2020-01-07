@@ -49,6 +49,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { getKeyByValue } from '@Core/models/objectWrapper';
 import { hasPlaceholder, hasOptions } from '@Attributes/models/attributeTypes';
 import AttributeOptionValues from '@Attributes/components/Forms/Sections/AttributeOptionValues';
 import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
@@ -81,10 +82,13 @@ export default {
             isMultilingual: (state) => state.isMultilingual,
         }),
         hasPlaceholder() {
-            return hasPlaceholder(this.type);
+            return hasPlaceholder(this.typeKey);
         },
         hasOptions() {
-            return hasOptions(this.type);
+            return hasOptions(this.typeKey);
+        },
+        typeKey() {
+            return getKeyByValue(this.attrTypes, this.type);
         },
         isUserAllowedToUpdate() {
             return this.$hasAccess(['ATTRIBUTE_UPDATE']);

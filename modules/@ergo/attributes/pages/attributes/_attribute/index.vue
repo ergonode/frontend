@@ -12,12 +12,13 @@
 <script>
 
 import { mapState, mapActions } from 'vuex';
+import { getKeyByValue } from '@Core/models/objectWrapper';
+import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import {
     getParsedParameterKeys,
     getParsedOptions,
 } from '@Attributes/models/attributeMapper';
-import { isMultilingual } from '@Attributes/models/attributeTypes';
-import { getParentRoutePath } from '@Core/models/navigation/tabs';
+import { isMultilingual, getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 
 export default {
     name: 'NewAttribute',
@@ -33,6 +34,9 @@ export default {
             parameter: (state) => state.parameter,
             optionKeys: (state) => state.optionKeys,
             optionValues: (state) => state.optionValues,
+        }),
+        ...mapState('data', {
+            attrTypes: (state) => state.attrTypes,
         }),
     },
     methods: {
@@ -57,13 +61,14 @@ export default {
             });
         },
         onCreate() {
+            const typeKey = getKeyByValue(this.attrTypes, this.type);
             const attribute = {
                 code: this.code,
-                type: this.type,
-                groups: this.groups,
+                type: typeKey,
+                groups: this.groups.map((group) => group.id),
             };
 
-            if (isMultilingual(this.type)) {
+            if (isMultilingual(typeKey)) {
                 attribute.multilingual = this.multilingual;
             }
 
@@ -87,9 +92,14 @@ export default {
             }
 
             if (this.parameter) {
+                const paramKey = getKeyByValue(getParamsOptionsForType(
+                    typeKey,
+                    this.$store.state.data,
+                ), this.parameter);
+
                 attribute.parameters = getParsedParameterKeys({
-                    selectedType: this.type,
-                    selectedParam: this.parameter,
+                    selectedType: typeKey,
+                    selectedParam: paramKey,
                 });
             }
 

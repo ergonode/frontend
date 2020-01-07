@@ -157,17 +157,21 @@ export function getMappedColumns(columns) {
     };
 }
 
-export function getMappedArrayValue(value, options) {
+export function getMappedArrayValue(value, options, languageCode) {
     const parsedKey = value !== null && value.length > 0 ? value : '';
 
     if (Array.isArray(value)) {
         return value.map((val) => ({
+            id: val,
             key: val,
             value: options[val],
+            hint: options[val] ? `#${val} ${languageCode}` : '',
         }));
     }
 
-    return { key: parsedKey, value: options[value] || '' };
+    return {
+        id: parsedKey, key: parsedKey, value: options[value] || '', hint: options[value] ? `#${parsedKey} ${languageCode}` : '',
+    };
 }
 
 export function getMappedCellValues(columns, rows, rowIds) {
@@ -187,7 +191,11 @@ export function getMappedCellValues(columns, rows, rowIds) {
             if (!values[rowId]) values[rowId] = {};
 
             if (filter && filter.options) {
-                values[rowId][columnId] = getMappedArrayValue(value, filter.options);
+                values[rowId][columnId] = getMappedArrayValue(
+                    value,
+                    filter.options,
+                    column.language,
+                );
             } else if (typeof value === 'boolean' && column.type !== COLUMN_TYPE.CHECK_CELL) {
                 values[rowId][columnId] = { value: value ? 'Yes' : 'No' };
             } else {

@@ -149,6 +149,7 @@ export default {
             this.setDraggedElement();
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
             removeLayoutElementCopyFromDocumentBody(event);
+            this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
 
             this.$emit('highlightedPositionChange', []);
         },

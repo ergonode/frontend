@@ -4,6 +4,10 @@
  */
 <template>
     <VerticalTabBarListWrapper>
+        <ListHeader
+            header="Widgets"
+            :is-expanded="isExpanded"
+            @expand="onExpand" />
         <WidgetsList />
     </VerticalTabBarListWrapper>
 </template>
@@ -15,6 +19,18 @@ export default {
     components: {
         VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
         WidgetsList: () => import('@Templates/components/Lists/Widgets/WidgetsList'),
+        ListHeader: () => import('@Core/components/List/ListHeader'),
+    },
+    props: {
+        isExpanded: {
+            type: Boolean,
+            required: true,
+        },
+    },
+    methods: {
+        onExpand(isExpanded) {
+            this.$emit('expand', isExpanded);
+        },
     },
 };
 </script>

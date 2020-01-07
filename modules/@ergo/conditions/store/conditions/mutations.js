@@ -12,7 +12,6 @@ export const types = {
     SET_CONDITIONS_DICTIONARY: 'SET_CONDITIONS_DICTIONARY',
     ADD_CONDITION_VALUE: 'ADD_CONDITION_VALUE',
     SET_CONDITION_VALUE: 'SET_CONDITION_VALUE',
-    SET_CONDITIONS_VALUES: 'SET_CONDITIONS_VALUES',
     SET_CONDITIONS_DATA: 'SET_CONDITIONS_DATA',
     REMOVE_CONDITION_VALUE_FROM_SET: 'REMOVE_CONDITION_VALUE_FROM_SET',
     CLEAR_STATE: 'CLEAR_STATE',
@@ -44,9 +43,6 @@ export default {
             ...state.conditionsValues[conditionId],
             [parameterName]: parameterValue,
         };
-    },
-    [types.SET_CONDITIONS_VALUES](state, { condition, values }) {
-        state.conditionsValues = { ...state.conditionsValues, [condition]: values };
     },
     [types.SET_CONDITIONS_DATA](state, data) {
         state.conditionsValues = data;

@@ -8,7 +8,7 @@
             <div class="product-template-header">
                 <div class="product-template-header__language-selection">
                     <Select
-                        :value="languageCode"
+                        :value="language"
                         solid
                         regular
                         label="Edit language"
@@ -30,7 +30,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getValueByKey } from '@Core/models/objectWrapper';
+import { getKeyByValue } from '@Core/models/objectWrapper';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';
@@ -45,16 +45,6 @@ export default {
         ProductCompleteness: () => import('@Products/components/Progress/ProductCompleteness'),
         ProductTemplateForm: () => import('@Products/components/Forms/ProductTemplateForm'),
     },
-    data() {
-        return {
-            language: '',
-        };
-    },
-    mounted() {
-        this.language = getValueByKey(this.languages, this.languageCode);
-
-        this.setDraftLanguageCode(this.languageCode);
-    },
     computed: {
         ...mapState('authentication', {
             user: (state) => state.user,
@@ -66,11 +56,11 @@ export default {
             languageCode: (state) => state.languageCode,
             completeness: (state) => state.completeness,
         }),
+        language() {
+            return this.languages[this.languageCode];
+        },
         languageOptions() {
-            return Object.keys(this.languages).map((language) => ({
-                id: language,
-                name: this.languages[language],
-            }));
+            return Object.values(this.languages);
         },
     },
     methods: {
@@ -78,10 +68,19 @@ export default {
             'setDraftLanguageCode',
         ]),
         onLanguageChange(value) {
-            this.language = getValueByKey(this.languages, value);
+            const { params: { id } } = this.$route;
 
-            this.setDraftLanguageCode(value);
+            this.setDraftLanguageCode({
+                languageCode: getKeyByValue(this.languages, value),
+                id,
+            });
         },
+    },
+    async fetch({ store, params }) {
+        const { id } = params;
+        const { language } = store.state.authentication.user;
+
+        await store.dispatch('productsDraft/setDraftLanguageCode', { languageCode: language, id });
     },
 };
 </script>

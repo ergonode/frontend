@@ -51,10 +51,10 @@ export default {
             this.removeValidationErrors();
             const data = {
                 sku: this.sku,
-                templateId: this.template,
+                templateId: this.template.id,
             };
             if (this.selectedCategories.length > 0) {
-                data.categoryIds = this.selectedCategories;
+                data.categoryIds = this.selectedCategories.map((category) => category.id);
             }
             this.createProduct({
                 data,

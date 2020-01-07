@@ -7,7 +7,6 @@
         :is="editableComponent"
         v-model="localValue"
         v-bind="$attrs"
-        :language-code="languageCode"
         @imageid="onImageIDChange"
         @focus="onFocus" />
 </template>
@@ -18,12 +17,6 @@ import { TYPES } from '@Attributes/defaults/attributes';
 export default {
     name: 'GridEditDataCell',
     inheritAttrs: false,
-    props: {
-        languageCode: {
-            type: String,
-            default: '',
-        },
-    },
     data() {
         return {
             localValue: this.$attrs.value,

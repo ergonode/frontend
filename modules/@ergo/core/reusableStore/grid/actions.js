@@ -227,9 +227,6 @@ export default {
 
         commit(types.SET_COLUMN_WIDTHS, newOrderedColumnWidths);
     },
-    setEditingCellCoordinates({ commit }, editingCellCoordinates = {}) {
-        commit(types.SET_EDITING_CELL_COORDINATES, editingCellCoordinates);
-    },
     addDraftToProduct({ commit }, { columnId, productId, value }) {
         const parsedValue = !Array.isArray(value) && typeof value !== 'object' ? { value } : value;
 

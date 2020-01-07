@@ -29,14 +29,17 @@ export default {
             id,
             conditions = [],
         }) => {
-            const { conditionsData, conditionsTree } = getParsedConditionSetData(conditions);
-
             await Promise.all(conditions.map(async (condition) => {
                 const { type } = condition;
                 if (!state.conditions[type]) {
                     await dispatch('getConditionConfigurationById', { conditionId: type });
                 }
             }));
+
+            const {
+                conditionsData, conditionsTree,
+            } = getParsedConditionSetData(conditions, state.conditions);
+
             commit(types.SET_CONDITION_SET_ID, id);
             commit(types.SET_CONDITIONS_DATA, conditionsData);
             dispatch('gridDesigner/setGridData', conditionsTree, { root: true });
@@ -77,12 +80,6 @@ export default {
         await this.app.$axios.$get(`${userLanguageCode}/conditions/${conditionId}`).then((data) => {
             commit(types.SET_CONDITIONS, { key: conditionId, value: data });
         }).catch(onDefaultError);
-    },
-    setConditionValues(
-        { commit },
-        { condition, values },
-    ) {
-        commit(types.SET_CONDITIONS_VALUES, { condition, values });
     },
     setConditionValue({ commit, state },
         { conditionId, parameterName, parameterValue }) {

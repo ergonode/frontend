@@ -15,7 +15,7 @@
                 :key="index"
                 :style="getItemPosition(element)"
                 :value="getElementValueByCode(element.code)"
-                :multiselect="element.type === 'MULTI_SELECT'"
+                :multiselect="isMultiSelect(element.type)"
                 :disabled="!isUserAllowedToUpdate"
                 v-bind="element" />
         </div>
@@ -24,7 +24,9 @@
 
 <script>
 import { mapState } from 'vuex';
+import { TYPES } from '@Attributes/defaults/attributes';
 import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
+import { isObject } from '@Core/models/objectWrapper';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 import ProductTemplateSection from '@Templates/components/Template/Product/ProductTemplateSection';
 import ProductTemplateDate from '@Templates/components/Template/Product/ProductTemplateDate';
@@ -32,6 +34,7 @@ import ProductTemplateImage from '@Templates/components/Template/Product/Product
 import ProductTemplateMultiLine from '@Templates/components/Template/Product/ProductTemplateMultiLine';
 import ProductTemplateOptions from '@Templates/components/Template/Product/ProductTemplateOptions';
 import ProductTemplateSingleLine from '@Templates/components/Template/Product/ProductTemplateSingleLine';
+import ProductTemplateNumeric from '@Templates/components/Template/Product/ProductTemplateNumeric';
 
 export default {
     name: 'ProductTemplateForm',
@@ -86,21 +89,25 @@ export default {
         }) {
             return { gridArea: `${row} / ${column} / ${row + height} / ${column + width}` };
         },
+        isMultiSelect(type) {
+            return type === TYPES.MULTI_SELECT;
+        },
         getComponentViaType(type) {
             switch (type) {
-            case 'DATE':
+            case TYPES.DATE:
                 return ProductTemplateDate;
-            case 'IMAGE':
+            case TYPES.IMAGE:
                 return ProductTemplateImage;
-            case 'TEXTAREA':
+            case TYPES.TEXTAREA:
                 return ProductTemplateMultiLine;
-            case 'SELECT':
-            case 'MULTI_SELECT':
+            case TYPES.SELECT:
+            case TYPES.MULTI_SELECT:
                 return ProductTemplateOptions;
-            case 'NUMERIC':
-            case 'TEXT':
-            case 'UNIT':
-            case 'PRICE':
+            case TYPES.NUMERIC:
+                return ProductTemplateNumeric;
+            case TYPES.TEXT:
+            case TYPES.UNIT:
+            case TYPES.PRICE:
                 return ProductTemplateSingleLine;
             case 'SECTION TITLE':
                 return ProductTemplateSection;
@@ -111,8 +118,12 @@ export default {
         getElementValueByCode(code) {
             if (!this.draft.attributes[code]) return '';
 
-            return this.draft.attributes[code].value[this.languageCode]
-                || this.draft.attributes[code].value;
+            const { value } = this.draft.attributes[code];
+
+            if (isObject(value) && !Array.isArray(value)) {
+                return value[this.languageCode] || '';
+            }
+            return value;
         },
     },
 };

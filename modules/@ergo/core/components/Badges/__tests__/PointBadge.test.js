@@ -6,6 +6,7 @@ import { shallowMount } from '@vue/test-utils';
 import PointBadge from '@Core/components/Badges/PointBadge.vue';
 import { GRAPHITE_DARK } from '@Core/assets/scss/_js-variables/colors.scss';
 
+
 describe('Badges/PointBadge', () => {
     let wrapper;
     beforeEach(() => {

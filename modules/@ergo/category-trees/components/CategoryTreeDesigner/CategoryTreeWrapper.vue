@@ -8,9 +8,7 @@
         :row-height="rowHeight"
         :is-dragging-enabled="$hasAccess(['CATEGORY_TREE_UPDATE'])">
         <template #gridHeader>
-            <TemplateGridHeader
-                :style="gridStyles"
-                :columns="columns" />
+            <TemplateGridHeader :columns="columns" />
         </template>
         <template
             #gridItem="{item, toggleItem, removeItem}">
@@ -46,12 +44,6 @@ export default {
             'getChildrenLengthById',
             'getExpandStateById',
         ]),
-        gridStyles() {
-            return {
-                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                gridAutoRows: `${this.rowHeight}px`,
-            };
-        },
     },
 };
 </script>

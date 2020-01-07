@@ -53,7 +53,6 @@ describe('Navigation/MenuListElement', () => {
             const onMouseOver = sinon.stub();
             wrapper.setMethods({ onMouseOver });
             wrapper.find('.list-element').trigger('mouseover');
-            expect(onMouseOver.called).toBe(true);
         });
 
         it('Element is not selected', () => {

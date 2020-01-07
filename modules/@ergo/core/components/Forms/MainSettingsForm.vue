@@ -5,18 +5,18 @@
 <template>
     <Form>
         <FormGroup>
-            <Select
-                :value="selectedLanguageNames"
-                :options="languageOptions"
-                solid
+            <TranslationSelect
+                :value="selectedLanguages"
+                :options="languages"
+                :solid="true"
                 label="Languages"
-                regular
-                multiselect
-                clearable
-                searchable
+                :regular="true"
+                :multiselect="true"
+                :clearable="true"
+                :searchable="true"
                 :drop-down-height="400"
                 @input="setSelectedLanguages"
-                @search="onSearch" />
+                @search="getFilteredData" />
         </FormGroup>
     </Form>
 </template>
@@ -30,29 +30,20 @@ export default {
     components: {
         Form: () => import('@Core/components/Form/Form'),
         FormGroup: () => import('@Core/components/Form/FormGroup'),
-        Select: () => import('@Core/components/Inputs/Select/Select'),
+        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
     },
     mixins: [errorValidationMixin],
     computed: {
         ...mapState('languageSettings', {
             languages: (state) => state.languages,
-            selectedLanguageNames: (state) => state.selectedLanguageNames,
+            selectedLanguages: (state) => state.selectedLanguages,
         }),
-        languageOptions() {
-            return this.languages.map((language) => ({
-                id: language.code,
-                name: language.name,
-            }));
-        },
     },
     methods: {
         ...mapActions('languageSettings', [
             'setSelectedLanguages',
             'getFilteredData',
         ]),
-        onSearch(filter) {
-            this.getFilteredData(filter);
-        },
     },
 };
 </script>

@@ -57,16 +57,15 @@
                     key: 'passwordRepeat',
                     value: passwordRepeat
                 })" />
-            <Select
-                :value="isActive"
-                solid
-                required
-                regular
-                label="Activity status"
-                :options="activityStatuses"
-                :error-messages="errorStatusMessage"
-                :disabled="isDisabledByPrivileges"
-                @input="onStatusChange" />
+            <div class="horizontal-wrapper">
+                <CheckBox
+                    :value="isActive"
+                    :disabled="isDisabledByPrivileges"
+                    @input="onStatusChange" />
+                <span class="font--medium-12-16">
+                    The active status
+                </span>
+            </div>
             <Select
                 :value="language"
                 solid
@@ -77,11 +76,11 @@
                 :disabled="isDisabledByPrivileges"
                 :error-messages="errorLanguageMessage"
                 @input="onLanguageChange" />
-            <Select
-                :value="roleId"
-                solid
-                required
-                regular
+            <TranslationSelect
+                :value="role"
+                :solid="true"
+                :required="true"
+                :regular="true"
                 label="Role"
                 :options="roles"
                 :disabled="isDisabledByPrivileges"
@@ -101,7 +100,9 @@ export default {
         Form: () => import('@Core/components/Form/Form'),
         FormGroup: () => import('@Core/components/Form/FormGroup'),
         TextField: () => import('@Core/components/Inputs/TextField'),
+        CheckBox: () => import('@Core/components/Inputs/CheckBox'),
         Select: () => import('@Core/components/Inputs/Select/Select'),
+        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
     },
     mixins: [errorValidationMixin],
     data() {
@@ -128,7 +129,7 @@ export default {
             passwordRepeat: (state) => state.passwordRepeat,
             language: (state) => state.language,
             isActive: (state) => state.isActive,
-            roleId: (state) => state.roleId,
+            role: (state) => state.role,
         }),
         isUserAllowedToUpdate() {
             return this.$hasAccess(['USER_UPDATE']);
@@ -141,10 +142,7 @@ export default {
             || (!this.isDisabled && !this.$hasAccess(['USER_CREATE']));
         },
         languageOptions() {
-            return Object.keys(this.languages).map((language) => ({
-                id: language,
-                name: this.languages[language],
-            }));
+            return Object.values(this.languages);
         },
         errorEmailMessage() {
             const emailIndex = 'email';
@@ -174,10 +172,6 @@ export default {
             const roleIndex = 'roleId';
             return this.elementIsValidate(roleIndex);
         },
-        errorStatusMessage() {
-            const isActiveIndex = 'isActive';
-            return this.elementIsValidate(isActiveIndex);
-        },
     },
     methods: {
         ...mapActions('users', [
@@ -187,7 +181,7 @@ export default {
             this.setAction({ key: 'language', value: language });
         },
         onRoleChange(role) {
-            this.setAction({ key: 'roleId', value: role });
+            this.setAction({ key: 'role', value: role });
         },
         onStatusChange(isActive) {
             this.setAction({ key: 'isActive', value: isActive });
@@ -195,3 +189,15 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .horizontal-wrapper {
+        display: flex;
+        align-items: center;
+
+        span {
+            margin-left: 8px;
+            color: $GRAPHITE_DARK;
+        }
+    }
+</style>

@@ -92,9 +92,6 @@ export default {
         ...mapState('draggable', {
             draggedElement: (state) => state.draggedElement,
         }),
-        ...mapState('list', {
-            listElements: (state) => state.elements,
-        }),
         dataWithoutGhostElement() {
             return this.gridData.filter((element) => element.id !== this.ghostElement.id);
         },
@@ -237,8 +234,7 @@ export default {
             const { row, column } = this.ghostElement;
             const rowToInsert = row === null ? draggedRow - this.positionBetweenRows : row;
             const columnToInsert = row === null ? draggedColumn : column;
-            const { code: categoryCode, name: categoryName } = this.listElements[this.language]
-                .find((e) => e.id === draggedId.split('--')[0]);
+            const { code: categoryCode, name: categoryName } = this.draggedElement;
             this.removeGhostElement();
             const parentId = this.getParentId(rowToInsert, columnToInsert);
             const childrenLength = this.hiddenItems[draggedId]

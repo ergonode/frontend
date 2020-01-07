@@ -6,7 +6,6 @@
     <TranslationSelect
         :style="{width: `${fixedWidth}px`, height: `${fixedHeight}px`}"
         :value="value"
-        :language-code="languageCode"
         :solid="true"
         :small="true"
         :clearable="true"
@@ -31,10 +30,6 @@ export default {
         value: {
             type: [Array, Object],
             required: true,
-        },
-        languageCode: {
-            type: String,
-            default: '',
         },
         multiselect: {
             type: Boolean,

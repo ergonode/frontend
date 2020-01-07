@@ -9,7 +9,6 @@ export default {
     props: {
         languageCode: {
             type: String,
-            required: false,
             default: '',
         },
     },

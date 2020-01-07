@@ -4,13 +4,14 @@
  */
 <template>
     <div
-        class="grid-header">
-        <label
+        class="grid-header"
+        :style="gridColumnTemplateStyle">
+        <span
             v-for="index in columns"
             :key="index"
-            class="grid-header__title font--bold-12-16">
-            {{ addOrdinalNumberSuffix(index) }} {{ headerName }}
-        </label>
+            class="grid-header__title">
+            {{ addOrdinalNumberSuffix(index) }} {{ header }}
+        </span>
     </div>
 </template>
 <script>
@@ -21,10 +22,16 @@ export default {
             type: Number,
             required: true,
         },
-        headerName: {
+        header: {
             type: String,
-            required: false,
             default: 'level',
+        },
+    },
+    computed: {
+        gridColumnTemplateStyle() {
+            return {
+                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
+            };
         },
     },
     methods: {
@@ -47,10 +54,11 @@ export default {
 <style lang="scss" scoped>
     .grid-header {
         display: grid;
+        height: 40px;
         border: 1px solid $GREY;
         border-left: none;
+        box-sizing: border-box;
         background-color: $WHITESMOKE;
-        padding-right: 4px;
 
         &__title {
             display: flex;
@@ -58,8 +66,10 @@ export default {
             justify-content: space-between;
             align-items: center;
             padding: 8px;
+            box-sizing: border-box;
             border-left: 1px solid $GREY;
             color: $GRAPHITE;
+            font: $FONT_BOLD_12_16;
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;

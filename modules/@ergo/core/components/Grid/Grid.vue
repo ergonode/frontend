@@ -85,14 +85,12 @@
                     :cell-data="gridState.cellValues[id][column.id]">
                     <GridDataCell
                         :key="id"
-                        :namespace="namespace"
                         :column-index="colIndex + columnsOffset"
                         :row-index="getRowIndex(rowIndex + rowsOffset)"
                         :row-id="id"
                         :cell-data="gridState.cellValues[id][column.id] || { value: ''}"
                         :column="column"
                         :draft="drafts[id]"
-                        :edit-routing-path="editRoute.name"
                         :is-selected="isSelectedAllRows
                             || selectedRows[getRowIndex(rowIndex + rowsOffset)]"
                         :editing-privilege-allowed="editingPrivilegeAllowed" />
@@ -192,12 +190,19 @@ export default {
             default: true,
         },
     },
+    provide() {
+        return {
+            setEditingCellCoordinates: this.setEditingCellCoordinates,
+            getEditingCellCoordinates: this.getEditingCellCoordinates,
+        };
+    },
     data() {
         return {
             isHeaderFocused: false,
             isMouseOverGrid: false,
             isSelectColumnPinned: false,
             isEditColumnPinned: false,
+            editingCellCoordinates: { row: null, column: null },
             rowHeight: ROW_HEIGHT.MEDIUM,
             layout: GRID_LAYOUT.TABLE,
         };
@@ -298,6 +303,12 @@ export default {
             'setGhostIndex',
             'setGhostFilterIndex',
         ]),
+        setEditingCellCoordinates(coordinates = { row: null, column: null }) {
+            this.editingCellCoordinates = coordinates;
+        },
+        getEditingCellCoordinates() {
+            return this.editingCellCoordinates;
+        },
         getRowIndex(index) {
             return index
                 + ((this.gridState.currentPage - 1) * this.gridState.numberOfDisplayedElements);
@@ -322,7 +333,8 @@ export default {
 
             if (!gridContent.contains(event.target) && isVisible) {
                 // Dismiss editable cell mode
-                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
+
+                this.setEditingCellCoordinates();
             }
         },
         onRowEdit(route) {

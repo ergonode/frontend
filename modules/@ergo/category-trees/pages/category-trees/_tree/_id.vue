@@ -96,6 +96,7 @@ export default {
         await Promise.all([
             store.dispatch('tree/clearStorage'),
             store.dispatch('translations/clearStorage'),
+            store.dispatch('list/clearStorage'),
             store.dispatch('list/getElements', {
                 listType: 'categories',
                 languageCode: userLanguageCode,

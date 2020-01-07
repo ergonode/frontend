@@ -17,6 +17,7 @@
             {{ itemName }}
         </span>
         <NumericBadge
+            class="grid-item__categories-length"
             v-if="hasChildren"
             :number="numberOfChildren"
             theme="transparent" />
@@ -130,7 +131,7 @@ export default {
         grid-column: 1 / 4;
         height: 100%;
         border: 1px solid $GREY;
-        padding-left: 12px;
+        padding-left: 8px;
         background-color: $WHITESMOKE;
         cursor: move;
         overflow: hidden;

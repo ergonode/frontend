@@ -4,29 +4,29 @@
  */
 <template>
     <GridCell
-        :editing-allowed="isFilterCell"
+        :locked="!isFilterCell"
         :row="rowIndex"
         :column="columnIndex"
-        :action-cell="false"
-        :editing="isEditingCell"
-        @edit="onEdit">
-        <Component
-            :is="infoComponent"
-            v-if="!isEditingCell"
-            :value="filterParsedValue" />
-        <GridEditActivatorCell v-else>
-            <GridEditFilterCell
-                :multiselect="isMultiSelect"
-                :type="filterType"
-                :language-code="column.language"
-                :value="filterValue"
-                :options="options"
-                :colors="column.colors || null"
-                :fixed-width="$el.offsetWidth"
-                :fixed-height="$el.offsetHeight"
-                @focus="onFocus"
-                @updateValue="onUpdateFilter" />
-        </GridEditActivatorCell>
+        :spacebar-edition="false">
+        <template #default="{ isEditing }">
+            <Component
+                :is="infoComponent"
+                v-if="!isEditing"
+                :value="filterParsedValue" />
+            <GridEditActivatorCell v-else>
+                <GridEditFilterCell
+                    :multiselect="isMultiSelect"
+                    :type="filterType"
+                    :language-code="column.language"
+                    :value="filterValue"
+                    :options="options"
+                    :colors="column.colors || null"
+                    :fixed-width="$el.offsetWidth"
+                    :fixed-height="$el.offsetHeight"
+                    @focus="onFocus"
+                    @updateValue="onUpdateFilter" />
+            </GridEditActivatorCell>
+        </template>
     </GridCell>
 </template>
 
@@ -37,6 +37,7 @@ import { getMappedArrayValue } from '@Core/models/mappers/gridDataMapper';
 
 export default {
     name: 'GridFilterCell',
+    inject: ['setEditingCellCoordinates'],
     components: {
         GridCell: () => import('@Core/components/Grid/GridCell'),
         GridEditActivatorCell: () => import('@Core/components/Grid/EditCells/GridEditActivatorCell'),
@@ -71,11 +72,6 @@ export default {
     computed: {
         gridState() {
             return this.$store.state[this.namespace];
-        },
-        isEditingCell() {
-            const { row, column } = this.gridState.editingCellCoordinates;
-
-            return this.rowIndex === row && this.columnIndex === column;
         },
         isFilterCell() {
             return typeof this.column.filter !== 'undefined';
@@ -142,7 +138,9 @@ export default {
             const { options } = filter;
             const optionKeys = Object.keys(options);
 
-            return optionKeys.map((key) => ({ key, value: options[key] }));
+            return optionKeys.map((key) => ({
+                id: key, key, value: options[key], hint: options[key] ? `#${key} ${this.column.language}` : '',
+            }));
         },
         infoComponent() {
             const { filter } = this.column;
@@ -160,15 +158,8 @@ export default {
     methods: {
         onFocus(isFocused) {
             if (!isFocused) {
-                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
+                this.setEditingCellCoordinates();
                 this.$el.focus();
-            }
-        },
-        onEdit(isEditing) {
-            if (isEditing) {
-                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, { column: this.columnIndex, row: this.rowIndex });
-            } else {
-                this.$store.dispatch(`${this.namespace}/setEditingCellCoordinates`, {});
             }
         },
         onUpdateFilter(value) {

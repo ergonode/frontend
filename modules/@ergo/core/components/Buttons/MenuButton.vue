@@ -24,7 +24,7 @@
                 <slot name="content">
                     <List>
                         <ListElement
-                            v-for="(option, index) in $attrs.options"
+                            v-for="(option, index) in options"
                             :key="index"
                             :small="true"
                             @click.native="onSelectedValue(index)">

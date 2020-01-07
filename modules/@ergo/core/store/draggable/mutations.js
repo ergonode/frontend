@@ -22,7 +22,7 @@ export default {
     [types.SET_GHOST_INDEX](state, index = -1) {
         state.ghostIndex = index;
     },
-    [types.SET_RESIZING_ELEMENT](state, element) {
+    [types.SET_RESIZING_ELEMENT](state, element = null) {
         state.resizingElement = element;
     },
     [types.SET_GHOST_FILTER_INDEX](state, index = -1) {

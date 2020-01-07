@@ -30,16 +30,13 @@ export default {
             id: (state) => state.id,
             code: (state) => state.code,
             conditionSetId: (state) => state.conditionSetId,
-
         }),
         ...mapState('translations', {
             translations: (state) => state.translations,
         }),
-        ...mapState('gridDesigner', {
-            fullGridData: (state) => state.fullGridData,
-        }),
         ...mapState('conditions', {
             conditionsValues: (state) => state.conditionsValues,
+            conditions: (state) => state.conditions,
         }),
     },
     methods: {
@@ -70,7 +67,7 @@ export default {
         },
         onSave() {
             const propertiesToUpdate = {
-                conditions: getMappedConditionSetData(this.fullGridData, this.conditionsValues),
+                conditions: getMappedConditionSetData(this.conditionsValues, this.conditions),
             };
 
             this.removeValidationErrors();

@@ -45,29 +45,27 @@
                 <IconArrowDropDown :state="arrowIconState" />
             </div>
         </div>
-        <FadeTransition>
-            <DropDown
-                v-if="isMenuActive"
-                ref="menu"
-                :style="selectBoundingBox"
-                :fixed-content="false">
-                <template #body>
-                    <Component
-                        :is="selectBodyComponent"
-                        :filter="filter || {}"
-                        :options="options"
-                        :language-code="data.language"
-                        @emptyRecord="onEmptyRecordChange"
-                        @input="onValueChange" />
-                </template>
-                <template #footer>
-                    <Component
-                        :is="selectFooterComponent"
-                        @apply="onApply"
-                        @clear="onClear" />
-                </template>
-            </DropDown>
-        </FadeTransition>
+        <DropDown
+            v-if="isMenuActive"
+            ref="menu"
+            :style="selectBoundingBox"
+            :fixed-content="false">
+            <template #body>
+                <Component
+                    :is="selectBodyComponent"
+                    :filter="filter || {}"
+                    :options="options"
+                    :language-code="data.language"
+                    @emptyRecord="onEmptyRecordChange"
+                    @input="onValueChange" />
+            </template>
+            <template #footer>
+                <Component
+                    :is="selectFooterComponent"
+                    @apply="onApply"
+                    @clear="onClear" />
+            </template>
+        </DropDown>
     </div>
 </template>
 
@@ -87,14 +85,12 @@ import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 import { changeCookiePosition } from '@Core/models/cookies';
 import { getMappedColumnHeaderTitle } from '@Core/models/mappers/gridDataMapper';
 import DropDown from '@Core/components/Inputs/Select/Contents/DropDown';
-import FadeTransition from '@Core/components/Transitions/FadeTransition';
 
 export default {
     name: 'GridAdvancedFilter',
     components: {
         IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
         DropDown,
-        FadeTransition,
     },
     props: {
         index: {

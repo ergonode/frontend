@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import {
-    isObject, getKeyByValue, getValueByKey,
+    isObject, getKeyByValue,
 } from '@Core/models/objectWrapper';
 import { getParamsKeyForType, getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 
@@ -18,15 +18,7 @@ export function getMappedParameterValues(type, parameters, data) {
     );
     const [parsedParameters] = Object.values(parameters);
 
-    if (Array.isArray(parsedParameters)) {
-        return parsedParameters.reduce((acc, current) => {
-            const newObject = acc;
-            newObject[current] = getValueByKey(typeParameters, current);
-            return newObject;
-        }, {});
-    }
-
-    return parsedParameters;
+    return typeParameters[parsedParameters];
 }
 
 export function getParsedParameterKeys({

@@ -83,12 +83,14 @@ export default {
 
 <style lang="scss" scoped>
     .templates {
+        flex: 1;
         padding: 24px 20px 24px 24px;
         overflow: auto;
 
         .section {
             display: flex;
             flex-direction: column;
+            height: 0;
 
             &__title {
                 color: $GRAPHITE_LIGHT;

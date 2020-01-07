@@ -3,16 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <TextArea
+    <TextField
         :value="localValue"
+        :input="inputType"
         solid
+        regular
         :label="label"
         :placeholder="placeholder"
-        :required="required"
         :error-messages="isError ? errorMessages : null"
         :is-information-label="false"
+        :required="required"
         :disabled="disabled"
-        resize="none"
+        :description="hint"
         @input="onValueChange" />
 </template>
 
@@ -20,10 +22,15 @@
 import productTemplateElementMixin from '@Templates/mixins/productTemplateElementMixin';
 
 export default {
-    name: 'ProductTemplateMultiLine',
+    name: 'ProductTemplateNumeric',
     mixins: [productTemplateElementMixin],
     components: {
-        TextArea: () => import('@Core/components/Inputs/TextArea'),
+        TextField: () => import('@Core/components/Inputs/TextField'),
+    },
+    computed: {
+        inputType() {
+            return { type: 'text' };
+        },
     },
     watch: {
         value() {
@@ -32,3 +39,13 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .suffix {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        color: $GRAPHITE_DARK;
+        margin-right: 4px;
+    }
+</style>

@@ -19,8 +19,11 @@ export default {
         return this.app.$axios.$get(`${userLanguageCode}/status`, { params }).then(({ collection: statuses }) => {
             commit(types.SET_STATUSES, statuses.map((status) => ({
                 id: status.id,
-                name: status.name,
-                code: status.code,
+                key: status.code,
+                value: status.name,
+                hint: status.name
+                    ? `#${status.code} ${userLanguageCode}`
+                    : '',
             })));
         }).catch(onDefaultError);
     },

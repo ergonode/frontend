@@ -4,5 +4,4 @@
  */
 export default () => ({
     translations: {},
-    cardsLanguageCodes: [],
 });

@@ -14,9 +14,11 @@
 <script>
 
 import { mapState, mapActions } from 'vuex';
-import { getParsedOptions, getParsedParameterKeys } from '@Attributes/models/attributeMapper';
+import { getKeyByValue } from '@Core/models/objectWrapper';
 import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
+import { getParsedOptions, getParsedParameterKeys } from '@Attributes/models/attributeMapper';
+import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 
 export default {
     validate({ params }) {
@@ -42,6 +44,9 @@ export default {
         }),
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
+        }),
+        ...mapState('data', {
+            attrTypes: (state) => state.attrTypes,
         }),
     },
     destroyed() {
@@ -83,16 +88,13 @@ export default {
         },
         onSave() {
             this.removeValidationErrors();
-
-            const setTranslation = (value) => {
-                const translation = this.isMultilingual
-                    ? getParsedTranslations(value)
-                    : { [this.userLanguageCode]: getParsedTranslations(value) };
-                return translation;
-            };
+            const typeKey = getKeyByValue(this.attrTypes, this.type);
+            const getTranslation = (value) => (this.isMultilingual
+                ? getParsedTranslations(value)
+                : { [this.userLanguageCode]: getParsedTranslations(value) });
             const { label, placeholder, hint } = this.translations;
             const propertiesToUpdate = {
-                groups: this.groups,
+                groups: this.groups.map((group) => group.id),
             };
 
             if (this.optionKeys.length > 0) {
@@ -116,22 +118,27 @@ export default {
             }
 
             if (this.parameter) {
+                const paramKey = getKeyByValue(getParamsOptionsForType(
+                    typeKey,
+                    this.$store.state.data,
+                ), this.parameter);
+
                 propertiesToUpdate.parameters = getParsedParameterKeys({
-                    selectedType: this.type,
-                    selectedParam: this.parameter,
+                    selectedType: typeKey,
+                    selectedParam: paramKey,
                 });
             }
 
             if (isThereAnyTranslation(label)) {
-                propertiesToUpdate.label = setTranslation(label);
+                propertiesToUpdate.label = getTranslation(label);
             }
 
             if (isThereAnyTranslation(hint)) {
-                propertiesToUpdate.hint = setTranslation(hint);
+                propertiesToUpdate.hint = getTranslation(hint);
             }
 
             if (isThereAnyTranslation(placeholder)) {
-                propertiesToUpdate.placeholder = setTranslation(placeholder);
+                propertiesToUpdate.placeholder = getTranslation(placeholder);
             }
 
             this.updateAttribute({

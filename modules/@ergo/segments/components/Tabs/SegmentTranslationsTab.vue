@@ -4,27 +4,21 @@
  */
 <template>
     <TranslationsTab>
-        <SegmentsTranslationForm
-            v-for="(languageCode, index) in cardsLanguageCodes"
-            :key="index"
-            :language-code="languageCode" />
+        <template #default="{ languageCodes }">
+            <SegmentsTranslationForm
+                v-for="(languageCode, index) in languageCodes"
+                :key="index"
+                :language-code="languageCode" />
+        </template>
     </TranslationsTab>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
 export default {
     name: 'SegmentTranslationsTab',
     components: {
         TranslationsTab: () => import('@Core/components/Card/Tabs/TranslationsTab'),
         SegmentsTranslationForm: () => import('@Segments/components/Forms/SegmentsTranslationForm'),
-    },
-    computed: {
-        ...mapState('translations', {
-            translations: (state) => state.translations,
-            cardsLanguageCodes: (state) => state.cardsLanguageCodes,
-        }),
     },
 };
 </script>

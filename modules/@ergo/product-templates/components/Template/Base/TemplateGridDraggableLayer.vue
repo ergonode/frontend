@@ -58,12 +58,6 @@ export default {
         onDrop(position) {
             this.$emit('addListElementToLayout', position);
         },
-        onEditSectionTitle(index) {
-            this.$emit('editSectionTitle', index);
-        },
-        onResizingElMaxRow(row) {
-            this.$emit('resizingElMaxRow', row);
-        },
     },
 };
 </script>

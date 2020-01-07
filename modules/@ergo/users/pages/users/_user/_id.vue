@@ -13,6 +13,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
+import { getKeyByValue } from '@Core/models/objectWrapper';
 
 export default {
     validate({ params }) {
@@ -26,6 +27,9 @@ export default {
         ...mapState('authentication', {
             user: (state) => state.user,
         }),
+        ...mapState('data', {
+            languages: (state) => state.languages,
+        }),
         ...mapState('users', {
             id: (state) => state.id,
             avatarId: (state) => state.avatarId,
@@ -36,7 +40,7 @@ export default {
             password: (state) => state.password,
             passwordRepeat: (state) => state.passwordRepeat,
             isActive: (state) => state.isActive,
-            roleId: (state) => state.roleId,
+            role: (state) => state.role,
         }),
         title() {
             return `${this.firstName} ${this.lastName}`;
@@ -74,10 +78,10 @@ export default {
             const user = {
                 firstName: this.firstName,
                 lastName: this.lastName,
-                language: this.language,
+                language: getKeyByValue(this.languages, this.language),
                 password: this.password,
                 passwordRepeat: this.passwordRepeat,
-                roleId: this.roleId,
+                roleId: this.role.id,
                 isActive: this.isActive,
             };
             this.updateUser({
