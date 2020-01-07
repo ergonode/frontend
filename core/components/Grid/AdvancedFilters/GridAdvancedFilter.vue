@@ -154,7 +154,6 @@ export default {
 
                 Object.keys(this.filter).forEach((key) => {
                     if (this.filter[key]) {
-                        console.log(this.filter);
                         value.push(this.filter[key]);
                     }
                 });
@@ -170,8 +169,6 @@ export default {
 
             const { options } = filter;
             const optionKeys = Object.keys(options);
-
-            console.log(options);
 
             return optionKeys.map((key) => ({ key, value: options[key] }));
         },
