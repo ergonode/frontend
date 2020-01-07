@@ -5,6 +5,7 @@
 <template functional>
     <span
         class="presentation-cell"
+        :title="props.value"
         v-text="props.value" />
 </template>
 

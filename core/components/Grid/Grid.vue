@@ -430,7 +430,7 @@ export default {
 
         &--disabled {
             #{$grid}__content::after {
-                z-index: 15;
+                z-index: $Z_INDEX_LVL_4;
             }
         }
 
