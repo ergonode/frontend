@@ -68,8 +68,19 @@ export default {
             'setDraftLanguageCode',
         ]),
         onLanguageChange(value) {
-            this.setDraftLanguageCode(getKeyByValue(this.languages, value));
+            const { params: { id } } = this.$route;
+
+            this.setDraftLanguageCode({
+                languageCode: getKeyByValue(this.languages, value),
+                id,
+            });
         },
+    },
+    async fetch({ store, params }) {
+        const { id } = params;
+        const { language } = store.state.authentication.user;
+
+        await store.dispatch('productsDraft/setDraftLanguageCode', { languageCode: language, id });
     },
 };
 </script>

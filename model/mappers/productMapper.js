@@ -17,7 +17,7 @@ function getParsedOptions(options) {
     for (let i = 0; i < length; i += 1) {
         const key = optionKeys[i];
 
-        parsedOptions.push({ key, value: options[key] });
+        parsedOptions.push({ id: key, key, value: options[key] });
     }
 
     return parsedOptions;

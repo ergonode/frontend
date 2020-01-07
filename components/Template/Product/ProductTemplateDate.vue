@@ -4,7 +4,6 @@
  */
 <template>
     <DatePicker
-        :value="localValue"
         solid
         regular
         clearable
