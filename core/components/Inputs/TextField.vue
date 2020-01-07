@@ -43,7 +43,7 @@
             </div>
         </div>
         <label
-            v-if="informationLabel"
+            v-if="informationLabel && isInformationLabel"
             :class="informationLabelClasses"
             v-text="informationLabel" />
     </div>
@@ -109,6 +109,10 @@ export default {
         required: {
             type: Boolean,
             default: false,
+        },
+        isInformationLabel: {
+            type: Boolean,
+            default: true,
         },
         autofocus: {
             type: Boolean,

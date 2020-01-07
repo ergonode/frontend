@@ -10,7 +10,8 @@
         regular
         :label="label"
         :placeholder="placeholder"
-        :error-messages="isError ? [' '] : null"
+        :error-messages="isError ? errorMessages : null"
+        :is-information-label="false"
         :required="required"
         :disabled="disabled"
         :description="hint"
@@ -41,10 +42,6 @@ export default {
             return null;
         },
         inputType() {
-            if (this.parameters) {
-                return { type: 'number' };
-            }
-
             return { type: 'text' };
         },
     },

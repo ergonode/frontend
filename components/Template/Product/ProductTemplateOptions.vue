@@ -12,7 +12,8 @@
         :placeholder="placeholder"
         :multiselect="multiselect"
         :disabled="disabled"
-        :error-messages="isError ? [' '] : null"
+        :error-messages="isError ? errorMessages : null"
+        :is-information-label="false"
         :required="required"
         :options="options"
         @focus="onFocusChange"
@@ -57,13 +58,16 @@ export default {
         initializeValues(value) {
             if (Array.isArray(value)) {
                 this.localValue = value.map((val) => ({
+                    id: val,
                     key: val,
                     value: this.options.find((option) => option.key === val).value,
                 }));
             } else if (value) {
                 this.localValue = this.options.find((option) => option.key === value);
             } else {
-                this.localValue = { key: '', value: '' };
+                this.localValue = this.multiselect ? [] : {
+                    id: '', key: '', value: '', hint: '',
+                };
             }
         },
         onFocusChange(isFocused) {
@@ -73,7 +77,7 @@ export default {
             this.localValue = value;
 
             if (Array.isArray(value)) {
-                this.debounceFunc(value.map((val) => val.key));
+                this.debounceFunc(value.length > 0 ? value.map((val) => val.key) : '');
             } else {
                 this.debounceFunc(value.key);
             }

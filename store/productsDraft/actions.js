@@ -16,11 +16,9 @@ export default {
     setProductCategories: ({ commit }, categories = []) => {
         commit(types.SET_PRODUCT_CATEGORIES, categories);
     },
-    async setDraftLanguageCode({ commit, state, dispatch }, languageCode) {
-        commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
+    async setDraftLanguageCode({ commit, dispatch }, data) {
+        commit(types.SET_DRAFT_LANGUAGE_CODE, data.languageCode);
 
-        const { id } = state;
-        const data = { id, languageCode };
         const productTemplateRequest = dispatch('getProductTemplate', data);
         const completenessRequest = dispatch('getProductCompleteness', data);
         const productDraftRequest = dispatch('getProductDraft', data);
