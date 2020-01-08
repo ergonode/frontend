@@ -11,7 +11,7 @@ export default {
         commit(types.SET_STATE, payload);
     },
     setUserLanguage({ commit, rootState }, { language }) {
-        const { languages } = rootState.data;
+        const { languages } = rootState.dictionaries;
         const lang = getKeyByValue(languages, language);
         commit(types.SET_STATE, { key: 'language', value: lang });
     },
@@ -21,7 +21,7 @@ export default {
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { roles } = rootState.roles;
-        const { languages } = rootState.data;
+        const { languages } = rootState.dictionaries;
 
         return this.app.$axios.$get(`${userLanguageCode}/accounts/${userId}`).then(({
             id,

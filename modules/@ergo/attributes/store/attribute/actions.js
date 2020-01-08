@@ -80,7 +80,7 @@ export default {
         { attributeId, onError = () => {} },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        const { attrTypes } = rootState.data;
+        const { attrTypes } = rootState.dictionaries;
         const { groupOptions } = state;
 
         return this.app.$axios.$get(`${userLanguageCode}/attributes/${attributeId}`).then(({
@@ -114,7 +114,7 @@ export default {
             if (parameters) {
                 commit(
                     types.SET_ATTRIBUTE_PARAMETER,
-                    getMappedParameterValues(type, parameters, rootState.data),
+                    getMappedParameterValues(type, parameters, rootState.dictionaries),
                 );
             }
 

@@ -21,7 +21,7 @@ export default {
         UserPage: () => import('@Users/components/Pages/UserPage'),
     },
     computed: {
-        ...mapState('data', {
+        ...mapState('dictionaries', {
             languages: (state) => state.languages,
         }),
         ...mapState('users', {

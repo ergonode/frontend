@@ -35,7 +35,7 @@ export default {
             optionKeys: (state) => state.optionKeys,
             optionValues: (state) => state.optionValues,
         }),
-        ...mapState('data', {
+        ...mapState('dictionaries', {
             attrTypes: (state) => state.attrTypes,
         }),
     },

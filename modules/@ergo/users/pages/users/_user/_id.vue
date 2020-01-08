@@ -27,7 +27,7 @@ export default {
         ...mapState('authentication', {
             user: (state) => state.user,
         }),
-        ...mapState('data', {
+        ...mapState('dictionaries', {
             languages: (state) => state.languages,
         }),
         ...mapState('users', {
