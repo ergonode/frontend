@@ -13,7 +13,8 @@
             </div>
         </div>
         <div class="layout-configuration-container">
-            <div class="divider-container">
+            <!-- TODO: Uncomment when grid functionality will be ready -->
+            <!-- <div class="divider-container">
                 <Divider vertical />
             </div>
             <div class="actions-container">
@@ -37,10 +38,10 @@
                                 : fillColor" />
                     </template>
                 </FabButton>
-            </div>
-            <div class="divider-container">
+            </div> -->
+            <!-- <div class="divider-container">
                 <Divider vertical />
-            </div>
+            </div> -->
             <div class="actions-container">
                 <FabButton
                     :theme="secondaryTheme"
@@ -87,8 +88,8 @@ export default {
     components: {
         Divider: () => import('~/core/components/Dividers/Divider'),
         FabButton: () => import('~/core/components/Buttons/FabButton'),
-        IconGrid: () => import('~/components/Icon/Others/IconGrid'),
-        IconTable: () => import('~/components/Icon/Others/IconTable'),
+        // IconGrid: () => import('~/components/Icon/Others/IconGrid'),
+        // IconTable: () => import('~/components/Icon/Others/IconTable'),
         IconListSmall: () => import('~/components/Icon/Others/IconListSmall'),
         IconListMedium: () => import('~/components/Icon/Others/IconListMedium'),
         IconListLarge: () => import('~/components/Icon/Others/IconListLarge'),

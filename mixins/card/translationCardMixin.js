@@ -31,12 +31,11 @@ export default {
             const property = this.translations[propertyName];
             return isObject(property) ? property[this.languageCode] : property;
         },
-        setTranslationPropertyValue(value, propertyName, isMultilingual = true) {
+        setTranslationPropertyValue(value, propertyName) {
             this.setMultilingualTranslationPropertyValue({
                 languageCode: this.languageCode,
                 propertyName,
                 value,
-                isMultilingual,
             });
         },
     },

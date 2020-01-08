@@ -13,9 +13,17 @@
             size="20"
             :state="btnExpanderIconState"
             @click.native="toggleItemExpand" />
-        <span class="grid-item__title font--medium-14-20">
-            {{ itemName }}
-        </span>
+        <div
+            class="grid-item__title"
+            :title="item.name ? `#${item.code}`: ''">
+            <span
+                class="font--medium-14-20"
+                v-text="item.name || `#${item.code}`" />
+            <span
+                v-if="item.name"
+                class="font--semi-bold-10-12"
+                v-text="`#${item.code}`" />
+        </div>
         <NumericBadge
             class="grid-item__categories-length"
             v-if="hasChildren"
@@ -65,8 +73,8 @@ export default {
             type: Boolean,
             default: false,
         },
-        itemName: {
-            type: String,
+        item: {
+            type: Object,
             required: true,
         },
         numberOfChildren: {
@@ -153,7 +161,9 @@ export default {
         }
 
         &__title {
+            display: flex;
             flex: 1;
+            flex-direction: column;
             margin-right: 8px;
             color: $GRAPHITE_DARK;
             text-overflow: ellipsis;
