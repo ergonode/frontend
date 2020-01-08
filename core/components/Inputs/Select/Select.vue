@@ -266,11 +266,9 @@ export default {
 
         this.isMounted = true;
         this.associatedLabel = `input-${this._uid}`;
-        console.log('mounted');
     },
     destroyed() {
         window.removeEventListener('click', this.onClickOutside);
-        console.log('destroying');
     },
     computed: {
         tinySize() {
