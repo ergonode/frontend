@@ -33,13 +33,13 @@ export function getParsedAdvancedFilters(filters) {
     const mappedFilter = [];
 
     Object.keys(filters).forEach((id) => {
-        Object.keys(filters[id]).forEach((operator) => {
-            if (operator === 'isEmptyRecord') {
-                mappedFilter.push(`${id}=`);
-            } else {
+        if (filters[id] && filters[id].isEmptyRecord) {
+            mappedFilter.push(`${id}=`);
+        } else {
+            Object.keys(filters[id]).forEach((operator) => {
                 mappedFilter.push(`${id}${operator}${filters[id][operator]}`);
-            }
-        });
+            });
+        }
     });
 
     return mappedFilter.join(';');

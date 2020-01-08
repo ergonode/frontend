@@ -12,7 +12,7 @@ describe('CategoryTreeDesigner/CategoryTreeItem', () => {
         wrapper = shallowMount(CategoryTreeItem, {
             propsData: {
                 numberOfChildren: 0,
-                itemName: '',
+                item: {},
             },
         });
     });

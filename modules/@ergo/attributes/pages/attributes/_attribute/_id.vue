@@ -89,9 +89,6 @@ export default {
         onSave() {
             this.removeValidationErrors();
             const typeKey = getKeyByValue(this.attrTypes, this.type);
-            const getTranslation = (value) => (this.isMultilingual
-                ? getParsedTranslations(value)
-                : { [this.userLanguageCode]: getParsedTranslations(value) });
             const { label, placeholder, hint } = this.translations;
             const propertiesToUpdate = {
                 groups: this.groups.map((group) => group.id),
@@ -130,15 +127,15 @@ export default {
             }
 
             if (isThereAnyTranslation(label)) {
-                propertiesToUpdate.label = getTranslation(label);
+                propertiesToUpdate.label = getParsedTranslations(label);
             }
 
             if (isThereAnyTranslation(hint)) {
-                propertiesToUpdate.hint = getTranslation(hint);
+                propertiesToUpdate.hint = getParsedTranslations(hint);
             }
 
             if (isThereAnyTranslation(placeholder)) {
-                propertiesToUpdate.placeholder = getTranslation(placeholder);
+                propertiesToUpdate.placeholder = getParsedTranslations(placeholder);
             }
 
             this.updateAttribute({

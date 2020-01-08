@@ -13,8 +13,12 @@
             <Component :is="typeIconComponent" />
         </ListElementIcon>
         <ListElementDescription>
-            <ListElementTitle :title="item.label || `#${item.code}`" />
-            <ListElementHint :title="formattedAttributeType" />
+            <ListElementTitle
+                :title="item.label || `#${item.code}`"
+                :hint="item.label ? `#${item.code} ${languageCode}` : ''" />
+            <ListElementHint
+                :title="formattedAttributeType"
+                :hint="item.label ? `#${item.code} ${languageCode}` : ''" />
         </ListElementDescription>
     </ListDraggableElement>
 </template>

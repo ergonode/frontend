@@ -34,6 +34,7 @@ import { getKeyByValue } from '@Core/models/objectWrapper';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';
+import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm';
 
 export default {
     name: 'ProductTemplateTab',
@@ -41,9 +42,9 @@ export default {
         VerticalCenteredView,
         VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
+        ProductTemplateForm,
         Select: () => import('@Core/components/Inputs/Select/Select'),
         ProductCompleteness: () => import('@Products/components/Progress/ProductCompleteness'),
-        ProductTemplateForm: () => import('@Products/components/Forms/ProductTemplateForm'),
     },
     computed: {
         ...mapState('authentication', {

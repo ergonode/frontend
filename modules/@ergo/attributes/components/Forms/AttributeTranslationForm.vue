@@ -13,8 +13,7 @@
                     regular
                     :error-messages="errorLabelMessage"
                     :disabled="!isUserAllowedToUpdate"
-                    @input="(value) =>
-                        setTranslationPropertyValue(value, 'label', isMultilingual)" />
+                    @input="(value) => setTranslationPropertyValue(value, 'label')" />
                 <TextArea
                     v-if="hasPlaceholder"
                     :value="parsedValue('placeholder')"
@@ -24,8 +23,7 @@
                     :style="{height: '150px'}"
                     :error-messages="errorPlaceholderMessage"
                     :disabled="!isUserAllowedToUpdate"
-                    @input="(value) =>
-                        setTranslationPropertyValue(value, 'placeholder', isMultilingual)" />
+                    @input="(value) => setTranslationPropertyValue(value, 'placeholder')" />
                 <TextArea
                     :value="parsedValue('hint')"
                     solid
@@ -34,8 +32,7 @@
                     :style="{height: '150px'}"
                     :error-messages="errorHintMessage"
                     :disabled="!isUserAllowedToUpdate"
-                    @input="(value) =>
-                        setTranslationPropertyValue(value, 'hint', isMultilingual)" />
+                    @input="(value) => setTranslationPropertyValue(value, 'hint')" />
                 <template v-if="hasOptions">
                     <Divider />
                     <AttributeOptionValues
@@ -79,7 +76,6 @@ export default {
         }),
         ...mapState('attribute', {
             type: (state) => state.type,
-            isMultilingual: (state) => state.isMultilingual,
         }),
         hasPlaceholder() {
             return hasPlaceholder(this.typeKey);

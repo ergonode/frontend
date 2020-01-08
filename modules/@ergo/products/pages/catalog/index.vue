@@ -115,13 +115,12 @@ export default {
 
             languagesSet.forEach((language) => {
                 if (columnElements[language] && filterElements[language]) {
-                    const ids = [...columnElements[language], ...filterElements[language]];
-                    const idsSet = new Set(ids);
-
-                    idsSet.forEach((id) => {
-                        disabledElements[language] = {
-                            ...disabledElements[language], [id]: true,
-                        };
+                    columnElements[language].forEach((id) => {
+                        if (filterElements[language].indexOf(id) !== -1) {
+                            disabledElements[language] = {
+                                ...disabledElements[language], [id]: true,
+                            };
+                        }
                     });
                 }
             });

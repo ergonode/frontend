@@ -41,7 +41,6 @@ export default {
         });
     },
     getFilteredData({ commit, rootState }, filter = '') {
-        console.log(filter);
         const { language: userLanguageCode } = rootState.authentication.user;
         const path = `/${userLanguageCode}/language/autocomplete`;
         const params = {

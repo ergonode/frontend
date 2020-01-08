@@ -40,20 +40,16 @@
 import { WHITE, BLUE, GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
 import TitleBarHeader from '@Core/components/TitleBar/TitleBarHeader';
 import TitleBarActions from '@Core/components/TitleBar/TitleBarActions';
-import InformationIconBadge from '@Core/components/Badges/InformationIconBadge';
-import IconLock from '@Core/components/Icons/Feedback/IconLock';
-import IconArrowPointer from '@Core/components/Icons/Arrows/IconArrowPointer';
-import FabButton from '@Core/components/Buttons/FabButton';
 
 export default {
     name: 'TitleBar',
     components: {
         TitleBarHeader,
         TitleBarActions,
-        InformationIconBadge,
-        IconLock,
-        IconArrowPointer,
-        FabButton,
+        IconLock: () => import('@Core/components/Icons/Feedback/IconLock'),
+        IconArrowPointer: () => import('@Core/components/Icons/Arrows/IconArrowPointer'),
+        InformationIconBadge: () => import('@Core/components/Badges/InformationIconBadge'),
+        FabButton: () => import('@Core/components/Buttons/FabButton'),
     },
     props: {
         title: {

@@ -26,8 +26,7 @@
                 <ListPlaceholder
                     v-else
                     title="Nothing to see here"
-                    subtitle="This is where you will see
-                    important notifications for product updates"
+                    subtitle="Here you can see important notifications of product update"
                     :bg-url="require('@Core/assets/images/placeholders/notify.svg')" />
             </div>
         </template>

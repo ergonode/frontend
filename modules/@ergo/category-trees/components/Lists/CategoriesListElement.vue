@@ -7,12 +7,15 @@
         :draggable-id="item.id"
         :is-draggable="$hasAccess(['CATEGORY_TREE_UPDATE'])"
         :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
+        :hint="item.name ? `#${item.code}` : ''"
         @drag="onDrag">
         <ListElementDescription>
             <ListElementTitle
                 :title="item.name || `#${item.code}`"
-                :hint="item.name ? `#${item.code} ${languageCode}`: ''" />
-            <ListElementHint :title="productsCount" />
+                :hint="item.name ? `#${item.code}` : ''" />
+            <ListElementHint
+                :title="itemCount"
+                :hint="item.name ? `#${item.code}` : ''" />
         </ListElementDescription>
     </ListDraggableElement>
 </template>
@@ -42,7 +45,7 @@ export default {
         ...mapState('list', {
             disabledElements: (state) => state.disabledElements,
         }),
-        productsCount() {
+        itemCount() {
             return `${this.item.elements_count || 0} Product${this.item.elements_count === 1 ? '' : 's'}`;
         },
     },

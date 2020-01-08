@@ -6,10 +6,8 @@
     <div class="show-only-content">
         <Toggler
             :value="value"
+            label="Show only empty records"
             @input="onValueChange" />
-        <span class="show-only-content__title font--semi-bold-12-16">
-            Show only empty records
-        </span>
     </div>
 </template>
 
@@ -37,10 +35,6 @@ export default {
 
 <style lang="scss" scoped>
     .show-only-content {
-        display: grid;
-        grid-template-columns: max-content;
-        grid-auto-flow: column;
-        column-gap: 8px;
         padding: 8px 12px;
 
         &__title {

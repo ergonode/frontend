@@ -41,11 +41,13 @@
 </template>
 
 <script>
+import Select from '@Core/components/Inputs/Select/Select';
+
 export default {
     name: 'TranslationSelect',
     inheritAttrs: false,
     components: {
-        Select: () => import('@Core/components/Inputs/Select/Select'),
+        Select,
         ListElement: () => import('@Core/components/List/ListElement'),
         ListElementAction: () => import('@Core/components/List/ListElementAction'),
         ListElementDescription: () => import('@Core/components/List/ListElementDescription'),

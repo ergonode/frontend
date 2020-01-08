@@ -46,13 +46,14 @@
 import { mapState, mapActions } from 'vuex';
 import { isEmpty } from '@Core/models/objectWrapper';
 import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
+import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 
 export default {
     name: 'TransitionForm',
     components: {
+        TranslationSelect,
         Form: () => import('@Core/components/Form/Form'),
         FormGroup: () => import('@Core/components/Form/FormGroup'),
-        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
     },
     mixins: [errorValidationMixin],
     computed: {
