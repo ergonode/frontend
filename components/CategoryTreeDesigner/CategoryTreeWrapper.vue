@@ -15,7 +15,7 @@
             <CategoryTreeItem
                 :number-of-children="getChildrenLengthById(item.id)"
                 :is-expanded="getExpandStateById(item.id)"
-                :item-name="item.name || item.code"
+                :item="item"
                 @toggleItem="toggleItem(item)"
                 @removeItem="removeItem(item)" />
         </template>
