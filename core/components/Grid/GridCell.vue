@@ -233,8 +233,7 @@ export default {
             }
         },
         stopResizeDrag() {
-            const height = parseInt(this.$refs.resizerBorder.getBoundingClientRect().height, 10);
-            const factor = Math.ceil(height / this.startHeight) - 1;
+            const factor = Math.ceil(this.currentHeight / this.startHeight) - 1;
 
             this.isResizing = false;
             this.$refs.resizerBorder.style.height = null;
