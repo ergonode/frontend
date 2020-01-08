@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getModulesConfig } from '~/plugins/moduleLoader';
+import { modulesConfig } from '~/plugins/moduleLoader';
 import { JWT_KEY } from '@Core/defaults/authenticate/cookies';
 
 export const actions = {
@@ -16,7 +16,7 @@ export const actions = {
         }
     },
     resetState({ dispatch }) {
-        const { store: modulesStore } = getModulesConfig;
+        const { store: modulesStore } = modulesConfig;
 
         for (let i = 0; i < modulesStore.length; i += 1) {
             const { store } = modulesStore[i];
@@ -29,13 +29,13 @@ export const actions = {
 };
 
 function getModulesStore() {
-    const { store: modulesStore } = getModulesConfig;
+    const { store: modulesStore } = modulesConfig;
     const newStore = {};
     for (let i = 0; i < modulesStore.length; i += 1) {
-        const { moduleName, store, source } = modulesStore[i];
+        const { moduleName, store, type } = modulesStore[i];
         for (let j = 0; j < store.length; j += 1) {
             const { directory, name } = store[j];
-            switch (source) {
+            switch (type) {
             // TODO: uncomment when npm modules ready
             // case 'npm':
             //     newStore[name] = require(`${moduleName}/store/${directory}`).default;

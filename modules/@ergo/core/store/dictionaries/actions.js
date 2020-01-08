@@ -2,14 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getModulesConfig } from '~/plugins/moduleLoader';
+import { modulesConfig } from '~/plugins/moduleLoader';
 import { types } from './mutations';
 
 const onError = () => {};
 
 export default {
     getDictionaries({ commit, rootState }) {
-        const { dictionaries: modulesDictionaries } = getModulesConfig;
+        const { dictionaries: modulesDictionaries } = modulesConfig;
         const { language: userLanguageCode } = rootState.authentication.user;
         const promises = modulesDictionaries.map(({ stateProp, requestPath }) => {
             const requestPromise = this.app.$axios.$get(`${userLanguageCode}${requestPath}`).then((response) => {

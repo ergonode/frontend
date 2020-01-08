@@ -2,100 +2,82 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export default [
-    {
-        active: true,
-        source: 'local', // types [npm, local]
-        name: '@ergo/core', // name that same as module page directory name
+
+export default {
+    '@ergo/core': {
+        type: 'local', // types [npm, local]
+        path: '@ergo/core', // name that same as module page directory name
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/authentication',
+    '@ergo/authentication': {
+        type: 'local',
+        path: '@ergo/authentication',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/dashboard',
+    '@ergo/dashboard': {
+        type: 'local',
+        path: '@ergo/dashboard',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/users',
+    '@ergo/users': {
+        type: 'local',
+        path: '@ergo/users',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/attributes',
+    '@ergo/attributes': {
+        type: 'local',
+        path: '@ergo/attributes',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/categories',
+    '@ergo/categories': {
+        type: 'local',
+        path: '@ergo/categories',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/category-trees',
+    '@ergo/category-trees': {
+        type: 'local',
+        path: '@ergo/category-trees',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/comments',
+    '@ergo/comments': {
+        type: 'local',
+        path: '@ergo/comments',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/products',
+    '@ergo/products': {
+        type: 'local',
+        path: '@ergo/products',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/product-templates',
+    '@ergo/product-templates': {
+        type: 'local',
+        path: '@ergo/product-templates',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/product-statuses',
+    '@ergo/product-statuses': {
+        type: 'local',
+        path: '@ergo/product-statuses',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/media',
+    '@ergo/media': {
+        type: 'local',
+        path: '@ergo/media',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/export',
+    '@ergo/export': {
+        type: 'local',
+        path: '@ergo/export',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/import',
+    '@ergo/import': {
+        type: 'local',
+        path: '@ergo/import',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/conditions',
+    '@ergo/conditions': {
+        type: 'local',
+        path: '@ergo/conditions',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/segments',
+    '@ergo/segments': {
+        type: 'local',
+        path: '@ergo/segments',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/status-transitions',
+    '@ergo/status-transitions': {
+        type: 'local',
+        path: '@ergo/status-transitions',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/activity-logs',
+    '@ergo/activity-logs': {
+        type: 'local',
+        path: '@ergo/activity-logs',
     },
-    {
-        active: true,
-        source: 'local',
-        name: '@ergo/notifications',
+    '@ergo/notifications': {
+        type: 'local',
+        path: '@ergo/notifications',
     },
-];
+};

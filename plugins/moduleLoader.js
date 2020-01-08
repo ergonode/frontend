@@ -4,164 +4,17 @@
  */
 /* eslint-disable no-param-reassign */
 import Vue from 'vue'; // eslint-disable-line import/no-extraneous-dependencies
-import { REQUIRED_MODULES } from '../defaults/modules';
 
-const deepmerge = require('deepmerge');
+const ModuleLoader = (() => {
+    let instance;
+    const modulesConfiguration = require('../modules.config').default || {};
+    const { REQUIRED_MODULES } = require('../defaults/modules') || [];
+    const deepmerge = require('deepmerge');
 
-class ModuleLoader {
-    constructor() {
-        this.modules = this.getActiveModules();
-        this.modulesConfig = this.getModules(this.modules);
-        this.checkRequiredModules();
-        this.checkModuleRelations();
-    }
-
-    install(_Vue) {
-        const { extendComponents } = this.modulesConfig;
-
-        _Vue.prototype.$getComponentsForExtended = (type) => extendComponents[type];
-    }
-
-    get getModulesConfig() {
-        return this.modulesConfig;
-    }
-
-    checkRelation(relation) {
-        return this.modules.find(
-            (module) => relation === module.name && module.active,
-        );
-    }
-
-    checkRequiredModules() {
-        REQUIRED_MODULES.forEach((module) => {
-            if (!this.checkRelation(module)) {
-                throw Error(`Module [${module}] does not exist.`);
-            }
-        });
-    }
-
-    checkModuleRelations() {
-        const { moduleRelations } = this.modulesConfig;
-
-        moduleRelations.forEach((relation) => {
-            const { moduleName, relations } = relation;
-
-            relations.forEach((r) => {
-                if (!this.checkRelation(r)) {
-                    throw Error(`Module [${moduleName}] has relation with [${r}].\n Module [${r}] does not exist.`);
-                }
-            });
-        });
-    }
-
-    getActiveModules() {
-        const baseConfig = require('../modules.config');
-
-        if (baseConfig) {
-            return baseConfig.default.filter((e) => e.active);
-        }
-
-        return [];
-    }
-
-    getModules(modules) {
-        return modules.reduce((acc, module) => {
-            const modulesConfig = acc;
-            const { name, source } = module;
-            let config = null;
-
-            switch (source) {
-            case 'local':
-                config = require(`../modules/${name}`).default;
-                break;
-            // case 'npm':
-            //     config = require(`${name}`);
-            //     break;
-            default:
-                config = null;
-            }
-
-            if (config) {
-                if (config.router) modulesConfig.router.push(...config.router);
-                if (config.dictionaries) modulesConfig.dictionaries.push(...config.dictionaries);
-                if (config.store) {
-                    modulesConfig.store.push({
-                        source,
-                        moduleName: name,
-                        store: config.store,
-                    });
-                }
-                if (config.nuxt) {
-                    const modulePath = source === 'local'
-                        ? `modules/${name}`
-                        : name;
-
-                    if (config.nuxt.aliases) {
-                        const { aliases } = config.nuxt;
-
-                        Object.keys(aliases).forEach((alias) => {
-                            config.nuxt.aliases[alias] = `/${modulePath}${aliases[alias]}`;
-                        });
-                    }
-                    if (config.nuxt.css) {
-                        const { css } = config.nuxt;
-
-                        css.forEach((style, index) => {
-                            config.nuxt.css[index] = `~${modulePath}${style}`;
-                        });
-                    }
-                    if (config.nuxt.styleResources) {
-                        const { styleResources } = config.nuxt;
-
-                        Object.keys(styleResources).forEach((resource) => {
-                            config.nuxt.styleResources[resource] = `~${modulePath}${styleResources[resource]}`;
-                        });
-                    }
-                    if (config.nuxt.plugins) {
-                        const { plugins } = config.nuxt;
-
-                        plugins.forEach((plugin, index) => {
-                            if (typeof plugin === 'string') {
-                                config.nuxt.plugins[index] = `~${modulePath}${plugin}`;
-                            } else {
-                                config.nuxt.plugins[index] = {
-                                    src: `~${modulePath}${plugin.src}`,
-                                    mode: plugin.mode,
-                                };
-                            }
-                        });
-                    }
-                    if (config.nuxt.middleware) {
-                        const { middleware } = config.nuxt;
-
-                        config.nuxt.middleware = async (ctx) => {
-                            for (let i = 0; i < middleware.length; i += 1) {
-                                const importedMiddleware = require(`../modules/${name}${middleware[i]}`).default;
-
-                                importedMiddleware(ctx);
-                            }
-                        };
-                    }
-                    modulesConfig.nuxt = deepmerge(modulesConfig.nuxt, config.nuxt);
-                }
-                if (config.moduleRelations) {
-                    modulesConfig.moduleRelations.push({
-                        moduleName: name,
-                        relations: config.moduleRelations,
-                    });
-                }
-                if (config.extendComponents) {
-                    modulesConfig.extendComponents = deepmerge(
-                        modulesConfig.extendComponents,
-                        config.extendComponents,
-                    );
-                }
-                if (config.extendTabs) {
-                    modulesConfig.extendTabs.push(...config.extendTabs);
-                }
-            }
-            return modulesConfig;
-        }, {
+    return {
+        _modules: modulesConfiguration,
+        _requiredModules: REQUIRED_MODULES,
+        _modulesConfig: {
             router: [],
             store: [],
             dictionaries: [],
@@ -169,32 +22,150 @@ class ModuleLoader {
             moduleRelations: [],
             extendComponents: {},
             extendTabs: [],
-        });
-    }
+        },
+        init() {
+            this.setModulesConfig(this._modules);
+            this.checkRequiredModules();
+            this.checkModuleRelations();
+        },
+        install(_Vue) {
+            const { extendComponents } = this._modulesConfig;
 
-    // TODO: old methods to refactor, don't remove
-    // getComponent(componentPath, module = null) {
-    //     const name = componentPath.split('/').pop();
+            _Vue.prototype.$getComponentsForExtended = (type) => extendComponents[type];
+        },
+        get modulesConfig() {
+            return this._modulesConfig;
+        },
+        setModulesConfig(modules) {
+            this._modulesConfig = Object.values(modules).reduce((acc, { path, type }) => {
+                let config;
+                const modulesConfig = acc;
 
-    //     if (Vue.options.components[name]) {
-    //         return Vue.options.components[name];
-    //     }
-    //     if (module) {
-    //         return Vue.component(name, () => import(`@Modules/${module}/${componentPath}`));
-    //     }
-    //     return Vue.component(
-    //         name,
-    //         () => import(`~/components/${componentPath}`),
-    //     );
-    // }
+                switch (type) {
+                case 'local':
+                    config = require(`../modules/${path}`).default;
+                    break;
+                // case 'npm':
+                //     config = require(`${path}`);
+                //     break;
+                default:
+                    config = null;
+                }
 
-    // removeComponent(name) {
-    //     delete Vue.options.components[name];
-    // }
-}
+                if (config) {
+                    if (config.router) modulesConfig.router.push(...config.router);
+                    if (config.dictionaries) {
+                        modulesConfig.dictionaries.push(...config.dictionaries);
+                    }
+                    if (config.store) {
+                        modulesConfig.store.push({
+                            type,
+                            moduleName: path,
+                            store: config.store,
+                        });
+                    }
+                    if (config.nuxt) {
+                        const modulePath = type === 'local'
+                            ? `modules/${path}`
+                            : path;
 
-const Modules = new ModuleLoader();
-Vue.use(Modules);
-export const {
-    getModulesConfig,
-} = Modules;
+                        if (config.nuxt.aliases) {
+                            const { aliases } = config.nuxt;
+
+                            Object.keys(aliases).forEach((alias) => {
+                                config.nuxt.aliases[alias] = `/${modulePath}${aliases[alias]}`;
+                            });
+                        }
+                        if (config.nuxt.css) {
+                            const { css } = config.nuxt;
+
+                            css.forEach((style, index) => {
+                                config.nuxt.css[index] = `~${modulePath}${style}`;
+                            });
+                        }
+                        if (config.nuxt.styleResources) {
+                            const { styleResources } = config.nuxt;
+
+                            Object.keys(styleResources).forEach((resource) => {
+                                config.nuxt.styleResources[resource] = `~${modulePath}${styleResources[resource]}`;
+                            });
+                        }
+                        if (config.nuxt.plugins) {
+                            const { plugins } = config.nuxt;
+
+                            plugins.forEach((plugin, index) => {
+                                if (typeof plugin === 'string') {
+                                    config.nuxt.plugins[index] = `~${modulePath}${plugin}`;
+                                } else {
+                                    config.nuxt.plugins[index] = {
+                                        src: `~${modulePath}${plugin.src}`,
+                                        mode: plugin.mode,
+                                    };
+                                }
+                            });
+                        }
+                        if (config.nuxt.middleware) {
+                            const { middleware } = config.nuxt;
+
+                            config.nuxt.middleware = async (ctx) => {
+                                for (let i = 0; i < middleware.length; i += 1) {
+                                    const importedMiddleware = require(`../modules/${path}${middleware[i]}`).default;
+
+                                    importedMiddleware(ctx);
+                                }
+                            };
+                        }
+                        modulesConfig.nuxt = deepmerge(modulesConfig.nuxt, config.nuxt);
+                    }
+                    if (config.moduleRelations) {
+                        modulesConfig.moduleRelations.push({
+                            moduleName: path,
+                            relations: config.moduleRelations,
+                        });
+                    }
+                    if (config.extendComponents) {
+                        modulesConfig.extendComponents = deepmerge(
+                            modulesConfig.extendComponents,
+                            config.extendComponents,
+                        );
+                    }
+                    if (config.extendTabs) {
+                        modulesConfig.extendTabs.push(...config.extendTabs);
+                    }
+                }
+                return modulesConfig;
+            }, this._modulesConfig);
+        },
+        checkRequiredModules() {
+            this._requiredModules.forEach((module) => {
+                if (!this._modules[module]) {
+                    throw Error(`Module [${module}] does not exist.`);
+                }
+            });
+        },
+        checkModuleRelations() {
+            const { moduleRelations: modulesRelations } = this._modulesConfig;
+
+            modulesRelations.forEach((moduleRelations) => {
+                const { moduleName, relations } = moduleRelations;
+
+                relations.forEach((relation) => {
+                    if (!this._modules[moduleName]) {
+                        throw Error(`Module [${moduleName}] has relation with [${relation}].\n Module [${relation}] does not exist.`);
+                    }
+                });
+            });
+        },
+        getInstance() {
+            if (!instance) {
+                instance = this.init();
+            }
+            return instance;
+        },
+    };
+})();
+
+ModuleLoader.getInstance();
+Vue.use(ModuleLoader);
+
+export const { modulesConfig } = ModuleLoader;

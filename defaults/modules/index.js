@@ -7,7 +7,7 @@ export const REQUIRED_MODULES = [
     '@ergo/authentication',
 ];
 
-export const MODULES = [
+export const AVAILABLE_MODULES = [
     '@ergo/core',
     '@ergo/authentication',
     '@ergo/users',

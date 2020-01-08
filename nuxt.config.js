@@ -3,14 +3,14 @@
  * See LICENSE for license details.
  */
 require('dotenv').config({path: '.env'});
-const { getModulesConfig } = require('./plugins/moduleLoader');
+const { modulesConfig } = require('./plugins/moduleLoader');
 const path = require('path');
 const pkg = require('./package');
 
 const nuxtConfig = {
-    css: getModulesConfig.nuxt.css || [],
-    styleResources: getModulesConfig.nuxt.styleResources || {},
-    plugins: getModulesConfig.nuxt.plugins || [],
+    css: modulesConfig.nuxt.css || [],
+    styleResources: modulesConfig.nuxt.styleResources || {},
+    plugins: modulesConfig.nuxt.plugins || [],
 };
 
 module.exports = {
@@ -63,7 +63,7 @@ module.exports = {
         cssSourceMap: false,
         extend(config, ctx) {
             const alias = config.resolve.alias || {};
-            const { aliases } = getModulesConfig.nuxt;
+            const { aliases } = modulesConfig.nuxt;
 
             alias['@Root'] = path.join(__dirname, './');
             alias['@Modules'] = path.join(__dirname, '/modules');

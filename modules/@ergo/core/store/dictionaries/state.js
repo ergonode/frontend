@@ -2,9 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getModulesConfig } from '~/plugins/moduleLoader';
+import { modulesConfig } from '~/plugins/moduleLoader';
 
-const { dictionaries } = getModulesConfig;
+const { dictionaries } = modulesConfig;
 
 export default () => dictionaries.reduce((acc, current) => {
     const newObject = acc;

@@ -11,9 +11,6 @@ export default {
     setMultilingualTranslationPropertyValue({ commit }, params) {
         commit(types.SET_MULTILINGUAL_TRANSLATION_PROPERTY_VALUE, params);
     },
-    addCardLanguageCode({ commit }, language) {
-        commit(types.ADD_CARD_LANGUAGE_CODE, language);
-    },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);
     },

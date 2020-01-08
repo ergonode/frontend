@@ -4,7 +4,7 @@
  */
 import Vue from 'vue';
 import Router from 'vue-router';
-import { getModulesConfig } from '~/plugins/moduleLoader';
+import { modulesConfig } from '~/plugins/moduleLoader';
 
 Vue.use(Router);
 
@@ -39,7 +39,7 @@ const scrollBehavior = (to, from, savedPosition) => {
 };
 
 const getRoutes = () => {
-    const { router, extendTabs } = getModulesConfig;
+    const { router, extendTabs } = modulesConfig;
 
     for (let i = 0; i < extendTabs.length; i += 1) {
         const index = router.findIndex(e => e.name === extendTabs[i].name);
