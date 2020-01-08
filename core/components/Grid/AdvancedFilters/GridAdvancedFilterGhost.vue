@@ -52,6 +52,8 @@ export default {
             'setDisabledElement',
         ]),
         async onDrop(event) {
+            event.preventDefault();
+
             this.$emit('mouseOverFilters', false);
 
             const data = event.dataTransfer.getData('text/plain');

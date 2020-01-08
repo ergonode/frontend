@@ -135,6 +135,8 @@ export default {
                 return false;
             }
 
+            const gridContentEl = document.documentElement.querySelector('.grid__content');
+
             switch (keyCode) {
             case 13:
                 // Key: ENTER
@@ -154,24 +156,24 @@ export default {
                 break;
             case 37:
                 // Key: LEFT
-                element = document.querySelector(`.coordinates-${this.column - 1}-${this.row}`);
+                element = gridContentEl.querySelector(`.coordinates-${this.column - 1}-${this.row}`);
                 break;
             case 38:
                 // Key: UP
-                element = document.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
+                element = gridContentEl.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
                 break;
             case 39:
             case 9:
                 // Key: RIGHT || TAB
-                element = document.querySelector(`.coordinates-${this.column + 1}-${this.row}`);
+                element = gridContentEl.querySelector(`.coordinates-${this.column + 1}-${this.row}`);
                 if (!element) {
                     // We get out of bounds - go to the next line
-                    element = document.querySelector(`.coordinates-0-${this.row + 1}`);
+                    element = gridContentEl.querySelector(`.coordinates-0-${this.row + 1}`);
                 }
                 break;
             case 40:
                 // Key: DOWN
-                element = document.querySelector(`.coordinates-${this.column}-${this.row + 1}`);
+                element = gridContentEl.querySelector(`.coordinates-${this.column}-${this.row + 1}`);
                 break;
             default: break;
             }
@@ -179,7 +181,11 @@ export default {
             event.preventDefault();
 
             if (element && (keyCode === 9 || keyCode === 40 || keyCode === 38)) {
-                element.scrollIntoView(false);
+                const isElementInsideViewPort = element.offsetTop + element.offsetHeight
+                    > gridContentEl.offsetHeight + gridContentEl.scrollTop;
+                if (isElementInsideViewPort) {
+                    element.scrollIntoView(false);
+                }
             }
 
             if ((keyCode === 13 && !this.isEditing && element) || (keyCode !== 13 && element)) {
