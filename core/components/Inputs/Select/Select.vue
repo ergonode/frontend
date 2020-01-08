@@ -266,9 +266,11 @@ export default {
 
         this.isMounted = true;
         this.associatedLabel = `input-${this._uid}`;
+        console.log('mounted');
     },
     destroyed() {
         window.removeEventListener('click', this.onClickOutside);
+        console.log('destroying');
     },
     computed: {
         tinySize() {
@@ -328,8 +330,7 @@ export default {
             if (!this.isMounted) return null;
 
             if (this.isFocused || !this.isEmptyOptions) {
-                const { activator } = this.$refs;
-                const transform = `translateY(-${activator.offsetHeight / 2}px)`;
+                const transform = 'translateY(calc(-100% + -4px))';
 
                 return {
                     transform,

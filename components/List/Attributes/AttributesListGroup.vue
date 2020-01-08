@@ -46,7 +46,7 @@ export default {
         },
         isDraggable: {
             type: Boolean,
-            default: false,
+            default: true,
         },
     },
     computed: {
