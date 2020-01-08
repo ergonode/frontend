@@ -7,16 +7,12 @@ export default {
         state.translations = { ...translations };
     },
     setMultilingualTranslationPropertyValue: (state, {
-        languageCode, propertyName, value, isMultilingual,
+        languageCode, propertyName, value,
     }) => {
-        if (isMultilingual) {
-            state.translations[propertyName] = {
-                ...state.translations[propertyName],
-                [languageCode]: value,
-            };
-        } else {
-            state.translations[propertyName] = value;
-        }
+        state.translations[propertyName] = {
+            ...state.translations[propertyName],
+            [languageCode]: value,
+        };
     },
     clearStorage: (state) => {
         state.translations = {};

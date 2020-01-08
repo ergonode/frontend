@@ -96,9 +96,9 @@ export default {
             multilingual,
         }) => {
             const translations = {
-                hint: multilingual ? hint : Object.values(hint)[0],
-                label: multilingual ? label : Object.values(label)[0],
-                placeholder: multilingual ? placeholder : Object.values(placeholder)[0],
+                hint,
+                label,
+                placeholder,
             };
 
             commit(types.SET_ATTRIBUTE_ID, id);
