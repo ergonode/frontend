@@ -11,7 +11,8 @@
         :draft="draftValue !== null"
         :spacebar-edition="false"
         :copyable="isEditingAllowed"
-        :selected="isSelected">
+        :selected="isSelected"
+        @copy="onDataCopy">
         <template #default="{ isEditing }">
             <Component
                 :is="infoComponent"
@@ -71,6 +72,10 @@ export default {
         },
         rowId: {
             type: [String, Number],
+            required: true,
+        },
+        rowIds: {
+            type: Array,
             required: true,
         },
         cellData: {
@@ -224,6 +229,36 @@ export default {
             'updateDraftValue',
             'addDraftValue',
         ]),
+        onDataCopy({ from, to }) {
+            const rowIndex = this.rowIds.findIndex((id) => id === this.rowId);
+            const offset = from.row - rowIndex;
+
+            if (from.row < to.row) {
+                for (let i = from.row - offset + 1; i < to.row - offset + 1; i += 1) {
+                    if (this.rowIds[i]) {
+                        this.updateDraftValue({
+                            productId: this.rowIds[i],
+                            columnId: this.column.id,
+                            elementId: this.column.element_id,
+                            value: this.editValue,
+                            languageCode: this.column.language || this.userLanguageCode,
+                        });
+                    }
+                }
+            } else {
+                for (let i = to.row - offset; i < from.row - offset; i += 1) {
+                    if (this.rowIds[i]) {
+                        this.updateDraftValue({
+                            productId: this.rowIds[i],
+                            columnId: this.column.id,
+                            elementId: this.column.element_id,
+                            value: this.editValue,
+                            languageCode: this.column.language || this.userLanguageCode,
+                        });
+                    }
+                }
+            }
+        },
         onFocus(isFocused) {
             if (!isFocused) {
                 this.setEditingCellCoordinates();
@@ -232,24 +267,27 @@ export default {
         },
         onUpdateDraft(value) {
             if ((value.id === '' || value.length === 0) && this.draft !== null) {
-                this.removeDraftValue({ productId: this.rowId, attributeId: this.column.id });
+                this.removeDraftValue({
+                    productId: this.rowId,
+                    attributeId: this.column.id,
+                });
                 return;
             }
 
-            if (this.isSelectKind) {
-                if (Array.isArray(value)) {
-                    if (this.draftValue
-                        && isArrayEqualToArray(
-                            value.map((val) => val.key),
-                            this.draftValue.map((val) => val.key),
-                        )) return;
-                    if (this.draftValue === null
-                        && isArrayEqualToArray(
-                            value.map((val) => val.key),
-                            this.cellData.map((val) => val.key),
-                        )) return;
-                } else if (this.cellData.key === value.key) return;
-            } else if (this.cellData.value === value) return;
+            if (Array.isArray(value)) {
+                const valueKeys = value.map((val) => val.key);
+                if (this.draftValue
+                    && isArrayEqualToArray(
+                        valueKeys,
+                        this.draftValue.map((val) => val.key),
+                    )) return;
+                if (this.draftValue === null
+                    && isArrayEqualToArray(
+                        valueKeys,
+                        this.cellData.map((val) => val.key),
+                    )) return;
+            } else if ((this.cellData.key && this.cellData.key === value.key)
+                || this.cellData.value === value) return;
 
             this.updateDraftValue({
                 productId: this.rowId,

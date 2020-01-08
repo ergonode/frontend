@@ -41,12 +41,14 @@ export default {
                 const {
                     id, code, name, elements_count: elementsCount,
                 } = collection[i];
-                groups.push({
-                    id,
-                    key: code,
-                    value: name || `#${code}`,
-                });
-                groupsElementsCount[id] = elementsCount;
+                if (elementsCount > 0) {
+                    groups.push({
+                        id,
+                        key: code,
+                        value: name || `#${code}`,
+                    });
+                    groupsElementsCount[id] = elementsCount;
+                }
             }
 
             groups.push({

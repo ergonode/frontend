@@ -88,7 +88,8 @@
                         :column-index="colIndex + columnsOffset"
                         :row-index="getRowIndex(rowIndex + rowsOffset)"
                         :row-id="id"
-                        :cell-data="gridState.cellValues[id][column.id] || { value: ''}"
+                        :row-ids="gridState.rowIds"
+                        :cell-data="gridState.cellValues[id][column.id]"
                         :column="column"
                         :draft="drafts[id]"
                         :is-selected="isSelectedAllRows
