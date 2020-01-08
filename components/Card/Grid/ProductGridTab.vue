@@ -86,12 +86,14 @@ export default {
             numberOfPages: 'numberOfPages',
         }),
         verticalTabs() {
+            const isUserAllowedToReadProduct = this.$hasAccess(['PRODUCT_READ']);
+
             return [
                 {
                     title: 'Attributes',
                     component: () => import('~/components/Card/Lists/AttributesListTab'),
                     props: {
-                        disabled: !this.$hasAccess(['PRODUCT_READ']),
+                        disabled: !isUserAllowedToReadProduct,
                     },
                     iconPath: 'Menu/IconAttributes',
                     listDataType: 'attributes',
@@ -100,7 +102,7 @@ export default {
                     title: 'System Attributes',
                     component: () => import('~/components/Card/Lists/SystemAttributesListTab'),
                     props: {
-                        disabled: !this.$hasAccess(['PRODUCT_READ']),
+                        disabled: !isUserAllowedToReadProduct,
                     },
                     iconPath: 'Menu/IconSettings',
                     listDataType: 'attributes/system',

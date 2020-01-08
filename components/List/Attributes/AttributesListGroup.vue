@@ -15,6 +15,7 @@
                 v-for="item in elementsByGroupInLanguage"
                 :key="item.id"
                 :item="item"
+                :is-draggable="isDraggable"
                 :language-code="languageCode" />
         </template>
     </ListGroupElement>
@@ -40,6 +41,10 @@ export default {
             required: true,
         },
         isExpanded: {
+            type: Boolean,
+            default: false,
+        },
+        isDraggable: {
             type: Boolean,
             default: false,
         },

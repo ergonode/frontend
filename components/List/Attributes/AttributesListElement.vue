@@ -5,7 +5,7 @@
 <template>
     <ListDraggableElement
         :draggable-id="`${item.code}:${languageCode}`"
-        :is-draggable="$hasAccess(['ATTRIBUTE_UPDATE'])"
+        :is-draggable="isDraggable"
         :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
         :hint="item.label ? `#${item.code} ${languageCode}`: ''"
         @drag="onDrag">
@@ -45,6 +45,10 @@ export default {
         languageCode: {
             type: String,
             required: true,
+        },
+        isDraggable: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {
