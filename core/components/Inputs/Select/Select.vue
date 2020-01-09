@@ -328,8 +328,7 @@ export default {
             if (!this.isMounted) return null;
 
             if (this.isFocused || !this.isEmptyOptions) {
-                const { activator } = this.$refs;
-                const transform = `translateY(-${activator.offsetHeight / 2}px)`;
+                const transform = 'translateY(calc(-100% - 4px))';
 
                 return {
                     transform,
