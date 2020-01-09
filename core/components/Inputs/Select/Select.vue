@@ -328,7 +328,7 @@ export default {
             if (!this.isMounted) return null;
 
             if (this.isFocused || !this.isEmptyOptions) {
-                const transform = 'translateY(calc(-100% + -4px))';
+                const transform = 'translateY(calc(-100% - 4px))';
 
                 return {
                     transform,
