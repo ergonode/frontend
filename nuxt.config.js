@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 require('dotenv').config({path: '.env'});
+var FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const { modulesConfig } = require('./plugins/moduleLoader');
 const path = require('path');
 const pkg = require('./package');
@@ -61,7 +62,25 @@ module.exports = {
     build: {
         parallel: true,
         cssSourceMap: false,
-        extend(config, ctx) {
+        // plugins: [
+        //   new FriendlyErrorsWebpackPlugin({
+        //     onErrors: (severity, errors) => {
+        //       console.log(severity, errors);
+        //       if (severity !== 'error') {
+        //         return;
+        //       }
+        //       return true;
+        //       // const error = errors[0];
+        //       // notifier.notify({
+        //       //   title: "Webpack error",
+        //       //   message: severity + ': ' + error.name,
+        //       //   subtitle: error.file || '',
+        //       //   icon: ICON
+        //       // });
+        //     }
+        //   })
+        // ],
+        extend(config, { isDev, isClient }) {
             const alias = config.resolve.alias || {};
             const { aliases } = modulesConfig.nuxt;
 
@@ -71,6 +90,29 @@ module.exports = {
             Object.keys(aliases).map((key) => {
                 alias[key] = path.join(__dirname, aliases[key]);
             });
+
+            if(isClient && isDev) {
+                config.devtool = 'source-map';
+            }
+            // config.watchOptions = {
+            //     ignored: [
+            //       'node_modules',
+            //       'modules/@ergo/dashboard',
+            //       'modules/@ergo/dashboard/*',
+            //       '/modules/@ergo/dashboard',
+            //     ]
+            // };
+            // const vueLoader = config.module.rules.find((rule) => rule.loader === 'babel')
+            // vueLoader.exclude = /modules\/@ergo\/dashboard/;
+            // vueLoader.exclude = file => (
+            //   /modules\/@ergo\/dashboard/.test(file) && /\.vue\.js/.test(file)
+            // );
+            // vueLoader.options.loaders.scss = 'vue-style-loader!css-loader!sass-loader?' + JSON.stringify({
+            //   includePaths: [
+            //     path.resolve(__dirname), 'node_modules'
+            //   ]
+            // })
+            // console.log(vueLoader);
         },
         optimization: {
             splitChunks: {

@@ -7,24 +7,42 @@ import Vue from 'vue'; // eslint-disable-line import/no-extraneous-dependencies
 
 const ModuleLoader = (() => {
     let instance;
+    const deepmerge = require('deepmerge');
     const modulesConfiguration = require('../modules.config').default || {};
     const { REQUIRED_MODULES } = require('../defaults/modules') || [];
-    const deepmerge = require('deepmerge');
+    const getModules = () => {
+        const keys = Object.keys(modulesConfiguration);
+        const active = keys.filter((module) => modulesConfiguration[module].active);
+        const inactive = keys.filter((module) => !modulesConfiguration[module].active);
+        return {
+            active: active.reduce((acc, module) => {
+                const newObject = acc;
+                newObject[module] = modulesConfiguration[module];
+                return newObject;
+            }, {}),
+            inactive: inactive.reduce((acc, module) => {
+                const newObject = acc;
+                newObject[module] = modulesConfiguration[module];
+                return newObject;
+            }, {}),
+        };
+    };
 
     return {
-        _modules: modulesConfiguration,
         _requiredModules: REQUIRED_MODULES,
+        _modules: getModules(),
         _modulesConfig: {
-            router: [],
-            store: [],
-            dictionaries: [],
             nuxt: {},
+            store: [],
+            router: [],
+            extendTabs: [],
+            dictionaries: [],
             moduleRelations: [],
             extendComponents: {},
-            extendTabs: [],
         },
         init() {
-            this.setModulesConfig(this._modules);
+            console.log(this._modules);
+            this.setModulesConfig(this._modules.active);
             this.checkRequiredModules();
             this.checkModuleRelations();
         },
@@ -37,17 +55,18 @@ const ModuleLoader = (() => {
             return this._modulesConfig;
         },
         setModulesConfig(modules) {
-            this._modulesConfig = Object.values(modules).reduce((acc, { path, type }) => {
+            this._modulesConfig = Object.keys(modules).reduce((acc, module) => {
                 let config;
+                const { path, type } = modules[module];
                 const modulesConfig = acc;
 
                 switch (type) {
                 case 'local':
                     config = require(`../modules/${path}`).default;
                     break;
-                // case 'npm':
-                //     config = require(`${path}`);
-                //     break;
+                case 'npm':
+                    config = require(`${path}`);
+                    break;
                 default:
                     config = null;
                 }
@@ -138,7 +157,7 @@ const ModuleLoader = (() => {
         },
         checkRequiredModules() {
             this._requiredModules.forEach((module) => {
-                if (!this._modules[module]) {
+                if (!this._modules.active[module]) {
                     throw Error(`Module [${module}] does not exist.`);
                 }
             });
@@ -150,7 +169,7 @@ const ModuleLoader = (() => {
                 const { moduleName, relations } = moduleRelations;
 
                 relations.forEach((relation) => {
-                    if (!this._modules[moduleName]) {
+                    if (!this._modules.active[moduleName]) {
                         throw Error(`Module [${moduleName}] has relation with [${relation}].\n Module [${relation}] does not exist.`);
                     }
                 });

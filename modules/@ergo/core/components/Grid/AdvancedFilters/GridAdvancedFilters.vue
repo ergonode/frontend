@@ -97,7 +97,7 @@ export default {
     props: {
         filters: {
             type: Object,
-            default: () => {},
+            default: () => ({}),
         },
         filtersData: {
             type: Array,
