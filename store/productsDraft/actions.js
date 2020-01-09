@@ -16,9 +16,7 @@ export default {
     setProductCategories: ({ commit }, categories = []) => {
         commit(types.SET_PRODUCT_CATEGORIES, categories);
     },
-    async setDraftLanguageCode({ commit, dispatch }, data) {
-        commit(types.SET_DRAFT_LANGUAGE_CODE, data.languageCode);
-
+    async getDraftForLanguage({ commit, dispatch }, data) {
         const productTemplateRequest = dispatch('getProductTemplate', data);
         const completenessRequest = dispatch('getProductCompleteness', data);
         const productDraftRequest = dispatch('getProductDraft', data);
@@ -30,15 +28,11 @@ export default {
         ]);
     },
     getProductDraft({ commit }, { languageCode, id }) {
-        commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
-
         return this.app.$axios.$get(`${languageCode}/products/${id}/draft`).then((draft) => {
             commit(types.SET_PRODUCT_DRAFT, draft);
         }).catch(onDefaultError);
     },
     getProduct({ commit, state }, { languageCode, id }) {
-        commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
-
         const { categories, templates } = state;
         const parseCategories = (category) => {
             const { id: categoryId, name, code } = categories.find((c) => c.code === category);
@@ -77,8 +71,6 @@ export default {
         }).catch(onDefaultError);
     },
     getProductTemplate({ commit }, { languageCode, id }) {
-        commit(types.SET_DRAFT_LANGUAGE_CODE, languageCode);
-
         return this.app.$axios.$get(`${languageCode}/products/${id}/template`).then(({ elements }) => {
             commit(types.SET_LAYOUT_ELEMENTS, getMappedLayoutElements(elements));
         }).catch(onDefaultError);
@@ -110,12 +102,12 @@ export default {
         value,
         required,
         name,
+        languageCode,
         onSuccess,
         onError,
     }) {
         const {
             id,
-            languageCode,
         } = state;
         const index = state.layoutElements.findIndex(
             (element) => element.id === attributeId,

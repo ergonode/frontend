@@ -14,6 +14,7 @@
                 :style="getItemPosition(element)"
                 :value="getElementValueByCode(element.code)"
                 :multiselect="isMultiSelect(element.type)"
+                :language-code="languageCode"
                 :disabled="!isUserAllowedToUpdate"
                 v-bind="element" />
         </div>
@@ -48,7 +49,7 @@ export default {
     data() {
         return {
             columnsNumber: 4,
-            templateRowHeight: 48,
+            templateRowHeight: 40,
         };
     },
     computed: {
@@ -60,7 +61,7 @@ export default {
             const layoutElement = getObjectWithMaxValueInArrayByObjectKey(this.layoutElements, 'row');
 
             if (layoutElement) {
-                return layoutElement.row + layoutElement.height;
+                return layoutElement.row + layoutElement.height - 1;
             }
 
             return 0;
@@ -70,7 +71,7 @@ export default {
         },
         gridStyle() {
             return {
-                gridTemplateRows: `repeat(${this.maxRows + 1}, ${this.templateRowHeight}px)`,
+                gridTemplateRows: `repeat(${this.maxRows}, ${this.templateRowHeight}px)`,
             };
         },
     },
@@ -125,6 +126,5 @@ export default {
         display: grid;
         grid-gap: 24px;
         grid-template-columns: repeat(4, 1fr);
-        height: 0;
     }
 </style>

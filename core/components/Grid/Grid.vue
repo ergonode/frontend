@@ -58,23 +58,26 @@
                 :row-height="rowHeight"
                 :is-header-focused="isHeaderFocused"
                 :is-mouse-over-grid="isMouseOverGrid"
-                @mouseOverGrid="onMouseOverGrid">
+                @mouseOverGrid="onMouseOverGrid"
+                @removeColumnAtIndex="onRemoveColumnAtIndex"
+                @changeColumnsPosition="onChangeColumnsPosition">
                 <GridHeaderCell
-                    :namespace="namespace"
                     :column-index="colIndex + columnsOffset"
                     :is-column-editable="isColumnEditable"
+                    :sorted-column="gridState.sortedColumn"
                     :column="column"
                     :path="editRoute.path"
                     :row-index="getRowIndex(0)"
-                    @focus="onHeaderFocus" />
+                    @focus="onHeaderFocus"
+                    @sort="onSortColumn"
+                    @removeColumnAtIndex="onRemoveColumnAtIndex" />
                 <GridFilterCell
                     v-if="basicFilters"
-                    :namespace="namespace"
                     :column-index="colIndex + columnsOffset"
                     :row-index="getRowIndex(1)"
                     :column="column"
                     :filter="gridState.filters[column.id]"
-                    :path="editRoute.path" />
+                    @filter="onFilterChange" />
                 <slot
                     v-for="(id, rowIndex) in gridState.rowIds"
                     name="cell"
@@ -366,6 +369,27 @@ export default {
         },
         onHeaderFocus(isFocused) {
             this.isHeaderFocused = isFocused;
+        },
+        onChangeColumnsPosition({ from, to }) {
+            this.$store.dispatch(`${this.namespace}/changeColumnPosition`, {
+                from, to,
+            });
+            this.$store.dispatch(`${this.namespace}/changeColumnWidthPosition`, {
+                from, to,
+            });
+        },
+        onRemoveColumnAtIndex(index) {
+            this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, index);
+            this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, index);
+        },
+        onSortColumn(sortState) {
+            this.$store.dispatch(`${this.namespace}/setSortingState`, sortState);
+            this.$store.dispatch(`${this.namespace}/getData`, this.editRoute.path);
+        },
+        onFilterChange(filter) {
+            this.$store.dispatch(`${this.namespace}/setFilter`, filter);
+            this.$store.dispatch(`${this.namespace}/getData`, this.editRoute.path);
+            this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
         },
         addGhostColumn() {
             if (!this.isColumnExists) {

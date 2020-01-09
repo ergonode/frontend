@@ -26,12 +26,13 @@
 
 <script>
 import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
+import TextField from '~/core/components/Inputs/TextField';
 
 export default {
     name: 'ProductTemplateSingleLine',
     mixins: [productTemplateElementMixin],
     components: {
-        TextField: () => import('~/core/components/Inputs/TextField'),
+        TextField,
     },
     computed: {
         suffix() {

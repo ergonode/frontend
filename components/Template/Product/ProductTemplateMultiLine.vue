@@ -18,12 +18,13 @@
 
 <script>
 import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
+import TextArea from '~/core/components/Inputs/TextArea';
 
 export default {
     name: 'ProductTemplateMultiLine',
     mixins: [productTemplateElementMixin],
     components: {
-        TextArea: () => import('~/core/components/Inputs/TextArea'),
+        TextArea,
     },
     watch: {
         value() {
