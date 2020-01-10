@@ -8,7 +8,7 @@ import {
     COLUMN_WIDTH,
 } from '~/defaults/grid';
 
-export function getParsedFilters(filters) {
+export function getParsedFilters(filters, advcFilters = null) {
     const entries = Object.entries(filters);
     const { length: entriesLength } = entries;
 
@@ -17,7 +17,7 @@ export function getParsedFilters(filters) {
     for (let i = 0; i < entriesLength; i += 1) {
         const [key, filter] = entries[i];
 
-        if (filter) {
+        if (filter && (advcFilters === null || typeof advcFilters[key] === 'undefined')) {
             const { value, operator } = filter;
 
             mappedFilter += i === 0 ? key : `;${key}`;
@@ -52,7 +52,7 @@ export const getParsedRequestDataParams = ({
     filters,
     advancedFilters,
 }, columns) => {
-    const parsedFilter = getParsedFilters(filters);
+    const parsedFilter = getParsedFilters(filters, advancedFilters);
     const parsedAdvcFilter = getParsedAdvancedFilters(advancedFilters);
 
     let filter = parsedFilter;
@@ -132,6 +132,7 @@ export function getMappedColumn(column) {
 
 export function getMappedColumns(columns) {
     const mappedColumns = [];
+    const mappedColumnsId = [];
     const columnWidths = [];
     const pinnedColumns = [];
     const { length } = columns;
@@ -139,18 +140,18 @@ export function getMappedColumns(columns) {
     for (let i = 0; i < length; i += 1) {
         const column = columns[i];
 
-        // TODO:
-        // Backend have to remove column with type CHECK
-        if (column.type !== COLUMN_TYPE.CHECK) {
+        if (column.visible && column.type !== 'CHECK') {
             columnWidths.push(COLUMN_WIDTH.DEFAULT);
             mappedColumns.push({
                 ...column,
                 header: getMappedColumnHeader(column),
             });
+            mappedColumnsId.push(column.id);
         }
     }
 
     return {
+        mappedColumnsId,
         mappedColumns,
         pinnedColumns,
         columnWidths,
@@ -207,30 +208,23 @@ export function getMappedCellValues(columns, rows, rowIds) {
     return values;
 }
 
-export function getMappedRowIds(rows) {
+export function getMappedRows(rows) {
     const rowIds = [];
-    const { length } = rows;
-
-    for (let i = 0; i < length; i += 1) {
-        const { id } = rows[i];
-
-        if (typeof id === 'undefined') rowIds.push(i + 1);
-        else rowIds.push(id);
-    }
-
-    return rowIds;
-}
-
-export function getMappedRowLinks(rows) {
     const rowLinks = [];
     const { length } = rows;
 
     for (let i = 0; i < length; i += 1) {
         const { id, _links } = rows[i];
 
-        if (typeof id === 'undefined') rowLinks.push({ id: i + 1, links: _links });
-        else rowLinks.push({ id, links: _links });
+        if (typeof id === 'undefined') {
+            const index = i + 1;
+            rowIds.push(index);
+            rowLinks.push({ id: index, links: _links });
+        } else {
+            rowIds.push(id);
+            rowLinks.push({ id, links: _links });
+        }
     }
 
-    return rowLinks;
+    return { rowIds, rowLinks };
 }

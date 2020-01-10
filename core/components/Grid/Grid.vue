@@ -51,7 +51,6 @@
                 :key="column.id"
                 :style="templateRows"
                 :draggable="draggableColumn"
-                :namespace="namespace"
                 :index="colIndex + columnsOffset"
                 :column="column"
                 :column-offset="columnsOffset"
@@ -60,7 +59,9 @@
                 :is-mouse-over-grid="isMouseOverGrid"
                 @mouseOverGrid="onMouseOverGrid"
                 @removeColumnAtIndex="onRemoveColumnAtIndex"
-                @changeColumnsPosition="onChangeColumnsPosition">
+                @changeColumnsPosition="onChangeColumnsPosition"
+                @updateColumnWidthAtIndex="onUpdateColumnWidthAtIndex"
+                @getColumnData="onGetColumnData">
                 <GridHeaderCell
                     :column-index="colIndex + columnsOffset"
                     :is-column-editable="isColumnEditable"
@@ -77,6 +78,7 @@
                     :row-index="getRowIndex(1)"
                     :column="column"
                     :filter="gridState.filters[column.id]"
+                    :disabled="typeof gridState.advancedFilters[column.id] !== 'undefined'"
                     @filter="onFilterChange" />
                 <slot
                     v-for="(id, rowIndex) in gridState.rowIds"
@@ -369,6 +371,12 @@ export default {
         },
         onHeaderFocus(isFocused) {
             this.isHeaderFocused = isFocused;
+        },
+        onGetColumnData(payload) {
+            this.$store.dispatch(`${this.namespace}/getColumnData`, payload);
+        },
+        onUpdateColumnWidthAtIndex(payload) {
+            this.$store.dispatch(`${this.namespace}/updateColumnWidthAtIndex`, payload);
         },
         onChangeColumnsPosition({ from, to }) {
             this.$store.dispatch(`${this.namespace}/changeColumnPosition`, {

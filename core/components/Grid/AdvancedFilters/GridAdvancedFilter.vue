@@ -294,7 +294,11 @@ export default {
             this.$store.dispatch(`${this.namespace}/setAdvancedFilterEmptyRecord`, { id: this.data.id, isEmptyRecord });
         },
         onValueChange({ value, operator }) {
-            this.$store.dispatch(`${this.namespace}/setAdvancedFilterValue`, { id: this.data.id, operator, value });
+            if (value.length) {
+                this.$store.dispatch(`${this.namespace}/setAdvancedFilterValue`, { id: this.data.id, operator, value });
+            } else {
+                this.$store.dispatch(`${this.namespace}/removeAdvancedFilter`, this.data.id);
+            }
 
             if (this.data.type === TYPES.SELECT) {
                 this.onApply();
