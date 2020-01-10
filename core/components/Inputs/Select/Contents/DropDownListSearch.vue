@@ -9,7 +9,7 @@
         }]">
         <input
             class="search-element__input"
-            :input="searchValue"
+            :input="value"
             type="text"
             placeholder="Search..."
             @focus="onSearchFocus"
@@ -32,6 +32,10 @@ export default {
         IconSearch,
     },
     props: {
+        value: {
+            type: String,
+            default: '',
+        },
         small: {
             type: Boolean,
             default: false,
@@ -46,7 +50,6 @@ export default {
     data() {
         return {
             isSearchFocused: false,
-            searchResult: '',
         };
     },
     computed: {
@@ -58,8 +61,7 @@ export default {
     },
     methods: {
         onSearch(event) {
-            this.searchResult = event.target.value;
-            this.$emit('search', this.searchResult);
+            this.$emit('input', event.target.value);
         },
         onSearchFocusLost() {
             this.isSearchFocused = false;

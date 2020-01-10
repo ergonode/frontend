@@ -53,7 +53,8 @@
                         <List>
                             <DropDownListSearch
                                 v-if="searchable"
-                                @search="onSearch"
+                                :value="searchResult"
+                                @input="onSearch"
                                 @searchFocused="onSearchFocused" />
                             <template v-for="(option, index) in options">
                                 <slot
@@ -62,16 +63,18 @@
                                     :index="index">
                                     <ListElement
                                         v-if="isOptionsValid"
-                                        :key="option.id"
+                                        :key="index"
                                         :small="small"
                                         :large="!small && regular"
-                                        :selected="selectedOptions[option]"
+                                        :selected="typeof selectedOptions[option] !== 'undefined'"
                                         @click.native="onSelectValue(option)">
                                         <ListElementAction
                                             v-if="multiselect"
                                             :small="small">
                                             <CheckBox
-                                                :value="selectedOptions[option]"
+                                                :value="
+                                                    typeof selectedOptions[option] !== 'undefined'
+                                                "
                                                 @input.native="onSelectValue(option)" />
                                         </ListElementAction>
                                         <ListElementDescription>
@@ -236,6 +239,7 @@ export default {
         return {
             selectedOptions: {},
             selectBoundingBox: null,
+            searchResult: '',
             isFocused: false,
             isMounted: false,
             isMouseMoving: false,
@@ -250,10 +254,10 @@ export default {
         if (this.isOptionsValid) {
             if (this.multiselect) {
                 this.value.forEach(({ id }) => {
-                    this.selectedOptions[id] = true;
+                    this.selectedOptions[id] = this.value;
                 });
             } else if (this.value || this.value === 0) {
-                this.selectedOptions = { [this.value]: true };
+                this.selectedOptions = { [this.value]: this.value };
             }
         }
     },
@@ -383,12 +387,12 @@ export default {
                 if (typeof this.selectedOptions[value] !== 'undefined') {
                     delete this.selectedOptions[value];
                 } else {
-                    this.selectedOptions[value] = true;
+                    this.selectedOptions[value] = this.value;
                 }
 
-                this.$emit('input', this.options.filter((option) => typeof this.selectedOptions[option] !== 'undefined'));
+                this.$emit('input', Object.values(this.selectedOptions));
             } else {
-                this.selectedOptions = { [value]: true };
+                this.selectedOptions = { [value]: this.value };
 
                 this.$emit('input', value);
             }
@@ -417,9 +421,11 @@ export default {
             if (this.isClickedOutside) {
                 this.isFocused = false;
                 this.isMenuActive = false;
+                this.searchResult = '';
 
                 window.removeEventListener('click', this.onClickOutside);
 
+                this.onSearch(this.searchResult);
                 this.$emit('focus', false);
             }
         },
@@ -483,9 +489,11 @@ export default {
             ) {
                 this.isFocused = false;
                 this.isMenuActive = false;
+                this.searchResult = '';
 
                 window.removeEventListener('click', this.onClickOutside);
 
+                this.onSearch(this.searchResult);
                 this.$emit('focus', false);
             }
         },

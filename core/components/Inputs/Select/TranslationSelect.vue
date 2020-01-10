@@ -16,7 +16,7 @@
             <ListElement
                 :key="index"
                 :large="!$attrs.small && $attrs.regular"
-                :selected="selectedOptions[option.id]"
+                :selected="typeof selectedOptions[option.id] !== 'undefined'"
                 @click.native="onSelectValue(option)">
                 <slot
                     name="option"
@@ -25,7 +25,7 @@
                         v-if="$attrs.multiselect"
                         :small="$attrs.small">
                         <CheckBox
-                            :value="selectedOptions[option.id]"
+                            :value="typeof selectedOptions[option.id] !== 'undefined'"
                             @input="onSelectValue(option)" />
                     </ListElementAction>
                     <ListElementDescription>
@@ -61,11 +61,11 @@ export default {
     },
     created() {
         if (this.$attrs.multiselect) {
-            this.$attrs.value.forEach(({ id }) => {
-                this.selectedOptions[id] = true;
+            this.$attrs.value.forEach((option) => {
+                this.selectedOptions[option.id] = { ...option };
             });
         } else if (this.$attrs.value.id || this.$attrs.value.id === 0) {
-            this.selectedOptions = { [this.$attrs.value.id]: true };
+            this.selectedOptions = { [this.$attrs.value.id]: { ...this.$attrs.value } };
         }
     },
     computed: {
@@ -96,12 +96,12 @@ export default {
                 if (typeof this.selectedOptions[id] !== 'undefined') {
                     delete this.selectedOptions[id];
                 } else {
-                    this.selectedOptions[id] = true;
+                    this.selectedOptions[id] = value;
                 }
 
-                this.$emit('input', this.$attrs.options.filter((option) => typeof this.selectedOptions[option.id] !== 'undefined'));
+                this.$emit('input', Object.values(this.selectedOptions));
             } else {
-                this.selectedOptions = { [id]: true };
+                this.selectedOptions = { [id]: value };
 
                 this.$emit('input', value);
             }
