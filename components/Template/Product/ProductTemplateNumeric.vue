@@ -20,12 +20,13 @@
 
 <script>
 import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
+import TextField from '~/core/components/Inputs/TextField';
 
 export default {
     name: 'ProductTemplateNumeric',
     mixins: [productTemplateElementMixin],
     components: {
-        TextField: () => import('~/core/components/Inputs/TextField'),
+        TextField,
     },
     computed: {
         inputType() {

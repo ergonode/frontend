@@ -43,11 +43,10 @@ export default {
     data() {
         return {
             isFocused: false,
-            parsedValue: '',
         };
     },
     watch: {
-        parsedOptions: {
+        options: {
             immediate: true,
             handler() {
                 this.initializeValues(this.value);

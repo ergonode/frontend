@@ -171,7 +171,10 @@ export default {
             if (isTrashBelowMouse) {
                 this.removeColumnWrapper(this.draggedElIndex - this.columnOffset);
             } else if (this.ghostIndex !== this.draggedElIndex) {
-                this.changeColumnPositionWrapper();
+                this.$emit('changeColumnsPosition', {
+                    from: this.draggedElIndex - this.columnOffset,
+                    to: this.ghostIndex - this.columnOffset,
+                });
             }
 
             this.removeColumnsTransform();
@@ -318,23 +321,12 @@ export default {
                     disabled: false,
                 });
             }
-            this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, index);
-            this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, index);
             removeCookieById({
                 cookies: this.$cookies,
                 cookieName: COLUMNS_IDS,
                 id: this.draggedElement.id,
             });
-        },
-        changeColumnPositionWrapper() {
-            this.$store.dispatch(`${this.namespace}/changeColumnPosition`, {
-                from: this.draggedElIndex - this.columnOffset,
-                to: this.ghostIndex - this.columnOffset,
-            });
-            this.$store.dispatch(`${this.namespace}/changeColumnWidthPosition`, {
-                from: this.draggedElIndex - this.columnOffset,
-                to: this.ghostIndex - this.columnOffset,
-            });
+            this.$emit('removeColumnAtIndex', index);
         },
         getTargetGhostIndex(isBefore) {
             if (this.index < this.draggedElIndex) {

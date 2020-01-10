@@ -34,6 +34,7 @@
 import { FILTER_OPERATOR } from '~/defaults/operators';
 import { COLUMN_TYPE } from '~/defaults/grid';
 import { getMappedArrayValue } from '~/model/mappers/gridDataMapper';
+import { isArrayEqualToArray } from '~/model/arrayWrapper';
 
 export default {
     name: 'GridFilterCell',
@@ -44,10 +45,6 @@ export default {
         GridEditFilterCell: () => import('~/core/components/Grid/EditCells/GridEditFilterCell'),
     },
     props: {
-        namespace: {
-            type: String,
-            required: true,
-        },
         rowIndex: {
             type: Number,
             required: true,
@@ -64,15 +61,8 @@ export default {
             type: Object,
             default: null,
         },
-        path: {
-            type: String,
-            required: true,
-        },
     },
     computed: {
-        gridState() {
-            return this.$store.state[this.namespace];
-        },
         isFilterCell() {
             return typeof this.column.filter !== 'undefined';
         },
@@ -172,10 +162,16 @@ export default {
                 parsedValue = value.key;
             }
 
-            if (this.gridState.filters[id] !== parsedValue) {
-                this.$store.dispatch(`${this.namespace}/setFilter`, { id, filter: parsedValue, operator: FILTER_OPERATOR.EQUAL });
-                this.$store.dispatch(`${this.namespace}/getData`, this.path);
-                this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
+            if (((this.filter
+                && ((Array.isArray(this.filter.value)
+                    && !isArrayEqualToArray(this.filter.value, parsedValue))
+                    || this.filter.value !== parsedValue)))
+                || (!this.filter && parsedValue.length > 0)) {
+                this.$emit('filter', {
+                    id,
+                    filter: parsedValue,
+                    operator: FILTER_OPERATOR.EQUAL,
+                });
             }
         },
     },

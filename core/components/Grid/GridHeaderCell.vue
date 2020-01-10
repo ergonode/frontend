@@ -11,9 +11,9 @@
         <Component
             :is="headerComponent"
             v-bind="headerComponentProps"
-            :namespace="namespace"
-            @sort="getData"
-            @focus="onFocus" />
+            @sort="onSort"
+            @focus="onFocus"
+            @removeColumn="onRemoveColumn" />
     </GridCell>
 </template>
 
@@ -26,10 +26,6 @@ export default {
         GridCell: () => import('~/core/components/Grid/GridCell'),
     },
     props: {
-        namespace: {
-            type: String,
-            required: true,
-        },
         columnIndex: {
             type: Number,
             required: true,
@@ -39,6 +35,10 @@ export default {
             required: true,
         },
         column: {
+            type: Object,
+            required: true,
+        },
+        sortedColumn: {
             type: Object,
             required: true,
         },
@@ -52,9 +52,6 @@ export default {
         },
     },
     computed: {
-        gridState() {
-            return this.$store.state[this.namespace];
-        },
         headerComponent() {
             const { type } = this.column.header;
 
@@ -74,6 +71,7 @@ export default {
                 return {
                     columnIndex: this.columnIndex,
                     column: this.column,
+                    sortedColumn: this.sortedColumn,
                     isColumnEditable: this.isColumnEditable,
                 };
             }
@@ -86,11 +84,14 @@ export default {
         },
     },
     methods: {
-        getData() {
-            this.$store.dispatch(`${this.namespace}/getData`, this.path);
-        },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);
+        },
+        onSort(sortState) {
+            this.$emit('sort', sortState);
+        },
+        onRemoveColumn(columnIndex) {
+            this.$emit('removeColumnAtIndex', columnIndex);
         },
     },
 };

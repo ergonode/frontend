@@ -20,9 +20,11 @@
         </template>
         <template #content>
             <VerticalFixedScroll>
-                <VerticalCenteredView>
-                    <ProductTemplateForm :language-code="languageCode" />
-                </VerticalCenteredView>
+                <div class="container">
+                    <VerticalCenteredView>
+                        <ProductTemplateForm :language-code="languageCode" />
+                    </VerticalCenteredView>
+                </div>
             </VerticalFixedScroll>
         </template>
     </ResponsiveCenteredViewTemplate>
@@ -46,6 +48,14 @@ export default {
         Select: () => import('~/core/components/Inputs/Select/Select'),
         ProductCompleteness: () => import('~/components/Progress/ProductCompleteness'),
     },
+    data() {
+        return {
+            language: '',
+        };
+    },
+    created() {
+        this.language = this.languages[this.user.language];
+    },
     computed: {
         ...mapState('authentication', {
             user: (state) => state.user,
@@ -54,11 +64,11 @@ export default {
             languages: (state) => state.languages,
         }),
         ...mapState('productsDraft', {
-            languageCode: (state) => state.languageCode,
+            id: (state) => state.id,
             completeness: (state) => state.completeness,
         }),
-        language() {
-            return this.languages[this.languageCode];
+        languageCode() {
+            return getKeyByValue(this.languages, this.language);
         },
         languageOptions() {
             return Object.values(this.languages);
@@ -66,22 +76,18 @@ export default {
     },
     methods: {
         ...mapActions('productsDraft', [
-            'setDraftLanguageCode',
+            'getDraftForLanguage',
         ]),
         onLanguageChange(value) {
-            const { params: { id } } = this.$route;
-
-            this.setDraftLanguageCode({
-                languageCode: getKeyByValue(this.languages, value),
-                id,
-            });
+            this.language = value;
+            this.getDraftForLanguage({ languageCode: this.languageCode, id: this.id });
         },
     },
     async fetch({ store, params }) {
         const { id } = params;
         const { language } = store.state.authentication.user;
 
-        await store.dispatch('productsDraft/setDraftLanguageCode', { languageCode: language, id });
+        await store.dispatch('productsDraft/getDraftForLanguage', { languageCode: language, id });
     },
 };
 </script>
@@ -102,5 +108,9 @@ export default {
     .template-grid {
         width: 1008px;
         padding: 24px;
+    }
+
+    .container {
+        display: grid;
     }
 </style>

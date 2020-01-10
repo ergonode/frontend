@@ -121,7 +121,7 @@ export default {
         state.currentPage = payload;
     },
     [types.SET_SORTING_STATE](state, sortedColumn = {}) {
-        state.sortedByColumn = sortedColumn;
+        state.sortedColumn = sortedColumn;
     },
     [types.UPDATE_COLUMN_AT_INDEX](state, { index, column }) {
         state.columns[index] = column;

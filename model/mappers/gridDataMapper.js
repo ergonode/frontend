@@ -46,7 +46,7 @@ export function getParsedAdvancedFilters(filters) {
 }
 
 export const getParsedRequestDataParams = ({
-    sortedByColumn,
+    sortedColumn,
     currentPage,
     numberOfDisplayedElements,
     filters,
@@ -70,8 +70,8 @@ export const getParsedRequestDataParams = ({
         filter,
     };
 
-    if (Object.keys(sortedByColumn).length) {
-        const { index: colSortID, orderState } = sortedByColumn;
+    if (Object.keys(sortedColumn).length) {
+        const { index: colSortID, orderState } = sortedColumn;
 
         params.field = colSortID;
         params.order = orderState;
