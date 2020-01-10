@@ -4,9 +4,7 @@
  */
 import {
     getMappedCellValues,
-    getMappedRowIds,
-    getMappedRowLinks,
-    getMappedColumn,
+    getMappedRows,
     getMappedColumns,
     getSortedColumnsByIDs,
     getParsedRequestDataParams,
@@ -32,15 +30,15 @@ export default {
             collection: rows, columns, info,
         }) => {
             const { count, filtered } = info;
-            const columnsToMap = columnIDs ? getSortedColumnsByIDs([...columns], columnIDs, 'id') : columns;
-            const visibleColumns = columnsToMap.filter((col) => col.visible);
-            const { mappedColumns, pinnedColumns, columnWidths } = getMappedColumns(visibleColumns);
-            const rowIds = getMappedRowIds(rows);
-            const rowLinks = getMappedRowLinks(rows);
+            const sortedColumns = columnIDs ? getSortedColumnsByIDs([...columns], columnIDs, 'id') : columns;
+            const {
+                mappedColumnsId, mappedColumns, pinnedColumns, columnWidths,
+            } = getMappedColumns(sortedColumns);
+            const { rowIds, rowLinks } = getMappedRows(rows);
             const cellValues = getMappedCellValues(columns, rows, rowIds);
 
             if (isProductGrid) {
-                this.$cookies.set(COLUMNS_IDS, visibleColumns.map((col) => col.id).join(','));
+                this.$cookies.set(COLUMNS_IDS, mappedColumnsId.join(','));
             }
 
             if (!stateColumnWidths.length) commit(types.SET_COLUMN_WIDTHS, columnWidths);
@@ -61,7 +59,6 @@ export default {
     }) {
         const {
             columns: stateColumns,
-            columnWidths: stateColumnWidths,
             advancedFiltersData,
         } = state;
         const stateColumnsID = stateColumns
@@ -76,26 +73,20 @@ export default {
             this.$cookies.set(COLUMNS_IDS, columnIDs);
 
             const draggedColumn = columns.find((col) => col.id === columnId);
-            const { mappedColumn, columnWidth } = getMappedColumn(draggedColumn);
-            const rowIds = getMappedRowIds(rows);
-            const rowLinks = getMappedRowLinks(rows);
+            const { mappedColumns, pinnedColumns, columnWidths } = getMappedColumns(columns);
+            const { rowIds, rowLinks } = getMappedRows(rows);
             const cellValues = getMappedCellValues(columns, rows, rowIds);
-            const newColumnsWidth = insertValueAtIndex(
-                stateColumnWidths, columnWidth, ghostIndex,
-            );
-            const newColumns = insertValueAtIndex(
-                stateColumns, mappedColumn, ghostIndex,
-            );
             const advcFilterIndex = advancedFiltersData
                 .findIndex((f) => f.element_id === draggedColumn.element_id);
 
             dispatch('list/setDisabledElement', { languageCode: draggedColumn.language, elementId: draggedColumn.element_id, disabled: advcFilterIndex !== -1 }, { root: true });
 
-            commit(types.SET_COLUMNS, newColumns);
-            commit(types.SET_COLUMN_WIDTHS, newColumnsWidth);
             commit(types.SET_CELL_VALUES, cellValues);
             commit(types.SET_ROW_IDS, rowIds);
             commit(types.SET_ROW_LINKS, rowLinks);
+            commit(types.SET_COLUMNS, mappedColumns);
+            commit(types.SET_COLUMN_WIDTHS, columnWidths);
+            commit(types.SET_PINNED_COLUMNS, pinnedColumns);
         });
     },
     getAdvancedFiltersData({ commit, rootState }) {
@@ -118,7 +109,7 @@ export default {
     },
     setGridData({ commit }, { columns, rows }) {
         const { mappedColumns } = getMappedColumns(columns);
-        const rowIds = getMappedRowIds(rows);
+        const { rowIds } = getMappedRows(rows);
         const cellValues = getMappedCellValues(columns, rows, rowIds);
 
         commit(types.SET_COLUMNS, mappedColumns);

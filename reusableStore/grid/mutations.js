@@ -32,7 +32,7 @@ export const types = {
     SET_SORTING_STATE: 'SET_SORTING_STATE',
     INSERT_COLUMN_AT_INDEX: 'INSERT_COLUMN_AT_INDEX',
     INSERT_COLUMN_WIDTH_AT_INDEX: 'INSERT_COLUMN_WIDTH_AT_INDEX',
-    UPDATE_COLUMN_AT_INDEX: 'UPDATE_COLUMN_AT_INDEX',
+    SET_COLUMN_AT_INDEX: 'SET_COLUMN_AT_INDEX',
     REMOVE_COLUMN_AT_INDEX: 'REMOVE_COLUMN_AT_INDEX',
     REMOVE_COLUMN_WIDTH_AT_INDEX: 'REMOVE_COLUMN_WIDTH_AT_INDEX',
     SET_COLUMN_WIDTHS: 'SET_COLUMN_WIDTHS',
@@ -123,7 +123,7 @@ export default {
     [types.SET_SORTING_STATE](state, sortedColumn = {}) {
         state.sortedColumn = sortedColumn;
     },
-    [types.UPDATE_COLUMN_AT_INDEX](state, { index, column }) {
+    [types.SET_COLUMN_AT_INDEX](state, { index, column }) {
         state.columns[index] = column;
         state.columns = [...state.columns];
     },

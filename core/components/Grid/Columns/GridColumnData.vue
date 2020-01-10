@@ -44,10 +44,6 @@ export default {
         GridColumnGhost: () => import('~/core/components/Grid/Columns/GridColumnGhost'),
     },
     props: {
-        namespace: {
-            type: String,
-            required: true,
-        },
         draggable: {
             type: Boolean,
             required: true,
@@ -105,7 +101,7 @@ export default {
                 && !this.isHeaderFocused;
         },
         isDraggedColumn() {
-            return this.draggedElIndex === this.index;
+            return this.draggedElIndex === this.index || this.column.id === 'ghost';
         },
     },
     methods: {
@@ -182,19 +178,19 @@ export default {
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
             this.$emit('mouseOverGrid', false);
         },
-        async onDrop(event) {
+        onDrop(event) {
             event.preventDefault();
 
             if (typeof this.draggedElement !== 'object') {
                 const columnId = event.dataTransfer.getData('text/plain');
 
-                this.removeColumnsTransform();
-                this.$emit('mouseOverGrid', false);
-                await this.$store.dispatch(`${this.namespace}/getColumnData`, {
+                this.$emit('getColumnData', {
                     ghostIndex: this.ghostIndex - this.columnOffset,
                     columnId,
                     path: `${this.languageCode}/products`,
                 });
+                this.$emit('mouseOverGrid', false);
+                this.removeColumnsTransform();
                 this.resetDraggedElementCache();
             }
         },
@@ -245,7 +241,7 @@ export default {
 
             if (width > this.minWidth) {
                 this.updateElementWidth(`${width}px`);
-                this.$store.dispatch(`${this.namespace}/updateColumnWidthAtIndex`, {
+                this.$emit('updateColumnWidthAtIndex', {
                     index: this.index - this.columnOffset, width: `${width}px`,
                 });
             }
@@ -463,7 +459,7 @@ export default {
             position: absolute;
             top: 0;
             right: 1.25px;
-            z-index: $Z_INDEX_LVL_3;
+            z-index: $Z_INDEX_LVL_2;
             width: 2.5px;
             height: 100%;
             cursor: col-resize;

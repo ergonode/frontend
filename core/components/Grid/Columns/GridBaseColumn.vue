@@ -33,7 +33,7 @@ export default {
         }
 
         &--hovered {
-            z-index: 999;
+            z-index: $Z_INDEX_LVL_4;
 
             &::after {
                 opacity: 1;

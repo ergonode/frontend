@@ -7,6 +7,7 @@
         :locked="!isFilterCell"
         :row="rowIndex"
         :column="columnIndex"
+        :disabled="disabled"
         :spacebar-edition="false">
         <template #default="{ isEditing }">
             <Component
@@ -60,6 +61,10 @@ export default {
         filter: {
             type: Object,
             default: null,
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {
