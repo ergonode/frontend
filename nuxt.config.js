@@ -3,11 +3,9 @@
  * See LICENSE for license details.
  */
 require('dotenv').config({path: '.env'});
-var FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
-const { modulesConfig } = require('./plugins/moduleLoader');
+const { modulesConfig, inactiveModulesConfig } = require('./plugins/moduleLoader');
 const path = require('path');
 const pkg = require('./package');
-
 const nuxtConfig = {
     css: modulesConfig.nuxt.css || [],
     styleResources: modulesConfig.nuxt.styleResources || {},
@@ -62,27 +60,10 @@ module.exports = {
     build: {
         parallel: true,
         cssSourceMap: false,
-        // plugins: [
-        //   new FriendlyErrorsWebpackPlugin({
-        //     onErrors: (severity, errors) => {
-        //       console.log(severity, errors);
-        //       if (severity !== 'error') {
-        //         return;
-        //       }
-        //       return true;
-        //       // const error = errors[0];
-        //       // notifier.notify({
-        //       //   title: "Webpack error",
-        //       //   message: severity + ': ' + error.name,
-        //       //   subtitle: error.file || '',
-        //       //   icon: ICON
-        //       // });
-        //     }
-        //   })
-        // ],
         extend(config, { isDev, isClient }) {
             const alias = config.resolve.alias || {};
-            const { aliases } = modulesConfig.nuxt;
+            const { aliases = {} } = modulesConfig.nuxt;
+            const { aliases: inactiveAliases = {} } = inactiveModulesConfig.nuxt;
 
             alias['@Root'] = path.join(__dirname, './');
             alias['@Modules'] = path.join(__dirname, '/modules');
@@ -90,29 +71,13 @@ module.exports = {
             Object.keys(aliases).map((key) => {
                 alias[key] = path.join(__dirname, aliases[key]);
             });
+            Object.keys(inactiveAliases).map((key) => {
+                alias[key] = path.join(__dirname, inactiveAliases[key]);
+            });
 
             if(isClient && isDev) {
                 config.devtool = 'source-map';
             }
-            // config.watchOptions = {
-            //     ignored: [
-            //       'node_modules',
-            //       'modules/@ergo/dashboard',
-            //       'modules/@ergo/dashboard/*',
-            //       '/modules/@ergo/dashboard',
-            //     ]
-            // };
-            // const vueLoader = config.module.rules.find((rule) => rule.loader === 'babel')
-            // vueLoader.exclude = /modules\/@ergo\/dashboard/;
-            // vueLoader.exclude = file => (
-            //   /modules\/@ergo\/dashboard/.test(file) && /\.vue\.js/.test(file)
-            // );
-            // vueLoader.options.loaders.scss = 'vue-style-loader!css-loader!sass-loader?' + JSON.stringify({
-            //   includePaths: [
-            //     path.resolve(__dirname), 'node_modules'
-            //   ]
-            // })
-            // console.log(vueLoader);
         },
         optimization: {
             splitChunks: {

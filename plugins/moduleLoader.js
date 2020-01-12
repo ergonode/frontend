@@ -7,30 +7,14 @@ import Vue from 'vue'; // eslint-disable-line import/no-extraneous-dependencies
 
 const ModuleLoader = (() => {
     let instance;
+    const isDev = process.env.NODE_ENV === 'development';
     const deepmerge = require('deepmerge');
-    const modulesConfiguration = require('../modules.config').default || {};
-    const { REQUIRED_MODULES } = require('../defaults/modules') || [];
-    const getModules = () => {
-        const keys = Object.keys(modulesConfiguration);
-        const active = keys.filter((module) => modulesConfiguration[module].active);
-        const inactive = keys.filter((module) => !modulesConfiguration[module].active);
-        return {
-            active: active.reduce((acc, module) => {
-                const newObject = acc;
-                newObject[module] = modulesConfiguration[module];
-                return newObject;
-            }, {}),
-            inactive: inactive.reduce((acc, module) => {
-                const newObject = acc;
-                newObject[module] = modulesConfiguration[module];
-                return newObject;
-            }, {}),
-        };
-    };
+    const modulesConfiguration = require('../config/.modules').default || {};
+    const { REQUIRED_MODULES, CORE_MODULES } = require('../defaults/modules') || [];
 
     return {
         _requiredModules: REQUIRED_MODULES,
-        _modules: getModules(),
+        _modules: modulesConfiguration,
         _modulesConfig: {
             nuxt: {},
             store: [],
@@ -40,11 +24,15 @@ const ModuleLoader = (() => {
             moduleRelations: [],
             extendComponents: {},
         },
+        _inactiveModulesConfig: {
+            nuxt: {},
+        },
         init() {
-            console.log(this._modules);
-            this.setModulesConfig(this._modules.active);
+            this.setModulesConfig(this._modules.active || []);
+            this.setInactiveModulesConfig(this._modules.inactive || []);
             this.checkRequiredModules();
             this.checkModuleRelations();
+            if (isDev) this.inactiveModulesInfo();
         },
         install(_Vue) {
             const { extendComponents } = this._modulesConfig;
@@ -54,22 +42,24 @@ const ModuleLoader = (() => {
         get modulesConfig() {
             return this._modulesConfig;
         },
+        get inactiveModulesConfig() {
+            return this._inactiveModulesConfig;
+        },
+        configType({ path, type }) {
+            switch (type) {
+            case 'local':
+                return require(`../modules/${path}`).default;
+            case 'npm':
+                return require(`${path}`);
+            default:
+                return null;
+            }
+        },
         setModulesConfig(modules) {
-            this._modulesConfig = Object.keys(modules).reduce((acc, module) => {
-                let config;
-                const { path, type } = modules[module];
+            this._modulesConfig = modules.reduce((acc, module) => {
+                const { path, type } = CORE_MODULES[module];
+                const config = this.configType(CORE_MODULES[module]);
                 const modulesConfig = acc;
-
-                switch (type) {
-                case 'local':
-                    config = require(`../modules/${path}`).default;
-                    break;
-                case 'npm':
-                    config = require(`${path}`);
-                    break;
-                default:
-                    config = null;
-                }
 
                 if (config) {
                     if (config.router) modulesConfig.router.push(...config.router);
@@ -155,9 +145,32 @@ const ModuleLoader = (() => {
                 return modulesConfig;
             }, this._modulesConfig);
         },
+        setInactiveModulesConfig(modules) {
+            this._inactiveModulesConfig = modules.reduce((acc, module) => {
+                const { path, type } = CORE_MODULES[module];
+                const config = this.configType(CORE_MODULES[module]);
+                const modulesConfig = acc;
+
+                if (config && config.nuxt) {
+                    const modulePath = type === 'local'
+                        ? `modules/${path}`
+                        : path;
+
+                    if (config.nuxt.aliases) {
+                        const { aliases } = config.nuxt;
+
+                        Object.keys(aliases).forEach((alias) => {
+                            config.nuxt.aliases[alias] = `/${modulePath}${aliases[alias]}`;
+                        });
+                    }
+                    modulesConfig.nuxt = deepmerge(modulesConfig.nuxt, config.nuxt);
+                }
+                return modulesConfig;
+            }, this._inactiveModulesConfig);
+        },
         checkRequiredModules() {
             this._requiredModules.forEach((module) => {
-                if (!this._modules.active[module]) {
+                if (!this._modules.active || !this._modules.active.includes(module)) {
                     throw Error(`Module [${module}] does not exist.`);
                 }
             });
@@ -169,11 +182,19 @@ const ModuleLoader = (() => {
                 const { moduleName, relations } = moduleRelations;
 
                 relations.forEach((relation) => {
-                    if (!this._modules.active[moduleName]) {
+                    if (!this._modules.active || !this._modules.active.includes(moduleName)) {
                         throw Error(`Module [${moduleName}] has relation with [${relation}].\n Module [${relation}] does not exist.`);
                     }
                 });
             });
+        },
+        inactiveModulesInfo() {
+            if (this._modules.inactive) {
+                const { inactive } = this._modules;
+                Object.keys(inactive).forEach((module) => {
+                    console.warn(`Module [${inactive[module]}] is inactive.`);
+                });
+            }
         },
         getInstance() {
             if (!instance) {
@@ -187,4 +208,4 @@ const ModuleLoader = (() => {
 ModuleLoader.getInstance();
 Vue.use(ModuleLoader);
 
-export const { modulesConfig } = ModuleLoader;
+export const { modulesConfig, inactiveModulesConfig } = ModuleLoader;
