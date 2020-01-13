@@ -6,6 +6,7 @@
     <div
         :class="['layout-element', draggableClasses]"
         :draggable="isDraggingEnabled && !disabled"
+        ref="layoutElement"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
         <slot name="content" />
@@ -129,16 +130,18 @@ export default {
 
             // Firefox does not support pageX, pageY...
             if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+                const navigationHeight = document.querySelector('.title-bar').clientHeight;
+
                 xPos = event.screenX;
-                yPos = event.screenY;
+                yPos = event.screenY - navigationHeight;
             } else {
                 xPos = event.pageX;
                 yPos = event.pageY;
             }
 
             const elementBelowMouse = document.elementFromPoint(xPos, yPos);
-            const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
 
+            const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
             if (isTrashBelowMouse) {
                 this.removeLayoutElementAtIndex(this.index);
             } else {

@@ -6,7 +6,9 @@
     <aside :class="['side-bar', {'side-bar--expanded': isExpanded}]">
         <ol class="side-bar__menu">
             <li>
-                <SideBarLogo :is-expanded="isExpanded" />
+                <nuxt-link to="/dashboard">
+                    <SideBarLogo :is-expanded="isExpanded" />
+                </nuxt-link>
             </li>
             <template v-for="(route, index) in routes">
                 <SideBarListGroup
