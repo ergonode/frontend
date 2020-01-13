@@ -10,7 +10,7 @@ const ModuleLoader = (() => {
     const isDev = process.env.NODE_ENV === 'development';
     const deepmerge = require('deepmerge');
     const modulesConfiguration = require('../config/.modules').default || {};
-    const { REQUIRED_MODULES, CORE_MODULES } = require('../defaults/modules') || [];
+    const { REQUIRED_MODULES, CORE_MODULES } = require('../defaults/modules');
 
     return {
         _requiredModules: REQUIRED_MODULES,

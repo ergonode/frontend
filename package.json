@@ -19,7 +19,11 @@
     "cli:run": "./lib/index.js"
   },
   "dependencies": {
+    "@babel/core": "^7.2.2",
     "@babel/runtime": "^7.6.2",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/register": "^7.8.0",
+    "@babel/plugin-transform-runtime": "^7.6.2",
     "@bleto/ergo-import": "^1.0.8",
     "@nuxtjs/axios": "^5.6.0",
     "@nuxtjs/component-cache": "^1.1.5",
@@ -44,9 +48,6 @@
     "vuex": "^3.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-transform-runtime": "^7.6.2",
-    "@babel/preset-env": "^7.3.1",
     "@vue/test-utils": "^1.0.0-beta.29",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^8",
