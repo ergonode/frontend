@@ -75,7 +75,6 @@ export default {
 <style lang="scss" scoped>
     .user-content {
         display: flex;
-        flex: 1;
         flex-direction: column;
         width: 320px;
 

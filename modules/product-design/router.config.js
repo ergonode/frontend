@@ -47,6 +47,12 @@ export const routing = [
                 title: 'Product design',
                 icon: 'Templates',
             },
+            breadcrumbs: [
+                {
+                    title: 'Product design',
+                    icon: 'Templates',
+                },
+            ],
             isMenu: true,
             privileges: {
                 namespace: 'ATTRIBUTE',
@@ -144,6 +150,12 @@ export const routing = [
                 title: 'Product design',
                 icon: 'Templates',
             },
+            breadcrumbs: [
+                {
+                    title: 'Product design',
+                    icon: 'Templates',
+                },
+            ],
             isMenu: true,
             privileges: {
                 namespace: 'ATTRIBUTE',
@@ -241,6 +253,12 @@ export const routing = [
                 title: 'Product design',
                 icon: 'Templates',
             },
+            breadcrumbs: [
+                {
+                    title: 'Product design',
+                    icon: 'Templates',
+                },
+            ],
             isMenu: true,
             privileges: {
                 namespace: 'TEMPLATE_DESIGNER',
@@ -338,6 +356,12 @@ export const routing = [
                 title: 'Product design',
                 icon: 'Templates',
             },
+            breadcrumbs: [
+                {
+                    title: 'Product design',
+                    icon: 'Templates',
+                },
+            ],
             isMenu: true,
             privileges: {
                 namespace: 'CATEGORY_TREE',
@@ -423,7 +447,7 @@ export const routing = [
                 path: 'designer',
                 component: Tabs.CategoryTreeDesignTab,
                 meta: {
-                    title: 'Designer',
+                    title: 'Tree designer',
                     breadcrumbs: [
                         {
                             title: 'Product design',
@@ -454,6 +478,12 @@ export const routing = [
                 title: 'Product design',
                 icon: 'Templates',
             },
+            breadcrumbs: [
+                {
+                    title: 'Product design',
+                    icon: 'Templates',
+                },
+            ],
             isMenu: true,
             privileges: {
                 namespace: 'TEMPLATE_DESIGNER',
@@ -520,7 +550,7 @@ export const routing = [
                 path: 'template',
                 component: Tabs.TemplateDesignerTab,
                 meta: {
-                    title: 'Designer',
+                    title: 'Template designer',
                     breadcrumbs: [
                         {
                             title: 'Product design',

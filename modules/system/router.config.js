@@ -32,6 +32,12 @@ export const routing = [
                 title: 'System',
                 icon: 'Settings',
             },
+            breadcrumbs: [
+                {
+                    title: 'System',
+                    icon: 'Settings',
+                },
+            ],
             isMenu: true,
             privileges: {
                 namespace: 'USER',
@@ -129,6 +135,12 @@ export const routing = [
                 title: 'System',
                 icon: 'Settings',
             },
+            breadcrumbs: [
+                {
+                    title: 'System',
+                    icon: 'Settings',
+                },
+            ],
             isMenu: true,
             privileges: {
                 namespace: 'USER_ROLE',
@@ -226,6 +238,12 @@ export const routing = [
                 title: 'System',
                 icon: 'Settings',
             },
+            breadcrumbs: [
+                {
+                    title: 'System',
+                    icon: 'Settings',
+                },
+            ],
             isMenu: true,
             privileges: {
                 namespace: 'USER',
@@ -244,6 +262,12 @@ export const routing = [
                 title: 'System',
                 icon: 'Settings',
             },
+            breadcrumbs: [
+                {
+                    title: 'System',
+                    icon: 'Settings',
+                },
+            ],
             isMenu: true,
             privileges: {
                 namespace: 'USER',

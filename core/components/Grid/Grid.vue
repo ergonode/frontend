@@ -142,6 +142,8 @@ import {
 } from '~/defaults/grid';
 import {
     isMouseOutOfBoundsElement,
+    isTrashBelowMouse,
+    getPositionForBrowser,
 } from '~/model/drag_and_drop/helpers';
 import selectedRowMixin from '~/mixins/grid/selectedRowMixin';
 
@@ -349,15 +351,15 @@ export default {
         onMouseOverGrid(isOver) {
             this.isMouseOverGrid = isOver;
         },
-        onDragLeave({ pageX, pageY }) {
-            if (pageX === 0 && pageY === 0) return false;
+        onDragLeave(event) {
+            const { xPos, yPos } = getPositionForBrowser(event);
+
+            if (xPos === 0 && yPos === 0) return false;
 
             const { gridContent } = this.$refs;
-            const elementBelowMouse = document.elementFromPoint(pageX, pageY);
-            const isOutOfBounds = isMouseOutOfBoundsElement(gridContent, pageX, pageY);
-            const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
+            const isOutOfBounds = isMouseOutOfBoundsElement(gridContent, xPos, yPos);
 
-            if (isOutOfBounds || isTrashBelowMouse) {
+            if (isOutOfBounds || isTrashBelowMouse(xPos, yPos)) {
                 this.isMouseOverGrid = false;
             }
 

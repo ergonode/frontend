@@ -47,7 +47,6 @@ export default {
             columns: (state) => state.columns,
             rowHeight: (state) => state.rowHeight,
             conditions: (state) => state.conditions,
-            conditionsValues: (state) => state.conditionsValues,
         }),
     },
     methods: {

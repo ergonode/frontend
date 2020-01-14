@@ -20,6 +20,10 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import {
+    isTrashBelowMouse,
+    getPositionForBrowser,
+} from '~/model/drag_and_drop/helpers';
+import {
     getHighlightingPositions,
     getHighlightingLayoutDropPositions,
     getMaxRowForGivenColumn,
@@ -125,24 +129,9 @@ export default {
             this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
         onDragEnd(event) {
-            let xPos = null;
-            let yPos = null;
+            const { xPos, yPos } = getPositionForBrowser(event);
 
-            // Firefox does not support pageX, pageY...
-            if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-                const navigationHeight = document.querySelector('.title-bar').clientHeight;
-
-                xPos = event.screenX;
-                yPos = event.screenY - navigationHeight;
-            } else {
-                xPos = event.pageX;
-                yPos = event.pageY;
-            }
-
-            const elementBelowMouse = document.elementFromPoint(xPos, yPos);
-
-            const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
-            if (isTrashBelowMouse) {
+            if (isTrashBelowMouse(xPos, yPos)) {
                 this.removeLayoutElementAtIndex(this.index);
             } else {
                 this.isDragged = false;
