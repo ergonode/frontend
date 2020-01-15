@@ -8,7 +8,7 @@
             :title="props.value"
             v-text="props.value" />
         <span
-            v-if="props.suffix"
+            v-if="props.value && props.suffix"
             :title="props.suffix"
             v-text="props.suffix" />
     </div>
