@@ -6,6 +6,7 @@
     <div
         :class="['layout-element', draggableClasses]"
         :draggable="isDraggingEnabled && !disabled"
+        ref="layoutElement"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
         <slot name="content" />
@@ -18,6 +19,10 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import {
+    isTrashBelowMouse,
+    getPositionForBrowser,
+} from '~/model/drag_and_drop/helpers';
 import {
     getHighlightingPositions,
     getHighlightingLayoutDropPositions,
@@ -127,22 +132,9 @@ export default {
             this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
         onDragEnd(event) {
-            let xPos = null;
-            let yPos = null;
+            const { xPos, yPos } = getPositionForBrowser(event);
 
-            // Firefox does not support pageX, pageY...
-            if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-                xPos = event.screenX;
-                yPos = event.screenY;
-            } else {
-                xPos = event.pageX;
-                yPos = event.pageY;
-            }
-
-            const elementBelowMouse = document.elementFromPoint(xPos, yPos);
-            const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
-
-            if (isTrashBelowMouse) {
+            if (isTrashBelowMouse(xPos, yPos)) {
                 this.removeLayoutElementAtIndex(this.index);
             } else {
                 this.isDragged = false;

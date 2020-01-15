@@ -34,7 +34,11 @@ import {
 } from '~/model/layout/ElementCopy';
 import { removeCookieById } from '~/model/cookies';
 import { COLUMNS_IDS } from '~/defaults/grid/cookies';
-import { getDraggedColumnPositionState } from '~/model/drag_and_drop/helpers';
+import {
+    getDraggedColumnPositionState,
+    isTrashBelowMouse,
+    getPositionForBrowser,
+} from '~/model/drag_and_drop/helpers';
 import { DRAGGED_ELEMENT } from '~/defaults/grid';
 
 const registerResizeEventListenersModule = () => import('~/model/resize/registerResizeEventListeners');
@@ -151,24 +155,11 @@ export default {
             return true;
         },
         onDragEnd(event) {
-            let xPos = null;
-            let yPos = null;
-
-            // Firefox does not support pageX, pageY...
-            if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-                xPos = event.screenX;
-                yPos = event.screenY;
-            } else {
-                xPos = event.pageX;
-                yPos = event.pageY;
-            }
-
-            const elementBelowMouse = document.elementFromPoint(xPos, yPos);
-            const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
+            const { xPos, yPos } = getPositionForBrowser(event);
 
             removeElementCopyFromDocumentBody(event);
 
-            if (isTrashBelowMouse) {
+            if (isTrashBelowMouse(xPos, yPos)) {
                 this.removeColumnWrapper(this.draggedElIndex - this.columnOffset);
             } else if (this.ghostIndex !== this.draggedElIndex) {
                 this.$emit('changeColumnsPosition', {

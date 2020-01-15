@@ -8,7 +8,7 @@
             v-for="(key, index) in optionKeys"
             :key="index"
             class="option">
-            <IconDelete @click.native="removeOptionKey(index)" />
+            <IconDelete @click.native="removeOptionKey(key)" />
             <TextField
                 :value="key"
                 solid
@@ -16,8 +16,8 @@
                 small
                 :disabled="disabled"
                 label="Option code"
-                @input="e => updateOptionKey(index, e)"
-                @click:append-outer="removeOptionKey(index)" />
+                @input="e => updateOptionKey(key, e)"
+                @click:append-outer="removeOptionKey(key)" />
         </div>
         <div
             class="add-option-wrapper"
@@ -46,11 +46,14 @@ export default {
     },
     computed: {
         ...mapState('attribute', {
-            optionKeys: (state) => state.optionKeys,
+            options: (state) => state.options,
         }),
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
         }),
+        optionKeys() {
+            return Object.keys(this.options);
+        },
     },
     methods: {
         ...mapActions('attribute', [
@@ -61,14 +64,14 @@ export default {
         ...mapActions('translations', [
             'addMultilingualOptionTranslation',
         ]),
-        updateOptionKey(index, key) {
-            this.setAttributeOptionKey({ index, key });
+        updateOptionKey(oldKey, newKey) {
+            this.setAttributeOptionKey({ oldKey, newKey });
         },
         addOptionKey() {
             this.addAttributeOptionKey('');
         },
-        removeOptionKey(index) {
-            this.removeAttributeOptionKey(index);
+        removeOptionKey(key) {
+            this.removeAttributeOptionKey(key);
         },
     },
 };

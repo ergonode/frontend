@@ -29,6 +29,12 @@ export const routing = [
                 title: 'Workflow',
                 icon: 'Flow',
             },
+            breadcrumbs: [
+                {
+                    title: 'Workflow',
+                    icon: 'Flow',
+                },
+            ],
             isMenu: true,
             privileges: {
                 namespace: 'WORKFLOW',
@@ -126,6 +132,12 @@ export const routing = [
                 title: 'Workflow',
                 icon: 'Flow',
             },
+            breadcrumbs: [
+                {
+                    title: 'Workflow',
+                    icon: 'Flow',
+                },
+            ],
             isMenu: true,
             privileges: {
                 namespace: 'WORKFLOW',
@@ -193,7 +205,7 @@ export const routing = [
                 path: 'designer',
                 component: Tabs.ConditionSetDesignTab,
                 meta: {
-                    title: 'Designer',
+                    title: 'Condition set',
                     breadcrumbs: [
                         {
                             title: 'Workflow',

@@ -26,7 +26,7 @@
                 :error-messages="errorDestinationMessage"
                 @input="setDestination" />
         </FormGroup>
-        <FormGroup title="Actions">
+        <FormGroup title="Send notification to">
             <TranslationSelect
                 :value="transitionRoles"
                 :solid="true"

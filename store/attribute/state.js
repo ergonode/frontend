@@ -8,8 +8,7 @@ export default () => ({
     groups: [],
     type: null,
     parameter: null,
-    optionKeys: [],
+    options: {},
     groupOptions: [],
-    optionValues: {},
     isMultilingual: true,
 });

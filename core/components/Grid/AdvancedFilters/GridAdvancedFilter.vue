@@ -80,6 +80,8 @@ import {
 import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT } from '~/defaults/grid';
 import {
     getDraggedColumnPositionState,
+    getPositionForBrowser,
+    isTrashBelowMouse,
 } from '~/model/drag_and_drop/helpers';
 import { ADV_FILTERS_IDS } from '~/defaults/grid/cookies';
 import { changeCookiePosition } from '~/model/cookies';
@@ -226,11 +228,9 @@ export default {
             });
         },
         onDragEnd(event) {
-            const { pageX, pageY } = event;
-            const elementBelowMouse = document.elementFromPoint(pageX, pageY);
-            const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
+            const { xPos, yPos } = getPositionForBrowser(event);
 
-            if (isTrashBelowMouse) {
+            if (isTrashBelowMouse(xPos, yPos)) {
                 const { language, element_id: elementId } = this.data;
 
                 this.$store.dispatch(`${this.namespace}/removeAdvancedFilterAtIndex`, this.index);

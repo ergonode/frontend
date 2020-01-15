@@ -63,55 +63,17 @@ export function getMappedGroupsElementsCount(elements) {
     return groupsElementsCount;
 }
 
-export function getMappedOptionKeysValues(options, isMultilingual) {
-    const optionKeys = [];
-    const optionValues = isMultilingual ? {} : [];
-
-    options.forEach((option) => {
-        const { key, value } = option;
-        optionKeys.push(key);
-
-        if (isMultilingual) {
-            if (!value) return;
-
-            Object.entries(value).forEach(([transKey, transValue]) => {
-                if (!optionValues[transKey]) {
-                    optionValues[transKey] = [];
-                }
-                optionValues[transKey].push(transValue);
-            });
-        } else {
-            optionValues.push(value);
-        }
-    });
-
-    return { optionKeys, optionValues };
+export function getMappedOptions(options) {
+    return options.reduce((acc, current) => {
+        const newObject = acc;
+        newObject[current.key] = current.value;
+        return newObject;
+    }, {});
 }
 
-export function getParsedOptions(optionKeys, optionValues, isMultilingual) {
-    const options = [];
-
-    optionKeys.forEach((key, optIndex) => {
-        let value = null;
-
-        if (isMultilingual) {
-            value = {};
-            const optionsEntries = Object.entries(optionValues);
-            optionsEntries.forEach(([transKey, transValue]) => {
-                // We do not want to send an empty option key values
-                if (transValue[optIndex]) {
-                    value[transKey] = transValue[optIndex];
-                }
-            });
-        } else {
-            value = optionValues[optIndex];
-        }
-
-        options.push({
-            key,
-            value,
-        });
-    });
-
-    return options;
+export function getParsedOptions(options) {
+    return Object.keys(options).map((key) => ({
+        key,
+        value: options[key],
+    }));
 }

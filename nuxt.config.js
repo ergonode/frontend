@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-require('dotenv').config({path: '.env'});
+require('dotenv').config({ path: '.env' });
 const path = require('path');
 const pkg = require('./package');
 
@@ -14,9 +14,9 @@ module.exports = {
         },
         title: 'Ergonode',
         meta: [
-            {charset: 'utf-8'},
-            {name: 'viewport', content: 'width=device-width, initial-scale=1'},
-            {hid: 'description', name: 'description', content: pkg.description},
+            { charset: 'utf-8' },
+            { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+            { hid: 'description', name: 'description', content: pkg.description },
         ],
         link: [
             {
@@ -48,17 +48,22 @@ module.exports = {
         '~plugins/register-store',
         '~plugins/privilege',
         '~plugins/core',
-        {mode: 'client', src: '~plugins/alerts'},
+        { mode: 'client', src: '~plugins/alerts' },
     ],
     modules: [
         '@nuxtjs/router',
         '@nuxtjs/axios',
         'cookie-universal-nuxt',
         '@nuxtjs/style-resources',
-        ['@nuxtjs/component-cache', {maxAge: 1000 * 60 * 60}],
+        [
+            '@nuxtjs/component-cache',
+            {
+                maxAge: 1000 * 60 * 60,
+            },
+        ],
     ],
     styleResources: {
-        scss: '~assets/scss/main.scss'
+        scss: '~assets/scss/main.scss',
     },
     axios: {
         credentials: false,
@@ -67,7 +72,7 @@ module.exports = {
     build: {
         parallel: true,
         cssSourceMap: false,
-        extend(config, ctx) {
+        extend(config) {
             const alias = config.resolve.alias || {};
             alias['@Root'] = path.join(__dirname, './');
             alias['@Modules'] = path.join(__dirname, '/modules');
@@ -75,7 +80,7 @@ module.exports = {
         },
         optimization: {
             splitChunks: {
-                chunks: 'all'
+                chunks: 'all',
             },
         },
         optimizeCSS: true,

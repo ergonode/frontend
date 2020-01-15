@@ -3,46 +3,9 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { getMappedOptionKeysValues, getMappedParameterValues } from '~/model/mappers/attributeMapper';
+import { getMappedParameterValues, getMappedOptions } from '~/model/mappers/attributeMapper';
 
 export default {
-    addAttributeOptionKey({ commit }, key) {
-        commit(types.ADD_ATTRIBUTE_OPTION_KEY, key);
-    },
-    removeAttributeOptions({ commit }) {
-        commit(types.INITIALIZE_OPTION_KEYS, []);
-    },
-    removeAttributeOptionKey({ commit, state }, index) {
-        const { optionValues, isMultilingual } = state;
-
-        commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index);
-
-        if (isMultilingual) {
-            Object.keys(optionValues).forEach((languageCode) => {
-                commit(types.REMOVE_ATTRIBUTE_OPTION_VALUE, { languageCode, index });
-            });
-        }
-    },
-    setAttributeOptionKey({ commit }, { index, key }) {
-        commit(types.SET_ATTRIBUTE_OPTION_KEY, { index, key });
-    },
-    setOptionValueForLanguageCode({ commit, state }, { index, value, languageCode }) {
-        const { isMultilingual, optionValues } = state;
-
-        if (isMultilingual) {
-            if (!optionValues[languageCode]) {
-                commit(types.INITIALIZE_OPTION_VALUE_FOR_LANGUAGE_CODE, languageCode);
-            }
-
-            commit(types.SET_OPTION_VALUE_FOR_LANGUAGE_CODE, { languageCode, index, value });
-        } else {
-            if (!Array.isArray(optionValues)) {
-                commit(types.INITIALIZE_OPTION_VALUES);
-            }
-
-            commit(types.SET_OPTION_VALUE, { index, value });
-        }
-    },
     setAttributeID({ commit }, id) {
         commit(types.SET_ATTRIBUTE_ID, id);
     },
@@ -60,6 +23,27 @@ export default {
     },
     setMultilingualAttribute({ commit }, isMultilingual) {
         commit(types.SET_MULTILINGUAL_ATTRIBUTE, isMultilingual);
+    },
+    addAttributeOptionKey({ commit }, key) {
+        commit(types.ADD_ATTRIBUTE_OPTION_KEY, key);
+    },
+    removeAttributeOptionKey({ commit }, key) {
+        commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, key);
+    },
+    removeAttributeOptions({ commit }) {
+        commit(types.INITIALIZE_OPTIONS);
+    },
+    setAttributeOptionKey({ commit }, { oldKey, newKey }) {
+        commit(types.SET_ATTRIBUTE_OPTION_KEY, { oldKey, newKey });
+    },
+    setOptionValueForLanguageCode({ commit, state }, { key, value, languageCode }) {
+        const { isMultilingual } = state;
+
+        if (isMultilingual) {
+            commit(types.SET_OPTION_VALUE_FOR_LANGUAGE_CODE, { languageCode, key, value });
+        } else {
+            commit(types.SET_OPTION_VALUE, { key, value });
+        }
     },
     getAttributeGroups({ commit, rootState }) {
         const { language: userLanguageCode } = rootState.authentication.user;
@@ -119,12 +103,7 @@ export default {
             }
 
             if (options) {
-                const {
-                    optionKeys, optionValues,
-                } = getMappedOptionKeysValues(options, multilingual);
-
-                commit(types.INITIALIZE_OPTION_KEYS, optionKeys);
-                commit(types.INITIALIZE_OPTION_VALUES, optionValues);
+                commit(types.INITIALIZE_OPTIONS, getMappedOptions(options));
             }
         }).catch((e) => onError(e.data));
     },

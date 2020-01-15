@@ -22,3 +22,25 @@ export function getDraggedColumnPositionState(pageX, elXPos, width) {
 
     return (pageX - elXPos) / width < normalizedHalfWidthFactor;
 }
+
+export function isTrashBelowMouse(xPos, yPos) {
+    const trash = document.querySelector('.trash-can');
+
+    return !isMouseOutOfBoundsElement(trash, xPos, yPos);
+}
+
+export function getPositionForBrowser(event) {
+    let xPos = null;
+    let yPos = null;
+
+    // Firefox does not support pageX, pageY...
+    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+        xPos = event.screenX;
+        yPos = event.screenY;
+    } else {
+        xPos = event.pageX;
+        yPos = event.pageY;
+    }
+
+    return { xPos, yPos };
+}

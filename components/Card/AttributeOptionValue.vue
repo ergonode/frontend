@@ -9,7 +9,7 @@
         solid
         small
         :disabled="disabled"
-        @input="value => setOptionValueForLanguageCode({ languageCode, index, value })" />
+        @input="value => setOptionValueForLanguageCode({ languageCode, key: label, value })" />
 </template>
 
 <script>
@@ -25,10 +25,6 @@ export default {
             type: String,
             required: true,
         },
-        index: {
-            type: Number,
-            required: true,
-        },
         label: {
             type: String,
             required: true,
@@ -40,22 +36,17 @@ export default {
     },
     computed: {
         ...mapState('attribute', {
-            optionValues: (state) => state.optionValues,
+            options: (state) => state.options,
             isMultilingual: (state) => state.isMultilingual,
         }),
         translationOptionValue() {
-            if (!this.isMultilingual) {
-                const { [this.index]: optionValue } = this.optionValues;
-                if (!optionValue) return '';
-
-                return optionValue;
+            if (this.options[this.label]) {
+                if (!this.isMultilingual) {
+                    return this.options[this.label];
+                }
+                return this.options[this.label][this.languageCode] || '';
             }
-
-            const { [this.languageCode]: transValue } = this.optionValues;
-
-            if (!transValue || !transValue[this.index]) return '';
-
-            return transValue[this.index];
+            return '';
         },
     },
     methods: {

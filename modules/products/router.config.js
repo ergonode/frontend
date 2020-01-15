@@ -37,6 +37,12 @@ export const routing = [
                 title: 'Products',
                 icon: 'Document',
             },
+            breadcrumbs: [
+                {
+                    title: 'Products',
+                    icon: 'Document',
+                },
+            ],
             isMenu: true,
             privileges: {
                 namespace: 'PRODUCT',
@@ -173,6 +179,12 @@ export const routing = [
                 title: 'Products',
                 icon: 'Document',
             },
+            breadcrumbs: [
+                {
+                    title: 'Products',
+                    icon: 'Document',
+                },
+            ],
             isMenu: true,
             privileges: {
                 namespace: 'SEGMENT',
@@ -258,7 +270,7 @@ export const routing = [
                 path: 'designer',
                 component: Tabs.ConditionSetDesignTab,
                 meta: {
-                    title: 'Designer',
+                    title: 'Condition set',
                     breadcrumbs: [
                         {
                             title: 'Products',

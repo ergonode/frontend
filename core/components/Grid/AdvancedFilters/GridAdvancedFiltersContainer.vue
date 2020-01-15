@@ -14,20 +14,22 @@
 <script>
 import {
     isMouseOutOfBoundsElement,
+    isTrashBelowMouse,
+    getPositionForBrowser,
 } from '~/model/drag_and_drop/helpers';
 
 export default {
     name: 'GridAdvancedFiltersContainer',
     methods: {
-        onDragLeave({ pageX, pageY }) {
-            if (pageX === 0 && pageY === 0) return false;
+        onDragLeave(event) {
+            const { xPos, yPos } = getPositionForBrowser(event);
+
+            if (xPos === 0 && yPos === 0) return false;
 
             const { filtersContent } = this.$refs;
-            const elementBelowMouse = document.elementFromPoint(pageX, pageY);
-            const isOutOfBounds = isMouseOutOfBoundsElement(filtersContent, pageX, pageY);
-            const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
+            const isOutOfBounds = isMouseOutOfBoundsElement(filtersContent, xPos, yPos);
 
-            if (isOutOfBounds || isTrashBelowMouse) {
+            if (isOutOfBounds || isTrashBelowMouse(xPos, yPos)) {
                 this.$emit('mouseOverFilters', false);
             }
 

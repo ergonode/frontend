@@ -13,7 +13,6 @@
         :options="conditionOptions"
         :value="conditionValue"
         :multiselect="parameter.type === 'MULTI_SELECT'"
-        :disabled="!$hasAccess(['CONDITION_UPDATE'])"
         :error-messages="errorParamsMessage"
         @input="setConditionValueByType" />
 </template>
@@ -47,7 +46,7 @@ export default {
             switch (this.parameter.type) {
             case TYPES.SELECT:
             case TYPES.MULTI_SELECT:
-                return () => import('~/core/components/Inputs/Select/Select');
+                return () => import('~/core/components/Inputs/Select/TranslationSelect');
             case TYPES.TEXT:
             case TYPES.UNIT:
             case TYPES.NUMERIC:
@@ -57,12 +56,17 @@ export default {
             }
         },
         conditionValue() {
-            return this.conditionsValues[this.itemId]
-                ? this.conditionsValues[this.itemId][this.parameter.name]
-                : '';
+            const { name } = this.parameter;
+            if (!this.conditionsValues[this.itemId] || !this.conditionsValues[this.itemId][name]) return '';
+
+            return this.conditionsValues[this.itemId][name];
         },
         conditionOptions() {
-            return this.parameter.options ? Object.values(this.parameter.options) : [];
+            return this.parameter.options
+                ? Object.keys(this.parameter.options).map((key) => ({
+                    id: key, key, value: this.parameter.options[key],
+                }))
+                : [];
         },
         errorParamsMessage() {
             const { name } = this.parameter;
@@ -75,13 +79,12 @@ export default {
             'setConditionValue',
         ]),
         setConditionValueByType(value) {
-            const tmpValue = value;
             const { name } = this.parameter;
 
             this.setConditionValue({
                 conditionId: this.itemId,
                 parameterName: name,
-                parameterValue: tmpValue,
+                parameterValue: value,
             });
         },
         conditionParametersAreValidate(index, key) {
