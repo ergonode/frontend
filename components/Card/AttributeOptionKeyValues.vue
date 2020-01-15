@@ -5,7 +5,7 @@
 <template>
     <div :class="['options', {'options--disabled': disabled}]">
         <div
-            v-for="(key, index) in Object.keys(options)"
+            v-for="(key, index) in optionKeys"
             :key="index"
             class="option">
             <IconDelete @click.native="removeOptionKey(key)" />
@@ -51,6 +51,9 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
         }),
+        optionKeys() {
+            return Object.keys(this.options);
+        },
     },
     methods: {
         ...mapActions('attribute', [

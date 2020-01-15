@@ -11,7 +11,4 @@ export default () => ({
     options: {},
     groupOptions: [],
     isMultilingual: true,
-
-    optionValues: {},
-    optionKeys: [],
 });
