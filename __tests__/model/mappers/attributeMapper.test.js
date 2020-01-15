@@ -56,6 +56,7 @@ describe('attributeMapper/getParsedOptions', () => {
                 const options = {
                     key1: { EN: 'val1' },
                     key2: null,
+                    key3: { PL: 'val3' },
                 };
                 const result = [
                     {
@@ -65,6 +66,10 @@ describe('attributeMapper/getParsedOptions', () => {
                     {
                         key: 'key2',
                         value: null,
+                    },
+                    {
+                        key: 'key3',
+                        value: { PL: 'val3' },
                     },
                 ];
 
