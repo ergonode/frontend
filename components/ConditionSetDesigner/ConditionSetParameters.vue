@@ -13,7 +13,6 @@
         :options="conditionOptions"
         :value="conditionValue"
         :multiselect="parameter.type === 'MULTI_SELECT'"
-        :disabled="!$hasAccess(['CONDITION_UPDATE'])"
         :error-messages="errorParamsMessage"
         @input="setConditionValueByType" />
 </template>

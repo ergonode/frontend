@@ -6,9 +6,8 @@
     <div class="option-values-container">
         <span>Option values</span>
         <AttributeOptionValue
-            v-for="(key, index) in optionKeys"
+            v-for="(key, index) in Object.keys(options)"
             :key="index"
-            :index="index"
             :label="key"
             :disabled="disabled"
             :language-code="languageCode" />
@@ -35,7 +34,7 @@ export default {
     },
     computed: {
         ...mapState('attribute', {
-            optionKeys: (state) => state.optionKeys,
+            options: (state) => state.options,
         }),
     },
 };

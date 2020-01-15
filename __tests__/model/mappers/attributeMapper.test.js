@@ -4,7 +4,7 @@
  */
 import {
     getMappedGroupsElementsCount,
-    getMappedOptionKeysValues,
+    getMappedOptions,
     getParsedType,
     getParsedParameterKeys,
     getParsedOptions,
@@ -14,26 +14,30 @@ import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
 describe('attributeMapper/getParsedOptions', () => {
     describe('Based on form data, data is mapped into API structure', () => {
         it('Non multilingual attribute', () => {
-            const optionKeys = ['key1', 'key2'];
-            const optionValues = [{ 0: 'val1' }, { 1: 'val2' }];
+            const options = {
+                key1: 'val1',
+                key2: 'val2',
+            };
             const result = [
                 {
                     key: 'key1',
-                    value: { 0: 'val1' },
+                    value: 'val1',
                 },
                 {
                     key: 'key2',
-                    value: { 1: 'val2' },
+                    value: 'val2',
                 },
             ];
 
-            expect(getParsedOptions(optionKeys, optionValues, false)).toStrictEqual(result);
+            expect(getParsedOptions(options)).toStrictEqual(result);
         });
 
         describe('Multilingual attribute', () => {
             it('All values has translation', () => {
-                const optionKeys = ['key1', 'key2'];
-                const optionValues = { EN: ['val1', 'val2'] };
+                const options = {
+                    key1: { EN: 'val1' },
+                    key2: { EN: 'val2' },
+                };
                 const result = [
                     {
                         key: 'key1',
@@ -45,12 +49,14 @@ describe('attributeMapper/getParsedOptions', () => {
                     },
                 ];
 
-                expect(getParsedOptions(optionKeys, optionValues, true)).toStrictEqual(result);
+                expect(getParsedOptions(options)).toStrictEqual(result);
             });
 
             it('Some of them are not', () => {
-                const optionKeys = ['key1', 'key2'];
-                const optionValues = { EN: ['val1'] };
+                const options = {
+                    key1: { EN: 'val1' },
+                    key2: null,
+                };
                 const result = [
                     {
                         key: 'key1',
@@ -58,17 +64,17 @@ describe('attributeMapper/getParsedOptions', () => {
                     },
                     {
                         key: 'key2',
-                        value: {},
+                        value: null,
                     },
                 ];
 
-                expect(getParsedOptions(optionKeys, optionValues, true)).toStrictEqual(result);
+                expect(getParsedOptions(options)).toStrictEqual(result);
             });
         });
     });
 });
 
-describe('attributeMapper/getMappedOptionKeysValues', () => {
+describe('attributeMapper/getMappedOptions', () => {
     describe('Based on API data, data is mapped into data structure', () => {
         it('Non multilingual attribute', () => {
             const apiData = [
@@ -82,10 +88,10 @@ describe('attributeMapper/getMappedOptionKeysValues', () => {
                 },
             ];
             const result = {
-                optionKeys: ['key1', 'key2'],
-                optionValues: ['val1', null],
+                key1: 'val1',
+                key2: null,
             };
-            expect(getMappedOptionKeysValues(apiData, false)).toStrictEqual(result);
+            expect(getMappedOptions(apiData)).toStrictEqual(result);
         });
 
         it('Multilingual attribute', () => {
@@ -102,12 +108,12 @@ describe('attributeMapper/getMappedOptionKeysValues', () => {
                 },
             ];
             const result = {
-                optionKeys: ['key1', 'key2'],
-                optionValues: {
-                    EN: ['val1'],
+                key1: {
+                    EN: 'val1',
                 },
+                key2: null,
             };
-            expect(getMappedOptionKeysValues(apiData, true)).toStrictEqual(result);
+            expect(getMappedOptions(apiData)).toStrictEqual(result);
         });
     });
 });
