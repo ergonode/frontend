@@ -219,12 +219,10 @@ export default {
         commit(types.SET_COLUMN_WIDTHS, newOrderedColumnWidths);
     },
     addDraftToProduct({ commit }, { columnId, productId, value }) {
-        const parsedValue = !Array.isArray(value) && typeof value !== 'object' ? { value } : value;
-
         commit(types.ADD_PRODUCT_VALUE, {
             productId,
             columnId,
-            value: parsedValue,
+            value,
         });
     },
     updateDataCellValue({ commit }, payload) {

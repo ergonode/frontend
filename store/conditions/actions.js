@@ -6,8 +6,6 @@ import { types } from './mutations';
 import { objectToArrayWithPropsName } from '~/model/objectWrapper';
 import { getParsedConditionSetData } from '~/model/mappers/conditionSetMapper';
 
-const onDefaultError = () => {};
-
 export default {
     setId({ commit }, value) {
         commit(types.SET_CONDITION_SET_ID, value);
@@ -16,7 +14,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$get(`${userLanguageCode}/dictionary/conditions`, { params }).then((data) => {
             commit(types.SET_CONDITIONS_DICTIONARY, objectToArrayWithPropsName(data));
-        }).catch(onDefaultError);
+        });
     },
     async getConditionSetById(
         {
@@ -44,7 +42,7 @@ export default {
             commit(types.SET_CONDITIONS_DATA, conditionsData);
             dispatch('gridDesigner/setGridData', conditionsTree, { root: true });
             dispatch('gridDesigner/setFullGridData', conditionsTree, { root: true });
-        }).catch(onDefaultError);
+        });
     },
     createConditionSet(
         { commit, rootState },
@@ -79,7 +77,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         await this.app.$axios.$get(`${userLanguageCode}/conditions/${conditionId}`).then((data) => {
             commit(types.SET_CONDITIONS, { key: conditionId, value: data });
-        }).catch(onDefaultError);
+        });
     },
     setConditionValue({ commit, state },
         { conditionId, parameterName, parameterValue }) {

@@ -12,6 +12,7 @@ const getCheckColumn = (privilegeType) => ({
     type: COLUMN_TYPE.CHECK_CELL,
     width: '1fr',
     editable: true,
+    visible: true,
 });
 
 const getNameColumn = () => ({
@@ -20,6 +21,7 @@ const getNameColumn = () => ({
     type: COLUMN_TYPE.TEXT,
     width: '1fr',
     editable: false,
+    visible: true,
 });
 
 export function getMappedGridData(privileges, rolePrivileges) {
@@ -44,8 +46,8 @@ export function getMappedGridData(privileges, rolePrivileges) {
         if (!tmpRowKeys[name]) {
             tmpRowKeys[name] = '+';
             rows.push({
-                id: rowIndex,
-                name,
+                id: { value: rowIndex },
+                name: { value: name },
             });
             descriptions[rowIndex] = description;
             rowIndex += 1;
@@ -62,7 +64,9 @@ export function getMappedGridData(privileges, rolePrivileges) {
                 tmpColumnKeys[rolePrivilegeType] = '+';
             }
 
-            rows[rowIndex - 1][rolePrivilegeType] = rolePrivileges.includes(rolePrivilege);
+            rows[rowIndex - 1][rolePrivilegeType] = {
+                value: rolePrivileges.includes(rolePrivilege),
+            };
         }
     }
 
@@ -85,18 +89,21 @@ export function getMappedPrivilegesBasedOnGridData(privilegesDic, gridData) {
         const privilegeKeys = Object.keys(role);
         const { length: privilegesKeysNumber } = privilegeKeys;
         const privilegeIndex = tmpPrivilegesDic.findIndex(
-            (privilege) => privilege.name === role.name.value,
+            (privilege) => privilege.name === role.name.presentationValue,
         );
 
-        for (let j = 0; j < privilegesKeysNumber; j += 1) {
-            if (privilegeKeys[j] !== 'name' && role[privilegeKeys[j]].value) {
-                const privilegeName = tmpPrivilegesDic[privilegeIndex].privileges[privilegeKeys[j]];
+        if (privilegeIndex > -1) {
+            for (let j = 0; j < privilegesKeysNumber; j += 1) {
+                if (privilegeKeys[j] !== 'name' && role[privilegeKeys[j]].editValue) {
+                    const privilegeName = tmpPrivilegesDic[privilegeIndex]
+                        .privileges[privilegeKeys[j]];
 
-                mappedPrivileges.push(privilegeName);
+                    mappedPrivileges.push(privilegeName);
+                }
             }
-        }
 
-        tmpPrivilegesDic.splice(privilegeIndex, 1);
+            tmpPrivilegesDic.splice(privilegeIndex, 1);
+        }
     }
 
     return mappedPrivileges;

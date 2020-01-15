@@ -38,6 +38,9 @@ import {
 } from '~/model/template_designer/layout/LayoutElementCopy';
 import { DRAGGED_ELEMENT } from '~/defaults/grid';
 
+const registerResizeEventListenersModule = () => import('~/model/resize/registerResizeEventListeners');
+const unregisterResizeEventListenersModule = () => import('~/model/resize/unregisterResizeEventListeners');
+
 export default {
     name: 'LayoutElement',
     props: {
@@ -175,7 +178,9 @@ export default {
             this.minWidth = this.getElementMinWidth();
             this.minHeight = this.getElementMinHeight();
 
-            this.addEventListenersForResizeState();
+            registerResizeEventListenersModule().then((response) => {
+                response.default(this.doResizeDrag, this.stopResizeDrag);
+            });
 
             this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
@@ -198,7 +203,10 @@ export default {
             this.resetDataForEndResizeInteraction();
 
             removeGhostElementFromDraggableLayer();
-            this.removeEventListenersForResizeState();
+
+            unregisterResizeEventListenersModule().then((response) => {
+                response.default(this.doResizeDrag, this.stopResizeDrag);
+            });
 
             this.$emit('highlightedPositionChange', []);
         },
@@ -277,30 +285,6 @@ export default {
 
                 this.$emit('resizingElMaxRow', this.newHeight + row);
             }
-        },
-        addEventListenersForResizeState() {
-            document.documentElement.addEventListener(
-                'mousemove',
-                this.doResizeDrag,
-                false,
-            );
-            document.documentElement.addEventListener(
-                'mouseup',
-                this.stopResizeDrag,
-                false,
-            );
-        },
-        removeEventListenersForResizeState() {
-            document.documentElement.removeEventListener(
-                'mousemove',
-                this.doResizeDrag,
-                false,
-            );
-            document.documentElement.removeEventListener(
-                'mouseup',
-                this.stopResizeDrag,
-                false,
-            );
         },
         blockOtherInteractionsOnResizeEvent() {
             this.isDraggingEnabled = false;

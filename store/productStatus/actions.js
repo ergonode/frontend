@@ -5,8 +5,6 @@
 import { types } from './mutations';
 import { isThereAnyTranslation, getParsedTranslations } from '~/model/mappers/translationsMapper';
 
-const onDefaultError = () => {};
-
 export default {
     setCode({ commit }, code) {
         commit(types.SET_CODE, code);
@@ -25,7 +23,7 @@ export default {
                     ? `#${status.code} ${userLanguageCode}`
                     : '',
             })));
-        }).catch(onDefaultError);
+        });
     },
     getProductStatus({ commit }, path) {
         return this.app.$axios.$get(path).then(({
@@ -41,7 +39,7 @@ export default {
             commit(types.SET_COLOR, color);
 
             commit('translations/setTabTranslations', translations, { root: true });
-        }).catch(onDefaultError);
+        });
     },
     getDefaultStatus({ commit, state, rootState }) {
         const { language: userLanguageCode } = rootState.authentication.user;
@@ -104,7 +102,7 @@ export default {
     removeProductStatus({ commit, state, rootState }, { onSuccess }) {
         const { id } = state;
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/status/${id}`).then(() => onSuccess()).catch(onDefaultError);
+        return this.app.$axios.$delete(`${userLanguageCode}/status/${id}`).then(() => onSuccess());
     },
     clearStorage: ({ commit }) => {
         commit(types.CLEAR_STATE);

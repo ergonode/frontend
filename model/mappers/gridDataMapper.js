@@ -67,6 +67,7 @@ export const getParsedRequestDataParams = ({
         columns,
         offset: (currentPage - 1) * numberOfDisplayedElements,
         limit: numberOfDisplayedElements,
+        extended: true,
         filter,
     };
 
@@ -158,20 +159,46 @@ export function getMappedColumns(columns) {
     };
 }
 
-export function getMappedArrayValue(value, options, languageCode) {
-    const parsedKey = value !== null && value.length > 0 ? value : '';
-
+export function getMappedGridColumnOptions(value, options, languageCode) {
     if (Array.isArray(value)) {
-        return value.map((val) => ({
-            id: val,
-            key: val,
-            value: options[val],
-            hint: options[val] ? `#${val} ${languageCode}` : '',
-        }));
+        const { length } = value;
+        const editValue = [];
+        let presentationValue = '';
+
+        for (let i = 0; i < length; i += 1) {
+            const val = value[i];
+
+            presentationValue += options[val] || `#${val}`;
+
+            if (i + 1 < length) {
+                presentationValue += ', ';
+            }
+
+            editValue.push({
+                id: val,
+                key: val,
+                value: options[val],
+                hint: options[val] ? `#${val} ${languageCode}` : '',
+            });
+        }
+
+        return {
+            presentationValue,
+            editValue,
+        };
+    }
+
+    let presentationValue = '';
+
+    if (value !== null && value.length) {
+        presentationValue = options[value] || `#${value}`;
     }
 
     return {
-        id: parsedKey, key: parsedKey, value: options[value] || '', hint: options[value] ? `#${parsedKey} ${languageCode}` : '',
+        presentationValue,
+        editValue: {
+            id: value, key: value, value: options[value] || '', hint: options[value] ? `#${value} ${languageCode}` : '',
+        },
     };
 }
 
@@ -187,20 +214,29 @@ export function getMappedCellValues(columns, rows, rowIds) {
         for (let j = 0; j < rowsNumber; j += 1) {
             const row = rows[j];
             const rowId = rowIds[j];
-            const value = row[column.id];
+            const { value, prefix = '', suffix = '' } = row[column.id];
 
             if (!values[rowId]) values[rowId] = {};
-
             if (filter && filter.options) {
-                values[rowId][columnId] = getMappedArrayValue(
+                const { presentationValue, editValue } = getMappedGridColumnOptions(
                     value,
                     filter.options,
                     column.language,
                 );
-            } else if (typeof value === 'boolean' && column.type !== COLUMN_TYPE.CHECK_CELL) {
-                values[rowId][columnId] = { value: value ? 'Yes' : 'No' };
+
+                values[rowId][columnId] = {
+                    presentationValue, editValue, prefix, suffix,
+                };
+            } else if (typeof value === 'boolean') {
+                values[rowId][columnId] = {
+                    presentationValue: value ? 'Yes' : 'No', editValue: value, prefix, suffix,
+                };
             } else {
-                values[rowId][columnId] = { value: value !== null && typeof value !== 'undefined' ? value : '' };
+                const parsedValue = value === null || typeof value === 'undefined' ? '' : value;
+
+                values[rowId][columnId] = {
+                    presentationValue: parsedValue, editValue: parsedValue, prefix, suffix,
+                };
             }
         }
     }
@@ -216,13 +252,13 @@ export function getMappedRows(rows) {
     for (let i = 0; i < length; i += 1) {
         const { id, _links } = rows[i];
 
-        if (typeof id === 'undefined') {
+        if (typeof id !== 'object') {
             const index = i + 1;
             rowIds.push(index);
             rowLinks.push({ id: index, links: _links });
         } else {
-            rowIds.push(id);
-            rowLinks.push({ id, links: _links });
+            rowIds.push(id.value);
+            rowLinks.push({ id: id.value, links: _links });
         }
     }
 

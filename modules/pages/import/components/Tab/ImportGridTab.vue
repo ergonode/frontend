@@ -84,7 +84,7 @@ export default {
                 this.getData(this.editRoute.path);
             }
         },
-        onRowEdit({ links: { edit } }) {
+        onRowEdit({ links: { value: { edit } } }) {
             const args = edit.href.split('/');
             const lastIndex = args.length - 1;
 

@@ -4,7 +4,7 @@
  */
 <template>
     <img
-        :class="['image', { 'image--fab': fab, 'image--broken': brokenImage }]"
+        :class="['image', { 'image--fab': fab, 'image--placeholder': isPlaceholder }]"
         :src="image"
         alt="picture">
 </template>
@@ -35,7 +35,7 @@ export default {
     },
     data() {
         return {
-            brokenImage: false,
+            isPlaceholder: false,
             image: null,
         };
     },
@@ -44,15 +44,18 @@ export default {
             'onError',
         ]),
         async getImageById() {
+            this.isPlaceholder = true;
+            this.image = require('~/assets/images/placeholders/no_image.svg'); // eslint-disable-line global-require, import/no-dynamic-require
             await this.$axios.$get(`multimedia/${this.imageId}`, {
                 responseType: 'arraybuffer',
             }).then((response) => this.onSuccess(response)).catch(this.imageLoadOnError);
         },
         onSuccess(response) {
             this.image = getImageData(response);
+            this.isPlaceholder = false;
         },
         imageLoadOnError() {
-            this.brokenImage = true;
+            this.isPlaceholder = true;
             this.image = require('~/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
     },
@@ -64,12 +67,14 @@ export default {
         flex: 1;
         width: 100%;
         max-height: 100%;
-        object-fit: cover;
 
-        &--broken {
-            flex: 0 0 auto;
-            width: 50%;
-            height: 50%;
+        &:not(&--placeholder) {
+            object-fit: cover;
+        }
+
+        &--placeholder {
+            object-fit: none;
+            background-color: $GREY_LIGHT;
         }
 
         &--fab {

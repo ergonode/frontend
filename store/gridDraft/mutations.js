@@ -9,18 +9,18 @@ export default {
     initializeColumnProductDraft: (state, { productId, columnId }) => {
         state.drafts[productId][columnId] = {};
     },
-    addDraftValueForLanguageCode: (state, {
-        productId, columnId, languageCode, value,
+    addDraftValue: (state, {
+        productId, columnId, value,
     }) => {
-        state.drafts[productId][columnId][languageCode] = value;
+        state.drafts[productId][columnId] = value;
         state.drafts[productId] = { ...state.drafts[productId] };
         state.drafts = { ...state.drafts };
     },
     removeDraft: (state, productId) => {
         delete state.drafts[productId];
     },
-    removeDraftValue: (state, { productId, attributeId }) => {
-        delete state.drafts[productId][attributeId];
+    removeDraftValue: (state, { productId, columnId }) => {
+        delete state.drafts[productId][columnId];
         state.drafts[productId] = { ...state.drafts[productId] };
     },
     forceDraftsMutation: (state) => {

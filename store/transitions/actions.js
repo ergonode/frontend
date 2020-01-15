@@ -4,8 +4,6 @@
  */
 import { types } from './mutations';
 
-const onDefaultError = () => {};
-
 export default {
     setSource({ commit }, value) {
         commit(types.SET_SOURCE, value);
@@ -51,7 +49,7 @@ export default {
                     conditionSetId,
                 }, { root: true });
             }
-        }).catch(onDefaultError);
+        });
     },
     async createTransition(
         { rootState },
@@ -90,12 +88,11 @@ export default {
             .then(() => {
                 if (conditionSetId) {
                     this.app.$axios.$delete(`${userLanguageCode}/conditionsets/${conditionSetId}`)
-                        .then(() => onSuccess())
-                        .catch(onDefaultError);
+                        .then(() => onSuccess());
                 } else {
                     onSuccess();
                 }
-            }).catch(onDefaultError);
+            });
     },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);

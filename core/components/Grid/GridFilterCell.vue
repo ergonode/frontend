@@ -18,7 +18,6 @@
                 <GridEditFilterCell
                     :multiselect="isMultiSelect"
                     :type="filterType"
-                    :language-code="column.language"
                     :value="filterValue"
                     :options="options"
                     :colors="column.colors || null"
@@ -34,7 +33,7 @@
 <script>
 import { FILTER_OPERATOR } from '~/defaults/operators';
 import { COLUMN_TYPE } from '~/defaults/grid';
-import { getMappedArrayValue } from '~/model/mappers/gridDataMapper';
+import { getMappedGridColumnOptions } from '~/model/mappers/gridDataMapper';
 import { isArrayEqualToArray } from '~/model/arrayWrapper';
 
 export default {
@@ -103,10 +102,10 @@ export default {
             }
 
             if (this.isSelectKind) {
-                return getMappedArrayValue(
+                return getMappedGridColumnOptions(
                     this.filter.value,
                     this.column.filter.options,
-                );
+                ).editValue;
             }
 
             return this.filter.value;

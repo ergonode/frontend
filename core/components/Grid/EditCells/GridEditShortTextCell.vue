@@ -9,6 +9,7 @@
             :dismissible="false"
             :autofocus="true"
             :left-alignment="true"
+            :input="inputType"
             :error-messages="errorMessages"
             small
             @input="onValueChange" />
@@ -16,6 +17,8 @@
 </template>
 
 <script>
+import { TYPES } from '~/defaults/attributes';
+
 export default {
     name: 'GridEditShortTextCell',
     components: {
@@ -35,10 +38,21 @@ export default {
             type: Number,
             required: true,
         },
+        type: {
+            type: String,
+            required: true,
+        },
+    },
+    computed: {
+        inputType() {
+            return this.type === TYPES.NUMERIC
+                ? { type: 'number' }
+                : { type: 'text' };
+        },
     },
     methods: {
         onValueChange(value) {
-            this.$emit('input', value);
+            this.$emit('input', this.type === TYPES.NUMERIC ? +value : value);
         },
     },
 };

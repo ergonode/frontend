@@ -49,7 +49,6 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import VerticalTabBar from '~/core/components/Tab/VerticalTabBar';
 import Button from '~/core/components/Buttons/Button';
 import GridViewTemplate from '~/core/components/Layout/Templates/GridViewTemplate';
 
@@ -57,8 +56,8 @@ export default {
     name: 'ProductGridTab',
     components: {
         GridViewTemplate,
-        VerticalTabBar,
         Button,
+        VerticalTabBar: () => import('~/core/components/Tab/VerticalTabBar'),
         Grid: () => import('~/core/components/Grid/Grid'),
         GridAdvancedFilters: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFilters'),
         GridPagination: () => import('~/core/components/Grid/GridPagination'),
@@ -163,7 +162,7 @@ export default {
             // TODO: Solve it
             this.isAdvancedFilterFocused = isFocused;
         },
-        onRowEdit({ links: { edit } }) {
+        onRowEdit({ links: { value: { edit } } }) {
             const args = edit.href.split('/');
             const lastIndex = args.length - 1;
 
@@ -180,11 +179,13 @@ export default {
                 promises.push(this.applyDraft({
                     id: productId,
                     onSuccess: () => {
-                        Object.entries(this.drafts[productId])
-                            .forEach(([columnId, languageCode]) => {
-                                const [value] = Object.values(languageCode);
-
-                                this.addDraftToProduct({ columnId, productId, value });
+                        Object.keys(this.drafts[productId])
+                            .forEach((columnId) => {
+                                this.addDraftToProduct({
+                                    columnId,
+                                    productId,
+                                    value: this.drafts[productId][columnId],
+                                });
                                 this.removeDraft(productId);
                             });
                     },

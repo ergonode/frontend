@@ -19,6 +19,7 @@
 
 <script>
 import { GRID_HEADER_TYPE } from '~/defaults/grid';
+import GridPresentationHeaderCell from '~/core/components/Grid/PresentationCells/GridPresentationHeaderCell';
 
 export default {
     name: 'GridHeaderCell',
@@ -55,7 +56,7 @@ export default {
         headerComponent() {
             const { type } = this.column.header;
 
-            if (type === GRID_HEADER_TYPE.PLAIN) return () => import('~/core/components/Grid/PresentationCells/GridPresentationHeaderCell');
+            if (type === GRID_HEADER_TYPE.PLAIN) return GridPresentationHeaderCell;
 
             return () => import('~/core/components/Grid/PresentationCells/GridPresentationInteractiveHeaderCell');
         },
