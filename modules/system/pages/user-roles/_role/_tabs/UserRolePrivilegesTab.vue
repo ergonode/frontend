@@ -41,7 +41,7 @@
                 </template>
                 <template #cell="{ column, columnIndex, rowId, rowIndex, cellData }">
                     <GridCell
-                        :key="rowId"
+                        :key="`${rowId}-${column.id}`"
                         :row="rowIndex"
                         :column="columnIndex"
                         :locked="isColumnTypeText(column.type) || !isEditingAllowed"
@@ -51,7 +51,7 @@
                             :is="getCellComponent(column.type, rowId)"
                             :style="{ justifyContent: 'start' }"
                             :row="rowIndex"
-                            :value="cellData.value"
+                            :value="cellData.editValue"
                             :hint="descriptions[rowId]"
                             :disabled="!isEditingAllowed"
                             @input="onValueChange(rowId, column.id, cellData)" />
@@ -166,20 +166,20 @@ export default {
         },
         onValueChange(rowId, columnId, cellData) {
             if (columnId !== 'name') {
-                const value = !cellData.value;
+                const value = !cellData.editValue;
 
                 if (columnId !== 'read' && value) {
-                    this.updateDataCellValue({ rowId, columnId, value: true });
-                    this.updateDataCellValue({ rowId, columnId: 'read', value: true });
+                    this.updateDataCellValue({ rowId, columnId, editValue: true });
+                    this.updateDataCellValue({ rowId, columnId: 'read', editValue: true });
                 }
 
                 if (columnId === 'read') {
-                    this.updateDataCellValue({ rowId, columnId: 'create', value: false });
-                    this.updateDataCellValue({ rowId, columnId: 'update', value: false });
-                    this.updateDataCellValue({ rowId, columnId: 'delete', value: false });
+                    this.updateDataCellValue({ rowId, columnId: 'create', editValue: false });
+                    this.updateDataCellValue({ rowId, columnId: 'update', editValue: false });
+                    this.updateDataCellValue({ rowId, columnId: 'delete', editValue: false });
                 }
 
-                this.updateDataCellValue({ rowId, columnId, value });
+                this.updateDataCellValue({ rowId, columnId, editValue: value });
                 this.selectRowValues(rowId);
             }
         },
@@ -192,10 +192,10 @@ export default {
         },
         selectRowValues(rowId) {
             const {
-                read: { value: colReadValue },
-                create: { value: colCreateValue },
-                update: { value: colUpdateValue },
-                delete: { value: colDeleteValue },
+                read: { editValue: colReadValue },
+                create: { editValue: colCreateValue },
+                update: { editValue: colUpdateValue },
+                delete: { editValue: colDeleteValue },
             } = this.cellValues[rowId];
 
             const privileges = [colReadValue, colCreateValue, colUpdateValue, colDeleteValue];
@@ -209,10 +209,10 @@ export default {
             }
         },
         updateDataCellValues(rowId, isSelected) {
-            this.updateDataCellValue({ rowId, columnId: 'read', value: isSelected });
-            this.updateDataCellValue({ rowId, columnId: 'create', value: isSelected });
-            this.updateDataCellValue({ rowId, columnId: 'update', value: isSelected });
-            this.updateDataCellValue({ rowId, columnId: 'delete', value: isSelected });
+            this.updateDataCellValue({ rowId, columnId: 'read', editValue: isSelected });
+            this.updateDataCellValue({ rowId, columnId: 'create', editValue: isSelected });
+            this.updateDataCellValue({ rowId, columnId: 'update', editValue: isSelected });
+            this.updateDataCellValue({ rowId, columnId: 'delete', editValue: isSelected });
         },
         selectEveryRowValues(isSelected) {
             this.rowIds.forEach((rowId) => {

@@ -17,16 +17,15 @@
                 :key="index"
                 :large="!$attrs.small && $attrs.regular"
                 :selected="typeof selectedOptions[option.id] !== 'undefined'"
-                @click.native="onSelectValue(option)">
+                @click.native.prevent="onSelectValue(option)">
                 <slot
                     name="option"
-                    :option="option">
+                    :option="option"
+                    :selected="typeof selectedOptions[option.id] !== 'undefined'">
                     <ListElementAction
                         v-if="$attrs.multiselect"
                         :small="$attrs.small">
-                        <CheckBox
-                            :value="typeof selectedOptions[option.id] !== 'undefined'"
-                            @input="onSelectValue(option)" />
+                        <CheckBox :value="typeof selectedOptions[option.id] !== 'undefined'" />
                     </ListElementAction>
                     <ListElementDescription>
                         <ListElementTitle

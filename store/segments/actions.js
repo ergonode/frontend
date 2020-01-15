@@ -4,8 +4,6 @@
  */
 import { types } from './mutations';
 
-const onDefaultError = () => {};
-
 export default {
     setId({ commit }, value) {
         commit(types.SET_SEGMENT_ID, value);
@@ -41,7 +39,7 @@ export default {
                     conditionSetId,
                 }, { root: true });
             }
-        }).catch(onDefaultError);
+        });
     },
     async createSegment(
         { commit, rootState },
@@ -83,12 +81,11 @@ export default {
             .then(() => {
                 if (conditionSetId) {
                     this.app.$axios.$delete(`${userLanguageCode}/conditionsets/${conditionSetId}`)
-                        .then(() => onSuccess())
-                        .catch(onDefaultError);
+                        .then(() => onSuccess());
                 } else {
                     onSuccess();
                 }
-            }).catch(onDefaultError);
+            });
     },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);

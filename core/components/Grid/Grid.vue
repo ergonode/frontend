@@ -89,7 +89,7 @@
                     :column-index="colIndex + columnsOffset"
                     :cell-data="gridState.cellValues[id][column.id]">
                     <GridDataCell
-                        :key="id"
+                        :key="`${id}-${column.id}`"
                         :column-index="colIndex + columnsOffset"
                         :row-index="getRowIndex(rowIndex + rowsOffset)"
                         :row-id="id"

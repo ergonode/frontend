@@ -4,8 +4,6 @@
  */
 import { types } from './mutations';
 
-const onDefaultError = () => {};
-
 export default {
     setCommentObjectId({ commit }, value) {
         commit(types.SET_OBJECT_ID, value);
@@ -15,7 +13,7 @@ export default {
         return this.app.$axios.$get(`${userLanguageCode}/comments`, { params }).then(({ collection: comments, info }) => {
             commit(types.SET_COMMENTS, comments);
             commit(types.SET_COUNT, info.filtered);
-        }).catch(onDefaultError);
+        });
     },
     async getMoreComments(
         { commit, rootState, state },
@@ -29,7 +27,7 @@ export default {
             commit(types.SET_CURRENT_PAGE, currentPage += 1);
             commit(types.SET_COUNT, info.filtered);
             commit(types.INSERT_MORE_COMMENTS, comments);
-        }).catch(onDefaultError);
+        });
         await this.$removeLoader('moreComments');
     },
     async createComment(
@@ -68,7 +66,7 @@ export default {
                 commit(types.ADD_COMMENT, comment);
                 commit(types.SET_COUNT, count += 1);
                 onSuccess(id);
-            }).catch(onDefaultError);
+            });
         }).catch((e) => onError(e.data));
         await this.$removeLoader('commentButton');
     },
@@ -105,7 +103,7 @@ export default {
                 };
                 commit(types.EDIT_COMMENT, comment);
                 onSuccess();
-            }).catch(onDefaultError);
+            });
         }).catch((e) => onError(e.data));
         await this.$removeLoader('commentButton');
     },

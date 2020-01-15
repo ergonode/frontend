@@ -146,8 +146,8 @@ export default {
     [types.REMOVE_COLUMN_WIDTH_AT_INDEX](state, index) {
         state.columnWidths.splice(index, 1);
     },
-    [types.UPDATE_DATA_CELL_VALUE](state, { rowId, columnId, value }) {
-        state.cellValues[rowId][columnId] = { value };
+    [types.UPDATE_DATA_CELL_VALUE](state, { rowId, columnId, editValue }) {
+        state.cellValues[rowId][columnId] = { ...state.cellValues[rowId][columnId], editValue };
     },
     [types.ADD_PRODUCT_VALUE](state, { productId, columnId, value }) {
         state.cellValues[productId][columnId] = value;

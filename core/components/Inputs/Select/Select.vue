@@ -67,15 +67,14 @@
                                         :small="small"
                                         :large="!small && regular"
                                         :selected="typeof selectedOptions[option] !== 'undefined'"
-                                        @click.native="onSelectValue(option)">
+                                        @click.native.prevent="onSelectValue(option)">
                                         <ListElementAction
                                             v-if="multiselect"
                                             :small="small">
                                             <CheckBox
                                                 :value="
                                                     typeof selectedOptions[option] !== 'undefined'
-                                                "
-                                                @input.native="onSelectValue(option)" />
+                                                " />
                                         </ListElementAction>
                                         <ListElementDescription>
                                             <ListElementTitle

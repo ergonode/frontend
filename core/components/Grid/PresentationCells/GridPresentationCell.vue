@@ -3,10 +3,15 @@
  * See LICENSE for license details.
  */
 <template functional>
-    <span
-        class="presentation-cell"
-        :title="props.value"
-        v-text="props.value" />
+    <div class="presentation-cell">
+        <span
+            :title="props.value"
+            v-text="props.value" />
+        <span
+            v-if="props.suffix"
+            :title="props.suffix"
+            v-text="props.suffix" />
+    </div>
 </template>
 
 <script>
@@ -18,13 +23,20 @@ export default {
             type: [String, Number],
             required: true,
         },
+        suffix: {
+            type: String,
+            default: '',
+        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
     .presentation-cell {
+        display: flex;
         flex: 1;
+        justify-content: space-between;
+        align-items: center;
         width: 0;
         padding: 8px;
         color: $GRAPHITE_DARK;

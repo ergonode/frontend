@@ -10,8 +10,6 @@ import {
 } from '~/model/mappers/templateMapper';
 import { getNestedObjectByKeyWithValue } from '~/model/objectWrapper';
 
-const onDefaultError = () => {};
-
 export default {
     getTemplateByID(
         {
@@ -28,6 +26,7 @@ export default {
             const attributesId = elements.map((el) => el.id);
             const params = {
                 filter: `id${attributesId.join(',')}`,
+                view: 'list',
             };
 
             return this.app.$axios.$get(`${languageCode}/attributes`, { params }).then(({ collection }) => {
@@ -50,7 +49,7 @@ export default {
                 commit(types.SET_TEMPLATE_DESIGNER_TITLE, name);
                 commit(types.SET_TEMPLATE_DESIGNER_IMAGE, imageID);
             });
-        }).catch(onDefaultError);
+        });
     },
     async updateTemplateDesigner(
         { rootState },
@@ -88,7 +87,7 @@ export default {
     }) {
         return this.app.$axios.$get(path, { params }).then(({ collection }) => {
             commit(types.SET_TYPES, collection);
-        }).catch(onDefaultError);
+        });
     },
     addListElementToLayout: ({
         commit, dispatch, rootState, getters,
@@ -148,7 +147,7 @@ export default {
     },
     removeTemplate({ rootState }, { id, onSuccess }) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/templates/${id}`).then(() => onSuccess()).catch(onDefaultError);
+        return this.app.$axios.$delete(`${userLanguageCode}/templates/${id}`).then(() => onSuccess());
     },
     clearStorage: ({ commit }) => commit(types.CLEAR_STATE),
 };

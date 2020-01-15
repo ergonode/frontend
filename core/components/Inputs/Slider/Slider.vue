@@ -21,6 +21,10 @@
 </template>
 
 <script>
+
+const registerResizeEventListenersModule = () => import('~/model/resize/registerResizeEventListeners');
+const unregisterResizeEventListenersModule = () => import('~/model/resize/unregisterResizeEventListeners');
+
 export default {
     name: 'Slider',
     props: {
@@ -61,7 +65,9 @@ export default {
     },
     methods: {
         initResizeDrag() {
-            this.addEventListenersForResizeState();
+            registerResizeEventListenersModule().then((response) => {
+                response.default(this.doResizeDrag, this.stopResizeDrag);
+            });
         },
         onClick(event) {
             this.$emit('input', this.getProgress(event.pageX));
@@ -78,36 +84,14 @@ export default {
             }
         },
         stopResizeDrag() {
-            this.removeEventListenersForResizeState();
+            unregisterResizeEventListenersModule().then((response) => {
+                response.default(this.doResizeDrag, this.stopResizeDrag);
+            });
         },
         getProgress(pageX) {
             const fixedXOffset = pageX - this.xPos - (this.sphereSize / 2);
 
             return Math.round((fixedXOffset / this.width) * this.maxValue);
-        },
-        addEventListenersForResizeState() {
-            document.documentElement.addEventListener(
-                'mousemove',
-                this.doResizeDrag,
-                false,
-            );
-            document.documentElement.addEventListener(
-                'mouseup',
-                this.stopResizeDrag,
-                false,
-            );
-        },
-        removeEventListenersForResizeState() {
-            document.documentElement.removeEventListener(
-                'mousemove',
-                this.doResizeDrag,
-                false,
-            );
-            document.documentElement.removeEventListener(
-                'mouseup',
-                this.stopResizeDrag,
-                false,
-            );
         },
     },
 };
