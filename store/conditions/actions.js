@@ -85,8 +85,9 @@ export default {
         { conditionId, parameterName, parameterValue }) {
         if (!state.conditionsValues[conditionId]) {
             commit(types.ADD_CONDITION_VALUE, { conditionId, parameterName, parameterValue });
+        } else {
+            commit(types.SET_CONDITION_VALUE, { conditionId, parameterName, parameterValue });
         }
-        commit(types.SET_CONDITION_VALUE, { conditionId, parameterName, parameterValue });
     },
     removeConditionValue({ commit, state }, conditionId) {
         if (state.conditionsValues[conditionId]) {

@@ -53,6 +53,7 @@ export default {
         ...mapActions('conditions', [
             'getConditionConfigurationById',
             'removeConditionValue',
+            'setConditionValue',
         ]),
         getCondition(id) {
             const [correctId] = id.split('--');
@@ -60,9 +61,15 @@ export default {
         },
         onGetConditionConfigurationById(id) {
             const [correctId] = id.split('--');
+
             if (!this.conditions[correctId]) {
                 this.getConditionConfigurationById({ conditionId: correctId });
             }
+            this.setConditionValue({
+                conditionId: id,
+                parameterName: null,
+                parameterValue: null,
+            });
         },
         removeConditionFromSet(id) {
             this.removeConditionValue(id);

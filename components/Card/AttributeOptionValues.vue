@@ -36,7 +36,6 @@ export default {
     computed: {
         ...mapState('attribute', {
             optionKeys: (state) => state.optionKeys,
-            optionValues: (state) => state.optionValues,
         }),
     },
 };

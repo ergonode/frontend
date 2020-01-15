@@ -31,17 +31,19 @@ export default {
         state.conditionsDictionary = value;
     },
     [types.ADD_CONDITION_VALUE](state, { conditionId, parameterName, parameterValue }) {
+        const condition = parameterName === null ? {} : { [parameterName]: parameterValue };
+
         state.conditionsValues = {
             ...state.conditionsValues,
-            [conditionId]: {
-                [parameterName]: parameterValue,
-            },
+            [conditionId]: condition,
         };
     },
     [types.SET_CONDITION_VALUE](state, { conditionId, parameterName, parameterValue }) {
+        const condition = parameterName === null ? {} : { [parameterName]: parameterValue };
+
         state.conditionsValues[conditionId] = {
             ...state.conditionsValues[conditionId],
-            [parameterName]: parameterValue,
+            ...condition,
         };
     },
     [types.SET_CONDITIONS_DATA](state, data) {
