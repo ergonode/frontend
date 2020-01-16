@@ -21,6 +21,7 @@
             </template>
         </TextField>
         <FabButton
+            v-if="isSearch"
             class="search-btn"
             @click.native="onSearchBtnClick">
             <template #icon="{ fillColor }">
@@ -56,6 +57,10 @@ export default {
             required: true,
         },
         isExpanded: {
+            type: Boolean,
+            required: true,
+        },
+        isSearch: {
             type: Boolean,
             required: true,
         },

@@ -11,14 +11,15 @@
         <Component
             :is="headerComponent"
             v-bind="headerComponentProps"
-            :namespace="namespace"
-            @sort="getData"
-            @focus="onFocus" />
+            @sort="onSort"
+            @focus="onFocus"
+            @removeColumn="onRemoveColumn" />
     </GridCell>
 </template>
 
 <script>
 import { GRID_HEADER_TYPE } from '@Core/defaults/grid';
+import GridPresentationHeaderCell from '@Core/components/Grid/PresentationCells/GridPresentationHeaderCell';
 
 export default {
     name: 'GridHeaderCell',
@@ -26,10 +27,6 @@ export default {
         GridCell: () => import('@Core/components/Grid/GridCell'),
     },
     props: {
-        namespace: {
-            type: String,
-            required: true,
-        },
         columnIndex: {
             type: Number,
             required: true,
@@ -39,6 +36,10 @@ export default {
             required: true,
         },
         column: {
+            type: Object,
+            required: true,
+        },
+        sortedColumn: {
             type: Object,
             required: true,
         },
@@ -52,13 +53,10 @@ export default {
         },
     },
     computed: {
-        gridState() {
-            return this.$store.state[this.namespace];
-        },
         headerComponent() {
             const { type } = this.column.header;
 
-            if (type === GRID_HEADER_TYPE.PLAIN) return () => import('@Core/components/Grid/PresentationCells/GridPresentationHeaderCell');
+            if (type === GRID_HEADER_TYPE.PLAIN) return GridPresentationHeaderCell;
 
             return () => import('@Core/components/Grid/PresentationCells/GridPresentationInteractiveHeaderCell');
         },
@@ -74,6 +72,7 @@ export default {
                 return {
                     columnIndex: this.columnIndex,
                     column: this.column,
+                    sortedColumn: this.sortedColumn,
                     isColumnEditable: this.isColumnEditable,
                 };
             }
@@ -86,11 +85,14 @@ export default {
         },
     },
     methods: {
-        getData() {
-            this.$store.dispatch(`${this.namespace}/getData`, this.path);
-        },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);
+        },
+        onSort(sortState) {
+            this.$emit('sort', sortState);
+        },
+        onRemoveColumn(columnIndex) {
+            this.$emit('removeColumnAtIndex', columnIndex);
         },
     },
 };

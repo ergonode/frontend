@@ -38,6 +38,12 @@ export default {
                     menuPosition: 1000,
                     icon: Icons.Settings,
                 },
+                breadcrumbs: [
+                    {
+                        title: 'System',
+                        icon: Icons.Settings,
+                    },
+                ],
                 isMenu: true,
                 menuPosition: 1,
                 privileges: {
@@ -137,6 +143,12 @@ export default {
                     menuPosition: 1000,
                     icon: Icons.Settings,
                 },
+                breadcrumbs: [
+                    {
+                        title: 'System',
+                        icon: Icons.Settings,
+                    },
+                ],
                 isMenu: true,
                 menuPosition: 2,
                 privileges: {

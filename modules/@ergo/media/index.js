@@ -28,6 +28,12 @@ export default {
                     menuPosition: 6,
                     icon: Icons.Media,
                 },
+                breadcrumbs: [
+                    {
+                        title: 'Resources',
+                        icon: Icons.Media,
+                    },
+                ],
                 isMenu: true,
                 menuPosition: 1,
                 privileges: {

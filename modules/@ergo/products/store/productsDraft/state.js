@@ -12,7 +12,6 @@ export default () => ({
         id: '', key: '', value: '', hint: '',
     },
     selectedCategories: [],
-    languageCode: '',
     layoutElements: [],
     completeness: {},
     templates: [],

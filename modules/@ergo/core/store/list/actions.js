@@ -18,6 +18,7 @@ export default {
             filter: state.filter.length ? `code=${state.filter}` : null,
             field: 'code',
             order: 'ASC',
+            view: 'list',
         };
 
         return this.app.$axios.$get(path, { params }).then(({ collection }) => {

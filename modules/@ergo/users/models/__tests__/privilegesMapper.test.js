@@ -76,37 +76,37 @@ describe('privilegesMapper/getMappedGridData', () => {
 
         const expectedRows = [
             {
-                id: 0,
-                name: 'User role',
-                read: true,
-                create: true,
-                update: true,
-                delete: true,
+                id: { value: 0 },
+                name: { value: 'User role' },
+                read: { value: true },
+                create: { value: true },
+                update: { value: true },
+                delete: { value: true },
             },
             {
-                id: 1,
-                name: 'User',
-                read: true,
-                create: true,
-                update: true,
-                delete: true,
+                id: { value: 1 },
+                name: { value: 'User' },
+                read: { value: true },
+                create: { value: true },
+                update: { value: true },
+                delete: { value: true },
             },
         ];
         const expectedColumns = [
             {
-                id: 'name', label: '', type: 'TEXT', width: '1fr', editable: false,
+                id: 'name', label: '', type: 'TEXT', width: '1fr', editable: false, visible: true,
             },
             {
-                id: 'create', label: 'Create', type: 'CHECK_CELL', width: '1fr', editable: true,
+                id: 'create', label: 'Create', type: 'CHECK_CELL', width: '1fr', editable: true, visible: true,
             },
             {
-                id: 'read', label: 'Read', type: 'CHECK_CELL', width: '1fr', editable: true,
+                id: 'read', label: 'Read', type: 'CHECK_CELL', width: '1fr', editable: true, visible: true,
             },
             {
-                id: 'update', label: 'Update', type: 'CHECK_CELL', width: '1fr', editable: true,
+                id: 'update', label: 'Update', type: 'CHECK_CELL', width: '1fr', editable: true, visible: true,
             },
             {
-                id: 'delete', label: 'Delete', type: 'CHECK_CELL', width: '1fr', editable: true,
+                id: 'delete', label: 'Delete', type: 'CHECK_CELL', width: '1fr', editable: true, visible: true,
             },
         ];
 
@@ -117,18 +117,18 @@ describe('privilegesMapper/getMappedGridData', () => {
     it('Based on Grid data, data is mapped into API structure', () => {
         const gridData = {
             0: {
-                name: { value: 'User' },
-                create: { value: true },
-                read: { value: true },
-                update: { value: true },
-                delete: { value: true },
+                name: { editValue: 'User', presentationValue: 'User' },
+                create: { editValue: true },
+                read: { editValue: true },
+                update: { editValue: true },
+                delete: { editValue: true },
             },
             1: {
-                name: { value: 'User role' },
-                create: { value: true },
-                read: { value: true },
-                update: { value: true },
-                delete: { value: true },
+                name: { editValue: 'User role', presentationValue: 'User role' },
+                create: { editValue: true },
+                read: { editValue: true },
+                update: { editValue: true },
+                delete: { editValue: true },
             },
         };
         const privilegesDic = [

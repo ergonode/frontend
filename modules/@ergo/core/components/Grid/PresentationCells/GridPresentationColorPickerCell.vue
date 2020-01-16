@@ -4,10 +4,8 @@
  */
 <template>
     <div class="status-presentation-cell">
-        <PointBadge
-            v-if="colors[cellData.key]"
-            :color="colors[cellData.key] || ''" />
-        <GridPresentationCell :value="cellData.value || `#${cellData.key}`" />
+        <PointBadge :color="color" />
+        <GridPresentationCell :value="value" />
     </div>
 </template>
 
@@ -22,12 +20,12 @@ export default {
         GridPresentationCell,
     },
     props: {
-        cellData: {
-            type: Object,
+        value: {
+            type: String,
             required: true,
         },
-        colors: {
-            type: Object,
+        color: {
+            type: String,
             required: true,
         },
     },

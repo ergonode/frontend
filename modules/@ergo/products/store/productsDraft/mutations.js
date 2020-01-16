@@ -11,7 +11,6 @@ export const types = {
     SET_PRODUCT_WORKFLOW: 'SET_PRODUCT_WORKFLOW',
     SET_PRODUCT_TEMPLATE: 'SET_PRODUCT_TEMPLATE',
     SET_PRODUCT_CATEGORIES: 'SET_PRODUCT_CATEGORIES',
-    SET_DRAFT_LANGUAGE_CODE: 'SET_DRAFT_LANGUAGE_CODE',
     SET_TEMPLATES: 'SET_TEMPLATES',
     SET_CATEGORIES: 'SET_CATEGORIES',
     SET_PRODUCT_COMPLETENESS: 'SET_PRODUCT_COMPLETENESS',
@@ -39,9 +38,6 @@ export default {
     },
     [types.SET_PRODUCT_CATEGORIES](state, selectedCategories) {
         state.selectedCategories = selectedCategories;
-    },
-    [types.SET_DRAFT_LANGUAGE_CODE](state, languageCode) {
-        state.languageCode = languageCode;
     },
     [types.SET_TEMPLATES](state, templates) {
         state.templates = templates;

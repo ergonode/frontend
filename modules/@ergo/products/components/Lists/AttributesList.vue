@@ -11,6 +11,7 @@
                 :group="group"
                 :language-code="languageCode"
                 :is-expanded="expendedGroup === group.key"
+                :is-draggable="isUserAllowedToDragAttributes"
                 @expandGroup="setExpandedGroup" />
         </ListScrollableContainer>
     </List>
@@ -49,6 +50,9 @@ export default {
         ...mapState('list', {
             groups: (state) => state.groups,
         }),
+        isUserAllowedToDragAttributes() {
+            return this.$hasAccess(['ATTRIBUTE_UPDATE']);
+        },
     },
     methods: {
         setExpandedGroup(key) {

@@ -66,6 +66,7 @@ export default {
     .side-bar-list-group-element {
         $element: &;
 
+        outline: none;
         display: flex;
         height: 48px;
         padding: 0 16px 0 24px;
@@ -114,6 +115,7 @@ export default {
         }
 
         &__link {
+            outline: none;
             display: grid;
             grid-template-columns: 32px max-content;
             grid-column-gap: 8px;

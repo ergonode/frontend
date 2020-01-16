@@ -32,7 +32,7 @@ export const types = {
     SET_SORTING_STATE: 'SET_SORTING_STATE',
     INSERT_COLUMN_AT_INDEX: 'INSERT_COLUMN_AT_INDEX',
     INSERT_COLUMN_WIDTH_AT_INDEX: 'INSERT_COLUMN_WIDTH_AT_INDEX',
-    UPDATE_COLUMN_AT_INDEX: 'UPDATE_COLUMN_AT_INDEX',
+    SET_COLUMN_AT_INDEX: 'SET_COLUMN_AT_INDEX',
     REMOVE_COLUMN_AT_INDEX: 'REMOVE_COLUMN_AT_INDEX',
     REMOVE_COLUMN_WIDTH_AT_INDEX: 'REMOVE_COLUMN_WIDTH_AT_INDEX',
     SET_COLUMN_WIDTHS: 'SET_COLUMN_WIDTHS',
@@ -121,9 +121,9 @@ export default {
         state.currentPage = payload;
     },
     [types.SET_SORTING_STATE](state, sortedColumn = {}) {
-        state.sortedByColumn = sortedColumn;
+        state.sortedColumn = sortedColumn;
     },
-    [types.UPDATE_COLUMN_AT_INDEX](state, { index, column }) {
+    [types.SET_COLUMN_AT_INDEX](state, { index, column }) {
         state.columns[index] = column;
         state.columns = [...state.columns];
     },
@@ -146,8 +146,8 @@ export default {
     [types.REMOVE_COLUMN_WIDTH_AT_INDEX](state, index) {
         state.columnWidths.splice(index, 1);
     },
-    [types.UPDATE_DATA_CELL_VALUE](state, { rowId, columnId, value }) {
-        state.cellValues[rowId][columnId] = { value };
+    [types.UPDATE_DATA_CELL_VALUE](state, { rowId, columnId, editValue }) {
+        state.cellValues[rowId][columnId] = { ...state.cellValues[rowId][columnId], editValue };
     },
     [types.ADD_PRODUCT_VALUE](state, { productId, columnId, value }) {
         state.cellValues[productId][columnId] = value;

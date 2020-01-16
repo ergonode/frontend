@@ -28,6 +28,12 @@ export default {
                     menuPosition: 3,
                     icon: Icons.Templates,
                 },
+                breadcrumbs: [
+                    {
+                        title: 'Product design',
+                        icon: Icons.Templates,
+                    },
+                ],
                 isMenu: true,
                 menuPosition: 4,
                 privileges: {

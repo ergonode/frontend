@@ -40,10 +40,11 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { isArrayEqualToArray } from '@Core/models/arrayWrapper';
 import { hasParams } from '@Attributes/models/attributeTypes';
-import { getKeyByValue } from '@Core/models/objectWrapper';
 import { COLUMN_TYPE } from '@Core/defaults/grid';
+import GridPresentationCell from '@Core/components/Grid/PresentationCells/GridPresentationCell';
+
+const getMappedDraftValuesModule = () => import('@Core/models/mappers/getMappedDraftValues');
 
 export default {
     name: 'GridDataCell',
@@ -98,11 +99,6 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
         }),
-        isSelectKind() {
-            return this.column.type === COLUMN_TYPE.SELECT
-                || this.column.type === COLUMN_TYPE.MULTI_SELECT
-                || this.column.type === COLUMN_TYPE.LABEL;
-        },
         isMultiSelect() {
             return this.column.type === COLUMN_TYPE.MULTI_SELECT;
         },
@@ -123,82 +119,40 @@ export default {
             case COLUMN_TYPE.MULTI_SELECT:
                 return () => import('@Core/components/Grid/PresentationCells/GridPresentationSelectCell');
             default:
-                return () => import('@Core/components/Grid/PresentationCells/GridPresentationCell');
+                return GridPresentationCell;
             }
         },
         infoComponentProps() {
             const { type } = this.column;
 
+            const value = this.draftValue === null
+                ? this.cellData.presentationValue
+                : this.draftValue.presentationValue;
+
             if (type === COLUMN_TYPE.LABEL) {
-                if (this.parsedDraftValue === null) {
-                    return {
-                        cellData: this.cellData,
-                        colors: this.column.colors,
-                    };
-                }
+                const color = this.draftValue === null
+                    ? this.column.colors[this.cellData.editValue.key]
+                    : this.column.colors[this.draftValue.editValue.key];
 
                 return {
-                    cellData: {
-                        key: getKeyByValue(this.column.filter.options, this.parsedDraftValue),
-                        value: this.parsedDraftValue,
-                    },
-                    colors: this.column.colors,
+                    value,
+                    color,
                 };
             }
 
-            if (this.parsedDraftValue === null) {
-                if (Array.isArray(this.cellData)) {
-                    return {
-                        value: this.cellData.map((data) => data.value || `#${data.key}`).join(', '),
-                    };
-                }
-
-                return {
-                    value: !this.cellData.value && !this.cellData.key
-                        ? ''
-                        : this.cellData.value || `#${this.cellData.key}`,
-                };
-            }
-
-            return { value: this.parsedDraftValue };
+            return { value, suffix: this.cellData.suffix };
         },
         draftValue() {
             if (this.draft && typeof this.draft[this.column.id] !== 'undefined') {
-                const languageCode = this.column.language || this.userLanguageCode;
-
-                return this.draft[this.column.id][languageCode];
-            }
-
-            return null;
-        },
-        parsedDraftValue() {
-            const { filter } = this.column;
-
-            if (this.draft && typeof this.draft[this.column.id] !== 'undefined') {
-                const languageCode = this.column.language || this.userLanguageCode;
-
-                if (filter && filter.options) {
-                    const { options } = filter;
-                    const draftValue = this.draft[this.column.id][languageCode];
-
-                    if (Array.isArray(draftValue)) {
-                        return draftValue.map((val) => options[val.key] || `#${val.key}`).join(', ');
-                    }
-
-                    if (draftValue.key) {
-                        return options[draftValue.key] || `#${draftValue.key}`;
-                    }
-
-                    return '';
-                }
-
-                return this.draft[this.column.id][languageCode];
+                return this.draft[this.column.id];
             }
 
             return null;
         },
         editValue() {
-            return this.draftValue || (this.isSelectKind ? this.cellData : this.cellData.value);
+            if (this.draftValue) return this.draftValue.editValue;
+
+            return this.cellData.editValue;
         },
         errorValue() {
             const { element_id: elementId } = this.column;
@@ -229,37 +183,52 @@ export default {
         ...mapActions('gridDraft', [
             'removeDraftValue',
             'updateDraftValue',
-            'addDraftValue',
         ]),
         onDataCopy({ from, to }) {
             const rowIndex = this.rowIds.findIndex((id) => id === this.rowId);
             const offset = from.row - rowIndex;
 
-            if (from.row < to.row) {
-                for (let i = from.row - offset + 1; i < to.row - offset + 1; i += 1) {
-                    if (this.rowIds[i]) {
-                        this.updateDraftValue({
-                            productId: this.rowIds[i],
-                            columnId: this.column.id,
-                            elementId: this.column.element_id,
-                            value: this.editValue,
-                            languageCode: this.column.language || this.userLanguageCode,
-                        });
+            getMappedDraftValuesModule().then((response) => {
+                const {
+                    apiData,
+                    presentationValue,
+                    editValue,
+                } = response.default(this.editValue);
+
+                if (from.row < to.row) {
+                    for (let i = from.row - offset + 1; i < to.row - offset + 1; i += 1) {
+                        if (this.rowIds[i]) {
+                            this.updateDraftValue({
+                                productId: this.rowIds[i],
+                                columnId: this.column.id,
+                                elementId: this.column.element_id,
+                                apiData,
+                                presentationValue,
+                                editValue,
+                                suffix: this.cellData.suffix,
+                                prefix: this.cellData.prefix,
+                                languageCode: this.column.language || this.userLanguageCode,
+                            });
+                        }
+                    }
+                } else {
+                    for (let i = to.row - offset; i < from.row - offset; i += 1) {
+                        if (this.rowIds[i]) {
+                            this.updateDraftValue({
+                                productId: this.rowIds[i],
+                                columnId: this.column.id,
+                                elementId: this.column.element_id,
+                                apiData,
+                                presentationValue,
+                                editValue,
+                                suffix: this.cellData.suffix,
+                                prefix: this.cellData.prefix,
+                                languageCode: this.column.language || this.userLanguageCode,
+                            });
+                        }
                     }
                 }
-            } else {
-                for (let i = to.row - offset; i < from.row - offset; i += 1) {
-                    if (this.rowIds[i]) {
-                        this.updateDraftValue({
-                            productId: this.rowIds[i],
-                            columnId: this.column.id,
-                            elementId: this.column.element_id,
-                            value: this.editValue,
-                            languageCode: this.column.language || this.userLanguageCode,
-                        });
-                    }
-                }
-            }
+            });
         },
         onFocus(isFocused) {
             if (!isFocused) {
@@ -271,32 +240,35 @@ export default {
             if ((value.id === '' || value.length === 0) && this.draft !== null) {
                 this.removeDraftValue({
                     productId: this.rowId,
-                    attributeId: this.column.id,
+                    columnId: this.column.id,
                 });
+
                 return;
             }
 
-            if (Array.isArray(value)) {
-                const valueKeys = value.map((val) => val.key);
-                if (this.draftValue
-                    && isArrayEqualToArray(
-                        valueKeys,
-                        this.draftValue.map((val) => val.key),
-                    )) return;
-                if (this.draftValue === null
-                    && isArrayEqualToArray(
-                        valueKeys,
-                        this.cellData.map((val) => val.key),
-                    )) return;
-            } else if ((this.cellData.key && this.cellData.key === value.key)
-                || this.cellData.value === value) return;
+            getMappedDraftValuesModule().then((response) => {
+                const {
+                    apiData,
+                    presentationValue,
+                    editValue,
+                } = response.default(value);
 
-            this.updateDraftValue({
-                productId: this.rowId,
-                columnId: this.column.id,
-                elementId: this.column.element_id,
-                value,
-                languageCode: this.column.language || this.userLanguageCode,
+                if ((this.cellData.presentationValue === '' && presentationValue !== '')
+                    || (this.cellData.presentationValue !== presentationValue
+                        || (this.draftValue
+                            && this.draftValue.presentationValue !== presentationValue))) {
+                    this.updateDraftValue({
+                        productId: this.rowId,
+                        columnId: this.column.id,
+                        elementId: this.column.element_id,
+                        apiData,
+                        presentationValue,
+                        editValue,
+                        suffix: this.cellData.suffix,
+                        prefix: this.cellData.prefix,
+                        languageCode: this.column.language || this.userLanguageCode,
+                    });
+                }
             });
         },
     },

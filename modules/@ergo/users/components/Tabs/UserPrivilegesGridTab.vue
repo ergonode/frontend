@@ -15,7 +15,7 @@
                 title="Privileges">
                 <template #cell="{ column, columnIndex, rowId, rowIndex, cellData }">
                     <GridCell
-                        :key="rowId"
+                        :key="`${rowId}-${column.id}`"
                         :spacebar-edition="false"
                         :column="columnIndex"
                         :row="rowIndex"
@@ -24,7 +24,7 @@
                             :is="getCellComponent(column.type, rowId)"
                             :style="{ justifyContent: 'start' }"
                             :row="rowIndex"
-                            :value="cellData.value"
+                            :value="cellData.editValue"
                             :hint="descriptions[rowId]"
                             :disabled="true" />
                     </GridCell>
@@ -52,8 +52,6 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
         GridCell,
-        GridPresentationCheckCell,
-        GridPresentationCell,
         Grid,
     },
     data() {

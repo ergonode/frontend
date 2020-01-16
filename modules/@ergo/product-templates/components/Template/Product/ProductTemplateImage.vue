@@ -15,12 +15,13 @@
 
 <script>
 import productTemplateElementMixin from '@Templates/mixins/productTemplateElementMixin';
+import UploadImage from '@Core/components/Inputs/Image/UploadImage';
 
 export default {
     name: 'ProductTemplateImage',
     mixins: [productTemplateElementMixin],
     components: {
-        UploadImage: () => import('@Core/components/Inputs/Image/UploadImage'),
+        UploadImage,
     },
 };
 </script>

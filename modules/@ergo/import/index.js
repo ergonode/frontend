@@ -28,6 +28,12 @@ export default {
                     menuPosition: 4,
                     icon: Icons.Export,
                 },
+                breadcrumbs: [
+                    {
+                        title: 'Imports',
+                        icon: Icons.Export,
+                    },
+                ],
                 isMenu: true,
                 menuPosition: 1,
                 privileges: {

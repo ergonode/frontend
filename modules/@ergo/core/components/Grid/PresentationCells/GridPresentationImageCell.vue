@@ -27,7 +27,10 @@ export default {
 
 <style lang="scss" scoped>
     .image-cell {
+        display: flex;
         flex: 1;
+        justify-content: center;
+        align-items: center;
         height: 100%;
         padding: 8px;
         box-sizing: border-box;

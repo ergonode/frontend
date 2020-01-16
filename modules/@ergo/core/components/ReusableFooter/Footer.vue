@@ -17,6 +17,7 @@ export default {
 
 <style lang="scss" scoped>
     .footer {
+        z-index: $Z_INDEX_LVL_1;
         display: flex;
         justify-content: flex-end;
         align-items: center;

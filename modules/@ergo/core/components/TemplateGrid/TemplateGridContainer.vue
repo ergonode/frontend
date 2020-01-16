@@ -27,7 +27,11 @@ import {
     getRowBellowMouse,
 } from '@Core/models/template_grid/TreeCalculations';
 import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
-import { isMouseOutOfBoundsElement } from '@Core/models/drag_and_drop/helpers';
+import {
+    isMouseOutOfBoundsElement,
+    isTrashBelowMouse,
+    getPositionForBrowser,
+} from '@Core/models/drag_and_drop/helpers';
 import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
 
 export default {
@@ -184,12 +188,12 @@ export default {
         },
         onDragEnd(event) {
             const { id } = this.draggedElement;
-            const { isOutOfBounds, isTrashBelowMouse } = this.getElementBelowMouse(event);
+            const { isOutOfBounds, isTrash } = this.getElementBelowMouse(event);
 
-            if (isTrashBelowMouse) {
+            if (isTrash) {
                 this.removeElementFromGrid(id);
             }
-            if (isOutOfBounds && !isTrashBelowMouse) {
+            if (isOutOfBounds && !isTrash) {
                 this.insertElementIntoGrid();
             }
             removeElementCopyFromDocumentBody(event);
@@ -197,9 +201,9 @@ export default {
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
         },
         onDragLeave(event) {
-            const { isOutOfBounds, isTrashBelowMouse } = this.getElementBelowMouse(event);
+            const { isOutOfBounds, isTrash } = this.getElementBelowMouse(event);
 
-            if (isOutOfBounds || isTrashBelowMouse) {
+            if (isOutOfBounds || isTrash) {
                 this.removeGhostElement();
             }
         },
@@ -273,14 +277,13 @@ export default {
             this.$emit('afterDrop', draggedId);
         },
         getElementBelowMouse(event) {
-            const { pageX, pageY } = event;
-            const elementBelowMouse = document.elementFromPoint(pageX, pageY);
+            const { xPos, yPos } = getPositionForBrowser(event);
             const itemsContainer = document.querySelector('.grid-container');
 
             return {
                 itemsContainer,
-                isOutOfBounds: isMouseOutOfBoundsElement(itemsContainer, pageX, pageY),
-                isTrashBelowMouse: elementBelowMouse && elementBelowMouse.className === 'trash-can',
+                isOutOfBounds: isMouseOutOfBoundsElement(itemsContainer, xPos, yPos),
+                isTrash: isTrashBelowMouse(xPos, yPos),
             };
         },
         removeGhostElement() {

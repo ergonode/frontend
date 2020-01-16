@@ -23,6 +23,9 @@
 
 <script>
 
+const registerResizeEventListenersModule = () => import('@Core/models/resize/registerResizeEventListeners');
+const unregisterResizeEventListenersModule = () => import('@Core/models/resize/unregisterResizeEventListeners');
+
 export default {
     name: 'GridCell',
     inject: ['getEditingCellCoordinates', 'setEditingCellCoordinates'],
@@ -74,12 +77,12 @@ export default {
         };
     },
     mounted() {
-        if (!this.locked) {
+        if (!this.locked && !this.disabled) {
             this.$el.addEventListener('dblclick', this.onDblcClick);
         }
     },
     destroyed() {
-        if (!this.locked) {
+        if (!this.locked && !this.disabled) {
             this.$el.removeEventListener('dblclick', this.onDblcClick);
         }
     },
@@ -93,6 +96,7 @@ export default {
                     'grid-cell--locked': this.locked,
                     'grid-cell--selected': this.selected,
                     'grid-cell--draft': this.draft,
+                    'grid-cell--disabled': this.disabled,
                 },
             ];
         },
@@ -140,7 +144,7 @@ export default {
             switch (keyCode) {
             case 13:
                 // Key: ENTER
-                if (!this.locked) {
+                if (!this.locked && !this.disabled) {
                     element = this.$el;
 
                     this.isEditing = !this.isEditing;
@@ -149,7 +153,7 @@ export default {
                 break;
             case 32:
                 // Key: SPACE BAR
-                if (!this.locked && this.spacebarEdition) {
+                if (!this.locked && !this.disabled && this.spacebarEdition) {
                     this.isEditing = !this.isEditing;
                     this.$emit('edit', this.isEditing);
                 }
@@ -195,7 +199,7 @@ export default {
             return true;
         },
         onDblcClick() {
-            if (!this.locked && !this.spacebarEdition) {
+            if (!this.locked && !this.disabled && !this.spacebarEdition) {
                 this.isEditing = true;
                 this.$emit('edit', this.isEditing);
             }
@@ -206,7 +210,10 @@ export default {
             this.startY = pageY;
             this.startHeight = parseInt(this.$el.getBoundingClientRect().height, 10);
             this.currentHeight = this.startHeight;
-            this.addEventListenersForResizeState();
+
+            registerResizeEventListenersModule().then((response) => {
+                response.default(this.doResizeDrag, this.stopResizeDrag);
+            });
         },
         doResizeDrag(event) {
             const { pageY } = event;
@@ -238,8 +245,6 @@ export default {
             this.isResizing = false;
             this.$refs.resizerBorder.style.height = null;
             this.$refs.resizerBorder.classList.remove('grid-cell__resizer-border--negative-height');
-
-            this.removeEventListenersForResizeState();
             this.$emit('copy', {
                 from: {
                     row: this.row,
@@ -250,30 +255,10 @@ export default {
                     column: this.column,
                 },
             });
-        },
-        addEventListenersForResizeState() {
-            document.documentElement.addEventListener(
-                'mousemove',
-                this.doResizeDrag,
-                false,
-            );
-            document.documentElement.addEventListener(
-                'mouseup',
-                this.stopResizeDrag,
-                false,
-            );
-        },
-        removeEventListenersForResizeState() {
-            document.documentElement.removeEventListener(
-                'mousemove',
-                this.doResizeDrag,
-                false,
-            );
-            document.documentElement.removeEventListener(
-                'mouseup',
-                this.stopResizeDrag,
-                false,
-            );
+
+            unregisterResizeEventListenersModule().then((response) => {
+                response.default(this.doResizeDrag, this.stopResizeDrag);
+            });
         },
     },
 };
@@ -298,7 +283,7 @@ export default {
             background-color: $WHITESMOKE;
         }
 
-        &:not(&--error):not(&--locked) {
+        &:not(&--error):not(&--locked):not(&--disabled) {
             &:focus {
                 box-shadow: inset 0 0 0 2px $GREEN;
             }
@@ -316,8 +301,14 @@ export default {
             }
         }
 
-        &--locked:focus {
-            box-shadow: inset 0 0 0 2px $GRAPHITE_LIGHT;
+        &--locked, &--disabled {
+            &:focus {
+                box-shadow: inset 0 0 0 2px $GRAPHITE_LIGHT;
+            }
+        }
+
+        &--disabled {
+            background-color: $WHITESMOKE;
         }
 
         &__resizer {

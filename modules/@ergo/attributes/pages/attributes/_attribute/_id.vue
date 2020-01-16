@@ -14,7 +14,7 @@
 <script>
 
 import { mapState, mapActions } from 'vuex';
-import { getKeyByValue } from '@Core/models/objectWrapper';
+import { isEmpty, getKeyByValue } from '@Core/models/objectWrapper';
 import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { getParsedOptions, getParsedParameterKeys } from '@Attributes/models/attributeMapper';
@@ -35,9 +35,7 @@ export default {
             code: (state) => state.code,
             type: (state) => state.type,
             parameter: (state) => state.parameter,
-            optionKeys: (state) => state.optionKeys,
-            optionValues: (state) => state.optionValues,
-            isMultilingual: (state) => state.isMultilingual,
+            options: (state) => state.options,
         }),
         ...mapState('translations', {
             translations: (state) => state.translations,
@@ -94,24 +92,21 @@ export default {
                 groups: this.groups.map((group) => group.id),
             };
 
-            if (this.optionKeys.length > 0) {
-                const uniqueOptions = new Set(this.optionKeys);
+            if (!isEmpty(this.options)) {
+                const optionKeys = Object.keys(this.options);
+                const uniqueOptions = new Set(optionKeys);
 
-                if (this.optionKeys.some((key) => key === '')) {
+                if (optionKeys.some((key) => key === '')) {
                     this.$addAlert({ type: 'warning', message: 'Options cannot have an empty keys' });
                     return;
                 }
 
-                if (this.optionKeys.length !== uniqueOptions.size) {
+                if (optionKeys.length !== uniqueOptions.size) {
                     this.$addAlert({ type: 'warning', message: 'Option code must be unique' });
                     return;
                 }
 
-                propertiesToUpdate.options = getParsedOptions(
-                    this.optionKeys,
-                    this.optionValues,
-                    this.isMultilingual,
-                );
+                propertiesToUpdate.options = getParsedOptions(this.options);
             }
 
             if (this.parameter) {

@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import { getUUID } from '@Core/models/stringWrapper';
-import { getKeyByValue } from '@Core/models/objectWrapper';
 
 export function getMappedConditionSetData(conditionSetData, conditions) {
     const mappedData = [];
@@ -16,9 +15,7 @@ export function getMappedConditionSetData(conditionSetData, conditions) {
             const parameter = parameters.find(({ name }) => name === conditionKey);
 
             if (parameter && parameter.options) {
-                conditionData[conditionKey] = getKeyByValue(
-                    parameter.options, conditionData[conditionKey],
-                );
+                conditionData[conditionKey] = conditionData[conditionKey].id;
             }
         });
 
@@ -42,7 +39,11 @@ export function getParsedConditionSetData(conditions, conditionsData) {
             const { options } = conditionsData[type].parameters.find((param) => param.name === key);
 
             if (options) {
-                parameters[key] = options[parameters[key]];
+                parameters[key] = {
+                    id: parameters[key],
+                    key: parameters[key],
+                    value: options[parameters[key]],
+                };
             }
         });
 

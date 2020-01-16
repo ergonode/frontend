@@ -35,7 +35,7 @@
                         title="more"
                         :theme="secondaryTheme"
                         :size="smallSize"
-                        :disabled="!$hasAccess(['PRODUCT_UPDATE'])"
+                        :disabled="!isUserAllowedToUpdateProduct"
                         :options="optionTitle"
                         @input="optionAction" />
                     <Button
@@ -44,7 +44,7 @@
                         :theme="secondaryTheme"
                         :size="smallSize"
                         :title="button.name || button.code"
-                        :disabled="!$hasAccess(['PRODUCT_UPDATE'])"
+                        :disabled="!isUserAllowedToUpdateProduct"
                         @click.native="updateStatus(button.code)" />
                 </TitleBarSubActions>
             </template>
@@ -111,6 +111,9 @@ export default {
         },
         optionTitle() {
             return this.statusesButtons.more.map((option) => option.code);
+        },
+        isUserAllowedToUpdateProduct() {
+            return this.$hasAccess(['PRODUCT_UPDATE']);
         },
     },
     methods: {

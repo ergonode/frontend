@@ -31,6 +31,12 @@ export default {
                     menuPosition: 7,
                     icon: Icons.Flow,
                 },
+                breadcrumbs: [
+                    {
+                        title: 'Workflow',
+                        icon: Icons.Flow,
+                    },
+                ],
                 isMenu: true,
                 menuPosition: 2,
                 privileges: {

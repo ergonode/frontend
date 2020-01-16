@@ -7,7 +7,7 @@ import defaultState from './state';
 export const types = {
     INITIALIZE_PRODUCT_DRAFT: 'INITIALIZE_PRODUCT_DRAFT',
     INITIALIZE_COLUMN_PRODUCT_DRAFT: 'INITIALIZE_COLUMN_PRODUCT_DRAFT',
-    ADD_DRAFT_VALUE_FOR_LANGUAGE_CODE: 'ADD_DRAFT_VALUE_FOR_LANGUAGE_CODE',
+    ADD_DRAFT_VALUE: 'ADD_DRAFT_VALUE',
     REMOVE_DRAFT: 'REMOVE_DRAFT',
     REMOVE_DRAFT_VALUE: 'REMOVE_DRAFT_VALUE',
     FORCE_DRAFT_MUTATION: 'FORCE_DRAFT_MUTATION',
@@ -20,10 +20,10 @@ export default {
     [types.INITIALIZE_COLUMN_PRODUCT_DRAFT](state, { productId, columnId }) {
         state.drafts[productId][columnId] = {};
     },
-    [types.ADD_DRAFT_VALUE_FOR_LANGUAGE_CODE](state, {
-        productId, columnId, languageCode, value,
+    [types.ADD_DRAFT_VALUE](state, {
+        productId, columnId, value,
     }) {
-        state.drafts[productId][columnId][languageCode] = value;
+        state.drafts[productId][columnId] = value;
         state.drafts[productId] = { ...state.drafts[productId] };
         state.drafts = { ...state.drafts };
     },

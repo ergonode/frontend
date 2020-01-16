@@ -7,6 +7,7 @@
         :locked="!isFilterCell"
         :row="rowIndex"
         :column="columnIndex"
+        :disabled="disabled"
         :spacebar-edition="false">
         <template #default="{ isEditing }">
             <Component
@@ -17,7 +18,6 @@
                 <GridEditFilterCell
                     :multiselect="isMultiSelect"
                     :type="filterType"
-                    :language-code="column.language"
                     :value="filterValue"
                     :options="options"
                     :colors="column.colors || null"
@@ -33,7 +33,8 @@
 <script>
 import { FILTER_OPERATOR } from '@Core/defaults/operators';
 import { COLUMN_TYPE } from '@Core/defaults/grid';
-import { getMappedArrayValue } from '@Core/models/mappers/gridDataMapper';
+import { getMappedGridColumnOptions } from '@Core/models/mappers/gridDataMapper';
+import { isArrayEqualToArray } from '@Core/models/arrayWrapper';
 
 export default {
     name: 'GridFilterCell',
@@ -44,10 +45,6 @@ export default {
         GridEditFilterCell: () => import('@Core/components/Grid/EditCells/GridEditFilterCell'),
     },
     props: {
-        namespace: {
-            type: String,
-            required: true,
-        },
         rowIndex: {
             type: Number,
             required: true,
@@ -64,15 +61,12 @@ export default {
             type: Object,
             default: null,
         },
-        path: {
-            type: String,
-            required: true,
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {
-        gridState() {
-            return this.$store.state[this.namespace];
-        },
         isFilterCell() {
             return typeof this.column.filter !== 'undefined';
         },
@@ -108,10 +102,10 @@ export default {
             }
 
             if (this.isSelectKind) {
-                return getMappedArrayValue(
+                return getMappedGridColumnOptions(
                     this.filter.value,
                     this.column.filter.options,
-                );
+                ).editValue;
             }
 
             return this.filter.value;
@@ -172,10 +166,16 @@ export default {
                 parsedValue = value.key;
             }
 
-            if (this.gridState.filters[id] !== parsedValue) {
-                this.$store.dispatch(`${this.namespace}/setFilter`, { id, filter: parsedValue, operator: FILTER_OPERATOR.EQUAL });
-                this.$store.dispatch(`${this.namespace}/getData`, this.path);
-                this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
+            if (((this.filter
+                && ((Array.isArray(this.filter.value)
+                    && !isArrayEqualToArray(this.filter.value, parsedValue))
+                    || this.filter.value !== parsedValue)))
+                || (!this.filter && parsedValue.length > 0)) {
+                this.$emit('filter', {
+                    id,
+                    filter: parsedValue,
+                    operator: FILTER_OPERATOR.EQUAL,
+                });
             }
         },
     },

@@ -9,6 +9,7 @@
                 v-for="element in elementsByLanguageCode"
                 :key="element.id"
                 :item="element"
+                :is-draggable="isUserAllowedToUpdateTree"
                 :language-code="languageCode" />
         </ListScrollableContainer>
     </List>
@@ -39,6 +40,9 @@ export default {
             if (!language || language.length === 0) return [];
 
             return language;
+        },
+        isUserAllowedToUpdateTree() {
+            return this.$hasAccess(['CATEGORY_TREE_UPDATE']);
         },
     },
 };

@@ -1,11 +1,14 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable array-callback-return */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-require('dotenv').config({path: '.env'});
+require('dotenv').config({ path: '.env' });
 const { modulesConfig, inactiveModulesConfig } = require('./plugins/moduleLoader');
 const path = require('path');
 const pkg = require('./package');
+
 const nuxtConfig = {
     css: modulesConfig.nuxt.css || [],
     styleResources: modulesConfig.nuxt.styleResources || {},
@@ -20,9 +23,9 @@ module.exports = {
         },
         title: 'Ergonode',
         meta: [
-            {charset: 'utf-8'},
-            {name: 'viewport', content: 'width=device-width, initial-scale=1'},
-            {hid: 'description', name: 'description', content: pkg.description},
+            { charset: 'utf-8' },
+            { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+            { hid: 'description', name: 'description', content: pkg.description },
         ],
         link: [
             {
@@ -51,7 +54,12 @@ module.exports = {
         '@nuxtjs/axios',
         'cookie-universal-nuxt',
         '@nuxtjs/style-resources',
-        ['@nuxtjs/component-cache', {maxAge: 1000 * 60 * 60}],
+        [
+            '@nuxtjs/component-cache',
+            {
+                maxAge: 1000 * 60 * 60,
+            },
+        ],
     ],
     axios: {
         credentials: false,
@@ -75,13 +83,13 @@ module.exports = {
                 alias[key] = path.join(__dirname, inactiveAliases[key]);
             });
 
-            if(isClient && isDev) {
+            if (isClient && isDev) {
                 config.devtool = 'source-map';
             }
         },
         optimization: {
             splitChunks: {
-                chunks: 'all'
+                chunks: 'all',
             },
         },
         optimizeCSS: true,

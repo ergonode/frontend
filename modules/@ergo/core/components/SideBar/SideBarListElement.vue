@@ -110,6 +110,7 @@ export default {
         }
 
         &__link {
+            outline: none;
             display: grid;
             grid-template-columns: 32px max-content;
             grid-column-gap: 8px;

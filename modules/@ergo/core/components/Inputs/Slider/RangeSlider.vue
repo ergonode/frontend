@@ -26,6 +26,10 @@
 </template>
 
 <script>
+
+const registerResizeEventListenersModule = () => import('@Core/models/resize/registerResizeEventListeners');
+const unregisterResizeEventListenersModule = () => import('@Core/models/resize/unregisterResizeEventListeners');
+
 export default {
     name: 'RangeSlider',
     props: {
@@ -71,7 +75,9 @@ export default {
     methods: {
         initResizeDrag(event) {
             this.isDraggingUpperSphere = event.target.classList.contains('slider__upper-sphere');
-            this.addEventListenersForResizeState();
+            registerResizeEventListenersModule().then((response) => {
+                response.default(this.doResizeDrag, this.stopResizeDrag);
+            });
         },
         onMouseEnter(event) {
             event.target.classList.add('column--hovered');
@@ -97,36 +103,14 @@ export default {
             }
         },
         stopResizeDrag() {
-            this.removeEventListenersForResizeState();
+            unregisterResizeEventListenersModule().then((response) => {
+                response.default(this.doResizeDrag, this.stopResizeDrag);
+            });
         },
         getProgress(pageX) {
             const fixedXOffset = pageX - this.xPos - (this.sphereSize / 2);
 
             return Math.round((fixedXOffset / this.width) * this.maxValue);
-        },
-        addEventListenersForResizeState() {
-            document.documentElement.addEventListener(
-                'mousemove',
-                this.doResizeDrag,
-                false,
-            );
-            document.documentElement.addEventListener(
-                'mouseup',
-                this.stopResizeDrag,
-                false,
-            );
-        },
-        removeEventListenersForResizeState() {
-            document.documentElement.removeEventListener(
-                'mousemove',
-                this.doResizeDrag,
-                false,
-            );
-            document.documentElement.removeEventListener(
-                'mouseup',
-                this.stopResizeDrag,
-                false,
-            );
         },
         getTransformValue(value) {
             return value === this.maxValue

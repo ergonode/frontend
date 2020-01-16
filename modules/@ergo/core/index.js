@@ -81,6 +81,12 @@ export default {
                     menuPosition: 1000,
                     icon: Icons.Settings,
                 },
+                breadcrumbs: [
+                    {
+                        title: 'System',
+                        icon: Icons.Settings,
+                    },
+                ],
                 isMenu: true,
                 menuPosition: 1000,
                 redirectTo: 'main',

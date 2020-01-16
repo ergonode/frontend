@@ -7,7 +7,7 @@
         <ListSearchHeader
             header="Conditions"
             :is-expanded="isExpanded"
-            @searchResults="onSearch"
+            :is-search="false"
             @expand="onExpand" />
         <ConditionsList :language-code="userLanguageCode" />
     </VerticalTabBarListWrapper>
@@ -37,9 +37,6 @@ export default {
     methods: {
         onExpand(isExpanded) {
             this.$emit('expand', isExpanded);
-        },
-        onSearch() {
-            // TODO: Add whenever we handle it at the BE
         },
     },
 };

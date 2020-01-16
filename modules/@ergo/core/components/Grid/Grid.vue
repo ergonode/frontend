@@ -51,30 +51,35 @@
                 :key="column.id"
                 :style="templateRows"
                 :draggable="draggableColumn"
-                :namespace="namespace"
                 :index="colIndex + columnsOffset"
                 :column="column"
                 :column-offset="columnsOffset"
                 :row-height="rowHeight"
                 :is-header-focused="isHeaderFocused"
                 :is-mouse-over-grid="isMouseOverGrid"
-                @mouseOverGrid="onMouseOverGrid">
+                @mouseOverGrid="onMouseOverGrid"
+                @removeColumnAtIndex="onRemoveColumnAtIndex"
+                @changeColumnsPosition="onChangeColumnsPosition"
+                @updateColumnWidthAtIndex="onUpdateColumnWidthAtIndex"
+                @getColumnData="onGetColumnData">
                 <GridHeaderCell
-                    :namespace="namespace"
                     :column-index="colIndex + columnsOffset"
                     :is-column-editable="isColumnEditable"
+                    :sorted-column="gridState.sortedColumn"
                     :column="column"
                     :path="editRoute.path"
                     :row-index="getRowIndex(0)"
-                    @focus="onHeaderFocus" />
+                    @focus="onHeaderFocus"
+                    @sort="onSortColumn"
+                    @removeColumnAtIndex="onRemoveColumnAtIndex" />
                 <GridFilterCell
                     v-if="basicFilters"
-                    :namespace="namespace"
                     :column-index="colIndex + columnsOffset"
                     :row-index="getRowIndex(1)"
                     :column="column"
                     :filter="gridState.filters[column.id]"
-                    :path="editRoute.path" />
+                    :disabled="typeof gridState.advancedFilters[column.id] !== 'undefined'"
+                    @filter="onFilterChange" />
                 <slot
                     v-for="(id, rowIndex) in gridState.rowIds"
                     name="cell"
@@ -84,7 +89,7 @@
                     :column-index="colIndex + columnsOffset"
                     :cell-data="gridState.cellValues[id][column.id]">
                     <GridDataCell
-                        :key="id"
+                        :key="`${id}-${column.id}`"
                         :column-index="colIndex + columnsOffset"
                         :row-index="getRowIndex(rowIndex + rowsOffset)"
                         :row-id="id"
@@ -137,6 +142,8 @@ import {
 } from '@Core/defaults/grid';
 import {
     isMouseOutOfBoundsElement,
+    isTrashBelowMouse,
+    getPositionForBrowser,
 } from '@Core/models/drag_and_drop/helpers';
 import selectedRowMixin from '@Core/mixins/grid/selectedRowMixin';
 
@@ -344,15 +351,15 @@ export default {
         onMouseOverGrid(isOver) {
             this.isMouseOverGrid = isOver;
         },
-        onDragLeave({ pageX, pageY }) {
-            if (pageX === 0 && pageY === 0) return false;
+        onDragLeave(event) {
+            const { xPos, yPos } = getPositionForBrowser(event);
+
+            if (xPos === 0 && yPos === 0) return false;
 
             const { gridContent } = this.$refs;
-            const elementBelowMouse = document.elementFromPoint(pageX, pageY);
-            const isOutOfBounds = isMouseOutOfBoundsElement(gridContent, pageX, pageY);
-            const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
+            const isOutOfBounds = isMouseOutOfBoundsElement(gridContent, xPos, yPos);
 
-            if (isOutOfBounds || isTrashBelowMouse) {
+            if (isOutOfBounds || isTrashBelowMouse(xPos, yPos)) {
                 this.isMouseOverGrid = false;
             }
 
@@ -366,6 +373,33 @@ export default {
         },
         onHeaderFocus(isFocused) {
             this.isHeaderFocused = isFocused;
+        },
+        onGetColumnData(payload) {
+            this.$store.dispatch(`${this.namespace}/getColumnData`, payload);
+        },
+        onUpdateColumnWidthAtIndex(payload) {
+            this.$store.dispatch(`${this.namespace}/updateColumnWidthAtIndex`, payload);
+        },
+        onChangeColumnsPosition({ from, to }) {
+            this.$store.dispatch(`${this.namespace}/changeColumnPosition`, {
+                from, to,
+            });
+            this.$store.dispatch(`${this.namespace}/changeColumnWidthPosition`, {
+                from, to,
+            });
+        },
+        onRemoveColumnAtIndex(index) {
+            this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, index);
+            this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, index);
+        },
+        onSortColumn(sortState) {
+            this.$store.dispatch(`${this.namespace}/setSortingState`, sortState);
+            this.$store.dispatch(`${this.namespace}/getData`, this.editRoute.path);
+        },
+        onFilterChange(filter) {
+            this.$store.dispatch(`${this.namespace}/setFilter`, filter);
+            this.$store.dispatch(`${this.namespace}/getData`, this.editRoute.path);
+            this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
         },
         addGhostColumn() {
             if (!this.isColumnExists) {

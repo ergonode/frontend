@@ -80,6 +80,8 @@ import {
 import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT } from '@Core/defaults/grid';
 import {
     getDraggedColumnPositionState,
+    getPositionForBrowser,
+    isTrashBelowMouse,
 } from '@Core/models/drag_and_drop/helpers';
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 import { changeCookiePosition } from '@Core/models/cookies';
@@ -226,11 +228,9 @@ export default {
             });
         },
         onDragEnd(event) {
-            const { pageX, pageY } = event;
-            const elementBelowMouse = document.elementFromPoint(pageX, pageY);
-            const isTrashBelowMouse = elementBelowMouse && elementBelowMouse.className === 'trash-can';
+            const { xPos, yPos } = getPositionForBrowser(event);
 
-            if (isTrashBelowMouse) {
+            if (isTrashBelowMouse(xPos, yPos)) {
                 const { language, element_id: elementId } = this.data;
 
                 this.$store.dispatch(`${this.namespace}/removeAdvancedFilterAtIndex`, this.index);
@@ -294,7 +294,11 @@ export default {
             this.$store.dispatch(`${this.namespace}/setAdvancedFilterEmptyRecord`, { id: this.data.id, isEmptyRecord });
         },
         onValueChange({ value, operator }) {
-            this.$store.dispatch(`${this.namespace}/setAdvancedFilterValue`, { id: this.data.id, operator, value });
+            if (value.length) {
+                this.$store.dispatch(`${this.namespace}/setAdvancedFilterValue`, { id: this.data.id, operator, value });
+            } else {
+                this.$store.dispatch(`${this.namespace}/removeAdvancedFilter`, this.data.id);
+            }
 
             if (this.data.type === TYPES.SELECT) {
                 this.onApply();

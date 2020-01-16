@@ -127,6 +127,7 @@ export default {
     .side-bar-list-group {
         $element: &;
 
+        outline: none;
         position: relative;
         display: flex;
         flex-direction: column;

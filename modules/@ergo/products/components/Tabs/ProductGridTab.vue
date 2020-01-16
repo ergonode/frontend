@@ -49,16 +49,16 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import VerticalTabBar from '@Core/components/Tab/VerticalTabBar';
 import Button from '@Core/components/Buttons/Button';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
+
 
 export default {
     name: 'ProductGridTab',
     components: {
         GridViewTemplate,
-        VerticalTabBar,
         Button,
+        VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
         Grid: () => import('@Core/components/Grid/Grid'),
         GridAdvancedFilters: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFilters'),
         GridPagination: () => import('@Core/components/Grid/GridPagination'),
@@ -86,12 +86,14 @@ export default {
             numberOfPages: 'numberOfPages',
         }),
         verticalTabs() {
+            const isUserAllowedToReadProduct = this.$hasAccess(['PRODUCT_READ']);
+
             return [
                 {
                     title: 'Attributes',
                     component: () => import('@Products/components/Tabs/List/AttributesListTab'),
                     props: {
-                        disabled: !this.$hasAccess(['PRODUCT_READ']),
+                        disabled: !isUserAllowedToReadProduct,
                     },
                     iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
                     listDataType: 'attributes',
@@ -100,7 +102,7 @@ export default {
                     title: 'System Attributes',
                     component: () => import('@Products/components/Tabs/List/SystemAttributesListTab'),
                     props: {
-                        disabled: !this.$hasAccess(['PRODUCT_READ']),
+                        disabled: !isUserAllowedToReadProduct,
                     },
                     iconComponent: () => import('@Core/components/Icons/Menu/IconSettings'),
                     listDataType: 'attributes/system',
@@ -161,7 +163,7 @@ export default {
             // TODO: Solve it
             this.isAdvancedFilterFocused = isFocused;
         },
-        onRowEdit({ links: { edit } }) {
+        onRowEdit({ links: { value: { edit } } }) {
             const args = edit.href.split('/');
             const lastIndex = args.length - 1;
 
@@ -178,11 +180,13 @@ export default {
                 promises.push(this.applyDraft({
                     id: productId,
                     onSuccess: () => {
-                        Object.entries(this.drafts[productId])
-                            .forEach(([columnId, languageCode]) => {
-                                const [value] = Object.values(languageCode);
-
-                                this.addDraftToProduct({ columnId, productId, value });
+                        Object.keys(this.drafts[productId])
+                            .forEach((columnId) => {
+                                this.addDraftToProduct({
+                                    columnId,
+                                    productId,
+                                    value: this.drafts[productId][columnId],
+                                });
                                 this.removeDraft(productId);
                             });
                     },

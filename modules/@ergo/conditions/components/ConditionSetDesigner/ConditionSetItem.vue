@@ -82,7 +82,7 @@ export default {
 
                 if (foundKey !== -1) {
                     if (!placeholders[clearedKey]) return placeholder;
-                    return placeholders[clearedKey];
+                    return placeholders[clearedKey].value;
                 }
                 return placeholders[clearedKey] || placeholder;
             });

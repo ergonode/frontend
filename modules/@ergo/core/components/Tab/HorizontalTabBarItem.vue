@@ -30,6 +30,7 @@ export default {
     .tab-bar-item {
         $item: &;
 
+        outline: none;
         position: relative;
         bottom: -1px;
         display: flex;

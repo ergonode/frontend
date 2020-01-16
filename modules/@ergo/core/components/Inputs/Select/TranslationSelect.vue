@@ -16,17 +16,16 @@
             <ListElement
                 :key="index"
                 :large="!$attrs.small && $attrs.regular"
-                :selected="selectedOptions[option.id]"
-                @click.native="onSelectValue(option)">
+                :selected="typeof selectedOptions[option.id] !== 'undefined'"
+                @click.native.prevent="onSelectValue(option)">
                 <slot
                     name="option"
-                    :option="option">
+                    :option="option"
+                    :selected="typeof selectedOptions[option.id] !== 'undefined'">
                     <ListElementAction
                         v-if="$attrs.multiselect"
                         :small="$attrs.small">
-                        <CheckBox
-                            :value="selectedOptions[option.id]"
-                            @input="onSelectValue(option)" />
+                        <CheckBox :value="typeof selectedOptions[option.id] !== 'undefined'" />
                     </ListElementAction>
                     <ListElementDescription>
                         <ListElementTitle
@@ -61,11 +60,11 @@ export default {
     },
     created() {
         if (this.$attrs.multiselect) {
-            this.$attrs.value.forEach(({ id }) => {
-                this.selectedOptions[id] = true;
+            this.$attrs.value.forEach((option) => {
+                this.selectedOptions[option.id] = { ...option };
             });
         } else if (this.$attrs.value.id || this.$attrs.value.id === 0) {
-            this.selectedOptions = { [this.$attrs.value.id]: true };
+            this.selectedOptions = { [this.$attrs.value.id]: { ...this.$attrs.value } };
         }
     },
     computed: {
@@ -96,12 +95,12 @@ export default {
                 if (typeof this.selectedOptions[id] !== 'undefined') {
                     delete this.selectedOptions[id];
                 } else {
-                    this.selectedOptions[id] = true;
+                    this.selectedOptions[id] = value;
                 }
 
-                this.$emit('input', this.$attrs.options.filter((option) => typeof this.selectedOptions[option.id] !== 'undefined'));
+                this.$emit('input', Object.values(this.selectedOptions));
             } else {
-                this.selectedOptions = { [id]: true };
+                this.selectedOptions = { [id]: value };
 
                 this.$emit('input', value);
             }

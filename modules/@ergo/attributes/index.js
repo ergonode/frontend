@@ -50,6 +50,12 @@ export default {
                     menuPosition: 3,
                     icon: Icons.Templates,
                 },
+                breadcrumbs: [
+                    {
+                        title: 'Product design',
+                        icon: Icons.Templates,
+                    },
+                ],
                 isMenu: true,
                 menuPosition: 1,
                 privileges: {
@@ -149,6 +155,12 @@ export default {
                     menuPosition: 3,
                     icon: Icons.Templates,
                 },
+                breadcrumbs: [
+                    {
+                        title: 'Product design',
+                        icon: Icons.Templates,
+                    },
+                ],
                 isMenu: true,
                 menuPosition: 2,
                 privileges: {

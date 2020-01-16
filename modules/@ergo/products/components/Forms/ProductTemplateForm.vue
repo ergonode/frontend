@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <TemplateGridDesigner
-        :row-height="48"
-        @rowsCount="onRowsCountChange">
+    <TemplateGridDesigner :row-height="templateRowHeight">
         <div
             class="products-template-grid"
             :style="gridStyle">
@@ -16,6 +14,7 @@
                 :style="getItemPosition(element)"
                 :value="getElementValueByCode(element.code)"
                 :multiselect="isMultiSelect(element.type)"
+                :language-code="languageCode"
                 :disabled="!isUserAllowedToUpdate"
                 v-bind="element" />
         </div>
@@ -50,7 +49,7 @@ export default {
     data() {
         return {
             columnsNumber: 4,
-            maxRows: 0,
+            templateRowHeight: 40,
         };
     },
     computed: {
@@ -58,32 +57,25 @@ export default {
             layoutElements: (state) => state.layoutElements,
             draft: (state) => state.draft,
         }),
-        maxRowOfLayoutElements() {
-            const maxVisibleRows = this.columnsNumber * this.maxRows;
+        maxRows() {
             const layoutElement = getObjectWithMaxValueInArrayByObjectKey(this.layoutElements, 'row');
 
             if (layoutElement) {
-                const { row, height } = layoutElement;
-                const maxElementRow = row + height;
-
-                return Math.min(maxElementRow, maxVisibleRows);
+                return layoutElement.row + layoutElement.height - 1;
             }
 
-            return maxVisibleRows;
+            return 0;
         },
         isUserAllowedToUpdate() {
             return this.$hasAccess(['PRODUCT_UPDATE']);
         },
         gridStyle() {
             return {
-                gridTemplateRows: `repeat(${this.maxRowOfLayoutElements + 1}, 46px)`,
+                gridTemplateRows: `repeat(${this.maxRows}, ${this.templateRowHeight}px)`,
             };
         },
     },
     methods: {
-        onRowsCountChange({ value }) {
-            this.maxRows = value;
-        },
         getItemPosition({
             row, column, width, height,
         }) {
@@ -134,6 +126,5 @@ export default {
         display: grid;
         grid-gap: 24px;
         grid-template-columns: repeat(4, 1fr);
-        height: 0;
     }
 </style>

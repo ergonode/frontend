@@ -82,11 +82,11 @@ export default {
         GridPresentationHeaderCell: () => import('@Core/components/Grid/PresentationCells/GridPresentationHeaderCell'),
     },
     props: {
-        namespace: {
-            type: String,
+        column: {
+            type: Object,
             required: true,
         },
-        column: {
+        sortedColumn: {
             type: Object,
             required: true,
         },
@@ -95,6 +95,10 @@ export default {
             required: true,
         },
         isColumnEditable: {
+            type: Boolean,
+            default: false,
+        },
+        isColumnSorted: {
             type: Boolean,
             default: false,
         },
@@ -130,9 +134,6 @@ export default {
         graphiteLightColor() {
             return GRAPHITE_LIGHT;
         },
-        gridState() {
-            return this.$store.state[this.namespace];
-        },
         isColumnExists() {
             return this.draggedElement === this.column.id;
         },
@@ -142,12 +143,12 @@ export default {
             return row !== null && column !== null;
         },
         isSorted() {
-            return this.gridState.sortedByColumn.index === this.column.id;
+            return this.sortedColumn.index === this.column.id;
         },
         sortingOrder() {
             if (!this.isSorted) return null;
 
-            return this.gridState.sortedByColumn.orderState;
+            return this.sortedColumn.orderState;
         },
     },
     methods: {
@@ -157,16 +158,18 @@ export default {
         onClickSort() {
             let orderState = SORTING_ORDER.ASC;
             if (this.isSorted) {
-                if (this.gridState.sortedByColumn.orderState === SORTING_ORDER.ASC) {
+                if (this.sortedColumn.orderState === SORTING_ORDER.ASC) {
                     orderState = SORTING_ORDER.DESC;
                 }
-                if (this.gridState.sortedByColumn.orderState === SORTING_ORDER.DESC) {
+                if (this.sortedColumn.orderState === SORTING_ORDER.DESC) {
                     orderState = SORTING_ORDER.ASC;
                 }
             }
-            this.$store.dispatch(`${this.namespace}/setSortingState`, { index: this.column.id, orderState });
 
-            this.$emit('sort');
+            this.$emit('sort', {
+                index: this.column.id,
+                orderState,
+            });
         },
         onSelectFocus(isFocused) {
             if (!isFocused) {
@@ -187,13 +190,12 @@ export default {
                     });
                 }
 
-                this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, this.columnIndex - 1);
-                this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, this.columnIndex - 1);
                 removeCookieById({
                     cookies: this.$cookies,
                     cookieName: COLUMNS_IDS,
                     id: this.column.id,
                 });
+                this.$emit('removeColumn', this.columnIndex - 1);
                 this.$emit('focus', false);
                 break;
             }

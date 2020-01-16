@@ -19,6 +19,10 @@ export default {
             type: String,
             required: true,
         },
+        languageCode: {
+            type: String,
+            required: true,
+        },
         required: {
             type: Boolean,
             required: true,
@@ -78,6 +82,7 @@ export default {
         this.debounceFunc = debounce((value) => {
             this.setProductTemplateElementValue({
                 value,
+                languageCode: this.languageCode,
                 attributeId: this.id,
                 required: this.required,
                 name: this.label,

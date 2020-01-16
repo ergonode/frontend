@@ -31,6 +31,12 @@ export default {
                     menuPosition: 2,
                     icon: Icons.Document,
                 },
+                breadcrumbs: [
+                    {
+                        title: 'Products',
+                        icon: Icons.Document,
+                    },
+                ],
                 isMenu: true,
                 menuPosition: 2,
                 privileges: {

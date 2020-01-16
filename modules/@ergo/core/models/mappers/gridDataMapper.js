@@ -8,7 +8,7 @@ import {
     COLUMN_WIDTH,
 } from '@Core/defaults/grid';
 
-export function getParsedFilters(filters) {
+export function getParsedFilters(filters, advcFilters = null) {
     const entries = Object.entries(filters);
     const { length: entriesLength } = entries;
 
@@ -17,7 +17,7 @@ export function getParsedFilters(filters) {
     for (let i = 0; i < entriesLength; i += 1) {
         const [key, filter] = entries[i];
 
-        if (filter) {
+        if (filter && (advcFilters === null || typeof advcFilters[key] === 'undefined')) {
             const { value, operator } = filter;
 
             mappedFilter += i === 0 ? key : `;${key}`;
@@ -46,13 +46,13 @@ export function getParsedAdvancedFilters(filters) {
 }
 
 export const getParsedRequestDataParams = ({
-    sortedByColumn,
+    sortedColumn,
     currentPage,
     numberOfDisplayedElements,
     filters,
     advancedFilters,
 }, columns) => {
-    const parsedFilter = getParsedFilters(filters);
+    const parsedFilter = getParsedFilters(filters, advancedFilters);
     const parsedAdvcFilter = getParsedAdvancedFilters(advancedFilters);
 
     let filter = parsedFilter;
@@ -67,11 +67,12 @@ export const getParsedRequestDataParams = ({
         columns,
         offset: (currentPage - 1) * numberOfDisplayedElements,
         limit: numberOfDisplayedElements,
+        extended: true,
         filter,
     };
 
-    if (Object.keys(sortedByColumn).length) {
-        const { index: colSortID, orderState } = sortedByColumn;
+    if (Object.keys(sortedColumn).length) {
+        const { index: colSortID, orderState } = sortedColumn;
 
         params.field = colSortID;
         params.order = orderState;
@@ -132,6 +133,7 @@ export function getMappedColumn(column) {
 
 export function getMappedColumns(columns) {
     const mappedColumns = [];
+    const mappedColumnsId = [];
     const columnWidths = [];
     const pinnedColumns = [];
     const { length } = columns;
@@ -139,38 +141,64 @@ export function getMappedColumns(columns) {
     for (let i = 0; i < length; i += 1) {
         const column = columns[i];
 
-        // TODO:
-        // Backend have to remove column with type CHECK
-        if (column.type !== COLUMN_TYPE.CHECK) {
+        if (column.visible && column.type !== 'CHECK') {
             columnWidths.push(COLUMN_WIDTH.DEFAULT);
             mappedColumns.push({
                 ...column,
                 header: getMappedColumnHeader(column),
             });
+            mappedColumnsId.push(column.id);
         }
     }
 
     return {
+        mappedColumnsId,
         mappedColumns,
         pinnedColumns,
         columnWidths,
     };
 }
 
-export function getMappedArrayValue(value, options, languageCode) {
-    const parsedKey = value !== null && value.length > 0 ? value : '';
-
+export function getMappedGridColumnOptions(value, options, languageCode) {
     if (Array.isArray(value)) {
-        return value.map((val) => ({
-            id: val,
-            key: val,
-            value: options[val],
-            hint: options[val] ? `#${val} ${languageCode}` : '',
-        }));
+        const { length } = value;
+        const editValue = [];
+        let presentationValue = '';
+
+        for (let i = 0; i < length; i += 1) {
+            const val = value[i];
+
+            presentationValue += options[val] || `#${val}`;
+
+            if (i + 1 < length) {
+                presentationValue += ', ';
+            }
+
+            editValue.push({
+                id: val,
+                key: val,
+                value: options[val],
+                hint: options[val] ? `#${val} ${languageCode}` : '',
+            });
+        }
+
+        return {
+            presentationValue,
+            editValue,
+        };
+    }
+
+    let presentationValue = '';
+
+    if (value !== null && value.length) {
+        presentationValue = options[value] || `#${value}`;
     }
 
     return {
-        id: parsedKey, key: parsedKey, value: options[value] || '', hint: options[value] ? `#${parsedKey} ${languageCode}` : '',
+        presentationValue,
+        editValue: {
+            id: value, key: value, value: options[value] || '', hint: options[value] ? `#${value} ${languageCode}` : '',
+        },
     };
 }
 
@@ -186,20 +214,29 @@ export function getMappedCellValues(columns, rows, rowIds) {
         for (let j = 0; j < rowsNumber; j += 1) {
             const row = rows[j];
             const rowId = rowIds[j];
-            const value = row[column.id];
+            const { value, prefix = '', suffix = '' } = row[column.id];
 
             if (!values[rowId]) values[rowId] = {};
-
             if (filter && filter.options) {
-                values[rowId][columnId] = getMappedArrayValue(
+                const { presentationValue, editValue } = getMappedGridColumnOptions(
                     value,
                     filter.options,
                     column.language,
                 );
-            } else if (typeof value === 'boolean' && column.type !== COLUMN_TYPE.CHECK_CELL) {
-                values[rowId][columnId] = { value: value ? 'Yes' : 'No' };
+
+                values[rowId][columnId] = {
+                    presentationValue, editValue, prefix, suffix,
+                };
+            } else if (typeof value === 'boolean') {
+                values[rowId][columnId] = {
+                    presentationValue: value ? 'Yes' : 'No', editValue: value, prefix, suffix,
+                };
             } else {
-                values[rowId][columnId] = { value: value !== null && typeof value !== 'undefined' ? value : '' };
+                const parsedValue = value === null || typeof value === 'undefined' ? '' : value;
+
+                values[rowId][columnId] = {
+                    presentationValue: parsedValue, editValue: parsedValue, prefix, suffix,
+                };
             }
         }
     }
@@ -207,30 +244,23 @@ export function getMappedCellValues(columns, rows, rowIds) {
     return values;
 }
 
-export function getMappedRowIds(rows) {
+export function getMappedRows(rows) {
     const rowIds = [];
-    const { length } = rows;
-
-    for (let i = 0; i < length; i += 1) {
-        const { id } = rows[i];
-
-        if (typeof id === 'undefined') rowIds.push(i + 1);
-        else rowIds.push(id);
-    }
-
-    return rowIds;
-}
-
-export function getMappedRowLinks(rows) {
     const rowLinks = [];
     const { length } = rows;
 
     for (let i = 0; i < length; i += 1) {
         const { id, _links } = rows[i];
 
-        if (typeof id === 'undefined') rowLinks.push({ id: i + 1, links: _links });
-        else rowLinks.push({ id, links: _links });
+        if (typeof id !== 'object') {
+            const index = i + 1;
+            rowIds.push(index);
+            rowLinks.push({ id: index, links: _links });
+        } else {
+            rowIds.push(id.value);
+            rowLinks.push({ id: id.value, links: _links });
+        }
     }
 
-    return rowLinks;
+    return { rowIds, rowLinks };
 }

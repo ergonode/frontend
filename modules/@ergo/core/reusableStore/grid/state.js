@@ -21,7 +21,7 @@ const state = () => ({
     advancedFilters: {},
     advancedFiltersData: [],
     currentPage: 1,
-    sortedByColumn: {},
+    sortedColumn: {},
 });
 
 export default {

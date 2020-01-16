@@ -4,8 +4,6 @@
  */
 import { types } from './mutations';
 
-const onDefaultError = () => {};
-
 export default {
     setRoleId({ commit }, value) {
         commit(types.SET_ROLE_ID, value);
@@ -28,7 +26,7 @@ export default {
                 value: name,
                 hint: description,
             })));
-        }).catch(onDefaultError);
+        });
     },
     getRoleById(
         { commit, rootState },
@@ -45,7 +43,7 @@ export default {
             commit(types.SET_ROLE_NAME, name);
             commit(types.SET_ROLE_DESCRIPTION, description);
             commit(types.SET_ROLE_PRIVILEGES, privileges);
-        }).catch(onDefaultError);
+        });
     },
     async createRole(
         { commit, rootState },
