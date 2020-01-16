@@ -62,7 +62,7 @@ export default {
         },
         isSearch: {
             type: Boolean,
-            required: true,
+            default: false,
         },
     },
     data() {
