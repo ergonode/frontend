@@ -3,12 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <NavigationBarSelectButton>
+    <NavigationBarSelectButton
+        @focus="onFocus">
         <template #input>
             <IconBell :fill-color="whiteColor" />
             <NotificationBadge
-                v-if="notifications.length > 0"
-                :number="notifications.length" />
+                v-if="notificationsCount > 0"
+                :number="notificationsCount" />
         </template>
         <template #selectContent>
             <div class="notifications-dropdown">
@@ -34,7 +35,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { WHITE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
@@ -52,14 +53,23 @@ export default {
     computed: {
         ...mapState('notifications', {
             notifications: (state) => state.notifications,
+            notificationsCount: (state) => state.count,
         }),
         whiteColor() {
             return WHITE;
         },
     },
     methods: {
+        ...mapActions('notifications', [
+            'requestForNotifications',
+        ]),
         navigateToAllNotifications() {
             this.$router.push({ name: 'notifications-grid' });
+        },
+        onFocus({ focus, isClickedInsideMenu }) {
+            if (focus && !isClickedInsideMenu) {
+                this.requestForNotifications();
+            }
         },
     },
 };
