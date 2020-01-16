@@ -32,7 +32,7 @@ export default {
     },
     data() {
         return {
-            isFocused: null,
+            isFocused: false,
             isClickedOutside: false,
         };
     },
