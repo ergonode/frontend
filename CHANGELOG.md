@@ -8,7 +8,7 @@ This changelog references the relevant changes.
  - feature - Add comment module 
  - feature - Add system attribute
  - feature - Add advanced filter support
- - feature - Add excel-light mechanisms to grid
+ - feature - Add excel-like mechanisms to grid
 
 ## CHANGELOG FOR v0.5.0
 
