@@ -6,7 +6,8 @@
     <li
         :class="['notification-element', {
             'notification-element--unread': notification.read_at === null,
-        }]">
+        }]"
+        @click="markAsRead">
         <UserAvatar
             :image-id="notification.avatar_id"
             :name="notification.author"
@@ -22,6 +23,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
@@ -38,6 +40,18 @@ export default {
     computed: {
         graphiteColor() {
             return GRAPHITE;
+        },
+    },
+    methods: {
+        ...mapActions('notifications', [
+            'markNotificationAsRead',
+        ]),
+        markAsRead() {
+            const { id, read_at: readAt } = this.notification;
+
+            if (readAt === null) {
+                this.markNotificationAsRead({ id });
+            }
         },
     },
 };

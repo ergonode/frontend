@@ -19,6 +19,11 @@
 </template>
 
 <script>
+import {
+    isMouseOutOfBoundsElement,
+    getPositionForBrowser,
+} from '@Core/models/drag_and_drop/helpers';
+
 export default {
     name: 'NavigationBarSelectButton',
     components: {
@@ -41,16 +46,13 @@ export default {
             }
         },
         onClickOutside(event) {
-            if (this.isFocused) {
-                const { pageX, pageY } = event;
-                const {
-                    top, left, width, height,
-                } = this.$refs.menu.getBoundingClientRect();
-                const isClickedInsideMenu = pageX > left
-                    && pageX < left + width
-                    && pageY > top
-                    && pageY < top + height;
+            let isClickedInsideMenu = false;
 
+            if (this.isFocused) {
+                const { xPos, yPos } = getPositionForBrowser(event);
+                const { menu } = this.$refs;
+
+                isClickedInsideMenu = !isMouseOutOfBoundsElement(menu, xPos, yPos);
                 if (!isClickedInsideMenu) {
                     this.isFocused = false;
                 }
@@ -62,7 +64,7 @@ export default {
                 window.removeEventListener('click', this.onClickOutside);
             }
 
-            this.$emit('focus', this.isFocused);
+            this.$emit('focus', { focus: this.isFocused, isClickedInsideMenu });
         },
     },
 };

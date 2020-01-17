@@ -80,11 +80,9 @@ export default {
     methods: {
         ...mapActions('notifications', [
             'setNotificationsLimit',
-            'requestForNotifications',
         ]),
         onLoadMoreNotifications() {
             this.setNotificationsLimit(this.limit + DATA_LIMIT);
-            this.requestForNotifications();
         },
     },
 };
