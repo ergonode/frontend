@@ -4,9 +4,12 @@
  */
 export default {
     components: {
-        PageWrapper: () => import('~/components/Layout/PageWrapper'),
-        NavigationHeader: () => import('~/components/ReusableHeader/NavigationHeader'),
-        HorizontalTabBar: () => import('~/components/Tab/HorizontalTabBar'),
+        Page: () => import('~/core/components/Layout/Page'),
+        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
+        HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
+        Footer: () => import('~/components/ReusableFooter/Footer'),
+        Button: () => import('~/core/components/Buttons/Button'),
+        IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
     props: {
         title: {
@@ -30,6 +33,10 @@ export default {
         },
         onSave() {
             this.$emit('save');
+        },
+        onUpdate() {
+            if (this.isEdit) this.onSave();
+            else this.onCreate();
         },
     },
 };

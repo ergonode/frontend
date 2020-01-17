@@ -13,14 +13,14 @@ export function addLayoutElementCopyToDocumentBody(event) {
         width: ${width}px;
     `;
     clonedDOMElement.setAttribute('style', clonedDOMElementStyle);
-    clonedDOMElement.classList.add('cloned-layout-element');
+    clonedDOMElement.classList.add('cloned-theme-element');
     document.body.appendChild(clonedDOMElement);
     event.dataTransfer.setDragImage(clonedDOMElement, offsetX, offsetY);
     event.dataTransfer.setData('text/plain', 'layoutElement');
 }
 
 export function removeLayoutElementCopyFromDocumentBody(event) {
-    const clonedDOMElement = document.documentElement.querySelector('.cloned-layout-element');
+    const clonedDOMElement = document.documentElement.querySelector('.cloned-theme-element');
     document.body.removeChild(clonedDOMElement);
 
     if (navigator.userAgent.toLowerCase().indexOf('firefox') === -1) {

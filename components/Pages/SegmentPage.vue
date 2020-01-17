@@ -3,106 +3,76 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
-        <NavigationHeader
+    <Page>
+        <TitleBar
             :title="title"
-            :buttons="buttons"
-            :breadcrumbs="breadcrumbs"
-            :is-read-only="!isUserAllowedToUpdateSegments && isEdit"
-            icon="Templates"
-            @navigateback="onDismiss" />
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('SEGMENT')"
+            @navigateBack="onDismiss">
+            <template
+                v-if="isEdit"
+                #mainAction>
+                <Button
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE SEGMENT"
+                    :disabled="!$hasAccess(['SEGMENT_DELETE'])"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </Button>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE SEGMENT' : 'CREATE SEGMENT'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
         <Blur
             v-show="isBlurVisible"
             :style="blurZIndex" />
-    </PageWrapper>
+        <TrashCan v-show="draggedElementOnGrid" />
+    </Page>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
+import { Z_INDEX_LVL_0 } from '~/assets/scss/_variables/_indexes.scss';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'SegmentPage',
     mixins: [categoryManagementPageBaseMixin],
     components: {
+        TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
         Blur: () => import('~/components/Blur/Blur'),
-    },
-    created() {
-        let generalOptTabPath = '/segments/segment/new/general';
-        let translationTabPath = '';
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        this.buttons = [];
-        this.breadcrumbs = [
-            {
-                title: 'Segments',
-                icon: 'Templates',
-                path: '/segments',
-            },
-        ];
-        this.isUserAllowedToUpdateSegments = this.$hasAccess('SEGMENT_UPDATE');
-        if (this.isEdit) {
-            generalOptTabPath = `/segments/segment/edit/${this.$route.params.id}/general`;
-            translationTabPath = `/segments/segment/edit/${this.$route.params.id}/translations`;
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-
-            this.buttons = [
-                {
-                    title: 'REMOVE SEGMENT',
-                    color: 'transparent',
-                    action: this.onRemove,
-                    theme: 'dark',
-                    icon: 'remove',
-                    disabled: !this.$hasAccess('SEGMENT_DELETE'),
-                },
-            ];
-        }
-        this.tabs = [
-            {
-                title: 'General options',
-                path: generalOptTabPath,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} SEGMENT`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateSegments : false,
-                    },
-                },
-            },
-            {
-                title: 'Translations',
-                path: translationTabPath,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} SEGMENT`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateSegments : false,
-                    },
-                },
-            },
-        ];
-    },
-    beforeDestroy() {
-        delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateSegments;
-        delete this.buttons;
     },
     computed: {
         ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
+            isListElementDragging: (state) => state.isListElementDragging,
+            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         isBlurVisible() {
-            return this.isListElementDragging;
+            return this.isListElementDragging || this.draggedElementOnGrid;
         },
         blurZIndex() {
-            if (this.isListElementDragging) {
-                return { zIndex: '10' };
+            if (this.isBlurVisible) {
+                return { zIndex: Z_INDEX_LVL_0 };
             }
             return null;
         },

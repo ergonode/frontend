@@ -3,39 +3,78 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="grid-item">
+    <div
+        :class="['grid-item',{ 'grid-item--menu-active': isContextualMenuActive }]"
+        @mouseover="onMouseOver"
+        @mouseout="onMouseOut">
         <IconPlusMinus
             v-if="hasChildren"
             class="grid-item__icon"
             size="20"
             :state="btnExpanderIconState"
             @click.native="toggleItemExpand" />
-        <span class="grid-item__title txt-fixed typo-subtitle txt--dark-graphite">
-            {{ itemName }}
-        </span>
-        <span
+        <div
+            class="grid-item__title"
+            :title="item.name ? `#${item.code}`: ''">
+            <span
+                class="font--medium-14-20"
+                v-text="item.name || `#${item.code}`" />
+            <span
+                v-if="item.name"
+                class="font--semi-bold-10-12"
+                v-text="`#${item.code}`" />
+        </div>
+        <NumericBadge
+            class="grid-item__categories-length"
             v-if="hasChildren"
-            class="grid-item__categories-length txt-fixed typo-hint txt--dark-graphite">
-            {{ numberOfChildren }}
-        </span>
+            :number="numberOfChildren"
+            theme="transparent" />
+        <div
+            :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
+            <MenuButton
+                :theme="secondaryTheme"
+                :size="smallSize"
+                :plain="true"
+                :options="contextualMenuItems"
+                @input="onSelectValue"
+                @focus="onSelectFocus">
+                <template #icon="{ fillColor }">
+                    <IconDots :fill-color="fillColor" />
+                </template>
+            </MenuButton>
+        </div>
     </div>
 </template>
 <script>
-import { Action } from '~/model/icons/Action';
+import { SIZES, THEMES } from '~/defaults/buttons';
+import { ACTION } from '~/defaults/icons';
+import IconDots from '~/components/Icon/Others/IconDots';
 import IconPlusMinus from '~/components/Icon/Actions/IconPlusMinus';
+import MenuButton from '~/core/components/Buttons/MenuButton';
+import NumericBadge from '~/core/components/Badges/NumericBadge';
 
 export default {
     name: 'CategoryTreeItem',
     components: {
+        IconDots,
         IconPlusMinus,
+        MenuButton,
+        NumericBadge,
+    },
+    data() {
+        return {
+            isContextualMenuActive: false,
+            contextualMenuItems: ['Remove'],
+            isHovered: false,
+        };
     },
     props: {
         isExpanded: {
             type: Boolean,
             default: false,
         },
-        itemName: {
-            type: String,
+        item: {
+            type: Object,
             required: true,
         },
         numberOfChildren: {
@@ -44,18 +83,46 @@ export default {
         },
     },
     computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         hasChildren() {
             return this.numberOfChildren > 0;
         },
         btnExpanderIconState() {
             return this.isExpanded
-                ? Action.PLUS
-                : Action.MINUS;
+                ? ACTION.PLUS
+                : ACTION.MINUS;
+        },
+        contextualMenuHoveStateClasses() {
+            return { 'grid-item__contextual-menu--hovered': this.isHovered };
         },
     },
     methods: {
         toggleItemExpand() {
             this.$emit('toggleItem');
+        },
+        onSelectFocus(isFocused) {
+            if (!isFocused) this.isHovered = false;
+
+            this.isContextualMenuActive = isFocused;
+        },
+        onSelectValue(value) {
+            switch (value) {
+            case 'Remove':
+                this.$emit('removeItem');
+                break;
+            default: break;
+            }
+        },
+        onMouseOver() {
+            if (!this.isHovered) this.isHovered = true;
+        },
+        onMouseOut() {
+            if (!this.isContextualMenuActive) this.isHovered = false;
         },
     },
 };
@@ -65,36 +132,53 @@ export default {
     .grid-item {
         $item: &;
 
-        z-index: 5;
+        z-index: $Z_INDEX_LVL_1;
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        grid-column: 1 / 3;
+        grid-column: 1 / 4;
         height: 100%;
-        border: 1px solid $grey;
-        padding: 0 12px;
-        background-color: $background;
+        border: 1px solid $GREY;
+        padding-left: 8px;
+        background-color: $WHITESMOKE;
         cursor: move;
         overflow: hidden;
 
-        &__icon, &__title {
-            flex: 0 0 auto;
+        &--menu-active {
+            z-index: $Z_INDEX_LVL_3;
+        }
+
+        &:hover {
+            z-index: $Z_INDEX_LVL_2;
+            border: none;
+            box-shadow: $ELEVATOR_6_DP;
         }
 
         &__icon {
             margin-right: 8px;
+            flex: 0 0 auto;
             cursor: pointer;
         }
 
         &__title {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
             margin-right: 8px;
+            color: $GRAPHITE_DARK;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
-        &__categories-length {
+        &__contextual-menu {
             flex: 0 1 auto;
-            border: 1px solid $grey;
-            padding: 2px 8px;
-            border-radius: 12px;
+            align-items: flex-start;
+            opacity: 0;
+
+            &--hovered {
+                opacity: 1;
+            }
         }
     }
 </style>

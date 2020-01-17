@@ -8,17 +8,17 @@ export default {
     setDraggableState({ commit }, { propName, value }) {
         commit(types.SET_DRAGGABLE_STATE, { propName, value });
     },
-    setGhostElTransform({ commit }, transform) {
-        commit(types.SET_GHOST_ELEMENT_TRANSFORM, transform);
+    setResizingElement({ commit }, element) {
+        commit(types.SET_RESIZING_ELEMENT, element);
     },
     setDraggedElIndex({ commit }, index) {
         commit(types.SET_DRAGGED_EL_INDEX, index);
     },
-    setBounds({ commit }, bounds) {
-        commit(types.SET_BOUNDS, bounds);
-    },
     setGhostIndex({ commit }, index) {
         commit(types.SET_GHOST_INDEX, index);
+    },
+    setGhostFilterIndex({ commit }, index) {
+        commit(types.SET_GHOST_FILTER_INDEX, index);
     },
     setDraggedElementProperty({ commit }, { propName, value }) {
         commit(types.SET_DRAGGED_ELEMENT_PROPERTY, { propName, value });

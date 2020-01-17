@@ -15,11 +15,11 @@ context('Add User', () => {
     describe('Navigate to User creation page', () => {
         it('Visit /users/grid', () => {
             cy.get('.header-title__title').should('contain', 'Users');
-            cy.url().should('include', '/users/grid');
+            cy.url().should('include', '/users');
         });
 
         it('Visit /users/new/general', () => {
-            cy.get('button').contains('CREATE USER').click();
+            cy.get('button').contains('NEW USER').click();
             cy.url().should('include', '/users/new/general');
         });
     });
@@ -31,7 +31,7 @@ context('Add User', () => {
         });
 
         it('Invalid User data', () => {
-            cy.get('button').contains('CREATE USER').click();
+            cy.get('button').contains('NEW USER').click();
             cy.wait('@addUser').its('status').should('eq', 400);
         });
     });
@@ -88,7 +88,7 @@ context('Add User', () => {
         it('Create User', () => {
             cy.server();
             cy.route('POST', '/api/v1/EN/accounts').as('addUser');
-            cy.get('button').contains('CREATE USER').click();
+            cy.get('button').contains('NEW USER').click();
             cy.wait('@addUser').its('status').should('eq', 201);
             cy.url().should('include', '/users/edit');
         });

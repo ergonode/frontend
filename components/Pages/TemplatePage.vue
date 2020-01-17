@@ -3,93 +3,64 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
-        <NavigationHeader
+    <Page>
+        <TitleBar
             :title="title"
-            :buttons="buttons"
-            :breadcrumbs="breadcrumbs"
-            :is-read-only="!isUserAllowedToUpdateTemplate && isEdit"
-            icon="Templates"
-            @navigateback="onDismiss" />
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')"
+            @navigateBack="onDismiss">
+            <template
+                v-if="isEdit"
+                #mainAction>
+                <Button
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE TEMPLATE"
+                    :disabled="!$hasAccess(['TEMPLATE_DESIGNER_DELETE'])"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </Button>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
-    </PageWrapper>
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE TEMPLATE' : 'CREATE TEMPLATE'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
+        <TrashCan v-show="draggedElementOnGrid" />
+    </Page>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'TemplatePage',
     mixins: [categoryManagementPageBaseMixin],
-    created() {
-        let generalOptTabPath = '/templates/new/general';
-        let templatePath = '';
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        this.buttons = [];
-        this.breadcrumbs = [
-            {
-                title: 'Templates',
-                icon: 'Templates',
-                path: '/templates',
-            },
-        ];
-        this.isUserAllowedToUpdateTemplate = this.$hasAccess('TEMPLATE_DESIGNER_UPDATE');
-        if (this.isEdit) {
-            generalOptTabPath = `/templates/edit/${this.$route.params.id}/general`;
-            templatePath = `/templates/edit/${this.$route.params.id}/template`;
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-            this.buttons = [
-                {
-                    title: 'REMOVE TEMPLATE',
-                    color: 'transparent',
-                    action: this.onRemove,
-                    theme: 'dark',
-                    icon: 'remove',
-                    disabled: !this.$hasAccess('TEMPLATE_DESIGNER_DELETE'),
-                },
-            ];
-        }
-        this.tabs = [
-            {
-                title: 'General options',
-                path: generalOptTabPath,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} TEMPLATE`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateTemplate : false,
-                    },
-                },
-            },
-            {
-                title: 'Template designer',
-                path: templatePath,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} TEMPLATE`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateTemplate : false,
-                    },
-                },
-            },
-        ];
+    components: {
+        TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
     },
-    methods: {
-        ...mapActions('list', {
-            setConfigurationForList: 'setConfigurationForList',
+    computed: {
+        ...mapState('draggable', {
+            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
-    },
-    beforeDestroy() {
-        delete this.isUserAllowedToUpdateTemplate;
-        delete this.breadcrumbs;
-        delete this.buttons;
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
 };
 </script>

@@ -4,11 +4,10 @@
  */
 export default () => ({
     isListElementDragging: false,
-    isColumnDragging: false,
-    isFilterDragging: false,
+    resizingElement: null,
+    draggedElementOnGrid: null,
     draggedElement: null,
-    bounds: null,
     ghostIndex: -1,
+    ghostFilterIndex: -1,
     draggedElIndex: -1,
-    ghostElTransform: 0,
 });

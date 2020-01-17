@@ -9,33 +9,29 @@
         @drop="drop">
         <div class="vertical-wrapper">
             <IconDelete
-                fill-color="#fff"
+                :fill-color="whiteColor"
                 size="48" />
-            <Label
-                class="typo-btn txt--white txt--upper l-spacing--half"
-                text="drop here to remove" />
+            <span class="trash-can__label font--semi-bold-14-16">drop here to remove</span>
         </div>
     </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import {
+    WHITE,
+} from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'TrashCan',
     components: {
-        Label: () => import('~/components/Label/Label'),
         IconDelete: () => import('~/components/Icon/Actions/IconDelete'),
     },
     computed: {
-        ...mapState('draggable', {
-            isColumnDragging: state => state.isColumnDragging,
-        }),
+        whiteColor() {
+            return WHITE;
+        },
     },
     methods: {
-        ...mapActions('draggable', [
-            'setDraggableState',
-        ]),
         drop(event) {
             event.preventDefault();
 
@@ -55,17 +51,13 @@ export default {
 <style lang="scss" scoped>
     .trash-can {
         position: absolute;
-        left: 50%;
+        left: 5%;
         bottom: -324px;
-        z-index: 9999;
+        z-index: $Z_INDEX_TRASH;
         width: 480px;
         height: 480px;
-        transform: translate(-50%, 0);
-        background-color: $darkGraphite;
-        box-shadow:
-            0 12px 17px 2px rgba(0, 0, 0, 0.14),
-            0 5px 22px 4px rgba(0, 0, 0, 0.12),
-            0 7px 8px -4px rgba(0, 0, 0, 0.2);
+        background-color: $GRAPHITE_DARK;
+        box-shadow: $ELEVATOR_12_DP;
         border-radius: 240px;
 
         & > * {
@@ -81,6 +73,11 @@ export default {
             & > * {
                 margin-bottom: 12px;
             }
+        }
+
+        &__label {
+            color: $WHITE;
+            text-transform: uppercase;
         }
     }
 </style>

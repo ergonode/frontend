@@ -3,17 +3,34 @@
  * See LICENSE for license details.
  */
 <template>
-    <UserProfileTabs
-        title="Profile"
-        icon="User" />
+    <Page>
+        <TitleBar title="Profile" />
+        <HorizontalTabBar
+            :items="tabs" />
+    </Page>
 </template>
 
 <script>
 export default {
-    name: 'Profile',
-    middleware: ['tab/redirectToUserActivityLogGrid'],
+    name: 'UserProfileTabs',
     components: {
-        UserProfileTabs: () => import('~/components/Pages/Tabs/UserProfileTabs'),
+        HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
+        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
+        Page: () => import('~/core/components/Layout/Page'),
+    },
+    data() {
+        return {
+            tabs: [
+                {
+                    title: 'Activity log',
+                    route: { name: 'profile-activity-log-grid' },
+                },
+                {
+                    title: 'Privileges',
+                    route: { name: 'profile-privileges-grid' },
+                },
+            ],
+        };
     },
 };
 </script>

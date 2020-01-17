@@ -58,26 +58,18 @@ export default {
         onDrop(position) {
             this.$emit('addListElementToLayout', position);
         },
-        onEditSectionTitle(index) {
-            this.$emit('editSectionTitle', index);
-        },
-        onResizingElMaxRow(row) {
-            this.$emit('resizingElMaxRow', row);
-        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    $border: 1px dashed $grey;
-
     .draggable-layer {
         position: relative;
-        z-index: 3;
+        z-index: $Z_INDEX_LVL_3;
         display: grid;
         height: 0;
         flex-grow: 1;
-        border-top: $border;
-        border-right: $border;
+        border-top: $BORDER_DASHED_GREY;
+        border-right: $BORDER_DASHED_GREY;
     }
 </style>

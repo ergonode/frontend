@@ -17,7 +17,7 @@ export default {
         position: absolute;
         width: 100%;
         height: 100%;
-        background-color: $white;
+        background-color: $WHITE;
         opacity: 0.6;
     }
 </style>

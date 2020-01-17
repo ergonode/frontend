@@ -2,7 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-const Import = () => import('./pages/import/index').then(m => m.default || m);
+const Import = () => import('./pages/import/index').then((m) => m.default || m);
+const ImportGridTab = () => import('./components/Tab/ImportGridTab').then((m) => m.default || m);
+
 const privileges = {
     IMPORT: ['IMPORT_READ'],
 };
@@ -10,23 +12,22 @@ const privileges = {
 export default {
     router: [
         {
-            name: 'import',
-            path: '/import',
+            name: 'imports',
+            path: '/imports',
             component: Import,
             meta: {
                 privileges: privileges.IMPORT,
             },
-            // Example how use children tabs
-            // children: [
-            //     {
-            //         path: 'general',
-            //         component: ImportBaseTab,
-            //     },
-            //     {
-            //         path: 'settings',
-            //         component: ImportSettingsTab,
-            //     },
-            // ],
+            children: [
+                {
+                    name: 'imports-grid',
+                    path: 'grid',
+                    component: ImportGridTab,
+                    meta: {
+                        privileges: privileges.IMPORT,
+                    },
+                },
+            ],
         },
     ],
     menu: [
@@ -35,7 +36,7 @@ export default {
             items: [
                 {
                     title: 'Import',
-                    routing: '/import',
+                    routing: '/imports',
                     icon: 'Import',
                     privileges: privileges.IMPORT,
                 },

@@ -4,7 +4,7 @@
  */
 <template>
     <span
-        class="section"
+        class="section font--medium-24-32"
         v-text="label" />
 </template>
 
@@ -23,8 +23,8 @@ export default {
 
 <style lang="scss" scoped>
     .section {
-        @include setFont(medium, huge, regular, $darkGraphite);
         display: flex;
         align-items: center;
+        color: $GRAPHITE_DARK;
     }
 </style>

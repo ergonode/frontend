@@ -3,89 +3,56 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
-        <NavigationHeader
+    <Page>
+        <TitleBar
             :title="title"
-            :buttons="buttons"
-            :breadcrumbs="breadcrumbs"
-            icon="User"
-            :is-read-only="!isUserAllowedToUpdateRole && isEdit"
-            @navigateback="onDismiss" />
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('USER_ROLE')"
+            @navigateBack="onDismiss">
+            <template
+                v-if="isEdit"
+                #mainAction>
+                <Button
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE ROLE"
+                    :disabled="!$hasAccess(['USER_ROLE_DELETE'])"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </Button>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
-    </PageWrapper>
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE ROLE' : 'CREATE ROLE'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
+    </Page>
 </template>
 
 <script>
+import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'UserRolesPage',
     mixins: [categoryManagementPageBaseMixin],
-    created() {
-        let generalOptTabPath = '/users/role/new/general';
-        let privilegesTabPath = '/users/role/new/privileges';
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        this.buttons = [];
-        this.breadcrumbs = [
-            {
-                title: 'Users/Roles',
-                icon: 'User',
-                path: '/users/roles',
-            },
-        ];
-        this.isUserAllowedToUpdateRole = this.$hasAccess('USER_ROLE_UPDATE');
-
-        if (this.isEdit) {
-            generalOptTabPath = `/users/role/edit/${this.$route.params.id}/general`;
-            privilegesTabPath = `/users/role/edit/${this.$route.params.id}/privileges`;
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-            this.buttons = [
-                {
-                    title: 'REMOVE ROLE',
-                    color: 'transparent',
-                    action: this.onRemove,
-                    theme: 'dark',
-                    icon: 'remove',
-                    disabled: !this.$hasAccess('USER_ROLE_DELETE'),
-                },
-            ];
-        }
-
-        this.tabs = [
-            {
-                title: 'General options',
-                path: generalOptTabPath,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} ROLE`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateRole : false,
-                    },
-                },
-            },
-            {
-                title: 'Privileges',
-                path: privilegesTabPath,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} PRIVILEGES`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateRole : false,
-                    },
-                },
-            },
-        ];
-    },
-    beforeDestroy() {
-        delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateRole;
-        delete this.buttons;
+    computed: {
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
 };
 </script>

@@ -25,9 +25,8 @@
                     label="Password"
                     @keyup.13="onSubmit" />
                 <Button
-                    large
-                    color="success"
                     title="Log in"
+                    type="submit"
                     @click.stop.prevent.native="onSubmit" />
             </form>
         </section>
@@ -35,8 +34,10 @@
             <h1 class="login__background__header">
                 The first human - centric <br>designed PIM
             </h1>
-            <h2 class="login__background__subheader txt--white">
-                <Typer :value="['Simple', 'Ergonomic', 'Efficient', 'For people.']" />
+            <h2 class="login__background__subheader">
+                <ClientOnly>
+                    <Typer :value="['Simple', 'Ergonomic', 'Efficient', 'For people.']" />
+                </ClientOnly>
             </h2>
         </section>
     </main>
@@ -49,9 +50,9 @@ export default {
     layout: 'login',
     name: 'Login',
     components: {
-        TextField: () => import('~/components/Inputs/TextField'),
-        Button: () => import('~/components/Buttons/Button'),
-        Typer: () => import('~/components/Inputs/Typer'),
+        TextField: () => import('~/core/components/Inputs/TextField'),
+        Button: () => import('~/core/components/Buttons/Button'),
+        Typer: () => import('~/core/components/Inputs/Typer'),
     },
     data: () => ({
         userAuthData: {
@@ -70,8 +71,7 @@ export default {
         ]),
         async onSubmit() {
             await this.authenticateUser({ data: this.userAuthData });
-
-            this.$router.push('/dashboard');
+            this.$router.push({ name: 'dashboard' });
         },
     },
     created() {

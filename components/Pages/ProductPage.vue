@@ -3,91 +3,143 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
-        <NavigationHeader
+    <Page>
+        <TitleBar
             :title="title"
-            :buttons="buttons"
-            :breadcrumbs="breadcrumbs"
-            icon="Document"
-            :is-read-only="!isUserAllowedToUpdateProduct && isEdit"
-            @navigateback="onDismiss" />
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('PRODUCT')"
+            @navigateBack="onDismiss">
+            <template #prependBadge>
+                <ProductStatusBadge
+                    v-if="status"
+                    :status="status" />
+            </template>
+            <template
+                v-if="isEdit"
+                #mainAction>
+                <Button
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE PRODUCT"
+                    :disabled="!$hasAccess(['PRODUCT_DELETE'])"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete :fill-color="color" />
+                    </template>
+                </Button>
+            </template>
+            <template #subActions>
+                <TitleBarSubActions>
+                    <MenuButton
+                        v-if="statusesButtons.more && statusesButtons.more.length"
+                        title="more"
+                        :theme="secondaryTheme"
+                        :size="smallSize"
+                        :disabled="!isUserAllowedToUpdateProduct"
+                        :options="optionTitle"
+                        @input="optionAction" />
+                    <Button
+                        v-for="button in statusesButtons.statuses"
+                        :key="button.code"
+                        :theme="secondaryTheme"
+                        :size="smallSize"
+                        :title="button.name || button.code"
+                        :disabled="!isUserAllowedToUpdateProduct"
+                        @click.native="updateStatus(button.code)" />
+                </TitleBarSubActions>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
-    </PageWrapper>
+        <Footer v-if="!$route.path.includes('history')">
+            <Button
+                :title="isEdit ? 'SAVE PRODUCT' : 'CREATE PRODUCT'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
+    </Page>
 </template>
-
 <script>
+import { mapState, mapActions } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
+import Button from '~/core/components/Buttons/Button';
+import MenuButton from '~/core/components/Buttons/MenuButton';
+import ProductStatusBadge from '~/components/Badges/ProductStatusBadge';
+import TitleBarSubActions from '~/core/components/TitleBar/TitleBarSubActions';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'ProductPage',
     mixins: [categoryManagementPageBaseMixin],
-    created() {
-        let generalOptTabPath = '/products/new/general';
-        let templateTabPath = '/products/new/template';
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        this.buttons = [];
-        this.breadcrumbs = [
-            {
-                title: 'Products',
-                icon: 'Document',
-                path: '/products',
-            },
-        ];
-
-
-        this.isUserAllowedToUpdateProduct = this.$hasAccess('PRODUCT_UPDATE');
-
-        if (this.isEdit) {
-            generalOptTabPath = `/products/edit/${this.$route.params.id}/general`;
-            templateTabPath = `/products/edit/${this.$route.params.id}/template`;
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-            this.buttons = [
-                {
-                    title: 'REMOVE PRODUCT',
-                    color: 'transparent',
-                    action: this.onRemove,
-                    theme: 'dark',
-                    icon: 'remove',
-                    disabled: !this.$hasAccess('PRODUCT_DELETE'),
-                },
-            ];
-        }
-
-        this.tabs = [
-            {
-                title: 'General options',
-                path: generalOptTabPath,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} PRODUCT`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateProduct : false,
-                    },
-                },
-            },
-            {
-                title: 'Product template',
-                path: templateTabPath,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} PRODUCT`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateProduct : false,
-                    },
-                },
-            },
-        ];
+    components: {
+        Button,
+        MenuButton,
+        TitleBarSubActions,
+        ProductStatusBadge,
     },
-    beforeDestroy() {
-        delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateProduct;
-        delete this.buttons;
+    computed: {
+        ...mapState('authentication', {
+            userLanguageCode: (state) => state.user.language,
+        }),
+        ...mapState('productsDraft', {
+            status: (state) => state.status,
+            workflow: (state) => state.workflow,
+        }),
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
+        statusesButtons() {
+            if (!this.workflow.length) return {};
+
+            const numberOfVisibleStatuses = 2;
+            const statuses = JSON.parse(JSON.stringify(this.workflow)); // deep array clone hack
+            const visibleStatuses = statuses.splice(0, numberOfVisibleStatuses);
+            const hiddenStatuses = statuses.slice(
+                -(this.workflow.length - numberOfVisibleStatuses),
+            );
+
+            return {
+                statuses: visibleStatuses.map((status) => status),
+                more: hiddenStatuses.map((status) => status),
+            };
+        },
+        optionTitle() {
+            return this.statusesButtons.more.map((option) => option.code);
+        },
+        isUserAllowedToUpdateProduct() {
+            return this.$hasAccess(['PRODUCT_UPDATE']);
+        },
+    },
+    methods: {
+        ...mapActions('productsDraft', [
+            'updateProductStatus',
+            'getProduct',
+        ]),
+        optionAction(value) {
+            return this.statusesButtons.more.forEach((option) => {
+                if (option.code === value) this.updateStatus(option.code);
+            });
+        },
+        updateStatus(statusCode) {
+            const isConfirm = confirm(`Are you sure you want to change status to ${statusCode}?`); /* eslint-disable-line no-restricted-globals */
+            if (isConfirm) {
+                this.updateProductStatus({
+                    value: statusCode,
+                    attributeId: this.status.attribute_id,
+                    onSuccess: () => {
+                        const { params: { id } } = this.$route;
+                        this.getProduct({ languageCode: this.userLanguageCode, id });
+                        this.$addAlert({ type: 'success', message: 'Status updated' });
+                    },
+                });
+            }
+        },
     },
 };
 </script>

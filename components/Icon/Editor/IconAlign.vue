@@ -3,31 +3,32 @@
  * See LICENSE for license details.
  */
 <template>
-    <IconBase
+    <BaseIcon
         :width="size"
         :height="size"
         :icon-color="fillColor">
         <path :d="drawingCommands" />
-    </IconBase>
+    </BaseIcon>
 </template>
 
 <script>
-import IconBase from '~/components/Icon/IconBase';
-import { Align } from '~/model/icons/Align';
+import { ALIGN } from '~/defaults/icons';
+import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
+import BaseIcon from '~/components/Icon/BaseIcon';
 
 export default {
     name: 'IconAlignLeft',
     components: {
-        IconBase,
+        BaseIcon,
     },
     props: {
         state: {
             type: String,
-            default: Align.LEFT,
+            default: ALIGN.LEFT,
         },
         fillColor: {
             type: String,
-            default: '#5C5F65',
+            default: GRAPHITE,
         },
         size: {
             type: [String, Number],
@@ -41,7 +42,7 @@ export default {
     },
     computed: {
         iconTransform() {
-            if (this.state === Align.RIGHT) return 'translate(12, 12) scale(-1, 1) translate(-12, -12)';
+            if (this.state === ALIGN.RIGHT) return 'translate(12, 12) scale(-1, 1) translate(-12, -12)';
 
             return null;
         },

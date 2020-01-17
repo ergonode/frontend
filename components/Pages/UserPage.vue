@@ -3,89 +3,56 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
-        <NavigationHeader
+    <Page>
+        <TitleBar
             :title="title"
-            :buttons="buttons"
-            :breadcrumbs="breadcrumbs"
-            icon="User"
-            :is-read-only="!isUserAllowedToUpdateUser && isEdit"
-            @navigateback="onDismiss" />
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('USER')"
+            @navigateBack="onDismiss">
+            <!-- <template
+                v-if="isEdit"
+                #mainAction>
+                <Button
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE USER"
+                    :disabled="!$hasAccess(['USER_DELETE'])"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </Button>
+            </template> -->
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
-    </PageWrapper>
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE USER' : 'CREATE USER'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
+    </Page>
 </template>
 
 <script>
+import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'UserPage',
     mixins: [categoryManagementPageBaseMixin],
-    created() {
-        let generalOptTabPath = '/users/user/new/general';
-        let avatarTabPath = '/users/user/new/avatar';
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        this.buttons = [];
-        this.breadcrumbs = [
-            {
-                title: 'Users',
-                icon: 'User',
-                path: '/users',
-            },
-        ];
-        this.isUserAllowedToUpdateUser = this.$hasAccess('USER_UPDATE');
-
-        if (this.isEdit) {
-            generalOptTabPath = `/users/user/edit/${this.$route.params.id}/general`;
-            avatarTabPath = `/users/user/edit/${this.$route.params.id}/avatar`;
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-            // TODO: Add when it's implemented on BE
-            // this.buttons = [
-            //     {
-            //         title: 'REMOVE USER',
-            //         color: 'transparent',
-            //         action: this.onRemove,
-            //         theme: 'dark',
-            //         disabled: !this.$hasAccess('USER_DELETE'),
-            //     },
-            // ];
-        }
-
-        this.tabs = [
-            {
-                title: 'General options',
-                path: generalOptTabPath,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} USER`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateUser : false,
-                    },
-                },
-            },
-            {
-                title: 'Avatar',
-                path: avatarTabPath,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} USER`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateUser : false,
-                    },
-                },
-            },
-        ];
-    },
-    beforeDestroy() {
-        delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateUser;
-        delete this.buttons;
+    computed: {
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
 };
 </script>

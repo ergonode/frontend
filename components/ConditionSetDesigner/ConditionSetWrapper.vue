@@ -5,17 +5,17 @@
 <template>
     <TemplateGridWrapper
         :columns="columns"
-        :rows-height="rowsHeight"
+        :row-height="rowHeight"
         :is-connections-visible="false"
-        :grid-gap="15"
-        :is-dragging-enabled="$hasAccess('SEGMENT_UPDATE')"
+        :grid-gap="16"
+        :is-dragging-enabled="$hasAccess(['SEGMENT_UPDATE'])"
         :is-multi-draggable="true"
+        :dragged-element-size="{ width: 600, height: 60 }"
         @afterDrop="onGetConditionConfigurationById"
         @afterRemove="removeConditionFromSet">
         <template #gridHeader>
             <TemplateGridHeader
-                :style="gridStyles"
-                header-name="condition level"
+                header="condition level"
                 :columns="columns" />
         </template>
         <template #gridItem="{item}">
@@ -40,22 +40,20 @@ export default {
         ConditionSetItem: () => import('~/components/ConditionSetDesigner/ConditionSetItem'),
     },
     computed: {
-        ...mapState('conditions', {
-            columns: state => state.columns,
-            rowsHeight: state => state.rowsHeight,
-            conditions: state => state.conditions,
+        ...mapState('gridDesigner', {
+            gridData: (state) => state.gridData,
         }),
-        gridStyles() {
-            return {
-                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                gridAutoRows: '50px',
-            };
-        },
+        ...mapState('conditions', {
+            columns: (state) => state.columns,
+            rowHeight: (state) => state.rowHeight,
+            conditions: (state) => state.conditions,
+        }),
     },
     methods: {
         ...mapActions('conditions', [
             'getConditionConfigurationById',
-            'removeCondition',
+            'removeConditionValue',
+            'setConditionValue',
         ]),
         getCondition(id) {
             const [correctId] = id.split('--');
@@ -63,12 +61,18 @@ export default {
         },
         onGetConditionConfigurationById(id) {
             const [correctId] = id.split('--');
+
             if (!this.conditions[correctId]) {
                 this.getConditionConfigurationById({ conditionId: correctId });
             }
+            this.setConditionValue({
+                conditionId: id,
+                parameterName: null,
+                parameterValue: null,
+            });
         },
         removeConditionFromSet(id) {
-            this.removeCondition(id);
+            this.removeConditionValue(id);
         },
     },
 };

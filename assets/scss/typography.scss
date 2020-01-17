@@ -5,147 +5,103 @@
 @import "reset";
 
 html, body {
-    @include setFont(medium, regular, regular, $darkGraphite);
+    font-family:
+        "Inter UI",
+        sans-serif;
     -webkit-text-size-adjust: 100%; //fix for iOS
 }
 
-.l-spacing {
-    &--half {
-        letter-spacing: 0.5px;
-    }
-
-    &--quarter {
-        letter-spacing: 0.25px;
-    }
-
-    &--negative-half {
-        letter-spacing: -0.5px;
-    }
+strong {
+    font-weight: 700;
 }
 
-.typo-title {
-    @include setFont(medium, huge, large);
+.font--medium-12-16 {
+    font: $FONT_MEDIUM_12_16;
 }
 
-.typo-list {
-    @include setFont(medium, medium, medium);
+.font--medium-14-20 {
+    font: $FONT_MEDIUM_14_20;
 }
 
-.typo-subtitle {
-    @include setFont(medium, regular, semiRegular);
+.font--medium-16-24 {
+    font: $FONT_MEDIUM_16_24;
 }
 
-.typo-btn {
-    @include setFont(semiBold, regular, regular);
-
-    &--xs {
-        @include setFont(medium, small, regular);
-    }
+.font--medium-24-32 {
+    font: $FONT_MEDIUM_24_32;
 }
 
-.typo-label {
-    @include setFont(semiBold, small, regular);
-
-    &--strong {
-        @include setFont(bold, small, regular);
-    }
+.font--semi-bold-10-12 {
+    font: $FONT_SEMI_BOLD_10_12;
 }
 
-.typo-input {
-    @include setFont(medium, small, regular);
+.font--semi-bold-12-16 {
+    font: $FONT_SEMI_BOLD_12_16;
 }
 
-.typo-hint {
-    @include setFont(medium, tiny, tiny);
+.font--semi-bold-14-16 {
+    font: $FONT_SEMI_BOLD_14_16;
 }
 
-.txt-fixed {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+.font--semi-bold-14-20 {
+    font: $FONT_SEMI_BOLD_14_20;
+}
+
+.font--bold-12-16 {
+    font: $FONT_BOLD_12_16;
 }
 
 .txt {
     //  Colors
     &--primary {
-        color: $primary;
+        color: $GREEN;
     }
 
     &--information {
-        color: $information;
+        color: $BLUE;
     }
 
     &--error {
-        color: $error;
+        color: $RED;
     }
 
     &--warning {
-        color: $warning;
+        color: $YELLOW;
     }
 
     &--success {
-        color: $success;
+        color: $GREEN;
     }
 
     &--dark-graphite {
-        color: $darkGraphite;
+        color: $GRAPHITE_DARK;
     }
 
     &--graphite {
-        color: $graphite;
+        color: $GRAPHITE;
     }
 
     &--light-graphite {
-        color: $lightGraphite;
+        color: $GRAPHITE_LIGHT;
     }
 
     &--dark-grey {
-        color: $darkGrey;
+        color: $GREY_DARK;
     }
 
     &--grey {
-        color: $grey;
+        color: $GREY;
     }
 
     &--light-grey {
-        color: $lightGrey;
+        color: $GREY_LIGHT;
     }
 
     &--background {
-        color: $background;
+        color: $WHITESMOKE;
     }
 
     &--white {
-        color: $white;
-    }
-
-    // Alignment
-    &--centered {
-        text-align: center;
-    }
-
-    &--left {
-        text-align: left;
-    }
-
-    &--right {
-        text-align: right;
-    }
-
-    // Transform
-    &--capital {
-        text-transform: capitalize;
-    }
-
-    &--upper {
-        text-transform: uppercase;
-    }
-
-    &--lower {
-        text-transform: lowercase;
-    }
-
-    &--none {
-        text-transform: none;
+        color: $WHITE;
     }
 }

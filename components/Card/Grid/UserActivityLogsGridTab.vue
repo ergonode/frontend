@@ -3,51 +3,42 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="tab">
-        <div class="tab__grid">
-            <GridWrapper
-                store-namespace="userActivityLogsGrid"
-                :rows-height="rowsHeight"
-                :action-paths="actionPaths" />
-        </div>
-        <GridFooter>
+    <ResponsiveCenteredViewTemplate>
+        <template #content>
+            <Grid
+                namespace="userActivityLogsGrid"
+                :edit-route="editRoute"
+                :basic-filters="true"
+                :edit-column="false"
+                :select-column="false"
+                :is-column-editable="false"
+                title="Activity logs" />
+        </template>
+        <template #footer>
             <GridPageSelector
-                v-model="visibleRowsInPageCount"
-                :rows-number="numberOfDataElements" />
+                :value="numberOfDisplayedElements"
+                :rows-number="numberOfDataElements"
+                @input="onRowsCountUpdate" />
             <GridPagination
-                :value="displayedPage"
+                :value="currentPage"
                 :max-page="numberOfPages"
                 @input="onPageChanged" />
-        </GridFooter>
-    </div>
+        </template>
+    </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import gridModule from '~/reusableStore/grid/state';
-import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
-import GridFooter from '~/components/Grid/GridFooter';
-import GridPageSelector from '~/components/Grid/GridPageSelector';
-import GridPagination from '~/components/Grid/GridPagination';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
     name: 'UserActivityLogsGridTab',
     components: {
-        GridWrapper,
-        GridFooter,
-        GridPageSelector,
-        GridPagination,
-    },
-    data() {
-        return {
-            gridConfiguration: {
-                rows: {
-                    height: 32,
-                },
-            },
-            filtersNumber: 0,
-            filtersExpanded: true,
-        };
+        ResponsiveCenteredViewTemplate,
+        Grid: () => import('~/core/components/Grid/Grid'),
+        GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
+        GridPagination: () => import('~/core/components/Grid/GridPagination'),
     },
     beforeCreate() {
         this.$registerStore({
@@ -61,63 +52,40 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
+            userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('userActivityLogsGrid', {
-            numberOfDataElements: state => state.count,
-            displayedPage: state => state.displayedPage,
-            numberOfDisplayedElements: state => state.numberOfDisplayedElements,
+            numberOfDataElements: (state) => state.filtered,
+            currentPage: (state) => state.currentPage,
+            numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
         ...mapGetters('userActivityLogsGrid', {
             numberOfPages: 'numberOfPages',
         }),
-        actionPaths() {
+        editRoute() {
             return {
-                getData: '/profile/log',
-                routerEdit: 'users-logs-edit-id',
+                path: '/profile/log',
+                name: 'users-logs-edit-id',
             };
-        },
-        rowsHeight: {
-            get() {
-                const { height } = this.gridConfiguration.rows;
-
-                return height;
-            },
-            set(value) {
-                this.gridConfiguration.rows.height = value;
-            },
-        },
-        visibleRowsInPageCount: {
-            get() {
-                return this.numberOfDisplayedElements;
-            },
-            set(value) {
-                const number = Math.trunc(value);
-
-                if (number !== this.numberOfDisplayedElements) {
-                    this.changeNumberOfDisplayingElements({ number });
-                    this.getDataWrapper();
-                }
-            },
         },
     },
     methods: {
         ...mapActions('userActivityLogsGrid', [
             'getData',
-            'changeDisplayingPage',
+            'setCurrentPage',
             'changeNumberOfDisplayingElements',
         ]),
-        onPageChanged(page) {
-            this.changeDisplayingPage(page);
-            this.getDataWrapper();
+        onRowsCountUpdate(value) {
+            const number = Math.trunc(value);
+
+            if (number !== this.numberOfDisplayedElements) {
+                this.changeNumberOfDisplayingElements(number);
+                this.getData(this.editRoute.path);
+            }
         },
-        getDataWrapper() {
-            const { getData: path } = this.actionPaths;
-            this.getData(
-                {
-                    path,
-                },
-            );
+        onPageChanged(page) {
+            this.setCurrentPage(page);
+            this.getData(this.editRoute.path);
         },
     },
     async fetch({ app, store }) {
@@ -127,24 +95,7 @@ export default {
             store,
         });
         const gridPath = '/profile/log';
-        await store.dispatch('userActivityLogsGrid/getData', { path: gridPath });
+        await store.dispatch('userActivityLogsGrid/getData', gridPath);
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .tab {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        background-color: $white;
-
-        &__grid {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            margin: 12px 12px 0;
-            overflow: hidden;
-        }
-    }
-</style>

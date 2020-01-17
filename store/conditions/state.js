@@ -4,10 +4,10 @@
  */
 export default () => ({
     id: null,
-    code: '',
     conditionSets: {},
     columns: 1,
-    rowsHeight: 120,
+    rowHeight: 120,
     conditions: {},
+    conditionsDictionary: [],
     conditionsValues: {},
 });

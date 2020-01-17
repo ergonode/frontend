@@ -1,9 +1,7 @@
-nuxt.config.js
 package.json
 router.js
 node_modules/
 cypress/
-tests/
 build/
 coverage/
 lib/

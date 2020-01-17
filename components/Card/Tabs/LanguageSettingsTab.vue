@@ -3,51 +3,26 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseTab>
+    <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <LanguageSettingsCard />
+            <VerticalFixedScroll>
+                <LanguageSettingsForm />
+            </VerticalFixedScroll>
         </template>
-        <Footer
-            slot="footer"
-            :buttons="[...updateButton]" />
-    </BaseTab>
+    </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
-import languageSettingsModule from '~/reusableStore/languageSettings/state';
-import LanguageSettingsCard from '~/components/Card/LanguageSettingsCard';
-import BaseTab from '~/components/Card/BaseTab';
+import LanguageSettingsForm from '~/components/Forms/LanguageSettingsForm';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'LanguageSettingsTab',
     components: {
-        Footer: () => import('~/components/ReusableFooter/Footer'),
-        LanguageSettingsCard,
-        BaseTab,
-    },
-    props: {
-        updateButton: {
-            type: Object,
-            required: true,
-        },
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: languageSettingsModule,
-            moduleName: 'languageSettings',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('languageSettings');
-    },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: languageSettingsModule,
-            moduleName: 'languageSettings',
-            store,
-        });
-        await store.dispatch('languageSettings/getData');
+        VerticalFixedScroll,
+        LanguageSettingsForm,
+        ResponsiveCenteredViewTemplate,
     },
 };
 </script>

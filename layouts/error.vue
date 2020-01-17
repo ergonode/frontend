@@ -3,11 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
+    <Page>
         <Component
             :is="errorPage"
             :error="error" />
-    </PageWrapper>
+    </Page>
 </template>
 
 <script>
@@ -15,7 +15,7 @@
 export default {
     name: 'NuxtError',
     components: {
-        PageWrapper: () => import('~/components/Layout/PageWrapper'),
+        Page: () => import('~/core/components/Layout/Page'),
     },
     props: {
         error: {
@@ -27,11 +27,11 @@ export default {
         errorPage() {
             switch (this.error.statusCode) {
             case 403:
-                return () => import('~/components/Error/403');
+                return () => import('~/core/components/Layout/Errors/403');
             case 404:
-                return () => import('~/components/Error/404');
+                return () => import('~/core/components/Layout/Errors/404');
             default:
-                return () => import('~/components/Error/500');
+                return () => import('~/core/components/Layout/Errors/500');
             }
         },
     },

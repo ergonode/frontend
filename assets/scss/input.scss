@@ -2,8 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-@import "_extends/input-line";
-
 .input {
     $input: &;
 
@@ -11,25 +9,22 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    background-color: $white;
+    background-color: $WHITE;
 
-    &__content {
+    &__activator {
         position: relative;
         display: flex;
         flex: 1;
-        align-items: center;
 
-        &--small {
-            flex-basis: 32px;
+        input::placeholder, textarea::placeholder, input, textarea {
+            color: $GRAPHITE_DARK;
         }
 
-        &--regular {
-            flex-basis: 40px;
+        textarea::placeholder, input::placeholder {
+            opacity: 0.4;
         }
 
         input, textarea {
-            @include setFont(medium, regular, regular, $darkGraphite);
-
             flex: 1;
             outline: none;
             width: 100%;
@@ -38,24 +33,49 @@
             border: none;
         }
 
+        textarea, textarea::placeholder {
+            font: $FONT_MEDIUM_14_20;
+        }
+
         textarea {
-            height: 100%;
+            padding: 6px 1px 1px;
+            box-sizing: border-box;
         }
     }
 
     &__information-label {
-        margin-top: 2px;
+        color: $GRAPHITE_DARK;
+        font: $FONT_MEDIUM_12_16;
+        margin-top: 4px;
+        margin-left: 12px;
+        word-break: break-word;
+    }
+
+    textarea ~ &__label {
+        align-self: baseline;
+        margin-top: 8px;
+    }
+
+    input ~ &__label {
+        align-self: center;
+    }
+
+    &__append {
+        display: grid;
+        grid-auto-flow: column;
+        justify-items: center;
+        align-items: center;
+        margin: 0 6px;
     }
 
     &.floating-label {
-        margin-top: 6px;
-
         #{$input}__label {
             position: absolute;
-            background-color: $white;
+            padding: 0 2px;
+            background-color: $WHITE;
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-            color: $lightGraphite;
-            padding-left: 2px;
+            color: $GRAPHITE_LIGHT;
+            cursor: text;
 
             &--required {
                 padding-right: 8px;
@@ -63,94 +83,168 @@
 
             &--required::after {
                 position: absolute;
-                color: $error;
+                color: $RED;
                 content: "*";
             }
         }
     }
 
     &.solid {
-        #{$input}__content {
-            border: 1px solid $grey;
-            padding: 4px;
+        #{$input}__activator {
+            border: $BORDER_1_GREY;
+            padding: 1px;
             box-sizing: border-box;
+        }
 
-            input, textarea {
-                margin-left: 8px;
+        #{$input}__label {
+            position: absolute;
+            margin-left: 8px;
+            color: $GRAPHITE_LIGHT;
+        }
+    }
+
+    &.underline {
+        #{$input}__activator {
+            input {
+                padding: 0;
+            }
+
+            &::before {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                border: solid $GREY;
+                border-width: thin 0 0;
+                transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+                content: "";
+            }
+
+            &:hover::before {
+                border-color: $GREEN;
             }
         }
 
         #{$input}__label {
             position: absolute;
-            color: $lightGraphite;
-            margin-left: 6px;
+            padding: 0;
+            color: $GRAPHITE_LIGHT;
         }
 
         #{$input}__information-label {
-            margin-left: 12px;
-        }
-
-        &:hover {
-            border-color: $primary;
+            margin-left: 0;
         }
     }
 
-    &.underline {
-        #{$input}__content::before {
-            bottom: 0;
-            width: 100%;
-            border: solid $grey;
-            border-width: thin 0 0;
-            @extend %defaultLine;
+    &:not(.left-alignment):not(.underline):not(.center-alignment) {
+        #{$input}__activator {
+            textarea {
+                margin-left: 8px;
+            }
+        }
+    }
+
+    &.small:not(.left-alignment):not(.underline):not(.center-alignment) {
+        #{$input}__activator {
+            input::placeholder, input {
+                margin-left: 5px;
+            }
         }
 
-        #{$input}__content:hover::before {
-            border-color: $primary;
+        #{$input}__label {
+            margin-left: 3px;
+        }
+
+        #{$input}__information-label {
+            margin-left: 8px;
+        }
+
+        #{$input}__append {
+            margin: 0 4px;
+        }
+    }
+
+    &.small {
+        #{$input}__activator {
+            flex-basis: 32px;
+
+            input::placeholder, input {
+                font: $FONT_MEDIUM_12_16;
+            }
+        }
+
+        #{$input}__label {
+            font: $FONT_MEDIUM_12_16;
+        }
+    }
+
+    &.regular:not(.left-alignment):not(.underline):not(.center-alignment) {
+        #{$input}__activator {
+            input::placeholder, input {
+                margin-left: 9px;
+            }
+        }
+    }
+
+    &.regular {
+        #{$input}__activator {
+            flex-basis: 40px;
+
+            input::placeholder, input {
+                font: $FONT_MEDIUM_14_20;
+            }
+        }
+    }
+
+    &.left-alignment, &.center-alignment {
+        #{$input}__activator::after {
+            position: absolute;
+            left: 0;
+            transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+            content: "";
         }
     }
 
     &.left-alignment {
-        #{$input}__content {
+        #{$input}__activator {
             input, textarea {
                 text-align: left;
             }
         }
 
-        #{$input}__content::after {
+        #{$input}__activator::after {
             bottom: 0;
             right: 100%;
             height: 2px;
-            background-color: $primary;
-            @extend %defaultLine;
+            background-color: $GREEN;
         }
     }
 
     &.center-alignment {
-        #{$input}__content {
+        #{$input}__activator {
             input, textarea {
                 text-align: center;
             }
         }
 
-        #{$input}__content::after {
+        #{$input}__activator::after {
             bottom: -1px;
             width: 100%;
-            border: solid $grey;
+            border: solid $GREY;
             border-width: thin 0;
             transform: scaleX(0);
-            @extend %defaultLine;
         }
     }
 
     &--focused {
         &.left-alignment {
-            #{$input}__content::after {
+            #{$input}__activator::after {
                 right: 0;
             }
         }
 
-        &.center-alignment, &:not(&.solid) {
-            #{$input}__content::after {
+        &.center-alignment {
+            #{$input}__activator::after {
                 transform: scaleX(1);
             }
         }
@@ -158,72 +252,87 @@
         &:not(#{$input}--error) {
             &.floating-label {
                 #{$input}__label {
-                    color: $success;
+                    color: $GREEN;
                 }
             }
 
             &.center-alignment {
-                #{$input}__content::after {
-                    border-color: $primary;
+                #{$input}__activator::after {
+                    border-color: $GREEN;
                 }
             }
 
             &.solid {
-                #{$input}__content {
-                    border: 2px solid $success;
-                    padding: 3px;
+                #{$input}__activator {
+                    border: $BORDER_2_GREEN;
+                    padding: 0;
+
+                    &::after {
+                        transform: scaleX(0);
+                    }
+                }
+
+                #{$input}__content::after {
+                    transform: scaleX(0);
                 }
             }
         }
+    }
 
-        &.input--error {
-            &.solid {
-                #{$input}__content {
-                    border: 2px solid $error;
-                    padding: 3px;
-                }
-            }
-
-            &.floating-label {
-                #{$input}__label {
-                    color: $error;
-                }
+    &:not(&--error):not(&--focused) {
+        &.solid {
+            #{$input}__activator:hover {
+                border: $BORDER_2_GREY;
+                padding: 0;
             }
         }
     }
 
     &--error {
         &.left-alignment {
-            #{$input}__content::after {
-                background-color: $error;
+            #{$input}__activator::after {
+                background-color: $RED;
             }
         }
 
         &.underline {
-            #{$input}__content:hover::before {
-                border-color: $error;
+            #{$input}__activator:hover::before {
+                border-color: $RED;
             }
         }
 
-        &:not(#{$input}--focused) {
-            &.solid {
-                #{$input}__content {
-                    border: 1px solid $error;
-                }
+        &.floating-label {
+            #{$input}__label {
+                color: $RED;
             }
+        }
+
+        &.solid {
+            #{$input}__activator {
+                border: $BORDER_2_RED;
+                padding: 0;
+            }
+        }
+
+        #{$input}__information-label {
+            color: $RED;
         }
     }
 
     &--disabled {
         pointer-events: none;
 
-        #{$input}__content {
-            background-color: $background;
+        #{$input}__activator {
+            background-color: $WHITESMOKE;
 
             input, textarea {
-                background-color: $background;
-                opacity: 0.4;
-                color: $darkGraphite;
+                background-color: $WHITESMOKE;
+                color: $GRAPHITE_LIGHT;
+            }
+
+            #{$input}__label {
+                background-color: unset;
+                background-image: linear-gradient($WHITE, $WHITESMOKE);
             }
         }
     }

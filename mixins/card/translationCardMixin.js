@@ -3,22 +3,21 @@
  * See LICENSE for license details.
  */
 import { mapState, mapActions } from 'vuex';
-import { getValueByKey } from '~/model/objectWrapper';
+import { isObject, getValueByKey } from '~/model/objectWrapper';
 
 export default {
     props: {
         languageCode: {
             type: String,
-            required: false,
             default: '',
         },
     },
     computed: {
         ...mapState('data', {
-            languages: state => state.languages,
+            languages: (state) => state.languages,
         }),
         ...mapState('translations', {
-            translations: state => state.translations,
+            translations: (state) => state.translations,
         }),
         selectedLanguage() {
             return getValueByKey(this.languages, this.languageCode);
@@ -28,6 +27,10 @@ export default {
         ...mapActions('translations', [
             'setMultilingualTranslationPropertyValue',
         ]),
+        parsedValue(propertyName) {
+            const property = this.translations[propertyName];
+            return isObject(property) ? property[this.languageCode] : property;
+        },
         setTranslationPropertyValue(value, propertyName) {
             this.setMultilingualTranslationPropertyValue({
                 languageCode: this.languageCode,

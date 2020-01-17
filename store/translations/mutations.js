@@ -3,16 +3,12 @@
  * See LICENSE for license details.
  */
 export default {
-    addCardLanguageCode: (state, { languageCode }) => {
-        state.cardsLanguageCodes.push(languageCode);
-    },
-    removeCardLanguageCode: (state, { index }) => {
-        state.cardsLanguageCodes.splice(index, 1);
-    },
-    setTabTranslations: (state, { translations }) => {
+    setTabTranslations: (state, translations) => {
         state.translations = { ...translations };
     },
-    setMultilingualTranslationPropertyValue: (state, { languageCode, propertyName, value }) => {
+    setMultilingualTranslationPropertyValue: (state, {
+        languageCode, propertyName, value,
+    }) => {
         state.translations[propertyName] = {
             ...state.translations[propertyName],
             [languageCode]: value,
@@ -20,6 +16,5 @@ export default {
     },
     clearStorage: (state) => {
         state.translations = {};
-        state.cardsLanguageCodes = [];
     },
 };

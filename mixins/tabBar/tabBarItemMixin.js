@@ -16,15 +16,9 @@ export default {
             type: Boolean,
             required: true,
         },
-        isContentExpanded: {
+        isExpanded: {
             type: Boolean,
-            required: false,
             default: true,
-        },
-        isContextualMenu: {
-            type: Boolean,
-            required: false,
-            default: false,
         },
     },
 };

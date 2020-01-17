@@ -4,43 +4,52 @@
  */
 
 import { toCapitalize } from '~/model/stringWrapper';
+import { COLUMN_TYPE } from '~/defaults/grid';
 
-const getCheckColumn = privilegeType => ({
+const getCheckColumn = (privilegeType) => ({
     id: privilegeType,
     label: toCapitalize(privilegeType),
-    type: 'CHECK_CELL',
+    type: COLUMN_TYPE.CHECK_CELL,
     width: '1fr',
     editable: true,
+    visible: true,
+});
+
+const getNameColumn = () => ({
+    id: 'name',
+    label: '',
+    type: COLUMN_TYPE.TEXT,
+    width: '1fr',
+    editable: false,
+    visible: true,
 });
 
 export function getMappedGridData(privileges, rolePrivileges) {
     const rows = [];
     const columns = [
-        {
-            id: 'name',
-            label: '',
-            type: 'TEXT',
-        },
+        getNameColumn(),
     ];
-    const columnWidths = ['0.5fr'];
+    const columnWidths = ['1fr'];
     const tmpRowKeys = {};
     const tmpColumnKeys = {};
     const systemPrivilegesEntries = Object.entries(privileges);
     const { length: systemPrivilegesLength } = systemPrivilegesEntries;
+    const descriptions = {};
     let rowIndex = 0;
 
     for (let i = 0; i < systemPrivilegesLength; i += 1) {
         const [, entry] = systemPrivilegesEntries[i];
-        const { name, privileges: systemPrivileges } = entry;
+        const { name, privileges: systemPrivileges, description } = entry;
         const privilegeNames = Object.values(systemPrivileges);
         const { length: privilegeNamesNumber } = privilegeNames;
 
         if (!tmpRowKeys[name]) {
             tmpRowKeys[name] = '+';
             rows.push({
-                id: rowIndex,
-                name,
+                id: { value: rowIndex },
+                name: { value: name },
             });
+            descriptions[rowIndex] = description;
             rowIndex += 1;
         }
 
@@ -55,13 +64,16 @@ export function getMappedGridData(privileges, rolePrivileges) {
                 tmpColumnKeys[rolePrivilegeType] = '+';
             }
 
-            rows[rowIndex - 1][rolePrivilegeType] = rolePrivileges.includes(rolePrivilege);
+            rows[rowIndex - 1][rolePrivilegeType] = {
+                value: rolePrivileges.includes(rolePrivilege),
+            };
         }
     }
 
     return {
         rows,
         columns,
+        descriptions,
         columnWidths,
     };
 }
@@ -77,18 +89,21 @@ export function getMappedPrivilegesBasedOnGridData(privilegesDic, gridData) {
         const privilegeKeys = Object.keys(role);
         const { length: privilegesKeysNumber } = privilegeKeys;
         const privilegeIndex = tmpPrivilegesDic.findIndex(
-            privilege => privilege.name === role.name.value,
+            (privilege) => privilege.name === role.name.presentationValue,
         );
 
-        for (let j = 0; j < privilegesKeysNumber; j += 1) {
-            if (privilegeKeys[j] !== 'name' && role[privilegeKeys[j]].value) {
-                const privilegeName = tmpPrivilegesDic[privilegeIndex].privileges[privilegeKeys[j]];
+        if (privilegeIndex > -1) {
+            for (let j = 0; j < privilegesKeysNumber; j += 1) {
+                if (privilegeKeys[j] !== 'name' && role[privilegeKeys[j]].editValue) {
+                    const privilegeName = tmpPrivilegesDic[privilegeIndex]
+                        .privileges[privilegeKeys[j]];
 
-                mappedPrivileges.push(privilegeName);
+                    mappedPrivileges.push(privilegeName);
+                }
             }
-        }
 
-        tmpPrivilegesDic.splice(privilegeIndex, 1);
+            tmpPrivilegesDic.splice(privilegeIndex, 1);
+        }
     }
 
     return mappedPrivileges;

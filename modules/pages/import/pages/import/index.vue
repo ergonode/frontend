@@ -3,51 +3,35 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridPage
-        :title="title"
-        :action-paths="actionPaths"
-        :buttons="buttons"
-        icon="Import" />
+    <Page>
+        <TitleBar
+            title="Imports"
+            :is-read-only="$isReadOnly('IMPORT')" />
+        <HorizontalTabBar
+            :items="tabs" />
+    </Page>
 </template>
 
 <script>
-import { mapState } from 'vuex';
 
 export default {
-    name: 'Imports',
+    name: 'Import',
     components: {
-        GridPage: () => import('~/components/Pages/GridPage'),
+        HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
+        TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
+        Page: () => import('~/core/components/Layout/Page'),
     },
-    data() {
-        return {
-            title: 'Imports',
-            buttons: [
-                // TODO: uncomment when we have create action
-                // {
-                //     title: 'CREATE IMPORT',
-                //     color: 'success',
-                //     action: this.addNewImport,
-                //     disabled: !this.$hasAccess('IMPORT_CREATE'),
-                // },
-            ],
-        };
+    beforeCreate() {
+        this.tabs = [];
+        if (this.$hasAccess(['IMPORT_READ'])) {
+            this.tabs.push({
+                title: 'Imports',
+                route: { name: 'imports-grid' },
+            });
+        }
     },
-    computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
-        actionPaths() {
-            return {
-                getData: `${this.userLanguageCode}/imports`,
-                routerEdit: 'imports-edit-id',
-            };
-        },
-    },
-    methods: {
-        addNewImport() {
-            // TODO: Imports will have add / edit
-            // this.$router.push('/imports/new');
-        },
+    beforeDestroy() {
+        delete this.tabs;
     },
 };
 </script>

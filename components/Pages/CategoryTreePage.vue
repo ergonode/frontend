@@ -3,119 +3,76 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
-        <NavigationHeader
+    <Page>
+        <TitleBar
             :title="title"
-            :buttons="buttons"
-            :breadcrumbs="breadcrumbs"
-            :is-read-only="!isUserAllowedToUpdateCategoryTree && isEdit"
-            icon="Tree"
-            @navigateback="onDismiss" />
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('CATEGORY_TREE')"
+            @navigateBack="onDismiss">
+            <template
+                v-if="isEdit"
+                #mainAction>
+                <Button
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE CATEGORY TREE"
+                    :disabled="!$hasAccess(['CATEGORY_TREE_DELETE'])"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </Button>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE TREE' : 'CREATE TREE'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
         <Blur
             v-show="isBlurVisible"
             :style="blurZIndex" />
-    </PageWrapper>
+        <TrashCan v-show="draggedElementOnGrid" />
+    </Page>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
+import { Z_INDEX_LVL_0 } from '~/assets/scss/_variables/_indexes.scss';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'CategoryTreePage',
     mixins: [categoryManagementPageBaseMixin],
     components: {
+        TrashCan: () => import('~/components/DragAndDrop/TrashCan'),
         Blur: () => import('~/components/Blur/Blur'),
-    },
-    created() {
-        let generalOptTabPath = '/category-trees/new/general';
-        let translationTabPath = '/category-trees/new/translations';
-        let designerPath = '/category-trees/new/designer';
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        this.buttons = [];
-        this.breadcrumbs = [
-            {
-                title: 'Category trees',
-                icon: 'Tree',
-                path: '/category-trees',
-            },
-        ];
-        this.isUserAllowedToUpdateCategoryTree = this.$hasAccess('CATEGORY_TREE_UPDATE');
-        if (this.isEdit) {
-            generalOptTabPath = `/category-trees/edit/${this.$route.params.id}/general`;
-            translationTabPath = `/category-trees/edit/${this.$route.params.id}/translations`;
-            designerPath = `/category-trees/edit/${this.$route.params.id}/designer`;
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-            this.buttons = [
-                {
-                    title: 'REMOVE CATEGORY TREE',
-                    color: 'transparent',
-                    action: this.onRemove,
-                    theme: 'dark',
-                    icon: 'remove',
-                    disabled: !this.$hasAccess('CATEGORY_TREE_DELETE'),
-                },
-            ];
-        }
-        this.tabs = [
-            {
-                title: 'General options',
-                path: generalOptTabPath,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} TREE`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateCategoryTree : false,
-                    },
-                },
-            },
-            {
-                title: 'Translations',
-                path: translationTabPath,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} TREE`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateCategoryTree : false,
-                    },
-                },
-            },
-            {
-                title: 'Designer',
-                path: designerPath,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} TREE`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateCategoryTree : false,
-                    },
-                },
-            },
-        ];
-    },
-    beforeDestroy() {
-        delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateCategoryTree;
-        delete this.buttons;
     },
     computed: {
         ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
+            isListElementDragging: (state) => state.isListElementDragging,
+            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         isBlurVisible() {
-            return this.isListElementDragging;
+            return this.isListElementDragging || this.draggedElementOnGrid;
         },
         blurZIndex() {
-            if (this.isListElementDragging) {
-                return { zIndex: '10' };
+            if (this.isBlurVisible) {
+                return { zIndex: Z_INDEX_LVL_0 };
             }
             return null;
         },

@@ -21,6 +21,9 @@ export default {
             });
         }
     },
+    setErrorForKey: ({ commit }, { key, error }) => {
+        commit('setErrorForKey', { key, error });
+    },
     setValidationErrors: ({ commit }, payload) => {
         commit('setValidationErrors', payload);
     },

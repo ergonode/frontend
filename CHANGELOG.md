@@ -1,6 +1,15 @@
 # CHANGELOG
 This changelog references the relevant changes.
 
+## CHANGELOG FOR v0.6.0 
+ - feature - Add product history log
+ - feature - Add core notifications 
+ - feature - Add workflow notifications
+ - feature - Add comment module 
+ - feature - Add system attribute
+ - feature - Add advanced filter support
+ - feature - Add excel-like mechanisms to grid
+
 ## CHANGELOG FOR v0.5.0
 
 - feature [#154](https://github.com/ergonode/frontend/issues/154) Segments + condition sets

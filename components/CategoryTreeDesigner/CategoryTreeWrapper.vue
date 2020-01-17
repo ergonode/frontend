@@ -5,20 +5,19 @@
 <template>
     <TemplateGridWrapper
         :columns="columns"
-        :rows-height="rowsHeight"
-        :is-dragging-enabled="$hasAccess('CATEGORY_TREE_UPDATE')">
+        :row-height="rowHeight"
+        :is-dragging-enabled="$hasAccess(['CATEGORY_TREE_UPDATE'])">
         <template #gridHeader>
-            <TemplateGridHeader
-                :style="gridStyles"
-                :columns="columns" />
+            <TemplateGridHeader :columns="columns" />
         </template>
         <template
-            #gridItem="{item, toggleItemMethod}">
+            #gridItem="{item, toggleItem, removeItem}">
             <CategoryTreeItem
                 :number-of-children="getChildrenLengthById(item.id)"
                 :is-expanded="getExpandStateById(item.id)"
-                :item-name="item.name || item.code"
-                @toggleItem="toggleItemMethod(item)" />
+                :item="item"
+                @toggleItem="toggleItem(item)"
+                @removeItem="removeItem(item)" />
         </template>
     </TemplateGridWrapper>
 </template>
@@ -38,19 +37,13 @@ export default {
     },
     computed: {
         ...mapState('tree', {
-            columns: state => state.treeLevels,
-            rowsHeight: state => state.rowsHeight,
+            columns: (state) => state.treeLevels,
+            rowHeight: (state) => state.rowHeight,
         }),
         ...mapGetters('gridDesigner', [
             'getChildrenLengthById',
             'getExpandStateById',
         ]),
-        gridStyles() {
-            return {
-                gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
-                gridAutoRows: `${this.rowsHeight}px`,
-            };
-        },
     },
 };
 </script>

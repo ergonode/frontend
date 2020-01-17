@@ -6,8 +6,8 @@ const positionBetweenRows = 0.5;
 
 export function getCoordinatesForHiddenCategories(hiddenElements, { row, column }) {
     const [{ row: firstRow, column: firstColumn }] = hiddenElements;
-    const getFixedRow = oldRow => oldRow - ((firstRow - 1) - row);
-    const getFixedColumn = oldColumn => oldColumn - ((firstColumn - 1) - column);
+    const getFixedRow = (oldRow) => oldRow - ((firstRow - 1) - row);
+    const getFixedColumn = (oldColumn) => oldColumn - ((firstColumn - 1) - column);
     return hiddenElements.map((ele) => {
         const item = {
             ...ele,
@@ -20,7 +20,7 @@ export function getCoordinatesForHiddenCategories(hiddenElements, { row, column 
 
 export function getNearestNeighborRowId(tree, column, row) {
     const [neighbor] = tree.filter(
-        e => e.column <= column && e.row > row,
+        (e) => e.column <= column && e.row > row,
     );
     return neighbor ? neighbor.row : tree.length;
 }
@@ -85,10 +85,10 @@ export function getRowBounds(elements) {
     return elementBounds;
 }
 
-export function getRowBellowMouse({ clientY, elements, elementBounds }, completion) {
+export function getRowBellowMouse({ pageY, elements, elementBounds }, completion) {
     for (let i = 0; i < elements.length; i += 1) {
         const { y, height } = elementBounds[i];
-        if (y <= clientY && y + height >= clientY) {
+        if (y <= pageY && y + height >= pageY) {
             return completion({ index: i, category: elements[i] });
         }
     }
@@ -96,11 +96,11 @@ export function getRowBellowMouse({ clientY, elements, elementBounds }, completi
 }
 
 export function getFullTree(hiddenChildren, oldTree) {
-    let newTree = oldTree.filter(el => el.id !== 'ghost_item');
+    let newTree = oldTree.filter((el) => el.id !== 'ghost_item');
     const arr = Object.keys(hiddenChildren);
     for (let i = arr.length - 1; i >= 0; i -= 1) {
         const key = arr[i];
-        const index = newTree.findIndex(el => el.id === key);
+        const index = newTree.findIndex((el) => el.id === key);
         newTree = getTreeWhenElementExpand(hiddenChildren[key], newTree, index);
     }
     return newTree;

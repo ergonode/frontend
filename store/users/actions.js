@@ -20,6 +20,9 @@ export default {
         { userId, onError = () => {} },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
+        const { roles } = rootState.roles;
+        const { languages } = rootState.data;
+
         return this.app.$axios.$get(`${userLanguageCode}/accounts/${userId}`).then(({
             id,
             email = '',
@@ -30,21 +33,23 @@ export default {
             password = '',
             password_repeat = '',
             is_active = false,
-            role_id = '',
+            role_id,
         }) => {
             commit(types.SET_STATE, { key: 'id', value: id });
             commit(types.SET_STATE, { key: 'avatarId', value: avatar_id });
             commit(types.SET_STATE, { key: 'email', value: email });
             commit(types.SET_STATE, { key: 'firstName', value: first_name });
             commit(types.SET_STATE, { key: 'lastName', value: last_name });
-            commit(types.SET_STATE, { key: 'language', value: language });
+            commit(types.SET_STATE, { key: 'language', value: languages[language] });
             commit(types.SET_STATE, { key: 'password', value: password });
             commit(types.SET_STATE, { key: 'passwordRepeat', value: password_repeat });
             commit(types.SET_STATE, { key: 'isActive', value: is_active });
-            commit(types.SET_STATE, { key: 'roleId', value: role_id });
+            if (role_id) {
+                commit(types.SET_STATE, { key: 'role', value: roles.find((role) => role.id === role_id) });
+            }
         }).catch(onError);
     },
-    createUser(
+    async createUser(
         { commit, rootState },
         {
             data,
@@ -53,12 +58,15 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$post(`${userLanguageCode}/accounts`, data).then(({ id }) => {
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$post(`${userLanguageCode}/accounts`, data).then(({ id }) => {
             commit(types.SET_STATE, { key: 'id', value: id });
             onSuccess(id);
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
-    updateUser(
+    async updateUser(
         { rootState },
         {
             id,
@@ -70,10 +78,12 @@ export default {
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
 
-        return Promise.all([
+        await this.$setLoader('footerButton');
+        await Promise.all([
             this.app.$axios.$put(`${userLanguageCode}/accounts/${id}`, data),
             this.app.$axios.$put(`${userLanguageCode}/accounts/${id}/avatar`, { multimedia: avatarId }),
-        ]).then(() => onSuccess()).catch(e => onError(e.data));
+        ]).then(() => onSuccess()).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);

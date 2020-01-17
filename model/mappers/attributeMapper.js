@@ -2,16 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getKeyByValue, getKeysByValues, getValuesByKeys } from '~/model/objectWrapper';
+import {
+    isObject, getKeyByValue,
+} from '~/model/objectWrapper';
 import { getParamsKeyForType, getParamsOptionsForType } from '~/model/attributes/AttributeTypes';
+import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
 
-export function getMappedType(types, selectedType) {
+export function getParsedType(types, selectedType) {
     return getKeyByValue(types, selectedType);
-}
-
-export function getMappedParameterKey(types, selectedType) {
-    const typeKey = getMappedType(types, selectedType);
-    return getParamsKeyForType(typeKey);
 }
 
 export function getMappedParameterValues(type, parameters, data) {
@@ -21,106 +19,61 @@ export function getMappedParameterValues(type, parameters, data) {
     );
     const [parsedParameters] = Object.values(parameters);
 
-    if (Array.isArray(parsedParameters)) {
-        return getValuesByKeys(typeParameters, parsedParameters);
-    }
-
     return typeParameters[parsedParameters];
 }
 
-export function getMappedParameterKeys(
-    types,
+export function getParsedParameterKeys({
     selectedType,
     selectedParam,
-    data,
-) {
-    const typeKey = getMappedType(types, selectedType);
-    const paramKey = getParamsKeyForType(typeKey);
-    const typeParameters = getParamsOptionsForType(
-        typeKey,
-        data,
-    );
+}) {
+    const paramKey = getParamsKeyForType(selectedType);
 
-    if (Array.isArray(selectedParam)) {
-        return { [paramKey]: getKeysByValues(typeParameters, selectedParam) };
+    if (isObject(selectedParam)) {
+        return { [paramKey]: Object.keys(selectedParam) };
     }
 
-    return { [paramKey]: getKeyByValue(typeParameters, selectedParam) };
+    return { [paramKey]: selectedParam };
 }
 
-export function getMappedGroupIDs(groups, selectedGroups) {
-    const mappedGroups = [];
+export function getMappedGroupsElementsCount(elements) {
+    const groupsElementsCount = {};
+    const { length } = elements;
 
-    groups.forEach((group) => {
-        if (selectedGroups.some(grp => grp === group.label)) {
-            mappedGroups.push(group.id);
-        }
-    });
+    for (let i = 0; i < length; i += 1) {
+        const { groups } = elements[i];
+        const { length: groupsCount } = groups;
 
-    return mappedGroups;
-}
-
-export function getMappedGroupLabels(groups, selectedGroups) {
-    const mappedGroups = [];
-
-    groups.forEach((group) => {
-        if (selectedGroups.some(grp => grp === group.id)) {
-            mappedGroups.push(group.label);
-        }
-    });
-
-    return mappedGroups;
-}
-
-export function getMappedOptionKeysValues(options, isMultilingual) {
-    const optionKeys = [];
-    const optionValues = isMultilingual ? {} : [];
-
-    options.forEach((option) => {
-        const { key, value } = option;
-        optionKeys.push(key);
-
-        if (isMultilingual) {
-            if (!value) return;
-
-            Object.entries(value).forEach(([transKey, transValue]) => {
-                if (!optionValues[transKey]) {
-                    optionValues[transKey] = [];
-                }
-                optionValues[transKey].push(transValue);
-            });
+        if (groupsCount === 0) {
+            if (typeof groupsElementsCount[UNASSIGNED_GROUP_ID] === 'undefined') {
+                groupsElementsCount[UNASSIGNED_GROUP_ID] = 1;
+            } else {
+                groupsElementsCount[UNASSIGNED_GROUP_ID] += 1;
+            }
         } else {
-            optionValues.push(value);
+            for (let j = 0; j < groupsCount; j += 1) {
+                if (typeof groupsElementsCount[groups[j]] === 'undefined') {
+                    groupsElementsCount[groups[j]] = 1;
+                } else {
+                    groupsElementsCount[groups[j]] += 1;
+                }
+            }
         }
-    });
+    }
 
-    return { optionKeys, optionValues };
+    return groupsElementsCount;
 }
 
-export function getMappedOptions(optionKeys, optionValues, isMultilingual) {
-    const options = [];
+export function getMappedOptions(options) {
+    return options.reduce((acc, current) => {
+        const newObject = acc;
+        newObject[current.key] = current.value;
+        return newObject;
+    }, {});
+}
 
-    optionKeys.forEach((key, optIndex) => {
-        let value = null;
-
-        if (isMultilingual) {
-            value = {};
-            const optionsEntries = Object.entries(optionValues);
-            optionsEntries.forEach(([transKey, transValue]) => {
-                // We do not want to send an empty option key values
-                if (transValue[optIndex]) {
-                    value[transKey] = transValue[optIndex];
-                }
-            });
-        } else {
-            value = optionValues[optIndex];
-        }
-
-        options.push({
-            key,
-            value,
-        });
-    });
-
-    return options;
+export function getParsedOptions(options) {
+    return Object.keys(options).map((key) => ({
+        key,
+        value: options[key],
+    }));
 }

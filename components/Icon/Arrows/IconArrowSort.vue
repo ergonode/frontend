@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <IconBase
+    <BaseIcon
         class="sort-icon"
         :width="size"
         :height="size"
@@ -17,26 +17,27 @@
             :points="upperArrow.points"
             :fill="upperArrowFill"
             :transform="upperArrow.transform" />
-    </IconBase>
+    </BaseIcon>
 </template>
 
 <script>
-import { SortingOrder } from '~/model/icons/SortingOrder';
-import IconBase from '~/components/Icon/IconBase';
+import { SORTING_ORDER } from '~/defaults/icons';
+import { GRAPHITE, GREY, GREEN } from '~/assets/scss/_variables/_colors.scss';
+import BaseIcon from '~/components/Icon/BaseIcon';
 
 export default {
     name: 'IconArrowSort',
     components: {
-        IconBase,
+        BaseIcon,
     },
     props: {
         sortingOrder: {
             type: String,
-            default: SortingOrder.NONE,
+            default: SORTING_ORDER.NONE,
         },
         fillColor: {
             type: String,
-            default: '#5C5F65',
+            default: GRAPHITE,
         },
         size: {
             type: [String, Number],
@@ -59,20 +60,20 @@ export default {
     computed: {
         upperArrowFill() {
             switch (this.sortingOrder) {
-            case SortingOrder.ASC:
-                return '#D6D7D8';
-            case SortingOrder.DESC:
-                return '#00bc87';
+            case SORTING_ORDER.ASC:
+                return GREY;
+            case SORTING_ORDER.DESC:
+                return GREEN;
             default:
                 return null;
             }
         },
         lowerArrowFill() {
             switch (this.sortingOrder) {
-            case SortingOrder.ASC:
-                return '#00bc87';
-            case SortingOrder.DESC:
-                return '#D6D7D8';
+            case SORTING_ORDER.ASC:
+                return GREEN;
+            case SORTING_ORDER.DESC:
+                return GREY;
             default:
                 return null;
             }

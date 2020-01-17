@@ -25,7 +25,7 @@ module.exports = {
         'node_modules/',
     ],
     testMatch: [
-        '**/tests/**/*.test.(js|jsx|ts|tsx)|**/__tests__/*.test.(js|jsx|ts|tsx)',
+        '**/(__tests__|tests)/**/*.test.(js|jsx|ts|tsx)',
     ],
     testURL: 'http://ergonode.local/',
     reporters: [

@@ -5,28 +5,21 @@
 <template>
     <Component
         :is="getComponentViaType"
-        solid
-        required
-        clearable
+        :solid="true"
+        :regular="true"
+        :required="true"
+        :clearable="true"
         :label="parameter.name"
-        :options="hasOptions ? Object.values(parameter.options) : []"
-        :value="getConditionValue"
+        :options="conditionOptions"
+        :value="conditionValue"
         :multiselect="parameter.type === 'MULTI_SELECT'"
-        :disabled="!$hasAccess('SEGMENT_UPDATE')"
         :error-messages="errorParamsMessage"
         @input="setConditionValueByType" />
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
-import {
-    getKeyByValue,
-    getValueByKey,
-    getKeysByValues,
-    getValuesByKeys,
-} from '~/model/objectWrapper';
+import { TYPES } from '~/defaults/conditions';
 import errorValidationMixin from '~/mixins/validations/errorValidationMixin';
-import TextField from '~/components/Inputs/TextField';
-import Select from '~/components/Inputs/Select/Select';
 
 export default {
     name: 'ConditionSetParameters',
@@ -47,36 +40,33 @@ export default {
     },
     computed: {
         ...mapState('conditions', {
-            conditionsValues: state => state.conditionsValues,
+            conditionsValues: (state) => state.conditionsValues,
         }),
-        hasOptions() {
-            return this.parameter.options || false;
-        },
         getComponentViaType() {
             switch (this.parameter.type) {
-            case 'SELECT':
-            case 'MULTI_SELECT':
-                return Select;
-            case 'NUMERIC':
-            case 'TEXT':
-            case 'UNIT':
-            case 'PRICE':
-                return TextField;
+            case TYPES.SELECT:
+            case TYPES.MULTI_SELECT:
+                return () => import('~/core/components/Inputs/Select/TranslationSelect');
+            case TYPES.TEXT:
+            case TYPES.UNIT:
+            case TYPES.NUMERIC:
+                return () => import('~/core/components/Inputs/TextField');
             default:
                 return null;
             }
         },
-        getConditionValue() {
-            const { name, options } = this.parameter;
-            const condition = this.conditionsValues[this.itemId];
+        conditionValue() {
+            const { name } = this.parameter;
+            if (!this.conditionsValues[this.itemId] || !this.conditionsValues[this.itemId][name]) return '';
 
-            if (!condition) return '';
-            if (this.hasOptions) {
-                return Array.isArray(condition[name])
-                    ? getValuesByKeys(options, condition[name])
-                    : getValueByKey(options, condition[name]);
-            }
-            return condition[name] || '';
+            return this.conditionsValues[this.itemId][name];
+        },
+        conditionOptions() {
+            return this.parameter.options
+                ? Object.keys(this.parameter.options).map((key) => ({
+                    id: key, key, value: this.parameter.options[key],
+                }))
+                : [];
         },
         errorParamsMessage() {
             const { name } = this.parameter;
@@ -89,17 +79,12 @@ export default {
             'setConditionValue',
         ]),
         setConditionValueByType(value) {
-            let tmpValue = value;
-            const { name, options } = this.parameter;
-            if (this.hasOptions) {
-                tmpValue = Array.isArray(value)
-                    ? getKeysByValues(options, value)
-                    : getKeyByValue(options, value) || null;
-            }
+            const { name } = this.parameter;
+
             this.setConditionValue({
                 conditionId: this.itemId,
                 parameterName: name,
-                parameterValue: tmpValue,
+                parameterValue: value,
             });
         },
         conditionParametersAreValidate(index, key) {

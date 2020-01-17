@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="details-content">
+    <div class="input__append">
         <slot name="append" />
         <InfoHint
             v-if="hint && !isError"
@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import InfoHint from '~/components/Inputs/Hint/InfoHint';
-import ErrorHint from '~/components/Inputs/Hint/ErrorHint';
+import InfoHint from '~/core/components/Hints/InfoHint';
+import ErrorHint from '~/core/components/Hints/ErrorHint';
 
 export default {
     name: 'ProductTemplateDetailsContent',
@@ -40,10 +40,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .details-content {
-        display: flex;
-        align-items: center;
-    }
-</style>

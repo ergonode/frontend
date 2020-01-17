@@ -3,28 +3,29 @@
  * See LICENSE for license details.
  */
 <template>
-    <IconBase
+    <BaseIcon
         :width="size"
         :height="size"
         :icon-color="fillColor">
         <path
             :d="drawingCommands"
             :transform="transform" />
-    </IconBase>
+    </BaseIcon>
 </template>
 
 <script>
-import IconBase from '~/components/Icon/IconBase';
+import BaseIcon from '~/components/Icon/BaseIcon';
+import { BLUE } from '~/assets/scss/_variables/_colors.scss';
 
 export default {
     name: 'IconInfo',
     components: {
-        IconBase,
+        BaseIcon,
     },
     props: {
         fillColor: {
             type: String,
-            default: '#2096F3',
+            default: BLUE,
         },
         size: {
             type: [String, Number],

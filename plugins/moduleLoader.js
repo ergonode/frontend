@@ -3,8 +3,6 @@
  * See LICENSE for license details.
  */
 /* eslint-disable no-param-reassign */
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
 import Vue from 'vue'; // eslint-disable-line import/no-extraneous-dependencies
 
 class ModuleLoader {
@@ -66,7 +64,7 @@ class ModuleLoader {
 
     setPagesConfiguration({ pages }) {
         const pagesConfiguration = { router: [], menu: [], store: [] };
-        const filteredPages = pages.filter(page => page.isActive);
+        const filteredPages = pages.filter((page) => page.isActive);
 
         for (let i = 0; i < filteredPages.length; i += 1) {
             let config = null;

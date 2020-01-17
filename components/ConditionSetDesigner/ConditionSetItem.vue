@@ -16,7 +16,7 @@
                     :item-row="itemRow" />
             </div>
             <span
-                class="condition__phrase typo-label txt--graphite"
+                class="condition__phrase"
                 v-text="conditionPhrase" />
         </template>
     </div>
@@ -25,9 +25,8 @@
 import { mapState } from 'vuex';
 import {
     isEmpty,
-    getValueByKey,
-    getValuesByKeys,
 } from '~/model/objectWrapper';
+import { hasOptions } from '~/model/attributes/AttributeTypes';
 import ConditionSetParameters from '~/components/ConditionSetDesigner/ConditionSetParameters';
 
 export default {
@@ -51,7 +50,7 @@ export default {
     },
     computed: {
         ...mapState('conditions', {
-            conditionsValues: state => state.conditionsValues,
+            conditionsValues: (state) => state.conditionsValues,
         }),
         parametersStyle() {
             const { parameters } = this.condition;
@@ -73,8 +72,10 @@ export default {
     methods: {
         replacePlaceholderOnPhrase(placeholders) {
             const { phrase, parameters } = this.condition;
-            const findKeyWhenSelect = clearedKey => parameters.findIndex(p => p.name === clearedKey
-                && (p.type === 'SELECT' || p.type === 'MULTI_SELECT'));
+            const findKeyWhenSelect = (clearedKey) => parameters.findIndex(
+                (parameter) => parameter.name === clearedKey
+                && hasOptions(parameter.type),
+            );
 
             return phrase.replace(/\[\w+\]/g, (placeholder) => {
                 const clearedKey = placeholder.slice(1).slice(0, -1);
@@ -82,9 +83,7 @@ export default {
 
                 if (foundKey !== -1) {
                     if (!placeholders[clearedKey]) return placeholder;
-                    return Array.isArray(placeholders[clearedKey])
-                        ? getValuesByKeys(parameters[foundKey].options, placeholders[clearedKey])
-                        : getValueByKey(parameters[foundKey].options, placeholders[clearedKey]);
+                    return placeholders[clearedKey].value;
                 }
                 return placeholders[clearedKey] || placeholder;
             });
@@ -97,9 +96,8 @@ export default {
     .condition {
         display: flex;
         flex-direction: column;
-        height: 100%;
-        border: 1px solid $grey;
-        background-color: $background;
+        border: 1px solid $GREY;
+        background-color: $WHITESMOKE;
         cursor: move;
         overflow: hidden;
 
@@ -109,30 +107,34 @@ export default {
             bottom: -8px;
             padding: 0 8px;
             transform: translateX(-50%);
-            background-color: $white;
-            color: $lightGraphite;
+            background-color: $WHITE;
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_14_20;
             content: "AND";
         }
 
         &--loader {
-            border: 1px dashed $primary;
-            background-color: $lightGreen;
+            border: 1px dashed $GREEN;
+            background-color: $GREEN_LIGHT;
         }
 
         &__parameters {
             display: grid;
             grid-gap: 6%;
             grid-template-rows: 1fr;
-            flex: 0 1 100%;
-            padding: 4px 6% 6px;
-            background-color: $white;
+            flex: 1;
+            background-color: $WHITE;
         }
 
         &__phrase {
-            padding: 6px 8px;
-            border-top: 1px dashed $lightGrey;
-            letter-spacing: 1px;
-            color: $lightGraphite;
+            flex: 0;
+            border-top: $BORDER_DASHED_GREY;
+            color: $GRAPHITE;
+            font: $FONT_BOLD_12_16;
+        }
+
+        &__phrase, &__parameters {
+            padding: 8px;
         }
     }
 </style>

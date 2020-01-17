@@ -3,37 +3,47 @@
  * See LICENSE for license details.
  */
 import defaultState from './state';
+import { UNASSIGNED_GROUP_ID } from '~/defaults/list';
 
 export const types = {
-    INITIALIZE_ELEMENTS_FOR_LANGUAGE: 'INITIALIZE_ELEMENTS_FOR_LANGUAGE',
     SET_GROUPS_FOR_LANGUAGE: 'SET_GROUPS_FOR_LANGUAGE',
     SET_ELEMENTS_FOR_LANGUAGE: 'SET_ELEMENTS_FOR_LANGUAGE',
-    SET_ELEMENTS: 'SET_ELEMENTS',
+    SET_GROUPS_ELEMENTS_COUNT: 'SET_GROUPS_ELEMENTS_COUNT',
+    SET_GROUPS_ELEMENTS_COUNT_FOR_UNASSIGNED_ELEMENTS: 'SET_GROUPS_ELEMENTS_COUNT_FOR_UNASSIGNED_ELEMENTS',
+    SET_FILTER: 'SET_FILTER',
     SET_DISABLED_ELEMENT: 'SET_DISABLED_ELEMENT',
+    SET_DISABLED_ELEMENTS: 'SET_DISABLED_ELEMENTS',
+    SET_GROUP_ELEMENTS_COUNT: 'SET_GROUP_ELEMENTS_COUNT',
     REMOVE_DISABLED_ELEMENT: 'REMOVE_DISABLED_ELEMENT',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 
 export default {
-    [types.INITIALIZE_ELEMENTS_FOR_LANGUAGE](state, { languageCode }) {
-        state.elements[languageCode] = [];
+    [types.SET_ELEMENTS_FOR_LANGUAGE](state, { languageCode, elements }) {
+        state.elements[languageCode] = elements;
+        state.elements = { ...state.elements };
+    },
+    [types.SET_GROUPS_ELEMENTS_COUNT](state, groupsElementsCount) {
+        state.groupsElementsCount = groupsElementsCount;
+    },
+    [types.SET_GROUPS_ELEMENTS_COUNT_FOR_UNASSIGNED_ELEMENTS](state, groupElementsCount) {
+        state.groupsElementsCount[UNASSIGNED_GROUP_ID] = groupElementsCount;
+    },
+    [types.SET_FILTER](state, filter) {
+        state.filter = filter;
     },
     [types.SET_GROUPS_FOR_LANGUAGE](state, { languageCode, groups }) {
         state.groups[languageCode] = groups;
         state.groups = { ...state.groups };
     },
-    [types.SET_ELEMENTS_FOR_LANGUAGE](state, { languageCode, elements }) {
-        state.elements[languageCode] = [...state.elements[languageCode], ...elements];
-        state.elements = { ...state.elements };
-    },
-    [types.SET_ELEMENTS](state, { languageCode, elements }) {
-        state.elements[languageCode] = elements;
-    },
-    [types.SET_DISABLED_ELEMENT](state, { languageCode, elementId }) {
+    [types.SET_DISABLED_ELEMENT](state, { languageCode, elementId, disabled }) {
         state.disabledElements[languageCode] = {
-            ...state.disabledElements[languageCode], [elementId]: true,
+            ...state.disabledElements[languageCode], [elementId]: disabled,
         };
         state.disabledElements = { ...state.disabledElements };
+    },
+    [types.SET_DISABLED_ELEMENTS](state, setDisabledElements) {
+        state.disabledElements = setDisabledElements;
     },
     [types.REMOVE_DISABLED_ELEMENT](state, { languageCode, elementId }) {
         delete state.disabledElements[languageCode][elementId];

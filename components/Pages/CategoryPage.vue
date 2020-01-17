@@ -3,89 +3,56 @@
  * See LICENSE for license details.
  */
 <template>
-    <PageWrapper>
-        <NavigationHeader
+    <Page>
+        <TitleBar
             :title="title"
-            :buttons="buttons"
-            :breadcrumbs="breadcrumbs"
-            icon="Category"
-            :is-read-only="!isUserAllowedToUpdateCategory && isEdit"
-            @navigateback="onDismiss" />
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('CATEGORY')"
+            @navigateBack="onDismiss">
+            <template
+                v-if="isEdit"
+                #mainAction>
+                <Button
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    title="REMOVE CATEGORY"
+                    :disabled="!$hasAccess(['CATEGORY_DELETE'])"
+                    @click.native="onRemove">
+                    <template #prepend="{ color }">
+                        <IconDelete
+                            :fill-color="color" />
+                    </template>
+                </Button>
+            </template>
+        </TitleBar>
         <HorizontalTabBar :items="tabs" />
-    </PageWrapper>
+        <Footer>
+            <Button
+                :title="isEdit ? 'SAVE CATEGORY' : 'CREATE CATEGORY'"
+                :loaded="$isLoaded('footerButton')"
+                @click.native="onUpdate" />
+        </Footer>
+    </Page>
 </template>
 
 <script>
+import { SIZES, THEMES } from '~/defaults/buttons';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 import categoryManagementPageBaseMixin from '~/mixins/page/categoryManagementPageBaseMixin';
 
 export default {
     name: 'CategoryPage',
     mixins: [categoryManagementPageBaseMixin],
-    created() {
-        let generalOptTabPath = '/categories/new/general';
-        let privilegesTabPath = '/categories/new/translations';
-        let tabAction = this.onCreate;
-        let buttonPrefix = 'CREATE';
-
-        this.buttons = [];
-        this.breadcrumbs = [
-            {
-                title: 'Categories',
-                icon: 'Category',
-                path: '/categories',
-            },
-        ];
-        this.isUserAllowedToUpdateCategory = this.$hasAccess('CATEGORY_UPDATE');
-
-        if (this.isEdit) {
-            generalOptTabPath = `/categories/edit/${this.$route.params.id}/general`;
-            privilegesTabPath = `/categories/edit/${this.$route.params.id}/translations`;
-            tabAction = this.onSave;
-            buttonPrefix = 'SAVE';
-
-            // TODO: uncomment when we create removal options
-            // this.buttons = [
-            //     {
-            //         title: 'REMOVE CATEGORY',
-            //         color: 'transparent',
-            //         action: this.onRemove,
-            //         theme: 'dark',
-            //         icon: 'sprite-system system-trash--deactive',
-            //     },
-            // ];
-        }
-
-        this.tabs = [
-            {
-                title: 'General options',
-                path: generalOptTabPath,
-                active: true,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} CATEGORY`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateCategory : false,
-                    },
-                },
-            },
-            {
-                title: 'Translations',
-                path: privilegesTabPath,
-                active: this.isEdit,
-                props: {
-                    updateButton: {
-                        title: `${buttonPrefix} CATEGORY`,
-                        action: tabAction,
-                        disabled: this.isEdit ? !this.isUserAllowedToUpdateCategory : false,
-                    },
-                },
-            },
-        ];
-    },
-    beforeDestroy() {
-        delete this.breadcrumbs;
-        delete this.isUserAllowedToUpdateCategory;
-        delete this.buttons;
+    computed: {
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
     },
 };
 </script>

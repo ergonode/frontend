@@ -2,18 +2,38 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-$primary: #00bc87;
-$information: #2096F3;
-$error: #f44336;
-$warning: #ffc108;
-$success: #00bc87;
-$lightGreen: #e8f6ed;
-$lightRed: #feeceb;
-$darkGraphite: #33373e;
-$graphite: #5c5f65;
-$lightGraphite: #85878b;
-$darkGrey: #adafb2;
-$grey: #d6d7d8;
-$lightGrey: #ebebec;
-$background: #fafafa;
-$white: #fff;
+$GREEN_DARK: #00A979;
+$GREEN: #00BC87;
+$GREEN_LIGHT: #EBF7EF;
+$BLUE: #2096F3;
+$RED: #F44336;
+$RED_LIGHT: #FFF0F0;
+$YELLOW: #ffc108;
+$GRAPHITE_COAL: #252832;
+$GRAPHITE_DARK: #33373E;
+$GRAPHITE: #5C5F65;
+$GRAPHITE_LIGHT: #85878B;
+$GREY_DARK: #ADAFB2;
+$GREY: #D6D7D8;
+$GREY_LIGHT: #EBEBEC;
+$WHITESMOKE: #F5F5F5;
+$WHITE: #FFFFFF;
+
+:export {
+    GREEN_DARK: $GRAPHITE_DARK;
+    GREEN: $GREEN;
+    GREEN_LIGHT: $GREEN_LIGHT;
+    BLUE: $BLUE;
+    RED: $RED;
+    RED_LIGHT: $RED_LIGHT;
+    YELLOW: $YELLOW;
+    GRAPHITE_COAL: $GRAPHITE_COAL;
+    GRAPHITE_DARK: $GRAPHITE_DARK;
+    GRAPHITE: $GRAPHITE;
+    GRAPHITE_LIGHT: $GRAPHITE_LIGHT;
+    GREY_DARK: $GREY_DARK;
+    GREY: $GREY;
+    GREY_LIGHT: $GREY_LIGHT;
+    WHITESMOKE: $WHITESMOKE;
+    WHITE: $WHITE;
+}

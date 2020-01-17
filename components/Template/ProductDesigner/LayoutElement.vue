@@ -6,6 +6,7 @@
     <div
         :class="['layout-element', draggableClasses]"
         :draggable="isDraggingEnabled && !disabled"
+        ref="layoutElement"
         @dragstart="onDragStart"
         @dragend="onDragEnd">
         <slot name="content" />
@@ -18,6 +19,10 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import {
+    isTrashBelowMouse,
+    getPositionForBrowser,
+} from '~/model/drag_and_drop/helpers';
 import {
     getHighlightingPositions,
     getHighlightingLayoutDropPositions,
@@ -36,6 +41,10 @@ import {
     addLayoutElementCopyToDocumentBody,
     removeLayoutElementCopyFromDocumentBody,
 } from '~/model/template_designer/layout/LayoutElementCopy';
+import { DRAGGED_ELEMENT } from '~/defaults/grid';
+
+const registerResizeEventListenersModule = () => import('~/model/resize/registerResizeEventListeners');
+const unregisterResizeEventListenersModule = () => import('~/model/resize/unregisterResizeEventListeners');
 
 export default {
     name: 'LayoutElement',
@@ -83,10 +92,10 @@ export default {
     },
     computed: {
         ...mapState('templateDesigner', {
-            layoutElements: state => state.layoutElements,
+            layoutElements: (state) => state.layoutElements,
         }),
         ...mapState('draggable', {
-            draggedElement: state => state.draggedElement,
+            draggedElement: (state) => state.draggedElement,
         }),
         draggableClasses() {
             return {
@@ -103,11 +112,13 @@ export default {
         ]),
         ...mapActions('draggable', [
             'setDraggedElement',
+            'setDraggableState',
         ]),
         onDragStart(event) {
             const { id, width, height } = this.element;
 
             this.setDraggedElement({ ...this.element, index: this.index });
+            this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.TEMPLATE });
             window.requestAnimationFrame(() => { this.isDragged = true; });
             addLayoutElementCopyToDocumentBody(event);
             this.highlightingPositions = getHighlightingLayoutDropPositions({
@@ -115,16 +126,24 @@ export default {
                 draggedElHeight: height,
                 layoutWidth: this.columnsNumber,
                 layoutHeight: this.rowsNumber,
-                layoutElements: this.layoutElements.filter(el => el.id !== id),
+                layoutElements: this.layoutElements.filter((el) => el.id !== id),
             });
 
             this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
         onDragEnd(event) {
-            this.isDragged = false;
+            const { xPos, yPos } = getPositionForBrowser(event);
+
+            if (isTrashBelowMouse(xPos, yPos)) {
+                this.removeLayoutElementAtIndex(this.index);
+            } else {
+                this.isDragged = false;
+            }
+
             this.highlightingPositions = [];
             this.setDraggedElement();
             removeLayoutElementCopyFromDocumentBody(event);
+            this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
 
             this.$emit('highlightedPositionChange', []);
         },
@@ -151,14 +170,16 @@ export default {
             this.minWidth = this.getElementMinWidth();
             this.minHeight = this.getElementMinHeight();
 
-            this.addEventListenersForResizeState();
+            registerResizeEventListenersModule().then((response) => {
+                response.default(this.doResizeDrag, this.stopResizeDrag);
+            });
 
             this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
         doResizeDrag(event) {
-            const { clientX, clientY } = event;
-            const width = this.getElementWidthBasedOnMouseXPosition(clientX);
-            const height = this.getElementHeightBasedOnMouseYPosition(clientY);
+            const { pageX, pageY } = event;
+            const width = this.getElementWidthBasedOnMouseXPosition(pageX);
+            const height = this.getElementHeightBasedOnMouseYPosition(pageY);
 
             this.updateElementWidth(width);
             this.updateElementHeight(height);
@@ -174,7 +195,10 @@ export default {
             this.resetDataForEndResizeInteraction();
 
             removeGhostElementFromDraggableLayer();
-            this.removeEventListenersForResizeState();
+
+            unregisterResizeEventListenersModule().then((response) => {
+                response.default(this.doResizeDrag, this.stopResizeDrag);
+            });
 
             this.$emit('highlightedPositionChange', []);
         },
@@ -254,36 +278,12 @@ export default {
                 this.$emit('resizingElMaxRow', this.newHeight + row);
             }
         },
-        addEventListenersForResizeState() {
-            document.documentElement.addEventListener(
-                'mousemove',
-                this.doResizeDrag,
-                false,
-            );
-            document.documentElement.addEventListener(
-                'mouseup',
-                this.stopResizeDrag,
-                false,
-            );
-        },
-        removeEventListenersForResizeState() {
-            document.documentElement.removeEventListener(
-                'mousemove',
-                this.doResizeDrag,
-                false,
-            );
-            document.documentElement.removeEventListener(
-                'mouseup',
-                this.stopResizeDrag,
-                false,
-            );
-        },
         blockOtherInteractionsOnResizeEvent() {
             this.isDraggingEnabled = false;
         },
-        initMousePosition({ clientX, clientY }) {
-            this.startX = clientX;
-            this.startY = clientY;
+        initMousePosition({ pageX, pageY }) {
+            this.startX = pageX;
+            this.startY = pageY;
         },
         initActualElementNormalizedBoundary() {
             const { row, column } = this.element;
@@ -325,23 +325,20 @@ export default {
 <style lang="scss" scoped>
     .layout-element {
         position: relative;
-        z-index: unset;
+        z-index: $Z_INDEX_UNSET;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        border: 1px solid $grey;
+        border: $BORDER_1_GREY;
         margin: 8px;
         box-sizing: border-box;
-        background-color: $background;
+        background-color: $WHITESMOKE;
         user-select: none;
         cursor: grab;
 
         &:hover:not(&--resized):not(&--disabled) {
             border: unset;
-            box-shadow:
-                0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 3px 1px -2px rgba(0, 0, 0, 0.12),
-                0 1px 5px 0 rgba(0, 0, 0, 0.2);
+            box-shadow: $ELEVATOR_2_DP;
         }
 
         &__resizer {
@@ -360,7 +357,7 @@ export default {
         &--resized {
             position: absolute;
             z-index: 5;
-            border: 2px solid $success;
+            border: 2px solid $GREEN;
         }
 
         &--disabled {

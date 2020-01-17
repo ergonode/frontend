@@ -3,148 +3,79 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="tab">
-        <div class="tab__grid">
-            <GridWrapper
-                store-namespace="usersActivityLogsGrid"
-                :rows-height="rowsHeight"
-                :action-paths="actionPaths" />
-        </div>
-        <GridFooter>
+    <ResponsiveCenteredViewTemplate>
+        <template #content>
+            <Grid
+                namespace="usersActivityLogsGrid"
+                :edit-route="editRoute"
+                :basic-filters="true"
+                :edit-column="false"
+                :select-column="false"
+                :is-column-editable="false"
+                title="Users activity logs" />
+        </template>
+        <template #footer>
             <GridPageSelector
-                v-model="visibleRowsInPageCount"
-                :rows-number="numberOfDataElements" />
+                :value="numberOfDisplayedElements"
+                :rows-number="numberOfDataElements"
+                @input="onRowsCountUpdate" />
             <GridPagination
-                :value="displayedPage"
+                :value="currentPage"
                 :max-page="numberOfPages"
                 @input="onPageChanged" />
-        </GridFooter>
-    </div>
+        </template>
+    </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import gridModule from '~/reusableStore/grid/state';
-import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
-import GridFooter from '~/components/Grid/GridFooter';
-import GridPageSelector from '~/components/Grid/GridPageSelector';
-import GridPagination from '~/components/Grid/GridPagination';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
     name: 'UsersActivityLogsGridTab',
     components: {
-        GridWrapper,
-        GridFooter,
-        GridPageSelector,
-        GridPagination,
-    },
-    data() {
-        return {
-            gridConfiguration: {
-                rows: {
-                    height: 32,
-                },
-            },
-            filtersNumber: 0,
-            filtersExpanded: true,
-        };
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'usersActivityLogsGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('usersActivityLogsGrid');
+        ResponsiveCenteredViewTemplate,
+        Grid: () => import('~/core/components/Grid/Grid'),
+        GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
+        GridPagination: () => import('~/core/components/Grid/GridPagination'),
     },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
+            userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('usersActivityLogsGrid', {
-            numberOfDataElements: state => state.count,
-            displayedPage: state => state.displayedPage,
-            numberOfDisplayedElements: state => state.numberOfDisplayedElements,
+            numberOfDataElements: (state) => state.filtered,
+            currentPage: (state) => state.currentPage,
+            numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
         }),
         ...mapGetters('usersActivityLogsGrid', {
             numberOfPages: 'numberOfPages',
         }),
-        actionPaths() {
+        editRoute() {
             return {
-                getData: `${this.userLanguageCode}/accounts/log`,
-                routerEdit: 'users-logs-edit-id',
+                path: `${this.userLanguageCode}/accounts/log`,
+                name: 'users-logs-edit-id',
             };
-        },
-        rowsHeight: {
-            get() {
-                const { height } = this.gridConfiguration.rows;
-
-                return height;
-            },
-            set(value) {
-                this.gridConfiguration.rows.height = value;
-            },
-        },
-        visibleRowsInPageCount: {
-            get() {
-                return this.numberOfDisplayedElements;
-            },
-            set(value) {
-                const number = Math.trunc(value);
-
-                if (number !== this.numberOfDisplayedElements) {
-                    this.changeNumberOfDisplayingElements({ number });
-                    this.getDataWrapper();
-                }
-            },
         },
     },
     methods: {
         ...mapActions('usersActivityLogsGrid', [
             'getData',
-            'changeDisplayingPage',
+            'setCurrentPage',
             'changeNumberOfDisplayingElements',
         ]),
+        onRowsCountUpdate(value) {
+            const number = Math.trunc(value);
+
+            if (number !== this.numberOfDisplayedElements) {
+                this.changeNumberOfDisplayingElements(number);
+                this.getData(this.editRoute.path);
+            }
+        },
         onPageChanged(page) {
-            this.changeDisplayingPage(page);
-            this.getDataWrapper();
+            this.setCurrentPage(page);
+            this.getData(this.editRoute.path);
         },
-        getDataWrapper() {
-            const { getData: path } = this.actionPaths;
-            this.getData(
-                {
-                    path,
-                },
-            );
-        },
-    },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'usersActivityLogsGrid',
-            store,
-        });
-        const gridPath = `${store.state.authentication.user.language}/accounts/log`;
-        await store.dispatch('usersActivityLogsGrid/getData', { path: gridPath });
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .tab {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        background-color: $white;
-
-        &__grid {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            margin: 12px 12px 0;
-            overflow: hidden;
-        }
-    }
-</style>

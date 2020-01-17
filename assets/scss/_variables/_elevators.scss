@@ -1,0 +1,27 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+$ELEVATOR_2_DP:
+    0px 1px 3px rgba(0, 0, 0, 0.16),
+    0px 2px 2px rgba(0, 0, 0, 0.16),
+    0px 0px 2px rgba(0, 0, 0, 0.16);
+$ELEVATOR_6_DP:
+    0px 3px 5px rgba(0, 0, 0, 0.2),
+    0px 1px 12px rgba(0, 0, 0, 0.18),
+    0px 6px 10px rgba(0, 0, 0, 0.16);
+$ELEVATOR_12_DP:
+    0px 7px 8px rgba(0, 0, 0, 0.2),
+    0px 5px 22px rgba(0, 0, 0, 0.12),
+    0px 12px 17px rgba(0, 0, 0, 0.14);
+$ELEVATOR_HOLE:
+    inset 0px 1px 5px rgba(0, 0, 0, 0.2),
+    inset 0px 3px 1px rgba(0, 0, 0, 0.12),
+    inset 0px 2px 2px rgba(0, 0, 0, 0.14);
+
+:export {
+    ELEVATOR_2_DP: $ELEVATOR_2_DP;
+    ELEVATOR_6_DP: $ELEVATOR_6_DP;
+    ELEVATOR_12_DP: $ELEVATOR_12_DP;
+    ELEVATOR_HOLE: $ELEVATOR_HOLE;
+}

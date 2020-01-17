@@ -6,4 +6,6 @@ export default () => ({
     id: null,
     code: null,
     color: null,
+    isDefaultStatus: false,
+    statuses: [],
 });

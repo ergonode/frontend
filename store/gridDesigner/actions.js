@@ -49,7 +49,7 @@ export default {
             commit(types.ADD_GRID_ITEM, item);
         }
     },
-    rebuildGrid: ({
+    rebuildGridById: ({
         state, getters, dispatch,
     }, id) => {
         const index = getters.getIndexById(id);
@@ -63,7 +63,7 @@ export default {
             newGrid = getTreeWhenElementRemoved(state.gridData, id);
             dispatch('setFullGridData', newGrid);
         } else {
-            newGrid = state.gridData.filter(el => el.id !== id);
+            newGrid = state.gridData.filter((el) => el.id !== id);
         }
         dispatch('setGridData', newGrid);
     },

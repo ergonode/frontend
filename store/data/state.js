@@ -7,9 +7,6 @@ export default () => ({
     currencies: {},
     units: {},
     attrTypes: {},
-    attrGroups: [],
     dateFormats: {},
-    imageFormats: {},
     privileges: {},
-    conditions: {},
 });

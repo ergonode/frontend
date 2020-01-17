@@ -3,116 +3,83 @@
  * See LICENSE for license details.
  */
 <template>
-    <Select
-        :value="parsedValue"
-        solid
-        clearable
+    <TranslationSelect
+        :value="localValue"
+        :solid="true"
+        :clearable="true"
+        :regular="true"
         :label="label"
         :placeholder="placeholder"
         :multiselect="multiselect"
         :disabled="disabled"
-        :error-messages="isError ? [' '] : null"
+        :error-messages="isError ? errorMessages : null"
+        :is-information-label="false"
         :required="required"
+        :options="options"
         @focus="onFocusChange"
-        @input="onValueChange">
-        <template #append>
-            <ProductTemplateDetailsContent
-                :hint="hint"
-                :error-messages="errorMessages"
-                :is-error="isError">
-                <template #append>
-                    <IconArrowDropDown :state="dropDownState" />
-                </template>
-            </ProductTemplateDetailsContent>
-        </template>
-        <template #selectContent>
-            <TranslationMultiselectListContent
-                v-if="multiselect"
-                :options="parsedOptions"
-                :selected-options="localValue || []"
-                @values="onValueChange" />
-            <TranslationSelectListContent
-                v-else
-                :options="parsedOptions"
-                :selected-option="localValue"
-                @value="onValueChange" />
-        </template>
-    </Select>
+        @input="onValueChange" />
 </template>
 
 <script>
-import { Arrow } from '~/model/icons/Arrow';
-import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
-import { getValuesByKeys, getValueByKey } from '~/model/objectWrapper';
-import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
+import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
+import TranslationSelect from '~/core/components/Inputs/Select/TranslationSelect';
 
 export default {
     name: 'ProductTemplateOptions',
-    mixins: [baseProductTemplateElementMixin],
+    mixins: [productTemplateElementMixin],
     components: {
-        Select: () => import('~/components/Inputs/Select/Select'),
-        TranslationSelectListContent: () => import('~/components/Inputs/Select/Contents/TranslationSelectListContent'),
-        TranslationMultiselectListContent: () => import('~/components/Inputs/Select/Contents/TranslationMultiselectListContent'),
-        IconArrowDropDown,
+        TranslationSelect,
     },
     props: {
         options: {
-            type: Object,
+            type: Array,
             required: true,
         },
         multiselect: {
             type: Boolean,
-            required: false,
             default: false,
         },
     },
     data() {
         return {
             isFocused: false,
-            parsedValue: '',
         };
     },
     watch: {
-        parsedOptions: {
+        options: {
             immediate: true,
             handler() {
                 this.initializeValues(this.value);
             },
         },
     },
-    computed: {
-        dropDownState() {
-            return this.isFocused
-                ? Arrow.UP
-                : Arrow.DOWN;
-        },
-        parsedOptions() {
-            const optionKeys = Object.keys(this.options);
-
-            return optionKeys.map(key => ({ key, value: this.options[key] }));
-        },
-    },
     methods: {
         initializeValues(value) {
-            this.parsedValue = Array.isArray(value)
-                ? getValuesByKeys(this.options, value)
-                : getValueByKey(this.options, value);
-
-            this.localValue = value;
+            if (Array.isArray(value)) {
+                this.localValue = value.map((val) => ({
+                    id: val,
+                    key: val,
+                    value: this.options.find((option) => option.key === val).value,
+                }));
+            } else if (value) {
+                this.localValue = this.options.find((option) => option.key === value);
+            } else {
+                this.localValue = this.multiselect ? [] : {
+                    id: '', key: '', value: '', hint: '',
+                };
+            }
         },
         onFocusChange(isFocused) {
             this.isFocused = isFocused;
         },
         onValueChange(value) {
-            if (Array.isArray(value)) {
-                this.localValue = value;
-                this.parsedValue = getValuesByKeys(this.options, value);
-            } else {
-                this.localValue = value.key;
-                this.parsedValue = value.value;
-            }
+            this.localValue = value;
 
-            this.debounceFunc(this.localValue);
+            if (Array.isArray(value)) {
+                this.debounceFunc(value.length > 0 ? value.map((val) => val.key) : '');
+            } else {
+                this.debounceFunc(value.key);
+            }
         },
     },
 };

@@ -15,32 +15,41 @@
                 :class="typeLabelClasses"
                 v-text="element.type" />
             <span
-                class="element-content__subheader txt--dark-graphite typo-subtitle"
+                class="element-content__subheader font--medium-14-20"
                 v-text="element.label" />
         </div>
         <div
             v-if="!disabled"
             :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
-            <ButtonSelect
-                icon-path="Others/IconDots"
+            <MenuButton
+                :theme="secondaryTheme"
+                :size="smallSize"
+                :plain="true"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
-                @focus="onSelectFocus" />
+                @focus="onSelectFocus">
+                <template #icon="{ fillColor }">
+                    <IconDots :fill-color="fillColor" />
+                </template>
+            </MenuButton>
         </div>
     </ElementContentBase>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
 import ElementContentBase from '~/components/Template/ProductDesigner/ElementContentBase';
 import IconFontSize from '~/components/Icon/Editor/IconFontSize';
-import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
+import MenuButton from '~/core/components/Buttons/MenuButton';
+import IconDots from '~/components/Icon/Others/IconDots';
 
 export default {
     name: 'SectionElementContent',
     components: {
         IconFontSize,
-        ButtonSelect,
+        MenuButton,
+        IconDots,
         ElementContentBase,
     },
     props: {
@@ -65,6 +74,12 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         contextualMenuHoveStateClasses() {
             return { 'element-content__contextual-menu--hovered': this.isHovered };
         },
@@ -72,8 +87,7 @@ export default {
             return [
                 'element-content__header',
                 'txt--light-graphite',
-                'typo-label',
-                'l-spacing--half',
+                'font--semi-bold-12-16',
             ];
         },
     },
@@ -121,8 +135,13 @@ export default {
             padding-top: 12px;
         }
 
+        &__header {
+            letter-spacing: 0.5px;
+        }
+
         &__subheader {
             height: 20px;
+            color: $GRAPHITE_DARK;
         }
 
         &__header, &__subheader {

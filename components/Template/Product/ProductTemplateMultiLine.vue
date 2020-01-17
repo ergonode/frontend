@@ -4,32 +4,32 @@
  */
 <template>
     <TextArea
-        :value="value"
+        :value="localValue"
         solid
         :label="label"
         :placeholder="placeholder"
         :required="required"
-        :error-messages="isError ? [' '] : null"
+        :error-messages="isError ? errorMessages : null"
+        :is-information-label="false"
         :disabled="disabled"
         resize="none"
-        @input="onValueChange">
-        <template #append>
-            <ProductTemplateDetailsContent
-                :hint="hint"
-                :error-messages="errorMessages"
-                :is-error="isError" />
-        </template>
-    </TextArea>
+        @input="onValueChange" />
 </template>
 
 <script>
-import baseProductTemplateElementMixin from '~/mixins/product/baseProductTemplateElementMixin';
+import productTemplateElementMixin from '~/mixins/product/productTemplateElementMixin';
+import TextArea from '~/core/components/Inputs/TextArea';
 
 export default {
     name: 'ProductTemplateMultiLine',
-    mixins: [baseProductTemplateElementMixin],
+    mixins: [productTemplateElementMixin],
     components: {
-        TextArea: () => import('~/components/Inputs/TextArea'),
+        TextArea,
+    },
+    watch: {
+        value() {
+            this.localValue = this.value;
+        },
     },
 };
 </script>

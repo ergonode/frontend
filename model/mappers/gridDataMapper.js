@@ -2,49 +2,120 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { toCapitalize } from '~/model/stringWrapper';
-import { PinnedColumnState } from '~/model/grid/layout/PinnedColumnState';
-import { GridHeaderType } from '~/model/grid/layout/GridHeaderType';
+import {
+    GRID_HEADER_TYPE,
+    COLUMN_TYPE,
+    COLUMN_WIDTH,
+} from '~/defaults/grid';
 
-const getMappedColumnHeaderTitle = ({
-    id,
-    type,
-    label,
-    language,
-    parameter,
-}) => {
-    let suffix = '';
-    const columnIDs = id.split(':');
+export function getParsedFilters(filters, advcFilters = null) {
+    const entries = Object.entries(filters);
+    const { length: entriesLength } = entries;
 
-    if (type === 'PRICE') suffix = parameter.currency;
-    if (type === 'ACTION') return 'Edit';
-    if (!language) return `${label} ${suffix}`;
-    if (columnIDs.length > 1) return `${label || id} ${suffix}`;
+    let mappedFilter = '';
 
-    return label
-        ? `${label} ${language} ${suffix}`
-        : `${id} ${language} ${suffix}`;
+    for (let i = 0; i < entriesLength; i += 1) {
+        const [key, filter] = entries[i];
+
+        if (filter && (advcFilters === null || typeof advcFilters[key] === 'undefined')) {
+            const { value, operator } = filter;
+
+            mappedFilter += i === 0 ? key : `;${key}`;
+            mappedFilter += operator;
+            mappedFilter += Array.isArray(value) ? value.join(',') : value;
+        }
+    }
+
+    return mappedFilter;
+}
+
+export function getParsedAdvancedFilters(filters) {
+    const mappedFilter = [];
+
+    Object.keys(filters).forEach((id) => {
+        if (filters[id] && filters[id].isEmptyRecord) {
+            mappedFilter.push(`${id}=`);
+        } else {
+            Object.keys(filters[id]).forEach((operator) => {
+                mappedFilter.push(`${id}${operator}${filters[id][operator]}`);
+            });
+        }
+    });
+
+    return mappedFilter.join(';');
+}
+
+export const getParsedRequestDataParams = ({
+    sortedColumn,
+    currentPage,
+    numberOfDisplayedElements,
+    filters,
+    advancedFilters,
+}, columns) => {
+    const parsedFilter = getParsedFilters(filters, advancedFilters);
+    const parsedAdvcFilter = getParsedAdvancedFilters(advancedFilters);
+
+    let filter = parsedFilter;
+
+    if (parsedFilter && parsedAdvcFilter) {
+        filter += `${parsedFilter};${parsedAdvcFilter}`;
+    } else if (parsedAdvcFilter) {
+        filter = parsedAdvcFilter;
+    }
+
+    const params = {
+        columns,
+        offset: (currentPage - 1) * numberOfDisplayedElements,
+        limit: numberOfDisplayedElements,
+        extended: true,
+        filter,
+    };
+
+    if (Object.keys(sortedColumn).length) {
+        const { index: colSortID, orderState } = sortedColumn;
+
+        params.field = colSortID;
+        params.order = orderState;
+    }
+
+    return params;
 };
 
 const getMappedColumnHeaderType = ({ filter, type }) => {
-    if (type === 'CHECK') return GridHeaderType.CHECK;
-    if (filter || type === 'IMAGE') return GridHeaderType.INTERACTIVE;
+    if (type === COLUMN_TYPE.CHECK) return GRID_HEADER_TYPE.CHECK;
+    if (filter || type === COLUMN_TYPE.IMAGE) return GRID_HEADER_TYPE.INTERACTIVE;
 
-    return GridHeaderType.PLAIN;
+    return GRID_HEADER_TYPE.PLAIN;
 };
 
-const getMappedColumnHeader = column => ({
-    title: getMappedColumnHeaderTitle(column),
-    type: getMappedColumnHeaderType(column),
+export const getMappedColumnHeaderTitle = ({
+    id, label, parameters, language,
+}) => {
+    let suffix = '';
+    const [code] = id.split(':');
+
+    if (parameters) suffix = Object.keys(parameters).map((key) => parameters[key]).join(', ');
+
+    return {
+        title: label || `#${code}`,
+        hint: label ? `${code} ${language}` : null,
+        suffix,
+    };
+};
+
+export const getMappedColumnHeader = ({
+    id,
+    label,
+    language = '',
+    parameters,
+    filter,
+    type,
+}) => ({
+    ...getMappedColumnHeaderTitle({
+        id, label, parameters, language,
+    }),
+    type: getMappedColumnHeaderType({ filter, type }),
 });
-
-const getMappedColumnWidth = (column) => {
-    const isSelectKind = column.filter && (column.filter.type === 'SELECT' || column.filter.type === 'MULTI_SELECT');
-    const isActionKind = column.type === 'ACTION' || column.type === 'CHECK';
-    if (isSelectKind) return '150px';
-    if (isActionKind) return '40px';
-    return 'min-content';
-};
 
 export function getSortedColumnsByIDs(columns, columnsID) {
     return columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id));
@@ -55,64 +126,79 @@ export function getMappedColumn(column) {
         ...column,
         header: getMappedColumnHeader(column),
     };
-    const columnWidth = getMappedColumnWidth(column);
+    const columnWidth = COLUMN_WIDTH.DEFAULT;
 
     return { mappedColumn, columnWidth };
 }
 
-export function getMappedColumns(columns, isExtenderNeeded = true) {
+export function getMappedColumns(columns) {
     const mappedColumns = [];
+    const mappedColumnsId = [];
     const columnWidths = [];
     const pinnedColumns = [];
     const { length } = columns;
-    const fixedColumnsLength = isExtenderNeeded ? length + 1 : length;
-    const extenderColumn = {
-        id: 'extender',
-        label: '',
-        type: '',
-        editable: false,
-    };
-    let isExtenderColumnAdded = false;
 
-    for (let i = 0; i < fixedColumnsLength; i += 1) {
-        const fixedIndex = isExtenderColumnAdded ? i - 1 : i;
-        const gridColumnPosition = `${i + 1} / ${i + 2}`;
+    for (let i = 0; i < length; i += 1) {
+        const column = columns[i];
 
-        if ((i + 1 === length && columns[i].type === 'ACTION' && isExtenderNeeded)
-            || (i === length && !isExtenderColumnAdded)) {
-            mappedColumns.push(extenderColumn);
-            columnWidths.push('auto');
-            isExtenderColumnAdded = true;
-        } else {
-            columnWidths.push(getMappedColumnWidth(columns[fixedIndex]));
-            mappedColumns.push(columns[fixedIndex]);
-        }
-
-        mappedColumns[i].header = getMappedColumnHeader(mappedColumns[i]);
-
-        const { id, type } = mappedColumns[i];
-
-        if (type === 'CHECK') {
-            pinnedColumns.push({
-                id,
-                state: PinnedColumnState.LEFT,
-                position: gridColumnPosition,
+        if (column.visible && column.type !== 'CHECK') {
+            columnWidths.push(COLUMN_WIDTH.DEFAULT);
+            mappedColumns.push({
+                ...column,
+                header: getMappedColumnHeader(column),
             });
-        }
-
-        if (type === 'ACTION') {
-            pinnedColumns.push({
-                id,
-                state: PinnedColumnState.RIGHT,
-                position: gridColumnPosition,
-            });
+            mappedColumnsId.push(column.id);
         }
     }
 
     return {
+        mappedColumnsId,
         mappedColumns,
         pinnedColumns,
         columnWidths,
+    };
+}
+
+export function getMappedGridColumnOptions(value, options, languageCode) {
+    if (Array.isArray(value)) {
+        const { length } = value;
+        const editValue = [];
+        let presentationValue = '';
+
+        for (let i = 0; i < length; i += 1) {
+            const val = value[i];
+
+            presentationValue += options[val] || `#${val}`;
+
+            if (i + 1 < length) {
+                presentationValue += ', ';
+            }
+
+            editValue.push({
+                id: val,
+                key: val,
+                value: options[val],
+                hint: options[val] ? `#${val} ${languageCode}` : '',
+            });
+        }
+
+        return {
+            presentationValue,
+            editValue,
+        };
+    }
+
+    let presentationValue = '';
+
+    if (value !== null && value.length) {
+        presentationValue = options[value] || `#${value}`;
+    }
+
+    return {
+        presentationValue,
+        editValue: {
+            id: value, key: value, value: options[value] || '', hint: options[value] ? `#${value} ${languageCode}` : '',
+        },
     };
 }
 
@@ -128,26 +214,29 @@ export function getMappedCellValues(columns, rows, rowIds) {
         for (let j = 0; j < rowsNumber; j += 1) {
             const row = rows[j];
             const rowId = rowIds[j];
-            const value = row[column.id];
+            const { value, prefix = '', suffix = '' } = row[column.id];
 
             if (!values[rowId]) values[rowId] = {};
-
             if (filter && filter.options) {
-                const { options } = filter;
+                const { presentationValue, editValue } = getMappedGridColumnOptions(
+                    value,
+                    filter.options,
+                    column.language,
+                );
 
-                if (Array.isArray(value)) {
-                    values[rowId][columnId] = { key: value, value: value.map(key => options[key] || 'No translation').join(', ') };
-                } else if (typeof options[value] !== 'undefined') {
-                    values[rowId][columnId] = { key: value, value: options[value] || 'No translation' };
-                } else {
-                    values[rowId][columnId] = { key: '', value: '' };
-                }
-            } else if (typeof value === 'undefined' || value === null) {
-                values[rowId][columnId] = { value: '' };
-            } else if (typeof value === 'boolean' && column.type !== 'CHECK_CELL') {
-                values[rowId][columnId] = { value: value ? 'Yes' : 'No' };
+                values[rowId][columnId] = {
+                    presentationValue, editValue, prefix, suffix,
+                };
+            } else if (typeof value === 'boolean') {
+                values[rowId][columnId] = {
+                    presentationValue: value ? 'Yes' : 'No', editValue: value, prefix, suffix,
+                };
             } else {
-                values[rowId][columnId] = { value };
+                const parsedValue = value === null || typeof value === 'undefined' ? '' : value;
+
+                values[rowId][columnId] = {
+                    presentationValue: parsedValue, editValue: parsedValue, prefix, suffix,
+                };
             }
         }
     }
@@ -155,63 +244,23 @@ export function getMappedCellValues(columns, rows, rowIds) {
     return values;
 }
 
-export function getMappedRowIds(rows) {
+export function getMappedRows(rows) {
     const rowIds = [];
+    const rowLinks = [];
     const { length } = rows;
 
     for (let i = 0; i < length; i += 1) {
-        const { id } = rows[i];
+        const { id, _links } = rows[i];
 
-        if (typeof id === 'undefined') rowIds.push(i + 1);
-        else rowIds.push(id);
-    }
-
-    return rowIds;
-}
-
-export function getMappedGridConfiguration(configuration) {
-    const mappedConfiguration = {};
-    const configurationKeys = Object.keys(configuration);
-    const configurationValues = Object.values(configuration);
-    const { length } = configurationKeys;
-
-    for (let i = 0; i < length; i += 1) {
-        const splittedKeys = configurationKeys[i].split('_');
-        const { length: splittedKeysLength } = splittedKeys;
-        if (splittedKeysLength > 0) {
-            const capitalizedFirstLetterKey = toCapitalize(
-                splittedKeys[splittedKeysLength - 1],
-            );
-
-            mappedConfiguration[`isColumn${capitalizedFirstLetterKey}able`] = configurationValues[i];
+        if (typeof id !== 'object') {
+            const index = i + 1;
+            rowIds.push(index);
+            rowLinks.push({ id: index, links: _links });
+        } else {
+            rowIds.push(id.value);
+            rowLinks.push({ id: id.value, links: _links });
         }
     }
 
-    return mappedConfiguration;
-}
-
-export function getMappedFilter(filter) {
-    const entries = Object.entries(filter);
-    const { length: entriesLength } = entries;
-
-    let mappedFilter = '';
-
-    for (let j = 0; j < entriesLength; j += 1) {
-        const [key, value] = entries[j];
-        if (value !== null) {
-            if (j === 0) {
-                mappedFilter += `${key}=`;
-            } else {
-                mappedFilter += `;${key}=`;
-            }
-
-            if (Array.isArray(value)) {
-                mappedFilter += value.join(',');
-            } else {
-                mappedFilter += value;
-            }
-        }
-    }
-
-    return mappedFilter;
+    return { rowIds, rowLinks };
 }

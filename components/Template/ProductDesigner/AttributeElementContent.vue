@@ -15,56 +15,68 @@
                 :class="[typeLabelClasses, typeLabelRequireClass]"
                 v-text="element.type" />
             <span
-                class="element-content__subheader txt--dark-graphite typo-subtitle"
-                v-text="element.label || 'No translation'" />
+                class="element-content__subheader font--medium-14-20"
+                v-text="element.label" />
         </div>
         <div
             v-if="!disabled"
             :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
-            <ButtonSelect
-                icon-path="Others/IconDots"
-                :options="contextualMenuItems"
+            <MenuButton
+                :theme="secondaryTheme"
+                :size="smallSize"
+                :plain="true"
                 @focus="onSelectFocus">
+                <template #icon="{ fillColor }">
+                    <IconDots :fill-color="fillColor" />
+                </template>
                 <template #content>
                     <List>
                         <ListElement
                             v-for="(option, optIndex) in contextualMenuItems"
                             :key="option"
-                            @click.native="() => onSelectValue(optIndex)">
+                            @click.native="onSelectValue(optIndex)">
                             <ListElementDescription>
                                 <ListElementTitle :title="option" />
                             </ListElementDescription>
-                            <CheckBox
-                                v-if="option === 'Required'"
-                                ref="checkbox"
-                                :value="element.required" />
+                            <ListElementAction>
+                                <CheckBox
+                                    v-if="option === 'Required'"
+                                    ref="checkbox"
+                                    :value="element.required"
+                                    @click.native="onSelectValue(optIndex)" />
+                            </ListElementAction>
                         </ListElement>
                     </List>
                 </template>
-            </ButtonSelect>
+            </MenuButton>
         </div>
     </ElementContentBase>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
 import { capitalizeAndConcatenationArray } from '~/model/stringWrapper';
-import ButtonSelect from '~/components/Inputs/Select/ButtonSelect';
-import CheckBox from '~/components/Inputs/CheckBox';
+import MenuButton from '~/core/components/Buttons/MenuButton';
+import IconDots from '~/components/Icon/Others/IconDots';
+import CheckBox from '~/core/components/Inputs/CheckBox';
 import ElementContentBase from '~/components/Template/ProductDesigner/ElementContentBase';
-import List from '~/components/List/List';
-import ListElement from '~/components/List/ListElement';
-import ListElementDescription from '~/components/List/ListElementDescription';
-import ListElementTitle from '~/components/List/ListElementTitle';
+import List from '~/core/components/List/List';
+import ListElement from '~/core/components/List/ListElement';
+import ListElementAction from '~/core/components/List/ListElementAction';
+import ListElementDescription from '~/core/components/List/ListElementDescription';
+import ListElementTitle from '~/core/components/List/ListElementTitle';
 
 export default {
     name: 'AttributeElementContent',
     components: {
+        IconDots,
         ListElementTitle,
-        ButtonSelect,
+        MenuButton,
         ElementContentBase,
         List,
         ListElement,
+        ListElementAction,
         ListElementDescription,
         CheckBox,
     },
@@ -90,15 +102,19 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         typeLabelRequireClass() {
             return { 'element-content--required': this.element.required };
         },
         typeLabelClasses() {
             return [
                 'element-content__header',
-                'txt--light-graphite',
-                'typo-label',
-                'l-spacing--half',
+                'font--semi-bold-12-16',
             ];
         },
         attributeIconComponent() {
@@ -161,8 +177,14 @@ export default {
             padding-top: 12px;
         }
 
+        &__header {
+            letter-spacing: 0.5px;
+            color: $GRAPHITE_LIGHT;
+        }
+
         &__subheader {
             height: 20px;
+            color: $GRAPHITE_DARK;
         }
 
         &__header, &__subheader {
@@ -184,7 +206,7 @@ export default {
 
         &--required::after {
             position: absolute;
-            color: $error;
+            color: $RED;
             content: "*";
         }
     }

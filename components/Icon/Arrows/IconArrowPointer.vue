@@ -3,33 +3,34 @@
  * See LICENSE for license details.
  */
 <template>
-    <IconBase
+    <BaseIcon
         :width="size"
         :height="size"
         :icon-color="fillColor">
         <polygon
             :transform="iconTransform"
             :points="points" />
-    </IconBase>
+    </BaseIcon>
 </template>
 
 <script>
-import { Arrow } from '~/model/icons/Arrow';
-import IconBase from '~/components/Icon/IconBase';
+import { ARROW } from '~/defaults/icons';
+import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
+import BaseIcon from '~/components/Icon/BaseIcon';
 
 export default {
     name: 'IconArrowPointer',
     components: {
-        IconBase,
+        BaseIcon,
     },
     props: {
         state: {
             type: String,
-            default: Arrow.LEFT,
+            default: ARROW.LEFT,
         },
         fillColor: {
             type: String,
-            default: '#5C5F65',
+            default: GRAPHITE,
         },
         size: {
             type: [String, Number],
@@ -43,7 +44,7 @@ export default {
     },
     computed: {
         iconTransform() {
-            if (this.state === Arrow.RIGHT) return 'translate(12, 12) rotate(-180) translate(-12, -12)';
+            if (this.state === ARROW.RIGHT) return 'translate(12, 12) rotate(-180) translate(-12, -12)';
 
             return null;
         },

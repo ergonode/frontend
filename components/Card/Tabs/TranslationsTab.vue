@@ -3,70 +3,88 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseTab>
-        <OptionsHeader
-            slot="header"
-            :cards-language-codes="cardsLanguageCodes" />
-        <template #content>
-            <div class="translation-cards">
-                <slot />
+    <ResponsiveCenteredViewTemplate :fixed="true">
+        <template #header>
+            <div class="language-selection-header">
+                <TranslationSelect
+                    v-model="selectedLanguages"
+                    :options="languageOptions"
+                    :solid="true"
+                    :regular="true"
+                    :multiselect="true"
+                    :clearable="true"
+                    label="Translations" />
             </div>
         </template>
-        <Footer
-            slot="footer"
-            :buttons="[...updateButton]" />
-    </BaseTab>
+        <template #content>
+            <VerticalFixedScroll>
+                <div class="container">
+                    <VerticalCenteredView>
+                        <slot :language-codes="selectedLanguageCodes" />
+                    </VerticalCenteredView>
+                </div>
+            </VerticalFixedScroll>
+        </template>
+    </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import BaseTab from '~/components/Card/BaseTab';
-import Footer from '~/components/ReusableFooter/Footer';
-import OptionsHeader from '~/components/ReusableHeader/OptionsHeader';
+import { mapState } from 'vuex';
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import TranslationSelect from '~/core/components/Inputs/Select/TranslationSelect';
+import VerticalFixedScroll from '~/core/components/Layout/Scroll/VerticalFixedScroll';
+import VerticalCenteredView from '~/core/components/Layout/VerticalCenteredView';
 
 export default {
     name: 'TranslationsTab',
     components: {
-        BaseTab,
-        Footer,
-        OptionsHeader,
+        VerticalCenteredView,
+        VerticalFixedScroll,
+        ResponsiveCenteredViewTemplate,
+        TranslationSelect,
     },
-    props: {
-        updateButton: {
-            type: Object,
-            required: true,
-        },
+    data() {
+        return {
+            selectedLanguages: [],
+        };
+    },
+    created() {
+        this.selectedLanguages = [
+            {
+                id: this.userLanguageCode,
+                key: this.userLanguageCode,
+                value: this.languages[this.userLanguageCode],
+            },
+        ];
     },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
+            userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('data', {
-            languages: state => state.languages,
+            languages: (state) => state.languages,
         }),
-        ...mapState('translations', {
-            cardsLanguageCodes: state => state.cardsLanguageCodes,
-        }),
-    },
-    created() {
-        if (!this.cardsLanguageCodes.find(langCode => langCode === this.userLanguageCode)) {
-            this.addCardLanguageCode({ languageCode: this.userLanguageCode });
-        }
-    },
-    methods: {
-        ...mapActions('translations', [
-            'addCardLanguageCode',
-        ]),
+        languageOptions() {
+            return Object.keys(this.languages).map((key) => ({
+                id: key, key, value: this.languages[key],
+            }));
+        },
+        selectedLanguageCodes() {
+            return this.selectedLanguages.map((language) => language.id);
+        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .translation-cards {
+    .language-selection-header {
+        display: flex;
+        flex: 0 0 196px;
+        align-items: center;
+        min-height: 55px;
+    }
+
+    .container {
         display: grid;
-        grid-auto-flow: column;
-        grid-template-rows: max-content;
-        justify-content: center;
-        width: 0;
     }
 </style>

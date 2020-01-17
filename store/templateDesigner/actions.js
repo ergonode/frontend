@@ -10,8 +10,6 @@ import {
 } from '~/model/mappers/templateMapper';
 import { getNestedObjectByKeyWithValue } from '~/model/objectWrapper';
 
-const onDefaultError = () => {};
-
 export default {
     getTemplateByID(
         {
@@ -24,24 +22,36 @@ export default {
             image_id: imageID,
             elements,
         }) => {
-            const { elementDataByType } = getters;
             const { language: languageCode } = rootState.authentication.user;
-            const layoutElements = getMappedLayoutElements(
-                elements,
-                elementDataByType,
-            );
+            const attributesId = elements.map((el) => el.id);
+            const params = {
+                filter: `id${attributesId.join(',')}`,
+                view: 'list',
+            };
 
-            for (let i = layoutElements.length - 1; i > -1; i -= 1) {
-                const { id } = layoutElements[i];
-                dispatch('list/setDisabledElement', { languageCode, elementId: id }, { root: true });
-            }
+            return this.app.$axios.$get(`${languageCode}/attributes`, { params }).then(({ collection }) => {
+                const elementsDescription = collection.map(
+                    ({ id, code, label }) => ({ id, code, label }),
+                );
+                const { elementDataByType } = getters;
+                const layoutElements = getMappedLayoutElements(
+                    elements,
+                    elementsDescription,
+                    elementDataByType,
+                );
 
-            commit(types.INITIALIZE_LAYOUT_ELEMENTS, layoutElements);
-            commit(types.SET_TEMPLATE_DESIGNER_TITLE, name);
-            commit(types.SET_TEMPLATE_DESIGNER_IMAGE, imageID);
-        }).catch(onDefaultError);
+                for (let i = layoutElements.length - 1; i > -1; i -= 1) {
+                    const { id } = layoutElements[i];
+                    dispatch('list/setDisabledElement', { languageCode, elementId: id, disabled: true }, { root: true });
+                }
+
+                commit(types.INITIALIZE_LAYOUT_ELEMENTS, layoutElements);
+                commit(types.SET_TEMPLATE_DESIGNER_TITLE, name);
+                commit(types.SET_TEMPLATE_DESIGNER_IMAGE, imageID);
+            });
+        });
     },
-    updateTemplateDesigner(
+    async updateTemplateDesigner(
         { rootState },
         {
             id,
@@ -51,9 +61,12 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/templates/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$put(`${userLanguageCode}/templates/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
-    createTemplateDesigner(
+    async createTemplateDesigner(
         { commit, rootState },
         {
             data,
@@ -62,16 +75,19 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$post(`${userLanguageCode}/templates`, data).then(({ id }) => {
+
+        await this.$setLoader('footerButton');
+        await this.app.$axios.$post(`${userLanguageCode}/templates`, data).then(({ id }) => {
             onSuccess(id);
-        }).catch(e => onError(e.data));
+        }).catch((e) => onError(e.data));
+        await this.$removeLoader('footerButton');
     },
     getTypes({ commit }, {
         path, params,
     }) {
         return this.app.$axios.$get(path, { params }).then(({ collection }) => {
             commit(types.SET_TYPES, collection);
-        }).catch(onDefaultError);
+        });
     },
     addListElementToLayout: ({
         commit, dispatch, rootState, getters,
@@ -84,10 +100,11 @@ export default {
         const layoutElement = getMappedLayoutElement(
             element.id,
             elementDataByType(element.type),
+            element.label || element.code,
             position,
         );
 
-        dispatch('list/setDisabledElement', { languageCode, elementId: element.id }, { root: true });
+        dispatch('list/setDisabledElement', { languageCode, elementId: element.id, disabled: true }, { root: true });
         commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
     },
     addSectionElementToLayout: ({
@@ -130,7 +147,7 @@ export default {
     },
     removeTemplate({ rootState }, { id, onSuccess }) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$delete(`${userLanguageCode}/templates/${id}`).then(() => onSuccess()).catch(onDefaultError);
+        return this.app.$axios.$delete(`${userLanguageCode}/templates/${id}`).then(() => onSuccess());
     },
     clearStorage: ({ commit }) => commit(types.CLEAR_STATE),
 };

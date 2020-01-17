@@ -3,241 +3,200 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="tab">
-        <div class="horizontal-wrapper">
-            <div class="tab__options">
-                <VerticalTabBar :items="verticalTabs" />
-            </div>
-            <div class="tab__grid">
-                <!-- NOTE: Uncomment when filters are implemented -->
-                <!--<GridGlobalFilters v-show="isGlobalFiltersVisible" />-->
-                <GridWrapper
-                    store-namespace="productsGrid"
-                    :rows-height="rowsHeight"
-                    :action-paths="actionPaths"
-                    :editing-privilege-allowed="isUserAllowedToUpdate" />
-                <TrashCan v-show="isColumnDragging" />
-            </div>
-        </div>
-        <GridFooter>
+    <GridViewTemplate>
+        <template #filters>
+            <GridAdvancedFilters
+                :filters-data="advancedFiltersData"
+                :filters="advancedFilters"
+                namespace="productsGrid"
+                :path="editRoute.path"
+                :disabled="isFilterExists"
+                @focus="onAdvancedFilterFocus" />
+        </template>
+        <template #sidebar>
+            <VerticalTabBar
+                :items="verticalTabs"
+                @select="onSelectTabBarItem" />
+        </template>
+        <template #grid>
+            <Grid
+                namespace="productsGrid"
+                :edit-route="editRoute"
+                :editing-privilege-allowed="isUserAllowedToUpdate"
+                :advanced-filters="true"
+                :basic-filters="true"
+                :draggable-column="true"
+                title="Products"
+                @rowEdit="onRowEdit" />
+        </template>
+        <template #footer>
             <GridPageSelector
-                v-model="visibleRowsInPageCount"
-                :rows-number="numberOfDataElements" />
+                :value="numberOfDisplayedElements"
+                :rows-number="numberOfDataElements"
+                @input="onRowsCountUpdate" />
             <GridPagination
-                :value="displayedPage"
+                :value="currentPage"
                 :max-page="numberOfPages"
                 @input="onPageChanged" />
             <Button
-                large
                 title="SAVE CHANGES"
+                :loaded="$isLoaded('footerDraftButton')"
                 :disabled="!isUserAllowedToUpdate"
                 @click.native="saveDrafts" />
-        </GridFooter>
-    </div>
+        </template>
+    </GridViewTemplate>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import gridModule from '~/reusableStore/grid/state';
-import GridWrapper from '~/components/Grid/Wrappers/GridWrapper';
-import GridFooter from '~/components/Grid/GridFooter';
-import GridPageSelector from '~/components/Grid/GridPageSelector';
-import GridPagination from '~/components/Grid/GridPagination';
-import VerticalTabBar from '~/components/Tab/VerticalTabBar';
-import TrashCan from '~/components/DragAndDrop/TrashCan';
-import Button from '~/components/Buttons/Button';
+import Button from '~/core/components/Buttons/Button';
+import GridViewTemplate from '~/core/components/Layout/Templates/GridViewTemplate';
 
 export default {
     name: 'ProductGridTab',
     components: {
-        GridWrapper,
-        GridFooter,
-        GridPageSelector,
-        GridPagination,
-        // GridGlobalFilters: () => import('~/components/Grid/GridGlobalFilters'),
-        VerticalTabBar,
-        TrashCan,
+        GridViewTemplate,
         Button,
-    },
-    data() {
-        return {
-            verticalTabs: [
-                {
-                    title: 'Attributes',
-                    component: () => import('~/components/Card/AttributesListTab'),
-                    props: {
-                        disabled: !this.$hasAccess('PRODUCT_READ'),
-                    },
-                    iconPath: 'Menu/IconAttributes',
-                    active: true,
-                },
-            ],
-            gridConfiguration: {
-                rows: {
-                    height: 32,
-                },
-            },
-            filtersNumber: 0,
-            filtersExpanded: true,
-        };
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'productsGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('productsGrid');
+        VerticalTabBar: () => import('~/core/components/Tab/VerticalTabBar'),
+        Grid: () => import('~/core/components/Grid/Grid'),
+        GridAdvancedFilters: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFilters'),
+        GridPagination: () => import('~/core/components/Grid/GridPagination'),
+        GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
     },
     computed: {
         ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
-            isColumnDragging: state => state.isColumnDragging,
+            isListElementDragging: (state) => state.isListElementDragging,
+            draggedElement: (state) => state.draggedElement,
         }),
         ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
+            userLanguageCode: (state) => state.user.language,
         }),
         ...mapState('productsGrid', {
-            numberOfDataElements: state => state.count,
-            displayedPage: state => state.displayedPage,
-            numberOfDisplayedElements: state => state.numberOfDisplayedElements,
+            numberOfDataElements: (state) => state.filtered,
+            currentPage: (state) => state.currentPage,
+            numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
+            advancedFiltersData: (state) => state.advancedFiltersData,
+            advancedFilters: (state) => state.advancedFilters,
         }),
         ...mapState('gridDraft', {
-            drafts: state => state.drafts,
+            drafts: (state) => state.drafts,
         }),
         ...mapGetters('productsGrid', {
             numberOfPages: 'numberOfPages',
         }),
+        verticalTabs() {
+            const isUserAllowedToReadProduct = this.$hasAccess(['PRODUCT_READ']);
+
+            return [
+                {
+                    title: 'Attributes',
+                    component: () => import('~/components/Card/Lists/AttributesListTab'),
+                    props: {
+                        disabled: !isUserAllowedToReadProduct,
+                    },
+                    iconPath: 'Menu/IconAttributes',
+                    listDataType: 'attributes',
+                },
+                {
+                    title: 'System Attributes',
+                    component: () => import('~/components/Card/Lists/SystemAttributesListTab'),
+                    props: {
+                        disabled: !isUserAllowedToReadProduct,
+                    },
+                    iconPath: 'Menu/IconSettings',
+                    listDataType: 'attributes/system',
+                },
+            ];
+        },
+        isFilterExists() {
+            const draggedElIndex = this.advancedFiltersData.findIndex(
+                (filter) => filter.id === this.draggedElement,
+            );
+
+            return draggedElIndex !== -1;
+        },
         isUserAllowedToUpdate() {
-            return this.$hasAccess('PRODUCT_UPDATE');
+            return this.$hasAccess(['PRODUCT_UPDATE']);
         },
-        actionPaths() {
+        editRoute() {
             return {
-                getData: `${this.userLanguageCode}/products`,
-                routerEdit: 'products-edit-id',
+                path: `${this.userLanguageCode}/products`,
+                name: 'product-edit-id',
             };
-        },
-        rowsHeight: {
-            get() {
-                const { height } = this.gridConfiguration.rows;
-
-                return height;
-            },
-            set(value) {
-                this.gridConfiguration.rows.height = value;
-            },
-        },
-        isGlobalFiltersVisible() {
-            return this.isListElementDragging
-                || (this.filtersNumber !== 0 && this.filtersExpanded);
-        },
-        visibleRowsInPageCount: {
-            get() {
-                return this.numberOfDisplayedElements;
-            },
-            set(value) {
-                const number = Math.trunc(value);
-
-                if (number !== this.numberOfDisplayedElements) {
-                    this.changeNumberOfDisplayingElements({ number });
-                    this.getDataWrapper();
-                }
-            },
         },
     },
     methods: {
         ...mapActions('productsGrid', [
             'getData',
             'addDraftToProduct',
-            'changeDisplayingPage',
+            'setCurrentPage',
             'changeNumberOfDisplayingElements',
         ]),
         ...mapActions('productsDraft', [
             'applyDraft',
         ]),
+        ...mapActions('list', [
+            'getElements',
+        ]),
         ...mapActions('gridDraft', [
             'removeDraft',
             'forceDraftsMutation',
         ]),
-        onPageChanged(page) {
-            this.changeDisplayingPage(page);
-            this.getDataWrapper();
+        onSelectTabBarItem(index) {
+            const { listDataType } = this.verticalTabs[index];
+
+            this.getElements({
+                listType: listDataType,
+                languageCode: this.userLanguageCode,
+            });
         },
-        getDataWrapper() {
-            const { getData: path } = this.actionPaths;
-            this.getData(
-                {
-                    path,
-                },
-            );
+        onRowsCountUpdate(value) {
+            const number = Math.trunc(value);
+
+            if (number !== this.numberOfDisplayedElements) {
+                this.changeNumberOfDisplayingElements(number);
+                this.getData(this.editRoute.path);
+            }
+        },
+        onAdvancedFilterFocus(isFocused) {
+            // TODO: Solve it
+            this.isAdvancedFilterFocused = isFocused;
+        },
+        onRowEdit({ links: { value: { edit } } }) {
+            const args = edit.href.split('/');
+            const lastIndex = args.length - 1;
+
+            this.$router.push({ name: 'product-edit-id-general', params: { id: args[lastIndex] } });
+        },
+        onPageChanged(page) {
+            this.setCurrentPage(page);
+            this.getData(this.editRoute.path);
         },
         saveDrafts() {
             const promises = [];
 
-            Object.entries(this.drafts).forEach(([productId, column]) => {
-                Object.entries(column).forEach(([columnId, languageCode]) => {
-                    const [value] = Object.values(languageCode);
-
-                    promises.push(this.applyDraft({
-                        id: productId,
-                        onSuccess: () => {
-                            this.addDraftToProduct({ columnId, productId, value });
-                            this.removeDraft(productId);
-                        },
-                    }));
-                });
+            Object.keys(this.drafts).forEach((productId) => {
+                promises.push(this.applyDraft({
+                    id: productId,
+                    onSuccess: () => {
+                        Object.keys(this.drafts[productId])
+                            .forEach((columnId) => {
+                                this.addDraftToProduct({
+                                    columnId,
+                                    productId,
+                                    value: this.drafts[productId][columnId],
+                                });
+                                this.removeDraft(productId);
+                            });
+                    },
+                }));
             });
 
             Promise.all(promises).then(() => {
                 this.forceDraftsMutation();
+                this.$addAlert({ type: 'success', message: 'Product changes saved' });
             });
         },
     },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'productsGrid',
-            store,
-        });
-
-        const gridPath = `${store.state.authentication.user.language}/products`;
-        await store.dispatch('productsGrid/getData', { path: gridPath });
-    },
 };
 </script>
-
-<style lang="scss" scoped>
-    .tab {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        background-color: $white;
-
-        .horizontal-wrapper {
-            display: flex;
-            flex: 1;
-        }
-
-        &__options {
-            display: flex;
-            margin: 24px 12px 0 24px;
-        }
-
-        &__grid {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            width: 0;
-            margin: 12px 12px 0 0;
-            overflow: hidden;
-
-            .filters-panel-wrapper {
-                display: flex;
-                justify-content: space-between;
-                padding: 12px 12px 0;
-            }
-        }
-    }
-</style>
