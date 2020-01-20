@@ -158,8 +158,8 @@ export const routing = [
             ],
             isMenu: true,
             privileges: {
-                namespace: 'ATTRIBUTE',
-                read: 'ATTRIBUTE_READ',
+                namespace: 'ATTRIBUTE_GROUP',
+                read: 'ATTRIBUTE_GROUP_READ',
             },
         },
     },
@@ -261,8 +261,8 @@ export const routing = [
             ],
             isMenu: true,
             privileges: {
-                namespace: 'TEMPLATE_DESIGNER',
-                read: 'TEMPLATE_DESIGNER_READ',
+                namespace: 'CATEGORY',
+                read: 'CATEGORY_READ',
             },
         },
     },
