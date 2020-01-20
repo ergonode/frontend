@@ -6,6 +6,8 @@ require('dotenv').config({ path: '.env' });
 const path = require('path');
 const pkg = require('./package');
 
+const BASE_URL = `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_PREFIX}`;
+
 module.exports = {
     mode: 'universal',
     head: {
@@ -67,7 +69,7 @@ module.exports = {
     },
     axios: {
         credentials: false,
-        baseURL: `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_PREFIX}`,
+        baseURL: BASE_URL,
     },
     build: {
         parallel: true,
@@ -91,6 +93,6 @@ module.exports = {
         },
     },
     env: {
-        baseURL: `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_PREFIX}`,
+        baseURL: BASE_URL,
     },
 };
