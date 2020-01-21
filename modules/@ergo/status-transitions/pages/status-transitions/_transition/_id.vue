@@ -68,13 +68,15 @@ export default {
                 this.updateConditionSet({
                     id: this.conditionSetId,
                     data: propertiesToUpdate,
-                    onError: this.onError,
-                });
-                this.updateTransition({
-                    data: {
-                        roles: this.roles.map((role) => role.key),
+                    onSuccess: () => {
+                        this.updateTransition({
+                            data: {
+                                roles: this.roles.map((role) => role.key),
+                            },
+                            onSuccess: this.onTransitionUpdated,
+                            onError: this.onError,
+                        });
                     },
-                    onSuccess: this.onTransitionUpdated,
                     onError: this.onError,
                 });
             }

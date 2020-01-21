@@ -2,6 +2,10 @@
   "name": "ergonode-front",
   "version": "0.1.0",
   "description": "Ergonode - Desktop PWA Ready Product Information Management Platform",
+  "keywords": [
+    "ergonode",
+    "PIM"
+  ],
   "author": "Ergonode team",
   "private": true,
   "bin": {

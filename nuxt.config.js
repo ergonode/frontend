@@ -6,18 +6,20 @@
  */
 require('dotenv').config({ path: '.env' });
 const { modulesConfig, inactiveModulesConfig } = require('./plugins/moduleLoader');
-const path = require('path');
-const pkg = require('./package');
+const PATH = require('path');
+const PKG = require('./package');
 
 const nuxtConfig = {
     css: modulesConfig.nuxt.css || [],
     styleResources: modulesConfig.nuxt.styleResources || {},
     plugins: modulesConfig.nuxt.plugins || [],
 };
+const IS_DEV = process.env.NODE_ENV !== 'production';
 const BASE_URL = `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_PREFIX}`;
 
 module.exports = {
     mode: 'universal',
+    dev: IS_DEV,
     head: {
         htmlAttrs: {
             lang: 'en',
@@ -26,7 +28,8 @@ module.exports = {
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'description', name: 'description', content: pkg.description },
+            { hid: 'keywords', name: 'keywords', content: PKG.keywords.join(', ') },
+            { hid: 'description', name: 'description', content: PKG.description },
         ],
         link: [
             {
@@ -63,8 +66,7 @@ module.exports = {
         ],
     ],
     axios: {
-        credentials: false,
-        baseURL: BASE_URL,
+        baseURL: BASE_URL || 'http://localhost:8000',
     },
     build: {
         parallel: true,
@@ -74,14 +76,14 @@ module.exports = {
             const { aliases = {} } = modulesConfig.nuxt;
             const { aliases: inactiveAliases = {} } = inactiveModulesConfig.nuxt;
 
-            alias['@Root'] = path.join(__dirname, './');
-            alias['@Modules'] = path.join(__dirname, '/modules');
-            alias['@NodeModules'] = path.join(__dirname, '/node_modules');
+            alias['@Root'] = PATH.join(__dirname, './');
+            alias['@Modules'] = PATH.join(__dirname, '/modules');
+            alias['@NodeModules'] = PATH.join(__dirname, '/node_modules');
             Object.keys(aliases).map((key) => {
-                alias[key] = path.join(__dirname, aliases[key]);
+                alias[key] = PATH.join(__dirname, aliases[key]);
             });
             Object.keys(inactiveAliases).map((key) => {
-                alias[key] = path.join(__dirname, inactiveAliases[key]);
+                alias[key] = PATH.join(__dirname, inactiveAliases[key]);
             });
 
             if (isClient && isDev) {
