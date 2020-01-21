@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default {
-    onError: ({ commit }, { errors = {}, name = null }) => {
+    onError: ({ commit }, { errors, name = null }) => {
         if (errors) {
             commit('clearStorage');
             Object.keys(errors).forEach((errorMessage) => {
