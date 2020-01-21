@@ -1,0 +1,69 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <ResponsiveCenteredViewTemplate>
+        <template #content>
+            <Grid
+                title="Attribute Groups"
+                :editing-privilege-allowed="$hasAccess(['ATTRIBUTE_UPDATE'])"
+                :columns="columns"
+                :basic-filters="basicFilters"
+                :sorted-column="sortedColumn"
+                :max-rows="filtered"
+                :max-page="numberOfPages"
+                :current-page="currentPage"
+                :cell-values="cellValues"
+                :row-ids="rowIds"
+                :row-links="rowLinks"
+                :is-edit-column="true"
+                :is-basic-filters="true"
+                @sortColumn="setSortedColumn"
+                @filterColumn="setBasicFilter"
+                @editRow="onEditRow" />
+        </template>
+        <template #footer>
+            <GridPageSelector
+                :value="maxRowsPerPage"
+                :max-rows="filtered"
+                @input="setMaxRowsPerPage" />
+            <GridPagination
+                :value="currentPage"
+                :max-page="numberOfPages"
+                @input="setCurrentPage" />
+        </template>
+    </ResponsiveCenteredViewTemplate>
+</template>
+
+<script>
+import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import gridDataMixin from '~/mixins/grid/gridDataMixin';
+
+export default {
+    name: 'AttributeGroupGridTab',
+    mixins: [gridDataMixin({ path: 'attributes/groups' })],
+    components: {
+        ResponsiveCenteredViewTemplate,
+        Grid: () => import('~/core/components/Grid/Grid'),
+        GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
+        GridPagination: () => import('~/core/components/Grid/GridPagination'),
+    },
+    computed: {
+        editRoute() {
+            return {
+                path: 'attributes/groups',
+                name: 'attribute-group-edit-id',
+            };
+        },
+    },
+    methods: {
+        onEditRow({ links: { value: { edit } } }) {
+            const args = edit.href.split('/');
+            const lastIndex = args.length - 1;
+
+            this.$router.push({ name: 'attribute-group-edit-id-general', params: { id: args[lastIndex] } });
+        },
+    },
+};
+</script>

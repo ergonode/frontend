@@ -20,6 +20,7 @@
                     :type="filterType"
                     :value="filterValue"
                     :options="options"
+                    :parameters="column.parameters"
                     :colors="column.colors || null"
                     :fixed-width="$el.offsetWidth"
                     :fixed-height="$el.offsetHeight"
@@ -166,14 +167,14 @@ export default {
                 parsedValue = value.key;
             }
 
-            if (((this.filter
+            if ((this.filter
                 && ((Array.isArray(this.filter.value)
                     && !isArrayEqualToArray(this.filter.value, parsedValue))
-                    || this.filter.value !== parsedValue)))
+                    || this.filter.value !== parsedValue))
                 || (!this.filter && parsedValue.length > 0)) {
                 this.$emit('filter', {
                     id,
-                    filter: parsedValue,
+                    value: parsedValue,
                     operator: FILTER_OPERATOR.EQUAL,
                 });
             }

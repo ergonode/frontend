@@ -5,7 +5,7 @@
 <template>
     <DatePicker
         :style="{width: `${fixedWidth}px`, height: `${fixedHeight}px`}"
-        :value="parsedDate"
+        :value="localValue"
         solid
         regular
         :placeholder="parameters.format"
@@ -56,29 +56,17 @@ export default {
     },
     created() {
         if (this.value) {
-            this.localValue = parseDate(this.value, this.parameters.format, new Date());
+            this.localValue = parseDate(this.value, 'yyyy-MM-dd', new Date());
         }
-    },
-    computed: {
-        parsedDate() {
-            if (!this.value) return null;
-
-            return parseDate(this.value, this.parameters.format, new Date());
-        },
     },
     methods: {
         onFocus(isFocused) {
             this.$emit('focus', isFocused);
         },
         onValueChange(date) {
-            if (date) this.$emit('input', this.formatDate(date));
+            this.localValue = date;
+            if (date) this.$emit('input', formatDate(date, 'yyyy-MM-dd'));
             else this.$emit('input', '');
-        },
-        formatDate(date) {
-            if (!date) return null;
-            const { format } = this.parameters;
-
-            return formatDate(date, format);
         },
     },
 };

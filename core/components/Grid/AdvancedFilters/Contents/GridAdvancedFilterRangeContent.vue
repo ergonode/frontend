@@ -4,11 +4,11 @@
  */
 <template>
     <GridAdvancedFilterBaseContent
-        :is-empty-record="isEmptyRecord"
+        :is-empty-record="filter.value.isEmptyRecord"
         @input="onEmptyRecordChange">
         <div class="container">
             <TextField
-                :value="filter[operators.GREATER_OR_EQUAL]"
+                :value="filter.value[operators.GREATER_OR_EQUAL]"
                 :input="{ type: 'number' }"
                 placeholder="From"
                 underline
@@ -17,7 +17,7 @@
                 @input="(fromValue) => onValueChange(fromValue, operators.GREATER_OR_EQUAL)" />
             <span class="dash font--medium-12-16">-</span>
             <TextField
-                :value="filter[operators.SMALLER_OR_EQUAL]"
+                :value="filter.value[operators.SMALLER_OR_EQUAL]"
                 :input="{ type: 'number' }"
                 placeholder="To"
                 underline
@@ -48,11 +48,6 @@ export default {
     computed: {
         operators() {
             return FILTER_OPERATOR;
-        },
-        isEmptyRecord() {
-            if (this.filter) return Boolean(this.filter.isEmptyRecord);
-
-            return false;
         },
     },
     methods: {

@@ -11,11 +11,16 @@
                 'advanced-filter--exists': isFilterExists,
             }
         ]"
-        :draggable="true"
+        :draggable="!isMenuActive"
         @dragover="onDragOver"
         @dragstart="onDragStart"
-        @dragend="onDragEnd">
+        @dragend="onDragEnd"
+        @drop="onDrop">
+        <GridAdvancedFilterGhost
+            v-if="filter.isGhost"
+            :is-mouse-over-filters="isMouseOverFilters" />
         <div
+            v-else
             ref="activator"
             class="advanced-filter__activator"
             @mousedown="onMouseDown"
@@ -49,13 +54,14 @@
             v-if="isMenuActive"
             ref="menu"
             :style="selectBoundingBox"
-            :fixed-content="false">
+            :fixed-content="isSelectKind">
             <template #body>
                 <Component
                     :is="selectBodyComponent"
-                    :filter="filter || {}"
-                    :options="options"
-                    :language-code="data.language"
+                    :filter="filter"
+                    :value="filter.value"
+                    :options="filter.options"
+                    :language-code="filter.languageCode"
                     @emptyRecord="onEmptyRecordChange"
                     @input="onValueChange" />
             </template>
@@ -92,15 +98,12 @@ export default {
     name: 'GridAdvancedFilter',
     components: {
         IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
+        GridAdvancedFilterGhost: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFilterGhost'),
         DropDown,
     },
     props: {
         index: {
             type: Number,
-            required: true,
-        },
-        data: {
-            type: Object,
             required: true,
         },
         filter: {
@@ -111,17 +114,10 @@ export default {
             type: Boolean,
             default: false,
         },
-        namespace: {
-            type: String,
-            required: true,
-        },
-        path: {
-            type: String,
-            required: true,
-        },
     },
     data() {
         return {
+            mouseUpTime: 0,
             isFocused: false,
             isMenuActive: false,
             isClickedOutside: false,
@@ -143,53 +139,43 @@ export default {
             draggedElement: (state) => state.draggedElement,
         }),
         isFilterExists() {
-            return this.draggedElement === this.data.id;
+            return this.draggedElement === this.filter.id;
         },
         filterHeader() {
-            return getMappedColumnHeaderTitle(this.data);
+            return getMappedColumnHeaderTitle(this.filter);
         },
         filterValue() {
-            if (this.filter) {
-                if (this.filter.isEmptyRecord) return 'Empty records';
+            if (this.filter.value.isEmptyRecord) return 'Empty records';
 
-                const value = [];
+            const value = [];
 
-                Object.keys(this.filter).forEach((key) => {
-                    if (this.filter[key]) {
-                        value.push(this.filter[key]);
-                    }
-                });
+            Object.keys(this.filter.value).forEach((key) => {
+                if (this.filter.value[key]) {
+                    value.push(this.filter.value[key]);
+                }
+            });
 
-                return value.join(' - ');
-            }
-
-            return null;
-        },
-        options() {
-            const { filter } = this.data;
-            if (!filter || !filter.options) return null;
-
-            const { options } = filter;
-            const optionKeys = Object.keys(options);
-
-            return optionKeys.map((key) => ({ key, value: options[key] }));
+            return value.join(' - ');
         },
         arrowIconState() {
             return this.isFocused ? ARROW.UP : ARROW.DOWN;
         },
+        isSelectKind() {
+            return this.filter.type === TYPES.SELECT || this.filter.type === TYPES.MULTI_SELECT;
+        },
         selectFooterComponent() {
-            switch (this.data.type) {
+            switch (this.filter.type) {
             case TYPES.SELECT:
                 return () => import('~/core/components/Inputs/Select/Contents/Footers/SelectContentFooter');
             case TYPES.MULTI_SELECT:
             case TYPES.DATE:
-            case TYPES.PRICE:
+            case 'RANGE':
                 return () => import('~/core/components/Inputs/Select/Contents/Footers/MultiselectContentFooter');
             default: return () => import('~/core/components/Inputs/Select/Contents/Footers/SelectContentApplyFooter');
             }
         },
         selectBodyComponent() {
-            switch (this.data.type) {
+            switch (this.filter.type) {
             case TYPES.SELECT:
                 return () => import('~/core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterSelectContent');
             case TYPES.MULTI_SELECT:
@@ -198,8 +184,7 @@ export default {
                 return () => import('~/core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
             case TYPES.DATE:
                 return () => import('~/core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterDateContent');
-            case TYPES.PRICE:
-            case TYPES.NUMERIC:
+            case 'RANGE':
                 return () => import('~/core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterRangeContent');
             default: return () => import('~/core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
             }
@@ -216,39 +201,43 @@ export default {
         onDragStart(event) {
             const { width } = this.$el.getBoundingClientRect();
 
-            addElementCopyToDocumentBody(event, width, JSON.stringify(this.data));
+            addElementCopyToDocumentBody(event, width, JSON.stringify(this.filter));
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.FILTER });
 
             window.requestAnimationFrame(() => {
-                this.$store.dispatch(`${this.namespace}/setAdvancedFilterAtIndex`, {
-                    index: this.index,
-                    filter: GHOST_ELEMENT_MODEL,
-                });
+                this.$emit('setGhost', { index: this.index, isGhost: true });
                 this.setGhostFilterIndex(this.index);
+            });
+        },
+        onDrop(event) {
+            event.preventDefault();
+
+            const data = event.dataTransfer.getData('text/plain');
+
+            this.$emit('drop', {
+                index: this.ghostFilterIndex,
+                data,
             });
         },
         onDragEnd(event) {
             const { xPos, yPos } = getPositionForBrowser(event);
 
             if (isTrashBelowMouse(xPos, yPos)) {
-                const { language, element_id: elementId } = this.data;
+                const { id, attributeId } = this.filter;
+                const [, languageCode] = id.split(':');
 
-                this.$store.dispatch(`${this.namespace}/removeAdvancedFilterAtIndex`, this.index);
+                this.$emit('remove', this.index);
                 this.setDisabledElement({
-                    languageCode: language, elementId, disabled: false,
+                    languageCode, elementId: attributeId, disabled: false,
                 });
-                this.onClear();
             } else {
-                this.$store.dispatch(`${this.namespace}/setAdvancedFilterAtIndex`, {
-                    index: this.ghostFilterIndex,
-                    filter: this.data,
-                });
                 changeCookiePosition({
                     cookies: this.$cookies,
                     cookieName: ADV_FILTERS_IDS,
                     from: this.index,
                     to: this.ghostFilterIndex,
                 });
+                this.$emit('setGhost', { index: this.index, isGhost: false });
             }
 
             removeElementCopyFromDocumentBody(event);
@@ -269,7 +258,8 @@ export default {
                 columnWidth,
             );
 
-            if ((isBefore && this.ghostFilterIndex === this.index - 1)
+            if (this.index === this.ghostFilterIndex
+                || (isBefore && this.ghostFilterIndex === this.index - 1)
                 || (!isBefore && this.ghostFilterIndex === this.index + 1)
                 || this.draggedElementOnGrid === DRAGGED_ELEMENT.COLUMN) {
                 return false;
@@ -279,9 +269,9 @@ export default {
                 const ghostFilterIndex = isBefore ? this.index : this.index + 1;
 
                 this.setGhostFilterIndex(ghostFilterIndex);
-                this.$store.dispatch(`${this.namespace}/insertAdvancedFilterAtIndex`, { index: ghostFilterIndex, filter: GHOST_ELEMENT_MODEL });
+                this.$emit('insert', { index: ghostFilterIndex, filter: GHOST_ELEMENT_MODEL });
             } else {
-                this.$store.dispatch(`${this.namespace}/changeFiltersPosition`, {
+                this.$emit('swap', {
                     from: this.ghostFilterIndex,
                     to: this.index,
                 });
@@ -291,34 +281,38 @@ export default {
             return true;
         },
         onEmptyRecordChange(isEmptyRecord) {
-            this.$store.dispatch(`${this.namespace}/setAdvancedFilterEmptyRecord`, { id: this.data.id, isEmptyRecord });
+            this.$emit('update', {
+                index: this.index,
+                key: 'isEmptyRecord',
+                value: isEmptyRecord,
+            });
         },
         onValueChange({ value, operator }) {
             if (value.length) {
-                this.$store.dispatch(`${this.namespace}/setAdvancedFilterValue`, { id: this.data.id, operator, value });
+                this.$emit('update', {
+                    index: this.index,
+                    key: operator,
+                    value,
+                });
             } else {
-                this.$store.dispatch(`${this.namespace}/removeAdvancedFilter`, this.data.id);
+                this.$emit('clear', this.index);
             }
 
-            if (this.data.type === TYPES.SELECT) {
+            if (this.filter.type === TYPES.SELECT) {
                 this.onApply();
             }
         },
         onClear() {
-            this.$store.dispatch(`${this.namespace}/removeAdvancedFilter`, this.data.id);
-            this.$store.dispatch(`${this.namespace}/getData`, this.path);
-            this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
+            this.$emit('clear', this.index);
         },
         onApply() {
             window.removeEventListener('click', this.onClickOutside);
 
             this.deactivateFilter();
-
-            this.$store.dispatch(`${this.namespace}/getData`, this.path);
-            this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
+            this.$emit('apply');
         },
         onFocus() {
-            if (!this.isFocused) {
+            if (!this.isFocused && this.mouseUpTime > 0) {
                 this.isFocused = true;
                 this.isMenuActive = true;
                 this.hasMouseDown = false;
@@ -336,17 +330,12 @@ export default {
         deactivateFilter() {
             this.isFocused = false;
             this.isMenuActive = false;
+            this.mouseUpTime = 0;
 
             window.removeEventListener('click', this.onClickOutside);
             this.$emit('focus', false);
         },
-        onMouseMove() {
-            // Dismiss drop down menu when we detect any move of mouse
-            this.deactivateFilter();
-        },
         onMouseDown(event) {
-            this.$refs.activator.addEventListener('mousemove', this.onMouseMove);
-
             const isClickedInsideInput = event.target === this.$refs.input;
 
             if (!isClickedInsideInput) {
@@ -357,7 +346,7 @@ export default {
             this.hasMouseDown = true;
         },
         onMouseUp(event) {
-            this.$refs.activator.removeEventListener('mousemove', this.onMouseMove);
+            this.mouseUpTime = new Date().getTime();
 
             const isDblClicked = event.detail > 1;
 
@@ -381,9 +370,7 @@ export default {
 
             if (this.isClickedOutside) {
                 this.deactivateFilter();
-
-                this.$store.dispatch(`${this.namespace}/getData`, this.path);
-                this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
+                this.$emit('apply');
             }
         },
         getSelectBoundingBox() {
@@ -425,6 +412,7 @@ export default {
         position: relative;
         display: flex;
         height: 32px;
+        cursor: pointer;
 
         &__activator {
             position: relative;

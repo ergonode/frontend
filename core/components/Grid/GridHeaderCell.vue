@@ -43,14 +43,6 @@ export default {
             type: Object,
             required: true,
         },
-        path: {
-            type: String,
-            required: true,
-        },
-        isColumnEditable: {
-            type: Boolean,
-            default: true,
-        },
     },
     computed: {
         headerComponent() {
@@ -73,7 +65,6 @@ export default {
                     columnIndex: this.columnIndex,
                     column: this.column,
                     sortedColumn: this.sortedColumn,
-                    isColumnEditable: this.isColumnEditable,
                 };
             }
 

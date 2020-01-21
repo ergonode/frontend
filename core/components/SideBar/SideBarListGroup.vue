@@ -49,6 +49,9 @@
                 :key="index"
                 :route="child"
                 :is-expanded="!isExpanded && isHovered" />
+            <div
+                class="side-bar-list-group__footer"
+                v-if="!isExpanded && isHovered" />
         </ul>
     </li>
 </template>
@@ -184,7 +187,7 @@ export default {
             display: flex;
             align-items: center;
             height: 48px;
-            padding: 0 16px 0 12px;
+            padding: 0 12px 0 16px;
             box-sizing: border-box;
         }
 
@@ -197,6 +200,10 @@ export default {
 
         &__items {
             background-color: $GRAPHITE_COAL;
+        }
+
+        &__footer {
+            height: 8px;
         }
     }
 </style>

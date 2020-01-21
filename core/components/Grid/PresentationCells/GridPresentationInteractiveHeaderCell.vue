@@ -6,7 +6,7 @@
     <div
         :class="['header-cell', {
             'header-cell--exists': isColumnExists,
-            'header-cell--draggable': isColumnEditable && !isCellEditing,
+            'header-cell--draggable': !isCellEditing,
         }
         ]">
         <GridPresentationHeaderCell
@@ -27,7 +27,7 @@
                 :fill-color="graphiteLightColor"
                 @click.native="onClickSort" />
             <MenuButton
-                v-if="isColumnEditable"
+                v-if="column.deletable"
                 :theme="secondaryTheme"
                 :size="tinySize"
                 :plain="true"
@@ -93,10 +93,6 @@ export default {
         columnIndex: {
             type: Number,
             required: true,
-        },
-        isColumnEditable: {
-            type: Boolean,
-            default: false,
         },
         isColumnSorted: {
             type: Boolean,

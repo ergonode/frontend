@@ -19,7 +19,7 @@ export default {
         padding: 8px;
         box-sizing: border-box;
         background-color: $WHITE;
-        transform: translate(-4px, -4px);
+        transform: translate(-2px, -2px);
         box-shadow: $ELEVATOR_6_DP;
     }
 </style>

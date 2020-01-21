@@ -5,7 +5,7 @@
 
 export const TYPES = {
     TEXT: 'TEXT',
-    TEXTAREA: 'TEXTAREA',
+    TEXTAREA: 'TEXT_AREA',
     NUMERIC: 'NUMERIC',
     SELECT: 'SELECT',
     MULTI_SELECT: 'MULTI_SELECT',

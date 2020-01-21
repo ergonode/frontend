@@ -4,6 +4,7 @@
  */
 <template>
     <DatePicker
+        :value="localValue"
         solid
         regular
         clearable
@@ -35,7 +36,7 @@ export default {
     },
     created() {
         if (!this.value) this.localValue = null;
-        else this.localValue = parseDate(this.value, this.parameters.format, new Date());
+        else this.localValue = parseDate(this.value, 'yyyy-MM-dd', new Date());
     },
     methods: {
         onFocusChange(isFocused) {
@@ -44,13 +45,7 @@ export default {
         onValueChange(date) {
             this.localValue = date;
 
-            this.debounceFunc(this.formatDate(date));
-        },
-        formatDate(date) {
-            if (!date) return null;
-            const { format } = this.parameters;
-
-            return formatDate(date, format);
+            this.debounceFunc(formatDate(date, 'yyyy-MM-dd'));
         },
     },
 };

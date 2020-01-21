@@ -15,6 +15,7 @@ export const ROW_INTERVALS = [
 export const COLUMN_WIDTH = {
     ACTION: '40px',
     DEFAULT: 'minmax(150px, 1fr)',
+    GHOST: '100px',
 };
 
 export const PINNED_COLUMN_STATE = {

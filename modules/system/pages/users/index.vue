@@ -19,35 +19,24 @@
                 </Button>
             </template>
         </TitleBar>
-        <UsersGridTab />
+        <HorizontalTabBar :items="tabs" />
     </Page>
 </template>
 
 <script>
 import { THEMES, SIZES } from '~/defaults/buttons';
-import gridModule from '~/reusableStore/grid/state';
 import Button from '~/core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
-import UsersGridTab from '~/components/Card/Grid/UsersGridTab';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 
 export default {
     name: 'UsersTabs',
     components: {
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         Page: () => import('~/core/components/Layout/Page'),
-        UsersGridTab,
+        HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
         Button,
         IconAdd,
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'usersGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('usersGrid');
     },
     computed: {
         smallSize() {
@@ -56,20 +45,14 @@ export default {
         secondaryTheme() {
             return THEMES.SECONDARY;
         },
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
     },
     methods: {
         addUser() {
             this.$router.push({ name: 'user-new-general' });
         },
-    },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'usersGrid',
-            store,
-        });
-        const gridPath = `${store.state.authentication.user.language}/accounts`;
-        await store.dispatch('usersGrid/getData', gridPath);
     },
 };
 </script>

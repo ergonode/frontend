@@ -22,6 +22,8 @@ const Tabs = {
 };
 
 const GridTabs = {
+    ProductGridTab: () => import('~/modules/products/pages/catalog/_tabs/ProductGridTab').then((m) => m.default || m),
+    SegmentsGridTab: () => import('~/modules/products/pages/segments/_tabs/SegmentsGridTab').then((m) => m.default || m),
     ProductHistoryGridTab: () => import('~/modules/products/pages/catalog/_product/_tabs/ProductHistoryGridTab').then((m) => m.default || m),
 };
 
@@ -37,18 +39,30 @@ export const routing = [
                 title: 'Products',
                 icon: 'Document',
             },
-            breadcrumbs: [
-                {
-                    title: 'Products',
-                    icon: 'Document',
-                },
-            ],
             isMenu: true,
             privileges: {
                 namespace: 'PRODUCT',
                 read: 'PRODUCT_READ',
             },
+            redirectTo: 'products',
         },
+        children: [
+            {
+                name: 'catalog-products',
+                path: 'products',
+                component: GridTabs.ProductGridTab,
+                meta: {
+                    title: '',
+                    breadcrumbs: [
+                        {
+                            title: 'Products',
+                            icon: 'Document',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
     },
     {
         name: 'product-new',
@@ -179,18 +193,31 @@ export const routing = [
                 title: 'Products',
                 icon: 'Document',
             },
-            breadcrumbs: [
-                {
-                    title: 'Products',
-                    icon: 'Document',
-                },
-            ],
+            breadcrumbs: [],
             isMenu: true,
             privileges: {
                 namespace: 'SEGMENT',
                 read: 'SEGMENT_READ',
             },
+            redirectTo: 'grid',
         },
+        children: [
+            {
+                name: 'segments-grid',
+                path: 'grid',
+                component: GridTabs.SegmentsGridTab,
+                meta: {
+                    title: '',
+                    breadcrumbs: [
+                        {
+                            title: 'Products',
+                            icon: 'Document',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
     },
     {
         name: 'segment-new',

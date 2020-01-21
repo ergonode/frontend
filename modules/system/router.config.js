@@ -20,6 +20,12 @@ const Tabs = {
     UserRolePrivilegesTab: () => import('~/modules/system/pages/user-roles/_role/_tabs/UserRolePrivilegesTab').then((m) => m.default || m),
 };
 
+const GridTabs = {
+    UsersGridTab: () => import('~/modules/system/pages/users/_tabs/UsersGridTab').then((m) => m.default || m),
+    RolesGridTab: () => import('~/modules/system/pages/user-roles/_tabs/RolesGridTab').then((m) => m.default || m),
+    UsersActivityLogsGridTab: () => import('~/modules/system/pages/activity-logs/_tabs/UsersActivityLogsGridTab').then((m) => m.default || m),
+};
+
 export const routing = [
     {
         name: 'users',
@@ -32,18 +38,31 @@ export const routing = [
                 title: 'System',
                 icon: 'Settings',
             },
-            breadcrumbs: [
-                {
-                    title: 'System',
-                    icon: 'Settings',
-                },
-            ],
+            breadcrumbs: [],
             isMenu: true,
             privileges: {
                 namespace: 'USER',
                 read: 'USER_READ',
             },
+            redirectTo: 'grid',
         },
+        children: [
+            {
+                name: 'users-grid',
+                path: 'grid',
+                component: GridTabs.UsersGridTab,
+                meta: {
+                    title: '',
+                    breadcrumbs: [
+                        {
+                            title: 'System',
+                            icon: 'Settings',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
     },
     {
         name: 'user-new',
@@ -135,18 +154,31 @@ export const routing = [
                 title: 'System',
                 icon: 'Settings',
             },
-            breadcrumbs: [
-                {
-                    title: 'System',
-                    icon: 'Settings',
-                },
-            ],
+            breadcrumbs: [],
             isMenu: true,
             privileges: {
                 namespace: 'USER_ROLE',
                 read: 'USER_ROLE_READ',
             },
+            redirectTo: 'grid',
         },
+        children: [
+            {
+                name: 'user-roles-grid',
+                path: 'grid',
+                component: GridTabs.RolesGridTab,
+                meta: {
+                    title: '',
+                    breadcrumbs: [
+                        {
+                            title: 'System',
+                            icon: 'Settings',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
     },
     {
         name: 'user-role-new',
@@ -238,18 +270,31 @@ export const routing = [
                 title: 'System',
                 icon: 'Settings',
             },
-            breadcrumbs: [
-                {
-                    title: 'System',
-                    icon: 'Settings',
-                },
-            ],
+            breadcrumbs: [],
             isMenu: true,
             privileges: {
                 namespace: 'USER',
                 read: 'USER_READ',
             },
+            redirectTo: 'grid',
         },
+        children: [
+            {
+                name: 'activity-logs-grid',
+                path: 'grid',
+                component: GridTabs.UsersActivityLogsGridTab,
+                meta: {
+                    title: '',
+                    breadcrumbs: [
+                        {
+                            title: 'System',
+                            icon: 'Settings',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
     },
     {
         name: 'settings',

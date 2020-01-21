@@ -4,7 +4,7 @@
  */
 <template>
     <GridAdvancedFilterBaseContent
-        :is-empty-record="isEmptyRecord"
+        :is-empty-record="filter.value.isEmptyRecord"
         @input="onEmptyRecordChange">
         <DateRangePickerContent
             :value="parsedDate"
@@ -36,11 +36,11 @@ export default {
             return 'yyyy-MM-dd';
         },
         parsedDate() {
-            const dateFrom = this.filter[FILTER_OPERATOR.GREATER_OR_EQUAL] ? parseDate(
-                this.filter[FILTER_OPERATOR.GREATER_OR_EQUAL], this.dateFormat, new Date(),
+            const dateFrom = this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL] ? parseDate(
+                this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL], this.dateFormat, new Date(),
             ) : null;
-            const dateTo = this.filter[FILTER_OPERATOR.SMALLER_OR_EQUAL] ? parseDate(
-                this.filter[FILTER_OPERATOR.SMALLER_OR_EQUAL], this.dateFormat, new Date(),
+            const dateTo = this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL] ? parseDate(
+                this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL], this.dateFormat, new Date(),
             ) : null;
 
             return {
@@ -48,20 +48,15 @@ export default {
                 to: dateTo,
             };
         },
-        isEmptyRecord() {
-            if (this.filter) return Boolean(this.filter.isEmptyRecord);
-
-            return false;
-        },
     },
     methods: {
         onValueChange({ from, to }) {
             const dateFrom = from ? formatDate(from, this.dateFormat) : null;
             const dateTo = to ? formatDate(to, this.dateFormat) : null;
 
-            if (this.filter[FILTER_OPERATOR.GREATER_OR_EQUAL] !== dateFrom
+            if (this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL] !== dateFrom
                 && dateFrom) this.$emit('input', { value: dateFrom, operator: FILTER_OPERATOR.GREATER_OR_EQUAL });
-            else if (this.filter[FILTER_OPERATOR.SMALLER_OR_EQUAL] !== dateTo
+            else if (this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL] !== dateTo
                 && dateTo) this.$emit('input', { value: dateTo, operator: FILTER_OPERATOR.SMALLER_OR_EQUAL });
         },
         onEmptyRecordChange(value) {
