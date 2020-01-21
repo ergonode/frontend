@@ -29,5 +29,8 @@ export default {
             ];
         },
     },
+    async fetch({ store }) {
+        await store.dispatch('notifications/requestForNotifications');
+    },
 };
 </script>

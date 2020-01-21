@@ -68,7 +68,9 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/conditionsets/${id}`, data).then(() => onSuccess(id)).catch((e) => onError(e.data));
+        return this.app.$axios.$put(`${userLanguageCode}/conditionsets/${id}`, data)
+            .then(() => onSuccess(id))
+            .catch((e) => onError(e.data));
     },
     async getConditionConfigurationById(
         { commit, rootState },

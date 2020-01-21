@@ -4,7 +4,6 @@
  */
 import { types } from './mutations';
 import { JWT_KEY } from '~/defaults/authenticate/cookies';
-import { COLUMNS_IDS, ADV_FILTERS_IDS } from '~/defaults/grid/cookies';
 
 const onError = () => {};
 
@@ -20,8 +19,8 @@ export default {
             return dispatch('getUser');
         }).catch(onError);
     },
-    getUser({ commit, dispatch }) {
-        return this.app.$axios.$get('profile').then((user) => {
+    async getUser({ commit, dispatch }) {
+        await this.app.$axios.$get('profile').then((user) => {
             if (user.email && user.first_name && user.last_name && user.role && user.privileges) {
                 commit(types.SET_USER, user);
             } else {
@@ -33,9 +32,7 @@ export default {
         });
     },
     logout({ commit }) {
-        this.$cookies.remove(JWT_KEY);
-        this.$cookies.remove(COLUMNS_IDS);
-        this.$cookies.remove(ADV_FILTERS_IDS);
+        this.$cookies.removeAll();
 
         commit(types.SET_JWT_TOKEN, null);
         commit(types.SET_USER, null);
