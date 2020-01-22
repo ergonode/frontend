@@ -31,9 +31,7 @@ describe('Grid/Grid', () => {
             localVue,
             mocks,
             propsData: {
-                namespace: 'productGrid',
                 title: 'Products',
-                editRoute: { path: 'api/v1/products' },
             },
         });
     });

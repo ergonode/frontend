@@ -7,7 +7,7 @@
         <template #content>
             <Grid
                 title="Attribute Groups"
-                :editing-privilege-allowed="$hasAccess(['ATTRIBUTE_UPDATE'])"
+                :editing-privilege-allowed="$hasAccess(['ATTRIBUTE_GROUP_UPDATE'])"
                 :columns="columns"
                 :basic-filters="basicFilters"
                 :sorted-column="sortedColumn"
@@ -48,14 +48,6 @@ export default {
         Grid: () => import('~/core/components/Grid/Grid'),
         GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
         GridPagination: () => import('~/core/components/Grid/GridPagination'),
-    },
-    computed: {
-        editRoute() {
-            return {
-                path: 'attributes/groups',
-                name: 'attribute-group-edit-id',
-            };
-        },
     },
     methods: {
         onEditRow({ links: { value: { edit } } }) {

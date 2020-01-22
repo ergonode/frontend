@@ -13,91 +13,83 @@ import { COLUMNS_IDS, ADV_FILTERS_IDS } from '~/defaults/grid/cookies';
 export default function ({ path }) {
     return {
         async asyncData({ app, store, params }) {
-            try {
-                const gridParams = {
-                    offset: 0,
-                    limit: DATA_LIMIT,
-                    extended: true,
-                };
-                const isProductsRequest = path === 'products';
-                let dynamicPath = path;
+            const gridParams = {
+                offset: 0,
+                limit: DATA_LIMIT,
+                extended: true,
+            };
+            const isProductsRequest = path === 'products';
+            let dynamicPath = path;
 
-                Object.keys(params).forEach((key) => {
-                    if (path.includes(key)) {
-                        dynamicPath = dynamicPath.replace(`_${key}`, params[key]);
-                    }
-                });
-
-                if (isProductsRequest) {
-                    gridParams.columns = app.$cookies.get(COLUMNS_IDS) || '';
+            Object.keys(params).forEach((key) => {
+                if (path.includes(key)) {
+                    dynamicPath = dynamicPath.replace(`_${key}`, params[key]);
                 }
+            });
 
-                const requests = [
-                    getGridData(
-                        app.$axios,
-                        app.$cookies,
-                        `${store.state.authentication.user.language}/${dynamicPath}`,
-                        gridParams,
-                    ),
-                ];
-
-                const advFiltersIds = app.$cookies.get(ADV_FILTERS_IDS);
-
-                if (advFiltersIds && isProductsRequest) {
-                    const filtersParams = {
-                        offset: 0,
-                        limit: advFiltersIds.split(',').length,
-                        columns: advFiltersIds,
-                    };
-
-                    requests.push(getAdvancedFiltersDara(
-                        app.$axios,
-                        `${store.state.authentication.user.language}/${dynamicPath}`,
-                        filtersParams,
-                    ));
-                }
-
-                const [gridData, advancedFilters = []] = await Promise.all(requests);
-                const { columns } = gridData;
-                const disabledElements = {};
-                const setDisabledElement = ({ languageCode, attributeId }) => {
-                    if (attributeId) {
-                        if (disabledElements[languageCode]
-                            && typeof disabledElements[languageCode][attributeId] !== 'undefined') {
-                            disabledElements[languageCode] = {
-                                ...disabledElements[languageCode],
-                                [attributeId]: true,
-                            };
-                        } else {
-                            disabledElements[languageCode] = {
-                                ...disabledElements[languageCode],
-                                [attributeId]: false,
-                            };
-                        }
-                    }
-                };
-                columns.forEach((column) => {
-                    const { element_id: attributeId, language: languageCode } = column;
-                    setDisabledElement({ languageCode, attributeId });
-                });
-
-                advancedFilters.forEach((filter) => {
-                    const { attributeId, languageCode } = filter;
-                    setDisabledElement({ languageCode, attributeId });
-                });
-
-                store.dispatch('list/setDisabledElements', disabledElements);
-
-                return {
-                    ...gridData,
-                    advancedFilters,
-                };
-            } catch (e) {
-                console.log(e);
+            if (isProductsRequest) {
+                gridParams.columns = app.$cookies.get(COLUMNS_IDS) || '';
             }
 
-            return {
+            const requests = [
+                getGridData(
+                    app.$axios,
+                    app.$cookies,
+                    `${store.state.authentication.user.language}/${dynamicPath}`,
+                    gridParams,
+                ),
+            ];
 
+            const advFiltersIds = app.$cookies.get(ADV_FILTERS_IDS);
+
+            if (advFiltersIds && isProductsRequest) {
+                const filtersParams = {
+                    offset: 0,
+                    limit: advFiltersIds.split(',').length,
+                    columns: advFiltersIds,
+                };
+
+                requests.push(getAdvancedFiltersDara(
+                    app.$axios,
+                    `${store.state.authentication.user.language}/${dynamicPath}`,
+                    filtersParams,
+                ));
+            }
+
+            const [gridData, advancedFilters = []] = await Promise.all(requests);
+            const { columns } = gridData;
+            const disabledElements = {};
+            const setDisabledElement = ({ languageCode, attributeId }) => {
+                if (attributeId) {
+                    if (disabledElements[languageCode]
+                        && typeof disabledElements[languageCode][attributeId] !== 'undefined') {
+                        disabledElements[languageCode] = {
+                            ...disabledElements[languageCode],
+                            [attributeId]: true,
+                        };
+                    } else {
+                        disabledElements[languageCode] = {
+                            ...disabledElements[languageCode],
+                            [attributeId]: false,
+                        };
+                    }
+                }
+            };
+            columns.forEach((column) => {
+                const { element_id: attributeId, language: languageCode } = column;
+                setDisabledElement({ languageCode, attributeId });
+            });
+
+            advancedFilters.forEach((filter) => {
+                const { attributeId, languageCode } = filter;
+                setDisabledElement({ languageCode, attributeId });
+            });
+
+            store.dispatch('list/setDisabledElements', disabledElements);
+
+            return {
+                ...gridData,
+                advancedFilters,
             };
         },
         data() {

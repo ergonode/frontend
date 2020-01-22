@@ -49,14 +49,6 @@ export default {
         GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
         GridPagination: () => import('~/core/components/Grid/GridPagination'),
     },
-    computed: {
-        editRoute() {
-            return {
-                path: 'attributes',
-                name: 'attribute-edit-id-general',
-            };
-        },
-    },
     methods: {
         onEditRow({ links: { value: { edit } } }) {
             const args = edit.href.split('/');
