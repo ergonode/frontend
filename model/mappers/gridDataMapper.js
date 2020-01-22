@@ -7,7 +7,7 @@ import {
     COLUMN_TYPE,
 } from '~/defaults/grid';
 
-export function getParsedFilters(filters, advancedFilters = null) {
+export function getParsedFilters(filters, advancedFilters = []) {
     const entries = Object.entries(filters);
     const { length: entriesLength } = entries;
 
