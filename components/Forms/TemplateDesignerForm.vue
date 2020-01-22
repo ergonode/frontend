@@ -18,6 +18,7 @@
                 :value="templateImage"
                 label="Template cover image"
                 :disabled="isDisabledByPrivileges"
+                border
                 @upload="uploadValue"
                 @remove="uploadValue" />
         </FormGroup>

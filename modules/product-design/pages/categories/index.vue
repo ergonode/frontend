@@ -19,54 +19,36 @@
                 </Button>
             </template>
         </TitleBar>
-        <CategoryGridTab />
+        <HorizontalTabBar :items="tabs" />
     </Page>
 </template>
 <script>
 import { SIZES } from '~/defaults/buttons';
-import gridModule from '~/reusableStore/grid/state';
 import Button from '~/core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
-import CategoryGridTab from '~/components/Card/Grid/CategoryGridTab';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 
 export default {
     name: 'Categories',
     components: {
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         Page: () => import('~/core/components/Layout/Page'),
+        HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
         Button,
         IconAdd,
-        CategoryGridTab,
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'categoryGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('categoryGrid');
     },
     computed: {
         smallSize() {
             return SIZES.SMALL;
+        },
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
     },
     methods: {
         addCategory() {
             this.$router.push({ name: 'category-new-general' });
         },
-    },
-    async fetch({ app, store }) {
-        const gridPath = `${store.state.authentication.user.language}/categories`;
-
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'categoryGrid',
-            store,
-        });
-        await store.dispatch('categoryGrid/getData', gridPath);
     },
 };
 </script>

@@ -20,54 +20,37 @@
                 </Button>
             </template>
         </TitleBar>
-        <ProductStatusGridTab />
+        <HorizontalTabBar :items="tabs" />
     </Page>
 </template>
 
 <script>
 import { SIZES } from '~/defaults/buttons';
-import gridModule from '~/reusableStore/grid/state';
 import Button from '~/core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
-import ProductStatusGridTab from '~/components/Card/Grid/ProductStatusGridTab';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 
 export default {
     name: 'WorkflowTabs',
     components: {
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         Page: () => import('~/core/components/Layout/Page'),
-        ProductStatusGridTab,
+        HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
         Button,
         IconAdd,
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'statusesGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('statusesGrid');
     },
     computed: {
         smallSize() {
             return SIZES.SMALL;
+        },
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
     },
     methods: {
         addStatus() {
             this.$router.push({ name: 'product-status-new-general' });
         },
-    },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'statusesGrid',
-            store,
-        });
-        const gridPath = `${store.state.authentication.user.language}/status`;
-        await store.dispatch('statusesGrid/getData', gridPath);
     },
 };
 </script>

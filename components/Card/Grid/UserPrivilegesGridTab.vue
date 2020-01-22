@@ -6,13 +6,11 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                namespace="privilegesGrid"
-                :edit-route="editRoute"
+                title="Privileges"
                 :editing-privilege-allowed="false"
-                :edit-column="false"
-                :select-column="false"
-                :is-column-editable="false"
-                title="Privileges">
+                :columns="columns"
+                :cell-values="cellValues"
+                :row-ids="rowIds">
                 <template #cell="{ column, columnIndex, rowId, rowIndex, cellData }">
                     <GridCell
                         :key="`${rowId}-${column.id}`"
@@ -35,9 +33,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import gridModule from '~/reusableStore/grid/state';
 import { getMappedGridData } from '~/model/mappers/privilegesMapper';
+import {
+    getMappedCellValues,
+    getMappedRows,
+    getMappedColumns,
+} from '~/model/mappers/gridDataMapper';
 import { COLUMN_TYPE } from '~/defaults/grid';
 import { STATE } from '~/defaults/inputs/checkbox';
 import Grid from '~/core/components/Grid/Grid';
@@ -59,39 +60,6 @@ export default {
             selectedRows: {},
             descriptions: {},
         };
-    },
-    async beforeCreate() {
-        this.editRoute = {
-            path: '',
-            name: '',
-        };
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'privilegesGrid',
-            store: this.$store,
-        });
-
-        const { privileges: privilegesDictionary } = this.$store.state.data;
-        const { privileges } = this.$store.state.authentication.user;
-        const {
-            rows, columns, columnWidths, descriptions,
-        } = getMappedGridData(privilegesDictionary, privileges);
-
-        this.descriptions = descriptions;
-
-        await this.$store.dispatch('privilegesGrid/setGridData', { columns, rows });
-        await this.$store.dispatch('privilegesGrid/setColumnWidths', columnWidths);
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('privilegesGrid');
-
-        delete this.editRoute;
-    },
-    computed: {
-        ...mapState('privilegesGrid', {
-            rowIds: (state) => state.rowIds,
-            cellValues: (state) => state.cellValues,
-        }),
     },
     mounted() {
         this.initializeRowsSelections();
@@ -131,12 +99,22 @@ export default {
             return GridPresentationCheckCell;
         },
     },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'privilegesGrid',
-            store,
-        });
+    asyncData({ store }) {
+        const { privileges: privilegesDictionary } = store.state.data;
+        const { privileges } = store.state.authentication.user;
+        const {
+            rows, columns, descriptions,
+        } = getMappedGridData(privilegesDictionary, privileges);
+        const { mappedColumns } = getMappedColumns(columns);
+        const { rowIds } = getMappedRows(rows);
+        const cellValues = getMappedCellValues(columns, rows, rowIds);
+
+        return {
+            descriptions,
+            rowIds,
+            cellValues,
+            columns: mappedColumns,
+        };
     },
 };
 </script>

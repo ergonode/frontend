@@ -20,35 +20,24 @@
                 </Button>
             </template>
         </TitleBar>
-        <AttributeGridTab />
+        <HorizontalTabBar :items="tabs" />
     </Page>
 </template>
 
 <script>
-import gridModule from '~/reusableStore/grid/state';
 import { THEMES, SIZES } from '~/defaults/buttons';
 import Button from '~/core/components/Buttons/Button';
 import IconAdd from '~/components/Icon/Actions/IconAdd';
-import AttributeGridTab from '~/components/Card/Grid/AttributeGridTab';
+import { getNestedTabRoutes } from '~/model/navigation/tabs';
 
 export default {
     name: 'AttributeTabs',
     components: {
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),
         Page: () => import('~/core/components/Layout/Page'),
-        AttributeGridTab,
+        HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
         Button,
         IconAdd,
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'attributeGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('attributeGrid');
     },
     computed: {
         smallSize() {
@@ -57,20 +46,14 @@ export default {
         secondaryTheme() {
             return THEMES.SECONDARY;
         },
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
     },
     methods: {
         addAttribute() {
             this.$router.push({ name: 'attribute-new-general' });
         },
-    },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'attributeGrid',
-            store,
-        });
-        const gridPath = `${store.state.authentication.user.language}/attributes`;
-        await store.dispatch('attributeGrid/getData', gridPath);
     },
 };
 </script>

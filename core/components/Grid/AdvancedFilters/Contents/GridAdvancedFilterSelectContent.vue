@@ -4,7 +4,7 @@
  */
 <template>
     <GridAdvancedFilterBaseContent
-        :is-empty-record="isEmptyRecord"
+        :is-empty-record="filter.value.isEmptyRecord"
         @input="onEmptyRecordChange">
         <List>
             <ListElement
@@ -69,14 +69,7 @@ export default {
     },
     computed: {
         filterValue() {
-            if (this.filter) return this.filter[FILTER_OPERATOR.EQUAL];
-
-            return '';
-        },
-        isEmptyRecord() {
-            if (this.filter) return Boolean(this.filter.isEmptyRecord);
-
-            return false;
+            return this.filter.value[FILTER_OPERATOR.EQUAL] || '';
         },
     },
     methods: {

@@ -5,17 +5,17 @@
 import { types } from './mutations';
 
 export default {
-    setRoleId({ commit }, value) {
-        commit(types.SET_ROLE_ID, value);
-    },
     setName({ commit }, value) {
         commit(types.SET_ROLE_NAME, value);
     },
     setDescription({ commit }, value) {
         commit(types.SET_ROLE_DESCRIPTION, value);
     },
-    setPrivileges({ commit }, value) {
-        commit(types.SET_ROLE_PRIVILEGES, value);
+    setRolePrivileges({ commit }, privileges) {
+        commit(types.SET_ROLE_PRIVILEGES, privileges);
+    },
+    setSelectedRolePrivileges({ commit }, selectedPrivileges) {
+        commit(types.SET_SELECTED_ROLE_PRIVILEGES, selectedPrivileges);
     },
     getRoles({ commit, rootState }, params) {
         const { language: userLanguageCode } = rootState.authentication.user;

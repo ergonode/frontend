@@ -4,24 +4,26 @@
  */
 <template>
     <GridAdvancedFilterBaseContent
-        :is-empty-record="isEmptyRecord"
+        :is-empty-record="filter.value.isEmptyRecord"
         @input="onEmptyRecordChange">
         <List>
             <ListElement
                 v-for="(option, index) in options"
                 :key="index"
-                @click.native="onSelectValue(option, index)">
-                <ListElementAction :small="true">
-                    <CheckBox
-                        :value="isSelected(index)"
-                        @input="onSelectValue(option, index)" />
-                </ListElementAction>
-                <ListElementDescription>
-                    <ListElementTitle
-                        :small="true"
-                        :hint="option.value ? `#${option.key} ${languageCode}` : ''"
-                        :title="option.value || `#${option.key}`" />
-                </ListElementDescription>
+                :selected="typeof selectedOptions[index] !== 'undefined'"
+                @click.native.prevent="onSelectValue(option, index)">
+                <template #default="{ isSelected }">
+                    <ListElementAction :small="true">
+                        <CheckBox
+                            :value="isSelected" />
+                    </ListElementAction>
+                    <ListElementDescription>
+                        <ListElementTitle
+                            :small="true"
+                            :hint="option.value ? `#${option.key} ${languageCode}` : ''"
+                            :title="option.value || `#${option.key}`" />
+                    </ListElementDescription>
+                </template>
             </ListElement>
         </List>
     </GridAdvancedFilterBaseContent>
@@ -77,21 +79,12 @@ export default {
     },
     computed: {
         filterValue() {
-            if (this.filter
-                && this.filter[FILTER_OPERATOR.EQUAL]) return this.filter[FILTER_OPERATOR.EQUAL].split(', ');
-
-            return [];
-        },
-        isEmptyRecord() {
-            if (this.filter) return Boolean(this.filter.isEmptyRecord);
-
-            return false;
+            return this.filter.value[FILTER_OPERATOR.EQUAL]
+                ? this.filter.value[FILTER_OPERATOR.EQUAL].split(', ')
+                : [];
         },
     },
     methods: {
-        isSelected(index) {
-            return typeof this.selectedOptions[index] !== 'undefined';
-        },
         initSelectedOptions() {
             if (this.filterValue.length === 0) {
                 this.selectedOptions = {};
@@ -109,10 +102,11 @@ export default {
         onSelectValue(value, index) {
             if (typeof this.selectedOptions[index] !== 'undefined') {
                 delete this.selectedOptions[index];
-                this.$emit('input', { value: Object.values(this.selectedOptions).join(', '), operator: FILTER_OPERATOR.EQUAL });
             } else {
-                this.$emit('input', { value: [...Object.values(this.selectedOptions), value.key].join(', '), operator: FILTER_OPERATOR.EQUAL });
+                this.selectedOptions[index] = value.key;
             }
+
+            this.$emit('input', { value: Object.values(this.selectedOptions).join(', '), operator: FILTER_OPERATOR.EQUAL });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

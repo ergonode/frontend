@@ -150,7 +150,6 @@ export default {
             this.setDraggedElIndex(this.index);
             this.setDraggedElement({ ...this.column, index: this.index });
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.COLUMN });
-            this.updateElementWidth(`${headerWidth}px`);
 
             return true;
         },
@@ -159,7 +158,7 @@ export default {
 
             removeElementCopyFromDocumentBody(event);
 
-            if (isTrashBelowMouse(xPos, yPos)) {
+            if (isTrashBelowMouse(xPos, yPos) && this.column.deletable) {
                 this.removeColumnWrapper(this.draggedElIndex - this.columnOffset);
             } else if (this.ghostIndex !== this.draggedElIndex) {
                 this.$emit('changeColumnsPosition', {
@@ -179,10 +178,9 @@ export default {
             if (typeof this.draggedElement !== 'object') {
                 const columnId = event.dataTransfer.getData('text/plain');
 
-                this.$emit('getColumnData', {
+                this.$emit('drop', {
                     ghostIndex: this.ghostIndex - this.columnOffset,
                     columnId,
-                    path: `${this.languageCode}/products`,
                 });
                 this.$emit('mouseOverGrid', false);
                 this.removeColumnsTransform();
@@ -233,7 +231,6 @@ export default {
             this.setResizingElement({ index: this.index });
             this.initMousePosition(event);
             this.initElementWidth();
-            this.updateElementWidth(`${this.startWidth}px`);
 
             registerResizeEventListenersModule().then((response) => {
                 response.default(this.doResizeDrag, this.stopResizeDrag);
@@ -244,9 +241,10 @@ export default {
             const width = this.getElementWidthBasedOnMouseXPosition(pageX);
 
             if (width > this.minWidth) {
-                this.updateElementWidth(`${width}px`);
-                this.$emit('updateColumnWidthAtIndex', {
-                    index: this.index - this.columnOffset, width: `${width}px`,
+                window.requestAnimationFrame(() => {
+                    this.$emit('updateColumnWidthAtIndex', {
+                        index: this.index, width: `${width}px`,
+                    });
                 });
             }
         },
@@ -268,9 +266,6 @@ export default {
         },
         getElementWidthBasedOnMouseXPosition(xPos) {
             return this.startWidth + xPos - this.startX;
-        },
-        updateElementWidth(width) {
-            this.$el.style.width = width;
         },
         getColumnFixedIndex() {
             if (this.$el.style.transform) {
@@ -328,7 +323,6 @@ export default {
             this.setGhostIndex();
             this.setDraggedElIndex();
             this.setDraggedElement();
-            this.updateElementWidth(null);
         },
     },
 };

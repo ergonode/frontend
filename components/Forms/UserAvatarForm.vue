@@ -9,6 +9,7 @@
                 :value="avatarId"
                 label="Profile picture"
                 :disabled="!isUserAllowedToUpdate"
+                border
                 @upload="uploadValue"
                 @remove="uploadValue" />
         </FormGroup>

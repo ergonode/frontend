@@ -9,7 +9,7 @@
             'element--large': large,
             'element--selected': selected,
         }]">
-        <slot />
+        <slot :is-selected="selected" />
     </li>
 </template>
 

@@ -6,6 +6,8 @@ export const THIS_YEAR = +(new Date().getFullYear());
 
 export const THIS_MONTH = +(new Date().getMonth()) + 1;
 
+export const DEFAULT_FORMAT = 'yyyy-MM-dd';
+
 export const WEEK_DAYS = {
     Sunday: 'Sun',
     Monday: 'Mon',
