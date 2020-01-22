@@ -16,8 +16,7 @@
                 small
                 :disabled="disabled"
                 label="Option code"
-                @input="value => updateAttributeOptionKey({ index, key: value })"
-                @click:append-outer="removeAttributeOptionKey(index)" />
+                @input="value => updateAttributeOptionKey({ index, key: value })" />
         </li>
         <div
             class="add-option-wrapper"

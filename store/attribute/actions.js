@@ -39,7 +39,6 @@ export default {
         const { isMultilingual } = state;
 
         if (isMultilingual) {
-            console.log(state.options[index]);
             if (!state.options[index].value || !state.options[index].value[languageCode]) {
                 commit(types.SET_OPTION_LANGUAGE_CODE_FOR_VALUE, { index, languageCode });
             }
