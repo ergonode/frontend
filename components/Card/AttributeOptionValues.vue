@@ -43,10 +43,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .option-values-container {
-        display: grid;
-        grid-gap: 8px;
-    }
-</style>
