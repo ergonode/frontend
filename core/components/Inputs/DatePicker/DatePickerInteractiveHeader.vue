@@ -19,6 +19,7 @@
 
 <script>
 import TextField from '~/core/components/Inputs/TextField';
+import { DEFAULT_FORMAT } from '~/model/calendar/calendar';
 
 export default {
     name: 'DatePickerHeader',
@@ -37,7 +38,7 @@ export default {
     },
     computed: {
         dateFormat() {
-            return 'yyyy-MM-dd';
+            return DEFAULT_FORMAT;
         },
     },
     methods: {

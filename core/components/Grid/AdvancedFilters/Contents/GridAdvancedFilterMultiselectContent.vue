@@ -69,9 +69,6 @@ export default {
             selectedOptions: {},
         };
     },
-    created() {
-
-    },
     watch: {
         filterValue: {
             immediate: true,
@@ -105,11 +102,11 @@ export default {
         onSelectValue(value, index) {
             if (typeof this.selectedOptions[index] !== 'undefined') {
                 delete this.selectedOptions[index];
-                this.$emit('input', { value: Object.values(this.selectedOptions).join(', '), operator: FILTER_OPERATOR.EQUAL });
             } else {
                 this.selectedOptions[index] = value.key;
-                this.$emit('input', { value: Object.values(this.selectedOptions).join(', '), operator: FILTER_OPERATOR.EQUAL });
             }
+
+            this.$emit('input', { value: Object.values(this.selectedOptions).join(', '), operator: FILTER_OPERATOR.EQUAL });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

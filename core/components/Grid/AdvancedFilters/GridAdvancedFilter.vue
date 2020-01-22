@@ -83,7 +83,7 @@ import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '~/model/layout/ElementCopy';
-import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT } from '~/defaults/grid';
+import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT, COLUMN_FILTER_TYPE } from '~/defaults/grid';
 import {
     getDraggedColumnPositionState,
     getPositionForBrowser,
@@ -161,30 +161,31 @@ export default {
             return this.isFocused ? ARROW.UP : ARROW.DOWN;
         },
         isSelectKind() {
-            return this.filter.type === TYPES.SELECT || this.filter.type === TYPES.MULTI_SELECT;
+            return this.filter.type === COLUMN_FILTER_TYPE.SELECT
+                || this.filter.type === COLUMN_FILTER_TYPE.MULTI_SELECT;
         },
         selectFooterComponent() {
             switch (this.filter.type) {
-            case TYPES.SELECT:
+            case COLUMN_FILTER_TYPE.SELECT:
                 return () => import('~/core/components/Inputs/Select/Contents/Footers/SelectContentFooter');
-            case TYPES.MULTI_SELECT:
-            case TYPES.DATE:
-            case 'RANGE':
+            case COLUMN_FILTER_TYPE.MULTI_SELECT:
+            case COLUMN_FILTER_TYPE.DATE:
+            case COLUMN_FILTER_TYPE.RANGE:
                 return () => import('~/core/components/Inputs/Select/Contents/Footers/MultiselectContentFooter');
             default: return () => import('~/core/components/Inputs/Select/Contents/Footers/SelectContentApplyFooter');
             }
         },
         selectBodyComponent() {
             switch (this.filter.type) {
-            case TYPES.SELECT:
+            case COLUMN_FILTER_TYPE.SELECT:
                 return () => import('~/core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterSelectContent');
-            case TYPES.MULTI_SELECT:
+            case COLUMN_FILTER_TYPE.MULTI_SELECT:
                 return () => import('~/core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterMultiselectContent');
-            case TYPES.TEXT:
+            case COLUMN_FILTER_TYPE.TEXT:
                 return () => import('~/core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
-            case TYPES.DATE:
+            case COLUMN_FILTER_TYPE.DATE:
                 return () => import('~/core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterDateContent');
-            case 'RANGE':
+            case COLUMN_FILTER_TYPE.RANGE:
                 return () => import('~/core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterRangeContent');
             default: return () => import('~/core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
             }

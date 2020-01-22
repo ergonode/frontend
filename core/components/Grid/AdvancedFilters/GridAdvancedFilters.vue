@@ -109,7 +109,7 @@ export default {
             return THEMES.SECONDARY;
         },
         filtersNumber() {
-            return this.filters.filter((f) => !f.isGhost).length;
+            return this.filters.filter((filter) => !filter.isGhost).length;
         },
         isFilterExists() {
             const draggedElIndex = this.filters.findIndex(

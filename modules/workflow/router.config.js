@@ -34,7 +34,6 @@ export const routing = [
                 title: 'Workflow',
                 icon: 'Flow',
             },
-            breadcrumbs: [],
             isMenu: true,
             privileges: {
                 namespace: 'WORKFLOW',
@@ -150,7 +149,6 @@ export const routing = [
                 title: 'Workflow',
                 icon: 'Flow',
             },
-            breadcrumbs: [],
             isMenu: true,
             privileges: {
                 namespace: 'WORKFLOW',

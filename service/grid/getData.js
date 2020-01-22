@@ -17,7 +17,7 @@ export const getGridData = ($axios, $cookies, path, params) => $axios
         columns,
         info: { count, filtered },
     }) => {
-        const sortedColumns = params.columns ? getSortedColumnsByIDs([...columns], params.columns, 'id') : columns;
+        const sortedColumns = params.columns ? getSortedColumnsByIDs(columns, params.columns, 'id') : columns;
         const {
             mappedColumnsId, mappedColumns,
         } = getMappedColumns(sortedColumns);

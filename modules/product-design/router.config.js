@@ -54,7 +54,6 @@ export const routing = [
                 title: 'Product design',
                 icon: 'Templates',
             },
-            breadcrumbs: [],
             isMenu: true,
             privileges: {
                 namespace: 'ATTRIBUTE',
@@ -170,7 +169,6 @@ export const routing = [
                 title: 'Product design',
                 icon: 'Templates',
             },
-            breadcrumbs: [],
             isMenu: true,
             privileges: {
                 namespace: 'ATTRIBUTE_GROUP',
@@ -286,7 +284,6 @@ export const routing = [
                 title: 'Product design',
                 icon: 'Templates',
             },
-            breadcrumbs: [],
             isMenu: true,
             privileges: {
                 namespace: 'CATEGORY',
@@ -402,7 +399,6 @@ export const routing = [
                 title: 'Product design',
                 icon: 'Templates',
             },
-            breadcrumbs: [],
             isMenu: true,
             privileges: {
                 namespace: 'CATEGORY_TREE',

@@ -193,7 +193,6 @@ export const routing = [
                 title: 'Products',
                 icon: 'Document',
             },
-            breadcrumbs: [],
             isMenu: true,
             privileges: {
                 namespace: 'SEGMENT',

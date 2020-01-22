@@ -20,6 +20,7 @@
 <script>
 import { format as formatDate, parse as parseDate } from 'date-fns';
 import DatePicker from '~/core/components/Inputs/DatePicker/DatePicker';
+import { DEFAULT_FORMAT } from '~/model/calendar/calendar';
 
 export default {
     name: 'GridEditDateCell',
@@ -56,7 +57,7 @@ export default {
     },
     created() {
         if (this.value) {
-            this.localValue = parseDate(this.value, 'yyyy-MM-dd', new Date());
+            this.localValue = parseDate(this.value, DEFAULT_FORMAT, new Date());
         }
     },
     methods: {
@@ -65,7 +66,7 @@ export default {
         },
         onValueChange(date) {
             this.localValue = date;
-            if (date) this.$emit('input', formatDate(date, 'yyyy-MM-dd'));
+            if (date) this.$emit('input', formatDate(date, DEFAULT_FORMAT));
             else this.$emit('input', '');
         },
     },

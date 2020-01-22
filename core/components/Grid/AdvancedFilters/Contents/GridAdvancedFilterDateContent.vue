@@ -18,6 +18,7 @@ import { format as formatDate, parse as parseDate } from 'date-fns';
 import GridAdvancedFilterBaseContent from '~/core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent';
 import DateRangePickerContent from '~/core/components/Inputs/DatePicker/DateRangePickerContent';
 import { FILTER_OPERATOR } from '~/defaults/operators';
+import { DEFAULT_FORMAT } from '~/model/calendar/calendar';
 
 export default {
     name: 'GridAdvancedFilterDateContent',
@@ -33,7 +34,7 @@ export default {
     },
     computed: {
         dateFormat() {
-            return 'yyyy-MM-dd';
+            return DEFAULT_FORMAT;
         },
         parsedDate() {
             const dateFrom = this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL] ? parseDate(

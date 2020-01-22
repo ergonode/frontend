@@ -52,9 +52,20 @@ export const COLUMN_TYPE = {
     IMAGE: 'IMAGE',
     LABEL: 'LABEL',
     SELECT: 'SELECT',
+    RANGE: 'RANGE',
     TEXT: 'TEXT',
     MULTI_SELECT: 'MULTI_SELECT',
     CHECK_CELL: 'CHECK_CELL',
+};
+
+export const COLUMN_FILTER_TYPE = {
+    CHECK: 'CHECK',
+    DATE: 'DATE',
+    RANGE: 'RANGE',
+    TEXT: 'TEXT',
+    NUMERIC: 'NUMERIC',
+    SELECT: 'SELECT',
+    MULTI_SELECT: 'MULTI_SELECT',
 };
 
 export const DATA_LIMIT = 25;

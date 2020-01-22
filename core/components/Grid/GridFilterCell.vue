@@ -33,7 +33,7 @@
 
 <script>
 import { FILTER_OPERATOR } from '~/defaults/operators';
-import { COLUMN_TYPE } from '~/defaults/grid';
+import { COLUMN_FILTER_TYPE } from '~/defaults/grid';
 import { getMappedGridColumnOptions } from '~/model/mappers/gridDataMapper';
 import { isArrayEqualToArray } from '~/model/arrayWrapper';
 
@@ -77,17 +77,17 @@ export default {
             if (!filter) return false;
             const { type } = filter;
 
-            return type === COLUMN_TYPE.SELECT || type === COLUMN_TYPE.MULTI_SELECT;
+            return type === COLUMN_FILTER_TYPE.SELECT || type === COLUMN_FILTER_TYPE.MULTI_SELECT;
         },
         isMultiSelect() {
             const { filter: { type } } = this.column;
 
-            return type === COLUMN_TYPE.MULTI_SELECT;
+            return type === COLUMN_FILTER_TYPE.MULTI_SELECT;
         },
         isSelect() {
             const { filter: { type } } = this.column;
 
-            return type === COLUMN_TYPE.SELECT;
+            return type === COLUMN_FILTER_TYPE.SELECT;
         },
         filterType() {
             if (this.column.colors) return this.column.type;
@@ -142,8 +142,8 @@ export default {
             const type = !filter ? this.column.type : filter.type;
 
             switch (type) {
-            case COLUMN_TYPE.SELECT:
-            case COLUMN_TYPE.MULTI_SELECT:
+            case COLUMN_FILTER_TYPE.SELECT:
+            case COLUMN_FILTER_TYPE.MULTI_SELECT:
                 return () => import('~/core/components/Grid/PresentationCells/GridPresentationFilterSelectCell');
             default:
                 return () => import('~/core/components/Grid/PresentationCells/GridPresentationFilterCell');
