@@ -6,9 +6,6 @@ import { types } from './mutations';
 import { getMappedParameterValues, getMappedOptions } from '~/model/mappers/attributeMapper';
 
 export default {
-    setAttributeID({ commit }, id) {
-        commit(types.SET_ATTRIBUTE_ID, id);
-    },
     setAttributeCode({ commit }, code) {
         commit(types.SET_ATTRIBUTE_CODE, code);
     },
@@ -24,8 +21,8 @@ export default {
     setMultilingualAttribute({ commit }, isMultilingual) {
         commit(types.SET_MULTILINGUAL_ATTRIBUTE, isMultilingual);
     },
-    addAttributeOptionKey({ commit }, key) {
-        commit(types.ADD_ATTRIBUTE_OPTION_KEY, key);
+    addAttributeOptionKey({ commit }, index) {
+        commit(types.ADD_ATTRIBUTE_OPTION_KEY, index);
     },
     removeAttributeOptionKey({ commit }, key) {
         commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, key);
@@ -33,16 +30,24 @@ export default {
     removeAttributeOptions({ commit }) {
         commit(types.INITIALIZE_OPTIONS);
     },
-    setAttributeOptionKey({ commit }, { oldKey, newKey }) {
-        commit(types.SET_ATTRIBUTE_OPTION_KEY, { oldKey, newKey });
+    updateAttributeOptionKey({ commit }, payload) {
+        commit(types.SET_ATTRIBUTE_OPTION_KEY, payload);
     },
-    setOptionValueForLanguageCode({ commit, state }, { key, value, languageCode }) {
+    setOptionValueForLanguageCode({ commit, state }, {
+        index, languageCode, value,
+    }) {
         const { isMultilingual } = state;
 
         if (isMultilingual) {
-            commit(types.SET_OPTION_VALUE_FOR_LANGUAGE_CODE, { languageCode, key, value });
+            if (!state.options[index].value || !state.options[index].value[languageCode]) {
+                commit(types.SET_OPTION_LANGUAGE_CODE_FOR_VALUE, { index, languageCode });
+            }
+
+            commit(types.SET_OPTION_VALUE_FOR_LANGUAGE_CODE, {
+                index, languageCode, value,
+            });
         } else {
-            commit(types.SET_OPTION_VALUE, { key, value });
+            commit(types.SET_OPTION_VALUE, { index, value });
         }
     },
     getAttributeGroups({ commit, rootState }) {

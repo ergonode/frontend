@@ -126,7 +126,7 @@ export default function ({ path }) {
                 let filter = parsedFilter;
 
                 if (parsedFilter && parsedAdvancedFilter) {
-                    filter += `${parsedFilter};${parsedAdvancedFilter}`;
+                    filter = `${parsedFilter};${parsedAdvancedFilter}`;
                 } else if (parsedAdvancedFilter) {
                     filter = parsedAdvancedFilter;
                 }
@@ -268,6 +268,8 @@ export default function ({ path }) {
                 );
                 this.advancedFilters = [];
                 this.$cookies.remove(ADV_FILTERS_IDS);
+                this.currentPage = 1;
+                this.getGridData();
             },
             setGhostFilterAtIndex({ index, isGhost }) {
                 this.advancedFilters[index].isGhost = isGhost;

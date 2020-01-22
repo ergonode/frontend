@@ -54,7 +54,7 @@ export default {
     },
     methods: {
         addProduct() {
-            this.$router.push({ path: 'catalog/product/new/general' });
+            this.$router.push({ path: '/catalog/product/new/general' });
         },
     },
     async fetch({ store }) {

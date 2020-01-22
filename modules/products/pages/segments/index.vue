@@ -48,7 +48,7 @@ export default {
     },
     methods: {
         addSegment() {
-            this.$router.push({ path: 'segments/segment/new/general' });
+            this.$router.push({ path: '/segments/segment/new/general' });
         },
     },
 };
