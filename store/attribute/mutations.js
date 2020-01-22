@@ -16,6 +16,7 @@ export const types = {
     ADD_ATTRIBUTE_OPTION_KEY: 'ADD_ATTRIBUTE_OPTION_KEY',
     REMOVE_ATTRIBUTE_OPTION_KEY: 'REMOVE_ATTRIBUTE_OPTION_KEY',
     SET_ATTRIBUTE_OPTION_KEY: 'SET_ATTRIBUTE_OPTION_KEY',
+    SET_OPTION_LANGUAGE_CODE_FOR_VALUE: 'SET_OPTION_LANGUAGE_CODE_FOR_VALUE',
     SET_OPTION_VALUE_FOR_LANGUAGE_CODE: 'SET_OPTION_VALUE_FOR_LANGUAGE_CODE',
     SET_OPTION_VALUE: 'SET_OPTION_VALUE',
     SET_MULTILINGUAL_ATTRIBUTE: 'SET_MULTILINGUAL_ATTRIBUTE',
@@ -26,32 +27,31 @@ export default {
     [types.SET_ATTRIBUTE_ID](state, id) {
         state.id = id;
     },
-    [types.INITIALIZE_OPTIONS](state, options = []) {
+    [types.INITIALIZE_OPTIONS](state, options) {
         state.options = options;
     },
-    [types.ADD_ATTRIBUTE_OPTION_KEY](state, key) {
+    [types.ADD_ATTRIBUTE_OPTION_KEY](state, index) {
         state.options = {
             ...state.options,
-            [key]: null,
+            [index]: { key: '', value: '' },
         };
     },
     [types.REMOVE_ATTRIBUTE_OPTION_KEY](state, key) {
         state.options = removeFromObjectByKey(state.options, key);
     },
-    [types.SET_ATTRIBUTE_OPTION_KEY](state, { oldKey, newKey }) {
-        state.options = Object.keys(state.options).reduce((acc, key) => ({
-            ...acc,
-            ...{ [key === oldKey ? newKey : key]: state.options[oldKey] },
-        }), {});
+    [types.SET_ATTRIBUTE_OPTION_KEY](state, { index, key }) {
+        state.options = { ...state.options, [index]: { key, value: state.options[index].value } };
     },
-    [types.SET_OPTION_VALUE_FOR_LANGUAGE_CODE](state, { languageCode, key, value }) {
-        state.options[key] = {
-            ...state.options[key],
-            [languageCode]: value || null,
-        };
+    [types.SET_OPTION_LANGUAGE_CODE_FOR_VALUE](state, { index, languageCode }) {
+        state.options[index].value = { ...state.options[index].value, [languageCode]: '' };
     },
-    [types.SET_OPTION_VALUE](state, { key, value }) {
-        state.options[key] = value;
+    [types.SET_OPTION_VALUE_FOR_LANGUAGE_CODE](state, { index, languageCode, value }) {
+        state.options[index].value[languageCode] = value;
+        state.options = { ...state.options };
+    },
+    [types.SET_OPTION_VALUE](state, { index, value }) {
+        state.options[index].value = value;
+        state.options = { ...state.options };
     },
     [types.SET_MULTILINGUAL_ATTRIBUTE](state, isMultilingual) {
         state.isMultilingual = isMultilingual;
