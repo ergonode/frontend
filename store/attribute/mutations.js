@@ -27,7 +27,7 @@ export default {
     [types.SET_ATTRIBUTE_ID](state, id) {
         state.id = id;
     },
-    [types.INITIALIZE_OPTIONS](state, options) {
+    [types.INITIALIZE_OPTIONS](state, options = {}) {
         state.options = options;
     },
     [types.ADD_ATTRIBUTE_OPTION_KEY](state, index) {

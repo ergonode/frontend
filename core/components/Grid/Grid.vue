@@ -463,7 +463,7 @@ export default {
                     gridContent.children[i].style.transform = null;
                 }
 
-                this.columnWidths.splice(this.ghostIndex, 1);
+                this.columnWidths.splice(this.draggedElIndex, 1);
                 this.$emit('removeColumn', index);
                 this.setDraggedElIndex();
                 this.setGhostIndex();
