@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 import { getMappedGridData } from '~/model/mappers/privilegesMapper';
 import {
     getMappedCellValues,
@@ -90,9 +91,19 @@ export default {
             isSelectedAllRows: STATE.UNCHECK,
             selectedRows: {},
             descriptions: {},
+            description: '',
+            rowIds: [],
+            cellValues: {},
+            columns: [],
         };
     },
     computed: {
+        ...mapState('data', {
+            privilegesDictionary: (state) => state.privileges,
+        }),
+        ...mapState('roles', {
+            privileges: (state) => state.privileges,
+        }),
         isEditingAllowed() {
             return this.$hasAccess(['USER_ROLE_UPDATE']);
         },
@@ -117,10 +128,27 @@ export default {
             return this.selectedRowsValues.every((rowState) => rowState === STATE.CHECK);
         },
     },
+    created() {
+        const {
+            rows, columns, descriptions,
+        } = getMappedGridData(this.privilegesDictionary, this.privileges);
+        const { mappedColumns } = getMappedColumns(columns);
+        const { rowIds } = getMappedRows(rows);
+        const cellValues = getMappedCellValues(columns, rows, rowIds);
+
+        this.description = descriptions;
+        this.rowIds = rowIds;
+        this.cellValues = cellValues;
+        this.columns = mappedColumns;
+        this.setSelectedRolePrivileges(JSON.parse(JSON.stringify(cellValues)));
+    },
     mounted() {
         this.initializeRowsSelections();
     },
     methods: {
+        ...mapActions('roles', [
+            'setSelectedRolePrivileges',
+        ]),
         onSelectRow(row) {
             const value = !this.selectedRows[row];
 
@@ -149,6 +177,7 @@ export default {
 
                 this.cellValues[rowId][columnId].editValue = value;
                 this.selectRowValues(rowId);
+                this.setSelectedRolePrivileges(JSON.parse(JSON.stringify(this.cellValues)));
             }
         },
         initializeRowsSelections() {
@@ -181,6 +210,7 @@ export default {
             this.cellValues[rowId].create.editValue = isSelected;
             this.cellValues[rowId].update.editValue = isSelected;
             this.cellValues[rowId].delete.editValue = isSelected;
+            this.setSelectedRolePrivileges(JSON.parse(JSON.stringify(this.cellValues)));
         },
         selectEveryRowValues(isSelected) {
             this.rowIds.forEach((rowId) => {
@@ -201,23 +231,6 @@ export default {
         isColumnTypeText(type) {
             return type === COLUMN_TYPE.TEXT;
         },
-    },
-    asyncData({ store }) {
-        const { privileges: privilegesDictionary } = store.state.data;
-        const { privileges } = store.state.authentication.user;
-        const {
-            rows, columns, descriptions,
-        } = getMappedGridData(privilegesDictionary, privileges);
-        const { mappedColumns } = getMappedColumns(columns);
-        const { rowIds } = getMappedRows(rows);
-        const cellValues = getMappedCellValues(columns, rows, rowIds);
-
-        return {
-            descriptions,
-            rowIds,
-            cellValues,
-            columns: mappedColumns,
-        };
     },
 };
 </script>
