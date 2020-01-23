@@ -19,54 +19,38 @@
                 </Button>
             </template>
         </TitleBar>
-        <TransitionsGridTab />
+        <HorizontalTabBar :items="tabs" />
     </Page>
 </template>
 
 <script>
 import { SIZES } from '@Core/defaults/buttons';
-import gridModule from '@Core/reusableStore/grid/state';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import TransitionsGridTab from '@Transitions/components/Tabs/TransitionsGridTab';
+import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+
 
 export default {
     name: 'WorkflowTabs',
     components: {
-        TransitionsGridTab,
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
+        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
         Button,
         IconAdd,
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'transitionsGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('transitionsGrid');
     },
     computed: {
         smallSize() {
             return SIZES.SMALL;
+        },
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
     },
     methods: {
         addStatusTransition() {
             this.$router.push({ name: 'transition-new-general' });
         },
-    },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'transitionsGrid',
-            store,
-        });
-        const gridPath = `${store.state.authentication.user.language}/workflow/default/transitions`;
-        await store.dispatch('transitionsGrid/getData', gridPath);
     },
 };
 </script>

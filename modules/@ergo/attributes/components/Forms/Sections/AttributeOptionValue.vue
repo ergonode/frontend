@@ -5,11 +5,15 @@
 <template>
     <TextField
         :value="translationOptionValue"
-        :label="label"
+        :label="option.key"
         solid
         small
         :disabled="disabled"
-        @input="value => setOptionValueForLanguageCode({ languageCode, key: label, value })" />
+        @input="value => setOptionValueForLanguageCode({
+            index,
+            languageCode,
+            value,
+        })" />
 </template>
 
 <script>
@@ -21,12 +25,16 @@ export default {
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     props: {
+        index: {
+            type: String,
+            required: true,
+        },
         languageCode: {
             type: String,
             required: true,
         },
-        label: {
-            type: String,
+        option: {
+            type: Object,
             required: true,
         },
         disabled: {
@@ -36,16 +44,17 @@ export default {
     },
     computed: {
         ...mapState('attribute', {
-            options: (state) => state.options,
             isMultilingual: (state) => state.isMultilingual,
         }),
         translationOptionValue() {
-            if (this.options[this.label]) {
-                if (!this.isMultilingual) {
-                    return this.options[this.label];
-                }
-                return this.options[this.label][this.languageCode] || '';
+            if (!this.isMultilingual) {
+                return this.option.value;
             }
+
+            if (this.option.value) {
+                return this.option.value[this.languageCode];
+            }
+
             return '';
         },
     },

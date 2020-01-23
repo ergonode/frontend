@@ -6,7 +6,7 @@
     <div
         :class="['upload-image', { 'upload-image--required': required }]"
         :style="{ height }">
-        <div class="upload-image__activator">
+        <div :class="['upload-image__activator', { 'upload-image__activator--border': border}]">
             <label
                 class="upload-image__label"
                 :for="associatedLabel"
@@ -78,6 +78,10 @@ export default {
         height: {
             type: String,
             default: '150px',
+        },
+        border: {
+            type: Boolean,
+            default: false,
         },
     },
     components: {
@@ -165,9 +169,12 @@ export default {
             display: flex;
             flex: 1;
             flex-direction: column;
-            border: $BORDER_1_GREY;
             padding: 12px;
             box-sizing: border-box;
+
+            &--border {
+                border: $BORDER_1_GREY;
+            }
         }
 
         input {

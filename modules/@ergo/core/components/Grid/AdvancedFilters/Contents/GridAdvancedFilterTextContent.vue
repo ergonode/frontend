@@ -4,7 +4,7 @@
  */
 <template>
     <GridAdvancedFilterBaseContent
-        :is-empty-record="isEmptyRecord"
+        :is-empty-record="value.isEmptyRecord"
         @input="onEmptyRecordChange">
         <div class="container">
             <TextField
@@ -29,21 +29,16 @@ export default {
         GridAdvancedFilterBaseContent,
     },
     props: {
-        filter: {
+        value: {
             type: Object,
-            default: null,
+            default: () => ({}),
         },
     },
     computed: {
         filterValue() {
-            if (this.filter) return this.filter[FILTER_OPERATOR.EQUAL];
+            if (this.value[FILTER_OPERATOR.EQUAL]) return this.value[FILTER_OPERATOR.EQUAL];
 
             return '';
-        },
-        isEmptyRecord() {
-            if (this.filter) return Boolean(this.filter.isEmptyRecord);
-
-            return false;
         },
     },
     methods: {

@@ -31,19 +31,31 @@ export default {
                     menuPosition: 2,
                     icon: Icons.Document,
                 },
-                breadcrumbs: [
-                    {
-                        title: 'Products',
-                        icon: Icons.Document,
-                    },
-                ],
                 isMenu: true,
                 menuPosition: 2,
                 privileges: {
                     namespace: Privileges.SEGMENT.namespace,
                     read: Privileges.SEGMENT.read,
                 },
+                redirectTo: 'grid',
             },
+            children: [
+                {
+                    name: 'segments-grid',
+                    path: 'grid',
+                    component: Tabs.SegmentsGridTab,
+                    meta: {
+                        title: '',
+                        breadcrumbs: [
+                            {
+                                title: 'Products',
+                                icon: Icons.Document,
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
         },
         {
             name: 'segment-new',

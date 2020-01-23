@@ -90,7 +90,7 @@ export default {
             if (this.parameter) {
                 const paramKey = getKeyByValue(getParamsOptionsForType(
                     typeKey,
-                    this.$store.state.data,
+                    this.$store.state.dictionaries,
                 ), this.parameter);
 
                 attribute.parameters = getParsedParameterKeys({

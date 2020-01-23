@@ -19,55 +19,37 @@
                 </Button>
             </template>
         </TitleBar>
-        <CategoryTreesGridTab />
+        <HorizontalTabBar :items="tabs" />
     </Page>
 </template>
 
 <script>
 import { SIZES } from '@Core/defaults/buttons';
-import gridModule from '@Core/reusableStore/grid/state';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import CategoryTreesGridTab from '@Trees/components/Tabs/CategoryTreesGridTab';
+import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 
 export default {
     name: 'CategoryTrees',
     components: {
-        CategoryTreesGridTab,
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
+        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
         Button,
         IconAdd,
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'categoryTreesGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('categoryTreesGrid');
     },
     computed: {
         smallSize() {
             return SIZES.SMALL;
+        },
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
     },
     methods: {
         addTree() {
             this.$router.push({ name: 'category-tree-new' });
         },
-    },
-    async fetch({ app, store }) {
-        const gridPath = `${store.state.authentication.user.language}/trees`;
-
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'categoryTreesGrid',
-            store,
-        });
-        await store.dispatch('categoryTreesGrid/getData', gridPath);
     },
 };
 </script>

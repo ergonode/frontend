@@ -68,19 +68,19 @@
                                         :large="!small && regular"
                                         :selected="typeof selectedOptions[option] !== 'undefined'"
                                         @click.native.prevent="onSelectValue(option)">
-                                        <ListElementAction
-                                            v-if="multiselect"
-                                            :small="small">
-                                            <CheckBox
-                                                :value="
-                                                    typeof selectedOptions[option] !== 'undefined'
-                                                " />
-                                        </ListElementAction>
-                                        <ListElementDescription>
-                                            <ListElementTitle
-                                                :small="small"
-                                                :title="option" />
-                                        </ListElementDescription>
+                                        <template #default="{ isSelected }">
+                                            <ListElementAction
+                                                v-if="multiselect"
+                                                :small="small">
+                                                <CheckBox
+                                                    :value="isSelected" />
+                                            </ListElementAction>
+                                            <ListElementDescription>
+                                                <ListElementTitle
+                                                    :small="small"
+                                                    :title="option" />
+                                            </ListElementDescription>
+                                        </template>
                                     </ListElement>
                                 </slot>
                             </template>
@@ -379,7 +379,7 @@ export default {
         onClear() {
             this.selectedOptions = {};
 
-            this.$emit('input', this.multiselect ? [] : {});
+            this.$emit('input', this.multiselect ? [] : '');
         },
         onSelectValue(value) {
             if (this.multiselect) {

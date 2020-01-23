@@ -4,6 +4,7 @@
  */
 <template>
     <DatePicker
+        :value="localValue"
         solid
         regular
         clearable
@@ -19,8 +20,10 @@
 
 <script>
 import { format as formatDate, parse as parseDate } from 'date-fns';
+import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
 import productTemplateElementMixin from '@Templates/mixins/productTemplateElementMixin';
 import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
+
 
 export default {
     name: 'ProductTemplateDate',
@@ -35,7 +38,7 @@ export default {
     },
     created() {
         if (!this.value) this.localValue = null;
-        else this.localValue = parseDate(this.value, this.parameters.format, new Date());
+        else this.localValue = parseDate(this.value, DEFAULT_FORMAT, new Date());
     },
     methods: {
         onFocusChange(isFocused) {
@@ -44,13 +47,7 @@ export default {
         onValueChange(date) {
             this.localValue = date;
 
-            this.debounceFunc(this.formatDate(date));
-        },
-        formatDate(date) {
-            if (!date) return null;
-            const { format } = this.parameters;
-
-            return formatDate(date, format);
+            this.debounceFunc(formatDate(date, DEFAULT_FORMAT));
         },
     },
 };

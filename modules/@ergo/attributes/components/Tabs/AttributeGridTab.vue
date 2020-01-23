@@ -6,82 +6,55 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                namespace="attributeGrid"
-                :edit-route="editRoute"
-                :editing-privilege-allowed="$hasAccess(['ATTRIBUTE_UPDATE'])"
-                :basic-filters="true"
-                :select-column="false"
-                :is-column-editable="false"
                 title="Attributes"
-                @rowEdit="onRowEdit" />
+                :editing-privilege-allowed="$hasAccess(['ATTRIBUTE_UPDATE'])"
+                :columns="columns"
+                :basic-filters="basicFilters"
+                :sorted-column="sortedColumn"
+                :max-rows="filtered"
+                :max-page="numberOfPages"
+                :current-page="currentPage"
+                :cell-values="cellValues"
+                :row-ids="rowIds"
+                :row-links="rowLinks"
+                :is-basic-filters="true"
+                :is-edit-column="true"
+                @sortColumn="setSortedColumn"
+                @filterColumn="setBasicFilter"
+                @editRow="onEditRow" />
         </template>
         <template #footer>
             <GridPageSelector
-                :value="numberOfDisplayedElements"
-                :rows-number="numberOfDataElements"
-                @input="onRowsCountUpdate" />
+                :value="maxRowsPerPage"
+                :max-rows="filtered"
+                @input="setMaxRowsPerPage" />
             <GridPagination
                 :value="currentPage"
                 :max-page="numberOfPages"
-                @input="onPageChanged" />
+                @input="setCurrentPage" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
 
 export default {
     name: 'AttributeGridTab',
+    mixins: [gridDataMixin({ path: 'attributes' })],
     components: {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
         GridPageSelector: () => import('@Core/components/Grid/GridPageSelector'),
         GridPagination: () => import('@Core/components/Grid/GridPagination'),
     },
-    computed: {
-        ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
-        }),
-        ...mapState('attributeGrid', {
-            numberOfDataElements: (state) => state.filtered,
-            currentPage: (state) => state.currentPage,
-            numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
-        }),
-        ...mapGetters('attributeGrid', {
-            numberOfPages: 'numberOfPages',
-        }),
-        editRoute() {
-            return {
-                path: `${this.userLanguageCode}/attributes`,
-                name: 'attribute-edit-id-general',
-            };
-        },
-    },
     methods: {
-        ...mapActions('attributeGrid', [
-            'getData',
-            'setCurrentPage',
-            'changeNumberOfDisplayingElements',
-        ]),
-        onRowsCountUpdate(value) {
-            const number = Math.trunc(value);
-
-            if (number !== this.numberOfDisplayedElements) {
-                this.changeNumberOfDisplayingElements(number);
-                this.getData(this.editRoute.path);
-            }
-        },
-        onRowEdit({ links: { value: { edit } } }) {
+        onEditRow({ links: { value: { edit } } }) {
             const args = edit.href.split('/');
             const lastIndex = args.length - 1;
 
             this.$router.push({ name: 'attribute-edit-id-general', params: { id: args[lastIndex] } });
-        },
-        onPageChanged(page) {
-            this.setCurrentPage(page);
-            this.getData(this.editRoute.path);
         },
     },
 };

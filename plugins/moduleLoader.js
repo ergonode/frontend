@@ -192,7 +192,7 @@ const ModuleLoader = (() => {
             if (this._modules.inactive) {
                 const { inactive } = this._modules;
                 Object.keys(inactive).forEach((module) => {
-                    console.warn(`Module [${inactive[module]}] is inactive.`);
+                    console.info(`Module [${inactive[module]}] is inactive.`);
                 });
             }
         },

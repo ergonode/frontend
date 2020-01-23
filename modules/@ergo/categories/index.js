@@ -28,19 +28,31 @@ export default {
                     menuPosition: 3,
                     icon: Icons.Templates,
                 },
-                breadcrumbs: [
-                    {
-                        title: 'Product design',
-                        icon: Icons.Templates,
-                    },
-                ],
                 isMenu: true,
                 menuPosition: 4,
                 privileges: {
-                    namespace: Privileges.TEMPLATE_DESIGNER.namespace,
-                    read: Privileges.TEMPLATE_DESIGNER.read,
+                    namespace: Privileges.CATEGORY.namespace,
+                    read: Privileges.CATEGORY.read,
                 },
+                redirectTo: 'grid',
             },
+            children: [
+                {
+                    name: 'categories-grid',
+                    path: 'grid',
+                    component: Tabs.CategoryGridTab,
+                    meta: {
+                        title: '',
+                        breadcrumbs: [
+                            {
+                                title: 'Product design',
+                                icon: Icons.Templates,
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
         },
         {
             name: 'category-new',

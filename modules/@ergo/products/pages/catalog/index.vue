@@ -19,18 +19,17 @@
                 </Button>
             </template>
         </TitleBar>
-        <ProductGridTab />
+        <HorizontalTabBar :items="tabs" />
         <TrashCan v-show="draggedElementOnGrid" />
     </Page>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import gridModule from '@Core/reusableStore/grid/state';
 import { SIZES } from '@Core/defaults/buttons';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import ProductGridTab from '@Products/components/Tabs/ProductGridTab';
+import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 
 export default {
     name: 'Products',
@@ -38,43 +37,30 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         TrashCan: () => import('@Core/components/DragAndDrop/TrashCan'),
-        ProductGridTab,
+        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
         Button,
         IconAdd,
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'productsGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('productsGrid');
     },
     computed: {
         ...mapState('draggable', {
             draggedElementOnGrid: (state) => state.draggedElementOnGrid,
         }),
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
         smallSize() {
             return SIZES.SMALL;
         },
     },
     methods: {
         addProduct() {
-            this.$router.push({ path: 'catalog/product/new/general' });
+            this.$router.push({ path: '/catalog/product/new/general' });
         },
     },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'productsGrid',
-            store,
-        });
+    async fetch({ store }) {
         const {
             user: { language: userLanguageCode },
         } = store.state.authentication;
-        const gridPath = `${userLanguageCode}/products`;
 
         await Promise.all([
             store.dispatch('list/clearStorage'),
@@ -88,45 +74,6 @@ export default {
                 languageCode: userLanguageCode,
             }),
         ]);
-        await Promise.all([
-            store.dispatch('productsGrid/getData', gridPath),
-            store.dispatch('productsGrid/getAdvancedFiltersData', gridPath),
-        ]).then(() => {
-            const { columns, advancedFiltersData } = store.state.productsGrid;
-            const disabledElements = {};
-            const getAttributeElements = (array) => {
-                const { length } = array;
-                const elements = {};
-
-                for (let i = 0; i < length; i += 1) {
-                    const { language, element_id: elementId } = array[i];
-                    if (elementId && language) {
-                        if (!elements[language]) elements[language] = [];
-
-                        elements[language].push(elementId);
-                    }
-                }
-
-                return elements;
-            };
-            const columnElements = getAttributeElements(columns);
-            const filterElements = getAttributeElements(advancedFiltersData);
-            const languagesSet = new Set(Object.keys(columnElements), Object.keys(filterElements));
-
-            languagesSet.forEach((language) => {
-                if (columnElements[language] && filterElements[language]) {
-                    columnElements[language].forEach((id) => {
-                        if (filterElements[language].indexOf(id) !== -1) {
-                            disabledElements[language] = {
-                                ...disabledElements[language], [id]: true,
-                            };
-                        }
-                    });
-                }
-            });
-
-            store.dispatch('list/setDisabledElements', disabledElements);
-        });
     },
 };
 </script>

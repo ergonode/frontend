@@ -9,6 +9,7 @@ export const Pages = {
 };
 
 export const Tabs = {
+    CategoryTreesGridTab: () => import('@Trees/components/Tabs/CategoryTreesGridTab').then((m) => m.default || m),
     CategoryTreeBaseTab: () => import('@Trees/components/Tabs/CategoryTreeBaseTab').then((m) => m.default || m),
     CategoryTreeTranslationsTab: () => import('@Trees/components/Tabs/CategoryTreeTranslationsTab').then((m) => m.default || m),
     CategoryTreeDesignTab: () => import('@Trees/components/Tabs/CategoryTreeDesignTab').then((m) => m.default || m),

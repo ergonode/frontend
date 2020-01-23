@@ -5,7 +5,7 @@
 <template>
     <DatePicker
         :style="{width: `${fixedWidth}px`, height: `${fixedHeight}px`}"
-        :value="parsedDate"
+        :value="localValue"
         solid
         regular
         :placeholder="parameters.format"
@@ -20,6 +20,7 @@
 <script>
 import { format as formatDate, parse as parseDate } from 'date-fns';
 import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
+import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
 
 export default {
     name: 'GridEditDateCell',
@@ -56,29 +57,17 @@ export default {
     },
     created() {
         if (this.value) {
-            this.localValue = parseDate(this.value, this.parameters.format, new Date());
+            this.localValue = parseDate(this.value, DEFAULT_FORMAT, new Date());
         }
-    },
-    computed: {
-        parsedDate() {
-            if (!this.value) return null;
-
-            return parseDate(this.value, this.parameters.format, new Date());
-        },
     },
     methods: {
         onFocus(isFocused) {
             this.$emit('focus', isFocused);
         },
         onValueChange(date) {
-            if (date) this.$emit('input', this.formatDate(date));
+            this.localValue = date;
+            if (date) this.$emit('input', formatDate(date, DEFAULT_FORMAT));
             else this.$emit('input', '');
-        },
-        formatDate(date) {
-            if (!date) return null;
-            const { format } = this.parameters;
-
-            return formatDate(date, format);
         },
     },
 };

@@ -19,6 +19,7 @@
                 :type="inputType"
                 :min="minRange"
                 :max="maxRange"
+                autocomplete="on"
                 :disabled="disabled"
                 :aria-label="label || 'no description'"
                 @input="onValueChange"

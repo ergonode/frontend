@@ -6,12 +6,17 @@
     <GridViewTemplate>
         <template #filters>
             <GridAdvancedFilters
-                :filters-data="advancedFiltersData"
                 :filters="advancedFilters"
-                namespace="productsGrid"
-                :path="editRoute.path"
-                :disabled="isFilterExists"
-                @focus="onAdvancedFilterFocus" />
+                @insertFilter="insertFilterAtIndex"
+                @setGhostFilter="setGhostFilterAtIndex"
+                @removeFilter="removeFilterAtIndex"
+                @updateFilter="updateFilterValueAtIndex"
+                @clearFilter="clearFilterAtIndex"
+                @applyFilter="applyFilter"
+                @swapFilters="swapFiltersPosition"
+                @removeAllFilters="removeAllFilters"
+                @clearAllFilters="clearAllFilters"
+                @dropFilter="dropFilterAtIndex" />
         </template>
         <template #sidebar>
             <VerticalTabBar
@@ -20,24 +25,39 @@
         </template>
         <template #grid>
             <Grid
-                namespace="productsGrid"
-                :edit-route="editRoute"
-                :editing-privilege-allowed="isUserAllowedToUpdate"
-                :advanced-filters="true"
-                :basic-filters="true"
-                :draggable-column="true"
                 title="Products"
-                @rowEdit="onRowEdit" />
+                :editing-privilege-allowed="isUserAllowedToUpdate"
+                :columns="columns"
+                :basic-filters="basicFilters"
+                :advanced-filters="advancedFilters"
+                :sorted-column="sortedColumn"
+                :max-rows="filtered"
+                :max-page="numberOfPages"
+                :current-page="currentPage"
+                :cell-values="cellValues"
+                :row-ids="rowIds"
+                :row-links="rowLinks"
+                :is-basic-filters="true"
+                :is-draggable="true"
+                :is-edit-column="true"
+                :is-select-column="true"
+                @editRow="onEditRow"
+                @sortColumn="setSortedColumn"
+                @filterColumn="setBasicFilter"
+                @swapColumns="swapColumnsPosition"
+                @insertColumn="insertColumnAtIndex"
+                @removeColumn="removeColumnAtIndex"
+                @dropColumn="dropColumnAtIndex" />
         </template>
         <template #footer>
             <GridPageSelector
-                :value="numberOfDisplayedElements"
-                :rows-number="numberOfDataElements"
-                @input="onRowsCountUpdate" />
+                :value="maxRowsPerPage"
+                :max-rows="filtered"
+                @input="setMaxRowsPerPage" />
             <GridPagination
                 :value="currentPage"
                 :max-page="numberOfPages"
-                @input="onPageChanged" />
+                @input="setCurrentPage" />
             <Button
                 title="SAVE CHANGES"
                 :loaded="$isLoaded('footerDraftButton')"
@@ -48,13 +68,14 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Button from '@Core/components/Buttons/Button';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
-
+import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
 
 export default {
     name: 'ProductGridTab',
+    mixins: [gridDataMixin({ path: 'products' })],
     components: {
         GridViewTemplate,
         Button,
@@ -72,18 +93,8 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
         }),
-        ...mapState('productsGrid', {
-            numberOfDataElements: (state) => state.filtered,
-            currentPage: (state) => state.currentPage,
-            numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
-            advancedFiltersData: (state) => state.advancedFiltersData,
-            advancedFilters: (state) => state.advancedFilters,
-        }),
         ...mapState('gridDraft', {
             drafts: (state) => state.drafts,
-        }),
-        ...mapGetters('productsGrid', {
-            numberOfPages: 'numberOfPages',
         }),
         verticalTabs() {
             const isUserAllowedToReadProduct = this.$hasAccess(['PRODUCT_READ']);
@@ -92,47 +103,28 @@ export default {
                 {
                     title: 'Attributes',
                     component: () => import('@Products/components/Tabs/List/AttributesListTab'),
+                    iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
                     props: {
                         disabled: !isUserAllowedToReadProduct,
                     },
-                    iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
                     listDataType: 'attributes',
                 },
                 {
                     title: 'System Attributes',
                     component: () => import('@Products/components/Tabs/List/SystemAttributesListTab'),
+                    iconComponent: () => import('@Core/components/Icons/Menu/IconSettings'),
                     props: {
                         disabled: !isUserAllowedToReadProduct,
                     },
-                    iconComponent: () => import('@Core/components/Icons/Menu/IconSettings'),
                     listDataType: 'attributes/system',
                 },
             ];
         },
-        isFilterExists() {
-            const draggedElIndex = this.advancedFiltersData.findIndex(
-                (filter) => filter.id === this.draggedElement,
-            );
-
-            return draggedElIndex !== -1;
-        },
         isUserAllowedToUpdate() {
             return this.$hasAccess(['PRODUCT_UPDATE']);
         },
-        editRoute() {
-            return {
-                path: `${this.userLanguageCode}/products`,
-                name: 'product-edit-id',
-            };
-        },
     },
     methods: {
-        ...mapActions('productsGrid', [
-            'getData',
-            'addDraftToProduct',
-            'setCurrentPage',
-            'changeNumberOfDisplayingElements',
-        ]),
         ...mapActions('productsDraft', [
             'applyDraft',
         ]),
@@ -151,27 +143,11 @@ export default {
                 languageCode: this.userLanguageCode,
             });
         },
-        onRowsCountUpdate(value) {
-            const number = Math.trunc(value);
-
-            if (number !== this.numberOfDisplayedElements) {
-                this.changeNumberOfDisplayingElements(number);
-                this.getData(this.editRoute.path);
-            }
-        },
-        onAdvancedFilterFocus(isFocused) {
-            // TODO: Solve it
-            this.isAdvancedFilterFocused = isFocused;
-        },
-        onRowEdit({ links: { value: { edit } } }) {
+        onEditRow({ links: { value: { edit } } }) {
             const args = edit.href.split('/');
             const lastIndex = args.length - 1;
 
             this.$router.push({ name: 'product-edit-id-general', params: { id: args[lastIndex] } });
-        },
-        onPageChanged(page) {
-            this.setCurrentPage(page);
-            this.getData(this.editRoute.path);
         },
         saveDrafts() {
             const promises = [];
@@ -180,15 +156,10 @@ export default {
                 promises.push(this.applyDraft({
                     id: productId,
                     onSuccess: () => {
-                        Object.keys(this.drafts[productId])
-                            .forEach((columnId) => {
-                                this.addDraftToProduct({
-                                    columnId,
-                                    productId,
-                                    value: this.drafts[productId][columnId],
-                                });
-                                this.removeDraft(productId);
-                            });
+                        Object.keys(this.drafts[productId]).forEach((columnId) => {
+                            this.cellValues[productId][columnId] = this.drafts[productId][columnId];
+                            this.removeDraft(productId);
+                        });
                     },
                 }));
             });

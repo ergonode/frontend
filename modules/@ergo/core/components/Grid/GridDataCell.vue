@@ -16,9 +16,8 @@
         <template #default="{ isEditing }">
             <Component
                 :is="infoComponent"
-                v-if="!isEditing"
                 v-bind="infoComponentProps" />
-            <GridEditActivatorCell v-else>
+            <GridEditActivatorCell v-if="isEditing">
                 <GridEditDataCell
                     :row-id="rowId"
                     :multiselect="isMultiSelect"
@@ -117,7 +116,10 @@ export default {
                 return () => import('@Core/components/Grid/EditCells/GridEditSelectRowCell');
             case COLUMN_TYPE.SELECT:
             case COLUMN_TYPE.MULTI_SELECT:
-                return () => import('@Core/components/Grid/PresentationCells/GridPresentationSelectCell');
+                if (this.isEditingAllowed) {
+                    return () => import('@Core/components/Grid/PresentationCells/GridPresentationSelectCell');
+                }
+                return GridPresentationCell;
             default:
                 return GridPresentationCell;
             }

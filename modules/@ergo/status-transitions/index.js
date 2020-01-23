@@ -31,21 +31,32 @@ export default {
                     menuPosition: 7,
                     icon: Icons.Flow,
                 },
-                breadcrumbs: [
-                    {
-                        title: 'Workflow',
-                        icon: Icons.Flow,
-                    },
-                ],
                 isMenu: true,
                 menuPosition: 2,
                 privileges: {
                     namespace: Privileges.WORKFLOW.namespace,
                     read: Privileges.WORKFLOW.read,
                 },
+                redirectTo: 'grid',
             },
+            children: [
+                {
+                    name: 'status-transitions-grid',
+                    path: 'grid',
+                    component: Tabs.TransitionsGridTab,
+                    meta: {
+                        title: '',
+                        breadcrumbs: [
+                            {
+                                title: 'Workflow',
+                                icon: Icons.Flow,
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
         },
-
         {
             name: 'transition-new',
             path: '/status-transitions/transition/new',

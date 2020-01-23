@@ -30,19 +30,31 @@ export default {
                     menuPosition: 3,
                     icon: Icons.Templates,
                 },
-                breadcrumbs: [
-                    {
-                        title: 'Product design',
-                        icon: Icons.Templates,
-                    },
-                ],
                 isMenu: true,
                 menuPosition: 5,
                 privileges: {
-                    namespace: 'CATEGORY_TREE',
-                    read: 'CATEGORY_TREE_READ',
+                    namespace: Privileges.CATEGORY_TREE.namespace,
+                    read: Privileges.CATEGORY_TREE.read,
                 },
+                redirectTo: 'grid',
             },
+            children: [
+                {
+                    name: 'category-trees-grid',
+                    path: 'grid',
+                    component: Tabs.CategoryTreesGridTab,
+                    meta: {
+                        title: '',
+                        breadcrumbs: [
+                            {
+                                title: 'Product design',
+                                icon: Icons.Templates,
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
         },
         {
             name: 'category-tree-new',

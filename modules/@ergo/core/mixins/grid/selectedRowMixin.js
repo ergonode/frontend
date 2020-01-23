@@ -38,7 +38,7 @@ export default {
                     // If we had chosen option with selected all of the options, we need to remove it
                     // and mark visible rows as selected
                     const fixedIndex = this.basicFilters ? 2 : 1;
-                    const { length } = this.gridState.rowIds;
+                    const { length } = this.rowIds;
 
                     for (let i = fixedIndex; i < length + fixedIndex; i += 1) {
                         if (i !== row) {

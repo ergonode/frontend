@@ -9,6 +9,7 @@
         :required="required"
         :disabled="disabled"
         height="unset"
+        border
         @upload="onValueChange"
         @remove="onValueChange" />
 </template>

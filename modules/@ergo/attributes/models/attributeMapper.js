@@ -64,16 +64,19 @@ export function getMappedGroupsElementsCount(elements) {
 }
 
 export function getMappedOptions(options) {
-    return options.reduce((acc, current) => {
+    return options.reduce((acc, current, currentIndex) => {
         const newObject = acc;
-        newObject[current.key] = current.value;
+        newObject[currentIndex] = {
+            key: current.key,
+            value: current.value,
+        };
         return newObject;
     }, {});
 }
 
 export function getParsedOptions(options) {
     return Object.keys(options).map((key) => ({
-        key,
-        value: options[key],
+        key: options[key].key,
+        value: options[key].value,
     }));
 }

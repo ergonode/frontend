@@ -31,19 +31,31 @@ export default {
                     menuPosition: 2,
                     icon: Icons.Document,
                 },
-                breadcrumbs: [
-                    {
-                        title: 'Products',
-                        icon: Icons.Document,
-                    },
-                ],
                 isMenu: true,
                 menuPosition: 1,
                 privileges: {
                     namespace: Privileges.PRODUCT.namespace,
                     read: Privileges.PRODUCT.read,
                 },
+                redirectTo: 'products',
             },
+            children: [
+                {
+                    name: 'catalog-products',
+                    path: 'products',
+                    component: Tabs.ProductGridTab,
+                    meta: {
+                        title: '',
+                        breadcrumbs: [
+                            {
+                                title: 'Products',
+                                icon: Icons.Document,
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
         },
         {
             name: 'product-new',

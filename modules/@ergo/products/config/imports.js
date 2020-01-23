@@ -9,6 +9,7 @@ export const Pages = {
 };
 
 export const Tabs = {
+    ProductGridTab: () => import('@Products/components/Tabs/ProductGridTab').then((m) => m.default || m),
     ProductBaseTab: () => import('@Products/components/Tabs/ProductBaseTab').then((m) => m.default || m),
     ProductTemplateTab: () => import('@Products/components/Tabs/ProductTemplateTab').then((m) => m.default || m),
     ProductCommentsTab: () => import('@Products/components/Tabs/ProductCommentsTab').then((m) => m.default || m),

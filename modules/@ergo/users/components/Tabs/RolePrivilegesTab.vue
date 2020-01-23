@@ -6,14 +6,12 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                namespace="privilegesGrid"
-                :is-draft="false"
-                :edit-route="editRoute"
-                :basic-filters="false"
-                :extender-column="false"
-                :edit-column="false"
-                :is-column-editable="false"
-                title="Role privileges">
+                title="Role privileges"
+                :editing-privilege-allowed="isEditingAllowed"
+                :columns="columns"
+                :cell-values="cellValues"
+                :row-ids="rowIds"
+                :is-select-column="true">
                 <template #headerSelectAllRowsCell="{ row, column }">
                     <GridCell
                         editing-allowed
@@ -64,8 +62,12 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import gridModule from '@Core/reusableStore/grid/state';
 import { getMappedGridData } from '@Users/models/privilegesMapper';
+import {
+    getMappedCellValues,
+    getMappedRows,
+    getMappedColumns,
+} from '@Core/models/mappers/gridDataMapper';
 import { COLUMN_TYPE } from '@Core/defaults/grid';
 import { STATE } from '@Core/defaults/inputs/checkbox';
 import Grid from '@Core/components/Grid/Grid';
@@ -89,42 +91,22 @@ export default {
             isSelectedAllRows: STATE.UNCHECK,
             selectedRows: {},
             descriptions: {},
+            description: '',
+            rowIds: [],
+            cellValues: {},
+            columns: [],
         };
-    },
-    async beforeCreate() {
-        this.editRoute = {
-            path: '',
-            name: '',
-        };
-        this.isEditingAllowed = this.$hasAccess(['USER_ROLE_UPDATE']);
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'privilegesGrid',
-            store: this.$store,
-        });
-
-        const { privileges: privilegesDictionary } = this.$store.state.dictionaries;
-        const { privileges } = this.$store.state.roles;
-        const {
-            rows, columns, columnWidths, descriptions,
-        } = getMappedGridData(privilegesDictionary, privileges);
-
-        this.descriptions = descriptions;
-
-        await this.$store.dispatch('privilegesGrid/setGridData', { columns, rows });
-        await this.$store.dispatch('privilegesGrid/setColumnWidths', columnWidths);
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('privilegesGrid');
-
-        delete this.editRoute;
-        delete this.isEditingAllowed;
     },
     computed: {
-        ...mapState('privilegesGrid', {
-            rowIds: (state) => state.rowIds,
-            cellValues: (state) => state.cellValues,
+        ...mapState('dictionaries', {
+            privilegesDictionary: (state) => state.privileges,
         }),
+        ...mapState('roles', {
+            privileges: (state) => state.privileges,
+        }),
+        isEditingAllowed() {
+            return this.$hasAccess(['USER_ROLE_UPDATE']);
+        },
         rowsSelectionState() {
             if (this.rowsAreDeselected) {
                 return STATE.UNCHECK;
@@ -146,12 +128,26 @@ export default {
             return this.selectedRowsValues.every((rowState) => rowState === STATE.CHECK);
         },
     },
+    created() {
+        const {
+            rows, columns, descriptions,
+        } = getMappedGridData(this.privilegesDictionary, this.privileges);
+        const { mappedColumns } = getMappedColumns(columns);
+        const { rowIds } = getMappedRows(rows);
+        const cellValues = getMappedCellValues(columns, rows, rowIds);
+
+        this.description = descriptions;
+        this.rowIds = rowIds;
+        this.cellValues = cellValues;
+        this.columns = mappedColumns;
+        this.setSelectedRolePrivileges(JSON.parse(JSON.stringify(cellValues)));
+    },
     mounted() {
         this.initializeRowsSelections();
     },
     methods: {
-        ...mapActions('privilegesGrid', [
-            'updateDataCellValue',
+        ...mapActions('roles', [
+            'setSelectedRolePrivileges',
         ]),
         onSelectRow(row) {
             const value = !this.selectedRows[row];
@@ -169,18 +165,19 @@ export default {
                 const value = !cellData.editValue;
 
                 if (columnId !== 'read' && value) {
-                    this.updateDataCellValue({ rowId, columnId, editValue: true });
-                    this.updateDataCellValue({ rowId, columnId: 'read', editValue: true });
+                    this.cellValues[rowId][columnId].editValue = false;
+                    this.cellValues[rowId].read.editValue = true;
                 }
 
                 if (columnId === 'read') {
-                    this.updateDataCellValue({ rowId, columnId: 'create', editValue: false });
-                    this.updateDataCellValue({ rowId, columnId: 'update', editValue: false });
-                    this.updateDataCellValue({ rowId, columnId: 'delete', editValue: false });
+                    this.cellValues[rowId].create.editValue = false;
+                    this.cellValues[rowId].update.editValue = false;
+                    this.cellValues[rowId].delete.editValue = false;
                 }
 
-                this.updateDataCellValue({ rowId, columnId, editValue: value });
+                this.cellValues[rowId][columnId].editValue = value;
                 this.selectRowValues(rowId);
+                this.setSelectedRolePrivileges(JSON.parse(JSON.stringify(this.cellValues)));
             }
         },
         initializeRowsSelections() {
@@ -209,10 +206,11 @@ export default {
             }
         },
         updateDataCellValues(rowId, isSelected) {
-            this.updateDataCellValue({ rowId, columnId: 'read', editValue: isSelected });
-            this.updateDataCellValue({ rowId, columnId: 'create', editValue: isSelected });
-            this.updateDataCellValue({ rowId, columnId: 'update', editValue: isSelected });
-            this.updateDataCellValue({ rowId, columnId: 'delete', editValue: isSelected });
+            this.cellValues[rowId].read.editValue = isSelected;
+            this.cellValues[rowId].create.editValue = isSelected;
+            this.cellValues[rowId].update.editValue = isSelected;
+            this.cellValues[rowId].delete.editValue = isSelected;
+            this.setSelectedRolePrivileges(JSON.parse(JSON.stringify(this.cellValues)));
         },
         selectEveryRowValues(isSelected) {
             this.rowIds.forEach((rowId) => {
@@ -233,13 +231,6 @@ export default {
         isColumnTypeText(type) {
             return type === COLUMN_TYPE.TEXT;
         },
-    },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'privilegesGrid',
-            store,
-        });
     },
 };
 </script>

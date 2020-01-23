@@ -38,19 +38,31 @@ export default {
                     menuPosition: 1000,
                     icon: Icons.Settings,
                 },
-                breadcrumbs: [
-                    {
-                        title: 'System',
-                        icon: Icons.Settings,
-                    },
-                ],
                 isMenu: true,
                 menuPosition: 1,
                 privileges: {
                     namespace: Privileges.USER.namespace,
                     read: Privileges.USER.read,
                 },
+                redirectTo: 'grid',
             },
+            children: [
+                {
+                    name: 'users-grid',
+                    path: 'grid',
+                    component: Tabs.UsersGridTab,
+                    meta: {
+                        title: '',
+                        breadcrumbs: [
+                            {
+                                title: 'System',
+                                icon: Icons.Settings,
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
         },
         {
             name: 'user-new',
@@ -143,19 +155,31 @@ export default {
                     menuPosition: 1000,
                     icon: Icons.Settings,
                 },
-                breadcrumbs: [
-                    {
-                        title: 'System',
-                        icon: Icons.Settings,
-                    },
-                ],
                 isMenu: true,
                 menuPosition: 2,
                 privileges: {
                     namespace: Privileges.USER_ROLE.namespace,
                     read: Privileges.USER_ROLE.read,
                 },
+                redirectTo: 'grid',
             },
+            children: [
+                {
+                    name: 'user-roles-grid',
+                    path: 'grid',
+                    component: Tabs.RolesGridTab,
+                    meta: {
+                        title: '',
+                        breadcrumbs: [
+                            {
+                                title: 'System',
+                                icon: Icons.Settings,
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
         },
         {
             name: 'user-role-new',

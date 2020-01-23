@@ -13,8 +13,8 @@ describe('attributeMapper/getParsedOptions', () => {
     describe('Based on form data, data is mapped into API structure', () => {
         it('Non multilingual attribute', () => {
             const options = {
-                key1: 'val1',
-                key2: 'val2',
+                0: { key: 'key1', value: 'val1' },
+                1: { key: 'key2', value: 'val2' },
             };
             const result = [
                 {
@@ -33,8 +33,8 @@ describe('attributeMapper/getParsedOptions', () => {
         describe('Multilingual attribute', () => {
             it('All values has translation', () => {
                 const options = {
-                    key1: { EN: 'val1' },
-                    key2: { EN: 'val2' },
+                    0: { key: 'key1', value: { EN: 'val1' } },
+                    1: { key: 'key2', value: { EN: 'val2' } },
                 };
                 const result = [
                     {
@@ -52,9 +52,18 @@ describe('attributeMapper/getParsedOptions', () => {
 
             it('Some of them are not', () => {
                 const options = {
-                    key1: { EN: 'val1' },
-                    key2: null,
-                    key3: { PL: 'val3' },
+                    0: {
+                        key: 'key1',
+                        value: { EN: 'val1' },
+                    },
+                    1: {
+                        key: 'key2',
+                        value: null,
+                    },
+                    2: {
+                        key: 'key3',
+                        value: { PL: 'val3' },
+                    },
                 };
                 const result = [
                     {
@@ -91,8 +100,8 @@ describe('attributeMapper/getMappedOptions', () => {
                 },
             ];
             const result = {
-                key1: 'val1',
-                key2: null,
+                0: { key: 'key1', value: 'val1' },
+                1: { key: 'key2', value: null },
             };
             expect(getMappedOptions(apiData)).toStrictEqual(result);
         });
@@ -111,10 +120,14 @@ describe('attributeMapper/getMappedOptions', () => {
                 },
             ];
             const result = {
-                key1: {
-                    EN: 'val1',
+                0: {
+                    key: 'key1',
+                    value: { EN: 'val1' },
                 },
-                key2: null,
+                1: {
+                    key: 'key2',
+                    value: null,
+                },
             };
             expect(getMappedOptions(apiData)).toStrictEqual(result);
         });

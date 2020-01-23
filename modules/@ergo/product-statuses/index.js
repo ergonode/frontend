@@ -27,19 +27,31 @@ export default {
                     menuPosition: 7,
                     icon: Icons.Flow,
                 },
-                breadcrumbs: [
-                    {
-                        title: 'Workflow',
-                        icon: Icons.Flow,
-                    },
-                ],
                 isMenu: true,
                 menuPosition: 1,
                 privileges: {
                     namespace: Privileges.WORKFLOW.namespace,
                     read: Privileges.WORKFLOW.read,
                 },
+                redirectTo: 'grid',
             },
+            children: [
+                {
+                    name: 'product-statuses-grid',
+                    path: 'grid',
+                    component: Tabs.ProductStatusGridTab,
+                    meta: {
+                        title: '',
+                        breadcrumbs: [
+                            {
+                                title: 'Workflow',
+                                icon: Icons.Flow,
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
         },
         {
             name: 'product-status-new',

@@ -5,19 +5,10 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
 import Grid from '@Core/components/Grid/Grid';
-import gridMutations from '@Core/reusableStore/grid/mutations';
 
 const localVue = createLocalVue();
 const store = new Store({
     state: {
-        productGrid: {
-            rowIds: [],
-            columns: [],
-            columnWidths: [],
-            rowLinks: [],
-            currentPage: 0,
-            advancedFiltersData: [],
-        },
         draggable: {
             isListElementDragging: false,
             draggedElIndex: -1,
@@ -40,9 +31,7 @@ describe('Grid/Grid', () => {
             localVue,
             mocks,
             propsData: {
-                namespace: 'productGrid',
                 title: 'Products',
-                editRoute: { path: 'api/v1/products' },
             },
         });
     });
@@ -105,14 +94,16 @@ describe('Grid/Grid', () => {
             });
 
             it('Each row was selected - unselect one row', () => {
-                gridMutations.SET_ROW_IDS(store.state.productGrid, [1, 2, 3, 4, 5]);
-
                 wrapper.setData({
-                    basicFilters: false,
-                });
-                wrapper.setData({
+                    isBasicFilters: false,
                     isSelectedAllRows: true,
-                    selectedRows: {},
+                    selectedRows: {
+                        1: true,
+                        2: true,
+                        3: true,
+                        4: true,
+                        5: true,
+                    },
                 });
 
                 wrapper.vm.onSelectRow({ row: 1, isSelected: false });

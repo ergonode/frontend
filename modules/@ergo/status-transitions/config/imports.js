@@ -9,6 +9,7 @@ export const Pages = {
 };
 
 export const Tabs = {
+    TransitionsGridTab: () => import('@Transitions/components/Tabs/TransitionsGridTab').then((m) => m.default || m),
     StatusTransitionBaseTab: () => import('@Transitions/components/Tabs/TransitionBaseTab').then((m) => m.default || m),
     ConditionSetDesignTab: () => import('@Transitions/components/Tabs/ConditionSetDesignTab').then((m) => m.default || m),
 };

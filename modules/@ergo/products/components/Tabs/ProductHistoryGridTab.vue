@@ -6,100 +6,44 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                namespace="productHistoryGrid"
-                :edit-route="editRoute"
-                :basic-filters="true"
-                :edit-column="false"
-                :select-column="false"
-                :is-column-editable="false"
-                title="Product history" />
+                title="Product history"
+                :columns="columns"
+                :basic-filters="basicFilters"
+                :sorted-column="sortedColumn"
+                :max-rows="filtered"
+                :max-page="numberOfPages"
+                :current-page="currentPage"
+                :cell-values="cellValues"
+                :row-ids="rowIds"
+                :is-basic-filters="true"
+                @sortColumn="setSortedColumn"
+                @filterColumn="setBasicFilter" />
         </template>
         <template #footer>
             <GridPageSelector
-                :value="numberOfDisplayedElements"
-                :rows-number="numberOfDataElements"
-                @input="onRowsCountUpdate" />
+                :value="maxRowsPerPage"
+                :max-rows="filtered"
+                @input="setMaxRowsPerPage" />
             <GridPagination
                 :value="currentPage"
                 :max-page="numberOfPages"
-                @input="onPageChanged" />
+                @input="setCurrentPage" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
-import gridModule from '@Core/reusableStore/grid/state';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
 
 export default {
     name: 'ProductHistoryGridTab',
+    mixins: [gridDataMixin({ path: 'products/_id/history' })],
     components: {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
         GridPageSelector: () => import('@Core/components/Grid/GridPageSelector'),
         GridPagination: () => import('@Core/components/Grid/GridPagination'),
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'productHistoryGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('productHistoryGrid');
-    },
-    computed: {
-        ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
-        }),
-        ...mapState('productHistoryGrid', {
-            numberOfDataElements: (state) => state.filtered,
-            currentPage: (state) => state.currentPage,
-            numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
-        }),
-        ...mapGetters('productHistoryGrid', {
-            numberOfPages: 'numberOfPages',
-        }),
-        editRoute() {
-            const { params: { id } } = this.$route;
-
-            return {
-                path: `${this.userLanguageCode}/products/${id}/history`,
-                name: '',
-            };
-        },
-    },
-    methods: {
-        ...mapActions('productHistoryGrid', [
-            'getData',
-            'setCurrentPage',
-            'changeNumberOfDisplayingElements',
-        ]),
-        onRowsCountUpdate(value) {
-            const number = Math.trunc(value);
-
-            if (number !== this.numberOfDisplayedElements) {
-                this.changeNumberOfDisplayingElements(number);
-                this.getData(this.editRoute.path);
-            }
-        },
-        onPageChanged(page) {
-            this.setCurrentPage(page);
-            this.getData(this.editRoute.path);
-        },
-    },
-    async fetch({ app, store, params }) {
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'productHistoryGrid',
-            store,
-        });
-        const { id } = params;
-        const gridPath = `${store.state.authentication.user.language}/products/${id}/history`;
-
-        await store.dispatch('productHistoryGrid/getData', gridPath);
     },
 };
 </script>

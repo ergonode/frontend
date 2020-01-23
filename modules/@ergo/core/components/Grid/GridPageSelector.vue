@@ -29,7 +29,7 @@ export default {
         Select: () => import('@Core/components/Inputs/Select/Select'),
     },
     props: {
-        rowsNumber: {
+        maxRows: {
             type: Number,
             required: true,
         },
@@ -40,7 +40,7 @@ export default {
     },
     computed: {
         infoText() {
-            return `of ${this.rowsNumber}`;
+            return `of ${this.maxRows}`;
         },
         rowIntervalOptions() {
             return ROW_INTERVALS;

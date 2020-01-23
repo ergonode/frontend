@@ -50,19 +50,31 @@ export default {
                     menuPosition: 3,
                     icon: Icons.Templates,
                 },
-                breadcrumbs: [
-                    {
-                        title: 'Product design',
-                        icon: Icons.Templates,
-                    },
-                ],
                 isMenu: true,
                 menuPosition: 1,
                 privileges: {
                     namespace: Privileges.ATTRIBUTE.namespace,
                     read: Privileges.ATTRIBUTE.read,
                 },
+                redirectTo: 'grid',
             },
+            children: [
+                {
+                    name: 'attributes-grid',
+                    path: 'grid',
+                    component: Tabs.AttributeGridTab,
+                    meta: {
+                        title: '',
+                        breadcrumbs: [
+                            {
+                                title: 'Product design',
+                                icon: Icons.Templates,
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
         },
         {
             name: 'attribute-new',
@@ -155,19 +167,31 @@ export default {
                     menuPosition: 3,
                     icon: Icons.Templates,
                 },
-                breadcrumbs: [
-                    {
-                        title: 'Product design',
-                        icon: Icons.Templates,
-                    },
-                ],
                 isMenu: true,
                 menuPosition: 2,
                 privileges: {
-                    namespace: Privileges.ATTRIBUTE.namespace,
-                    read: Privileges.ATTRIBUTE.read,
+                    namespace: Privileges.ATTRIBUTE_GROUP.namespace,
+                    read: Privileges.ATTRIBUTE_GROUP.read,
                 },
+                redirectTo: 'grid',
             },
+            children: [
+                {
+                    name: 'attribute-groups-grid',
+                    path: 'grid',
+                    component: Tabs.AttributeGroupGridTab,
+                    meta: {
+                        title: '',
+                        breadcrumbs: [
+                            {
+                                title: 'Product design',
+                                icon: Icons.Templates,
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
         },
         {
             name: 'attribute-group-new',

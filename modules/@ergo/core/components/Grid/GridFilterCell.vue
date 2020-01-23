@@ -20,6 +20,7 @@
                     :type="filterType"
                     :value="filterValue"
                     :options="options"
+                    :parameters="column.parameters"
                     :colors="column.colors || null"
                     :fixed-width="$el.offsetWidth"
                     :fixed-height="$el.offsetHeight"
@@ -32,7 +33,7 @@
 
 <script>
 import { FILTER_OPERATOR } from '@Core/defaults/operators';
-import { COLUMN_TYPE } from '@Core/defaults/grid';
+import { COLUMN_FILTER_TYPE } from '@Core/defaults/grid';
 import { getMappedGridColumnOptions } from '@Core/models/mappers/gridDataMapper';
 import { isArrayEqualToArray } from '@Core/models/arrayWrapper';
 
@@ -76,17 +77,17 @@ export default {
             if (!filter) return false;
             const { type } = filter;
 
-            return type === COLUMN_TYPE.SELECT || type === COLUMN_TYPE.MULTI_SELECT;
+            return type === COLUMN_FILTER_TYPE.SELECT || type === COLUMN_FILTER_TYPE.MULTI_SELECT;
         },
         isMultiSelect() {
             const { filter: { type } } = this.column;
 
-            return type === COLUMN_TYPE.MULTI_SELECT;
+            return type === COLUMN_FILTER_TYPE.MULTI_SELECT;
         },
         isSelect() {
             const { filter: { type } } = this.column;
 
-            return type === COLUMN_TYPE.SELECT;
+            return type === COLUMN_FILTER_TYPE.SELECT;
         },
         filterType() {
             if (this.column.colors) return this.column.type;
@@ -141,8 +142,8 @@ export default {
             const type = !filter ? this.column.type : filter.type;
 
             switch (type) {
-            case COLUMN_TYPE.SELECT:
-            case COLUMN_TYPE.MULTI_SELECT:
+            case COLUMN_FILTER_TYPE.SELECT:
+            case COLUMN_FILTER_TYPE.MULTI_SELECT:
                 return () => import('@Core/components/Grid/PresentationCells/GridPresentationFilterSelectCell');
             default:
                 return () => import('@Core/components/Grid/PresentationCells/GridPresentationFilterCell');
@@ -166,14 +167,14 @@ export default {
                 parsedValue = value.key;
             }
 
-            if (((this.filter
+            if ((this.filter
                 && ((Array.isArray(this.filter.value)
                     && !isArrayEqualToArray(this.filter.value, parsedValue))
-                    || this.filter.value !== parsedValue)))
+                    || this.filter.value !== parsedValue))
                 || (!this.filter && parsedValue.length > 0)) {
                 this.$emit('filter', {
                     id,
-                    filter: parsedValue,
+                    value: parsedValue,
                     operator: FILTER_OPERATOR.EQUAL,
                 });
             }

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['grid-advanced-filters', {'grid-advanced-filters--disabled': disabled}]">
+    <div :class="['grid-advanced-filters', {'grid-advanced-filters--disabled': isFilterExists}]">
         <div class="grid-advanced-filters__header">
             <div class="container">
                 <div class="title-container">
@@ -47,26 +47,23 @@
             <GridAdvancedFiltersContainer
                 v-if="isExpanded"
                 @mouseOverFilters="onMouseOverFilters">
-                <GridAdvancedFilterPlaceholder v-if="filtersData.length === 0" />
-                <template v-for="(filter, index) in filtersData">
-                    <GridAdvancedFilter
-                        v-if="filter.id !== ghostFilterId"
-                        :key="index"
-                        :index="index"
-                        :data="filter"
-                        :filter="filters[filter.id]"
-                        :is-mouse-over-filters="isMouseOverFilters"
-                        :namespace="namespace"
-                        :path="path"
-                        @mouseOverFilters="onMouseOverFilters"
-                        @focus="onFilterFocus" />
-                    <GridAdvancedFilterGhost
-                        v-else
-                        :key="index"
-                        :is-mouse-over-filters="isMouseOverFilters"
-                        :namespace="namespace"
-                        @mouseOverFilters="onMouseOverFilters" />
-                </template>
+                <GridAdvancedFilterPlaceholder v-if="!filters.length" />
+                <GridAdvancedFilter
+                    v-for="(filter, index) in filters"
+                    :key="index"
+                    :index="index"
+                    :filter="filter"
+                    :is-mouse-over-filters="isMouseOverFilters"
+                    @mouseOverFilters="onMouseOverFilters"
+                    @focus="onFilterFocus"
+                    @clear="onClearFilterAtIndex"
+                    @apply="onApplyFilter"
+                    @update="onUpdateFilterAtIndex"
+                    @remove="onRemoveFilterAtIndex"
+                    @insert="onInsertFilterAtIndex"
+                    @setGhost="onSetGhostFilterAtIndex"
+                    @swap="onSwapFiltersPosition"
+                    @drop="onDropFilterAtIndex" />
             </GridAdvancedFiltersContainer>
         </FadeTransition>
     </div>
@@ -76,10 +73,7 @@
 import { mapState, mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
 import { ARROW } from '@Core/defaults/icons';
-import { GHOST_ID } from '@Core/defaults/grid';
 import GridAdvancedFilterPlaceholder from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder';
-import GridAdvancedFilterGhost from '@Core/components/Grid/AdvancedFilters/GridAdvancedFilterGhost';
-import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 
 export default {
     name: 'GridAdvancedFilters',
@@ -92,28 +86,11 @@ export default {
         GridAdvancedFilter: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFilter'),
         FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
         GridAdvancedFilterPlaceholder,
-        GridAdvancedFilterGhost,
     },
     props: {
         filters: {
-            type: Object,
-            default: () => ({}),
-        },
-        filtersData: {
             type: Array,
             default: () => [],
-        },
-        namespace: {
-            type: String,
-            required: true,
-        },
-        path: {
-            type: String,
-            required: true,
-        },
-        disabled: {
-            type: Boolean,
-            default: false,
         },
     },
     data() {
@@ -126,21 +103,34 @@ export default {
     computed: {
         ...mapState('draggable', {
             isListElementDragging: (state) => state.isListElementDragging,
+            draggedElement: (state) => state.draggedElement,
         }),
         secondaryTheme() {
             return THEMES.SECONDARY;
         },
-        ghostFilterId() {
-            return GHOST_ID;
-        },
         filtersNumber() {
-            return this.filtersData.filter((f) => f.id !== this.ghostFilterId).length;
+            return this.filters.filter((filter) => !filter.isGhost).length;
+        },
+        isFilterExists() {
+            const draggedElIndex = this.filters.findIndex(
+                (filter) => filter.id === this.draggedElement,
+            );
+
+            return draggedElIndex !== -1;
         },
     },
     watch: {
         isListElementDragging() {
-            if (!this.isExpanded && this.isListElementDragging) {
-                this.isExpanded = true;
+            this.isMouseOverFilters = false;
+
+            if (this.isListElementDragging) {
+                if (!this.isExpanded) {
+                    this.isExpanded = true;
+                    this.iconExpanderState = ARROW.UP;
+                }
+                this.addGhostFilter();
+            } else {
+                this.removeGhostFilter();
             }
         },
     },
@@ -148,8 +138,35 @@ export default {
         ...mapActions('list', [
             'setDisabledElements',
         ]),
+        ...mapActions('draggable', [
+            'setGhostFilterIndex',
+        ]),
         onMouseOverFilters(isOver) {
             this.isMouseOverFilters = isOver;
+        },
+        onDropFilterAtIndex(payload) {
+            this.$emit('dropFilter', payload);
+        },
+        onUpdateFilterAtIndex(payload) {
+            this.$emit('updateFilter', payload);
+        },
+        onRemoveFilterAtIndex(index) {
+            this.$emit('removeFilter', index);
+        },
+        onInsertFilterAtIndex(payload) {
+            this.$emit('insertFilter', payload);
+        },
+        onClearFilterAtIndex(index) {
+            this.$emit('clearFilter', index);
+        },
+        onSetGhostFilterAtIndex(payload) {
+            this.$emit('setGhostFilter', payload);
+        },
+        onSwapFiltersPosition(payload) {
+            this.$emit('swapFilters', payload);
+        },
+        onApplyFilter() {
+            this.$emit('applyFilter');
         },
         onFilterFocus(isFocused) {
             this.$emit('focus', isFocused);
@@ -164,20 +181,33 @@ export default {
             }
         },
         onRemoveAll() {
-            this.setDisabledElements(
-                this.filtersData
-                    .map(({ element_id: elementId, language: languageCode }) => (
-                        { languageCode, elementId, isDisabled: false }
-                    )),
-            );
-            this.$cookies.remove(ADV_FILTERS_IDS);
-            this.$store.dispatch(`${this.namespace}/removeAllAdvancedFilters`);
-            this.onClearAll();
+            this.$emit('removeAllFilters');
         },
         onClearAll() {
-            this.$store.dispatch(`${this.namespace}/clearAllAdvancedFilters`);
-            this.$store.dispatch(`${this.namespace}/getData`, this.path);
-            this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
+            this.$emit('clearAllFilters');
+        },
+        addGhostFilter() {
+            if (!this.isFilterExists) {
+                const ghostIndex = 0;
+
+                this.onInsertFilterAtIndex({
+                    index: ghostIndex,
+                    filter: {
+                        isGhost: true,
+                    },
+                });
+                this.setGhostFilterIndex(ghostIndex);
+            }
+        },
+        removeGhostFilter() {
+            const ghostIndex = this.filters.findIndex(
+                (filter) => filter.isGhost,
+            );
+
+            if (ghostIndex !== -1 && !this.isMouseOverFilters) {
+                this.onRemoveFilterAtIndex(ghostIndex);
+                this.setGhostFilterIndex();
+            }
         },
     },
 };

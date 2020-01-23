@@ -9,6 +9,7 @@ export const Pages = {
 };
 
 export const Tabs = {
+    ProductStatusGridTab: () => import('@Statuses/components/Tabs/ProductStatusGridTab').then((m) => m.default || m),
     ProductStatusBaseTab: () => import('@Statuses/components/Tabs/ProductStatusBaseTab').then((m) => m.default || m),
     ProductStatusTranslationsTab: () => import('@Statuses/components/Tabs/ProductStatusTranslationsTab').then((m) => m.default || m),
 };

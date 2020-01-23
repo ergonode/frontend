@@ -19,55 +19,37 @@
                 </Button>
             </template>
         </TitleBar>
-        <SegmentsGridTab />
+        <HorizontalTabBar :items="tabs" />
     </Page>
 </template>
 
 <script>
 import { SIZES } from '@Core/defaults/buttons';
-import gridModule from '@Core/reusableStore/grid/state';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import SegmentsGridTab from '@Segments/components/Tabs/SegmentsGridTab';
+import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 
 export default {
     name: 'SegmentsPage',
     components: {
-        SegmentsGridTab,
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
+        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
         Button,
         IconAdd,
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'segmentsGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('segmentsGrid');
     },
     computed: {
         smallSize() {
             return SIZES.SMALL;
         },
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
     },
     methods: {
         addSegment() {
-            this.$router.push({ path: 'segments/segment/new/general' });
+            this.$router.push({ path: '/segments/segment/new/general' });
         },
-    },
-    async fetch({ app, store }) {
-        const gridPath = `${store.state.authentication.user.language}/segments`;
-
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'segmentsGrid',
-            store,
-        });
-        await store.dispatch('segmentsGrid/getData', gridPath);
     },
 };
 </script>

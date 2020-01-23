@@ -29,6 +29,7 @@ export default {
             roleID: (state) => state.id,
             name: (state) => state.name,
             description: (state) => state.description,
+            selectedPrivileges: (state) => state.selectedPrivileges,
         }),
         ...mapState('dictionaries', {
             privileges: (state) => state.privileges,
@@ -63,13 +64,12 @@ export default {
             this.$addAlert({ type: 'error', message });
         },
         onSave() {
-            const { privilegesGrid } = this.$store.state;
             const role = {
                 name: this.name,
                 description: this.description,
                 privileges: getMappedPrivilegesBasedOnGridData(
                     this.privileges,
-                    privilegesGrid.cellValues,
+                    this.selectedPrivileges,
                 ),
             };
 

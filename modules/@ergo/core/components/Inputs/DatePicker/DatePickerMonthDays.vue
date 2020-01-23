@@ -34,7 +34,6 @@ export default {
         },
         selectedDates: {
             type: Array,
-            required: false,
             default: () => [],
         },
     },

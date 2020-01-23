@@ -20,7 +20,7 @@
             </GridCell>
         </slot>
         <GridCell
-            v-if="basicFilters"
+            v-if="isBasicFilters"
             :locked="true"
             :spacebar-edition="false"
             :row="getRowIndex(1)"
@@ -74,7 +74,7 @@ export default {
             type: Object,
             required: true,
         },
-        basicFilters: {
+        isBasicFilters: {
             type: Boolean,
             default: true,
         },

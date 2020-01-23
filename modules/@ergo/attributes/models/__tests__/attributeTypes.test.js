@@ -8,8 +8,6 @@ import {
     hasParams,
     getParamsOptionsForType,
     getParamsKeyForType,
-    getTypeElement,
-    getTypeTranslation,
 } from '../attributeTypes';
 
 describe('AttributeTypes/hasOptions', () => {
@@ -47,27 +45,6 @@ describe('AttributeTypes/hasParams', () => {
     });
 });
 
-describe('AttributeTypes/getTypeTranslation', () => {
-    it.each([
-        ['TEXT', 'TEXT'],
-        ['TEXTAREA', 'TEXT AREA'],
-        ['NUMERIC', 'NUMERIC'],
-        ['SELECT', 'SELECT'],
-        ['MULTI_SELECT', 'MULTI SELECT'],
-        ['IMAGE', 'IMAGE'],
-        ['PRICE', 'PRICE'],
-        ['UNIT', 'UNIT'],
-        ['DATE', 'DATE'],
-        ['OTHER_TYPE', ''],
-    ])(
-        ' Set type (%s) get class (%s)',
-        (type, expected) => {
-            const fun = getTypeTranslation(type);
-            expect(fun).toBe(expected);
-        },
-    );
-});
-
 describe('AttributeTypes/getParamsOptionsForType', () => {
     const data = {
         units: ['Kg'],
@@ -100,27 +77,6 @@ describe('AttributeTypes/getParamsKeyForType', () => {
         ' Set type (%s) and get params key (%s)',
         (type, expected) => {
             const fun = getParamsKeyForType(type);
-            expect(fun).toBe(expected);
-        },
-    );
-});
-
-describe('AttributeTypes/getTypeElement', () => {
-    it.each([
-        ['TEXT', 'SingleLine'],
-        ['TEXTAREA', 'MultiLine'],
-        ['NUMERIC', 'SingleLine'],
-        ['SELECT', 'Options'],
-        ['MULTI_SELECT', 'Options'],
-        ['IMAGE', 'Image'],
-        ['PRICE', 'SingleLine'],
-        ['UNIT', 'SingleLine'],
-        ['DATE', 'Date'],
-        ['OTHER_TYPE', 'SingleLine'],
-    ])(
-        ' Set type (%s) and get params key (%s)',
-        (type, expected) => {
-            const fun = getTypeElement(type);
             expect(fun).toBe(expected);
         },
     );
