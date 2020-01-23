@@ -13,6 +13,7 @@ const nuxtConfig = {
     css: modulesConfig.nuxt.css || [],
     styleResources: modulesConfig.nuxt.styleResources || {},
     plugins: modulesConfig.nuxt.plugins || [],
+    chunks: modulesConfig.nuxt.chunks || [],
 };
 const IS_DEV = process.env.NODE_ENV !== 'production';
 const BASE_URL = `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_PREFIX}`;
@@ -89,10 +90,52 @@ module.exports = {
             if (isClient && isDev) {
                 config.devtool = 'source-map';
             }
+            // config.entry = {
+            //     vendor2: ['lodash', 'diff', 'nise'],
+            //     // app: './entry',
+            // };
+        },
+        splitChunks: {
+            layouts: true,
+            pages: true,
+            commons: true,
+            modules: true,
+        },
+        filenames: {
+            app: '[name].[chunkhash].js',
         },
         optimization: {
             splitChunks: {
                 chunks: 'all',
+                cacheGroups: {
+                    default: false,
+                    commons: {
+                        test: /[\\/]node_modules[\\/]/,
+                        chunks: 'all',
+                        name: 'vendors',
+                        enforce: true,
+                    },
+                    modules: {
+                        test(module) {
+                            return module.resource && module.resource.includes('modules/@ergo');
+                        },
+                        chunks: 'all',
+                        name: 'modules',
+                        enforce: true,
+                        priority: -30,
+                    },
+                    coreComponentsModule: {
+                        test(module) {
+                            return module.resource && module.resource.includes('@ergo/core/component');
+                        },
+                        chunks: 'all',
+                        name: 'coreComponentsModule',
+                        priority: -10,
+                        enforce: true,
+                        reuseExistingChunk: true,
+                    },
+                    ...nuxtConfig.chunks,
+                },
             },
         },
         optimizeCSS: true,

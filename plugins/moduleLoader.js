@@ -57,6 +57,7 @@ const ModuleLoader = (() => {
         },
         setModulesConfig(modules) {
             this._modulesConfig = modules.reduce((acc, module) => {
+                const moduleName = module.replace('@ergo/', '');
                 const { path, type } = CORE_MODULES[module];
                 const config = this.configType(CORE_MODULES[module]);
                 const modulesConfig = acc;
@@ -124,6 +125,17 @@ const ModuleLoader = (() => {
                                 }
                             };
                         }
+                        config.nuxt.chunks = {
+                            [`${moduleName}Module`]: {
+                                test(m) {
+                                    return m.resource && m.resource.includes(`modules/${module}`);
+                                },
+                                chunks: 'all',
+                                name: `${moduleName}Module`,
+                                enforce: true,
+                                priority: -20,
+                            },
+                        };
                         modulesConfig.nuxt = deepmerge(modulesConfig.nuxt, config.nuxt);
                     }
                     if (config.moduleRelations) {
