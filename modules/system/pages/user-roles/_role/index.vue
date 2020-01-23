@@ -24,7 +24,6 @@ export default {
             roleID: (state) => state.id,
             name: (state) => state.name,
             description: (state) => state.description,
-            privileges: (state) => state.privileges,
         }),
     },
     created() {
@@ -56,7 +55,6 @@ export default {
             const role = {
                 name: this.name,
                 description: this.description,
-                privileges: this.privileges,
             };
             this.createRole({
                 data: role,

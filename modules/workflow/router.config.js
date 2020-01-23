@@ -18,6 +18,11 @@ const Tabs = {
     ConditionSetDesignTab: () => import('~/modules/workflow/pages/status-transitions/_transition/_tabs/ConditionSetDesignTab').then((m) => m.default || m),
 };
 
+const GridTabs = {
+    TransitionsGridTab: () => import('~/modules/workflow/pages/status-transitions/_tabs/TransitionsGridTab').then((m) => m.default || m),
+    ProductStatusGridTab: () => import('~/modules/workflow/pages/product-statuses/_tabs/ProductStatusGridTab').then((m) => m.default || m),
+};
+
 export const routing = [
     {
         name: 'product-statuses',
@@ -29,18 +34,30 @@ export const routing = [
                 title: 'Workflow',
                 icon: 'Flow',
             },
-            breadcrumbs: [
-                {
-                    title: 'Workflow',
-                    icon: 'Flow',
-                },
-            ],
             isMenu: true,
             privileges: {
                 namespace: 'WORKFLOW',
                 read: 'WORKFLOW_READ',
             },
+            redirectTo: 'grid',
         },
+        children: [
+            {
+                name: 'product-statuses-grid',
+                path: 'grid',
+                component: GridTabs.ProductStatusGridTab,
+                meta: {
+                    title: '',
+                    breadcrumbs: [
+                        {
+                            title: 'Workflow',
+                            icon: 'Flow',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
     },
     {
         name: 'product-status-new',
@@ -132,18 +149,30 @@ export const routing = [
                 title: 'Workflow',
                 icon: 'Flow',
             },
-            breadcrumbs: [
-                {
-                    title: 'Workflow',
-                    icon: 'Flow',
-                },
-            ],
             isMenu: true,
             privileges: {
                 namespace: 'WORKFLOW',
                 read: 'WORKFLOW_READ',
             },
+            redirectTo: 'grid',
         },
+        children: [
+            {
+                name: 'status-transitions-grid',
+                path: 'grid',
+                component: GridTabs.TransitionsGridTab,
+                meta: {
+                    title: '',
+                    breadcrumbs: [
+                        {
+                            title: 'Workflow',
+                            icon: 'Flow',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
     },
 
     {

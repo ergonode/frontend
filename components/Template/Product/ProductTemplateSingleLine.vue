@@ -47,8 +47,11 @@ export default {
         },
     },
     watch: {
-        value() {
-            this.localValue = this.value;
+        value: {
+            immediate: true,
+            handler() {
+                this.localValue = this.value;
+            },
         },
     },
 };

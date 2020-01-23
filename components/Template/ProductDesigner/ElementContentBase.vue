@@ -28,7 +28,6 @@ export default {
         padding-left: 10px;
         background-color: $WHITESMOKE;
         overflow: hidden;
-        resize: both;
 
         &--disabled {
             resize: none;

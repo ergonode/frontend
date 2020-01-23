@@ -5,14 +5,13 @@
 <template>
     <Page>
         <TitleBar title="Profile" />
-        <HorizontalTabBar
-            :items="tabs" />
+        <HorizontalTabBar :items="tabs" />
     </Page>
 </template>
 
 <script>
 export default {
-    name: 'UserProfileTabs',
+    name: 'Index',
     components: {
         HorizontalTabBar: () => import('~/core/components/Tab/HorizontalTabBar'),
         TitleBar: () => import('~/core/components/TitleBar/TitleBar'),

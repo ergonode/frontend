@@ -91,7 +91,7 @@ export default {
     },
     methods: {
         onEdit(route) {
-            this.$emit('rowEdit', route);
+            this.$emit('editRow', route);
         },
         getRowIndex(index) {
             return index

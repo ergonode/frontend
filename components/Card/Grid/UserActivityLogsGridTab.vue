@@ -6,96 +6,41 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                namespace="userActivityLogsGrid"
-                :edit-route="editRoute"
-                :basic-filters="true"
-                :edit-column="false"
-                :select-column="false"
-                :is-column-editable="false"
-                title="Activity logs" />
+                title="Activity logs"
+                :columns="columns"
+                :basic-filters="basicFilters"
+                :sorted-column="sortedColumn"
+                :max-rows="filtered"
+                :max-page="numberOfPages"
+                :current-page="currentPage"
+                :cell-values="cellValues"
+                :row-ids="rowIds" />
         </template>
         <template #footer>
             <GridPageSelector
-                :value="numberOfDisplayedElements"
-                :rows-number="numberOfDataElements"
-                @input="onRowsCountUpdate" />
+                :value="maxRowsPerPage"
+                :max-rows="filtered"
+                @input="setMaxRowsPerPage" />
             <GridPagination
                 :value="currentPage"
                 :max-page="numberOfPages"
-                @input="onPageChanged" />
+                @input="setCurrentPage" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
-import gridModule from '~/reusableStore/grid/state';
 import ResponsiveCenteredViewTemplate from '~/core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
+import gridDataMixin from '~/mixins/grid/gridDataMixin';
 
 export default {
     name: 'UserActivityLogsGridTab',
+    mixins: [gridDataMixin({ path: 'profile/log' })],
     components: {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('~/core/components/Grid/Grid'),
         GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
         GridPagination: () => import('~/core/components/Grid/GridPagination'),
-    },
-    beforeCreate() {
-        this.$registerStore({
-            module: gridModule,
-            moduleName: 'userActivityLogsGrid',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('userActivityLogsGrid');
-    },
-    computed: {
-        ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
-        }),
-        ...mapState('userActivityLogsGrid', {
-            numberOfDataElements: (state) => state.filtered,
-            currentPage: (state) => state.currentPage,
-            numberOfDisplayedElements: (state) => state.numberOfDisplayedElements,
-        }),
-        ...mapGetters('userActivityLogsGrid', {
-            numberOfPages: 'numberOfPages',
-        }),
-        editRoute() {
-            return {
-                path: '/profile/log',
-                name: 'users-logs-edit-id',
-            };
-        },
-    },
-    methods: {
-        ...mapActions('userActivityLogsGrid', [
-            'getData',
-            'setCurrentPage',
-            'changeNumberOfDisplayingElements',
-        ]),
-        onRowsCountUpdate(value) {
-            const number = Math.trunc(value);
-
-            if (number !== this.numberOfDisplayedElements) {
-                this.changeNumberOfDisplayingElements(number);
-                this.getData(this.editRoute.path);
-            }
-        },
-        onPageChanged(page) {
-            this.setCurrentPage(page);
-            this.getData(this.editRoute.path);
-        },
-    },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: gridModule,
-            moduleName: 'userActivityLogsGrid',
-            store,
-        });
-        const gridPath = '/profile/log';
-        await store.dispatch('userActivityLogsGrid/getData', gridPath);
     },
 };
 </script>

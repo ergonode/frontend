@@ -43,10 +43,10 @@ export default {
         ...mapActions('validations', [
             'onError',
         ]),
-        async getImageById() {
+        getImageById() {
             this.isPlaceholder = true;
             this.image = require('~/assets/images/placeholders/no_image.svg'); // eslint-disable-line global-require, import/no-dynamic-require
-            await this.$axios.$get(`multimedia/${this.imageId}`, {
+            this.$axios.$get(`multimedia/${this.imageId}`, {
                 responseType: 'arraybuffer',
             }).then((response) => this.onSuccess(response)).catch(this.imageLoadOnError);
         },

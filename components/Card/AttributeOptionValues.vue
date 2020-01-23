@@ -3,15 +3,15 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="option-values-container">
-        <span>Option values</span>
+    <FormGroup title="Option values">
         <AttributeOptionValue
-            v-for="(key, index) in optionKeys"
+            v-for="index in optionIndexes"
             :key="index"
-            :label="key"
+            :index="index"
+            :option="options[index]"
             :disabled="disabled"
             :language-code="languageCode" />
-    </div>
+    </FormGroup>
 </template>
 
 <script>
@@ -21,6 +21,7 @@ export default {
     name: 'AttributeOptionValues',
     components: {
         AttributeOptionValue: () => import('~/components/Card/AttributeOptionValue'),
+        FormGroup: () => import('~/core/components/Form/FormGroup'),
     },
     props: {
         languageCode: {
@@ -36,16 +37,9 @@ export default {
         ...mapState('attribute', {
             options: (state) => state.options,
         }),
-        optionKeys() {
+        optionIndexes() {
             return Object.keys(this.options);
         },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .option-values-container {
-        display: grid;
-        grid-gap: 8px;
-    }
-</style>

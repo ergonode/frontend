@@ -28,30 +28,10 @@ describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent', () => {
 
         it('Has value', () => {
             wrapper.setProps({
-                filter: {
-                    [FILTER_OPERATOR.EQUAL]: 'Test value',
-                },
+                value: { [FILTER_OPERATOR.EQUAL]: 'Test value' },
             });
 
             expect(wrapper.vm.filterValue).toBe('Test value');
-        });
-
-        it('Has empty records', () => {
-            wrapper.setProps({
-                filter: {
-                    isEmptyRecord: true,
-                },
-            });
-
-            expect(wrapper.vm.isEmptyRecord).toBeTruthy();
-        });
-
-        it('Has no empty records', () => {
-            wrapper.setProps({
-                filter: null,
-            });
-
-            expect(wrapper.vm.isEmptyRecord).toBeFalsy();
         });
     });
 });

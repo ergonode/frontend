@@ -20,16 +20,16 @@
             :style="templateColumns"
             @dragleave="onDragLeave">
             <GridColumnSelectRow
-                v-if="selectColumn"
+                v-if="isSelectColumn"
                 :style="templateRows"
-                :row-ids="gridState.rowIds"
+                :row-ids="rowIds"
                 :rows-offset="rowsOffset"
                 :row-height="rowHeight"
                 :is-selected-all-rows="isSelectedAllRows"
                 :selected-rows="selectedRows"
-                :basic-filters="basicFilters"
-                :current-page="gridState.currentPage"
-                :number-of-displayed-elements="gridState.numberOfDisplayedElements"
+                :is-basic-filters="isBasicFilters"
+                :current-page="currentPage"
+                :number-of-displayed-elements="maxRows"
                 :is-pinned="isSelectColumnPinned"
                 @rowSelect="onSelectRow"
                 @rowsSelect="onSelectAllRows">
@@ -47,10 +47,10 @@
                 </template>
             </GridColumnSelectRow>
             <GridColumnData
-                v-for="(column, colIndex) in gridState.columns"
+                v-for="(column, colIndex) in columns"
                 :key="column.id"
                 :style="templateRows"
-                :draggable="draggableColumn"
+                :draggable="isDraggable"
                 :index="colIndex + columnsOffset"
                 :column="column"
                 :column-offset="columnsOffset"
@@ -61,40 +61,38 @@
                 @removeColumnAtIndex="onRemoveColumnAtIndex"
                 @changeColumnsPosition="onChangeColumnsPosition"
                 @updateColumnWidthAtIndex="onUpdateColumnWidthAtIndex"
-                @getColumnData="onGetColumnData">
+                @drop="onDrop">
                 <GridHeaderCell
                     :column-index="colIndex + columnsOffset"
-                    :is-column-editable="isColumnEditable"
-                    :sorted-column="gridState.sortedColumn"
+                    :sorted-column="sortedColumn"
                     :column="column"
-                    :path="editRoute.path"
                     :row-index="getRowIndex(0)"
                     @focus="onHeaderFocus"
                     @sort="onSortColumn"
                     @removeColumnAtIndex="onRemoveColumnAtIndex" />
                 <GridFilterCell
-                    v-if="basicFilters"
+                    v-if="isBasicFilters"
                     :column-index="colIndex + columnsOffset"
                     :row-index="getRowIndex(1)"
                     :column="column"
-                    :filter="gridState.filters[column.id]"
-                    :disabled="typeof gridState.advancedFilters[column.id] !== 'undefined'"
+                    :filter="basicFilters[column.id]"
+                    :disabled="typeof advancedFiltersValues[column.id] !== 'undefined'"
                     @filter="onFilterChange" />
                 <slot
-                    v-for="(id, rowIndex) in gridState.rowIds"
+                    v-for="(id, rowIndex) in rowIds"
                     name="cell"
                     :column="column"
                     :row-id="id"
                     :row-index="getRowIndex(rowIndex + rowsOffset)"
                     :column-index="colIndex + columnsOffset"
-                    :cell-data="gridState.cellValues[id][column.id]">
+                    :cell-data="cellValues[id][column.id]">
                     <GridDataCell
                         :key="`${id}-${column.id}`"
                         :column-index="colIndex + columnsOffset"
                         :row-index="getRowIndex(rowIndex + rowsOffset)"
                         :row-id="id"
-                        :row-ids="gridState.rowIds"
-                        :cell-data="gridState.cellValues[id][column.id]"
+                        :row-ids="rowIds"
+                        :cell-data="cellValues[id][column.id]"
                         :column="column"
                         :draft="drafts[id]"
                         :is-selected="isSelectedAllRows
@@ -103,25 +101,24 @@
                 </slot>
             </GridColumnData>
             <GridColumnEdit
-                v-if="editColumn"
+                v-if="isEditColumn"
                 :style="templateRows"
                 :is-selected-all-rows="isSelectedAllRows"
                 :selected-rows="selectedRows"
-                :current-page="gridState.currentPage"
-                :number-of-displayed-elements="gridState.numberOfDisplayedElements"
+                :current-page="currentPage"
+                :number-of-displayed-elements="maxRows"
                 :rows-offset="rowsOffset"
                 :column-index="editColumnIndex"
-                :basic-filters="basicFilters"
-                :row-links="gridState.rowLinks"
-                :route-path="editRoute.name"
+                :is-basic-filters="isBasicFilters"
+                :row-links="rowLinks"
                 :is-pinned="isEditColumnPinned"
-                @rowEdit="onRowEdit" />
+                @editRow="onEditRow" />
             <GridColumnSentinel
-                v-if="selectColumn"
+                v-if="isSelectColumn"
                 :pinned-state="columnPinnedState.LEFT"
                 @sticky="onStickyChange" />
             <GridColumnSentinel
-                v-if="editColumn"
+                v-if="isEditColumn"
                 :style="{ gridColumn: `${editColumnIndex} / ${editColumnIndex}`}"
                 :pinned-state="columnPinnedState.RIGHT"
                 @sticky="onStickyChange" />
@@ -136,9 +133,9 @@ import {
     ROW_HEIGHT,
     GRID_LAYOUT,
     GHOST_ELEMENT_MODEL,
-    GHOST_ID,
     PINNED_COLUMN_STATE,
     COLUMN_WIDTH,
+    GHOST_ID,
 } from '~/defaults/grid';
 import {
     isMouseOutOfBoundsElement,
@@ -146,6 +143,7 @@ import {
     getPositionForBrowser,
 } from '~/model/drag_and_drop/helpers';
 import selectedRowMixin from '~/mixins/grid/selectedRowMixin';
+import { swapItemPosition, insertValueAtIndex } from '~/model/arrayWrapper';
 
 export default {
     name: 'Grid',
@@ -161,41 +159,69 @@ export default {
         GridPlaceholder: () => import('~/core/components/Grid/GridPlaceholder'),
     },
     props: {
-        namespace: {
-            type: String,
-            required: true,
-        },
         title: {
             type: String,
             required: true,
         },
-        editRoute: {
+        columns: {
+            type: Array,
+            default: () => [],
+        },
+        cellValues: {
             type: Object,
-            required: true,
+            default: () => ({}),
+        },
+        rowIds: {
+            type: Array,
+            default: () => [],
+        },
+        rowLinks: {
+            type: Array,
+            default: () => [],
+        },
+        sortedColumn: {
+            type: Object,
+            default: () => ({}),
+        },
+        basicFilters: {
+            type: Object,
+            default: () => ({}),
+        },
+        advancedFilters: {
+            type: Array,
+            default: () => [],
+        },
+        maxRows: {
+            type: Number,
+            default: 0,
+        },
+        maxPage: {
+            type: Number,
+            default: 1,
+        },
+        currentPage: {
+            type: Number,
+            default: 1,
         },
         editingPrivilegeAllowed: {
             type: Boolean,
             default: true,
         },
-        draggableColumn: {
+        isDraggable: {
             type: Boolean,
             default: false,
         },
-        basicFilters: {
+        isBasicFilters: {
             type: Boolean,
             default: false,
         },
-        selectColumn: {
+        isSelectColumn: {
             type: Boolean,
-            default: true,
+            default: false,
         },
-        editColumn: {
+        isEditColumn: {
             type: Boolean,
-            default: true,
-        },
-        isColumnEditable: {
-            type: Boolean,
-            default: true,
+            default: false,
         },
     },
     provide() {
@@ -213,7 +239,23 @@ export default {
             editingCellCoordinates: { row: null, column: null },
             rowHeight: ROW_HEIGHT.MEDIUM,
             layout: GRID_LAYOUT.TABLE,
+            columnWidths: [],
         };
+    },
+    created() {
+        if (this.isSelectColumn) this.columnWidths.push(COLUMN_WIDTH.ACTION);
+
+        const { length } = this.columns;
+
+        for (let i = 0; i < length; i += 1) {
+            if (this.columns[i].id === GHOST_ID) {
+                this.columnWidths.push(COLUMN_WIDTH.GHOST);
+            } else {
+                this.columnWidths.push(COLUMN_WIDTH.DEFAULT);
+            }
+        }
+
+        if (this.isEditColumn) this.columnWidths.push(COLUMN_WIDTH.ACTION);
     },
     mounted() {
         window.addEventListener('click', this.onClickOutside);
@@ -225,10 +267,8 @@ export default {
         isListElementDragging() {
             if (this.isListElementDragging) {
                 this.addGhostColumn();
-                this.addGhostFilter();
             } else {
                 this.removeGhostColumn();
-                this.removeGhostFilter();
             }
         },
     },
@@ -243,63 +283,57 @@ export default {
         ...mapState('gridDraft', {
             drafts: (state) => state.drafts,
         }),
-        gridState() {
-            return this.$store.state[this.namespace];
+        templateColumns() {
+            return {
+                gridTemplateColumns: this.columnWidths.join(' '),
+            };
+        },
+        advancedFiltersValues() {
+            const { length } = this.advancedFilters;
+            const advancedFiltersValues = {};
+
+            for (let i = 0; i < length; i += 1) {
+                if (!this.advancedFilters[i].isGhost
+                    && Object.keys(this.advancedFilters[i].value).length > 1) {
+                    advancedFiltersValues[this.advancedFilters[i].id] = true;
+                }
+            }
+
+            return advancedFiltersValues;
         },
         columnPinnedState() {
             return PINNED_COLUMN_STATE;
         },
         editColumnIndex() {
-            let index = this.gridState.columns.length;
+            let index = this.columns.length;
 
-            if (this.selectColumn) index += 1;
+            if (this.isSelectColumn) index += 1;
 
             return index;
         },
-        numberOfPages() {
-            return this.$store.getters[`${this.namespace}/numberOfPages`];
-        },
         columnsOffset() {
-            return this.selectColumn ? 1 : 0;
+            return this.isSelectColumn ? 1 : 0;
         },
         rowsOffset() {
-            return this.basicFilters ? 2 : 1;
+            return this.isBasicFilters ? 2 : 1;
         },
         templateRows() {
-            const headerRowsTemplate = this.basicFilters ? `${ROW_HEIGHT.MEDIUM}px ${ROW_HEIGHT.MEDIUM}px` : `${ROW_HEIGHT.MEDIUM}px`;
-            const dataRowsTemplate = this.gridState.rowIds.length > 0 ? `repeat(${this.gridState.rowIds.length}, ${this.rowHeight}px)` : '';
+            const headerRowsTemplate = this.isBasicFilters ? `${ROW_HEIGHT.MEDIUM}px ${ROW_HEIGHT.MEDIUM}px` : `${ROW_HEIGHT.MEDIUM}px`;
+            const dataRowsTemplate = this.rowIds.length > 0 ? `repeat(${this.rowIds.length}, ${this.rowHeight}px)` : '';
 
             return {
                 gridTemplateRows: `${headerRowsTemplate} ${dataRowsTemplate}`,
             };
         },
-        templateColumns() {
-            const rightWidths = [];
-            const leftWidths = [];
-
-            if (this.selectColumn) leftWidths.push(COLUMN_WIDTH.ACTION);
-            if (this.editColumn) rightWidths.push(COLUMN_WIDTH.ACTION);
-
-            return {
-                gridTemplateColumns: `${leftWidths.join(' ')} ${this.gridState.columnWidths.join(' ')} ${rightWidths.join(' ')}`,
-            };
-        },
-        isFilterExists() {
-            const draggedElIndex = this.gridState.advancedFiltersData.findIndex(
-                (filter) => filter.id === this.draggedElement,
-            );
-
-            return draggedElIndex !== -1;
-        },
         isColumnExists() {
-            const draggedElIndex = this.gridState.columns.findIndex(
+            const draggedElIndex = this.columns.findIndex(
                 (column) => column.id === this.draggedElement,
             );
 
             return draggedElIndex !== -1;
         },
         isPlaceholder() {
-            return !this.gridState.rowIds.length;
+            return !this.rowIds.length;
         },
     },
     methods: {
@@ -309,7 +343,6 @@ export default {
             'setDraggedElIndex',
             'setGhostElXTranslation',
             'setGhostIndex',
-            'setGhostFilterIndex',
         ]),
         setEditingCellCoordinates(coordinates = { row: null, column: null }) {
             this.editingCellCoordinates = coordinates;
@@ -319,7 +352,7 @@ export default {
         },
         getRowIndex(index) {
             return index
-                + ((this.gridState.currentPage - 1) * this.gridState.numberOfDisplayedElements);
+                + ((this.currentPage - 1) * this.maxRows);
         },
         onStickyChange({
             isSticky, state,
@@ -332,12 +365,10 @@ export default {
         },
         onClickOutside(event) {
             const { gridContent } = this.$refs;
-            const isVisible = !!gridContent
-                && !!(
-                    gridContent.offsetWidth
-                    || gridContent.offsetHeight
-                    || gridContent.getClientRects().length
-                );
+            const isVisible = !!(
+                gridContent.offsetWidth
+                || gridContent.offsetHeight
+                || gridContent.getClientRects().length);
 
             if (!gridContent.contains(event.target) && isVisible) {
                 // Dismiss editable cell mode
@@ -345,8 +376,8 @@ export default {
                 this.setEditingCellCoordinates();
             }
         },
-        onRowEdit(route) {
-            this.$emit('rowEdit', route);
+        onEditRow(route) {
+            this.$emit('editRow', route);
         },
         onMouseOverGrid(isOver) {
             this.isMouseOverGrid = isOver;
@@ -374,73 +405,68 @@ export default {
         onHeaderFocus(isFocused) {
             this.isHeaderFocused = isFocused;
         },
-        onGetColumnData(payload) {
-            this.$store.dispatch(`${this.namespace}/getColumnData`, payload);
+        onDrop(payload) {
+            this.columnWidths.splice(this.draggedElIndex, 1);
+            this.columnWidths = insertValueAtIndex(
+                this.columnWidths,
+                COLUMN_WIDTH.DEFAULT,
+                this.ghostIndex,
+            );
+            this.$emit('dropColumn', payload);
         },
-        onUpdateColumnWidthAtIndex(payload) {
-            this.$store.dispatch(`${this.namespace}/updateColumnWidthAtIndex`, payload);
+        onUpdateColumnWidthAtIndex({ index, width }) {
+            this.columnWidths[index] = width;
+            this.columnWidths = [...this.columnWidths];
         },
         onChangeColumnsPosition({ from, to }) {
-            this.$store.dispatch(`${this.namespace}/changeColumnPosition`, {
-                from, to,
-            });
-            this.$store.dispatch(`${this.namespace}/changeColumnWidthPosition`, {
-                from, to,
-            });
+            this.$emit('swapColumns', { from, to });
+
+            this.columnWidths = [
+                ...swapItemPosition(
+                    this.columnWidths,
+                    from + this.columnsOffset,
+                    to + this.columnsOffset,
+                ),
+            ];
         },
         onRemoveColumnAtIndex(index) {
-            this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, index);
-            this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, index);
+            this.columnWidths.splice(index, 1);
+            this.$emit('removeColumn', index);
         },
-        onSortColumn(sortState) {
-            this.$store.dispatch(`${this.namespace}/setSortingState`, sortState);
-            this.$store.dispatch(`${this.namespace}/getData`, this.editRoute.path);
+        onSortColumn(payload) {
+            this.$emit('sortColumn', payload);
         },
         onFilterChange(filter) {
-            this.$store.dispatch(`${this.namespace}/setFilter`, filter);
-            this.$store.dispatch(`${this.namespace}/getData`, this.editRoute.path);
-            this.$store.dispatch(`${this.namespace}/setCurrentPage`, 1);
+            this.$emit('filterColumn', filter);
         },
         addGhostColumn() {
             if (!this.isColumnExists) {
-                const width = 100;
                 const ghostIndex = 0; // 0 because we cannot drag select row column
 
-                this.$store.dispatch(`${this.namespace}/insertColumnAtIndex`, { column: GHOST_ELEMENT_MODEL, index: ghostIndex });
-                this.$store.dispatch(`${this.namespace}/insertColumnWidthAtIndex`, { width: `${width}px`, index: ghostIndex });
-
+                this.$emit('insertColumn', { column: GHOST_ELEMENT_MODEL, index: ghostIndex });
+                this.columnWidths = insertValueAtIndex(
+                    this.columnWidths,
+                    COLUMN_WIDTH.GHOST,
+                    ghostIndex + this.columnsOffset,
+                );
                 this.setGhostIndex(ghostIndex + this.columnsOffset);
                 this.setDraggedElIndex(ghostIndex + this.columnsOffset);
             }
         },
         removeGhostColumn() {
             if (this.draggedElIndex !== -1) {
-                this.$store.dispatch(`${this.namespace}/removeColumnAtIndex`, this.draggedElIndex - this.columnsOffset);
-                this.$store.dispatch(`${this.namespace}/removeColumnWidthAtIndex`, this.draggedElIndex - this.columnsOffset);
+                const index = this.draggedElIndex - this.columnsOffset;
+                const { gridContent } = this.$refs;
+                const { length } = gridContent.children;
 
+                for (let i = 0; i < length; i += 1) {
+                    gridContent.children[i].style.transform = null;
+                }
+
+                this.columnWidths.splice(this.draggedElIndex, 1);
+                this.$emit('removeColumn', index);
                 this.setDraggedElIndex();
                 this.setGhostIndex();
-            }
-        },
-        addGhostFilter() {
-            if (!this.isFilterExists) {
-                const ghostIndex = 0;
-
-                this.$store.dispatch(`${this.namespace}/insertAdvancedFilterAtIndex`, {
-                    index: ghostIndex,
-                    filter: GHOST_ELEMENT_MODEL,
-                });
-                this.setGhostFilterIndex(ghostIndex);
-            }
-        },
-        removeGhostFilter() {
-            const ghostIndex = this.gridState.advancedFiltersData.findIndex(
-                (filter) => filter.id === GHOST_ID,
-            );
-
-            if (ghostIndex !== -1) {
-                this.$store.dispatch(`${this.namespace}/removeAdvancedFilterAtIndex`, ghostIndex);
-                this.setGhostFilterIndex();
             }
         },
     },

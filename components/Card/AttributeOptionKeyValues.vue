@@ -3,29 +3,28 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['options', {'options--disabled': disabled}]">
-        <div
-            v-for="(key, index) in optionKeys"
+    <ul :class="['options', {'options--disabled': disabled}]">
+        <li
+            v-for="index in optionIndexes"
             :key="index"
             class="option">
-            <IconDelete @click.native="removeOptionKey(key)" />
+            <IconDelete @click.native="removeAttributeOptionKey(index)" />
             <TextField
-                :value="key"
+                :value="options[index].key"
                 solid
                 required
                 small
                 :disabled="disabled"
                 label="Option code"
-                @input="e => updateOptionKey(key, e)"
-                @click:append-outer="removeOptionKey(key)" />
-        </div>
+                @input="value => updateAttributeOptionKey({ index, key: value })" />
+        </li>
         <div
             class="add-option-wrapper"
             @click="addOptionKey">
             <IconAdd />
             <span class="font--medium-12-16">Add option</span>
         </div>
-    </div>
+    </ul>
 </template>
 
 <script>
@@ -51,7 +50,7 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: (state) => state.user.language,
         }),
-        optionKeys() {
+        optionIndexes() {
             return Object.keys(this.options);
         },
     },
@@ -59,19 +58,13 @@ export default {
         ...mapActions('attribute', [
             'addAttributeOptionKey',
             'removeAttributeOptionKey',
-            'setAttributeOptionKey',
+            'updateAttributeOptionKey',
         ]),
         ...mapActions('translations', [
             'addMultilingualOptionTranslation',
         ]),
-        updateOptionKey(oldKey, newKey) {
-            this.setAttributeOptionKey({ oldKey, newKey });
-        },
         addOptionKey() {
-            this.addAttributeOptionKey('');
-        },
-        removeOptionKey(key) {
-            this.removeAttributeOptionKey(key);
+            this.addAttributeOptionKey(Object.keys(this.options).length);
         },
     },
 };

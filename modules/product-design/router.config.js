@@ -35,6 +35,13 @@ const Tabs = {
     TemplateDesignerTab: () => import('~/modules/product-design/pages/product-templates/_template/_tabs/TemplateDesignerTab').then((m) => m.default || m),
 };
 
+const GridTabs = {
+    AttributeGroupGridTab: () => import('~/modules/product-design/pages/attribute-groups/_tabs/AttributeGroupGridTab').then((m) => m.default || m),
+    AttributeGridTab: () => import('~/modules/product-design/pages/attributes/_tabs/AttributeGridTab').then((m) => m.default || m),
+    CategoryGridTab: () => import('~/modules/product-design/pages/categories/_tabs/CategoryGridTab').then((m) => m.default || m),
+    CategoryTreesGridTab: () => import('~/modules/product-design/pages/category-trees/_tabs/CategoryTreesGridTab').then((m) => m.default || m),
+};
+
 export const routing = [
     {
         name: 'attributes',
@@ -47,18 +54,30 @@ export const routing = [
                 title: 'Product design',
                 icon: 'Templates',
             },
-            breadcrumbs: [
-                {
-                    title: 'Product design',
-                    icon: 'Templates',
-                },
-            ],
             isMenu: true,
             privileges: {
                 namespace: 'ATTRIBUTE',
                 read: 'ATTRIBUTE_READ',
             },
+            redirectTo: 'grid',
         },
+        children: [
+            {
+                name: 'attributes-grid',
+                path: 'grid',
+                component: GridTabs.AttributeGridTab,
+                meta: {
+                    title: '',
+                    breadcrumbs: [
+                        {
+                            title: 'Product design',
+                            icon: 'Templates',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
     },
     {
         name: 'attribute-new',
@@ -150,18 +169,30 @@ export const routing = [
                 title: 'Product design',
                 icon: 'Templates',
             },
-            breadcrumbs: [
-                {
-                    title: 'Product design',
-                    icon: 'Templates',
-                },
-            ],
             isMenu: true,
             privileges: {
-                namespace: 'ATTRIBUTE',
-                read: 'ATTRIBUTE_READ',
+                namespace: 'ATTRIBUTE_GROUP',
+                read: 'ATTRIBUTE_GROUP_READ',
             },
+            redirectTo: 'grid',
         },
+        children: [
+            {
+                name: 'attribute-groups-grid',
+                path: 'grid',
+                component: GridTabs.AttributeGroupGridTab,
+                meta: {
+                    title: '',
+                    breadcrumbs: [
+                        {
+                            title: 'Product design',
+                            icon: 'Templates',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
     },
     {
         name: 'attribute-group-new',
@@ -253,18 +284,30 @@ export const routing = [
                 title: 'Product design',
                 icon: 'Templates',
             },
-            breadcrumbs: [
-                {
-                    title: 'Product design',
-                    icon: 'Templates',
-                },
-            ],
             isMenu: true,
             privileges: {
-                namespace: 'TEMPLATE_DESIGNER',
-                read: 'TEMPLATE_DESIGNER_READ',
+                namespace: 'CATEGORY',
+                read: 'CATEGORY_READ',
             },
+            redirectTo: 'grid',
         },
+        children: [
+            {
+                name: 'categories-grid',
+                path: 'grid',
+                component: GridTabs.CategoryGridTab,
+                meta: {
+                    title: '',
+                    breadcrumbs: [
+                        {
+                            title: 'Product design',
+                            icon: 'Templates',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
     },
     {
         name: 'category-new',
@@ -356,18 +399,30 @@ export const routing = [
                 title: 'Product design',
                 icon: 'Templates',
             },
-            breadcrumbs: [
-                {
-                    title: 'Product design',
-                    icon: 'Templates',
-                },
-            ],
             isMenu: true,
             privileges: {
                 namespace: 'CATEGORY_TREE',
                 read: 'CATEGORY_TREE_READ',
             },
+            redirectTo: 'grid',
         },
+        children: [
+            {
+                name: 'category-trees-grid',
+                path: 'grid',
+                component: GridTabs.CategoryTreesGridTab,
+                meta: {
+                    title: '',
+                    breadcrumbs: [
+                        {
+                            title: 'Product design',
+                            icon: 'Templates',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
     },
     {
         name: 'category-tree-new',

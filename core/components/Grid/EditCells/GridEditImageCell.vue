@@ -45,6 +45,6 @@ export default {
     .image-cell {
         width: 300px;
         background-color: $WHITE;
-        box-shadow: $ELEVATOR_2_DP;
+        box-shadow: $ELEVATOR_6_DP;
     }
 </style>
