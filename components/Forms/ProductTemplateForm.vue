@@ -96,10 +96,10 @@ export default {
             case TYPES.MULTI_SELECT:
                 return ProductTemplateOptions;
             case TYPES.NUMERIC:
-                return ProductTemplateNumeric;
-            case TYPES.TEXT:
             case TYPES.UNIT:
             case TYPES.PRICE:
+                return ProductTemplateNumeric;
+            case TYPES.TEXT:
                 return ProductTemplateSingleLine;
             case 'SECTION TITLE':
                 return ProductTemplateSection;
