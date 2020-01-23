@@ -6,7 +6,7 @@
     <label
         class="info-hint"
         :title="hint">
-        <IconError size="16" />
+        <IconError size="24" />
     </label>
 </template>
 
@@ -34,5 +34,6 @@ export default {
         align-items: center;
         width: 24px;
         height: 24px;
+        transform: scale(0.8);
     }
 </style>

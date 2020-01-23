@@ -10,10 +10,11 @@
         @dragstart="onDragStart"
         @dragend="onDragEnd">
         <slot name="content" />
-        <div
+        <IconResize
             v-if="!disabled"
+            size="8"
             class="layout-element__resizer"
-            @mousedown="initResizeDrag" />
+            @mousedown.native="initResizeDrag" />
     </div>
 </template>
 
@@ -42,12 +43,16 @@ import {
     removeLayoutElementCopyFromDocumentBody,
 } from '@Templates/models/layout/LayoutElementCopy';
 import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
+import IconResize from '@Core/components/Icons/Others/IconResize';
 
 const registerResizeEventListenersModule = () => import('@Core/models/resize/registerResizeEventListeners');
 const unregisterResizeEventListenersModule = () => import('@Core/models/resize/unregisterResizeEventListeners');
 
 export default {
     name: 'LayoutElement',
+    components: {
+        IconResize,
+    },
     props: {
         index: {
             type: Number,
@@ -344,10 +349,8 @@ export default {
 
         &__resizer {
             position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 10px;
-            height: 10px;
+            bottom: 2px;
+            right: 2px;
             cursor: se-resize;
         }
 

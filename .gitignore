@@ -16,7 +16,7 @@ npm-debug.log
 .nuxt
 
 # Nuxt generate
-dist
+/dist
 /build
 !/build/.gitkeep
 /tmp

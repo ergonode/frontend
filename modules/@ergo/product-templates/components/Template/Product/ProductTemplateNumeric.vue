@@ -30,7 +30,7 @@ export default {
     },
     computed: {
         inputType() {
-            return { type: 'text' };
+            return { type: 'number' };
         },
     },
     watch: {
