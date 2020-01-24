@@ -117,5 +117,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import "~assets/scss/grid/pagination.scss";
+    .pagination {
+        display: grid;
+        align-items: center;
+        grid-auto-flow: column;
+        column-gap: 8px;
+        margin: auto;
+
+        &__text, &__number {
+            color: $GRAPHITE_DARK;
+        }
+
+        &__icon {
+            color: $GRAPHITE_LIGHT;
+        }
+
+        .non-visible {
+            visibility: hidden;
+        }
+    }
 </style>

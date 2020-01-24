@@ -29,7 +29,7 @@
             </ListElementAction>
             <ListElementDescription>
                 <ListElementTitle
-                    small
+                    :small="true"
                     :hint="option.hint"
                     :title="option.value || `#${option.key}`" />
             </ListElementDescription>
@@ -39,13 +39,15 @@
 
 <script>
 import { mapState } from 'vuex';
+import ListElementDescription from '~/core/components/List/ListElementDescription';
+import ListElementTitle from '~/core/components/List/ListElementTitle';
 
 export default {
     name: 'GridEditStatusSelectCell',
     components: {
         TranslationSelect: () => import('~/core/components/Inputs/Select/TranslationSelect'),
-        ListElementDescription: () => import('~/core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('~/core/components/List/ListElementTitle'),
+        ListElementDescription,
+        ListElementTitle,
         ListElementAction: () => import('~/core/components/List/ListElementAction'),
         PointBadge: () => import('~/core/components/Badges/PointBadge'),
     },

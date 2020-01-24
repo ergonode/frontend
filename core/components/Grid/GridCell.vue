@@ -139,7 +139,7 @@ export default {
                 return false;
             }
 
-            const gridContentEl = document.documentElement.querySelector('.grid__content');
+            const gridBodyEl = document.documentElement.querySelector('.grid__body');
 
             switch (keyCode) {
             case 13:
@@ -160,24 +160,24 @@ export default {
                 break;
             case 37:
                 // Key: LEFT
-                element = gridContentEl.querySelector(`.coordinates-${this.column - 1}-${this.row}`);
+                element = gridBodyEl.querySelector(`.coordinates-${this.column - 1}-${this.row}`);
                 break;
             case 38:
                 // Key: UP
-                element = gridContentEl.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
+                element = gridBodyEl.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
                 break;
             case 39:
             case 9:
                 // Key: RIGHT || TAB
-                element = gridContentEl.querySelector(`.coordinates-${this.column + 1}-${this.row}`);
+                element = gridBodyEl.querySelector(`.coordinates-${this.column + 1}-${this.row}`);
                 if (!element) {
                     // We get out of bounds - go to the next line
-                    element = gridContentEl.querySelector(`.coordinates-0-${this.row + 1}`);
+                    element = gridBodyEl.querySelector(`.coordinates-0-${this.row + 1}`);
                 }
                 break;
             case 40:
                 // Key: DOWN
-                element = gridContentEl.querySelector(`.coordinates-${this.column}-${this.row + 1}`);
+                element = gridBodyEl.querySelector(`.coordinates-${this.column}-${this.row + 1}`);
                 break;
             default: break;
             }
@@ -186,7 +186,7 @@ export default {
 
             if (element && (keyCode === 9 || keyCode === 40 || keyCode === 38)) {
                 const isElementInsideViewPort = element.offsetTop + element.offsetHeight
-                    > gridContentEl.offsetHeight + gridContentEl.scrollTop;
+                    > gridBodyEl.offsetHeight + gridBodyEl.scrollTop;
                 if (isElementInsideViewPort) {
                     element.scrollIntoView(false);
                 }

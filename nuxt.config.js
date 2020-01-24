@@ -42,8 +42,8 @@ module.exports = {
     css: [
         '~assets/scss/plugins-config.scss',
         '~assets/scss/font-inter-ui.scss',
-        '~assets/scss/theme.scss',
         '~assets/scss/typography.scss',
+        '~assets/scss/input.scss',
     ],
     router: {
         middleware: ['privilegeRoutingCheck', 'redirectToPath'],

@@ -11,7 +11,7 @@
                 :columns="columns"
                 :basic-filters="basicFilters"
                 :sorted-column="sortedColumn"
-                :max-rows="filtered"
+                :max-rows="maxRowsPerPage"
                 :max-page="numberOfPages"
                 :current-page="currentPage"
                 :cell-values="cellValues"

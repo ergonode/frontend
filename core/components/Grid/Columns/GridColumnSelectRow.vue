@@ -7,11 +7,11 @@
         <slot
             name="headerCheckCell"
             :column="0"
-            :row="getRowIndex(0)">
+            :row="rowsOffset">
             <GridCell
                 editing-allowed
                 spacebar-edition
-                :row="getRowIndex(0)"
+                :row="rowsOffset"
                 :column="0"
                 @edit="onRowsSelect">
                 <GridPresentationCheckCell
@@ -23,7 +23,7 @@
             v-if="isBasicFilters"
             :locked="true"
             :spacebar-edition="false"
-            :row="getRowIndex(1)"
+            :row="rowsOffset + basicFiltersOffset"
             :column="0">
             <GridCheckPlaceholderCell />
         </GridCell>
@@ -31,13 +31,13 @@
             <slot
                 name="checkCell"
                 :column="0"
-                :row="getRowIndex(rowIndex + rowsOffset)">
+                :row="rowsOffset + rowIndex + basicFiltersOffset + 1">
                 <GridEditSelectRowCell
                     :key="id"
                     :column="0"
-                    :row="getRowIndex(rowIndex + rowsOffset)"
+                    :row="rowsOffset + rowIndex + basicFiltersOffset + 1"
                     :is-selected="isSelectedAllRows
-                        || selectedRows[getRowIndex(rowIndex + rowsOffset)]"
+                        || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
                     @select="onSelectRow" />
             </slot>
         </template>
@@ -78,14 +78,6 @@ export default {
             type: Boolean,
             default: true,
         },
-        currentPage: {
-            type: Number,
-            required: true,
-        },
-        numberOfDisplayedElements: {
-            type: Number,
-            required: true,
-        },
     },
     computed: {
         pinnedColumnClass() {
@@ -105,12 +97,11 @@ export default {
 
             return 2;
         },
+        basicFiltersOffset() {
+            return this.isBasicFilters ? 1 : 0;
+        },
     },
     methods: {
-        getRowIndex(index) {
-            return index
-                + ((this.currentPage - 1) * this.numberOfDisplayedElements);
-        },
         onRowsSelect() {
             this.$emit('rowsSelect', !this.isSelectedAllRows);
         },

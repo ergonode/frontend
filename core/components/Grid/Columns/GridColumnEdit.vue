@@ -6,25 +6,25 @@
     <div :class="pinnedColumnClass">
         <GridCell
             :column="columnIndex"
-            :row="getRowIndex(0)"
+            :row="rowsOffset"
             :spacebar-edition="false"
             :locked="true">
             <GridPresentationEditHeaderCell />
         </GridCell>
         <GridCell
-            v-if="basicFilters"
+            v-if="isBasicFilters"
             :column="columnIndex"
-            :row="getRowIndex(1)"
+            :row="rowsOffset + basicFiltersOffset"
             :spacebar-edition="false"
             :locked="true" />
         <GridCell
             v-for="(rowLink, index) in rowLinks"
             :key="rowLink.id"
             :column="columnIndex"
-            :row="getRowIndex(index + rowsOffset)"
             :spacebar-edition="true"
-            :selected="isSelectedAllRows
-                || selectedRows[getRowIndex(index + rowsOffset)]"
+            :row="rowsOffset + index + basicFiltersOffset + 1"
+            :is-selected="isSelectedAllRows
+                || selectedRows[rowsOffset + index + basicFiltersOffset + 1]"
             @edit="onEdit(rowLink)">
             <GridEditRowCell
                 :params="rowLink"
@@ -58,7 +58,7 @@ export default {
             type: Boolean,
             required: true,
         },
-        basicFilters: {
+        isBasicFilters: {
             type: Boolean,
             default: true,
         },
@@ -68,14 +68,6 @@ export default {
         },
         selectedRows: {
             type: Object,
-            required: true,
-        },
-        currentPage: {
-            type: Number,
-            required: true,
-        },
-        numberOfDisplayedElements: {
-            type: Number,
             required: true,
         },
     },
@@ -88,14 +80,13 @@ export default {
                 },
             ];
         },
+        basicFiltersOffset() {
+            return this.isBasicFilters ? 1 : 0;
+        },
     },
     methods: {
         onEdit(route) {
             this.$emit('editRow', route);
-        },
-        getRowIndex(index) {
-            return index
-                + ((this.currentPage - 1) * this.numberOfDisplayedElements);
         },
     },
 };

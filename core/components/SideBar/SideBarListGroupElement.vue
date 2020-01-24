@@ -17,9 +17,7 @@
         <NuxtLink
             :to="{ path: route.path }"
             class="side-bar-list-group-element__link">
-            <div class="side-bar-list-group-element__icon">
-                <div class="side-bar-list-group-element__dot" />
-            </div>
+            <div class="side-bar-list-group-element__dot" />
             <span
                 class="side-bar-list-group-element__title"
                 v-text="route.meta.title" />
@@ -124,13 +122,8 @@ export default {
             text-decoration: none;
         }
 
-        &__icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
         &__dot {
+            justify-self: center;
             width: 4px;
             height: 4px;
             border-radius: 2px;
