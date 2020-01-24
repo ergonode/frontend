@@ -4,7 +4,7 @@
  */
 <template>
     <div class="page-selector">
-        <span class="page-selector__text font--medium-12-16">
+        <span class="page-selector__text">
             Show
         </span>
         <Select
@@ -15,7 +15,7 @@
             small
             @input="onValueChange" />
         <span
-            class="page-selector__text font--medium-12-16"
+            class="page-selector__text"
             v-text="infoText" />
     </div>
 </template>
@@ -55,5 +55,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import "~assets/scss/grid/page-selector.scss";
+    .page-selector {
+        display: grid;
+        align-items: center;
+        grid-auto-flow: column;
+        column-gap: 8px;
+
+        &__text {
+            flex: 0 0 auto;
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_12_16;
+        }
+    }
 </style>

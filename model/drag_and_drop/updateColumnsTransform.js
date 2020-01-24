@@ -90,7 +90,7 @@ function getUpperBoundsTransforms(
 }
 
 export default function (targetGhostIndex, draggedElIndex, ghostIndex) {
-    const contentGrid = document.documentElement.querySelector('.grid__content');
+    const contentGrid = document.documentElement.querySelector('.grid__body');
     const { width: ghostWidth } = contentGrid.children[draggedElIndex]
         .getBoundingClientRect();
     const ghostTransform = +contentGrid.children[draggedElIndex].style.transform.replace(/[^0-9\-.,]/g, '');

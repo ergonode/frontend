@@ -18,11 +18,10 @@
         <div
             class="side-bar-list-group__activator"
             @click="onGroupSelect">
-            <div class="side-bar-list-group__icon">
-                <Component
-                    :is="listIcon"
-                    :fill-color="listIconFillColor" />
-            </div>
+            <Component
+                class="side-bar-list-group__icon"
+                :is="listIcon"
+                :fill-color="listIconFillColor" />
             <FadeSideBarTextTransition>
                 <span
                     v-if="isExpanded"
@@ -178,9 +177,7 @@ export default {
         }
 
         &__icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-self: center;
         }
 
         &__expanded-title {

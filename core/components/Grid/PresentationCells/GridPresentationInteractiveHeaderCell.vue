@@ -66,18 +66,20 @@ import { removeCookieById } from '~/model/cookies';
 import { COLUMNS_IDS } from '~/defaults/grid/cookies';
 import { SORTING_ORDER } from '~/defaults/icons';
 import { GRAPHITE_LIGHT } from '~/assets/scss/_variables/_colors.scss';
+import ListElementDescription from '~/core/components/List/ListElementDescription';
+import ListElementTitle from '~/core/components/List/ListElementTitle';
 
 export default {
     name: 'GridPresentationInteractiveHeaderCell',
     inject: ['getEditingCellCoordinates'],
     components: {
+        ListElementDescription,
+        ListElementTitle,
         MenuButton: () => import('~/core/components/Buttons/MenuButton'),
         IconArrowSort: () => import('~/components/Icon/Arrows/IconArrowSort'),
         IconDots: () => import('~/components/Icon/Others/IconDots'),
         List: () => import('~/core/components/List/List'),
         ListElement: () => import('~/core/components/List/ListElement'),
-        ListElementDescription: () => import('~/core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('~/core/components/List/ListElementTitle'),
         CheckBox: () => import('~/core/components/Inputs/CheckBox'),
         GridPresentationHeaderCell: () => import('~/core/components/Grid/PresentationCells/GridPresentationHeaderCell'),
     },
@@ -199,7 +201,7 @@ export default {
             }
         },
         getColumnAtIndex(index) {
-            const contentGrid = document.querySelector('.grid__content');
+            const contentGrid = document.querySelector('.grid__body');
             const { children } = contentGrid;
 
             return children[index];
@@ -213,7 +215,7 @@ export default {
             this.removeColumnHover();
         },
         isHeaderFocused() {
-            const contentGrid = document.querySelector('.grid__content');
+            const contentGrid = document.querySelector('.grid__body');
             const headerEls = contentGrid.querySelectorAll('.header-cell__actions--focused');
 
             return headerEls.length;

@@ -41,16 +41,18 @@
 <script>
 import { ARROW } from '~/defaults/icons';
 import Button from '~/core/components/Buttons/Button';
+import ListElementDescription from '~/core/components/List/ListElementDescription';
+import ListElementTitle from '~/core/components/List/ListElementTitle';
 
 export default {
     name: 'MenuButton',
     inheritAttrs: false,
     components: {
         Button,
+        ListElementDescription,
+        ListElementTitle,
         List: () => import('~/core/components/List/List'),
         ListElement: () => import('~/core/components/List/ListElement'),
-        ListElementDescription: () => import('~/core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('~/core/components/List/ListElementTitle'),
         IconArrowDropDown: () => import('~/components/Icon/Arrows/IconArrowDropDown'),
         FadeTransition: () => import('~/core/components/Transitions/FadeTransition'),
     },

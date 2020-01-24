@@ -2,131 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
-    <div
-        :class="['grid', {
-            'grid--placeholder': isPlaceholder,
-            'grid--disabled': isColumnExists,
-        }]">
-        <GridHeader
-            :title="title"
-            :row-height="rowHeight"
-            :layout="layout"
-            @rowHeightChange="onRowHeightChange"
-            @layoutChange="onLayoutChange" />
-        <div
-            ref="gridContent"
-            class="grid__content"
-            :style="templateColumns"
-            @dragleave="onDragLeave">
-            <GridColumnSelectRow
-                v-if="isSelectColumn"
-                :style="templateRows"
-                :row-ids="rowIds"
-                :rows-offset="rowsOffset"
-                :row-height="rowHeight"
-                :is-selected-all-rows="isSelectedAllRows"
-                :selected-rows="selectedRows"
-                :is-basic-filters="isBasicFilters"
-                :current-page="currentPage"
-                :number-of-displayed-elements="maxRows"
-                :is-pinned="isSelectColumnPinned"
-                @rowSelect="onSelectRow"
-                @rowsSelect="onSelectAllRows">
-                <template #headerCheckCell="{ row, column }">
-                    <slot
-                        name="headerSelectAllRowsCell"
-                        :row="row"
-                        :column="column" />
-                </template>
-                <template #checkCell="{ row, column }">
-                    <slot
-                        name="selectRowCell"
-                        :row="row"
-                        :column="column" />
-                </template>
-            </GridColumnSelectRow>
-            <GridColumnData
-                v-for="(column, colIndex) in columns"
-                :key="column.id"
-                :style="templateRows"
-                :draggable="isDraggable"
-                :index="colIndex + columnsOffset"
-                :column="column"
-                :column-offset="columnsOffset"
-                :row-height="rowHeight"
-                :is-header-focused="isHeaderFocused"
-                :is-mouse-over-grid="isMouseOverGrid"
-                @mouseOverGrid="onMouseOverGrid"
-                @removeColumnAtIndex="onRemoveColumnAtIndex"
-                @changeColumnsPosition="onChangeColumnsPosition"
-                @updateColumnWidthAtIndex="onUpdateColumnWidthAtIndex"
-                @drop="onDrop">
-                <GridHeaderCell
-                    :column-index="colIndex + columnsOffset"
-                    :sorted-column="sortedColumn"
-                    :column="column"
-                    :row-index="getRowIndex(0)"
-                    @focus="onHeaderFocus"
-                    @sort="onSortColumn"
-                    @removeColumnAtIndex="onRemoveColumnAtIndex" />
-                <GridFilterCell
-                    v-if="isBasicFilters"
-                    :column-index="colIndex + columnsOffset"
-                    :row-index="getRowIndex(1)"
-                    :column="column"
-                    :filter="basicFilters[column.id]"
-                    :disabled="typeof advancedFiltersValues[column.id] !== 'undefined'"
-                    @filter="onFilterChange" />
-                <slot
-                    v-for="(id, rowIndex) in rowIds"
-                    name="cell"
-                    :column="column"
-                    :row-id="id"
-                    :row-index="getRowIndex(rowIndex + rowsOffset)"
-                    :column-index="colIndex + columnsOffset"
-                    :cell-data="cellValues[id][column.id]">
-                    <GridDataCell
-                        :key="`${id}-${column.id}`"
-                        :column-index="colIndex + columnsOffset"
-                        :row-index="getRowIndex(rowIndex + rowsOffset)"
-                        :row-id="id"
-                        :row-ids="rowIds"
-                        :cell-data="cellValues[id][column.id]"
-                        :column="column"
-                        :draft="drafts[id]"
-                        :is-selected="isSelectedAllRows
-                            || selectedRows[getRowIndex(rowIndex + rowsOffset)]"
-                        :editing-privilege-allowed="editingPrivilegeAllowed" />
-                </slot>
-            </GridColumnData>
-            <GridColumnEdit
-                v-if="isEditColumn"
-                :style="templateRows"
-                :is-selected-all-rows="isSelectedAllRows"
-                :selected-rows="selectedRows"
-                :current-page="currentPage"
-                :number-of-displayed-elements="maxRows"
-                :rows-offset="rowsOffset"
-                :column-index="editColumnIndex"
-                :is-basic-filters="isBasicFilters"
-                :row-links="rowLinks"
-                :is-pinned="isEditColumnPinned"
-                @editRow="onEditRow" />
-            <GridColumnSentinel
-                v-if="isSelectColumn"
-                :pinned-state="columnPinnedState.LEFT"
-                @sticky="onStickyChange" />
-            <GridColumnSentinel
-                v-if="isEditColumn"
-                :style="{ gridColumn: `${editColumnIndex} / ${editColumnIndex}`}"
-                :pinned-state="columnPinnedState.RIGHT"
-                @sticky="onStickyChange" />
-        </div>
-        <GridPlaceholder v-if="isPlaceholder" />
-    </div>
-</template>
-
 <script>
 import { mapState, mapActions } from 'vuex';
 import {
@@ -157,6 +32,227 @@ export default {
         GridFilterCell: () => import('~/core/components/Grid/GridFilterCell'),
         GridHeaderCell: () => import('~/core/components/Grid/GridHeaderCell'),
         GridPlaceholder: () => import('~/core/components/Grid/GridPlaceholder'),
+    },
+    render(createElement) {
+        const getColumnCells = (column, columnIndex) => {
+            const cells = [];
+            const GridHeaderCell = createElement('GridHeaderCell', {
+                attrs: {
+                    'column-index': columnIndex,
+                    'sorted-column': this.sortedColumn,
+                    column,
+                    'row-index': this.rowsOffset,
+                },
+                on: {
+                    focus: this.onHeaderFocus,
+                    sort: this.onSortColumn,
+                    removeColumnAtIndex: this.onRemoveColumnAtIndex,
+                },
+            });
+            let rowIndex = 0;
+
+            cells.push(GridHeaderCell);
+
+            if (this.isBasicFilters) {
+                rowIndex += 1;
+                const GridFilterCell = createElement('GridFilterCell', {
+                    attrs: {
+                        'column-index': columnIndex,
+                        'row-index': this.rowsOffset + rowIndex,
+                        column,
+                        filter: this.basicFilters[column.id],
+                        disabled: typeof this.advancedFiltersValues[column
+                            .id] !== 'undefined',
+                    },
+                    on: {
+                        filter: this.onFilterChange,
+                    },
+                });
+
+                cells.push(GridFilterCell);
+            }
+
+            const { length } = this.rowIds;
+
+            for (let i = 0; i < length; i += 1) {
+                rowIndex += 1;
+                const fixedRowIndex = this.rowsOffset + rowIndex;
+                const id = this.rowIds[i];
+
+                if (this.$scopedSlots && this.$scopedSlots.cell) {
+                    cells.push(this.$scopedSlots.cell({
+                        column,
+                        rowId: id,
+                        rowIndex: fixedRowIndex,
+                        columnIndex,
+                        cellData: this.cellValues[id][column.id],
+                    }));
+                } else {
+                    cells.push(createElement('GridDataCell', {
+                        key: (`${id}-${column.id}`),
+                        attrs: {
+                            'column-index': columnIndex,
+                            'row-index': fixedRowIndex,
+                            'row-id': id,
+                            'row-ids': this.rowIds,
+                            'cell-data': this.cellValues[id][column.id],
+                            column,
+                            draft: this.drafts[id],
+                            'is-selected': this.isSelectedAllRows
+                                || this.selectedRows[fixedRowIndex],
+                            'editing-privilege-allowed': this.editingPrivilegeAllowed,
+                        },
+                    }));
+                }
+            }
+
+            return cells;
+        };
+        const getGridColumns = () => {
+            const { length } = this.columns;
+            const gridColumns = [];
+            let columnIndex = 0;
+
+            if (this.isSelectColumn) {
+                columnIndex += 1;
+                const { headerSelectAllRowsCell, selectRowCell } = this.$scopedSlots;
+
+                gridColumns.push(createElement('GridColumnSelectRow', {
+                    key: columnIndex,
+                    style: this.templateRows,
+                    attrs: {
+                        'row-ids': this.rowIds,
+                        'rows-offset': this.rowsOffset,
+                        'row-height': this.rowHeight,
+                        'is-selected-all-rows': this.isSelectedAllRows,
+                        'selected-rows': this.selectedRows,
+                        'is-basic-filters': this.isBasicFilters,
+                        'is-pinned': this.isSelectColumnPinned,
+                    },
+                    slot: ['headerSelectAllRowsCell', 'selectRowCell'],
+                    on: {
+                        rowSelect: this.onSelectRow,
+                        rowsSelect: this.onSelectAllRows,
+                    },
+                    scopedSlots: {
+                        headerCheckCell(props) {
+                            return headerSelectAllRowsCell ? headerSelectAllRowsCell(props) : null;
+                        },
+                        checkCell(props) {
+                            return selectRowCell ? selectRowCell(props) : null;
+                        },
+                    },
+                }));
+            }
+
+            for (let i = 0; i < length; i += 1) {
+                gridColumns.push(createElement('GridColumnData', {
+                    key: this.columns[i].id,
+                    style: this.templateRows,
+                    attrs: {
+                        draggable: this.isDraggable,
+                        index: i + this.columnsOffset,
+                        column: this.columns[i],
+                        'column-offset': this.columnsOffset,
+                        'row-height': this.rowHeight,
+                        'is-header-focused': this.isHeaderFocused,
+                        'is-mouse-over-grid': this.isMouseOverGrid,
+                    },
+                    slot: 'cell',
+                    on: {
+                        mouseOverGrid: this.onMouseOverGrid,
+                        removeColumnAtIndex: this.onRemoveColumnAtIndex,
+                        changeColumnsPosition: this.onChangeColumnsPosition,
+                        updateColumnWidthAtIndex: this.onUpdateColumnWidthAtIndex,
+                        drop: this.onDrop,
+                    },
+                }, getColumnCells(this.columns[i], columnIndex)));
+
+                columnIndex += 1;
+            }
+
+            if (this.isSelectColumn) {
+                gridColumns.push(createElement('GridColumnSentinel', {
+                    attrs: {
+                        'pinned-state': PINNED_COLUMN_STATE.LEFT,
+                    },
+                    on: {
+                        sticky: this.onStickyChange,
+                    },
+                }));
+            }
+
+            if (this.isEditColumn) {
+                columnIndex += 1;
+                gridColumns.push(createElement('GridColumnEdit', {
+                    key: columnIndex,
+                    style: this.templateRows,
+                    attrs: {
+                        'is-selected-all-rows': this.isSelectedAllRows,
+                        'selected-rows': this.selectedRows,
+                        'rows-offset': this.rowsOffset,
+                        'column-index': columnIndex,
+                        'is-basic-filters': this.isBasicFilters,
+                        'row-links': this.rowLinks,
+                        'is-pinned': this.isEditColumnPinned,
+                    },
+                    on: {
+                        editRow: this.onEditRow,
+                    },
+                }));
+                gridColumns.push(createElement('GridColumnSentinel', {
+                    style: ({
+                        gridColumn: (`${columnIndex} / ${columnIndex}`),
+                    }),
+                    attrs: {
+                        'pinned-state': PINNED_COLUMN_STATE.RIGHT,
+                    },
+                    on: {
+                        sticky: this.onStickyChange,
+                    },
+                }));
+            }
+
+            return gridColumns;
+        };
+
+        const GridHeader = createElement('GridHeader', {
+            attrs: {
+                title: this.title,
+                'row-height': this.rowHeight,
+                layout: this.layout,
+            },
+            on: {
+                rowHeightChange: this.onRowHeightChange,
+                layoutChange: this.onLayoutChange,
+            },
+        });
+        const GridBody = createElement('div', {
+            ref: 'gridBody',
+            staticClass: 'grid__body',
+            style: (this.templateColumns),
+            on: {
+                dragleave: this.onDragLeave,
+            },
+        }, getGridColumns());
+
+        const gridElements = [
+            GridHeader,
+            GridBody,
+        ];
+
+        if (this.isPlaceholder) {
+            gridElements.push(createElement('GridPlaceholder'));
+        }
+
+        return createElement('div', {
+            class: [
+                'grid',
+                {
+                    'grid--placeholder': this.isPlaceholder,
+                    'grid--disabled': this.isColumnExists,
+                }],
+        }, gridElements);
     },
     props: {
         title: {
@@ -288,34 +384,24 @@ export default {
                 gridTemplateColumns: this.columnWidths.join(' '),
             };
         },
+        rowsOffset() {
+            return (this.currentPage - 1) * this.maxRows;
+        },
         advancedFiltersValues() {
             const { length } = this.advancedFilters;
             const advancedFiltersValues = {};
 
             for (let i = 0; i < length; i += 1) {
                 if (!this.advancedFilters[i].isGhost
-                    && Object.keys(this.advancedFilters[i].value).length > 1) {
+                        && Object.keys(this.advancedFilters[i].value).length > 1) {
                     advancedFiltersValues[this.advancedFilters[i].id] = true;
                 }
             }
 
             return advancedFiltersValues;
         },
-        columnPinnedState() {
-            return PINNED_COLUMN_STATE;
-        },
-        editColumnIndex() {
-            let index = this.columns.length;
-
-            if (this.isSelectColumn) index += 1;
-
-            return index;
-        },
         columnsOffset() {
             return this.isSelectColumn ? 1 : 0;
-        },
-        rowsOffset() {
-            return this.isBasicFilters ? 2 : 1;
         },
         templateRows() {
             const headerRowsTemplate = this.isBasicFilters ? `${ROW_HEIGHT.MEDIUM}px ${ROW_HEIGHT.MEDIUM}px` : `${ROW_HEIGHT.MEDIUM}px`;
@@ -350,10 +436,6 @@ export default {
         getEditingCellCoordinates() {
             return this.editingCellCoordinates;
         },
-        getRowIndex(index) {
-            return index
-                + ((this.currentPage - 1) * this.maxRows);
-        },
         onStickyChange({
             isSticky, state,
         }) {
@@ -364,13 +446,13 @@ export default {
             }
         },
         onClickOutside(event) {
-            const { gridContent } = this.$refs;
+            const { gridBody } = this.$refs;
             const isVisible = !!(
-                gridContent.offsetWidth
-                || gridContent.offsetHeight
-                || gridContent.getClientRects().length);
+                gridBody.offsetWidth
+                    || gridBody.offsetHeight
+                    || gridBody.getClientRects().length);
 
-            if (!gridContent.contains(event.target) && isVisible) {
+            if (!gridBody.contains(event.target) && isVisible) {
                 // Dismiss editable cell mode
 
                 this.setEditingCellCoordinates();
@@ -387,8 +469,8 @@ export default {
 
             if (xPos === 0 && yPos === 0) return false;
 
-            const { gridContent } = this.$refs;
-            const isOutOfBounds = isMouseOutOfBoundsElement(gridContent, xPos, yPos);
+            const { gridBody } = this.$refs;
+            const isOutOfBounds = isMouseOutOfBoundsElement(gridBody, xPos, yPos);
 
             if (isOutOfBounds || isTrashBelowMouse(xPos, yPos)) {
                 this.isMouseOverGrid = false;
@@ -456,11 +538,11 @@ export default {
         removeGhostColumn() {
             if (this.draggedElIndex !== -1) {
                 const index = this.draggedElIndex - this.columnsOffset;
-                const { gridContent } = this.$refs;
-                const { length } = gridContent.children;
+                const { gridBody } = this.$refs;
+                const { length } = gridBody.children;
 
                 for (let i = 0; i < length; i += 1) {
-                    gridContent.children[i].style.transform = null;
+                    gridBody.children[i].style.transform = null;
                 }
 
                 this.columnWidths.splice(this.draggedElIndex, 1);
@@ -484,18 +566,18 @@ export default {
         height: 0;
 
         &--placeholder {
-            #{$grid}__content {
+            #{$grid}__body {
                 flex-shrink: 0;
             }
         }
 
         &--disabled {
-            #{$grid}__content::after {
+            #{$grid}__body::after {
                 z-index: $Z_INDEX_LVL_4;
             }
         }
 
-        &__content {
+        &__body {
             position: relative;
             display: grid;
             border-left: $BORDER_1_GREY;

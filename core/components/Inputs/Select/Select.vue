@@ -125,6 +125,8 @@ import { ARROW } from '~/defaults/icons';
 import FadeTransition from '~/core/components/Transitions/FadeTransition';
 import DropDown from '~/core/components/Inputs/Select/Contents/DropDown';
 import IconArrowDropDown from '~/components/Icon/Arrows/IconArrowDropDown';
+import ListElementDescription from '~/core/components/List/ListElementDescription';
+import ListElementTitle from '~/core/components/List/ListElementTitle';
 
 export default {
     name: 'Select',
@@ -132,11 +134,11 @@ export default {
         FadeTransition,
         DropDown,
         IconArrowDropDown,
+        ListElementDescription,
+        ListElementTitle,
         List: () => import('~/core/components/List/List'),
         ListElement: () => import('~/core/components/List/ListElement'),
         ListElementAction: () => import('~/core/components/List/ListElementAction'),
-        ListElementDescription: () => import('~/core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('~/core/components/List/ListElementTitle'),
         DropDownListSearch: () => import('~/core/components/Inputs/Select/Contents/DropDownListSearch'),
         CheckBox: () => import('~/core/components/Inputs/CheckBox'),
         InfoHint: () => import('~/core/components/Hints/InfoHint'),
@@ -532,7 +534,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    @import "~assets/scss/input.scss";
-</style>
