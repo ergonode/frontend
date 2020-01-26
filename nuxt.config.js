@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 /* eslint-disable array-callback-return */
 /*
@@ -6,6 +7,8 @@
  */
 require('dotenv').config({ path: '.env' });
 const { modulesConfig, inactiveModulesConfig } = require('./plugins/moduleLoader');
+// const nodeExternals = require('webpack-node-externals');
+// const TerserPlugin = require('terser-webpack-plugin');
 const PATH = require('path');
 const PKG = require('./package');
 
@@ -71,7 +74,8 @@ module.exports = {
     },
     build: {
         parallel: true,
-        cssSourceMap: false,
+        // cache: true,
+        // optimizeCSS: true,
         extend(config, { isDev, isClient }) {
             const alias = config.resolve.alias || {};
             const { aliases = {} } = modulesConfig.nuxt;
@@ -90,26 +94,66 @@ module.exports = {
             if (isClient && isDev) {
                 config.devtool = 'source-map';
             }
+            // if (!isDev) {
+            // config.target = 'node';
+            // config.externals = [
+            //     nodeExternals({
+            //         // whitelist: [/@babel\/runtime/],
+            //         modulesFromFile: {
+            //             exclude: ['devDependencies'],
+            //             include: ['dependencies'],
+            //         },
+            //     }),
+            // ];
+            // }
+            // if (isDev) {
+            //     config.mode = 'development';
+            // } else {
+            //     config.mode = 'production';
+            // }
+            // config.module.rules.push(
+            //     {
+            //         // test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
+            //         // test: /\.test\.(js|jsx|ts|tsx)$/,
+            //         // exclude: [
+            //         //     // PATH.resolve(__dirname, 'modules/@ergo/import'),
+            //         //     /(.*)\/(__tests__|tests)\/(.*)/,
+            //         // ],
+            //         test: /\.js$/,
+            //         loader: 'babel-loader',
+            //         include: [],
+            //         // exclude: [
+            //         //     /(tests|__tests__)/,
+            //         //     /modules\/@ergo\/attributes\/components\/Pages\/__tests__/,
+            //         //     /(modules)\/(.*)(tests|__tests__)\/(.*)\//,
+            //         //     PATH.resolve(__dirname, 'modules/@ergo/attributes/components/Pages/__tests__'),
+            //         //     // /\.test\.(js|jsx|ts|tsx)$/,
+            //         // ],
+            //     },
+            // );
             // config.entry = {
             //     vendor2: ['lodash', 'diff', 'nise'],
             //     // app: './entry',
             // };
         },
-        splitChunks: {
-            layouts: true,
-            pages: true,
-            commons: true,
-            modules: true,
-        },
-        filenames: {
-            app: '[name].[chunkhash].js',
-        },
         optimization: {
+            // minimize: true,
+            // minimizer: [new TerserPlugin()],
+            runtimeChunk: 'single',
             splitChunks: {
                 chunks: 'all',
+                maxInitialRequests: Infinity,
+                minSize: 0,
                 cacheGroups: {
                     default: false,
                     commons: {
+                        test: /node_modules[\\/](vue|vue-loader|vue-router|vuex|vue-meta|core-js|@babel\/runtime|axios|webpack|setimmediate|timers-browserify|process|regenerator-runtime|cookie|js-cookie|is-buffer|dotprop|nuxt\.js)[\\/]/,
+                        chunks: 'all',
+                        name: 'vueLib',
+                        // reuseExistingChunk: true,
+                        priority: 10,
+                    },
+                    vendors: {
                         test: /[\\/]node_modules[\\/]/,
                         chunks: 'all',
                         name: 'vendors',
@@ -132,13 +176,17 @@ module.exports = {
                         name: 'coreComponentsModule',
                         priority: -10,
                         enforce: true,
-                        reuseExistingChunk: true,
+                    },
+                    styles: {
+                        test: /\.css$/,
+                        name: 'styles',
+                        chunks: 'all',
+                        enforce: true,
                     },
                     ...nuxtConfig.chunks,
                 },
             },
         },
-        optimizeCSS: true,
     },
     vue: {
         config: {

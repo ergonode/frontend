@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
-import { JWT_KEY } from '@Core/defaults/authenticate/cookies';
+import { JWT_KEY } from '@Authentication/defaults/cookies';
 
 const onError = () => {};
 

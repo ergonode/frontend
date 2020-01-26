@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { modulesConfig } from '~/plugins/moduleLoader';
-import { JWT_KEY } from '@Core/defaults/authenticate/cookies';
+import { JWT_KEY } from '@Authentication/defaults/cookies';
 
 export const actions = {
     async nuxtServerInit({ dispatch }) {
