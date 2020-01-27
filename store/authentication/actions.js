@@ -19,17 +19,10 @@ export default {
             return dispatch('getUser');
         }).catch(onError);
     },
-    async getUser({ commit, dispatch }) {
+    async getUser({ commit }) {
         await this.app.$axios.$get('profile').then((user) => {
-            if (user.email && user.first_name && user.last_name && user.role && user.privileges) {
-                commit(types.SET_USER, user);
-                commit(types.SET_LOGGED_STATE, true);
-            } else {
-                dispatch('alerts/addAlert', { type: 'error', message: 'Internal Server Error' }, { root: true });
-                dispatch('logout');
-            }
-        }).catch(() => {
-            dispatch('logout');
+            commit(types.SET_USER, user);
+            commit(types.SET_LOGGED_STATE, true);
         });
     },
     setLoggedState({ commit }, isLogged) {
