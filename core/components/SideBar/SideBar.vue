@@ -134,16 +134,16 @@ export default {
         justify-content: space-between;
         height: 100vh;
         background-color: $GRAPHITE_DARK;
-        transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        transition: width 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         overflow-x: hidden;
         overflow-y: auto;
+        will-change: width;
 
         &--expanded {
             width: 256px;
 
             #{$sidebar}__expand-btn {
-                align-self: flex-end;
-                transform: translateX(-20px);
+                transform: translateX(200px);
             }
         }
 
@@ -151,7 +151,7 @@ export default {
             width: 80px;
 
             #{$sidebar}__expand-btn {
-                align-self: center;
+                transform: translateX(24px);
             }
         }
 
@@ -162,7 +162,9 @@ export default {
         &__expand-btn {
             position: sticky;
             bottom: 20px;
+            width: 32px;
             border-radius: 16px;
+            transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
 
             &:hover {
                 background-color: $GREEN;

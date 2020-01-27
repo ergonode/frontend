@@ -6,7 +6,6 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                title="Users"
                 :editing-privilege-allowed="$hasAccess(['USER_UPDATE'])"
                 :columns="columns"
                 :basic-filters="basicFilters"

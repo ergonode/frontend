@@ -40,6 +40,6 @@ export default {
         align-items: center;
         width: 100%;
         height: 100%;
-        background-color: transparentize($GRAPHITE_COAL, 0.8);
+        background-color: transparentize($GRAPHITE_COAL, 0.2);
     }
 </style>
