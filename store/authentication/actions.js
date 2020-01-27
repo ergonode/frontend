@@ -5,8 +5,6 @@
 import { types } from './mutations';
 import { JWT_KEY } from '~/defaults/authenticate/cookies';
 
-const onError = () => {};
-
 export default {
     setAuth({ commit }, token) {
         commit(types.SET_JWT_TOKEN, token);
@@ -17,7 +15,7 @@ export default {
             commit(types.SET_JWT_TOKEN, token);
 
             return dispatch('getUser');
-        }).catch(onError);
+        });
     },
     async getUser({ commit }) {
         await this.app.$axios.$get('profile').then((user) => {
