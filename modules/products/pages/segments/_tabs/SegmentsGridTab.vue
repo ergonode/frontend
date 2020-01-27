@@ -6,7 +6,6 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                title="Segments"
                 :editing-privilege-allowed="$hasAccess(['SEGMENT_UPDATE'])"
                 :columns="columns"
                 :basic-filters="basicFilters"

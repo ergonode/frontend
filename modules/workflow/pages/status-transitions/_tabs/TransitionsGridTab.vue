@@ -6,7 +6,6 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                title="Transitions"
                 :editing-privilege-allowed="$hasAccess(['WORKFLOW_UPDATE'])"
                 :columns="columns"
                 :basic-filters="basicFilters"

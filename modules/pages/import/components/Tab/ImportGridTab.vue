@@ -6,7 +6,6 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                title="Imports"
                 :editing-privilege-allowed="$hasAccess(['IMPORT_UPDATE'])"
                 :columns="columns"
                 :basic-filters="basicFilters"

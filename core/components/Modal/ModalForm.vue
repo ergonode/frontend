@@ -114,7 +114,7 @@ export default {
             display: flex;
             flex: 0;
             justify-content: space-between;
-            padding: 12px 24px;
+            padding: 16px 24px;
             box-shadow: $ELEVATOR_6_DP;
         }
     }

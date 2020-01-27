@@ -47,7 +47,10 @@
                     v-else
                     class="advanced-filter__value"
                     v-text="filterValue" />
-                <IconArrowDropDown :state="arrowIconState" />
+                <IconArrowDropDown
+                    class="advanced-filter__icon"
+                    :state="arrowIconState"
+                    :fill-color="arrowIconFillColor" />
             </div>
         </div>
         <DropDown
@@ -79,6 +82,7 @@
 import { mapState, mapActions } from 'vuex';
 import { ARROW } from '~/defaults/icons';
 import { TYPES } from '~/defaults/attributes';
+import { WHITE, GRAPHITE_DARK } from '~/assets/scss/_variables/_colors.scss';
 import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
@@ -140,6 +144,9 @@ export default {
         }),
         isFilterExists() {
             return this.draggedElement === this.filter.id;
+        },
+        arrowIconFillColor() {
+            return this.isFilterExists ? WHITE : GRAPHITE_DARK;
         },
         filterHeader() {
             return getMappedColumnHeaderTitle(this.filter);
@@ -413,11 +420,16 @@ export default {
         position: relative;
         display: flex;
         height: 32px;
+        box-sizing: border-box;
+        background-color: $WHITESMOKE;
         cursor: pointer;
+        max-width: 200px;
+        overflow: hidden;
 
         &__activator {
             position: relative;
             display: flex;
+            overflow: hidden;
         }
 
         &__input {
@@ -429,11 +441,10 @@ export default {
 
         &__label {
             display: flex;
+            flex-shrink: 0;
             align-items: center;
-            border: 1px solid $GREY;
             padding: 0 8px;
             box-sizing: border-box;
-            background-color: $WHITESMOKE;
             color: $GRAPHITE_DARK;
             font: $FONT_BOLD_12_16;
         }
@@ -441,11 +452,15 @@ export default {
         &__details {
             display: flex;
             align-items: center;
-            padding: 0 2px 0 8px;
             box-sizing: border-box;
-            border-right: 1px solid $GREY;
-            border-top: 1px solid $GREY;
-            border-bottom: 1px solid $GREY;
+            padding-right: 4px;
+            overflow: hidden;
+        }
+
+        &__label, &__value {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
         &__placeholder {
@@ -460,25 +475,29 @@ export default {
             font: $FONT_MEDIUM_12_16;
         }
 
+        &__icon {
+            flex-shrink: 0;
+        }
+
         &--exists {
-            #{$filter}__label {
-                background-color: $GREEN;
-                box-shadow: $ELEVATOR_HOLE;
+            background-color: $GREEN;
+            box-shadow: $ELEVATOR_HOLE;
+
+            #{$filter}__label, #{$filter}__placeholder {
                 color: $WHITE;
             }
         }
 
         &--selected {
+            border: $BORDER_2_GREEN;
+            background-color: $WHITE;
+
             #{$filter}__label {
-                border-color: $GREEN;
-                background-color: $GREEN;
-                color: $WHITE;
+                padding-left: 6px;
             }
 
             #{$filter}__details {
-                border-color: $GREEN;
-                border-width: 2px;
-                padding: 0 1px 0 8px;
+                padding-right: 2px;
             }
         }
     }

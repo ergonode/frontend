@@ -6,7 +6,6 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                title="Product history"
                 :columns="columns"
                 :basic-filters="basicFilters"
                 :sorted-column="sortedColumn"

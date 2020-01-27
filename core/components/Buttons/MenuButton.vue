@@ -150,14 +150,6 @@ export default {
             height: 24px;
             padding: 0;
         }
-
-        &--menu-title {
-            padding: 0 8px;
-
-            #{$btn}__title {
-                margin: 0;
-            }
-        }
     }
 
     .btn__select-content {

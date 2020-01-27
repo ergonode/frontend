@@ -6,7 +6,6 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                title="Product statuses"
                 :editing-privilege-allowed="$hasAccess(['WORKFLOW_UPDATE'])"
                 :columns="columns"
                 :basic-filters="basicFilters"

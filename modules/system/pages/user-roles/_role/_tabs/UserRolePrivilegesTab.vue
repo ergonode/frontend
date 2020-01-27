@@ -6,7 +6,6 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                title="Role privileges"
                 :editing-privilege-allowed="isEditingAllowed"
                 :columns="columns"
                 :cell-values="cellValues"
