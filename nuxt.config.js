@@ -7,8 +7,6 @@
  */
 require('dotenv').config({ path: '.env' });
 const { modulesConfig, inactiveModulesConfig } = require('./plugins/moduleLoader');
-// const nodeExternals = require('webpack-node-externals');
-// const TerserPlugin = require('terser-webpack-plugin');
 const PATH = require('path');
 const PKG = require('./package');
 
@@ -74,8 +72,7 @@ module.exports = {
     },
     build: {
         parallel: true,
-        // cache: true,
-        // optimizeCSS: true,
+        terser: true,
         extend(config, { isDev, isClient }) {
             const alias = config.resolve.alias || {};
             const { aliases = {} } = modulesConfig.nuxt;
@@ -94,51 +91,22 @@ module.exports = {
             if (isClient && isDev) {
                 config.devtool = 'source-map';
             }
-            // if (!isDev) {
-            // config.target = 'node';
-            // config.externals = [
-            //     nodeExternals({
-            //         // whitelist: [/@babel\/runtime/],
-            //         modulesFromFile: {
-            //             exclude: ['devDependencies'],
-            //             include: ['dependencies'],
-            //         },
-            //     }),
-            // ];
-            // }
-            // if (isDev) {
-            //     config.mode = 'development';
-            // } else {
-            //     config.mode = 'production';
-            // }
-            // config.module.rules.push(
-            //     {
-            //         // test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
-            //         // test: /\.test\.(js|jsx|ts|tsx)$/,
-            //         // exclude: [
-            //         //     // PATH.resolve(__dirname, 'modules/@ergo/import'),
-            //         //     /(.*)\/(__tests__|tests)\/(.*)/,
-            //         // ],
-            //         test: /\.js$/,
-            //         loader: 'babel-loader',
-            //         include: [],
-            //         // exclude: [
-            //         //     /(tests|__tests__)/,
-            //         //     /modules\/@ergo\/attributes\/components\/Pages\/__tests__/,
-            //         //     /(modules)\/(.*)(tests|__tests__)\/(.*)\//,
-            //         //     PATH.resolve(__dirname, 'modules/@ergo/attributes/components/Pages/__tests__'),
-            //         //     // /\.test\.(js|jsx|ts|tsx)$/,
-            //         // ],
-            //     },
-            // );
-            // config.entry = {
-            //     vendor2: ['lodash', 'diff', 'nise'],
-            //     // app: './entry',
-            // };
+            if (!isDev) {
+                config.module.rules.push(
+                    {
+                        test: /\.jsx?$/i,
+                        loader: 'babel-loader',
+                        exclude: (file) => {
+                            [, file] = file.split('__tests__', 2);
+
+                            // not exclude files outside __tests__
+                            return !!file;
+                        },
+                    },
+                );
+            }
         },
         optimization: {
-            // minimize: true,
-            // minimizer: [new TerserPlugin()],
             runtimeChunk: 'single',
             splitChunks: {
                 chunks: 'all',
@@ -150,7 +118,6 @@ module.exports = {
                         test: /node_modules[\\/](vue|vue-loader|vue-router|vuex|vue-meta|core-js|@babel\/runtime|axios|webpack|setimmediate|timers-browserify|process|regenerator-runtime|cookie|js-cookie|is-buffer|dotprop|nuxt\.js)[\\/]/,
                         chunks: 'all',
                         name: 'vueLib',
-                        // reuseExistingChunk: true,
                         priority: 10,
                     },
                     vendors: {
@@ -178,7 +145,7 @@ module.exports = {
                         enforce: true,
                     },
                     styles: {
-                        test: /\.css$/,
+                        test: /\.(css|scss|sass)$/,
                         name: 'styles',
                         chunks: 'all',
                         enforce: true,
