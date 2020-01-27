@@ -54,5 +54,7 @@ export default {
         display: flex;
         flex: 1 1 auto;
         flex-direction: column;
+        padding: 24px 24px 0;
+        border-left: $BORDER_1_GREY;
     }
 </style>

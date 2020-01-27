@@ -18,7 +18,7 @@
 
     &:not(&--small):not(&--tiny):not(&--fab) {
         height: 40px;
-        padding: 0 16px 0 12px;
+        padding: 0 12px;
         font: $FONT_SEMI_BOLD_14_20;
     }
 
@@ -31,7 +31,7 @@
     }
 
     &__title {
-        margin-left: 4px;
+        margin: 0 4px;
         color: $WHITE;
         letter-spacing: 0.5px;
     }
@@ -64,12 +64,12 @@
 
     &--small {
         height: 32px;
-        padding: 0 12px 0 8px;
+        padding: 0 8px;
     }
 
     &--tiny {
         height: 24px;
-        padding: 0 8px 0 4px;
+        padding: 0 4px;
     }
 
     &--fab {

@@ -193,7 +193,7 @@ export default {
                     cookieName: COLUMNS_IDS,
                     id: this.column.id,
                 });
-                this.$emit('removeColumn', this.columnIndex - 1);
+                this.$emit('removeColumn', this.columnIndex);
                 this.$emit('focus', false);
                 break;
             }

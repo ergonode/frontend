@@ -32,16 +32,20 @@ export default {
         GridFilterCell: () => import('~/core/components/Grid/GridFilterCell'),
         GridHeaderCell: () => import('~/core/components/Grid/GridHeaderCell'),
         GridPlaceholder: () => import('~/core/components/Grid/GridPlaceholder'),
+        GridAdvancedFiltersContainer: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFiltersContainer'),
+        GridAdvancedFilter: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFilter'),
+        GridAdvancedFiltersRemoveAllButton: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFiltersRemoveAllButton'),
+        GridAdvancedFilterPlaceholder: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder'),
     },
     render(createElement) {
         const getColumnCells = (column, columnIndex) => {
             const cells = [];
             const GridHeaderCell = createElement('GridHeaderCell', {
                 attrs: {
-                    'column-index': columnIndex,
-                    'sorted-column': this.sortedColumn,
+                    columnIndex,
+                    sortedColumn: this.sortedColumn,
                     column,
-                    'row-index': this.rowsOffset,
+                    rowIndex: this.rowsOffset,
                 },
                 on: {
                     focus: this.onHeaderFocus,
@@ -57,8 +61,8 @@ export default {
                 rowIndex += 1;
                 const GridFilterCell = createElement('GridFilterCell', {
                     attrs: {
-                        'column-index': columnIndex,
-                        'row-index': this.rowsOffset + rowIndex,
+                        columnIndex,
+                        rowIndex: this.rowsOffset + rowIndex,
                         column,
                         filter: this.basicFilters[column.id],
                         disabled: typeof this.advancedFiltersValues[column
@@ -91,16 +95,16 @@ export default {
                     cells.push(createElement('GridDataCell', {
                         key: (`${id}-${column.id}`),
                         attrs: {
-                            'column-index': columnIndex,
-                            'row-index': fixedRowIndex,
-                            'row-id': id,
-                            'row-ids': this.rowIds,
-                            'cell-data': this.cellValues[id][column.id],
+                            columnIndex,
+                            rowIndex: fixedRowIndex,
+                            rowId: id,
+                            rowIds: this.rowIds,
+                            cellData: this.cellValues[id][column.id],
                             column,
                             draft: this.drafts[id],
-                            'is-selected': this.isSelectedAllRows
+                            isSelected: this.isSelectedAllRows
                                 || this.selectedRows[fixedRowIndex],
-                            'editing-privilege-allowed': this.editingPrivilegeAllowed,
+                            editingPrivilegeAllowed: this.editingPrivilegeAllowed,
                         },
                     }));
                 }
@@ -121,13 +125,13 @@ export default {
                     key: columnIndex,
                     style: this.templateRows,
                     attrs: {
-                        'row-ids': this.rowIds,
-                        'rows-offset': this.rowsOffset,
-                        'row-height': this.rowHeight,
-                        'is-selected-all-rows': this.isSelectedAllRows,
-                        'selected-rows': this.selectedRows,
-                        'is-basic-filters': this.isBasicFilters,
-                        'is-pinned': this.isSelectColumnPinned,
+                        rowIds: this.rowIds,
+                        rowsOffset: this.rowsOffset,
+                        rowHeight: this.rowHeight,
+                        isSelectedAllRows: this.isSelectedAllRows,
+                        selectedRows: this.selectedRows,
+                        isBasicFilters: this.isBasicFilters,
+                        isPinned: this.isSelectColumnPinned,
                     },
                     slot: ['headerSelectAllRowsCell', 'selectRowCell'],
                     on: {
@@ -153,10 +157,10 @@ export default {
                         draggable: this.isDraggable,
                         index: i + this.columnsOffset,
                         column: this.columns[i],
-                        'column-offset': this.columnsOffset,
-                        'row-height': this.rowHeight,
-                        'is-header-focused': this.isHeaderFocused,
-                        'is-mouse-over-grid': this.isMouseOverGrid,
+                        columnOffset: this.columnsOffset,
+                        rowHeight: this.rowHeight,
+                        isHeaderFocused: this.isHeaderFocused,
+                        isMouseOverGrid: this.isMouseOverGrid,
                     },
                     slot: 'cell',
                     on: {
@@ -174,7 +178,7 @@ export default {
             if (this.isSelectColumn) {
                 gridColumns.push(createElement('GridColumnSentinel', {
                     attrs: {
-                        'pinned-state': PINNED_COLUMN_STATE.LEFT,
+                        pinnedState: PINNED_COLUMN_STATE.LEFT,
                     },
                     on: {
                         sticky: this.onStickyChange,
@@ -188,13 +192,13 @@ export default {
                     key: columnIndex,
                     style: this.templateRows,
                     attrs: {
-                        'is-selected-all-rows': this.isSelectedAllRows,
-                        'selected-rows': this.selectedRows,
-                        'rows-offset': this.rowsOffset,
-                        'column-index': columnIndex,
-                        'is-basic-filters': this.isBasicFilters,
-                        'row-links': this.rowLinks,
-                        'is-pinned': this.isEditColumnPinned,
+                        isSelectedAllRows: this.isSelectedAllRows,
+                        selectedRows: this.selectedRows,
+                        rowsOffset: this.rowsOffset,
+                        columnIndex,
+                        isBasicFilters: this.isBasicFilters,
+                        rowLinks: this.rowLinks,
+                        isPinned: this.isEditColumnPinned,
                     },
                     on: {
                         editRow: this.onEditRow,
@@ -205,7 +209,7 @@ export default {
                         gridColumn: (`${columnIndex} / ${columnIndex}`),
                     }),
                     attrs: {
-                        'pinned-state': PINNED_COLUMN_STATE.RIGHT,
+                        pinnedState: PINNED_COLUMN_STATE.RIGHT,
                     },
                     on: {
                         sticky: this.onStickyChange,
@@ -216,17 +220,6 @@ export default {
             return gridColumns;
         };
 
-        const GridHeader = createElement('GridHeader', {
-            attrs: {
-                title: this.title,
-                'row-height': this.rowHeight,
-                layout: this.layout,
-            },
-            on: {
-                rowHeightChange: this.onRowHeightChange,
-                layoutChange: this.onLayoutChange,
-            },
-        });
         const GridBody = createElement('div', {
             ref: 'gridBody',
             staticClass: 'grid__body',
@@ -236,10 +229,34 @@ export default {
             },
         }, getGridColumns());
 
-        const gridElements = [
-            GridHeader,
-            GridBody,
-        ];
+        const gridElements = [];
+
+        if (this.isHeaderVisible) {
+            gridElements.push(createElement('GridHeader', {
+                attrs: {
+                    rowHeight: this.rowHeight,
+                    layout: this.layout,
+                    filters: this.advancedFilters,
+                    isActionsSelected: this.isSelectedAllRows
+                        || Object.keys(this.selectedRows).length !== 0,
+                },
+                on: {
+                    rowHeightChange: this.onRowHeightChange,
+                    layoutChange: this.onLayoutChange,
+                    dropFilter: this.onDropFilterAtIndex,
+                    updateFilter: this.onUpdateFilterAtIndex,
+                    removeFilter: this.onRemoveFilterAtIndex,
+                    insertFilter: this.onInsertFilterAtIndex,
+                    clearFilter: this.onClearFilterAtIndex,
+                    setGhostFilter: this.onSetGhostFilterAtIndex,
+                    swapFilters: this.onSwapFiltersPosition,
+                    applyFilter: this.onApplyFilter,
+                    removeAllFilters: this.onRemoveAll,
+                },
+            }));
+        }
+
+        gridElements.push(GridBody);
 
         if (this.isPlaceholder) {
             gridElements.push(createElement('GridPlaceholder'));
@@ -255,10 +272,6 @@ export default {
         }, gridElements);
     },
     props: {
-        title: {
-            type: String,
-            required: true,
-        },
         columns: {
             type: Array,
             default: () => [],
@@ -316,6 +329,10 @@ export default {
             default: false,
         },
         isEditColumn: {
+            type: Boolean,
+            default: false,
+        },
+        isHeaderVisible: {
             type: Boolean,
             default: false,
         },
@@ -513,7 +530,7 @@ export default {
         },
         onRemoveColumnAtIndex(index) {
             this.columnWidths.splice(index, 1);
-            this.$emit('removeColumn', index);
+            this.$emit('removeColumn', index - this.columnsOffset);
         },
         onSortColumn(payload) {
             this.$emit('sortColumn', payload);
@@ -551,6 +568,33 @@ export default {
                 this.setGhostIndex();
             }
         },
+        onDropFilterAtIndex(payload) {
+            this.$emit('dropFilter', payload);
+        },
+        onUpdateFilterAtIndex(payload) {
+            this.$emit('updateFilter', payload);
+        },
+        onRemoveFilterAtIndex(index) {
+            this.$emit('removeFilter', index);
+        },
+        onInsertFilterAtIndex(payload) {
+            this.$emit('insertFilter', payload);
+        },
+        onClearFilterAtIndex(index) {
+            this.$emit('clearFilter', index);
+        },
+        onSetGhostFilterAtIndex(payload) {
+            this.$emit('setGhostFilter', payload);
+        },
+        onSwapFiltersPosition(payload) {
+            this.$emit('swapFilters', payload);
+        },
+        onApplyFilter() {
+            this.$emit('applyFilter');
+        },
+        onRemoveAll() {
+            this.$emit('removeAllFilters');
+        },
     },
 };
 </script>
@@ -580,6 +624,7 @@ export default {
         &__body {
             position: relative;
             display: grid;
+            border-top: $BORDER_1_GREY;
             border-left: $BORDER_1_GREY;
             border-right: $BORDER_1_GREY;
             background-color: $WHITESMOKE;
