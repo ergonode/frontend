@@ -19,6 +19,10 @@ const nuxtConfig = {
 const IS_DEV = process.env.NODE_ENV !== 'production';
 const BASE_URL = `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_PREFIX}`;
 
+// function isJSRule(rule) {
+//     return rule.test.toString() === '/\\.vue$/';
+// }
+
 module.exports = {
     mode: 'universal',
     dev: IS_DEV,
@@ -91,20 +95,36 @@ module.exports = {
             if (isClient && isDev) {
                 config.devtool = 'source-map';
             }
-            if (!isDev) {
-                config.module.rules.push(
-                    {
-                        test: /\.jsx?$/i,
-                        loader: 'babel-loader',
-                        exclude: (file) => {
-                            [, file] = file.split('__tests__', 2);
+            // if (!isDev) {
+            // config.module.rules.forEach((rule) => {
+            //     if (rule.test.toString() === '/\\.jsx?$/i') {
+            //         console.log(rule);
+            //         rule.exclude = (file) => {
+            //             [, file] = file.split('__tests__', 2);
 
-                            // not exclude files outside __tests__
-                            return !!file;
-                        },
+            //             // not exclude files outside __tests__
+            //             return !!file;
+            //         };
+            //     }
+            //     // if (isSASSRule(rule)) {
+            //     //     rule.use.push(sassResourcesLoader);
+            //     // }
+            // });
+            config.module.rules.push(
+                {
+                    test: /\.js$/i,
+                    loader: 'babel-loader',
+                    exclude: (file) => {
+                        [, file] = file.split('__tests__', 2);
+
+                        // not exclude files outside __tests__
+                        return !!file;
                     },
-                );
-            }
+                },
+            );
+            // console.log(config.entry);
+            // config.entry = { ...config.entry, xxx: [PATH.resolve(__dirname, './dist'), path.resolve(buildDir, 'client.js')] };
+            // }
         },
         optimization: {
             runtimeChunk: 'single',
@@ -137,10 +157,19 @@ module.exports = {
                     },
                     coreComponentsModule: {
                         test(module) {
-                            return module.resource && module.resource.includes('@ergo/core/component');
+                            return module.resource && module.resource.includes('@ergo/core/components');
                         },
                         chunks: 'all',
                         name: 'coreComponentsModule',
+                        priority: -10,
+                        enforce: true,
+                    },
+                    coreComponentGridModule: {
+                        test(module) {
+                            return module.resource && module.resource.includes('@ergo/core/components/Grid');
+                        },
+                        chunks: 'all',
+                        name: 'coreComponentsGridModule',
                         priority: -10,
                         enforce: true,
                     },
