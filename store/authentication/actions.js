@@ -23,6 +23,7 @@ export default {
         await this.app.$axios.$get('profile').then((user) => {
             if (user.email && user.first_name && user.last_name && user.role && user.privileges) {
                 commit(types.SET_USER, user);
+                commit(types.SET_LOGGED_STATE, true);
             } else {
                 dispatch('alerts/addAlert', { type: 'error', message: 'Internal Server Error' }, { root: true });
                 dispatch('logout');
@@ -30,6 +31,9 @@ export default {
         }).catch(() => {
             dispatch('logout');
         });
+    },
+    setLoggedState({ commit }, isLogged) {
+        commit(types.SET_LOGGED_STATE, isLogged);
     },
     logout({ commit }) {
         this.$cookies.removeAll();
