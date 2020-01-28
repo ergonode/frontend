@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default function ({
-    $axios, store, error,
+    $axios, store, error, redirect,
 }) {
     $axios.setHeader('Content-Type', 'application/json');
     $axios.setHeader('Accept', 'application/json');
@@ -31,6 +31,7 @@ export default function ({
         case regExp.auth.test(status):
             msg = 'Authentication needed';
             store.dispatch('authentication/setLoggedState', false);
+            redirect('/');
             break;
         case regExp.access.test(status):
             msg = 'Access denied';
