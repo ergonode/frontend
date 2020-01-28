@@ -5,6 +5,7 @@
 <template>
     <Page>
         <Component
+            v-if="error.status !== 401"
             :is="errorPage"
             :error="error" />
     </Page>
@@ -22,6 +23,11 @@ export default {
             type: [Object, Error],
             required: true,
         },
+    },
+    created() {
+        if (this.error.status === 401) {
+            this.$router.push('/');
+        }
     },
     computed: {
         errorPage() {

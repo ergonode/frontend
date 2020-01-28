@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default function ({ store, redirect }) {
-    if (store.state.authentication.jwt && store.state.authentication.user) {
+    if (store.state.authentication.isLogged) {
         return redirect('/dashboard');
     }
     return null;

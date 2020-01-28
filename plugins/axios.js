@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default function ({
-    $axios, redirect, store, error,
+    $axios, store, error,
 }) {
     $axios.setHeader('Content-Type', 'application/json');
     $axios.setHeader('Accept', 'application/json');
@@ -12,7 +12,7 @@ export default function ({
         configLocal.headers.JWTAuthorization = `Bearer ${store.state.authentication.jwt}`;
     });
 
-    $axios.onError((errorResponse) => {
+    $axios.onResponseError((errorResponse) => {
         let msg = '';
         const dev = process.env.NODE_ENV === 'development';
         const regExp = {
@@ -30,8 +30,7 @@ export default function ({
             break;
         case regExp.auth.test(status):
             msg = 'Authentication needed';
-            store.dispatch('authentication/logout');
-            redirect('/');
+            store.dispatch('authentication/setLoggedState', false);
             break;
         case regExp.access.test(status):
             msg = 'Access denied';

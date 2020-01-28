@@ -5,8 +5,6 @@
 import { types } from './mutations';
 import { JWT_KEY } from '~/defaults/authenticate/cookies';
 
-const onError = () => {};
-
 export default {
     setAuth({ commit }, token) {
         commit(types.SET_JWT_TOKEN, token);
@@ -17,19 +15,16 @@ export default {
             commit(types.SET_JWT_TOKEN, token);
 
             return dispatch('getUser');
-        }).catch(onError);
-    },
-    async getUser({ commit, dispatch }) {
-        await this.app.$axios.$get('profile').then((user) => {
-            if (user.email && user.first_name && user.last_name && user.role && user.privileges) {
-                commit(types.SET_USER, user);
-            } else {
-                dispatch('alerts/addAlert', { type: 'error', message: 'Internal Server Error' }, { root: true });
-                dispatch('logout');
-            }
-        }).catch(() => {
-            dispatch('logout');
         });
+    },
+    async getUser({ commit }) {
+        await this.app.$axios.$get('profile').then((user) => {
+            commit(types.SET_USER, user);
+            commit(types.SET_LOGGED_STATE, true);
+        });
+    },
+    setLoggedState({ commit }, isLogged) {
+        commit(types.SET_LOGGED_STATE, isLogged);
     },
     logout({ commit }) {
         this.$cookies.removeAll();
