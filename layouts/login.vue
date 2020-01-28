@@ -12,7 +12,12 @@
 
 export default {
     name: 'NuxtLoginLayout',
-    middleware: ['notAuthenticated'],
+    middleware({ store, redirect }) {
+        if (store.state.authentication.isLogged) {
+            return redirect('/dashboard');
+        }
+        return null;
+    },
     components: {
         LoginLayout: () => import('@Core/layouts/login'),
     },
