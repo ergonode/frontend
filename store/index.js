@@ -13,8 +13,11 @@ export const actions = {
 
         await dispatch('authentication/setAuth', token);
 
-        if (token) {
+        try {
             await dispatch('authentication/getUser');
+        } catch (e) {
+            // TODO: There should be refresh token request
+            console.error(e);
         }
     },
     resetState({ dispatch, commit }) {
