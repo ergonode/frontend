@@ -12,7 +12,7 @@
         :is-multi-draggable="true"
         :dragged-element-size="{ width: 600, height: 60 }"
         @afterDrop="onGetConditionConfigurationById"
-        @afterRemove="removeConditionFromSet">
+        @afterRemove="removeConditionValue">
         <template #gridHeader>
             <TemplateGridHeader
                 header="condition level"
@@ -22,7 +22,8 @@
             <ConditionSetItem
                 :condition="getCondition(item.id)"
                 :item-id="item.id"
-                :item-row="item.row" />
+                :item-row="item.row"
+                @remove="removeCondition" />
         </template>
     </TemplateGridWrapper>
 </template>
@@ -55,6 +56,9 @@ export default {
             'removeConditionValue',
             'setConditionValue',
         ]),
+        ...mapActions('gridDesigner', [
+            'removeGridItem',
+        ]),
         getCondition(id) {
             const [correctId] = id.split('--');
             return this.conditions[correctId] || {};
@@ -71,8 +75,9 @@ export default {
                 parameterValue: null,
             });
         },
-        removeConditionFromSet(id) {
+        removeCondition(id) {
             this.removeConditionValue(id);
+            this.removeGridItem(id);
         },
     },
 };

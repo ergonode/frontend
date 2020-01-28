@@ -8,7 +8,7 @@
         :is-expanded="isExpanded"
         @expand="onExpand">
         <Select
-            v-show="!isSearchBtnClicked"
+            v-show="!isSearchButtonClicked"
             :value="selectedOption"
             class="options-select"
             solid
@@ -16,7 +16,7 @@
             :options="options"
             @input="onLanguageSelect" />
         <TextField
-            v-if="isSearchBtnClicked"
+            v-if="isSearchButtonClicked"
             :value="searchResult"
             class="search-text-field"
             solid
@@ -30,11 +30,11 @@
             </template>
         </TextField>
         <FabButton
-            class="search-btn"
-            @click.native="onSearchBtnClick">
+            class="search-button"
+            @click.native="onSearchButtonClick">
             <template #icon="{ fillColor }">
                 <Component
-                    :is="searchBtnIconComponent"
+                    :is="searchButtonIconComponent"
                     :fill-color="fillColor" />
             </template>
         </FabButton>
@@ -81,7 +81,7 @@ export default {
     },
     data() {
         return {
-            isSearchBtnClicked: false,
+            isSearchButtonClicked: false,
             isSearchFocused: false,
             searchResult: null,
         };
@@ -96,8 +96,8 @@ export default {
         whiteColor() {
             return WHITE;
         },
-        searchBtnIconComponent() {
-            return this.isSearchBtnClicked
+        searchButtonIconComponent() {
+            return this.isSearchButtonClicked
                 ? () => import('~/components/Icon/Window/IconClose')
                 : IconSearch;
         },
@@ -118,10 +118,10 @@ export default {
         onLanguageSelect(value) {
             this.$emit('selectOption', value);
         },
-        onSearchBtnClick() {
-            this.isSearchBtnClicked = !this.isSearchBtnClicked;
+        onSearchButtonClick() {
+            this.isSearchButtonClicked = !this.isSearchButtonClicked;
 
-            if (!this.isSearchBtnClicked && this.searchResult !== '') {
+            if (!this.isSearchButtonClicked && this.searchResult !== '') {
                 this.searchResult = '';
                 this.onSearch(this.searchResult);
             }
@@ -139,7 +139,7 @@ export default {
         grid-row: 2;
     }
 
-    .search-btn {
+    .search-button {
         grid-column: 2;
         grid-row: 2;
     }

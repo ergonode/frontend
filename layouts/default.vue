@@ -4,9 +4,7 @@
  */
 <template>
     <App>
-        <div
-            v-if="user"
-            class="app-content">
+        <div class="app-content">
             <div class="app-content__navigation-bar">
                 <NavigationBar>
                     <template #breadcrumbs>

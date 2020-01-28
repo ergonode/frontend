@@ -32,7 +32,7 @@
                         :src="image"
                         alt="Uploaded file">
                 </div>
-                <div class="upload-image__remove-btn">
+                <div class="upload-image__remove-button">
                     <FabButton
                         :theme="secondaryTheme"
                         @click.native="onRemove">
@@ -219,7 +219,7 @@ export default {
             font: $FONT_MEDIUM_12_16;
         }
 
-        &__remove-btn {
+        &__remove-button {
             position: absolute;
             top: 24px;
             right: 24px;

@@ -20,7 +20,7 @@
             @searchResult="onSearch"
             @expand="onExpand" />
         <AttributesList :language-code="language.key" />
-        <div class="add-fab-btn">
+        <div class="add-fab-button">
             <FabButton
                 :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
                 @click.native="addAttribute">
@@ -123,7 +123,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .add-fab-btn {
+    .add-fab-button {
         position: absolute;
         bottom: 12px;
         right: 12px;
