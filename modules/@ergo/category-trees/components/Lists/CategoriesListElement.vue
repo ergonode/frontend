@@ -22,14 +22,17 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import ListElementDescription from '@Core/components/List/ListElementDescription';
+import ListElementTitle from '@Core/components/List/ListElementTitle';
+import ListElementHint from '@Core/components/List/ListElementHint';
 
 export default {
     name: 'CategoriesListElement',
     components: {
         ListDraggableElement: () => import('@Core/components/List/ListDraggableElement'),
-        ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
-        ListElementHint: () => import('@Core/components/List/ListElementHint'),
+        ListElementDescription,
+        ListElementTitle,
+        ListElementHint,
     },
     props: {
         item: {

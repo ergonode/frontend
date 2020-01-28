@@ -7,7 +7,7 @@
         :draggable-id="`${item.code}:${languageCode}`"
         :is-draggable="isDraggable"
         :is-disabled="disabledElements[languageCode] && disabledElements[languageCode][item.id]"
-        :hint="item.label ? `#${item.code} ${languageCode}`: ''"
+        :hint="hint"
         @drag="onDrag">
         <ListElementIcon>
             <Component :is="typeIconComponent" />
@@ -15,10 +15,10 @@
         <ListElementDescription>
             <ListElementTitle
                 :title="item.label || `#${item.code}`"
-                :hint="item.label ? `#${item.code} ${languageCode}` : ''" />
+                :hint="hint" />
             <ListElementHint
                 :title="formattedAttributeType"
-                :hint="item.label ? `#${item.code} ${languageCode}` : ''" />
+                :hint="hint" />
         </ListElementDescription>
     </ListDraggableElement>
 </template>
@@ -27,15 +27,19 @@
 import { mapState, mapActions } from 'vuex';
 import { TYPES } from '@Attributes/defaults/attributes';
 import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
+import ListElementDescription from '@Core/components/List/ListElementDescription';
+import ListElementTitle from '@Core/components/List/ListElementTitle';
+import ListElementHint from '@Core/components/List/ListElementHint';
+import ListElementIcon from '@Core/components/List/ListElementIcon';
 
 export default {
     name: 'AttributesListElement',
     components: {
+        ListElementDescription,
+        ListElementTitle,
+        ListElementHint,
+        ListElementIcon,
         ListDraggableElement: () => import('@Core/components/List/ListDraggableElement'),
-        ListElementIcon: () => import('@Core/components/List/ListElementIcon'),
-        ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
-        ListElementHint: () => import('@Core/components/List/ListElementHint'),
     },
     props: {
         item: {
@@ -63,6 +67,9 @@ export default {
         },
         formattedAttributeType() {
             return capitalizeAndConcatenationArray(this.item.type.split('_'));
+        },
+        hint() {
+            return this.item.label ? `#${this.item.code} ${this.languageCode}` : '';
         },
     },
     methods: {

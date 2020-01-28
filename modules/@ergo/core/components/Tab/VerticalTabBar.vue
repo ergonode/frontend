@@ -65,7 +65,6 @@ export default {
     .tab-bar {
         display: flex;
         height: 100%;
-        border-right: $BORDER_1_GREY;
 
         &__items {
             position: relative;

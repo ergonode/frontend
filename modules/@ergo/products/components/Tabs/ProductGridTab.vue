@@ -4,20 +4,6 @@
  */
 <template>
     <GridViewTemplate>
-        <template #filters>
-            <GridAdvancedFilters
-                :filters="advancedFilters"
-                @insertFilter="insertFilterAtIndex"
-                @setGhostFilter="setGhostFilterAtIndex"
-                @removeFilter="removeFilterAtIndex"
-                @updateFilter="updateFilterValueAtIndex"
-                @clearFilter="clearFilterAtIndex"
-                @applyFilter="applyFilter"
-                @swapFilters="swapFiltersPosition"
-                @removeAllFilters="removeAllFilters"
-                @clearAllFilters="clearAllFilters"
-                @dropFilter="dropFilterAtIndex" />
-        </template>
         <template #sidebar>
             <VerticalTabBar
                 :items="verticalTabs"
@@ -25,18 +11,18 @@
         </template>
         <template #grid>
             <Grid
-                title="Products"
                 :editing-privilege-allowed="isUserAllowedToUpdate"
                 :columns="columns"
                 :basic-filters="basicFilters"
                 :advanced-filters="advancedFilters"
                 :sorted-column="sortedColumn"
-                :max-rows="filtered"
+                :max-rows="maxRowsPerPage"
                 :max-page="numberOfPages"
                 :current-page="currentPage"
                 :cell-values="cellValues"
                 :row-ids="rowIds"
                 :row-links="rowLinks"
+                :is-header-visible="true"
                 :is-basic-filters="true"
                 :is-draggable="true"
                 :is-edit-column="true"
@@ -47,7 +33,17 @@
                 @swapColumns="swapColumnsPosition"
                 @insertColumn="insertColumnAtIndex"
                 @removeColumn="removeColumnAtIndex"
-                @dropColumn="dropColumnAtIndex" />
+                @dropColumn="dropColumnAtIndex"
+                @insertFilter="insertFilterAtIndex"
+                @setGhostFilter="setGhostFilterAtIndex"
+                @removeFilter="removeFilterAtIndex"
+                @updateFilter="updateFilterValueAtIndex"
+                @clearFilter="clearFilterAtIndex"
+                @applyFilter="applyFilter"
+                @swapFilters="swapFiltersPosition"
+                @removeAllFilters="removeAllFilters"
+                @clearAllFilters="clearAllFilters"
+                @dropFilter="dropFilterAtIndex" />
         </template>
         <template #footer>
             <GridPageSelector
@@ -81,7 +77,6 @@ export default {
         Button,
         VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
         Grid: () => import('@Core/components/Grid/Grid'),
-        GridAdvancedFilters: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFilters'),
         GridPagination: () => import('@Core/components/Grid/GridPagination'),
         GridPageSelector: () => import('@Core/components/Grid/GridPageSelector'),
     },

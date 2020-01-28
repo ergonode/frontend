@@ -6,12 +6,11 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                title="Category trees"
                 :editing-privilege-allowed="$hasAccess(['CATEGORY_TREE_UPDATE'])"
                 :columns="columns"
                 :basic-filters="basicFilters"
                 :sorted-column="sortedColumn"
-                :max-rows="filtered"
+                :max-rows="maxRowsPerPage"
                 :max-page="numberOfPages"
                 :current-page="currentPage"
                 :cell-values="cellValues"

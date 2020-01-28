@@ -39,18 +39,21 @@
     </Button>
 </template>
 <script>
+
 import { ARROW } from '@Core/defaults/icons';
 import Button from '@Core/components/Buttons/Button';
+import ListElementDescription from '@Core/components/List/ListElementDescription';
+import ListElementTitle from '@Core/components/List/ListElementTitle';
 
 export default {
     name: 'MenuButton',
     inheritAttrs: false,
     components: {
         Button,
+        ListElementDescription,
+        ListElementTitle,
         List: () => import('@Core/components/List/List'),
         ListElement: () => import('@Core/components/List/ListElement'),
-        ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
         IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
         FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
     },
@@ -147,14 +150,6 @@ export default {
             width: 24px;
             height: 24px;
             padding: 0;
-        }
-
-        &--menu-title {
-            padding: 0 8px;
-
-            #{$btn}__title {
-                margin: 0;
-            }
         }
     }
 

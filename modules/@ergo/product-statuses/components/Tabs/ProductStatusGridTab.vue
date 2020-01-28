@@ -6,12 +6,11 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                title="Product statuses"
                 :editing-privilege-allowed="$hasAccess(['WORKFLOW_UPDATE'])"
                 :columns="columns"
                 :basic-filters="basicFilters"
                 :sorted-column="sortedColumn"
-                :max-rows="filtered"
+                :max-rows="maxRowsPerPage"
                 :max-page="numberOfPages"
                 :current-page="currentPage"
                 :cell-values="cellValues"

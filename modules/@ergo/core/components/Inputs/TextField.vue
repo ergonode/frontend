@@ -151,7 +151,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    @import "@Core/assets/scss/input/input.scss";
-</style>

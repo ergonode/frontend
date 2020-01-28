@@ -16,13 +16,15 @@
 <script>
 import { mapActions } from 'vuex';
 import { getUUID } from '@Core/models/stringWrapper';
+import ListElementDescription from '@Core/components/List/ListElementDescription';
+import ListElementTitle from '@Core/components/List/ListElementTitle';
 
 export default {
     name: 'ConditionsListElement',
     components: {
+        ListElementDescription,
+        ListElementTitle,
         ListDraggableElement: () => import('@Core/components/List/ListDraggableElement'),
-        ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
     },
     props: {
         item: {

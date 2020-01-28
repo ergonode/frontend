@@ -43,11 +43,11 @@ export default {
     .advanced-filters-container {
         display: flex;
         flex-wrap: wrap;
-        padding: 0 6px 8px 16px;
+        padding: 8px 6px 0 8px;
         overflow: auto;
 
         & > * {
-            margin: 0 8px 8px 0;
+            margin: 8px 0 0 8px;
         }
     }
 </style>

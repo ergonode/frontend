@@ -43,6 +43,8 @@
 
 <script>
 import Select from '@Core/components/Inputs/Select/Select';
+import ListElementDescription from '@Core/components/List/ListElementDescription';
+import ListElementTitle from '@Core/components/List/ListElementTitle';
 
 export default {
     name: 'TranslationSelect',
@@ -51,8 +53,8 @@ export default {
         Select,
         ListElement: () => import('@Core/components/List/ListElement'),
         ListElementAction: () => import('@Core/components/List/ListElementAction'),
-        ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
+        ListElementDescription,
+        ListElementTitle,
         CheckBox: () => import('@Core/components/Inputs/CheckBox'),
     },
     data() {

@@ -66,18 +66,20 @@ import { removeCookieById } from '@Core/models/cookies';
 import { COLUMNS_IDS } from '@Core/defaults/grid/cookies';
 import { SORTING_ORDER } from '@Core/defaults/icons';
 import { GRAPHITE_LIGHT } from '@Core/assets/scss/_js-variables/colors.scss';
+import ListElementDescription from '@Core/components/List/ListElementDescription';
+import ListElementTitle from '@Core/components/List/ListElementTitle';
 
 export default {
     name: 'GridPresentationInteractiveHeaderCell',
     inject: ['getEditingCellCoordinates'],
     components: {
+        ListElementDescription,
+        ListElementTitle,
         MenuButton: () => import('@Core/components/Buttons/MenuButton'),
         IconArrowSort: () => import('@Core/components/Icons/Arrows/IconArrowSort'),
         IconDots: () => import('@Core/components/Icons/Others/IconDots'),
         List: () => import('@Core/components/List/List'),
         ListElement: () => import('@Core/components/List/ListElement'),
-        ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
         CheckBox: () => import('@Core/components/Inputs/CheckBox'),
         GridPresentationHeaderCell: () => import('@Core/components/Grid/PresentationCells/GridPresentationHeaderCell'),
     },
@@ -191,7 +193,7 @@ export default {
                     cookieName: COLUMNS_IDS,
                     id: this.column.id,
                 });
-                this.$emit('removeColumn', this.columnIndex - 1);
+                this.$emit('removeColumn', this.columnIndex);
                 this.$emit('focus', false);
                 break;
             }
@@ -199,7 +201,7 @@ export default {
             }
         },
         getColumnAtIndex(index) {
-            const contentGrid = document.querySelector('.grid__content');
+            const contentGrid = document.querySelector('.grid__body');
             const { children } = contentGrid;
 
             return children[index];
@@ -213,7 +215,7 @@ export default {
             this.removeColumnHover();
         },
         isHeaderFocused() {
-            const contentGrid = document.querySelector('.grid__content');
+            const contentGrid = document.querySelector('.grid__body');
             const headerEls = contentGrid.querySelectorAll('.header-cell__actions--focused');
 
             return headerEls.length;

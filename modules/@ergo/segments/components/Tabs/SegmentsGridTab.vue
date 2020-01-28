@@ -6,12 +6,11 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                title="Segments"
                 :editing-privilege-allowed="$hasAccess(['SEGMENT_UPDATE'])"
                 :columns="columns"
                 :basic-filters="basicFilters"
                 :sorted-column="sortedColumn"
-                :max-rows="filtered"
+                :max-rows="maxRowsPerPage"
                 :max-page="numberOfPages"
                 :current-page="currentPage"
                 :cell-values="cellValues"

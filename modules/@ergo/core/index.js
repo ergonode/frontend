@@ -27,8 +27,8 @@ export default {
             '/assets/scss/reset.scss',
             '/assets/scss/plugins-config.scss',
             '/assets/scss/font-inter-ui.scss',
-            '/assets/scss/theme.scss',
             '/assets/scss/typography.scss',
+            '/assets/scss/input/input.scss',
         ],
         styleResources: {
             scss: '/assets/scss/main.scss',

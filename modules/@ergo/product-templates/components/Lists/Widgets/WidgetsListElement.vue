@@ -19,15 +19,19 @@
 
 <script>
 import { mapActions } from 'vuex';
+import ListElementDescription from '@Core/components/List/ListElementDescription';
+import ListElementTitle from '@Core/components/List/ListElementTitle';
+import ListElementHint from '@Core/components/List/ListElementHint';
+import ListElementIcon from '@Core/components/List/ListElementIcon';
 
 export default {
     name: 'WidgetsListElement',
     components: {
+        ListElementDescription,
+        ListElementTitle,
         ListDraggableElement: () => import('@Core/components/List/ListDraggableElement'),
-        ListElementIcon: () => import('@Core/components/List/ListElementIcon'),
-        ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
-        ListElementHint: () => import('@Core/components/List/ListElementHint'),
+        ListElementIcon,
+        ListElementHint,
     },
     props: {
         item: {

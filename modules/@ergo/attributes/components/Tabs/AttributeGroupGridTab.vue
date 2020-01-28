@@ -6,12 +6,11 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                title="Attribute Groups"
                 :editing-privilege-allowed="$hasAccess(['ATTRIBUTE_GROUP_UPDATE'])"
                 :columns="columns"
                 :basic-filters="basicFilters"
                 :sorted-column="sortedColumn"
-                :max-rows="filtered"
+                :max-rows="maxRowsPerPage"
                 :max-page="numberOfPages"
                 :current-page="currentPage"
                 :cell-values="cellValues"

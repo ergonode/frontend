@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="group">
+    <ul>
         <ListElement
             large
             @click.native="expandGroup">
@@ -22,20 +22,23 @@
                 <slot name="item" />
             </div>
         </FadeTransition>
-    </div>
+    </ul>
 </template>
 
 <script>
 import { ARROW } from '@Core/defaults/icons';
+import ListElementDescription from '@Core/components/List/ListElementDescription';
+import ListElementTitle from '@Core/components/List/ListElementTitle';
+import ListElementHint from '@Core/components/List/ListElementHint';
 
 export default {
     name: 'ListGroupElement',
     components: {
         ListElementAction: () => import('@Core/components/List/ListElementAction'),
         ListElement: () => import('@Core/components/List/ListElement'),
-        ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
-        ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
-        ListElementHint: () => import('@Core/components/List/ListElementHint'),
+        ListElementDescription,
+        ListElementTitle,
+        ListElementHint,
         IconArrowSingle: () => import('@Core/components/Icons/Arrows/IconArrowSingle'),
         FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
     },
