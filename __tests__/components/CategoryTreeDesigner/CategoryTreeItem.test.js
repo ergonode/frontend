@@ -53,13 +53,13 @@ describe('CategoryTreeDesigner/CategoryTreeItem', () => {
         wrapper.setProps({
             isExpanded: true,
         });
-        expect(wrapper.vm.btnExpanderIconState).toBe(ACTION.PLUS);
+        expect(wrapper.vm.buttonExpanderIconState).toBe(ACTION.PLUS);
     });
 
     it('Expanded is not icon', () => {
         wrapper.setProps({
             isExpanded: false,
         });
-        expect(wrapper.vm.btnExpanderIconState).toBe(ACTION.MINUS);
+        expect(wrapper.vm.buttonExpanderIconState).toBe(ACTION.MINUS);
     });
 });

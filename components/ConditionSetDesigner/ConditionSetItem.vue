@@ -3,8 +3,45 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['condition', {'condition--loader': !isCondition}]">
+    <div class="condition">
         <template v-if="isCondition">
+            <div class="container">
+                <div class="condition__description">
+                    <span
+                        class="condition__title"
+                        v-text="condition.name" />
+                    <span
+                        class="condition__phrase"
+                        v-text="conditionPhrase" />
+                </div>
+                <MenuButton
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    :plain="true">
+                    <template #icon="{ fillColor }">
+                        <IconDots :fill-color="fillColor" />
+                    </template>
+                    <template #content>
+                        <List>
+                            <ListElement
+                                v-for="(option, optIndex) in contextualMenuItems"
+                                :key="option"
+                                :small="true"
+                                @click.native.prevent="onSelectValue(optIndex)">
+                                <ListElementDescription>
+                                    <ListElementTitle :title="option" />
+                                </ListElementDescription>
+                                <ListElementAction>
+                                    <CheckBox
+                                        v-if="option === 'Required'"
+                                        ref="checkbox"
+                                        :value="element.required" />
+                                </ListElementAction>
+                            </ListElement>
+                        </List>
+                    </template>
+                </MenuButton>
+            </div>
             <div
                 class="condition__parameters"
                 :style="parametersStyle">
@@ -15,24 +52,36 @@
                     :item-id="itemId"
                     :item-row="itemRow" />
             </div>
-            <span
-                class="condition__phrase"
-                v-text="conditionPhrase" />
         </template>
     </div>
 </template>
 <script>
 import { mapState } from 'vuex';
+import { SIZES, THEMES } from '~/defaults/buttons';
 import {
     isEmpty,
 } from '~/model/objectWrapper';
 import { hasOptions } from '~/model/attributes/AttributeTypes';
 import ConditionSetParameters from '~/components/ConditionSetDesigner/ConditionSetParameters';
+import List from '~/core/components/List/List';
+import ListElement from '~/core/components/List/ListElement';
+import ListElementAction from '~/core/components/List/ListElementAction';
+import ListElementDescription from '~/core/components/List/ListElementDescription';
+import ListElementTitle from '~/core/components/List/ListElementTitle';
+import MenuButton from '~/core/components/Buttons/MenuButton';
+import IconDots from '~/components/Icon/Others/IconDots';
 
 export default {
     name: 'ConditionSetItem',
     components: {
         ConditionSetParameters,
+        MenuButton,
+        IconDots,
+        List,
+        ListElement,
+        ListElementAction,
+        ListElementTitle,
+        ListElementDescription,
     },
     props: {
         condition: {
@@ -48,15 +97,20 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            contextualMenuItems: ['Remove'],
+        };
+    },
     computed: {
         ...mapState('conditions', {
             conditionsValues: (state) => state.conditionsValues,
         }),
-        parametersStyle() {
-            const { parameters } = this.condition;
-            return {
-                gridTemplateColumns: `repeat(${parameters.length}, 1fr)`,
-            };
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
         },
         isCondition() {
             return !isEmpty(this.condition);
@@ -68,8 +122,22 @@ export default {
             if (!placeholders) return phrase;
             return this.replacePlaceholderOnPhrase(placeholders);
         },
+        parametersStyle() {
+            const { parameters } = this.condition;
+            return {
+                gridTemplateColumns: `repeat(${parameters.length}, minmax(max-content, 33%))`,
+            };
+        },
     },
     methods: {
+        onSelectValue(index) {
+            switch (this.contextualMenuItems[index]) {
+            case 'Remove':
+                this.$emit('remove', this.itemId);
+                break;
+            default: break;
+            }
+        },
         replacePlaceholderOnPhrase(placeholders) {
             const { phrase, parameters } = this.condition;
             const findKeyWhenSelect = (clearedKey) => parameters.findIndex(
@@ -97,8 +165,10 @@ export default {
         display: flex;
         flex-direction: column;
         border: 1px solid $GREY;
+        padding: 16px;
+        box-sizing: border-box;
         background-color: $WHITESMOKE;
-        cursor: move;
+        cursor: grab;
         overflow: hidden;
 
         &::after {
@@ -113,28 +183,33 @@ export default {
             content: "AND";
         }
 
-        &--loader {
-            border: 1px dashed $GREEN;
-            background-color: $GREEN_LIGHT;
+        &__title {
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_14_20;
+            margin-bottom: 4px;
+        }
+
+        &__phrase {
+            color: $GRAPHITE_LIGHT;
+            font: $FONT_MEDIUM_12_16;
         }
 
         &__parameters {
             display: grid;
-            grid-gap: 6%;
-            grid-template-rows: 1fr;
-            flex: 1;
-            background-color: $WHITE;
+            grid-auto-flow: column;
+            grid-column-gap: 16px;
+            margin-top: 12px;
         }
 
-        &__phrase {
-            flex: 0;
-            border-top: $BORDER_DASHED_GREY;
-            color: $GRAPHITE;
-            font: $FONT_BOLD_12_16;
+        &__description {
+            display: flex;
+            flex-direction: column;
         }
+    }
 
-        &__phrase, &__parameters {
-            padding: 8px;
-        }
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 </style>

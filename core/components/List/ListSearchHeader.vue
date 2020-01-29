@@ -8,7 +8,7 @@
         :is-expanded="isExpanded"
         @expand="onExpand">
         <TextField
-            v-show="isSearchBtnClicked"
+            v-show="isSearchButtonClicked"
             :value="searchResult"
             class="search-text-field"
             solid
@@ -22,11 +22,11 @@
         </TextField>
         <FabButton
             v-if="isSearch"
-            class="search-btn"
-            @click.native="onSearchBtnClick">
+            class="search-button"
+            @click.native="onSearchButtonClick">
             <template #icon="{ fillColor }">
                 <Component
-                    :is="searchBtnIconComponent"
+                    :is="searchButtonIconComponent"
                     :fill-color="fillColor" />
             </template>
         </FabButton>
@@ -67,7 +67,7 @@ export default {
     },
     data() {
         return {
-            isSearchBtnClicked: false,
+            isSearchButtonClicked: false,
             isSearchFocused: false,
             searchResult: '',
         };
@@ -82,8 +82,8 @@ export default {
         whiteColor() {
             return WHITE;
         },
-        searchBtnIconComponent() {
-            return this.isSearchBtnClicked
+        searchButtonIconComponent() {
+            return this.isSearchButtonClicked
                 ? () => import('~/components/Icon/Window/IconClose')
                 : IconSearch;
         },
@@ -101,10 +101,10 @@ export default {
             this.searchResult = value;
             this.$emit('searchResult', value);
         },
-        onSearchBtnClick() {
-            this.isSearchBtnClicked = !this.isSearchBtnClicked;
+        onSearchButtonClick() {
+            this.isSearchButtonClicked = !this.isSearchButtonClicked;
 
-            if (!this.isSearchBtnClicked && this.searchResult !== '') {
+            if (!this.isSearchButtonClicked && this.searchResult !== '') {
                 this.searchResult = '';
                 this.onSearch(this.searchResult);
             }
@@ -122,7 +122,7 @@ export default {
         grid-row: 2;
     }
 
-    .search-btn {
+    .search-button {
         grid-column: 2;
         grid-row: 1;
         justify-self: end;

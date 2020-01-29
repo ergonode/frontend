@@ -11,7 +11,7 @@
             v-if="hasChildren"
             class="grid-item__icon"
             size="20"
-            :state="btnExpanderIconState"
+            :state="buttonExpanderIconState"
             @click.native="toggleItemExpand" />
         <div
             class="grid-item__title"
@@ -92,7 +92,7 @@ export default {
         hasChildren() {
             return this.numberOfChildren > 0;
         },
-        btnExpanderIconState() {
+        buttonExpanderIconState() {
             return this.isExpanded
                 ? ACTION.PLUS
                 : ACTION.MINUS;
