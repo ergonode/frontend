@@ -16,7 +16,7 @@ import { GRAPHITE } from '~/assets/scss/_variables/_colors.scss';
 import BaseIcon from '~/components/Icon/BaseIcon';
 
 export default {
-    name: 'IconTextarea',
+    name: 'IconTextArea',
     components: {
         BaseIcon,
     },

@@ -10,7 +10,6 @@
         <IconPlusMinus
             v-if="hasChildren"
             class="grid-item__icon"
-            size="20"
             :state="buttonExpanderIconState"
             @click.native="toggleItemExpand" />
         <div
@@ -141,7 +140,8 @@ export default {
         border: 1px solid $GREY;
         padding-left: 8px;
         background-color: $WHITESMOKE;
-        cursor: move;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        cursor: grab;
         overflow: hidden;
 
         &--menu-active {
@@ -150,14 +150,8 @@ export default {
 
         &:hover {
             z-index: $Z_INDEX_LVL_2;
-            border: none;
-            box-shadow: $ELEVATOR_6_DP;
-        }
-
-        &__icon {
-            margin-right: 8px;
-            flex: 0 0 auto;
-            cursor: pointer;
+            border-color: $WHITESMOKE;
+            box-shadow: $ELEVATOR_2_DP;
         }
 
         &__title {

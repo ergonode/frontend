@@ -13,11 +13,6 @@
         :dragged-element-size="{ width: 600, height: 60 }"
         @afterDrop="onGetConditionConfigurationById"
         @afterRemove="removeConditionValue">
-        <template #gridHeader>
-            <TemplateGridHeader
-                header="condition level"
-                :columns="columns" />
-        </template>
         <template #gridItem="{item}">
             <ConditionSetItem
                 :condition="getCondition(item.id)"
@@ -31,13 +26,11 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import TemplateGridWrapper from '~/components/TemplateGrid/TemplateGridWrapper';
-import TemplateGridHeader from '~/components/TemplateGrid/TemplateGridHeader';
 
 export default {
     name: 'ConditionSetWrapper',
     components: {
         TemplateGridWrapper,
-        TemplateGridHeader,
         ConditionSetItem: () => import('~/components/ConditionSetDesigner/ConditionSetItem'),
     },
     computed: {

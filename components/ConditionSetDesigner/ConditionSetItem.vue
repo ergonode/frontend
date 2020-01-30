@@ -3,7 +3,10 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="condition">
+    <div
+        class="condition"
+        @mouseover="onMouseOver"
+        @mouseout="onMouseOut">
         <template v-if="isCondition">
             <div class="container">
                 <div class="condition__description">
@@ -15,30 +18,14 @@
                         v-text="conditionPhrase" />
                 </div>
                 <MenuButton
+                    :class="['condition__contextual-menu', contextualMenuHoveStateClasses]"
                     :theme="secondaryTheme"
                     :size="smallSize"
-                    :plain="true">
+                    :plain="true"
+                    :options="contextualMenuItems"
+                    @focus="onSelectFocus">
                     <template #icon="{ fillColor }">
                         <IconDots :fill-color="fillColor" />
-                    </template>
-                    <template #content>
-                        <List>
-                            <ListElement
-                                v-for="(option, optIndex) in contextualMenuItems"
-                                :key="option"
-                                :small="true"
-                                @click.native.prevent="onSelectValue(optIndex)">
-                                <ListElementDescription>
-                                    <ListElementTitle :title="option" />
-                                </ListElementDescription>
-                                <ListElementAction>
-                                    <CheckBox
-                                        v-if="option === 'Required'"
-                                        ref="checkbox"
-                                        :value="element.required" />
-                                </ListElementAction>
-                            </ListElement>
-                        </List>
                     </template>
                 </MenuButton>
             </div>
@@ -63,11 +50,6 @@ import {
 } from '~/model/objectWrapper';
 import { hasOptions } from '~/model/attributes/AttributeTypes';
 import ConditionSetParameters from '~/components/ConditionSetDesigner/ConditionSetParameters';
-import List from '~/core/components/List/List';
-import ListElement from '~/core/components/List/ListElement';
-import ListElementAction from '~/core/components/List/ListElementAction';
-import ListElementDescription from '~/core/components/List/ListElementDescription';
-import ListElementTitle from '~/core/components/List/ListElementTitle';
 import MenuButton from '~/core/components/Buttons/MenuButton';
 import IconDots from '~/components/Icon/Others/IconDots';
 
@@ -77,11 +59,6 @@ export default {
         ConditionSetParameters,
         MenuButton,
         IconDots,
-        List,
-        ListElement,
-        ListElementAction,
-        ListElementTitle,
-        ListElementDescription,
     },
     props: {
         condition: {
@@ -100,6 +77,8 @@ export default {
     data() {
         return {
             contextualMenuItems: ['Remove'],
+            isContextualMenuActive: false,
+            isHovered: false,
         };
     },
     computed: {
@@ -127,6 +106,9 @@ export default {
             return {
                 gridTemplateColumns: `repeat(${parameters.length}, minmax(max-content, 33%))`,
             };
+        },
+        contextualMenuHoveStateClasses() {
+            return { 'condition__contextual-menu--hovered': this.isHovered };
         },
     },
     methods: {
@@ -156,6 +138,17 @@ export default {
                 return placeholders[clearedKey] || placeholder;
             });
         },
+        onSelectFocus(isFocused) {
+            if (!isFocused) this.isHovered = false;
+
+            this.isContextualMenuActive = isFocused;
+        },
+        onMouseOver() {
+            if (!this.isHovered) this.isHovered = true;
+        },
+        onMouseOut() {
+            if (!this.isContextualMenuActive) this.isHovered = false;
+        },
     },
 };
 </script>
@@ -168,6 +161,7 @@ export default {
         padding: 16px;
         box-sizing: border-box;
         background-color: $WHITESMOKE;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         cursor: grab;
         overflow: hidden;
 
@@ -205,11 +199,24 @@ export default {
             display: flex;
             flex-direction: column;
         }
+
+        &__contextual-menu {
+            opacity: 0;
+
+            &--hovered {
+                opacity: 1;
+            }
+        }
+
+        &:hover {
+            border-color: $WHITESMOKE;
+            box-shadow: $ELEVATOR_2_DP;
+        }
     }
 
     .container {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        margin-right: -8px;
     }
 </style>

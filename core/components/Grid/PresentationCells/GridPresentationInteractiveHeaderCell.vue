@@ -31,28 +31,11 @@
                 :theme="secondaryTheme"
                 :size="tinySize"
                 :plain="true"
-                @focus="onSelectFocus">
+                :options="contextualMenuItems"
+                @focus="onSelectFocus"
+                @input="onSelectOption">
                 <template #icon="{ fillColor }">
                     <IconDots :fill-color="fillColor" />
-                </template>
-                <template #content>
-                    <List>
-                        <ListElement
-                            v-for="option in contextualMenuItems"
-                            :key="option.text"
-                            :small="true"
-                            @click.native="onSelectOption(option)">
-                            <ListElementDescription>
-                                <ListElementTitle
-                                    :small="true"
-                                    :title="option.text" />
-                            </ListElementDescription>
-                            <CheckBox
-                                v-if="option.text !== 'Remove'"
-                                ref="checkbox"
-                                :value="option.value" />
-                        </ListElement>
-                    </List>
                 </template>
             </MenuButton>
         </div>
@@ -66,21 +49,14 @@ import { removeCookieById } from '~/model/cookies';
 import { COLUMNS_IDS } from '~/defaults/grid/cookies';
 import { SORTING_ORDER } from '~/defaults/icons';
 import { GRAPHITE_LIGHT } from '~/assets/scss/_variables/_colors.scss';
-import ListElementDescription from '~/core/components/List/ListElementDescription';
-import ListElementTitle from '~/core/components/List/ListElementTitle';
 
 export default {
     name: 'GridPresentationInteractiveHeaderCell',
     inject: ['getEditingCellCoordinates'],
     components: {
-        ListElementDescription,
-        ListElementTitle,
         MenuButton: () => import('~/core/components/Buttons/MenuButton'),
         IconArrowSort: () => import('~/components/Icon/Arrows/IconArrowSort'),
         IconDots: () => import('~/components/Icon/Others/IconDots'),
-        List: () => import('~/core/components/List/List'),
-        ListElement: () => import('~/core/components/List/ListElement'),
-        CheckBox: () => import('~/core/components/Inputs/CheckBox'),
         GridPresentationHeaderCell: () => import('~/core/components/Grid/PresentationCells/GridPresentationHeaderCell'),
     },
     props: {
@@ -103,9 +79,7 @@ export default {
     },
     data() {
         return {
-            contextualMenuItems: [
-                { text: 'Remove' },
-            ],
+            contextualMenuItems: ['Remove'],
             isMenuSelected: false,
             isColumnHovered: false,
         };
@@ -178,7 +152,7 @@ export default {
             this.$emit('focus', isFocused);
         },
         onSelectOption(option) {
-            switch (option.text) {
+            switch (option) {
             case 'Remove': {
                 if (this.column.element_id) {
                     this.setDisabledElement({
