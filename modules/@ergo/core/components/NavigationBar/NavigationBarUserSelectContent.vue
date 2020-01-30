@@ -62,12 +62,10 @@ export default {
     },
     methods: {
         ...mapActions('authentication', [
-            'logout',
             'setLoggedState',
         ]),
         onLogout() {
             this.setLoggedState(false);
-            this.logout();
             this.$router.push({ name: 'index' });
         },
     },

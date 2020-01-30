@@ -10,14 +10,19 @@
         @dragstart="onDragStart"
         @dragend="onDragEnd">
         <slot v-if="!isDragged" />
+        <IconDragDrop
+            size="16"
+            class="draggable-element__icon" />
     </li>
 </template>
 
 <script>
 import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import IconDragDrop from '@Core/components/Icons/Actions/IconDragDrop';
 
 export default {
     name: 'ListDraggableElement',
+    components: { IconDragDrop },
     props: {
         isDisabled: {
             type: Boolean,
@@ -93,14 +98,21 @@ export default {
 
 <style lang="scss" scoped>
     .draggable-element {
+        $element: &;
+
         position: relative;
         display: flex;
+        align-items: center;
         height: 48px;
-        padding: 0 12px;
+        padding: 0 16px 0 12px;
         box-sizing: border-box;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         user-select: none;
         cursor: grab;
+
+        &__icon {
+            opacity: 0;
+        }
 
         &--dragged {
             z-index: 11;
@@ -128,6 +140,10 @@ export default {
         &:not(&--dragged):not(&--disabled):hover {
             background-color: $WHITESMOKE;
             box-shadow: $ELEVATOR_2_DP;
+
+            #{$element}__icon {
+                opacity: 1;
+            }
         }
     }
 </style>

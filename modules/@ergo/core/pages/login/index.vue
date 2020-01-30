@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     layout: 'login',
@@ -61,8 +61,17 @@ export default {
             username: '',
             password: '',
         },
-        loginError: false,
     }),
+    created() {
+        if (!this.isLogged) {
+            this.resetState();
+        }
+    },
+    computed: {
+        ...mapState('authentication', {
+            isLogged: (state) => state.isLogged,
+        }),
+    },
     methods: {
         ...mapActions('authentication', [
             'authenticateUser',
@@ -71,12 +80,13 @@ export default {
             'resetState',
         ]),
         async onSubmit() {
-            await this.authenticateUser({ data: this.userAuthData });
-            this.$router.push({ name: 'dashboard' });
+            try {
+                await this.authenticateUser({ data: this.userAuthData });
+                this.$router.push({ name: 'dashboard' });
+            } catch (e) {
+                console.error(e);
+            }
         },
-    },
-    created() {
-        this.resetState();
     },
 };
 </script>

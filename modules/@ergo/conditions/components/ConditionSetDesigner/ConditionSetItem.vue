@@ -3,8 +3,32 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['condition', {'condition--loader': !isCondition}]">
+    <div
+        class="condition"
+        @mouseover="onMouseOver"
+        @mouseout="onMouseOut">
         <template v-if="isCondition">
+            <div class="container">
+                <div class="condition__description">
+                    <span
+                        class="condition__title"
+                        v-text="condition.name" />
+                    <span
+                        class="condition__phrase"
+                        v-text="conditionPhrase" />
+                </div>
+                <MenuButton
+                    :class="['condition__contextual-menu', contextualMenuHoveStateClasses]"
+                    :theme="secondaryTheme"
+                    :size="smallSize"
+                    :plain="true"
+                    :options="contextualMenuItems"
+                    @focus="onSelectFocus">
+                    <template #icon="{ fillColor }">
+                        <IconDots :fill-color="fillColor" />
+                    </template>
+                </MenuButton>
+            </div>
             <div
                 class="condition__parameters"
                 :style="parametersStyle">
@@ -15,23 +39,24 @@
                     :item-id="itemId"
                     :item-row="itemRow" />
             </div>
-            <span
-                class="condition__phrase"
-                v-text="conditionPhrase" />
         </template>
     </div>
 </template>
 <script>
 import { mapState } from 'vuex';
+import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { isEmpty } from '@Core/models/objectWrapper';
 import { hasOptions } from '@Conditions/models/conditionTypes';
 import ConditionSetParameters from '@Conditions/components/ConditionSetDesigner/ConditionSetParameters';
-
+import MenuButton from '@Core/components/Buttons/MenuButton';
+import IconDots from '@Core/components/Icons/Others/IconDots';
 
 export default {
     name: 'ConditionSetItem',
     components: {
         ConditionSetParameters,
+        MenuButton,
+        IconDots,
     },
     props: {
         condition: {
@@ -47,15 +72,22 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            contextualMenuItems: ['Remove'],
+            isContextualMenuActive: false,
+            isHovered: false,
+        };
+    },
     computed: {
         ...mapState('conditions', {
             conditionsValues: (state) => state.conditionsValues,
         }),
-        parametersStyle() {
-            const { parameters } = this.condition;
-            return {
-                gridTemplateColumns: `repeat(${parameters.length}, 1fr)`,
-            };
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
         },
         isCondition() {
             return !isEmpty(this.condition);
@@ -67,8 +99,25 @@ export default {
             if (!placeholders) return phrase;
             return this.replacePlaceholderOnPhrase(placeholders);
         },
+        parametersStyle() {
+            const { parameters } = this.condition;
+            return {
+                gridTemplateColumns: `repeat(${parameters.length}, minmax(max-content, 33%))`,
+            };
+        },
+        contextualMenuHoveStateClasses() {
+            return { 'condition__contextual-menu--hovered': this.isHovered };
+        },
     },
     methods: {
+        onSelectValue(index) {
+            switch (this.contextualMenuItems[index]) {
+            case 'Remove':
+                this.$emit('remove', this.itemId);
+                break;
+            default: break;
+            }
+        },
         replacePlaceholderOnPhrase(placeholders) {
             const { phrase, parameters } = this.condition;
             const findKeyWhenSelect = (clearedKey) => parameters.findIndex(
@@ -87,6 +136,17 @@ export default {
                 return placeholders[clearedKey] || placeholder;
             });
         },
+        onSelectFocus(isFocused) {
+            if (!isFocused) this.isHovered = false;
+
+            this.isContextualMenuActive = isFocused;
+        },
+        onMouseOver() {
+            if (!this.isHovered) this.isHovered = true;
+        },
+        onMouseOut() {
+            if (!this.isContextualMenuActive) this.isHovered = false;
+        },
     },
 };
 </script>
@@ -96,8 +156,11 @@ export default {
         display: flex;
         flex-direction: column;
         border: 1px solid $GREY;
+        padding: 16px;
+        box-sizing: border-box;
         background-color: $WHITESMOKE;
-        cursor: move;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        cursor: grab;
         overflow: hidden;
 
         &::after {
@@ -112,28 +175,46 @@ export default {
             content: "AND";
         }
 
-        &--loader {
-            border: 1px dashed $GREEN;
-            background-color: $GREEN_LIGHT;
+        &__title {
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_14_20;
+            margin-bottom: 4px;
+        }
+
+        &__phrase {
+            color: $GRAPHITE_LIGHT;
+            font: $FONT_MEDIUM_12_16;
         }
 
         &__parameters {
             display: grid;
-            grid-gap: 6%;
-            grid-template-rows: 1fr;
-            flex: 1;
-            background-color: $WHITE;
+            grid-auto-flow: column;
+            grid-column-gap: 16px;
+            margin-top: 12px;
         }
 
-        &__phrase {
-            flex: 0;
-            border-top: $BORDER_DASHED_GREY;
-            color: $GRAPHITE;
-            font: $FONT_BOLD_12_16;
+        &__description {
+            display: flex;
+            flex-direction: column;
         }
 
-        &__phrase, &__parameters {
-            padding: 8px;
+        &__contextual-menu {
+            opacity: 0;
+
+            &--hovered {
+                opacity: 1;
+            }
         }
+
+        &:hover {
+            border-color: $WHITESMOKE;
+            box-shadow: $ELEVATOR_2_DP;
+        }
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        margin-right: -8px;
     }
 </style>

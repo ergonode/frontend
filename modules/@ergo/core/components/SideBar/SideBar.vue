@@ -25,7 +25,7 @@
                     :is-expanded="isExpanded" />
             </template>
         </ol>
-        <div class="side-bar__expand-btn">
+        <div class="side-bar__expand-button">
             <FabButton
                 :theme="secondaryTheme"
                 :plain="true"
@@ -170,7 +170,7 @@ export default {
         &--expanded {
             width: 256px;
 
-            #{$sidebar}__expand-btn {
+            #{$sidebar}__expand-button {
                 transform: translateX(200px);
             }
         }
@@ -178,7 +178,7 @@ export default {
         &:not(&--expanded) {
             width: 80px;
 
-            #{$sidebar}__expand-btn {
+            #{$sidebar}__expand-button {
                 transform: translateX(24px);
             }
         }
@@ -187,7 +187,7 @@ export default {
             margin-bottom: 24px;
         }
 
-        &__expand-btn {
+        &__expand-button {
             position: sticky;
             bottom: 20px;
             width: 32px;

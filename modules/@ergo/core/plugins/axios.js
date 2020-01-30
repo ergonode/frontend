@@ -12,7 +12,7 @@ export default function ({
         configLocal.headers.JWTAuthorization = `Bearer ${store.state.authentication.jwt}`;
     });
 
-    $axios.onResponseError((errorResponse) => {
+    $axios.onError((errorResponse) => {
         let msg = '';
         const dev = process.env.NODE_ENV === 'development';
         const regExp = {
@@ -30,8 +30,10 @@ export default function ({
             break;
         case regExp.auth.test(status):
             msg = 'Authentication needed';
-            store.dispatch('authentication/setLoggedState', false);
-            redirect('/');
+            if (store.state.authentication.isLogged) {
+                store.dispatch('authentication/setLoggedState', false);
+                redirect('/');
+            }
             break;
         case regExp.access.test(status):
             msg = 'Access denied';

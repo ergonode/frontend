@@ -17,8 +17,8 @@ export default {
             return dispatch('getUser');
         });
     },
-    async getUser({ commit }) {
-        await this.app.$axios.$get('profile').then((user) => {
+    getUser({ commit }) {
+        return this.app.$axios.$get('profile').then((user) => {
             commit(types.SET_USER, user);
             commit(types.SET_LOGGED_STATE, true);
         });
@@ -26,13 +26,8 @@ export default {
     setLoggedState({ commit }, isLogged) {
         commit(types.SET_LOGGED_STATE, isLogged);
     },
-    logout({ commit }) {
-        this.$cookies.removeAll();
-
-        commit(types.SET_JWT_TOKEN, null);
-        commit(types.SET_USER, null);
-    },
     clearStorage({ commit }) {
+        this.$cookies.removeAll();
         commit(types.CLEAR_STATE);
     },
 };

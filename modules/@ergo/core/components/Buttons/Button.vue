@@ -5,7 +5,7 @@
 <template>
     <button
         type="button"
-        :class="btnClasses"
+        :class="buttonClasses"
         :disabled="disabled || !loaded"
         :aria-label="title">
         <slot
@@ -42,20 +42,20 @@ export default {
 
             return WHITE;
         },
-        btnClasses() {
+        buttonClasses() {
             return [
-                'btn',
-                `btn--${this.theme}`,
-                `btn--${this.size}`,
+                'button',
+                `button--${this.theme}`,
+                `button--${this.size}`,
                 {
-                    'btn--plain': this.plain,
-                    'btn--fab': this.fab,
+                    'button--plain': this.plain,
+                    'button--fab': this.fab,
                 },
             ];
         },
         titleClasses() {
             return [
-                'btn__title',
+                'button__title',
             ];
         },
     },

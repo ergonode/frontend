@@ -132,7 +132,7 @@ export default {
 
         &__icon {
             display: flex;
-            padding-top: 12px;
+            padding-top: 10px;
         }
 
         &__header {

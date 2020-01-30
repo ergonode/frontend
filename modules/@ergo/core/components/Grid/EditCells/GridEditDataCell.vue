@@ -28,7 +28,7 @@ export default {
     computed: {
         editableComponent() {
             switch (this.$attrs.type) {
-            case TYPES.TEXTAREA:
+            case TYPES.TEXT_AREA:
                 return () => import('@Core/components/Grid/EditCells/GridEditLongTextCell');
             case TYPES.DATE:
                 return () => import('@Core/components/Grid/EditCells/GridEditDateCell');

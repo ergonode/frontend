@@ -54,11 +54,13 @@ export default {
 <style lang="scss" scoped>
     .grid-header {
         display: grid;
+        grid-column-gap: 1px;
         height: 40px;
-        border: 1px solid $GREY;
-        border-left: none;
+        border-top: $BORDER_1_GREY;
+        border-left: $BORDER_1_GREY;
+        border-right: $BORDER_1_GREY;
         box-sizing: border-box;
-        background-color: $WHITESMOKE;
+        background-color: $GREY;
 
         &__title {
             display: flex;
@@ -66,8 +68,7 @@ export default {
             justify-content: space-between;
             align-items: center;
             padding: 8px;
-            box-sizing: border-box;
-            border-left: 1px solid $GREY;
+            background-color: $WHITESMOKE;
             color: $GRAPHITE;
             font: $FONT_BOLD_12_16;
             text-overflow: ellipsis;

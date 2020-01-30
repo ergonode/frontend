@@ -10,7 +10,7 @@
             @expand="onExpand"
             @searchResult="onSearch" />
         <CategoriesList :language-code="userLanguageCode" />
-        <div class="add-fab-btn">
+        <div class="add-fab-button">
             <FabButton
                 :disabled="!$hasAccess(['CATEGORY_CREATE'])"
                 @click.native="addCategory">
@@ -74,7 +74,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .add-fab-btn {
+    .add-fab-button {
         position: absolute;
         bottom: 12px;
         right: 12px;

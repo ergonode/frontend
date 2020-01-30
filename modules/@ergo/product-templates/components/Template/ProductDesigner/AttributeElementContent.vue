@@ -34,7 +34,8 @@
                         <ListElement
                             v-for="(option, optIndex) in contextualMenuItems"
                             :key="option"
-                            @click.native="onSelectValue(optIndex)">
+                            :small="true"
+                            @click.native.prevent="onSelectValue(optIndex)">
                             <ListElementDescription>
                                 <ListElementTitle :title="option" />
                             </ListElementDescription>
@@ -42,8 +43,7 @@
                                 <CheckBox
                                     v-if="option === 'Required'"
                                     ref="checkbox"
-                                    :value="element.required"
-                                    @click.native="onSelectValue(optIndex)" />
+                                    :value="element.required" />
                             </ListElementAction>
                         </ListElement>
                     </List>
@@ -71,12 +71,12 @@ export default {
     name: 'AttributeElementContent',
     components: {
         IconDots,
-        ListElementTitle,
         MenuButton,
         ElementContentBase,
         List,
         ListElement,
         ListElementAction,
+        ListElementTitle,
         ListElementDescription,
         CheckBox,
     },
@@ -96,8 +96,8 @@ export default {
     },
     data() {
         return {
-            isContextualMenuActive: false,
             contextualMenuItems: ['Required', 'Remove'],
+            isContextualMenuActive: false,
             isHovered: false,
         };
     },
@@ -174,7 +174,7 @@ export default {
 
         &__icon {
             display: flex;
-            padding-top: 12px;
+            padding-top: 10px;
         }
 
         &__header {

@@ -4,13 +4,16 @@
  */
 <template>
     <Button
-        :class="menuBtnClasses"
+        :class="menuButtonClasses"
         v-bind="$attrs"
-        @click.native="onClick">
+        @click.native="onClick"
+        @mouseenter.native="onMouseEnter"
+        @mouseleave.native="onMouseLeave">
         <template #append="{ color }">
             <slot
                 name="icon"
-                :fillColor="color">
+                :fillColor="iconFillColor"
+                :is-hovered="isHovered">
                 <IconArrowDropDown
                     :state="iconArrowState"
                     :fill-color="color" />
@@ -19,7 +22,7 @@
         <FadeTransition>
             <div
                 v-if="isFocused"
-                class="btn__select-content"
+                class="button__select-content"
                 :style="contentPositionStyle">
                 <slot name="content">
                     <List>
@@ -41,6 +44,10 @@
 <script>
 
 import { ARROW } from '@Core/defaults/icons';
+import { THEMES } from '@Core/defaults/buttons';
+import {
+    GREEN, GRAPHITE, WHITE, GREY_DARK,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 import Button from '@Core/components/Buttons/Button';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
@@ -66,13 +73,27 @@ export default {
     data() {
         return {
             isFocused: false,
+            isHovered: false,
             contentPositionStyle: null,
         };
     },
     computed: {
-        menuBtnClasses() {
+        iconFillColor() {
+            if (this.$attrs.theme === THEMES.SECONDARY) {
+                if (this.$attrs.disabled) {
+                    return GREY_DARK;
+                }
+                if (this.isHovered || this.isFocused) {
+                    return GREEN;
+                }
+                return GRAPHITE;
+            }
+
+            return WHITE;
+        },
+        menuButtonClasses() {
             return {
-                'btn--menu-title': Boolean(this.$attrs.title),
+                'button--menu-title': Boolean(this.$attrs.title),
             };
         },
         iconArrowState() {
@@ -94,6 +115,12 @@ export default {
         window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
+        onMouseEnter() {
+            this.isHovered = true;
+        },
+        onMouseLeave() {
+            this.isHovered = false;
+        },
         onClick() {
             this.isFocused = !this.isFocused;
         },
@@ -143,8 +170,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-    .btn {
-        $btn: &;
+    .button {
+        $button: &;
 
         &:not(&--menu-title) {
             width: 24px;
@@ -153,7 +180,7 @@ export default {
         }
     }
 
-    .btn__select-content {
+    .button__select-content {
         position: fixed;
         z-index: $Z_INDEX_DROP_DOWN;
         display: flex;

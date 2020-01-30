@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-.btn {
-    $btn: &;
+.button {
+    $button: &;
 
     position: relative;
     display: flex;
@@ -47,17 +47,17 @@
     &--secondary {
         background-color: transparent;
 
-        #{$btn}__title {
+        #{$button}__title {
             color: $GRAPHITE;
         }
 
         &:disabled {
-            #{$btn}__title {
+            #{$button}__title {
                 color: $GREY_DARK;
             }
         }
 
-        &:hover:not(:disabled):not(#{$btn}--plain) {
+        &:hover:not(:disabled):not(#{$button}--plain) {
             background-color: $WHITE;
         }
     }
@@ -80,7 +80,7 @@
     }
 
     &--tiny, &--small {
-        #{$btn}__title {
+        #{$button}__title {
             font: $FONT_SEMI_BOLD_12_16;
         }
     }

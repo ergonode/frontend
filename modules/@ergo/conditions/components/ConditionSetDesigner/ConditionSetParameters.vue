@@ -6,9 +6,9 @@
     <Component
         :is="getComponentViaType"
         :solid="true"
-        :regular="true"
         :required="true"
         :clearable="true"
+        :small="true"
         :label="parameter.name"
         :options="conditionOptions"
         :value="conditionValue"

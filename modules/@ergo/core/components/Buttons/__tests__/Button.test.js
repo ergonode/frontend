@@ -24,7 +24,7 @@ describe('Buttons/Button', () => {
     });
 
     it('Check if button has not children', () => {
-        const icon = wrapper.find('.btn__icon');
+        const icon = wrapper.find('.button__icon');
         const label = wrapper.find('label');
         expect(icon.exists()).toBe(false);
         expect(label.exists()).toBe(false);
@@ -38,13 +38,13 @@ describe('Buttons/Button', () => {
     });
 
     it('Check button classes if no props', () => {
-        expect(wrapper.vm.btnClasses).toStrictEqual([
-            'btn',
-            'btn--primary',
-            'btn--regular',
+        expect(wrapper.vm.buttonClasses).toStrictEqual([
+            'button',
+            'button--primary',
+            'button--regular',
             {
-                'btn--plain': false,
-                'btn--fab': false,
+                'button--plain': false,
+                'button--fab': false,
             },
         ]);
     });
@@ -55,13 +55,13 @@ describe('Buttons/Button', () => {
             size: 'small',
             plain: true,
         });
-        expect(wrapper.vm.btnClasses).toStrictEqual([
-            'btn',
-            'btn--secondary',
-            'btn--small',
+        expect(wrapper.vm.buttonClasses).toStrictEqual([
+            'button',
+            'button--secondary',
+            'button--small',
             {
-                'btn--plain': true,
-                'btn--fab': false,
+                'button--plain': true,
+                'button--fab': false,
             },
         ]);
     });

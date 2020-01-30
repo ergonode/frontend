@@ -12,17 +12,13 @@
         :is-multi-draggable="true"
         :dragged-element-size="{ width: 600, height: 60 }"
         @afterDrop="onGetConditionConfigurationById"
-        @afterRemove="removeConditionFromSet">
-        <template #gridHeader>
-            <TemplateGridHeader
-                header="condition level"
-                :columns="columns" />
-        </template>
+        @afterRemove="removeConditionValue">
         <template #gridItem="{item}">
             <ConditionSetItem
                 :condition="getCondition(item.id)"
                 :item-id="item.id"
-                :item-row="item.row" />
+                :item-row="item.row"
+                @remove="removeCondition" />
         </template>
     </TemplateGridWrapper>
 </template>
@@ -30,13 +26,11 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import TemplateGridWrapper from '@Core/components/TemplateGrid/TemplateGridWrapper';
-import TemplateGridHeader from '@Core/components/TemplateGrid/TemplateGridHeader';
 
 export default {
     name: 'ConditionSetWrapper',
     components: {
         TemplateGridWrapper,
-        TemplateGridHeader,
         ConditionSetItem: () => import('@Conditions/components/ConditionSetDesigner/ConditionSetItem'),
     },
     computed: {
@@ -55,6 +49,9 @@ export default {
             'removeConditionValue',
             'setConditionValue',
         ]),
+        ...mapActions('gridDesigner', [
+            'removeGridItem',
+        ]),
         getCondition(id) {
             const [correctId] = id.split('--');
             return this.conditions[correctId] || {};
@@ -71,8 +68,9 @@ export default {
                 parameterValue: null,
             });
         },
-        removeConditionFromSet(id) {
+        removeCondition(id) {
             this.removeConditionValue(id);
+            this.removeGridItem(id);
         },
     },
 };
