@@ -11,8 +11,13 @@ module.exports = {
         jest: true,
         "cypress/globals": true
     },
-    parserOptions: {
-        parser: 'babel-eslint'
+    // parserOptions: {
+    //     parser: 'babel-eslint'
+    // },
+    // "parser": "vue-eslint-parser",
+    "parserOptions": {
+        "parser": "babel-eslint",
+
     },
     extends: [
         // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
@@ -31,6 +36,11 @@ module.exports = {
     ],
     // add your custom rules here
     rules: {
+        // "indent": ["error", 2, {
+        //   "ignoredNodes": ["TemplateLiteral"]
+        // }],
+        // 'template-curly-spacing' : 'off',
+        // 'indent' : 'off',
         'notice/notice':[
           "error", {
             "templateFile":"./config/.copyright",
@@ -80,5 +90,8 @@ module.exports = {
                 'fetch',
             ],
         }],
+        'jest/no-commented-out-tests': 'off',
+        'jest/expect-expect': 'off',
+        'jest/no-mocks-import': 'off'
     }
 };

@@ -6,11 +6,11 @@
  * See LICENSE for license details.
  */
 require('dotenv').config({ path: '.env' });
-const { modulesConfig, inactiveModulesConfig } = require('./plugins/moduleLoader');
 const PATH = require('path');
 const PKG = require('./package');
+const { modulesConfig, inactiveModulesConfig } = require('./plugins/moduleLoader');
 
-const nuxtConfig = {
+const NUXT_CONFIG = {
     css: modulesConfig.nuxt.css || [],
     styleResources: modulesConfig.nuxt.styleResources || {},
     plugins: modulesConfig.nuxt.plugins || [],
@@ -18,10 +18,6 @@ const nuxtConfig = {
 };
 const IS_DEV = process.env.NODE_ENV !== 'production';
 const BASE_URL = `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_PREFIX}`;
-
-// function isJSRule(rule) {
-//     return rule.test.toString() === '/\\.vue$/';
-// }
 
 module.exports = {
     mode: 'universal',
@@ -56,9 +52,9 @@ module.exports = {
     router: {
         middleware: ['modules'],
     },
-    css: nuxtConfig.css,
-    plugins: nuxtConfig.plugins,
-    styleResources: nuxtConfig.styleResources,
+    css: NUXT_CONFIG.css,
+    plugins: NUXT_CONFIG.plugins,
+    styleResources: NUXT_CONFIG.styleResources,
     modules: [
         '@nuxtjs/router',
         '@nuxtjs/axios',
@@ -77,7 +73,8 @@ module.exports = {
     build: {
         parallel: true,
         terser: true,
-        extend(config, { isDev, isClient }) {
+        optimizeCSS: true,
+        extend(config) {
             const alias = config.resolve.alias || {};
             const { aliases = {} } = modulesConfig.nuxt;
             const { aliases: inactiveAliases = {} } = inactiveModulesConfig.nuxt;
@@ -92,39 +89,9 @@ module.exports = {
                 alias[key] = PATH.join(__dirname, inactiveAliases[key]);
             });
 
-            if (isClient && isDev) {
+            if (IS_DEV) {
                 config.devtool = 'source-map';
             }
-            // if (!isDev) {
-            // config.module.rules.forEach((rule) => {
-            //     if (rule.test.toString() === '/\\.jsx?$/i') {
-            //         console.log(rule);
-            //         rule.exclude = (file) => {
-            //             [, file] = file.split('__tests__', 2);
-
-            //             // not exclude files outside __tests__
-            //             return !!file;
-            //         };
-            //     }
-            //     // if (isSASSRule(rule)) {
-            //     //     rule.use.push(sassResourcesLoader);
-            //     // }
-            // });
-            config.module.rules.push(
-                {
-                    test: /\.js$/i,
-                    loader: 'babel-loader',
-                    exclude: (file) => {
-                        [, file] = file.split('__tests__', 2);
-
-                        // not exclude files outside __tests__
-                        return !!file;
-                    },
-                },
-            );
-            // console.log(config.entry);
-            // config.entry = { ...config.entry, xxx: [PATH.resolve(__dirname, './dist'), path.resolve(buildDir, 'client.js')] };
-            // }
         },
         optimization: {
             runtimeChunk: 'single',
@@ -132,6 +99,7 @@ module.exports = {
                 chunks: 'all',
                 maxInitialRequests: Infinity,
                 minSize: 0,
+                maxSize: 200000,
                 cacheGroups: {
                     default: false,
                     commons: {
@@ -155,31 +123,13 @@ module.exports = {
                         enforce: true,
                         priority: -30,
                     },
-                    coreComponentsModule: {
-                        test(module) {
-                            return module.resource && module.resource.includes('@ergo/core/components');
-                        },
-                        chunks: 'all',
-                        name: 'coreComponentsModule',
-                        priority: -10,
-                        enforce: true,
-                    },
-                    coreComponentGridModule: {
-                        test(module) {
-                            return module.resource && module.resource.includes('@ergo/core/components/Grid');
-                        },
-                        chunks: 'all',
-                        name: 'coreComponentsGridModule',
-                        priority: -10,
-                        enforce: true,
-                    },
                     styles: {
                         test: /\.(css|scss|sass)$/,
                         name: 'styles',
                         chunks: 'all',
                         enforce: true,
                     },
-                    ...nuxtConfig.chunks,
+                    ...NUXT_CONFIG.chunks,
                 },
             },
         },
@@ -191,5 +141,6 @@ module.exports = {
     },
     env: {
         baseURL: BASE_URL,
+        NUXT_ENV: process.env.NUXT_ENV || process.env.NODE_ENV || 'development',
     },
 };

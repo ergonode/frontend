@@ -132,7 +132,6 @@ const ModuleLoader = (() => {
                                 },
                                 chunks: 'all',
                                 name: `${moduleName}Module`,
-                                enforce: true,
                                 priority: -20,
                             },
                         };
