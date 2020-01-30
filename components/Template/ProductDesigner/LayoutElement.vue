@@ -252,7 +252,10 @@ export default {
                     updateGhostElementWidth(ghostElementWidth);
                 }
 
-                this.$el.style.width = `${width}px`;
+                window.requestAnimationFrame(() => {
+                    this.$el.style.width = `${width}px`;
+                });
+
                 this.actualElementColumn = columnBellowMouse;
             }
         },
@@ -339,10 +342,14 @@ export default {
         box-sizing: border-box;
         background-color: $WHITESMOKE;
         user-select: none;
+        transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        transition-property:
+            border-color,
+            box-shadow;
         cursor: grab;
 
         &:hover:not(&--resized):not(&--disabled) {
-            border: unset;
+            border-color: $WHITESMOKE;
             box-shadow: $ELEVATOR_2_DP;
         }
 

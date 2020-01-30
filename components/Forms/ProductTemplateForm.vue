@@ -90,7 +90,7 @@ export default {
                 return ProductTemplateDate;
             case TYPES.IMAGE:
                 return ProductTemplateImage;
-            case TYPES.TEXTAREA:
+            case TYPES.TEXT_AREA:
                 return ProductTemplateMultiLine;
             case TYPES.SELECT:
             case TYPES.MULTI_SELECT:

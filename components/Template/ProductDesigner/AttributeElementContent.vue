@@ -96,8 +96,8 @@ export default {
     },
     data() {
         return {
-            isContextualMenuActive: false,
             contextualMenuItems: ['Required', 'Remove'],
+            isContextualMenuActive: false,
             isHovered: false,
         };
     },
@@ -174,7 +174,7 @@ export default {
 
         &__icon {
             display: flex;
-            padding-top: 12px;
+            padding-top: 10px;
         }
 
         &__header {
