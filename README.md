@@ -42,6 +42,11 @@ npm run cli:run
 ```
 > *You can also copy .env.dist file as .env and set your API URL configuration.*
 
+Execute CLI command and choose yours modules :
+```bash
+npm run cli:run modules
+```
+
 Run server
 ```bash
 #development

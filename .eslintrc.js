@@ -11,36 +11,23 @@ module.exports = {
         jest: true,
         "cypress/globals": true
     },
-    // parserOptions: {
-    //     parser: 'babel-eslint'
-    // },
-    // "parser": "vue-eslint-parser",
     "parserOptions": {
         "parser": "babel-eslint",
 
     },
     extends: [
-        // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
-        // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
         'airbnb-base',
         'plugin:vue/strongly-recommended',
         'plugin:jest/recommended',
         'plugin:cypress/recommended'
     ],
-    // required to lint *.vue files
     plugins: [
         'vue',
         'jest',
         'notice',
         'cypress'
     ],
-    // add your custom rules here
     rules: {
-        // "indent": ["error", 2, {
-        //   "ignoredNodes": ["TemplateLiteral"]
-        // }],
-        // 'template-curly-spacing' : 'off',
-        // 'indent' : 'off',
         'notice/notice':[
           "error", {
             "templateFile":"./config/.copyright",
