@@ -71,10 +71,23 @@ module.exports = {
         baseURL: BASE_URL || 'http://localhost:8000',
     },
     build: {
-        parallel: true,
-        terser: true,
-        optimizeCSS: true,
-        extend(config) {
+        terser: {
+            parallel: true,
+            sourceMap: true,
+            exclude: /\/store/,
+            extractComments: {
+                filename: 'LICENSES',
+            },
+            terserOptions: {
+                output: {
+                    comments: /^\**!|@preserve|@license|@cc_on/,
+                },
+            },
+        },
+        hardSource: true, // TODO: check if it works correctly
+        // extractCSS: true, //TODO: check webpack CSS plugins for optimize files
+        // optimizeCSS: true,
+        extend(config, { isDev, isClient }) {
             const alias = config.resolve.alias || {};
             const { aliases = {} } = modulesConfig.nuxt;
             const { aliases: inactiveAliases = {} } = inactiveModulesConfig.nuxt;
@@ -89,19 +102,43 @@ module.exports = {
                 alias[key] = PATH.join(__dirname, inactiveAliases[key]);
             });
 
-            if (IS_DEV) {
-                config.devtool = 'source-map';
+            if (isDev) {
+                config.devtool = isClient ? 'source-map' : 'inline-source-map';
             }
+            // TODO: finish method to exclude test files
+            // config.module.rules.forEach((rule) => {
+            //     if (rule.test.toString() === '/\\.jsx?$/i') {
+            //         rule.exclude = (file) => file.endsWith('test.js');
+            //         // rule.test = (file) => {
+            //         //     if (/[\\/](tests|__tests__|__mocks__)[\\/]/.test(file)) {
+            //         //         return false;
+            //         //     }
+
+            //         //     return /\.jsx?$/i.test(file);
+            //         // };
+            //     }
+            // });
         },
         optimization: {
             runtimeChunk: 'single',
+            minimize: true,
             splitChunks: {
                 chunks: 'all',
+                name: false,
                 maxInitialRequests: Infinity,
                 minSize: 0,
                 maxSize: 200000,
                 cacheGroups: {
                     default: false,
+                    tests: {
+                        test(mod) {
+                            return mod.resource && /[\\/](tests|__tests__)[\\/]/.test(mod.resource);
+                        },
+                        chunks: 'all',
+                        name: 'tests',
+                        enforce: true,
+                        priority: 30,
+                    },
                     commons: {
                         test: /node_modules[\\/](vue|vue-loader|vue-router|vuex|vue-meta|core-js|@babel\/runtime|axios|webpack|setimmediate|timers-browserify|process|regenerator-runtime|cookie|js-cookie|is-buffer|dotprop|nuxt\.js)[\\/]/,
                         chunks: 'all',
@@ -115,8 +152,8 @@ module.exports = {
                         enforce: true,
                     },
                     modules: {
-                        test(module) {
-                            return module.resource && module.resource.includes('modules/@ergo');
+                        test(mod) {
+                            return mod.resource && mod.resource.includes('modules/@ergo');
                         },
                         chunks: 'all',
                         name: 'modules',

@@ -127,8 +127,8 @@ const ModuleLoader = (() => {
                         }
                         config.nuxt.chunks = {
                             [`${moduleName}Module`]: {
-                                test(m) {
-                                    return m.resource && m.resource.includes(`modules/${module}`);
+                                test(mod) {
+                                    return mod.resource && mod.resource.includes(`modules/${module}`);
                                 },
                                 chunks: 'all',
                                 name: `${moduleName}Module`,
