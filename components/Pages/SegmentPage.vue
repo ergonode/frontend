@@ -29,7 +29,7 @@
         <Footer>
             <Button
                 :title="isEdit ? 'SAVE SEGMENT' : 'CREATE SEGMENT'"
-                :loaded="$isLoaded('footerButton')"
+                :disabled="$isLoading('footerButton')"
                 @click.native="onUpdate" />
         </Footer>
         <Blur

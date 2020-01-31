@@ -29,7 +29,7 @@
         <Footer>
             <Button
                 :title="isEdit ? 'SAVE ATTRIBUTE' : 'CREATE ATTRIBUTE'"
-                :loaded="$isLoaded('footerButton')"
+                :disabled="$isLoading('footerButton')"
                 @click.native="onUpdate" />
         </Footer>
     </Page>

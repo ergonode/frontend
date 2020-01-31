@@ -90,24 +90,24 @@ function getUpperBoundsTransforms(
 }
 
 export default function (targetGhostIndex, draggedElIndex, ghostIndex) {
-    const contentGrid = document.documentElement.querySelector('.grid__body');
-    const { width: ghostWidth } = contentGrid.children[draggedElIndex]
+    const gridColumns = document.documentElement.querySelector('.grid__columns');
+    const { width: ghostWidth } = gridColumns.children[draggedElIndex]
         .getBoundingClientRect();
-    const ghostTransform = +contentGrid.children[draggedElIndex].style.transform.replace(/[^0-9\-.,]/g, '');
+    const ghostTransform = +gridColumns.children[draggedElIndex].style.transform.replace(/[^0-9\-.,]/g, '');
     let bounds = {};
 
     if (targetGhostIndex < ghostIndex) {
         bounds = getLowerBoundsTransforms(
-            contentGrid, ghostWidth, ghostTransform, targetGhostIndex, draggedElIndex, ghostIndex,
+            gridColumns, ghostWidth, ghostTransform, targetGhostIndex, draggedElIndex, ghostIndex,
         );
     } else {
         bounds = getUpperBoundsTransforms(
-            contentGrid, ghostWidth, ghostTransform, targetGhostIndex, draggedElIndex, ghostIndex,
+            gridColumns, ghostWidth, ghostTransform, targetGhostIndex, draggedElIndex, ghostIndex,
         );
     }
     Object.keys(bounds.transforms).forEach((index) => {
-        contentGrid.children[index].style.transform = `translateX(${bounds.transforms[index]}px)`;
+        gridColumns.children[index].style.transform = `translateX(${bounds.transforms[index]}px)`;
     });
 
-    contentGrid.children[draggedElIndex].style.transform = `translateX(${bounds.updatedGhostTransform}px)`;
+    gridColumns.children[draggedElIndex].style.transform = `translateX(${bounds.updatedGhostTransform}px)`;
 }

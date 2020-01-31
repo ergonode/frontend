@@ -29,7 +29,7 @@
         <Footer>
             <Button
                 :title="isEdit ? 'SAVE CATEGORY' : 'CREATE CATEGORY'"
-                :loaded="$isLoaded('footerButton')"
+                :disabled="$isLoading('footerButton')"
                 @click.native="onUpdate" />
         </Footer>
     </Page>
