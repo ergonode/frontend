@@ -137,8 +137,8 @@ export default {
                     onSuccess: () => {
                         Object.keys(this.drafts[productId]).forEach((columnId) => {
                             this.cellValues[productId][columnId] = this.drafts[productId][columnId];
-                            this.removeDraft(productId);
                         });
+                        this.removeDraft(productId);
                     },
                 }));
             });
