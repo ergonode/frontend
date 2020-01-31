@@ -10,6 +10,7 @@ import {
     GHOST_ELEMENT_MODEL,
     PINNED_COLUMN_STATE,
     COLUMN_WIDTH,
+    DATA_LIMIT,
     GHOST_ID,
 } from '~/defaults/grid';
 import {
@@ -32,6 +33,8 @@ export default {
         GridFilterCell: () => import('~/core/components/Grid/GridFilterCell'),
         GridHeaderCell: () => import('~/core/components/Grid/GridHeaderCell'),
         GridPlaceholder: () => import('~/core/components/Grid/GridPlaceholder'),
+        GridPagination: () => import('~/core/components/Grid/GridPagination'),
+        GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
         GridAdvancedFiltersContainer: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFiltersContainer'),
         GridAdvancedFilter: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFilter'),
         GridAdvancedFiltersRemoveAllButton: () => import('~/core/components/Grid/AdvancedFilters/GridAdvancedFiltersRemoveAllButton'),
@@ -64,7 +67,7 @@ export default {
                         columnIndex,
                         rowIndex: this.rowsOffset + rowIndex,
                         column,
-                        filter: this.basicFilters[column.id],
+                        filter: this.filters[column.id],
                         disabled: typeof this.advancedFiltersValues[column
                             .id] !== 'undefined',
                     },
@@ -103,7 +106,7 @@ export default {
                             column,
                             draft: this.drafts[id],
                             isSelected: this.isSelectedAllRows
-                                || this.selectedRows[fixedRowIndex],
+                                    || this.selectedRows[fixedRowIndex],
                             editingPrivilegeAllowed: this.editingPrivilegeAllowed,
                         },
                     }));
@@ -219,16 +222,46 @@ export default {
 
             return gridColumns;
         };
+        const gridColumns = createElement('div', {
+            staticClass: 'grid__columns',
+            style: this.templateColumns,
+        }, getGridColumns());
+        const gridBodyElements = [gridColumns];
 
-        const GridBody = createElement('div', {
+        if (this.isPlaceholder) {
+            gridBodyElements.push(createElement('GridPlaceholder'));
+        }
+
+        const gridBody = createElement('div', {
             ref: 'gridBody',
             staticClass: 'grid__body',
-            style: (this.templateColumns),
             on: {
                 dragleave: this.onDragLeave,
             },
-        }, getGridColumns());
-
+        }, gridBodyElements);
+        const gridFooter = createElement('div', {
+            staticClass: 'grid__footer',
+        }, [
+            createElement('GridPageSelector', {
+                attrs: {
+                    value: this.maxRows,
+                    maxRows: this.dataCount,
+                },
+                on: {
+                    input: this.setMaxRows,
+                },
+            }),
+            createElement('GridPagination', {
+                attrs: {
+                    value: this.currentPage,
+                    maxPage: this.maxPage,
+                },
+                on: {
+                    input: this.setCurrentPage,
+                },
+            }),
+            this.$slots.appendFooter,
+        ]);
         const gridElements = [];
 
         if (this.isHeaderVisible) {
@@ -238,7 +271,7 @@ export default {
                     layout: this.layout,
                     filters: this.advancedFilters,
                     isActionsSelected: this.isSelectedAllRows
-                        || Object.keys(this.selectedRows).length !== 0,
+                            || Object.keys(this.selectedRows).length !== 0,
                 },
                 on: {
                     rowHeightChange: this.onRowHeightChange,
@@ -250,25 +283,21 @@ export default {
                     clearFilter: this.onClearFilterAtIndex,
                     setGhostFilter: this.onSetGhostFilterAtIndex,
                     swapFilters: this.onSwapFiltersPosition,
-                    applyFilter: this.onApplyFilter,
+                    applyFilter: this.emitFetchData,
                     removeAllFilters: this.onRemoveAll,
                 },
             }));
         }
 
-        gridElements.push(GridBody);
-
-        if (this.isPlaceholder) {
-            gridElements.push(createElement('GridPlaceholder'));
-        }
+        gridElements.push(gridBody);
+        gridElements.push(gridFooter);
 
         return createElement('div', {
-            class: [
-                'grid',
-                {
-                    'grid--placeholder': this.isPlaceholder,
-                    'grid--disabled': this.isColumnExists,
-                }],
+            staticClass: 'grid',
+            class: {
+                'grid--placeholder': this.isPlaceholder,
+                'grid--disabled': this.isColumnExists,
+            },
         }, gridElements);
     },
     props: {
@@ -288,33 +317,17 @@ export default {
             type: Array,
             default: () => [],
         },
-        sortedColumn: {
-            type: Object,
-            default: () => ({}),
-        },
-        basicFilters: {
-            type: Object,
-            default: () => ({}),
-        },
         advancedFilters: {
             type: Array,
             default: () => [],
         },
-        maxRows: {
-            type: Number,
-            default: 0,
-        },
-        maxPage: {
-            type: Number,
-            default: 1,
-        },
-        currentPage: {
-            type: Number,
-            default: 1,
-        },
         editingPrivilegeAllowed: {
             type: Boolean,
             default: true,
+        },
+        dataCount: {
+            type: Number,
+            default: 0,
         },
         isDraggable: {
             type: Boolean,
@@ -352,7 +365,11 @@ export default {
             editingCellCoordinates: { row: null, column: null },
             rowHeight: ROW_HEIGHT.MEDIUM,
             layout: GRID_LAYOUT.TABLE,
+            maxRows: DATA_LIMIT,
+            currentPage: 1,
             columnWidths: [],
+            filters: {},
+            sortedColumn: {},
         };
     },
     created() {
@@ -396,6 +413,11 @@ export default {
         ...mapState('gridDraft', {
             drafts: (state) => state.drafts,
         }),
+        maxPage() {
+            const result = Math.ceil(this.dataCount / this.maxRows);
+
+            return result > 0 ? result : 1;
+        },
         templateColumns() {
             return {
                 gridTemplateColumns: this.columnWidths.join(' '),
@@ -532,11 +554,18 @@ export default {
             this.columnWidths.splice(index, 1);
             this.$emit('removeColumn', index - this.columnsOffset);
         },
-        onSortColumn(payload) {
-            this.$emit('sortColumn', payload);
+        onSortColumn(sortedColumn) {
+            this.sortedColumn = sortedColumn;
+            this.emitFetchData();
         },
-        onFilterChange(filter) {
-            this.$emit('filterColumn', filter);
+        onFilterChange({ id, value, operator }) {
+            if (!value || !value.length) {
+                delete this.filters[id];
+            } else {
+                this.filters[id] = { value, operator };
+            }
+
+            this.emitFetchData();
         },
         addGhostColumn() {
             if (!this.isColumnExists) {
@@ -568,14 +597,41 @@ export default {
                 this.setGhostIndex();
             }
         },
-        onDropFilterAtIndex(payload) {
-            this.$emit('dropFilter', payload);
+        setCurrentPage(page) {
+            this.currentPage = page;
+            this.emitFetchData();
+        },
+        setMaxRows(maxRows) {
+            const number = Math.trunc(maxRows);
+
+            if (number !== this.maxRows) {
+                this.maxRows = number;
+
+                this.emitFetchData();
+            }
+        },
+        emitFetchData() {
+            this.$emit('fetchData', {
+                sortedColumn: this.sortedColumn,
+                filters: this.filters,
+                offset: (this.currentPage - 1) * this.maxRows,
+                limit: this.maxRows,
+            });
         },
         onUpdateFilterAtIndex(payload) {
             this.$emit('updateFilter', payload);
+            this.emitFetchData();
         },
         onRemoveFilterAtIndex(index) {
             this.$emit('removeFilter', index);
+            this.emitFetchData();
+        },
+        onRemoveAll() {
+            this.$emit('removeAllFilters');
+            this.emitFetchData();
+        },
+        onDropFilterAtIndex(payload) {
+            this.$emit('dropFilter', payload);
         },
         onInsertFilterAtIndex(payload) {
             this.$emit('insertFilter', payload);
@@ -589,12 +645,6 @@ export default {
         onSwapFiltersPosition(payload) {
             this.$emit('swapFilters', payload);
         },
-        onApplyFilter() {
-            this.$emit('applyFilter');
-        },
-        onRemoveAll() {
-            this.$emit('removeAllFilters');
-        },
     },
 };
 </script>
@@ -607,7 +657,8 @@ export default {
         display: flex;
         flex: 1 1 auto;
         flex-direction: column;
-        height: 0;
+        min-width: 0;
+        overflow: hidden;
 
         &--placeholder {
             #{$grid}__body {
@@ -622,13 +673,14 @@ export default {
         }
 
         &__body {
-            position: relative;
-            display: grid;
+            display: flex;
+            flex: 1 1 auto;
+            flex-direction: column;
+            height: 0;
+            background-color: $WHITESMOKE;
             border-top: $BORDER_1_GREY;
             border-left: $BORDER_1_GREY;
             border-right: $BORDER_1_GREY;
-            background-color: $WHITESMOKE;
-            overflow: auto;
 
             &::after {
                 position: absolute;
@@ -637,6 +689,26 @@ export default {
                 height: 100%;
                 content: "";
             }
+        }
+
+        &__columns {
+            position: relative;
+            display: grid;
+            overflow: auto;
+        }
+
+        &__footer {
+            z-index: $Z_INDEX_LVL_5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            box-sizing: border-box;
+            background-color: $WHITE;
+            box-shadow: $ELEVATOR_6_DP;
+            border-left: $BORDER_1_GREY;
+            border-right: $BORDER_1_GREY;
+            min-height: 40px;
         }
     }
 </style>

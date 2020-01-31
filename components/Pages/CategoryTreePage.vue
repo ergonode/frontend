@@ -29,7 +29,7 @@
         <Footer>
             <Button
                 :title="isEdit ? 'SAVE TREE' : 'CREATE TREE'"
-                :loaded="$isLoaded('footerButton')"
+                :disabled="$isLoading('footerButton')"
                 @click.native="onUpdate" />
         </Footer>
         <Blur

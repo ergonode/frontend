@@ -94,10 +94,6 @@ export default function ({ path }) {
         },
         data() {
             return {
-                sortedColumn: {},
-                maxRowsPerPage: DATA_LIMIT,
-                currentPage: 1,
-                basicFilters: {},
                 advancedFilters: [],
             };
         },
@@ -108,19 +104,16 @@ export default function ({ path }) {
             ...mapState('list', {
                 disabledElements: (state) => state.disabledElements,
             }),
-            numberOfPages() {
-                const result = Math.ceil(this.filtered / this.maxRowsPerPage);
-
-                return result > 0 ? result : 1;
-            },
         },
         methods: {
             ...mapActions('list', [
                 'setDisabledElement',
                 'setDisabledElements',
             ]),
-            async getGridData() {
-                const parsedFilter = getParsedFilters(this.basicFilters, this.advancedFilters);
+            async getGridData({
+                offset, limit, filters, sortedColumn,
+            }) {
+                const parsedFilter = getParsedFilters(filters, this.advancedFilters);
                 const parsedAdvancedFilter = getParsedAdvancedFilters(this.advancedFilters);
 
                 let filter = parsedFilter;
@@ -133,8 +126,8 @@ export default function ({ path }) {
 
                 const isProductsRequest = path === 'products';
                 const params = {
-                    offset: (this.currentPage - 1) * this.maxRowsPerPage,
-                    limit: this.maxRowsPerPage,
+                    offset,
+                    limit,
                     extended: true,
                     filter,
                 };
@@ -143,8 +136,8 @@ export default function ({ path }) {
                     params.columns = this.$cookies.get(COLUMNS_IDS);
                 }
 
-                if (Object.keys(this.sortedColumn).length) {
-                    const { index: colSortID, orderState } = this.sortedColumn;
+                if (Object.keys(sortedColumn).length) {
+                    const { index: colSortID, orderState } = sortedColumn;
 
                     params.field = colSortID;
                     params.order = orderState;
@@ -164,43 +157,12 @@ export default function ({ path }) {
                     params,
                 );
 
-
                 this.columns = columns;
                 this.rowIds = rowIds;
                 this.rowLinks = rowLinks;
                 this.cellValues = cellValues;
                 this.count = count;
                 this.filtered = filtered;
-            },
-            setCurrentPage(page) {
-                this.currentPage = page;
-
-                this.getGridData();
-            },
-            setMaxRowsPerPage(maxRows) {
-                const number = Math.trunc(maxRows);
-
-                if (number !== this.maxRowsPerPage) {
-                    this.maxRowsPerPage = number;
-
-                    this.getGridData();
-                }
-            },
-            setSortedColumn(sortedColumn) {
-                this.sortedColumn = sortedColumn;
-
-                this.getGridData();
-            },
-            setBasicFilter({ id, value, operator }) {
-                if (!value || !value.length) {
-                    delete this.basicFilters[id];
-                } else {
-                    this.basicFilters[id] = { value, operator };
-                }
-
-                this.currentPage = 1;
-
-                this.getGridData();
             },
             removeColumnAtIndex(index) {
                 this.columns.splice(index, 1);
@@ -215,8 +177,6 @@ export default function ({ path }) {
                     ghostIndex,
                 );
                 this.$cookies.set(COLUMNS_IDS, columnIds.join(','));
-                await this.getGridData();
-
                 const {
                     language: languageCode, element_id: attributeId,
                 } = this.columns[ghostIndex];
@@ -268,16 +228,10 @@ export default function ({ path }) {
                 );
                 this.advancedFilters = [];
                 this.$cookies.remove(ADV_FILTERS_IDS);
-                this.currentPage = 1;
-                this.getGridData();
             },
             setGhostFilterAtIndex({ index, isGhost }) {
                 this.advancedFilters[index].isGhost = isGhost;
                 this.advancedFilters = [...this.advancedFilters];
-            },
-            applyFilter() {
-                this.currentPage = 1;
-                this.getGridData();
             },
             clearAllFilters() {
                 const { length } = this.advancedFilters;
@@ -287,9 +241,6 @@ export default function ({ path }) {
                         isEmptyRecord: false,
                     };
                 }
-
-                this.currentPage = 1;
-                this.getGridData();
             },
             clearFilterAtIndex(index) {
                 this.advancedFilters[index].value = {

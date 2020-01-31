@@ -29,7 +29,7 @@
         <Footer>
             <Button
                 :title="isEdit ? 'SAVE ROLE' : 'CREATE ROLE'"
-                :loaded="$isLoaded('footerButton')"
+                :disabled="$isLoading('footerButton')"
                 @click.native="onUpdate" />
         </Footer>
     </Page>

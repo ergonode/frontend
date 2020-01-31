@@ -8,9 +8,7 @@
             :column="columnIndex"
             :row="rowsOffset"
             :spacebar-edition="false"
-            :locked="true">
-            <GridPresentationEditHeaderCell />
-        </GridCell>
+            :locked="true" />
         <GridCell
             v-if="isBasicFilters"
             :column="columnIndex"
@@ -37,7 +35,6 @@
 export default {
     name: 'GridColumnEdit',
     components: {
-        GridPresentationEditHeaderCell: () => import('~/core/components/Grid/PresentationCells/GridPresentationEditHeaderCell'),
         GridCell: () => import('~/core/components/Grid/GridCell'),
         GridEditRowCell: () => import('~/core/components/Grid/EditCells/GridEditRowCell'),
     },

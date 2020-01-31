@@ -8,29 +8,14 @@
             <Grid
                 :editing-privilege-allowed="$hasAccess(['USER_UPDATE'])"
                 :columns="columns"
-                :basic-filters="basicFilters"
-                :sorted-column="sortedColumn"
-                :max-rows="maxRowsPerPage"
-                :max-page="numberOfPages"
-                :current-page="currentPage"
+                :data-count="filtered"
                 :cell-values="cellValues"
                 :row-ids="rowIds"
                 :row-links="rowLinks"
                 :is-basic-filters="true"
                 :is-edit-column="true"
                 @editRow="onEditRow"
-                @sortColumn="setSortedColumn"
-                @filterColumn="setBasicFilter" />
-        </template>
-        <template #footer>
-            <GridPageSelector
-                :value="maxRowsPerPage"
-                :max-rows="filtered"
-                @input="setMaxRowsPerPage" />
-            <GridPagination
-                :value="currentPage"
-                :max-page="numberOfPages"
-                @input="setCurrentPage" />
+                @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -45,8 +30,6 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('~/core/components/Grid/Grid'),
-        GridPageSelector: () => import('~/core/components/Grid/GridPageSelector'),
-        GridPagination: () => import('~/core/components/Grid/GridPagination'),
     },
     methods: {
         onEditRow({ links: { value: { edit } } }) {

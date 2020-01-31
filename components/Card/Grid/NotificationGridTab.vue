@@ -14,7 +14,7 @@
                                 :key="notification.id"
                                 :notification="notification" />
                             <NotificationsListFooter v-if="isMoreButtonVisible">
-                                <Loader v-if="!$isLoaded('moreNotifications')" />
+                                <Loader v-if="!$isLoading('moreNotifications')" />
                                 <Button
                                     :title="buttonTitle"
                                     @click.native="onLoadMoreNotifications" />

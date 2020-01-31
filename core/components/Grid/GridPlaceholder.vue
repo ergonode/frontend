@@ -29,8 +29,6 @@ export default {
         align-items: center;
         background: $WHITESMOKE url("~assets/images/placeholders/noresults.svg") no-repeat;
         padding-top: 80px;
-        border-left: 1px solid $GREY;
-        border-right: 1px solid $GREY;
 
         &__description {
             display: flex;

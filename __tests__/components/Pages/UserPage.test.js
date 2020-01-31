@@ -8,7 +8,7 @@ import UserPage from '~/components/Pages/UserPage';
 const mocks = {
     $hasAccess: jest.fn(),
     $isReadOnly: jest.fn(),
-    $isLoaded: jest.fn(),
+    $isLoading: jest.fn(),
     $route: {
         params: {
             id: '12345',

@@ -201,8 +201,8 @@ export default {
             }
         },
         getColumnAtIndex(index) {
-            const contentGrid = document.querySelector('.grid__body');
-            const { children } = contentGrid;
+            const gridColumns = document.querySelector('.grid__columns');
+            const { children } = gridColumns;
 
             return children[index];
         },
@@ -215,8 +215,8 @@ export default {
             this.removeColumnHover();
         },
         isHeaderFocused() {
-            const contentGrid = document.querySelector('.grid__body');
-            const headerEls = contentGrid.querySelectorAll('.header-cell__actions--focused');
+            const gridColumns = document.querySelector('.grid__columns');
+            const headerEls = gridColumns.querySelectorAll('.header-cell__actions--focused');
 
             return headerEls.length;
         },

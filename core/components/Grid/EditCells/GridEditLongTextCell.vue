@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridEditTextBaseCell :style="{width: `${fixedWidth + 8}px`}">
+    <GridEditTextBaseCell :style="{width: `${fixedWidth + 8}px` }">
         <TextArea
             :value="value"
             :dismissible="false"
