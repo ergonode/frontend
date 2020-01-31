@@ -17,7 +17,7 @@ const store = new Store({
 const mocks = {
     $hasAccess: jest.fn(),
     $isReadOnly: jest.fn(),
-    $isLoaded: jest.fn(),
+    $isLoading: jest.fn(),
     $route: {
         params: {
             id: '12345',

@@ -122,7 +122,6 @@ export default {
         align-items: center;
         grid-auto-flow: column;
         column-gap: 8px;
-        margin: auto;
 
         &__text, &__number {
             color: $GRAPHITE_DARK;

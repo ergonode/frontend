@@ -28,7 +28,7 @@
         <Footer>
             <Button
                 :title="isEdit ? 'SAVE TRANSITION' : 'CREATE TRANSITION'"
-                :loaded="$isLoaded('footerButton')"
+                :disabled="$isLoading('footerButton')"
                 @click.native="onUpdate" />
         </Footer>
         <Blur

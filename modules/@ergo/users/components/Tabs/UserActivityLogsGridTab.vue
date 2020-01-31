@@ -7,24 +7,10 @@
         <template #content>
             <Grid
                 :columns="columns"
-                :basic-filters="basicFilters"
-                :sorted-column="sortedColumn"
-                :max-rows="maxRowsPerPage"
-                :max-page="numberOfPages"
-                :current-page="currentPage"
+                :data-count="filtered"
                 :cell-values="cellValues"
                 :row-ids="rowIds"
-                @sortColumn="setSortedColumn" />
-        </template>
-        <template #footer>
-            <GridPageSelector
-                :value="maxRowsPerPage"
-                :max-rows="filtered"
-                @input="setMaxRowsPerPage" />
-            <GridPagination
-                :value="currentPage"
-                :max-page="numberOfPages"
-                @input="setCurrentPage" />
+                @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -39,8 +25,6 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
-        GridPageSelector: () => import('@Core/components/Grid/GridPageSelector'),
-        GridPagination: () => import('@Core/components/Grid/GridPagination'),
     },
 };
 </script>

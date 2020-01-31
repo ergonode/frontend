@@ -9,8 +9,8 @@ export default ({ app }, inject) => {
     inject('removeLoader', (key) => {
         app.store.dispatch('core/removeLoader', key);
     });
-    inject('isLoaded', (key) => {
+    inject('isLoading', (key) => {
         const { loaders } = app.store.state.core;
-        return !loaders[key];
+        return Boolean(loaders[key]);
     });
 };

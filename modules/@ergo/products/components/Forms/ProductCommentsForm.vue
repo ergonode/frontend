@@ -38,7 +38,7 @@
         <template
             v-if="isMoreButtonVisible"
             #footer>
-            <Loader v-if="!$isLoaded('moreComments')" />
+            <Loader v-if="!$isLoading('moreComments')" />
             <Button
                 :title="showMoreText"
                 @click.native="showMore" />

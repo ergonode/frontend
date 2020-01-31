@@ -13,7 +13,7 @@
             <FooterActions>
                 <Button
                     title="SAVE SETTINGS"
-                    :loaded="$isLoaded('saveSettings')"
+                    :disabled="$isLoading('saveSettings')"
                     @click.native="onSave" />
             </FooterActions>
         </template>

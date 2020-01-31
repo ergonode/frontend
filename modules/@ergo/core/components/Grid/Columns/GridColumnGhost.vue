@@ -41,7 +41,8 @@ export default {
 
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
+        padding-top: 80px;
         background-color: $GREY_LIGHT;
         box-shadow: $ELEVATOR_HOLE;
 

@@ -53,7 +53,7 @@
         <Footer v-if="!$route.path.includes('history')">
             <Button
                 :title="isEdit ? 'SAVE PRODUCT' : 'CREATE PRODUCT'"
-                :loaded="$isLoaded('footerButton')"
+                :disabled="$isLoading('footerButton')"
                 @click.native="onUpdate" />
         </Footer>
     </Page>

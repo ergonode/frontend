@@ -28,7 +28,7 @@
         <Footer>
             <Button
                 :title="isEdit ? 'SAVE GROUP' : 'CREATE GROUP'"
-                :loaded="$isLoaded('footerButton')"
+                :disabled="$isLoading('footerButton')"
                 @click.native="onUpdate" />
         </Footer>
     </Page>

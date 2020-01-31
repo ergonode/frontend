@@ -13,12 +13,8 @@
             <Grid
                 :editing-privilege-allowed="isUserAllowedToUpdate"
                 :columns="columns"
-                :basic-filters="basicFilters"
                 :advanced-filters="advancedFilters"
-                :sorted-column="sortedColumn"
-                :max-rows="maxRowsPerPage"
-                :max-page="numberOfPages"
-                :current-page="currentPage"
+                :data-count="filtered"
                 :cell-values="cellValues"
                 :row-ids="rowIds"
                 :row-links="rowLinks"
@@ -28,8 +24,6 @@
                 :is-edit-column="true"
                 :is-select-column="true"
                 @editRow="onEditRow"
-                @sortColumn="setSortedColumn"
-                @filterColumn="setBasicFilter"
                 @swapColumns="swapColumnsPosition"
                 @insertColumn="insertColumnAtIndex"
                 @removeColumn="removeColumnAtIndex"
@@ -39,26 +33,18 @@
                 @removeFilter="removeFilterAtIndex"
                 @updateFilter="updateFilterValueAtIndex"
                 @clearFilter="clearFilterAtIndex"
-                @applyFilter="applyFilter"
                 @swapFilters="swapFiltersPosition"
                 @removeAllFilters="removeAllFilters"
                 @clearAllFilters="clearAllFilters"
-                @dropFilter="dropFilterAtIndex" />
-        </template>
-        <template #footer>
-            <GridPageSelector
-                :value="maxRowsPerPage"
-                :max-rows="filtered"
-                @input="setMaxRowsPerPage" />
-            <GridPagination
-                :value="currentPage"
-                :max-page="numberOfPages"
-                @input="setCurrentPage" />
-            <Button
-                title="SAVE CHANGES"
-                :loaded="$isLoaded('footerDraftButton')"
-                :disabled="!isUserAllowedToUpdate"
-                @click.native="saveDrafts" />
+                @dropFilter="dropFilterAtIndex"
+                @fetchData="getGridData">
+                <template #appendFooter>
+                    <Button
+                        title="SAVE CHANGES"
+                        :disabled="!isUserAllowedToUpdate || $isLoading('footerDraftButton')"
+                        @click.native="saveDrafts" />
+                </template>
+            </Grid>
         </template>
     </GridViewTemplate>
 </template>
@@ -77,8 +63,6 @@ export default {
         Button,
         VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
         Grid: () => import('@Core/components/Grid/Grid'),
-        GridPagination: () => import('@Core/components/Grid/GridPagination'),
-        GridPageSelector: () => import('@Core/components/Grid/GridPageSelector'),
     },
     computed: {
         ...mapState('draggable', {
@@ -153,8 +137,8 @@ export default {
                     onSuccess: () => {
                         Object.keys(this.drafts[productId]).forEach((columnId) => {
                             this.cellValues[productId][columnId] = this.drafts[productId][columnId];
-                            this.removeDraft(productId);
                         });
+                        this.removeDraft(productId);
                     },
                 }));
             });
