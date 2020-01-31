@@ -64,7 +64,7 @@ export default {
                 window.removeEventListener('click', this.onClickOutside);
             }
 
-            this.$emit('focus', { focus: this.isFocused, isClickedInsideMenu });
+            this.$emit('focus', this.isFocused);
         },
     },
 };
