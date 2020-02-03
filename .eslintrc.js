@@ -11,25 +11,22 @@ module.exports = {
         jest: true,
         "cypress/globals": true
     },
-    parserOptions: {
-        parser: 'babel-eslint'
+    "parserOptions": {
+        "parser": "babel-eslint",
+
     },
     extends: [
-        // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
-        // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
         'airbnb-base',
         'plugin:vue/strongly-recommended',
         'plugin:jest/recommended',
         'plugin:cypress/recommended'
     ],
-    // required to lint *.vue files
     plugins: [
         'vue',
         'jest',
         'notice',
         'cypress'
     ],
-    // add your custom rules here
     rules: {
         'notice/notice':[
           "error", {
@@ -45,6 +42,7 @@ module.exports = {
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
         'import/no-unresolved': ['off'],
         'import/prefer-default-export': ['off'],
+        'import/order': ['off'],
         'vue/html-indent': ['error', 4],
         'vue/html-closing-bracket-newline': ['off'],
         'indent': ['error', 4],
@@ -79,5 +77,8 @@ module.exports = {
                 'fetch',
             ],
         }],
+        'jest/no-commented-out-tests': 'off',
+        'jest/expect-expect': 'off',
+        'jest/no-mocks-import': 'off'
     }
 };

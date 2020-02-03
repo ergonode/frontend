@@ -1,0 +1,35 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <List>
+        <ListScrollableContainer>
+            <WidgetsListElement
+                v-for="(widget, index) in widgets"
+                :key="index"
+                :item="widget" />
+        </ListScrollableContainer>
+    </List>
+</template>
+
+<script>
+import { mapState } from 'vuex';
+
+export default {
+    name: 'WidgetsList',
+    components: {
+        List: () => import('@Core/components/List/List'),
+        ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
+        WidgetsListElement: () => import('@Templates/components/Lists/Widgets/WidgetsListElement'),
+    },
+    computed: {
+        ...mapState('templateDesigner', {
+            types: (state) => state.types,
+        }),
+        widgets() {
+            return this.types.filter((type) => type.variant === 'ui');
+        },
+    },
+};
+</script>

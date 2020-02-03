@@ -5,126 +5,218 @@
 /* eslint-disable no-param-reassign */
 import Vue from 'vue'; // eslint-disable-line import/no-extraneous-dependencies
 
-class ModuleLoader {
-    constructor() {
-        this.config = this.setModulesConfiguration();
-        this.pagesConfig = this.setPagesConfiguration(this.config);
-        this.componentsConfig = this.setComponentsConfiguration(this.config);
-    }
+const ModuleLoader = (() => {
+    let instance;
+    const isDev = process.env.NODE_ENV === 'development';
+    const deepmerge = require('deepmerge');
+    const modulesConfiguration = require('../config/.modules').default || {};
+    const { REQUIRED_MODULES, CORE_MODULES } = require('../defaults/modules');
 
-    get getPagesConfig() {
-        return this.pagesConfig;
-    }
+    return {
+        _requiredModules: REQUIRED_MODULES,
+        _modules: modulesConfiguration,
+        _modulesConfig: {
+            nuxt: {},
+            store: [],
+            router: [],
+            extendTabs: [],
+            dictionaries: [],
+            moduleRelations: [],
+            extendComponents: {},
+        },
+        _inactiveModulesConfig: {
+            nuxt: {},
+        },
+        init() {
+            this.setModulesConfig(this._modules.active || []);
+            this.setInactiveModulesConfig(this._modules.inactive || []);
+            this.checkRequiredModules();
+            this.checkModuleRelations();
+            if (isDev) this.inactiveModulesInfo();
+        },
+        install(_Vue) {
+            const { extendComponents } = this._modulesConfig;
 
-    get getComponentsConfig() {
-        return this.componentsConfig;
-    }
-
-    install(_Vue) {
-        const { router, menu } = this.pagesConfig;
-        _Vue.prototype.$modulesConfiguration = {
-            router,
-            menu,
-        };
-    }
-
-    getDefaultModuleConfig() {
-        try {
-            return require('@Root/config/modules');
-        } catch (e) {
-            return false;
-        }
-    }
-
-    setModulesConfiguration() {
-        let summaryConfig = { pages: [], components: [] };
-        const modulesConfig = this.getDefaultModuleConfig();
-        const additionalConfig = require('@Root/modules.config');
-
-        if (modulesConfig) {
-            const { pages: modulePages, components: moduleComponents } = modulesConfig.default;
-
-            summaryConfig = {
-                pages: [...modulePages],
-                components: [...moduleComponents],
-            };
-        }
-
-        if (additionalConfig) {
-            const {
-                pages: additionalConfigPages,
-                components: additionalConfigComponents,
-            } = additionalConfig.default;
-
-            summaryConfig.pages.push(...additionalConfigPages);
-            summaryConfig.components.push(...additionalConfigComponents);
-        }
-        return summaryConfig;
-    }
-
-    setPagesConfiguration({ pages }) {
-        const pagesConfiguration = { router: [], menu: [], store: [] };
-        const filteredPages = pages.filter((page) => page.isActive);
-
-        for (let i = 0; i < filteredPages.length; i += 1) {
-            let config = null;
-            const { name, source } = filteredPages[i];
-            const pageName = `pages/${name}`;
-
-            switch (source) {
+            _Vue.prototype.$getComponentsForExtended = (type) => extendComponents[type];
+        },
+        get modulesConfig() {
+            return this._modulesConfig;
+        },
+        get inactiveModulesConfig() {
+            return this._inactiveModulesConfig;
+        },
+        configType({ path, type }) {
+            switch (type) {
             case 'local':
-                config = require(`@Modules/${pageName}/config`).default;
-                break;
-            // TODO: uncomment when npm modules ready
-            // case 'npm':
-            //     config = require(`@NodeModules/${pageName}/config`).default;
-            //     break;
+                return require(`../modules/${path}`).default;
+            case 'npm':
+                return require(`${path}`);
             default:
-                config = null;
+                return null;
             }
-            if (config) {
-                if (config.router) pagesConfiguration.router.push(...config.router);
-                if (config.menu) pagesConfiguration.menu.push(...config.menu);
-                if (config.store) {
-                    pagesConfiguration.store.push({
-                        source,
-                        moduleName: pageName,
-                        store: [...config.store],
-                    });
+        },
+        setModulesConfig(modules) {
+            this._modulesConfig = modules.reduce((acc, module) => {
+                const moduleName = module.replace('@ergo/', '');
+                const { path, type } = CORE_MODULES[module];
+                const config = this.configType(CORE_MODULES[module]);
+                const modulesConfig = acc;
+
+                if (config) {
+                    if (config.router) modulesConfig.router.push(...config.router);
+                    if (config.dictionaries) {
+                        modulesConfig.dictionaries.push(...config.dictionaries);
+                    }
+                    if (config.store) {
+                        modulesConfig.store.push({
+                            type,
+                            moduleName: path,
+                            store: config.store,
+                        });
+                    }
+                    if (config.nuxt) {
+                        const modulePath = type === 'local'
+                            ? `modules/${path}`
+                            : path;
+
+                        if (config.nuxt.aliases) {
+                            const { aliases } = config.nuxt;
+
+                            Object.keys(aliases).forEach((alias) => {
+                                config.nuxt.aliases[alias] = `/${modulePath}${aliases[alias]}`;
+                            });
+                        }
+                        if (config.nuxt.css) {
+                            const { css } = config.nuxt;
+
+                            css.forEach((style, index) => {
+                                config.nuxt.css[index] = `~${modulePath}${style}`;
+                            });
+                        }
+                        if (config.nuxt.styleResources) {
+                            const { styleResources } = config.nuxt;
+
+                            Object.keys(styleResources).forEach((resource) => {
+                                config.nuxt.styleResources[resource] = `~${modulePath}${styleResources[resource]}`;
+                            });
+                        }
+                        if (config.nuxt.plugins) {
+                            const { plugins } = config.nuxt;
+
+                            plugins.forEach((plugin, index) => {
+                                if (typeof plugin === 'string') {
+                                    config.nuxt.plugins[index] = `~${modulePath}${plugin}`;
+                                } else {
+                                    config.nuxt.plugins[index] = {
+                                        src: `~${modulePath}${plugin.src}`,
+                                        mode: plugin.mode,
+                                    };
+                                }
+                            });
+                        }
+                        if (config.nuxt.middleware) {
+                            const { middleware } = config.nuxt;
+
+                            config.nuxt.middleware = async (ctx) => {
+                                for (let i = 0; i < middleware.length; i += 1) {
+                                    const importedMiddleware = require(`../modules/${path}${middleware[i]}`).default;
+
+                                    importedMiddleware(ctx);
+                                }
+                            };
+                        }
+                        config.nuxt.chunks = {
+                            [`${moduleName}Module`]: {
+                                test(mod) {
+                                    return mod.resource && mod.resource.includes(`modules/${module}`);
+                                },
+                                chunks: 'all',
+                                name: `${moduleName}Module`,
+                                priority: -20,
+                            },
+                        };
+                        modulesConfig.nuxt = deepmerge(modulesConfig.nuxt, config.nuxt);
+                    }
+                    if (config.moduleRelations) {
+                        modulesConfig.moduleRelations.push({
+                            moduleName: path,
+                            relations: config.moduleRelations,
+                        });
+                    }
+                    if (config.extendComponents) {
+                        modulesConfig.extendComponents = deepmerge(
+                            modulesConfig.extendComponents,
+                            config.extendComponents,
+                        );
+                    }
+                    if (config.extendTabs) {
+                        modulesConfig.extendTabs.push(...config.extendTabs);
+                    }
                 }
+                return modulesConfig;
+            }, this._modulesConfig);
+        },
+        setInactiveModulesConfig(modules) {
+            this._inactiveModulesConfig = modules.reduce((acc, module) => {
+                const { path, type } = CORE_MODULES[module];
+                const config = this.configType(CORE_MODULES[module]);
+                const modulesConfig = acc;
+
+                if (config && config.nuxt) {
+                    const modulePath = type === 'local'
+                        ? `modules/${path}`
+                        : path;
+
+                    if (config.nuxt.aliases) {
+                        const { aliases } = config.nuxt;
+
+                        Object.keys(aliases).forEach((alias) => {
+                            config.nuxt.aliases[alias] = `/${modulePath}${aliases[alias]}`;
+                        });
+                    }
+                    modulesConfig.nuxt = deepmerge(modulesConfig.nuxt, config.nuxt);
+                }
+                return modulesConfig;
+            }, this._inactiveModulesConfig);
+        },
+        checkRequiredModules() {
+            this._requiredModules.forEach((module) => {
+                if (!this._modules.active || !this._modules.active.includes(module)) {
+                    throw Error(`Module [${module}] does not exist.`);
+                }
+            });
+        },
+        checkModuleRelations() {
+            const { moduleRelations: modulesRelations } = this._modulesConfig;
+
+            modulesRelations.forEach((moduleRelations) => {
+                const { moduleName, relations } = moduleRelations;
+
+                relations.forEach((relation) => {
+                    if (!this._modules.active || !this._modules.active.includes(moduleName)) {
+                        throw Error(`Module [${moduleName}] has relation with [${relation}].\n Module [${relation}] does not exist.`);
+                    }
+                });
+            });
+        },
+        inactiveModulesInfo() {
+            if (this._modules.inactive) {
+                const { inactive } = this._modules;
+                Object.keys(inactive).forEach((module) => {
+                    console.info(`Module [${inactive[module]}] is inactive.`);
+                });
             }
-        }
-        return pagesConfiguration;
-    }
+        },
+        getInstance() {
+            if (!instance) {
+                instance = this.init();
+            }
+            return instance;
+        },
+    };
+})();
 
-    // TODO: complete when components modules ready
-    setComponentsConfiguration({ components }) {
-        return components;
-    }
-    // TODO: old methods to refactor, don't remove
-    // getComponent(componentPath, module = null) {
-    //     const name = componentPath.split('/').pop();
+ModuleLoader.getInstance();
+Vue.use(ModuleLoader);
 
-    //     if (Vue.options.components[name]) {
-    //         return Vue.options.components[name];
-    //     }
-    //     if (module) {
-    //         return Vue.component(name, () => import(`@Modules/${module}/${componentPath}`));
-    //     }
-    //     return Vue.component(
-    //         name,
-    //         () => import(`~/components/${componentPath}`),
-    //     );
-    // }
-
-    // removeComponent(name) {
-    //     delete Vue.options.components[name];
-    // }
-}
-
-const Modules = new ModuleLoader();
-Vue.use(Modules);
-export const {
-    getPagesConfig,
-    getComponentsConfig,
-} = Modules;
+export const { modulesConfig, inactiveModulesConfig } = ModuleLoader;

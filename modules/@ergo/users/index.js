@@ -1,0 +1,319 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+import { Pages, Tabs, Icons } from './config/imports';
+import Privileges from './config/privileges';
+
+export default {
+    name: '@ergo/users',
+    type: 'page',
+    moduleRelations: [],
+    privileges: Privileges,
+    nuxt: {
+        aliases: {
+            '@Users': '/',
+        },
+        plugins: [
+            '/plugins/privilege',
+        ],
+    },
+    dictionaries: [
+        {
+            stateProp: 'privileges',
+            dataFormat: {},
+            requestPath: '/dictionary/privileges',
+        },
+    ],
+    router: [
+        {
+            name: 'users',
+            path: '/users',
+            component: Pages.Users,
+            meta: {
+                access: true,
+                title: 'Users',
+                group: {
+                    title: 'System',
+                    menuPosition: 1000,
+                    icon: Icons.Settings,
+                },
+                isMenu: true,
+                menuPosition: 1,
+                privileges: {
+                    namespace: Privileges.USER.namespace,
+                    read: Privileges.USER.read,
+                },
+                redirectTo: 'grid',
+            },
+            children: [
+                {
+                    name: 'users-grid',
+                    path: 'grid',
+                    component: Tabs.UsersGridTab,
+                    meta: {
+                        title: '',
+                        breadcrumbs: [
+                            {
+                                title: 'System',
+                                icon: Icons.Settings,
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
+        },
+        {
+            name: 'user-new',
+            path: '/users/user/new',
+            component: Pages.UserNew,
+            children: [
+                {
+                    name: 'user-new-general',
+                    path: 'general',
+                    component: Tabs.UserBaseTab,
+                    meta: {
+                        title: 'General options',
+                        breadcrumbs: [
+                            {
+                                title: 'System',
+                                icon: Icons.Settings,
+                            },
+                            {
+                                title: 'Users',
+                                routePath: '/users',
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
+            meta: {
+                isMenu: false,
+                redirectTo: 'general',
+            },
+        },
+        {
+            name: 'user-edit-id',
+            path: '/users/user/edit/:id',
+            component: Pages.UserEdit,
+            children: [
+                {
+                    name: 'user-edit-id-general',
+                    path: 'general',
+                    component: Tabs.UserBaseTab,
+                    meta: {
+                        title: 'General options',
+                        breadcrumbs: [
+                            {
+                                title: 'System',
+                                icon: Icons.Settings,
+                            },
+                            {
+                                title: 'Users',
+                                routePath: '/users',
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+                {
+                    name: 'user-edit-id-avatar',
+                    path: 'avatar',
+                    component: Tabs.UserAvatarTab,
+                    meta: {
+                        title: 'Avatar',
+                        breadcrumbs: [
+                            {
+                                title: 'System',
+                                icon: Icons.Settings,
+                            },
+                            {
+                                title: 'Users',
+                                routePath: '/users',
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
+            meta: {
+                isMenu: false,
+                redirectTo: 'general',
+            },
+        },
+        {
+            name: 'user-roles',
+            path: '/user-roles',
+            component: Pages.Roles,
+            meta: {
+                access: true,
+                title: 'User roles',
+                group: {
+                    title: 'System',
+                    menuPosition: 1000,
+                    icon: Icons.Settings,
+                },
+                isMenu: true,
+                menuPosition: 2,
+                privileges: {
+                    namespace: Privileges.USER_ROLE.namespace,
+                    read: Privileges.USER_ROLE.read,
+                },
+                redirectTo: 'grid',
+            },
+            children: [
+                {
+                    name: 'user-roles-grid',
+                    path: 'grid',
+                    component: Tabs.RolesGridTab,
+                    meta: {
+                        title: '',
+                        breadcrumbs: [
+                            {
+                                title: 'System',
+                                icon: Icons.Settings,
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
+        },
+        {
+            name: 'user-role-new',
+            path: '/user-roles/role/new',
+            component: Pages.RoleNew,
+            children: [
+                {
+                    name: 'user-role-new-general',
+                    path: 'general',
+                    component: Tabs.RoleBaseTab,
+                    meta: {
+                        title: 'General options',
+                        breadcrumbs: [
+                            {
+                                title: 'System',
+                                icon: Icons.Settings,
+                            },
+                            {
+                                title: 'User roles',
+                                routePath: '/user-roles',
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
+            meta: {
+                isMenu: false,
+                redirectTo: 'general',
+            },
+        },
+        {
+            name: 'user-role-edit-id',
+            path: '/user-roles/role/edit/:id',
+            component: Pages.RoleEdit,
+            children: [
+                {
+                    name: 'user-role-edit-id-general',
+                    path: 'general',
+                    component: Tabs.RoleBaseTab,
+                    meta: {
+                        title: 'General options',
+                        breadcrumbs: [
+                            {
+                                title: 'System',
+                                icon: Icons.Settings,
+                            },
+                            {
+                                title: 'User roles',
+                                routePath: '/user-roles',
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+                {
+                    name: 'user-role-edit-id-privileges',
+                    path: 'privileges',
+                    component: Tabs.RolePrivilegesTab,
+                    meta: {
+                        title: 'Privileges',
+                        breadcrumbs: [
+                            {
+                                title: 'System',
+                                icon: Icons.Settings,
+                            },
+                            {
+                                title: 'User roles',
+                                routePath: '/user-roles',
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+            ],
+            meta: {
+                isMenu: false,
+                redirectTo: 'general',
+            },
+        },
+        {
+            name: 'profile',
+            path: '/profile',
+            component: Pages.Profile,
+            children: [
+                {
+                    name: 'profile-activity-log-grid',
+                    path: 'activity-log-grid',
+                    component: Tabs.UserActivityLogsGridTab,
+                    meta: {
+                        title: 'Activity log',
+                        privileges: [],
+                    },
+                },
+                {
+                    name: 'profile-privileges-grid',
+                    path: 'privileges-grid',
+                    component: Tabs.UserPrivilegesGridTab,
+                    meta: {
+                        title: 'Privileges',
+                        privileges: [],
+                    },
+                },
+            ],
+            meta: {
+                isMenu: false,
+                redirectTo: 'activity-log-grid',
+            },
+        },
+    ],
+    store: [
+        {
+            directory: 'users',
+            name: 'users',
+        },
+        {
+            directory: 'roles',
+            name: 'roles',
+        },
+    ],
+    extendTabs: [
+        // {
+        //     name: 'settings',
+        //     children: [
+        //         {
+        //             name: 'settings-user',
+        //             path: 'user',
+        //             component: Tabs.UserSettingsTab,
+        //             meta: {
+        //                 title: 'User settings',
+        //                 privileges: [],
+        //             },
+        //         },
+        //     ],
+        // },
+    ],
+};

@@ -1,11 +1,9 @@
-/* eslint-disable import/no-dynamic-require */
-/* eslint-disable global-require */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getPagesConfig } from '~/plugins/moduleLoader';
-import { JWT_KEY } from '~/defaults/authenticate/cookies';
+import { modulesConfig } from '~/plugins/moduleLoader';
+import { JWT_KEY } from '@Authentication/defaults/cookies';
 
 export const actions = {
     async nuxtServerInit({ dispatch }) {
@@ -22,42 +20,33 @@ export const actions = {
             console.error(e);
         }
     },
-    resetState({ dispatch, commit }) {
-        dispatch('categories/clearStorage');
-        dispatch('attribute/clearStorage');
-        dispatch('authentication/clearStorage');
-        dispatch('data/clearStorage');
-        dispatch('draggable/clearStorage');
-        dispatch('tree/clearStorage');
-        dispatch('segments/clearStorage');
-        dispatch('conditions/clearStorage');
-        dispatch('gridDesigner/clearStorage');
-        dispatch('productsDraft/clearStorage');
-        dispatch('productStatus/clearStorage');
-        dispatch('templateDesigner/clearStorage');
-        dispatch('list/clearStorage');
-        dispatch('roles/clearStorage');
-        dispatch('users/clearStorage');
-        commit('gridDraft/clearStorage');
-        commit('translations/clearStorage');
-        commit('validations/clearStorage');
+    resetState({ dispatch }) {
+        const { store: modulesStore } = modulesConfig;
+
+        for (let i = 0; i < modulesStore.length; i += 1) {
+            const { store } = modulesStore[i];
+            for (let j = 0; j < store.length; j += 1) {
+                const { name } = store[j];
+                dispatch(`${name}/clearStorage`);
+            }
+        }
     },
 };
 
 function getModulesStore() {
-    const { store: modulesStore } = getPagesConfig;
+    const { store: modulesStore } = modulesConfig;
     const newStore = {};
     for (let i = 0; i < modulesStore.length; i += 1) {
-        const { moduleName, store, source } = modulesStore[i];
+        const { moduleName, store, type } = modulesStore[i];
         for (let j = 0; j < store.length; j += 1) {
             const { directory, name } = store[j];
-            switch (source) {
+            switch (type) {
             // TODO: uncomment when npm modules ready
             // case 'npm':
-            //     newStore[`module<${name}>`] = require(`@NodeModules/${moduleName}/store/${directory}`).default;
+            //     newStore[name] = require(`${moduleName}/store/${directory}`).default;
             //     break;
             default:
-                newStore[`module<${name}>`] = require(`@Modules/${moduleName}/store/${directory}`).default;
+                newStore[name] = require(`@Modules/${moduleName}/store/${directory}`).default;
                 break;
             }
         }

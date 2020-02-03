@@ -3,5 +3,7 @@ router.js
 node_modules/
 cypress/
 build/
+dist/
 coverage/
-lib/
+.history/
+.vscode/

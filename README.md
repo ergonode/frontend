@@ -42,6 +42,11 @@ npm run cli:run
 ```
 > *You can also copy .env.dist file as .env and set your API URL configuration.*
 
+Execute CLI command and choose yours modules :
+```bash
+npm run cli:run modules
+```
+
 Run server
 ```bash
 #development
@@ -55,6 +60,11 @@ npm run start
 **2) Using Docker**
 
 Documentation how to install: [docker repository][docker]
+
+## Browser
+
+We recommend using the latest version of **Chrome** browser.
+On other browsers some functionalities may not work as intended.
 
 ## Documentation
 
@@ -85,14 +95,14 @@ If you have any questions or ideas feel free to join our [slack][slack].
 
 ## Is it production ready?
 
-No! At the moment we have only one testing implementation to production environment (with more than 150k+ product indexes and integration with Magento Commerce 2.3), but in our opinion system still needs to be stabilised and we recommend not to use it at the moment in production mode. We still develop the core and there could be a lot of changes in the near future. If you want to know when it will be production ready look at Ergonode Roadmap. 
+No! At the moment we have only one testing implementation to production environment (with more than 150k+ product indexes and integration with Magento Commerce 2.3), but in our opinion system still needs to be stabilised and we recommend not to use it at the moment in production mode. We still develop the core and there could be a lot of changes in the near future. If you want to know when it will be production ready look at Ergonode Roadmap.
 
 
 ## Roadmap
 
 If you would like to find the current and future milestones for our project go to our [Roadmap][roadmap] page.
 
-At the moment we finalize development of Milestone 1 of the project. 
+At the moment we finalize development of Milestone 1 of the project.
 
 ## Build Ergonode with us!
 

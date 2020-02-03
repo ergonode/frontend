@@ -4,8 +4,7 @@
  */
 import Vue from 'vue';
 import Router from 'vue-router';
-import { getPagesConfig } from '~/plugins/moduleLoader';
-import { pages } from '~/router.config';
+import { modulesConfig } from '~/plugins/moduleLoader';
 
 Vue.use(Router);
 
@@ -40,14 +39,23 @@ const scrollBehavior = (to, from, savedPosition) => {
 };
 
 const getRoutes = () => {
-    const { router } = getPagesConfig;
-    let filteredPages = pages;
-    for (let i = 0; i < router.length; i += 1) {
-        filteredPages = filteredPages.filter(e => e.name !== router[i].name);
+    const { router, extendTabs } = modulesConfig;
+
+    for (let i = 0; i < extendTabs.length; i += 1) {
+        const index = router.findIndex(e => e.name === extendTabs[i].name);
+
+        if (index !== -1) {
+            router[index] = {
+                ...router[index],
+                children: [
+                  ...router[index].children,
+                  ...extendTabs[i].children,
+                ],
+            };
+        }
     }
 
-    //filteredPages.concat(router)
-    return pages;
+    return router;
 };
 
 export function createRouter() {

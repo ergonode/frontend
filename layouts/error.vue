@@ -3,42 +3,20 @@
  * See LICENSE for license details.
  */
 <template>
-    <Page>
-        <Component
-            v-if="error.status !== 401"
-            :is="errorPage"
-            :error="error" />
-    </Page>
+    <ErrorLayout :error="error" />
 </template>
 
 <script>
 
 export default {
-    name: 'NuxtError',
+    name: 'NuxtErrorLayout',
     components: {
-        Page: () => import('~/core/components/Layout/Page'),
+        ErrorLayout: () => import('@Core/layouts/error'),
     },
     props: {
         error: {
             type: [Object, Error],
             required: true,
-        },
-    },
-    created() {
-        if (this.error.status === 401) {
-            this.$router.push('/');
-        }
-    },
-    computed: {
-        errorPage() {
-            switch (this.error.statusCode) {
-            case 403:
-                return () => import('~/core/components/Layout/Errors/403');
-            case 404:
-                return () => import('~/core/components/Layout/Errors/404');
-            default:
-                return () => import('~/core/components/Layout/Errors/500');
-            }
         },
     },
 };

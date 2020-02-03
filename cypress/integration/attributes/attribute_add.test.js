@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getUUID } from "../../../model/stringWrapper";
+import { getUUID } from "@Core/models/stringWrapper";
 
 context('Add Attribute', () => {
     const uuid = getUUID();
