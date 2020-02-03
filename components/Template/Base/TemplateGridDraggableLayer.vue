@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="draggable-layer">
-        <TemplateGridGhostItem
+    <div class="template-grid-draggable-layer">
+        <TemplateGridLayerItem
             v-for="(position, index) in gridLayerPositions"
             :key="index"
             :style="{ gridArea: `${position.row} / ${position.column} / auto / auto` }"
@@ -19,7 +19,7 @@
 export default {
     name: 'TemplateGridDraggableLayer',
     components: {
-        TemplateGridGhostItem: () => import('~/components/Template/Base/TemplateGridGhostItem'),
+        TemplateGridLayerItem: () => import('~/components/Template/Base/TemplateGridLayerItem'),
     },
     props: {
         columnsNumber: {
@@ -56,14 +56,14 @@ export default {
     },
     methods: {
         onDrop(position) {
-            this.$emit('addListElementToLayout', position);
+            this.$emit('drop', position);
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .draggable-layer {
+    .template-grid-draggable-layer {
         position: relative;
         z-index: $Z_INDEX_LVL_3;
         display: grid;
