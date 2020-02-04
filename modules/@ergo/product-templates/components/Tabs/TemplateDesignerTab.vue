@@ -14,8 +14,9 @@
                     :rows-number="maxLayoutRow"
                     :columns-number="columnsNumber"
                     :highlighted-positions="highlightedPositions"
-                    @addListElementToLayout="updateLayoutElement">
+                    @drop="updateLayoutElement">
                     <template #elements>
+                        <TemplateGridPlaceholderItem v-if="!layoutElements.length" />
                         <LayoutElement
                             v-for="(element, index) in layoutElements"
                             :key="`${element.row}/${element.column}`"
@@ -72,6 +73,7 @@ export default {
         TemplateGridDraggableLayer,
         VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
         SectionTemplateModalForm: () => import('@Templates/components/Modals/SectionTemplateModalForm'),
+        TemplateGridPlaceholderItem: () => import('@Templates/components/Template/Base/TemplateGridPlaceholderItem'),
         LayoutElement: () => import('@Templates/components/Template/ProductDesigner/LayoutElement'),
         AttributeElementContent: () => import('@Templates/components/Template/ProductDesigner/AttributeElementContent'),
         SectionElementContent: () => import('@Templates/components/Template/ProductDesigner/SectionElementContent'),
@@ -140,7 +142,7 @@ export default {
         gridStyles() {
             return {
                 gridTemplateColumns: `repeat(${this.columnsNumber}, 1fr)`,
-                gridAutoRows: '62px',
+                gridTemplateRows: `repeat(${this.maxRow}, 62px)`,
             };
         },
         maxLayoutRow() {
