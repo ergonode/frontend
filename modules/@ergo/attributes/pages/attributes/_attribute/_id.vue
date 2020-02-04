@@ -21,12 +21,12 @@ import { getParsedOptions, getParsedParameterKeys } from '@Attributes/models/att
 import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 
 export default {
-    validate({ params }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
-    },
     name: 'EditAttribute',
     components: {
         AttributePage: () => import('@Attributes/components/Pages/AttributePage'),
+    },
+    validate({ params }) {
+        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({ store, params }) {
         await store.dispatch('attribute/getAttributeGroups');

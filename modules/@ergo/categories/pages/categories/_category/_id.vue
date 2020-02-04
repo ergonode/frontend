@@ -17,12 +17,12 @@ import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappe
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
-    validate({ params }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
-    },
     name: 'EditCategory',
     components: {
         CategoryPage: () => import('@Categories/components/Pages/CategoryPage'),
+    },
+    validate({ params }) {
+        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
         store,

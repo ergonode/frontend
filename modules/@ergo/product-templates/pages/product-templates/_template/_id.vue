@@ -16,12 +16,12 @@ import { mapState, mapActions } from 'vuex';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
-    validate({ params }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
-    },
     name: 'Edit',
     components: {
         TemplatePage: () => import('@Templates/components/Pages/TemplatePage'),
+    },
+    validate({ params }) {
+        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({ store, params }) {
         const {

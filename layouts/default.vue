@@ -13,6 +13,9 @@ import { isEmpty } from '@Core/models/objectWrapper';
 
 export default {
     name: 'NuxtDefaultLayout',
+    components: {
+        DefaultLayout: () => import('@Core/layouts/default'),
+    },
     middleware({ store, redirect }) {
         const { dictionaries, authentication } = store.state;
         let emptyState = 0;
@@ -34,9 +37,6 @@ export default {
         }
 
         return null;
-    },
-    components: {
-        DefaultLayout: () => import('@Core/layouts/default'),
     },
 };
 </script>

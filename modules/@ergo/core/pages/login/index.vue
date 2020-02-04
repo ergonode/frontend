@@ -49,7 +49,6 @@
 import { mapState, mapActions } from 'vuex';
 
 export default {
-    layout: 'login',
     name: 'Login',
     components: {
         TextField: () => import('@Core/components/Inputs/TextField'),
@@ -90,6 +89,7 @@ export default {
             }
         },
     },
+    layout: 'login',
 };
 </script>
 

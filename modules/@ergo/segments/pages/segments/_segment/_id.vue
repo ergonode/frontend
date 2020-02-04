@@ -18,12 +18,12 @@ import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappe
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
-    validate({ params }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
-    },
     name: 'SegmentEdit',
     components: {
         SegmentPage: () => import('@Segments/components/Pages/SegmentPage'),
+    },
+    validate({ params }) {
+        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
         store,

@@ -17,12 +17,12 @@ import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappe
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
-    validate({ params }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
-    },
     name: 'EditAttributeGroup',
     components: {
         AttributeGroupPage: () => import('@Attributes/components/Pages/AttributeGroupPage'),
+    },
+    validate({ params }) {
+        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({ store, params }) {
         await store.dispatch('attributeGroup/getAttributeGroupById', {

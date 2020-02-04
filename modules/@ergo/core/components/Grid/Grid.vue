@@ -408,8 +408,7 @@ export default {
                         rowIndex: this.rowsOffset + rowIndex,
                         column,
                         filter: this.filters[column.id],
-                        disabled: typeof this.advancedFiltersValues[column
-                            .id] !== 'undefined',
+                        disabled: typeof this.advancedFiltersValues[column.id] !== 'undefined',
                     },
                     on: {
                         filter: this.onFilterChange,

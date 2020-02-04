@@ -16,12 +16,12 @@ import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 
 export default {
-    validate({ params }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
-    },
     name: 'EditUser',
     components: {
         UserPage: () => import('@Users/components/Pages/UserPage'),
+    },
+    validate({ params }) {
+        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
         store,

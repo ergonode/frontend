@@ -17,12 +17,12 @@ import { getMappedPrivilegesBasedOnGridData } from '@Users/models/privilegesMapp
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
-    validate({ params }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
-    },
     name: 'EditUserRoles',
     components: {
         UserRolesPage: () => import('@Users/components/Pages/UserRolesPage'),
+    },
+    validate({ params }) {
+        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({
         store,
