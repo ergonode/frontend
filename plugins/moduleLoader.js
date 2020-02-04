@@ -37,7 +37,7 @@ const ModuleLoader = (() => {
         install(_Vue) {
             const { extendComponents } = this._modulesConfig;
 
-            _Vue.prototype.$getComponentsForExtended = (type) => extendComponents[type];
+            _Vue.prototype.$getComponentsForExtended = type => extendComponents[type];
         },
         get modulesConfig() {
             return this._modulesConfig;

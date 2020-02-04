@@ -62,18 +62,12 @@ export default {
             language: {},
         };
     },
-    created() {
-        this.language = {
-            key: this.userLanguageCode,
-            value: this.languages[this.userLanguageCode],
-        };
-    },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
+            userLanguageCode: state => state.user.language,
         }),
         ...mapState('dictionaries', {
-            languages: (state) => state.languages,
+            languages: state => state.languages,
         }),
         whiteColor() {
             return WHITE;
@@ -84,6 +78,12 @@ export default {
         listDataType() {
             return 'attributes';
         },
+    },
+    created() {
+        this.language = {
+            key: this.userLanguageCode,
+            value: this.languages[this.userLanguageCode],
+        };
     },
     methods: {
         ...mapActions('list', [

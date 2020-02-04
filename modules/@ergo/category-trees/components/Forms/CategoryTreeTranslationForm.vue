@@ -28,13 +28,13 @@ import FormGroup from '@Core/components/Form/FormGroup';
 
 export default {
     name: 'CategoryTreeTranslationForm',
-    mixins: [errorValidationMixin, translationCardMixin],
     components: {
         FormGroup,
         Form,
         Card,
         TextField,
     },
+    mixins: [errorValidationMixin, translationCardMixin],
     computed: {
         nameValue: {
             get() {

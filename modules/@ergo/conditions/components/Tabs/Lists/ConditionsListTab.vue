@@ -18,20 +18,20 @@ import { mapState } from 'vuex';
 
 export default {
     name: 'ConditionsListTab',
+    components: {
+        VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
+        ConditionsList: () => import('@Conditions/components/Lists/ConditionsList'),
+        ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
+    },
     props: {
         isExpanded: {
             type: Boolean,
             required: true,
         },
     },
-    components: {
-        VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
-        ConditionsList: () => import('@Conditions/components/Lists/ConditionsList'),
-        ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
-    },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
+            userLanguageCode: state => state.user.language,
         }),
     },
     methods: {

@@ -17,20 +17,25 @@ import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappe
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
-    validate({ params }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
-    },
     name: 'EditAttributeGroup',
     components: {
         AttributeGroupPage: () => import('@Attributes/components/Pages/AttributeGroupPage'),
     },
+    validate({ params }) {
+        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
+    },
+    async fetch({ store, params }) {
+        await store.dispatch('attributeGroup/getAttributeGroupById', {
+            groupId: params.id,
+        });
+    },
     computed: {
         ...mapState('attributeGroup', {
-            id: (state) => state.id,
-            code: (state) => state.code,
+            id: state => state.id,
+            code: state => state.code,
         }),
         ...mapState('translations', {
-            translations: (state) => state.translations,
+            translations: state => state.translations,
         }),
     },
     methods: {
@@ -75,11 +80,6 @@ export default {
             this.$addAlert({ type: 'success', message: 'Attribute Group removed' });
             this.$router.push({ name: 'attribute-groups' });
         },
-    },
-    async fetch({ store, params }) {
-        await store.dispatch('attributeGroup/getAttributeGroupById', {
-            groupId: params.id,
-        });
     },
 };
 </script>

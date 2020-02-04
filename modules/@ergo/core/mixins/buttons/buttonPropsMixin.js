@@ -9,12 +9,12 @@ export default {
         theme: {
             type: String,
             default: THEMES.PRIMARY,
-            validator: (value) => Object.values(THEMES).indexOf(value) !== -1,
+            validator: value => Object.values(THEMES).indexOf(value) !== -1,
         },
         size: {
             type: String,
             default: SIZES.REGULAR,
-            validator: (value) => Object.values(SIZES).indexOf(value) !== -1,
+            validator: value => Object.values(SIZES).indexOf(value) !== -1,
         },
         title: {
             type: String,

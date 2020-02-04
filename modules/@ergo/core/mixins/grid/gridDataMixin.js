@@ -99,10 +99,10 @@ export default function ({ path }) {
         },
         computed: {
             ...mapState('authentication', {
-                languageCode: (state) => state.user.language,
+                languageCode: state => state.user.language,
             }),
             ...mapState('list', {
-                disabledElements: (state) => state.disabledElements,
+                disabledElements: state => state.disabledElements,
             }),
         },
         methods: {
@@ -188,7 +188,7 @@ export default function ({ path }) {
                     ...swapItemPosition(this.columns, from, to),
                 ];
 
-                this.$cookies.set(COLUMNS_IDS, this.columns.map((column) => column.id).join(','));
+                this.$cookies.set(COLUMNS_IDS, this.columns.map(column => column.id).join(','));
             },
             dropFilterAtIndex({ data, index }) {
                 try {
@@ -270,7 +270,7 @@ export default function ({ path }) {
                         const [attribute] = columns;
                         const options = attribute.filter && attribute.filter.options
                             ? Object.keys(attribute.filter.options)
-                                .map((key) => ({
+                                .map(key => ({
                                     key,
                                     value: attribute.filter.options[key],
                                 }))

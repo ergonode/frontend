@@ -48,6 +48,22 @@ export default {
             selectedLanguages: [],
         };
     },
+    computed: {
+        ...mapState('authentication', {
+            userLanguageCode: state => state.user.language,
+        }),
+        ...mapState('dictionaries', {
+            languages: state => state.languages,
+        }),
+        languageOptions() {
+            return Object.keys(this.languages).map(key => ({
+                id: key, key, value: this.languages[key],
+            }));
+        },
+        selectedLanguageCodes() {
+            return this.selectedLanguages.map(language => language.id);
+        },
+    },
     created() {
         this.selectedLanguages = [
             {
@@ -56,22 +72,6 @@ export default {
                 value: this.languages[this.userLanguageCode],
             },
         ];
-    },
-    computed: {
-        ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
-        }),
-        ...mapState('dictionaries', {
-            languages: (state) => state.languages,
-        }),
-        languageOptions() {
-            return Object.keys(this.languages).map((key) => ({
-                id: key, key, value: this.languages[key],
-            }));
-        },
-        selectedLanguageCodes() {
-            return this.selectedLanguages.map((language) => language.id);
-        },
     },
 };
 </script>

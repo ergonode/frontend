@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
 import {
     getMappedLayoutElements,
 } from '@Products/models/productMapper';
+import { types } from './mutations';
 
 export default {
     setProductSku: ({ commit }, sku) => commit(types.SET_PRODUCT_SKU, sku),
@@ -35,7 +35,7 @@ export default {
         const parseCategories = (category) => {
             const {
                 id: categoryId, name, code,
-            } = categories.find((c) => c.code === category);
+            } = categories.find(c => c.code === category);
 
             return {
                 id: categoryId,
@@ -45,7 +45,7 @@ export default {
             };
         };
         const parseTemplate = (templateId) => {
-            const { name } = templates.find((t) => t.id === templateId);
+            const { name } = templates.find(t => t.id === templateId);
 
             return {
                 id: templateId, key: '', value: name, hint: '',
@@ -113,7 +113,7 @@ export default {
             id,
         } = state;
         const index = state.layoutElements.findIndex(
-            (element) => element.id === attributeId,
+            element => element.id === attributeId,
         );
 
         await this.app.$axios.$put(`${languageCode}/products/${id}/draft/${attributeId}/value`, { value }).then(() => {
@@ -126,7 +126,7 @@ export default {
                 });
             }
             onSuccess(name);
-        }).catch((e) => onError({ errors: e.data.errors, name }));
+        }).catch(e => onError({ errors: e.data.errors, name }));
     },
     updateProductStatus({ state, rootState, dispatch }, {
         attributeId,
@@ -157,7 +157,7 @@ export default {
         await this.app.$axios.$post(`${language}/products`, data).then(({ id }) => {
             commit(types.SET_PRODUCT_ID, id);
             onSuccess(id);
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     async applyDraft(

@@ -2,12 +2,12 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
 import { getParsedFilters } from '@Core/models/mappers/gridDataMapper';
 import { UNASSIGNED_GROUP_ID } from '@Core/defaults/list';
 import { FILTER_OPERATOR } from '@Core/defaults/operators';
 import { getUUID } from '@Core/models/stringWrapper';
 import { getMappedGroupsElementsCount } from '@Core/models/mappers/listMapper';
+import { types } from './mutations';
 
 export default {
     getElements({ commit, state }, { listType, languageCode }) {

@@ -31,17 +31,17 @@ export default {
         background: {
             type: String,
             default: WHITE,
-            validator: (value) => /^#([A-Fa-f0-9]{6})$/.test(value),
+            validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
         color: {
             type: String,
             default: GRAPHITE_DARK,
-            validator: (value) => /^#([A-Fa-f0-9]{6})$/.test(value),
+            validator: value => /^#([A-Fa-f0-9]{6})$/.test(value),
         },
         size: {
             type: String,
             default: 'regular',
-            validator: (value) => Object.values(SIZES).indexOf(value) !== -1,
+            validator: value => Object.values(SIZES).indexOf(value) !== -1,
         },
     },
     computed: {

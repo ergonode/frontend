@@ -45,7 +45,7 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
+            userLanguageCode: state => state.user.language,
         }),
         whiteColor() {
             return WHITE;

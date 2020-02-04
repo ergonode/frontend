@@ -10,7 +10,7 @@ export default ({
     const { matched, name, path } = route;
     const clearPath = path.replace(/\/$/, '');
     const routeMatched = matched.find(
-        (match) => match.name === name,
+        match => match.name === name,
     );
 
     if (routeMatched && !isEmpty(routeMatched.meta) && routeMatched.meta.redirectTo) {

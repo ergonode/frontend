@@ -6,9 +6,9 @@
     <aside :class="['side-bar', {'side-bar--expanded': isExpanded}]">
         <ol class="side-bar__menu">
             <li>
-                <nuxt-link to="/dashboard">
+                <NuxtLink to="/dashboard">
                     <SideBarLogo :is-expanded="isExpanded" />
-                </nuxt-link>
+                </NuxtLink>
             </li>
             <template v-for="(route, index) in routes">
                 <SideBarListGroup
@@ -66,9 +66,6 @@ export default {
             selectedGroup: null,
         };
     },
-    destroyed() {
-        window.removeEventListener('click', this.onClickOutside);
-    },
     computed: {
         expendStateIcon() {
             return this.isExpanded ? ARROW.LEFT : ARROW.RIGHT;
@@ -101,7 +98,7 @@ export default {
                         groups[route.meta.group.title] = true;
                     } else if (route.meta.group && groups[route.meta.group.title]) {
                         const index = routes
-                            .findIndex((r) => r.group && r.group.title === route.meta.group.title);
+                            .findIndex(r => r.group && r.group.title === route.meta.group.title);
 
                         routes[index].routes.push({ ...route });
                     } else {
@@ -121,6 +118,9 @@ export default {
 
             return this.sortRoutes(subMenuSorted);
         },
+    },
+    destroyed() {
+        window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
         sortRoutes(routes, subMenu = false) {

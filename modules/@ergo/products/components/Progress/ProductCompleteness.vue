@@ -32,7 +32,7 @@ export default {
     },
     computed: {
         ...mapState('productsDraft', {
-            completeness: (state) => state.completeness,
+            completeness: state => state.completeness,
         }),
         caption() {
             return `${this.progress}% Completeness of ${this.language}`;

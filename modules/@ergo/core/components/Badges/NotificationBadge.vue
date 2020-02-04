@@ -22,7 +22,7 @@ export default {
         number: {
             type: Number,
             required: true,
-            validator: (value) => value > 0,
+            validator: value => value > 0,
         },
     },
     computed: {

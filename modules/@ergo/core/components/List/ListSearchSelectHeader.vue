@@ -86,12 +86,6 @@ export default {
             searchResult: null,
         };
     },
-    created() {
-        this.debouncedSearch = debounce(this.onSearch, 500);
-    },
-    beforeDestroy() {
-        delete this.debouncedSearch;
-    },
     computed: {
         whiteColor() {
             return WHITE;
@@ -106,6 +100,12 @@ export default {
                 ? GREEN
                 : GRAPHITE;
         },
+    },
+    created() {
+        this.debouncedSearch = debounce(this.onSearch, 500);
+    },
+    beforeDestroy() {
+        delete this.debouncedSearch;
     },
     methods: {
         onExpand(isExpanded) {

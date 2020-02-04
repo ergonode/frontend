@@ -52,9 +52,19 @@ export default {
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
         Button: () => import('@Core/components/Buttons/Button'),
     },
+    async fetch({ store }) {
+        const params = {
+            limit: 5000,
+            offset: 0,
+        };
+        await store.dispatch('templateLists/clearStorage');
+        await store.dispatch('templateLists/getTemplatesSection', {
+            params,
+        });
+    },
     computed: {
         ...mapState('templateLists', {
-            templatesSection: (state) => state.templatesSection,
+            templatesSection: state => state.templatesSection,
         }),
         ...mapGetters('templateLists', {
             sectionElementsByID: 'sectionElementsByID',
@@ -67,16 +77,6 @@ export default {
         onCreate() {
             this.$router.push({ name: 'product-template-new-general' });
         },
-    },
-    async fetch({ store }) {
-        const params = {
-            limit: 5000,
-            offset: 0,
-        };
-        await store.dispatch('templateLists/clearStorage');
-        await store.dispatch('templateLists/getTemplatesSection', {
-            params,
-        });
     },
 };
 </script>

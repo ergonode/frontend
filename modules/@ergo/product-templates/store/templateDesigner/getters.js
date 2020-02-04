@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export default {
-    elementDataByType: (state) => (type) => state.types.find(
-        (attributeType) => attributeType.type === type,
+    elementDataByType: state => type => state.types.find(
+        attributeType => attributeType.type === type,
     ),
 };

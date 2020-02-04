@@ -18,18 +18,32 @@ export default {
     components: {
         TransitionPage: () => import('@Transitions/components/Pages/TransitionPage'),
     },
-    created() {
-        this.clearStorage();
+    async fetch({
+        store,
+    }) {
+        await Promise.all([
+            store.dispatch('productStatus/getProductStatuses', {
+                limit: 9999,
+                offset: 0,
+            }),
+            store.dispatch('roles/getRoles', {
+                limit: 9999,
+                offset: 0,
+            }),
+        ]);
     },
     computed: {
         ...mapState('productStatus', {
-            statuses: (state) => state.statuses,
+            statuses: state => state.statuses,
         }),
         ...mapState('transitions', {
-            source: (state) => state.source,
-            destination: (state) => state.destination,
-            roles: (state) => state.roles,
+            source: state => state.source,
+            destination: state => state.destination,
+            roles: state => state.roles,
         }),
+    },
+    created() {
+        this.clearStorage();
     },
     methods: {
         ...mapActions('transitions', [
@@ -44,7 +58,7 @@ export default {
             const transition = {
                 source: this.source.key,
                 destination: this.destination.key,
-                roles: this.roles.map((role) => role.key),
+                roles: this.roles.map(role => role.key),
             };
 
             this.removeValidationErrors();
@@ -67,20 +81,6 @@ export default {
                 },
             });
         },
-    },
-    async fetch({
-        store,
-    }) {
-        await Promise.all([
-            store.dispatch('productStatus/getProductStatuses', {
-                limit: 9999,
-                offset: 0,
-            }),
-            store.dispatch('roles/getRoles', {
-                limit: 9999,
-                offset: 0,
-            }),
-        ]);
     },
 };
 </script>

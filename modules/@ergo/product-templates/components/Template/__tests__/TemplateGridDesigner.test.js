@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import TemplateGridDesigner from '../Base/TemplateGridDesigner';
 import TemplateGridPresentationLayer from '@Core/components/TemplateGrid/TemplateGridPresentationLayer';
+import TemplateGridDesigner from '../Base/TemplateGridDesigner';
 
 const columnsNumber = 4;
 const maxRows = 0;

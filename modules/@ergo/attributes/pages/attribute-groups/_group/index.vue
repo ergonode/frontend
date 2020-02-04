@@ -21,7 +21,7 @@ export default {
     },
     computed: {
         ...mapState('attributeGroup', {
-            code: (state) => state.code,
+            code: state => state.code,
         }),
     },
     created() {

@@ -11,7 +11,7 @@ export default {
     },
     computed: {
         ...mapState('validations', {
-            validationErrors: (state) => state.validationErrors,
+            validationErrors: state => state.validationErrors,
         }),
         validationErrorsAreNotNull() {
             return !isEmpty(this.validationErrors);

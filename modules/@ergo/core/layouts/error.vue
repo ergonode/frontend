@@ -24,11 +24,6 @@ export default {
             required: true,
         },
     },
-    created() {
-        if (this.error.status === 401) {
-            this.$router.push('/');
-        }
-    },
     computed: {
         errorPage() {
             switch (this.error.statusCode) {
@@ -40,6 +35,11 @@ export default {
                 return () => import('@Core/components/Layout/Errors/500');
             }
         },
+    },
+    created() {
+        if (this.error.status === 401) {
+            this.$router.push('/');
+        }
     },
 };
 </script>

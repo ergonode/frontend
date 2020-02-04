@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export const Pages = {
-    Import: () => import('@Import/pages/import/index').then((m) => m.default || m),
+    Import: () => import('@Import/pages/import/index').then(m => m.default || m),
 };
 
 export const Icons = {

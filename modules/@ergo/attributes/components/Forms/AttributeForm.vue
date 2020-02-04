@@ -103,19 +103,19 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
+            userLanguageCode: state => state.user.language,
         }),
         ...mapState('attribute', {
-            attrID: (state) => state.id,
-            code: (state) => state.code,
-            groups: (state) => state.groups,
-            groupOptions: (state) => state.groupOptions,
-            type: (state) => state.type,
-            parameter: (state) => state.parameter,
-            multilingual: (state) => state.isMultilingual,
+            attrID: state => state.id,
+            code: state => state.code,
+            groups: state => state.groups,
+            groupOptions: state => state.groupOptions,
+            type: state => state.type,
+            parameter: state => state.parameter,
+            multilingual: state => state.isMultilingual,
         }),
         ...mapState('dictionaries', {
-            attrTypes: (state) => state.attrTypes,
+            attrTypes: state => state.attrTypes,
         }),
         paramsLabel() {
             const paramsKey = getParamsKeyForType(this.typeKey);

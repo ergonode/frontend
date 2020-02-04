@@ -15,7 +15,7 @@ export function toCapitalize(string) {
     if (!string) return '';
 
     return string.replace(
-        /^\w/, (c) => c.toUpperCase(),
+        /^\w/, c => c.toUpperCase(),
     );
 }
 

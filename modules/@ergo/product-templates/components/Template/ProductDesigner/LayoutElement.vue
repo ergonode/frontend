@@ -99,10 +99,10 @@ export default {
     },
     computed: {
         ...mapState('templateDesigner', {
-            layoutElements: (state) => state.layoutElements,
+            layoutElements: state => state.layoutElements,
         }),
         ...mapState('draggable', {
-            draggedElement: (state) => state.draggedElement,
+            draggedElement: state => state.draggedElement,
         }),
         draggableClasses() {
             return {
@@ -133,7 +133,7 @@ export default {
                 draggedElHeight: height,
                 layoutWidth: this.columnsNumber,
                 layoutHeight: this.rowsNumber,
-                layoutElements: this.layoutElements.filter((el) => el.id !== id),
+                layoutElements: this.layoutElements.filter(el => el.id !== id),
             });
 
             this.$emit('highlightedPositionChange', this.highlightingPositions);

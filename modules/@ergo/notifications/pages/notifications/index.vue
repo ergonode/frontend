@@ -19,6 +19,9 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
     },
+    async fetch({ store }) {
+        await store.dispatch('notifications/requestForNotifications');
+    },
     computed: {
         tabs() {
             return [
@@ -28,9 +31,6 @@ export default {
                 },
             ];
         },
-    },
-    async fetch({ store }) {
-        await store.dispatch('notifications/requestForNotifications');
     },
 };
 </script>

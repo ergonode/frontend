@@ -25,10 +25,10 @@ import Button from '@Core/components/Buttons/Button';
 
 export default {
     name: 'FabButton',
-    inheritAttrs: false,
     components: {
         Button,
     },
+    inheritAttrs: false,
     data() {
         return {
             isHovered: false,

@@ -24,9 +24,15 @@ export default {
         VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
         ConditionSetWrapper: () => import('@Conditions/components/ConditionSetDesigner/ConditionSetWrapper'),
     },
-    destroyed() {
-        this.clearGridDesignerStorage();
-        this.clearConditionsStorage();
+    async fetch({
+        store,
+    }) {
+        await Promise.all([
+            store.dispatch('conditions/getConditions', { group: 'segment' }),
+        ]);
+        const { conditionsDictionary } = store.state.conditions;
+
+        await store.dispatch('list/setElementsForLanguage', conditionsDictionary);
     },
     computed: {
         verticalTabs() {
@@ -39,6 +45,10 @@ export default {
             ];
         },
     },
+    destroyed() {
+        this.clearGridDesignerStorage();
+        this.clearConditionsStorage();
+    },
     methods: {
         ...mapActions('gridDesigner', {
             clearGridDesignerStorage: 'clearStorage',
@@ -46,16 +56,6 @@ export default {
         ...mapActions('conditions', {
             clearConditionsStorage: 'clearStorage',
         }),
-    },
-    async fetch({
-        store,
-    }) {
-        await Promise.all([
-            store.dispatch('conditions/getConditions', { group: 'segment' }),
-        ]);
-        const { conditionsDictionary } = store.state.conditions;
-
-        await store.dispatch('list/setElementsForLanguage', conditionsDictionary);
     },
 };
 </script>

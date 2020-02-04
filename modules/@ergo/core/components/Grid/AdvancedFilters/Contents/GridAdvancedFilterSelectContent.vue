@@ -59,6 +59,11 @@ export default {
             selectedOptionIndex: -1,
         };
     },
+    computed: {
+        filterValue() {
+            return this.filter.value[FILTER_OPERATOR.EQUAL] || '';
+        },
+    },
     watch: {
         filterValue: {
             immediate: true,
@@ -67,15 +72,10 @@ export default {
             },
         },
     },
-    computed: {
-        filterValue() {
-            return this.filter.value[FILTER_OPERATOR.EQUAL] || '';
-        },
-    },
     methods: {
         initSelectedOptions() {
             this.selectedOptionIndex = this.options
-                .findIndex((option) => option.key === this.filterValue);
+                .findIndex(option => option.key === this.filterValue);
         },
         onSelectValue(value) {
             this.$emit('input', { value: value.key, operator: FILTER_OPERATOR.EQUAL });

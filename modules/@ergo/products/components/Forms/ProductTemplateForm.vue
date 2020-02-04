@@ -54,8 +54,8 @@ export default {
     },
     computed: {
         ...mapState('productsDraft', {
-            layoutElements: (state) => state.layoutElements,
-            draft: (state) => state.draft,
+            layoutElements: state => state.layoutElements,
+            draft: state => state.draft,
         }),
         maxRows() {
             const layoutElement = getObjectWithMaxValueInArrayByObjectKey(this.layoutElements, 'row');

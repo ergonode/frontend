@@ -47,11 +47,6 @@ export default {
             isDraggingUpperSphere: false,
         };
     },
-    mounted() {
-        const { width, x } = this.$refs.tracker.getBoundingClientRect();
-        this.width = width;
-        this.xPos = x;
-    },
     computed: {
         progressStyle() {
             const { from, to } = this.value;
@@ -71,6 +66,11 @@ export default {
                 transform: `translateX(${this.getTransformValue(this.value.to)}px)`,
             };
         },
+    },
+    mounted() {
+        const { width, x } = this.$refs.tracker.getBoundingClientRect();
+        this.width = width;
+        this.xPos = x;
     },
     methods: {
         initResizeDrag(event) {

@@ -26,7 +26,7 @@ export default {
         layoutOrientation: {
             type: String,
             default: LayoutOrientation.VERTICAL,
-            validator: (value) => Object.values(LayoutOrientation).indexOf(value) !== -1,
+            validator: value => Object.values(LayoutOrientation).indexOf(value) !== -1,
         },
         title: {
             type: String,

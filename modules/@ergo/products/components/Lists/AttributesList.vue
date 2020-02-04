@@ -38,21 +38,21 @@ export default {
             expendedGroup: '',
         };
     },
-    created() {
-        this.setDefaultExpandedGroup();
+    computed: {
+        ...mapState('list', {
+            groups: state => state.groups,
+        }),
+        isUserAllowedToDragAttributes() {
+            return this.$hasAccess(['ATTRIBUTE_UPDATE']);
+        },
     },
     watch: {
         languageCode() {
             this.expendedGroup = '';
         },
     },
-    computed: {
-        ...mapState('list', {
-            groups: (state) => state.groups,
-        }),
-        isUserAllowedToDragAttributes() {
-            return this.$hasAccess(['ATTRIBUTE_UPDATE']);
-        },
+    created() {
+        this.setDefaultExpandedGroup();
     },
     methods: {
         setExpandedGroup(key) {

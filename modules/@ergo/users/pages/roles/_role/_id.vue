@@ -17,22 +17,30 @@ import { getMappedPrivilegesBasedOnGridData } from '@Users/models/privilegesMapp
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
-    validate({ params }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
-    },
     name: 'EditUserRoles',
     components: {
         UserRolesPage: () => import('@Users/components/Pages/UserRolesPage'),
     },
+    validate({ params }) {
+        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
+    },
+    async fetch({
+        store,
+        params,
+    }) {
+        await store.dispatch('roles/getRoleById', {
+            roleId: params.id,
+        });
+    },
     computed: {
         ...mapState('roles', {
-            roleID: (state) => state.id,
-            name: (state) => state.name,
-            description: (state) => state.description,
-            selectedPrivileges: (state) => state.selectedPrivileges,
+            roleID: state => state.id,
+            name: state => state.name,
+            description: state => state.description,
+            selectedPrivileges: state => state.selectedPrivileges,
         }),
         ...mapState('dictionaries', {
-            privileges: (state) => state.privileges,
+            privileges: state => state.privileges,
         }),
     },
     destroyed() {
@@ -90,14 +98,6 @@ export default {
                 });
             }
         },
-    },
-    async fetch({
-        store,
-        params,
-    }) {
-        await store.dispatch('roles/getRoleById', {
-            roleId: params.id,
-        });
     },
 };
 </script>

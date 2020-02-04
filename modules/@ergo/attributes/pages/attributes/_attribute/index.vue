@@ -25,17 +25,22 @@ export default {
     components: {
         AttributePage: () => import('@Attributes/components/Pages/AttributePage'),
     },
+    async fetch({ store }) {
+        await store.dispatch('attribute/clearStorage');
+        await store.dispatch('translations/clearStorage');
+        await store.dispatch('attribute/getAttributeGroups');
+    },
     computed: {
         ...mapState('attribute', {
-            code: (state) => state.code,
-            groups: (state) => state.groups,
-            type: (state) => state.type,
-            multilingual: (state) => state.isMultilingual,
-            parameter: (state) => state.parameter,
-            options: (state) => state.options,
+            code: state => state.code,
+            groups: state => state.groups,
+            type: state => state.type,
+            multilingual: state => state.isMultilingual,
+            parameter: state => state.parameter,
+            options: state => state.options,
         }),
         ...mapState('dictionaries', {
-            attrTypes: (state) => state.attrTypes,
+            attrTypes: state => state.attrTypes,
         }),
     },
     methods: {
@@ -64,7 +69,7 @@ export default {
             const attribute = {
                 code: this.code,
                 type: typeKey,
-                groups: this.groups.map((group) => group.id),
+                groups: this.groups.map(group => group.id),
             };
 
             if (isMultilingual(typeKey)) {
@@ -75,7 +80,7 @@ export default {
                 const optionKeys = Object.keys(this.options);
                 const uniqueOptions = new Set(optionKeys);
 
-                if (optionKeys.some((key) => key === '')) {
+                if (optionKeys.some(key => key === '')) {
                     this.$addAlert({ type: 'warning', message: 'Options cannot have an empty keys' });
                     return;
                 }
@@ -105,11 +110,6 @@ export default {
                 onError: this.onError,
             });
         },
-    },
-    async fetch({ store }) {
-        await store.dispatch('attribute/clearStorage');
-        await store.dispatch('translations/clearStorage');
-        await store.dispatch('attribute/getAttributeGroups');
     },
 };
 </script>

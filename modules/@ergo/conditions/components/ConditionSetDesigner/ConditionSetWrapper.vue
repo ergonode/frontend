@@ -35,12 +35,12 @@ export default {
     },
     computed: {
         ...mapState('gridDesigner', {
-            gridData: (state) => state.gridData,
+            gridData: state => state.gridData,
         }),
         ...mapState('conditions', {
-            columns: (state) => state.columns,
-            rowHeight: (state) => state.rowHeight,
-            conditions: (state) => state.conditions,
+            columns: state => state.columns,
+            rowHeight: state => state.rowHeight,
+            conditions: state => state.conditions,
         }),
     },
     methods: {

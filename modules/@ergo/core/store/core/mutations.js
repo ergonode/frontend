@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import defaultState from './state';
 import { removeFromObjectByKey } from '@Core/models/objectWrapper';
+import defaultState from './state';
 
 export const types = {
     SET_LOADER: 'SET_LOADER',

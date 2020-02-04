@@ -49,28 +49,29 @@
 import { mapState, mapActions } from 'vuex';
 
 export default {
-    layout: 'login',
     name: 'Login',
     components: {
         TextField: () => import('@Core/components/Inputs/TextField'),
         Button: () => import('@Core/components/Buttons/Button'),
         Typer: () => import('@Core/components/Inputs/Typer'),
     },
-    data: () => ({
-        userAuthData: {
-            username: '',
-            password: '',
-        },
-    }),
+    data() {
+        return {
+            userAuthData: {
+                username: '',
+                password: '',
+            },
+        };
+    },
+    computed: {
+        ...mapState('authentication', {
+            isLogged: state => state.isLogged,
+        }),
+    },
     created() {
         if (!this.isLogged) {
             this.resetState();
         }
-    },
-    computed: {
-        ...mapState('authentication', {
-            isLogged: (state) => state.isLogged,
-        }),
     },
     methods: {
         ...mapActions('authentication', [
@@ -88,6 +89,7 @@ export default {
             }
         },
     },
+    layout: 'login',
 };
 </script>
 

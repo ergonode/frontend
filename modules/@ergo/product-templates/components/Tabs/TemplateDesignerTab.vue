@@ -89,31 +89,16 @@ export default {
             maxRow: 0,
         };
     },
-    watch: {
-        isListElementDragging() {
-            if (this.isListElementDragging) {
-                this.highlightedPositions = getHighlightingLayoutDropPositions({
-                    draggedElWidth: 1,
-                    draggedElHeight: 1,
-                    layoutWidth: this.columnsNumber,
-                    layoutHeight: this.maxLayoutRow,
-                    layoutElements: this.layoutElements,
-                });
-            } else {
-                this.highlightedPositions = [];
-            }
-        },
-    },
     computed: {
         ...mapState('templateDesigner', {
-            templateGroups: (state) => state.templateGroups,
-            layoutElements: (state) => state.layoutElements,
-            titleValidationError: (state) => state.titleValidationError,
-            title: (state) => state.title,
+            templateGroups: state => state.templateGroups,
+            layoutElements: state => state.layoutElements,
+            titleValidationError: state => state.titleValidationError,
+            title: state => state.title,
         }),
         ...mapState('draggable', {
-            draggedElement: (state) => state.draggedElement,
-            isListElementDragging: (state) => state.isListElementDragging,
+            draggedElement: state => state.draggedElement,
+            isListElementDragging: state => state.isListElementDragging,
         }),
         verticalTabs() {
             return [
@@ -157,6 +142,21 @@ export default {
             return this.maxRow;
         },
     },
+    watch: {
+        isListElementDragging() {
+            if (this.isListElementDragging) {
+                this.highlightedPositions = getHighlightingLayoutDropPositions({
+                    draggedElWidth: 1,
+                    draggedElHeight: 1,
+                    layoutWidth: this.columnsNumber,
+                    layoutHeight: this.maxLayoutRow,
+                    layoutElements: this.layoutElements,
+                });
+            } else {
+                this.highlightedPositions = [];
+            }
+        },
+    },
     methods: {
         ...mapActions('templateDesigner', [
             'setTemplateDesignerTitle',
@@ -180,7 +180,7 @@ export default {
             if (typeof this.draggedElement === 'object') {
                 const { row, column } = position;
                 const index = this.layoutElements.findIndex(
-                    (el) => el.id === this.draggedElement.id,
+                    el => el.id === this.draggedElement.id,
                 );
 
                 this.updateLayoutElementPosition({ index, row, column });

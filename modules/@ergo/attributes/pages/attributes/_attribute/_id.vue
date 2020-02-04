@@ -21,30 +21,36 @@ import { getParsedOptions, getParsedParameterKeys } from '@Attributes/models/att
 import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 
 export default {
-    validate({ params }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
-    },
     name: 'EditAttribute',
     components: {
         AttributePage: () => import('@Attributes/components/Pages/AttributePage'),
     },
+    validate({ params }) {
+        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
+    },
+    async fetch({ store, params }) {
+        await store.dispatch('attribute/getAttributeGroups');
+        await store.dispatch('attribute/getAttributeById', {
+            attributeId: params.id,
+        });
+    },
     computed: {
         ...mapState('attribute', {
-            id: (state) => state.id,
-            groups: (state) => state.groups,
-            code: (state) => state.code,
-            type: (state) => state.type,
-            parameter: (state) => state.parameter,
-            options: (state) => state.options,
+            id: state => state.id,
+            groups: state => state.groups,
+            code: state => state.code,
+            type: state => state.type,
+            parameter: state => state.parameter,
+            options: state => state.options,
         }),
         ...mapState('translations', {
-            translations: (state) => state.translations,
+            translations: state => state.translations,
         }),
         ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
+            userLanguageCode: state => state.user.language,
         }),
         ...mapState('dictionaries', {
-            attrTypes: (state) => state.attrTypes,
+            attrTypes: state => state.attrTypes,
         }),
     },
     destroyed() {
@@ -89,14 +95,14 @@ export default {
             const typeKey = getKeyByValue(this.attrTypes, this.type);
             const { label, placeholder, hint } = this.translations;
             const propertiesToUpdate = {
-                groups: this.groups.map((group) => group.id),
+                groups: this.groups.map(group => group.id),
             };
 
             if (!isEmpty(this.options)) {
                 const optionKeys = Object.keys(this.options);
                 const uniqueOptions = new Set(optionKeys);
 
-                if (optionKeys.some((key) => key === '')) {
+                if (optionKeys.some(key => key === '')) {
                     this.$addAlert({ type: 'warning', message: 'Options cannot have an empty keys' });
                     return;
                 }
@@ -140,12 +146,6 @@ export default {
                 onError: this.onError,
             });
         },
-    },
-    async fetch({ store, params }) {
-        await store.dispatch('attribute/getAttributeGroups');
-        await store.dispatch('attribute/getAttributeById', {
-            attributeId: params.id,
-        });
     },
 };
 </script>

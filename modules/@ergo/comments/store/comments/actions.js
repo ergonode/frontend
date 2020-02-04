@@ -67,7 +67,7 @@ export default {
                 commit(types.SET_COUNT, count += 1);
                 onSuccess(id);
             });
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
         await this.$removeLoader('commentButton');
     },
     async updateComment(
@@ -104,7 +104,7 @@ export default {
                 commit(types.EDIT_COMMENT, comment);
                 onSuccess();
             });
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
         await this.$removeLoader('commentButton');
     },
     removeComment(
@@ -121,7 +121,7 @@ export default {
             commit(types.DELETE_COMMENT, id);
             commit(types.SET_COUNT, count -= 1);
             onSuccess();
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
     },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);

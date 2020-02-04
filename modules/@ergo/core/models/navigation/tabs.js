@@ -11,7 +11,7 @@ export const getNestedTabRoutes = (hasAccess, routes, currentRoute) => {
         const { children } = routes[i];
 
         if (children
-            && children.find((nestedRoute) => nestedRoute.name === currentRoute.name)) {
+            && children.find(nestedRoute => nestedRoute.name === currentRoute.name)) {
             for (let j = 0; j < children.length; j += 1) {
                 if (hasAccess(children[j].meta.privileges)) {
                     childRoutes.push({
@@ -28,4 +28,4 @@ export const getNestedTabRoutes = (hasAccess, routes, currentRoute) => {
     return [];
 };
 
-export const getParentRoutePath = (currentRoute) => `/${currentRoute.path.split('/')[1]}`;
+export const getParentRoutePath = currentRoute => `/${currentRoute.path.split('/')[1]}`;

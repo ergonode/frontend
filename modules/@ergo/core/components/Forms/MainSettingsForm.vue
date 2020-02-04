@@ -35,8 +35,8 @@ export default {
     mixins: [errorValidationMixin],
     computed: {
         ...mapState('languageSettings', {
-            languages: (state) => state.languages,
-            selectedLanguages: (state) => state.selectedLanguages,
+            languages: state => state.languages,
+            selectedLanguages: state => state.selectedLanguages,
         }),
     },
     methods: {

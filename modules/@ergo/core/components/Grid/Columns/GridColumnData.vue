@@ -82,6 +82,26 @@ export default {
             minWidth: 150,
         };
     },
+    computed: {
+        ...mapState('authentication', {
+            languageCode: state => state.user.language,
+        }),
+        ...mapState('draggable', {
+            draggedElement: state => state.draggedElement,
+            resizingElement: state => state.resizingElement,
+            ghostIndex: state => state.ghostIndex,
+            bounds: state => state.bounds,
+            draggedElIndex: state => state.draggedElIndex,
+            draggedElementOnGrid: state => state.draggedElementOnGrid,
+        }),
+        isColumnDraggable() {
+            return this.draggable
+                && !this.isHeaderFocused;
+        },
+        isDraggedColumn() {
+            return this.draggedElIndex === this.index || this.column.id === 'ghost';
+        },
+    },
     beforeCreate() {
         this.startWidth = 0;
         this.startX = 0;
@@ -91,26 +111,6 @@ export default {
         delete this.startWidth;
         delete this.startX;
         delete this.columnWidth;
-    },
-    computed: {
-        ...mapState('authentication', {
-            languageCode: (state) => state.user.language,
-        }),
-        ...mapState('draggable', {
-            draggedElement: (state) => state.draggedElement,
-            resizingElement: (state) => state.resizingElement,
-            ghostIndex: (state) => state.ghostIndex,
-            bounds: (state) => state.bounds,
-            draggedElIndex: (state) => state.draggedElIndex,
-            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
-        }),
-        isColumnDraggable() {
-            return this.draggable
-                && !this.isHeaderFocused;
-        },
-        isDraggedColumn() {
-            return this.draggedElIndex === this.index || this.column.id === 'ghost';
-        },
     },
     methods: {
         ...mapActions('draggable', [

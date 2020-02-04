@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { UNASSIGNED_GROUP_ID } from '@Core/defaults/list';
 import {
     getMappedGroupsElementsCount,
 } from '../listMapper';
-import { UNASSIGNED_GROUP_ID } from '@Core/defaults/list';
 
 describe('attributeMapper/getMappedGroupsElementsCount', () => {
     describe('Based on API data, data is mapped into data structure', () => {

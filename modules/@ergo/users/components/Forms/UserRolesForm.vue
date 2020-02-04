@@ -43,9 +43,9 @@ export default {
     mixins: [errorValidationMixin],
     computed: {
         ...mapState('roles', {
-            roleID: (state) => state.id,
-            name: (state) => state.name,
-            description: (state) => state.description,
+            roleID: state => state.id,
+            name: state => state.name,
+            description: state => state.description,
         }),
         isDisabled() {
             return Boolean(this.roleID);

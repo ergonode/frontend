@@ -22,6 +22,9 @@ import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'NavigationBarUserSelectContentHeader',
+    components: {
+        UserAvatar: () => import('@Core/components/Multimedia/UserAvatar'),
+    },
     props: {
         initials: {
             type: String,
@@ -35,9 +38,6 @@ export default {
             type: String,
             default: '',
         },
-    },
-    components: {
-        UserAvatar: () => import('@Core/components/Multimedia/UserAvatar'),
     },
     computed: {
         graphiteColor() {
