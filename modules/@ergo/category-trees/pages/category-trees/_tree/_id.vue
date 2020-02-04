@@ -25,20 +25,38 @@ export default {
     components: {
         CategoryTreePage: () => import('@Trees/components/Pages/CategoryTreePage'),
     },
-    destroyed() {
-        this.clearGridDesignerStorage();
+    async fetch({ store, params }) {
+        const {
+            user: { language: userLanguageCode },
+        } = store.state.authentication;
+
+        await Promise.all([
+            store.dispatch('tree/clearStorage'),
+            store.dispatch('translations/clearStorage'),
+            store.dispatch('list/clearStorage'),
+            store.dispatch('list/getElements', {
+                listType: 'categories',
+                languageCode: userLanguageCode,
+            }),
+        ]);
+        await store.dispatch('tree/getTreeById', {
+            treeId: params.id,
+        });
     },
     computed: {
         ...mapState('tree', {
-            treeId: (state) => state.treeId,
-            code: (state) => state.code,
+            treeId: state => state.treeId,
+            code: state => state.code,
         }),
         ...mapState('gridDesigner', {
-            fullGridData: (state) => state.fullGridData,
+            fullGridData: state => state.fullGridData,
         }),
         ...mapState('translations', {
-            translations: (state) => state.translations,
+            translations: state => state.translations,
         }),
+    },
+    destroyed() {
+        this.clearGridDesignerStorage();
     },
     methods: {
         ...mapActions('tree', [
@@ -87,24 +105,6 @@ export default {
             this.$addAlert({ type: 'success', message: 'Category tree removed' });
             this.$router.push({ name: 'category-trees' });
         },
-    },
-    async fetch({ store, params }) {
-        const {
-            user: { language: userLanguageCode },
-        } = store.state.authentication;
-
-        await Promise.all([
-            store.dispatch('tree/clearStorage'),
-            store.dispatch('translations/clearStorage'),
-            store.dispatch('list/clearStorage'),
-            store.dispatch('list/getElements', {
-                listType: 'categories',
-                languageCode: userLanguageCode,
-            }),
-        ]);
-        await store.dispatch('tree/getTreeById', {
-            treeId: params.id,
-        });
     },
 };
 </script>

@@ -130,17 +130,11 @@ export default {
             associatedLabel: '',
         };
     },
-    mounted() {
-        this.associatedLabel = `input-${this._uid}`;
-    },
-    destroyed() {
-        window.removeEventListener('click', this.onClickOutside);
-    },
     computed: {
         ...mapState('draggable', {
-            ghostFilterIndex: (state) => state.ghostFilterIndex,
-            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
-            draggedElement: (state) => state.draggedElement,
+            ghostFilterIndex: state => state.ghostFilterIndex,
+            draggedElementOnGrid: state => state.draggedElementOnGrid,
+            draggedElement: state => state.draggedElement,
         }),
         isFilterExists() {
             return this.draggedElement === this.filter.id;
@@ -197,6 +191,12 @@ export default {
             default: return () => import('@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
             }
         },
+    },
+    mounted() {
+        this.associatedLabel = `input-${this._uid}`;
+    },
+    destroyed() {
+        window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
         ...mapActions('draggable', [

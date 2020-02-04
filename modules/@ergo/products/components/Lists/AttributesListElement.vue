@@ -57,7 +57,7 @@ export default {
     },
     computed: {
         ...mapState('list', {
-            disabledElements: (state) => state.disabledElements,
+            disabledElements: state => state.disabledElements,
         }),
         typeIconComponent() {
             if (typeof TYPES[this.item.type] === 'undefined') {

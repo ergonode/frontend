@@ -69,19 +69,19 @@ export default {
             selectedOptions: {},
         };
     },
+    computed: {
+        filterValue() {
+            return this.filter.value[FILTER_OPERATOR.EQUAL]
+                ? this.filter.value[FILTER_OPERATOR.EQUAL].split(', ')
+                : [];
+        },
+    },
     watch: {
         filterValue: {
             immediate: true,
             handler() {
                 this.initSelectedOptions();
             },
-        },
-    },
-    computed: {
-        filterValue() {
-            return this.filter.value[FILTER_OPERATOR.EQUAL]
-                ? this.filter.value[FILTER_OPERATOR.EQUAL].split(', ')
-                : [];
         },
     },
     methods: {
@@ -93,7 +93,7 @@ export default {
 
                 for (let i = 0; i < length; i += 1) {
                     const optionIndex = this.options
-                        .findIndex((option) => option.key === this.filterValue[i]);
+                        .findIndex(option => option.key === this.filterValue[i]);
 
                     this.selectedOptions[optionIndex] = this.filterValue[i];
                 }

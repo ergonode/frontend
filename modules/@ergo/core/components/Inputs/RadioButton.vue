@@ -46,9 +46,6 @@ export default {
             associatedLabel: '',
         };
     },
-    mounted() {
-        this.associatedLabel = `radio-${this._uid}`;
-    },
     computed: {
         isSelected() {
             return this.value === this.label;
@@ -69,6 +66,9 @@ export default {
                 },
             ];
         },
+    },
+    mounted() {
+        this.associatedLabel = `radio-${this._uid}`;
     },
 };
 </script>

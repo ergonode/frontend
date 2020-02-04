@@ -23,15 +23,40 @@ export default {
     components: {
         TemplatePage: () => import('@Templates/components/Pages/TemplatePage'),
     },
+    async fetch({ store, params }) {
+        const {
+            user: { language: userLanguageCode },
+        } = store.state.authentication;
+        const { id } = params;
+
+        await Promise.all([
+            store.dispatch('templateDesigner/getTypes', {
+                path: `${userLanguageCode}/templates/types`,
+            }),
+            store.dispatch('list/clearStorage'),
+            store.dispatch('list/getGroups', {
+                listType: 'attributes',
+                languageCode: userLanguageCode,
+            }),
+            store.dispatch('list/getElementsForGroup', {
+                listType: 'attributes',
+                groupId: null,
+                languageCode: userLanguageCode,
+            }),
+        ]);
+        await store.dispatch('templateDesigner/getTemplateByID', {
+            path: `${userLanguageCode}/templates/${id}`,
+        });
+    },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
+            userLanguageCode: state => state.user.language,
         }),
         ...mapState('templateDesigner', {
-            groups: (state) => state.templateGroups,
-            templateTitle: (state) => state.title,
-            templateImage: (state) => state.image,
-            layoutElements: (state) => state.layoutElements,
+            groups: state => state.templateGroups,
+            templateTitle: state => state.title,
+            templateImage: state => state.image,
+            layoutElements: state => state.layoutElements,
         }),
     },
     destroyed() {
@@ -85,31 +110,6 @@ export default {
                 });
             });
         },
-    },
-    async fetch({ store, params }) {
-        const {
-            user: { language: userLanguageCode },
-        } = store.state.authentication;
-        const { id } = params;
-
-        await Promise.all([
-            store.dispatch('templateDesigner/getTypes', {
-                path: `${userLanguageCode}/templates/types`,
-            }),
-            store.dispatch('list/clearStorage'),
-            store.dispatch('list/getGroups', {
-                listType: 'attributes',
-                languageCode: userLanguageCode,
-            }),
-            store.dispatch('list/getElementsForGroup', {
-                listType: 'attributes',
-                groupId: null,
-                languageCode: userLanguageCode,
-            }),
-        ]);
-        await store.dispatch('templateDesigner/getTemplateByID', {
-            path: `${userLanguageCode}/templates/${id}`,
-        });
     },
 };
 </script>

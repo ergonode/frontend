@@ -21,10 +21,10 @@ import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
 
 export default {
     name: 'UserActivityLogsGridTab',
-    mixins: [gridDataMixin({ path: 'profile/log' })],
     components: {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
+    mixins: [gridDataMixin({ path: 'profile/log' })],
 };
 </script>

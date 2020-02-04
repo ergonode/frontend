@@ -35,7 +35,7 @@ export default {
     },
     computed: {
         ...mapState('attribute', {
-            options: (state) => state.options,
+            options: state => state.options,
         }),
         optionIndexes() {
             return Object.keys(this.options);

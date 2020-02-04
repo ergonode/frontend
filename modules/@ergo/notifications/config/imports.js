@@ -3,11 +3,11 @@
  * See LICENSE for license details.
  */
 export const Pages = {
-    Notifications: () => import('@Notifications/pages/notifications/index').then((m) => m.default || m),
+    Notifications: () => import('@Notifications/pages/notifications/index').then(m => m.default || m),
 };
 
 export const Tabs = {
-    NotificationGridTab: () => import('@Notifications/components/Tabs/NotificationGridTab').then((m) => m.default || m),
+    NotificationGridTab: () => import('@Notifications/components/Tabs/NotificationGridTab').then(m => m.default || m),
 };
 
 export const Components = {

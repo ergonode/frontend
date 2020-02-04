@@ -116,7 +116,7 @@ export default {
 
             if (Array.isArray(this.filter.value)) {
                 return this.filter.value
-                    .map((val) => this.column.filter.options[val] || `#${val}`)
+                    .map(val => this.column.filter.options[val] || `#${val}`)
                     .join(', ');
             }
 
@@ -133,7 +133,7 @@ export default {
             const { options } = filter;
             const optionKeys = Object.keys(options);
 
-            return optionKeys.map((key) => ({
+            return optionKeys.map(key => ({
                 id: key, key, value: options[key], hint: options[key] ? `#${key} ${this.column.language}` : '',
             }));
         },
@@ -162,7 +162,7 @@ export default {
             let parsedValue = value;
 
             if (Array.isArray(value)) {
-                parsedValue = value.map((val) => val.key);
+                parsedValue = value.map(val => val.key);
             } else if (typeof value === 'object') {
                 parsedValue = value.key;
             }

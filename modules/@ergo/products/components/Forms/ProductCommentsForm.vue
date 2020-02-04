@@ -69,6 +69,7 @@ export default {
         EditableComment,
         ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
     },
+    mixins: [errorValidationMixin],
     data() {
         return {
             showForm: false,
@@ -76,10 +77,10 @@ export default {
     },
     computed: {
         ...mapState('comments', {
-            objectId: (state) => state.objectId,
-            fullListCount: (state) => state.count,
-            commentList: (state) => state.comments,
-            currentPage: (state) => state.currentPage,
+            objectId: state => state.objectId,
+            fullListCount: state => state.count,
+            commentList: state => state.comments,
+            currentPage: state => state.currentPage,
         }),
         horizontalOrientation() {
             return LayoutOrientation.HORIZONTAL;
@@ -97,7 +98,6 @@ export default {
                 && this.fullListCount > DATA_LIMIT;
         },
     },
-    mixins: [errorValidationMixin],
     methods: {
         ...mapActions('comments', [
             'getMoreComments',

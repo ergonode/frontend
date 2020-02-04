@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 export const Pages = {
-    Placeholder: () => import('@Core/pages/placeholder/index').then((m) => m.default || m),
+    Placeholder: () => import('@Core/pages/placeholder/index').then(m => m.default || m),
 };
 
 export const Icons = {

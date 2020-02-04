@@ -58,15 +58,15 @@ export default {
     mixins: [errorValidationMixin],
     computed: {
         ...mapState('transitions', {
-            source: (state) => state.source,
-            destination: (state) => state.destination,
-            transitionRoles: (state) => state.roles,
+            source: state => state.source,
+            destination: state => state.destination,
+            transitionRoles: state => state.roles,
         }),
         ...mapState('productStatus', {
-            statuses: (state) => state.statuses,
+            statuses: state => state.statuses,
         }),
         ...mapState('roles', {
-            roles: (state) => state.roles,
+            roles: state => state.roles,
         }),
         isDisabled() {
             if (!isEmpty(this.$route.params)) {
@@ -78,10 +78,10 @@ export default {
             return false;
         },
         sourceOptions() {
-            return this.statuses.filter((status) => status.id !== this.destination.id);
+            return this.statuses.filter(status => status.id !== this.destination.id);
         },
         destinationOptions() {
-            return this.statuses.filter((status) => status.id !== this.source.id);
+            return this.statuses.filter(status => status.id !== this.source.id);
         },
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['WORKFLOW_UPDATE']))

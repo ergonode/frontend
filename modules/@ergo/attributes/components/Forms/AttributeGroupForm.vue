@@ -33,8 +33,8 @@ export default {
     mixins: [errorValidationMixin],
     computed: {
         ...mapState('attributeGroup', {
-            attributeID: (state) => state.id,
-            code: (state) => state.code,
+            attributeID: state => state.id,
+            code: state => state.code,
         }),
         isDisabled() {
             return Boolean(this.attributeID);

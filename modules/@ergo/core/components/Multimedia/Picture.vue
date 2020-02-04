@@ -25,6 +25,12 @@ export default {
             default: false,
         },
     },
+    data() {
+        return {
+            isPlaceholder: false,
+            image: null,
+        };
+    },
     watch: {
         imageId: {
             immediate: true,
@@ -32,12 +38,6 @@ export default {
                 this.getImageById();
             },
         },
-    },
-    data() {
-        return {
-            isPlaceholder: false,
-            image: null,
-        };
     },
     methods: {
         ...mapActions('validations', [
@@ -48,7 +48,7 @@ export default {
             this.image = require('@Core/assets/images/placeholders/no_image.svg'); // eslint-disable-line global-require, import/no-dynamic-require
             this.$axios.$get(`multimedia/${this.imageId}`, {
                 responseType: 'arraybuffer',
-            }).then((response) => this.onSuccess(response)).catch(this.imageLoadOnError);
+            }).then(response => this.onSuccess(response)).catch(this.imageLoadOnError);
         },
         onSuccess(response) {
             this.image = getImageData(response);

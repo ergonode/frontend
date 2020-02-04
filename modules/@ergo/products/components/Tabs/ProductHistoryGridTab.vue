@@ -22,10 +22,10 @@ import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
 
 export default {
     name: 'ProductHistoryGridTab',
-    mixins: [gridDataMixin({ path: 'products/_id/history' })],
     components: {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
+    mixins: [gridDataMixin({ path: 'products/_id/history' })],
 };
 </script>

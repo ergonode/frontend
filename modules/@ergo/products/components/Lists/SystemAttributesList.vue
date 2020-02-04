@@ -32,7 +32,7 @@ export default {
     },
     computed: {
         ...mapState('list', {
-            elements: (state) => state.elements,
+            elements: state => state.elements,
         }),
     },
 };

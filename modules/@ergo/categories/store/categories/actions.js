@@ -40,7 +40,7 @@ export default {
         await this.app.$axios.$post(`${userLanguageCode}/categories`, data).then(({ id }) => {
             commit(types.SET_ID, id);
             onSuccess(id);
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     async updateCategory(
@@ -55,7 +55,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
 
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/categories/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+        await this.app.$axios.$put(`${userLanguageCode}/categories/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     removeCategory({ state, rootState }, { onSuccess }) {

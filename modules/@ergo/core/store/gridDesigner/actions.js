@@ -2,7 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
 import {
     getTreeWhenElementRemoved,
     getTreeWhenGhostElementRemoved,
@@ -10,6 +9,7 @@ import {
     getTreeWhenElementExpand,
     getFullTree,
 } from '@Core/models/template_grid/TreeCalculations';
+import { types } from './mutations';
 
 export default {
     setRowsCount: ({ commit }, value) => {
@@ -63,7 +63,7 @@ export default {
             newGrid = getTreeWhenElementRemoved(state.gridData, id);
             dispatch('setFullGridData', newGrid);
         } else {
-            newGrid = state.gridData.filter((el) => el.id !== id);
+            newGrid = state.gridData.filter(el => el.id !== id);
         }
         dispatch('setGridData', newGrid);
     },

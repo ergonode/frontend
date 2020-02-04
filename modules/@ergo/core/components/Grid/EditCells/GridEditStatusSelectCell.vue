@@ -90,12 +90,17 @@ export default {
             workflowOptions: [],
         };
     },
+    computed: {
+        ...mapState('authentication', {
+            languageCode: state => state.user.language,
+        }),
+    },
     async created() {
         if (this.rowId) {
             await this.$axios.$get(`${this.languageCode}/products/${this.rowId}`).then(({
                 workflow = [],
             }) => {
-                this.workflowOptions = workflow.map((e) => ({
+                this.workflowOptions = workflow.map(e => ({
                     id: e.code,
                     key: e.code,
                     value: e.name,
@@ -105,11 +110,6 @@ export default {
         } else {
             this.workflowOptions = this.options;
         }
-    },
-    computed: {
-        ...mapState('authentication', {
-            languageCode: (state) => state.user.language,
-        }),
     },
     methods: {
         getColor(key) {

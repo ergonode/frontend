@@ -67,7 +67,7 @@ export const isDate = (date) => {
 export const getMonthIndex = (monthDesc) => {
     const monthDescriptions = Object.values(CALENDAR_MONTHS);
 
-    return monthDescriptions.findIndex((desc) => desc === monthDesc);
+    return monthDescriptions.findIndex(desc => desc === monthDesc);
 };
 
 export const isSameDay = (date, basedate = new Date()) => {
@@ -100,9 +100,9 @@ export const getNextMonth = (month, year) => {
     return { month: nextMonth, year: nextMonthYear };
 };
 
-export const getPreviousYear = (year) => year - 1;
+export const getPreviousYear = year => year - 1;
 
-export const getNextYear = (year) => year + 1;
+export const getNextYear = year => year + 1;
 
 export const getPreviousYearsRange = (years) => {
     const offset = 20;

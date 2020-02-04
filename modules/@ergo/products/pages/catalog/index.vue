@@ -41,22 +41,6 @@ export default {
         Button,
         IconAdd,
     },
-    computed: {
-        ...mapState('draggable', {
-            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
-        }),
-        tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-        smallSize() {
-            return SIZES.SMALL;
-        },
-    },
-    methods: {
-        addProduct() {
-            this.$router.push({ path: '/catalog/product/new/general' });
-        },
-    },
     async fetch({ store }) {
         const {
             user: { language: userLanguageCode },
@@ -74,6 +58,22 @@ export default {
                 languageCode: userLanguageCode,
             }),
         ]);
+    },
+    computed: {
+        ...mapState('draggable', {
+            draggedElementOnGrid: state => state.draggedElementOnGrid,
+        }),
+        tabs() {
+            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
+        },
+        smallSize() {
+            return SIZES.SMALL;
+        },
+    },
+    methods: {
+        addProduct() {
+            this.$router.push({ path: '/catalog/product/new/general' });
+        },
     },
 };
 </script>

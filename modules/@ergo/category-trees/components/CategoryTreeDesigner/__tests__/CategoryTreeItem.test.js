@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import CategoryTreeItem from '../CategoryTreeItem';
 import { ACTION } from '@Core/defaults/icons';
+import CategoryTreeItem from '../CategoryTreeItem';
 
 describe('CategoryTreeDesigner/CategoryTreeItem', () => {
     let wrapper;

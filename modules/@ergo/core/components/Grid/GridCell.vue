@@ -76,16 +76,6 @@ export default {
             currentHeight: 0,
         };
     },
-    mounted() {
-        if (!this.locked && !this.disabled) {
-            this.$el.addEventListener('dblclick', this.onDblcClick);
-        }
-    },
-    destroyed() {
-        if (!this.locked && !this.disabled) {
-            this.$el.removeEventListener('dblclick', this.onDblcClick);
-        }
-    },
     computed: {
         gridCellClasses() {
             return [
@@ -117,6 +107,16 @@ export default {
                 }
             },
         },
+    },
+    mounted() {
+        if (!this.locked && !this.disabled) {
+            this.$el.addEventListener('dblclick', this.onDblcClick);
+        }
+    },
+    destroyed() {
+        if (!this.locked && !this.disabled) {
+            this.$el.removeEventListener('dblclick', this.onDblcClick);
+        }
     },
     methods: {
         onMouseDown() {

@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
 import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
+import { types } from './mutations';
 
 export default {
     setCode({ commit }, code) {
@@ -15,7 +15,7 @@ export default {
     getProductStatuses({ commit, rootState }, params) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$get(`${userLanguageCode}/status`, { params }).then(({ collection: statuses }) => {
-            commit(types.SET_STATUSES, statuses.map((status) => ({
+            commit(types.SET_STATUSES, statuses.map(status => ({
                 id: status.id,
                 key: status.code,
                 value: status.name,
@@ -68,7 +68,7 @@ export default {
         await this.app.$axios.$post(`${userLanguageCode}/status`, data).then(({ id }) => {
             commit(types.SET_STATUS_ID, id);
             onSuccess(id);
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     async updateProductStatus({ commit, state, rootState }, { onError }) {
@@ -92,7 +92,7 @@ export default {
         };
 
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/status/${state.id}`, data).catch((e) => onError(e.data));
+        await this.app.$axios.$put(`${userLanguageCode}/status/${state.id}`, data).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     setStatusAsDefault({ commit }, isDefault) {

@@ -38,7 +38,7 @@ export default {
         return this.app.$axios.$post(`${userLanguageCode}/attributes/groups`, data).then(({ id }) => {
             commit(types.SET_ID, id);
             onSuccess(id);
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
     },
     updateAttributeGroup(
         { rootState },
@@ -50,7 +50,7 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$put(`${userLanguageCode}/attributes/groups/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+        return this.app.$axios.$put(`${userLanguageCode}/attributes/groups/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
     },
     removeAttributeGroup({ state, rootState }, { onSuccess }) {
         const { id } = state;

@@ -84,18 +84,10 @@ export default {
             isColumnHovered: false,
         };
     },
-    mounted() {
-        this.$el.addEventListener('mouseenter', this.onMouseEnter);
-        this.$el.addEventListener('mouseleave', this.onMouseLeave);
-    },
-    destroyed() {
-        this.$el.removeEventListener('mouseenter', this.onMouseEnter);
-        this.$el.removeEventListener('mouseleave', this.onMouseLeave);
-    },
     computed: {
         ...mapState('draggable', {
-            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
-            draggedElement: (state) => state.draggedElement,
+            draggedElementOnGrid: state => state.draggedElementOnGrid,
+            draggedElement: state => state.draggedElement,
         }),
         tinySize() {
             return SIZES.TINY;
@@ -122,6 +114,14 @@ export default {
 
             return this.sortedColumn.orderState;
         },
+    },
+    mounted() {
+        this.$el.addEventListener('mouseenter', this.onMouseEnter);
+        this.$el.addEventListener('mouseleave', this.onMouseLeave);
+    },
+    destroyed() {
+        this.$el.removeEventListener('mouseenter', this.onMouseEnter);
+        this.$el.removeEventListener('mouseleave', this.onMouseLeave);
     },
     methods: {
         ...mapActions('list', [

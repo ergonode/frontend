@@ -8,8 +8,8 @@ import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin'
 import ProductTemplateDetailsContent from '@Templates/components/Template/Product/ProductTemplateDetailsContent';
 
 export default {
-    mixins: [errorValidationMixin],
     components: { ProductTemplateDetailsContent },
+    mixins: [errorValidationMixin],
     props: {
         placeholder: {
             type: String,

@@ -54,6 +54,23 @@ export default {
         GridCell,
         Grid,
     },
+    asyncData({ store }) {
+        const { privileges: privilegesDictionary } = store.state.dictionaries;
+        const { privileges } = store.state.authentication.user;
+        const {
+            rows, columns, descriptions,
+        } = getMappedGridData(privilegesDictionary, privileges);
+        const { mappedColumns } = getMappedColumns(columns);
+        const { rowIds } = getMappedRows(rows);
+        const cellValues = getMappedCellValues(columns, rows, rowIds);
+
+        return {
+            descriptions,
+            rowIds,
+            cellValues,
+            columns: mappedColumns,
+        };
+    },
     data() {
         return {
             selectedRows: {},
@@ -81,9 +98,9 @@ export default {
 
             const privileges = [colReadValue, colCreateValue, colUpdateValue, colDeleteValue];
 
-            if (privileges.every((privilege) => privilege === true)) {
+            if (privileges.every(privilege => privilege === true)) {
                 this.selectedRows[rowId] = STATE.CHECK;
-            } else if (privileges.every((privilege) => privilege === false)) {
+            } else if (privileges.every(privilege => privilege === false)) {
                 this.selectedRows[rowId] = STATE.UNCHECK;
             } else {
                 this.selectedRows[rowId] = STATE.CHECK_ANY;
@@ -97,23 +114,6 @@ export default {
 
             return GridPresentationCheckCell;
         },
-    },
-    asyncData({ store }) {
-        const { privileges: privilegesDictionary } = store.state.dictionaries;
-        const { privileges } = store.state.authentication.user;
-        const {
-            rows, columns, descriptions,
-        } = getMappedGridData(privilegesDictionary, privileges);
-        const { mappedColumns } = getMappedColumns(columns);
-        const { rowIds } = getMappedRows(rows);
-        const cellValues = getMappedCellValues(columns, rows, rowIds);
-
-        return {
-            descriptions,
-            rowIds,
-            cellValues,
-            columns: mappedColumns,
-        };
     },
 };
 </script>

@@ -206,21 +206,6 @@ export default {
             associatedLabel: '',
         };
     },
-    mounted() {
-        this.initSelectedOptions();
-
-        if (this.autofocus) {
-            this.$nextTick(() => {
-                this.$refs.input.focus();
-            });
-        }
-
-        this.isMounted = true;
-        this.associatedLabel = `input-${this._uid}`;
-    },
-    destroyed() {
-        window.removeEventListener('click', this.onClickOutside);
-    },
     computed: {
         tinySize() {
             return SIZES.TINY;
@@ -315,6 +300,21 @@ export default {
             return this.isFocused && !this.value ? this.placeholder : null;
         },
     },
+    mounted() {
+        this.initSelectedOptions();
+
+        if (this.autofocus) {
+            this.$nextTick(() => {
+                this.$refs.input.focus();
+            });
+        }
+
+        this.isMounted = true;
+        this.associatedLabel = `input-${this._uid}`;
+    },
+    destroyed() {
+        window.removeEventListener('click', this.onClickOutside);
+    },
     methods: {
         isOptionValid(option) {
             return typeof option === 'string' || typeof option === 'number';
@@ -322,13 +322,13 @@ export default {
         initSelectedOptions() {
             if (!this.multiselect) {
                 this.selectedOptionIndex = this.options
-                    .findIndex((option) => option === this.value);
+                    .findIndex(option => option === this.value);
             } else {
                 const { length } = this.value;
 
                 for (let i = 0; i < length; i += 1) {
                     const optionIndex = this.options
-                        .findIndex((option) => option === this.value[i]);
+                        .findIndex(option => option === this.value[i]);
 
                     this.selectedOptions[optionIndex] = this.value[i];
                 }

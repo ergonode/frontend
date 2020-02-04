@@ -45,10 +45,10 @@ export default {
     },
     computed: {
         ...mapState('attribute', {
-            options: (state) => state.options,
+            options: state => state.options,
         }),
         ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
+            userLanguageCode: state => state.user.language,
         }),
         optionIndexes() {
             return Object.keys(this.options);

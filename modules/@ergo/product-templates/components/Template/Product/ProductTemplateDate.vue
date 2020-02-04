@@ -27,10 +27,10 @@ import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 
 export default {
     name: 'ProductTemplateDate',
-    mixins: [productTemplateElementMixin],
     components: {
         DatePicker,
     },
+    mixins: [productTemplateElementMixin],
     data() {
         return {
             isFocused: false,

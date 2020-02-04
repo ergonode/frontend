@@ -87,17 +87,17 @@ export default {
     }),
     computed: {
         ...mapState('gridDesigner', {
-            fullGridData: (state) => state.fullGridData,
-            hiddenItems: (state) => state.hiddenItems,
+            fullGridData: state => state.fullGridData,
+            hiddenItems: state => state.hiddenItems,
         }),
         ...mapState('authentication', {
-            language: (state) => state.user.language,
+            language: state => state.user.language,
         }),
         ...mapState('draggable', {
-            draggedElement: (state) => state.draggedElement,
+            draggedElement: state => state.draggedElement,
         }),
         dataWithoutGhostElement() {
-            return this.gridData.filter((element) => element.id !== this.ghostElement.id);
+            return this.gridData.filter(element => element.id !== this.ghostElement.id);
         },
         maxRow() {
             return getObjectWithMaxValueInArrayByObjectKey(this.dataWithoutGhostElement, 'row').row;
@@ -350,7 +350,7 @@ export default {
             const { directionOfCollision } = this.mousePosition;
             const isTop = directionOfCollision === 'top';
             const [neighborEl] = this.dataWithoutGhostElement.filter(
-                (el) => el.row === (isTop ? collidingElRow - 1 : collidingElRow + 1),
+                el => el.row === (isTop ? collidingElRow - 1 : collidingElRow + 1),
             );
             const isFirstElement = (!neighborEl || collidingElRow === 0) && isTop;
             const collidingData = {
@@ -383,7 +383,7 @@ export default {
 
             if (column > 0) {
                 const findElements = this.dataWithoutGhostElement.filter(
-                    (e) => (e.column === column - 1 && e.row < row),
+                    e => (e.column === column - 1 && e.row < row),
                 );
                 const parent = Math.floor(getObjectWithMaxValueInArrayByObjectKey(findElements, 'row').row);
 
@@ -404,7 +404,7 @@ export default {
         },
         getMouseOverProps(pageX, pageY) {
             const elements = document.elementsFromPoint(pageX, pageY);
-            const shadowItem = elements.find((e) => e.classList.contains('shadow-grid-item'));
+            const shadowItem = elements.find(e => e.classList.contains('shadow-grid-item'));
 
             if (shadowItem) {
                 const positionOverRow = pageY - shadowItem.getBoundingClientRect().top;
@@ -434,7 +434,7 @@ export default {
             return layerPositionY > centerPosition ? 'bottom' : 'top';
         },
         isRowGet(row) {
-            const [item] = this.gridData.filter((element) => element.row === row);
+            const [item] = this.gridData.filter(element => element.row === row);
 
             return item || null;
         },

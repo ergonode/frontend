@@ -41,11 +41,6 @@ export default {
             sphereSize: 16,
         };
     },
-    mounted() {
-        const { width, x } = this.$refs.tracker.getBoundingClientRect();
-        this.width = width;
-        this.xPos = x;
-    },
     computed: {
         transformValue() {
             return this.value === this.maxValue
@@ -62,6 +57,11 @@ export default {
                 transform: `translateX(${this.transformValue}px)`,
             };
         },
+    },
+    mounted() {
+        const { width, x } = this.$refs.tracker.getBoundingClientRect();
+        this.width = width;
+        this.xPos = x;
     },
     methods: {
         initResizeDrag() {

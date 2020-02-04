@@ -29,20 +29,20 @@ export default {
         ContentBaseFooter,
         Button,
     },
-    methods: {
-        onClear() {
-            this.$emit('clear');
-        },
-        onApply() {
-            this.$emit('apply');
-        },
-    },
     computed: {
         tinySize() {
             return SIZES.TINY;
         },
         secondaryTheme() {
             return THEMES.SECONDARY;
+        },
+    },
+    methods: {
+        onClear() {
+            this.$emit('clear');
+        },
+        onApply() {
+            this.$emit('apply');
         },
     },
 };

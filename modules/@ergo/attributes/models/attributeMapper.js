@@ -75,7 +75,7 @@ export function getMappedOptions(options) {
 }
 
 export function getParsedOptions(options) {
-    return Object.keys(options).map((key) => ({
+    return Object.keys(options).map(key => ({
         key: options[key].key,
         value: options[key].value,
     }));

@@ -2,9 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
 import { objectToArrayWithPropsName } from '@Core/models/objectWrapper';
 import { getParsedConditionSetData } from '@Conditions/models/conditionSetMapper';
+import { types } from './mutations';
 
 export default {
     setId({ commit }, value) {
@@ -56,7 +56,7 @@ export default {
         return this.app.$axios.$post(`${userLanguageCode}/conditionsets`, data).then(({ id }) => {
             commit(types.SET_CONDITION_SET_ID, id);
             onSuccess(id);
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
     },
     updateConditionSet(
         { rootState },
@@ -70,7 +70,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$put(`${userLanguageCode}/conditionsets/${id}`, data)
             .then(() => onSuccess(id))
-            .catch((e) => onError(e.data));
+            .catch(e => onError(e.data));
     },
     async getConditionConfigurationById(
         { commit, rootState },

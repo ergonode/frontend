@@ -12,7 +12,7 @@
  * @returns {string} Key for value
  */
 export function getKeyByValue(object, value) {
-    return Object.keys(object).find((key) => object[key] === value);
+    return Object.keys(object).find(key => object[key] === value);
 }
 
 /**
@@ -26,7 +26,7 @@ export function getKeyByValue(object, value) {
 export function getNestedObjectByKeyWithValue(object, key, value) {
     let lookingNestedObject = null;
 
-    Object.values(object).some((values) => values.some((nestedObject) => {
+    Object.values(object).some(values => values.some((nestedObject) => {
         if (nestedObject[key] === value) {
             lookingNestedObject = { ...nestedObject };
             return true;

@@ -58,6 +58,10 @@ import { getImageData } from '@Core/models/multimedia';
 
 export default {
     name: 'UploadImage',
+    components: {
+        FabButton: () => import('@Core/components/Buttons/FabButton'),
+        IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
+    },
     props: {
         label: {
             type: String,
@@ -84,10 +88,6 @@ export default {
             default: false,
         },
     },
-    components: {
-        FabButton: () => import('@Core/components/Buttons/FabButton'),
-        IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
-    },
     data() {
         return {
             image: null,
@@ -95,16 +95,9 @@ export default {
             associatedLabel: '',
         };
     },
-    mounted() {
-        if (this.value) {
-            this.getImageById(this.value);
-        }
-
-        this.associatedLabel = `input-${this._uid}`;
-    },
     computed: {
         ...mapState('validations', {
-            uploadError: (state) => state.validationErrors.upload,
+            uploadError: state => state.validationErrors.upload,
         }),
         secondaryTheme() {
             return THEMES.SECONDARY;
@@ -112,6 +105,13 @@ export default {
         redColor() {
             return RED;
         },
+    },
+    mounted() {
+        if (this.value) {
+            this.getImageById(this.value);
+        }
+
+        this.associatedLabel = `input-${this._uid}`;
     },
     methods: {
         ...mapActions('validations', [
@@ -143,7 +143,7 @@ export default {
 
                     this.$addAlert({ type: 'success', message: 'File uploaded' });
                     this.removeValidationError('upload');
-                }).catch((e) => this.onError(e.data));
+                }).catch(e => this.onError(e.data));
             }
         },
         getImageById(id) {

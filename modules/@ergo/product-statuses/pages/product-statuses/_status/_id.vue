@@ -24,10 +24,19 @@ export default {
     components: {
         ProductStatusPage: () => import('@Statuses/components/Pages/ProductStatusPage'),
     },
+    async fetch({
+        store, params,
+    }) {
+        const path = `${store.state.authentication.user.language}/status/${params.id}`;
+
+        await store.dispatch('productStatus/clearStorage');
+        await store.dispatch('productStatus/getProductStatus', path);
+        await store.dispatch('productStatus/getDefaultStatus');
+    },
     computed: {
         ...mapState('productStatus', {
-            code: (state) => state.code,
-            isDefaultStatus: (state) => state.isDefaultStatus,
+            code: state => state.code,
+            isDefaultStatus: state => state.isDefaultStatus,
         }),
     },
     methods: {
@@ -72,15 +81,6 @@ export default {
             this.$addAlert({ type: 'success', message: 'Product status updated' });
             this.$router.push({ name: 'product-statuses' });
         },
-    },
-    async fetch({
-        store, params,
-    }) {
-        const path = `${store.state.authentication.user.language}/status/${params.id}`;
-
-        await store.dispatch('productStatus/clearStorage');
-        await store.dispatch('productStatus/getProductStatus', path);
-        await store.dispatch('productStatus/getDefaultStatus');
     },
 };
 </script>

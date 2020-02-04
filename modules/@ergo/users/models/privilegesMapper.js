@@ -6,7 +6,7 @@
 import { toCapitalize } from '@Core/models/stringWrapper';
 import { COLUMN_TYPE } from '@Core/defaults/grid';
 
-const getCheckColumn = (privilegeType) => ({
+const getCheckColumn = privilegeType => ({
     id: privilegeType,
     label: toCapitalize(privilegeType),
     type: COLUMN_TYPE.CHECK_CELL,
@@ -89,7 +89,7 @@ export function getMappedPrivilegesBasedOnGridData(privilegesDic, gridData) {
         const privilegeKeys = Object.keys(role);
         const { length: privilegesKeysNumber } = privilegeKeys;
         const privilegeIndex = tmpPrivilegesDic.findIndex(
-            (privilege) => privilege.name === role.name.presentationValue,
+            privilege => privilege.name === role.name.presentationValue,
         );
 
         if (privilegeIndex > -1) {

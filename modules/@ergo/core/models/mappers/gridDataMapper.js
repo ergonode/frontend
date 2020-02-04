@@ -19,7 +19,7 @@ export function getParsedFilters(filters, advancedFilters = []) {
         if (filter) {
             const { value, operator } = filter;
             const advancedFilter = advancedFilters
-                .find((advFilter) => advFilter.id === key
+                .find(advFilter => advFilter.id === key
                     && Object.keys(advFilter.value).length > 1);
 
             if (!advancedFilter) {
@@ -66,7 +66,7 @@ export const getMappedColumnHeaderTitle = ({
     let suffix = '';
     const [code, language = ''] = id.split(':');
 
-    if (parameters) suffix = Object.keys(parameters).map((key) => parameters[key]).join(', ');
+    if (parameters) suffix = Object.keys(parameters).map(key => parameters[key]).join(', ');
 
     return {
         title: label || `#${code}`,

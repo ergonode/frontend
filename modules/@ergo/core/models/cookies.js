@@ -10,7 +10,7 @@ export const removeCookieById = ({ cookies, cookieName, id }) => {
 
     const parsedData = cookiesData.split(',');
 
-    cookies.set(cookieName, parsedData.filter((value) => value !== id).join(','));
+    cookies.set(cookieName, parsedData.filter(value => value !== id).join(','));
 };
 
 export const insertCookieAtIndex = ({

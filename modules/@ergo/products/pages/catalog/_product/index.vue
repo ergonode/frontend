@@ -18,12 +18,19 @@ export default {
     components: {
         ProductPage: () => import('@Products/components/Pages/ProductPage'),
     },
+    async fetch({ store }) {
+        await Promise.all([
+            store.dispatch('productsDraft/clearStorage'),
+            store.dispatch('productsDraft/getTemplates'),
+            store.dispatch('productsDraft/getCategories'),
+        ]);
+    },
     computed: {
         ...mapState('productsDraft', {
-            sku: (state) => state.sku,
-            template: (state) => state.template,
-            templates: (state) => state.templates,
-            selectedCategories: (state) => state.selectedCategories,
+            sku: state => state.sku,
+            template: state => state.template,
+            templates: state => state.templates,
+            selectedCategories: state => state.selectedCategories,
         }),
     },
     methods: {
@@ -54,7 +61,7 @@ export default {
                 templateId: this.template.id,
             };
             if (this.selectedCategories.length > 0) {
-                data.categoryIds = this.selectedCategories.map((category) => category.id);
+                data.categoryIds = this.selectedCategories.map(category => category.id);
             }
             this.createProduct({
                 data,
@@ -62,13 +69,6 @@ export default {
                 onError: this.onError,
             });
         },
-    },
-    async fetch({ store }) {
-        await Promise.all([
-            store.dispatch('productsDraft/clearStorage'),
-            store.dispatch('productsDraft/getTemplates'),
-            store.dispatch('productsDraft/getCategories'),
-        ]);
     },
 };
 </script>

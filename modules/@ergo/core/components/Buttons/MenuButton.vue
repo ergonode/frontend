@@ -54,7 +54,6 @@ import ListElementTitle from '@Core/components/List/ListElementTitle';
 
 export default {
     name: 'MenuButton',
-    inheritAttrs: false,
     components: {
         Button,
         ListElementDescription,
@@ -64,6 +63,7 @@ export default {
         IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
         FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
     },
+    inheritAttrs: false,
     props: {
         options: {
             type: Array,

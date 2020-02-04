@@ -48,7 +48,6 @@ import ListElementTitle from '@Core/components/List/ListElementTitle';
 
 export default {
     name: 'TranslationSelect',
-    inheritAttrs: false,
     components: {
         Select,
         ListElement: () => import('@Core/components/List/ListElement'),
@@ -57,10 +56,19 @@ export default {
         ListElementTitle,
         CheckBox: () => import('@Core/components/Inputs/CheckBox'),
     },
+    inheritAttrs: false,
     data() {
         return {
             selectedOptions: {},
         };
+    },
+    computed: {
+        parsedValue() {
+            if (Array.isArray(this.$attrs.value)) {
+                return this.$attrs.value.map(val => val.value || `#${val.key}`);
+            }
+            return this.$attrs.value.value || this.$attrs.value.key;
+        },
     },
     created() {
         if (this.$attrs.multiselect) {
@@ -70,14 +78,6 @@ export default {
         } else if (this.$attrs.value.id || this.$attrs.value.id === 0) {
             this.selectedOptions = { [this.$attrs.value.id]: { ...this.$attrs.value } };
         }
-    },
-    computed: {
-        parsedValue() {
-            if (Array.isArray(this.$attrs.value)) {
-                return this.$attrs.value.map((val) => val.value || `#${val.key}`);
-            }
-            return this.$attrs.value.value || this.$attrs.value.key;
-        },
     },
     methods: {
         onFocus(isFocused) {

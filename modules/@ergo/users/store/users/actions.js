@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 /* eslint-disable camelcase */
-import { types } from './mutations';
 import { getKeyByValue } from '@Core/models/objectWrapper';
+import { types } from './mutations';
 
 export default {
     setAction({ commit }, payload) {
@@ -45,7 +45,7 @@ export default {
             commit(types.SET_STATE, { key: 'passwordRepeat', value: password_repeat });
             commit(types.SET_STATE, { key: 'isActive', value: is_active });
             if (role_id) {
-                commit(types.SET_STATE, { key: 'role', value: roles.find((role) => role.id === role_id) });
+                commit(types.SET_STATE, { key: 'role', value: roles.find(role => role.id === role_id) });
             }
         }).catch(onError);
     },
@@ -63,7 +63,7 @@ export default {
         await this.app.$axios.$post(`${userLanguageCode}/accounts`, data).then(({ id }) => {
             commit(types.SET_STATE, { key: 'id', value: id });
             onSuccess(id);
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     async updateUser(
@@ -82,7 +82,7 @@ export default {
         await Promise.all([
             this.app.$axios.$put(`${userLanguageCode}/accounts/${id}`, data),
             this.app.$axios.$put(`${userLanguageCode}/accounts/${id}/avatar`, { multimedia: avatarId }),
-        ]).then(() => onSuccess()).catch((e) => onError(e.data));
+        ]).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     clearStorage({ commit }) {

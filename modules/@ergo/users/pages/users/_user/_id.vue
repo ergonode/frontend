@@ -23,24 +23,36 @@ export default {
     components: {
         UserPage: () => import('@Users/components/Pages/UserPage'),
     },
+    async fetch({
+        store,
+        params,
+    }) {
+        await store.dispatch('roles/getRoles', {
+            limit: 9999,
+            offset: 0,
+        });
+        await store.dispatch('users/getUserById', {
+            userId: params.id,
+        });
+    },
     computed: {
         ...mapState('authentication', {
-            user: (state) => state.user,
+            user: state => state.user,
         }),
         ...mapState('dictionaries', {
-            languages: (state) => state.languages,
+            languages: state => state.languages,
         }),
         ...mapState('users', {
-            id: (state) => state.id,
-            avatarId: (state) => state.avatarId,
-            email: (state) => state.email,
-            firstName: (state) => state.firstName,
-            lastName: (state) => state.lastName,
-            language: (state) => state.language,
-            password: (state) => state.password,
-            passwordRepeat: (state) => state.passwordRepeat,
-            isActive: (state) => state.isActive,
-            role: (state) => state.role,
+            id: state => state.id,
+            avatarId: state => state.avatarId,
+            email: state => state.email,
+            firstName: state => state.firstName,
+            lastName: state => state.lastName,
+            language: state => state.language,
+            password: state => state.password,
+            passwordRepeat: state => state.passwordRepeat,
+            isActive: state => state.isActive,
+            role: state => state.role,
         }),
         title() {
             return `${this.firstName} ${this.lastName}`;
@@ -92,18 +104,6 @@ export default {
                 onError: this.onError,
             });
         },
-    },
-    async fetch({
-        store,
-        params,
-    }) {
-        await store.dispatch('roles/getRoles', {
-            limit: 9999,
-            offset: 0,
-        });
-        await store.dispatch('users/getUserById', {
-            userId: params.id,
-        });
     },
 };
 </script>

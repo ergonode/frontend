@@ -30,10 +30,10 @@ import TextField from '@Core/components/Inputs/TextField';
 
 export default {
     name: 'ProductTemplateSingleLine',
-    mixins: [productTemplateElementMixin],
     components: {
         TextField,
     },
+    mixins: [productTemplateElementMixin],
     computed: {
         suffix() {
             if (this.parameters) {

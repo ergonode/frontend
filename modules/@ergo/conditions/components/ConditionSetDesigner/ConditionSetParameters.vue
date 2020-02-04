@@ -40,7 +40,7 @@ export default {
     },
     computed: {
         ...mapState('conditions', {
-            conditionsValues: (state) => state.conditionsValues,
+            conditionsValues: state => state.conditionsValues,
         }),
         getComponentViaType() {
             switch (this.parameter.type) {
@@ -63,7 +63,7 @@ export default {
         },
         conditionOptions() {
             return this.parameter.options
-                ? Object.keys(this.parameter.options).map((key) => ({
+                ? Object.keys(this.parameter.options).map(key => ({
                     id: key, key, value: this.parameter.options[key],
                 }))
                 : [];

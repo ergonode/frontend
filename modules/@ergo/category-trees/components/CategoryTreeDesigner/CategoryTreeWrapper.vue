@@ -37,8 +37,8 @@ export default {
     },
     computed: {
         ...mapState('tree', {
-            columns: (state) => state.treeLevels,
-            rowHeight: (state) => state.rowHeight,
+            columns: state => state.treeLevels,
+            rowHeight: state => state.rowHeight,
         }),
         ...mapGetters('gridDesigner', [
             'getChildrenLengthById',

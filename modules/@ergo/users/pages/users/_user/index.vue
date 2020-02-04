@@ -20,19 +20,27 @@ export default {
     components: {
         UserPage: () => import('@Users/components/Pages/UserPage'),
     },
+    async fetch({
+        store,
+    }) {
+        await store.dispatch('roles/getRoles', {
+            limit: 9999,
+            offset: 0,
+        });
+    },
     computed: {
         ...mapState('dictionaries', {
-            languages: (state) => state.languages,
+            languages: state => state.languages,
         }),
         ...mapState('users', {
-            email: (state) => state.email,
-            firstName: (state) => state.firstName,
-            lastName: (state) => state.lastName,
-            language: (state) => state.language,
-            password: (state) => state.password,
-            passwordRepeat: (state) => state.passwordRepeat,
-            isActive: (state) => state.isActive,
-            role: (state) => state.role,
+            email: state => state.email,
+            firstName: state => state.firstName,
+            lastName: state => state.lastName,
+            language: state => state.language,
+            password: state => state.password,
+            passwordRepeat: state => state.passwordRepeat,
+            isActive: state => state.isActive,
+            role: state => state.role,
         }),
     },
     created() {
@@ -77,14 +85,6 @@ export default {
                 onError: this.onError,
             });
         },
-    },
-    async fetch({
-        store,
-    }) {
-        await store.dispatch('roles/getRoles', {
-            limit: 9999,
-            offset: 0,
-        });
     },
 };
 </script>

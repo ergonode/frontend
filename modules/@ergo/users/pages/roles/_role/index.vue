@@ -21,9 +21,9 @@ export default {
     },
     computed: {
         ...mapState('roles', {
-            roleID: (state) => state.id,
-            name: (state) => state.name,
-            description: (state) => state.description,
+            roleID: state => state.id,
+            name: state => state.name,
+            description: state => state.description,
         }),
     },
     created() {

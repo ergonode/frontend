@@ -24,15 +24,23 @@ export default {
     components: {
         UserRolesPage: () => import('@Users/components/Pages/UserRolesPage'),
     },
+    async fetch({
+        store,
+        params,
+    }) {
+        await store.dispatch('roles/getRoleById', {
+            roleId: params.id,
+        });
+    },
     computed: {
         ...mapState('roles', {
-            roleID: (state) => state.id,
-            name: (state) => state.name,
-            description: (state) => state.description,
-            selectedPrivileges: (state) => state.selectedPrivileges,
+            roleID: state => state.id,
+            name: state => state.name,
+            description: state => state.description,
+            selectedPrivileges: state => state.selectedPrivileges,
         }),
         ...mapState('dictionaries', {
-            privileges: (state) => state.privileges,
+            privileges: state => state.privileges,
         }),
     },
     destroyed() {
@@ -90,14 +98,6 @@ export default {
                 });
             }
         },
-    },
-    async fetch({
-        store,
-        params,
-    }) {
-        await store.dispatch('roles/getRoleById', {
-            roleId: params.id,
-        });
     },
 };
 </script>

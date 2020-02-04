@@ -54,6 +54,19 @@ export default {
             breadcrumbs: [],
         };
     },
+    computed: {
+        ...mapState('authentication', {
+            user: state => state.user,
+        }),
+        getComponentsForExtended() {
+            return this.$getComponentsForExtended(COMPONENTS.NAVIGATION_BAR);
+        },
+    },
+    watch: {
+        $route() {
+            this.breadcrumbs = this.$route.meta.breadcrumbs || [];
+        },
+    },
     created() {
         this.breadcrumbs = this.$route.meta.breadcrumbs || [];
     },
@@ -62,19 +75,6 @@ export default {
     },
     destroyed() {
         this.invalidateRequestTimeout();
-    },
-    watch: {
-        $route() {
-            this.breadcrumbs = this.$route.meta.breadcrumbs || [];
-        },
-    },
-    computed: {
-        ...mapState('authentication', {
-            user: (state) => state.user,
-        }),
-        getComponentsForExtended() {
-            return this.$getComponentsForExtended(COMPONENTS.NAVIGATION_BAR);
-        },
     },
     methods: {
         ...mapActions('notifications', [

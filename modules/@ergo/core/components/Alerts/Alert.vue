@@ -36,7 +36,7 @@ export default {
         alert: {
             type: Object,
             required: true,
-            validator: (value) => ['success', 'info', 'warning', 'error'].indexOf(value.type) !== -1,
+            validator: value => ['success', 'info', 'warning', 'error'].indexOf(value.type) !== -1,
         },
     },
     computed: {

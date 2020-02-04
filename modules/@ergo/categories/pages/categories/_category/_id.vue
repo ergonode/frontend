@@ -24,13 +24,25 @@ export default {
     components: {
         CategoryPage: () => import('@Categories/components/Pages/CategoryPage'),
     },
+    async fetch({
+        store,
+        params,
+    }) {
+        await Promise.all([
+            store.dispatch('translations/clearStorage'),
+            store.dispatch('categories/clearStorage'),
+        ]);
+        await store.dispatch('categories/getCategoryById', {
+            categoryId: params.id,
+        });
+    },
     computed: {
         ...mapState('categories', {
-            id: (state) => state.id,
-            code: (state) => state.code,
+            id: state => state.id,
+            code: state => state.code,
         }),
         ...mapState('translations', {
-            translations: (state) => state.translations,
+            translations: state => state.translations,
         }),
     },
     methods: {
@@ -75,18 +87,6 @@ export default {
             this.$addAlert({ type: 'success', message: 'Category removed' });
             this.$router.push({ name: 'categories' });
         },
-    },
-    async fetch({
-        store,
-        params,
-    }) {
-        await Promise.all([
-            store.dispatch('translations/clearStorage'),
-            store.dispatch('categories/clearStorage'),
-        ]);
-        await store.dispatch('categories/getCategoryById', {
-            categoryId: params.id,
-        });
     },
 };
 </script>

@@ -19,11 +19,27 @@ export default {
     components: {
         TemplatePage: () => import('@Templates/components/Pages/TemplatePage'),
     },
+    async fetch({ store }) {
+        const {
+            user: { language: userLanguageCode },
+        } = store.state.authentication;
+
+        await store.dispatch('templateDesigner/clearStorage');
+
+        const getTypesRequest = asyncRequestWrapper({
+            action: 'templateDesigner/getTypes',
+            path: `${userLanguageCode}/templates/types`,
+            params: {},
+            store,
+        });
+
+        return Promise.all([getTypesRequest]);
+    },
     computed: {
         ...mapState('templateDesigner', {
-            templateTitle: (state) => state.title,
-            templateImage: (state) => state.image,
-            layoutElements: (state) => state.layoutElements,
+            templateTitle: state => state.title,
+            templateImage: state => state.image,
+            layoutElements: state => state.layoutElements,
         }),
     },
     methods: {
@@ -60,22 +76,6 @@ export default {
                 });
             });
         },
-    },
-    async fetch({ store }) {
-        const {
-            user: { language: userLanguageCode },
-        } = store.state.authentication;
-
-        await store.dispatch('templateDesigner/clearStorage');
-
-        const getTypesRequest = asyncRequestWrapper({
-            action: 'templateDesigner/getTypes',
-            path: `${userLanguageCode}/templates/types`,
-            params: {},
-            store,
-        });
-
-        return Promise.all([getTypesRequest]);
     },
 };
 </script>

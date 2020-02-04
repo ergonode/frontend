@@ -102,18 +102,18 @@ export default {
     },
     computed: {
         ...mapState('draggable', {
-            isListElementDragging: (state) => state.isListElementDragging,
-            draggedElement: (state) => state.draggedElement,
+            isListElementDragging: state => state.isListElementDragging,
+            draggedElement: state => state.draggedElement,
         }),
         secondaryTheme() {
             return THEMES.SECONDARY;
         },
         filtersNumber() {
-            return this.filters.filter((filter) => !filter.isGhost).length;
+            return this.filters.filter(filter => !filter.isGhost).length;
         },
         isFilterExists() {
             const draggedElIndex = this.filters.findIndex(
-                (filter) => filter.id === this.draggedElement,
+                filter => filter.id === this.draggedElement,
             );
 
             return draggedElIndex !== -1;
@@ -201,7 +201,7 @@ export default {
         },
         removeGhostFilter() {
             const ghostIndex = this.filters.findIndex(
-                (filter) => filter.isGhost,
+                filter => filter.isGhost,
             );
 
             if (ghostIndex !== -1 && !this.isMouseOverFilters) {

@@ -20,7 +20,7 @@ export default {
     },
     computed: {
         ...mapState('categories', {
-            code: (state) => state.code,
+            code: state => state.code,
         }),
     },
     created() {

@@ -73,7 +73,7 @@ export function getMappedLayoutSectionElement({
 
 export function getMappedTemplateID(templates, selectedTemplate) {
     const templateByName = templates.find(
-        (template) => template.name === selectedTemplate,
+        template => template.name === selectedTemplate,
     );
     return templateByName
         ? templateByName.id

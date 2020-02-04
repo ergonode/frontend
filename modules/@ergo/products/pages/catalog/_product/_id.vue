@@ -23,11 +23,25 @@ export default {
     components: {
         ProductPage: () => import('@Products/components/Pages/ProductPage'),
     },
+    async fetch({
+        store,
+        params,
+    }) {
+        const { language: languageCode } = store.state.authentication.user;
+        const { id } = params;
+
+        await Promise.all([
+            store.dispatch('productsDraft/getCategories'),
+            store.dispatch('productsDraft/getTemplates'),
+            store.dispatch('productsDraft/getProductDraft', { languageCode, id }),
+        ]);
+        await store.dispatch('productsDraft/getProduct', { languageCode, id });
+    },
     computed: {
         ...mapState('productsDraft', {
-            id: (state) => state.id,
-            sku: (state) => state.sku,
-            selectedCategories: (state) => state.selectedCategories,
+            id: state => state.id,
+            sku: state => state.sku,
+            selectedCategories: state => state.selectedCategories,
         }),
     },
     destroyed() {
@@ -65,7 +79,7 @@ export default {
             await this.updateProduct({
                 id,
                 data: {
-                    categoryIds: this.selectedCategories.map((category) => category.id),
+                    categoryIds: this.selectedCategories.map(category => category.id),
                 },
             });
             await this.applyDraft({
@@ -73,20 +87,6 @@ export default {
                 onSuccess: this.onDraftAppliedSuccess,
             });
         },
-    },
-    async fetch({
-        store,
-        params,
-    }) {
-        const { language: languageCode } = store.state.authentication.user;
-        const { id } = params;
-
-        await Promise.all([
-            store.dispatch('productsDraft/getCategories'),
-            store.dispatch('productsDraft/getTemplates'),
-            store.dispatch('productsDraft/getProductDraft', { languageCode, id }),
-        ]);
-        await store.dispatch('productsDraft/getProduct', { languageCode, id });
     },
 };
 </script>

@@ -24,13 +24,18 @@ export default {
     components: {
         AttributeGroupPage: () => import('@Attributes/components/Pages/AttributeGroupPage'),
     },
+    async fetch({ store, params }) {
+        await store.dispatch('attributeGroup/getAttributeGroupById', {
+            groupId: params.id,
+        });
+    },
     computed: {
         ...mapState('attributeGroup', {
-            id: (state) => state.id,
-            code: (state) => state.code,
+            id: state => state.id,
+            code: state => state.code,
         }),
         ...mapState('translations', {
-            translations: (state) => state.translations,
+            translations: state => state.translations,
         }),
     },
     methods: {
@@ -75,11 +80,6 @@ export default {
             this.$addAlert({ type: 'success', message: 'Attribute Group removed' });
             this.$router.push({ name: 'attribute-groups' });
         },
-    },
-    async fetch({ store, params }) {
-        await store.dispatch('attributeGroup/getAttributeGroupById', {
-            groupId: params.id,
-        });
     },
 };
 </script>

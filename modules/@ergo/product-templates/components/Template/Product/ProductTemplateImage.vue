@@ -20,9 +20,9 @@ import UploadImage from '@Core/components/Inputs/Image/UploadImage';
 
 export default {
     name: 'ProductTemplateImage',
-    mixins: [productTemplateElementMixin],
     components: {
         UploadImage,
     },
+    mixins: [productTemplateElementMixin],
 };
 </script>

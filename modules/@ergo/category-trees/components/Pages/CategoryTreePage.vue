@@ -48,15 +48,15 @@ import categoryManagementPageBaseMixin from '@Core/mixins/page/categoryManagemen
 
 export default {
     name: 'CategoryTreePage',
-    mixins: [categoryManagementPageBaseMixin],
     components: {
         TrashCan: () => import('@Core/components/DragAndDrop/TrashCan'),
         Blur: () => import('@Core/components/Blur/Blur'),
     },
+    mixins: [categoryManagementPageBaseMixin],
     computed: {
         ...mapState('draggable', {
-            isListElementDragging: (state) => state.isListElementDragging,
-            draggedElementOnGrid: (state) => state.draggedElementOnGrid,
+            isListElementDragging: state => state.isListElementDragging,
+            draggedElementOnGrid: state => state.draggedElementOnGrid,
         }),
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);

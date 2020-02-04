@@ -103,16 +103,16 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            language: (state) => state.user.language,
+            language: state => state.user.language,
         }),
         ...mapState('gridDesigner', {
-            rows: (state) => state.rows,
-            gridData: (state) => state.gridData,
-            hiddenItems: (state) => state.hiddenItems,
+            rows: state => state.rows,
+            gridData: state => state.gridData,
+            hiddenItems: state => state.hiddenItems,
         }),
         filteredGridData() {
             return this.gridData.filter(
-                (item) => item.column < this.columns,
+                item => item.column < this.columns,
             );
         },
         gridStyles() {
@@ -168,7 +168,7 @@ export default {
             }
         },
         connectionLineStyle({ id, row, parent }) {
-            const children = this.filteredGridData.filter((e) => e.parent === parent);
+            const children = this.filteredGridData.filter(e => e.parent === parent);
             const connectionHeight = this.rowHeight * (
                 row - (children.length ? children[0].row : 0) + 1
             );

@@ -2,9 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
 import { SUCCESS, ALERT_TIME_TO_LEAVE } from '@Core/defaults/alerts';
 import { getUUID } from '@Core/models/stringWrapper';
+import { types } from './mutations';
 
 export default {
     addAlert({ commit, dispatch }, alert) {
@@ -25,7 +25,7 @@ export default {
     },
     removeAlert({ commit, state }, { id }) {
         const indexToRemove = state.alerts.findIndex(
-            (alert) => alert.id === id,
+            alert => alert.id === id,
         );
 
         clearTimeout(state.alerts[indexToRemove].timeOut);
