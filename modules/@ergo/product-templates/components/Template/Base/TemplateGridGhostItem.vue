@@ -19,7 +19,7 @@ import {
 export default {
     name: 'TemplateGridGhostItem',
     components: {
-        IconAddFilter: () => import('~/modules/@ergo/core/components/Icons/Actions/IconAddFilter.vue'),
+        IconAddFilter: () => import('@Core/components/Icons/Actions/IconAddFilter'),
     },
     computed: {
         whiteColor() {
