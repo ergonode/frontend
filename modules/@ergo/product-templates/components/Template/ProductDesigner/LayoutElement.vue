@@ -33,16 +33,18 @@ import {
     getColumnBasedOnWidth,
 } from '@Templates/models/layout/LayoutCalculations';
 import {
-    addGhostElementToDraggableLayer,
-    updateGhostElementWidth,
-    updateGhostElementHeight,
-    removeGhostElementFromDraggableLayer,
+    addResizablePlaceholder,
+    updateResizablePlaceholderWidth,
+    updateResizablePlaceholderHeight,
+    removeResizablePlaceholder,
 } from '@Templates/models/layout/GhostElement';
 import {
     addLayoutElementCopyToDocumentBody,
     removeLayoutElementCopyFromDocumentBody,
 } from '@Templates/models/layout/LayoutElementCopy';
 import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
+import { ELEVATOR_HOLE } from '@Core/assets/scss/_js-variables/elevators.scss';
+import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
 import IconResize from '@Core/components/Icons/Others/IconResize';
 
 const registerResizeEventListenersModule = () => import('@Core/models/resize/registerResizeEventListeners');
@@ -166,11 +168,13 @@ export default {
             this.initElementBoundary();
             this.initElementStyleForResizeState();
 
-            addGhostElementToDraggableLayer({
+            addResizablePlaceholder({
                 top: this.$el.offsetTop,
                 left: this.$el.offsetLeft,
                 width: this.startWidth,
                 height: this.startHeight,
+                boxShadow: ELEVATOR_HOLE,
+                backgroundColor: GREEN,
             });
 
             this.minWidth = this.getElementMinWidth();
@@ -200,7 +204,7 @@ export default {
             this.resetElementStyleForEndResizeInteraction();
             this.resetDataForEndResizeInteraction();
 
-            removeGhostElementFromDraggableLayer();
+            removeResizablePlaceholder();
 
             unregisterResizeEventListenersModule().then((response) => {
                 response.default(this.doResizeDrag, this.stopResizeDrag);
@@ -250,7 +254,7 @@ export default {
                     const ghostElementWidth = this.minWidth * this.newWidth
                         + gapsValue;
 
-                    updateGhostElementWidth(ghostElementWidth);
+                    updateResizablePlaceholderWidth(ghostElementWidth);
                 }
 
                 window.requestAnimationFrame(() => {
@@ -278,12 +282,14 @@ export default {
                     const ghostElementHeight = this.minHeight * this.newHeight
                         + gapsValue;
 
-                    updateGhostElementHeight(ghostElementHeight);
+                    updateResizablePlaceholderHeight(ghostElementHeight);
                 }
 
-                this.$el.style.height = `${height}px`;
-                this.actualElementRow = rowBellowMouse;
+                window.requestAnimationFrame(() => {
+                    this.$el.style.height = `${height}px`;
+                });
 
+                this.actualElementRow = rowBellowMouse;
                 this.$emit('resizingElMaxRow', this.newHeight + row);
             }
         },

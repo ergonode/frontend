@@ -4,7 +4,7 @@
  */
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
-import TemplateGridGhostItem from '../Base/TemplateGridGhostItem.vue';
+import TemplateGridLayerItem from '../Base/TemplateGridLayerItem';
 
 const localVue = createLocalVue();
 const store = new Store({
@@ -18,11 +18,11 @@ const mocks = {
     $store: store,
 };
 
-describe('Template/Base/TemplateGridGhostItem', () => {
+describe('Template/Base/TemplateGridLayerItem', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(TemplateGridGhostItem, {
+        wrapper = shallowMount(TemplateGridLayerItem, {
             localVue,
             mocks,
             propsData: {
@@ -32,8 +32,8 @@ describe('Template/Base/TemplateGridGhostItem', () => {
     });
 
     it('Component is named well', () => {
-        expect(typeof TemplateGridGhostItem.name).toBe('string');
-        expect(TemplateGridGhostItem.name).toEqual('TemplateGridGhostItem');
+        expect(typeof TemplateGridLayerItem.name).toBe('string');
+        expect(TemplateGridLayerItem.name).toEqual('TemplateGridLayerItem');
     });
 
     describe('Component highlighting states', () => {
@@ -110,7 +110,7 @@ describe('Template/Base/TemplateGridGhostItem', () => {
             height: 500px;
             width: 200px;
         `;
-        draggableLayerElement.classList.add('draggable-layer');
+        draggableLayerElement.classList.add('template-grid-draggable-layer');
         draggableLayerElement.setAttribute('style', draggableLayerElementStyle);
 
         document.body.appendChild(draggableLayerElement);
@@ -125,11 +125,9 @@ describe('Template/Base/TemplateGridGhostItem', () => {
                 ],
             });
 
-            wrapper.find('.ghost-item').trigger('dragenter');
+            wrapper.find('.template-grid-layer-item').trigger('dragenter');
 
-            const ghostElement = draggableLayerElement.querySelector('.ghost-element');
-
-            expect(draggableLayerElement.contains(ghostElement)).toBeTruthy();
+            expect(wrapper.vm.isGhostElement).toBeTruthy();
         });
 
         it('Ghost element is removed on drag leave', () => {
@@ -142,20 +140,16 @@ describe('Template/Base/TemplateGridGhostItem', () => {
                 ],
             });
 
-            wrapper.find('.ghost-item').trigger('dragleave');
+            wrapper.find('.template-grid-layer-item').trigger('dragleave');
 
-            const ghostElement = draggableLayerElement.querySelector('.ghost-element');
-
-            expect(ghostElement).toBeNull();
+            expect(wrapper.vm.isGhostElement).toBeFalsy();
         });
 
         it('Ghost element is removed on drop', () => {
-            wrapper.find('.ghost-item').trigger('dragenter');
-            wrapper.find('.ghost-item').trigger('drop');
+            wrapper.find('.template-grid-layer-item').trigger('dragenter');
+            wrapper.find('.template-grid-layer-item').trigger('drop');
 
-            const ghostElement = draggableLayerElement.querySelector('.ghost-element');
-
-            expect(ghostElement).toBeNull();
+            expect(wrapper.vm.isGhostElement).toBeFalsy();
         });
     });
 });
