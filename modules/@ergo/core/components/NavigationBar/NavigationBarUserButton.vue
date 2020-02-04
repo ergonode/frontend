@@ -49,7 +49,7 @@ export default {
     },
     computed: {
         ...mapState('authentication', {
-            user: (state) => state.user,
+            user: state => state.user,
         }),
         whiteColor() {
             return WHITE;

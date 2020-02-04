@@ -70,20 +70,20 @@ import categoryManagementPageBaseMixin from '@Core/mixins/page/categoryManagemen
 
 export default {
     name: 'ProductPage',
-    mixins: [categoryManagementPageBaseMixin],
     components: {
         Button,
         MenuButton,
         TitleBarSubActions,
         ProductStatusBadge,
     },
+    mixins: [categoryManagementPageBaseMixin],
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
+            userLanguageCode: state => state.user.language,
         }),
         ...mapState('productsDraft', {
-            status: (state) => state.status,
-            workflow: (state) => state.workflow,
+            status: state => state.status,
+            workflow: state => state.workflow,
         }),
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
@@ -105,12 +105,12 @@ export default {
             );
 
             return {
-                statuses: visibleStatuses.map((status) => status),
-                more: hiddenStatuses.map((status) => status),
+                statuses: visibleStatuses.map(status => status),
+                more: hiddenStatuses.map(status => status),
             };
         },
         optionTitle() {
-            return this.statusesButtons.more.map((option) => option.code);
+            return this.statusesButtons.more.map(option => option.code);
         },
         isUserAllowedToUpdateProduct() {
             return this.$hasAccess(['PRODUCT_UPDATE']);

@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import defaultState from './state';
 import { UNASSIGNED_GROUP_ID } from '@Core/defaults/list';
+import defaultState from './state';
 
 export const types = {
     SET_GROUPS_FOR_LANGUAGE: 'SET_GROUPS_FOR_LANGUAGE',

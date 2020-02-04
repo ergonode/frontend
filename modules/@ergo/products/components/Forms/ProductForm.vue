@@ -54,15 +54,15 @@ export default {
     mixins: [errorValidationMixin],
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
+            userLanguageCode: state => state.user.language,
         }),
         ...mapState('productsDraft', {
-            productID: (state) => state.id,
-            sku: (state) => state.sku,
-            template: (state) => state.template,
-            templates: (state) => state.templates,
-            selectedCategories: (state) => state.selectedCategories,
-            categories: (state) => state.categories,
+            productID: state => state.id,
+            sku: state => state.sku,
+            template: state => state.template,
+            templates: state => state.templates,
+            selectedCategories: state => state.selectedCategories,
+            categories: state => state.categories,
         }),
         templateOptions() {
             return this.templates.map(({ id, name }) => ({

@@ -56,9 +56,9 @@ export default {
     },
     computed: {
         ...mapState('notifications', {
-            notifications: (state) => state.notifications,
-            limit: (state) => state.limit,
-            count: (state) => state.count,
+            notifications: state => state.notifications,
+            limit: state => state.limit,
+            count: state => state.count,
         }),
         horizontalOrientation() {
             return LayoutOrientation.HORIZONTAL;

@@ -72,10 +72,10 @@ export default {
     mixins: [errorValidationMixin, translationCardMixin],
     computed: {
         ...mapState('dictionaries', {
-            attrTypes: (state) => state.attrTypes,
+            attrTypes: state => state.attrTypes,
         }),
         ...mapState('attribute', {
-            type: (state) => state.type,
+            type: state => state.type,
         }),
         hasPlaceholder() {
             return hasPlaceholder(this.typeKey);

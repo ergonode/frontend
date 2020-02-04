@@ -52,8 +52,8 @@ export default {
     },
     computed: {
         ...mapState('notifications', {
-            notifications: (state) => state.notifications,
-            notificationsCount: (state) => state.count,
+            notifications: state => state.notifications,
+            notificationsCount: state => state.count,
         }),
         whiteColor() {
             return WHITE;

@@ -38,6 +38,14 @@ export default {
         FooterActions,
         Button,
     },
+    async fetch({ app, store }) {
+        app.$registerStore({
+            module: languageSettingsModule,
+            moduleName: 'languageSettings',
+            store,
+        });
+        await store.dispatch('languageSettings/getData');
+    },
     beforeCreate() {
         this.$registerStore({
             module: languageSettingsModule,
@@ -61,14 +69,6 @@ export default {
             await this.getLanguagesDictionary();
             await this.$removeLoader('saveSettings');
         },
-    },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: languageSettingsModule,
-            moduleName: 'languageSettings',
-            store,
-        });
-        await store.dispatch('languageSettings/getData');
     },
 };
 </script>

@@ -7,7 +7,7 @@ const ghostElementSelector = '.ghost-element';
 const getDraggableLayerElement = () => document.documentElement.querySelector(
     draggableLayerElementSelector,
 );
-const getGhostElement = (draggableLayer) => draggableLayer.querySelector(ghostElementSelector);
+const getGhostElement = draggableLayer => draggableLayer.querySelector(ghostElementSelector);
 
 export function addResizablePlaceholder({
     top, left, width, height, boxShadow, backgroundColor,

@@ -26,10 +26,10 @@ import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect'
 
 export default {
     name: 'ProductTemplateOptions',
-    mixins: [productTemplateElementMixin],
     components: {
         TranslationSelect,
     },
+    mixins: [productTemplateElementMixin],
     props: {
         options: {
             type: Array,
@@ -56,13 +56,13 @@ export default {
     methods: {
         initializeValues(value) {
             if (Array.isArray(value)) {
-                this.localValue = value.map((val) => ({
+                this.localValue = value.map(val => ({
                     id: val,
                     key: val,
-                    value: this.options.find((option) => option.key === val).value,
+                    value: this.options.find(option => option.key === val).value,
                 }));
             } else if (value) {
-                this.localValue = this.options.find((option) => option.key === value);
+                this.localValue = this.options.find(option => option.key === value);
             } else {
                 this.localValue = this.multiselect ? [] : {
                     id: '', key: '', value: '', hint: '',
@@ -76,7 +76,7 @@ export default {
             this.localValue = value;
 
             if (Array.isArray(value)) {
-                this.debounceFunc(value.length > 0 ? value.map((val) => val.key) : '');
+                this.debounceFunc(value.length > 0 ? value.map(val => val.key) : '');
             } else {
                 this.debounceFunc(value.key);
             }

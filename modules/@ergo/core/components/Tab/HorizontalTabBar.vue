@@ -35,7 +35,7 @@ export default {
     data() {
         return {
             selectedTabIndex: this.items.findIndex(
-                (item) => item.route.name === this.$route.name,
+                item => item.route.name === this.$route.name,
             ),
         };
     },

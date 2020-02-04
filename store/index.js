@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { modulesConfig } from '~/plugins/moduleLoader';
 import { JWT_KEY } from '@Authentication/defaults/cookies';
+import { modulesConfig } from '~/plugins/moduleLoader';
 
 export const actions = {
     async nuxtServerInit({ dispatch }) {

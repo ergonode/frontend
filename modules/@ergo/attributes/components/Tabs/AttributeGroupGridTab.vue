@@ -26,11 +26,11 @@ import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
 
 export default {
     name: 'AttributeGroupGridTab',
-    mixins: [gridDataMixin({ path: 'attributes/groups' })],
     components: {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
+    mixins: [gridDataMixin({ path: 'attributes/groups' })],
     methods: {
         onEditRow({ links: { value: { edit } } }) {
             const args = edit.href.split('/');

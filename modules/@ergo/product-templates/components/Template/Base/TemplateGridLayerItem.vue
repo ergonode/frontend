@@ -40,7 +40,7 @@ export default {
     },
     computed: {
         ...mapState('draggable', {
-            draggedElement: (state) => state.draggedElement,
+            draggedElement: state => state.draggedElement,
         }),
         highlightedStateClasses() {
             return {

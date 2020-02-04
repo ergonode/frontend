@@ -27,7 +27,7 @@ export default {
         theme: {
             type: String,
             default: THEME.PRIMARY,
-            validator: (value) => Object.values(THEME).indexOf(value) !== -1,
+            validator: value => Object.values(THEME).indexOf(value) !== -1,
         },
     },
 };

@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import defaultState from './state';
 import { removeValueAtIndex } from '@Core/models/arrayWrapper';
+import defaultState from './state';
 
 export const types = {
     SET_OBJECT_ID: 'SET_OBJECT_ID',
@@ -37,7 +37,7 @@ export default {
         state.currentPage = value;
     },
     [types.DELETE_COMMENT](state, id) {
-        const indexToRemove = state.comments.findIndex((e) => e.id === id);
+        const indexToRemove = state.comments.findIndex(e => e.id === id);
         state.comments = removeValueAtIndex(state.comments, indexToRemove);
     },
     [types.ADD_COMMENT](state, comment) {
@@ -45,7 +45,7 @@ export default {
     },
     [types.EDIT_COMMENT](state, comment) {
         const { id } = comment;
-        const indexToEdit = state.comments.findIndex((e) => e.id === id);
+        const indexToEdit = state.comments.findIndex(e => e.id === id);
         state.comments[indexToEdit] = comment;
         state.comments = [...state.comments];
     },

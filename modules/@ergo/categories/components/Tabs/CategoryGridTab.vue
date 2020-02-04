@@ -26,11 +26,11 @@ import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
 
 export default {
     name: 'CategoryGridTab',
-    mixins: [gridDataMixin({ path: 'categories' })],
     components: {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
+    mixins: [gridDataMixin({ path: 'categories' })],
     methods: {
         onEditRow({ links: { value: { edit } } }) {
             const args = edit.href.split('/');

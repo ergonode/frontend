@@ -26,7 +26,7 @@ export default {
     },
     methods: {
         filteredItems() {
-            return GRID_ITEMS.filter((e) => this.$hasAccess(e.privileges));
+            return GRID_ITEMS.filter(e => this.$hasAccess(e.privileges));
         },
     },
 };

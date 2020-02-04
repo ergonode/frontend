@@ -17,17 +17,26 @@ import { mapState, mapActions } from 'vuex';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
-    validate({ params }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
-    },
     name: 'StatusEdit',
     components: {
         ProductStatusPage: () => import('@Statuses/components/Pages/ProductStatusPage'),
     },
+    validate({ params }) {
+        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
+    },
+    async fetch({
+        store, params,
+    }) {
+        const path = `${store.state.authentication.user.language}/status/${params.id}`;
+
+        await store.dispatch('productStatus/clearStorage');
+        await store.dispatch('productStatus/getProductStatus', path);
+        await store.dispatch('productStatus/getDefaultStatus');
+    },
     computed: {
         ...mapState('productStatus', {
-            code: (state) => state.code,
-            isDefaultStatus: (state) => state.isDefaultStatus,
+            code: state => state.code,
+            isDefaultStatus: state => state.isDefaultStatus,
         }),
     },
     methods: {
@@ -72,15 +81,6 @@ export default {
             this.$addAlert({ type: 'success', message: 'Product status updated' });
             this.$router.push({ name: 'product-statuses' });
         },
-    },
-    async fetch({
-        store, params,
-    }) {
-        const path = `${store.state.authentication.user.language}/status/${params.id}`;
-
-        await store.dispatch('productStatus/clearStorage');
-        await store.dispatch('productStatus/getProductStatus', path);
-        await store.dispatch('productStatus/getDefaultStatus');
     },
 };
 </script>

@@ -25,10 +25,10 @@ export default {
     },
     computed: {
         ...mapState('templateDesigner', {
-            types: (state) => state.types,
+            types: state => state.types,
         }),
         widgets() {
-            return this.types.filter((type) => type.variant === 'ui');
+            return this.types.filter(type => type.variant === 'ui');
         },
     },
 };

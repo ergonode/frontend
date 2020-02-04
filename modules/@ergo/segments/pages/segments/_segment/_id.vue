@@ -18,26 +18,42 @@ import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappe
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
-    validate({ params }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
-    },
     name: 'SegmentEdit',
     components: {
         SegmentPage: () => import('@Segments/components/Pages/SegmentPage'),
     },
+    validate({ params }) {
+        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
+    },
+    async fetch({
+        store,
+        params,
+    }) {
+        await Promise.all([
+            store.dispatch('translations/clearStorage'),
+            store.dispatch('segments/clearStorage'),
+        ]);
+        await store.dispatch('segments/getSegmentById', {
+            segmentId: params.id,
+        });
+    },
     computed: {
         ...mapState('segments', {
-            id: (state) => state.id,
-            code: (state) => state.code,
-            conditionSetId: (state) => state.conditionSetId,
+            id: state => state.id,
+            code: state => state.code,
+            conditionSetId: state => state.conditionSetId,
         }),
         ...mapState('translations', {
-            translations: (state) => state.translations,
+            translations: state => state.translations,
         }),
         ...mapState('conditions', {
-            conditionsValues: (state) => state.conditionsValues,
-            conditions: (state) => state.conditions,
+            conditionsValues: state => state.conditionsValues,
+            conditions: state => state.conditions,
         }),
+    },
+    destroyed() {
+        this.clearSegmentStorage();
+        this.clearConditionSetStorage();
     },
     methods: {
         ...mapActions('conditions', {
@@ -114,22 +130,6 @@ export default {
             this.$addAlert({ type: 'success', message: 'Segment removed' });
             this.$router.push({ name: 'segments' });
         },
-    },
-    destroyed() {
-        this.clearSegmentStorage();
-        this.clearConditionSetStorage();
-    },
-    async fetch({
-        store,
-        params,
-    }) {
-        await Promise.all([
-            store.dispatch('translations/clearStorage'),
-            store.dispatch('segments/clearStorage'),
-        ]);
-        await store.dispatch('segments/getSegmentById', {
-            segmentId: params.id,
-        });
     },
 };
 </script>

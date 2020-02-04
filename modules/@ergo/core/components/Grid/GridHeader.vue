@@ -176,8 +176,39 @@ export default {
             isMouseOverFilters: false,
         };
     },
-    created() {
-        this.initializeRowHeightDescription();
+    computed: {
+        ...mapState('draggable', {
+            isListElementDragging: state => state.isListElementDragging,
+            draggedElement: state => state.draggedElement,
+        }),
+        filtersNumber() {
+            return this.filters.filter(filter => !filter.isGhost).length;
+        },
+        isFilterExists() {
+            const draggedElIndex = this.filters.findIndex(
+                filter => filter.id === this.draggedElement,
+            );
+
+            return draggedElIndex !== -1;
+        },
+        theme() {
+            return THEMES;
+        },
+        greenColor() {
+            return GREEN;
+        },
+        iconExpandedState() {
+            return this.isFiltersExpanded ? ARROW.UP : ARROW.DOWN;
+        },
+        rowHeightsDescriptions() {
+            return Object.keys(ROW_HEIGHT).map(key => toCapitalize(key.toLowerCase()));
+        },
+        gridLayouts() {
+            return GRID_LAYOUT;
+        },
+        smallSize() {
+            return SIZES.SMALL;
+        },
     },
     watch: {
         isListElementDragging() {
@@ -193,39 +224,8 @@ export default {
             }
         },
     },
-    computed: {
-        ...mapState('draggable', {
-            isListElementDragging: (state) => state.isListElementDragging,
-            draggedElement: (state) => state.draggedElement,
-        }),
-        filtersNumber() {
-            return this.filters.filter((filter) => !filter.isGhost).length;
-        },
-        isFilterExists() {
-            const draggedElIndex = this.filters.findIndex(
-                (filter) => filter.id === this.draggedElement,
-            );
-
-            return draggedElIndex !== -1;
-        },
-        theme() {
-            return THEMES;
-        },
-        greenColor() {
-            return GREEN;
-        },
-        iconExpandedState() {
-            return this.isFiltersExpanded ? ARROW.UP : ARROW.DOWN;
-        },
-        rowHeightsDescriptions() {
-            return Object.keys(ROW_HEIGHT).map((key) => toCapitalize(key.toLowerCase()));
-        },
-        gridLayouts() {
-            return GRID_LAYOUT;
-        },
-        smallSize() {
-            return SIZES.SMALL;
-        },
+    created() {
+        this.initializeRowHeightDescription();
     },
     methods: {
         ...mapActions('draggable', [
@@ -298,7 +298,7 @@ export default {
         },
         removeGhostFilter() {
             const ghostIndex = this.filters.findIndex(
-                (filter) => filter.isGhost,
+                filter => filter.isGhost,
             );
 
             if (ghostIndex !== -1 && !this.isMouseOverFilters) {

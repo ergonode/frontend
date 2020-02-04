@@ -48,24 +48,27 @@ export default {
         Select: () => import('@Core/components/Inputs/Select/Select'),
         ProductCompleteness: () => import('@Products/components/Progress/ProductCompleteness'),
     },
+    async fetch({ store, params }) {
+        const { id } = params;
+        const { language } = store.state.authentication.user;
+
+        await store.dispatch('productsDraft/getDraftForLanguage', { languageCode: language, id });
+    },
     data() {
         return {
             language: '',
         };
     },
-    created() {
-        this.language = this.languages[this.user.language];
-    },
     computed: {
         ...mapState('authentication', {
-            user: (state) => state.user,
+            user: state => state.user,
         }),
         ...mapState('dictionaries', {
-            languages: (state) => state.languages,
+            languages: state => state.languages,
         }),
         ...mapState('productsDraft', {
-            id: (state) => state.id,
-            completeness: (state) => state.completeness,
+            id: state => state.id,
+            completeness: state => state.completeness,
         }),
         languageCode() {
             return getKeyByValue(this.languages, this.language);
@@ -73,6 +76,9 @@ export default {
         languageOptions() {
             return Object.values(this.languages);
         },
+    },
+    created() {
+        this.language = this.languages[this.user.language];
     },
     methods: {
         ...mapActions('productsDraft', [
@@ -82,12 +88,6 @@ export default {
             this.language = value;
             this.getDraftForLanguage({ languageCode: this.languageCode, id: this.id });
         },
-    },
-    async fetch({ store, params }) {
-        const { id } = params;
-        const { language } = store.state.authentication.user;
-
-        await store.dispatch('productsDraft/getDraftForLanguage', { languageCode: language, id });
     },
 };
 </script>

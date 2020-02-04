@@ -15,10 +15,10 @@ import InformationBadge from '@Core/components/Badges/InformationBadge';
 
 export default {
     name: 'InformationIconBadge',
-    inheritAttrs: false,
     components: {
         InformationBadge,
     },
+    inheritAttrs: false,
 };
 </script>
 

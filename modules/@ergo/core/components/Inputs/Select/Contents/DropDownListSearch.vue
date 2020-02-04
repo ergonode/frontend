@@ -42,12 +42,6 @@ export default {
             default: false,
         },
     },
-    created() {
-        this.debouncedSearch = debounce(this.onSearch, 500);
-    },
-    destroyed() {
-        delete this.debouncedSearch;
-    },
     data() {
         return {
             isSearchFocused: false,
@@ -59,6 +53,12 @@ export default {
                 ? GREEN
                 : GRAPHITE;
         },
+    },
+    created() {
+        this.debouncedSearch = debounce(this.onSearch, 500);
+    },
+    destroyed() {
+        delete this.debouncedSearch;
     },
     methods: {
         onSearch(event) {

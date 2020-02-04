@@ -78,7 +78,7 @@ export function getMappedLayoutElements(elements, elementsDescription, elementDa
         if (type !== 'SECTION') {
             const {
                 code: descCode, label: descLabel,
-            } = elementsDescription.find((el) => el.id === attrID);
+            } = elementsDescription.find(el => el.id === attrID);
 
             return getMappedLayoutElement(
                 attrID,

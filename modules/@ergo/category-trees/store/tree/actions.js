@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
 import { getParsedTreeData } from '@Trees/models/treeMapper';
+import { types } from './mutations';
 
 export default {
     getTreeById(
@@ -23,7 +23,7 @@ export default {
                 name,
             };
 
-            treeToSet.forEach((e) => dispatch('list/setDisabledElement', { languageCode: userLanguageCode, elementId: e.id, disabled: true }, { root: true }));
+            treeToSet.forEach(e => dispatch('list/setDisabledElement', { languageCode: userLanguageCode, elementId: e.id, disabled: true }, { root: true }));
             commit(types.SET_TREE_ID, treeId);
             commit(types.SET_CODE, code);
             dispatch('gridDesigner/setGridData', treeToSet, { root: true });
@@ -45,7 +45,7 @@ export default {
         await this.app.$axios.$post(`${userLanguageCode}/trees`, data).then(({ id }) => {
             commit(types.SET_TREE_ID, id);
             onSuccess(id);
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     async updateTree(

@@ -55,7 +55,7 @@ export default {
         await this.app.$axios.$post(`${userLanguageCode}/segments`, data).then(({ id }) => {
             commit(types.SET_SEGMENT_ID, id);
             onSuccess(id);
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     async updateSegment(
@@ -70,7 +70,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
 
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/segments/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+        await this.app.$axios.$put(`${userLanguageCode}/segments/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     removeSegment({ state, rootState }, { onSuccess }) {

@@ -81,7 +81,7 @@ export default {
     },
     computed: {
         ...mapState('conditions', {
-            conditionsValues: (state) => state.conditionsValues,
+            conditionsValues: state => state.conditionsValues,
         }),
         smallSize() {
             return SIZES.SMALL;
@@ -120,8 +120,8 @@ export default {
         },
         replacePlaceholderOnPhrase(placeholders) {
             const { phrase, parameters } = this.condition;
-            const findKeyWhenSelect = (clearedKey) => parameters.findIndex(
-                (parameter) => parameter.name === clearedKey
+            const findKeyWhenSelect = clearedKey => parameters.findIndex(
+                parameter => parameter.name === clearedKey
                 && hasOptions(parameter.type),
             );
 

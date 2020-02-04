@@ -26,11 +26,11 @@ import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
 
 export default {
     name: 'TransitionsGridTab',
-    mixins: [gridDataMixin({ path: 'workflow/default/transitions' })],
     components: {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
+    mixins: [gridDataMixin({ path: 'workflow/default/transitions' })],
     methods: {
         onEditRow({ links: { value: { edit } } }) {
             const args = edit.href.split('/');

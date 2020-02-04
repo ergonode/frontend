@@ -40,8 +40,8 @@ export default {
     mixins: [errorValidationMixin],
     computed: {
         ...mapState('templateDesigner', {
-            templateTitle: (state) => state.title,
-            templateImage: (state) => state.image,
+            templateTitle: state => state.title,
+            templateImage: state => state.image,
         }),
         isDisabledByPrivileges() {
             const isEdit = /edit/.test(this.$route.path);

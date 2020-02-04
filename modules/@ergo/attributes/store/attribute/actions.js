@@ -2,8 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
 import { getMappedParameterValues, getMappedOptions } from '@Attributes/models/attributeMapper';
+import { types } from './mutations';
 
 export default {
     setAttributeCode({ commit }, code) {
@@ -54,7 +54,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
 
         return this.app.$axios.$get(`${userLanguageCode}/attributes/groups`).then(({ collection }) => {
-            commit(types.SET_ATTRIBUTE_GROUPS_OPTIONS, collection.map((group) => ({
+            commit(types.SET_ATTRIBUTE_GROUPS_OPTIONS, collection.map(group => ({
                 id: group.id,
                 key: group.code,
                 value: group.name,
@@ -95,7 +95,7 @@ export default {
             commit(types.SET_ATTRIBUTE_TYPE, attrTypes[type]);
             commit(types.SET_MULTILINGUAL_ATTRIBUTE, multilingual);
             commit(types.SET_ATTRIBUTE_GROUPS, groupOptions.filter(
-                (group) => groupIds.some((groupId) => group.id === groupId),
+                group => groupIds.some(groupId => group.id === groupId),
             ));
 
             dispatch('translations/setTabTranslations', translations, { root: true });
@@ -110,7 +110,7 @@ export default {
             if (options) {
                 commit(types.INITIALIZE_OPTIONS, getMappedOptions(options));
             }
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
     },
     async createAttribute(
         { commit, rootState },
@@ -126,7 +126,7 @@ export default {
         await this.app.$axios.$post(`${userLanguageCode}/attributes`, data).then(({ id }) => {
             commit(types.SET_ATTRIBUTE_ID, id);
             onSuccess(id);
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     async updateAttribute(
@@ -143,7 +143,7 @@ export default {
         await this.$setLoader('footerButton');
         await this.app.$axios.$put(`${userLanguageCode}/attributes/${id}`, data).then(() => {
             onSuccess();
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     removeAttribute({ state, rootState }, { onSuccess }) {

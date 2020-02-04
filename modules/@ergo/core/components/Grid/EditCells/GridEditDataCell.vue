@@ -22,9 +22,6 @@ export default {
             localValue: this.$attrs.value,
         };
     },
-    destroyed() {
-        this.$emit('updateValue', this.localValue);
-    },
     computed: {
         editableComponent() {
             switch (this.$attrs.type) {
@@ -42,6 +39,9 @@ export default {
             default: return () => import('@Core/components/Grid/EditCells/GridEditShortTextCell');
             }
         },
+    },
+    destroyed() {
+        this.$emit('updateValue', this.localValue);
     },
     methods: {
         onImageIDChange(id) {

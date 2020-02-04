@@ -25,11 +25,6 @@ export default {
         EditableComment: () => import('@Comments/components/Comments/EditableComment'),
         FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
     },
-    data() {
-        return {
-            showEditingForm: false,
-        };
-    },
     props: {
         comment: {
             type: Object,
@@ -39,6 +34,11 @@ export default {
             type: Boolean,
             default: false,
         },
+    },
+    data() {
+        return {
+            showEditingForm: false,
+        };
     },
     watch: {
         isAdditionFormVisible(newVal) {

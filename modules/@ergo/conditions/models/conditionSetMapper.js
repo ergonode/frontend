@@ -36,7 +36,7 @@ export function getParsedConditionSetData(conditions, conditionsData) {
 
 
         Object.keys(parameters).forEach((key) => {
-            const { options } = conditionsData[type].parameters.find((param) => param.name === key);
+            const { options } = conditionsData[type].parameters.find(param => param.name === key);
 
             if (options) {
                 parameters[key] = {

@@ -23,17 +23,17 @@ export default {
         ContentBaseFooter,
         Button,
     },
-    methods: {
-        onClear() {
-            this.$emit('clear');
-        },
-    },
     computed: {
         tinySize() {
             return SIZES.TINY;
         },
         secondaryTheme() {
             return THEMES.SECONDARY;
+        },
+    },
+    methods: {
+        onClear() {
+            this.$emit('clear');
         },
     },
 };

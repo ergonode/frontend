@@ -31,17 +31,17 @@ export default {
             role_ids: rolesIds,
         }) => {
             const sourceOption = statusOptions.find(
-                (status) => status.key === source.replace(/%20/g, ' '),
+                status => status.key === source.replace(/%20/g, ' '),
             );
             const destinationOption = statusOptions.find(
-                (status) => status.key === destination.replace(/%20/g, ' '),
+                status => status.key === destination.replace(/%20/g, ' '),
             );
 
             commit(types.SET_SOURCE, sourceOption);
             commit(types.SET_DESTINATION, destinationOption);
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
             commit(types.SET_ROLES, roles.filter(
-                (role) => rolesIds.some((roleId) => role.id === roleId),
+                role => rolesIds.some(roleId => role.id === roleId),
             ));
 
             if (conditionSetId) {
@@ -62,7 +62,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
 
         await this.$setLoader('footerButton');
-        await this.app.$axios.$post(`${userLanguageCode}/workflow/default/transitions`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+        await this.app.$axios.$post(`${userLanguageCode}/workflow/default/transitions`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     async updateTransition(
@@ -77,7 +77,7 @@ export default {
         const { source, destination } = state;
 
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/workflow/default/transitions/${source.id}/${destination.id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+        await this.app.$axios.$put(`${userLanguageCode}/workflow/default/transitions/${source.id}/${destination.id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     removeTransition({ state, rootState }, { onSuccess }) {

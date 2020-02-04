@@ -37,18 +37,18 @@ export default {
             expendedGroup: '',
         };
     },
-    created() {
-        this.setDefaultExpandedGroup();
+    computed: {
+        ...mapState('list', {
+            groups: state => state.groups,
+        }),
     },
     watch: {
         languageCode() {
             this.expendedGroup = '';
         },
     },
-    computed: {
-        ...mapState('list', {
-            groups: (state) => state.groups,
-        }),
+    created() {
+        this.setDefaultExpandedGroup();
     },
     methods: {
         setExpandedGroup(key) {

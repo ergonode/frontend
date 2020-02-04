@@ -13,7 +13,7 @@ export function getParsedTreeData(tree, categories) {
             const {
                 code: categoryCode,
                 name: categoryName,
-            } = categories.find((e) => e.id === categoryId);
+            } = categories.find(e => e.id === categoryId);
             newTree.push({
                 id: categoryId,
                 code: categoryCode,

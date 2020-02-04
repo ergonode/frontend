@@ -44,7 +44,7 @@ export default {
     },
     computed: {
         ...mapState('attribute', {
-            isMultilingual: (state) => state.isMultilingual,
+            isMultilingual: state => state.isMultilingual,
         }),
         translationOptionValue() {
             if (!this.isMultilingual) {

@@ -15,21 +15,13 @@ export default {
         pinnedState: {
             type: String,
             required: true,
-            validator: (value) => Object.values(PINNED_COLUMN_STATE).indexOf(value) !== -1,
+            validator: value => Object.values(PINNED_COLUMN_STATE).indexOf(value) !== -1,
         },
     },
     data() {
         return {
             observer: null,
         };
-    },
-    mounted() {
-        this.initializeObserver();
-
-        this.observer.observe(this.$el);
-    },
-    beforeDestroy() {
-        this.observer.unobserve(this.$el);
     },
     computed: {
         pinnedStateClasses() {
@@ -38,6 +30,14 @@ export default {
                 'column-sentinel--right': this.pinnedState === PINNED_COLUMN_STATE.RIGHT,
             };
         },
+    },
+    mounted() {
+        this.initializeObserver();
+
+        this.observer.observe(this.$el);
+    },
+    beforeDestroy() {
+        this.observer.unobserve(this.$el);
     },
     methods: {
         initializeObserver() {

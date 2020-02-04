@@ -2,13 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { types } from './mutations';
 import {
     getMappedLayoutElements,
     getMappedLayoutElement,
     getMappedLayoutSectionElement,
 } from '@Templates/models/templateMapper';
 import { getNestedObjectByKeyWithValue } from '@Core/models/objectWrapper';
+import { types } from './mutations';
 
 export default {
     getTemplateByID(
@@ -23,7 +23,7 @@ export default {
             elements,
         }) => {
             const { language: languageCode } = rootState.authentication.user;
-            const attributesId = elements.map((el) => el.id);
+            const attributesId = elements.map(el => el.id);
             const params = {
                 filter: `id${attributesId.join(',')}`,
                 view: 'list',
@@ -63,7 +63,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
 
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/templates/${id}`, data).then(() => onSuccess()).catch((e) => onError(e.data));
+        await this.app.$axios.$put(`${userLanguageCode}/templates/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     async createTemplateDesigner(
@@ -79,7 +79,7 @@ export default {
         await this.$setLoader('footerButton');
         await this.app.$axios.$post(`${userLanguageCode}/templates`, data).then(({ id }) => {
             onSuccess(id);
-        }).catch((e) => onError(e.data));
+        }).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
     getTypes({ commit }, {

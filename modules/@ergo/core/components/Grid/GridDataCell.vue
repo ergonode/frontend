@@ -93,10 +93,10 @@ export default {
     },
     computed: {
         ...mapState('validations', {
-            validationErrors: (state) => state.validationErrors,
+            validationErrors: state => state.validationErrors,
         }),
         ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
+            userLanguageCode: state => state.user.language,
         }),
         isMultiSelect() {
             return this.column.type === COLUMN_TYPE.MULTI_SELECT;
@@ -169,7 +169,7 @@ export default {
             const { options } = filter;
             const optionKeys = Object.keys(options);
 
-            return optionKeys.map((key) => ({
+            return optionKeys.map(key => ({
                 id: key, key, value: options[key], hint: options[key] ? `#${key} ${this.column.language}` : '',
             }));
         },
@@ -187,7 +187,7 @@ export default {
             'updateDraftValue',
         ]),
         onDataCopy({ from, to }) {
-            const rowIndex = this.rowIds.findIndex((id) => id === this.rowId);
+            const rowIndex = this.rowIds.findIndex(id => id === this.rowId);
             const offset = from.row - rowIndex;
 
             getMappedDraftValuesModule().then((response) => {

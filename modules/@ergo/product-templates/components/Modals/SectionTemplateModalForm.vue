@@ -76,14 +76,14 @@ export default {
             error: null,
         };
     },
-    watch: {
-        sectionTitle() {
-            this.title = this.sectionTitle;
-        },
-    },
     computed: {
         secondaryTheme() {
             return THEMES.SECONDARY;
+        },
+    },
+    watch: {
+        sectionTitle() {
+            this.title = this.sectionTitle;
         },
     },
     methods: {

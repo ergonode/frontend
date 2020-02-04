@@ -26,11 +26,11 @@ import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
 
 export default {
     name: 'RolesGridTab',
-    mixins: [gridDataMixin({ path: 'roles' })],
     components: {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
+    mixins: [gridDataMixin({ path: 'roles' })],
     methods: {
         onEditRow({ links: { value: { edit } } }) {
             const args = edit.href.split('/');

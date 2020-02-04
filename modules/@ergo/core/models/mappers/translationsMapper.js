@@ -9,7 +9,7 @@ export function isThereAnyTranslation(translation) {
     if (!isObject(translation)) {
         return translation !== '';
     }
-    return !!Object.keys(translation).find((key) => translation[key] !== '');
+    return !!Object.keys(translation).find(key => translation[key] !== '');
 }
 
 export function getParsedTranslations(translation) {

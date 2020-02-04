@@ -13,7 +13,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { selectedLanguages } = state;
         const data = {
-            collection: selectedLanguages.map((language) => language.key),
+            collection: selectedLanguages.map(language => language.key),
         };
 
         return this.app.$axios.$put(`${userLanguageCode}/languages`, data).then(() => {
@@ -36,7 +36,7 @@ export default {
         }) => {
             commit(types.SET_LANGUAGES, collection.map(mappedLanguage));
             commit(types.SET_SELECTED_LANGUAGE_NAMES, collection
-                .filter((language) => language.active)
+                .filter(language => language.active)
                 .map(mappedLanguage));
         });
     },

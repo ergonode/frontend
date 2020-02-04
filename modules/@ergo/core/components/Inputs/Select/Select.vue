@@ -251,30 +251,6 @@ export default {
             isSearchFocused: false,
         };
     },
-    created() {
-        if (this.isOptionsValid) {
-            if (this.multiselect) {
-                this.value.forEach(({ id }) => {
-                    this.selectedOptions[id] = this.value;
-                });
-            } else if (this.value || this.value === 0) {
-                this.selectedOptions = { [this.value]: this.value };
-            }
-        }
-    },
-    mounted() {
-        if (this.autofocus) {
-            this.$nextTick(() => {
-                this.$refs.input.focus();
-            });
-        }
-
-        this.isMounted = true;
-        this.associatedLabel = `input-${this._uid}`;
-    },
-    destroyed() {
-        window.removeEventListener('click', this.onClickOutside);
-    },
     computed: {
         tinySize() {
             return SIZES.TINY;
@@ -367,6 +343,30 @@ export default {
         placeholderValue() {
             return this.isFocused && !this.value ? this.placeholder : null;
         },
+    },
+    created() {
+        if (this.isOptionsValid) {
+            if (this.multiselect) {
+                this.value.forEach(({ id }) => {
+                    this.selectedOptions[id] = this.value;
+                });
+            } else if (this.value || this.value === 0) {
+                this.selectedOptions = { [this.value]: this.value };
+            }
+        }
+    },
+    mounted() {
+        if (this.autofocus) {
+            this.$nextTick(() => {
+                this.$refs.input.focus();
+            });
+        }
+
+        this.isMounted = true;
+        this.associatedLabel = `input-${this._uid}`;
+    },
+    destroyed() {
+        window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
         isOptionValid(option) {

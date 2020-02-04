@@ -59,8 +59,8 @@
 import { GREEN, WHITE, GREY_DARK } from '@Core/assets/scss/_js-variables/colors.scss';
 import { ARROW } from '@Core/defaults/icons';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
-import SideBarListGroupElement from './SideBarListGroupElement';
 import FadeSideBarTextTransition from '@Core/components/Transitions/FadeSideBarTextTransition';
+import SideBarListGroupElement from './SideBarListGroupElement';
 
 export default {
     name: 'SideBarListGroup',
@@ -106,7 +106,7 @@ export default {
                 : ARROW.DOWN;
         },
         isGroupActivated() {
-            return this.route.routes.some((route) => this.$route.path.includes(route.path));
+            return this.route.routes.some(route => this.$route.path.includes(route.path));
         },
     },
     methods: {

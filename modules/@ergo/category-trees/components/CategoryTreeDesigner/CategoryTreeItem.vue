@@ -60,13 +60,6 @@ export default {
         MenuButton,
         NumericBadge,
     },
-    data() {
-        return {
-            isContextualMenuActive: false,
-            contextualMenuItems: ['Remove'],
-            isHovered: false,
-        };
-    },
     props: {
         isExpanded: {
             type: Boolean,
@@ -80,6 +73,13 @@ export default {
             type: Number,
             default: 0,
         },
+    },
+    data() {
+        return {
+            isContextualMenuActive: false,
+            contextualMenuItems: ['Remove'],
+            isHovered: false,
+        };
     },
     computed: {
         smallSize() {

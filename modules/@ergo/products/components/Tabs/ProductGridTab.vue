@@ -57,23 +57,23 @@ import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
 
 export default {
     name: 'ProductGridTab',
-    mixins: [gridDataMixin({ path: 'products' })],
     components: {
         GridViewTemplate,
         Button,
         VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
         Grid: () => import('@Core/components/Grid/Grid'),
     },
+    mixins: [gridDataMixin({ path: 'products' })],
     computed: {
         ...mapState('draggable', {
-            isListElementDragging: (state) => state.isListElementDragging,
-            draggedElement: (state) => state.draggedElement,
+            isListElementDragging: state => state.isListElementDragging,
+            draggedElement: state => state.draggedElement,
         }),
         ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
+            userLanguageCode: state => state.user.language,
         }),
         ...mapState('gridDraft', {
-            drafts: (state) => state.drafts,
+            drafts: state => state.drafts,
         }),
         verticalTabs() {
             const isUserAllowedToReadProduct = this.$hasAccess(['PRODUCT_READ']);

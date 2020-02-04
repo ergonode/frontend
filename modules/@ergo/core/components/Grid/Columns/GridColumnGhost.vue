@@ -18,14 +18,14 @@ import {
 
 export default {
     name: 'GridColumnGhost',
+    components: {
+        IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
+    },
     props: {
         isMouseOverGrid: {
             type: Boolean,
             default: false,
         },
-    },
-    components: {
-        IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
     },
     computed: {
         addIconFillColor() {

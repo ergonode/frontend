@@ -62,25 +62,25 @@ export default {
             attributesLanguageCode: null,
         };
     },
-    created() {
-        this.attributesLanguageCode = this.userLanguageCode;
-    },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: (state) => state.user.language,
+            userLanguageCode: state => state.user.language,
         }),
         ...mapState('dictionaries', {
-            languages: (state) => state.languages,
+            languages: state => state.languages,
         }),
         whiteColor() {
             return WHITE;
         },
         languageOptions() {
-            return Object.keys(this.languages).map((language) => ({
+            return Object.keys(this.languages).map(language => ({
                 id: language,
                 name: this.languages[language],
             }));
         },
+    },
+    created() {
+        this.attributesLanguageCode = this.userLanguageCode;
     },
     methods: {
         ...mapActions('list', [

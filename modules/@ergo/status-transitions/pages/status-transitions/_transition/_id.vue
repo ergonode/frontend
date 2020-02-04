@@ -21,21 +21,41 @@ export default {
     components: {
         TransitionPage: () => import('@Transitions/components/Pages/TransitionPage'),
     },
+    async fetch({
+        store, params,
+    }) {
+        await Promise.all([
+            store.dispatch('transitions/clearStorage'),
+            store.dispatch('productStatus/getProductStatuses', {
+                limit: 9999,
+                offset: 0,
+            }),
+            store.dispatch('roles/getRoles', {
+                limit: 9999,
+                offset: 0,
+            }),
+        ]);
+        await store.dispatch('transitions/getTransitionById', params);
+    },
     computed: {
         ...mapState('transitions', {
-            source: (state) => state.source,
-            destination: (state) => state.destination,
-            roles: (state) => state.roles,
-            conditionSetId: (state) => state.conditionSetId,
+            source: state => state.source,
+            destination: state => state.destination,
+            roles: state => state.roles,
+            conditionSetId: state => state.conditionSetId,
         }),
         ...mapState('conditions', {
-            conditionsValues: (state) => state.conditionsValues,
-            conditions: (state) => state.conditions,
+            conditionsValues: state => state.conditionsValues,
+            conditions: state => state.conditions,
         }),
         getParamId() {
             const { id } = this.$route.params;
             return id.split('--');
         },
+    },
+    beforeDestroy() {
+        this.clearTransitionStorage();
+        this.clearConditionSetStorage();
     },
     methods: {
         ...mapActions('conditions', {
@@ -71,7 +91,7 @@ export default {
                     onSuccess: () => {
                         this.updateTransition({
                             data: {
-                                roles: this.roles.map((role) => role.key),
+                                roles: this.roles.map(role => role.key),
                             },
                             onSuccess: this.onTransitionUpdated,
                             onError: this.onError,
@@ -84,7 +104,7 @@ export default {
         onConditionCreated(conditionSetId) {
             const propertiesToUpdate = {
                 condition_set: conditionSetId,
-                roles: this.roles.map((role) => role.key),
+                roles: this.roles.map(role => role.key),
             };
 
             this.updateTransition({
@@ -112,26 +132,6 @@ export default {
             this.$addAlert({ type: 'success', message: 'Transition removed' });
             this.$router.push({ name: 'status-transitions' });
         },
-    },
-    beforeDestroy() {
-        this.clearTransitionStorage();
-        this.clearConditionSetStorage();
-    },
-    async fetch({
-        store, params,
-    }) {
-        await Promise.all([
-            store.dispatch('transitions/clearStorage'),
-            store.dispatch('productStatus/getProductStatuses', {
-                limit: 9999,
-                offset: 0,
-            }),
-            store.dispatch('roles/getRoles', {
-                limit: 9999,
-                offset: 0,
-            }),
-        ]);
-        await store.dispatch('transitions/getTransitionById', params);
     },
 };
 </script>

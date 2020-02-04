@@ -16,31 +16,43 @@ import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 
 export default {
-    validate({ params }) {
-        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
-    },
     name: 'EditUser',
     components: {
         UserPage: () => import('@Users/components/Pages/UserPage'),
     },
+    validate({ params }) {
+        return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
+    },
+    async fetch({
+        store,
+        params,
+    }) {
+        await store.dispatch('roles/getRoles', {
+            limit: 9999,
+            offset: 0,
+        });
+        await store.dispatch('users/getUserById', {
+            userId: params.id,
+        });
+    },
     computed: {
         ...mapState('authentication', {
-            user: (state) => state.user,
+            user: state => state.user,
         }),
         ...mapState('dictionaries', {
-            languages: (state) => state.languages,
+            languages: state => state.languages,
         }),
         ...mapState('users', {
-            id: (state) => state.id,
-            avatarId: (state) => state.avatarId,
-            email: (state) => state.email,
-            firstName: (state) => state.firstName,
-            lastName: (state) => state.lastName,
-            language: (state) => state.language,
-            password: (state) => state.password,
-            passwordRepeat: (state) => state.passwordRepeat,
-            isActive: (state) => state.isActive,
-            role: (state) => state.role,
+            id: state => state.id,
+            avatarId: state => state.avatarId,
+            email: state => state.email,
+            firstName: state => state.firstName,
+            lastName: state => state.lastName,
+            language: state => state.language,
+            password: state => state.password,
+            passwordRepeat: state => state.passwordRepeat,
+            isActive: state => state.isActive,
+            role: state => state.role,
         }),
         title() {
             return `${this.firstName} ${this.lastName}`;
@@ -92,18 +104,6 @@ export default {
                 onError: this.onError,
             });
         },
-    },
-    async fetch({
-        store,
-        params,
-    }) {
-        await store.dispatch('roles/getRoles', {
-            limit: 9999,
-            offset: 0,
-        });
-        await store.dispatch('users/getUserById', {
-            userId: params.id,
-        });
     },
 };
 </script>

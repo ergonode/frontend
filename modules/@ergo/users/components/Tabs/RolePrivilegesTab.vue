@@ -98,10 +98,10 @@ export default {
     },
     computed: {
         ...mapState('dictionaries', {
-            privilegesDictionary: (state) => state.privileges,
+            privilegesDictionary: state => state.privileges,
         }),
         ...mapState('roles', {
-            privileges: (state) => state.privileges,
+            privileges: state => state.privileges,
         }),
         isEditingAllowed() {
             return this.$hasAccess(['USER_ROLE_UPDATE']);
@@ -121,10 +121,10 @@ export default {
             return Object.values(this.selectedRows);
         },
         rowsAreDeselected() {
-            return this.selectedRowsValues.every((rowState) => rowState === STATE.UNCHECK);
+            return this.selectedRowsValues.every(rowState => rowState === STATE.UNCHECK);
         },
         rowsAreSelected() {
-            return this.selectedRowsValues.every((rowState) => rowState === STATE.CHECK);
+            return this.selectedRowsValues.every(rowState => rowState === STATE.CHECK);
         },
     },
     created() {
@@ -196,9 +196,9 @@ export default {
 
             const privileges = [colReadValue, colCreateValue, colUpdateValue, colDeleteValue];
 
-            if (privileges.every((privilege) => privilege === true)) {
+            if (privileges.every(privilege => privilege === true)) {
                 this.selectedRows[rowId] = STATE.CHECK;
-            } else if (privileges.every((privilege) => privilege === false)) {
+            } else if (privileges.every(privilege => privilege === false)) {
                 this.selectedRows[rowId] = STATE.UNCHECK;
             } else {
                 this.selectedRows[rowId] = STATE.CHECK_ANY;

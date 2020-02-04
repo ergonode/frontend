@@ -22,10 +22,10 @@ import TextArea from '@Core/components/Inputs/TextArea';
 
 export default {
     name: 'ProductTemplateMultiLine',
-    mixins: [productTemplateElementMixin],
     components: {
         TextArea,
     },
+    mixins: [productTemplateElementMixin],
     watch: {
         value() {
             this.localValue = this.value;
