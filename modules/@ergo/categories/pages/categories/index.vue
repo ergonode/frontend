@@ -19,7 +19,17 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalTabBar :items="tabs">
+            <template #item>
+                <HorizontalTabBarContent
+                    :is-fetching-needed="fetchGridData"
+                    @fetched="onFetchedGridData" />
+            </template>
+        </HorizontalTabBar>
+        <CreateCategoryModalForm
+            v-if="isCreateCategoryVisible"
+            @close="onCloseModal"
+            @created="onCreatedCategory" />
     </Page>
 </template>
 <script>
@@ -34,8 +44,16 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
+        CreateCategoryModalForm: () => import('@Categories/components/Modals/CreateCategoryModalForm'),
         Button,
         IconAdd,
+    },
+    data() {
+        return {
+            isCreateCategoryVisible: false,
+            fetchGridData: false,
+        };
     },
     computed: {
         smallSize() {
@@ -47,7 +65,17 @@ export default {
     },
     methods: {
         addCategory() {
-            this.$router.push({ name: 'category-new-general' });
+            this.isCreateCategoryVisible = true;
+        },
+        onCloseModal() {
+            this.isCreateCategoryVisible = false;
+        },
+        onCreatedCategory() {
+            this.isCreateCategoryVisible = false;
+            this.fetchGridData = true;
+        },
+        onFetchedGridData() {
+            this.fetchGridData = false;
         },
     },
 };

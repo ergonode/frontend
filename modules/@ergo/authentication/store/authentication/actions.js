@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { JWT_KEY } from '@Authentication/defaults/cookies';
+import { getMappedPrivileges } from '@Authentication/models/userMapper';
 import { types } from './mutations';
 
 export default {
@@ -19,7 +20,10 @@ export default {
     },
     getUser({ commit }) {
         return this.app.$axios.$get('profile').then((user) => {
-            commit(types.SET_USER, user);
+            commit(types.SET_USER, {
+                ...user,
+                privileges: getMappedPrivileges(user.privileges),
+            });
             commit(types.SET_LOGGED_STATE, true);
         });
     },

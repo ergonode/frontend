@@ -36,7 +36,7 @@ export default {
                     namespace: Privileges.CATEGORY_TREE.namespace,
                     read: Privileges.CATEGORY_TREE.read,
                 },
-                redirectTo: 'grid',
+                redirectTo: 'category-trees-grid',
             },
             children: [
                 {
@@ -57,39 +57,13 @@ export default {
             ],
         },
         {
-            name: 'category-tree-new',
-            path: '/category-trees/tree/new',
-            component: Pages.CategoryTreesNew,
-            children: [
-                {
-                    name: 'category-tree-new-general',
-                    path: 'general',
-                    component: Tabs.CategoryTreeBaseTab,
-                    meta: {
-                        title: 'General options',
-                        breadcrumbs: [
-                            {
-                                title: 'Product design',
-                                icon: Icons.Templates,
-                            },
-                            {
-                                title: 'Category trees',
-                                routePath: '/category-trees',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
-        },
-        {
             name: 'category-tree-edit-id',
             path: '/category-trees/tree/edit/:id',
             component: Pages.CategoryTreesEdit,
+            meta: {
+                isMenu: false,
+                redirectTo: 'category-tree-edit-id-general',
+            },
             children: [
                 {
                     name: 'category-tree-edit-id-general',
@@ -149,10 +123,6 @@ export default {
                     },
                 },
             ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
         },
     ],
     store: [

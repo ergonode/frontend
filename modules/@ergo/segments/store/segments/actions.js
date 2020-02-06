@@ -41,23 +41,6 @@ export default {
             }
         });
     },
-    async createSegment(
-        { commit, rootState },
-        {
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$post(`${userLanguageCode}/segments`, data).then(({ id }) => {
-            commit(types.SET_SEGMENT_ID, id);
-            onSuccess(id);
-        }).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
-    },
     async updateSegment(
         { rootState },
         {

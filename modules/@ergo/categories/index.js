@@ -34,7 +34,7 @@ export default {
                     namespace: Privileges.CATEGORY.namespace,
                     read: Privileges.CATEGORY.read,
                 },
-                redirectTo: 'grid',
+                redirectTo: 'categories-grid',
             },
             children: [
                 {
@@ -55,39 +55,13 @@ export default {
             ],
         },
         {
-            name: 'category-new',
-            path: '/categories/category/new',
-            component: Pages.CategoryNew,
-            children: [
-                {
-                    name: 'category-new-general',
-                    path: 'general',
-                    component: Tabs.CategoryBaseTab,
-                    meta: {
-                        title: 'General options',
-                        breadcrumbs: [
-                            {
-                                title: 'Product design',
-                                icon: Icons.Templates,
-                            },
-                            {
-                                title: 'Categories',
-                                routePath: '/categories',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
-        },
-        {
             name: 'category-edit-id',
             path: '/categories/category/edit/:id',
             component: Pages.CategoryEdit,
+            meta: {
+                isMenu: false,
+                redirectTo: 'category-edit-id-general',
+            },
             children: [
                 {
                     name: 'category-edit-id-general',
@@ -128,10 +102,6 @@ export default {
                     },
                 },
             ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
         },
     ],
     store: [

@@ -38,7 +38,7 @@ export const getGridData = ($axios, $cookies, path, params) => $axios
         };
     });
 
-export const getAdvancedFiltersDara = ($axios, path, params) => $axios
+export const getAdvancedFiltersData = ($axios, path, params) => $axios
     .$get(path, { params })
     .then(({
         columns,

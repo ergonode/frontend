@@ -45,11 +45,11 @@
                     </template>
                 </TemplateGridDraggableLayer>
                 <SectionTemplateModalForm
-                    :value="isSectionAdded"
+                    v-if="isSectionAdded"
                     :section-position="sectionPosition"
                     :section-title="sectionTitle"
                     :section-index="sectionIndex"
-                    @input="onCloseSectionModal" />
+                    @close="onCloseSectionModal" />
             </TemplateGridDesigner>
         </template>
     </GridViewTemplate>

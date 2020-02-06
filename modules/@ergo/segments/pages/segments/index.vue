@@ -19,7 +19,17 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalTabBar :items="tabs">
+            <template #item>
+                <HorizontalTabBarContent
+                    :is-fetching-needed="fetchGridData"
+                    @fetched="onFetchedGridData" />
+            </template>
+        </HorizontalTabBar>
+        <CreateSegmentModalForm
+            v-if="isCreateSegmentVisible"
+            @close="onCloseModal"
+            @created="onCreatedSegment" />
     </Page>
 </template>
 
@@ -35,8 +45,16 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
+        CreateSegmentModalForm: () => import('@Segments/components/Modals/CreateSegmentModalForm'),
         Button,
         IconAdd,
+    },
+    data() {
+        return {
+            isCreateSegmentVisible: false,
+            fetchGridData: false,
+        };
     },
     computed: {
         smallSize() {
@@ -48,7 +66,17 @@ export default {
     },
     methods: {
         addSegment() {
-            this.$router.push({ path: '/segments/segment/new/general' });
+            this.isCreateSegmentVisible = true;
+        },
+        onCloseModal() {
+            this.isCreateSegmentVisible = false;
+        },
+        onCreatedSegment() {
+            this.isCreateSegmentVisible = false;
+            this.fetchGridData = true;
+        },
+        onFetchedGridData() {
+            this.fetchGridData = false;
         },
     },
 };

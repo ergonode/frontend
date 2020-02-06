@@ -29,7 +29,7 @@ export default {
                 group: {
                     title: 'Products',
                     menuPosition: 2,
-                    icon: Icons.Document,
+                    icon: Icons.Product,
                 },
                 isMenu: true,
                 menuPosition: 1,
@@ -37,7 +37,7 @@ export default {
                     namespace: Privileges.PRODUCT.namespace,
                     read: Privileges.PRODUCT.read,
                 },
-                redirectTo: 'products',
+                redirectTo: 'catalog-products',
             },
             children: [
                 {
@@ -49,48 +49,22 @@ export default {
                         breadcrumbs: [
                             {
                                 title: 'Products',
-                                icon: Icons.Document,
+                                icon: Icons.Product,
                             },
                         ],
                         privileges: [],
                     },
                 },
             ],
-        },
-        {
-            name: 'product-new',
-            path: '/catalog/product/new',
-            component: Pages.ProductNew,
-            children: [
-                {
-                    name: 'product-new-general',
-                    path: 'general',
-                    component: Tabs.ProductBaseTab,
-                    meta: {
-                        title: 'General options',
-                        breadcrumbs: [
-                            {
-                                title: 'Products',
-                                icon: Icons.Document,
-                            },
-                            {
-                                title: 'Catalog',
-                                routePath: '/catalog',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
         },
         {
             name: 'product-edit-id',
             path: '/catalog/product/edit/:id',
             component: Pages.ProductEdit,
+            meta: {
+                isMenu: false,
+                redirectTo: 'product-edit-id-general',
+            },
             children: [
                 {
                     name: 'product-edit-id-general',
@@ -101,7 +75,7 @@ export default {
                         breadcrumbs: [
                             {
                                 title: 'Products',
-                                icon: Icons.Document,
+                                icon: Icons.Product,
                             },
                             {
                                 title: 'Catalog',
@@ -120,7 +94,7 @@ export default {
                         breadcrumbs: [
                             {
                                 title: 'Products',
-                                icon: Icons.Document,
+                                icon: Icons.Product,
                             },
                             {
                                 title: 'Catalog',
@@ -139,7 +113,7 @@ export default {
                         breadcrumbs: [
                             {
                                 title: 'Products',
-                                icon: Icons.Document,
+                                icon: Icons.Product,
                             },
                             {
                                 title: 'Catalog',
@@ -158,7 +132,7 @@ export default {
                         breadcrumbs: [
                             {
                                 title: 'Products',
-                                icon: Icons.Document,
+                                icon: Icons.Product,
                             },
                             {
                                 title: 'Catalog',
@@ -169,10 +143,6 @@ export default {
                     },
                 },
             ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
         },
     ],
     store: [

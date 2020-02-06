@@ -4,7 +4,6 @@
  */
 export const Pages = {
     Categories: () => import('@Categories/pages/categories/index').then(m => m.default || m),
-    CategoryNew: () => import('@Categories/pages/categories/_category/index').then(m => m.default || m),
     CategoryEdit: () => import('@Categories/pages/categories/_category/_id').then(m => m.default || m),
 };
 

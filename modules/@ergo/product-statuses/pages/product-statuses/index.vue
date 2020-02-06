@@ -12,7 +12,7 @@
                     title="NEW STATUS"
                     :size="smallSize"
                     :disabled="!$hasAccess(['WORKFLOW_CREATE'])"
-                    @click.native="addStatus">
+                    @click.native="addProductStatus">
                     <template #prepend="{ color }">
                         <IconAdd
                             :fill-color="color" />
@@ -20,7 +20,17 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalTabBar :items="tabs">
+            <template #item>
+                <HorizontalTabBarContent
+                    :is-fetching-needed="fetchGridData"
+                    @fetched="onFetchedGridData" />
+            </template>
+        </HorizontalTabBar>
+        <CreateProductStatusModalForm
+            v-if="isCreateProductStatusVisible"
+            @close="onCloseModal"
+            @created="onCreatedProductStatus" />
     </Page>
 </template>
 
@@ -36,8 +46,16 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
+        CreateProductStatusModalForm: () => import('@Statuses/components/Modals/CreateProductStatusModalForm'),
         Button,
         IconAdd,
+    },
+    data() {
+        return {
+            isCreateProductStatusVisible: false,
+            fetchGridData: false,
+        };
     },
     computed: {
         smallSize() {
@@ -48,8 +66,18 @@ export default {
         },
     },
     methods: {
-        addStatus() {
-            this.$router.push({ name: 'product-status-new-general' });
+        addProductStatus() {
+            this.isCreateProductStatusVisible = true;
+        },
+        onCloseModal() {
+            this.isCreateProductStatusVisible = false;
+        },
+        onCreatedProductStatus() {
+            this.isCreateProductStatusVisible = false;
+            this.fetchGridData = true;
+        },
+        onFetchedGridData() {
+            this.fetchGridData = false;
         },
     },
 };

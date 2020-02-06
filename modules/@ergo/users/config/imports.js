@@ -4,10 +4,8 @@
  */
 export const Pages = {
     Users: () => import('@Users/pages/users/index').then(m => m.default || m),
-    UserNew: () => import('@Users/pages/users/_user/index').then(m => m.default || m),
     UserEdit: () => import('@Users/pages/users/_user/_id').then(m => m.default || m),
     Roles: () => import('@Users/pages/roles/index').then(m => m.default || m),
-    RoleNew: () => import('@Users/pages/roles/_role/index').then(m => m.default || m),
     RoleEdit: () => import('@Users/pages/roles/_role/_id').then(m => m.default || m),
     Profile: () => import('@Users/pages/profile/index').then(m => m.default || m),
 };

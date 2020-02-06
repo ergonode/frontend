@@ -16,10 +16,6 @@ export default {
             type: String,
             required: true,
         },
-        isEdit: {
-            type: Boolean,
-            default: false,
-        },
     },
     methods: {
         onDismiss() {
@@ -28,15 +24,8 @@ export default {
         onRemove() {
             this.$emit('remove');
         },
-        onCreate() {
-            this.$emit('create');
-        },
         onSave() {
             this.$emit('save');
-        },
-        onUpdate() {
-            if (this.isEdit) this.onSave();
-            else this.onCreate();
         },
     },
 };

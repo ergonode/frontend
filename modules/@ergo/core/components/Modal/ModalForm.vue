@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ModalOverlay :value="value">
+    <ModalOverlay @close="onClose">
         <div class="modal">
             <div class="modal__header">
                 <div class="header-title">
@@ -20,9 +20,7 @@
             </div>
             <Divider />
             <div class="modal__body">
-                <Form>
-                    <slot name="body" />
-                </Form>
+                <slot name="body" />
             </div>
             <div class="modal__footer">
                 <slot name="footer" />
@@ -35,7 +33,6 @@
 import { THEMES } from '@Core/defaults/buttons';
 import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import ModalOverlay from '@Core/components/Modal/ModalOverlay';
-import Form from '@Core/components/Form/Form';
 import Divider from '@Core/components/Dividers/Divider';
 import FabButton from '@Core/components/Buttons/FabButton';
 import IconClose from '@Core/components/Icons/Window/IconClose';
@@ -44,16 +41,11 @@ export default {
     name: 'Modal',
     components: {
         ModalOverlay,
-        Form,
         Divider,
         FabButton,
         IconClose,
     },
     props: {
-        value: {
-            type: Boolean,
-            required: true,
-        },
         title: {
             type: String,
             default: '',
@@ -69,10 +61,7 @@ export default {
     },
     methods: {
         onClose() {
-            this.$emit('input', false);
-        },
-        onApply() {
-            this.$emit('apply');
+            this.$emit('close');
         },
     },
 };

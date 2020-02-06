@@ -106,7 +106,8 @@ export default {
                 : ARROW.DOWN;
         },
         isGroupActivated() {
-            return this.route.routes.some(route => this.$route.path.includes(route.path));
+            return this.route.routes.some(route => this.$route.name
+                && this.$route.name.includes(route.name));
         },
     },
     methods: {

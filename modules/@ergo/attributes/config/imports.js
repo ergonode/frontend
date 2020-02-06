@@ -4,10 +4,8 @@
  */
 export const Pages = {
     Attributes: () => import('@Attributes/pages/attributes/index').then(m => m.default || m),
-    AttributeNew: () => import('@Attributes/pages/attributes/_attribute/index').then(m => m.default || m),
     AttributeEdit: () => import('@Attributes/pages/attributes/_attribute/_id').then(m => m.default || m),
     AttributeGroups: () => import('@Attributes/pages/attribute-groups/index').then(m => m.default || m),
-    AttributeGroupNew: () => import('@Attributes/pages/attribute-groups/_group/index').then(m => m.default || m),
     AttributeGroupEdit: () => import('@Attributes/pages/attribute-groups/_group/_id').then(m => m.default || m),
 };
 

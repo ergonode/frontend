@@ -8,8 +8,8 @@
         :class="['tab-bar-item', {
             'tab-bar-item--selected': isSelected,
         }]"
-        @click.native="onLinkSelect"
-        v-text="item.title" />
+        v-text="item.title"
+        @click.native="onLinkSelect" />
 </template>
 
 <script>
@@ -45,7 +45,7 @@ export default {
         word-break: break-all;
         text-decoration: none;
 
-        &:after {
+        &::after {
             position: absolute;
             left: 0;
             bottom: 0;
@@ -57,7 +57,7 @@ export default {
             content: "";
         }
 
-        &--selected:after {
+        &--selected::after {
             opacity: 1;
         }
     }

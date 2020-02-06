@@ -19,7 +19,17 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalTabBar :items="tabs">
+            <template #item>
+                <HorizontalTabBarContent
+                    :is-fetching-needed="fetchGridData"
+                    @fetched="onFetchedGridData" />
+            </template>
+        </HorizontalTabBar>
+        <CreateProductModalForm
+            v-if="isCreateProductVisible"
+            @close="onCloseModal"
+            @created="onCreatedProduct" />
         <TrashCan v-show="draggedElementOnGrid" />
     </Page>
 </template>
@@ -38,6 +48,8 @@ export default {
         Page: () => import('@Core/components/Layout/Page'),
         TrashCan: () => import('@Core/components/DragAndDrop/TrashCan'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
+        CreateProductModalForm: () => import('@Products/components/Modals/CreateProductModalForm'),
         Button,
         IconAdd,
     },
@@ -59,6 +71,12 @@ export default {
             }),
         ]);
     },
+    data() {
+        return {
+            isCreateProductVisible: false,
+            fetchGridData: false,
+        };
+    },
     computed: {
         ...mapState('draggable', {
             draggedElementOnGrid: state => state.draggedElementOnGrid,
@@ -72,7 +90,17 @@ export default {
     },
     methods: {
         addProduct() {
-            this.$router.push({ path: '/catalog/product/new/general' });
+            this.isCreateProductVisible = true;
+        },
+        onCloseModal() {
+            this.isCreateProductVisible = false;
+        },
+        onCreatedProduct() {
+            this.isCreateProductVisible = false;
+            this.fetchGridData = true;
+        },
+        onFetchedGridData() {
+            this.fetchGridData = false;
         },
     },
 };

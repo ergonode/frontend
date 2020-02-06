@@ -112,23 +112,6 @@ export default {
             }
         }).catch(e => onError(e.data));
     },
-    async createAttribute(
-        { commit, rootState },
-        {
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$post(`${userLanguageCode}/attributes`, data).then(({ id }) => {
-            commit(types.SET_ATTRIBUTE_ID, id);
-            onSuccess(id);
-        }).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
-    },
     async updateAttribute(
         { rootState },
         {

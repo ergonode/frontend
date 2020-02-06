@@ -14,7 +14,7 @@
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave">
         <NuxtLink
-            :to="{ path: route.path }"
+            :to="{ name: route.name }"
             class="side-bar-list-element__link">
             <div class="side-bar-list-element__icon">
                 <Component

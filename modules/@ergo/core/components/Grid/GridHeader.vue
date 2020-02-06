@@ -8,7 +8,6 @@
             <div class="grid-header__actions">
                 <!--                TODO: Uncomment when mass actions are implemented-->
                 <!--                <MenuButton-->
-                <!--    :class="{'actions-button&#45;&#45;custom-theme': !isActionsSelected}"-->
                 <!--                    title="ACTIONS"-->
                 <!--      :theme="isActionsSelected ? theme.PRIMARY : theme.SECONDARY"-->
                 <!--                    :size="smallSize"-->
@@ -18,7 +17,6 @@
                 <!--                    </template>-->
                 <!--                </MenuButton>-->
                 <Button
-                    :class="{'actions-button--custom-theme': !isFiltersExpanded}"
                     :size="smallSize"
                     :theme="isFiltersExpanded ? theme.PRIMARY : theme.SECONDARY"
                     title="FILTERS"
@@ -71,19 +69,21 @@
             </div>
         </div>
         <ModalForm
+            v-if="isSettingsModal"
             title="Display settings"
-            :value="isSettingsModal"
-            @input="onDismissSettingsModal">
+            @close="onDismissSettingsModal">
             <template #body>
-                <FormGroup title="Table settings">
-                    <Select
-                        :value="rowHeightDescription"
-                        solid
-                        regular
-                        label="Row height"
-                        :options="rowHeightsDescriptions"
-                        @input="onRowHeightChange" />
-                </FormGroup>
+                <Form>
+                    <FormGroup title="Table settings">
+                        <Select
+                            :value="rowHeightDescription"
+                            solid
+                            regular
+                            label="Row height"
+                            :options="rowHeightsDescriptions"
+                            @input="onRowHeightChange" />
+                    </FormGroup>
+                </Form>
             </template>
             <template #footer>
                 <Button
@@ -134,6 +134,7 @@ export default {
     name: 'GridHeader',
     components: {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
+        Form: () => import('@Core/components/Form/Form'),
         FormGroup: () => import('@Core/components/Form/FormGroup'),
         // MenuButton: () => import('@Core/components/Buttons/MenuButton'),
         NumericBadge: () => import('@Core/components/Badges/NumericBadge'),
@@ -352,12 +353,6 @@ export default {
             .primary-badge {
                 background-color: $GREEN_DARK;
             }
-        }
-    }
-
-    .actions-button {
-        &--custom-theme {
-            background-color: $WHITESMOKE;
         }
     }
 </style>

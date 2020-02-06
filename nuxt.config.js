@@ -71,20 +71,20 @@ module.exports = {
         baseURL: BASE_URL || 'http://localhost:8000',
     },
     build: {
-        terser: {
-            parallel: true,
-            sourceMap: true,
-            exclude: /\/store/,
-            extractComments: {
-                filename: 'LICENSES',
-            },
-            terserOptions: {
-                output: {
-                    comments: /^\**!|@preserve|@license|@cc_on/,
-                },
-            },
-        },
-        hardSource: true, // TODO: check if it works correctly
+        // terser: {
+        //     parallel: true,
+        //     sourceMap: true,
+        //     exclude: /\/store/,
+        //     extractComments: {
+        //         filename: 'LICENSES',
+        //     },
+        //     terserOptions: {
+        //         output: {
+        //             comments: /^\**!|@preserve|@license|@cc_on/,
+        //         },
+        //     },
+        // },
+        // hardSource: true, // TODO: check if it works correctly
         // extractCSS: true, //TODO: check webpack CSS plugins for optimize files
         // optimizeCSS: true,
         extend(config, { isDev, isClient }) {
@@ -119,57 +119,57 @@ module.exports = {
             //     }
             // });
         },
-        optimization: {
-            runtimeChunk: 'single',
-            minimize: true,
-            splitChunks: {
-                chunks: 'all',
-                name: false,
-                maxInitialRequests: Infinity,
-                minSize: 0,
-                maxSize: 200000,
-                cacheGroups: {
-                    default: false,
-                    tests: {
-                        test(mod) {
-                            return mod.resource && /[\\/](tests|__tests__)[\\/]/.test(mod.resource);
-                        },
-                        chunks: 'all',
-                        name: 'tests',
-                        enforce: true,
-                        priority: 30,
-                    },
-                    commons: {
-                        test: /node_modules[\\/](vue|vue-loader|vue-router|vuex|vue-meta|core-js|@babel\/runtime|axios|webpack|setimmediate|timers-browserify|process|regenerator-runtime|cookie|js-cookie|is-buffer|dotprop|nuxt\.js)[\\/]/,
-                        chunks: 'all',
-                        name: 'vueLib',
-                        priority: 10,
-                    },
-                    vendors: {
-                        test: /[\\/]node_modules[\\/]/,
-                        chunks: 'all',
-                        name: 'vendors',
-                        enforce: true,
-                    },
-                    modules: {
-                        test(mod) {
-                            return mod.resource && mod.resource.includes('modules/@ergo');
-                        },
-                        chunks: 'all',
-                        name: 'modules',
-                        enforce: true,
-                        priority: -30,
-                    },
-                    styles: {
-                        test: /\.(css|scss|sass)$/,
-                        name: 'styles',
-                        chunks: 'all',
-                        enforce: true,
-                    },
-                    ...NUXT_CONFIG.chunks,
-                },
-            },
-        },
+        // optimization: {
+        //     runtimeChunk: 'single',
+        //     minimize: true,
+        //     splitChunks: {
+        //         chunks: 'all',
+        //         name: false,
+        //         maxInitialRequests: Infinity,
+        //         minSize: 0,
+        //         maxSize: 200000,
+        //         cacheGroups: {
+        //             default: false,
+        //             tests: {
+        //                 test(mod) {
+        //                     return mod.resource && /[\\/](tests|__tests__)[\\/]/.test(mod.resource);
+        //                 },
+        //                 chunks: 'all',
+        //                 name: 'tests',
+        //                 enforce: true,
+        //                 priority: 30,
+        //             },
+        //             commons: {
+        //                 test: /node_modules[\\/](vue|vue-loader|vue-router|vuex|vue-meta|core-js|@babel\/runtime|axios|webpack|setimmediate|timers-browserify|process|regenerator-runtime|cookie|js-cookie|is-buffer|dotprop|nuxt\.js)[\\/]/,
+        //                 chunks: 'all',
+        //                 name: 'vueLib',
+        //                 priority: 10,
+        //             },
+        //             vendors: {
+        //                 test: /[\\/]node_modules[\\/]/,
+        //                 chunks: 'all',
+        //                 name: 'vendors',
+        //                 enforce: true,
+        //             },
+        //             modules: {
+        //                 test(mod) {
+        //                     return mod.resource && mod.resource.includes('modules/@ergo');
+        //                 },
+        //                 chunks: 'all',
+        //                 name: 'modules',
+        //                 enforce: true,
+        //                 priority: -30,
+        //             },
+        //             styles: {
+        //                 test: /\.(css|scss|sass)$/,
+        //                 name: 'styles',
+        //                 chunks: 'all',
+        //                 enforce: true,
+        //             },
+        //             ...NUXT_CONFIG.chunks,
+        //         },
+        //     },
+        // },
     },
     vue: {
         config: {

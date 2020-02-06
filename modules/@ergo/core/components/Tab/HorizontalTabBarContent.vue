@@ -7,18 +7,14 @@
         :key="$route.name"
         class="tab-content"
         keep-alive
-        v-bind="item.props" />
+        v-bind="$attrs"
+        v-on="$listeners" />
 </template>
 
 <script>
 export default {
-    name: 'HorizontalTabContent',
-    props: {
-        item: {
-            type: Object,
-            required: true,
-        },
-    },
+    name: 'HorizontalTabBarContent',
+    inheritAttrs: false,
 };
 </script>
 

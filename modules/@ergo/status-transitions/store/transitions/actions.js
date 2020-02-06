@@ -51,20 +51,6 @@ export default {
             }
         });
     },
-    async createTransition(
-        { rootState },
-        {
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$post(`${userLanguageCode}/workflow/default/transitions`, data).then(() => onSuccess()).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
-    },
     async updateTransition(
         { state, rootState },
         {

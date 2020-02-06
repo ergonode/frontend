@@ -81,9 +81,6 @@ export default {
             'setRequestTimeout',
             'invalidateRequestTimeout',
         ]),
-        onStateChange(value) {
-            this.sideBarState = value;
-        },
     },
 };
 </script>

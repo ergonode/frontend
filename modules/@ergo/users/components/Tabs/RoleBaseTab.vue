@@ -6,14 +6,14 @@
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
             <VerticalFixedScroll>
-                <UserRolesForm />
+                <UserRoleForm />
             </VerticalFixedScroll>
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
-import UserRolesForm from '@Users/components/Forms/UserRolesForm';
+import UserRoleForm from '@Users/components/Forms/UserRoleForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 
@@ -22,7 +22,7 @@ export default {
     components: {
         VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
-        UserRolesForm,
+        UserRoleForm,
     },
 };
 </script>

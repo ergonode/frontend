@@ -36,7 +36,7 @@ export default {
                     namespace: Privileges.USER.namespace,
                     read: Privileges.USER.read,
                 },
-                redirectTo: 'grid',
+                redirectTo: 'activity-logs-grid',
             },
             children: [
                 {

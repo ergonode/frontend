@@ -4,7 +4,6 @@
  */
 export const Pages = {
     Segments: () => import('@Segments/pages/segments/index').then(m => m.default || m),
-    SegmentNew: () => import('@Segments/pages/segments/_segment/index').then(m => m.default || m),
     SegmentEdit: () => import('@Segments/pages/segments/_segment/_id').then(m => m.default || m),
 };
 
