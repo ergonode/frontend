@@ -11,5 +11,6 @@ export default function ({ $axios, $store }) {
         destination: destination.key,
         roles: roles.map(role => role.key),
     };
+
     return $axios.$post(`${language}/workflow/default/transitions`, data);
 }

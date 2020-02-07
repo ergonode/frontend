@@ -6,5 +6,6 @@
 export default function ({ $axios, $store }) {
     const { language } = $store.state.authentication.user;
     const { title, image } = $store.state.templateDesigner;
+
     return $axios.$post(`${language}/templates`, { name: title, image });
 }
