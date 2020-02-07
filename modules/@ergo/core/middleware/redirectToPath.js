@@ -7,13 +7,12 @@ import { isEmpty } from '@Core/models/objectWrapper';
 export default ({
     route, redirect,
 }) => {
-    const { matched, name, path } = route;
-    const clearPath = path.replace(/\/$/, '');
+    const { matched, name } = route;
     const routeMatched = matched.find(
         match => match.name === name,
     );
 
     if (routeMatched && !isEmpty(routeMatched.meta) && routeMatched.meta.redirectTo) {
-        redirect(`${clearPath}/${routeMatched.meta.redirectTo}`);
+        redirect({ name: routeMatched.meta.redirectTo });
     }
 };

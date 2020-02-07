@@ -8,7 +8,9 @@
             v-for="index in optionIndexes"
             :key="index"
             class="option">
-            <IconDelete @click.native="removeAttributeOptionKey(index)" />
+            <IconDelete
+                class="option__remove-icon"
+                @click.native="removeAttributeOptionKey(index)" />
             <TextField
                 :value="options[index].key"
                 solid
@@ -19,16 +21,25 @@
                 @input="value => updateAttributeOptionKey({ index, key: value })" />
         </li>
         <div
-            class="add-option-wrapper"
-            @click="addOptionKey">
-            <IconAdd />
-            <span class="font--medium-12-16">Add option</span>
+            class="options__add"
+            ref="addOption">
+            <Button
+                title="Add option"
+                :size="smallSize"
+                :theme="secondaryTheme"
+                @click.native="addOptionKey">
+                <template #prepend="{ color }">
+                    <IconAdd :fill-color="color" />
+                </template>
+            </Button>
         </div>
     </ul>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { SIZES, THEMES } from '@Core/defaults/buttons';
+
 
 export default {
     name: 'AttributeOptionKeyValues',
@@ -36,6 +47,7 @@ export default {
         TextField: () => import('@Core/components/Inputs/TextField'),
         IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
+        Button: () => import('@Core/components/Buttons/Button'),
     },
     props: {
         disabled: {
@@ -50,6 +62,12 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
+        smallSize() {
+            return SIZES.SMALL;
+        },
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
         optionIndexes() {
             return Object.keys(this.options);
         },
@@ -64,6 +82,7 @@ export default {
             'addMultilingualOptionTranslation',
         ]),
         addOptionKey() {
+            this.$refs.addOption.scrollIntoView(true);
             this.addAttributeOptionKey(Object.keys(this.options).length);
         },
     },
@@ -72,9 +91,14 @@ export default {
 
 <style lang="scss" scoped>
     .options {
+        position: relative;
         display: grid;
         padding: 16px 0;
         grid-gap: 8px;
+
+        &__add {
+            margin-left: 32px;
+        }
 
         &--disabled {
             pointer-events: none;
@@ -84,17 +108,8 @@ export default {
             display: grid;
             grid-template-columns: 32px auto;
             align-items: center;
-        }
 
-        .add-option-wrapper {
-            display: flex;
-            align-items: center;
-            margin-left: 28px;
-            cursor: pointer;
-
-            & > label {
-                margin-left: 4px;
-                color: $GRAPHITE;
+            &__remove-icon {
                 cursor: pointer;
             }
         }

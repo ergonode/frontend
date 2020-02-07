@@ -4,7 +4,6 @@
  */
 export const Pages = {
     Products: () => import('@Products/pages/catalog/index').then(m => m.default || m),
-    ProductNew: () => import('@Products/pages/catalog/_product/index').then(m => m.default || m),
     ProductEdit: () => import('@Products/pages/catalog/_product/_id').then(m => m.default || m),
 };
 
@@ -17,5 +16,5 @@ export const Tabs = {
 };
 
 export const Icons = {
-    Document: () => import('@Core/components/Icons/Menu/IconDocument'),
+    Product: () => import('@Core/components/Icons/Menu/IconProduct'),
 };

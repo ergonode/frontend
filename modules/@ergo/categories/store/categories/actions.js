@@ -26,23 +26,6 @@ export default {
             dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onError);
     },
-    async createCategory(
-        { commit, rootState },
-        {
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$post(`${userLanguageCode}/categories`, data).then(({ id }) => {
-            commit(types.SET_ID, id);
-            onSuccess(id);
-        }).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
-    },
     async updateCategory(
         { rootState },
         {

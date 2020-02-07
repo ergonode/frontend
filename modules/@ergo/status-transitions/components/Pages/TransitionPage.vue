@@ -9,9 +9,7 @@
             :is-navigation-back="true"
             :is-read-only="$isReadOnly('WORKFLOW')"
             @navigateBack="onDismiss">
-            <template
-                v-if="isEdit"
-                #mainAction>
+            <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
@@ -27,9 +25,9 @@
         <HorizontalTabBar :items="tabs" />
         <Footer>
             <Button
-                :title="isEdit ? 'SAVE TRANSITION' : 'CREATE TRANSITION'"
+                title="SAVE TRANSITION"
                 :disabled="$isLoading('footerButton')"
-                @click.native="onUpdate" />
+                @click.native="onSave" />
         </Footer>
         <Blur
             v-show="isBlurVisible"

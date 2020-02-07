@@ -56,7 +56,7 @@ export default {
                     namespace: Privileges.ATTRIBUTE.namespace,
                     read: Privileges.ATTRIBUTE.read,
                 },
-                redirectTo: 'grid',
+                redirectTo: 'attributes-grid',
             },
             children: [
                 {
@@ -77,39 +77,13 @@ export default {
             ],
         },
         {
-            name: 'attribute-new',
-            path: '/attributes/attribute/new',
-            component: Pages.AttributeNew,
-            children: [
-                {
-                    name: 'attribute-new-general',
-                    path: 'general',
-                    component: Tabs.AttributeBaseTab,
-                    meta: {
-                        title: 'General options',
-                        breadcrumbs: [
-                            {
-                                title: 'Product design',
-                                icon: Icons.Templates,
-                            },
-                            {
-                                title: 'Attributes',
-                                routePath: '/attributes',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
-        },
-        {
             name: 'attribute-edit-id',
             path: '/attributes/attribute/edit/:id',
             component: Pages.AttributeEdit,
+            meta: {
+                isMenu: false,
+                redirectTo: 'attribute-edit-id-general',
+            },
             children: [
                 {
                     name: 'attribute-edit-id-general',
@@ -150,10 +124,6 @@ export default {
                     },
                 },
             ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
         },
         {
             name: 'attribute-groups',
@@ -173,7 +143,7 @@ export default {
                     namespace: Privileges.ATTRIBUTE_GROUP.namespace,
                     read: Privileges.ATTRIBUTE_GROUP.read,
                 },
-                redirectTo: 'grid',
+                redirectTo: 'attribute-groups-grid',
             },
             children: [
                 {
@@ -194,39 +164,13 @@ export default {
             ],
         },
         {
-            name: 'attribute-group-new',
-            path: '/attribute-groups/group/new',
-            component: Pages.AttributeGroupNew,
-            children: [
-                {
-                    name: 'attribute-group-new-general',
-                    path: 'general',
-                    component: Tabs.AttributeGroupBaseTab,
-                    meta: {
-                        title: 'General options',
-                        breadcrumbs: [
-                            {
-                                title: 'Product design',
-                                icon: Icons.Templates,
-                            },
-                            {
-                                title: 'Attribute groups',
-                                routePath: '/attribute-groups',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
-        },
-        {
             name: 'attribute-group-edit-id',
             path: '/attribute-groups/group/edit/:id',
             component: Pages.AttributeGroupEdit,
+            meta: {
+                isMenu: false,
+                redirectTo: 'attribute-group-edit-id-general',
+            },
             children: [
                 {
                     name: 'attribute-group-edit-id-general',
@@ -267,10 +211,6 @@ export default {
                     },
                 },
             ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
         },
     ],
     store: [

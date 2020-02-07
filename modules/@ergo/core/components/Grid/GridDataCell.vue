@@ -43,7 +43,7 @@ import { hasParams } from '@Attributes/models/attributeTypes';
 import { COLUMN_TYPE } from '@Core/defaults/grid';
 import GridPresentationCell from '@Core/components/Grid/PresentationCells/GridPresentationCell';
 
-const getMappedDraftValuesModule = () => import('@Core/models/mappers/getMappedDraftValues');
+const getMappedDraftValues = () => import('@Core/models/mappers/getMappedDraftValues');
 
 export default {
     name: 'GridDataCell',
@@ -190,7 +190,7 @@ export default {
             const rowIndex = this.rowIds.findIndex(id => id === this.rowId);
             const offset = from.row - rowIndex;
 
-            getMappedDraftValuesModule().then((response) => {
+            getMappedDraftValues().then((response) => {
                 const {
                     apiData,
                     presentationValue,
@@ -248,7 +248,7 @@ export default {
                 return;
             }
 
-            getMappedDraftValuesModule().then((response) => {
+            getMappedDraftValues().then((response) => {
                 const {
                     apiData,
                     presentationValue,

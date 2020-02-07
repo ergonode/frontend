@@ -19,7 +19,17 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalTabBar :items="tabs">
+            <template #item>
+                <HorizontalTabBarContent
+                    :is-fetching-needed="fetchGridData"
+                    @fetched="onFetchedGridData" />
+            </template>
+        </HorizontalTabBar>
+        <CreateUserModalForm
+            v-if="isCreateUserVisible"
+            @close="onCloseModal"
+            @created="onCreatedUser" />
     </Page>
 </template>
 
@@ -35,8 +45,16 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
+        CreateUserModalForm: () => import('@Users/components/Modals/CreateUserModalForm'),
         Button,
         IconAdd,
+    },
+    data() {
+        return {
+            isCreateUserVisible: false,
+            fetchGridData: false,
+        };
     },
     computed: {
         smallSize() {
@@ -51,7 +69,17 @@ export default {
     },
     methods: {
         addUser() {
-            this.$router.push({ name: 'user-new-general' });
+            this.isCreateUserVisible = true;
+        },
+        onCloseModal() {
+            this.isCreateUserVisible = false;
+        },
+        onCreatedUser() {
+            this.isCreateUserVisible = false;
+            this.fetchGridData = true;
+        },
+        onFetchedGridData() {
+            this.fetchGridData = false;
         },
     },
 };

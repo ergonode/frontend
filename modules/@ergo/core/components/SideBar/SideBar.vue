@@ -169,18 +169,10 @@ export default {
 
         &--expanded {
             width: 256px;
-
-            #{$sidebar}__expand-button {
-                transform: translateX(200px);
-            }
         }
 
         &:not(&--expanded) {
             width: 80px;
-
-            #{$sidebar}__expand-button {
-                transform: translateX(24px);
-            }
         }
 
         &__menu {
@@ -189,6 +181,7 @@ export default {
 
         &__expand-button {
             position: sticky;
+            left: 24px;
             bottom: 20px;
             width: 32px;
             border-radius: 16px;

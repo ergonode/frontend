@@ -44,7 +44,7 @@ export default {
                     namespace: Privileges.USER.namespace,
                     read: Privileges.USER.read,
                 },
-                redirectTo: 'grid',
+                redirectTo: 'users-grid',
             },
             children: [
                 {
@@ -65,39 +65,13 @@ export default {
             ],
         },
         {
-            name: 'user-new',
-            path: '/users/user/new',
-            component: Pages.UserNew,
-            children: [
-                {
-                    name: 'user-new-general',
-                    path: 'general',
-                    component: Tabs.UserBaseTab,
-                    meta: {
-                        title: 'General options',
-                        breadcrumbs: [
-                            {
-                                title: 'System',
-                                icon: Icons.Settings,
-                            },
-                            {
-                                title: 'Users',
-                                routePath: '/users',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
-        },
-        {
             name: 'user-edit-id',
             path: '/users/user/edit/:id',
             component: Pages.UserEdit,
+            meta: {
+                isMenu: false,
+                redirectTo: 'user-edit-id-general',
+            },
             children: [
                 {
                     name: 'user-edit-id-general',
@@ -138,10 +112,6 @@ export default {
                     },
                 },
             ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
         },
         {
             name: 'user-roles',
@@ -161,7 +131,7 @@ export default {
                     namespace: Privileges.USER_ROLE.namespace,
                     read: Privileges.USER_ROLE.read,
                 },
-                redirectTo: 'grid',
+                redirectTo: 'user-roles-grid',
             },
             children: [
                 {
@@ -182,39 +152,13 @@ export default {
             ],
         },
         {
-            name: 'user-role-new',
-            path: '/user-roles/role/new',
-            component: Pages.RoleNew,
-            children: [
-                {
-                    name: 'user-role-new-general',
-                    path: 'general',
-                    component: Tabs.RoleBaseTab,
-                    meta: {
-                        title: 'General options',
-                        breadcrumbs: [
-                            {
-                                title: 'System',
-                                icon: Icons.Settings,
-                            },
-                            {
-                                title: 'User roles',
-                                routePath: '/user-roles',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
-        },
-        {
             name: 'user-role-edit-id',
             path: '/user-roles/role/edit/:id',
             component: Pages.RoleEdit,
+            meta: {
+                isMenu: false,
+                redirectTo: 'user-role-edit-id-general',
+            },
             children: [
                 {
                     name: 'user-role-edit-id-general',
@@ -255,15 +199,15 @@ export default {
                     },
                 },
             ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
         },
         {
             name: 'profile',
             path: '/profile',
             component: Pages.Profile,
+            meta: {
+                isMenu: false,
+                redirectTo: 'profile-activity-log-grid',
+            },
             children: [
                 {
                     name: 'profile-activity-log-grid',
@@ -284,10 +228,6 @@ export default {
                     },
                 },
             ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'activity-log-grid',
-            },
         },
     ],
     store: [

@@ -29,7 +29,7 @@ export default {
                 group: {
                     title: 'Products',
                     menuPosition: 2,
-                    icon: Icons.Document,
+                    icon: Icons.Product,
                 },
                 isMenu: true,
                 menuPosition: 2,
@@ -37,7 +37,7 @@ export default {
                     namespace: Privileges.SEGMENT.namespace,
                     read: Privileges.SEGMENT.read,
                 },
-                redirectTo: 'grid',
+                redirectTo: 'segments-grid',
             },
             children: [
                 {
@@ -49,48 +49,22 @@ export default {
                         breadcrumbs: [
                             {
                                 title: 'Products',
-                                icon: Icons.Document,
+                                icon: Icons.Product,
                             },
                         ],
                         privileges: [],
                     },
                 },
             ],
-        },
-        {
-            name: 'segment-new',
-            path: '/segments/segment/new',
-            component: Pages.SegmentNew,
-            children: [
-                {
-                    name: 'segment-new-general',
-                    path: 'general',
-                    component: Tabs.SegmentBaseTab,
-                    meta: {
-                        title: 'General options',
-                        breadcrumbs: [
-                            {
-                                title: 'Products',
-                                icon: Icons.Document,
-                            },
-                            {
-                                title: 'Segments',
-                                routePath: '/segments',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
         },
         {
             name: 'segment-edit-id',
             path: '/segments/segment/edit/:id',
             component: Pages.SegmentEdit,
+            meta: {
+                isMenu: false,
+                redirectTo: 'segment-edit-id-general',
+            },
             children: [
                 {
                     name: 'segment-edit-id-general',
@@ -101,7 +75,7 @@ export default {
                         breadcrumbs: [
                             {
                                 title: 'Products',
-                                icon: Icons.Document,
+                                icon: Icons.Product,
                             },
                             {
                                 title: 'Segments',
@@ -120,7 +94,7 @@ export default {
                         breadcrumbs: [
                             {
                                 title: 'Products',
-                                icon: Icons.Document,
+                                icon: Icons.Product,
                             },
                             {
                                 title: 'Segments',
@@ -139,7 +113,7 @@ export default {
                         breadcrumbs: [
                             {
                                 title: 'Products',
-                                icon: Icons.Document,
+                                icon: Icons.Product,
                             },
                             {
                                 title: 'Segments',
@@ -150,10 +124,6 @@ export default {
                     },
                 },
             ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
         },
     ],
     store: [

@@ -61,17 +61,6 @@ export default {
             name: 'settings',
             path: '/settings',
             component: Pages.Settings,
-            children: [
-                {
-                    name: 'settings-main',
-                    path: 'main',
-                    component: Tabs.MainSettingsTab,
-                    meta: {
-                        title: 'Main settings',
-                        privileges: [],
-                    },
-                },
-            ],
             meta: {
                 access: true,
                 title: 'Settings',
@@ -88,8 +77,19 @@ export default {
                 ],
                 isMenu: true,
                 menuPosition: 1000,
-                redirectTo: 'main',
+                redirectTo: 'settings-main',
             },
+            children: [
+                {
+                    name: 'settings-main',
+                    path: 'main',
+                    component: Tabs.MainSettingsTab,
+                    meta: {
+                        title: 'Main settings',
+                        privileges: [],
+                    },
+                },
+            ],
         },
     ],
     store: [

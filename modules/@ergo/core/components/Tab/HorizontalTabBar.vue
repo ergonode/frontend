@@ -15,7 +15,12 @@
                 :item="item"
                 @select="onSelectTabBarItem" />
         </div>
-        <HorizontalTabContent :item="items[selectedTabIndex] || {}" />
+        <slot
+            name="item"
+            v-if="items.length"
+            :item="items[selectedTabIndex]">
+            <HorizontalTabBarContent />
+        </slot>
     </div>
 </template>
 
@@ -23,7 +28,7 @@
 export default {
     name: 'HorizontalTabBar',
     components: {
-        HorizontalTabContent: () => import('@Core/components/Tab/HorizontalTabContent'),
+        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
         HorizontalTabBarItem: () => import('@Core/components/Tab/HorizontalTabBarItem'),
     },
     props: {

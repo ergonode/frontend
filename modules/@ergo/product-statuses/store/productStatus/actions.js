@@ -57,20 +57,6 @@ export default {
         }
         return null;
     },
-    async createProductStatus({ commit, state, rootState }, { onSuccess, onError }) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-        const data = {
-            code: state.code,
-            color: state.color,
-        };
-
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$post(`${userLanguageCode}/status`, data).then(({ id }) => {
-            commit(types.SET_STATUS_ID, id);
-            onSuccess(id);
-        }).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
-    },
     async updateProductStatus({ commit, state, rootState }, { onError }) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { translations } = rootState.translations;

@@ -11,7 +11,7 @@ export default ({ app }, inject) => {
     });
     const hasAccess = (privileges) => {
         const { user } = app.store.state.authentication;
-        return user && privileges.every(privilege => user.privileges.includes(privilege));
+        return user && privileges.every(privilege => user.privileges[privilege]);
     };
     const isReadOnly = (prefix) => {
         const types = privilegesTypes(prefix);
@@ -19,7 +19,7 @@ export default ({ app }, inject) => {
         const { user } = app.store.state.authentication;
 
         return hasAccess([types.READ])
-          && !(user && privileges.some(privilege => user.privileges.includes(privilege)));
+          && !(user && privileges.some(privilege => user.privileges[privilege]));
     };
 
     inject('hasAccess', privileges => hasAccess(privileges));

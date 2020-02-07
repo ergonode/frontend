@@ -19,7 +19,17 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalTabBar :items="tabs">
+            <template #item>
+                <HorizontalTabBarContent
+                    :is-fetching-needed="fetchGridData"
+                    @fetched="onFetchedGridData" />
+            </template>
+        </HorizontalTabBar>
+        <CreateStatusTransitionModalForm
+            v-if="isCreateStatusTransitionVisible"
+            @close="onCloseModal"
+            @created="onCreatedStatusTransition" />
     </Page>
 </template>
 
@@ -36,8 +46,16 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
+        CreateStatusTransitionModalForm: () => import('@Transitions/components/Modals/CreateStatusTransitionModalForm'),
         Button,
         IconAdd,
+    },
+    data() {
+        return {
+            isCreateStatusTransitionVisible: false,
+            fetchGridData: false,
+        };
     },
     computed: {
         smallSize() {
@@ -49,7 +67,17 @@ export default {
     },
     methods: {
         addStatusTransition() {
-            this.$router.push({ name: 'transition-new-general' });
+            this.isCreateStatusTransitionVisible = true;
+        },
+        onCloseModal() {
+            this.isCreateStatusTransitionVisible = false;
+        },
+        onCreatedStatusTransition() {
+            this.isCreateStatusTransitionVisible = false;
+            this.fetchGridData = true;
+        },
+        onFetchedGridData() {
+            this.fetchGridData = false;
         },
     },
 };

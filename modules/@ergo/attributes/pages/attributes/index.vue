@@ -14,13 +14,22 @@
                     :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
                     @click.native="addAttribute">
                     <template #prepend="{ color }">
-                        <IconAdd
-                            :fill-color="color" />
+                        <IconAdd :fill-color="color" />
                     </template>
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalTabBar :items="tabs">
+            <template #item>
+                <HorizontalTabBarContent
+                    :is-fetching-needed="fetchGridData"
+                    @fetched="onFetchedGridData" />
+            </template>
+        </HorizontalTabBar>
+        <CreateAttributeModalForm
+            v-if="isCreateAttributeVisible"
+            @close="onCloseModal"
+            @created="onCreatedAttribute" />
     </Page>
 </template>
 
@@ -36,8 +45,16 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
+        CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
         Button,
         IconAdd,
+    },
+    data() {
+        return {
+            isCreateAttributeVisible: false,
+            fetchGridData: false,
+        };
     },
     computed: {
         smallSize() {
@@ -52,7 +69,17 @@ export default {
     },
     methods: {
         addAttribute() {
-            this.$router.push({ name: 'attribute-new-general' });
+            this.isCreateAttributeVisible = true;
+        },
+        onCloseModal() {
+            this.isCreateAttributeVisible = false;
+        },
+        onCreatedAttribute() {
+            this.isCreateAttributeVisible = false;
+            this.fetchGridData = true;
+        },
+        onFetchedGridData() {
+            this.fetchGridData = false;
         },
     },
 };

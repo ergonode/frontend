@@ -5,8 +5,9 @@
 <template>
     <FadeTransition>
         <div
-            v-if="value"
-            class="dialog-overlay">
+            v-if="isMounted"
+            class="dialog-overlay"
+            @click="onClick">
             <slot />
         </div>
     </FadeTransition>
@@ -20,10 +21,19 @@ export default {
     components: {
         FadeTransition,
     },
-    props: {
-        value: {
-            type: Boolean,
-            required: true,
+    data() {
+        return {
+            isMounted: false,
+        };
+    },
+    mounted() {
+        this.isMounted = true;
+    },
+    methods: {
+        onClick(event) {
+            if (event.target.classList.contains('dialog-overlay')) {
+                this.$emit('close');
+            }
         },
     },
 };

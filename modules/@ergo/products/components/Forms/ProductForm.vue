@@ -10,7 +10,7 @@
                 hint="Products SKU must be unique"
                 solid
                 regular
-                label="Sku"
+                label="SKU"
                 required
                 :error-messages="errorSkuMessage"
                 :disabled="isDisabled || isDisabledByPrivileges"
@@ -20,7 +20,7 @@
                 :solid="true"
                 :required="true"
                 :regular="true"
-                label="Template"
+                label="Product template"
                 :error-messages="errorTemplateMessage"
                 :options="templateOptions"
                 :disabled="isDisabled || isDisabledByPrivileges"

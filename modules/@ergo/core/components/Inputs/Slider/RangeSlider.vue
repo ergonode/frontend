@@ -27,8 +27,8 @@
 
 <script>
 
-const registerResizeEventListenersModule = () => import('@Core/models/resize/registerResizeEventListeners');
-const unregisterResizeEventListenersModule = () => import('@Core/models/resize/unregisterResizeEventListeners');
+const registerResizeEventListeners = () => import('@Core/models/resize/registerResizeEventListeners');
+const unregisterResizeEventListeners = () => import('@Core/models/resize/unregisterResizeEventListeners');
 
 export default {
     name: 'RangeSlider',
@@ -75,7 +75,7 @@ export default {
     methods: {
         initResizeDrag(event) {
             this.isDraggingUpperSphere = event.target.classList.contains('slider__upper-sphere');
-            registerResizeEventListenersModule().then((response) => {
+            registerResizeEventListeners().then((response) => {
                 response.default(this.doResizeDrag, this.stopResizeDrag);
             });
         },
@@ -103,7 +103,7 @@ export default {
             }
         },
         stopResizeDrag() {
-            unregisterResizeEventListenersModule().then((response) => {
+            unregisterResizeEventListeners().then((response) => {
                 response.default(this.doResizeDrag, this.stopResizeDrag);
             });
         },

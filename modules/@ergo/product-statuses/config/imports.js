@@ -4,7 +4,6 @@
  */
 export const Pages = {
     ProductStatuses: () => import('@Statuses/pages/product-statuses/index').then(m => m.default || m),
-    ProductStatusNew: () => import('@Statuses/pages/product-statuses/_status/index').then(m => m.default || m),
     ProductStatusEdit: () => import('@Statuses/pages/product-statuses/_status/_id').then(m => m.default || m),
 };
 

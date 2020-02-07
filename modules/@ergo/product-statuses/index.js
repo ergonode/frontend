@@ -33,7 +33,7 @@ export default {
                     namespace: Privileges.WORKFLOW.namespace,
                     read: Privileges.WORKFLOW.read,
                 },
-                redirectTo: 'grid',
+                redirectTo: 'product-statuses-grid',
             },
             children: [
                 {
@@ -54,39 +54,13 @@ export default {
             ],
         },
         {
-            name: 'product-status-new',
-            path: '/product-statuses/status/new',
-            component: Pages.ProductStatusNew,
-            children: [
-                {
-                    name: 'product-status-new-general',
-                    path: 'general',
-                    component: Tabs.ProductStatusBaseTab,
-                    meta: {
-                        title: 'General options',
-                        breadcrumbs: [
-                            {
-                                title: 'Workflow',
-                                icon: Icons.Flow,
-                            },
-                            {
-                                title: 'Product statuses',
-                                routePath: '/product-statuses',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
-        },
-        {
             name: 'product-status-edit-id',
             path: '/product-statuses/status/edit/:id',
             component: Pages.ProductStatusEdit,
+            meta: {
+                isMenu: false,
+                redirectTo: 'product-status-edit-id-general',
+            },
             children: [
                 {
                     name: 'product-status-edit-id-general',
@@ -127,10 +101,6 @@ export default {
                     },
                 },
             ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
         },
     ],
     store: [

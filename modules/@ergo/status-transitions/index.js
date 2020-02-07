@@ -37,7 +37,7 @@ export default {
                     namespace: Privileges.WORKFLOW.namespace,
                     read: Privileges.WORKFLOW.read,
                 },
-                redirectTo: 'grid',
+                redirectTo: 'status-transitions-grid',
             },
             children: [
                 {
@@ -58,39 +58,13 @@ export default {
             ],
         },
         {
-            name: 'transition-new',
-            path: '/status-transitions/transition/new',
-            component: Pages.StatusTransitionNew,
-            children: [
-                {
-                    name: 'transition-new-general',
-                    path: 'general',
-                    component: Tabs.StatusTransitionBaseTab,
-                    meta: {
-                        title: 'General options',
-                        breadcrumbs: [
-                            {
-                                title: 'Workflow',
-                                icon: Icons.Flow,
-                            },
-                            {
-                                title: 'Status transitions',
-                                routePath: '/status-transitions',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
-        },
-        {
             name: 'transition-edit-source-destination',
             path: '/status-transitions/transition/edit/:id',
             component: Pages.StatusTransitionEdit,
+            meta: {
+                isMenu: false,
+                redirectTo: 'transition-edit-id-general',
+            },
             children: [
                 {
                     name: 'transition-edit-id-general',
@@ -131,10 +105,6 @@ export default {
                     },
                 },
             ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'general',
-            },
         },
     ],
     store: [
