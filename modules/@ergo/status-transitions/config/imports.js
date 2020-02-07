@@ -4,7 +4,6 @@
  */
 export const Pages = {
     StatusTransitions: () => import('@Transitions/pages/status-transitions/index').then(m => m.default || m),
-    StatusTransitionNew: () => import('@Transitions/pages/status-transitions/_transition/index').then(m => m.default || m),
     StatusTransitionEdit: () => import('@Transitions/pages/status-transitions/_transition/_id').then(m => m.default || m),
 };
 

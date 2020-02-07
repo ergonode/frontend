@@ -19,7 +19,17 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalTabBar :items="tabs">
+            <template #item>
+                <HorizontalTabBarContent
+                    :is-fetching-needed="fetchGridData"
+                    @fetched="onFetchedGridData" />
+            </template>
+        </HorizontalTabBar>
+        <CreateAttributeGroupModalForm
+            v-if="isCreateAttributeGroupVisible"
+            @close="onCloseModal"
+            @created="onCreatedAttributeGroup" />
     </Page>
 </template>
 
@@ -35,8 +45,16 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
+        CreateAttributeGroupModalForm: () => import('@Attributes/components/Modals/CreateAttributeGroupModalForm'),
         Button,
         IconAdd,
+    },
+    data() {
+        return {
+            isCreateAttributeGroupVisible: false,
+            fetchGridData: false,
+        };
     },
     computed: {
         smallSize() {
@@ -51,7 +69,17 @@ export default {
     },
     methods: {
         addAttributeGroup() {
-            this.$router.push({ name: 'attribute-group-new-general' });
+            this.isCreateAttributeGroupVisible = true;
+        },
+        onCloseModal() {
+            this.isCreateAttributeGroupVisible = false;
+        },
+        onCreatedAttributeGroup() {
+            this.isCreateAttributeGroupVisible = false;
+            this.fetchGridData = true;
+        },
+        onFetchedGridData() {
+            this.fetchGridData = false;
         },
     },
 };

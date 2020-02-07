@@ -65,7 +65,7 @@ export function getMappedGridData(privileges, rolePrivileges) {
             }
 
             rows[rowIndex - 1][rolePrivilegeType] = {
-                value: rolePrivileges.includes(rolePrivilege),
+                value: Boolean(rolePrivileges[rolePrivilege]),
             };
         }
     }

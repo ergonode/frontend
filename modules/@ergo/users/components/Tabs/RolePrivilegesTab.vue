@@ -10,7 +10,8 @@
                 :columns="columns"
                 :cell-values="cellValues"
                 :row-ids="rowIds"
-                :is-select-column="true">
+                :is-select-column="true"
+                :is-footer-visible="false">
                 <template #headerSelectAllRowsCell="{ row, column }">
                     <GridCell
                         editing-allowed

@@ -9,9 +9,7 @@
             :is-navigation-back="true"
             :is-read-only="$isReadOnly('SEGMENT')"
             @navigateBack="onDismiss">
-            <template
-                v-if="isEdit"
-                #mainAction>
+            <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
@@ -28,9 +26,9 @@
         <HorizontalTabBar :items="tabs" />
         <Footer>
             <Button
-                :title="isEdit ? 'SAVE SEGMENT' : 'CREATE SEGMENT'"
+                title="SAVE SEGMENT"
                 :disabled="$isLoading('footerButton')"
-                @click.native="onUpdate" />
+                @click.native="onSave" />
         </Footer>
         <Blur
             v-show="isBlurVisible"

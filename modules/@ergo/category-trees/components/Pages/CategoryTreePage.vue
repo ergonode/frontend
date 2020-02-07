@@ -9,9 +9,7 @@
             :is-navigation-back="true"
             :is-read-only="$isReadOnly('CATEGORY_TREE')"
             @navigateBack="onDismiss">
-            <template
-                v-if="isEdit"
-                #mainAction>
+            <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
@@ -28,9 +26,9 @@
         <HorizontalTabBar :items="tabs" />
         <Footer>
             <Button
-                :title="isEdit ? 'SAVE TREE' : 'CREATE TREE'"
+                title="SAVE TREE"
                 :disabled="$isLoading('footerButton')"
-                @click.native="onUpdate" />
+                @click.native="onSave" />
         </Footer>
         <Blur
             v-show="isBlurVisible"

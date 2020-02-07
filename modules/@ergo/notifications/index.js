@@ -20,6 +20,10 @@ export default {
             name: 'notifications',
             path: '/notifications',
             component: Pages.Notifications,
+            meta: {
+                isMenu: false,
+                redirectTo: 'notifications-grid',
+            },
             children: [
                 {
                     name: 'notifications-grid',
@@ -27,10 +31,6 @@ export default {
                     component: Tabs.NotificationGridTab,
                 },
             ],
-            meta: {
-                isMenu: false,
-                redirectTo: 'grid',
-            },
         },
     ],
     store: [

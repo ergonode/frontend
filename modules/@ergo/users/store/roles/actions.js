@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { getMappedPrivileges } from '@Authentication/models/userMapper';
 import { types } from './mutations';
 
 export default {
@@ -10,9 +11,6 @@ export default {
     },
     setDescription({ commit }, value) {
         commit(types.SET_ROLE_DESCRIPTION, value);
-    },
-    setRolePrivileges({ commit }, privileges) {
-        commit(types.SET_ROLE_PRIVILEGES, privileges);
     },
     setSelectedRolePrivileges({ commit }, selectedPrivileges) {
         commit(types.SET_SELECTED_ROLE_PRIVILEGES, selectedPrivileges);
@@ -42,25 +40,8 @@ export default {
             commit(types.SET_ROLE_ID, id);
             commit(types.SET_ROLE_NAME, name);
             commit(types.SET_ROLE_DESCRIPTION, description);
-            commit(types.SET_ROLE_PRIVILEGES, privileges);
+            commit(types.SET_ROLE_PRIVILEGES, getMappedPrivileges(privileges));
         });
-    },
-    async createRole(
-        { commit, rootState },
-        {
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$post(`${userLanguageCode}/roles`, data).then(({ id }) => {
-            commit(types.SET_ROLE_ID, id);
-            onSuccess(id);
-        }).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
     },
     async updateRole(
         { rootState },

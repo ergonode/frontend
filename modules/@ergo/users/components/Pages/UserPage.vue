@@ -9,9 +9,7 @@
             :is-navigation-back="true"
             :is-read-only="$isReadOnly('USER')"
             @navigateBack="onDismiss">
-            <!-- <template
-                v-if="isEdit"
-                #mainAction>
+            <!-- <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
@@ -28,9 +26,9 @@
         <HorizontalTabBar :items="tabs" />
         <Footer>
             <Button
-                :title="isEdit ? 'SAVE USER' : 'CREATE USER'"
+                title="SAVE USER"
                 :disabled="$isLoading('footerButton')"
-                @click.native="onUpdate" />
+                @click.native="onSave" />
         </Footer>
     </Page>
 </template>

@@ -69,6 +69,10 @@ export default {
             type: Number,
             default: 0,
         },
+        isFooterVisible: {
+            type: Boolean,
+            default: true,
+        },
         isDraggable: {
             type: Boolean,
             default: false,
@@ -629,7 +633,10 @@ export default {
         }
 
         gridElements.push(gridBody);
-        gridElements.push(gridFooter);
+
+        if (this.isFooterVisible) {
+            gridElements.push(gridFooter);
+        }
 
         return createElement('div', {
             staticClass: 'grid',

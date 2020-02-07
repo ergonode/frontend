@@ -38,7 +38,7 @@ import FormGroup from '@Core/components/Form/FormGroup';
 import Form from '@Core/components/Form/Form';
 
 export default {
-    name: 'SegmentsTranslationForm',
+    name: 'SegmentTranslationForm',
     components: {
         Form,
         FormGroup,

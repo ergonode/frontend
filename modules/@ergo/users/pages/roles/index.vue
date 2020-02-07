@@ -19,7 +19,17 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalTabBar :items="tabs">
+            <template #item>
+                <HorizontalTabBarContent
+                    :is-fetching-needed="fetchGridData"
+                    @fetched="onFetchedGridData" />
+            </template>
+        </HorizontalTabBar>
+        <CreateRoleModalForm
+            v-if="isCreateRoleVisible"
+            @close="onCloseModal"
+            @created="onCreatedRole" />
     </Page>
 </template>
 
@@ -35,8 +45,16 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
+        CreateRoleModalForm: () => import('@Users/components/Modals/CreateRoleModalForm'),
         Button,
         IconAdd,
+    },
+    data() {
+        return {
+            isCreateRoleVisible: false,
+            fetchGridData: false,
+        };
     },
     computed: {
         smallSize() {
@@ -51,7 +69,17 @@ export default {
     },
     methods: {
         addUserRole() {
-            this.$router.push({ name: 'user-role-new-general' });
+            this.isCreateRoleVisible = true;
+        },
+        onCloseModal() {
+            this.isCreateRoleVisible = false;
+        },
+        onCreatedRole() {
+            this.isCreateRoleVisible = false;
+            this.fetchGridData = true;
+        },
+        onFetchedGridData() {
+            this.fetchGridData = false;
         },
     },
 };

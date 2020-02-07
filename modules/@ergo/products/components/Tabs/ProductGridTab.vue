@@ -77,7 +77,6 @@ export default {
         }),
         verticalTabs() {
             const isUserAllowedToReadProduct = this.$hasAccess(['PRODUCT_READ']);
-
             return [
                 {
                     title: 'Attributes',

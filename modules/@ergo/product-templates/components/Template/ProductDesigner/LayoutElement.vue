@@ -47,8 +47,8 @@ import { ELEVATOR_HOLE } from '@Core/assets/scss/_js-variables/elevators.scss';
 import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
 import IconResize from '@Core/components/Icons/Others/IconResize';
 
-const registerResizeEventListenersModule = () => import('@Core/models/resize/registerResizeEventListeners');
-const unregisterResizeEventListenersModule = () => import('@Core/models/resize/unregisterResizeEventListeners');
+const registerResizeEventListeners = () => import('@Core/models/resize/registerResizeEventListeners');
+const unregisterResizeEventListeners = () => import('@Core/models/resize/unregisterResizeEventListeners');
 
 export default {
     name: 'LayoutElement',
@@ -180,7 +180,7 @@ export default {
             this.minWidth = this.getElementMinWidth();
             this.minHeight = this.getElementMinHeight();
 
-            registerResizeEventListenersModule().then((response) => {
+            registerResizeEventListeners().then((response) => {
                 response.default(this.doResizeDrag, this.stopResizeDrag);
             });
 
@@ -206,7 +206,7 @@ export default {
 
             removeResizablePlaceholder();
 
-            unregisterResizeEventListenersModule().then((response) => {
+            unregisterResizeEventListeners().then((response) => {
                 response.default(this.doResizeDrag, this.stopResizeDrag);
             });
 

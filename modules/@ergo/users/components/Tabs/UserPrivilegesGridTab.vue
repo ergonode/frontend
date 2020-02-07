@@ -9,7 +9,8 @@
                 :editing-privilege-allowed="false"
                 :columns="columns"
                 :cell-values="cellValues"
-                :row-ids="rowIds">
+                :row-ids="rowIds"
+                :is-footer-visible="false">
                 <template #cell="{ column, columnIndex, rowId, rowIndex, cellData }">
                     <GridCell
                         :key="`${rowId}-${column.id}`"

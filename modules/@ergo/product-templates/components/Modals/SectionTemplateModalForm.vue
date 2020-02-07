@@ -4,23 +4,24 @@
  */
 <template>
     <ModalForm
-        :value="value"
         title="Section title settings"
-        @input="onClose">
+        @close="onClose">
         <template #headerPrepend>
             <IconFontSize />
         </template>
         <template #body>
-            <FormGroup>
-                <TextField
-                    :value="title"
-                    solid
-                    label="Section title"
-                    regular
-                    required
-                    :error-messages="error"
-                    @input="onTitleChange" />
-            </FormGroup>
+            <Form>
+                <FormGroup>
+                    <TextField
+                        :value="title"
+                        solid
+                        label="Section title"
+                        regular
+                        required
+                        :error-messages="error"
+                        @input="onTitleChange" />
+                </FormGroup>
+            </Form>
         </template>
         <template #footer>
             <Button
@@ -40,6 +41,7 @@ import { THEMES } from '@Core/defaults/buttons';
 import ModalForm from '@Core/components/Modal/ModalForm';
 import TextField from '@Core/components/Inputs/TextField';
 import Button from '@Core/components/Buttons/Button';
+import Form from '@Core/components/Form/Form';
 import FormGroup from '@Core/components/Form/FormGroup';
 import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
 
@@ -48,6 +50,7 @@ export default {
     components: {
         IconFontSize,
         FormGroup,
+        Form,
         TextField,
         ModalForm,
         Button,
@@ -101,7 +104,7 @@ export default {
         onClose() {
             this.title = '';
             this.error = null;
-            this.$emit('input', false);
+            this.$emit('close');
         },
         onSave() {
             if (this.title !== '' && this.title.length <= 255) {
@@ -111,7 +114,7 @@ export default {
                     this.updateSectionElementTitle({ index: this.sectionIndex, title: this.title });
                 }
                 this.title = '';
-                this.$emit('input', false);
+                this.$emit('close');
             } else if (this.title === '') {
                 this.setTitleError();
             } else {

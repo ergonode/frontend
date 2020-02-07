@@ -4,7 +4,6 @@
  */
 export const Pages = {
     ProductTemplates: () => import('@Templates/pages/product-templates/index').then(m => m.default || m),
-    ProductTemplateNew: () => import('@Templates/pages/product-templates/_template/index').then(m => m.default || m),
     ProductTemplateEdit: () => import('@Templates/pages/product-templates/_template/_id').then(m => m.default || m),
 };
 

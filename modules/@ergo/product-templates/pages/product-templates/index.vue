@@ -36,11 +36,15 @@
                 </div>
             </div>
         </div>
+        <CreateProductTemplateModalForm
+            v-if="isCreateProductTemplateVisible"
+            @close="onCloseModal"
+            @created="onCreatedProductTemplate" />
     </Page>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import { SIZES } from '@Core/defaults/buttons';
 
 export default {
@@ -51,16 +55,22 @@ export default {
         Page: () => import('@Core/components/Layout/Page'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
         Button: () => import('@Core/components/Buttons/Button'),
+        CreateProductTemplateModalForm: () => import('@Templates/components/Modals/CreateProductTemplateModalForm'),
     },
     async fetch({ store }) {
         const params = {
-            limit: 5000,
+            limit: 9999,
             offset: 0,
         };
         await store.dispatch('templateLists/clearStorage');
         await store.dispatch('templateLists/getTemplatesSection', {
             params,
         });
+    },
+    data() {
+        return {
+            isCreateProductTemplateVisible: false,
+        };
     },
     computed: {
         ...mapState('templateLists', {
@@ -74,8 +84,18 @@ export default {
         },
     },
     methods: {
+        ...mapActions('templateLists', [
+            'getTemplatesSection',
+        ]),
         onCreate() {
-            this.$router.push({ name: 'product-template-new-general' });
+            this.isCreateProductTemplateVisible = true;
+        },
+        onCloseModal() {
+            this.isCreateProductTemplateVisible = false;
+        },
+        onCreatedProductTemplate() {
+            this.isCreateProductTemplateVisible = false;
+            this.getTemplatesSection({ limit: 9999, offset: 0 });
         },
     },
 };

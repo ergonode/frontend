@@ -51,20 +51,6 @@ export default {
             }
         });
     },
-    async createTransition(
-        { rootState },
-        {
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$post(`${userLanguageCode}/workflow/default/transitions`, data).then(() => onSuccess()).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
-    },
     async updateTransition(
         { state, rootState },
         {
@@ -84,7 +70,7 @@ export default {
         const { source, destination, conditionSetId } = state;
         const { language: userLanguageCode } = rootState.authentication.user;
 
-        return this.app.$axios.$delete(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`)
+        return this.app.$axios.$delete(`${userLanguageCode}/workflow/default/transitions/${source.key}/${destination.key}`)
             .then(() => {
                 if (conditionSetId) {
                     this.app.$axios.$delete(`${userLanguageCode}/conditionsets/${conditionSetId}`)

@@ -4,7 +4,6 @@
  */
 export const Pages = {
     CategoryTrees: () => import('@Trees/pages/category-trees/index').then(m => m.default || m),
-    CategoryTreesNew: () => import('@Trees/pages/category-trees/_tree/index').then(m => m.default || m),
     CategoryTreesEdit: () => import('@Trees/pages/category-trees/_tree/_id').then(m => m.default || m),
 };
 

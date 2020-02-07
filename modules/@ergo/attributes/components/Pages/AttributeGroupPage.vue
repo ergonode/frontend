@@ -9,9 +9,7 @@
             :is-navigation-back="true"
             :is-read-only="$isReadOnly('ATTRIBUTE')"
             @navigateBack="onDismiss">
-            <template
-                v-if="isEdit"
-                #mainAction>
+            <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
@@ -27,9 +25,9 @@
         <HorizontalTabBar :items="tabs" />
         <Footer>
             <Button
-                :title="isEdit ? 'SAVE GROUP' : 'CREATE GROUP'"
+                title="SAVE GROUP"
                 :disabled="$isLoading('footerButton')"
-                @click.native="onUpdate" />
+                @click.native="onSave" />
         </Footer>
     </Page>
 </template>

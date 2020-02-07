@@ -41,9 +41,9 @@ import {
 } from '@Core/models/drag_and_drop/helpers';
 import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
 
-const registerResizeEventListenersModule = () => import('@Core/models/resize/registerResizeEventListeners');
-const unregisterResizeEventListenersModule = () => import('@Core/models/resize/unregisterResizeEventListeners');
-const updateColumnsTransformModule = () => import('@Core/models/drag_and_drop/updateColumnsTransform');
+const registerResizeEventListeners = () => import('@Core/models/resize/registerResizeEventListeners');
+const unregisterResizeEventListeners = () => import('@Core/models/resize/unregisterResizeEventListeners');
+const updateColumnsTransform = () => import('@Core/models/drag_and_drop/updateColumnsTransform');
 
 export default {
     name: 'GridColumnData',
@@ -216,7 +216,7 @@ export default {
 
             const targetGhostIndex = this.getTargetGhostIndex(isBefore);
 
-            updateColumnsTransformModule().then((response) => {
+            updateColumnsTransform().then((response) => {
                 response.default(
                     targetGhostIndex,
                     this.draggedElIndex,
@@ -232,7 +232,7 @@ export default {
             this.initMousePosition(event);
             this.initElementWidth();
 
-            registerResizeEventListenersModule().then((response) => {
+            registerResizeEventListeners().then((response) => {
                 response.default(this.doResizeDrag, this.stopResizeDrag);
             });
         },
@@ -249,7 +249,7 @@ export default {
             }
         },
         stopResizeDrag() {
-            unregisterResizeEventListenersModule().then((response) => {
+            unregisterResizeEventListeners().then((response) => {
                 response.default(this.doResizeDrag, this.stopResizeDrag);
             });
             this.setResizingElement();

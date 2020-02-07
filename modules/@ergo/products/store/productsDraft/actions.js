@@ -143,23 +143,6 @@ export default {
             });
         });
     },
-    async createProduct(
-        { commit, rootState },
-        {
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        const { authentication: { user: { language } } } = rootState;
-
-        await this.$setLoader('footerButton');
-        await this.app.$axios.$post(`${language}/products`, data).then(({ id }) => {
-            commit(types.SET_PRODUCT_ID, id);
-            onSuccess(id);
-        }).catch(e => onError(e.data));
-        await this.$removeLoader('footerButton');
-    },
     async applyDraft(
         { rootState },
         {

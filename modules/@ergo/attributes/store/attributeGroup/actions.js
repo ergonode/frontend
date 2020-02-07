@@ -26,20 +26,6 @@ export default {
             dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onError);
     },
-    createAttributeGroup(
-        { commit, rootState },
-        {
-            data,
-            onSuccess,
-            onError,
-        },
-    ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-        return this.app.$axios.$post(`${userLanguageCode}/attributes/groups`, data).then(({ id }) => {
-            commit(types.SET_ID, id);
-            onSuccess(id);
-        }).catch(e => onError(e.data));
-    },
     updateAttributeGroup(
         { rootState },
         {

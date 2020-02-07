@@ -14,9 +14,7 @@
                     v-if="status"
                     :status="status" />
             </template>
-            <template
-                v-if="isEdit"
-                #mainAction>
+            <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
@@ -52,9 +50,9 @@
         <HorizontalTabBar :items="tabs" />
         <Footer v-if="!$route.path.includes('history')">
             <Button
-                :title="isEdit ? 'SAVE PRODUCT' : 'CREATE PRODUCT'"
+                title="SAVE PRODUCT"
                 :disabled="$isLoading('footerButton')"
-                @click.native="onUpdate" />
+                @click.native="onSave" />
         </Footer>
     </Page>
 </template>

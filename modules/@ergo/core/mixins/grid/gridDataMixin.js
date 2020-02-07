@@ -4,7 +4,7 @@
  */
 import { mapState, mapActions } from 'vuex';
 import { insertCookieAtIndex } from '@Core/models/cookies';
-import { getGridData, getAdvancedFiltersDara } from '@Core/services/grid/getData';
+import { getGridData, getAdvancedFiltersData } from '@Core/services/grid/getData.service';
 import { DATA_LIMIT } from '@Core/defaults/grid';
 import { getParsedFilters, getParsedAdvancedFilters } from '@Core/models/mappers/gridDataMapper';
 import { swapItemPosition, insertValueAtIndex } from '@Core/models/arrayWrapper';
@@ -12,6 +12,12 @@ import { COLUMNS_IDS, ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 
 export default function ({ path }) {
     return {
+        props: {
+            isFetchingNeeded: {
+                type: Boolean,
+                default: false,
+            },
+        },
         async asyncData({ app, store, params }) {
             const gridParams = {
                 offset: 0,
@@ -49,7 +55,7 @@ export default function ({ path }) {
                     columns: advFiltersIds,
                 };
 
-                requests.push(getAdvancedFiltersDara(
+                requests.push(getAdvancedFiltersData(
                     app.$axios,
                     `${store.state.authentication.user.language}/${dynamicPath}`,
                     filtersParams,
@@ -95,6 +101,9 @@ export default function ({ path }) {
         data() {
             return {
                 advancedFilters: [],
+                localParams: {
+                    offset: 0, limit: DATA_LIMIT, filters: {}, sortedColumn: {},
+                },
             };
         },
         computed: {
@@ -104,6 +113,13 @@ export default function ({ path }) {
             ...mapState('list', {
                 disabledElements: state => state.disabledElements,
             }),
+        },
+        watch: {
+            isFetchingNeeded() {
+                if (this.isFetchingNeeded) {
+                    this.getGridData(this.localParams);
+                }
+            },
         },
         methods: {
             ...mapActions('list', [
@@ -116,6 +132,9 @@ export default function ({ path }) {
                 const parsedFilter = getParsedFilters(filters, this.advancedFilters);
                 const parsedAdvancedFilter = getParsedAdvancedFilters(this.advancedFilters);
 
+                this.localParams = {
+                    offset, limit, filters, sortedColumn,
+                };
                 let filter = parsedFilter;
 
                 if (parsedFilter && parsedAdvancedFilter) {
@@ -163,6 +182,8 @@ export default function ({ path }) {
                 this.cellValues = cellValues;
                 this.count = count;
                 this.filtered = filtered;
+
+                this.$emit('fetched');
             },
             removeColumnAtIndex(index) {
                 this.columns.splice(index, 1);
