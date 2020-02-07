@@ -26,6 +26,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
+import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
 
 const createAttribute = () => import('@Attributes/services/createAttribute.service');
 
@@ -36,17 +37,7 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         AttributeForm: () => import('@Attributes/components/Forms/AttributeForm'),
     },
-    props: {
-        value: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    data() {
-        return {
-            isRequestPending: false,
-        };
-    },
+    mixins: [createModalFormMixin({ namespace: 'Attribute', createRequest: createAttribute })],
     computed: {
         secondaryTheme() {
             return THEMES.SECONDARY;
@@ -60,57 +51,22 @@ export default {
             'getAttributeGroups',
             'clearStorage',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeValidationErrors',
-        ]),
         onClose() {
             this.clearStorage();
             this.$emit('close');
         },
         onCreated() {
-            this.isRequestPending = true;
-            this.removeValidationErrors();
-
-            createAttribute().then((response) => {
-                response.default({
-                    $axios: this.$axios,
-                    $addAlert: this.$addAlert,
-                    $store: this.$store,
-                }).then(() => {
-                    this.isRequestPending = false;
-                    this.removeValidationErrors();
-                    this.$addAlert({ type: 'success', message: 'Attribute has been created' });
-                    this.clearStorage();
-                    this.$emit('created');
-                }).catch((e) => {
-                    this.isRequestPending = false;
-                    this.onError(e.data);
-                });
+            this.onCreate(() => {
+                this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.isRequestPending = true;
-            this.removeValidationErrors();
-
-            createAttribute().then((response) => {
-                response.default({
-                    $axios: this.$axios,
-                    $addAlert: this.$addAlert,
-                    $store: this.$store,
-                }).then(({ id }) => {
-                    this.isRequestPending = false;
-                    this.removeValidationErrors();
-                    this.$addAlert({ type: 'success', message: 'Attribute has been created' });
-                    this.$router.push({
-                        name: 'attribute-edit-id-general',
-                        params: {
-                            id,
-                        },
-                    });
-                }).catch((e) => {
-                    this.isRequestPending = false;
-                    this.onError(e.data);
+            this.onCreate((id) => {
+                this.$router.push({
+                    name: 'attribute-edit-id-general',
+                    params: {
+                        id,
+                    },
                 });
             });
         },

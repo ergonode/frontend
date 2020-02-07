@@ -26,6 +26,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
+import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
 
 const createAttributeGroup = () => import('@Attributes/services/createAttributeGroup.service');
 
@@ -36,17 +37,7 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         AttributeGroupForm: () => import('@Attributes/components/Forms/AttributeGroupForm'),
     },
-    props: {
-        value: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    data() {
-        return {
-            isRequestPending: false,
-        };
-    },
+    mixins: [createModalFormMixin({ namespace: 'Attribute group', createRequest: createAttributeGroup })],
     computed: {
         secondaryTheme() {
             return THEMES.SECONDARY;
@@ -56,57 +47,22 @@ export default {
         ...mapActions('attribute', [
             'clearStorage',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeValidationErrors',
-        ]),
         onClose() {
             this.clearStorage();
             this.$emit('close');
         },
         onCreated() {
-            this.isRequestPending = true;
-            this.removeValidationErrors();
-
-            createAttributeGroup().then((response) => {
-                response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
-                }).then(() => {
-                    this.isRequestPending = false;
-                    this.removeValidationErrors();
-                    this.$addAlert({ type: 'success', message: 'Attribute group has been created' });
-                    this.clearStorage();
-                    this.$emit('created');
-                }).catch((e) => {
-                    this.isRequestPending = false;
-                    this.onError(e.data);
-                });
+            this.onCreate(() => {
+                this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.isRequestPending = true;
-            this.removeValidationErrors();
-
-            createAttributeGroup().then((response) => {
-                response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
-                }).then(({ id }) => {
-                    this.isRequestPending = false;
-                    this.removeValidationErrors();
-                    this.$addAlert({ type: 'success', message: 'Attribute has been created' });
-                    this.$router.push({
-                        name: 'attribute-group-edit-id',
-                        params: {
-                            id,
-                        },
-                    });
-                }).catch((e) => {
-                    console.log('dupa');
-                    console.log(e);
-                    this.isRequestPending = false;
-                    this.onError(e.data);
+            this.onCreate((id) => {
+                this.$router.push({
+                    name: 'attribute-group-edit-id',
+                    params: {
+                        id,
+                    },
                 });
             });
         },

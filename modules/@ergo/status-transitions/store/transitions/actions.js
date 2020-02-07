@@ -70,7 +70,7 @@ export default {
         const { source, destination, conditionSetId } = state;
         const { language: userLanguageCode } = rootState.authentication.user;
 
-        return this.app.$axios.$delete(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`)
+        return this.app.$axios.$delete(`${userLanguageCode}/workflow/default/transitions/${source.key}/${destination.key}`)
             .then(() => {
                 if (conditionSetId) {
                     this.app.$axios.$delete(`${userLanguageCode}/conditionsets/${conditionSetId}`)

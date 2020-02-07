@@ -26,6 +26,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
+import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
 
 const createStatusTransition = () => import('@Transitions/services/createStatusTransition.service');
 
@@ -36,17 +37,7 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         TransitionForm: () => import('@Transitions/components/Forms/TransitionForm'),
     },
-    props: {
-        value: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    data() {
-        return {
-            isRequestPending: false,
-        };
-    },
+    mixins: [createModalFormMixin({ namespace: 'Status transition', createRequest: createStatusTransition })],
     computed: {
         ...mapState('transitions', {
             source: state => state.source,
@@ -78,55 +69,22 @@ export default {
         ...mapActions('roles', [
             'getRoles',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeValidationErrors',
-        ]),
         onClose() {
             this.clearStorage();
             this.$emit('close');
         },
         onCreated() {
-            this.isRequestPending = true;
-            this.removeValidationErrors();
-
-            createStatusTransition().then((response) => {
-                response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
-                }).then(() => {
-                    this.isRequestPending = false;
-                    this.removeValidationErrors();
-                    this.$addAlert({ type: 'success', message: 'Status transition has been created' });
-                    this.clearStorage();
-                    this.$emit('created');
-                }).catch((e) => {
-                    this.isRequestPending = false;
-                    this.onError(e.data);
-                });
+            this.onCreate(() => {
+                this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.isRequestPending = true;
-            this.removeValidationErrors();
-
-            createStatusTransition().then((response) => {
-                response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
-                }).then(() => {
-                    this.isRequestPending = false;
-                    this.removeValidationErrors();
-                    this.$addAlert({ type: 'success', message: 'Status transition has been created' });
-                    this.$router.push({
-                        name: 'transition-edit-id-general',
-                        params: {
-                            id: `${this.source.key}--${this.destination.key}`,
-                        },
-                    });
-                }).catch((e) => {
-                    this.isRequestPending = false;
-                    this.onError(e.data);
+            this.onCreate(() => {
+                this.$router.push({
+                    name: 'transition-edit-id-general',
+                    params: {
+                        id: `${this.source.key}--${this.destination.key}`,
+                    },
                 });
             });
         },

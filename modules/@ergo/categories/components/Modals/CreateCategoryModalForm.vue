@@ -26,6 +26,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
+import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
 
 const createCategory = () => import('@Categories/services/createCategory.service');
 
@@ -36,17 +37,7 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         CategoryForm: () => import('@Categories/components/Forms/CategoryForm'),
     },
-    props: {
-        value: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    data() {
-        return {
-            isRequestPending: false,
-        };
-    },
+    mixins: [createModalFormMixin({ namespace: 'Category', createRequest: createCategory })],
     computed: {
         secondaryTheme() {
             return THEMES.SECONDARY;
@@ -56,55 +47,22 @@ export default {
         ...mapActions('categories', [
             'clearStorage',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeValidationErrors',
-        ]),
         onClose() {
             this.clearStorage();
             this.$emit('close');
         },
         onCreated() {
-            this.isRequestPending = true;
-            this.removeValidationErrors();
-
-            createCategory().then((response) => {
-                response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
-                }).then(() => {
-                    this.isRequestPending = false;
-                    this.removeValidationErrors();
-                    this.$addAlert({ type: 'success', message: 'Category has been created' });
-                    this.clearStorage();
-                    this.$emit('created');
-                }).catch((e) => {
-                    this.isRequestPending = false;
-                    this.onError(e.data);
-                });
+            this.onCreate(() => {
+                this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.isRequestPending = true;
-            this.removeValidationErrors();
-
-            createCategory().then((response) => {
-                response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
-                }).then(({ id }) => {
-                    this.isRequestPending = false;
-                    this.removeValidationErrors();
-                    this.$addAlert({ type: 'success', message: 'Category has been created' });
-                    this.$router.push({
-                        name: 'category-edit-id-general',
-                        params: {
-                            id,
-                        },
-                    });
-                }).catch((e) => {
-                    this.isRequestPending = false;
-                    this.onError(e.data);
+            this.onCreate((id) => {
+                this.$router.push({
+                    name: 'category-edit-id-general',
+                    params: {
+                        id,
+                    },
                 });
             });
         },

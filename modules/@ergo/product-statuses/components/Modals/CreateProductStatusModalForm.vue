@@ -26,6 +26,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
+import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
 
 const createProductStatus = () => import('@Statuses/services/createProductStatus.service');
 
@@ -36,17 +37,7 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         ProductStatusForm: () => import('@Statuses/components/Forms/ProductStatusForm'),
     },
-    props: {
-        value: {
-            type: Boolean,
-            default: false,
-        },
-    },
-    data() {
-        return {
-            isRequestPending: false,
-        };
-    },
+    mixins: [createModalFormMixin({ namespace: 'Product status', createRequest: createProductStatus })],
     computed: {
         secondaryTheme() {
             return THEMES.SECONDARY;
@@ -56,55 +47,22 @@ export default {
         ...mapActions('productStatus', [
             'clearStorage',
         ]),
-        ...mapActions('validations', [
-            'onError',
-            'removeValidationErrors',
-        ]),
         onClose() {
             this.clearStorage();
             this.$emit('close');
         },
         onCreated() {
-            this.isRequestPending = true;
-            this.removeValidationErrors();
-
-            createProductStatus().then((response) => {
-                response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
-                }).then(() => {
-                    this.isRequestPending = false;
-                    this.removeValidationErrors();
-                    this.$addAlert({ type: 'success', message: 'Product status has been created' });
-                    this.clearStorage();
-                    this.$emit('created');
-                }).catch((e) => {
-                    this.isRequestPending = false;
-                    this.onError(e.data);
-                });
+            this.onCreate(() => {
+                this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.isRequestPending = true;
-            this.removeValidationErrors();
-
-            createProductStatus().then((response) => {
-                response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
-                }).then(({ id }) => {
-                    this.isRequestPending = false;
-                    this.removeValidationErrors();
-                    this.$addAlert({ type: 'success', message: 'Product status has been created' });
-                    this.$router.push({
-                        name: 'product-status-edit-id-general',
-                        params: {
-                            id,
-                        },
-                    });
-                }).catch((e) => {
-                    this.isRequestPending = false;
-                    this.onError(e.data);
+            this.onCreate((id) => {
+                this.$router.push({
+                    name: 'product-status-edit-id-general',
+                    params: {
+                        id,
+                    },
                 });
             });
         },
