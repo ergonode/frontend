@@ -27,7 +27,7 @@
 import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
 
-const createProductModule = () => import('@Products/services/createProduct.service');
+const createProduct = () => import('@Products/services/createProduct.service');
 
 export default {
     name: 'CreateProductModalForm',
@@ -76,7 +76,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createProductModule().then((response) => {
+            createProduct().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $store: this.$store,
@@ -96,7 +96,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createProductModule().then((response) => {
+            createProduct().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $store: this.$store,

@@ -27,7 +27,7 @@
 import { mapState, mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
 
-const createStatusTransitionModule = () => import('@Transitions/services/createStatusTransition.service');
+const createStatusTransition = () => import('@Transitions/services/createStatusTransition.service');
 
 export default {
     name: 'CreateStatusTransitionModalForm',
@@ -90,7 +90,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createStatusTransitionModule().then((response) => {
+            createStatusTransition().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $store: this.$store,
@@ -110,7 +110,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createStatusTransitionModule().then((response) => {
+            createStatusTransition().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $store: this.$store,

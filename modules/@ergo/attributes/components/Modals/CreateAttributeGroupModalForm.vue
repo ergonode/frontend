@@ -27,7 +27,7 @@
 import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
 
-const createAttributeGroupModule = () => import('@Attributes/services/createAttributeGroup.service');
+const createAttributeGroup = () => import('@Attributes/services/createAttributeGroup.service');
 
 export default {
     name: 'CreateAttributeGroupModalForm',
@@ -68,7 +68,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createAttributeGroupModule().then((response) => {
+            createAttributeGroup().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $store: this.$store,
@@ -88,7 +88,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createAttributeGroupModule().then((response) => {
+            createAttributeGroup().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $store: this.$store,

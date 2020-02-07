@@ -27,7 +27,7 @@
 import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
 
-const createSegmentModule = () => import('@Segments/services/createSegment.service');
+const createSegment = () => import('@Segments/services/createSegment.service');
 
 export default {
     name: 'CreateSegmentModalForm',
@@ -68,7 +68,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createSegmentModule().then((response) => {
+            createSegment().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $store: this.$store,
@@ -88,7 +88,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createSegmentModule().then((response) => {
+            createSegment().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $store: this.$store,

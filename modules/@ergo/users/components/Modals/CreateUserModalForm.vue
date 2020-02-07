@@ -27,7 +27,7 @@
 import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
 
-const createUserModule = () => import('@Users/services/createUser.service');
+const createUser = () => import('@Users/services/createUser.service');
 
 export default {
     name: 'CreateUserModalForm',
@@ -77,7 +77,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createUserModule().then((response) => {
+            createUser().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $store: this.$store,
@@ -97,7 +97,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createUserModule().then((response) => {
+            createUser().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $store: this.$store,

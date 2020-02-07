@@ -27,7 +27,7 @@
 import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
 
-const createRoleModule = () => import('@Users/services/createRole.service');
+const createRole = () => import('@Users/services/createRole.service');
 
 export default {
     name: 'CreateRoleModalForm',
@@ -68,7 +68,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createRoleModule().then((response) => {
+            createRole().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $store: this.$store,
@@ -88,7 +88,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createRoleModule().then((response) => {
+            createRole().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $store: this.$store,

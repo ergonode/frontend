@@ -23,8 +23,8 @@
 
 <script>
 
-const registerResizeEventListenersModule = () => import('@Core/models/resize/registerResizeEventListeners');
-const unregisterResizeEventListenersModule = () => import('@Core/models/resize/unregisterResizeEventListeners');
+const registerResizeEventListeners = () => import('@Core/models/resize/registerResizeEventListeners');
+const unregisterResizeEventListeners = () => import('@Core/models/resize/unregisterResizeEventListeners');
 
 export default {
     name: 'GridCell',
@@ -211,7 +211,7 @@ export default {
             this.startHeight = parseInt(this.$el.getBoundingClientRect().height, 10);
             this.currentHeight = this.startHeight;
 
-            registerResizeEventListenersModule().then((response) => {
+            registerResizeEventListeners().then((response) => {
                 response.default(this.doResizeDrag, this.stopResizeDrag);
             });
         },
@@ -256,7 +256,7 @@ export default {
                 },
             });
 
-            unregisterResizeEventListenersModule().then((response) => {
+            unregisterResizeEventListeners().then((response) => {
                 response.default(this.doResizeDrag, this.stopResizeDrag);
             });
         },

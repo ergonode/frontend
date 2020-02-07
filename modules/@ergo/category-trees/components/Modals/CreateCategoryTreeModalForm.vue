@@ -27,7 +27,7 @@
 import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
 
-const createCategoryTreeModule = () => import('@Trees/services/createCategoryTree.service');
+const createCategoryTree = () => import('@Trees/services/createCategoryTree.service');
 
 export default {
     name: 'CreateCategoryTreeModalForm',
@@ -68,7 +68,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createCategoryTreeModule().then((response) => {
+            createCategoryTree().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $store: this.$store,
@@ -88,7 +88,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createCategoryTreeModule().then((response) => {
+            createCategoryTree().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $store: this.$store,

@@ -27,7 +27,7 @@
 import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
 
-const createAttributeModule = () => import('@Attributes/services/createAttribute.service');
+const createAttribute = () => import('@Attributes/services/createAttribute.service');
 
 export default {
     name: 'CreateAttributeModalForm',
@@ -72,7 +72,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createAttributeModule().then((response) => {
+            createAttribute().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $addAlert: this.$addAlert,
@@ -93,7 +93,7 @@ export default {
             this.isRequestPending = true;
             this.removeValidationErrors();
 
-            createAttributeModule().then((response) => {
+            createAttribute().then((response) => {
                 response.default({
                     $axios: this.$axios,
                     $addAlert: this.$addAlert,
