@@ -11,14 +11,12 @@
             :selected-option="attributesLanguageCode"
             :is-expanded="isExpanded"
             @searchResult="onSearch"
-            @selectOption="onSelect"
-            @expand="onExpand" />
+            @selectOption="onSelect" />
         <ListSearchHeader
             v-else
             header="Attributes"
             :is-expanded="isExpanded"
-            @searchResult="onSearch"
-            @expand="onExpand" />
+            @searchResult="onSearch" />
         <AttributesList :language-code="attributesLanguageCode" />
         <div class="add-fab-btn">
             <FabButton
@@ -40,7 +38,7 @@ export default {
     name: 'AttributesListTab',
     components: {
         VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
-        AttributesList: () => import('@Templates/components/Lists/Attributes/AttributesList'),
+        AttributesList: () => import('@Attributes/components/Lists/AttributesList'),
         ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         FabButton: () => import('@Core/components/Buttons/FabButton'),
@@ -88,9 +86,6 @@ export default {
             'getGroups',
             'getElements',
         ]),
-        onExpand(isExpanded) {
-            this.$emit('expand', isExpanded);
-        },
         onSearch(value) {
             this.setFilter(value);
             this.getElements({
@@ -122,7 +117,7 @@ export default {
 <style lang="scss" scoped>
     .add-fab-btn {
         position: absolute;
-        bottom: 12px;
-        right: 12px;
+        bottom: 16px;
+        right: 16px;
     }
 </style>

@@ -15,6 +15,7 @@
                 v-for="item in elementsByGroupInLanguage"
                 :key="item.id"
                 :item="item"
+                :is-draggable="isDraggable"
                 :language-code="languageCode" />
         </template>
     </ListGroupElement>
@@ -28,7 +29,7 @@ export default {
     name: 'AttributesListGroup',
     components: {
         ListGroupElement: () => import('@Core/components/List/ListGroupElement'),
-        AttributesListElement: () => import('@Templates/components/Lists/Attributes/AttributesListElement'),
+        AttributesListElement: () => import('@Attributes/components/Lists/AttributesListElement'),
     },
     props: {
         group: {
@@ -42,6 +43,10 @@ export default {
         isExpanded: {
             type: Boolean,
             default: false,
+        },
+        isDraggable: {
+            type: Boolean,
+            default: true,
         },
     },
     computed: {

@@ -3,10 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ListHeader
-        :header="header"
-        :is-expanded="isExpanded"
-        @expand="onExpand">
+    <ListHeader :header="header">
         <Select
             v-show="!isSearchButtonClicked"
             :value="selectedOption"
@@ -74,10 +71,6 @@ export default {
             type: String,
             required: true,
         },
-        isExpanded: {
-            type: Boolean,
-            required: true,
-        },
     },
     data() {
         return {
@@ -108,9 +101,6 @@ export default {
         delete this.debouncedSearch;
     },
     methods: {
-        onExpand(isExpanded) {
-            this.$emit('expand', isExpanded);
-        },
         onSearch(value) {
             this.searchResult = value;
             this.$emit('searchResult', value);

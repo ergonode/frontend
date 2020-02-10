@@ -103,7 +103,7 @@ export default {
         verticalTabs() {
             return [
                 {
-                    title: 'Attributes',
+                    title: 'Product attributes',
                     component: () => import('@Templates/components/Tabs/List/AttributesListTab'),
                     props: {
                         isSelectLanguage: false,

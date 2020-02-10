@@ -6,19 +6,15 @@
     <VerticalTabBarListWrapper>
         <ListSearchSelectHeader
             v-if="isSelectLanguage"
-            header="System Attributes"
+            header="System attributes"
             :options="languageOptions"
             :selected-option="language.value"
-            :is-expanded="isExpanded"
             @searchResult="onSearch"
-            @selectOption="onSelect"
-            @expand="onExpand" />
+            @selectOption="onSelect" />
         <ListSearchHeader
             v-else
-            header="System Attributes"
-            :is-expanded="isExpanded"
-            @searchResult="onSearch"
-            @expand="onExpand" />
+            header="System attributes"
+            @searchResult="onSearch" />
         <SystemAttributesList :language-code="language.key" />
     </VerticalTabBarListWrapper>
 </template>
@@ -31,7 +27,7 @@ export default {
     name: 'SystemAttributesListTab',
     components: {
         VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
-        SystemAttributesList: () => import('@Products/components/Lists/SystemAttributesList'),
+        SystemAttributesList: () => import('@Attributes/components/Lists/SystemAttributesList'),
         ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
     },
@@ -39,10 +35,6 @@ export default {
         isSelectLanguage: {
             type: Boolean,
             default: true,
-        },
-        isExpanded: {
-            type: Boolean,
-            required: true,
         },
     },
     data() {
@@ -75,9 +67,6 @@ export default {
             'setFilter',
             'getElements',
         ]),
-        onExpand(isExpanded) {
-            this.$emit('expand', isExpanded);
-        },
         onSearch(value) {
             this.setFilter(value);
             this.getElements({
