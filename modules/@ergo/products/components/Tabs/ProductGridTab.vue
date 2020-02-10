@@ -80,7 +80,7 @@ export default {
             return [
                 {
                     title: 'Product attributes',
-                    component: () => import('@Products/components/Tabs/List/AttributesListTab'),
+                    component: () => import('@Attributes/components/Tabs/List/AttributesListTab'),
                     iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
                     props: {
                         disabled: !isUserAllowedToReadProduct,
@@ -89,7 +89,7 @@ export default {
                 },
                 {
                     title: 'System attributes',
-                    component: () => import('@Products/components/Tabs/List/SystemAttributesListTab'),
+                    component: () => import('@Attributes/components/Tabs/List/SystemAttributesListTab'),
                     iconComponent: () => import('@Core/components/Icons/Menu/IconSettings'),
                     props: {
                         disabled: !isUserAllowedToReadProduct,

@@ -104,7 +104,7 @@ export default {
             return [
                 {
                     title: 'Product attributes',
-                    component: () => import('@Templates/components/Tabs/List/AttributesListTab'),
+                    component: () => import('@Attributes/components/Tabs/List/AttributesListTab'),
                     props: {
                         isSelectLanguage: false,
                         disabled: !this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']),
