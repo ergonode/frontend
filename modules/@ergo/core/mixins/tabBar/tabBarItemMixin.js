@@ -16,9 +16,5 @@ export default {
             type: Boolean,
             required: true,
         },
-        isExpanded: {
-            type: Boolean,
-            default: true,
-        },
     },
 };

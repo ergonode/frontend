@@ -43,10 +43,15 @@
                     class="advanced-filter__placeholder">
                     Select...
                 </span>
-                <span
-                    v-else
-                    class="advanced-filter__value"
-                    v-text="filterValue" />
+                <template v-else>
+                    <span
+                        class="advanced-filter__value"
+                        v-text="filterValue" />
+                    <span
+                        v-if="parameter"
+                        class="advanced-filter__parameter"
+                        v-text="parameter" />
+                </template>
                 <IconArrowDropDown
                     class="advanced-filter__icon"
                     :state="arrowIconState"
@@ -94,7 +99,7 @@ import {
     isTrashBelowMouse,
 } from '@Core/models/drag_and_drop/helpers';
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
-import { changeCookiePosition } from '@Core/models/cookies';
+import { changeCookiePosition, removeCookieById } from '@Core/models/cookies';
 import { getMappedColumnHeaderTitle } from '@Core/models/mappers/gridDataMapper';
 import DropDown from '@Core/components/Inputs/Select/Contents/DropDown';
 
@@ -136,6 +141,13 @@ export default {
             draggedElementOnGrid: state => state.draggedElementOnGrid,
             draggedElement: state => state.draggedElement,
         }),
+        parameter() {
+            if (!this.filter.parameters) return null;
+
+            const [key] = Object.keys(this.filter.parameters);
+
+            return this.filter.parameters[key];
+        },
         isFilterExists() {
             return this.draggedElement === this.filter.id;
         },
@@ -237,6 +249,12 @@ export default {
                 this.$emit('remove', this.index);
                 this.setDisabledElement({
                     languageCode, elementId: attributeId, disabled: false,
+                });
+
+                removeCookieById({
+                    cookies: this.$cookies,
+                    cookieName: ADV_FILTERS_IDS,
+                    id: this.filter.id,
                 });
             } else {
                 changeCookiePosition({
@@ -454,6 +472,7 @@ export default {
             align-items: center;
             box-sizing: border-box;
             padding-right: 4px;
+            font: $FONT_MEDIUM_12_16;
             overflow: hidden;
         }
 
@@ -467,12 +486,12 @@ export default {
             color: $GREY_DARK;
         }
 
-        &__value {
+        &__value, &__parameter {
             color: $GRAPHITE_DARK;
         }
 
-        &__placeholder, &__value {
-            font: $FONT_MEDIUM_12_16;
+        &__parameter {
+            margin-left: 4px;
         }
 
         &__icon {

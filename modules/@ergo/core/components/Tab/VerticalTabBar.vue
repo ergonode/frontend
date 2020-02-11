@@ -4,32 +4,47 @@
  */
 <template>
     <div class="tab-bar">
-        <div
-            v-if="isTabVisible || !isExpanded"
-            class="tab-bar__items">
-            <VerticalTabBarItem
-                v-for="(item, index) in items"
-                :key="index"
-                :index="index"
-                :item="item"
-                :is-expanded="isExpanded"
-                :is-selected="index === selectedTabIndex"
-                @select="onSelectTabBarItem" />
+        <div class="tab-bar__items">
+            <VerticalFixedScroll>
+                <VerticalTabBarItem
+                    v-for="(item, index) in items"
+                    :key="index"
+                    :index="index"
+                    :item="item"
+                    :is-selected="index === selectedTabIndex && isExpanded"
+                    @select="onSelectTabBarItem" />
+            </VerticalFixedScroll>
+            <div class="tab-bar__expand-button">
+                <FabButton
+                    :theme="secondaryTheme"
+                    @click.native="onExpand">
+                    <template #icon="{ fillColor }">
+                        <IconArrowDouble
+                            :fill-color="fillColor"
+                            :state="expendStateIcon" />
+                    </template>
+                </FabButton>
+            </div>
         </div>
         <VerticalTabContent
             v-show="isExpanded"
-            :tab-item="items[selectedTabIndex]"
-            :is-expanded="isExpanded"
-            @expand="onExpandTab" />
+            :item="items[selectedTabIndex]" />
     </div>
 </template>
 
 <script>
+
+import { THEMES } from '@Core/defaults/buttons';
+import { ARROW } from '@Core/defaults/icons';
+
 export default {
     name: 'VerticalTabBar',
     components: {
         VerticalTabContent: () => import('@Core/components/Tab/VerticalTabContent'),
         VerticalTabBarItem: () => import('@Core/components/Tab/VerticalTabBarItem'),
+        FabButton: () => import('@Core/components/Buttons/FabButton'),
+        IconArrowDouble: () => import('@Core/components/Icons/Arrows/IconArrowDouble'),
+        VerticalFixedScroll: () => import('@Core/components/Layout/Scroll/VerticalFixedScroll'),
     },
     props: {
         items: {
@@ -44,8 +59,11 @@ export default {
         };
     },
     computed: {
-        isTabVisible() {
-            return this.items.length > 1;
+        secondaryTheme() {
+            return THEMES.SECONDARY;
+        },
+        expendStateIcon() {
+            return this.isExpanded ? ARROW.LEFT : ARROW.RIGHT;
         },
     },
     methods: {
@@ -54,8 +72,8 @@ export default {
             this.isExpanded = true;
             this.$emit('select', index);
         },
-        onExpandTab(isExpanded) {
-            this.isExpanded = isExpanded;
+        onExpand() {
+            this.isExpanded = !this.isExpanded;
         },
     },
 };
@@ -70,9 +88,17 @@ export default {
             position: relative;
             display: flex;
             flex-flow: column nowrap;
-            width: 82px;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            width: 80px;
             box-sizing: border-box;
             background-color: $WHITESMOKE;
+        }
+
+        &__expand-button {
+            position: absolute;
+            bottom: 16px;
         }
     }
 </style>

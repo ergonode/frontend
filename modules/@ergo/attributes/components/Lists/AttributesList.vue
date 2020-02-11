@@ -11,6 +11,7 @@
                 :group="group"
                 :language-code="languageCode"
                 :is-expanded="expendedGroup === group.key"
+                :is-draggable="isUserAllowedToDragAttributes"
                 @expandGroup="setExpandedGroup" />
         </ListScrollableContainer>
     </List>
@@ -24,7 +25,7 @@ export default {
     components: {
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
-        AttributesListGroup: () => import('@Templates/components/Lists/Attributes/AttributesListGroup'),
+        AttributesListGroup: () => import('@Attributes/components/Lists/AttributesListGroup'),
     },
     props: {
         languageCode: {
@@ -41,6 +42,9 @@ export default {
         ...mapState('list', {
             groups: state => state.groups,
         }),
+        isUserAllowedToDragAttributes() {
+            return this.$hasAccess(['ATTRIBUTE_UPDATE']);
+        },
     },
     watch: {
         languageCode() {
