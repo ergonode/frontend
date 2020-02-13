@@ -15,14 +15,14 @@
                 label="System name"
                 hint="Status code must be unique"
                 @input="setCode" />
-            <div class="horizontal-wrapper">
-                <CheckBox
-                    :value="isDefaultStatus"
-                    @input="setStatusAsDefault" />
-                <span class="font--medium-12-16">
-                    The initial status
-                </span>
-            </div>
+            <CheckBox
+                :value="isDefaultStatus"
+                label="Default status of new products"
+                @input="setStatusAsDefault">
+                <template #append>
+                    <InfoHint hint="You may set only one status as a default" />
+                </template>
+            </CheckBox>
             <ColorPicker
                 :value="color"
                 solid
@@ -53,6 +53,7 @@ export default {
         TextField: () => import('@Core/components/Inputs/TextField'),
         ColorPicker: () => import('@Core/components/Inputs/ColorPicker/ColorPicker'),
         CheckBox: () => import('@Core/components/Inputs/CheckBox'),
+        InfoHint: () => import('@Core/components/Hints/InfoHint'),
     },
     mixins: [errorValidationMixin],
     computed: {
@@ -101,16 +102,6 @@ export default {
             justify-content: center;
             align-items: center;
             height: 30px;
-        }
-    }
-
-    .horizontal-wrapper {
-        display: flex;
-        align-items: center;
-
-        span {
-            margin-left: 8px;
-            color: $GRAPHITE_DARK;
         }
     }
 </style>
