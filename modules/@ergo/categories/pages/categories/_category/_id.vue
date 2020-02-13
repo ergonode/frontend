@@ -5,7 +5,6 @@
 <template>
     <CategoryPage
         :title="code"
-        is-edit
         @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
@@ -81,11 +80,11 @@ export default {
         onUpdateCategorySuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Category updated' });
-            this.$router.push({ name: 'categories' });
+            this.$router.push({ name: 'categories-grid' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Category removed' });
-            this.$router.push({ name: 'categories' });
+            this.$router.push({ name: 'categories-grid' });
         },
     },
 };

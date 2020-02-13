@@ -81,7 +81,7 @@ export default {
         onCreatedAndEdit() {
             this.onCreate(() => {
                 this.$router.push({
-                    name: 'transition-edit-id-general',
+                    name: 'transition-id-general',
                     params: {
                         id: `${this.source.key}--${this.destination.key}`,
                     },

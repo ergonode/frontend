@@ -57,16 +57,16 @@ export default {
             ],
         },
         {
-            name: 'category-tree-edit-id',
-            path: '/category-trees/tree/edit/:id',
+            name: 'category-tree-id',
+            path: '/category-trees/tree/:id',
             component: Pages.CategoryTreesEdit,
             meta: {
                 isMenu: false,
-                redirectTo: 'category-tree-edit-id-general',
+                redirectTo: 'category-tree-id-general',
             },
             children: [
                 {
-                    name: 'category-tree-edit-id-general',
+                    name: 'category-tree-id-general',
                     path: 'general',
                     component: Tabs.CategoryTreeBaseTab,
                     meta: {
@@ -78,14 +78,14 @@ export default {
                             },
                             {
                                 title: 'Category trees',
-                                routePath: '/category-trees',
+                                routeName: 'category-trees-grid',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'category-tree-edit-id-translations',
+                    name: 'category-tree-id-translations',
                     path: 'translations',
                     component: Tabs.CategoryTreeTranslationsTab,
                     meta: {
@@ -97,14 +97,14 @@ export default {
                             },
                             {
                                 title: 'Category trees',
-                                routePath: '/category-trees',
+                                routeName: 'category-trees-grid',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'category-tree-edit-id-designer',
+                    name: 'category-tree-id-designer',
                     path: 'designer',
                     component: Tabs.CategoryTreeDesignTab,
                     meta: {
@@ -116,7 +116,7 @@ export default {
                             },
                             {
                                 title: 'Category trees',
-                                routePath: '/category-trees',
+                                routeName: 'category-trees-grid',
                             },
                         ],
                         privileges: [],

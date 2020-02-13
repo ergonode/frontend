@@ -58,16 +58,16 @@ export default {
             ],
         },
         {
-            name: 'segment-edit-id',
-            path: '/segments/segment/edit/:id',
+            name: 'segment-id',
+            path: '/segments/segment/:id',
             component: Pages.SegmentEdit,
             meta: {
                 isMenu: false,
-                redirectTo: 'segment-edit-id-general',
+                redirectTo: 'segment-id-general',
             },
             children: [
                 {
-                    name: 'segment-edit-id-general',
+                    name: 'segment-id-general',
                     path: 'general',
                     component: Tabs.SegmentBaseTab,
                     meta: {
@@ -79,14 +79,14 @@ export default {
                             },
                             {
                                 title: 'Segments',
-                                routePath: '/segments',
+                                routeName: 'segments-grid',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'segment-edit-id-translations',
+                    name: 'segment-id-translations',
                     path: 'translations',
                     component: Tabs.SegmentTranslationsTab,
                     meta: {
@@ -98,14 +98,14 @@ export default {
                             },
                             {
                                 title: 'Segments',
-                                routePath: '/segments',
+                                routeName: 'segments-grid',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'segment-edit-id-designer',
+                    name: 'segment-id-designer',
                     path: 'designer',
                     component: Tabs.ConditionSetDesignTab,
                     meta: {
@@ -117,7 +117,7 @@ export default {
                             },
                             {
                                 title: 'Segments',
-                                routePath: '/segments',
+                                routeName: 'segments-grid',
                             },
                         ],
                         privileges: [],

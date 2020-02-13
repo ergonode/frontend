@@ -7,12 +7,13 @@
         <Form>
             <FormGroup>
                 <TextField
-                    v-model="nameValue"
+                    :value="translations.name[languageCode]"
                     solid
                     regular
                     label="Category name"
                     :disabled="!isUserAllowedToUpdate"
-                    :error-messages="errorNameMessage" />
+                    :error-messages="errorNameMessage"
+                    @input="(value) => setTranslationPropertyValue(value, 'name')" />
             </FormGroup>
         </Form>
     </Card>
@@ -36,15 +37,6 @@ export default {
     },
     mixins: [errorValidationMixin, translationCardMixin],
     computed: {
-        nameValue: {
-            get() {
-                return this.translations.name[this.languageCode];
-            },
-            set(newName) {
-                const nameIndex = 'name';
-                this.setTranslationPropertyValue(newName, nameIndex);
-            },
-        },
         isUserAllowedToUpdate() {
             return this.$hasAccess(['CATEGORY_UPDATE']);
         },

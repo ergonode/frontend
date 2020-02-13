@@ -59,7 +59,7 @@ export default {
         onCreatedAndEdit() {
             this.onCreate((id) => {
                 this.$router.push({
-                    name: 'category-edit-id-general',
+                    name: 'category-id-general',
                     params: {
                         id,
                     },

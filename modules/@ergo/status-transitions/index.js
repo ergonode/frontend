@@ -58,16 +58,16 @@ export default {
             ],
         },
         {
-            name: 'transition-edit-source-destination',
-            path: '/status-transitions/transition/edit/:id',
+            name: 'transition-source-destination',
+            path: '/status-transitions/transition/:id',
             component: Pages.StatusTransitionEdit,
             meta: {
                 isMenu: false,
-                redirectTo: 'transition-edit-id-general',
+                redirectTo: 'transition-id-general',
             },
             children: [
                 {
-                    name: 'transition-edit-id-general',
+                    name: 'transition-id-general',
                     path: 'general',
                     component: Tabs.StatusTransitionBaseTab,
                     meta: {
@@ -79,14 +79,14 @@ export default {
                             },
                             {
                                 title: 'Status transitions',
-                                routePath: '/status-transitions',
+                                routeName: 'status-transitions-grid',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'transition-edit-id-designer',
+                    name: 'transition-id-designer',
                     path: 'designer',
                     component: Tabs.ConditionSetDesignTab,
                     meta: {
@@ -98,7 +98,7 @@ export default {
                             },
                             {
                                 title: 'Status transitions',
-                                routePath: '/status-transitions',
+                                routeName: 'status-transitions-grid',
                             },
                         ],
                         privileges: [],

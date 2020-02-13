@@ -55,6 +55,7 @@ module.exports = {
                 'state',
             ],
         }],
+        camelcase: ['off'],
         'class-methods-use-this': ['off'],
         'global-require': ['off'],
         'import/no-dynamic-require': ['off'],

@@ -59,7 +59,7 @@ export default {
         onCreatedAndEdit() {
             this.onCreate((id) => {
                 this.$router.push({
-                    name: 'attribute-group-edit-id',
+                    name: 'attribute-group-id',
                     params: {
                         id,
                     },
