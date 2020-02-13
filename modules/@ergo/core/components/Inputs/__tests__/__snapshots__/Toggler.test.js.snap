@@ -2,8 +2,9 @@
 
 exports[`Inputs/Toggler/Toggler Component is named well 1`] = `
 <div class="toggler"><input id="input-1" type="checkbox" value="false"> <label for="input-1">
-    <div class="toggler__state"></div>
-  </label>
-  <!---->
-</div>
+    <div class="toggler__state-background">
+      <div class="toggler__state"></div>
+    </div>
+    <!---->
+  </label> </div>
 `;

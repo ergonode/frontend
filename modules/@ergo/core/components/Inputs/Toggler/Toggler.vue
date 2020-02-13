@@ -12,12 +12,14 @@
             type="checkbox"
             @input="onValueChange">
         <label :for="associatedLabel">
-            <div class="toggler__state" />
+            <div class="toggler__state-background">
+                <div class="toggler__state" />
+            </div>
+            <span
+                v-if="label"
+                class="toggler__label"
+                v-text="label" />
         </label>
-        <span
-            v-if="label"
-            class="toggler__label"
-            v-text="label" />
         <slot name="append" />
     </div>
 </template>
@@ -62,30 +64,28 @@ export default {
 
         position: relative;
         display: grid;
-        grid-template-columns: max-content max-content;
+        grid-template-columns: max-content;
         grid-auto-flow: column;
         column-gap: 8px;
         align-items: center;
 
         & label {
             position: relative;
+            display: grid;
+            grid-auto-flow: column;
+            column-gap: 8px;
+            align-items: center;
+        }
+
+        &__state-background {
             display: flex;
-            flex: 1;
             align-items: center;
             width: 30px;
-
-            &::before {
-                position: absolute;
-                top: 50%;
-                left: 0;
-                transform: translate(0, -50%);
-                width: 100%;
-                height: 12px;
-                background-color: $GREY_LIGHT;
-                border-radius: 8px;
-                box-shadow: $ELEVATOR_HOLE;
-                content: "";
-            }
+            height: 12px;
+            background-color: $GREY_LIGHT;
+            border-radius: 8px;
+            box-shadow: $ELEVATOR_HOLE;
+            cursor: pointer;
         }
 
         &__state {
@@ -116,6 +116,7 @@ export default {
         &__label {
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
+            cursor: pointer;
         }
 
         & input[type="checkbox"] {

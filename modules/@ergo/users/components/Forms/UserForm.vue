@@ -57,15 +57,11 @@
                     key: 'passwordRepeat',
                     value: passwordRepeat
                 })" />
-            <div class="horizontal-wrapper">
-                <CheckBox
-                    :value="isActive"
-                    :disabled="isDisabledByPrivileges"
-                    @input="onStatusChange" />
-                <span class="font--medium-12-16">
-                    The active status
-                </span>
-            </div>
+            <CheckBox
+                :value="isActive"
+                :disabled="isDisabledByPrivileges"
+                label="The active status"
+                @input="onStatusChange" />
             <Select
                 :value="language"
                 solid
@@ -189,15 +185,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .horizontal-wrapper {
-        display: flex;
-        align-items: center;
-
-        span {
-            margin-left: 8px;
-            color: $GRAPHITE_DARK;
-        }
-    }
-</style>
