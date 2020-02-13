@@ -303,7 +303,7 @@ export default {
             );
 
             if (ghostIndex !== -1 && !this.isMouseOverFilters) {
-                this.onRemoveFilterAtIndex(ghostIndex);
+                this.$emit('removeGhostFilter', ghostIndex);
                 this.setGhostFilterIndex();
             }
         },

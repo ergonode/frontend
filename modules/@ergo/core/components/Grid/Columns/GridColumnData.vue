@@ -159,7 +159,7 @@ export default {
             removeElementCopyFromDocumentBody(event);
 
             if (isTrashBelowMouse(xPos, yPos) && this.column.deletable) {
-                this.removeColumnWrapper(this.draggedElIndex - this.columnOffset);
+                this.removeColumnWrapper(this.index);
             } else if (this.ghostIndex !== this.draggedElIndex) {
                 this.$emit('changeColumnsPosition', {
                     from: this.draggedElIndex - this.columnOffset,

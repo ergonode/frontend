@@ -191,7 +191,7 @@ export default function ({ path }) {
             insertColumnAtIndex({ index, column }) {
                 this.columns = insertValueAtIndex([...this.columns], column, index);
             },
-            async dropColumnAtIndex({ columnId, ghostIndex }) {
+            dropColumnAtIndex({ columnId, ghostIndex }) {
                 const columnIds = insertValueAtIndex(
                     this.$cookies.get(COLUMNS_IDS).split(','),
                     columnId,

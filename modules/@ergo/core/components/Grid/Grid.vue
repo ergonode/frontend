@@ -96,6 +96,7 @@ export default {
     },
     data() {
         return {
+            isColumnDropped: false,
             isHeaderFocused: false,
             isMouseOverGrid: false,
             isSelectColumnPinned: false,
@@ -223,13 +224,13 @@ export default {
             }
         },
         onClickOutside(event) {
-            const { gridBody } = this.$refs;
+            const { gridColumns } = this.$refs;
             const isVisible = !!(
-                gridBody.offsetWidth
-                || gridBody.offsetHeight
-                || gridBody.getClientRects().length);
+                gridColumns.offsetWidth
+                || gridColumns.offsetHeight
+                || gridColumns.getClientRects().length);
 
-            if (!gridBody.contains(event.target) && isVisible) {
+            if (!gridColumns.contains(event.target) && isVisible) {
                 // Dismiss editable cell mode
 
                 this.setEditingCellCoordinates();
@@ -246,8 +247,8 @@ export default {
 
             if (xPos === 0 && yPos === 0) return false;
 
-            const { gridBody } = this.$refs;
-            const isOutOfBounds = isMouseOutOfBoundsElement(gridBody, xPos, yPos);
+            const { gridColumns } = this.$refs;
+            const isOutOfBounds = isMouseOutOfBoundsElement(gridColumns, xPos, yPos);
 
             if (isOutOfBounds || isTrashBelowMouse(xPos, yPos)) {
                 this.isMouseOverGrid = false;
@@ -265,13 +266,18 @@ export default {
             this.isHeaderFocused = isFocused;
         },
         onDrop(payload) {
-            this.columnWidths.splice(this.draggedElIndex, 1);
-            this.columnWidths = insertValueAtIndex(
-                this.columnWidths,
-                COLUMN_WIDTH.DEFAULT,
+            this.isColumnDropped = true;
+            let tmpColumnWidths = [...this.columnWidths];
+            tmpColumnWidths = swapItemPosition(
+                tmpColumnWidths,
+                this.draggedElIndex,
                 this.ghostIndex,
             );
+            tmpColumnWidths[this.ghostIndex] = COLUMN_WIDTH.DEFAULT;
+            this.columnWidths = tmpColumnWidths;
+            this.$emit('removeColumn', this.draggedElement);
             this.$emit('dropColumn', payload);
+            this.emitFetchData();
         },
         onUpdateColumnWidthAtIndex({ index, width }) {
             this.columnWidths[index] = width;
@@ -280,13 +286,11 @@ export default {
         onChangeColumnsPosition({ from, to }) {
             this.$emit('swapColumns', { from, to });
 
-            this.columnWidths = [
-                ...swapItemPosition(
-                    this.columnWidths,
-                    from + this.columnsOffset,
-                    to + this.columnsOffset,
-                ),
-            ];
+            this.columnWidths = swapItemPosition(
+                this.columnWidths,
+                from + this.columnsOffset,
+                to + this.columnsOffset,
+            );
         },
         onRemoveColumnAtIndex(index) {
             this.columnWidths.splice(index, 1);
@@ -320,20 +324,21 @@ export default {
             }
         },
         removeGhostColumn() {
-            if (this.draggedElIndex !== -1) {
-                const index = this.draggedElIndex - this.columnsOffset;
-                const { gridBody } = this.$refs;
-                const { length } = gridBody.children;
+            if (!this.isColumnDropped) {
+                const { gridColumns } = this.$refs;
+                const { length } = gridColumns.children;
 
                 for (let i = 0; i < length; i += 1) {
-                    gridBody.children[i].style.transform = null;
+                    gridColumns.children[i].style.transform = null;
                 }
 
-                this.columnWidths.splice(this.draggedElIndex, 1);
-                this.$emit('removeColumn', index);
+                this.columnWidths = this.columnWidths.filter(width => width !== COLUMN_WIDTH.GHOST);
+                this.$emit('removeColumn', this.draggedElement);
                 this.setDraggedElIndex();
                 this.setGhostIndex();
             }
+
+            this.isColumnDropped = false;
         },
         setCurrentPage(page) {
             this.currentPage = page;
@@ -343,6 +348,7 @@ export default {
             const number = Math.trunc(maxRows);
 
             if (number !== this.maxRows) {
+                this.currentPage = 1;
                 this.maxRows = number;
 
                 this.emitFetchData();
@@ -363,6 +369,9 @@ export default {
         onRemoveFilterAtIndex(index) {
             this.$emit('removeFilter', index);
             this.emitFetchData();
+        },
+        onRemoveGhostFilterAtIndex(index) {
+            this.$emit('removeFilter', index);
         },
         onRemoveAll() {
             this.$emit('removeAllFilters');
@@ -566,6 +575,7 @@ export default {
             return gridColumns;
         };
         const gridColumns = createElement('div', {
+            ref: 'gridColumns',
             staticClass: 'grid__columns',
             style: this.templateColumns,
         }, getGridColumns());
@@ -576,7 +586,6 @@ export default {
         }
 
         const gridBody = createElement('div', {
-            ref: 'gridBody',
             staticClass: 'grid__body',
             on: {
                 dragleave: this.onDragLeave,
@@ -622,6 +631,7 @@ export default {
                     dropFilter: this.onDropFilterAtIndex,
                     updateFilter: this.onUpdateFilterAtIndex,
                     removeFilter: this.onRemoveFilterAtIndex,
+                    removeGhostFilter: this.onRemoveGhostFilterAtIndex,
                     insertFilter: this.onInsertFilterAtIndex,
                     clearFilter: this.onClearFilterAtIndex,
                     setGhostFilter: this.onSetGhostFilterAtIndex,

@@ -4,55 +4,20 @@
  */
 <template>
     <div class="list-header">
-        <div class="vertical-wrapper">
-            <FabButton
-                :theme="secondaryTheme"
-                @click.native="onExpand">
-                <template #icon="{ fillColor }">
-                    <IconArrowDouble
-                        :fill-color="fillColor"
-                        :state="expendStateIcon" />
-                </template>
-            </FabButton>
-            <span
-                class="list-header__title font--medium-16-24"
-                v-text="header" />
-        </div>
+        <span
+            class="list-header__title font--medium-16-24"
+            v-text="header" />
         <slot />
     </div>
 </template>
 
 <script>
-import { THEMES } from '@Core/defaults/buttons';
-import { ARROW } from '@Core/defaults/icons';
-
 export default {
     name: 'ListHeader',
-    components: {
-        FabButton: () => import('@Core/components/Buttons/FabButton'),
-        IconArrowDouble: () => import('@Core/components/Icons/Arrows/IconArrowDouble'),
-    },
     props: {
         header: {
             type: String,
             required: true,
-        },
-        isExpanded: {
-            type: Boolean,
-            required: true,
-        },
-    },
-    computed: {
-        secondaryTheme() {
-            return THEMES.SECONDARY;
-        },
-        expendStateIcon() {
-            return ARROW.LEFT;
-        },
-    },
-    methods: {
-        onExpand() {
-            this.$emit('expand', !this.isExpanded);
         },
     },
 };
@@ -74,10 +39,5 @@ export default {
             margin-left: 4px;
             color: $GRAPHITE_DARK;
         }
-    }
-
-    .vertical-wrapper {
-        display: flex;
-        align-items: center;
     }
 </style>
