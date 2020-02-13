@@ -6,8 +6,6 @@
     <VerticalTabBarListWrapper>
         <ListSearchHeader
             header="Categories"
-            :is-expanded="isExpanded"
-            @expand="onExpand"
             @searchResult="onSearch" />
         <CategoriesList :language-code="userLanguageCode" />
         <div class="add-fab-button">
@@ -37,12 +35,6 @@ export default {
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
         FabButton: () => import('@Core/components/Buttons/FabButton'),
     },
-    props: {
-        isExpanded: {
-            type: Boolean,
-            required: true,
-        },
-    },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
@@ -56,9 +48,6 @@ export default {
             'setFilter',
             'getElements',
         ]),
-        onExpand(isExpanded) {
-            this.$emit('expand', isExpanded);
-        },
         onSearch(value) {
             this.setFilter(value);
             this.getElements({

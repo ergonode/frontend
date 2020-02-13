@@ -79,8 +79,8 @@ export default {
             const isUserAllowedToReadProduct = this.$hasAccess(['PRODUCT_READ']);
             return [
                 {
-                    title: 'Attributes',
-                    component: () => import('@Products/components/Tabs/List/AttributesListTab'),
+                    title: 'Product attributes',
+                    component: () => import('@Attributes/components/Tabs/List/AttributesListTab'),
                     iconComponent: () => import('@Core/components/Icons/Menu/IconAttributes'),
                     props: {
                         disabled: !isUserAllowedToReadProduct,
@@ -88,8 +88,8 @@ export default {
                     listDataType: 'attributes',
                 },
                 {
-                    title: 'System Attributes',
-                    component: () => import('@Products/components/Tabs/List/SystemAttributesListTab'),
+                    title: 'System attributes',
+                    component: () => import('@Attributes/components/Tabs/List/SystemAttributesListTab'),
                     iconComponent: () => import('@Core/components/Icons/Menu/IconSettings'),
                     props: {
                         disabled: !isUserAllowedToReadProduct,

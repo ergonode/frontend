@@ -18,9 +18,9 @@
             </ListElementAction>
         </ListElement>
         <FadeTransition>
-            <div v-if="isExpanded">
+            <ul v-if="isExpanded">
                 <slot name="item" />
-            </div>
+            </ul>
         </FadeTransition>
     </ul>
 </template>

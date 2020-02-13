@@ -6,9 +6,7 @@
     <VerticalTabBarListWrapper>
         <ListSearchHeader
             header="Conditions"
-            :is-expanded="isExpanded"
-            :is-search="false"
-            @expand="onExpand" />
+            :is-search="false" />
         <ConditionsList :language-code="userLanguageCode" />
     </VerticalTabBarListWrapper>
 </template>
@@ -23,21 +21,10 @@ export default {
         ConditionsList: () => import('@Conditions/components/Lists/ConditionsList'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
     },
-    props: {
-        isExpanded: {
-            type: Boolean,
-            required: true,
-        },
-    },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-    },
-    methods: {
-        onExpand(isExpanded) {
-            this.$emit('expand', isExpanded);
-        },
     },
 };
 </script>

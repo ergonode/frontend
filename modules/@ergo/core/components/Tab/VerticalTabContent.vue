@@ -5,10 +5,8 @@
 <template>
     <KeepAlive>
         <Component
-            :is="tabItem.component"
-            v-bind="tabItem.props"
-            :is-expanded="isExpanded"
-            @expand="onExpand" />
+            :is="item.component"
+            v-bind="item.props" />
     </KeepAlive>
 </template>
 
@@ -16,18 +14,9 @@
 export default {
     name: 'VerticalTabContent',
     props: {
-        tabItem: {
+        item: {
             type: Object,
             required: true,
-        },
-        isExpanded: {
-            type: Boolean,
-            required: true,
-        },
-    },
-    methods: {
-        onExpand(isExpanded) {
-            this.$emit('expand', isExpanded);
         },
     },
 };

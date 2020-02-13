@@ -3,14 +3,12 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
+    <button
         :class="
             [
                 'tab-bar-item',
-                'font--medium-12-16',
                 {
-                    'tab-bar-item--selected': (isSelected && isExpanded),
-                    'tab-bar-item--expanded': isExpanded,
+                    'tab-bar-item--selected': isSelected,
                 }
             ]"
         @click="onClick">
@@ -20,7 +18,7 @@
         <span
             class="tab-bar-item__title"
             v-text="item.title" />
-    </div>
+    </button>
 </template>
 
 <script>
@@ -39,7 +37,7 @@ export default {
                 return null;
             }
 
-            return this.isSelected && this.isExpanded
+            return this.isSelected
                 ? GREEN
                 : GRAPHITE;
         },
@@ -57,15 +55,24 @@ export default {
         $tabItem: &;
 
         position: relative;
-        display: grid;
-        row-gap: 4px;
-        justify-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
-        padding: 12px 0;
+        width: 80px;
+        border: none;
+        padding: 12px 8px;
+        box-sizing: border-box;
+        background-color: unset;
         color: $GRAPHITE;
+        font: $FONT_MEDIUM_12_16;
         outline: none;
         text-align: center;
         cursor: pointer;
+
+        &__title {
+            margin-top: 4px;
+        }
 
         &--selected {
             background-image: linear-gradient(to left, $WHITE, $WHITESMOKE);
