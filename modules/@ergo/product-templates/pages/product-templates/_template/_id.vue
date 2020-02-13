@@ -5,7 +5,6 @@
 <template>
     <TemplatePage
         :title="templateTitle"
-        is-edit
         @dismiss="onDismiss"
         @remove="onRemove"
         @save="onCreate" />

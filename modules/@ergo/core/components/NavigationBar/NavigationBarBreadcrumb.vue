@@ -9,9 +9,9 @@
             v-if="breadcrumb.icon"
             :fill-color="breadcrumbIconFillColor" />
         <NuxtLink
-            v-if="breadcrumb.routePath"
+            v-if="breadcrumb.routeName"
             class="navigation-bar-breadcrumb__link"
-            :to="breadcrumb.routePath"
+            :to="{ name: breadcrumb.routeName }"
             v-text="breadcrumb.title" />
         <span
             v-else

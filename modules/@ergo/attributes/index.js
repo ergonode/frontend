@@ -77,16 +77,16 @@ export default {
             ],
         },
         {
-            name: 'attribute-edit-id',
-            path: '/attributes/attribute/edit/:id',
+            name: 'attribute-id',
+            path: '/attributes/attribute/:id',
             component: Pages.AttributeEdit,
             meta: {
                 isMenu: false,
-                redirectTo: 'attribute-edit-id-general',
+                redirectTo: 'attribute-id-general',
             },
             children: [
                 {
-                    name: 'attribute-edit-id-general',
+                    name: 'attribute-id-general',
                     path: 'general',
                     component: Tabs.AttributeBaseTab,
                     meta: {
@@ -98,14 +98,14 @@ export default {
                             },
                             {
                                 title: 'Attributes',
-                                routePath: '/attributes',
+                                routeName: 'attributes-grid',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'attribute-edit-id-translations',
+                    name: 'attribute-id-translations',
                     path: 'translations',
                     component: Tabs.AttributeTranslationsTab,
                     meta: {
@@ -117,7 +117,7 @@ export default {
                             },
                             {
                                 title: 'Attributes',
-                                routePath: '/attributes',
+                                routeName: 'attributes-grid',
                             },
                         ],
                         privileges: [],
@@ -164,16 +164,16 @@ export default {
             ],
         },
         {
-            name: 'attribute-group-edit-id',
-            path: '/attribute-groups/group/edit/:id',
+            name: 'attribute-group-id',
+            path: '/attribute-groups/group/:id',
             component: Pages.AttributeGroupEdit,
             meta: {
                 isMenu: false,
-                redirectTo: 'attribute-group-edit-id-general',
+                redirectTo: 'attribute-group-id-general',
             },
             children: [
                 {
-                    name: 'attribute-group-edit-id-general',
+                    name: 'attribute-group-id-general',
                     path: 'general',
                     component: Tabs.AttributeGroupBaseTab,
                     meta: {
@@ -185,14 +185,14 @@ export default {
                             },
                             {
                                 title: 'Attribute groups',
-                                routePath: '/attribute-groups',
+                                routeName: 'attribute-groups-grid',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'attribute-group-edit-id-translations',
+                    name: 'attribute-group-id-translations',
                     path: 'translations',
                     component: Tabs.AttributeGroupTranslationsTab,
                     meta: {
@@ -204,7 +204,7 @@ export default {
                             },
                             {
                                 title: 'Attribute groups',
-                                routePath: '/attribute-groups',
+                                routeName: 'attribute-groups-grid',
                             },
                         ],
                         privileges: [],

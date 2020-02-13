@@ -125,7 +125,7 @@ export default {
             const args = edit.href.split('/');
             const lastIndex = args.length - 1;
 
-            this.$router.push({ name: 'product-edit-id-general', params: { id: args[lastIndex] } });
+            this.$router.push({ name: 'product-id-general', params: { id: args[lastIndex] } });
         },
         saveDrafts() {
             const promises = [];

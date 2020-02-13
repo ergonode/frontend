@@ -10,7 +10,7 @@
                 solid
                 regular
                 required
-                label="Code"
+                label="System name"
                 :disabled="isDisabled || isDisabledByPrivileges"
                 :error-messages="errorCodeMessage"
                 hint="Code must be unique"

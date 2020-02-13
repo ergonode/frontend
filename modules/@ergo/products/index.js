@@ -58,16 +58,16 @@ export default {
             ],
         },
         {
-            name: 'product-edit-id',
-            path: '/catalog/product/edit/:id',
+            name: 'product-id',
+            path: '/catalog/product/:id',
             component: Pages.ProductEdit,
             meta: {
                 isMenu: false,
-                redirectTo: 'product-edit-id-general',
+                redirectTo: 'product-id-general',
             },
             children: [
                 {
-                    name: 'product-edit-id-general',
+                    name: 'product-id-general',
                     path: 'general',
                     component: Tabs.ProductBaseTab,
                     meta: {
@@ -79,14 +79,14 @@ export default {
                             },
                             {
                                 title: 'Catalog',
-                                routePath: '/catalog',
+                                routeName: 'catalog-products',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'product-edit-id-template',
+                    name: 'product-id-template',
                     path: 'template',
                     component: Tabs.ProductTemplateTab,
                     meta: {
@@ -98,14 +98,14 @@ export default {
                             },
                             {
                                 title: 'Catalog',
-                                routePath: '/catalog',
+                                routeName: 'catalog-products',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'product-edit-id-comments',
+                    name: 'product-id-comments',
                     path: 'comments',
                     component: Tabs.ProductCommentsTab,
                     meta: {
@@ -117,14 +117,14 @@ export default {
                             },
                             {
                                 title: 'Catalog',
-                                routePath: '/catalog',
+                                routeName: 'catalog-products',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'product-edit-id-history',
+                    name: 'product-id-history',
                     path: 'history',
                     component: Tabs.ProductHistoryGridTab,
                     meta: {
@@ -136,7 +136,7 @@ export default {
                             },
                             {
                                 title: 'Catalog',
-                                routePath: '/catalog',
+                                routeName: 'catalog-products',
                             },
                         ],
                         privileges: [],

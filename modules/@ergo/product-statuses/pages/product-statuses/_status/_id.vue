@@ -5,7 +5,6 @@
 <template>
     <ProductStatusPage
         :title="code"
-        is-edit
         @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
@@ -74,12 +73,12 @@ export default {
         },
         onRemoveProductStatusSuccess() {
             this.$addAlert({ type: 'success', message: 'Product status removed' });
-            this.$router.push({ name: 'product-statuses' });
+            this.$router.push({ name: 'product-statuses-grid' });
         },
         onProductStatusUpdated() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Product status updated' });
-            this.$router.push({ name: 'product-statuses' });
+            this.$router.push({ name: 'product-statuses-grid' });
         },
     },
 };

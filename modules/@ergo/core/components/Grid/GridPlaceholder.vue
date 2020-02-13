@@ -28,7 +28,6 @@ export default {
         flex-direction: column;
         align-items: center;
         background: $WHITESMOKE url("~@Core/assets/images/placeholders/noresults.svg") no-repeat;
-        padding-top: 80px;
 
         &__description {
             display: flex;

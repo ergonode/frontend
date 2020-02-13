@@ -43,10 +43,12 @@ export default {
             templateTitle: state => state.title,
             templateImage: state => state.image,
         }),
+        isDisabled() {
+            return Boolean(this.templateTitle);
+        },
         isDisabledByPrivileges() {
-            const isEdit = /edit/.test(this.$route.path);
-            return (isEdit && !this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']))
-            || (!isEdit && !this.$hasAccess(['TEMPLATE_DESIGNER_CREATE']));
+            return (this.isDisabled && !this.$hasAccess(['TEMPLATE_DESIGNER_UPDATE']))
+                || (!this.isDisabled && !this.$hasAccess(['TEMPLATE_DESIGNER_CREATE']));
         },
         errorNameMessage() {
             const typeIndex = 'name';

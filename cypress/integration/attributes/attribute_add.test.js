@@ -40,7 +40,7 @@ context('Add Attribute', () => {
 
     describe('Insert Attribute values - valid', () => {
         it('Insert code', () => {
-            cy.get('input[aria-label="Code"]')
+            cy.get('input[aria-label="System name"]')
                 .type(uuid)
                 .should('have.value', uuid);
         });

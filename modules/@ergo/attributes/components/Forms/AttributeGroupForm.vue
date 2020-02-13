@@ -12,7 +12,7 @@
                 required
                 :error-messages="errorCodeMessage"
                 :disabled="isDisabled || isDisabledByPrivileges"
-                label="Code"
+                label="System name"
                 hint="Attribute group code must be unique"
                 @input="setAttributeGroupCode" />
         </FormGroup>

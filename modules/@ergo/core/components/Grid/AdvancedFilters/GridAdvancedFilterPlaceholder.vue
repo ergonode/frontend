@@ -5,7 +5,7 @@
 <template>
     <div class="advanced-filters-placeholder">
         <IconDragDrop size="16" />
-        Drag & drop the attribute here
+        Drag the attribute to add a filter
     </div>
 </template>
 

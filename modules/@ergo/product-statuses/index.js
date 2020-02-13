@@ -54,16 +54,16 @@ export default {
             ],
         },
         {
-            name: 'product-status-edit-id',
-            path: '/product-statuses/status/edit/:id',
+            name: 'product-status-id',
+            path: '/product-statuses/status/:id',
             component: Pages.ProductStatusEdit,
             meta: {
                 isMenu: false,
-                redirectTo: 'product-status-edit-id-general',
+                redirectTo: 'product-status-id-general',
             },
             children: [
                 {
-                    name: 'product-status-edit-id-general',
+                    name: 'product-status-id-general',
                     path: 'general',
                     component: Tabs.ProductStatusBaseTab,
                     meta: {
@@ -75,14 +75,14 @@ export default {
                             },
                             {
                                 title: 'Product statuses',
-                                routePath: '/product-statuses',
+                                routeName: 'product-statuses-grid',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'product-status-edit-id-general-translations',
+                    name: 'product-status-id-general-translations',
                     path: 'translations',
                     component: Tabs.ProductStatusTranslationsTab,
                     meta: {
@@ -94,7 +94,7 @@ export default {
                             },
                             {
                                 title: 'Product statuses',
-                                routePath: '/product-statuses',
+                                routeName: 'product-statuses-grid',
                             },
                         ],
                         privileges: [],

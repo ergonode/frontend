@@ -12,7 +12,7 @@
                 required
                 :error-messages="errorCodeMessage"
                 :disabled="isDisabled || isDisabledByPrivileges"
-                label="Code"
+                label="System name"
                 hint="Category code must be unique"
                 @input="setCategoryCode" />
         </FormGroup>

@@ -2,7 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-/* eslint-disable camelcase */
 import { getKeyByValue } from '@Core/models/objectWrapper';
 import { types } from './mutations';
 
