@@ -59,7 +59,7 @@ export default {
         onCreatedAndEdit() {
             this.onCreate((id) => {
                 this.$router.push({
-                    name: 'product-status-edit-id-general',
+                    name: 'product-status-id-general',
                     params: {
                         id,
                     },

@@ -38,7 +38,7 @@ export default {
             const id = `${args[lastIndex - 1].replace(/%20/g, ' ')}--${args[lastIndex].replace(/%20/g, ' ')}`;
 
             this.$router.push({
-                name: 'transition-edit-id-general',
+                name: 'transition-id-general',
                 params: { id },
             });
         },

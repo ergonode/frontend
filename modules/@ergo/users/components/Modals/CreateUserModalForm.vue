@@ -68,7 +68,7 @@ export default {
         onCreatedAndEdit() {
             this.onCreate((id) => {
                 this.$router.push({
-                    name: 'user-edit-id-general',
+                    name: 'user-id-general',
                     params: {
                         id,
                     },

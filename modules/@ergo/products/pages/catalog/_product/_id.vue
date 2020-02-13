@@ -5,7 +5,6 @@
 <template>
     <ProductPage
         :title="sku"
-        is-edit
         @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
@@ -56,11 +55,11 @@ export default {
         ]),
         onDraftAppliedSuccess() {
             this.$addAlert({ type: 'success', message: 'Product updated' });
-            this.$router.push({ name: 'catalog' });
+            this.$router.push({ name: 'catalog-products' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Product removed' });
-            this.$router.push({ name: 'catalog' });
+            this.$router.push({ name: 'catalog-products' });
         },
         onDismiss() {
             this.$router.push(getParentRoutePath(this.$route));

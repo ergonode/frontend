@@ -12,7 +12,7 @@
                 :error-messages="errorCodeMessage"
                 :disabled="isDisabled || isDisabledByPrivileges"
                 regular
-                label="Code"
+                label="System name"
                 hint="Status code must be unique"
                 @input="setCode" />
             <div class="horizontal-wrapper">

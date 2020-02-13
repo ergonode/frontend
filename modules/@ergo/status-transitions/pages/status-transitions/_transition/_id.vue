@@ -5,7 +5,6 @@
 <template>
     <TransitionPage
         :title="`${getParamId[0]} -> ${getParamId[1]}`"
-        is-edit
         @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
@@ -113,10 +112,6 @@ export default {
                 onError: this.onError,
             });
         },
-        onTransitionUpdated() {
-            this.$addAlert({ type: 'success', message: 'Transition updated' });
-            this.$router.push({ name: 'status-transitions' });
-        },
         onDismiss() {
             this.$router.push(getParentRoutePath(this.$route));
         },
@@ -128,9 +123,13 @@ export default {
                 });
             }
         },
+        onTransitionUpdated() {
+            this.$addAlert({ type: 'success', message: 'Transition updated' });
+            this.$router.push({ name: 'status-transitions-grid' });
+        },
         onRemoveTransitionSuccess() {
             this.$addAlert({ type: 'success', message: 'Transition removed' });
-            this.$router.push({ name: 'status-transitions' });
+            this.$router.push({ name: 'status-transitions-grid' });
         },
     },
 };

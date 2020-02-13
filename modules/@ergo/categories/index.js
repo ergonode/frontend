@@ -55,16 +55,16 @@ export default {
             ],
         },
         {
-            name: 'category-edit-id',
-            path: '/categories/category/edit/:id',
+            name: 'category-id',
+            path: '/categories/category/:id',
             component: Pages.CategoryEdit,
             meta: {
                 isMenu: false,
-                redirectTo: 'category-edit-id-general',
+                redirectTo: 'category-id-general',
             },
             children: [
                 {
-                    name: 'category-edit-id-general',
+                    name: 'category-id-general',
                     path: 'general',
                     component: Tabs.CategoryBaseTab,
                     meta: {
@@ -76,14 +76,14 @@ export default {
                             },
                             {
                                 title: 'Categories',
-                                routePath: '/categories',
+                                routeName: 'categories-grid',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'category-edit-id-translations',
+                    name: 'category-id-translations',
                     path: 'translations',
                     component: Tabs.CategoryTranslationsTab,
                     meta: {
@@ -95,7 +95,7 @@ export default {
                             },
                             {
                                 title: 'Categories',
-                                routePath: '/categories',
+                                routeName: 'categories-grid',
                             },
                         ],
                         privileges: [],

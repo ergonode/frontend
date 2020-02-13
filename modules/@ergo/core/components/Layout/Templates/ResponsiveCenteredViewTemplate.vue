@@ -73,7 +73,7 @@ export default {
 
             #{$parent}__responsive-container {
                 grid-area: 2 / 2 / 3 / 3;
-                padding: 24px 24px 0;
+                padding: 24px;
             }
         }
 

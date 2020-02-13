@@ -45,16 +45,16 @@ export default {
             },
         },
         {
-            name: 'product-template-edit-id',
-            path: '/product-templates/template/edit/:id',
+            name: 'product-template-id',
+            path: '/product-templates/template/:id',
             component: Pages.ProductTemplateEdit,
             meta: {
                 isMenu: false,
-                redirectTo: 'product-template-edit-id-general',
+                redirectTo: 'product-template-id-general',
             },
             children: [
                 {
-                    name: 'product-template-edit-id-general',
+                    name: 'product-template-id-general',
                     path: 'general',
                     component: Tabs.TemplateDesignerBaseTab,
                     meta: {
@@ -66,14 +66,14 @@ export default {
                             },
                             {
                                 title: 'Product templates',
-                                routePath: '/product-templates',
+                                routeName: 'product-templates',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'product-template-edit-id-template',
+                    name: 'product-template-id-template',
                     path: 'template',
                     component: Tabs.TemplateDesignerTab,
                     meta: {
@@ -85,7 +85,7 @@ export default {
                             },
                             {
                                 title: 'Product templates',
-                                routePath: '/product-templates',
+                                routeName: 'product-templates',
                             },
                         ],
                         privileges: [],

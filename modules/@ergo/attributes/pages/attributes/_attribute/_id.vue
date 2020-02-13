@@ -5,7 +5,6 @@
 <template>
     <AttributePage
         :title="code"
-        is-edit
         @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
@@ -76,11 +75,11 @@ export default {
         },
         onUpdateAttributeSuccess() {
             this.$addAlert({ type: 'success', message: 'Attribute updated' });
-            this.$router.push({ name: 'attributes' });
+            this.$router.push({ name: 'attributes-grid' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Attribute removed' });
-            this.$router.push({ name: 'attributes' });
+            this.$router.push({ name: 'attributes-grid' });
         },
         onRemove() {
             const isConfirm = confirm('Are you sure you want to delete this attribute?'); /* eslint-disable-line no-restricted-globals */

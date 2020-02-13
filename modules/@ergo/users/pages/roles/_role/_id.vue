@@ -5,7 +5,6 @@
 <template>
     <UserRolesPage
         :title="name"
-        is-edit
         @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
@@ -62,11 +61,11 @@ export default {
         onUpdateRoleSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Role updated' });
-            this.$router.push({ name: 'user-roles' });
+            this.$router.push({ name: 'user-roles-grid' });
         },
         onRemoveRoleSuccess() {
             this.$addAlert({ type: 'success', message: 'Role removed' });
-            this.$router.push({ name: 'user-roles' });
+            this.$router.push({ name: 'user-roles-grid' });
         },
         onRemoveRoleError({ message }) {
             this.$addAlert({ type: 'error', message });

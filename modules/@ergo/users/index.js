@@ -65,16 +65,16 @@ export default {
             ],
         },
         {
-            name: 'user-edit-id',
-            path: '/users/user/edit/:id',
+            name: 'user-id',
+            path: '/users/user/:id',
             component: Pages.UserEdit,
             meta: {
                 isMenu: false,
-                redirectTo: 'user-edit-id-general',
+                redirectTo: 'user-id-general',
             },
             children: [
                 {
-                    name: 'user-edit-id-general',
+                    name: 'user-id-general',
                     path: 'general',
                     component: Tabs.UserBaseTab,
                     meta: {
@@ -86,14 +86,14 @@ export default {
                             },
                             {
                                 title: 'Users',
-                                routePath: '/users',
+                                routeName: 'users-grid',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'user-edit-id-avatar',
+                    name: 'user-id-avatar',
                     path: 'avatar',
                     component: Tabs.UserAvatarTab,
                     meta: {
@@ -105,7 +105,7 @@ export default {
                             },
                             {
                                 title: 'Users',
-                                routePath: '/users',
+                                routeName: 'users-grid',
                             },
                         ],
                         privileges: [],
@@ -152,16 +152,16 @@ export default {
             ],
         },
         {
-            name: 'user-role-edit-id',
-            path: '/user-roles/role/edit/:id',
+            name: 'user-role-id',
+            path: '/user-roles/role/:id',
             component: Pages.RoleEdit,
             meta: {
                 isMenu: false,
-                redirectTo: 'user-role-edit-id-general',
+                redirectTo: 'user-role-id-general',
             },
             children: [
                 {
-                    name: 'user-role-edit-id-general',
+                    name: 'user-role-id-general',
                     path: 'general',
                     component: Tabs.RoleBaseTab,
                     meta: {
@@ -173,14 +173,14 @@ export default {
                             },
                             {
                                 title: 'User roles',
-                                routePath: '/user-roles',
+                                routeName: 'user-roles-grid',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'user-role-edit-id-privileges',
+                    name: 'user-role-id-privileges',
                     path: 'privileges',
                     component: Tabs.RolePrivilegesTab,
                     meta: {
@@ -192,7 +192,7 @@ export default {
                             },
                             {
                                 title: 'User roles',
-                                routePath: '/user-roles',
+                                routeName: 'user-roles-grid',
                             },
                         ],
                         privileges: [],
