@@ -19,6 +19,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { TYPES } from '@Conditions/defaults/conditions';
+import { isEmpty } from '@Core/models/objectWrapper';
 import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 
 export default {
@@ -88,8 +89,8 @@ export default {
             });
         },
         conditionParametersAreValidate(index, key) {
-            return this.validationErrorsAreNotNull
-            && this.validationErrorsHasProperty(index)
+            return !isEmpty(this.validationErrors)
+            && this.validationErrors[index]
             && this.validationErrors[index][key]
                 ? this.validationErrors[index][key].join(', ') : null;
         },

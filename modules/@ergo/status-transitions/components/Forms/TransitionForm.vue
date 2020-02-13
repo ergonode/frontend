@@ -106,9 +106,6 @@ export default {
             'setDestination',
             'setRoles',
         ]),
-        ...mapActions('validations', [
-            'setErrorForKey',
-        ]),
     },
 };
 </script>
