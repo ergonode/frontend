@@ -34,7 +34,6 @@
 </template>
 
 <script>
-// import { mapState } from 'vuex';
 import { SIZES } from '@Core/defaults/buttons';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
