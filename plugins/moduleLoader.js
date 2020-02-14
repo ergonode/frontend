@@ -5,16 +5,15 @@
 /* eslint-disable no-param-reassign */
 import Vue from 'vue'; // eslint-disable-line import/no-extraneous-dependencies
 
+const deepmerge = require('deepmerge');
+
 const ModuleLoader = (() => {
-    let instance;
-    const isDev = process.env.NODE_ENV === 'development';
-    const deepmerge = require('deepmerge');
-    const modulesConfiguration = require('../config/.modules').default || {};
-    const { REQUIRED_MODULES, CORE_MODULES } = require('../defaults/modules');
+    let _instance;
+    const _isDev = process.env.NODE_ENV === 'development';
+    const _modules = require('../config/.modules').default || {};
+    const { _requiredModules, _availableModules } = require('../package');
 
     return {
-        _requiredModules: REQUIRED_MODULES,
-        _modules: modulesConfiguration,
         _modulesConfig: {
             nuxt: {},
             store: [],
@@ -28,16 +27,16 @@ const ModuleLoader = (() => {
             nuxt: {},
         },
         init() {
-            this.setModulesConfig(this._modules.active || []);
-            this.setInactiveModulesConfig(this._modules.inactive || []);
+            this.setModulesConfig(_modules.active);
+            this.setInactiveModulesConfig(_modules.inactive);
             this.checkRequiredModules();
             this.checkModuleRelations();
-            if (isDev) this.inactiveModulesInfo();
+            if (_isDev) this.inactiveModulesInfo();
         },
         install(_Vue) {
             const { extendComponents } = this._modulesConfig;
 
-            _Vue.prototype.$getComponentsForExtended = type => extendComponents[type];
+            _Vue.prototype.$getExtendedComponents = type => extendComponents[type];
         },
         get modulesConfig() {
             return this._modulesConfig;
@@ -45,21 +44,22 @@ const ModuleLoader = (() => {
         get inactiveModulesConfig() {
             return this._inactiveModulesConfig;
         },
-        configType({ path, type }) {
+        configType({ type, name }) {
             switch (type) {
             case 'local':
-                return require(`../modules/${path}`).default;
-            case 'npm':
-                return require(`${path}`);
+                return require(`../modules/${name}`).default;
+            // case 'npm': {
+            //     return require('@bleto/ergo-import');
+            // }
             default:
                 return null;
             }
         },
-        setModulesConfig(modules) {
+        setModulesConfig(modules = []) {
             this._modulesConfig = modules.reduce((acc, module) => {
-                const moduleName = module.replace('@ergo/', '');
-                const { path, type } = CORE_MODULES[module];
-                const config = this.configType(CORE_MODULES[module]);
+                const clearModuleName = module.replace('/', '_');
+                const moduleType = _availableModules[module];
+                const config = this.configType({ type: moduleType, name: module });
                 const modulesConfig = acc;
 
                 if (config) {
@@ -69,21 +69,24 @@ const ModuleLoader = (() => {
                     }
                     if (config.store) {
                         modulesConfig.store.push({
-                            type,
-                            moduleName: path,
+                            moduleType,
+                            moduleName: module,
                             store: config.store,
                         });
                     }
                     if (config.nuxt) {
-                        const modulePath = type === 'local'
-                            ? `modules/${path}`
-                            : path;
+                        const modulePath = moduleType === 'local'
+                            ? `modules/${module}`
+                            : module;
 
                         if (config.nuxt.aliases) {
                             const { aliases } = config.nuxt;
 
                             Object.keys(aliases).forEach((alias) => {
-                                config.nuxt.aliases[alias] = `/${modulePath}${aliases[alias]}`;
+                                config.nuxt.aliases[alias] = {
+                                    path: `${moduleType === 'local' ? '/' : ''}${modulePath}${aliases[alias]}`.replace(/\/$/g, ''),
+                                    type: moduleType,
+                                };
                             });
                         }
                         if (config.nuxt.css) {
@@ -119,19 +122,19 @@ const ModuleLoader = (() => {
 
                             config.nuxt.middleware = async (ctx) => {
                                 for (let i = 0; i < middleware.length; i += 1) {
-                                    const importedMiddleware = require(`../modules/${path}${middleware[i]}`).default;
+                                    const importedMiddleware = require(`../modules/${module}${middleware[i]}`).default;
 
                                     importedMiddleware(ctx);
                                 }
                             };
                         }
                         config.nuxt.chunks = {
-                            [`${moduleName}Module`]: {
+                            [`${clearModuleName}Module`]: {
                                 test(mod) {
                                     return mod.resource && mod.resource.includes(`modules/${module}`);
                                 },
                                 chunks: 'all',
-                                name: `${moduleName}Module`,
+                                name: `${clearModuleName}Module`,
                                 priority: -20,
                             },
                         };
@@ -139,7 +142,7 @@ const ModuleLoader = (() => {
                     }
                     if (config.moduleRelations) {
                         modulesConfig.moduleRelations.push({
-                            moduleName: path,
+                            moduleName: module,
                             relations: config.moduleRelations,
                         });
                     }
@@ -156,16 +159,16 @@ const ModuleLoader = (() => {
                 return modulesConfig;
             }, this._modulesConfig);
         },
-        setInactiveModulesConfig(modules) {
+        setInactiveModulesConfig(modules = []) {
             this._inactiveModulesConfig = modules.reduce((acc, module) => {
-                const { path, type } = CORE_MODULES[module];
-                const config = this.configType(CORE_MODULES[module]);
+                const moduleType = _availableModules[module];
+                const config = this.configType({ type: moduleType, name: module });
                 const modulesConfig = acc;
 
                 if (config && config.nuxt) {
-                    const modulePath = type === 'local'
-                        ? `modules/${path}`
-                        : path;
+                    const modulePath = moduleType === 'local'
+                        ? `modules/${module}`
+                        : module;
 
                     if (config.nuxt.aliases) {
                         const { aliases } = config.nuxt;
@@ -180,8 +183,8 @@ const ModuleLoader = (() => {
             }, this._inactiveModulesConfig);
         },
         checkRequiredModules() {
-            this._requiredModules.forEach((module) => {
-                if (!this._modules.active || !this._modules.active.includes(module)) {
+            _requiredModules.forEach((module) => {
+                if (!_modules.active || !_modules.active.includes(module)) {
                     throw Error(`Module [${module}] does not exist.`);
                 }
             });
@@ -193,25 +196,25 @@ const ModuleLoader = (() => {
                 const { moduleName, relations } = moduleRelations;
 
                 relations.forEach((relation) => {
-                    if (!this._modules.active || !this._modules.active.includes(moduleName)) {
+                    if (!_modules.active || !_modules.active.includes(moduleName)) {
                         throw Error(`Module [${moduleName}] has relation with [${relation}].\n Module [${relation}] does not exist.`);
                     }
                 });
             });
         },
         inactiveModulesInfo() {
-            if (this._modules.inactive) {
-                const { inactive } = this._modules;
+            if (_modules.inactive) {
+                const { inactive } = _modules;
                 Object.keys(inactive).forEach((module) => {
                     console.info(`Module [${inactive[module]}] is inactive.`);
                 });
             }
         },
         getInstance() {
-            if (!instance) {
-                instance = this.init();
+            if (!_instance) {
+                _instance = this.init();
             }
-            return instance;
+            return _instance;
         },
     };
 })();

@@ -6,7 +6,12 @@
  * See LICENSE for license details.
  */
 require('dotenv').config({ path: '.env' });
+const inquirer = require('inquirer');
+const chalk = require('chalk');
+const figlet = require('figlet');
+const FS = require('fs');
 const PATH = require('path');
+
 const PKG = require('./package');
 const { modulesConfig, inactiveModulesConfig } = require('./plugins/moduleLoader');
 
@@ -52,11 +57,56 @@ module.exports = {
     router: {
         middleware: ['modules'],
     },
+    hooks: {
+        builder: {
+            async prepared(builder) {
+                console.log(chalk.green(figlet.textSync('Ergonode', { horizontalLayout: 'full' })));
+                console.log(chalk.yellow('Select your modules'));
+
+                const options = Object.keys(PKG._availableModules).map(module => (PKG._requiredModules.includes(module)
+                    ? { name: module, disabled: 'Required', checked: true }
+                    : { name: module, checked: true }));
+                const { modules } = await inquirer.prompt([
+                    {
+                        type: 'checkbox',
+                        pageSize: 15,
+                        name: 'modules',
+                        message: 'Select your modules',
+                        choices: options,
+                    },
+                ]);
+                const selectedModules = PKG._requiredModules.concat(modules);
+                const inactiveModules = Object.keys(PKG._availableModules).filter(
+                    x => !selectedModules.includes(x),
+                );
+                const moduleStr = array => array.reduce((acc, module, i) => {
+                    const tabs = i === 0 ? '' : '\t\t\t\t';
+                    const enter = i === array.length - 1 ? '' : '\n';
+
+                    return `${acc}${tabs}'${module}',${enter}`;
+                }, '');
+                const copyright = FS.readFileSync('./config/.copyright', 'utf8');
+                const fileStr = `${copyright}export default {
+    active: [
+        ${moduleStr(selectedModules)}
+    ],${inactiveModules.length ? `\n\t\tinactive: [\n\t\t\t\t${moduleStr(inactiveModules)}\n\t\t],` : ''}
+};`;
+
+                const extraFilePath = PATH.join(builder.nuxt.options.buildDir, 'modules.js');
+                await FS.writeFileSync(extraFilePath, fileStr);
+            },
+        },
+    },
     css: NUXT_CONFIG.css,
     plugins: NUXT_CONFIG.plugins,
     styleResources: NUXT_CONFIG.styleResources,
+    buildModules: [
+        '@bleto/ergo-import',
+    ],
     modules: [
-        '@nuxtjs/router',
+        ['@nuxtjs/router', {
+            keepDefaultRouter: true,
+        }],
         '@nuxtjs/axios',
         'cookie-universal-nuxt',
         '@nuxtjs/style-resources',
@@ -94,17 +144,17 @@ module.exports = {
 
             alias['@Root'] = PATH.join(__dirname, './');
             alias['@Modules'] = PATH.join(__dirname, '/modules');
-            alias['@NodeModules'] = PATH.join(__dirname, '/node_modules');
             Object.keys(aliases).map((key) => {
-                alias[key] = PATH.join(__dirname, aliases[key]);
+                alias[key] = aliases[key].type === 'npm' ? aliases[key].path : PATH.join(__dirname, aliases[key].path);
             });
             Object.keys(inactiveAliases).map((key) => {
                 alias[key] = PATH.join(__dirname, inactiveAliases[key]);
             });
-
             if (isDev) {
                 config.devtool = isClient ? 'source-map' : 'inline-source-map';
             }
+            config.resolve.aliasFields = ['browser'];
+            config.resolve.symlinks = false; // this prevents symlinks from breaking the build
             // TODO: finish method to exclude test files
             // config.module.rules.forEach((rule) => {
             //     if (rule.test.toString() === '/\\.jsx?$/i') {
@@ -119,57 +169,57 @@ module.exports = {
             //     }
             // });
         },
-        // optimization: {
-        //     runtimeChunk: 'single',
-        //     minimize: true,
-        //     splitChunks: {
-        //         chunks: 'all',
-        //         name: false,
-        //         maxInitialRequests: Infinity,
-        //         minSize: 0,
-        //         maxSize: 200000,
-        //         cacheGroups: {
-        //             default: false,
-        //             tests: {
-        //                 test(mod) {
-        //                     return mod.resource && /[\\/](tests|__tests__)[\\/]/.test(mod.resource);
-        //                 },
-        //                 chunks: 'all',
-        //                 name: 'tests',
-        //                 enforce: true,
-        //                 priority: 30,
-        //             },
-        //             commons: {
-        //                 test: /node_modules[\\/](vue|vue-loader|vue-router|vuex|vue-meta|core-js|@babel\/runtime|axios|webpack|setimmediate|timers-browserify|process|regenerator-runtime|cookie|js-cookie|is-buffer|dotprop|nuxt\.js)[\\/]/,
-        //                 chunks: 'all',
-        //                 name: 'vueLib',
-        //                 priority: 10,
-        //             },
-        //             vendors: {
-        //                 test: /[\\/]node_modules[\\/]/,
-        //                 chunks: 'all',
-        //                 name: 'vendors',
-        //                 enforce: true,
-        //             },
-        //             modules: {
-        //                 test(mod) {
-        //                     return mod.resource && mod.resource.includes('modules/@ergo');
-        //                 },
-        //                 chunks: 'all',
-        //                 name: 'modules',
-        //                 enforce: true,
-        //                 priority: -30,
-        //             },
-        //             styles: {
-        //                 test: /\.(css|scss|sass)$/,
-        //                 name: 'styles',
-        //                 chunks: 'all',
-        //                 enforce: true,
-        //             },
-        //             ...NUXT_CONFIG.chunks,
-        //         },
-        //     },
-        // },
+        optimization: { // TODO: remove inactive modules from chunks
+            runtimeChunk: 'single',
+            minimize: true,
+            splitChunks: {
+                // chunks: 'all',
+                //     name: false,
+                // maxInitialRequests: Infinity,
+                // minSize: 0,
+                maxSize: 200000,
+            //     cacheGroups: {
+            //         default: false,
+            //         tests: {
+            //             test(mod) {
+            //                 return mod.resource && /[\\/](tests|__tests__)[\\/]/.test(mod.resource);
+            //             },
+            //             chunks: 'all',
+            //             name: 'tests',
+            //             enforce: true,
+            //             priority: 30,
+            //         },
+            //         commons: {
+            //             test: /node_modules[\\/](vue|vue-loader|vue-router|vuex|vue-meta|core-js|@babel\/runtime|axios|webpack|setimmediate|timers-browserify|process|regenerator-runtime|cookie|js-cookie|is-buffer|dotprop|nuxt\.js)[\\/]/,
+            //             chunks: 'all',
+            //             name: 'vueLib',
+            //             priority: 10,
+            //         },
+            //         vendors: {
+            //             test: /[\\/]node_modules[\\/]/,
+            //             chunks: 'all',
+            //             name: 'vendors',
+            //             enforce: true,
+            //         },
+            //         modules: {
+            //             test(mod) {
+            //                 return mod.resource && mod.resource.includes('modules/@ergo');
+            //             },
+            //             chunks: 'all',
+            //             name: 'modules',
+            //             enforce: true,
+            //             priority: -30,
+            //         },
+            //         styles: {
+            //             test: /\.(css|scss|sass)$/,
+            //             name: 'styles',
+            //             chunks: 'all',
+            //             enforce: true,
+            //         },
+            //         ...NUXT_CONFIG.chunks,
+            //     },
+            },
+        },
     },
     vue: {
         config: {
