@@ -13,20 +13,14 @@ export default {
         ...mapState('validations', {
             validationErrors: state => state.validationErrors,
         }),
-        validationErrorsAreNotNull() {
-            return !isEmpty(this.validationErrors);
-        },
     },
     methods: {
         ...mapActions('validations', [
             'removeValidationErrors',
         ]),
-        validationErrorsHasProperty(property) {
-            return this.validationErrors[property];
-        },
         elementIsValidate(index) {
-            return this.validationErrorsAreNotNull
-            && this.validationErrorsHasProperty(index)
+            return !isEmpty(this.validationErrors)
+            && this.validationErrors[index]
                 ? this.validationErrors[index].join(', ') : null;
         },
     },

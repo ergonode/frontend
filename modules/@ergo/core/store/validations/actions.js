@@ -8,31 +8,25 @@ export default {
     onError({ commit }, { errors, name = null }) {
         if (errors) {
             commit(types.REMOVE_VALIDATION_ERRORS);
+            let mappedErrors = {};
+
             Object.keys(errors).forEach((errorMessage) => {
                 if (!Array.isArray(errors[errorMessage])) {
-                    Object.keys(errors[errorMessage]).forEach((errorNameDetailed) => {
-                        const errorKey = `${errorMessage}_${errorNameDetailed}`;
-                        const errorValue = errors[errorMessage][errorNameDetailed];
-                        commit(types.SET_ERROR_FOR_KEY, { key: errorKey, error: errorValue });
-                    });
+                    mappedErrors = {
+                        ...mappedErrors,
+                        ...Object.keys(errors[errorMessage]).map(errorNameDetailed => ({
+                            [`${errorMessage}_${errorNameDetailed}`]: errors[errorMessage][errorNameDetailed],
+                        })),
+                    };
                 } else if (name) {
-                    commit(types.SET_ERROR_FOR_KEY, { key: name, error: errors[errorMessage] });
+                    mappedErrors[name] = errors[errorMessage];
                 } else {
-                    commit(types.SET_ERROR_FOR_KEY, {
-                        key: errorMessage, error: errors[errorMessage],
-                    });
+                    mappedErrors[errorMessage] = errors[errorMessage];
                 }
             });
+
+            commit(types.SET_ERRORS, mappedErrors);
         }
-    },
-    setErrorForKey({ commit }, { key, error }) {
-        commit(types.SET_ERROR_FOR_KEY, { key, error });
-    },
-    setValidationErrors({ commit }, message) {
-        commit(types.SET_VALIDATION_ERRORS, message);
-    },
-    appendValidationError({ commit }, message) {
-        commit(types.APPEND_VALIDATION_ERROR, message);
     },
     removeValidationError({ commit, state }, key) {
         if (state.validationErrors[key]) {

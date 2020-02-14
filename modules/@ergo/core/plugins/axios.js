@@ -10,6 +10,8 @@ export default function ({
     $axios.onRequest((config) => {
         const configLocal = config;
         configLocal.headers.JWTAuthorization = `Bearer ${store.state.authentication.jwt}`;
+
+        return configLocal;
     });
 
     $axios.onError((errorResponse) => {
