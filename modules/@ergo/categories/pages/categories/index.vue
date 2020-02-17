@@ -12,7 +12,7 @@
                     title="NEW CATEGORY"
                     :size="smallSize"
                     :disabled="!$hasAccess(['CATEGORY_CREATE'])"
-                    @click.native="addCategory">
+                    @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
@@ -27,9 +27,9 @@
             </template>
         </HorizontalTabBar>
         <CreateCategoryModalForm
-            v-if="isCreateCategoryVisible"
+            v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedCategory" />
+            @created="onCreatedData" />
     </Page>
 </template>
 <script>
@@ -37,6 +37,7 @@ import { SIZES } from '@Core/defaults/buttons';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'Categories',
@@ -44,38 +45,17 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
-        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
         CreateCategoryModalForm: () => import('@Categories/components/Modals/CreateCategoryModalForm'),
         Button,
         IconAdd,
     },
-    data() {
-        return {
-            isCreateCategoryVisible: false,
-            fetchGridData: false,
-        };
-    },
+    mixins: [gridModalMixin],
     computed: {
         smallSize() {
             return SIZES.SMALL;
         },
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-    },
-    methods: {
-        addCategory() {
-            this.isCreateCategoryVisible = true;
-        },
-        onCloseModal() {
-            this.isCreateCategoryVisible = false;
-        },
-        onCreatedCategory() {
-            this.isCreateCategoryVisible = false;
-            this.fetchGridData = true;
-        },
-        onFetchedGridData() {
-            this.fetchGridData = false;
         },
     },
 };

@@ -12,7 +12,7 @@
                     title="NEW PRODUCT COLLECTION"
                     :size="smallSize"
                     :disabled="!$hasAccess(['PRODUCT_COLLECTION_CREATE'])"
-                    @click.native="addProductCollection">
+                    @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
@@ -27,9 +27,9 @@
             </template>
         </HorizontalTabBar>
         <CreateProductCollectionModalForm
-            v-if="isCreateProductCollectionVisible"
+            v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedProduct" />
+            @created="onCreatedData" />
     </Page>
 </template>
 
@@ -38,6 +38,7 @@ import { SIZES } from '@Core/defaults/buttons';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'ProductCollections',
@@ -45,38 +46,17 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
-        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
         CreateProductCollectionModalForm: () => import('@Collections/components/Modals/CreateProductCollectionModalForm'),
         Button,
         IconAdd,
     },
-    data() {
-        return {
-            isCreateProductCollectionVisible: false,
-            fetchGridData: false,
-        };
-    },
+    mixins: [gridModalMixin],
     computed: {
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
         smallSize() {
             return SIZES.SMALL;
-        },
-    },
-    methods: {
-        addProductCollection() {
-            this.isCreateProductCollectionVisible = true;
-        },
-        onCloseModal() {
-            this.isCreateProductCollectionVisible = false;
-        },
-        onCreatedProduct() {
-            this.isCreateProductCollectionVisible = false;
-            this.fetchGridData = true;
-        },
-        onFetchedGridData() {
-            this.fetchGridData = false;
         },
     },
 };

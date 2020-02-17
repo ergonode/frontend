@@ -20,9 +20,28 @@
                         <IconDelete :fill-color="color" />
                     </template>
                 </Button>
+                <Button
+                    title="ADD PRODUCTS TO COLLECTION"
+                    :size="smallSize"
+                    :disabled="!$hasAccess(['PRODUCT_COLLECTION_UPDATE'])"
+                    @click.native="onShowModal">
+                    <template #prepend="{ color }">
+                        <IconAdd :fill-color="color" />
+                    </template>
+                </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalTabBar :items="tabs">
+            <template #item>
+                <HorizontalTabBarContent
+                    :is-fetching-needed="fetchGridData"
+                    @fetched="onFetchedGridData" />
+            </template>
+        </HorizontalTabBar>
+        <AddProductsToCollectionModalForm
+            v-if="isModalVisible"
+            @close="onCloseModal"
+            @added="onCreatedData" />
         <Footer>
             <Button
                 title="SAVE PRODUCT COLLECTION"
@@ -36,10 +55,16 @@
 import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import categoryManagementPageBaseMixin from '@Core/mixins/page/categoryManagementPageBaseMixin';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'ProductCollectionPage',
-    mixins: [categoryManagementPageBaseMixin],
+    components: {
+        IconAdd,
+        AddProductsToCollectionModalForm: () => import('@Collections/components/Modals/AddProductsToCollectionModalForm'),
+    },
+    mixins: [categoryManagementPageBaseMixin, gridModalMixin],
     computed: {
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);

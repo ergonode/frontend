@@ -14,7 +14,7 @@ export default {
     getProductCollectionTypes({ commit, rootState }) {
         const { language: userLanguageCode } = rootState.authentication.user;
 
-        return this.app.$axios.$get(`${userLanguageCode}/collectionTypes`).then(({ collection }) => {
+        return this.app.$axios.$get(`${userLanguageCode}/collections/types`).then(({ collection }) => {
             commit(types.SET_COLLECTION_TYPES_OPTIONS, collection.map(type => ({
                 id: type.id,
                 key: type.code,

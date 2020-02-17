@@ -12,7 +12,7 @@
                     title="NEW USER"
                     :size="smallSize"
                     :disabled="!$hasAccess(['USER_CREATE'])"
-                    @click.native="addUser">
+                    @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
@@ -27,9 +27,9 @@
             </template>
         </HorizontalTabBar>
         <CreateUserModalForm
-            v-if="isCreateUserVisible"
+            v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedUser" />
+            @created="onCreatedData" />
     </Page>
 </template>
 
@@ -38,6 +38,7 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
 
 export default {
     name: 'UsersTabs',
@@ -45,17 +46,11 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
-        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
         CreateUserModalForm: () => import('@Users/components/Modals/CreateUserModalForm'),
         Button,
         IconAdd,
     },
-    data() {
-        return {
-            isCreateUserVisible: false,
-            fetchGridData: false,
-        };
-    },
+    mixins: [gridDataMixin],
     computed: {
         smallSize() {
             return SIZES.SMALL;
@@ -65,21 +60,6 @@ export default {
         },
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-    },
-    methods: {
-        addUser() {
-            this.isCreateUserVisible = true;
-        },
-        onCloseModal() {
-            this.isCreateUserVisible = false;
-        },
-        onCreatedUser() {
-            this.isCreateUserVisible = false;
-            this.fetchGridData = true;
-        },
-        onFetchedGridData() {
-            this.fetchGridData = false;
         },
     },
 };

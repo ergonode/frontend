@@ -19,7 +19,7 @@
     &:not(&--small):not(&--tiny):not(&--fab) {
         height: 40px;
         padding: 0 12px;
-        font: $FONT_SEMI_BOLD_14_20;
+        font: $FONT_BOLD_14_20;
     }
 
     &:disabled {
@@ -81,7 +81,7 @@
 
     &--tiny, &--small {
         #{$button}__title {
-            font: $FONT_SEMI_BOLD_12_16;
+            font: $FONT_BOLD_12_16;
         }
     }
 }

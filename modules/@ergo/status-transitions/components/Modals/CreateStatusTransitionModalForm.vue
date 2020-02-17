@@ -13,7 +13,7 @@
             <Button
                 title="CREATE"
                 :disabled="isRequestPending"
-                @click.native="onCreated" />
+                @click.native="onCreate" />
             <Button
                 title="CREATE & EDIT"
                 :theme="secondaryTheme"
@@ -73,13 +73,13 @@ export default {
             this.clearStorage();
             this.$emit('close');
         },
-        onCreated() {
-            this.onCreate(() => {
+        onCreate() {
+            this.onCreateRequest(() => {
                 this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.onCreate(() => {
+            this.onCreateRequest(() => {
                 this.$router.push({
                     name: 'transition-id-general',
                     params: {

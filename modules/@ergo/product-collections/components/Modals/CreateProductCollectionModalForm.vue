@@ -13,7 +13,7 @@
             <Button
                 title="CREATE"
                 :disabled="isRequestPending"
-                @click.native="onCreated" />
+                @click.native="onCreate" />
             <Button
                 title="CREATE & EDIT"
                 :theme="secondaryTheme"
@@ -51,13 +51,13 @@ export default {
             this.clearStorage();
             this.$emit('close');
         },
-        onCreated() {
-            this.onCreate(() => {
+        onCreate() {
+            this.onCreateRequest(() => {
                 this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.onCreate((id) => {
+            this.onCreateRequest((id) => {
                 this.$router.push({
                     name: 'product-collection-id-general',
                     params: {

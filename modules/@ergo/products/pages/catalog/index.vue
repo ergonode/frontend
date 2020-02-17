@@ -12,7 +12,7 @@
                     title="NEW PRODUCT"
                     :size="smallSize"
                     :disabled="!$hasAccess(['PRODUCT_CREATE'])"
-                    @click.native="addProduct">
+                    @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
@@ -27,9 +27,9 @@
             </template>
         </HorizontalTabBar>
         <CreateProductModalForm
-            v-if="isCreateProductVisible"
+            v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedProduct" />
+            @created="onCreatedData" />
         <TrashCan v-show="draggedElementOnGrid" />
     </Page>
 </template>
@@ -40,6 +40,7 @@ import { SIZES } from '@Core/defaults/buttons';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'Products',
@@ -48,11 +49,11 @@ export default {
         Page: () => import('@Core/components/Layout/Page'),
         TrashCan: () => import('@Core/components/DragAndDrop/TrashCan'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
-        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
         CreateProductModalForm: () => import('@Products/components/Modals/CreateProductModalForm'),
         Button,
         IconAdd,
     },
+    mixins: [gridModalMixin],
     async fetch({ store }) {
         const {
             user: { language: userLanguageCode },
@@ -71,12 +72,6 @@ export default {
             }),
         ]);
     },
-    data() {
-        return {
-            isCreateProductVisible: false,
-            fetchGridData: false,
-        };
-    },
     computed: {
         ...mapState('draggable', {
             draggedElementOnGrid: state => state.draggedElementOnGrid,
@@ -86,21 +81,6 @@ export default {
         },
         smallSize() {
             return SIZES.SMALL;
-        },
-    },
-    methods: {
-        addProduct() {
-            this.isCreateProductVisible = true;
-        },
-        onCloseModal() {
-            this.isCreateProductVisible = false;
-        },
-        onCreatedProduct() {
-            this.isCreateProductVisible = false;
-            this.fetchGridData = true;
-        },
-        onFetchedGridData() {
-            this.fetchGridData = false;
         },
     },
 };

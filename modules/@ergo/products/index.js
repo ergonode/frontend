@@ -105,6 +105,25 @@ export default {
                     },
                 },
                 {
+                    name: 'product-id-collections',
+                    path: 'collections',
+                    component: Tabs.ProductCollectionTab,
+                    meta: {
+                        title: 'Collections',
+                        breadcrumbs: [
+                            {
+                                title: 'Products',
+                                icon: Icons.Product,
+                            },
+                            {
+                                title: 'Catalog',
+                                routeName: 'catalog-products',
+                            },
+                        ],
+                        privileges: [],
+                    },
+                },
+                {
                     name: 'product-id-comments',
                     path: 'comments',
                     component: Tabs.ProductCommentsTab,
