@@ -5,7 +5,7 @@
 
 export default function ({ $axios, $store }) {
     const { language } = $store.state.authentication.user;
-    const { code, type } = $store.state.productCollection;
+    const { code, type } = $store.state.Collection;
 
     return $axios.$post(`${language}/collections`, { code, typeId: type.id });
 }

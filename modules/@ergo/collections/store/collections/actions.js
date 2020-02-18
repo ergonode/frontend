@@ -11,7 +11,7 @@ export default {
     setType({ commit }, type) {
         commit(types.SET_TYPE, type);
     },
-    getProductCollectionTypes({ commit, rootState }) {
+    getCollectionTypes({ commit, rootState }) {
         const { language: userLanguageCode } = rootState.authentication.user;
 
         return this.app.$axios.$get(`${userLanguageCode}/collections/types`).then(({ collection }) => {
@@ -23,7 +23,7 @@ export default {
             })));
         });
     },
-    getProductCollectionById(
+    getCollectionById(
         {
             commit, dispatch, state, rootState,
         },
@@ -55,7 +55,7 @@ export default {
             dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onError);
     },
-    updateProductCollection(
+    updateCollection(
         { rootState },
         {
             id,
@@ -67,7 +67,7 @@ export default {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$put(`${userLanguageCode}/collections/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
     },
-    removeProductCollection({ state, rootState }, { onSuccess }) {
+    removeCollection({ state, rootState }, { onSuccess }) {
         const { id } = state;
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$delete(`${userLanguageCode}/collections/${id}`).then(() => onSuccess());

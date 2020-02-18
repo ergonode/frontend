@@ -27,6 +27,8 @@
 
 <script>
 
+import { getParentRoutePath } from '../../models/navigation/tabs';
+
 export default {
     name: 'SideBarListGroupElement',
     props: {
@@ -46,7 +48,7 @@ export default {
     },
     computed: {
         isSelected() {
-            return this.$route.path.includes(this.route.path);
+            return getParentRoutePath(this.$route) === this.route.path;
         },
     },
     methods: {

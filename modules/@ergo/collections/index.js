@@ -7,7 +7,7 @@ import { Pages, Tabs, Icons } from './config/imports';
 import Privileges from './config/privileges';
 
 export default {
-    name: '@ergo/product-collections',
+    name: '@ergo/collections',
     type: 'page',
     moduleRelations: [
         '@ergo/products',
@@ -19,11 +19,11 @@ export default {
     },
     router: [
         {
-            name: 'product-collections',
-            path: '/product-collections',
-            component: Pages.ProductCollections,
+            name: 'collections',
+            path: '/collections',
+            component: Pages.Collections,
             meta: {
-                title: 'Product collections',
+                title: 'Collections',
                 group: {
                     title: 'Products',
                     menuPosition: 2,
@@ -35,13 +35,13 @@ export default {
                     namespace: Privileges.PRODUCT_COLLECTION.namespace,
                     read: Privileges.PRODUCT_COLLECTION.read,
                 },
-                redirectTo: 'product-collections-grid',
+                redirectTo: 'collections-grid',
             },
             children: [
                 {
-                    name: 'product-collections-grid',
+                    name: 'collections-grid',
                     path: 'grid',
-                    component: Tabs.ProductCollectionGridTab,
+                    component: Tabs.CollectionGridTab,
                     meta: {
                         title: '',
                         breadcrumbs: [
@@ -56,18 +56,18 @@ export default {
             ],
         },
         {
-            name: 'product-collection-id',
-            path: '/product-collections/collection/:id',
-            component: Pages.ProductCollectionEdit,
+            name: 'collection-id',
+            path: '/collections/collection/:id',
+            component: Pages.CollectionEdit,
             meta: {
                 isMenu: false,
-                redirectTo: 'product-collection-id-general',
+                redirectTo: 'collection-id-general',
             },
             children: [
                 {
-                    name: 'product-collection-id-general',
+                    name: 'collection-id-general',
                     path: 'general',
-                    component: Tabs.ProductCollectionBaseTab,
+                    component: Tabs.CollectionBaseTab,
                     meta: {
                         title: 'General options',
                         breadcrumbs: [
@@ -76,17 +76,17 @@ export default {
                                 icon: Icons.Product,
                             },
                             {
-                                title: 'Product collections',
-                                routeName: 'product-collections-grid',
+                                title: 'Collections',
+                                routeName: 'collections-grid',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'product-collection-id-translations',
+                    name: 'collection-id-translations',
                     path: 'translations',
-                    component: Tabs.ProductCollectionTranslationsTab,
+                    component: Tabs.CollectionTranslationsTab,
                     meta: {
                         title: 'Translations',
                         breadcrumbs: [
@@ -95,17 +95,17 @@ export default {
                                 icon: Icons.Product,
                             },
                             {
-                                title: 'Product collections',
-                                routeName: 'product-collections-grid',
+                                title: 'Collections',
+                                routeName: 'collections-grid',
                             },
                         ],
                         privileges: [],
                     },
                 },
                 {
-                    name: 'product-collection-id-products',
+                    name: 'collection-id-products',
                     path: 'products',
-                    component: Tabs.ProductCollectionProductsTab,
+                    component: Tabs.CollectionProductsTab,
                     meta: {
                         title: 'Products',
                         breadcrumbs: [
@@ -114,8 +114,8 @@ export default {
                                 icon: Icons.Product,
                             },
                             {
-                                title: 'Product collections',
-                                routeName: 'product-collections-grid',
+                                title: 'Collections',
+                                routeName: 'collections-grid',
                             },
                         ],
                         privileges: [],
@@ -126,8 +126,8 @@ export default {
     ],
     store: [
         {
-            directory: 'productCollection',
-            name: 'productCollection',
+            directory: 'collections',
+            name: 'collections',
         },
     ],
 };

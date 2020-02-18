@@ -72,9 +72,9 @@ export const CORE_MODULES = {
         type: 'local',
         path: '@ergo/segments',
     },
-    '@ergo/product-collections': {
+    '@ergo/collections': {
         type: 'local',
-        path: '@ergo/product-collections',
+        path: '@ergo/collections',
     },
     '@ergo/status-transitions': {
         type: 'local',

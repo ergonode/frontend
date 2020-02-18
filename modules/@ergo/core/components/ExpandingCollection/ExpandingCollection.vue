@@ -36,7 +36,9 @@
                 class="expanding-collection__item"
                 v-for="(item, index) in collection.items"
                 :key="index">
-                <slot :item="item" />
+                <slot
+                    name="item"
+                    :item="item" />
             </div>
         </div>
     </div>
@@ -83,7 +85,11 @@ export default {
         }
 
         &__body {
+            display: grid;
+            grid-gap: 24px;
+            padding: 24px;
             border-top: $BORDER_1_GREY;
+            box-sizing: border-box;
             background-color: $WHITE;
         }
     }

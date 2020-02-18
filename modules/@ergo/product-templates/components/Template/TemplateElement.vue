@@ -13,7 +13,7 @@
                 :image-id="image" />
             <img
                 v-else
-                :src="getImage"
+                :src="placeholderImage"
                 alt="template icon">
         </div>
         <div class="horizontal-wrapper">
@@ -48,7 +48,7 @@ export default {
         },
     },
     computed: {
-        getImage() {
+        placeholderImage() {
             return require('@Core/assets/images/placeholders/template.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
     },
@@ -94,6 +94,7 @@ export default {
         &__title {
             margin-left: 8px;
             color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_12_16;
         }
     }
 </style>

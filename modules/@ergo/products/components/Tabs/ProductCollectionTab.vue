@@ -8,12 +8,10 @@
             <VerticalFixedScroll>
                 <div class="container">
                     <VerticalCenteredView>
-                        <div class="product-collections">
+                        <div class="collections">
                             <ExpandingCollection>
                                 <template #item="{ item }">
-                                    <div class="product-collection-item">
-                                        {{ item }}
-                                    </div>
+                                    <ProductCollectionItem :item="item" />
                                 </template>
                             </ExpandingCollection>
                         </div>
@@ -29,6 +27,7 @@ import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/Re
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';
 import ExpandingCollection from '@Core/components/ExpandingCollection/ExpandingCollection';
+import ProductCollectionItem from '@Products/components/ExpandingCollection/ProductCollectionItem';
 
 export default {
     name: 'ProductCollectionTab',
@@ -37,6 +36,7 @@ export default {
         VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
         ExpandingCollection,
+        ProductCollectionItem,
     },
     asyncData({ params, $axios, store }) {
         return $axios.$get(`${store.state.authentication.user.language}/collections/product/${params.id}`).then(collection => collection);
@@ -45,7 +45,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .product-collections {
+    .collections {
         width: 1008px;
         padding: 24px;
     }

@@ -34,7 +34,7 @@ import { mapState, mapActions } from 'vuex';
 import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 
 export default {
-    name: 'ProductCollectionForm',
+    name: 'CollectionForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
         FormGroup: () => import('@Core/components/Form/FormGroup'),
@@ -43,7 +43,7 @@ export default {
     },
     mixins: [errorValidationMixin],
     computed: {
-        ...mapState('productCollection', {
+        ...mapState('collections', {
             id: state => state.id,
             code: state => state.code,
             type: state => state.type,
@@ -66,13 +66,13 @@ export default {
         },
     },
     created() {
-        this.getProductCollectionTypes();
+        this.getCollectionTypes();
     },
     methods: {
-        ...mapActions('productCollection', [
+        ...mapActions('collections', [
             'setCode',
             'setType',
-            'getProductCollectionTypes',
+            'getCollectionTypes',
         ]),
     },
 };

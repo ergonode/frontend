@@ -13,8 +13,6 @@
                 :row-ids="rowIds"
                 :row-links="rowLinks"
                 :is-basic-filters="true"
-                :is-edit-column="true"
-                @editRow="onEditRow"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>
@@ -25,19 +23,11 @@ import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/Re
 import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
 
 export default {
-    name: 'ProductCollectionGridTab',
+    name: 'CollectionProductsTab',
     components: {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
-    mixins: [gridDataMixin({ path: 'collections' })],
-    methods: {
-        onEditRow({ links: { value: { edit } } }) {
-            const args = edit.href.split('/');
-            const lastIndex = args.length - 1;
-
-            this.$router.push({ name: 'product-collection-id-general', params: { id: args[lastIndex] } });
-        },
-    },
+    mixins: [gridDataMixin({ path: 'collections/_id/elements' })],
 };
 </script>

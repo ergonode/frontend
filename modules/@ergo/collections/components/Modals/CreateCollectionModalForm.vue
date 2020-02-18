@@ -7,7 +7,7 @@
         title="Create product collection"
         @close="onClose">
         <template #body>
-            <ProductCollectionForm />
+            <CollectionForm />
         </template>
         <template #footer>
             <Button
@@ -28,23 +28,23 @@ import { mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
 import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
 
-const createProductCollection = () => import('@Collections/services/createProductCollection.service');
+const createCollection = () => import('@Collections/services/createCollection.service');
 
 export default {
-    name: 'CreateProductCollectionModalForm',
+    name: 'CreateCollectionModalForm',
     components: {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
         Button: () => import('@Core/components/Buttons/Button'),
-        ProductCollectionForm: () => import('@Collections/components/Forms/ProductCollectionForm'),
+        CollectionForm: () => import('@Collections/components/Forms/CollectionForm'),
     },
-    mixins: [createModalFormMixin({ namespace: 'Product collection', createRequest: createProductCollection })],
+    mixins: [createModalFormMixin({ namespace: 'Product collection', createRequest: createCollection })],
     computed: {
         secondaryTheme() {
             return THEMES.SECONDARY;
         },
     },
     methods: {
-        ...mapActions('productCollection', [
+        ...mapActions('collections', [
             'clearStorage',
         ]),
         onClose() {
@@ -59,7 +59,7 @@ export default {
         onCreatedAndEdit() {
             this.onCreateRequest((id) => {
                 this.$router.push({
-                    name: 'product-collection-id-general',
+                    name: 'collection-id-general',
                     params: {
                         id,
                     },

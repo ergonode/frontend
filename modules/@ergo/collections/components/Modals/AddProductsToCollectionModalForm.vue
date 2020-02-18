@@ -49,7 +49,7 @@ export default {
         ...mapState('authentication', {
             language: state => state.user.language,
         }),
-        ...mapState('productCollection', {
+        ...mapState('collections', {
             id: state => state.id,
         }),
         secondaryTheme() {

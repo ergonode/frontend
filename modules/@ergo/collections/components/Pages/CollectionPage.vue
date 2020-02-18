@@ -59,7 +59,7 @@ import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 
 export default {
-    name: 'ProductCollectionPage',
+    name: 'CollectionPage',
     components: {
         IconAdd,
         AddProductsToCollectionModalForm: () => import('@Collections/components/Modals/AddProductsToCollectionModalForm'),

@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar
-            title="Product collections"
+            title="Collections"
             :is-read-only="$isReadOnly('PRODUCT_COLLECTION')">
             <template #mainAction>
                 <Button
@@ -26,7 +26,7 @@
                     @fetched="onFetchedGridData" />
             </template>
         </HorizontalTabBar>
-        <CreateProductCollectionModalForm
+        <CreateCollectionModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
             @created="onCreatedData" />
@@ -41,12 +41,12 @@ import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
-    name: 'ProductCollections',
+    name: 'Collections',
     components: {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
-        CreateProductCollectionModalForm: () => import('@Collections/components/Modals/CreateProductCollectionModalForm'),
+        CreateCollectionModalForm: () => import('@Collections/components/Modals/CreateCollectionModalForm'),
         Button,
         IconAdd,
     },

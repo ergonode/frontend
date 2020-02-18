@@ -6,23 +6,23 @@
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
             <VerticalFixedScroll>
-                <ProductCollectionForm />
+                <CollectionForm />
             </VerticalFixedScroll>
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
-import ProductCollectionForm from '@Collections/components/Forms/ProductCollectionForm';
+import CollectionForm from '@Collections/components/Forms/CollectionForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
-    name: 'ProductCollectionBaseTab',
+    name: 'CollectionBaseTab',
     components: {
         VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
-        ProductCollectionForm,
+        CollectionForm,
     },
 };
 </script>

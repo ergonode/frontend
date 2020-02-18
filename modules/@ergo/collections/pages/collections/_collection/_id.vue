@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ProductCollectionPage
+    <CollectionPage
         :title="code"
         @dismiss="onDismiss"
         @remove="onRemove"
@@ -16,21 +16,21 @@ import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappe
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
-    name: 'EditProductCollection',
+    name: 'EditCollection',
     components: {
-        ProductCollectionPage: () => import('@Collections/components/Pages/ProductCollectionPage'),
+        CollectionPage: () => import('@Collections/components/Pages/CollectionPage'),
     },
     validate({ params }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({ store, params }) {
-        await store.dispatch('productCollection/getProductCollectionTypes');
-        await store.dispatch('productCollection/getProductCollectionById', {
+        await store.dispatch('collections/getCollectionTypes');
+        await store.dispatch('collections/getCollectionById', {
             collectionId: params.id,
         });
     },
     computed: {
-        ...mapState('productCollection', {
+        ...mapState('collections', {
             id: state => state.id,
             code: state => state.code,
             type: state => state.type,
@@ -40,9 +40,9 @@ export default {
         }),
     },
     methods: {
-        ...mapActions('productCollection', [
-            'updateProductCollection',
-            'removeProductCollection',
+        ...mapActions('collections', [
+            'updateCollection',
+            'removeCollection',
         ]),
         ...mapActions('validations', [
             'onError',
@@ -54,7 +54,7 @@ export default {
         onRemove() {
             const isConfirm = confirm('Are you sure you want to delete this group?'); /* eslint-disable-line no-restricted-globals */
             if (isConfirm) {
-                this.removeProductCollection({
+                this.removeCollection({
                     onSuccess: this.onRemoveSuccess,
                 });
             }
@@ -66,7 +66,7 @@ export default {
             if (isThereAnyTranslation(name)) {
                 name = getParsedTranslations(name);
             }
-            this.updateProductCollection({
+            this.updateCollection({
                 id: this.id,
                 data: { typeId: this.type.id, name, description },
                 onSuccess: this.onUpdateAttributeGroupSuccess,
@@ -76,11 +76,11 @@ export default {
         onUpdateAttributeGroupSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Product collection updated' });
-            this.$router.push({ name: 'product-collections-grid' });
+            this.$router.push({ name: 'collections-grid' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Product collection removed' });
-            this.$router.push({ name: 'product-collections-grid' });
+            this.$router.push({ name: 'collections-grid' });
         },
     },
 };

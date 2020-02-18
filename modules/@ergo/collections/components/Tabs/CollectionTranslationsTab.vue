@@ -5,7 +5,7 @@
 <template>
     <TranslationsTab>
         <template #default="{ languageCodes }">
-            <ProductCollectionTranslationForm
+            <CollectionTranslationForm
                 v-for="(languageCode, index) in languageCodes"
                 :key="index"
                 :language-code="languageCode" />
@@ -18,7 +18,7 @@ export default {
     name: 'AttributeGroupTranslationsTab',
     components: {
         TranslationsTab: () => import('@Core/components/Card/Tabs/TranslationsTab'),
-        ProductCollectionTranslationForm: () => import('@Collections/components/Forms/ProductCollectionTranslationForm'),
+        CollectionTranslationForm: () => import('@Collections/components/Forms/CollectionTranslationForm'),
     },
 };
 </script>
