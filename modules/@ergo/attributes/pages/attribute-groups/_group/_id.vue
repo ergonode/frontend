@@ -73,7 +73,6 @@ export default {
         onUpdateAttributeGroupSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Attribute Group updated' });
-            this.$router.push({ name: 'attribute-groups-grid' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Attribute Group removed' });
