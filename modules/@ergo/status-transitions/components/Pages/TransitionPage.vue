@@ -26,6 +26,7 @@
         <Footer>
             <Button
                 title="SAVE TRANSITION"
+                :size="smallSize"
                 :disabled="$isLoading('footerButton')"
                 @click.native="onSave" />
         </Footer>

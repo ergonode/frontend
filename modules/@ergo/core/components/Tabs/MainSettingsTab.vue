@@ -13,6 +13,7 @@
             <FooterActions>
                 <Button
                     title="SAVE SETTINGS"
+                    :size="smallSize"
                     :disabled="$isLoading('saveSettings')"
                     @click.native="onSave" />
             </FooterActions>
@@ -28,6 +29,7 @@ import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/Re
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 import FooterActions from '@Core/components/ReusableFooter/FooterActions';
 import Button from '@Core/components/Buttons/Button';
+import { SIZES } from '@Core/defaults/buttons';
 
 export default {
     name: 'MainSettingsTab',
@@ -45,6 +47,11 @@ export default {
             store,
         });
         await store.dispatch('languageSettings/getData');
+    },
+    computed: {
+        smallSize() {
+            return SIZES.SMALL;
+        },
     },
     beforeCreate() {
         this.$registerStore({
