@@ -7,7 +7,7 @@ const PATH = require('path');
 const PKG = require('./package');
 
 const IS_DEV = process.env.NODE_ENV !== 'production';
-const BASE_URL = `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_PREFIX}`;
+const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8000';
 
 module.exports = {
     mode: 'universal',
