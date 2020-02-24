@@ -27,6 +27,7 @@
         <Footer>
             <Button
                 title="SAVE TREE"
+                :size="smallSize"
                 :disabled="$isLoading('footerButton')"
                 @click.native="onSave" />
         </Footer>

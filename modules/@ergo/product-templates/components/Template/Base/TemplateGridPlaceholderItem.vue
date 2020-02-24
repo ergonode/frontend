@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
+<template functional>
     <div class="template-grid-placeholder-item">
         <IconDragDrop size="16" />
         Drag & drop the attribute here
@@ -28,8 +28,10 @@ export default {
         grid-column-gap: 8px;
         grid-area: 1 / 1 / 2 / 2;
         align-items: center;
+        height: 48px;
         padding: 0 12px;
         margin: 8px;
+        box-sizing: border-box;
         background-color: $GREY_LIGHT;
         box-shadow: $ELEVATOR_HOLE;
         color: $GRAPHITE_DARK;

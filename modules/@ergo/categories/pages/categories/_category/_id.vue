@@ -80,7 +80,6 @@ export default {
         onUpdateCategorySuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Category updated' });
-            this.$router.push({ name: 'categories-grid' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Category removed' });

@@ -29,21 +29,22 @@
             <template #subActions>
                 <TitleBarSubActions>
                     <MenuButton
-                        v-if="statusesButtons.more && statusesButtons.more.length"
-                        title="more"
+                        v-if="workflow.length"
+                        title="STATUS CHANGE"
                         :theme="secondaryTheme"
                         :size="smallSize"
                         :disabled="!isUserAllowedToUpdateProduct"
-                        :options="optionTitle"
-                        @input="optionAction" />
-                    <Button
-                        v-for="button in statusesButtons.statuses"
-                        :key="button.code"
-                        :theme="secondaryTheme"
-                        :size="smallSize"
-                        :title="button.name || button.code"
-                        :disabled="!isUserAllowedToUpdateProduct"
-                        @click.native="updateStatus(button.code)" />
+                        :options="workflow"
+                        @input="onUpdateStatus">
+                        <template #option="{ option }">
+                            <ListElementAction>
+                                <PointBadge :color="option.color" />
+                            </ListElementAction>
+                            <ListElementDescription>
+                                <ListElementTitle :title="option.name || `#${option.code}`" />
+                            </ListElementDescription>
+                        </template>
+                    </MenuButton>
                 </TitleBarSubActions>
             </template>
         </TitleBar>
@@ -51,6 +52,7 @@
         <Footer v-if="!$route.path.includes('history')">
             <Button
                 title="SAVE PRODUCT"
+                :size="smallSize"
                 :disabled="$isLoading('footerButton')"
                 @click.native="onSave" />
         </Footer>
@@ -61,7 +63,6 @@ import { mapState, mapActions } from 'vuex';
 import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import Button from '@Core/components/Buttons/Button';
-import MenuButton from '@Core/components/Buttons/MenuButton';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
 import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
 import categoryManagementPageBaseMixin from '@Core/mixins/page/categoryManagementPageBaseMixin';
@@ -70,9 +71,13 @@ export default {
     name: 'ProductPage',
     components: {
         Button,
-        MenuButton,
         TitleBarSubActions,
         ProductStatusBadge,
+        ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
+        ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
+        ListElementAction: () => import('@Core/components/List/ListElementAction'),
+        MenuButton: () => import('@Core/components/Buttons/MenuButton'),
+        PointBadge: () => import('@Core/components/Badges/PointBadge'),
     },
     mixins: [categoryManagementPageBaseMixin],
     computed: {
@@ -92,24 +97,6 @@ export default {
         secondaryTheme() {
             return THEMES.SECONDARY;
         },
-        statusesButtons() {
-            if (!this.workflow.length) return {};
-
-            const numberOfVisibleStatuses = 2;
-            const statuses = JSON.parse(JSON.stringify(this.workflow)); // deep array clone hack
-            const visibleStatuses = statuses.splice(0, numberOfVisibleStatuses);
-            const hiddenStatuses = statuses.slice(
-                -(this.workflow.length - numberOfVisibleStatuses),
-            );
-
-            return {
-                statuses: visibleStatuses.map(status => status),
-                more: hiddenStatuses.map(status => status),
-            };
-        },
-        optionTitle() {
-            return this.statusesButtons.more.map(option => option.code);
-        },
         isUserAllowedToUpdateProduct() {
             return this.$hasAccess(['PRODUCT_UPDATE']);
         },
@@ -119,16 +106,11 @@ export default {
             'updateProductStatus',
             'getProduct',
         ]),
-        optionAction(value) {
-            return this.statusesButtons.more.forEach((option) => {
-                if (option.code === value) this.updateStatus(option.code);
-            });
-        },
-        updateStatus(statusCode) {
-            const isConfirm = confirm(`Are you sure you want to change status to ${statusCode}?`); /* eslint-disable-line no-restricted-globals */
+        onUpdateStatus({ code }) {
+            const isConfirm = confirm(`Are you sure you want to change status to ${code}?`); /* eslint-disable-line no-restricted-globals */
             if (isConfirm) {
                 this.updateProductStatus({
-                    value: statusCode,
+                    value: code,
                     attributeId: this.status.attribute_id,
                     onSuccess: () => {
                         const { params: { id } } = this.$route;

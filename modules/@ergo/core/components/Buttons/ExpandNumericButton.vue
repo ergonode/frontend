@@ -5,7 +5,7 @@
 <template>
     <Button
         :size="smallSize"
-        :theme="isExpanded ? theme.PRIMARY : theme.SECONDARY"
+        :theme="theme.SECONDARY"
         :title="title"
         @click.native="$emit('expand', !isExpanded)">
         <template #prepend="{ color }">

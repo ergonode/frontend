@@ -55,7 +55,6 @@ export default {
         ]),
         onDraftAppliedSuccess() {
             this.$addAlert({ type: 'success', message: 'Product updated' });
-            this.$router.push({ name: 'catalog-products' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Product removed' });

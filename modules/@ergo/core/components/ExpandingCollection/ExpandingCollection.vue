@@ -23,7 +23,7 @@
                 <slot name="appendHeader">
                     <ExpandNumericButton
                         title="PRODUCTS"
-                        :number="collection.items.length"
+                        :number="collection.itemsCount"
                         :is-expanded="isExpanded"
                         @expand="onExpand" />
                 </slot>
@@ -50,22 +50,27 @@ export default {
     components: {
         ExpandNumericButton: () => import('@Core/components/Buttons/ExpandNumericButton'),
     },
+    props: {
+        index: {
+            type: Number,
+            default: 0,
+        },
+        collection: {
+            type: Object,
+            required: true,
+        },
+    },
     data() {
         return {
             isExpanded: false,
-            collection: {
-                title: 'Title',
-                subtitle: 'Subtitle',
-                description: 'Description',
-                items: [{
-                    title: 'Test title',
-                }],
-            },
         };
     },
     methods: {
         onExpand(isExpanded) {
             this.isExpanded = isExpanded;
+            if (this.isExpanded && this.collection.itemsCount !== this.collection.items.length) {
+                this.$emit('fetch', { id: this.collection.id, index: this.index });
+            }
         },
     },
 };
@@ -86,6 +91,7 @@ export default {
 
         &__body {
             display: grid;
+            grid-template-columns: repeat(4, 1fr);
             grid-gap: 24px;
             padding: 24px;
             border-top: $BORDER_1_GREY;

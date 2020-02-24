@@ -4,18 +4,26 @@
  */
 <template>
     <div class="advanced-filters-placeholder">
-        <IconDragDrop size="16" />
+        <IconDragDrop
+            size="16"
+            :fill-color="graphiteLightColor" />
         Drag the attribute to add a filter
     </div>
 </template>
 
 <script>
+import { GRAPHITE_LIGHT } from '@Core/assets/scss/_js-variables/colors.scss';
 import IconDragDrop from '@Core/components/Icons/Actions/IconDragDrop';
 
 export default {
     name: 'GridAdvancedFilterPlaceholder',
     components: {
         IconDragDrop,
+    },
+    computed: {
+        graphiteLightColor() {
+            return GRAPHITE_LIGHT;
+        },
     },
 };
 </script>
@@ -30,7 +38,7 @@ export default {
         padding: 0 12px;
         background-color: $GREY_LIGHT;
         box-shadow: $ELEVATOR_HOLE;
-        color: $GRAPHITE_DARK;
+        color: $GRAPHITE_LIGHT;
         font: $FONT_MEDIUM_12_16;
     }
 </style>

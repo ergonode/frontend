@@ -41,6 +41,7 @@
                 <template #appendFooter>
                     <Button
                         title="SAVE CHANGES"
+                        :size="smallSize"
                         :disabled="!isUserAllowedToUpdate || $isLoading('footerDraftButton')"
                         @click.native="saveDrafts" />
                 </template>
@@ -54,6 +55,7 @@ import { mapState, mapActions } from 'vuex';
 import Button from '@Core/components/Buttons/Button';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
+import { SIZES } from '@Core/defaults/buttons';
 
 export default {
     name: 'ProductGridTab',
@@ -75,6 +77,9 @@ export default {
         ...mapState('gridDraft', {
             drafts: state => state.drafts,
         }),
+        smallSize() {
+            return SIZES.SMALL;
+        },
         verticalTabs() {
             const isUserAllowedToReadProduct = this.$hasAccess(['PRODUCT_READ']);
             return [

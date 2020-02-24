@@ -27,6 +27,7 @@
         <Footer>
             <Button
                 title="SAVE SEGMENT"
+                :size="smallSize"
                 :disabled="$isLoading('footerButton')"
                 @click.native="onSave" />
         </Footer>

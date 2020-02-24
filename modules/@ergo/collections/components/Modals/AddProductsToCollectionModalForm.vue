@@ -81,14 +81,11 @@ export default {
             this.removeValidationErrors();
             const data = {
                 segments: this.segments.map(segment => segment.id),
+                skus: this.productSkus,
             };
 
-            if (this.productSkus) {
-                data.skus = this.productSkus.split(',').map(substring => substring.trim());
-            }
-
             this.isRequestPending = true;
-            this.$axios.$post(`${this.language}/collections/${this.id}/elements`, data).then(() => {
+            this.$axios.$post(`${this.language}/collections/${this.id}/elements/multiple`, data).then(() => {
                 this.isRequestPending = false;
                 this.removeValidationErrors();
                 this.$addAlert({ type: 'success', message: 'Products has been added to collection' });

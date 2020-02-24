@@ -27,6 +27,7 @@
         <Footer>
             <Button
                 title="SAVE ROLE"
+                :size="smallSize"
                 :disabled="$isLoading('footerButton')"
                 @click.native="onSave" />
         </Footer>

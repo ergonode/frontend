@@ -73,10 +73,12 @@
             <template #footer>
                 <Button
                     title="SAVE SETTINGS"
+                    :size="smallSize"
                     @click.native="onApplySettings" />
                 <Button
                     :theme="theme.SECONDARY"
                     title="CANCEL"
+                    :size="smallSize"
                     @click.native="onDismissSettingsModal" />
             </template>
         </ModalForm>

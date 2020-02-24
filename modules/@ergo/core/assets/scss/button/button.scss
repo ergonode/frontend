@@ -26,8 +26,8 @@
         cursor: not-allowed;
     }
 
-    &:hover:not(:disabled):not(&--plain) {
-        box-shadow: $ELEVATOR_2_DP;
+    &:hover:not(:disabled):not(&--plain), &:focus {
+        box-shadow: $ELEVATOR_HOVER_FOCUS;
     }
 
     &__title {

@@ -3,11 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="item">
+    <div class="product-collection-item">
         <img
+            class="product-collection-item__placeholder"
             :src="placeholderImage"
             alt="template icon">
-        <span class="item__title">Placeholder</span>
+        <span
+            class="product-collection-item__title"
+            v-text="item.sku" />
     </div>
 </template>
 
@@ -29,10 +32,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .item {
+    .product-collection-item {
         display: grid;
         grid-template-rows: 156px 32px;
-        width: 210px;
         border: $BORDER_1_GREY;
         box-sizing: border-box;
 
@@ -42,6 +44,11 @@ export default {
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
             border-top: $BORDER_1_GREY;
+        }
+
+        &__placeholder {
+            justify-self: center;
+            align-self: center;
         }
     }
 </style>

@@ -68,7 +68,7 @@ export function getMappedLayoutSectionElement(
     };
 }
 
-export function getMappedLayoutElements(elements, elementsDescription, elementDataByType) {
+export function getMappedLayoutElements(elements, elementsDescription, types) {
     return elements.map((element) => {
         const {
             position, size, properties, type,
@@ -82,7 +82,7 @@ export function getMappedLayoutElements(elements, elementsDescription, elementDa
 
             return getMappedLayoutElement(
                 attrID,
-                elementDataByType(type),
+                types.find(attributeType => attributeType.type === type),
                 descLabel || descCode,
                 { row: row + 1, column: column + 1 },
                 required,
@@ -92,7 +92,7 @@ export function getMappedLayoutElements(elements, elementsDescription, elementDa
 
         return getMappedLayoutSectionElement(
             label,
-            elementDataByType('SECTION'),
+            types.find(attributeType => attributeType.type === 'SECTION'),
             { row: row + 1, column: column + 1 },
             size,
         );

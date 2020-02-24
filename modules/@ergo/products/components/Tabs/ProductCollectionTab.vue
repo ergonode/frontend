@@ -8,13 +8,24 @@
             <VerticalFixedScroll>
                 <div class="container">
                     <VerticalCenteredView>
-                        <div class="collections">
-                            <ExpandingCollection>
+                        <ProductCollection v-if="collections.length">
+                            <ExpandingCollection
+                                v-for="(collection, index) in collections"
+                                :key="collection.id"
+                                :index="index"
+                                :collection="collection"
+                                @fetch="fetchCollectionItems">
                                 <template #item="{ item }">
                                     <ProductCollectionItem :item="item" />
                                 </template>
                             </ExpandingCollection>
-                        </div>
+                        </ProductCollection>
+                        <ListPlaceholder
+                            v-else
+                            title="Nothing to see here"
+                            subtitle="Here you can see important notifications of product update"
+                            :layout-orientation="horizontalOrientation"
+                            :bg-url="require('@Core/assets/images/placeholders/comments.svg')" />
                     </VerticalCenteredView>
                 </div>
             </VerticalFixedScroll>
@@ -23,11 +34,12 @@
 </template>
 
 <script>
+import { LayoutOrientation } from '@Core/defaults/layout';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';
-import ExpandingCollection from '@Core/components/ExpandingCollection/ExpandingCollection';
-import ProductCollectionItem from '@Products/components/ExpandingCollection/ProductCollectionItem';
+import ProductCollection from '@Products/components/ProductCollection/ProductCollection';
+import ProductCollectionItem from '@Products/components/ProductCollection/ProductCollectionItem';
 
 export default {
     name: 'ProductCollectionTab',
@@ -35,21 +47,51 @@ export default {
         VerticalCenteredView,
         VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
-        ExpandingCollection,
+        ProductCollection,
         ProductCollectionItem,
+        ExpandingCollection: () => import('@Core/components/ExpandingCollection/ExpandingCollection'),
+        ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
     },
-    asyncData({ params, $axios, store }) {
-        return $axios.$get(`${store.state.authentication.user.language}/collections/product/${params.id}`).then(collection => collection);
+    async asyncData({ params, $axios, store }) {
+        const { collection: types } = await $axios.$get(`${store.state.authentication.user.language}/collections/type`);
+        const { collection: collections } = await $axios.$get(`${store.state.authentication.user.language}/products/${params.id}/collections`);
+
+        return {
+            collections: collections.map(({
+                id, code, name, description, elements_count, type_id,
+            }) => {
+                const collectionType = types.find(type => type.id === type_id);
+                return {
+                    id,
+                    title: name || `#${code}`,
+                    subtitle: collectionType ? collectionType.name : '',
+                    description,
+                    itemsCount: elements_count,
+                    items: [],
+                };
+            }),
+        };
+    },
+    computed: {
+        horizontalOrientation() {
+            return LayoutOrientation.HORIZONTAL;
+        },
+    },
+    methods: {
+        fetchCollectionItems({ id, index }) {
+            this.$axios.$get(`${this.$store.state.authentication.user.language}/collections/${id}/elements`).then(({ collection }) => {
+                this.collections[index].items = collection.map(({
+                    sku,
+                }) => ({
+                    sku,
+                }));
+            });
+        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .collections {
-        width: 1008px;
-        padding: 24px;
-    }
-
     .container {
         display: grid;
     }

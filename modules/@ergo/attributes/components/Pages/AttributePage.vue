@@ -27,6 +27,7 @@
         <Footer>
             <Button
                 title="SAVE ATTRIBUTE"
+                :size="smallSize"
                 :disabled="$isLoading('footerButton')"
                 @click.native="onSave" />
         </Footer>

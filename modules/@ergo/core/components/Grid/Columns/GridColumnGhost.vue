@@ -48,7 +48,7 @@ export default {
 
         &__title {
             margin-top: 8px;
-            color: $GRAPHITE_DARK;
+            color: $GRAPHITE;
         }
 
         &--hovered {
