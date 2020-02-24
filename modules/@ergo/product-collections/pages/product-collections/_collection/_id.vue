@@ -76,7 +76,6 @@ export default {
         onUpdateAttributeGroupSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Product collection updated' });
-            this.$router.push({ name: 'product-collections-grid' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Product collection removed' });

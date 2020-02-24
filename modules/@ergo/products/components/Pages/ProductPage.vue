@@ -51,6 +51,7 @@
         <Footer v-if="!$route.path.includes('history')">
             <Button
                 title="SAVE PRODUCT"
+                :size="smallSize"
                 :disabled="$isLoading('footerButton')"
                 @click.native="onSave" />
         </Footer>

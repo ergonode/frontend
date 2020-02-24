@@ -57,7 +57,7 @@
                     key: 'passwordRepeat',
                     value: passwordRepeat
                 })" />
-            <CheckBox
+            <Toggler
                 :value="isActive"
                 :disabled="isDisabledByPrivileges"
                 label="The active status"
@@ -96,7 +96,7 @@ export default {
         Form: () => import('@Core/components/Form/Form'),
         FormGroup: () => import('@Core/components/Form/FormGroup'),
         TextField: () => import('@Core/components/Inputs/TextField'),
-        CheckBox: () => import('@Core/components/Inputs/CheckBox'),
+        Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
         Select: () => import('@Core/components/Inputs/Select/Select'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
     },

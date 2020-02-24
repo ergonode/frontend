@@ -78,7 +78,6 @@ export default {
         onProductStatusUpdated() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Product status updated' });
-            this.$router.push({ name: 'product-statuses-grid' });
         },
     },
 };

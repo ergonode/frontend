@@ -91,7 +91,7 @@ export default {
             position: relative;
             display: grid;
             grid-auto-flow: column;
-            column-gap: 8px;
+            column-gap: 12px;
             align-items: center;
         }
 
@@ -116,7 +116,13 @@ export default {
             top: 0;
             left: 0;
             margin: 0;
-            visibility: hidden;
+            opacity: 0;
+
+            &:focus + label {
+                #{$checkbox}__check {
+                    box-shadow: $ELEVATOR_HOVER_FOCUS;
+                }
+            }
 
             &:checked + label, &:indeterminate + label {
                 #{$checkbox}__check::before {
