@@ -25,28 +25,22 @@
                 :theme="secondaryTheme"
                 :size="smallSize"
                 :plain="true"
+                :options="contextualMenuItems"
+                @input="onSelectValue"
                 @focus="onSelectFocus">
                 <template #icon="{ fillColor }">
                     <IconDots :fill-color="fillColor" />
                 </template>
-                <template #content>
-                    <List>
-                        <ListElement
-                            v-for="(option, optIndex) in contextualMenuItems"
-                            :key="option"
-                            :small="true"
-                            @click.native.prevent="onSelectValue(optIndex)">
-                            <ListElementDescription>
-                                <ListElementTitle :title="option" />
-                            </ListElementDescription>
-                            <ListElementAction>
-                                <CheckBox
-                                    v-if="option === 'Required'"
-                                    ref="checkbox"
-                                    :value="element.required" />
-                            </ListElementAction>
-                        </ListElement>
-                    </List>
+                <template #option="{ option }">
+                    <ListElementDescription>
+                        <ListElementTitle :title="option" />
+                    </ListElementDescription>
+                    <ListElementAction>
+                        <CheckBox
+                            v-if="option === 'Required'"
+                            ref="checkbox"
+                            :value="element.required" />
+                    </ListElementAction>
                 </template>
             </MenuButton>
         </div>
@@ -61,7 +55,6 @@ import MenuButton from '@Core/components/Buttons/MenuButton';
 import IconDots from '@Core/components/Icons/Others/IconDots';
 import CheckBox from '@Core/components/Inputs/CheckBox';
 import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
-import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementAction from '@Core/components/List/ListElementAction';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
@@ -73,7 +66,6 @@ export default {
         IconDots,
         MenuButton,
         ElementContentBase,
-        List,
         ListElement,
         ListElementAction,
         ListElementTitle,
@@ -139,8 +131,8 @@ export default {
 
             this.isContextualMenuActive = isFocused;
         },
-        onSelectValue(index) {
-            switch (this.contextualMenuItems[index]) {
+        onSelectValue(option) {
+            switch (option) {
             case 'Required':
                 this.setLayoutElementRequirement({
                     index: this.index,

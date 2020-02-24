@@ -126,5 +126,7 @@ export default {
         display: grid;
         grid-gap: 24px;
         grid-template-columns: repeat(4, 1fr);
+        width: 1008px;
+        padding: 24px;
     }
 </style>

@@ -16,15 +16,19 @@
             header="Attributes"
             @searchResult="onSearch" />
         <AttributesList :language-code="language.key" />
-        <div class="add-fab-button">
+        <template #fab>
             <FabButton
                 :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
-                @click.native="addAttribute">
+                @click.native="onShowModal">
                 <template #icon="{ fillColor }">
                     <IconAdd :fill-color="fillColor" />
                 </template>
             </FabButton>
-        </div>
+        </template>
+        <CreateAttributeModalForm
+            v-if="isModalVisible"
+            @close="onCloseModal"
+            @created="onCreatedAttribute" />
     </VerticalTabBarListWrapper>
 </template>
 
@@ -32,6 +36,7 @@
 import { mapState, mapActions } from 'vuex';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'AttributesListTab',
@@ -42,7 +47,9 @@ export default {
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         FabButton: () => import('@Core/components/Buttons/FabButton'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
+        CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
     },
+    mixins: [gridModalMixin],
     props: {
         isSelectLanguage: {
             type: Boolean,
@@ -83,6 +90,19 @@ export default {
             'getGroups',
             'getElements',
         ]),
+        onCreatedAttribute() {
+            this.onCloseModal();
+            Promise.all([
+                this.getGroups({
+                    listType: this.listDataType,
+                    languageCode: this.language.key,
+                }),
+                this.getElements({
+                    listType: this.listDataType,
+                    languageCode: this.language.key,
+                }),
+            ]);
+        },
         onSearch(value) {
             this.setFilter(value);
             this.getElements({
@@ -107,17 +127,6 @@ export default {
                 }),
             ]);
         },
-        addAttribute() {
-            this.$router.push({ name: 'attribute-new-general' });
-        },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .add-fab-button {
-        position: absolute;
-        bottom: 16px;
-        right: 16px;
-    }
-</style>

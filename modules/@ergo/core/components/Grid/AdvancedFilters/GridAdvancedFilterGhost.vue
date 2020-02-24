@@ -51,7 +51,7 @@ export default {
         padding: 0 12px;
         background-color: $GREY_LIGHT;
         box-shadow: $ELEVATOR_HOLE;
-        color: $GRAPHITE_DARK;
+        color: $GRAPHITE;
         font: $FONT_BOLD_12_16;
 
         &--hovered {

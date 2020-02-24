@@ -64,6 +64,8 @@ import {
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 import TemplateGridDraggableLayer from '@Templates/components/Template/Base/TemplateGridDraggableLayer';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
+import TemplateGridPlaceholderItem from '@Templates/components/Template/Base/TemplateGridPlaceholderItem';
+import LayoutElement from '@Templates/components/Template/ProductDesigner/LayoutElement';
 
 export default {
     name: 'TemplateDesignerTab',
@@ -71,10 +73,10 @@ export default {
         GridViewTemplate,
         TemplateGridDesigner,
         TemplateGridDraggableLayer,
+        TemplateGridPlaceholderItem,
+        LayoutElement,
         VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
         SectionTemplateModalForm: () => import('@Templates/components/Modals/SectionTemplateModalForm'),
-        TemplateGridPlaceholderItem: () => import('@Templates/components/Template/Base/TemplateGridPlaceholderItem'),
-        LayoutElement: () => import('@Templates/components/Template/ProductDesigner/LayoutElement'),
         AttributeElementContent: () => import('@Templates/components/Template/ProductDesigner/AttributeElementContent'),
         SectionElementContent: () => import('@Templates/components/Template/ProductDesigner/SectionElementContent'),
     },

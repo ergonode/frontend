@@ -13,7 +13,7 @@ import { types } from './mutations';
 export default {
     getTemplateByID(
         {
-            commit, dispatch, getters, rootState,
+            commit, dispatch, state, rootState,
         },
         { path },
     ) {
@@ -33,11 +33,10 @@ export default {
                 const elementsDescription = collection.map(
                     ({ id, code, label }) => ({ id, code, label }),
                 );
-                const { elementDataByType } = getters;
                 const layoutElements = getMappedLayoutElements(
                     elements,
                     elementsDescription,
-                    elementDataByType,
+                    state.types,
                 );
 
                 for (let i = layoutElements.length - 1; i > -1; i -= 1) {
@@ -74,16 +73,15 @@ export default {
         });
     },
     addListElementToLayout: ({
-        commit, dispatch, rootState, getters,
+        commit, dispatch, rootState, state,
     }, position) => {
         const { draggedElement } = rootState.draggable;
         const { elements } = rootState.list;
-        const { elementDataByType } = getters;
         const [value, languageCode] = draggedElement.split(':');
         const element = getNestedObjectByKeyWithValue(elements, 'code', value);
         const layoutElement = getMappedLayoutElement(
             element.id,
-            elementDataByType(element.type),
+            state.types.find(attributeType => attributeType.type === element.type),
             element.label || element.code,
             position,
         );
@@ -92,12 +90,11 @@ export default {
         commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
     },
     addSectionElementToLayout: ({
-        commit, getters,
+        commit, state,
     }, { row, column, title }) => {
-        const { elementDataByType } = getters;
         const layoutElement = getMappedLayoutSectionElement(
             title,
-            elementDataByType('SECTION'),
+            state.types.find(attributeType => attributeType.type === 'SECTION'),
             { row, column },
         );
 

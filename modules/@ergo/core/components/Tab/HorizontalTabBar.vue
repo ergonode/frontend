@@ -5,15 +5,19 @@
 <template>
     <div class="tab-bar">
         <div
-            v-if="isTabVisible"
-            class="tab-bar__items">
-            <HorizontalTabBarItem
-                v-for="(item, index) in items"
-                :key="index"
-                :index="index"
-                :is-selected="index === selectedTabIndex"
-                :item="item"
-                @select="onSelectTabBarItem" />
+            class="tab-bar__items-background"
+            v-if="isTabVisible">
+            <HorizontalFixedScroll>
+                <div class="tab-bar__items">
+                    <HorizontalTabBarItem
+                        v-for="(item, index) in items"
+                        :key="index"
+                        :index="index"
+                        :is-selected="index === selectedTabIndex"
+                        :item="item"
+                        @select="onSelectTabBarItem" />
+                </div>
+            </HorizontalFixedScroll>
         </div>
         <slot
             name="item"
@@ -30,6 +34,7 @@ export default {
     components: {
         HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
         HorizontalTabBarItem: () => import('@Core/components/Tab/HorizontalTabBarItem'),
+        HorizontalFixedScroll: () => import('@Core/components/Layout/Scroll/HorizontalFixedScroll'),
     },
     props: {
         items: {
@@ -65,12 +70,13 @@ export default {
         flex: 1;
         flex-direction: column;
 
-        &__items {
-            position: relative;
+        &__items-background {
+            background-image: linear-gradient($WHITESMOKE, $WHITE);
+        }
+
+        &__items, &__items-background {
             display: flex;
             height: 40px;
-            box-sizing: border-box;
-            background-image: linear-gradient($WHITESMOKE, $WHITE);
         }
     }
 </style>
