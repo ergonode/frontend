@@ -61,7 +61,6 @@ export default {
         onUpdateRoleSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Role updated' });
-            this.$router.push({ name: 'user-roles-grid' });
         },
         onRemoveRoleSuccess() {
             this.$addAlert({ type: 'success', message: 'Role removed' });

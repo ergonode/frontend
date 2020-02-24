@@ -78,7 +78,6 @@ export default {
         onUpdateTemplateDesignerSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'Template updated' });
-            this.$router.push({ name: 'product-templates' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Template removed' });

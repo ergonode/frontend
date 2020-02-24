@@ -125,7 +125,6 @@ export default {
         },
         onTransitionUpdated() {
             this.$addAlert({ type: 'success', message: 'Transition updated' });
-            this.$router.push({ name: 'status-transitions-grid' });
         },
         onRemoveTransitionSuccess() {
             this.$addAlert({ type: 'success', message: 'Transition removed' });

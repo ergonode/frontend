@@ -28,11 +28,10 @@
         <div class="side-bar__expand-button">
             <FabButton
                 :theme="secondaryTheme"
-                :plain="true"
                 @click.native="onExpand">
-                <template #icon>
+                <template #icon="{ isHovered, fillColor }">
                     <IconArrowDouble
-                        :fill-color="whiteColor"
+                        :fill-color="isHovered ? fillColor : whiteColor"
                         :state="expendStateIcon" />
                 </template>
             </FabButton>
