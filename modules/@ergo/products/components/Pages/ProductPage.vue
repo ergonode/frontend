@@ -41,7 +41,9 @@
                                 <PointBadge :color="option.color" />
                             </ListElementAction>
                             <ListElementDescription>
-                                <ListElementTitle :title="option.name || `#${option.code}`" />
+                                <ListElementTitle
+                                    :title="option.name || `#${option.code}`"
+                                    :small="true" />
                             </ListElementDescription>
                         </template>
                     </MenuButton>

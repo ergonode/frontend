@@ -33,7 +33,7 @@
                 </template>
                 <template #option="{ option }">
                     <ListElementDescription>
-                        <ListElementTitle :title="option" />
+                        <ListElementTitle :title="option" :small="true" />
                     </ListElementDescription>
                     <ListElementAction>
                         <CheckBox

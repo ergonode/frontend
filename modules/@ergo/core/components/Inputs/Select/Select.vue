@@ -12,16 +12,19 @@
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
             <slot name="prepend" />
+            <div class="input__value">
+                <slot name="value">
+                    <span v-text="multiselect ? value.join(', ') : value" />
+                </slot>
+            </div>
             <input
                 :id="associatedLabel"
                 ref="input"
-                :value="multiselect ? value.join(', ') : value"
                 :placeholder="placeholderValue"
                 :disabled="disabled"
                 :aria-label="label || 'no description'"
                 type="text"
                 readonly
-                @input="onValueChange"
                 @focus="onFocus"
                 @blur="onBlur">
             <label
@@ -30,8 +33,7 @@
                 :class="floatingLabelClasses"
                 :style="floatingLabelTransforms"
                 v-text="label" />
-            <div
-                class="input__append">
+            <div class="input__append">
                 <slot name="append" />
                 <ErrorHint
                     v-if="isError"
@@ -46,8 +48,8 @@
             <DropDown
                 v-if="isMenuActive"
                 ref="menu"
-                :style="selectBoundingBox"
-                :fixed-content="fixedContentWidth">
+                :offset="dropDownOffset"
+                :fixed="fixedContent">
                 <template #body>
                     <slot name="selectContent">
                         <List>
@@ -56,24 +58,24 @@
                                 :value="searchResult"
                                 @input="onSearch"
                                 @searchFocused="onSearchFocused" />
-                            <template v-for="(option, index) in options">
-                                <slot
-                                    name="option"
-                                    :option="option"
-                                    :index="index">
-                                    <ListElement
-                                        v-if="isOptionsValid"
-                                        :key="index"
-                                        :small="small"
-                                        :large="!small && regular"
-                                        :selected="typeof selectedOptions[option] !== 'undefined'"
-                                        @click.native.prevent="onSelectValue(option)">
-                                        <template #default="{ isSelected }">
+                            <ListElement
+                                v-for="(option, index) in options"
+                                :key="index"
+                                :small="small"
+                                :large="!small && regular"
+                                :selected="isOptionSelected(index)"
+                                @click.native.prevent="onSelectValue(option)">
+                                <template #default="{ isSelected }">
+                                    <slot
+                                        name="option"
+                                        :option="option"
+                                        :is-selected="isSelected"
+                                        :index="index">
+                                        <template v-if="isOptionsValid">
                                             <ListElementAction
                                                 v-if="multiselect"
                                                 :small="small">
-                                                <CheckBox
-                                                    :value="isSelected" />
+                                                <CheckBox :value="isSelected" />
                                             </ListElementAction>
                                             <ListElementDescription>
                                                 <ListElementTitle
@@ -81,9 +83,9 @@
                                                     :title="option" />
                                             </ListElementDescription>
                                         </template>
-                                    </ListElement>
-                                </slot>
-                            </template>
+                                    </slot>
+                                </template>
+                            </ListElement>
                         </List>
                     </slot>
                 </template>
@@ -114,6 +116,7 @@
         </FadeTransition>
         <label
             v-if="informationLabel"
+            ref="informationLabel"
             :class="informationLabelClasses"
             v-text="informationLabel" />
     </div>
@@ -148,7 +151,7 @@ export default {
     },
     props: {
         value: {
-            type: [Array, String, Number],
+            type: [Array, String, Number, Object],
             default: '',
         },
         options: {
@@ -163,7 +166,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        fixedContentWidth: {
+        fixedContent: {
             type: Boolean,
             default: true,
         },
@@ -239,7 +242,6 @@ export default {
     data() {
         return {
             selectedOptions: {},
-            selectBoundingBox: null,
             searchResult: '',
             isFocused: false,
             isMounted: false,
@@ -252,6 +254,18 @@ export default {
         };
     },
     computed: {
+        dropDownOffset() {
+            const {
+                x, y, width, height,
+            } = this.$refs.activator.getBoundingClientRect();
+
+            return {
+                x, y, width, height,
+            };
+        },
+        stringifiedOptions() {
+            return this.options.map(option => JSON.stringify(option));
+        },
         tinySize() {
             return SIZES.TINY;
         },
@@ -345,14 +359,12 @@ export default {
         },
     },
     created() {
-        if (this.isOptionsValid) {
-            if (this.multiselect) {
-                this.value.forEach(({ id }) => {
-                    this.selectedOptions[id] = this.value;
-                });
-            } else if (this.value || this.value === 0) {
-                this.selectedOptions = { [this.value]: this.value };
-            }
+        if (this.multiselect) {
+            this.value.forEach((option) => {
+                this.selectedOptions[JSON.stringify(option)] = option;
+            });
+        } else if (this.value || this.value === 0) {
+            this.selectedOptions = { [JSON.stringify(this.value)]: this.value };
         }
     },
     mounted() {
@@ -372,6 +384,9 @@ export default {
         isOptionValid(option) {
             return typeof option !== 'object';
         },
+        isOptionSelected(index) {
+            return typeof this.selectedOptions[this.stringifiedOptions[index]] !== 'undefined';
+        },
         onSearch(value) {
             this.$emit('search', value);
         },
@@ -384,16 +399,18 @@ export default {
             this.$emit('input', this.multiselect ? [] : '');
         },
         onSelectValue(value) {
+            const valueKey = JSON.stringify(value);
+
             if (this.multiselect) {
-                if (typeof this.selectedOptions[value] !== 'undefined') {
-                    delete this.selectedOptions[value];
+                if (typeof this.selectedOptions[valueKey] !== 'undefined') {
+                    delete this.selectedOptions[valueKey];
                 } else {
-                    this.selectedOptions[value] = this.value;
+                    this.selectedOptions[valueKey] = value;
                 }
 
                 this.$emit('input', Object.values(this.selectedOptions));
             } else {
-                this.selectedOptions = { [value]: this.value };
+                this.selectedOptions = { [valueKey]: value };
 
                 this.$emit('input', value);
             }
@@ -403,15 +420,11 @@ export default {
 
             this.onBlur();
         },
-        onValueChange(event) {
-            this.$emit('input', event.target.value);
-        },
         onFocus() {
             if (!this.isFocused) {
                 this.isFocused = true;
                 this.isMenuActive = true;
                 this.hasMouseDown = false;
-                this.selectBoundingBox = this.getSelectBoundingBox();
 
                 window.addEventListener('click', this.onClickOutside);
 
@@ -497,39 +510,6 @@ export default {
                 this.onSearch(this.searchResult);
                 this.$emit('focus', false);
             }
-        },
-        getSelectBoundingBox() {
-            const {
-                x,
-                y,
-                height,
-                width,
-            } = this.$el.getBoundingClientRect();
-            let hintHeight = 0;
-            const hint = this.$el.querySelector('.input__information-label');
-            const { innerHeight } = window;
-            const maxHeight = this.dropDownHeight;
-            const position = { left: `${x}px` };
-
-            if (hint) {
-                hintHeight = hint.getBoundingClientRect().height;
-            }
-
-            if (this.fixedContentWidth) {
-                position.maxHeight = `${maxHeight}px`;
-                position.width = `${width}px`;
-            }
-
-            if (innerHeight - y < maxHeight) {
-                const offsetBottom = innerHeight - y;
-
-                position.bottom = `${offsetBottom + 1}px`;
-
-                return position;
-            }
-            position.top = hint ? `${y + height - hintHeight - 2}px` : `${y + height + 2}px`;
-
-            return position;
         },
     },
 };

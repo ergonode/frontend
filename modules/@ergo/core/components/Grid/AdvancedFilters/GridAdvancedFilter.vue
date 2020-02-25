@@ -47,10 +47,10 @@
                     <span
                         class="advanced-filter__value"
                         v-text="filterValue" />
-                    <span
-                        v-if="parameter"
-                        class="advanced-filter__parameter"
-                        v-text="parameter" />
+                    <!--                    <span-->
+                    <!--                        v-if="parameter"-->
+                    <!--                        class="advanced-filter__parameter"-->
+                    <!--                        v-text="parameter" />-->
                 </template>
                 <IconArrowDropDown
                     class="advanced-filter__icon"
@@ -61,7 +61,7 @@
         <DropDown
             v-if="isMenuActive"
             ref="menu"
-            :style="selectBoundingBox"
+            :offset="dropDownOffset"
             :fixed-content="isSelectKind">
             <template #body>
                 <Component
@@ -131,7 +131,6 @@ export default {
             isMenuActive: false,
             isClickedOutside: false,
             hasMouseDown: false,
-            selectBoundingBox: null,
             associatedLabel: '',
         };
     },
@@ -141,12 +140,24 @@ export default {
             draggedElementOnGrid: state => state.draggedElementOnGrid,
             draggedElement: state => state.draggedElement,
         }),
+        dropDownOffset() {
+            const {
+                x, y, width, height,
+            } = this.$refs.activator.getBoundingClientRect();
+
+            return {
+                x, y, width, height,
+            };
+        },
         parameter() {
             if (!this.filter.parameters) return null;
 
-            const [key] = Object.keys(this.filter.parameters);
+            const { parameters, languageCode } = this.filter;
+            const [key] = Object.keys(parameters);
 
-            return this.filter.parameters[key];
+            console.log(Object.keys(parameters[key]).map(parameter => parameters[key][parameter].value[languageCode]).join(', '));
+
+            return Object.keys(parameters[key]).map(parameter => parameters[key][parameter].value[languageCode]).join(', ');
         },
         isFilterExists() {
             return this.draggedElement === this.filter.id;
@@ -342,7 +353,6 @@ export default {
                 this.isFocused = true;
                 this.isMenuActive = true;
                 this.hasMouseDown = false;
-                this.selectBoundingBox = this.getSelectBoundingBox();
 
                 window.addEventListener('click', this.onClickOutside);
                 this.$emit('focus', true);
@@ -399,34 +409,6 @@ export default {
                 this.$emit('apply');
             }
         },
-        getSelectBoundingBox() {
-            const {
-                x,
-                y,
-                height,
-                width,
-            } = this.$el.getBoundingClientRect();
-            const { innerHeight } = window;
-            const maxHeight = 200;
-
-            const position = { left: `${x}px` };
-
-            if (this.fixedContentWidth) {
-                position.width = `${width}px`;
-            }
-
-            if (innerHeight - y < maxHeight) {
-                const offsetBottom = innerHeight - y;
-
-                position.bottom = `${offsetBottom + 1}px`;
-
-                return position;
-            }
-
-            position.top = `${y + height + 2}px`;
-
-            return position;
-        },
     },
 };
 </script>
@@ -441,7 +423,6 @@ export default {
         box-sizing: border-box;
         background-color: $WHITESMOKE;
         cursor: pointer;
-        max-width: 200px;
         overflow: hidden;
 
         &__activator {

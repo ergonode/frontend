@@ -27,7 +27,7 @@
 
 <script>
 
-import { getParentRoutePath } from '../../models/navigation/tabs';
+import { getParentRoutePath } from '@Core/models/navigation/tabs';
 
 export default {
     name: 'SideBarListGroupElement',

@@ -4,39 +4,31 @@
  */
 <template>
     <Select
-        :value="parsedValue"
         v-bind="$attrs"
-        @search="onSearch"
-        @focus="onFocus"
-        @input="onClear">
+        v-on="$listeners">
         <template #prepend>
             <slot name="prepend" />
         </template>
-        <template #option="{ option, index }">
-            <ListElement
-                :key="index"
-                :large="!$attrs.small && $attrs.regular"
-                :selected="typeof selectedOptions[option.id] !== 'undefined'"
-                @click.native.prevent="onSelectValue(option)">
-                <template #default="{ isSelected }">
-                    <slot
-                        name="option"
-                        :option="option"
-                        :selected="isSelected">
-                        <ListElementAction
-                            v-if="$attrs.multiselect"
-                            :small="$attrs.small">
-                            <CheckBox :value="isSelected" />
-                        </ListElementAction>
-                        <ListElementDescription>
-                            <ListElementTitle
-                                :small="$attrs.small"
-                                :hint="option.hint"
-                                :title="option.value || `#${option.key}`" />
-                        </ListElementDescription>
-                    </slot>
-                </template>
-            </ListElement>
+        <template #value>
+            <span v-text="parsedValue" />
+        </template>
+        <template #option="{ option, isSelected }">
+            <slot
+                name="option"
+                :option="option"
+                :selected="isSelected">
+                <ListElementAction
+                    v-if="$attrs.multiselect"
+                    :small="$attrs.small">
+                    <CheckBox :value="isSelected" />
+                </ListElementAction>
+                <ListElementDescription>
+                    <ListElementTitle
+                        :small="$attrs.small"
+                        :hint="option.hint"
+                        :title="option.value || `#${option.key}`" />
+                </ListElementDescription>
+            </slot>
         </template>
     </Select>
 </template>
@@ -50,64 +42,18 @@ export default {
     name: 'TranslationSelect',
     components: {
         Select,
-        ListElement: () => import('@Core/components/List/ListElement'),
-        ListElementAction: () => import('@Core/components/List/ListElementAction'),
         ListElementDescription,
         ListElementTitle,
+        ListElementAction: () => import('@Core/components/List/ListElementAction'),
         CheckBox: () => import('@Core/components/Inputs/CheckBox'),
     },
     inheritAttrs: false,
-    data() {
-        return {
-            selectedOptions: {},
-        };
-    },
     computed: {
         parsedValue() {
             if (Array.isArray(this.$attrs.value)) {
-                return this.$attrs.value.map(val => val.value || `#${val.key}`);
+                return this.$attrs.value.map(val => val.value || `#${val.key}`).join(', ');
             }
             return this.$attrs.value.value || this.$attrs.value.key;
-        },
-    },
-    created() {
-        if (this.$attrs.multiselect) {
-            this.$attrs.value.forEach((option) => {
-                this.selectedOptions[option.id] = { ...option };
-            });
-        } else if (this.$attrs.value.id || this.$attrs.value.id === 0) {
-            this.selectedOptions = { [this.$attrs.value.id]: { ...this.$attrs.value } };
-        }
-    },
-    methods: {
-        onFocus(isFocused) {
-            this.$emit('focus', isFocused);
-        },
-        onSearch(value) {
-            this.$emit('search', value);
-        },
-        onClear() {
-            this.selectedOptions = {};
-            this.$emit('input', this.$attrs.multiselect ? [] : {
-                id: '', key: '', value: '', hint: '',
-            });
-        },
-        onSelectValue(value) {
-            const { id } = value;
-
-            if (this.$attrs.multiselect) {
-                if (typeof this.selectedOptions[id] !== 'undefined') {
-                    delete this.selectedOptions[id];
-                } else {
-                    this.selectedOptions[id] = value;
-                }
-
-                this.$emit('input', Object.values(this.selectedOptions));
-            } else {
-                this.selectedOptions = { [id]: value };
-
-                this.$emit('input', value);
-            }
         },
     },
 };

@@ -542,7 +542,6 @@ export default {
             }
 
             if (this.isEditColumn) {
-                columnIndex += 1;
                 gridColumns.push(createElement('GridColumnEdit', {
                     key: columnIndex,
                     style: this.templateRows,
@@ -559,6 +558,9 @@ export default {
                         editRow: this.onEditRow,
                     },
                 }));
+
+                columnIndex += 1;
+
                 gridColumns.push(createElement('GridColumnSentinel', {
                     style: ({
                         gridColumn: (`${columnIndex} / ${columnIndex}`),

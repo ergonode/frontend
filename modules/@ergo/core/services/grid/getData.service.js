@@ -46,6 +46,8 @@ export const getAdvancedFiltersData = ($axios, path, params) => $axios
         const { length } = columns;
         const advancedFilters = [];
 
+        console.log(params);
+
         for (let i = 0; i < length; i += 1) {
             const options = columns[i].filter && columns[i].filter.options
                 ? Object.keys(columns[i].filter.options)

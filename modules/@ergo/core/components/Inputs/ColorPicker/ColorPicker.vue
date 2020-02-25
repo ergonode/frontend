@@ -47,15 +47,13 @@
             <DropDown
                 v-if="isMenuActive"
                 ref="menu"
-                :style="selectBoundingBox"
-                :fixed-content="fixedContentWidth">
+                :offset="dropDownOffset"
+                :fixed="fixedContentWidth">
                 <template #body>
-                    <slot name="selectContent">
-                        <ColorPickerContent
-                            :value="value"
-                            :options="options"
-                            @input="onSelectValue" />
-                    </slot>
+                    <ColorPickerContent
+                        :value="value"
+                        :options="options"
+                        @input="onSelectValue" />
                 </template>
                 <template
                     v-if="clearable"
@@ -196,7 +194,6 @@ export default {
         return {
             selectedOptions: {},
             selectedOptionIndex: -1,
-            selectBoundingBox: null,
             isFocused: false,
             isMounted: false,
             isMouseMoving: false,
@@ -207,6 +204,15 @@ export default {
         };
     },
     computed: {
+        dropDownOffset() {
+            const {
+                x, y, width, height,
+            } = this.$refs.activator.getBoundingClientRect();
+
+            return {
+                x, y, width, height,
+            };
+        },
         tinySize() {
             return SIZES.TINY;
         },
@@ -356,7 +362,6 @@ export default {
                 this.isFocused = true;
                 this.isMenuActive = true;
                 this.hasMouseDown = false;
-                this.selectBoundingBox = this.getSelectBoundingBox();
 
                 window.addEventListener('click', this.onClickOutside);
 
@@ -435,34 +440,6 @@ export default {
 
                 this.$emit('focus', false);
             }
-        },
-        getSelectBoundingBox() {
-            const {
-                x,
-                y,
-                height,
-                width,
-            } = this.$el.getBoundingClientRect();
-            const { innerHeight } = window;
-            const maxHeight = 200;
-
-            const position = { left: `${x}px` };
-
-            if (this.fixedContentWidth) {
-                position.width = `${width}px`;
-            }
-
-            if (innerHeight - y < maxHeight) {
-                const offsetBottom = innerHeight - y;
-
-                position.bottom = `${offsetBottom + 1}px`;
-
-                return position;
-            }
-
-            position.top = `${y + height + 2}px`;
-
-            return position;
         },
     },
 };
