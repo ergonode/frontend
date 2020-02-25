@@ -38,7 +38,7 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
-import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'UsersTabs',
@@ -50,7 +50,7 @@ export default {
         Button,
         IconAdd,
     },
-    mixins: [gridDataMixin],
+    mixins: [gridModalMixin],
     computed: {
         smallSize() {
             return SIZES.SMALL;

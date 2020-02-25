@@ -29,15 +29,27 @@ export default {
         return {
             isPlaceholder: false,
             image: null,
+            observer: null,
         };
     },
     watch: {
-        imageId: {
-            immediate: true,
-            handler() {
-                this.getImageById();
-            },
+        imageId() {
+            this.getImageById();
         },
+    },
+    mounted() {
+        this.observer = new IntersectionObserver((entries) => {
+            const image = entries[0];
+            if (image.isIntersecting) {
+                this.getImageById();
+                this.observer.disconnect();
+            }
+        });
+
+        this.observer.observe(this.$el);
+    },
+    destroyed() {
+        this.observer.disconnect();
     },
     methods: {
         ...mapActions('validations', [
@@ -65,8 +77,11 @@ export default {
 <style lang="scss" scoped>
     .image {
         flex: 1;
-        width: 100%;
         max-height: 100%;
+
+        &:not(&--fab) {
+            width: 100%;
+        }
 
         &:not(&--placeholder) {
             object-fit: cover;
