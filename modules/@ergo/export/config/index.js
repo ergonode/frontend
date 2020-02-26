@@ -3,4 +3,9 @@
  * See LICENSE for license details.
  */
 export default {
+    name: '@ergo/export',
+    type: 'local',
+    aliases: {
+        '@Export': '/',
+    },
 };

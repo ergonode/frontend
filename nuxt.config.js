@@ -5,22 +5,37 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-require('dotenv').config({ path: '.env' });
-const inquirer = require('inquirer');
-const chalk = require('chalk');
-const figlet = require('figlet');
-const FS = require('fs');
-const PATH = require('path');
+import { join } from 'path';
+import dotenv from 'dotenv';
+import {
+    _requiredModules as REQUIRED_MODULES,
+    _availableModules as AVAILABLE_MODULES,
+    keywords,
+    description,
+} from './package';
+import _modules from './config/.modules';
+import { inactiveModulesConfig } from './plugins/moduleLoader';
 
-const PKG = require('./package');
-const { modulesConfig, inactiveModulesConfig } = require('./plugins/moduleLoader');
+dotenv.config({ path: '.env' });
+const VENDOR_DIR = 'vendor';
+const MODULES_DIR = 'modules';
+const DIR_PREFIX = type => (`~/${type === 'npm' ? VENDOR_DIR : MODULES_DIR}/`);
+const ACTIVE_MODULES = _modules.active.reduce((acc, current) => {
+    const newObject = acc;
+    newObject[current] = AVAILABLE_MODULES[current];
+    return newObject;
+}, {});
+const INACTIVE_MODULES = _modules.inactive.reduce((acc, current) => {
+    const newObject = acc;
+    newObject[current] = AVAILABLE_MODULES[current];
+    return newObject;
+}, {});
+const MODULES_TO_LOAD = _modules.active.map((name) => {
+    const type = AVAILABLE_MODULES[name];
 
-const NUXT_CONFIG = {
-    css: modulesConfig.nuxt.css || [],
-    styleResources: modulesConfig.nuxt.styleResources || {},
-    plugins: modulesConfig.nuxt.plugins || [],
-    chunks: modulesConfig.nuxt.chunks || [],
-};
+    return [`${DIR_PREFIX(type)}${name}`, { type, vendorDir: VENDOR_DIR }];
+});
+const NPM_MODULES = Object.keys(ACTIVE_MODULES).filter(name => ACTIVE_MODULES[name] === 'npm');
 const IS_DEV = process.env.NODE_ENV !== 'production';
 const BASE_URL = `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_PREFIX}`;
 
@@ -35,8 +50,8 @@ module.exports = {
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'keywords', name: 'keywords', content: PKG.keywords.join(', ') },
-            { hid: 'description', name: 'description', content: PKG.description },
+            { hid: 'keywords', name: 'keywords', content: keywords.join(', ') },
+            { hid: 'description', name: 'description', content: description },
         ],
         link: [
             {
@@ -54,69 +69,42 @@ module.exports = {
         ],
     },
     loading: { color: '#00BC87', height: '3px' },
-    router: {
-        middleware: ['modules'],
-    },
-    hooks: {
-        builder: {
-            async prepared(builder) {
-                console.log(chalk.green(figlet.textSync('Ergonode', { horizontalLayout: 'full' })));
-                console.log(chalk.yellow('Select your modules'));
-
-                const options = Object.keys(PKG._availableModules).map(module => (PKG._requiredModules.includes(module)
-                    ? { name: module, disabled: 'Required', checked: true }
-                    : { name: module, checked: true }));
-                const { modules } = await inquirer.prompt([
-                    {
-                        type: 'checkbox',
-                        pageSize: 15,
-                        name: 'modules',
-                        message: 'Select your modules',
-                        choices: options,
-                    },
-                ]);
-                const selectedModules = PKG._requiredModules.concat(modules);
-                const inactiveModules = Object.keys(PKG._availableModules).filter(
-                    x => !selectedModules.includes(x),
-                );
-                const moduleStr = array => array.reduce((acc, module, i) => {
-                    const tabs = i === 0 ? '' : '\t\t\t\t';
-                    const enter = i === array.length - 1 ? '' : '\n';
-
-                    return `${acc}${tabs}'${module}',${enter}`;
-                }, '');
-                const copyright = FS.readFileSync('./config/.copyright', 'utf8');
-                const fileStr = `${copyright}export default {
-    active: [
-        ${moduleStr(selectedModules)}
-    ],${inactiveModules.length ? `\n\t\tinactive: [\n\t\t\t\t${moduleStr(inactiveModules)}\n\t\t],` : ''}
-};`;
-
-                const extraFilePath = PATH.join(builder.nuxt.options.buildDir, 'modules.js');
-                await FS.writeFileSync(extraFilePath, fileStr);
-            },
-        },
-    },
-    css: NUXT_CONFIG.css,
-    plugins: NUXT_CONFIG.plugins,
-    styleResources: NUXT_CONFIG.styleResources,
+    modulesDir: ['node_modules', 'modules'],
     buildModules: [
-        '@bleto/ergo-import',
+        '~/modules/helpers/modulesLoader',
+        '@nuxtjs/router',
+        ...MODULES_TO_LOAD,
+        '~/modules/helpers/symlinksCreator',
+        '~/modules/helpers/registerRouter',
+        '~/modules/helpers/registerMiddleware',
+        '~/modules/helpers/registerStore',
     ],
     modules: [
-        ['@nuxtjs/router', {
-            keepDefaultRouter: true,
-        }],
         '@nuxtjs/axios',
-        'cookie-universal-nuxt',
         '@nuxtjs/style-resources',
-        [
-            '@nuxtjs/component-cache',
-            {
-                maxAge: 1000 * 60 * 60,
-            },
-        ],
+        ['@nuxtjs/component-cache', { maxAge: 1000 * 60 * 60 }],
+        'cookie-universal-nuxt',
     ],
+    modulesLoader: {
+        modules: ACTIVE_MODULES,
+        inactiveModules: INACTIVE_MODULES,
+        requiredModules: REQUIRED_MODULES,
+    },
+    router: {
+        middleware: ['modulesMiddlewareLoader'],
+    },
+    symlinksCreator: {
+        modulesDir: NPM_MODULES,
+    },
+    registerRouter: {
+        modules: ACTIVE_MODULES,
+    },
+    registerMiddleware: {
+        modules: ACTIVE_MODULES,
+    },
+    registerStore: {
+        modules: ACTIVE_MODULES,
+    },
     axios: {
         baseURL: BASE_URL || 'http://localhost:8000',
     },
@@ -139,22 +127,26 @@ module.exports = {
         // optimizeCSS: true,
         extend(config, { isDev, isClient }) {
             const alias = config.resolve.alias || {};
-            const { aliases = {} } = modulesConfig.nuxt;
             const { aliases: inactiveAliases = {} } = inactiveModulesConfig.nuxt;
 
-            alias['@Root'] = PATH.join(__dirname, './');
-            alias['@Modules'] = PATH.join(__dirname, '/modules');
-            Object.keys(aliases).map((key) => {
-                alias[key] = aliases[key].type === 'npm' ? aliases[key].path : PATH.join(__dirname, aliases[key].path);
-            });
+            alias['@Root'] = join(__dirname, './');
+            alias['@Modules'] = join(__dirname, '/modules');
+            alias['@Vendor'] = join(__dirname, '/vendor');
             Object.keys(inactiveAliases).map((key) => {
-                alias[key] = PATH.join(__dirname, inactiveAliases[key]);
+                alias[key] = inactiveAliases[key].type === 'npm' ? inactiveAliases[key].path : join(__dirname, inactiveAliases[key].path);
             });
             if (isDev) {
                 config.devtool = isClient ? 'source-map' : 'inline-source-map';
             }
-            config.resolve.aliasFields = ['browser'];
-            config.resolve.symlinks = false; // this prevents symlinks from breaking the build
+            config.module.rules.push(
+                {
+                    test: /\.ejs$/,
+                    loader: 'ejs-loader',
+                },
+            );
+            config.node = {
+                fs: 'empty',
+            };
             // TODO: finish method to exclude test files
             // config.module.rules.forEach((rule) => {
             //     if (rule.test.toString() === '/\\.jsx?$/i') {

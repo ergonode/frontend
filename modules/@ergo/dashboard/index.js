@@ -2,30 +2,28 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Pages, Icons } from './config/imports';
+import { join } from 'path';
+import configuration from './config';
 
-export default {
-    name: '@ergo/dashboard',
-    type: 'page',
-    moduleRelations: [],
-    privileges: {},
-    nuxt: {
-        aliases: {
-            '@Dashboard': '/',
-        },
-    },
-    router: [
-        {
-            name: 'dashboard',
-            path: '/dashboard',
-            component: Pages.Dashboard,
-            meta: {
-                access: true,
-                title: 'Dashboard',
-                icon: Icons.Dashboard,
-                isMenu: true,
-                menuPosition: -1000,
-            },
-        },
-    ],
-};
+export default async function () {
+    const {
+        name,
+        type,
+        aliases = {},
+    } = configuration;
+
+    if (!this.options.ergoModules) this.options.ergoModules = {};
+
+    this.options.ergoModules[name] = type;
+    this.extendBuild((config) => {
+        const alias = config.resolve.alias || {};
+
+        Object.keys(aliases).forEach((key) => {
+            alias[key] = (type === 'npm'
+                ? join(name, aliases[key], '/src')
+                : join(__dirname, aliases[key])
+            ).replace(/\/$/g, '');
+        });
+    });
+}
+export const config = configuration;

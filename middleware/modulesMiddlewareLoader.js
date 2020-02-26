@@ -2,10 +2,8 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { modulesConfig } from '~/plugins/moduleLoader';
+import middlewareModules from '~/.nuxt/middleware.modules';
 
 export default (ctx) => {
-    const { nuxt: { middleware } } = modulesConfig;
-
-    middleware(ctx);
+    middlewareModules(ctx);
 };

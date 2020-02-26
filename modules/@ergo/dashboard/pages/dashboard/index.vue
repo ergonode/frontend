@@ -24,6 +24,10 @@ export default {
             title: 'Take an action',
         };
     },
+    mounted() {
+        console.log('yyy dasboard mount');
+        this.$test();
+    },
     methods: {
         filteredItems() {
             return GRID_ITEMS.filter(e => this.$hasAccess(e.privileges));

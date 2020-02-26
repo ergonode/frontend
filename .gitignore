@@ -45,3 +45,5 @@ yarn-error.log
 config/*
 # exception to the rule
 !config/.copyright
+vendor
+.monitor

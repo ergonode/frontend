@@ -1,38 +1,67 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
 import Vue from 'vue';
-import Router from 'vue-router';
+import VueRouter from 'vue-router';
 import { modulesConfig } from '~/plugins/moduleLoader';
+import routerModules from '~/.nuxt/router.modules';
+import routerLocal from './router.local';
 
-Vue.use(Router);
+Vue.use(VueRouter);
 
-const fixRoutes = (defaultRoutes) => {
-    const { router, extendTabs } = modulesConfig;
+const scrollBehavior = (to, from, savedPosition) => {
+    let position = false;
+    if (to.matched.length < 2) {
+        position = { x: 0, y: 0 };
+    } else if (to.matched.some(r => r.components.default.options.scrollToTop)) {
+        position = { x: 0, y: 0 };
+    }
+    if (savedPosition) {
+        position = savedPosition;
+    }
+    return new Promise((resolve) => {
+        window.$nuxt.$once('triggerScroll', () => {
+            if (to.hash && document.querySelector(to.hash)) {
+                position = { selector: to.hash };
+            }
+            resolve(position);
+        });
+    });
+};
+
+const extendRoutes = () => {
+    const { extendTabs } = modulesConfig;
+    const extendedRoutes = [].concat(...Object.values(routerModules), routerLocal);
 
     for (let i = 0; i < extendTabs.length; i += 1) {
-        const index = router.findIndex(e => e.name === extendTabs[i].name);
+        const index = extendedRoutes.findIndex(e => e.name === extendTabs[i].name);
 
         if (index !== -1) {
-            router[index] = {
-                ...router[index],
+            extendedRoutes[index] = {
+                ...extendedRoutes[index],
                 children: [
-                  ...router[index].children,
-                  ...extendTabs[i].children,
+                    ...extendedRoutes[index].children,
+                    ...extendTabs[i].children,
                 ],
             };
         }
     }
-
-    return defaultRoutes.concat(router);
+    return extendedRoutes;
 };
 
-export function createRouter(ssrContext, createDefaultRouter, routerOptions) {
-    const options = routerOptions ? routerOptions : createDefaultRouter(ssrContext).options;
+const Router = new VueRouter({
+    mode: 'history',
+    base: '/',
+    linkActiveClass: 'nuxt-link-active',
+    linkExactActiveClass: 'nuxt-link-exact-active',
+    scrollBehavior,
+    routes: extendRoutes(),
+    fallback: false,
+});
 
-    return new Router({
-        ...options,
-        routes: fixRoutes(options.routes)
-    });
+export function createRouter() {
+    return Router;
 }
+export default Router;
