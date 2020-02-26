@@ -54,24 +54,6 @@ export default {
         IconAdd,
     },
     mixins: [gridModalMixin],
-    async fetch({ store }) {
-        const {
-            user: { language: userLanguageCode },
-        } = store.state.authentication;
-
-        await Promise.all([
-            store.dispatch('list/clearStorage'),
-            store.dispatch('list/getGroups', {
-                listType: 'attributes',
-                languageCode: userLanguageCode,
-            }),
-            store.dispatch('list/getElementsForGroup', {
-                listType: 'attributes',
-                groupId: null,
-                languageCode: userLanguageCode,
-            }),
-        ]);
-    },
     computed: {
         ...mapState('draggable', {
             draggedElementOnGrid: state => state.draggedElementOnGrid,

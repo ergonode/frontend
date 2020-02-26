@@ -8,7 +8,11 @@
         :height="size"
         :style="iconTransform"
         :icon-color="fillColor">
-        <polygon :points="points" />
+        <rect
+            width="2"
+            height="12"
+            transform="matrix(-1 0 0 1 8 6)" />
+        <path :d="drawingCommands" />
     </BaseIcon>
 </template>
 
@@ -18,7 +22,7 @@ import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import BaseIcon from '@Core/components/Icons/BaseIcon';
 
 export default {
-    name: 'IconArrowPointer',
+    name: 'IconArrowPointerBlock',
     components: {
         BaseIcon,
     },
@@ -38,7 +42,7 @@ export default {
     },
     data() {
         return {
-            points: '20 11 7.8 11 13.4 5.4 12 4 4 12 12 20 13.4 18.6 7.8 13 20 13',
+            drawingCommands: 'M18 7.415L13.42 12.005L18 16.595L16.59 18.005L10.59 12.005L16.59 6.005L18 7.415Z',
         };
     },
     computed: {

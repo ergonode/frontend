@@ -25,18 +25,9 @@ export default {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({ store, params }) {
-        const {
-            user: { language: userLanguageCode },
-        } = store.state.authentication;
-
         await Promise.all([
             store.dispatch('tree/clearStorage'),
             store.dispatch('translations/clearStorage'),
-            store.dispatch('list/clearStorage'),
-            store.dispatch('list/getElements', {
-                listType: 'categories',
-                languageCode: userLanguageCode,
-            }),
         ]);
         await store.dispatch('tree/getTreeById', {
             treeId: params.id,

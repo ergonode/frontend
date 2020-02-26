@@ -31,6 +31,7 @@ import ListElementDescription from '@Core/components/List/ListElementDescription
 import ListElementTitle from '@Core/components/List/ListElementTitle';
 import ListElementHint from '@Core/components/List/ListElementHint';
 import ListElementIcon from '@Core/components/List/ListElementIcon';
+import ListDraggableElement from '@Core/components/List/ListDraggableElement';
 
 export default {
     name: 'AttributesListElement',
@@ -39,7 +40,7 @@ export default {
         ListElementTitle,
         ListElementHint,
         ListElementIcon,
-        ListDraggableElement: () => import('@Core/components/List/ListDraggableElement'),
+        ListDraggableElement,
     },
     props: {
         item: {

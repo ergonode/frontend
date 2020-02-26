@@ -23,7 +23,8 @@
                     :size="smallSize"
                     :plain="true"
                     :options="contextualMenuItems"
-                    @focus="onSelectFocus">
+                    @focus="onSelectFocus"
+                    @input="onSelectValue">
                     <template #icon="{ fillColor }">
                         <IconDots :fill-color="fillColor" />
                     </template>
@@ -110,8 +111,8 @@ export default {
         },
     },
     methods: {
-        onSelectValue(index) {
-            switch (this.contextualMenuItems[index]) {
+        onSelectValue(value) {
+            switch (value) {
             case 'Remove':
                 this.$emit('remove', this.itemId);
                 break;

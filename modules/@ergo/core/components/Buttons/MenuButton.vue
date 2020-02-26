@@ -24,7 +24,7 @@
             <DropDown
                 v-if="isFocused"
                 :offset="dropDownOffset"
-                :fixed="true">
+                :fixed="fixedContent">
                 <template #body>
                     <List>
                         <ListElement
@@ -77,6 +77,10 @@ export default {
         options: {
             type: Array,
             default: () => [],
+        },
+        fixedContent: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {

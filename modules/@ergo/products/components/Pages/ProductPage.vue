@@ -35,6 +35,7 @@
                         :size="smallSize"
                         :disabled="!isUserAllowedToUpdateProduct"
                         :options="workflow"
+                        :fixed-content="true"
                         @input="onUpdateStatus">
                         <template #option="{ option }">
                             <ListElementAction>

@@ -4,6 +4,7 @@
  */
 <template>
     <svg
+        class="icon"
         xmlns="http://www.w3.org/2000/svg"
         :width="width"
         :height="height"
@@ -37,3 +38,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .icon {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+    }
+</style>

@@ -18,7 +18,7 @@ import {
     isTrashBelowMouse,
     getPositionForBrowser,
 } from '@Core/models/drag_and_drop/helpers';
-import selectedRowMixin from '@Core/mixins/grid/selectedRowMixin';
+import selectGridRowMixin from '@Core/mixins/grid/selectGridRowMixin';
 import { swapItemPosition, insertValueAtIndex } from '@Core/models/arrayWrapper';
 
 export default {
@@ -39,7 +39,7 @@ export default {
         GridAdvancedFiltersRemoveAllButton: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFiltersRemoveAllButton'),
         GridAdvancedFilterPlaceholder: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder'),
     },
-    mixins: [selectedRowMixin],
+    mixins: [selectGridRowMixin],
     props: {
         columns: {
             type: Array,
@@ -324,7 +324,8 @@ export default {
             }
         },
         removeGhostColumn() {
-            if (!this.isColumnDropped) {
+            if (!this.isColumnDropped
+                && this.columnWidths.findIndex(width => width === COLUMN_WIDTH.GHOST) !== -1) {
                 const { gridColumns } = this.$refs;
                 const { length } = gridColumns.children;
 
@@ -593,9 +594,7 @@ export default {
                 dragleave: this.onDragLeave,
             },
         }, gridBodyElements);
-        const gridFooter = createElement('div', {
-            staticClass: 'grid__footer',
-        }, [
+        const gridFooterElements = [
             createElement('GridPageSelector', {
                 attrs: {
                     value: this.maxRows,
@@ -605,17 +604,28 @@ export default {
                     input: this.setMaxRows,
                 },
             }),
-            createElement('GridPagination', {
-                attrs: {
-                    value: this.currentPage,
-                    maxPage: this.maxPage,
-                },
-                on: {
-                    input: this.setCurrentPage,
-                },
-            }),
-            this.$slots.appendFooter,
-        ]);
+        ];
+
+        if (this.maxPage > 1) {
+            gridFooterElements.push(
+                createElement('GridPagination', {
+                    attrs: {
+                        value: this.currentPage,
+                        maxPage: this.maxPage,
+                    },
+                    on: {
+                        input: this.setCurrentPage,
+                    },
+                }),
+            );
+        }
+
+        gridFooterElements.push(this.$slots.appendFooter);
+
+        const gridFooter = createElement('div', {
+            staticClass: 'grid__footer',
+        }, gridFooterElements);
+
         const gridElements = [];
 
         if (this.isHeaderVisible) {
