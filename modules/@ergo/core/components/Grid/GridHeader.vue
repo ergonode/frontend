@@ -16,26 +16,11 @@
                 <!--                        <IconArrowDropDown :fill-color="fillColor" />-->
                 <!--                    </template>-->
                 <!--                </MenuButton>-->
-                <Button
-                    :size="smallSize"
-                    :theme="isFiltersExpanded ? theme.PRIMARY : theme.SECONDARY"
+                <ExpandNumericButton
                     title="FILTERS"
-                    @click.native="onFiltersExpand">
-                    <template #prepend="{ color }">
-                        <IconArrowDouble
-                            :fill-color="color"
-                            :state="iconExpandedState" />
-                    </template>
-                    <template #append>
-                        <div
-                            :class="[
-                                'filters-number',
-                                { 'filters-number--selected': isFiltersExpanded },
-                            ]">
-                            <NumericBadge :number="filtersNumber" />
-                        </div>
-                    </template>
-                </Button>
+                    :number="filtersNumber"
+                    :is-expanded="isFiltersExpanded"
+                    @click.native="onFiltersExpand" />
             </div>
             <div class="grid-header__layout-configuration">
                 <FabButton
@@ -139,13 +124,12 @@ export default {
         Form: () => import('@Core/components/Form/Form'),
         FormGroup: () => import('@Core/components/Form/FormGroup'),
         // MenuButton: () => import('@Core/components/Buttons/MenuButton'),
-        NumericBadge: () => import('@Core/components/Badges/NumericBadge'),
         Button: () => import('@Core/components/Buttons/Button'),
+        ExpandNumericButton: () => import('@Core/components/Buttons/ExpandNumericButton'),
         Select: () => import('@Core/components/Inputs/Select/Select'),
         FabButton: () => import('@Core/components/Buttons/FabButton'),
         // IconGrid: () => import('@Core/components/Icons/Others/IconGrid'),
         IconSettings: () => import('@Core/components/Icons/Actions/IconSettings'),
-        IconArrowDouble: () => import('@Core/components/Icons/Arrows/IconArrowDouble'),
         // IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
         IconListMedium: () => import('@Core/components/Icons/Others/IconListMedium'),
         GridAdvancedFiltersContainer: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFiltersContainer'),
@@ -345,16 +329,6 @@ export default {
 
         &--disabled {
             pointer-events: none;
-        }
-    }
-
-    .filters-number {
-        margin: 0 4px;
-
-        &--selected {
-            .primary-badge {
-                background-color: $GREEN_DARK;
-            }
         }
     }
 </style>

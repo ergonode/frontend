@@ -24,19 +24,21 @@
                 v-if="isFocused"
                 class="button__select-content"
                 :style="contentPositionStyle">
-                <slot name="content">
-                    <List>
-                        <ListElement
-                            v-for="(option, index) in options"
-                            :key="index"
-                            :small="true"
-                            @click.native="onSelectedValue(index)">
+                <List>
+                    <ListElement
+                        v-for="(option, index) in options"
+                        :key="index"
+                        :small="true"
+                        @click.native.prevent="onSelectedValue(index)">
+                        <slot
+                            name="option"
+                            :option="option">
                             <ListElementDescription>
                                 <ListElementTitle :title="option" />
                             </ListElementDescription>
-                        </ListElement>
-                    </List>
-                </slot>
+                        </slot>
+                    </ListElement>
+                </List>
             </div>
         </FadeTransition>
     </Button>

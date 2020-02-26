@@ -12,7 +12,7 @@
                     title="NEW TRANSITION"
                     :size="smallSize"
                     :disabled="!$hasAccess(['WORKFLOW_CREATE'])"
-                    @click.native="addStatusTransition">
+                    @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
@@ -27,9 +27,9 @@
             </template>
         </HorizontalTabBar>
         <CreateStatusTransitionModalForm
-            v-if="isCreateStatusTransitionVisible"
+            v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedStatusTransition" />
+            @created="onCreatedData" />
     </Page>
 </template>
 
@@ -38,7 +38,7 @@ import { SIZES } from '@Core/defaults/buttons';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
-
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'WorkflowTabs',
@@ -46,38 +46,17 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
-        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
         CreateStatusTransitionModalForm: () => import('@Transitions/components/Modals/CreateStatusTransitionModalForm'),
         Button,
         IconAdd,
     },
-    data() {
-        return {
-            isCreateStatusTransitionVisible: false,
-            fetchGridData: false,
-        };
-    },
+    mixins: [gridModalMixin],
     computed: {
         smallSize() {
             return SIZES.SMALL;
         },
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-    },
-    methods: {
-        addStatusTransition() {
-            this.isCreateStatusTransitionVisible = true;
-        },
-        onCloseModal() {
-            this.isCreateStatusTransitionVisible = false;
-        },
-        onCreatedStatusTransition() {
-            this.isCreateStatusTransitionVisible = false;
-            this.fetchGridData = true;
-        },
-        onFetchedGridData() {
-            this.fetchGridData = false;
         },
     },
 };

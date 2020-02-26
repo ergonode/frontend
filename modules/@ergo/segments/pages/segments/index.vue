@@ -12,7 +12,7 @@
                     title="NEW SEGMENT"
                     :size="smallSize"
                     :disabled="!$hasAccess(['SEGMENT_CREATE'])"
-                    @click.native="addSegment">
+                    @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
@@ -27,9 +27,9 @@
             </template>
         </HorizontalTabBar>
         <CreateSegmentModalForm
-            v-if="isCreateSegmentVisible"
+            v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedSegment" />
+            @created="onCreatedData" />
     </Page>
 </template>
 
@@ -38,6 +38,7 @@ import { SIZES } from '@Core/defaults/buttons';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'SegmentsPage',
@@ -45,38 +46,17 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
-        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
         CreateSegmentModalForm: () => import('@Segments/components/Modals/CreateSegmentModalForm'),
         Button,
         IconAdd,
     },
-    data() {
-        return {
-            isCreateSegmentVisible: false,
-            fetchGridData: false,
-        };
-    },
+    mixins: [gridModalMixin],
     computed: {
         smallSize() {
             return SIZES.SMALL;
         },
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-    },
-    methods: {
-        addSegment() {
-            this.isCreateSegmentVisible = true;
-        },
-        onCloseModal() {
-            this.isCreateSegmentVisible = false;
-        },
-        onCreatedSegment() {
-            this.isCreateSegmentVisible = false;
-            this.fetchGridData = true;
-        },
-        onFetchedGridData() {
-            this.fetchGridData = false;
         },
     },
 };

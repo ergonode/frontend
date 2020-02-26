@@ -21,6 +21,7 @@ export default {
         align-items: center;
         min-width: 16px;
         height: 16px;
+        padding: 0 4px;
         box-sizing: border-box;
         border-radius: 999px;
     }

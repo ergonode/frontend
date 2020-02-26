@@ -105,11 +105,6 @@ export default {
         }
     }
 
-    .template-grid {
-        width: 1008px;
-        padding: 24px;
-    }
-
     .container {
         display: grid;
     }
