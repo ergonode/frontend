@@ -4,10 +4,8 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
-            <VerticalFixedScroll>
-                <CollectionForm />
-            </VerticalFixedScroll>
+        <template #centeredContent>
+            <CollectionForm />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -15,12 +13,10 @@
 <script>
 import CollectionForm from '@Collections/components/Forms/CollectionForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'CollectionBaseTab',
     components: {
-        VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
         CollectionForm,
     },

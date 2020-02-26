@@ -4,10 +4,8 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
-            <VerticalFixedScroll>
-                <CategoryForm />
-            </VerticalFixedScroll>
+        <template #centeredContent>
+            <CategoryForm />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -15,12 +13,10 @@
 <script>
 import CategoryForm from '@Categories/components/Forms/CategoryForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'CategoryBaseTab',
     components: {
-        VerticalFixedScroll,
         CategoryForm,
         ResponsiveCenteredViewTemplate,
     },

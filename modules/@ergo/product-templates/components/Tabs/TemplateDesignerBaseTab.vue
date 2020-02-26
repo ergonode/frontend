@@ -4,10 +4,8 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
-            <VerticalFixedScroll>
-                <TemplateDesignerForm />
-            </VerticalFixedScroll>
+        <template #centeredContent>
+            <TemplateDesignerForm />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -15,12 +13,10 @@
 <script>
 import TemplateDesignerForm from '@Templates/components/Forms/TemplateDesignerForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'TemplateDesignerBaseTab',
     components: {
-        VerticalFixedScroll,
         TemplateDesignerForm,
         ResponsiveCenteredViewTemplate,
     },

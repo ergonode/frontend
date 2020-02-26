@@ -143,7 +143,7 @@ export default {
             });
         });
     },
-    applyDraft(
+    async applyDraft(
         { rootState },
         {
             id,
@@ -152,7 +152,9 @@ export default {
     ) {
         const { authentication: { user: { language } } } = rootState;
 
-        return this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {}).then(() => onSuccess());
+        await this.$setLoader('footerDraftButton');
+        await this.app.$axios.$put(`${language}/products/${id}/draft/persist`, {}).then(() => onSuccess());
+        await this.$removeLoader('footerDraftButton');
     },
     async updateProduct(
         { rootState },

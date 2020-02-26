@@ -20,6 +20,5 @@ export default {
         grid-auto-flow: row;
         row-gap: 24px;
         width: 1008px;
-        padding: 24px;
     }
 </style>

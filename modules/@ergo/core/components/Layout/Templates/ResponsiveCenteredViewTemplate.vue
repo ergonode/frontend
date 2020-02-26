@@ -10,7 +10,15 @@
             <slot name="header" />
         </div>
         <div class="responsive-view-template__responsive-container">
-            <slot name="content" />
+            <slot name="content">
+                <VerticalFixedScroll>
+                    <div class="container">
+                        <VerticalCenteredView>
+                            <slot name="centeredContent" />
+                        </VerticalCenteredView>
+                    </div>
+                </VerticalFixedScroll>
+            </slot>
         </div>
         <div
             v-if="isFooterSlotVisible"
@@ -21,8 +29,15 @@
 </template>
 
 <script>
+import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
+import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';
+
 export default {
     name: 'ResponsiveCenteredViewTemplate',
+    components: {
+        VerticalFixedScroll,
+        VerticalCenteredView,
+    },
     props: {
         fixed: {
             type: Boolean,
@@ -86,7 +101,6 @@ export default {
 
         &__responsive-container {
             display: flex;
-            flex: 1 1 auto;
             flex-direction: column;
             min-width: 0;
         }
@@ -104,5 +118,9 @@ export default {
             padding: 12px 24px;
             background-color: $WHITE;
         }
+    }
+
+    .container {
+        display: flex;
     }
 </style>

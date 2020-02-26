@@ -4,10 +4,8 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
-            <VerticalFixedScroll>
-                <SegmentForm />
-            </VerticalFixedScroll>
+        <template #centeredContent>
+            <SegmentForm />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -15,12 +13,10 @@
 <script>
 import SegmentForm from '@Segments/components/Forms/SegmentForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'SegmentBaseTab',
     components: {
-        VerticalFixedScroll,
         SegmentForm,
         ResponsiveCenteredViewTemplate,
     },
