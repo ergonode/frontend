@@ -123,7 +123,6 @@ export default {
         },
         onUpdateSegmentsSuccess() {
             this.$addAlert({ type: 'success', message: 'Segment updated' });
-            this.$router.push({ name: 'segments-grid' });
         },
         onRemoveSegmentSuccess() {
             this.$addAlert({ type: 'success', message: 'Segment removed' });

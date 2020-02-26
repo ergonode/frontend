@@ -12,7 +12,7 @@
                     title="NEW TREE"
                     :size="smallSize"
                     :disabled="!$hasAccess(['CATEGORY_TREE_CREATE'])"
-                    @click.native="addCategoryTree">
+                    @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
@@ -27,9 +27,9 @@
             </template>
         </HorizontalTabBar>
         <CreateCategoryTreeModalForm
-            v-if="isCreateCategoryTreeVisible"
+            v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedCategoryTree" />
+            @created="onCreatedData" />
     </Page>
 </template>
 
@@ -38,6 +38,7 @@ import { SIZES } from '@Core/defaults/buttons';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'CategoryTrees',
@@ -50,33 +51,13 @@ export default {
         Button,
         IconAdd,
     },
-    data() {
-        return {
-            isCreateCategoryTreeVisible: false,
-            fetchGridData: false,
-        };
-    },
+    mixins: [gridModalMixin],
     computed: {
         smallSize() {
             return SIZES.SMALL;
         },
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-    },
-    methods: {
-        addCategoryTree() {
-            this.isCreateCategoryTreeVisible = true;
-        },
-        onCloseModal() {
-            this.isCreateCategoryTreeVisible = false;
-        },
-        onCreatedCategoryTree() {
-            this.isCreateCategoryTreeVisible = false;
-            this.fetchGridData = true;
-        },
-        onFetchedGridData() {
-            this.fetchGridData = false;
         },
     },
 };

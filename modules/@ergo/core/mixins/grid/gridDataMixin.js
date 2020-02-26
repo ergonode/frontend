@@ -162,6 +162,14 @@ export default function ({ path }) {
                     params.order = orderState;
                 }
 
+                let dynamicPath = path;
+
+                Object.keys(this.$route.params).forEach((key) => {
+                    if (path.includes(key)) {
+                        dynamicPath = dynamicPath.replace(`_${key}`, this.$route.params[key]);
+                    }
+                });
+
                 const {
                     columns,
                     rowIds,
@@ -172,7 +180,7 @@ export default function ({ path }) {
                 } = await getGridData(
                     this.$axios,
                     this.$cookies,
-                    `${this.languageCode}/${path}`,
+                    `${this.languageCode}/${dynamicPath}`,
                     params,
                 );
 

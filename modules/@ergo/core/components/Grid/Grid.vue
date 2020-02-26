@@ -718,13 +718,14 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: $BORDER_1_GREY;
-            padding: 12px 24px;
+            border-left: $BORDER_1_GREY;
+            border-right: $BORDER_1_GREY;
+            border-bottom: $BORDER_1_GREY;
+            height: 56px;
+            padding: 12px 16px;
             box-sizing: border-box;
             background-color: $WHITE;
             box-shadow: $ELEVATOR_6_DP;
-            border-top: unset;
-            min-height: 40px;
         }
     }
 </style>

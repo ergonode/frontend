@@ -78,7 +78,6 @@ export default {
         onUpdateUserSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: 'success', message: 'User updated' });
-            this.$router.push({ name: 'users-grid' });
 
             // TODO: Along Notification introduce - remove it from it - this solution is preventing from relogging to see newly edited data for user if edited user is logged one
             if (this.user.id === this.id) {

@@ -11,7 +11,7 @@ export default () => ({
     language: '',
     password: '',
     passwordRepeat: '',
-    isActive: false,
+    isActive: true,
     role: {
         id: '', key: '', value: '', hint: '',
     },

@@ -75,7 +75,6 @@ export default {
         },
         onUpdateAttributeSuccess() {
             this.$addAlert({ type: 'success', message: 'Attribute updated' });
-            this.$router.push({ name: 'attributes-grid' });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: 'success', message: 'Attribute removed' });

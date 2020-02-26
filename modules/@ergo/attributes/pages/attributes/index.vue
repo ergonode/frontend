@@ -12,7 +12,7 @@
                     title="NEW ATTRIBUTE"
                     :size="smallSize"
                     :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
-                    @click.native="addAttribute">
+                    @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd :fill-color="color" />
                     </template>
@@ -27,9 +27,9 @@
             </template>
         </HorizontalTabBar>
         <CreateAttributeModalForm
-            v-if="isCreateAttributeVisible"
+            v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedAttribute" />
+            @created="onCreatedData" />
     </Page>
 </template>
 
@@ -38,6 +38,7 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'AttributeTabs',
@@ -45,17 +46,11 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
-        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
         CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
         Button,
         IconAdd,
     },
-    data() {
-        return {
-            isCreateAttributeVisible: false,
-            fetchGridData: false,
-        };
-    },
+    mixins: [gridModalMixin],
     computed: {
         smallSize() {
             return SIZES.SMALL;
@@ -65,21 +60,6 @@ export default {
         },
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-    },
-    methods: {
-        addAttribute() {
-            this.isCreateAttributeVisible = true;
-        },
-        onCloseModal() {
-            this.isCreateAttributeVisible = false;
-        },
-        onCreatedAttribute() {
-            this.isCreateAttributeVisible = false;
-            this.fetchGridData = true;
-        },
-        onFetchedGridData() {
-            this.fetchGridData = false;
         },
     },
 };

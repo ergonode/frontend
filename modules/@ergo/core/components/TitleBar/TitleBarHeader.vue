@@ -34,7 +34,7 @@ export default {
 
         &__title {
             color: $GRAPHITE_DARK;
-            font: $FONT_MEDIUM_24_32;
+            font: $FONT_SEMI_BOLD_24_32;
         }
     }
 </style>

@@ -103,7 +103,7 @@
         "@ergo/export": "module",
         "@ergo/media": "module",
         "@ergo/notifications": "module",
-        "@ergo/product-collections": "local",
+        "@ergo/collections": "module",
         "@ergo/product-statuses": "module",
         "@ergo/product-templates": "module",
         "@ergo/products": "module",

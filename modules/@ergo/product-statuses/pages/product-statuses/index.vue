@@ -12,7 +12,7 @@
                     title="NEW STATUS"
                     :size="smallSize"
                     :disabled="!$hasAccess(['WORKFLOW_CREATE'])"
-                    @click.native="addProductStatus">
+                    @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconAdd
                             :fill-color="color" />
@@ -28,9 +28,9 @@
             </template>
         </HorizontalTabBar>
         <CreateProductStatusModalForm
-            v-if="isCreateProductStatusVisible"
+            v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedProductStatus" />
+            @created="onCreatedData" />
     </Page>
 </template>
 
@@ -39,6 +39,7 @@ import { SIZES } from '@Core/defaults/buttons';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'WorkflowTabs',
@@ -46,38 +47,17 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
-        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
         CreateProductStatusModalForm: () => import('@Statuses/components/Modals/CreateProductStatusModalForm'),
         Button,
         IconAdd,
     },
-    data() {
-        return {
-            isCreateProductStatusVisible: false,
-            fetchGridData: false,
-        };
-    },
+    mixins: [gridModalMixin],
     computed: {
         smallSize() {
             return SIZES.SMALL;
         },
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-    },
-    methods: {
-        addProductStatus() {
-            this.isCreateProductStatusVisible = true;
-        },
-        onCloseModal() {
-            this.isCreateProductStatusVisible = false;
-        },
-        onCreatedProductStatus() {
-            this.isCreateProductStatusVisible = false;
-            this.fetchGridData = true;
-        },
-        onFetchedGridData() {
-            this.fetchGridData = false;
         },
     },
 };

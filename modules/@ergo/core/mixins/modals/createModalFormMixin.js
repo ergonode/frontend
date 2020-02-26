@@ -17,7 +17,7 @@ export default function ({ namespace, createRequest }) {
                 'onError',
                 'removeValidationErrors',
             ]),
-            onCreate(onSuccess) {
+            onCreateRequest(onSuccess) {
                 this.isRequestPending = true;
                 this.removeValidationErrors();
 

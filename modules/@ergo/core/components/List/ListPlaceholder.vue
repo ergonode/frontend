@@ -67,6 +67,7 @@ export default {
         }
 
         &.horizontal-layout {
+            width: 560px;
             height: 280px;
             padding: 40px 40px 0;
             box-sizing: border-box;

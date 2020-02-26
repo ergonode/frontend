@@ -34,8 +34,8 @@ export default {
         position: relative;
         bottom: -1px;
         display: flex;
+        flex: 0 0 176px;
         justify-content: center;
-        width: 176px;
         padding-top: 6px;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_14_20;

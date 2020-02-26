@@ -362,8 +362,9 @@ export default {
 
         &__resizer {
             position: absolute;
-            bottom: 2px;
-            right: 2px;
+            bottom: 0;
+            right: 0;
+            padding: 2px;
             cursor: se-resize;
         }
 
