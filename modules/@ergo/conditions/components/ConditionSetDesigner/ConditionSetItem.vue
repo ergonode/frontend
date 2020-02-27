@@ -131,7 +131,12 @@ export default {
                 const foundKey = findKeyWhenSelect(clearedKey);
 
                 if (foundKey !== -1) {
-                    if (!placeholders[clearedKey]) return placeholder;
+                    if (!placeholders[clearedKey]) {
+                        return placeholder;
+                    }
+                    if (Array.isArray(placeholders[clearedKey])) {
+                        return placeholders[clearedKey].map(option => option.value).join(', ');
+                    }
                     return placeholders[clearedKey].value;
                 }
                 return placeholders[clearedKey] || placeholder;
