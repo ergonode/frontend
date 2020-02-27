@@ -420,7 +420,6 @@ export default {
         box-sizing: border-box;
         background-color: $WHITESMOKE;
         cursor: pointer;
-        overflow: hidden;
 
         &__activator {
             position: relative;

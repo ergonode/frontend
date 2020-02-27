@@ -120,13 +120,13 @@ import { getKeyByValue } from '@Core/models/objectWrapper';
 export default {
     name: 'GridHeader',
     components: {
+        Select: () => import('@Core/components/Inputs/Select/Select'),
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
         Form: () => import('@Core/components/Form/Form'),
         FormGroup: () => import('@Core/components/Form/FormGroup'),
         // MenuButton: () => import('@Core/components/Buttons/MenuButton'),
         Button: () => import('@Core/components/Buttons/Button'),
         ExpandNumericButton: () => import('@Core/components/Buttons/ExpandNumericButton'),
-        Select: () => import('@Core/components/Inputs/Select/Select'),
         FabButton: () => import('@Core/components/Buttons/FabButton'),
         // IconGrid: () => import('@Core/components/Icons/Others/IconGrid'),
         IconSettings: () => import('@Core/components/Icons/Actions/IconSettings'),

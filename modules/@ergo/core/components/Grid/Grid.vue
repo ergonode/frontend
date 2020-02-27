@@ -34,10 +34,6 @@ export default {
         GridPlaceholder: () => import('@Core/components/Grid/GridPlaceholder'),
         GridPagination: () => import('@Core/components/Grid/GridPagination'),
         GridPageSelector: () => import('@Core/components/Grid/GridPageSelector'),
-        GridAdvancedFiltersContainer: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFiltersContainer'),
-        GridAdvancedFilter: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFilter'),
-        GridAdvancedFiltersRemoveAllButton: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFiltersRemoveAllButton'),
-        GridAdvancedFilterPlaceholder: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder'),
     },
     mixins: [selectGridRowMixin],
     props: {
