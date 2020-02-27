@@ -184,6 +184,15 @@ export default function ({ path }) {
                     params,
                 );
 
+                columns.forEach(({ language, element_id }) => {
+                    if (element_id) {
+                        this.disableListElement({
+                            languageCode: language,
+                            attributeId: element_id,
+                        });
+                    }
+                });
+
                 this.columns = columns;
                 this.rowIds = rowIds;
                 this.rowLinks = rowLinks;
