@@ -62,7 +62,7 @@
                                 v-for="(option, index) in options"
                                 :key="index"
                                 :small="small"
-                                :large="!small && regular"
+                                :regular="regular"
                                 :selected="isOptionSelected(index)"
                                 @click.native.prevent="onSelectValue(option)">
                                 <template #default="{ isSelected }">
@@ -243,8 +243,6 @@ export default {
         return {
             selectedOptions: {},
             searchResult: '',
-            isFocused: false,
-            isMounted: false,
             isMouseMoving: false,
             isMenuActive: false,
             isClickedOutside: false,
@@ -276,12 +274,12 @@ export default {
             return this.options.length && typeof this.options[0] !== 'object';
         },
         dropDownState() {
-            return this.isFocused
+            return this.isMenuActive
                 ? ARROW.UP
                 : ARROW.DOWN;
         },
         isEmptyOptions() {
-            return this.multiselect ? !this.value.length : (this.value === '' || this.value === null);
+            return Object.keys(this.selectedOptions).length === 0;
         },
         isFloatingLabel() {
             return this.label !== '' && this.label !== null;
@@ -302,9 +300,9 @@ export default {
                     regular: this.regular,
                     'left-alignment': this.leftAlignment,
                     'center-alignment': this.centerAlignment,
-                    'floating-label': this.isFloatingLabel,
+                    'floating-label': this.label,
                     'input--error': this.isError,
-                    'input--focused': this.isFocused,
+                    'input--focused': this.isMenuActive,
                     'input--disabled': this.disabled,
                 },
             ];
@@ -320,9 +318,7 @@ export default {
             ];
         },
         floatingLabelTransforms() {
-            if (!this.isMounted) return null;
-
-            if (this.isFocused || !this.isEmptyOptions) {
+            if (this.isMenuActive || !this.isEmptyOptions) {
                 return {
                     transform: this.small
                         ? 'translateY(calc(-100%))'
@@ -337,7 +333,7 @@ export default {
         floatingLabelClasses() {
             return [
                 'input__label',
-                this.isEmptyOptions && !this.isFocused ? 'font--medium-14-20' : 'font--medium-12-16',
+                this.isEmptyOptions && !this.isMenuActive ? 'font--medium-14-20' : 'font--medium-12-16',
                 { 'input__label--required': this.required },
             ];
         },
@@ -355,7 +351,7 @@ export default {
                 : this.errorMessages;
         },
         placeholderValue() {
-            return this.isFocused && !this.value ? this.placeholder : null;
+            return this.isMenuActive && !this.value ? this.placeholder : null;
         },
     },
     created() {
@@ -374,7 +370,6 @@ export default {
             });
         }
 
-        this.isMounted = true;
         this.associatedLabel = `input-${this._uid}`;
     },
     destroyed() {
@@ -408,6 +403,8 @@ export default {
                     this.selectedOptions[valueKey] = value;
                 }
 
+                this.selectedOptions = { ...this.selectedOptions };
+
                 this.$emit('input', Object.values(this.selectedOptions));
             } else {
                 this.selectedOptions = { [valueKey]: value };
@@ -421,8 +418,7 @@ export default {
             this.onBlur();
         },
         onFocus() {
-            if (!this.isFocused) {
-                this.isFocused = true;
+            if (!this.isMenuActive) {
                 this.isMenuActive = true;
                 this.hasMouseDown = false;
 
@@ -433,7 +429,6 @@ export default {
         },
         onBlur() {
             if (this.isClickedOutside) {
-                this.isFocused = false;
                 this.isMenuActive = false;
                 this.searchResult = '';
 
@@ -473,7 +468,7 @@ export default {
 
             if (this.dismissible) {
                 if (isClickedInsideActivator) {
-                    if (this.isFocused && this.hasMouseDown && !this.isMouseMoving) {
+                    if (this.isMenuActive && this.hasMouseDown && !this.isMouseMoving) {
                         this.isClickedOutside = true;
                         this.$refs.input.blur();
                     } else {
@@ -501,7 +496,6 @@ export default {
                 && this.dismissible
                 && !this.isSearchFocused)
             ) {
-                this.isFocused = false;
                 this.isMenuActive = false;
                 this.searchResult = '';
 

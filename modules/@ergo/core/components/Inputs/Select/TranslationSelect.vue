@@ -50,6 +50,7 @@ export default {
     inheritAttrs: false,
     computed: {
         parsedValue() {
+            if (!this.$attrs.value) return null;
             if (Array.isArray(this.$attrs.value)) {
                 return this.$attrs.value.map(val => val.value || `#${val.key}`).join(', ');
             }

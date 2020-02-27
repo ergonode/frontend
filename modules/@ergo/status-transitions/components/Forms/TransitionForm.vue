@@ -26,6 +26,7 @@
                 :error-messages="errorDestinationMessage"
                 @input="setDestination" />
         </FormGroup>
+        <Divider />
         <FormGroup title="Send notification to">
             <TranslationSelect
                 :value="transitionRoles"
@@ -54,6 +55,7 @@ export default {
         TranslationSelect,
         Form: () => import('@Core/components/Form/Form'),
         FormGroup: () => import('@Core/components/Form/FormGroup'),
+        Divider: () => import('@Core/components/Dividers/Divider'),
     },
     mixins: [errorValidationMixin],
     computed: {

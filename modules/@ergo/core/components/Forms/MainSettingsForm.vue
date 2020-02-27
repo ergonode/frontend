@@ -4,7 +4,7 @@
  */
 <template>
     <Form>
-        <FormGroup>
+        <FormGroup title="General options">
             <TranslationSelect
                 :value="selectedLanguages"
                 :options="languages"

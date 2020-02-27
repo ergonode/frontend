@@ -37,6 +37,7 @@
                 :error-messages="errorTypeMessage"
                 @input="onTypeChange" />
         </FormGroup>
+        <Divider />
         <FormGroup
             v-if="isMultilingual || hasParams"
             title="Configuration">
@@ -94,6 +95,7 @@ export default {
         Select: () => import('@Core/components/Inputs/Select/Select'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
         FadeGroupTransition: () => import('@Core/components/Transitions/FadeGroupTransition'),
+        Divider: () => import('@Core/components/Dividers/Divider'),
     },
     mixins: [errorValidationMixin],
     data() {

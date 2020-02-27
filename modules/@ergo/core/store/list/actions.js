@@ -6,7 +6,6 @@ import { types } from './mutations';
 
 export default {
     setDisabledElement: ({ commit }, payload) => {
-        console.log(payload);
         commit(types.SET_DISABLED_ELEMENT, payload);
     },
     setDisabledElements: ({ commit }, disabledElements) => {

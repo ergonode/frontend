@@ -223,16 +223,16 @@ export default {
                 this.isEditColumnPinned = isSticky;
             }
         },
-        onClickOutside(event) {
+        onClickOutside({ pageX, pageY }) {
             const { gridColumns } = this.$refs;
-            const isVisible = !!(
-                gridColumns.offsetWidth
-                || gridColumns.offsetHeight
-                || gridColumns.getClientRects().length);
+            const {
+                top, left, width, height,
+            } = gridColumns.getBoundingClientRect();
 
-            if (!gridColumns.contains(event.target) && isVisible) {
-                // Dismiss editable cell mode
-
+            if (!(pageX > left
+                 && pageX < left + width
+                 && pageY > top
+                 && pageY < top + height)) {
                 this.setEditingCellCoordinates();
             }
         },

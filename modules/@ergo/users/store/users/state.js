@@ -12,7 +12,5 @@ export default () => ({
     password: '',
     passwordRepeat: '',
     isActive: true,
-    role: {
-        id: '', key: '', value: '', hint: '',
-    },
+    role: null,
 });

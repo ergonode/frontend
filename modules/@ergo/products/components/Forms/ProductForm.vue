@@ -4,7 +4,7 @@
  */
 <template>
     <Form>
-        <FormGroup>
+        <FormGroup title="General options">
             <TextField
                 :value="sku"
                 hint="Products SKU must be unique"

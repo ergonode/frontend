@@ -21,7 +21,7 @@ export default {
         display: grid;
         grid-template-columns: 352px;
         grid-auto-flow: row;
-        grid-row-gap: 16px;
+        grid-row-gap: 24px;
         padding: 24px;
     }
 </style>

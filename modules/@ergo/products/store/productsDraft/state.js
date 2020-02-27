@@ -8,9 +8,7 @@ export default () => ({
     sku: '',
     status: null,
     workflow: [],
-    template: {
-        id: '', key: '', value: '', hint: '',
-    },
+    template: null,
     selectedCategories: [],
     layoutElements: [],
     completeness: {},

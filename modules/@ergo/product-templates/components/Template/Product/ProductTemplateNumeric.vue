@@ -10,12 +10,18 @@
         regular
         :label="label"
         :placeholder="placeholder"
-        :error-messages="isError ? errorMessages : null"
+        :error-messages="errorMessages"
         :is-information-label="false"
         :required="required"
         :disabled="disabled"
         :description="hint"
-        @input="onValueChange" />
+        @input="onValueChange">
+        <template #append>
+            <TextFieldSuffix
+                v-if="parameter"
+                :suffix="parameter" />
+        </template>
+    </TextField>
 </template>
 
 <script>
@@ -26,11 +32,19 @@ export default {
     name: 'ProductTemplateNumeric',
     components: {
         TextField,
+        TextFieldSuffix: () => import('@Core/components/Inputs/TextFieldSuffix'),
     },
     mixins: [productTemplateElementMixin],
     computed: {
         inputType() {
             return { type: 'number' };
+        },
+        parameter() {
+            if (!this.parameters) return null;
+
+            const [key] = Object.keys(this.parameters);
+
+            return this.parameters[key];
         },
     },
     watch: {
@@ -40,13 +54,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .suffix {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        color: $GRAPHITE_DARK;
-        margin-right: 4px;
-    }
-</style>

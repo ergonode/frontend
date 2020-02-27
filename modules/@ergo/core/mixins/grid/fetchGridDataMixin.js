@@ -340,7 +340,6 @@ export default function ({ path }) {
                     this.setDisabledElement({
                         languageCode, elementId: attributeId, disabled: false,
                     });
-                    console.log('Not Disabled', this.disabledElements);
                 }
             },
         },

@@ -47,10 +47,10 @@
                     <span
                         class="advanced-filter__value"
                         v-text="filterValue" />
-                    <!--                    <span-->
-                    <!--                        v-if="parameter"-->
-                    <!--                        class="advanced-filter__parameter"-->
-                    <!--                        v-text="parameter" />-->
+                    <span
+                        v-if="parameter"
+                        class="advanced-filter__parameter"
+                        v-text="parameter" />
                 </template>
                 <IconArrowDropDown
                     class="advanced-filter__icon"
@@ -152,12 +152,9 @@ export default {
         parameter() {
             if (!this.filter.parameters) return null;
 
-            const { parameters, languageCode } = this.filter;
-            const [key] = Object.keys(parameters);
+            const [key] = Object.keys(this.filter.parameters);
 
-            console.log(Object.keys(parameters[key]).map(parameter => parameters[key][parameter].value[languageCode]).join(', '));
-
-            return Object.keys(parameters[key]).map(parameter => parameters[key][parameter].value[languageCode]).join(', ');
+            return this.filter.parameters[key];
         },
         isFilterExists() {
             return this.draggedElement === this.filter.id;

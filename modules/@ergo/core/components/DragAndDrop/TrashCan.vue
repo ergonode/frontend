@@ -59,6 +59,8 @@ export default {
         background-color: $GRAPHITE_DARK;
         box-shadow: $ELEVATOR_12_DP;
         border-radius: 240px;
+        transform: scale(1);
+        animation: pulse 2s infinite;
 
         & > * {
             pointer-events: none;
@@ -78,6 +80,20 @@ export default {
         &__label {
             color: $WHITE;
             text-transform: uppercase;
+        }
+    }
+
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.9);
+        }
+
+        70% {
+            box-shadow: 0 0 0 40px rgba(0, 0, 0, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
         }
     }
 </style>
