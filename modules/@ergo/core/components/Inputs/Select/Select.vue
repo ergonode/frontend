@@ -284,9 +284,6 @@ export default {
         isFloatingLabel() {
             return this.label !== '' && this.label !== null;
         },
-        isPlaceholder() {
-            return this.placeholder !== '' && this.placeholder !== null;
-        },
         isDescription() {
             return this.description !== '' && this.description !== null;
         },
@@ -351,7 +348,7 @@ export default {
                 : this.errorMessages;
         },
         placeholderValue() {
-            return this.isMenuActive && !this.value ? this.placeholder : null;
+            return this.isEmptyOptions ? this.placeholder : null;
         },
     },
     created() {

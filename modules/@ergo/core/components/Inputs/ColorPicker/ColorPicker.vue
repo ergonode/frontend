@@ -233,9 +233,6 @@ export default {
         isFloatingLabel() {
             return this.label !== '' && this.label !== null;
         },
-        isPlaceholder() {
-            return this.placeholder !== '' && this.placeholder !== null;
-        },
         isDescription() {
             return this.description !== '' && this.description !== null;
         },
