@@ -25,5 +25,10 @@ export default {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
     },
+    head() {
+        return {
+            title: 'Profile - Ergonode',
+        };
+    },
 };
 </script>

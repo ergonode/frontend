@@ -86,5 +86,10 @@ export default {
             });
         },
     },
+    head() {
+        return {
+            title: `${this.sku} - Products - Ergonode`,
+        };
+    },
 };
 </script>

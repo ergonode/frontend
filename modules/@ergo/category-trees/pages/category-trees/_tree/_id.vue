@@ -95,5 +95,10 @@ export default {
             this.$router.push({ name: 'category-trees-grid' });
         },
     },
+    head() {
+        return {
+            title: `${this.code} - Category trees - Ergonode`,
+        };
+    },
 };
 </script>

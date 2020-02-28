@@ -86,5 +86,10 @@ export default {
             this.$router.push({ name: 'categories-grid' });
         },
     },
+    head() {
+        return {
+            title: `${this.code} - Categories - Ergonode`,
+        };
+    },
 };
 </script>

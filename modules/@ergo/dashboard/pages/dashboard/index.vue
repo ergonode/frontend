@@ -29,6 +29,11 @@ export default {
             return GRID_ITEMS.filter(e => this.$hasAccess(e.privileges));
         },
     },
+    head() {
+        return {
+            title: 'Dashboard - Ergonode',
+        };
+    },
 };
 </script>
 

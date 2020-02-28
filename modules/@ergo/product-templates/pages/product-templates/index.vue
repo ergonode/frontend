@@ -98,6 +98,11 @@ export default {
             this.getTemplatesSection({ limit: 9999, offset: 0 });
         },
     },
+    head() {
+        return {
+            title: 'Product templates - Ergonode',
+        };
+    },
 };
 </script>
 

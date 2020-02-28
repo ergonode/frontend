@@ -129,5 +129,10 @@ export default {
             this.$router.push({ name: 'segments-grid' });
         },
     },
+    head() {
+        return {
+            title: `${this.code} - Segments - Ergonode`,
+        };
+    },
 };
 </script>

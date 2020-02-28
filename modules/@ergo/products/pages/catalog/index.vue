@@ -65,5 +65,10 @@ export default {
             return SIZES.SMALL;
         },
     },
+    head() {
+        return {
+            title: 'Products - Ergonode',
+        };
+    },
 };
 </script>

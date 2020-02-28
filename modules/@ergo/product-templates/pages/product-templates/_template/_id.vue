@@ -97,6 +97,11 @@ export default {
             });
         },
     },
+    head() {
+        return {
+            title: `${this.templateTitle} - Product templates - Ergonode`,
+        };
+    },
 };
 </script>
 
