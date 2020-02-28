@@ -96,7 +96,7 @@ export default {
             } = this.$refs.activator.$el.getBoundingClientRect();
 
             return {
-                x, y, width, height,
+                x, y, width, height: height + 1,
             };
         },
         iconFillColor() {

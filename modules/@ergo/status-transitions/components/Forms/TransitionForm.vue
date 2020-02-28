@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form>
-        <FormGroup title="Status change">
+    <Form title="Status change">
+        <FormGroup>
             <TranslationSelect
                 :value="source"
                 :solid="true"
@@ -80,10 +80,12 @@ export default {
             return false;
         },
         sourceOptions() {
-            return this.statuses.filter(status => status.id !== this.destination.id);
+            return this.statuses.filter(status => !this.destination
+                || status.id !== this.destination.id);
         },
         destinationOptions() {
-            return this.statuses.filter(status => status.id !== this.source.id);
+            return this.statuses.filter(status => !this.source
+                || status.id !== this.source.id);
         },
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['WORKFLOW_UPDATE']))

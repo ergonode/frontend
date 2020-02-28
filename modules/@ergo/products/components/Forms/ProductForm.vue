@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form>
-        <FormGroup title="General options">
+    <Form title="General options">
+        <FormGroup>
             <TextField
                 :value="sku"
                 hint="Products SKU must be unique"

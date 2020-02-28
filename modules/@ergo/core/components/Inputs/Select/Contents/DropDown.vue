@@ -39,7 +39,7 @@ export default {
             } = this.$el.getBoundingClientRect();
             const { innerHeight } = window;
             let maxHeight = 200;
-            const position = { };
+            const position = { left: `${this.offset.x}px` };
 
             if (this.fixed) {
                 position.maxHeight = `${maxHeight}px`;
@@ -49,9 +49,11 @@ export default {
             }
 
             if (innerHeight - this.offset.y < maxHeight) {
-                position.bottom = `${this.offset.height}px`;
+                const offsetBottom = innerHeight - this.offset.y;
+
+                position.bottom = `${offsetBottom}px`;
             } else {
-                position.top = `${this.offset.height}px`;
+                position.top = `${this.offset.y + this.offset.height}px`;
             }
 
             this.position = position;
@@ -62,7 +64,7 @@ export default {
 
 <style lang="scss" scoped>
     .drop-down {
-        position: absolute;
+        position: fixed;
         z-index: $Z_INDEX_DROP_DOWN;
         display: flex;
         flex-direction: column;

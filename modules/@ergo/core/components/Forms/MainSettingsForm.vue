@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form>
-        <FormGroup title="General options">
+    <Form title="General options">
+        <FormGroup>
             <TranslationSelect
                 :value="selectedLanguages"
                 :options="languages"

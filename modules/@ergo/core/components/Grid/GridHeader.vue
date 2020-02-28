@@ -58,8 +58,8 @@
             title="Display settings"
             @close="onDismissSettingsModal">
             <template #body>
-                <Form>
-                    <FormGroup title="Table settings">
+                <Form title="Table settings">
+                    <FormGroup>
                         <Select
                             :value="rowHeightDescription"
                             solid

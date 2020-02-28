@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form>
-        <FormGroup title="General options">
+    <Form title="General options">
+        <FormGroup>
             <TextField
                 :value="code"
                 solid
@@ -37,40 +37,41 @@
                 :error-messages="errorTypeMessage"
                 @input="onTypeChange" />
         </FormGroup>
-        <Divider />
-        <FormGroup
-            v-if="isMultilingual || hasParams"
-            title="Configuration">
-            <FadeGroupTransition>
-                <Toggler
-                    v-if="isMultilingual"
-                    key="attrMultilingual"
-                    :value="multilingual"
-                    :disabled="isDisabled || isDisabledByPrivileges"
-                    label="Multilingual attribute"
-                    @input="setMultilingualAttribute">
-                    <template #append>
-                        <InfoHint :hint="multilingualHint" />
-                    </template>
-                </Toggler>
-                <Select
-                    v-if="hasParams"
-                    key="attrHasParams"
-                    :value="parameter"
-                    solid
-                    required
-                    regular
-                    :label="paramsLabel"
-                    :options="attributeParametersOptions"
-                    :error-messages="errorParamsMessage"
-                    :disabled="isDisabledByPrivileges"
-                    @input="setAttributeParameter" />
-                <AttributeOptionKeyValues
-                    v-show="hasOptions"
-                    key="attrHasOptions"
-                    :disabled="isDisabledByPrivileges" />
-            </FadeGroupTransition>
-        </FormGroup>
+        <template v-if="isMultilingual || hasParams">
+            <Divider />
+            <FormGroup
+                title="Configuration">
+                <FadeGroupTransition>
+                    <Toggler
+                        v-if="isMultilingual"
+                        key="attrMultilingual"
+                        :value="multilingual"
+                        :disabled="isDisabled || isDisabledByPrivileges"
+                        label="Multilingual attribute"
+                        @input="setMultilingualAttribute">
+                        <template #append>
+                            <InfoHint :hint="multilingualHint" />
+                        </template>
+                    </Toggler>
+                    <Select
+                        v-if="hasParams"
+                        key="attrHasParams"
+                        :value="parameter"
+                        solid
+                        required
+                        regular
+                        :label="paramsLabel"
+                        :options="attributeParametersOptions"
+                        :error-messages="errorParamsMessage"
+                        :disabled="isDisabledByPrivileges"
+                        @input="setAttributeParameter" />
+                    <AttributeOptionKeyValues
+                        v-show="hasOptions"
+                        key="attrHasOptions"
+                        :disabled="isDisabledByPrivileges" />
+                </FadeGroupTransition>
+            </FormGroup>
+        </template>
     </Form>
 </template>
 
