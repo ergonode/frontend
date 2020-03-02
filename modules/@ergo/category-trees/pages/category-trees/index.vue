@@ -60,5 +60,10 @@ export default {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
     },
+    head() {
+        return {
+            title: 'Category trees - Ergonode',
+        };
+    },
 };
 </script>

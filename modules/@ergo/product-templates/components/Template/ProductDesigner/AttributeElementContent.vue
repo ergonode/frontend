@@ -33,7 +33,9 @@
                 </template>
                 <template #option="{ option }">
                     <ListElementDescription>
-                        <ListElementTitle :title="option" />
+                        <ListElementTitle
+                            :title="option"
+                            :small="true" />
                     </ListElementDescription>
                     <ListElementAction>
                         <CheckBox
@@ -161,6 +163,7 @@ export default {
             display: flex;
             flex: 1;
             flex-direction: column;
+            width: 0;
             padding: 6px 8px;
         }
 
@@ -182,7 +185,6 @@ export default {
         &__header, &__subheader {
             text-overflow: ellipsis;
             overflow: hidden;
-            word-break: break-all;
         }
 
         &__contextual-menu {

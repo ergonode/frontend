@@ -6,6 +6,7 @@
     <Button
         :class="menuButtonClasses"
         v-bind="$attrs"
+        ref="activator"
         @click.native="onClick"
         @mouseenter.native="onMouseEnter"
         @mouseleave.native="onMouseLeave">
@@ -20,26 +21,30 @@
             </slot>
         </template>
         <FadeTransition>
-            <div
+            <DropDown
                 v-if="isFocused"
-                class="button__select-content"
-                :style="contentPositionStyle">
-                <List>
-                    <ListElement
-                        v-for="(option, index) in options"
-                        :key="index"
-                        :small="true"
-                        @click.native.prevent="onSelectedValue(index)">
-                        <slot
-                            name="option"
-                            :option="option">
-                            <ListElementDescription>
-                                <ListElementTitle :title="option" />
-                            </ListElementDescription>
-                        </slot>
-                    </ListElement>
-                </List>
-            </div>
+                :offset="dropDownOffset"
+                :fixed="fixedContent">
+                <template #body>
+                    <List>
+                        <ListElement
+                            v-for="(option, index) in options"
+                            :key="index"
+                            :small="true"
+                            @click.native.prevent="onSelectedValue(index)">
+                            <slot
+                                name="option"
+                                :option="option">
+                                <ListElementDescription>
+                                    <ListElementTitle
+                                        :title="option"
+                                        :small="true" />
+                                </ListElementDescription>
+                            </slot>
+                        </ListElement>
+                    </List>
+                </template>
+            </DropDown>
         </FadeTransition>
     </Button>
 </template>
@@ -53,6 +58,7 @@ import {
 import Button from '@Core/components/Buttons/Button';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
+import DropDown from '@Core/components/Inputs/Select/Contents/DropDown';
 
 export default {
     name: 'MenuButton',
@@ -60,6 +66,7 @@ export default {
         Button,
         ListElementDescription,
         ListElementTitle,
+        DropDown,
         List: () => import('@Core/components/List/List'),
         ListElement: () => import('@Core/components/List/ListElement'),
         IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
@@ -71,15 +78,27 @@ export default {
             type: Array,
             default: () => [],
         },
+        fixedContent: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
             isFocused: false,
             isHovered: false,
-            contentPositionStyle: null,
         };
     },
     computed: {
+        dropDownOffset() {
+            const {
+                x, y, width, height,
+            } = this.$refs.activator.$el.getBoundingClientRect();
+
+            return {
+                x, y, width, height: height + 1,
+            };
+        },
         iconFillColor() {
             if (this.$attrs.theme === THEMES.SECONDARY) {
                 if (this.$attrs.disabled) {
@@ -108,7 +127,6 @@ export default {
                 window.removeEventListener('click', this.onClickOutside);
             } else {
                 window.addEventListener('click', this.onClickOutside);
-                this.contentPositionStyle = this.getContentPositionStyle();
             }
             this.$emit('focus', this.isFocused);
         },
@@ -142,32 +160,6 @@ export default {
         onSelectedValue(index) {
             this.$emit('input', this.options[index]);
         },
-        getContentPositionStyle() {
-            const {
-                top,
-                left,
-                width,
-                height,
-            } = this.$el.getBoundingClientRect();
-            const { innerHeight, innerWidth } = window;
-            const maxHeight = 200;
-            const minWidth = 130;
-            const leftPos = left + minWidth > innerWidth ? (left - minWidth + (width / 2)) : left;
-
-            if (innerHeight - top < maxHeight) {
-                const offsetBottom = innerHeight - top;
-
-                return {
-                    left: `${leftPos}px`,
-                    bottom: `${offsetBottom + 1}px`,
-                };
-            }
-
-            return {
-                left: `${leftPos}px`,
-                top: `${top + height + 2}px`,
-            };
-        },
     },
 };
 </script>
@@ -180,18 +172,5 @@ export default {
             height: 24px;
             padding: 0;
         }
-    }
-
-    .button__select-content {
-        position: fixed;
-        z-index: $Z_INDEX_DROP_DOWN;
-        display: flex;
-        flex-direction: column;
-        background-color: $WHITE;
-        box-shadow: $ELEVATOR_2_DP;
-        max-height: 200px;
-        min-width: 130px;
-        max-width: 170px;
-        text-transform: none;
     }
 </style>

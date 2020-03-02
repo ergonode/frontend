@@ -24,15 +24,10 @@ export default {
         VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
         ConditionSetWrapper: () => import('@Conditions/components/ConditionSetDesigner/ConditionSetWrapper'),
     },
-    async fetch({
-        store,
-    }) {
-        await Promise.all([
+    fetch({ store }) {
+        return Promise.all([
             store.dispatch('conditions/getConditions', { group: 'segment' }),
         ]);
-        const { conditionsDictionary } = store.state.conditions;
-
-        await store.dispatch('list/setElementsForLanguage', conditionsDictionary);
     },
     computed: {
         verticalTabs() {

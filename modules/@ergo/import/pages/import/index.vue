@@ -20,5 +20,10 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
     },
+    head() {
+        return {
+            title: 'Imports - Ergonode',
+        };
+    },
 };
 </script>

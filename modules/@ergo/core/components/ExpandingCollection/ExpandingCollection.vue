@@ -34,8 +34,8 @@
             v-show="isExpanded">
             <div
                 class="expanding-collection__item"
-                v-for="(item, index) in collection.items"
-                :key="index">
+                v-for="(item, itemIndex) in collection.items"
+                :key="itemIndex">
                 <slot
                     name="item"
                     :item="item" />

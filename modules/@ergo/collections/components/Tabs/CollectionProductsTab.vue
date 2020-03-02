@@ -20,7 +20,7 @@
 
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
     name: 'CollectionProductsTab',
@@ -28,6 +28,6 @@ export default {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
-    mixins: [gridDataMixin({ path: 'collections/_id/elements' })],
+    mixins: [fetchGridDataMixin({ path: 'collections/_id/elements' })],
 };
 </script>

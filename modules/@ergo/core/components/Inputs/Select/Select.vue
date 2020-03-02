@@ -12,16 +12,19 @@
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
             <slot name="prepend" />
+            <div class="input__value">
+                <slot name="value">
+                    <span v-text="multiselect ? value.join(', ') : value" />
+                </slot>
+            </div>
             <input
                 :id="associatedLabel"
                 ref="input"
-                :value="multiselect ? value.join(', ') : value"
                 :placeholder="placeholderValue"
                 :disabled="disabled"
                 :aria-label="label || 'no description'"
                 type="text"
                 readonly
-                @input="onValueChange"
                 @focus="onFocus"
                 @blur="onBlur">
             <label
@@ -30,8 +33,7 @@
                 :class="floatingLabelClasses"
                 :style="floatingLabelTransforms"
                 v-text="label" />
-            <div
-                class="input__append">
+            <div class="input__append">
                 <slot name="append" />
                 <ErrorHint
                     v-if="isError"
@@ -46,8 +48,8 @@
             <DropDown
                 v-if="isMenuActive"
                 ref="menu"
-                :style="selectBoundingBox"
-                :fixed-content="fixedContentWidth">
+                :offset="dropDownOffset"
+                :fixed="fixedContent">
                 <template #body>
                     <slot name="selectContent">
                         <List>
@@ -56,24 +58,24 @@
                                 :value="searchResult"
                                 @input="onSearch"
                                 @searchFocused="onSearchFocused" />
-                            <template v-for="(option, index) in options">
-                                <slot
-                                    name="option"
-                                    :option="option"
-                                    :index="index">
-                                    <ListElement
-                                        v-if="isOptionsValid"
-                                        :key="index"
-                                        :small="small"
-                                        :large="!small && regular"
-                                        :selected="typeof selectedOptions[option] !== 'undefined'"
-                                        @click.native.prevent="onSelectValue(option)">
-                                        <template #default="{ isSelected }">
+                            <ListElement
+                                v-for="(option, index) in options"
+                                :key="index"
+                                :small="small"
+                                :regular="regular"
+                                :selected="isOptionSelected(index)"
+                                @click.native.prevent="onSelectValue(option)">
+                                <template #default="{ isSelected }">
+                                    <slot
+                                        name="option"
+                                        :option="option"
+                                        :is-selected="isSelected"
+                                        :index="index">
+                                        <template v-if="isOptionsValid">
                                             <ListElementAction
                                                 v-if="multiselect"
                                                 :small="small">
-                                                <CheckBox
-                                                    :value="isSelected" />
+                                                <CheckBox :value="isSelected" />
                                             </ListElementAction>
                                             <ListElementDescription>
                                                 <ListElementTitle
@@ -81,9 +83,9 @@
                                                     :title="option" />
                                             </ListElementDescription>
                                         </template>
-                                    </ListElement>
-                                </slot>
-                            </template>
+                                    </slot>
+                                </template>
+                            </ListElement>
                         </List>
                     </slot>
                 </template>
@@ -114,6 +116,7 @@
         </FadeTransition>
         <label
             v-if="informationLabel"
+            ref="informationLabel"
             :class="informationLabelClasses"
             v-text="informationLabel" />
     </div>
@@ -148,7 +151,7 @@ export default {
     },
     props: {
         value: {
-            type: [Array, String, Number],
+            type: [Array, String, Number, Object],
             default: '',
         },
         options: {
@@ -163,7 +166,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        fixedContentWidth: {
+        fixedContent: {
             type: Boolean,
             default: true,
         },
@@ -239,10 +242,7 @@ export default {
     data() {
         return {
             selectedOptions: {},
-            selectBoundingBox: null,
             searchResult: '',
-            isFocused: false,
-            isMounted: false,
             isMouseMoving: false,
             isMenuActive: false,
             isClickedOutside: false,
@@ -252,6 +252,18 @@ export default {
         };
     },
     computed: {
+        dropDownOffset() {
+            const {
+                x, y, width, height,
+            } = this.$refs.activator.getBoundingClientRect();
+
+            return {
+                x, y, width, height,
+            };
+        },
+        stringifiedOptions() {
+            return this.options.map(option => JSON.stringify(option));
+        },
         tinySize() {
             return SIZES.TINY;
         },
@@ -262,18 +274,15 @@ export default {
             return this.options.length && typeof this.options[0] !== 'object';
         },
         dropDownState() {
-            return this.isFocused
+            return this.isMenuActive
                 ? ARROW.UP
                 : ARROW.DOWN;
         },
         isEmptyOptions() {
-            return this.multiselect ? !this.value.length : (this.value === '' || this.value === null);
+            return Object.keys(this.selectedOptions).length === 0;
         },
         isFloatingLabel() {
             return this.label !== '' && this.label !== null;
-        },
-        isPlaceholder() {
-            return this.placeholder !== '' && this.placeholder !== null;
         },
         isDescription() {
             return this.description !== '' && this.description !== null;
@@ -288,9 +297,9 @@ export default {
                     regular: this.regular,
                     'left-alignment': this.leftAlignment,
                     'center-alignment': this.centerAlignment,
-                    'floating-label': this.isFloatingLabel,
+                    'floating-label': this.label,
                     'input--error': this.isError,
-                    'input--focused': this.isFocused,
+                    'input--focused': this.isMenuActive,
                     'input--disabled': this.disabled,
                 },
             ];
@@ -306,9 +315,7 @@ export default {
             ];
         },
         floatingLabelTransforms() {
-            if (!this.isMounted) return null;
-
-            if (this.isFocused || !this.isEmptyOptions) {
+            if (this.isMenuActive || !this.isEmptyOptions) {
                 return {
                     transform: this.small
                         ? 'translateY(calc(-100%))'
@@ -323,7 +330,7 @@ export default {
         floatingLabelClasses() {
             return [
                 'input__label',
-                this.isEmptyOptions && !this.isFocused ? 'font--medium-14-20' : 'font--medium-12-16',
+                this.isEmptyOptions && !this.isMenuActive ? 'font--medium-14-20' : 'font--medium-12-16',
                 { 'input__label--required': this.required },
             ];
         },
@@ -341,18 +348,16 @@ export default {
                 : this.errorMessages;
         },
         placeholderValue() {
-            return this.isFocused && !this.value ? this.placeholder : null;
+            return this.isEmptyOptions ? this.placeholder : null;
         },
     },
     created() {
-        if (this.isOptionsValid) {
-            if (this.multiselect) {
-                this.value.forEach(({ id }) => {
-                    this.selectedOptions[id] = this.value;
-                });
-            } else if (this.value || this.value === 0) {
-                this.selectedOptions = { [this.value]: this.value };
-            }
+        if (this.multiselect) {
+            this.value.forEach((option) => {
+                this.selectedOptions[JSON.stringify(option)] = option;
+            });
+        } else if (this.value || this.value === 0) {
+            this.selectedOptions = { [JSON.stringify(this.value)]: this.value };
         }
     },
     mounted() {
@@ -362,7 +367,6 @@ export default {
             });
         }
 
-        this.isMounted = true;
         this.associatedLabel = `input-${this._uid}`;
     },
     destroyed() {
@@ -371,6 +375,9 @@ export default {
     methods: {
         isOptionValid(option) {
             return typeof option !== 'object';
+        },
+        isOptionSelected(index) {
+            return typeof this.selectedOptions[this.stringifiedOptions[index]] !== 'undefined';
         },
         onSearch(value) {
             this.$emit('search', value);
@@ -384,16 +391,20 @@ export default {
             this.$emit('input', this.multiselect ? [] : '');
         },
         onSelectValue(value) {
+            const valueKey = JSON.stringify(value);
+
             if (this.multiselect) {
-                if (typeof this.selectedOptions[value] !== 'undefined') {
-                    delete this.selectedOptions[value];
+                if (typeof this.selectedOptions[valueKey] !== 'undefined') {
+                    delete this.selectedOptions[valueKey];
                 } else {
-                    this.selectedOptions[value] = this.value;
+                    this.selectedOptions[valueKey] = value;
                 }
+
+                this.selectedOptions = { ...this.selectedOptions };
 
                 this.$emit('input', Object.values(this.selectedOptions));
             } else {
-                this.selectedOptions = { [value]: this.value };
+                this.selectedOptions = { [valueKey]: value };
 
                 this.$emit('input', value);
             }
@@ -403,15 +414,10 @@ export default {
 
             this.onBlur();
         },
-        onValueChange(event) {
-            this.$emit('input', event.target.value);
-        },
         onFocus() {
-            if (!this.isFocused) {
-                this.isFocused = true;
+            if (!this.isMenuActive) {
                 this.isMenuActive = true;
                 this.hasMouseDown = false;
-                this.selectBoundingBox = this.getSelectBoundingBox();
 
                 window.addEventListener('click', this.onClickOutside);
 
@@ -420,7 +426,6 @@ export default {
         },
         onBlur() {
             if (this.isClickedOutside) {
-                this.isFocused = false;
                 this.isMenuActive = false;
                 this.searchResult = '';
 
@@ -460,7 +465,7 @@ export default {
 
             if (this.dismissible) {
                 if (isClickedInsideActivator) {
-                    if (this.isFocused && this.hasMouseDown && !this.isMouseMoving) {
+                    if (this.isMenuActive && this.hasMouseDown && !this.isMouseMoving) {
                         this.isClickedOutside = true;
                         this.$refs.input.blur();
                     } else {
@@ -488,7 +493,6 @@ export default {
                 && this.dismissible
                 && !this.isSearchFocused)
             ) {
-                this.isFocused = false;
                 this.isMenuActive = false;
                 this.searchResult = '';
 
@@ -497,39 +501,6 @@ export default {
                 this.onSearch(this.searchResult);
                 this.$emit('focus', false);
             }
-        },
-        getSelectBoundingBox() {
-            const {
-                x,
-                y,
-                height,
-                width,
-            } = this.$el.getBoundingClientRect();
-            let hintHeight = 0;
-            const hint = this.$el.querySelector('.input__information-label');
-            const { innerHeight } = window;
-            const maxHeight = this.dropDownHeight;
-            const position = { left: `${x}px` };
-
-            if (hint) {
-                hintHeight = hint.getBoundingClientRect().height;
-            }
-
-            if (this.fixedContentWidth) {
-                position.maxHeight = `${maxHeight}px`;
-                position.width = `${width}px`;
-            }
-
-            if (innerHeight - y < maxHeight) {
-                const offsetBottom = innerHeight - y;
-
-                position.bottom = `${offsetBottom + 1}px`;
-
-                return position;
-            }
-            position.top = hint ? `${y + height - hintHeight - 2}px` : `${y + height + 2}px`;
-
-            return position;
         },
     },
 };

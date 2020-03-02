@@ -3,9 +3,5 @@
  * See LICENSE for license details.
  */
 export default () => ({
-    groups: {},
-    groupsElementsCount: {},
-    elements: {},
     disabledElements: {},
-    filter: '',
 });

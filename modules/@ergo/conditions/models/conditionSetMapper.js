@@ -6,6 +6,7 @@ import { getUUID } from '@Core/models/stringWrapper';
 
 export function getMappedConditionSetData(conditionSetData, conditions) {
     const mappedData = [];
+
     Object.keys(conditionSetData).forEach((key) => {
         const [conditionId] = key.split('--');
         const conditionData = { ...conditionSetData[key] };
@@ -15,7 +16,13 @@ export function getMappedConditionSetData(conditionSetData, conditions) {
             const parameter = parameters.find(({ name }) => name === conditionKey);
 
             if (parameter && parameter.options) {
-                conditionData[conditionKey] = conditionData[conditionKey].id;
+                if (Array.isArray(conditionData[conditionKey])) {
+                    conditionData[conditionKey] = conditionData[conditionKey].map(
+                        option => option.id,
+                    );
+                } else {
+                    conditionData[conditionKey] = conditionData[conditionKey].id;
+                }
             }
         });
 
@@ -39,11 +46,19 @@ export function getParsedConditionSetData(conditions, conditionsData) {
             const { options } = conditionsData[type].parameters.find(param => param.name === key);
 
             if (options) {
-                parameters[key] = {
-                    id: parameters[key],
-                    key: parameters[key],
-                    value: options[parameters[key]],
-                };
+                if (Array.isArray(parameters[key])) {
+                    parameters[key] = parameters[key].map(option => ({
+                        id: option,
+                        key: option,
+                        value: options[option],
+                    }));
+                } else {
+                    parameters[key] = {
+                        id: parameters[key],
+                        key: parameters[key],
+                        value: options[parameters[key]],
+                    };
+                }
             }
         });
 

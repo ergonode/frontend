@@ -27,9 +27,5 @@ export default {
         justify-content: center;
         align-items: center;
         margin: 0 4px;
-
-        &--small {
-            margin-left: 0;
-        }
     }
 </style>

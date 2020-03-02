@@ -4,7 +4,7 @@
  */
 import { mapState, mapActions } from 'vuex';
 import { insertCookieAtIndex } from '@Core/models/cookies';
-import { getGridData, getAdvancedFiltersData } from '@Core/services/grid/getData.service';
+import { getGridData, getAdvancedFiltersData } from '@Core/services/grid/getGridData.service';
 import { DATA_LIMIT } from '@Core/defaults/grid';
 import { getParsedFilters, getParsedAdvancedFilters } from '@Core/models/mappers/gridDataMapper';
 import { swapItemPosition, insertValueAtIndex } from '@Core/models/arrayWrapper';
@@ -184,6 +184,15 @@ export default function ({ path }) {
                     params,
                 );
 
+                columns.forEach(({ language, element_id }) => {
+                    if (element_id) {
+                        this.disableListElement({
+                            languageCode: language,
+                            attributeId: element_id,
+                        });
+                    }
+                });
+
                 this.columns = columns;
                 this.rowIds = rowIds;
                 this.rowLinks = rowLinks;
@@ -206,11 +215,6 @@ export default function ({ path }) {
                     ghostIndex,
                 );
                 this.$cookies.set(COLUMNS_IDS, columnIds.join(','));
-                const {
-                    language: languageCode, element_id: attributeId,
-                } = this.columns[ghostIndex];
-
-                this.disableListElement({ languageCode, attributeId });
             },
             swapColumnsPosition({ from, to }) {
                 this.columns = [

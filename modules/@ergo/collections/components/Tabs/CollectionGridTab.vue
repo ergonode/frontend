@@ -22,7 +22,7 @@
 
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
     name: 'CollectionGridTab',
@@ -30,7 +30,7 @@ export default {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
-    mixins: [gridDataMixin({ path: 'collections' })],
+    mixins: [fetchGridDataMixin({ path: 'collections' })],
     methods: {
         onEditRow({ links: { value: { edit } } }) {
             const args = edit.href.split('/');

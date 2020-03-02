@@ -4,7 +4,7 @@
  */
 <template>
     <TransitionPage
-        :title="`${getParamId[0]} -> ${getParamId[1]}`"
+        :title="`${params[0]} -> ${params[1]}`"
         @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
@@ -47,7 +47,7 @@ export default {
             conditionsValues: state => state.conditionsValues,
             conditions: state => state.conditions,
         }),
-        getParamId() {
+        params() {
             const { id } = this.$route.params;
             return id.split('--');
         },
@@ -130,6 +130,11 @@ export default {
             this.$addAlert({ type: 'success', message: 'Transition removed' });
             this.$router.push({ name: 'status-transitions-grid' });
         },
+    },
+    head() {
+        return {
+            title: `${this.params[0]} -> ${this.params[1]} - Status transitions - Ergonode`,
+        };
     },
 };
 </script>

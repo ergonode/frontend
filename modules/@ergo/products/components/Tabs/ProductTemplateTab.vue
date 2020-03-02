@@ -18,14 +18,8 @@
                 <ProductCompleteness :language="language" />
             </div>
         </template>
-        <template #content>
-            <VerticalFixedScroll>
-                <div class="container">
-                    <VerticalCenteredView>
-                        <ProductTemplateForm :language-code="languageCode" />
-                    </VerticalCenteredView>
-                </div>
-            </VerticalFixedScroll>
+        <template #centeredContent>
+            <ProductTemplateForm :language-code="languageCode" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -34,15 +28,11 @@
 import { mapState, mapActions } from 'vuex';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
-import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';
 import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm';
 
 export default {
     name: 'ProductTemplateTab',
     components: {
-        VerticalCenteredView,
-        VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
         ProductTemplateForm,
         Select: () => import('@Core/components/Inputs/Select/Select'),
@@ -103,9 +93,5 @@ export default {
         &__language-selection {
             flex: 0 0 196px;
         }
-    }
-
-    .container {
-        display: grid;
     }
 </style>

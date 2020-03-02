@@ -7,7 +7,6 @@ import {
     getMappedLayoutElement,
     getMappedLayoutSectionElement,
 } from '@Templates/models/templateMapper';
-import { getNestedObjectByKeyWithValue } from '@Core/models/objectWrapper';
 import { types } from './mutations';
 
 export default {
@@ -72,22 +71,31 @@ export default {
             commit(types.SET_TYPES, collection);
         });
     },
-    addListElementToLayout: ({
+    addListElementToLayout({
         commit, dispatch, rootState, state,
-    }, position) => {
+    }, position) {
         const { draggedElement } = rootState.draggable;
-        const { elements } = rootState.list;
         const [value, languageCode] = draggedElement.split(':');
-        const element = getNestedObjectByKeyWithValue(elements, 'code', value);
-        const layoutElement = getMappedLayoutElement(
-            element.id,
-            state.types.find(attributeType => attributeType.type === element.type),
-            element.label || element.code,
-            position,
-        );
+        const params = {
+            limit: 1,
+            offset: 0,
+            filter: `code=${value}`,
+            field: 'code',
+            order: 'ASC',
+        };
+        this.app.$axios.$get(`${languageCode}/attributes`, { params }).then(({ collection }) => {
+            const [element] = collection;
 
-        dispatch('list/setDisabledElement', { languageCode, elementId: element.id, disabled: true }, { root: true });
-        commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
+            const layoutElement = getMappedLayoutElement(
+                element.id,
+                state.types.find(attributeType => attributeType.type === element.type),
+                element.label || element.code,
+                position,
+            );
+
+            dispatch('list/setDisabledElement', { languageCode, elementId: element.id, disabled: true }, { root: true });
+            commit(types.ADD_ELEMENT_TO_LAYOUT, layoutElement);
+        });
     },
     addSectionElementToLayout: ({
         commit, state,

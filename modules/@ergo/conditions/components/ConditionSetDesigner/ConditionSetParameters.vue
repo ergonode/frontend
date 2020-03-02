@@ -12,7 +12,7 @@
         :label="parameter.name"
         :options="conditionOptions"
         :value="conditionValue"
-        :multiselect="parameter.type === 'MULTI_SELECT'"
+        :multiselect="isConditionTypeMultiSelect"
         :error-messages="errorParamsMessage"
         @input="setConditionValueByType" />
 </template>
@@ -43,6 +43,9 @@ export default {
         ...mapState('conditions', {
             conditionsValues: state => state.conditionsValues,
         }),
+        isConditionTypeMultiSelect() {
+            return this.parameter.type === TYPES.MULTI_SELECT;
+        },
         getComponentViaType() {
             switch (this.parameter.type) {
             case TYPES.SELECT:
@@ -58,7 +61,11 @@ export default {
         },
         conditionValue() {
             const { name } = this.parameter;
-            if (!this.conditionsValues[this.itemId] || !this.conditionsValues[this.itemId][name]) return '';
+
+            if (!this.conditionsValues[this.itemId] || !this.conditionsValues[this.itemId][name]) {
+                if (this.isConditionTypeMultiSelect) return [];
+                return '';
+            }
 
             return this.conditionsValues[this.itemId][name];
         },

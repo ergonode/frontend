@@ -27,7 +27,6 @@ export default {
         height: 100%;
         padding-left: 10px;
         background-color: $WHITESMOKE;
-        overflow: hidden;
 
         &--disabled {
             resize: none;

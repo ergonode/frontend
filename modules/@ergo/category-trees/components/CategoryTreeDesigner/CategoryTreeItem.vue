@@ -109,8 +109,8 @@ export default {
 
             this.isContextualMenuActive = isFocused;
         },
-        onSelectValue(value) {
-            switch (value) {
+        onSelectValue(option) {
+            switch (option) {
             case 'Remove':
                 this.$emit('removeItem');
                 break;

@@ -8,17 +8,30 @@
             v-if="isSelectLanguage"
             header="Attributes"
             :options="languageOptions"
-            :selected-option="language.value"
+            :selected-option="language"
             @searchResult="onSearch"
             @selectOption="onSelect" />
         <ListSearchHeader
             v-else
             header="Attributes"
             @searchResult="onSearch" />
-        <AttributesList :language-code="language.key" />
+        <List>
+            <ListScrollableContainer>
+                <AttributesListGroup
+                    v-for="(group, index) in groupsWithItems"
+                    :key="index"
+                    :group="group"
+                    :items-count="groupItemsCounts[group.id]"
+                    :items="items[group.id][languageCode]"
+                    :language-code="languageCode"
+                    :is-expanded="expandedGroupId === group.id"
+                    :is-draggable="isUserAllowedToDragAttributes"
+                    @expand="onGroupExpand" />
+            </ListScrollableContainer>
+        </List>
         <template #fab>
             <FabButton
-                :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
+                :disabled="!isUserAllowedToCreateAttribute"
                 @click.native="onShowModal">
                 <template #icon="{ fillColor }">
                     <IconAdd :fill-color="fillColor" />
@@ -33,23 +46,25 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import { getKeyByValue } from '@Core/models/objectWrapper';
-import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
+import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
 
 export default {
     name: 'AttributesListTab',
     components: {
         VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
-        AttributesList: () => import('@Attributes/components/Lists/AttributesList'),
+        List: () => import('@Core/components/List/List'),
+        ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
+        AttributesListGroup: () => import('@Attributes/components/Lists/AttributesListGroup'),
         ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         FabButton: () => import('@Core/components/Buttons/FabButton'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
         CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
     },
-    mixins: [gridModalMixin],
+    mixins: [gridModalMixin, fetchListGroupDataMixin({ namespace: 'attributes' })],
     props: {
         isSelectLanguage: {
             type: Boolean,
@@ -58,7 +73,7 @@ export default {
     },
     data() {
         return {
-            language: {},
+            language: '',
         };
     },
     computed: {
@@ -68,64 +83,39 @@ export default {
         ...mapState('dictionaries', {
             languages: state => state.languages,
         }),
-        whiteColor() {
-            return WHITE;
+        languageCode() {
+            return getKeyByValue(this.languages, this.language);
+        },
+        isUserAllowedToCreateAttribute() {
+            return this.$hasAccess(['ATTRIBUTE_CREATE']);
+        },
+        isUserAllowedToDragAttributes() {
+            return this.$hasAccess(['ATTRIBUTE_UPDATE']);
         },
         languageOptions() {
             return Object.values(this.languages);
         },
-        listDataType() {
-            return 'attributes';
-        },
     },
     created() {
-        this.language = {
-            key: this.userLanguageCode,
-            value: this.languages[this.userLanguageCode],
-        };
+        this.language = this.languages[this.userLanguageCode];
     },
     methods: {
-        ...mapActions('list', [
-            'setFilter',
-            'getGroups',
-            'getElements',
-        ]),
         onCreatedAttribute() {
             this.onCloseModal();
-            Promise.all([
-                this.getGroups({
-                    listType: this.listDataType,
-                    languageCode: this.language.key,
-                }),
-                this.getElements({
-                    listType: this.listDataType,
-                    languageCode: this.language.key,
-                }),
-            ]);
-        },
-        onSearch(value) {
-            this.setFilter(value);
-            this.getElements({
-                listType: this.listDataType,
-                languageCode: this.language.key,
+            this.getGroupsAndExpandedGroupItems({
+                languageCode: this.languageCode,
             });
         },
+        onSearch(value) {
+            this.codeFilter = value;
+            this.getAllGroupsItems({ languageCode: this.languageCode });
+        },
         onSelect(value) {
-            this.language = {
-                key: getKeyByValue(this.languages, value),
-                value,
-            };
+            this.language = value;
 
-            Promise.all([
-                this.getGroups({
-                    listType: this.listDataType,
-                    languageCode: this.language.key,
-                }),
-                this.getElements({
-                    listType: this.listDataType,
-                    languageCode: this.language.key,
-                }),
-            ]);
+            this.getGroupsAndExpandedGroupItems({
+                languageCode: this.languageCode,
+            });
         },
     },
 };

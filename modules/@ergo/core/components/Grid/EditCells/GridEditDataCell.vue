@@ -7,7 +7,6 @@
         :is="editableComponent"
         v-model="localValue"
         v-bind="$attrs"
-        @imageid="onImageIDChange"
         @focus="onFocus" />
 </template>
 
@@ -44,9 +43,6 @@ export default {
         this.$emit('updateValue', this.localValue);
     },
     methods: {
-        onImageIDChange(id) {
-            this.localValue = id;
-        },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);
         },

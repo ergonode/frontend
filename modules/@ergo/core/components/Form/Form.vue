@@ -6,6 +6,10 @@
     <form
         class="form"
         @submit.prevent>
+        <h2
+            v-if="title"
+            class="form__title"
+            v-text="title" />
         <slot />
     </form>
 </template>
@@ -13,16 +17,26 @@
 <script>
 export default {
     name: 'Form',
+    props: {
+        title: {
+            type: String,
+            default: '',
+        },
+    },
 };
 </script>
 
 <style lang="scss" scoped>
     .form {
         display: grid;
-        justify-content: center;
         grid-template-columns: 352px;
         grid-auto-flow: row;
-        grid-row-gap: 16px;
+        grid-row-gap: 24px;
         padding: 24px;
+
+        &__title {
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_16_24;
+        }
     }
 </style>
