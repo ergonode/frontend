@@ -4,10 +4,8 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
-            <VerticalFixedScroll>
-                <AttributeGroupForm />
-            </VerticalFixedScroll>
+        <template #centeredContent>
+            <AttributeGroupForm />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -15,12 +13,10 @@
 <script>
 import AttributeGroupForm from '@Attributes/components/Forms/AttributeGroupForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'AttributeGroupBaseTab',
     components: {
-        VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
         AttributeGroupForm,
     },

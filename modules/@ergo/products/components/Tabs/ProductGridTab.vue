@@ -5,9 +5,7 @@
 <template>
     <GridViewTemplate>
         <template #sidebar>
-            <VerticalTabBar
-                :items="verticalTabs"
-                @select="onSelectTabBarItem" />
+            <VerticalTabBar :items="verticalTabs" />
         </template>
         <template #grid>
             <Grid
@@ -54,7 +52,7 @@
 import { mapState, mapActions } from 'vuex';
 import Button from '@Core/components/Buttons/Button';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
-import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import { SIZES } from '@Core/defaults/buttons';
 
 export default {
@@ -65,7 +63,7 @@ export default {
         VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
         Grid: () => import('@Core/components/Grid/Grid'),
     },
-    mixins: [gridDataMixin({ path: 'products' })],
+    mixins: [fetchGridDataMixin({ path: 'products' })],
     computed: {
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,
@@ -90,7 +88,6 @@ export default {
                     props: {
                         disabled: !isUserAllowedToReadProduct,
                     },
-                    listDataType: 'attributes',
                 },
                 {
                     title: 'System attributes',
@@ -99,7 +96,6 @@ export default {
                     props: {
                         disabled: !isUserAllowedToReadProduct,
                     },
-                    listDataType: 'attributes/system',
                 },
             ];
         },
@@ -111,21 +107,10 @@ export default {
         ...mapActions('productsDraft', [
             'applyDraft',
         ]),
-        ...mapActions('list', [
-            'getElements',
-        ]),
         ...mapActions('gridDraft', [
             'removeDraft',
             'forceDraftsMutation',
         ]),
-        onSelectTabBarItem(index) {
-            const { listDataType } = this.verticalTabs[index];
-
-            this.getElements({
-                listType: listDataType,
-                languageCode: this.userLanguageCode,
-            });
-        },
         onEditRow({ links: { value: { edit } } }) {
             const args = edit.href.split('/');
             const lastIndex = args.length - 1;

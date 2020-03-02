@@ -4,12 +4,8 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
-            <VerticalFixedScroll>
-                <VerticalCenteredView>
-                    <ProductCommentsForm />
-                </VerticalCenteredView>
-            </VerticalFixedScroll>
+        <template #centeredContent>
+            <ProductCommentsForm />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -18,14 +14,10 @@
 import { DATA_LIMIT } from '@Core/defaults/grid';
 import ProductCommentsForm from '@Products/components/Forms/ProductCommentsForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
-import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';
 
 export default {
     name: 'ProductCommentsTab',
     components: {
-        VerticalCenteredView,
-        VerticalFixedScroll,
         ProductCommentsForm,
         ResponsiveCenteredViewTemplate,
     },

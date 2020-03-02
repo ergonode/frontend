@@ -4,10 +4,8 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
-            <VerticalFixedScroll>
-                <UserForm />
-            </VerticalFixedScroll>
+        <template #centeredContent>
+            <UserForm />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -15,12 +13,10 @@
 <script>
 import UserForm from '@Users/components/Forms/UserForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'UserBaseTab',
     components: {
-        VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
         UserForm,
     },

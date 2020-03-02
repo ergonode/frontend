@@ -59,5 +59,10 @@ export default {
             return SIZES.SMALL;
         },
     },
+    head() {
+        return {
+            title: 'Collections - Ergonode',
+        };
+    },
 };
 </script>

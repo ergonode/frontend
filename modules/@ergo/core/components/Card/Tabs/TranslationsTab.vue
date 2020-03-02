@@ -16,14 +16,8 @@
                     label="Translations" />
             </div>
         </template>
-        <template #content>
-            <VerticalFixedScroll>
-                <div class="container">
-                    <VerticalCenteredView>
-                        <slot :language-codes="selectedLanguageCodes" />
-                    </VerticalCenteredView>
-                </div>
-            </VerticalFixedScroll>
+        <template #centeredContent>
+            <slot :language-codes="selectedLanguageCodes" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -32,14 +26,10 @@
 import { mapState } from 'vuex';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
-import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';
 
 export default {
     name: 'TranslationsTab',
     components: {
-        VerticalCenteredView,
-        VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
         TranslationSelect,
     },
@@ -82,9 +72,5 @@ export default {
         flex: 0 0 196px;
         align-items: center;
         min-height: 55px;
-    }
-
-    .container {
-        display: grid;
     }
 </style>

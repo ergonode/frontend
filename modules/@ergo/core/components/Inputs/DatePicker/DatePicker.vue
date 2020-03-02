@@ -19,7 +19,7 @@
         :dismissible="false"
         :small="small"
         :regular="regular"
-        :fixed-content-width="false"
+        :fixed-content="false"
         clearable
         @focus="onFocus"
         @input="onValueChange">

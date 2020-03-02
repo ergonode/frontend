@@ -35,13 +35,16 @@
                         :size="smallSize"
                         :disabled="!isUserAllowedToUpdateProduct"
                         :options="workflow"
+                        :fixed-content="true"
                         @input="onUpdateStatus">
                         <template #option="{ option }">
                             <ListElementAction>
                                 <PointBadge :color="option.color" />
                             </ListElementAction>
                             <ListElementDescription>
-                                <ListElementTitle :title="option.name || `#${option.code}`" />
+                                <ListElementTitle
+                                    :title="option.name || `#${option.code}`"
+                                    :small="true" />
                             </ListElementDescription>
                         </template>
                     </MenuButton>

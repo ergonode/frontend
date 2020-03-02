@@ -50,8 +50,6 @@ export default {
                 type => type.id === type_id,
             ));
 
-            console.log();
-
             dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onError);
     },

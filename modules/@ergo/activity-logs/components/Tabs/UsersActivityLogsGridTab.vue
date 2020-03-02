@@ -18,7 +18,7 @@
 
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import gridDataMixin from '@Core/mixins/grid/gridDataMixin';
+import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
     name: 'UsersActivityLogsGridTab',
@@ -26,6 +26,6 @@ export default {
         ResponsiveCenteredViewTemplate,
         Grid: () => import('@Core/components/Grid/Grid'),
     },
-    mixins: [gridDataMixin({ path: 'accounts/log' })],
+    mixins: [fetchGridDataMixin({ path: 'accounts/log' })],
 };
 </script>

@@ -4,7 +4,6 @@
  */
 import {
     getKeyByValue,
-    getNestedObjectByKeyWithValue,
     objectToArray,
     objectToArrayWithPropsName,
     getValueByKey,
@@ -26,29 +25,6 @@ describe('objectWrapper/getKeyByValue', () => {
     it('Get undefined if the value does not exist', () => {
         const fun = getKeyByValue(obj, 5);
         expect(fun).toBeUndefined();
-    });
-});
-
-describe('objectWrapper/getNestedObjectByKeyWithValue', () => {
-    const localObj = {
-        test: [
-            { x: 'xx', y: 'yy' },
-            { z: 'zz', q: 'qq' },
-        ],
-        jest: [
-            { a: 'aa', b: 'bb' },
-            { c: 'cc', d: 'dd' },
-        ],
-    };
-
-    it('Get nested object by key and value - exist object ', () => {
-        const fun = getNestedObjectByKeyWithValue(localObj, 'z', 'zz');
-        expect(fun).toEqual({ z: 'zz', q: 'qq' });
-    });
-
-    it('Get nested object by key and value - does not exist object ', () => {
-        const fun = getNestedObjectByKeyWithValue(localObj, 'g', 'gg');
-        expect(fun).toEqual(null);
     });
 });
 

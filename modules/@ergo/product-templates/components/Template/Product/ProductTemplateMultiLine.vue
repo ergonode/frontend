@@ -9,7 +9,7 @@
         :label="label"
         :placeholder="placeholder"
         :required="required"
-        :error-messages="isError ? errorMessages : null"
+        :error-messages="errorMessages"
         :is-information-label="false"
         :disabled="disabled"
         resize="none"

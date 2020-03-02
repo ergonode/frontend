@@ -80,5 +80,10 @@ export default {
             this.$addAlert({ type: 'success', message: 'Product status updated' });
         },
     },
+    head() {
+        return {
+            title: `${this.code} - Product statuses - Ergonode`,
+        };
+    },
 };
 </script>

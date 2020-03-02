@@ -7,7 +7,15 @@
         <ListSearchHeader
             header="Conditions"
             :is-search="false" />
-        <ConditionsList :language-code="userLanguageCode" />
+        <List>
+            <ListScrollableContainer>
+                <ConditionsListElement
+                    v-for="item in items"
+                    :key="item.id"
+                    :item="item"
+                    :language-code="userLanguageCode" />
+            </ListScrollableContainer>
+        </List>
     </VerticalTabBarListWrapper>
 </template>
 
@@ -18,12 +26,17 @@ export default {
     name: 'ConditionsListTab',
     components: {
         VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
-        ConditionsList: () => import('@Conditions/components/Lists/ConditionsList'),
+        List: () => import('@Core/components/List/List'),
+        ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
+        ConditionsListElement: () => import('@Conditions/components/Lists/ConditionsListElement'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
     },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
+        }),
+        ...mapState('conditions', {
+            items: state => state.conditionsDictionary,
         }),
     },
 };

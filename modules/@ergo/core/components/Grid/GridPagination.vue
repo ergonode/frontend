@@ -4,16 +4,28 @@
  */
 <template>
     <div class="pagination">
-        <FadeTransition>
-            <FabButton
-                :class="{'non-visible': !isLeftArrowVisible}"
-                :theme="secondaryTheme"
-                @click.native="decrementPage">
-                <template #icon="{ fillColor }">
-                    <IconArrowPointer :fill-color="fillColor" />
-                </template>
-            </FabButton>
-        </FadeTransition>
+        <div :class="['pagination__decrease', {'non-visible': !isLeftArrowVisible}]">
+            <FadeTransition>
+                <FabButton
+                    :theme="secondaryTheme"
+                    @click.native="toFirstPage">
+                    <template #icon="{ fillColor }">
+                        <IconArrowPointerBlock :fill-color="fillColor" />
+                    </template>
+                </FabButton>
+            </FadeTransition>
+            <FadeTransition>
+                <FabButton
+                    :theme="secondaryTheme"
+                    @click.native="decrementPage">
+                    <template #icon="{ fillColor }">
+                        <IconArrowSingle
+                            :fill-color="fillColor"
+                            :state="arrow.LEFT" />
+                    </template>
+                </FabButton>
+            </FadeTransition>
+        </div>
         <span class="pagination__text font--medium-12-16">
             Page
         </span>
@@ -31,18 +43,30 @@
         <span
             class="pagination__number font--medium-12-16"
             v-text="maxPage" />
-        <FadeTransition>
-            <FabButton
-                :class="{'non-visible': !isRightArrowVisible}"
-                :theme="secondaryTheme"
-                @click.native="incrementPage">
-                <template #icon="{ fillColor }">
-                    <IconArrowPointer
-                        :fill-color="fillColor"
-                        :state="rightArrow" />
-                </template>
-            </FabButton>
-        </FadeTransition>
+        <div :class="['pagination__increase', {'non-visible': !isRightArrowVisible}]">
+            <FadeTransition>
+                <FabButton
+                    :theme="secondaryTheme"
+                    @click.native="incrementPage">
+                    <template #icon="{ fillColor }">
+                        <IconArrowSingle
+                            :fill-color="fillColor"
+                            :state="arrow.RIGHT" />
+                    </template>
+                </FabButton>
+            </FadeTransition>
+            <FadeTransition>
+                <FabButton
+                    :theme="secondaryTheme"
+                    @click.native="toLastPage">
+                    <template #icon="{ fillColor }">
+                        <IconArrowPointerBlock
+                            :fill-color="fillColor"
+                            :state="arrow.RIGHT" />
+                    </template>
+                </FabButton>
+            </FadeTransition>
+        </div>
     </div>
 </template>
 
@@ -55,7 +79,8 @@ export default {
     components: {
         TextField: () => import('@Core/components/Inputs/TextField'),
         FabButton: () => import('@Core/components/Buttons/FabButton'),
-        IconArrowPointer: () => import('@Core/components/Icons/Arrows/IconArrowPointer'),
+        IconArrowSingle: () => import('@Core/components/Icons/Arrows/IconArrowSingle'),
+        IconArrowPointerBlock: () => import('@Core/components/Icons/Arrows/IconArrowPointerBlock'),
         FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
     },
     props: {
@@ -68,12 +93,10 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            rightArrow: ARROW.RIGHT,
-        };
-    },
     computed: {
+        arrow() {
+            return ARROW;
+        },
         secondaryTheme() {
             return THEMES.SECONDARY;
         },
@@ -94,6 +117,12 @@ export default {
     methods: {
         onValueChange(value) {
             this.validateValueOnChange(value);
+        },
+        toLastPage() {
+            this.validateValueOnChange(this.maxPage);
+        },
+        toFirstPage() {
+            this.validateValueOnChange(1);
         },
         incrementPage() {
             this.validateValueOnChange(this.value + 1);
@@ -129,6 +158,11 @@ export default {
 
         &__icon {
             color: $GRAPHITE_LIGHT;
+        }
+
+        &__increase, &__decrease {
+            display: flex;
+            align-items: center;
         }
 
         .non-visible {

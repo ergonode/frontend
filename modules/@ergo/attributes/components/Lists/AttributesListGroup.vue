@@ -4,15 +4,14 @@
  */
 <template>
     <ListGroupElement
-        :index="group.key"
         :title="group.value"
-        :subtitle="elementsCount"
-        :hint="group.value ? `${group.key} ${languageCode}` : ''"
+        :subtitle="itemsCountDescription"
+        :hint="group.hint"
         :is-expanded="isExpanded"
-        @group="getElementsForGroupWrapper">
+        @expand="onGroupExpand">
         <template #item>
             <AttributesListElement
-                v-for="item in elementsByGroupInLanguage"
+                v-for="item in items"
                 :key="item.id"
                 :item="item"
                 :is-draggable="isDraggable"
@@ -22,8 +21,6 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { UNASSIGNED_GROUP_ID } from '@Core/defaults/list';
 
 export default {
     name: 'AttributesListGroup',
@@ -35,6 +32,14 @@ export default {
         group: {
             type: Object,
             required: true,
+        },
+        items: {
+            type: Array,
+            default: () => [],
+        },
+        itemsCount: {
+            type: Number,
+            default: 0,
         },
         languageCode: {
             type: String,
@@ -50,38 +55,13 @@ export default {
         },
     },
     computed: {
-        ...mapState('list', {
-            groups: state => state.groups,
-            groupsElementsCount: state => state.groupsElementsCount,
-            elements: state => state.elements,
-        }),
-        elementsByGroupInLanguage() {
-            if (!this.elements[this.languageCode]
-                || this.elements[this.languageCode].length === 0) return [];
-
-            return this.elements[this.languageCode].filter(
-                element => (element.groups.length === 0 && this.group.id === UNASSIGNED_GROUP_ID)
-                    || element.groups.some(group => group === this.group.id),
-            );
-        },
-        elementsCount() {
-            return `${this.groupsElementsCount[this.group.id] || 0} Attributes`;
+        itemsCountDescription() {
+            return `${this.itemsCount} Attributes`;
         },
     },
     methods: {
-        ...mapActions('list', [
-            'getElementsForGroup',
-        ]),
-        getElementsForGroupWrapper(id = '') {
-            if (!this.isExpanded) {
-                this.getElementsForGroup({
-                    listType: 'attributes',
-                    groupId: this.group.id,
-                    languageCode: this.languageCode,
-                });
-            }
-
-            this.$emit('expandGroup', id);
+        onGroupExpand(payload) {
+            this.$emit('expand', { ...payload, group: this.group, languageCode: this.languageCode });
         },
     },
 };

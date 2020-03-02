@@ -44,7 +44,6 @@ export default {
         display: flex;
         flex-wrap: wrap;
         padding: 8px 6px 0 8px;
-        overflow: auto;
 
         & > * {
             margin: 8px 0 0 8px;

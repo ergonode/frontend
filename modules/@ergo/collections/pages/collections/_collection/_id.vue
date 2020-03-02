@@ -82,5 +82,10 @@ export default {
             this.$router.push({ name: 'collections-grid' });
         },
     },
+    head() {
+        return {
+            title: `${this.code} - Collections - Ergonode`,
+        };
+    },
 };
 </script>

@@ -79,5 +79,10 @@ export default {
             this.$router.push({ name: 'attribute-groups-grid' });
         },
     },
+    head() {
+        return {
+            title: `${this.code} - Attribute groups - Ergonode`,
+        };
+    },
 };
 </script>
