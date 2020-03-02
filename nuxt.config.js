@@ -10,15 +10,15 @@ import dotenv from 'dotenv';
 import {
     _requiredModules as REQUIRED_MODULES,
     _availableModules as AVAILABLE_MODULES,
-    keywords,
-    description,
+    _vendorDir as VENDOR_DIR,
+    _modulesDir as MODULES_DIR,
+    keywords as KEYWORDS,
+    description as DESCRIPTION,
 } from './package';
 import _modules from './config/.modules';
-import { inactiveModulesConfig } from './plugins/moduleLoader';
 
 dotenv.config({ path: '.env' });
-const VENDOR_DIR = 'vendor';
-const MODULES_DIR = 'modules';
+
 const DIR_PREFIX = type => (`~/${type === 'npm' ? VENDOR_DIR : MODULES_DIR}/`);
 const ACTIVE_MODULES = _modules.active.reduce((acc, current) => {
     const newObject = acc;
@@ -33,7 +33,7 @@ const INACTIVE_MODULES = _modules.inactive.reduce((acc, current) => {
 const MODULES_TO_LOAD = _modules.active.map((name) => {
     const type = AVAILABLE_MODULES[name];
 
-    return [`${DIR_PREFIX(type)}${name}`, { type, vendorDir: VENDOR_DIR }];
+    return [`${DIR_PREFIX(type)}${name}`];
 });
 const NPM_MODULES = Object.keys(ACTIVE_MODULES).filter(name => ACTIVE_MODULES[name] === 'npm');
 const IS_DEV = process.env.NODE_ENV !== 'production';
@@ -50,8 +50,8 @@ module.exports = {
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'keywords', name: 'keywords', content: keywords.join(', ') },
-            { hid: 'description', name: 'description', content: description },
+            { hid: 'keywords', name: 'keywords', content: KEYWORDS.join(', ') },
+            { hid: 'description', name: 'description', content: DESCRIPTION },
         ],
         link: [
             {
@@ -76,6 +76,7 @@ module.exports = {
         ...MODULES_TO_LOAD,
         '~/modules/helpers/symlinksCreator',
         '~/modules/helpers/registerRouter',
+        '~/modules/helpers/registerExtends',
         '~/modules/helpers/registerMiddleware',
         '~/modules/helpers/registerStore',
     ],
@@ -86,9 +87,10 @@ module.exports = {
         'cookie-universal-nuxt',
     ],
     modulesLoader: {
-        modules: ACTIVE_MODULES,
+        activeModules: ACTIVE_MODULES,
         inactiveModules: INACTIVE_MODULES,
         requiredModules: REQUIRED_MODULES,
+        isDev: IS_DEV,
     },
     router: {
         middleware: ['modulesMiddlewareLoader'],
@@ -97,6 +99,9 @@ module.exports = {
         modulesDir: NPM_MODULES,
     },
     registerRouter: {
+        modules: ACTIVE_MODULES,
+    },
+    registerExtends: {
         modules: ACTIVE_MODULES,
     },
     registerMiddleware: {
@@ -109,32 +114,29 @@ module.exports = {
         baseURL: BASE_URL || 'http://localhost:8000',
     },
     build: {
-        // terser: {
-        //     parallel: true,
-        //     sourceMap: true,
-        //     exclude: /\/store/,
-        //     extractComments: {
-        //         filename: 'LICENSES',
-        //     },
-        //     terserOptions: {
-        //         output: {
-        //             comments: /^\**!|@preserve|@license|@cc_on/,
-        //         },
-        //     },
-        // },
+        terser: {
+            parallel: true,
+            sourceMap: true,
+            // exclude: /\/store/,
+            extractComments: {
+                filename: 'LICENSES',
+            },
+            terserOptions: {
+                output: {
+                    comments: /^\**!|@preserve|@license|@cc_on/,
+                },
+            },
+        },
         // hardSource: true, // TODO: check if it works correctly
         // extractCSS: true, //TODO: check webpack CSS plugins for optimize files
-        // optimizeCSS: true,
+        optimizeCSS: true,
         extend(config, { isDev, isClient }) {
             const alias = config.resolve.alias || {};
-            const { aliases: inactiveAliases = {} } = inactiveModulesConfig.nuxt;
 
             alias['@Root'] = join(__dirname, './');
             alias['@Modules'] = join(__dirname, '/modules');
             alias['@Vendor'] = join(__dirname, '/vendor');
-            Object.keys(inactiveAliases).map((key) => {
-                alias[key] = inactiveAliases[key].type === 'npm' ? inactiveAliases[key].path : join(__dirname, inactiveAliases[key].path);
-            });
+
             if (isDev) {
                 config.devtool = isClient ? 'source-map' : 'inline-source-map';
             }

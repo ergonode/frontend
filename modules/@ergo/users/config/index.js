@@ -11,27 +11,4 @@ export default {
     plugins: [
         { ssr: true, src: './plugins/privilege' },
     ],
-    dictionaries: [
-        {
-            stateProp: 'privileges',
-            dataFormat: {},
-            requestPath: '/dictionary/privileges',
-        },
-    ],
-    extendTabs: [
-        // {
-        //     name: 'settings',
-        //     children: [
-        //         {
-        //             name: 'settings-user',
-        //             path: 'user',
-        //             component: Tabs.UserSettingsTab,
-        //             meta: {
-        //                 title: 'User settings',
-        //                 privileges: [],
-        //             },
-        //         },
-        //     ],
-        // },
-    ],
 };

@@ -8,26 +8,4 @@ export default {
     aliases: {
         '@Attributes': '/',
     },
-    dictionaries: [
-        {
-            stateProp: 'currencies',
-            dataFormat: {},
-            requestPath: '/dictionary/currencies',
-        },
-        {
-            stateProp: 'units',
-            dataFormat: {},
-            requestPath: '/dictionary/units',
-        },
-        {
-            stateProp: 'dateFormats',
-            dataFormat: {},
-            requestPath: '/dictionary/date_format',
-        },
-        {
-            stateProp: 'attrTypes',
-            dataFormat: {},
-            requestPath: '/dictionary/attributes/types',
-        },
-    ],
 };

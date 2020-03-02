@@ -23,11 +23,4 @@ export default {
     styleResources: {
         scss: './assets/scss/main.scss',
     },
-    dictionaries: [
-        {
-            stateProp: 'languages',
-            dataFormat: {},
-            requestPath: '/dictionary/languages',
-        },
-    ],
 };

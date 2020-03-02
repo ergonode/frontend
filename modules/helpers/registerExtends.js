@@ -13,39 +13,43 @@ const DEFAULTS = {
     modules: {},
 };
 
-async function* middlewarePaths({ modules, vendorDir, modulesDir }) {
+async function* extendsPaths({ modules, vendorDir, modulesDir }) {
     for (let i = 0; i < Object.keys(modules).length; i += 1) {
         const moduleName = Object.keys(modules)[i];
         const type = modules[moduleName];
         const dirPrefix = type === 'npm' ? vendorDir : modulesDir;
-        const path = resolve(this.options.srcDir, dirPrefix, `${moduleName}`, type === 'npm' ? 'src' : '', 'middleware');
+        const path = resolve(this.options.srcDir, dirPrefix, `${moduleName}`, type === 'npm' ? 'src' : '', 'config');
 
         try {
             yield recursive(path).then(
-                files => files.filter(file => /\.global\.js/.test(file)),
+                files => files.find(file => /config\/extends\.js/.test(file)),
             );
         } catch (e) {
             // console.error(e);
         }
     }
 }
-export default async function registerMiddleware(moduleOptions) {
-    let middleware = [];
+export default async function registerExtends(moduleOptions) {
+    const extend = [];
     const options = { ...DEFAULTS, ...this.options.registerRouter || moduleOptions };
 
     if (!Object.keys(options.modules).length && this.options.ergoModules) {
         options.modules = this.options.ergoModules;
     }
 
-    for await (const files of middlewarePaths.call(this, options)) {
-        if (files) middleware = middleware.concat(files);
+    for await (const file of extendsPaths.call(this, options)) {
+        if (file) extend.push(file);
     }
 
     this.addTemplate({
-        fileName: 'middleware.modules.js',
-        src: resolve(__dirname, './templates/middleware.ejs'),
+        fileName: 'extends.modules.js',
+        src: resolve(__dirname, './templates/extends.ejs'),
         options: {
-            middleware,
+            extend,
         },
+    });
+    this.addPlugin({
+        fileName: 'modules.js',
+        src: resolve(__dirname, './templates/modules.ejs'),
     });
 }

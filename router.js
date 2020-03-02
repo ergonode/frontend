@@ -5,8 +5,8 @@
  */
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { modulesConfig } from '~/plugins/moduleLoader';
 import routerModules from '~/.nuxt/router.modules';
+import extendsModules from '~/.nuxt/extends.modules';
 import routerLocal from './router.local';
 
 Vue.use(VueRouter);
@@ -32,7 +32,8 @@ const scrollBehavior = (to, from, savedPosition) => {
 };
 
 const extendRoutes = () => {
-    const { extendTabs } = modulesConfig;
+    const extendTabs = Object.values(extendsModules)
+        .reduce((acc, current) => [].concat(...acc, ...current.extendTabs || []), []);
     const extendedRoutes = [].concat(...Object.values(routerModules), routerLocal);
 
     for (let i = 0; i < extendTabs.length; i += 1) {
@@ -64,4 +65,3 @@ const Router = new VueRouter({
 export function createRouter() {
     return Router;
 }
-export default Router;

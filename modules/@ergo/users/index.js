@@ -5,7 +5,7 @@
 import { resolve, join } from 'path';
 import configuration from './config';
 
-export default async function (moduleOptions) {
+export default async function () {
     const {
         name,
         type,
@@ -22,7 +22,7 @@ export default async function (moduleOptions) {
 
         Object.keys(aliases).forEach((key) => {
             alias[key] = (type === 'npm'
-                ? join(moduleOptions.vendorDir, aliases[key], 'src')
+                ? join(name, aliases[key], '/src')
                 : join(__dirname, aliases[key])
             ).replace(/\/$/g, '');
         });

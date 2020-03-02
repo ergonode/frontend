@@ -13,7 +13,6 @@ export default [
         meta: {
             access: true,
             title: 'Segments',
-            icon: 'Templates',
             group: {
                 title: 'Products',
                 menuPosition: 2,

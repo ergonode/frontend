@@ -5,7 +5,6 @@
 import { Pages, Tabs, Icons } from './imports';
 import Privileges from './privileges';
 
-
 export default [
     {
         name: 'users',

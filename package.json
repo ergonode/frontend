@@ -85,6 +85,8 @@
         "vue-jest": "^3.0.5",
         "vuex-mock-store": "0.0.8"
     },
+    "_vendorDir": "vendor",
+    "_modulesDir": "modules",
     "_requiredModules": [
         "@ergo/core",
         "@ergo/authentication",
