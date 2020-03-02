@@ -12,9 +12,7 @@
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
             <slot name="prepend" />
-            <div
-                class="input__value"
-                v-if="!isEmptyOptions">
+            <div class="input__value">
                 <slot name="value">
                     <span v-text="multiselect ? value.join(', ') : value" />
                 </slot>
