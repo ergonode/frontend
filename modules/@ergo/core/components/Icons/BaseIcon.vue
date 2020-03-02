@@ -37,9 +37,6 @@ export default {
             default: 'currentColor',
         },
     },
-    computed: {
-
-    },
 };
 </script>
 

@@ -59,7 +59,6 @@ export default {
         background-color: $GRAPHITE_DARK;
         box-shadow: $ELEVATOR_12_DP;
         border-radius: 240px;
-        transform: scale(1);
         animation: pulse 2s infinite;
 
         & > * {
