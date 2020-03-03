@@ -2,12 +2,20 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { modulesConfig } from '~/plugins/moduleLoader';
+import extendsModules from '~/.nuxt/extends.modules';
 import { types } from './mutations';
 
 export default {
     getDictionaries({ commit, rootState }) {
-        const { dictionaries: modulesDictionaries } = modulesConfig;
+        const modulesDictionaries = Object.values(extendsModules)
+            .reduce((acc, current) => {
+                let connectedArray = acc;
+
+                if (current.dictionaries) {
+                    connectedArray = [...acc, ...current.dictionaries];
+                }
+                return connectedArray;
+            }, []);
         const { language: userLanguageCode } = rootState.authentication.user;
         const promises = modulesDictionaries.map(({ stateProp, requestPath }) => {
             const requestPromise = this.app.$axios.$get(`${userLanguageCode}${requestPath}`).then((response) => {

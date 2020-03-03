@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['drop-down', {'drop-down--fixed': fixedContent}]">
+    <div
+        :class="['drop-down', {'drop-down--fixed': fixed}]"
+        :style="position">
         <slot name="body" />
         <slot name="footer" />
     </div>
@@ -14,10 +16,48 @@
 export default {
     name: 'DropDown',
     props: {
-        fixedContent: {
+        fixed: {
             type: Boolean,
-            required: true,
+            default: false,
         },
+        offset: {
+            type: Object,
+            default: () => ({
+                x: 0, y: 0, width: 0, height: 0,
+            }),
+        },
+    },
+    data() {
+        return {
+            position: {},
+        };
+    },
+    mounted() {
+        window.requestAnimationFrame(() => {
+            const {
+                height,
+            } = this.$el.getBoundingClientRect();
+            const { innerHeight } = window;
+            let maxHeight = 200;
+            const position = { left: `${this.offset.x}px` };
+
+            if (this.fixed) {
+                position.maxHeight = `${maxHeight}px`;
+                position.width = `${this.offset.width}px`;
+            } else {
+                maxHeight = height;
+            }
+
+            if (innerHeight - this.offset.y < maxHeight) {
+                const offsetBottom = innerHeight - this.offset.y;
+
+                position.bottom = `${offsetBottom}px`;
+            } else {
+                position.top = `${this.offset.y + this.offset.height}px`;
+            }
+
+            this.position = position;
+        });
     },
 };
 </script>
@@ -30,9 +70,5 @@ export default {
         flex-direction: column;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_2_DP;
-
-        &--fixed {
-            max-height: 200px;
-        }
     }
 </style>

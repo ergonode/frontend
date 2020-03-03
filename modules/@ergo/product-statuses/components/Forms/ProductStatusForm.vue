@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form>
+    <Form title="General options">
         <FormGroup>
             <TextField
                 :value="code"
@@ -31,7 +31,7 @@
                 regular
                 clearable
                 :options="colorOptions"
-                :fixed-content-width="false"
+                :fixed-content="false"
                 label="Badge color"
                 hint="Badge color is needed for presentation purpose"
                 :disabled="isDisabledByPrivileges"

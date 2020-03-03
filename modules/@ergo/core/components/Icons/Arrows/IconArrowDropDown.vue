@@ -6,10 +6,9 @@
     <BaseIcon
         :width="size"
         :height="size"
+        :style="iconTransform"
         :icon-color="fillColor">
-        <polygon
-            :points="points"
-            :transform="iconTransform" />
+        <polygon :points="points" />
     </BaseIcon>
 </template>
 
@@ -44,7 +43,7 @@ export default {
     },
     computed: {
         iconTransform() {
-            if (this.state === ARROW.UP) return 'translate(12, 12) rotate(-180) translate(-12, -12)';
+            if (this.state === ARROW.UP) return { transform: 'rotate(-180deg)' };
 
             return null;
         },

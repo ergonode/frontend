@@ -4,10 +4,8 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
-            <VerticalFixedScroll>
-                <TransitionForm />
-            </VerticalFixedScroll>
+        <template #centeredContent>
+            <TransitionForm />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -15,12 +13,10 @@
 <script>
 import TransitionForm from '@Transitions/components/Forms/TransitionForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'TransitionBaseTab',
     components: {
-        VerticalFixedScroll,
         TransitionForm,
         ResponsiveCenteredViewTemplate,
     },

@@ -4,31 +4,27 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
-            <VerticalFixedScroll>
-                <div class="container">
-                    <VerticalCenteredView>
-                        <ProductCollection v-if="collections.length">
-                            <ExpandingCollection
-                                v-for="(collection, index) in collections"
-                                :key="collection.id"
-                                :index="index"
-                                :collection="collection"
-                                @fetch="fetchCollectionItems">
-                                <template #item="{ item }">
-                                    <ProductCollectionItem :item="item" />
-                                </template>
-                            </ExpandingCollection>
-                        </ProductCollection>
-                        <ListPlaceholder
-                            v-else
-                            title="Nothing to see here"
-                            subtitle="Here you can see important notifications of product update"
-                            :layout-orientation="horizontalOrientation"
-                            :bg-url="require('@Core/assets/images/placeholders/comments.svg')" />
-                    </VerticalCenteredView>
-                </div>
-            </VerticalFixedScroll>
+        <template #centeredContent>
+            <div class="product-collection-container">
+                <ProductCollection v-if="collections.length">
+                    <ExpandingCollection
+                        v-for="(collection, index) in collections"
+                        :key="collection.id"
+                        :index="index"
+                        :collection="collection"
+                        @fetch="fetchCollectionItems">
+                        <template #item="{ item }">
+                            <ProductCollectionItem :item="item" />
+                        </template>
+                    </ExpandingCollection>
+                </ProductCollection>
+                <ListPlaceholder
+                    v-else
+                    title="Nothing to see here"
+                    subtitle="Here you can see important notifications of product update"
+                    :layout-orientation="horizontalOrientation"
+                    :bg-url="require('@Core/assets/images/placeholders/comments.svg')" />
+            </div>
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -36,16 +32,12 @@
 <script>
 import { LayoutOrientation } from '@Core/defaults/layout';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
-import VerticalCenteredView from '@Core/components/Layout/VerticalCenteredView';
 import ProductCollection from '@Products/components/ProductCollection/ProductCollection';
 import ProductCollectionItem from '@Products/components/ProductCollection/ProductCollectionItem';
 
 export default {
     name: 'ProductCollectionTab',
     components: {
-        VerticalCenteredView,
-        VerticalFixedScroll,
         ResponsiveCenteredViewTemplate,
         ProductCollection,
         ProductCollectionItem,
@@ -92,7 +84,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .container {
-        display: grid;
+    .product-collection-container {
+        display: flex;
+        align-items: center;
+        padding: 24px;
     }
 </style>

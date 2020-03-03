@@ -4,10 +4,8 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
-            <VerticalFixedScroll>
-                <ProductForm />
-            </VerticalFixedScroll>
+        <template #centeredContent>
+            <ProductForm />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -15,12 +13,10 @@
 <script>
 import ProductForm from '@Products/components/Forms/ProductForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 
 export default {
     name: 'ProductBaseTab',
     components: {
-        VerticalFixedScroll,
         ProductForm,
         ResponsiveCenteredViewTemplate,
     },

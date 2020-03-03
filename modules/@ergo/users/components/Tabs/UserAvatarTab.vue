@@ -4,23 +4,19 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
-            <VerticalFixedScroll>
-                <UserAvatarForm />
-            </VerticalFixedScroll>
+        <template #centeredContent>
+            <UserAvatarForm />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 import UserAvatarForm from '@Users/components/Forms/UserAvatarForm';
 
 export default {
     name: 'UserAvatarTab',
     components: {
-        VerticalFixedScroll,
         UserAvatarForm,
         ResponsiveCenteredViewTemplate,
     },

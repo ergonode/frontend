@@ -47,7 +47,7 @@ describe('Grid/Grid', () => {
         expect(Grid.name).toEqual('Grid');
     });
 
-    describe('mixins/selectedRowMixin', () => {
+    describe('mixins/selectGridRowMixin', () => {
         describe('Selecting every row by marking header check', () => {
             it('None of rows are selected', () => {
                 wrapper.vm.onSelectAllRows(true);

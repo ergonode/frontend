@@ -34,19 +34,15 @@ import ListElementHint from '@Core/components/List/ListElementHint';
 export default {
     name: 'ListGroupElement',
     components: {
-        ListElementAction: () => import('@Core/components/List/ListElementAction'),
-        ListElement: () => import('@Core/components/List/ListElement'),
         ListElementDescription,
         ListElementTitle,
         ListElementHint,
+        ListElementAction: () => import('@Core/components/List/ListElementAction'),
+        ListElement: () => import('@Core/components/List/ListElement'),
         IconArrowSingle: () => import('@Core/components/Icons/Arrows/IconArrowSingle'),
         FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
     },
     props: {
-        index: {
-            type: String,
-            default: null,
-        },
         title: {
             type: String,
             required: true,
@@ -73,11 +69,7 @@ export default {
     },
     methods: {
         expandGroup() {
-            if (!this.isExpanded) {
-                this.$emit('group', this.index);
-            } else {
-                this.$emit('group');
-            }
+            this.$emit('expand', { isExpanded: !this.isExpanded });
         },
     },
 };

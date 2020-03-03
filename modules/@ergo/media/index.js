@@ -2,45 +2,28 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Pages, Icons } from './config/imports';
-import Privileges from './config/privileges';
+import { join } from 'path';
+import configuration from './config';
 
-export default {
-    name: '@ergo/media',
-    type: 'page',
-    moduleRelations: [],
-    privileges: Privileges,
-    nuxt: {
-        aliases: {
-            '@Media': '/',
-        },
-    },
-    router: [
-        {
-            name: 'media',
-            path: '/media',
-            component: Pages.Placeholder,
-            meta: {
-                access: true,
-                title: 'Media',
-                group: {
-                    title: 'Resources',
-                    menuPosition: 6,
-                    icon: Icons.Media,
-                },
-                breadcrumbs: [
-                    {
-                        title: 'Resources',
-                        icon: Icons.Media,
-                    },
-                ],
-                isMenu: true,
-                menuPosition: 1,
-                privileges: {
-                    namespace: Privileges.MULTIMEDIA.namespace,
-                    read: Privileges.MULTIMEDIA.read,
-                },
-            },
-        },
-    ],
-};
+export default async function () {
+    const {
+        name,
+        type,
+        aliases = {},
+    } = configuration;
+
+    if (!this.options.ergoModules) this.options.ergoModules = {};
+
+    this.options.ergoModules[name] = type;
+    this.extendBuild((config) => {
+        const alias = config.resolve.alias || {};
+
+        Object.keys(aliases).forEach((key) => {
+            alias[key] = (type === 'npm'
+                ? join(name, aliases[key], '/src')
+                : join(__dirname, aliases[key])
+            ).replace(/\/$/g, '');
+        });
+    });
+}
+export const config = configuration;

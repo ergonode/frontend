@@ -23,7 +23,8 @@
                     :size="smallSize"
                     :plain="true"
                     :options="contextualMenuItems"
-                    @focus="onSelectFocus">
+                    @focus="onSelectFocus"
+                    @input="onSelectValue">
                     <template #icon="{ fillColor }">
                         <IconDots :fill-color="fillColor" />
                     </template>
@@ -110,8 +111,8 @@ export default {
         },
     },
     methods: {
-        onSelectValue(index) {
-            switch (this.contextualMenuItems[index]) {
+        onSelectValue(value) {
+            switch (value) {
             case 'Remove':
                 this.$emit('remove', this.itemId);
                 break;
@@ -130,7 +131,12 @@ export default {
                 const foundKey = findKeyWhenSelect(clearedKey);
 
                 if (foundKey !== -1) {
-                    if (!placeholders[clearedKey]) return placeholder;
+                    if (!placeholders[clearedKey]) {
+                        return placeholder;
+                    }
+                    if (Array.isArray(placeholders[clearedKey])) {
+                        return placeholders[clearedKey].map(option => option.value).join(', ');
+                    }
                     return placeholders[clearedKey].value;
                 }
                 return placeholders[clearedKey] || placeholder;

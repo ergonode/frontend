@@ -28,21 +28,9 @@ export default {
         } = store.state.authentication;
         const { id } = params;
 
-        await Promise.all([
-            store.dispatch('templateDesigner/getTypes', {
-                path: `${userLanguageCode}/templates/types`,
-            }),
-            store.dispatch('list/clearStorage'),
-            store.dispatch('list/getGroups', {
-                listType: 'attributes',
-                languageCode: userLanguageCode,
-            }),
-            store.dispatch('list/getElementsForGroup', {
-                listType: 'attributes',
-                groupId: null,
-                languageCode: userLanguageCode,
-            }),
-        ]);
+        await store.dispatch('templateDesigner/getTypes', {
+            path: `${userLanguageCode}/templates/types`,
+        });
         await store.dispatch('templateDesigner/getTemplateByID', {
             path: `${userLanguageCode}/templates/${id}`,
         });
@@ -108,6 +96,11 @@ export default {
                 });
             });
         },
+    },
+    head() {
+        return {
+            title: `${this.templateTitle} - Product templates - Ergonode`,
+        };
     },
 };
 </script>

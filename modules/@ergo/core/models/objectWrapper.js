@@ -16,28 +16,6 @@ export function getKeyByValue(object, value) {
 }
 
 /**
- * Returns nested object searched by key and value
- * @function
- * @param {Object} object
- * @param {string} key
- * @param {string|number} value
- * @returns {?Object} Object with searched key and value
- */
-export function getNestedObjectByKeyWithValue(object, key, value) {
-    let lookingNestedObject = null;
-
-    Object.values(object).some(values => values.some((nestedObject) => {
-        if (nestedObject[key] === value) {
-            lookingNestedObject = { ...nestedObject };
-            return true;
-        }
-        return false;
-    }));
-
-    return lookingNestedObject;
-}
-
-/**
  * Returns array from object
  * @function
  * @param {Object} object

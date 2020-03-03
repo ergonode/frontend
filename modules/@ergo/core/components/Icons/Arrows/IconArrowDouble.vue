@@ -6,10 +6,9 @@
     <BaseIcon
         :width="size"
         :height="size"
+        :style="iconTransform"
         :icon-color="fillColor">
-        <path
-            :d="drawingCommands"
-            :transform="iconTransform" />
+        <path :d="drawingCommands" />
     </BaseIcon>
 </template>
 
@@ -44,9 +43,9 @@ export default {
     },
     computed: {
         iconTransform() {
-            if (this.state === ARROW.LEFT) return 'translate(12, 12.005) scale(1, -1) rotate(-270) translate(-12, -12.005)';
-            if (this.state === ARROW.RIGHT) return 'translate(12, 12) rotate(-90) translate(-12, -12)';
-            if (this.state === ARROW.UP) return 'translate(12, 12.005) scale(1, -1) translate(-12, -12.005)';
+            if (this.state === ARROW.LEFT) return { transform: 'rotate(-270deg)' };
+            if (this.state === ARROW.RIGHT) return { transform: 'rotate(-90deg)' };
+            if (this.state === ARROW.UP) return { transform: 'rotate(-180deg)' };
 
             return null;
         },

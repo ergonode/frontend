@@ -10,9 +10,7 @@
         @dragstart="onDragStart"
         @dragend="onDragEnd">
         <slot v-if="!isDragged" />
-        <IconDragDrop
-            size="16"
-            class="draggable-element__icon" />
+        <IconDragDrop class="draggable-element__icon" />
     </li>
 </template>
 

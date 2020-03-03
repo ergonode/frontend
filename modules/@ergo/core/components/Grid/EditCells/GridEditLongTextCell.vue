@@ -5,6 +5,7 @@
 <template>
     <GridEditTextBaseCell :style="{width: `${fixedWidth + 8}px` }">
         <TextArea
+            :style="{height: '134px'}"
             :value="value"
             :dismissible="false"
             :autofocus="true"

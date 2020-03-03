@@ -2,59 +2,28 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Pages, Tabs, Icons } from './config/imports';
-import Privileges from './config/privileges';
+import { join } from 'path';
+import configuration from './config';
 
-export default {
-    name: '@ergo/activity-logs',
-    type: 'page',
-    moduleRelations: [
-        '@ergo/users',
-    ],
-    privileges: Privileges,
-    nuxt: {
-        aliases: {
-            '@ActivityLogs': '/',
-        },
-    },
-    router: [
-        {
-            name: 'activity-logs',
-            path: '/activity-logs',
-            component: Pages.UsersActivityLogs,
-            meta: {
-                access: true,
-                title: 'Activity logs',
-                group: {
-                    title: 'System',
-                    menuPosition: 1000,
-                    icon: Icons.Settings,
-                },
-                isMenu: true,
-                menuPosition: 3,
-                privileges: {
-                    namespace: Privileges.USER.namespace,
-                    read: Privileges.USER.read,
-                },
-                redirectTo: 'activity-logs-grid',
-            },
-            children: [
-                {
-                    name: 'activity-logs-grid',
-                    path: 'grid',
-                    component: Tabs.UsersActivityLogsGridTab,
-                    meta: {
-                        title: '',
-                        breadcrumbs: [
-                            {
-                                title: 'System',
-                                icon: Icons.Settings,
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-        },
-    ],
-};
+export default async function () {
+    const {
+        name,
+        type,
+        aliases = {},
+    } = configuration;
+
+    if (!this.options.ergoModules) this.options.ergoModules = {};
+
+    this.options.ergoModules[name] = type;
+    this.extendBuild((config) => {
+        const alias = config.resolve.alias || {};
+
+        Object.keys(aliases).forEach((key) => {
+            alias[key] = (type === 'npm'
+                ? join(name, aliases[key], '/src')
+                : join(__dirname, aliases[key])
+            ).replace(/\/$/g, '');
+        });
+    });
+}
+export const config = configuration;

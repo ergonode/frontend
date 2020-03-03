@@ -12,7 +12,7 @@
         :placeholder="placeholder"
         :multiselect="multiselect"
         :disabled="disabled"
-        :error-messages="isError ? errorMessages : null"
+        :error-messages="errorMessages"
         :is-information-label="false"
         :required="required"
         :options="options"
@@ -64,9 +64,7 @@ export default {
             } else if (value) {
                 this.localValue = this.options.find(option => option.key === value);
             } else {
-                this.localValue = this.multiselect ? [] : {
-                    id: '', key: '', value: '', hint: '',
-                };
+                this.localValue = this.multiselect ? [] : null;
             }
         },
         onFocusChange(isFocused) {

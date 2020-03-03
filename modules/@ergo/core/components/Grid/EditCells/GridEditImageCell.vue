@@ -30,7 +30,7 @@ export default {
     },
     destroyed() {
         if (this.imageId !== this.value) {
-            this.$emit('imageid', this.imageId);
+            this.$emit('input', this.imageId);
         }
     },
     methods: {

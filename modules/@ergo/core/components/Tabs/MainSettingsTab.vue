@@ -4,10 +4,8 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
-            <VerticalFixedScroll>
-                <MainSettingsForm />
-            </VerticalFixedScroll>
+        <template #centeredContent>
+            <MainSettingsForm />
         </template>
         <template #footer>
             <FooterActions>
@@ -26,7 +24,6 @@ import { mapActions } from 'vuex';
 import languageSettingsModule from '@Core/reusableStore/languageSettings/state';
 import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 import FooterActions from '@Core/components/ReusableFooter/FooterActions';
 import Button from '@Core/components/Buttons/Button';
 import { SIZES } from '@Core/defaults/buttons';
@@ -34,7 +31,6 @@ import { SIZES } from '@Core/defaults/buttons';
 export default {
     name: 'MainSettingsTab',
     components: {
-        VerticalFixedScroll,
         MainSettingsForm,
         ResponsiveCenteredViewTemplate,
         FooterActions,

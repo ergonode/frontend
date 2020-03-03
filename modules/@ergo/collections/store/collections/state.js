@@ -5,8 +5,6 @@
 export default () => ({
     id: null,
     code: '',
-    type: {
-        id: '', key: '', value: '', hint: '',
-    },
+    type: null,
     types: [],
 });

@@ -145,5 +145,10 @@ export default {
             });
         },
     },
+    head() {
+        return {
+            title: `${this.code} - Attributes - Ergonode`,
+        };
+    },
 };
 </script>

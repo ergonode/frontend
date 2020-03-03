@@ -2,132 +2,49 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Pages, Tabs, Icons } from './config/imports';
-import Privileges from './config/privileges';
+import { resolve, join } from 'path';
+import configuration from './config';
 
-export default {
-    name: '@ergo/core',
-    type: 'page',
-    Privileges,
-    nuxt: {
-        aliases: {
-            '@Core': '/',
-        },
-        middleware: [
-            '/middleware/privilegeRoutingCheck',
-            '/middleware/redirectToPath',
-        ],
-        plugins: [
-            '/plugins/axios',
-            '/plugins/register-store',
-            '/plugins/core',
-            { mode: 'client', src: '/plugins/alerts' },
-        ],
-        css: [
-            '/assets/scss/reset.scss',
-            '/assets/scss/font-inter-ui.scss',
-            '/assets/scss/typography.scss',
-            '/assets/scss/input/input.scss',
-        ],
-        styleResources: {
-            scss: '/assets/scss/main.scss',
-        },
-    },
-    dictionaries: [
-        {
-            stateProp: 'languages',
-            dataFormat: {},
-            requestPath: '/dictionary/languages',
-        },
-    ],
-    router: [
-        {
-            name: 'index',
-            path: '/',
-            component: Pages.Login,
-            meta: {
-                isMenu: false,
-            },
-        },
-        {
-            name: 'placeholder',
-            path: '/placeholder/:placeholder',
-            component: Pages.Placeholder,
-            meta: {
-                isMenu: false,
-            },
-        },
-        {
-            name: 'settings',
-            path: '/settings',
-            component: Pages.Settings,
-            meta: {
-                access: true,
-                title: 'Settings',
-                group: {
-                    title: 'System',
-                    menuPosition: 1000,
-                    icon: Icons.Settings,
-                },
-                breadcrumbs: [
-                    {
-                        title: 'System',
-                        icon: Icons.Settings,
-                    },
-                ],
-                isMenu: true,
-                menuPosition: 1000,
-                redirectTo: 'settings-main',
-            },
-            children: [
-                {
-                    name: 'settings-main',
-                    path: 'main',
-                    component: Tabs.MainSettingsTab,
-                    meta: {
-                        title: 'Main settings',
-                        privileges: [],
-                    },
-                },
-            ],
-        },
-    ],
-    store: [
-        {
-            directory: 'dictionaries',
-            name: 'dictionaries',
-        },
-        {
-            directory: 'core',
-            name: 'core',
-        },
-        {
-            directory: 'validations',
-            name: 'validations',
-        },
-        {
-            directory: 'translations',
-            name: 'translations',
-        },
-        {
-            directory: 'list',
-            name: 'list',
-        },
-        {
-            directory: 'alerts',
-            name: 'alerts',
-        },
-        {
-            directory: 'draggable',
-            name: 'draggable',
-        },
-        {
-            directory: 'gridDesigner',
-            name: 'gridDesigner',
-        },
-        {
-            directory: 'gridDraft',
-            name: 'gridDraft',
-        },
-    ],
-};
+export default async function () {
+    const {
+        name = '',
+        type,
+        aliases = {},
+        plugins = [],
+        css = [],
+        styleResources = {},
+    } = configuration;
+    const moduleName = name.replace(/[^a-zA-Z]/g, '');
+    const modulePath = type === 'npm'
+        ? name
+        : `~/modules/${name}`;
+
+    if (!this.options.styleResources) this.options.styleResources = {};
+    if (!this.options.ergoModules) this.options.ergoModules = {};
+
+    this.options.ergoModules[name] = type;
+    this.extendBuild((config) => {
+        const alias = config.resolve.alias || {};
+
+        Object.keys(aliases).forEach((key) => {
+            alias[key] = (type === 'npm'
+                ? join(name, aliases[key], '/src')
+                : join(__dirname, aliases[key])
+            ).replace(/\/$/g, '');
+        });
+    });
+    css.forEach((style) => {
+        this.options.css.push(join(modulePath, style));
+    });
+    Object.keys(styleResources).forEach((resource) => {
+        this.options.styleResources[resource] = join(modulePath, styleResources[resource]);
+    });
+    plugins.forEach(({ ssr, src }) => {
+        this.addPlugin({
+            src: resolve(__dirname, `${src}.js`),
+            fileName: join('modules', moduleName, `${src}.js`),
+            ssr,
+        });
+    });
+}
+export const config = configuration;

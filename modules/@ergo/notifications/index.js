@@ -2,49 +2,28 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Pages, Tabs, Components } from './config/imports';
-import Privileges from './config/privileges';
+import { join } from 'path';
+import configuration from './config';
 
-export default {
-    name: '@ergo/notifications',
-    type: 'page',
-    moduleRelations: [],
-    privileges: Privileges,
-    nuxt: {
-        aliases: {
-            '@Notifications': '/',
-        },
-    },
-    router: [
-        {
-            name: 'notifications',
-            path: '/notifications',
-            component: Pages.Notifications,
-            meta: {
-                isMenu: false,
-                redirectTo: 'notifications-grid',
-            },
-            children: [
-                {
-                    name: 'notifications-grid',
-                    path: 'grid',
-                    component: Tabs.NotificationGridTab,
-                },
-            ],
-        },
-    ],
-    store: [
-        {
-            directory: 'notifications',
-            name: 'notifications',
-        },
-    ],
-    extendComponents: {
-        NAVIGATION_BAR: [
-            {
-                component: Components.NavigationBarNotificationButton,
-                props: {},
-            },
-        ],
-    },
-};
+export default async function () {
+    const {
+        name,
+        type,
+        aliases = {},
+    } = configuration;
+
+    if (!this.options.ergoModules) this.options.ergoModules = {};
+
+    this.options.ergoModules[name] = type;
+    this.extendBuild((config) => {
+        const alias = config.resolve.alias || {};
+
+        Object.keys(aliases).forEach((key) => {
+            alias[key] = (type === 'npm'
+                ? join(name, aliases[key], '/src')
+                : join(__dirname, aliases[key])
+            ).replace(/\/$/g, '');
+        });
+    });
+}
+export const config = configuration;

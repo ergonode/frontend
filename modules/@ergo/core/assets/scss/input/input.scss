@@ -15,8 +15,9 @@
         position: relative;
         display: flex;
         flex: 1;
+        align-items: center;
 
-        input::placeholder, textarea::placeholder, input, textarea {
+        input::placeholder, textarea::placeholder, input, textarea, #{$input}__value {
             color: $GRAPHITE_DARK;
         }
 
@@ -38,9 +39,16 @@
         }
 
         textarea {
+            height: 100%;
             padding: 6px 1px 1px;
             box-sizing: border-box;
         }
+    }
+
+    &__value {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
 
     &__information-label {
@@ -105,7 +113,7 @@
 
     &.underline {
         #{$input}__activator {
-            input {
+            input, #{$input}__value {
                 padding: 0;
             }
 
@@ -146,7 +154,7 @@
 
     &.small:not(.left-alignment):not(.underline):not(.center-alignment) {
         #{$input}__activator {
-            input::placeholder, input {
+            input::placeholder, input, #{$input}__value {
                 margin-left: 5px;
             }
         }
@@ -168,7 +176,7 @@
         #{$input}__activator {
             flex-basis: 32px;
 
-            input::placeholder, input {
+            input::placeholder, input, #{$input}__value {
                 font: $FONT_MEDIUM_12_16;
             }
         }
@@ -180,7 +188,7 @@
 
     &.regular:not(.left-alignment):not(.underline):not(.center-alignment) {
         #{$input}__activator {
-            input::placeholder, input {
+            input::placeholder, input, #{$input}__value {
                 margin-left: 9px;
             }
         }
@@ -190,7 +198,7 @@
         #{$input}__activator {
             flex-basis: 40px;
 
-            input::placeholder, input {
+            input::placeholder, input, #{$input}__value {
                 font: $FONT_MEDIUM_14_20;
             }
         }
@@ -327,7 +335,7 @@
         #{$input}__activator {
             background-color: $WHITESMOKE;
 
-            input, textarea {
+            input, textarea, #{$input}__value {
                 background-color: $WHITESMOKE;
                 color: $GRAPHITE_LIGHT;
             }
