@@ -33,7 +33,14 @@ const scrollBehavior = (to, from, savedPosition) => {
 
 const extendRoutes = () => {
     const extendTabs = Object.values(extendsModules)
-        .reduce((acc, current) => [].concat(...acc, ...current.extendTabs || []), []);
+        .reduce((acc, current) => {
+            let connectedArray = acc;
+
+            if (current.extendTabs) {
+                connectedArray = [...acc, ...current.extendTabs];
+            }
+            return connectedArray;
+        }, []);
     const extendedRoutes = [].concat(...Object.values(routerModules), routerLocal);
 
     for (let i = 0; i < extendTabs.length; i += 1) {

@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import { Pages, Icons } from './imports';
-// import Privileges from './privileges';
 
 export default [
     {
@@ -20,10 +19,6 @@ export default [
             },
             isMenu: true,
             menuPosition: 1,
-            // privileges: {
-            //     namespace: Privileges.EXPORT.namespace,
-            //     read: Privileges.EXPORT.read,
-            // },
         },
     },
 ];

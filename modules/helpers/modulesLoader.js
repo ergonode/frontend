@@ -5,6 +5,7 @@
  * See LICENSE for license details.
  */
 import { resolve, join } from 'path';
+import { existsSync } from 'fs';
 import recursive from 'recursive-readdir';
 
 const DEFAULTS = {
@@ -27,7 +28,7 @@ async function* moduleConfig({
         const dirPrefix = type === 'npm' ? vendorDir : modulesDir;
         const path = resolve(this.options.srcDir, dirPrefix, `${moduleName}`, type === 'npm' ? 'src' : '', 'config');
 
-        try {
+        if (existsSync(path)) {
             yield recursive(path).then(
                 files => files.find(file => /\/index\.js/.test(file)),
             ).then((file) => {
@@ -38,8 +39,6 @@ async function* moduleConfig({
                 }
                 return null;
             });
-        } catch (e) {
-            // console.error(e);
         }
     }
 }

@@ -5,7 +5,7 @@
  * See LICENSE for license details.
  */
 import { resolve } from 'path';
-import recursive from 'recursive-readdir';
+import { findPaths } from '../../models/modulesHelper';
 
 const DEFAULTS = {
     vendorDir: 'vendor',
@@ -13,22 +13,6 @@ const DEFAULTS = {
     modules: {},
 };
 
-async function* storePaths({ modules, vendorDir, modulesDir }) {
-    for (let i = 0; i < Object.keys(modules).length; i += 1) {
-        const moduleName = Object.keys(modules)[i];
-        const type = modules[moduleName];
-        const dirPrefix = type === 'npm' ? vendorDir : modulesDir;
-        const path = resolve(this.options.srcDir, dirPrefix, `${moduleName}`, type === 'npm' ? 'src' : '', 'store');
-
-        try {
-            yield recursive(path).then(
-                files => files.filter(file => /\/index\.js/.test(file)),
-            );
-        } catch (e) {
-            // console.error(e);
-        }
-    }
-}
 export default async function registerStore(moduleOptions) {
     const store = [];
     const options = { ...DEFAULTS, ...this.options.registerRouter || moduleOptions };
@@ -37,7 +21,7 @@ export default async function registerStore(moduleOptions) {
         options.modules = this.options.ergoModules;
     }
 
-    for await (const files of storePaths.call(this, options)) {
+    for await (const files of findPaths.call(this, 'store', /index\.js/, options, true)) {
         if (files) {
             files.forEach((file) => {
                 const storeName = file.split('/');

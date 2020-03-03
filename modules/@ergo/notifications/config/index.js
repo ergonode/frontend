@@ -8,12 +8,4 @@ export default {
     aliases: {
         '@Notifications': '/',
     },
-    extendComponents: {
-        NAVIGATION_BAR: [
-            {
-                component: () => import('@Notifications/components/NavigationBar/NavigationBarNotificationButton'),
-                props: {},
-            },
-        ],
-    },
 };

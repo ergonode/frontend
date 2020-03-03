@@ -19,17 +19,14 @@ import _modules from './config/.modules';
 
 dotenv.config({ path: '.env' });
 
+const prepareModulesObject = array => array.reduce((acc, current) => {
+    const newObject = acc;
+    newObject[current] = AVAILABLE_MODULES[current];
+    return newObject;
+}, {});
 const DIR_PREFIX = type => (`~/${type === 'npm' ? VENDOR_DIR : MODULES_DIR}/`);
-const ACTIVE_MODULES = _modules.active.reduce((acc, current) => {
-    const newObject = acc;
-    newObject[current] = AVAILABLE_MODULES[current];
-    return newObject;
-}, {});
-const INACTIVE_MODULES = _modules.inactive.reduce((acc, current) => {
-    const newObject = acc;
-    newObject[current] = AVAILABLE_MODULES[current];
-    return newObject;
-}, {});
+const ACTIVE_MODULES = prepareModulesObject(_modules.active);
+const INACTIVE_MODULES = prepareModulesObject(_modules.inactive);
 const MODULES_TO_LOAD = _modules.active.map((name) => {
     const type = AVAILABLE_MODULES[name];
 

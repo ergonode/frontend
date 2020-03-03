@@ -20,7 +20,6 @@ export const Tabs = {
     RolePrivilegesTab: () => import('@Users/components/Tabs/RolePrivilegesTab').then(m => m.default || m),
     UserActivityLogsGridTab: () => import('@Users/components/Tabs/UserActivityLogsGridTab').then(m => m.default || m),
     UserPrivilegesGridTab: () => import('@Users/components/Tabs/UserPrivilegesGridTab').then(m => m.default || m),
-    // UserSettingsTab: () => import('@Users/components/Tabs/UserSettingsTab').then(m => m.default || m),
 };
 
 export const Icons = {
