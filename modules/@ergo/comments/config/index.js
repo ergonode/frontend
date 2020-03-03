@@ -3,4 +3,9 @@
  * See LICENSE for license details.
  */
 export default {
+    name: '@ergo/comments',
+    type: 'local',
+    aliases: {
+        '@Comments': '/',
+    },
 };

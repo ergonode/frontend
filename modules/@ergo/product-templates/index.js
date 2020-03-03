@@ -2,106 +2,28 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Pages, Tabs, Icons } from './config/imports';
-import Privileges from './config/privileges';
+import { join } from 'path';
+import configuration from './config';
 
-export default {
-    name: '@ergo/product-templates',
-    type: 'page',
-    moduleRelations: [
-        // '@ergo/products',
-    ],
-    privileges: Privileges,
-    nuxt: {
-        aliases: {
-            '@Templates': '/',
-        },
-    },
-    router: [
-        {
-            name: 'product-templates',
-            path: '/product-templates',
-            component: Pages.ProductTemplates,
-            meta: {
-                access: true,
-                title: 'Product templates',
-                group: {
-                    title: 'Product design',
-                    menuPosition: 3,
-                    icon: Icons.Templates,
-                },
-                breadcrumbs: [
-                    {
-                        title: 'Product design',
-                        icon: Icons.Templates,
-                    },
-                ],
-                isMenu: true,
-                menuPosition: 3,
-                privileges: {
-                    namespace: Privileges.TEMPLATE_DESIGNER.namespace,
-                    read: Privileges.TEMPLATE_DESIGNER.read,
-                },
-            },
-        },
-        {
-            name: 'product-template-id',
-            path: '/product-templates/template/:id',
-            component: Pages.ProductTemplateEdit,
-            meta: {
-                isMenu: false,
-                redirectTo: 'product-template-id-general',
-            },
-            children: [
-                {
-                    name: 'product-template-id-general',
-                    path: 'general',
-                    component: Tabs.TemplateDesignerBaseTab,
-                    meta: {
-                        title: 'General options',
-                        breadcrumbs: [
-                            {
-                                title: 'Product design',
-                                icon: Icons.Templates,
-                            },
-                            {
-                                title: 'Product templates',
-                                routeName: 'product-templates',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-                {
-                    name: 'product-template-id-template',
-                    path: 'template',
-                    component: Tabs.TemplateDesignerTab,
-                    meta: {
-                        title: 'Designer',
-                        breadcrumbs: [
-                            {
-                                title: 'Product design',
-                                icon: Icons.Templates,
-                            },
-                            {
-                                title: 'Product templates',
-                                routeName: 'product-templates',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-        },
-    ],
-    store: [
-        {
-            directory: 'templateLists',
-            name: 'templateLists',
-        },
-        {
-            directory: 'templateDesigner',
-            name: 'templateDesigner',
-        },
-    ],
-};
+export default async function () {
+    const {
+        name,
+        type,
+        aliases = {},
+    } = configuration;
+
+    if (!this.options.ergoModules) this.options.ergoModules = {};
+
+    this.options.ergoModules[name] = type;
+    this.extendBuild((config) => {
+        const alias = config.resolve.alias || {};
+
+        Object.keys(aliases).forEach((key) => {
+            alias[key] = (type === 'npm'
+                ? join(name, aliases[key], '/src')
+                : join(__dirname, aliases[key])
+            ).replace(/\/$/g, '');
+        });
+    });
+}
+export const config = configuration;

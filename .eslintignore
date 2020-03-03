@@ -1,9 +1,9 @@
 package.json
-router.js
 node_modules/
 cypress/
 build/
 dist/
 coverage/
+vendor/
 .history/
 .vscode/

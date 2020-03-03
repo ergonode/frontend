@@ -2,132 +2,28 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { join } from 'path';
+import configuration from './config';
 
-import { Pages, Tabs, Icons } from './config/imports';
-import Privileges from './config/privileges';
+export default async function () {
+    const {
+        name,
+        type,
+        aliases = {},
+    } = configuration;
 
-export default {
-    name: '@ergo/collections',
-    type: 'page',
-    moduleRelations: [
-        '@ergo/products',
-    ],
-    nuxt: {
-        aliases: {
-            '@Collections': '/',
-        },
-    },
-    router: [
-        {
-            name: 'collections',
-            path: '/collections',
-            component: Pages.Collections,
-            meta: {
-                title: 'Collections',
-                group: {
-                    title: 'Products',
-                    menuPosition: 2,
-                    icon: Icons.Product,
-                },
-                isMenu: true,
-                menuPosition: 3,
-                privileges: {
-                    namespace: Privileges.PRODUCT_COLLECTION.namespace,
-                    read: Privileges.PRODUCT_COLLECTION.read,
-                },
-                redirectTo: 'collections-grid',
-            },
-            children: [
-                {
-                    name: 'collections-grid',
-                    path: 'grid',
-                    component: Tabs.CollectionGridTab,
-                    meta: {
-                        title: '',
-                        breadcrumbs: [
-                            {
-                                title: 'Products',
-                                icon: Icons.Product,
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-        },
-        {
-            name: 'collection-id',
-            path: '/collections/collection/:id',
-            component: Pages.CollectionEdit,
-            meta: {
-                isMenu: false,
-                redirectTo: 'collection-id-general',
-            },
-            children: [
-                {
-                    name: 'collection-id-general',
-                    path: 'general',
-                    component: Tabs.CollectionBaseTab,
-                    meta: {
-                        title: 'General options',
-                        breadcrumbs: [
-                            {
-                                title: 'Products',
-                                icon: Icons.Product,
-                            },
-                            {
-                                title: 'Collections',
-                                routeName: 'collections-grid',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-                {
-                    name: 'collection-id-translations',
-                    path: 'translations',
-                    component: Tabs.CollectionTranslationsTab,
-                    meta: {
-                        title: 'Translations',
-                        breadcrumbs: [
-                            {
-                                title: 'Products',
-                                icon: Icons.Product,
-                            },
-                            {
-                                title: 'Collections',
-                                routeName: 'collections-grid',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-                {
-                    name: 'collection-id-products',
-                    path: 'products',
-                    component: Tabs.CollectionProductsTab,
-                    meta: {
-                        title: 'Products',
-                        breadcrumbs: [
-                            {
-                                title: 'Products',
-                                icon: Icons.Product,
-                            },
-                            {
-                                title: 'Collections',
-                                routeName: 'collections-grid',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-        },
-    ],
-    store: [
-        {
-            directory: 'collections',
-            name: 'collections',
-        },
-    ],
-};
+    if (!this.options.ergoModules) this.options.ergoModules = {};
+
+    this.options.ergoModules[name] = type;
+    this.extendBuild((config) => {
+        const alias = config.resolve.alias || {};
+
+        Object.keys(aliases).forEach((key) => {
+            alias[key] = (type === 'npm'
+                ? join(name, aliases[key], '/src')
+                : join(__dirname, aliases[key])
+            ).replace(/\/$/g, '');
+        });
+    });
+}
+export const config = configuration;

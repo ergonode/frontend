@@ -2,112 +2,28 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Pages, Tabs, Icons } from './config/imports';
-import Privileges from './config/privileges';
+import { join } from 'path';
+import configuration from './config';
 
-export default {
-    name: '@ergo/categories',
-    type: 'page',
-    moduleRelations: [],
-    privileges: Privileges,
-    nuxt: {
-        aliases: {
-            '@Categories': '/',
-        },
-    },
-    router: [
-        {
-            name: 'categories',
-            path: '/categories',
-            component: Pages.Categories,
-            meta: {
-                access: true,
-                title: 'Categories',
-                group: {
-                    title: 'Product design',
-                    menuPosition: 3,
-                    icon: Icons.Templates,
-                },
-                isMenu: true,
-                menuPosition: 4,
-                privileges: {
-                    namespace: Privileges.CATEGORY.namespace,
-                    read: Privileges.CATEGORY.read,
-                },
-                redirectTo: 'categories-grid',
-            },
-            children: [
-                {
-                    name: 'categories-grid',
-                    path: 'grid',
-                    component: Tabs.CategoryGridTab,
-                    meta: {
-                        title: '',
-                        breadcrumbs: [
-                            {
-                                title: 'Product design',
-                                icon: Icons.Templates,
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-        },
-        {
-            name: 'category-id',
-            path: '/categories/category/:id',
-            component: Pages.CategoryEdit,
-            meta: {
-                isMenu: false,
-                redirectTo: 'category-id-general',
-            },
-            children: [
-                {
-                    name: 'category-id-general',
-                    path: 'general',
-                    component: Tabs.CategoryBaseTab,
-                    meta: {
-                        title: 'General options',
-                        breadcrumbs: [
-                            {
-                                title: 'Product design',
-                                icon: Icons.Templates,
-                            },
-                            {
-                                title: 'Categories',
-                                routeName: 'categories-grid',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-                {
-                    name: 'category-id-translations',
-                    path: 'translations',
-                    component: Tabs.CategoryTranslationsTab,
-                    meta: {
-                        title: 'Translations',
-                        breadcrumbs: [
-                            {
-                                title: 'Product design',
-                                icon: Icons.Templates,
-                            },
-                            {
-                                title: 'Categories',
-                                routeName: 'categories-grid',
-                            },
-                        ],
-                        privileges: [],
-                    },
-                },
-            ],
-        },
-    ],
-    store: [
-        {
-            directory: 'categories',
-            name: 'categories',
-        },
-    ],
-};
+export default async function () {
+    const {
+        name,
+        type,
+        aliases = {},
+    } = configuration;
+
+    if (!this.options.ergoModules) this.options.ergoModules = {};
+
+    this.options.ergoModules[name] = type;
+    this.extendBuild((config) => {
+        const alias = config.resolve.alias || {};
+
+        Object.keys(aliases).forEach((key) => {
+            alias[key] = (type === 'npm'
+                ? join(name, aliases[key], '/src')
+                : join(__dirname, aliases[key])
+            ).replace(/\/$/g, '');
+        });
+    });
+}
+export const config = configuration;
