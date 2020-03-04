@@ -25,8 +25,8 @@ const prepareModulesObject = array => array.reduce((acc, current) => {
     return newObject;
 }, {});
 const DIR_PREFIX = type => (`~/${type === 'npm' ? VENDOR_DIR : MODULES_DIR}/`);
-const ACTIVE_MODULES = prepareModulesObject(_modules.active);
-const INACTIVE_MODULES = prepareModulesObject(_modules.inactive);
+const ACTIVE_MODULES = prepareModulesObject(_modules.active || []);
+const INACTIVE_MODULES = prepareModulesObject(_modules.inactive || []);
 const MODULES_TO_LOAD = _modules.active.map((name) => {
     const type = AVAILABLE_MODULES[name];
 
