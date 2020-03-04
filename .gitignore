@@ -45,5 +45,6 @@ yarn-error.log
 config/*
 # exception to the rule
 !config/.copyright
+modules.config.js
 vendor
-.monitor
+.huskyrc

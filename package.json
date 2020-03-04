@@ -9,7 +9,7 @@
     "author": "Ergonode team",
     "private": true,
     "bin": {
-        "cli:run": "./lib/index.js"
+        "cli": "./lib/index.js"
     },
     "scripts": {
         "dev": "nuxt",
@@ -20,7 +20,7 @@
         "lint:dev": "npm run lint -- --cache && npm run lint:scss",
         "test": "jest --no-cache",
         "test:dev": "npm run test -- --coverage --u",
-        "cli:run": "./lib/index.js"
+        "cli": "./lib/index.js"
     },
     "dependencies": {
         "@babel/core": "^7.8.4",

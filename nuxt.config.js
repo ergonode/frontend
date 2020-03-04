@@ -15,7 +15,7 @@ import {
     keywords as KEYWORDS,
     description as DESCRIPTION,
 } from './package';
-import _modules from './config/.modules';
+import _modules from './modules.config';
 
 dotenv.config({ path: '.env' });
 
