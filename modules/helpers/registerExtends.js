@@ -22,7 +22,6 @@ export default async function registerExtends(moduleOptions) {
     }
 
     for await (const file of findPaths.call(this, 'config', /extends\.js/, options)) {
-        console.log(file);
         if (file) extend.push(file);
     }
 
