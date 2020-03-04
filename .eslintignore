@@ -7,3 +7,4 @@ coverage/
 vendor/
 .history/
 .vscode/
+modules.config.js

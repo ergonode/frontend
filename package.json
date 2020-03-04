@@ -9,18 +9,19 @@
     "author": "Ergonode team",
     "private": true,
     "bin": {
-        "cli:run": "./lib/index.js"
+        "cli": "./lib/index.js"
     },
     "scripts": {
         "dev": "nuxt",
         "build": "nuxt build",
         "start": "nuxt start",
+        "storybook": "start-storybook",
         "lint:scss": "stylelint './**/*.scss' './**/*.vue'",
         "lint": "eslint --ext .js,.vue . && npm run lint:scss",
         "lint:dev": "npm run lint -- --cache && npm run lint:scss",
         "test": "jest --no-cache",
         "test:dev": "npm run test -- --coverage --u",
-        "cli:run": "./lib/index.js"
+        "cli": "./lib/index.js"
     },
     "dependencies": {
         "@babel/core": "^7.8.4",
@@ -32,6 +33,7 @@
         "@nuxtjs/component-cache": "^1.1.5",
         "@nuxtjs/router": "^1.5",
         "@nuxtjs/style-resources": "^1.0",
+        "@storybook/vue": "^5.3.14",
         "chalk": "^3.0.0",
         "clear": "^0.1.0",
         "commander": "^4.1.1",
@@ -56,6 +58,7 @@
         "babel-eslint": "^8.0.1",
         "babel-jest": "^25.1.0",
         "babel-plugin-dynamic-import-node": "^2.3.0",
+        "babel-preset-vue": "^2.0.2",
         "cross-env": "^7.0.0",
         "cypress": "^3.8.3",
         "eslint": "^6.8.0",
