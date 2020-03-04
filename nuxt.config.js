@@ -34,7 +34,7 @@ const MODULES_TO_LOAD = _modules.active.map((name) => {
 });
 const NPM_MODULES = Object.keys(ACTIVE_MODULES).filter(name => ACTIVE_MODULES[name] === 'npm');
 const IS_DEV = process.env.NODE_ENV !== 'production';
-const BASE_URL = `${process.env.API_PROTOCOL}://${process.env.API_HOST}${process.env.API_PORT ? `:${process.env.API_PORT}` : ''}${process.env.API_PREFIX}`;
+const BASE_URL = process.env.API_BASE_URL || 'http://localhost:8000';
 
 module.exports = {
     mode: 'universal',
