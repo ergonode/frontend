@@ -2,9 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template functional>
+<template>
     <div class="template-grid-placeholder-item">
-        <IconDragDrop size="16" />
+        <IconDragDrop />
         Drag & drop the attribute here
     </div>
 </template>
