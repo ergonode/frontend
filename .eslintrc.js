@@ -12,9 +12,6 @@ module.exports = {
         'cypress/globals': true,
     },
     parserOptions: {
-      ecmaFeatures: {
-        legacyDecorators: true
-      },
         parser: 'babel-eslint',
 
     },

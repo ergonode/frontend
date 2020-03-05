@@ -9,7 +9,7 @@ module.exports = {
                 ['@nuxt/babel-preset-app', { corejs: { version: 3 } }],
             ],
         },
-        production: { // development environment transforms
+        production: { // production environment transforms
             presets: [
                 ['@nuxt/babel-preset-app', { corejs: { version: 3 } }],
             ],
