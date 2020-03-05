@@ -12,6 +12,9 @@ module.exports = {
         'cypress/globals': true,
     },
     parserOptions: {
+      ecmaFeatures: {
+        legacyDecorators: true
+      },
         parser: 'babel-eslint',
 
     },
@@ -48,14 +51,14 @@ module.exports = {
         'import/prefer-default-export': ['off'],
         'vue/html-indent': ['error', 4],
         'vue/html-closing-bracket-newline': ['off'],
-        indent: ['error', 4],
+        'indent': ['error', 4],
         'no-param-reassign': ['error', {
             props: true,
             ignorePropertyModificationsFor: [
                 'state',
             ],
         }],
-        camelcase: ['off'],
+        'camelcase': ['off'],
         'class-methods-use-this': ['off'],
         'global-require': ['off'],
         'import/no-dynamic-require': ['off'],

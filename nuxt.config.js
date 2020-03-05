@@ -111,6 +111,9 @@ module.exports = {
         baseURL: BASE_URL || 'http://localhost:8000',
     },
     build: {
+        babel: {
+            configFile: './babel.config.js',
+        },
         terser: {
             parallel: true,
             sourceMap: true,
