@@ -55,7 +55,6 @@ export default async function modulesLoader(moduleOptions) {
             configuration[file.name] = file;
         }
     }
-    this.options.modulesConfiguration = configuration;
 
     // Aliases to inactive modules
     Object.keys(options.inactiveModules).forEach((key) => {
@@ -86,7 +85,7 @@ export default async function modulesLoader(moduleOptions) {
 
     // Check modules relations
     Object.keys(options.activeModules).forEach((module) => {
-        if (configuration[module].relations) {
+        if (configuration[module] && configuration[module].relations) {
             configuration[module].relations.forEach((relation) => {
                 if (relation && !Object.keys(options.activeModules).includes(relation)) {
                     throw Error(`Module [${module}] has relation with [${relation}].\n Module [${relation}] does not exist.`);

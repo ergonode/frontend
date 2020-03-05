@@ -38,13 +38,17 @@ npm install
 ```
 Execute CLI command and set you API URL:
 ```bash
-npm run cli
+npm run env
 ```
 > *You can also copy .env.dist file as .env and set your API URL configuration.*
 
-Execute CLI command and choose yours modules :
+Execute CLI command and choose yours modules:
 ```bash
-npm run cli modules
+npm run modules
+```
+or select all available modules
+```bash
+npm run modules:all
 ```
 
 Run server

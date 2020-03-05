@@ -4,7 +4,7 @@
  */
 export default {
     name: '@ergo/media',
-    type: 'page',
+    type: 'local',
     aliases: {
         '@Media': '/',
     },
