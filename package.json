@@ -21,7 +21,9 @@
         "lint:dev": "npm run lint -- --cache && npm run lint:scss",
         "test": "jest --no-cache",
         "test:dev": "npm run test -- --coverage --u",
-        "cli": "./lib/index.js"
+        "env": "./lib/index.js env",
+        "modules": "./lib/index.js modules",
+        "modules:all": "./lib/index.js modules-all"
     },
     "dependencies": {
         "@babel/core": "^7.8.4",
