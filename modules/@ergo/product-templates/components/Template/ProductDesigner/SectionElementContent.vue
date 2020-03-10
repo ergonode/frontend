@@ -12,10 +12,10 @@
         </div>
         <div class="vertical-wrapper">
             <span
-                :class="typeLabelClasses"
+                class="element-content__header"
                 v-text="element.type" />
             <span
-                class="element-content__subheader font--medium-14-20"
+                class="element-content__subheader"
                 v-text="element.label" />
         </div>
         <div
@@ -83,13 +83,6 @@ export default {
         contextualMenuHoveStateClasses() {
             return { 'element-content__contextual-menu--hovered': this.isHovered };
         },
-        typeLabelClasses() {
-            return [
-                'element-content__header',
-                'txt--light-graphite',
-                'font--semi-bold-12-16',
-            ];
-        },
     },
     methods: {
         ...mapActions('templateDesigner', [
@@ -137,11 +130,14 @@ export default {
 
         &__header {
             letter-spacing: 0.5px;
+            color: $GRAPHITE_LIGHT;
+            font: $FONT_SEMI_BOLD_12_16;
         }
 
         &__subheader {
             height: 20px;
             color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_14_20;
         }
 
         &__header, &__subheader {

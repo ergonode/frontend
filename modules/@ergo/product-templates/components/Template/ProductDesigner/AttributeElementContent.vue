@@ -15,7 +15,7 @@
                 :class="[typeLabelClasses, typeLabelRequireClass]"
                 v-text="element.type" />
             <span
-                class="element-content__subheader font--medium-14-20"
+                class="element-content__subheader"
                 v-text="element.label" />
         </div>
         <div
@@ -106,10 +106,7 @@ export default {
             return { 'element-content--required': this.element.required };
         },
         typeLabelClasses() {
-            return [
-                'element-content__header',
-                'font--semi-bold-12-16',
-            ];
+            return 'element-content__header';
         },
         attributeIconComponent() {
             if (!this.element.type) return '';
@@ -175,11 +172,13 @@ export default {
         &__header {
             letter-spacing: 0.5px;
             color: $GRAPHITE_LIGHT;
+            font: $FONT_SEMI_BOLD_12_16;
         }
 
         &__subheader {
             height: 20px;
             color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_14_20;
         }
 
         &__header, &__subheader {

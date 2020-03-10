@@ -1,0 +1,118 @@
+import { Meta, Story, Preview, Description, Props } from '@storybook/addon-docs/blocks';
+import Button from '@Core/components/Buttons/Button';
+import { THEMES, SIZES } from '@Core/defaults/buttons';
+
+<Meta title="Components API|Button" component={Button} />
+
+# Button
+
+`Button` is a default component to display action in page
+
+```
+    import Button from '@Core/components/Buttons/Button'
+```
+
+## Theme
+<Preview>
+    <Story name="test">
+        <Button title="Test" />
+    </Story>
+    <Story name="primary">
+        {{
+            components: { Button },
+            template: `<Button title="PRIMARY" :theme="primaryTheme" />`,
+            computed: {
+                primaryTheme() {
+                    return THEMES.PRIMARY;
+                }
+            }
+        }}
+    </Story>
+    <Story name="secondary">
+        {{
+            components: { Button },
+            template: `<Button title="SECONDARY" :theme="secondaryTheme" />`,
+            computed: {
+                secondaryTheme() {
+                    return THEMES.SECONDARY;
+                }
+            }
+        }}
+    </Story>
+</Preview>
+
+## Disabled
+
+<Preview>
+    <Story name="disabled-primary">
+        {{
+            components: { Button },
+            template: `<Button title="DISABLED PRIMARY" :theme="primaryTheme" :disabled="true" />`,
+            computed: {
+                primaryTheme() {
+                    return THEMES.PRIMARY;
+                }
+            }
+        }}
+    </Story>
+    <Story name="disabled-secondary">
+        {{
+            components: { Button },
+            template: `<Button title="DISABLED SECONDARY" :theme="secondaryTheme" :disabled="true" />`,
+            computed: {
+                secondaryTheme() {
+                    return THEMES.SECONDARY;
+                }
+            }
+        }}
+    </Story>
+</Preview>
+
+## Size
+<Preview>
+    <Story name="regular">
+        {{
+            components: { Button },
+            template: `<Button title="PRIMARY" :theme="primaryTheme" :size="regularSize" />`,
+            computed: {
+                primaryTheme() {
+                    return THEMES.PRIMARY;
+                },
+                regularSize() {
+                    return SIZES.REGULAR;
+                },
+            }
+        }}
+    </Story>
+    <Story name="small">
+        {{
+            components: { Button },
+            template: `<Button title="PRIMARY" :theme="primaryTheme" :size="smallSize" />`,
+            computed: {
+                primaryTheme() {
+                    return THEMES.PRIMARY;
+                },
+                smallSize() {
+                    return SIZES.SMALL;
+                },
+            }
+        }}
+    </Story>
+    <Story name="tiny">
+        {{
+            components: { Button },
+            template: `<Button title="PRIMARY" :theme="primaryTheme" :size="tinySize" />`,
+            computed: {
+                primaryTheme() {
+                    return THEMES.PRIMARY;
+                },
+                tinySize() {
+                    return SIZES.TINY;
+                },
+            }
+        }}
+    </Story>
+</Preview>
+
+## Props
+<Props of={Button} />

@@ -26,7 +26,7 @@
             </template>
         </ol>
         <div class="side-bar__expand-button">
-            <FabButton
+            <Fab
                 :theme="secondaryTheme"
                 @click.native="onExpand">
                 <template #icon="{ isHovered, fillColor }">
@@ -34,7 +34,7 @@
                         :fill-color="isHovered ? fillColor : whiteColor"
                         :state="expendStateIcon" />
                 </template>
-            </FabButton>
+            </Fab>
         </div>
     </aside>
 </template>
@@ -44,7 +44,7 @@ import { THEMES } from '@Core/defaults/buttons';
 import { ARROW } from '@Core/defaults/icons';
 import { GREEN, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
-import FabButton from '@Core/components/Buttons/FabButton';
+import Fab from '@Core/components/Buttons/Fab';
 import SideBarLogo from '@Core/components/SideBar/SideBarLogo';
 import SideBarListElement from './SideBarListElement';
 import SideBarListGroup from './SideBarListGroup';
@@ -56,7 +56,7 @@ export default {
         SideBarListElement,
         SideBarListGroup,
         IconArrowDouble,
-        FabButton,
+        Fab,
     },
     data() {
         return {

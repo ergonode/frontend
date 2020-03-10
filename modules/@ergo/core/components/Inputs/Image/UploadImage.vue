@@ -33,13 +33,13 @@
                         alt="Uploaded file">
                 </div>
                 <div class="upload-image__remove-button">
-                    <FabButton
+                    <Fab
                         :theme="secondaryTheme"
                         @click.native="onRemove">
                         <template #icon="{ fillColor, isHovered }">
                             <IconDelete :fill-color="isHovered ? redColor : fillColor" />
                         </template>
-                    </FabButton>
+                    </Fab>
                 </div>
             </template>
         </div>
@@ -59,7 +59,7 @@ import { getImageData } from '@Core/models/multimedia';
 export default {
     name: 'UploadImage',
     components: {
-        FabButton: () => import('@Core/components/Buttons/FabButton'),
+        Fab: () => import('@Core/components/Buttons/Fab'),
         IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
     },
     props: {

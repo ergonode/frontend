@@ -5,7 +5,7 @@
 <template>
     <div class="date-picker-header">
         <slot name="previous">
-            <FabButton
+            <Fab
                 :theme="secondaryTheme"
                 @click.native="onPrevious">
                 <template #icon="{ fillColor }">
@@ -13,14 +13,14 @@
                         :fill-color="fillColor"
                         :state="leftArrow" />
                 </template>
-            </FabButton>
+            </Fab>
         </slot>
         <span
             class="header font--medium-14-20"
             @click="onClick"
             v-text="header" />
         <slot name="next">
-            <FabButton
+            <Fab
                 :theme="secondaryTheme"
                 @click.native="onNext">
                 <template #icon="{ fillColor }">
@@ -28,7 +28,7 @@
                         :fill-color="fillColor"
                         :state="rightArrow" />
                 </template>
-            </FabButton>
+            </Fab>
         </slot>
     </div>
 </template>
@@ -36,13 +36,13 @@
 <script>
 import { THEMES } from '@Core/defaults/buttons';
 import { ARROW } from '@Core/defaults/icons';
-import FabButton from '@Core/components/Buttons/FabButton';
+import Fab from '@Core/components/Buttons/Fab';
 import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
 
 export default {
     name: 'DatePickerNavigationHeader',
     components: {
-        FabButton,
+        Fab,
         IconArrowSingle,
     },
     props: {

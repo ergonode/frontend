@@ -23,7 +23,7 @@
                     @click.native="onFiltersExpand" />
             </div>
             <div class="grid-header__layout-configuration">
-                <FabButton
+                <Fab
                     :theme="theme.SECONDARY"
                     @click.native="onSelectLayout(gridLayouts.TABLE)">
                     <template #icon="{ fillColor }">
@@ -32,9 +32,9 @@
                                 ? greenColor
                                 : fillColor" />
                     </template>
-                </FabButton>
+                </Fab>
                 <!--                TODO: Uncomment when Image layout is rdy-->
-                <!--                <FabButton-->
+                <!--                <Fab-->
                 <!--                    :theme="theme.SECONDARY"-->
                 <!--                    @click.native="onSelectLayout(gridLayouts.GRID)">-->
                 <!--                    <template #icon="{ fillColor }">-->
@@ -43,14 +43,14 @@
                 <!--                                ? greenColor-->
                 <!--                                : fillColor" />-->
                 <!--                    </template>-->
-                <!--                </FabButton>-->
-                <FabButton
+                <!--                </Fab>-->
+                <Fab
                     :theme="theme.SECONDARY"
                     @click.native="isSettingsModal = true">
                     <template #icon="{ fillColor }">
                         <IconSettings :fill-color="fillColor" />
                     </template>
-                </FabButton>
+                </Fab>
             </div>
         </div>
         <ModalForm
@@ -127,7 +127,7 @@ export default {
         // MenuButton: () => import('@Core/components/Buttons/MenuButton'),
         Button: () => import('@Core/components/Buttons/Button'),
         ExpandNumericButton: () => import('@Core/components/Buttons/ExpandNumericButton'),
-        FabButton: () => import('@Core/components/Buttons/FabButton'),
+        Fab: () => import('@Core/components/Buttons/Fab'),
         // IconGrid: () => import('@Core/components/Icons/Others/IconGrid'),
         IconSettings: () => import('@Core/components/Icons/Actions/IconSettings'),
         // IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),

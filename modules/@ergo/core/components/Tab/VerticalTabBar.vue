@@ -15,7 +15,7 @@
                     @select="onSelectTabBarItem" />
             </VerticalFixedScroll>
             <div class="tab-bar__expand-button">
-                <FabButton
+                <Fab
                     :theme="secondaryTheme"
                     @click.native="onExpand">
                     <template #icon="{ fillColor }">
@@ -23,7 +23,7 @@
                             :fill-color="fillColor"
                             :state="expendStateIcon" />
                     </template>
-                </FabButton>
+                </Fab>
             </div>
         </div>
         <VerticalTabContent
@@ -42,7 +42,7 @@ export default {
     components: {
         VerticalTabContent: () => import('@Core/components/Tab/VerticalTabContent'),
         VerticalTabBarItem: () => import('@Core/components/Tab/VerticalTabBarItem'),
-        FabButton: () => import('@Core/components/Buttons/FabButton'),
+        Fab: () => import('@Core/components/Buttons/Fab'),
         IconArrowDouble: () => import('@Core/components/Icons/Arrows/IconArrowDouble'),
         VerticalFixedScroll: () => import('@Core/components/Layout/Scroll/VerticalFixedScroll'),
     },

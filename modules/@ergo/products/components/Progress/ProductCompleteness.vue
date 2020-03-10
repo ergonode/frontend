@@ -5,7 +5,7 @@
 <template>
     <div class="completeness-progress">
         <span
-            class="completeness-progress__title font--medium-12-16"
+            class="completeness-progress__title"
             v-text="caption" />
         <ProgressBar
             :value="progress"
@@ -59,6 +59,7 @@ export default {
 
         &__title {
             color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_12_16;
         }
     }
 </style>

@@ -4,7 +4,7 @@
  */
 <template>
     <span
-        class="section font--medium-24-32"
+        class="section"
         v-text="label" />
 </template>
 
@@ -26,5 +26,6 @@ export default {
         display: flex;
         align-items: center;
         color: $GRAPHITE_DARK;
+        font: $FONT_MEDIUM_24_32;
     }
 </style>

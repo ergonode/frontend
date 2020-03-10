@@ -1,0 +1,128 @@
+import { Meta, Story, Preview, Description, Props } from '@storybook/addon-docs/blocks';
+import Fab from '@Core/components/Buttons/Fab';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+import { THEMES } from '@Core/defaults/buttons';
+
+<Meta title="Components API|Fab" component={Fab} />
+
+# Fab
+
+`Fab` is a default component to display action in page
+
+```
+    import Fab from '@Core/components/Buttons/Fab'
+```
+
+## Theme
+<Preview>
+    <Story name="primary">
+        {{
+            components: { Fab, IconAdd },
+            template: `
+                <Fab :theme="primaryTheme">
+                    <template #icon="{ fillColor, isHovered }">
+                        <IconAdd :fill-color="fillColor" />
+                    </template>
+                </Fab>
+            `,
+            computed: {
+                primaryTheme() {
+                    return THEMES.PRIMARY;
+                }
+            }
+        }}
+    </Story>
+    <Story name="secondary">
+        {{
+            components: { Fab, IconAdd },
+            template: `
+                <Fab :theme="secondaryTheme">
+                    <template #icon="{ fillColor, isHovered }">
+                        <IconAdd :fill-color="fillColor" />
+                    </template>
+                </Fab>
+            `,
+            computed: {
+                secondaryTheme() {
+                    return THEMES.SECONDARY;
+                }
+            }
+        }}
+    </Story>
+    <Story name="secondary-plain">
+        {{
+            components: { Fab, IconAdd },
+            template: `
+                <Fab :theme="secondaryPlainTheme">
+                    <template #icon="{ fillColor, isHovered }">
+                        <IconAdd :fill-color="fillColor" />
+                    </template>
+                </Fab>
+            `,
+            computed: {
+                secondaryPlainTheme() {
+                    return THEMES.SECONDARY_PLAIN;
+                }
+            }
+        }}
+    </Story>
+</Preview>
+
+## Disabled
+
+<Preview>
+    <Story name="disabled-primary">
+        {{
+            components: { Fab, IconAdd },
+            template: `
+                <Fab :disabled="true" :theme="secondaryPlainTheme">
+                    <template #icon="{ fillColor, isHovered }">
+                        <IconAdd :fill-color="fillColor" />
+                    </template>
+                </Fab>
+            `,
+            computed: {
+                primaryTheme() {
+                    return THEMES.PRIMARY;
+                }
+            }
+        }}
+    </Story>
+    <Story name="disabled-secondary">
+        {{
+            components: { Fab, IconAdd },
+            template: `
+                <Fab :disabled="true" :theme="secondaryPlainTheme">
+                    <template #icon="{ fillColor, isHovered }">
+                        <IconAdd :fill-color="fillColor" />
+                    </template>
+                </Fab>
+            `,
+            computed: {
+                secondaryTheme() {
+                    return THEMES.SECONDARY;
+                }
+            }
+        }}
+    </Story>
+    <Story name="disabled-secondary-plain">
+        {{
+            components: { Fab, IconAdd },
+            template: `
+                <Fab :disabled="true" :theme="secondaryPlainTheme">
+                    <template #icon="{ fillColor, isHovered }">
+                        <IconAdd :fill-color="fillColor" />
+                    </template>
+                </Fab>
+            `,
+            computed: {
+                secondaryPlainTheme() {
+                    return THEMES.SECONDARY_PLAIN;
+                }
+            }
+        }}
+    </Story>
+</Preview>
+
+## Props
+<Props of={Fab} />

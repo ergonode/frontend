@@ -15,22 +15,22 @@
                     v-text="comment.author" />
             </div>
             <div class="header__actions">
-                <FabButton
+                <Fab
                     v-if="isAbleToEdit"
                     :theme="secondaryTheme"
                     @click.native="editComment">
                     <template #icon="{ fillColor, isHovered }">
                         <IconEdit :fill-color="isHovered ? colorGreen : fillColor" />
                     </template>
-                </FabButton>
-                <FabButton
+                </Fab>
+                <Fab
                     v-if="isAbleToDelete"
                     :theme="secondaryTheme"
                     @click.native="onRemove">
                     <template #icon="{ fillColor, isHovered }">
                         <IconDelete :fill-color="isHovered ? colorRed : fillColor" />
                     </template>
-                </FabButton>
+                </Fab>
             </div>
         </template>
         <template #content>
@@ -58,7 +58,7 @@ import {
     GREEN, RED, WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import CommentWrapper from '@Comments/components/Comments/CommentWrapper';
-import FabButton from '@Core/components/Buttons/FabButton';
+import Fab from '@Core/components/Buttons/Fab';
 import IconEdit from '@Core/components/Icons/Actions/IconEdit';
 import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 
@@ -66,7 +66,7 @@ export default {
     name: 'Comment',
     components: {
         CommentWrapper,
-        FabButton,
+        Fab,
         IconEdit,
         IconDelete,
         UserAvatar: () => import('@Core/components/Multimedia/UserAvatar'),

@@ -17,7 +17,7 @@
                 <IconSearch :fill-color="searchIconFillColor" />
             </template>
         </TextField>
-        <FabButton
+        <Fab
             v-if="isSearch"
             class="search-button"
             @click.native="onSearchButtonClick">
@@ -26,7 +26,7 @@
                     :is="searchButtonIconComponent"
                     :fill-color="fillColor" />
             </template>
-        </FabButton>
+        </Fab>
     </ListHeader>
 </template>
 
@@ -36,7 +36,7 @@ import {
     GREEN, GRAPHITE, WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 import ListHeader from '@Core/components/List/ListHeader';
-import FabButton from '@Core/components/Buttons/FabButton';
+import Fab from '@Core/components/Buttons/Fab';
 import TextField from '@Core/components/Inputs/TextField';
 import IconSearch from '@Core/components/Icons/Actions/IconSearch';
 
@@ -45,7 +45,7 @@ export default {
     components: {
         ListHeader,
         TextField,
-        FabButton,
+        Fab,
         IconSearch,
     },
     props: {

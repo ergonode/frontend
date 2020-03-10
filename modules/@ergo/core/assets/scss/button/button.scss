@@ -16,12 +16,6 @@
     cursor: pointer;
     outline: none;
 
-    &:not(&--small):not(&--tiny):not(&--fab) {
-        height: 40px;
-        padding: 0 12px;
-        font: $FONT_BOLD_14_20;
-    }
-
     &:disabled {
         cursor: not-allowed;
     }
@@ -32,12 +26,12 @@
 
     &__title {
         margin: 0 4px;
-        color: $WHITE;
         letter-spacing: 0.5px;
     }
 
     &--primary {
         background-color: $GREEN;
+        color: $WHITE;
 
         &:disabled {
             background-color: $GREY;
@@ -46,20 +40,21 @@
 
     &--secondary {
         background-color: transparent;
-
-        #{$button}__title {
-            color: $GRAPHITE;
-        }
+        color: $GRAPHITE;
 
         &:disabled {
-            #{$button}__title {
-                color: $GREY_DARK;
-            }
+            color: $GREY_DARK;
         }
 
         &:hover:not(:disabled):not(#{$button}--plain) {
             background-color: $WHITE;
         }
+    }
+
+    &--regular {
+        height: 40px;
+        padding: 0 12px;
+        font: $FONT_BOLD_14_20;
     }
 
     &--small {
@@ -70,13 +65,6 @@
     &--tiny {
         height: 24px;
         padding: 0 4px;
-    }
-
-    &--fab {
-        width: 32px;
-        height: 32px;
-        border-radius: 16px;
-        padding: 0;
     }
 
     &--tiny, &--small {

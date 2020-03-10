@@ -18,12 +18,12 @@
                     class="delorean"
                     src="@Core/assets/images/placeholders/error-pages/delorean.svg">
                 <div class="section__info">
-                    <h1 class="info__header font--medium-24-32">
+                    <h1 class="info__header">
                         <ClientOnly>
                             <Typer :value="['Future', 'Feature']" />
                         </ClientOnly>
                     </h1>
-                    <p class="info__text font--medium-16-24">
+                    <p class="info__text">
                         This feature will be implemented in the near future!
                     </p>
                     <Button
@@ -33,12 +33,12 @@
                 </div>
             </div>
             <div class="wrapper__section">
-                <q class="font--medium-16-24 section__quotation">
+                <q class="section__quotation">
                     „Time traveling is just too dangerous. Better that I devote myself<br>
                     to study the other great mystery of the universe: women!”
                 </q>
                 <a
-                    class="section__video-link font--medium-16-24"
+                    class="section__video-link"
                     href="https://www.youtube.com/watch?v=Dylp3c3_OBQ"
                     target="_blank">
                     Dr. Emmett „Doc” Brown

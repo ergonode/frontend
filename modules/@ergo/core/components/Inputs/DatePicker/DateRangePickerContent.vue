@@ -18,7 +18,7 @@
                     lowerBoundMonth, lowerBoundYear
                 )">
                 <template #previous>
-                    <FabButton
+                    <Fab
                         :theme="secondaryTheme"
                         @click.native="previousMonth">
                         <template #icon="{ fillColor }">
@@ -26,7 +26,7 @@
                                 :fill-color="fillColor"
                                 :state="leftArrow" />
                         </template>
-                    </FabButton>
+                    </Fab>
                 </template>
                 <template #next>
                     <div class="expander" />
@@ -56,7 +56,7 @@
                     <div class="expander" />
                 </template>
                 <template #next>
-                    <FabButton
+                    <Fab
                         :theme="secondaryTheme"
                         @click.native="nextMonth">
                         <template #icon="{ fillColor }">
@@ -64,7 +64,7 @@
                                 :fill-color="fillColor"
                                 :state="rightArrow" />
                         </template>
-                    </FabButton>
+                    </Fab>
                 </template>
             </DatePickerNavigationHeader>
             <DatePickerContentHeader :headers="weekDays" />
@@ -85,7 +85,7 @@ import calendar, {
     WEEK_DAYS,
     CALENDAR_MONTHS,
 } from '@Core/models/calendar/calendar';
-import FabButton from '@Core/components/Buttons/FabButton';
+import Fab from '@Core/components/Buttons/Fab';
 import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
 import DatePickerMonthDays from '@Core/components/Inputs/DatePicker/DatePickerMonthDays';
 import DatePickerContentHeader from '@Core/components/Inputs/DatePicker/DatePickerContentHeader';
@@ -97,7 +97,7 @@ import DatePickerInteractiveHeader from '@Core/components/Inputs/DatePicker/Date
 export default {
     name: 'DateRangePickerContent',
     components: {
-        FabButton,
+        Fab,
         DatePickerMonthDays,
         DatePickerContentHeader,
         DatePickerNavigationHeader,
