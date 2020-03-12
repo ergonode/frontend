@@ -8,6 +8,10 @@
         :class="buttonClasses"
         :disabled="disabled"
         :aria-label="title">
+        <!--
+            @slot Prepend element - icon recommended
+            @binding {string} color color of an element
+        -->
         <slot
             name="prepend"
             :color="foregroundColor" />
@@ -15,12 +19,17 @@
             v-if="title"
             :class="titleClasses"
             v-text="title" />
+        <!--
+            @slot Append element - icon recommended
+            @binding {string} color color of an element
+        -->
         <slot
             name="append"
             :color="foregroundColor" />
         <slot />
     </button>
 </template>
+
 <script>
 import { THEMES, SIZES } from '@Core/defaults/buttons';
 import {
@@ -30,20 +39,36 @@ import {
 export default {
     name: 'Button',
     props: {
+        /**
+         * The theme of the button
+         * @values primary, secondary
+         */
         theme: {
             type: String,
             default: THEMES.PRIMARY,
             validator: value => Object.values(THEMES).indexOf(value) !== -1,
         },
+        /**
+         * The size of the button
+         * @values regular, small, tiny
+         */
         size: {
             type: String,
             default: SIZES.REGULAR,
             validator: value => Object.values(SIZES).indexOf(value) !== -1,
         },
+        /**
+         * The title of the button
+         * @values primary, secondary
+         */
         title: {
             type: String,
             default: '',
         },
+        /**
+         * The disabled state of the button
+         * @values primary, secondary
+         */
         disabled: {
             type: Boolean,
             default: false,
@@ -91,17 +116,16 @@ export default {
         cursor: pointer;
         outline: none;
 
+        &__title {
+            letter-spacing: 0.5px;
+        }
+
         &:disabled {
             cursor: not-allowed;
         }
 
         &:hover:not(:disabled), &:focus {
             box-shadow: $ELEVATOR_HOVER_FOCUS;
-        }
-
-        &__title {
-            margin: 0 4px;
-            letter-spacing: 0.5px;
         }
 
         &--primary {
@@ -121,7 +145,7 @@ export default {
                 color: $GREY_DARK;
             }
 
-            &:hover:not(:disabled) {
+            &:hover:not(:disabled), &:focus {
                 background-color: $WHITE;
             }
         }
@@ -139,7 +163,17 @@ export default {
 
         &--tiny {
             height: 24px;
-            padding: 0 4px;
+            padding: 0 3px;
+
+            #{$button}__title {
+                margin: 0 3px;
+            }
+        }
+
+        &--small, &--regular {
+            #{$button}__title {
+                margin: 0 4px;
+            }
         }
 
         &--tiny, &--small {

@@ -21,17 +21,16 @@
         <div
             v-if="!disabled"
             :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
-            <MenuButton
+            <ActionIconButton
                 :theme="secondaryTheme"
-                :size="smallSize"
-                :plain="true"
+                :size="tinySize"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
                 @focus="onSelectFocus">
-                <template #icon="{ fillColor }">
-                    <IconDots :fill-color="fillColor" />
+                <template #icon="{ color }">
+                    <IconDots :fill-color="color" />
                 </template>
-            </MenuButton>
+            </ActionIconButton>
         </div>
     </ElementContentBase>
 </template>
@@ -41,14 +40,14 @@ import { mapActions } from 'vuex';
 import { SIZES, THEMES } from '@Core/defaults/buttons';
 import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
 import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
-import MenuButton from '@Core/components/Buttons/MenuButton';
+import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
 import IconDots from '@Core/components/Icons/Others/IconDots';
 
 export default {
     name: 'SectionElementContent',
     components: {
         IconFontSize,
-        MenuButton,
+        ActionIconButton,
         IconDots,
         ElementContentBase,
     },
@@ -74,8 +73,8 @@ export default {
         };
     },
     computed: {
-        smallSize() {
-            return SIZES.SMALL;
+        tinySize() {
+            return SIZES.TINY;
         },
         secondaryTheme() {
             return THEMES.SECONDARY;

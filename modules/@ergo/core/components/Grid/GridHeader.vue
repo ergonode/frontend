@@ -7,7 +7,7 @@
         <div class="grid-header__settings">
             <div class="grid-header__actions">
                 <!--                TODO: Uncomment when mass actions are implemented-->
-                <!--                <MenuButton-->
+                <!--                <ActionIconButton-->
                 <!--                    title="ACTIONS"-->
                 <!--      :theme="isActionsSelected ? theme.PRIMARY : theme.SECONDARY"-->
                 <!--                    :size="smallSize"-->
@@ -15,7 +15,7 @@
                 <!--                    <template #icon="{ fillColor }">-->
                 <!--                        <IconArrowDropDown :fill-color="fillColor" />-->
                 <!--                    </template>-->
-                <!--                </MenuButton>-->
+                <!--                </ActionIconButton>-->
                 <ExpandNumericButton
                     title="FILTERS"
                     :number="filtersNumber"
@@ -124,7 +124,7 @@ export default {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
         Form: () => import('@Core/components/Form/Form'),
         FormGroup: () => import('@Core/components/Form/FormGroup'),
-        // MenuButton: () => import('@Core/components/Buttons/MenuButton'),
+        // ActionIconButton: () => import('@Core/components/Buttons/ActionIconButton'),
         Button: () => import('@Core/components/Buttons/Button'),
         ExpandNumericButton: () => import('@Core/components/Buttons/ExpandNumericButton'),
         Fab: () => import('@Core/components/Buttons/Fab'),

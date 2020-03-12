@@ -17,18 +17,17 @@
                         class="condition__phrase"
                         v-text="conditionPhrase" />
                 </div>
-                <MenuButton
+                <ActionIconButton
                     :class="['condition__contextual-menu', contextualMenuHoveStateClasses]"
                     :theme="secondaryTheme"
-                    :size="smallSize"
-                    :plain="true"
+                    :size="tinySize"
                     :options="contextualMenuItems"
                     @focus="onSelectFocus"
                     @input="onSelectValue">
                     <template #icon="{ fillColor }">
                         <IconDots :fill-color="fillColor" />
                     </template>
-                </MenuButton>
+                </ActionIconButton>
             </div>
             <div
                 class="condition__parameters"
@@ -49,14 +48,14 @@ import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { isEmpty } from '@Core/models/objectWrapper';
 import { hasOptions } from '@Conditions/models/conditionTypes';
 import ConditionSetParameters from '@Conditions/components/ConditionSetDesigner/ConditionSetParameters';
-import MenuButton from '@Core/components/Buttons/MenuButton';
+import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
 import IconDots from '@Core/components/Icons/Others/IconDots';
 
 export default {
     name: 'ConditionSetItem',
     components: {
         ConditionSetParameters,
-        MenuButton,
+        ActionIconButton,
         IconDots,
     },
     props: {
@@ -84,8 +83,8 @@ export default {
         ...mapState('conditions', {
             conditionsValues: state => state.conditionsValues,
         }),
-        smallSize() {
-            return SIZES.SMALL;
+        tinySize() {
+            return SIZES.TINY;
         },
         secondaryTheme() {
             return THEMES.SECONDARY;

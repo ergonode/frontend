@@ -28,7 +28,7 @@
             </template>
             <template #subActions>
                 <TitleBarSubActions>
-                    <MenuButton
+                    <ActionButton
                         v-if="workflow.length"
                         title="STATUS CHANGE"
                         :theme="secondaryTheme"
@@ -47,7 +47,7 @@
                                     :small="true" />
                             </ListElementDescription>
                         </template>
-                    </MenuButton>
+                    </ActionButton>
                 </TitleBarSubActions>
             </template>
         </TitleBar>
@@ -79,7 +79,7 @@ export default {
         ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
         ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
         ListElementAction: () => import('@Core/components/List/ListElementAction'),
-        MenuButton: () => import('@Core/components/Buttons/MenuButton'),
+        ActionButton: () => import('@Core/components/Buttons/ActionButton'),
         PointBadge: () => import('@Core/components/Badges/PointBadge'),
     },
     mixins: [categoryManagementPageBaseMixin],

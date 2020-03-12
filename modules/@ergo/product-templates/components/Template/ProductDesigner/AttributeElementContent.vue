@@ -21,15 +21,14 @@
         <div
             v-if="!disabled"
             :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
-            <MenuButton
-                :theme="secondaryTheme"
-                :size="smallSize"
-                :plain="true"
+            <ActionIconButton
+                :theme="secondaryPlainTheme"
+                :size="tinySize"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
                 @focus="onSelectFocus">
-                <template #icon="{ fillColor }">
-                    <IconDots :fill-color="fillColor" />
+                <template #icon="{ color }">
+                    <IconDots :fill-color="color" />
                 </template>
                 <template #option="{ option }">
                     <ListElementDescription>
@@ -44,7 +43,7 @@
                             :value="element.required" />
                     </ListElementAction>
                 </template>
-            </MenuButton>
+            </ActionIconButton>
         </div>
     </ElementContentBase>
 </template>
@@ -53,7 +52,7 @@
 import { mapActions } from 'vuex';
 import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
-import MenuButton from '@Core/components/Buttons/MenuButton';
+import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
 import IconDots from '@Core/components/Icons/Others/IconDots';
 import CheckBox from '@Core/components/Inputs/CheckBox';
 import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
@@ -66,7 +65,7 @@ export default {
     name: 'AttributeElementContent',
     components: {
         IconDots,
-        MenuButton,
+        ActionIconButton,
         ElementContentBase,
         ListElement,
         ListElementAction,
@@ -96,11 +95,11 @@ export default {
         };
     },
     computed: {
-        smallSize() {
-            return SIZES.SMALL;
+        tinySize() {
+            return SIZES.TINY;
         },
-        secondaryTheme() {
-            return THEMES.SECONDARY;
+        secondaryPlainTheme() {
+            return THEMES.SECONDARY_PLAIN;
         },
         typeLabelRequireClass() {
             return { 'element-content--required': this.element.required };

@@ -26,18 +26,17 @@
                 :sorting-order="sortingOrder"
                 :fill-color="graphiteLightColor"
                 @click.native="onClickSort" />
-            <MenuButton
+            <ActionIconButton
                 v-if="column.deletable"
                 :theme="secondaryTheme"
                 :size="tinySize"
-                :plain="true"
                 :options="contextualMenuItems"
                 @focus="onSelectFocus"
                 @input="onSelectOption">
-                <template #icon="{ fillColor }">
-                    <IconDots :fill-color="fillColor" />
+                <template #icon="{ color }">
+                    <IconDots :fill-color="color" />
                 </template>
-            </MenuButton>
+            </ActionIconButton>
         </div>
     </div>
 </template>
@@ -54,7 +53,7 @@ export default {
     name: 'GridPresentationInteractiveHeaderCell',
     inject: ['getEditingCellCoordinates'],
     components: {
-        MenuButton: () => import('@Core/components/Buttons/MenuButton'),
+        ActionIconButton: () => import('@Core/components/Buttons/ActionIconButton'),
         IconArrowSort: () => import('@Core/components/Icons/Arrows/IconArrowSort'),
         IconDots: () => import('@Core/components/Icons/Others/IconDots'),
         GridPresentationHeaderCell: () => import('@Core/components/Grid/PresentationCells/GridPresentationHeaderCell'),

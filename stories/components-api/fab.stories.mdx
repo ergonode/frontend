@@ -1,19 +1,19 @@
 import { Meta, Story, Preview, Description, Props } from '@storybook/addon-docs/blocks';
 import Fab from '@Core/components/Buttons/Fab';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import { THEMES } from '@Core/defaults/buttons';
+import { THEMES, SIZES } from '@Core/defaults/buttons';
 
-<Meta title="Components API|Fab" component={Fab} />
+<Meta title="Components API|Fab" />
 
 # Fab
 
-`Fab` is a default component to display action in page
+`Fab` is a default component to display action in page. It may have any icon component inside `icon` slot.
 
 ```
     import Fab from '@Core/components/Buttons/Fab'
 ```
 
-## Theme
+### Theme
 <Preview>
     <Story name="primary">
         {{
@@ -68,14 +68,14 @@ import { THEMES } from '@Core/defaults/buttons';
     </Story>
 </Preview>
 
-## Disabled
+### Disabled
 
 <Preview>
     <Story name="disabled-primary">
         {{
             components: { Fab, IconAdd },
             template: `
-                <Fab :disabled="true" :theme="secondaryPlainTheme">
+                <Fab :disabled="true" :theme="primaryTheme">
                     <template #icon="{ fillColor, isHovered }">
                         <IconAdd :fill-color="fillColor" />
                     </template>
@@ -92,7 +92,7 @@ import { THEMES } from '@Core/defaults/buttons';
         {{
             components: { Fab, IconAdd },
             template: `
-                <Fab :disabled="true" :theme="secondaryPlainTheme">
+                <Fab :disabled="true" :theme="secondaryTheme">
                     <template #icon="{ fillColor, isHovered }">
                         <IconAdd :fill-color="fillColor" />
                     </template>
@@ -124,5 +124,71 @@ import { THEMES } from '@Core/defaults/buttons';
     </Story>
 </Preview>
 
-## Props
+### Size
+
+<Preview>
+    <Story name="regular">
+        {{
+            components: { Fab, IconAdd },
+            template: `
+                <Fab :theme="primaryTheme" :size="regularSize">
+                    <template #icon="{ fillColor, isHovered }">
+                        <IconAdd :fill-color="fillColor" />
+                    </template>
+                </Fab>
+            `,
+            computed: {
+                primaryTheme() {
+                    return THEMES.PRIMARY;
+                },
+                regularSize() {
+                    return SIZES.REGULAR;
+                },
+            }
+        }}
+    </Story>
+    <Story name="small">
+        {{
+            components: { Fab, IconAdd },
+            template: `
+                <Fab :theme="primaryTheme" :size="smallSize">
+                    <template #icon="{ fillColor, isHovered }">
+                        <IconAdd :fill-color="fillColor" />
+                    </template>
+                </Fab>
+            `,
+            computed: {
+                primaryTheme() {
+                    return THEMES.PRIMARY;
+                },
+                smallSize() {
+                    return SIZES.SMALL;
+                },
+            }
+        }}
+    </Story>
+    <Story name="tiny">
+        {{
+            components: { Fab, IconAdd },
+            template: `
+                <Fab :theme="primaryTheme" :size="tinySize">
+                    <template #icon="{ fillColor, isHovered }">
+                        <IconAdd :fill-color="fillColor" />
+                    </template>
+                </Fab>
+            `,
+            computed: {
+                primaryTheme() {
+                    return THEMES.PRIMARY;
+                },
+                tinySize() {
+                    return SIZES.TINY;
+                },
+            }
+        }}
+    </Story>
+</Preview>
+
+### Props
+
 <Props of={Fab} />

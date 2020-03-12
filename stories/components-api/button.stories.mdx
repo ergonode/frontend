@@ -1,22 +1,21 @@
 import { Meta, Story, Preview, Description, Props } from '@storybook/addon-docs/blocks';
 import Button from '@Core/components/Buttons/Button';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { THEMES, SIZES } from '@Core/defaults/buttons';
 
-<Meta title="Components API|Button" component={Button} />
+<Meta title="Components API|Button" />
 
 # Button
 
-`Button` is a default component to display action in page
+`Button` is a default component to display action in page. It may have any icon component inside `prepend` and `append` slots.
 
 ```
     import Button from '@Core/components/Buttons/Button'
 ```
 
-## Theme
+### Theme
+
 <Preview>
-    <Story name="test">
-        <Button title="Test" />
-    </Story>
     <Story name="primary">
         {{
             components: { Button },
@@ -41,13 +40,13 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
     </Story>
 </Preview>
 
-## Disabled
+### Disabled
 
 <Preview>
     <Story name="disabled-primary">
         {{
             components: { Button },
-            template: `<Button title="DISABLED PRIMARY" :theme="primaryTheme" :disabled="true" />`,
+            template: `<Button title="PRIMARY" :theme="primaryTheme" :disabled="true" />`,
             computed: {
                 primaryTheme() {
                     return THEMES.PRIMARY;
@@ -58,7 +57,7 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
     <Story name="disabled-secondary">
         {{
             components: { Button },
-            template: `<Button title="DISABLED SECONDARY" :theme="secondaryTheme" :disabled="true" />`,
+            template: `<Button title="SECONDARY" :theme="secondaryTheme" :disabled="true" />`,
             computed: {
                 secondaryTheme() {
                     return THEMES.SECONDARY;
@@ -68,7 +67,8 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
     </Story>
 </Preview>
 
-## Size
+### Size
+
 <Preview>
     <Story name="regular">
         {{
@@ -114,5 +114,50 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
     </Story>
 </Preview>
 
-## Props
+### Slots
+
+<Preview>
+    <Story name="append">
+        {{
+            components: { Button, IconAdd },
+            template: `
+                <Button title="APPEND">
+                    <template #append="{ color }">
+                        <IconAdd :fill-color="color" />
+                    </template>
+                </Button>
+            `,
+        }}
+    </Story>
+    <Story name="prepend">
+        {{
+            components: { Button, IconAdd },
+            template: `
+                <Button title="PREPEND">
+                    <template #prepend="{ color }">
+                        <IconAdd :fill-color="color" />
+                    </template>
+                </Button>
+            `,
+        }}
+    </Story>
+    <Story name="append-prepend">
+        {{
+            components: { Button, IconAdd },
+            template: `
+                <Button title="APPEND | PREPEND">
+                    <template #append="{ color }">
+                        <IconAdd :fill-color="color" />
+                    </template>
+                    <template #prepend="{ color }">
+                        <IconAdd :fill-color="color" />
+                    </template>
+                </Button>
+            `,
+        }}
+    </Story>
+</Preview>
+
+### Props
+
 <Props of={Button} />

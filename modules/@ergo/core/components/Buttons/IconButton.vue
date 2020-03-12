@@ -4,35 +4,31 @@
  */
 <template>
     <button
-        :class="fabClasses"
-        :disabled="disabled"
-        @mouseenter="onFocus"
-        @mouseleave="onBlur"
-        @focus="onFocus"
-        @blur="onBlur">
+        type="button"
+        :class="buttonClasses"
+        :disabled="disabled">
         <!--
             @slot Icon
-            @binding {string} fill-color fill-color of an icon
-            @binding {boolean} is-hovered hovered state of Fab
+            @binding {string} color color of an icon
         -->
         <slot
             name="icon"
-            :fill-color="iconFillColor"
-            :is-hovered="isHovered" />
+            :color="foregroundColor" />
+        <slot />
     </button>
 </template>
 <script>
 import { THEMES, SIZES } from '@Core/defaults/buttons';
 import {
-    GREEN, GRAPHITE, WHITE, GREY_DARK,
+    GRAPHITE, GREY_DARK, WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
-    name: 'Fab',
+    name: 'IconButton',
     props: {
         /**
-         * The theme of the fab
-         * @values primary, secondary, secondary-plain
+         * The theme of the button
+         * @values primary, secondary
          */
         theme: {
             type: String,
@@ -40,16 +36,24 @@ export default {
             validator: value => Object.values(THEMES).indexOf(value) !== -1,
         },
         /**
-         * The size of the fab
+         * The size of the button
          * @values regular, small, tiny
          */
         size: {
             type: String,
-            default: SIZES.SMALL,
+            default: SIZES.REGULAR,
             validator: value => Object.values(SIZES).indexOf(value) !== -1,
         },
         /**
-         * The disabled state of the fab
+         * The title of the button
+         * @values primary, secondary
+         */
+        title: {
+            type: String,
+            default: '',
+        },
+        /**
+         * The disabled state of the button
          * @values primary, secondary
          */
         disabled: {
@@ -57,52 +61,40 @@ export default {
             default: false,
         },
     },
-    data() {
-        return {
-            isHovered: false,
-        };
-    },
     computed: {
-        iconFillColor() {
-            if (this.theme !== THEMES.PRIMARY) {
+        foregroundColor() {
+            if (this.theme === THEMES.SECONDARY) {
                 if (this.disabled) {
                     return GREY_DARK;
-                }
-                if (this.isHovered) {
-                    return GREEN;
                 }
                 return GRAPHITE;
             }
 
             return WHITE;
         },
-        fabClasses() {
+        buttonClasses() {
             return [
-                'fab',
-                `fab--${this.theme}`,
-                `fab--${this.size}`,
+                'icon-button',
+                `icon-button--${this.theme}`,
+                `icon-button--${this.size}`,
             ];
-        },
-    },
-    methods: {
-        onFocus() {
-            this.isHovered = true;
-        },
-        onBlur() {
-            this.isHovered = false;
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .fab {
+    .icon-button {
+        $button: &;
+
         position: relative;
         display: flex;
         flex-shrink: 0;
         justify-content: center;
         align-items: center;
         border: none;
+        padding: 0;
+        margin: 0;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         text-transform: uppercase;
         cursor: pointer;
@@ -127,7 +119,7 @@ export default {
         &--secondary {
             background-color: transparent;
 
-            &:hover:not(:disabled) {
+            &:hover:not(:disabled), &:focus {
                 background-color: $WHITE;
             }
         }
@@ -137,21 +129,18 @@ export default {
         }
 
         &--regular {
+            width: 40px;
             height: 40px;
-            padding: 8px;
-            border-radius: 20px;
         }
 
         &--small {
+            width: 32px;
             height: 32px;
-            padding: 4px;
-            border-radius: 16px;
         }
 
         &--tiny {
+            width: 24px;
             height: 24px;
-            padding: 0;
-            border-radius: 12px;
         }
     }
 </style>
