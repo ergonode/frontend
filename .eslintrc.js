@@ -26,6 +26,7 @@ module.exports = {
         'jest',
         'notice',
         'cypress',
+        'markdown',
     ],
     rules: {
         'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
