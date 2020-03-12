@@ -16,7 +16,7 @@ export default async function () {
     } = configuration;
     const moduleName = name.replace(/[^a-zA-Z]/g, '');
     const modulePath = type === 'npm'
-        ? name
+        ? `~/vendor/${name}/src`
         : `~/modules/${name}`;
 
     if (!this.options.styleResources) this.options.styleResources = {};

@@ -31,7 +31,7 @@ module.exports = {
     testMatch: [
         '**/(__tests__|tests)/**/*.test.(js|jsx|ts|tsx)',
     ],
-    testURL: 'http://ergonode.local/',
+    testURL: 'http://localhost/',
     reporters: [
         'default',
         ['jest-junit', { suiteName: 'jest tests', outputDirectory: 'build', outputName: './jest-junit.xml' }],

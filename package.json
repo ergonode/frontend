@@ -11,17 +11,23 @@
   "bin": {
     "cli": "./lib/index.js"
   },
+  "engines": {
+    "node": ">= 11.0.0",
+    "npm": ">= 5.0.0"
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "storybook": "start-storybook -p 6006",
     "lint:scss": "stylelint './**/*.scss' './**/*.vue'",
     "lint": "eslint --ext .js,.vue . && npm run lint:scss",
     "lint:dev": "npm run lint -- --cache && npm run lint:scss",
     "test": "jest --no-cache",
     "test:dev": "npm run test -- --coverage --u",
-    "cli": "./lib/index.js",
+    "env": "./lib/index.js env",
+    "modules": "./lib/index.js modules",
+    "modules:all": "./lib/index.js modules-all",
+    "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
@@ -105,25 +111,25 @@
     "@ergo/users"
   ],
   "_availableModules": {
-    "@ergo/activity-logs": "module",
-    "@ergo/attributes": "module",
-    "@ergo/authentication": "module",
-    "@ergo/categories": "module",
-    "@ergo/category-trees": "module",
-    "@ergo/comments": "module",
-    "@ergo/conditions": "module",
-    "@ergo/core": "module",
-    "@ergo/dashboard": "module",
-    "@ergo/export": "module",
-    "@ergo/media": "module",
-    "@ergo/notifications": "module",
-    "@ergo/collections": "module",
-    "@ergo/product-statuses": "module",
-    "@ergo/product-templates": "module",
-    "@ergo/products": "module",
-    "@ergo/segments": "module",
-    "@ergo/status-transitions": "module",
-    "@ergo/users": "module",
-    "@ergo/import": "module"
+    "@ergo/activity-logs": "local",
+    "@ergo/attributes": "local",
+    "@ergo/authentication": "local",
+    "@ergo/categories": "local",
+    "@ergo/category-trees": "local",
+    "@ergo/comments": "local",
+    "@ergo/conditions": "local",
+    "@ergo/core": "local",
+    "@ergo/dashboard": "local",
+    "@ergo/export": "local",
+    "@ergo/media": "local",
+    "@ergo/notifications": "local",
+    "@ergo/collections": "local",
+    "@ergo/product-statuses": "local",
+    "@ergo/product-templates": "local",
+    "@ergo/products": "local",
+    "@ergo/segments": "local",
+    "@ergo/status-transitions": "local",
+    "@ergo/users": "local",
+    "@ergo/import": "local"
   }
 }

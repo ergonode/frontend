@@ -43,7 +43,12 @@ npm install
 Follow cli steps to configure project:
 
 ```bash
-npm run cli
+npm run modules
+```
+
+You might want automatically setup all modules by executing command:
+```bash
+npm run modules:all
 ```
 
 > *You may want to override created .env file by other settings*

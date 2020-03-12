@@ -68,10 +68,10 @@ module.exports = {
     loading: { color: '#00BC87', height: '3px' },
     modulesDir: ['node_modules', 'modules'],
     buildModules: [
-        '~/modules/helpers/modulesLoader',
         '@nuxtjs/router',
-        ...MODULES_TO_LOAD,
         '~/modules/helpers/symlinksCreator',
+        '~/modules/helpers/modulesLoader',
+        ...MODULES_TO_LOAD,
         '~/modules/helpers/registerRouter',
         '~/modules/helpers/registerExtends',
         '~/modules/helpers/registerMiddleware',
@@ -111,6 +111,9 @@ module.exports = {
         baseURL: BASE_URL || 'http://localhost:8000',
     },
     build: {
+        babel: {
+            configFile: './babel.config.js',
+        },
         terser: {
             parallel: true,
             sourceMap: true,
