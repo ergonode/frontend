@@ -50,7 +50,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
 import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
 import IconDots from '@Core/components/Icons/Others/IconDots';
@@ -96,10 +96,10 @@ export default {
     },
     computed: {
         tinySize() {
-            return SIZES.TINY;
+            return SIZE.TINY;
         },
         secondaryPlainTheme() {
-            return THEMES.SECONDARY_PLAIN;
+            return THEME.SECONDARY_PLAIN;
         },
         typeLabelRequireClass() {
             return { 'element-content--required': this.element.required };

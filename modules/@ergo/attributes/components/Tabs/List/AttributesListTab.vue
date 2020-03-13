@@ -33,8 +33,8 @@
             <Fab
                 :disabled="!isUserAllowedToCreateAttribute"
                 @click.native="onShowModal">
-                <template #icon="{ fillColor }">
-                    <IconAdd :fill-color="fillColor" />
+                <template #icon="{ color }">
+                    <IconAdd :fill-color="color" />
                 </template>
             </Fab>
         </template>

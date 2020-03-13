@@ -38,7 +38,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 
 
 export default {
@@ -63,10 +63,10 @@ export default {
             userLanguageCode: state => state.user.language,
         }),
         smallSize() {
-            return SIZES.SMALL;
+            return SIZE.SMALL;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         optionIndexes() {
             return Object.keys(this.options);

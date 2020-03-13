@@ -8,9 +8,9 @@
             <Fab
                 :theme="secondaryTheme"
                 @click.native="onPrevious">
-                <template #icon="{ fillColor }">
+                <template #icon="{ color }">
                     <IconArrowSingle
-                        :fill-color="fillColor"
+                        :fill-color="color"
                         :state="leftArrow" />
                 </template>
             </Fab>
@@ -23,9 +23,9 @@
             <Fab
                 :theme="secondaryTheme"
                 @click.native="onNext">
-                <template #icon="{ fillColor }">
+                <template #icon="{ color }">
                     <IconArrowSingle
-                        :fill-color="fillColor"
+                        :fill-color="color"
                         :state="rightArrow" />
                 </template>
             </Fab>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import { ARROW } from '@Core/defaults/icons';
 import Fab from '@Core/components/Buttons/Fab';
 import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
@@ -59,7 +59,7 @@ export default {
     },
     computed: {
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
     },
     methods: {

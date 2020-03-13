@@ -18,9 +18,9 @@
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="onExpand">
-                    <template #icon="{ fillColor }">
+                    <template #icon="{ color }">
                         <IconArrowDouble
-                            :fill-color="fillColor"
+                            :fill-color="color"
                             :state="expendStateIcon" />
                     </template>
                 </Fab>
@@ -34,7 +34,7 @@
 
 <script>
 
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import { ARROW } from '@Core/defaults/icons';
 
 export default {
@@ -60,7 +60,7 @@ export default {
     },
     computed: {
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         expendStateIcon() {
             return this.isExpanded ? ARROW.LEFT : ARROW.RIGHT;

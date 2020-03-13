@@ -50,7 +50,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { SIZES } from '@Core/defaults/buttons';
+import { SIZE } from '@Core/defaults/theme';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import Button from '@Core/components/Buttons/Button';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
@@ -77,7 +77,7 @@ export default {
             drafts: state => state.drafts,
         }),
         smallSize() {
-            return SIZES.SMALL;
+            return SIZE.SMALL;
         },
         verticalTabs() {
             const isUserAllowedToReadProduct = this.$hasAccess(['PRODUCT_READ']);

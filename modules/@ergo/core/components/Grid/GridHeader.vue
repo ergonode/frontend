@@ -12,8 +12,8 @@
                 <!--      :theme="isActionsSelected ? theme.PRIMARY : theme.SECONDARY"-->
                 <!--                    :size="smallSize"-->
                 <!--                    :options="[]">-->
-                <!--                    <template #icon="{ fillColor }">-->
-                <!--                        <IconArrowDropDown :fill-color="fillColor" />-->
+                <!--                    <template #icon="{ color }">-->
+                <!--                        <IconArrowDropDown :fill-color="color" />-->
                 <!--                    </template>-->
                 <!--                </ActionIconButton>-->
                 <ExpandNumericButton
@@ -26,29 +26,29 @@
                 <Fab
                     :theme="theme.SECONDARY"
                     @click.native="onSelectLayout(gridLayouts.TABLE)">
-                    <template #icon="{ fillColor }">
+                    <template #icon="{ color }">
                         <IconListMedium
                             :fill-color="layout === gridLayouts.TABLE
                                 ? greenColor
-                                : fillColor" />
+                                : color" />
                     </template>
                 </Fab>
                 <!--                TODO: Uncomment when Image layout is rdy-->
                 <!--                <Fab-->
                 <!--                    :theme="theme.SECONDARY"-->
                 <!--                    @click.native="onSelectLayout(gridLayouts.GRID)">-->
-                <!--                    <template #icon="{ fillColor }">-->
+                <!--                    <template #icon="{ color }">-->
                 <!--                        <IconGrid-->
                 <!--                            :fill-color="layout === gridLayouts.GRID-->
                 <!--                                ? greenColor-->
-                <!--                                : fillColor" />-->
+                <!--                                : color" />-->
                 <!--                    </template>-->
                 <!--                </Fab>-->
                 <Fab
                     :theme="theme.SECONDARY"
                     @click.native="isSettingsModal = true">
-                    <template #icon="{ fillColor }">
-                        <IconSettings :fill-color="fillColor" />
+                    <template #icon="{ color }">
+                        <IconSettings :fill-color="color" />
                     </template>
                 </Fab>
             </div>
@@ -110,7 +110,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { ROW_HEIGHT, GRID_LAYOUT } from '@Core/defaults/grid';
 import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
 import { ARROW } from '@Core/defaults/icons';
@@ -179,7 +179,7 @@ export default {
             return draggedElIndex !== -1;
         },
         theme() {
-            return THEMES;
+            return THEME;
         },
         greenColor() {
             return GREEN;
@@ -194,7 +194,7 @@ export default {
             return GRID_LAYOUT;
         },
         smallSize() {
-            return SIZES.SMALL;
+            return SIZE.SMALL;
         },
     },
     watch: {

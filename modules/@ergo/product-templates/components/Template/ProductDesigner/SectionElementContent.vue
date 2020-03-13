@@ -37,7 +37,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
 import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
 import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
@@ -74,10 +74,10 @@ export default {
     },
     computed: {
         tinySize() {
-            return SIZES.TINY;
+            return SIZE.TINY;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         contextualMenuHoveStateClasses() {
             return { 'element-content__contextual-menu--hovered': this.isHovered };

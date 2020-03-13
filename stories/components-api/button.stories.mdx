@@ -1,7 +1,7 @@
 import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import { THEMES, SIZES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 
 <Meta title="Components API|Button" />
 
@@ -22,7 +22,7 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             template: `<Button title="PRIMARY" :theme="primaryTheme" />`,
             computed: {
                 primaryTheme() {
-                    return THEMES.PRIMARY;
+                    return THEME.PRIMARY;
                 }
             }
         }}
@@ -33,7 +33,7 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             template: `<Button title="SECONDARY" :theme="secondaryTheme" />`,
             computed: {
                 secondaryTheme() {
-                    return THEMES.SECONDARY;
+                    return THEME.SECONDARY;
                 }
             }
         }}
@@ -49,7 +49,7 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             template: `<Button title="PRIMARY" :theme="primaryTheme" :disabled="true" />`,
             computed: {
                 primaryTheme() {
-                    return THEMES.PRIMARY;
+                    return THEME.PRIMARY;
                 }
             }
         }}
@@ -60,7 +60,7 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             template: `<Button title="SECONDARY" :theme="secondaryTheme" :disabled="true" />`,
             computed: {
                 secondaryTheme() {
-                    return THEMES.SECONDARY;
+                    return THEME.SECONDARY;
                 }
             }
         }}
@@ -76,10 +76,10 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             template: `<Button title="PRIMARY" :theme="primaryTheme" :size="regularSize" />`,
             computed: {
                 primaryTheme() {
-                    return THEMES.PRIMARY;
+                    return THEME.PRIMARY;
                 },
                 regularSize() {
-                    return SIZES.REGULAR;
+                    return SIZE.REGULAR;
                 },
             }
         }}
@@ -90,10 +90,10 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             template: `<Button title="PRIMARY" :theme="primaryTheme" :size="smallSize" />`,
             computed: {
                 primaryTheme() {
-                    return THEMES.PRIMARY;
+                    return THEME.PRIMARY;
                 },
                 smallSize() {
-                    return SIZES.SMALL;
+                    return SIZE.SMALL;
                 },
             }
         }}
@@ -104,10 +104,10 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             template: `<Button title="PRIMARY" :theme="primaryTheme" :size="tinySize" />`,
             computed: {
                 primaryTheme() {
-                    return THEMES.PRIMARY;
+                    return THEME.PRIMARY;
                 },
                 tinySize() {
-                    return SIZES.TINY;
+                    return SIZE.TINY;
                 },
             }
         }}

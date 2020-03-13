@@ -36,7 +36,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
-import { THEMES, SIZES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 import CommentWrapper from '@Comments/components/Comments/CommentWrapper';
@@ -72,10 +72,10 @@ export default {
     },
     computed: {
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         smallSize() {
-            return SIZES.SMALL;
+            return SIZE.SMALL;
         },
         errorCommentMessage() {
             const placeholderIndex = 'content';

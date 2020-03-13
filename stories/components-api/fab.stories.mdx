@@ -1,7 +1,7 @@
 import { Meta, Story, Preview, Description, Props } from '@storybook/addon-docs/blocks';
 import Fab from '@Core/components/Buttons/Fab';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import { THEMES, SIZES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 
 <Meta title="Components API|Fab" />
 
@@ -21,14 +21,14 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             components: { Fab, IconAdd },
             template: `
                 <Fab :theme="primaryTheme">
-                    <template #icon="{ fillColor, isHovered }">
-                        <IconAdd :fill-color="fillColor" />
+                    <template #icon="{ color, isHovered }">
+                        <IconAdd :fill-color="color" />
                     </template>
                 </Fab>
             `,
             computed: {
                 primaryTheme() {
-                    return THEMES.PRIMARY;
+                    return THEME.PRIMARY;
                 }
             }
         }}
@@ -38,14 +38,14 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             components: { Fab, IconAdd },
             template: `
                 <Fab :theme="secondaryTheme">
-                    <template #icon="{ fillColor, isHovered }">
-                        <IconAdd :fill-color="fillColor" />
+                    <template #icon="{ color, isHovered }">
+                        <IconAdd :fill-color="color" />
                     </template>
                 </Fab>
             `,
             computed: {
                 secondaryTheme() {
-                    return THEMES.SECONDARY;
+                    return THEME.SECONDARY;
                 }
             }
         }}
@@ -55,14 +55,14 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             components: { Fab, IconAdd },
             template: `
                 <Fab :theme="secondaryPlainTheme">
-                    <template #icon="{ fillColor, isHovered }">
-                        <IconAdd :fill-color="fillColor" />
+                    <template #icon="{ color, isHovered }">
+                        <IconAdd :fill-color="color" />
                     </template>
                 </Fab>
             `,
             computed: {
                 secondaryPlainTheme() {
-                    return THEMES.SECONDARY_PLAIN;
+                    return THEME.SECONDARY_PLAIN;
                 }
             }
         }}
@@ -77,14 +77,14 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             components: { Fab, IconAdd },
             template: `
                 <Fab :disabled="true" :theme="primaryTheme">
-                    <template #icon="{ fillColor, isHovered }">
-                        <IconAdd :fill-color="fillColor" />
+                    <template #icon="{ color, isHovered }">
+                        <IconAdd :fill-color="color" />
                     </template>
                 </Fab>
             `,
             computed: {
                 primaryTheme() {
-                    return THEMES.PRIMARY;
+                    return THEME.PRIMARY;
                 }
             }
         }}
@@ -94,14 +94,14 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             components: { Fab, IconAdd },
             template: `
                 <Fab :disabled="true" :theme="secondaryTheme">
-                    <template #icon="{ fillColor, isHovered }">
-                        <IconAdd :fill-color="fillColor" />
+                    <template #icon="{ color, isHovered }">
+                        <IconAdd :fill-color="color" />
                     </template>
                 </Fab>
             `,
             computed: {
                 secondaryTheme() {
-                    return THEMES.SECONDARY;
+                    return THEME.SECONDARY;
                 }
             }
         }}
@@ -111,14 +111,14 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             components: { Fab, IconAdd },
             template: `
                 <Fab :disabled="true" :theme="secondaryPlainTheme">
-                    <template #icon="{ fillColor, isHovered }">
-                        <IconAdd :fill-color="fillColor" />
+                    <template #icon="{ color, isHovered }">
+                        <IconAdd :fill-color="color" />
                     </template>
                 </Fab>
             `,
             computed: {
                 secondaryPlainTheme() {
-                    return THEMES.SECONDARY_PLAIN;
+                    return THEME.SECONDARY_PLAIN;
                 }
             }
         }}
@@ -133,17 +133,17 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             components: { Fab, IconAdd },
             template: `
                 <Fab :theme="primaryTheme" :size="regularSize">
-                    <template #icon="{ fillColor, isHovered }">
-                        <IconAdd :fill-color="fillColor" />
+                    <template #icon="{ color, isHovered }">
+                        <IconAdd :fill-color="color" />
                     </template>
                 </Fab>
             `,
             computed: {
                 primaryTheme() {
-                    return THEMES.PRIMARY;
+                    return THEME.PRIMARY;
                 },
                 regularSize() {
-                    return SIZES.REGULAR;
+                    return SIZE.REGULAR;
                 },
             }
         }}
@@ -153,17 +153,17 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             components: { Fab, IconAdd },
             template: `
                 <Fab :theme="primaryTheme" :size="smallSize">
-                    <template #icon="{ fillColor, isHovered }">
-                        <IconAdd :fill-color="fillColor" />
+                    <template #icon="{ color, isHovered }">
+                        <IconAdd :fill-color="color" />
                     </template>
                 </Fab>
             `,
             computed: {
                 primaryTheme() {
-                    return THEMES.PRIMARY;
+                    return THEME.PRIMARY;
                 },
                 smallSize() {
-                    return SIZES.SMALL;
+                    return SIZE.SMALL;
                 },
             }
         }}
@@ -173,17 +173,17 @@ import { THEMES, SIZES } from '@Core/defaults/buttons';
             components: { Fab, IconAdd },
             template: `
                 <Fab :theme="primaryTheme" :size="tinySize">
-                    <template #icon="{ fillColor, isHovered }">
-                        <IconAdd :fill-color="fillColor" />
+                    <template #icon="{ color, isHovered }">
+                        <IconAdd :fill-color="color" />
                     </template>
                 </Fab>
             `,
             computed: {
                 primaryTheme() {
-                    return THEMES.PRIMARY;
+                    return THEME.PRIMARY;
                 },
                 tinySize() {
-                    return SIZES.TINY;
+                    return SIZE.TINY;
                 },
             }
         }}

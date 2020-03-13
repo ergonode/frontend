@@ -21,10 +21,10 @@
             v-if="isSearch"
             class="search-button"
             @click.native="onSearchButtonClick">
-            <template #icon="{ fillColor }">
+            <template #icon="{ color }">
                 <Component
                     :is="searchButtonIconComponent"
-                    :fill-color="fillColor" />
+                    :fill-color="color" />
             </template>
         </Fab>
     </ListHeader>

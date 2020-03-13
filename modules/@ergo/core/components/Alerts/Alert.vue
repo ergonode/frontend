@@ -11,8 +11,8 @@
         <Fab
             :theme="secondaryPlainTheme"
             @click.native="removeAlert(alert)">
-            <template #icon="{ fillColor }">
-                <IconClose :fill-color="fillColor" />
+            <template #icon="{ color }">
+                <IconClose :fill-color="color" />
             </template>
         </Fab>
     </div>
@@ -20,7 +20,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { toCapitalize } from '@Core/models/stringWrapper';
 import Fab from '@Core/components/Buttons/Fab';
@@ -41,7 +41,7 @@ export default {
     },
     computed: {
         secondaryPlainTheme() {
-            return THEMES.SECONDARY_PLAIN;
+            return THEME.SECONDARY_PLAIN;
         },
         typeClass() {
             return `alert--${this.alert.type}`;

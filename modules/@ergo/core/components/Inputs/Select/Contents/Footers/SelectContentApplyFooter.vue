@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import ContentBaseFooter from '@Core/components/Inputs/Select/Contents/Footers/ContentBaseFooter';
 import Button from '@Core/components/Buttons/Button';
 
@@ -31,10 +31,10 @@ export default {
     },
     computed: {
         tinySize() {
-            return SIZES.TINY;
+            return SIZE.TINY;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
     },
     methods: {

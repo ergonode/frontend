@@ -53,7 +53,7 @@
 
 <script>
 import { ARROW } from '@Core/defaults/icons';
-import { THEMES, SIZES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import ActionBaseButton from '@Core/components/Buttons/ActionBaseButton';
 import Button from '@Core/components/Buttons/Button';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
@@ -72,8 +72,8 @@ export default {
          */
         theme: {
             type: String,
-            default: THEMES.PRIMARY,
-            validator: value => Object.values(THEMES).indexOf(value) !== -1,
+            default: THEME.PRIMARY,
+            validator: value => Object.values(THEME).indexOf(value) !== -1,
         },
         /**
          * The size of the button
@@ -81,8 +81,8 @@ export default {
          */
         size: {
             type: String,
-            default: SIZES.REGULAR,
-            validator: value => Object.values(SIZES).indexOf(value) !== -1,
+            default: SIZE.REGULAR,
+            validator: value => Object.values(SIZE).indexOf(value) !== -1,
         },
         /**
          * The title of the button

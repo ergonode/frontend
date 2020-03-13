@@ -63,7 +63,7 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import Button from '@Core/components/Buttons/Button';
@@ -96,10 +96,10 @@ export default {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
         smallSize() {
-            return SIZES.SMALL;
+            return SIZE.SMALL;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         isUserAllowedToUpdateProduct() {
             return this.$hasAccess(['PRODUCT_UPDATE']);

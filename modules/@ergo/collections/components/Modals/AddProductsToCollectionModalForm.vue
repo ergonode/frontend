@@ -28,7 +28,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
@@ -54,7 +54,7 @@ export default {
             id: state => state.id,
         }),
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
     },
     created() {

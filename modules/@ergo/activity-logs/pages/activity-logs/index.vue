@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { THEMES, SIZES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 
 export default {
@@ -24,10 +24,10 @@ export default {
     },
     computed: {
         smallSize() {
-            return SIZES.SMALL;
+            return SIZE.SMALL;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);

@@ -24,8 +24,8 @@
                     :options="contextualMenuItems"
                     @focus="onSelectFocus"
                     @input="onSelectValue">
-                    <template #icon="{ fillColor }">
-                        <IconDots :fill-color="fillColor" />
+                    <template #icon="{ color }">
+                        <IconDots :fill-color="color" />
                     </template>
                 </ActionIconButton>
             </div>
@@ -44,7 +44,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { isEmpty } from '@Core/models/objectWrapper';
 import { hasOptions } from '@Conditions/models/conditionTypes';
 import ConditionSetParameters from '@Conditions/components/ConditionSetDesigner/ConditionSetParameters';
@@ -84,10 +84,10 @@ export default {
             conditionsValues: state => state.conditionsValues,
         }),
         tinySize() {
-            return SIZES.TINY;
+            return SIZE.TINY;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         isCondition() {
             return !isEmpty(this.condition);

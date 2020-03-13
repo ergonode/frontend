@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { THEMES, SIZES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import {
     GREEN, GRAPHITE, WHITE, GREY_DARK,
 } from '@Core/assets/scss/_js-variables/colors.scss';
@@ -58,8 +58,8 @@ export default {
          */
         theme: {
             type: String,
-            default: THEMES.PRIMARY,
-            validator: value => Object.values(THEMES).indexOf(value) !== -1,
+            default: THEME.PRIMARY,
+            validator: value => Object.values(THEME).indexOf(value) !== -1,
         },
         /**
          * The size of the button
@@ -67,8 +67,8 @@ export default {
          */
         size: {
             type: String,
-            default: SIZES.REGULAR,
-            validator: value => Object.values(SIZES).indexOf(value) !== -1,
+            default: SIZE.REGULAR,
+            validator: value => Object.values(SIZE).indexOf(value) !== -1,
         },
         /**
          * The disabled state of the button
@@ -101,7 +101,7 @@ export default {
     },
     computed: {
         iconFillColor() {
-            if (this.theme !== THEMES.PRIMARY) {
+            if (this.theme !== THEME.PRIMARY) {
                 if (this.disabled) {
                     return GREY_DARK;
                 }

@@ -3,13 +3,13 @@
  * See LICENSE for license details.
  */
 <template>
-    <RoundedBadge :class="`${theme}-badge`">
+    <RoundedBadge :class="numericBadgeClasses">
         <BadgeLabel :label="number" />
     </RoundedBadge>
 </template>
 
 <script>
-import { THEME } from '@Core/defaults/badge';
+import { THEME } from '@Core/defaults/theme';
 import RoundedBadge from '@Core/components/Badges/RoundedBadge';
 import BadgeLabel from '@Core/components/Badges/BadgeLabel';
 
@@ -30,17 +30,22 @@ export default {
             validator: value => Object.values(THEME).indexOf(value) !== -1,
         },
     },
+    computed: {
+        numericBadgeClasses() {
+            return `badge--${this.theme}`;
+        },
+    },
 };
 </script>
 
 <style lang="scss" scoped>
-    .transparent-badge {
+    .badge--secondary {
         border: $BORDER_1_GREY;
         background-color: $WHITE;
         color: $GRAPHITE_DARK;
     }
 
-    .primary-badge {
+    .badge--primary {
         background-color: $GREEN;
         color: $WHITE;
     }

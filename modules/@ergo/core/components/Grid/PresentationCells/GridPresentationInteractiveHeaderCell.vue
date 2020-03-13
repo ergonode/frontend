@@ -43,7 +43,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { removeCookieById } from '@Core/models/cookies';
 import { COLUMNS_IDS } from '@Core/defaults/grid/cookies';
 import { SORTING_ORDER } from '@Core/defaults/icons';
@@ -89,10 +89,10 @@ export default {
             draggedElement: state => state.draggedElement,
         }),
         tinySize() {
-            return SIZES.TINY;
+            return SIZE.TINY;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;

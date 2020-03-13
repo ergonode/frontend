@@ -89,7 +89,7 @@
 
 
 <script>
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { ARROW } from '@Core/defaults/icons';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import DropDown from '@Core/components/Inputs/Select/Contents/DropDown';
@@ -214,10 +214,10 @@ export default {
             };
         },
         tinySize() {
-            return SIZES.TINY;
+            return SIZE.TINY;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         parsedInputValue() {
             return Array.isArray(this.value) ? this.value.join(', ') : this.value;

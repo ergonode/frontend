@@ -9,8 +9,8 @@
                 <Fab
                     v-if="isNavigationBack"
                     @click.native="onClick">
-                    <template #icon="{ fillColor }">
-                        <IconArrowPointer :fill-color="fillColor" />
+                    <template #icon="{ color }">
+                        <IconArrowPointer :fill-color="color" />
                     </template>
                 </Fab>
             </template>
@@ -21,10 +21,10 @@
                     :background="blueColor"
                     :color="whiteColor"
                     title="READ ONLY">
-                    <template #icon>
+                    <template #icon="{ color }">
                         <IconLock
                             size="24"
-                            :fill-color="whiteColor" />
+                            :fill-color="color" />
                     </template>
                 </InformationIconBadge>
             </template>

@@ -5,7 +5,9 @@
 <template>
     <InformationBadge v-bind="$attrs">
         <template #prepend>
-            <slot name="icon" />
+            <slot
+                name="icon"
+                :color="$attrs.color" />
         </template>
     </InformationBadge>
 </template>

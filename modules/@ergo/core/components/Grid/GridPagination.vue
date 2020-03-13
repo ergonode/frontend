@@ -9,8 +9,8 @@
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="toFirstPage">
-                    <template #icon="{ fillColor }">
-                        <IconArrowPointerBlock :fill-color="fillColor" />
+                    <template #icon="{ color }">
+                        <IconArrowPointerBlock :fill-color="color" />
                     </template>
                 </Fab>
             </FadeTransition>
@@ -18,9 +18,9 @@
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="decrementPage">
-                    <template #icon="{ fillColor }">
+                    <template #icon="{ color }">
                         <IconArrowSingle
-                            :fill-color="fillColor"
+                            :fill-color="color"
                             :state="arrow.LEFT" />
                     </template>
                 </Fab>
@@ -48,9 +48,9 @@
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="incrementPage">
-                    <template #icon="{ fillColor }">
+                    <template #icon="{ color }">
                         <IconArrowSingle
-                            :fill-color="fillColor"
+                            :fill-color="color"
                             :state="arrow.RIGHT" />
                     </template>
                 </Fab>
@@ -59,9 +59,9 @@
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="toLastPage">
-                    <template #icon="{ fillColor }">
+                    <template #icon="{ color }">
                         <IconArrowPointerBlock
-                            :fill-color="fillColor"
+                            :fill-color="color"
                             :state="arrow.RIGHT" />
                     </template>
                 </Fab>
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import { ARROW } from '@Core/defaults/icons';
 
 export default {
@@ -98,7 +98,7 @@ export default {
             return ARROW;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         isLeftArrowVisible() {
             return this.value > 1;

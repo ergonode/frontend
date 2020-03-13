@@ -19,16 +19,16 @@
                     v-if="isAbleToEdit"
                     :theme="secondaryTheme"
                     @click.native="editComment">
-                    <template #icon="{ fillColor, isHovered }">
-                        <IconEdit :fill-color="isHovered ? colorGreen : fillColor" />
+                    <template #icon="{ color, isHovered }">
+                        <IconEdit :fill-color="isHovered ? colorGreen : color" />
                     </template>
                 </Fab>
                 <Fab
                     v-if="isAbleToDelete"
                     :theme="secondaryTheme"
                     @click.native="onRemove">
-                    <template #icon="{ fillColor, isHovered }">
-                        <IconDelete :fill-color="isHovered ? colorRed : fillColor" />
+                    <template #icon="{ color, isHovered }">
+                        <IconDelete :fill-color="isHovered ? colorRed : color" />
                     </template>
                 </Fab>
             </div>
@@ -52,7 +52,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { format as formatDate } from 'date-fns';
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import { DEFAULT_DATA_HOUR_FORMAT } from '@Core/defaults/date';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import {
@@ -80,7 +80,7 @@ export default {
     },
     computed: {
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         colorGreen() {
             return GREEN;

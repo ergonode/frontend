@@ -27,7 +27,7 @@
             class="grid-item__categories-length"
             v-if="hasChildren"
             :number="numberOfChildren"
-            theme="transparent" />
+            :theme="secondaryTheme" />
         <div
             :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
             <ActionIconButton
@@ -44,7 +44,7 @@
     </div>
 </template>
 <script>
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { ACTION } from '@Core/defaults/icons';
 import IconDots from '@Core/components/Icons/Others/IconDots';
 import IconPlusMinus from '@Core/components/Icons/Actions/IconPlusMinus';
@@ -82,10 +82,10 @@ export default {
     },
     computed: {
         tinySize() {
-            return SIZES.TINY;
+            return SIZE.TINY;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         hasChildren() {
             return this.numberOfChildren > 0;

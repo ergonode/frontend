@@ -29,9 +29,9 @@
             <Fab
                 :theme="secondaryTheme"
                 @click.native="onExpand">
-                <template #icon="{ isHovered, fillColor }">
+                <template #icon="{ isHovered, color }">
                     <IconArrowDouble
-                        :fill-color="isHovered ? fillColor : whiteColor"
+                        :fill-color="isHovered ? color : whiteColor"
                         :state="expendStateIcon" />
                 </template>
             </Fab>
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import { ARROW } from '@Core/defaults/icons';
 import { GREEN, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
@@ -70,7 +70,7 @@ export default {
             return this.isExpanded ? ARROW.LEFT : ARROW.RIGHT;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         greenColor() {
             return GREEN;

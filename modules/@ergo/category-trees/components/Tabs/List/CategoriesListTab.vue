@@ -21,8 +21,8 @@
             <Fab
                 :disabled="!$hasAccess(['CATEGORY_CREATE'])"
                 @click.native="onShowModal">
-                <template #icon="{ fillColor }">
-                    <IconAdd :fill-color="fillColor" />
+                <template #icon="{ color }">
+                    <IconAdd :fill-color="color" />
                 </template>
             </Fab>
         </template>

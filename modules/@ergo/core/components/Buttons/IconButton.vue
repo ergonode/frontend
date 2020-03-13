@@ -18,7 +18,7 @@
     </button>
 </template>
 <script>
-import { THEMES, SIZES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import {
     GRAPHITE, GREY_DARK, WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
@@ -32,8 +32,8 @@ export default {
          */
         theme: {
             type: String,
-            default: THEMES.PRIMARY,
-            validator: value => Object.values(THEMES).indexOf(value) !== -1,
+            default: THEME.PRIMARY,
+            validator: value => Object.values(THEME).indexOf(value) !== -1,
         },
         /**
          * The size of the button
@@ -41,8 +41,8 @@ export default {
          */
         size: {
             type: String,
-            default: SIZES.REGULAR,
-            validator: value => Object.values(SIZES).indexOf(value) !== -1,
+            default: SIZE.REGULAR,
+            validator: value => Object.values(SIZE).indexOf(value) !== -1,
         },
         /**
          * The title of the button
@@ -63,7 +63,7 @@ export default {
     },
     computed: {
         foregroundColor() {
-            if (this.theme === THEMES.SECONDARY) {
+            if (this.theme === THEME.SECONDARY) {
                 if (this.disabled) {
                     return GREY_DARK;
                 }

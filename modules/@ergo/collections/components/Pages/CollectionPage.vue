@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import categoryManagementPageBaseMixin from '@Core/mixins/page/categoryManagementPageBaseMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
@@ -71,10 +71,10 @@ export default {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
         smallSize() {
-            return SIZES.SMALL;
+            return SIZE.SMALL;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
     },
 };
