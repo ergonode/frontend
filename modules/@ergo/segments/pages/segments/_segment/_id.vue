@@ -15,6 +15,7 @@ import { mapState, mapActions } from 'vuex';
 import { getMappedConditionSetData } from '@Conditions/models/conditionSetMapper';
 import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
     name: 'SegmentEdit',
@@ -122,10 +123,10 @@ export default {
             });
         },
         onUpdateSegmentsSuccess() {
-            this.$addAlert({ type: 'success', message: 'Segment updated' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Segment updated' });
         },
         onRemoveSegmentSuccess() {
-            this.$addAlert({ type: 'success', message: 'Segment removed' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Segment removed' });
             this.$router.push({ name: 'segments-grid' });
         },
     },

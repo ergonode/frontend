@@ -25,7 +25,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
 
 const createStatusTransition = () => import('@Transitions/services/createStatusTransition.service');
@@ -44,7 +44,7 @@ export default {
             destination: state => state.destination,
         }),
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
     },
     created() {

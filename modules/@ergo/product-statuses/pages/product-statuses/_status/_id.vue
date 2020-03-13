@@ -14,6 +14,7 @@
 
 import { mapState, mapActions } from 'vuex';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
     name: 'StatusEdit',
@@ -72,12 +73,12 @@ export default {
             }
         },
         onRemoveProductStatusSuccess() {
-            this.$addAlert({ type: 'success', message: 'Product status removed' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product status removed' });
             this.$router.push({ name: 'product-statuses-grid' });
         },
         onProductStatusUpdated() {
             this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Product status updated' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product status updated' });
         },
     },
     head() {

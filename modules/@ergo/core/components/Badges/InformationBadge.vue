@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { SIZES } from '@Core/defaults/badge';
+import { SIZE } from '@Core/defaults/theme';
 import { WHITE, GRAPHITE_DARK } from '@Core/assets/scss/_js-variables/colors.scss';
 import BadgeLabel from '@Core/components/Badges/BadgeLabel';
 
@@ -40,8 +40,8 @@ export default {
         },
         size: {
             type: String,
-            default: 'regular',
-            validator: value => Object.values(SIZES).indexOf(value) !== -1,
+            default: SIZE.REGULAR,
+            validator: value => Object.values(SIZE).indexOf(value) !== -1,
         },
     },
     computed: {

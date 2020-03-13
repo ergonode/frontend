@@ -27,7 +27,7 @@
 
 <script>
 import { ARROW } from '@Core/defaults/icons';
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 
 export default {
     name: 'ExpandNumericButton',
@@ -52,10 +52,10 @@ export default {
     },
     computed: {
         theme() {
-            return THEMES;
+            return THEME;
         },
         smallSize() {
-            return SIZES.SMALL;
+            return SIZE.SMALL;
         },
         iconExpandedState() {
             return this.isExpanded ? ARROW.UP : ARROW.DOWN;

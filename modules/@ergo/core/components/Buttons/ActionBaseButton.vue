@@ -3,23 +3,15 @@
  * See LICENSE for license details.
  */
 <template>
-    <Button
-        :class="menuButtonClasses"
-        v-bind="$attrs"
-        ref="activator"
-        @click.native="onClick"
-        @mouseenter.native="onMouseEnter"
-        @mouseleave.native="onMouseLeave">
-        <template #append="{ color }">
-            <slot
-                name="icon"
-                :fillColor="iconFillColor"
-                :is-hovered="isHovered">
-                <IconArrowDropDown
-                    :state="iconArrowState"
-                    :fill-color="color" />
-            </slot>
-        </template>
+    <div class="action-button">
+        <div
+            class="action-button__activator"
+            ref="activator"
+            @click="onClick"
+            @mouseenter="onMouseEnter"
+            @mouseleave="onMouseLeave">
+            <slot name="button" />
+        </div>
         <FadeTransition>
             <DropDown
                 v-if="isFocused"
@@ -46,38 +38,38 @@
                 </template>
             </DropDown>
         </FadeTransition>
-    </Button>
+    </div>
 </template>
-<script>
 
-import { ARROW } from '@Core/defaults/icons';
-import { THEMES } from '@Core/defaults/buttons';
-import {
-    GREEN, GRAPHITE, WHITE, GREY_DARK,
-} from '@Core/assets/scss/_js-variables/colors.scss';
-import Button from '@Core/components/Buttons/Button';
+<script>
+import DropDown from '@Core/components/Inputs/Select/Contents/DropDown';
+import List from '@Core/components/List/List';
+import ListElement from '@Core/components/List/ListElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
-import DropDown from '@Core/components/Inputs/Select/Contents/DropDown';
+import FadeTransition from '@Core/components/Transitions/FadeTransition';
 
 export default {
-    name: 'MenuButton',
+    name: 'ActionButton',
     components: {
-        Button,
+        DropDown,
+        List,
+        ListElement,
         ListElementDescription,
         ListElementTitle,
-        DropDown,
-        List: () => import('@Core/components/List/List'),
-        ListElement: () => import('@Core/components/List/ListElement'),
-        IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
-        FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
+        FadeTransition,
     },
-    inheritAttrs: false,
     props: {
+        /**
+         * The options of the dropdown
+         */
         options: {
             type: Array,
             default: () => [],
         },
+        /**
+         * The flag which tells if the dropdown has fixed content to it's parent width
+         */
         fixedContent: {
             type: Boolean,
             default: false,
@@ -93,32 +85,11 @@ export default {
         dropDownOffset() {
             const {
                 x, y, width, height,
-            } = this.$refs.activator.$el.getBoundingClientRect();
+            } = this.$refs.activator.getBoundingClientRect();
 
             return {
                 x, y, width, height: height + 1,
             };
-        },
-        iconFillColor() {
-            if (this.$attrs.theme === THEMES.SECONDARY) {
-                if (this.$attrs.disabled) {
-                    return GREY_DARK;
-                }
-                if (this.isHovered || this.isFocused) {
-                    return GREEN;
-                }
-                return GRAPHITE;
-            }
-
-            return WHITE;
-        },
-        menuButtonClasses() {
-            return {
-                'button--menu-title': Boolean(this.$attrs.title),
-            };
-        },
-        iconArrowState() {
-            return this.isFocused ? ARROW.UP : ARROW.DOWN;
         },
     },
     watch: {
@@ -137,9 +108,11 @@ export default {
     methods: {
         onMouseEnter() {
             this.isHovered = true;
+            this.$emit('hover', true);
         },
         onMouseLeave() {
             this.isHovered = false;
+            this.$emit('hover', false);
         },
         onClick() {
             this.isFocused = !this.isFocused;
@@ -163,14 +136,16 @@ export default {
     },
 };
 </script>
-<style lang="scss" scoped>
-    .button {
-        $button: &;
 
-        &:not(&--menu-title) {
-            width: 24px;
-            height: 24px;
-            padding: 0;
+<style lang="scss" scoped>
+    .action-button {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: max-content;
+
+        &__activator {
+            position: relative;
         }
     }
 </style>

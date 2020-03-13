@@ -37,7 +37,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import ModalForm from '@Core/components/Modal/ModalForm';
 import TextField from '@Core/components/Inputs/TextField';
 import Button from '@Core/components/Buttons/Button';
@@ -81,7 +81,7 @@ export default {
     },
     computed: {
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
     },
     watch: {

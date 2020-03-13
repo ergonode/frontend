@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { isEmpty, getKeyByValue } from '@Core/models/objectWrapper';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 import {
     getParsedParameterKeys,
     getParsedOptions,
@@ -40,11 +41,11 @@ export default function ({
         const uniqueOptions = new Set(optionKeys);
 
         if (optionKeys.some(key => key === '')) {
-            $addAlert({ type: 'warning', message: 'Options cannot have an empty keys' });
+            $addAlert({ type: ALERT_TYPE.WARNING, message: 'Options cannot have an empty keys' });
         }
 
         if (optionKeys.length !== uniqueOptions.size) {
-            $addAlert({ type: 'warning', message: 'Option code must be unique' });
+            $addAlert({ type: ALERT_TYPE.WARNING, message: 'Option code must be unique' });
         }
 
         data.options = getParsedOptions(options);

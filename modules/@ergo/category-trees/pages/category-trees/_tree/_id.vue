@@ -15,6 +15,7 @@ import { mapState, mapActions } from 'vuex';
 import { getMappedTreeData } from '@Trees/models/treeMapper';
 import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
     name: 'EditCategoryTree',
@@ -88,10 +89,10 @@ export default {
         },
         onUpdateSuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Tree updated' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Tree updated' });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: 'success', message: 'Category tree removed' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Category tree removed' });
             this.$router.push({ name: 'category-trees-grid' });
         },
     },

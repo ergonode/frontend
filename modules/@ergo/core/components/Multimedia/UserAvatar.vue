@@ -12,7 +12,7 @@
             :image-id="imageId" />
         <span
             v-else
-            class="user-avatar__placeholder font--medium-14-20"
+            class="user-avatar__placeholder"
             v-text="avatarInitial" />
     </div>
 </template>
@@ -62,6 +62,7 @@ export default {
 
         &__placeholder {
             color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_14_20;
             text-transform: uppercase;
         }
     }

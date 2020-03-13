@@ -4,7 +4,7 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #content>
+        <template #centeredContent>
             <CategoryTreeForm />
         </template>
     </ResponsiveCenteredViewTemplate>

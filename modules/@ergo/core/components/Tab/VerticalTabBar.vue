@@ -15,15 +15,15 @@
                     @select="onSelectTabBarItem" />
             </VerticalFixedScroll>
             <div class="tab-bar__expand-button">
-                <FabButton
+                <Fab
                     :theme="secondaryTheme"
                     @click.native="onExpand">
-                    <template #icon="{ fillColor }">
+                    <template #icon="{ color }">
                         <IconArrowDouble
-                            :fill-color="fillColor"
+                            :fill-color="color"
                             :state="expendStateIcon" />
                     </template>
-                </FabButton>
+                </Fab>
             </div>
         </div>
         <VerticalTabContent
@@ -34,7 +34,7 @@
 
 <script>
 
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import { ARROW } from '@Core/defaults/icons';
 
 export default {
@@ -42,7 +42,7 @@ export default {
     components: {
         VerticalTabContent: () => import('@Core/components/Tab/VerticalTabContent'),
         VerticalTabBarItem: () => import('@Core/components/Tab/VerticalTabBarItem'),
-        FabButton: () => import('@Core/components/Buttons/FabButton'),
+        Fab: () => import('@Core/components/Buttons/Fab'),
         IconArrowDouble: () => import('@Core/components/Icons/Arrows/IconArrowDouble'),
         VerticalFixedScroll: () => import('@Core/components/Layout/Scroll/VerticalFixedScroll'),
     },
@@ -60,7 +60,7 @@ export default {
     },
     computed: {
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         expendStateIcon() {
             return this.isExpanded ? ARROW.LEFT : ARROW.RIGHT;

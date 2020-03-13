@@ -12,43 +12,42 @@
         </div>
         <div class="vertical-wrapper">
             <span
-                :class="typeLabelClasses"
+                class="element-content__header"
                 v-text="element.type" />
             <span
-                class="element-content__subheader font--medium-14-20"
+                class="element-content__subheader"
                 v-text="element.label" />
         </div>
         <div
             v-if="!disabled"
             :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
-            <MenuButton
+            <ActionIconButton
                 :theme="secondaryTheme"
-                :size="smallSize"
-                :plain="true"
+                :size="tinySize"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
                 @focus="onSelectFocus">
-                <template #icon="{ fillColor }">
-                    <IconDots :fill-color="fillColor" />
+                <template #icon="{ color }">
+                    <IconDots :fill-color="color" />
                 </template>
-            </MenuButton>
+            </ActionIconButton>
         </div>
     </ElementContentBase>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
 import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
-import MenuButton from '@Core/components/Buttons/MenuButton';
+import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
 import IconDots from '@Core/components/Icons/Others/IconDots';
 
 export default {
     name: 'SectionElementContent',
     components: {
         IconFontSize,
-        MenuButton,
+        ActionIconButton,
         IconDots,
         ElementContentBase,
     },
@@ -74,21 +73,14 @@ export default {
         };
     },
     computed: {
-        smallSize() {
-            return SIZES.SMALL;
+        tinySize() {
+            return SIZE.TINY;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         contextualMenuHoveStateClasses() {
             return { 'element-content__contextual-menu--hovered': this.isHovered };
-        },
-        typeLabelClasses() {
-            return [
-                'element-content__header',
-                'txt--light-graphite',
-                'font--semi-bold-12-16',
-            ];
         },
     },
     methods: {
@@ -137,11 +129,14 @@ export default {
 
         &__header {
             letter-spacing: 0.5px;
+            color: $GRAPHITE_LIGHT;
+            font: $FONT_SEMI_BOLD_12_16;
         }
 
         &__subheader {
             height: 20px;
             color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_14_20;
         }
 
         &__header, &__subheader {

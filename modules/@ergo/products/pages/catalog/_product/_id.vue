@@ -13,6 +13,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
     name: 'ProductEdit',
@@ -54,10 +55,10 @@ export default {
             'clearStorage',
         ]),
         onDraftAppliedSuccess() {
-            this.$addAlert({ type: 'success', message: 'Product updated' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product updated' });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: 'success', message: 'Product removed' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product removed' });
             this.$router.push({ name: 'catalog-products' });
         },
         onDismiss() {

@@ -13,6 +13,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
     name: 'Edit',
@@ -65,10 +66,10 @@ export default {
         },
         onUpdateTemplateDesignerSuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Template updated' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Template updated' });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: 'success', message: 'Template removed' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Template removed' });
             this.$router.push({ name: 'product-templates' });
         },
         onRemove() {

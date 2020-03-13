@@ -6,13 +6,13 @@
     <div class="title-bar">
         <TitleBarHeader :title="title">
             <template #prepend>
-                <FabButton
+                <Fab
                     v-if="isNavigationBack"
                     @click.native="onClick">
-                    <template #icon="{ fillColor }">
-                        <IconArrowPointer :fill-color="fillColor" />
+                    <template #icon="{ color }">
+                        <IconArrowPointer :fill-color="color" />
                     </template>
-                </FabButton>
+                </Fab>
             </template>
             <template #append>
                 <slot name="prependBadge" />
@@ -21,10 +21,10 @@
                     :background="blueColor"
                     :color="whiteColor"
                     title="READ ONLY">
-                    <template #icon>
+                    <template #icon="{ color }">
                         <IconLock
                             size="24"
-                            :fill-color="whiteColor" />
+                            :fill-color="color" />
                     </template>
                 </InformationIconBadge>
             </template>
@@ -40,14 +40,14 @@
 import { WHITE, BLUE, GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
 import TitleBarHeader from '@Core/components/TitleBar/TitleBarHeader';
 import TitleBarActions from '@Core/components/TitleBar/TitleBarActions';
-import FabButton from '@Core/components/Buttons/FabButton';
+import Fab from '@Core/components/Buttons/Fab';
 
 export default {
     name: 'TitleBar',
     components: {
         TitleBarHeader,
         TitleBarActions,
-        FabButton,
+        Fab,
         IconLock: () => import('@Core/components/Icons/Feedback/IconLock'),
         IconArrowPointer: () => import('@Core/components/Icons/Arrows/IconArrowPointer'),
         InformationIconBadge: () => import('@Core/components/Badges/InformationIconBadge'),

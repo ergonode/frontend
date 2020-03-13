@@ -26,7 +26,7 @@ import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import FooterActions from '@Core/components/ReusableFooter/FooterActions';
 import Button from '@Core/components/Buttons/Button';
-import { SIZES } from '@Core/defaults/buttons';
+import { SIZE } from '@Core/defaults/theme';
 
 export default {
     name: 'MainSettingsTab',
@@ -46,7 +46,7 @@ export default {
     },
     computed: {
         smallSize() {
-            return SIZES.SMALL;
+            return SIZE.SMALL;
         },
     },
     beforeCreate() {

@@ -94,8 +94,9 @@ export default {
 
         &__header {
             grid-area: 1 / 1 / 2 / 4;
-            border-bottom: 1px solid $GREY;
+            justify-content: space-between;
             border-bottom: $BORDER_1_GREY;
+            height: 64px;
             box-sizing: border-box;
         }
 

@@ -4,7 +4,7 @@
  */
 import { shallowMount } from '@vue/test-utils';
 import { WHITE, GRAPHITE_DARK } from '@Core/assets/scss/_js-variables/colors.scss';
-import { SIZES } from '@Core/defaults/badge';
+import { SIZE } from '@Core/defaults/theme';
 import InformationBadge from '@Core/components/Badges/InformationBadge.vue';
 
 describe('Badges/InformationBadge', () => {
@@ -41,11 +41,11 @@ describe('Badges/InformationBadge', () => {
             const { size } = wrapper.vm.$options.props;
 
             expect(size.required).toBeFalsy();
-            expect(size.default).toBe(SIZES.REGULAR);
+            expect(size.default).toBe(SIZE.REGULAR);
             expect(size.type).toBe(String);
             expect(size.validator && size.validator('test')).toBeFalsy();
-            expect(size.validator && size.validator(SIZES.REGULAR)).toBeTruthy();
-            expect(size.validator && size.validator(SIZES.SMALL)).toBeTruthy();
+            expect(size.validator && size.validator(SIZE.REGULAR)).toBeTruthy();
+            expect(size.validator && size.validator(SIZE.SMALL)).toBeTruthy();
         });
     });
 });

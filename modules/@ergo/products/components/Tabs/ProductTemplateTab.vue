@@ -5,18 +5,15 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #header>
-            <div class="product-template-header">
-                <div class="product-template-header__language-selection">
-                    <Select
-                        :value="language"
-                        solid
-                        regular
-                        label="Edit language"
-                        :options="languageOptions"
-                        @input="onLanguageChange" />
-                </div>
-                <ProductCompleteness :language="language" />
-            </div>
+            <Select
+                :style="{ flex: '0 0 192px' }"
+                :value="language"
+                solid
+                small
+                label="Edit language"
+                :options="languageOptions"
+                @input="onLanguageChange" />
+            <ProductCompleteness />
         </template>
         <template #centeredContent>
             <ProductTemplateForm :language-code="languageCode" />
@@ -81,17 +78,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .product-template-header {
-        display: flex;
-        flex: 1 1 auto;
-        justify-content: space-between;
-        align-items: center;
-        min-height: 55px;
-
-        &__language-selection {
-            flex: 0 0 196px;
-        }
-    }
-</style>

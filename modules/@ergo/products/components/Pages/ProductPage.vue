@@ -28,7 +28,7 @@
             </template>
             <template #subActions>
                 <TitleBarSubActions>
-                    <MenuButton
+                    <ActionButton
                         v-if="workflow.length"
                         title="STATUS CHANGE"
                         :theme="secondaryTheme"
@@ -47,7 +47,7 @@
                                     :small="true" />
                             </ListElementDescription>
                         </template>
-                    </MenuButton>
+                    </ActionButton>
                 </TitleBarSubActions>
             </template>
         </TitleBar>
@@ -63,8 +63,9 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 import Button from '@Core/components/Buttons/Button';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
 import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
@@ -79,7 +80,7 @@ export default {
         ListElementDescription: () => import('@Core/components/List/ListElementDescription'),
         ListElementTitle: () => import('@Core/components/List/ListElementTitle'),
         ListElementAction: () => import('@Core/components/List/ListElementAction'),
-        MenuButton: () => import('@Core/components/Buttons/MenuButton'),
+        ActionButton: () => import('@Core/components/Buttons/ActionButton'),
         PointBadge: () => import('@Core/components/Badges/PointBadge'),
     },
     mixins: [categoryManagementPageBaseMixin],
@@ -95,10 +96,10 @@ export default {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
         smallSize() {
-            return SIZES.SMALL;
+            return SIZE.SMALL;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         isUserAllowedToUpdateProduct() {
             return this.$hasAccess(['PRODUCT_UPDATE']);
@@ -118,7 +119,7 @@ export default {
                     onSuccess: () => {
                         const { params: { id } } = this.$route;
                         this.getProduct({ languageCode: this.userLanguageCode, id });
-                        this.$addAlert({ type: 'success', message: 'Status updated' });
+                        this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Status updated' });
                     },
                 });
             }
