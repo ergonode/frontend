@@ -33,13 +33,13 @@
                         alt="Uploaded file">
                 </div>
                 <div class="upload-image__remove-button">
-                    <FabButton
+                    <Fab
                         :theme="secondaryTheme"
                         @click.native="onRemove">
-                        <template #icon="{ fillColor, isHovered }">
-                            <IconDelete :fill-color="isHovered ? redColor : fillColor" />
+                        <template #icon="{ color, isHovered }">
+                            <IconDelete :fill-color="isHovered ? redColor : color" />
                         </template>
-                    </FabButton>
+                    </Fab>
                 </div>
             </template>
         </div>
@@ -52,14 +52,15 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import { GRAPHITE, GREEN, RED } from '@Core/assets/scss/_js-variables/colors.scss';
 import { getImageData } from '@Core/models/multimedia';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
     name: 'UploadImage',
     components: {
-        FabButton: () => import('@Core/components/Buttons/FabButton'),
+        Fab: () => import('@Core/components/Buttons/Fab'),
         IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
     },
     props: {
@@ -100,7 +101,7 @@ export default {
             uploadError: state => state.validationErrors.upload,
         }),
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         redColor() {
             return RED;
@@ -141,7 +142,7 @@ export default {
                     this.getImageById(id);
                     this.$emit('upload', id);
 
-                    this.$addAlert({ type: 'success', message: 'File uploaded' });
+                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'File uploaded' });
                     this.removeValidationError('upload');
                 }).catch(e => this.onError(e.data));
             }

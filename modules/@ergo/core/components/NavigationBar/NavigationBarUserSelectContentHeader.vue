@@ -9,10 +9,10 @@
             :name="initials"
             :avatar-size="64" />
         <span
-            class="header__initials font--medium-16-24"
+            class="header__initials"
             v-text="initials" />
         <span
-            class="header__email font--medium-12-16"
+            class="header__email"
             v-text="email" />
     </div>
 </template>
@@ -65,12 +65,14 @@ export default {
             align-self: flex-end;
             color: $GRAPHITE_DARK;
             letter-spacing: 0.1px;
+            font: $FONT_MEDIUM_16_24;
         }
 
         &__email {
             grid-row: 2;
             align-self: flex-start;
             color: $GREY_DARK;
+            font: $FONT_MEDIUM_12_16;
         }
 
         .user-avatar {

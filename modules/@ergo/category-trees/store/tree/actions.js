@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { getParsedTreeData } from '@Trees/models/treeMapper';
+import { getListItems } from '@Core/services/list/getList.service';
 import { types } from './mutations';
 
 export default {
@@ -11,23 +12,38 @@ export default {
         { treeId },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        const { [userLanguageCode]: categories } = rootState.list.elements;
 
         return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({
             code,
             name = '',
-            categories: treeData,
+            categories,
         }) => {
-            const treeToSet = getParsedTreeData(treeData, categories);
+            if (categories.length) {
+                getListItems({
+                    $axios: this.app.$axios,
+                    path: `${userLanguageCode}/categories`,
+                    params: {
+                        limit: categories.length,
+                        offset: 0,
+                        filter: `category_id=${categories.map(category => category.id).join(',')}`,
+                        field: 'code',
+                        order: 'ASC',
+                    },
+                }).then(({ items }) => {
+                    const treeToSet = getParsedTreeData(categories, items);
+
+                    treeToSet.forEach(e => dispatch('list/setDisabledElement', { languageCode: userLanguageCode, elementId: e.id, disabled: true }, { root: true }));
+                    dispatch('gridDesigner/setGridData', treeToSet, { root: true });
+                    dispatch('gridDesigner/setFullGridData', treeToSet, { root: true });
+                });
+            }
+
             const translations = {
                 name,
             };
 
-            treeToSet.forEach(e => dispatch('list/setDisabledElement', { languageCode: userLanguageCode, elementId: e.id, disabled: true }, { root: true }));
             commit(types.SET_TREE_ID, treeId);
             commit(types.SET_CODE, code);
-            dispatch('gridDesigner/setGridData', treeToSet, { root: true });
-            dispatch('gridDesigner/setFullGridData', treeToSet, { root: true });
             dispatch('translations/setTabTranslations', translations, { root: true });
         });
     },

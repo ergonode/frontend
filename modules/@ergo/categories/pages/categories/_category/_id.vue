@@ -14,6 +14,7 @@
 import { mapState, mapActions } from 'vuex';
 import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
     name: 'EditCategory',
@@ -79,10 +80,10 @@ export default {
         },
         onUpdateCategorySuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Category updated' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Category updated' });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: 'success', message: 'Category removed' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Category removed' });
             this.$router.push({ name: 'categories-grid' });
         },
     },

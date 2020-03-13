@@ -5,7 +5,7 @@
 <template>
     <div class="grid-container">
         <span
-            class="grid-title font--medium-24-32"
+            class="grid-title"
             v-text="title" />
         <div
             v-for="item in items"
@@ -16,7 +16,7 @@
                     :src="require(`@Dashboard/assets/images/${item.icon}`)"
                     :alt="`${item.title} icon`">
                 <span
-                    class="item-title font--medium-24-32"
+                    class="item-title"
                     v-text="item.title" />
                 <Button
                     :title="item.actionTitle "
@@ -55,6 +55,7 @@ export default {
         .grid-title {
             height: 37px;
             color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_24_32;
             text-align: center;
             grid-column: 1/4;
             grid-row: 1;
@@ -75,6 +76,7 @@ export default {
                 .item-title {
                     height: 24px;
                     color: $GRAPHITE_DARK;
+                    font: $FONT_MEDIUM_24_32;
                     text-align: center;
                 }
             }

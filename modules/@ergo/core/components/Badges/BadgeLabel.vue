@@ -2,10 +2,10 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
+<template functional>
     <span
-        class="font--semi-bold-10-12"
-        v-text="label" />
+        class="badge-label"
+        v-text="props.label" />
 </template>
 
 <script>
@@ -21,7 +21,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    span {
+    .badge-label {
+        font: $FONT_SEMI_BOLD_10_12;
         text-transform: uppercase;
     }
 </style>

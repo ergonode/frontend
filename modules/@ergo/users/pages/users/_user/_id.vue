@@ -13,6 +13,7 @@
 import { mapState, mapActions } from 'vuex';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { getKeyByValue } from '@Core/models/objectWrapper';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
     name: 'EditUser',
@@ -77,7 +78,7 @@ export default {
         },
         onUpdateUserSuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'User updated' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'User updated' });
 
             // TODO: Along Notification introduce - remove it from it - this solution is preventing from relogging to see newly edited data for user if edited user is logged one
             if (this.user.id === this.id) {

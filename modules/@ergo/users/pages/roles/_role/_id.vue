@@ -14,6 +14,7 @@
 import { mapState, mapActions } from 'vuex';
 import { getMappedPrivilegesBasedOnGridData } from '@Users/models/privilegesMapper';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
     name: 'EditUserRoles',
@@ -60,14 +61,14 @@ export default {
         },
         onUpdateRoleSuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Role updated' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Role updated' });
         },
         onRemoveRoleSuccess() {
-            this.$addAlert({ type: 'success', message: 'Role removed' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Role removed' });
             this.$router.push({ name: 'user-roles-grid' });
         },
         onRemoveRoleError({ message }) {
-            this.$addAlert({ type: 'error', message });
+            this.$addAlert({ type: ALERT_TYPE.ERROR, message });
         },
         onSave() {
             const role = {

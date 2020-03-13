@@ -702,6 +702,7 @@ export default {
             flex-direction: column;
             height: 0;
             background-color: $WHITESMOKE;
+            overflow: auto;
             border-top: $BORDER_1_GREY;
             border-left: $BORDER_1_GREY;
             border-right: $BORDER_1_GREY;
@@ -718,7 +719,6 @@ export default {
         &__columns {
             position: relative;
             display: grid;
-            overflow: auto;
         }
 
         &__footer {

@@ -25,7 +25,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
 
 const createAttributeGroup = () => import('@Attributes/services/createAttributeGroup.service');
@@ -40,7 +40,7 @@ export default {
     mixins: [createModalFormMixin({ namespace: 'Attribute group', createRequest: createAttributeGroup })],
     computed: {
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
     },
     methods: {

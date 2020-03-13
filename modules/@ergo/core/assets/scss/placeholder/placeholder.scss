@@ -39,11 +39,13 @@
                 height: 56px;
                 min-width: 1px;
                 color: $GREEN;
+                font: $FONT_MEDIUM_24_32;
             }
 
             .info__text {
                 margin-top: 24px;
                 color: $GRAPHITE_DARK;
+                font: $FONT_MEDIUM_16_24;
             }
 
             .info__button {
@@ -60,6 +62,10 @@
 
         .section__video-link {
             margin: 24px 0 48px;
+        }
+
+        .section__quotation, .section__video-link {
+            font: $FONT_MEDIUM_16_24;
         }
     }
 

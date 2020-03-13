@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { types } from './mutations';
 
 function mappedLanguage({ id, code, name }) {
@@ -17,7 +18,7 @@ export default {
         };
 
         return this.app.$axios.$put(`${userLanguageCode}/languages`, data).then(() => {
-            this.$addAlert({ type: 'success', message: 'Languages updated' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Languages updated' });
         });
     },
     getData({ commit, rootState }) {

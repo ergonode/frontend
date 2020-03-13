@@ -4,9 +4,7 @@
  */
 <template>
     <div class="completeness-progress">
-        <span
-            class="completeness-progress__title font--medium-12-16"
-            v-text="caption" />
+        {{ caption }}
         <ProgressBar
             :value="progress"
             :color="color" />
@@ -24,18 +22,12 @@ export default {
     components: {
         ProgressBar: () => import('@Core/components/Inputs/ProgressBar'),
     },
-    props: {
-        language: {
-            type: String,
-            required: true,
-        },
-    },
     computed: {
         ...mapState('productsDraft', {
             completeness: state => state.completeness,
         }),
         caption() {
-            return `${this.progress}% Completeness of ${this.language}`;
+            return `${this.progress}% Completed`;
         },
         progress() {
             const { filled, required } = this.completeness;
@@ -55,10 +47,9 @@ export default {
 
 <style lang="scss" scoped>
     .completeness-progress {
-        width: 200px;
-
-        &__title {
-            color: $GRAPHITE_DARK;
-        }
+        width: 160px;
+        color: $GRAPHITE_DARK;
+        font: $FONT_MEDIUM_12_16;
+        text-align: center;
     }
 </style>

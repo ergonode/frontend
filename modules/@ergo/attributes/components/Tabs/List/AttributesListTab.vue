@@ -30,13 +30,13 @@
             </ListScrollableContainer>
         </List>
         <template #fab>
-            <FabButton
+            <Fab
                 :disabled="!isUserAllowedToCreateAttribute"
                 @click.native="onShowModal">
-                <template #icon="{ fillColor }">
-                    <IconAdd :fill-color="fillColor" />
+                <template #icon="{ color }">
+                    <IconAdd :fill-color="color" />
                 </template>
-            </FabButton>
+            </Fab>
         </template>
         <CreateAttributeModalForm
             v-if="isModalVisible"
@@ -60,7 +60,7 @@ export default {
         AttributesListGroup: () => import('@Attributes/components/Lists/AttributesListGroup'),
         ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
-        FabButton: () => import('@Core/components/Buttons/FabButton'),
+        Fab: () => import('@Core/components/Buttons/Fab'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
         CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
     },

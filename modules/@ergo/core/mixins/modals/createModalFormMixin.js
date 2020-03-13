@@ -4,6 +4,7 @@
  */
 
 import { mapActions } from 'vuex';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default function ({ namespace, createRequest }) {
     return {
@@ -27,7 +28,7 @@ export default function ({ namespace, createRequest }) {
                 }).then(({ id }) => {
                     this.isRequestPending = false;
                     this.removeValidationErrors();
-                    this.$addAlert({ type: 'success', message: `${namespace} has been created` });
+                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: `${namespace} has been created` });
 
                     onSuccess(id);
 

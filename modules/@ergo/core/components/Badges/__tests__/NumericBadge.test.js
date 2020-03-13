@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import { THEME } from '@Core/defaults/badge';
+import { THEME } from '@Core/defaults/theme';
 import NumericBadge from '@Core/components/Badges/NumericBadge.vue';
 
 describe('Badges/NumericBadge', () => {
@@ -30,7 +30,7 @@ describe('Badges/NumericBadge', () => {
             expect(theme.type).toBe(String);
             expect(theme.validator && theme.validator('test')).toBeFalsy();
             expect(theme.validator && theme.validator(THEME.PRIMARY)).toBeTruthy();
-            expect(theme.validator && theme.validator(THEME.TRANSPARENT)).toBeTruthy();
+            expect(theme.validator && theme.validator(THEME.SECONDARY)).toBeTruthy();
         });
     });
 });
