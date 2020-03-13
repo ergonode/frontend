@@ -30,7 +30,7 @@ describe('Badges/NumericBadge', () => {
             expect(theme.type).toBe(String);
             expect(theme.validator && theme.validator('test')).toBeFalsy();
             expect(theme.validator && theme.validator(THEME.PRIMARY)).toBeTruthy();
-            expect(theme.validator && theme.validator(THEME.TRANSPARENT)).toBeTruthy();
+            expect(theme.validator && theme.validator(THEME.SECONDARY)).toBeTruthy();
         });
     });
 });
