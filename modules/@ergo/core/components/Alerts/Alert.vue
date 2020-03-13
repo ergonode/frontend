@@ -9,7 +9,7 @@
             class="alert__title"
             v-text="alert.message" />
         <Fab
-            :theme="secondaryTheme"
+            :theme="secondaryPlainTheme"
             @click.native="removeAlert(alert)">
             <template #icon="{ fillColor }">
                 <IconClose :fill-color="fillColor" />
@@ -40,8 +40,8 @@ export default {
         },
     },
     computed: {
-        secondaryTheme() {
-            return THEMES.SECONDARY;
+        secondaryPlainTheme() {
+            return THEMES.SECONDARY_PLAIN;
         },
         typeClass() {
             return `alert--${this.alert.type}`;

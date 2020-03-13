@@ -44,7 +44,7 @@ describe('Badges/ProductCompleteness', () => {
     });
 
     it('Check caption', () => {
-        expect(wrapper.vm.caption).toBe('100% Completeness of PL');
+        expect(wrapper.vm.caption).toBe('100% Completed');
     });
 
     it('Check progress', () => {
