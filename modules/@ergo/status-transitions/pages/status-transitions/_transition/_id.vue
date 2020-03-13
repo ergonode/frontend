@@ -14,6 +14,7 @@
 import { mapState, mapActions } from 'vuex';
 import { getMappedConditionSetData } from '@Conditions/models/conditionSetMapper';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
     name: 'TransitionEdit',
@@ -124,10 +125,10 @@ export default {
             }
         },
         onTransitionUpdated() {
-            this.$addAlert({ type: 'success', message: 'Transition updated' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Transition updated' });
         },
         onRemoveTransitionSuccess() {
-            this.$addAlert({ type: 'success', message: 'Transition removed' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Transition removed' });
             this.$router.push({ name: 'status-transitions-grid' });
         },
     },

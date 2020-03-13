@@ -50,10 +50,11 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { SIZES } from '@Core/defaults/buttons';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 import Button from '@Core/components/Buttons/Button';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
-import { SIZES } from '@Core/defaults/buttons';
 
 export default {
     name: 'ProductGridTab',
@@ -134,7 +135,7 @@ export default {
 
             Promise.all(promises).then(() => {
                 this.forceDraftsMutation();
-                this.$addAlert({ type: 'success', message: 'Product changes saved' });
+                this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product changes saved' });
             });
         },
     },

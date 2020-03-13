@@ -17,8 +17,7 @@
                     :disabled="!$hasAccess(['ATTRIBUTE_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
-                        <IconDelete
-                            :fill-color="color" />
+                        <IconDelete :fill-color="color" />
                     </template>
                 </Button>
             </template>

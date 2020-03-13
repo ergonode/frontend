@@ -37,6 +37,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { THEMES, SIZES } from '@Core/defaults/buttons';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 import CommentWrapper from '@Comments/components/Comments/CommentWrapper';
 import Button from '@Core/components/Buttons/Button';
@@ -108,7 +109,7 @@ export default {
         },
         onSuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: `Comment ${this.isEdit ? 'edited' : 'created'}` });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: `Comment ${this.isEdit ? 'edited' : 'created'}` });
             this.$emit('close');
         },
         closeComment() {

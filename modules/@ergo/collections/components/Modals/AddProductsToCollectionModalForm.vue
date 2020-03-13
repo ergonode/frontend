@@ -29,6 +29,7 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
     name: 'AddProductsToCollectionModalForm',
@@ -88,7 +89,7 @@ export default {
             this.$axios.$post(`${this.language}/collections/${this.id}/elements/multiple`, data).then(() => {
                 this.isRequestPending = false;
                 this.removeValidationErrors();
-                this.$addAlert({ type: 'success', message: 'Products has been added to collection' });
+                this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been added to collection' });
 
                 this.$emit('added');
             }).catch((e) => {

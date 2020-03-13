@@ -55,6 +55,7 @@ import { mapState, mapActions } from 'vuex';
 import { THEMES } from '@Core/defaults/buttons';
 import { GRAPHITE, GREEN, RED } from '@Core/assets/scss/_js-variables/colors.scss';
 import { getImageData } from '@Core/models/multimedia';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
     name: 'UploadImage',
@@ -141,7 +142,7 @@ export default {
                     this.getImageById(id);
                     this.$emit('upload', id);
 
-                    this.$addAlert({ type: 'success', message: 'File uploaded' });
+                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'File uploaded' });
                     this.removeValidationError('upload');
                 }).catch(e => this.onError(e.data));
             }

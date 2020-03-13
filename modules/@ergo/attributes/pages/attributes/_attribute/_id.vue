@@ -18,6 +18,7 @@ import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappe
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { getParsedOptions, getParsedParameterKeys } from '@Attributes/models/attributeMapper';
 import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
     name: 'EditAttribute',
@@ -74,10 +75,10 @@ export default {
             this.$router.push(getParentRoutePath(this.$route));
         },
         onUpdateAttributeSuccess() {
-            this.$addAlert({ type: 'success', message: 'Attribute updated' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Attribute updated' });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: 'success', message: 'Attribute removed' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Attribute removed' });
             this.$router.push({ name: 'attributes-grid' });
         },
         onRemove() {
@@ -101,12 +102,12 @@ export default {
                 const uniqueOptions = new Set(optionKeys);
 
                 if (optionKeys.some(key => key === '')) {
-                    this.$addAlert({ type: 'warning', message: 'Options cannot have an empty keys' });
+                    this.$addAlert({ type: ALERT_TYPE.WARNING, message: 'Options cannot have an empty keys' });
                     return;
                 }
 
                 if (optionKeys.length !== uniqueOptions.size) {
-                    this.$addAlert({ type: 'warning', message: 'Option code must be unique' });
+                    this.$addAlert({ type: ALERT_TYPE.WARNING, message: 'Option code must be unique' });
                     return;
                 }
 

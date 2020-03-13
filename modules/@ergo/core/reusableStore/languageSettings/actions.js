@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { types } from './mutations';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 function mappedLanguage({ id, code, name }) {
     return { id, key: code, value: name };
@@ -17,7 +18,7 @@ export default {
         };
 
         return this.app.$axios.$put(`${userLanguageCode}/languages`, data).then(() => {
-            this.$addAlert({ type: 'success', message: 'Languages updated' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Languages updated' });
         });
     },
     getData({ commit, rootState }) {

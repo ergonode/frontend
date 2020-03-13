@@ -65,6 +65,7 @@
 import { mapState, mapActions } from 'vuex';
 import { SIZES, THEMES } from '@Core/defaults/buttons';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 import Button from '@Core/components/Buttons/Button';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
 import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
@@ -118,7 +119,7 @@ export default {
                     onSuccess: () => {
                         const { params: { id } } = this.$route;
                         this.getProduct({ languageCode: this.userLanguageCode, id });
-                        this.$addAlert({ type: 'success', message: 'Status updated' });
+                        this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Status updated' });
                     },
                 });
             }

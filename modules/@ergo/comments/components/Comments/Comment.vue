@@ -54,6 +54,7 @@ import { mapActions } from 'vuex';
 import { format as formatDate } from 'date-fns';
 import { THEMES } from '@Core/defaults/buttons';
 import { DEFAULT_DATA_HOUR_FORMAT } from '@Core/defaults/date';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 import {
     GREEN, RED, WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
@@ -116,10 +117,10 @@ export default {
             }
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: 'success', message: 'Comment removed' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Comment removed' });
         },
         onRemoveError({ message }) {
-            this.$addAlert({ type: 'error', message });
+            this.$addAlert({ type: ALERT_TYPE.ERROR, message });
         },
         formatDate(date) {
             if (!date) return null;
