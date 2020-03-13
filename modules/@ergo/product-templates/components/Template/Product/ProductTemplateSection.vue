@@ -26,6 +26,6 @@ export default {
         display: flex;
         align-items: center;
         color: $GRAPHITE_DARK;
-        font: $FONT_MEDIUM_24_32;
+        font: $FONT_SEMI_BOLD_16_24;
     }
 </style>
