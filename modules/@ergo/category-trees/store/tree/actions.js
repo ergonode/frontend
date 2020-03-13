@@ -38,7 +38,6 @@ export default {
                 });
             }
 
-
             const translations = {
                 name,
             };
