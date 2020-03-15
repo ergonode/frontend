@@ -36,6 +36,7 @@
         "@babel/register": "^7.8.6",
         "@babel/runtime": "^7.8.7",
         "@babel/types": "^7.8.7",
+        "@ergonode/vuems": "^0.7.0",
         "@nuxtjs/axios": "^5.9.5",
         "@nuxtjs/component-cache": "^1.1.5",
         "@nuxtjs/router": "^1.5",
