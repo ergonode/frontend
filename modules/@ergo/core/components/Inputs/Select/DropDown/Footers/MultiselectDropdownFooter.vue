@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <ContentBaseFooter
+    <DropDownFooter
         :small="true"
         :space-between="true">
         <Button
@@ -15,18 +15,18 @@
             :size="tinySize"
             title="CLEAR ALL"
             @click.native="onClear" />
-    </ContentBaseFooter>
+    </DropDownFooter>
 </template>
 
 <script>
 import { SIZE, THEME } from '@Core/defaults/theme';
-import ContentBaseFooter from '@Core/components/Inputs/Select/Contents/Footers/ContentBaseFooter';
+import DropDownFooter from '@Core/components/Inputs/Select/DropDown/Footers/DropDownFooter';
 import Button from '@Core/components/Buttons/Button';
 
 export default {
-    name: 'MultiselectContentFooter',
+    name: 'MultiselectDropdownFooter',
     components: {
-        ContentBaseFooter,
+        DropDownFooter,
         Button,
     },
     computed: {

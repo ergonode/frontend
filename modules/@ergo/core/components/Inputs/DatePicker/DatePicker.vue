@@ -29,13 +29,13 @@
         <template #append>
             <slot name="append" />
         </template>
-        <template #selectContent>
+        <template #dropdown>
             <DatePickerContent
                 :value="value"
                 @input="onValueChange" />
         </template>
         <template #footer="{ clear, apply }">
-            <SelectContentApplyFooter
+            <SelectDropdownApplyFooter
                 @clear="clear"
                 @apply="apply" />
         </template>
@@ -51,7 +51,7 @@ export default {
     components: {
         Select,
         DatePickerContent: () => import('@Core/components/Inputs/DatePicker/DatePickerContent'),
-        SelectContentApplyFooter: () => import('@Core/components/Inputs/Select/Contents/Footers/SelectContentApplyFooter'),
+        SelectDropdownApplyFooter: () => import('@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownApplyFooter'),
     },
     props: {
         value: {

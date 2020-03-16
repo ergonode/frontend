@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import DropDown from '@Core/components/Inputs/Select/Contents/DropDown';
+import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
 import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';
 import ListElementDescription from '@Core/components/List/ListElementDescription';

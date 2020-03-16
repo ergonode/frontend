@@ -116,7 +116,7 @@ module.exports = {
         },
         terser: {
             parallel: true,
-            sourceMap: true,
+            sourceMap: false,
             // exclude: /\/store/,
             extractComments: {
                 filename: 'LICENSES',
