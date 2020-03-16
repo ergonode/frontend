@@ -4,13 +4,13 @@
  */
 <template>
     <section class="form-group">
-        <fieldset class="form-group__fields">
-            <legend
-                v-if="title"
-                class="form-group__title"
-                v-text="title" />
+        <h3
+            v-if="title"
+            class="form-group__title"
+            v-text="title" />
+        <div class="form-group__fields">
             <slot />
-        </fieldset>
+        </div>
     </section>
 </template>
 
@@ -39,7 +39,10 @@ export default {
         }
 
         &__fields {
-            display: contents;
+            display: grid;
+            grid-template-columns: 352px;
+            grid-auto-flow: row;
+            grid-row-gap: 16px;
         }
     }
 </style>

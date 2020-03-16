@@ -10,9 +10,7 @@ export default {
     data() {
         return {
             isFocused: false,
-            isMounted: false,
             isMouseMoving: false,
-            hasMouseDown: false,
             associatedLabel: '',
         };
     },
@@ -23,7 +21,6 @@ export default {
             });
         }
 
-        this.isMounted = true;
         this.associatedLabel = `input-${this._uid}`;
     },
     computed: {
@@ -33,16 +30,13 @@ export default {
         isEmpty() {
             return this.value === '' || this.value === null;
         },
-        isFloatingLabel() {
-            return this.label !== '' && this.label !== null;
-        },
         isDescription() {
             return this.description !== '' && this.description !== null;
         },
         isError() {
-            return Boolean(Array.isArray(this.errorMessages)
-                ? this.errorMessages.length
-                : this.errorMessages);
+            if (this.errorMessages === null) return false;
+
+            return Boolean(this.errorMessages.length);
         },
         inputClasses() {
             return [
@@ -54,7 +48,7 @@ export default {
                     regular: this.regular,
                     'left-alignment': this.leftAlignment,
                     'center-alignment': this.centerAlignment,
-                    'floating-label': this.isFloatingLabel,
+                    'floating-label': this.label,
                     'input--error': this.isError,
                     'input--focused': this.isFocused,
                     'input--disabled': this.disabled,
@@ -72,32 +66,22 @@ export default {
             ];
         },
         floatingLabelTransforms() {
-            if (!this.isMounted) return null;
-
             if (this.isFocused || !this.isEmpty) {
-                const isTextArea = this.$refs.input.type === 'textarea';
-                const { activator } = this.$refs;
-                const transformValue = isTextArea ? 18 : activator.offsetHeight / 2;
-                const transform = `translateY(-${transformValue}px)`;
-
                 return {
-                    transform,
+                    transform: 'translateY(-100%) scale(0.8)',
                 };
             }
 
-            return {
-                transform: 'translateY(0)',
-            };
+            return null;
         },
         floatingLabelClasses() {
             return [
                 'input__label',
-                this.isEmpty && !this.isFocused ? 'font--medium-14-20' : 'font--medium-12-16',
                 { 'input__label--required': this.required },
             ];
         },
         informationLabel() {
-            return this.isError ? this.parsedErrorMessages : this.hint;
+            return this.parsedErrorMessages || this.hint;
         },
         parsedErrorMessages() {
             return Array.isArray(this.errorMessages)
@@ -115,7 +99,6 @@ export default {
         },
         onFocus() {
             this.isFocused = true;
-            this.hasMouseDown = false;
 
             this.$emit('focus', true);
         },
@@ -134,27 +117,14 @@ export default {
                 event.preventDefault();
                 event.stopPropagation();
             }
-
-            this.hasMouseDown = true;
         },
-        onMouseUp(event) {
+        onMouseUp() {
             this.$refs.activator.removeEventListener('mousemove', this.onMouseMove);
 
-            const isClickedInsideInput = event.target === this.$refs.input;
-            const isDblClicked = event.detail > 1;
-
-            if (isDblClicked || this.isMouseMoving) return;
-
-            if (this.dismissible) {
-                if (isClickedInsideInput) {
-                    if (this.isFocused && this.hasMouseDown) this.$refs.input.blur();
-                } else if (!this.isFocused) this.$refs.input.focus();
-                else this.$refs.input.blur();
-            } else if (!isClickedInsideInput) {
+            // Manual handling of input focus
+            if (!this.isMouseMoving) {
                 this.$refs.input.focus();
             }
-
-            this.hasMouseDown = false;
         },
         onMouseMove() {
             this.isMouseMoving = true;

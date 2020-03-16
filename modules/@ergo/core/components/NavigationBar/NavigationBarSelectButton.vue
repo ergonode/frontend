@@ -11,8 +11,8 @@
             <div
                 v-if="isFocused"
                 ref="menu"
-                class="select-content">
-                <slot name="selectContent" />
+                class="dropdown">
+                <slot name="dropdown" />
             </div>
         </FadeTransition>
     </NavigationBarButton>
@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .select-content {
+    .dropdown {
         position: absolute;
         top: 48px;
         right: 0;

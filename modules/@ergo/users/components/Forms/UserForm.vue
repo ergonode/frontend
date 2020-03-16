@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form title="General options">
+    <Form title="General">
         <FormGroup>
             <TextField
                 :value="email"

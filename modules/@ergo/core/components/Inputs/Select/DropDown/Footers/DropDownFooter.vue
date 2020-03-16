@@ -4,9 +4,9 @@
  */
 <template>
     <div
-        :class="['content-base-footer', {
-            'content-base-footer--space-between': spaceBetween,
-            'content-base-footer--small': small,
+        :class="['dropdown-footer', {
+            'space-between': spaceBetween,
+            'small': small,
         }]">
         <slot />
     </div>
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-    name: 'ContentBaseFooter',
+    name: 'DropDownFooter',
     props: {
         spaceBetween: {
             type: Boolean,
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .content-base-footer {
+    .dropdown-footer {
         display: flex;
         flex-shrink: 0;
         justify-content: flex-end;
@@ -40,11 +40,11 @@ export default {
         background-color: $WHITE;
         box-shadow: 0 -5px 5px -5px rgba(0, 0, 0, 0.12);
 
-        &--space-between {
+        &.space-between {
             justify-content: space-between;
         }
 
-        &--small {
+        &.small {
             flex-basis: 40px;
             padding: 0 8px;
         }

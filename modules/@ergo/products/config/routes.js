@@ -58,7 +58,7 @@ export default [
                 path: 'general',
                 component: Tabs.ProductBaseTab,
                 meta: {
-                    title: 'General options',
+                    title: 'General',
                     breadcrumbs: [
                         {
                             title: 'Products',
@@ -77,7 +77,7 @@ export default [
                 path: 'template',
                 component: Tabs.ProductTemplateTab,
                 meta: {
-                    title: 'Product template',
+                    title: 'Template',
                     breadcrumbs: [
                         {
                             title: 'Products',

@@ -101,7 +101,7 @@ import {
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 import { changeCookiePosition, removeCookieById } from '@Core/models/cookies';
 import { getMappedColumnHeaderTitle } from '@Core/models/mappers/gridDataMapper';
-import DropDown from '@Core/components/Inputs/Select/Contents/DropDown';
+import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
 
 export default {
     name: 'GridAdvancedFilter',
@@ -188,12 +188,12 @@ export default {
         selectFooterComponent() {
             switch (this.filter.type) {
             case COLUMN_FILTER_TYPE.SELECT:
-                return () => import('@Core/components/Inputs/Select/Contents/Footers/SelectContentFooter');
+                return () => import('@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownFooter');
             case COLUMN_FILTER_TYPE.MULTI_SELECT:
             case COLUMN_FILTER_TYPE.DATE:
             case COLUMN_FILTER_TYPE.RANGE:
-                return () => import('@Core/components/Inputs/Select/Contents/Footers/MultiselectContentFooter');
-            default: return () => import('@Core/components/Inputs/Select/Contents/Footers/SelectContentApplyFooter');
+                return () => import('@Core/components/Inputs/Select/DropDown/Footers/MultiselectDropdownFooter');
+            default: return () => import('@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownApplyFooter');
             }
         },
         selectBodyComponent() {

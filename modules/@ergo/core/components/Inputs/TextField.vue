@@ -71,10 +71,6 @@ export default {
             type: Boolean,
             default: false,
         },
-        dismissible: {
-            type: Boolean,
-            default: true,
-        },
         underline: {
             type: Boolean,
             default: false,
@@ -151,3 +147,7 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    @import "@Core/assets/scss/input/input.scss";
+</style>

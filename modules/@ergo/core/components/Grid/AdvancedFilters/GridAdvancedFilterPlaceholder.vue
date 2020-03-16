@@ -4,9 +4,7 @@
  */
 <template>
     <div class="advanced-filters-placeholder">
-        <IconDragDrop
-            size="16"
-            :fill-color="graphiteLightColor" />
+        <IconDragDrop :fill-color="graphiteLightColor" />
         Drag the attribute to add a filter
     </div>
 </template>

@@ -6,7 +6,6 @@
     <GridEditTextBaseCell :style="{width: `${fixedWidth + 8}px`}">
         <TextField
             :value="value"
-            :dismissible="false"
             :autofocus="true"
             :left-alignment="true"
             :input="inputType"

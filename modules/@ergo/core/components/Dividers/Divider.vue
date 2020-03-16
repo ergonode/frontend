@@ -21,6 +21,7 @@ export default {
 <style lang="scss" scoped>
     .divider {
         background-color: $GREY_LIGHT;
+        flex-shrink: 0;
 
         &:not(&--vertical) {
             height: 1px;
