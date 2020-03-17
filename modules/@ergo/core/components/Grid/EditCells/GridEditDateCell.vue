@@ -34,7 +34,6 @@ export default {
         },
         errorMessages: {
             type: [String, Array],
-            required: false,
             default: '',
         },
         parameters: {

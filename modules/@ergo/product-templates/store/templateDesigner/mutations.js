@@ -15,6 +15,10 @@ export const types = {
     SET_TEMPLATE_DESIGNER_TITLE: 'SET_TEMPLATE_DESIGNER_TITLE',
     SET_TEMPLATE_DESIGNER_IMAGE: 'SET_TEMPLATE_DESIGNER_IMAGE',
     UPDATE_SECTION_ELEMENT_TITLE: 'UPDATE_SECTION_ELEMENT_TITLE',
+    SET_DEFAULT_TEXT_ATTRIBUTE: 'SET_DEFAULT_TEXT_ATTRIBUTE',
+    SET_DEFAULT_IMAGE_ATTRIBUTE: 'SET_DEFAULT_IMAGE_ATTRIBUTE',
+    SET_TEXT_ATTRIBUTES_OPTIONS: 'SET_TEXT_ATTRIBUTES_OPTIONS',
+    SET_IMAGE_ATTRIBUTES_OPTIONS: 'SET_IMAGE_ATTRIBUTES_OPTIONS',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 
@@ -50,6 +54,18 @@ export default {
     },
     [types.SET_TEMPLATE_DESIGNER_IMAGE](state, image) {
         state.image = image;
+    },
+    [types.SET_DEFAULT_TEXT_ATTRIBUTE](state, defaultTextAttribute) {
+        state.defaultTextAttribute = defaultTextAttribute;
+    },
+    [types.SET_DEFAULT_IMAGE_ATTRIBUTE](state, defaultImageAttribute) {
+        state.defaultImageAttribute = defaultImageAttribute;
+    },
+    [types.SET_TEXT_ATTRIBUTES_OPTIONS](state, textAttributesOptions) {
+        state.textAttributesOptions = textAttributesOptions;
+    },
+    [types.SET_IMAGE_ATTRIBUTES_OPTIONS](state, imageAttributesOptions) {
+        state.imageAttributesOptions = imageAttributesOptions;
     },
     [types.UPDATE_SECTION_ELEMENT_TITLE](state, { index, title }) {
         state.layoutElements[index].label = title;

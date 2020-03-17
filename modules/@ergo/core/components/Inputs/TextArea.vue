@@ -32,9 +32,10 @@
                 v-if="isAppendSlotVisible"
                 class="input__append">
                 <slot name="append" />
-                <IconError
+                <ErrorHint
                     v-if="isError"
-                    size="14" />
+                    size="14"
+                    :hint="informationLabel" />
                 <InfoHint
                     v-if="isDescription"
                     :hint="description" />
@@ -63,10 +64,6 @@ export default {
         value: {
             type: [String, Number],
             default: null,
-        },
-        dismissible: {
-            type: Boolean,
-            default: true,
         },
         solid: {
             type: Boolean,
@@ -130,3 +127,7 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    @import "@Core/assets/scss/input/input.scss";
+</style>

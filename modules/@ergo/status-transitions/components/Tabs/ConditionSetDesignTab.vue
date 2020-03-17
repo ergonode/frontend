@@ -26,9 +26,7 @@ export default {
         ConditionSetWrapper: () => import('@Conditions/components/ConditionSetDesigner/ConditionSetWrapper'),
     },
     fetch({ store }) {
-        return Promise.all([
-            store.dispatch('conditions/getConditions', { group: 'workflow' }),
-        ]);
+        return store.dispatch('conditions/getConditions', { group: 'workflow' });
     },
     computed: {
         verticalTabs() {

@@ -17,13 +17,9 @@ export default {
                 return connectedArray;
             }, []);
         const { language: userLanguageCode } = rootState.authentication.user;
-        const promises = modulesDictionaries.map(({ stateProp, requestPath }) => {
-            const requestPromise = this.app.$axios.$get(`${userLanguageCode}${requestPath}`).then((response) => {
-                commit(types.SET_CUSTOM_STATE_PROPERTY, { stateProp, value: response });
-            });
-
-            return requestPromise;
-        });
+        const promises = modulesDictionaries.map(({ stateProp, requestPath }) => this.app.$axios.$get(`${userLanguageCode}${requestPath}`).then((response) => {
+            commit(types.SET_CUSTOM_STATE_PROPERTY, { stateProp, value: response });
+        }));
 
         return Promise.all(promises);
     },

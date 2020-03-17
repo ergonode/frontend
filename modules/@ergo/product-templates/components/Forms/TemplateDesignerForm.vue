@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form title="General options">
+    <Form title="General">
         <FormGroup>
             <TextField
                 :value="templateTitle"
@@ -13,14 +13,31 @@
                 :error-messages="errorNameMessage"
                 label="Template name"
                 :disabled="isDisabledByPrivileges"
-                @input="(title) => setTemplateDesignerTitle(title)" />
+                @input="setTitle" />
             <UploadImage
                 :value="templateImage"
                 label="Template cover image"
                 :disabled="isDisabledByPrivileges"
-                border
-                @upload="uploadValue"
-                @remove="uploadValue" />
+                @upload="setImage"
+                @remove="setImage" />
+        </FormGroup>
+        <FormGroup title="Presentation product">
+            <TranslationSelect
+                :value="defaultTextAttribute"
+                solid
+                regular
+                required
+                label="Default label attribute"
+                :options="textAttributesOptions"
+                @input="setDefaultTextAttribute" />
+            <TranslationSelect
+                :value="defaultImageAttribute"
+                solid
+                regular
+                clearable
+                label="Default image attribute"
+                :options="imageAttributesOptions"
+                @input="setDefaultImageAttribute" />
         </FormGroup>
     </Form>
 </template>
@@ -35,6 +52,7 @@ export default {
         Form: () => import('@Core/components/Form/Form'),
         FormGroup: () => import('@Core/components/Form/FormGroup'),
         TextField: () => import('@Core/components/Inputs/TextField'),
+        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
         UploadImage: () => import('@Core/components/Inputs/Image/UploadImage'),
     },
     mixins: [errorValidationMixin],
@@ -42,6 +60,10 @@ export default {
         ...mapState('templateDesigner', {
             templateTitle: state => state.title,
             templateImage: state => state.image,
+            defaultTextAttribute: state => state.defaultTextAttribute,
+            defaultImageAttribute: state => state.defaultImageAttribute,
+            textAttributesOptions: state => state.textAttributesOptions,
+            imageAttributesOptions: state => state.imageAttributesOptions,
         }),
         isDisabled() {
             return Boolean(this.templateTitle);
@@ -57,12 +79,11 @@ export default {
     },
     methods: {
         ...mapActions('templateDesigner', [
-            'setTemplateDesignerTitle',
-            'setTemplateDesignerImage',
+            'setTitle',
+            'setImage',
+            'setDefaultImageAttribute',
+            'setDefaultTextAttribute',
         ]),
-        uploadValue(value = '') {
-            this.setTemplateDesignerImage(value);
-        },
     },
 };
 </script>

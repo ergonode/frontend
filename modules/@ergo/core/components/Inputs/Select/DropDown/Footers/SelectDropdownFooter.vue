@@ -3,24 +3,24 @@
  * See LICENSE for license details.
  */
 <template>
-    <ContentBaseFooter :small="true">
+    <DropDownFooter :small="true">
         <Button
             :theme="secondaryTheme"
             :size="tinySize"
             title="CLEAR"
             @click.native="onClear" />
-    </ContentBaseFooter>
+    </DropDownFooter>
 </template>
 
 <script>
 import { SIZE, THEME } from '@Core/defaults/theme';
-import ContentBaseFooter from '@Core/components/Inputs/Select/Contents/Footers/ContentBaseFooter';
+import DropDownFooter from '@Core/components/Inputs/Select/DropDown/Footers/DropDownFooter';
 import Button from '@Core/components/Buttons/Button';
 
 export default {
-    name: 'SelectContentFooter',
+    name: 'SelectDropdownFooter',
     components: {
-        ContentBaseFooter,
+        DropDownFooter,
         Button,
     },
     computed: {

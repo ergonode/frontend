@@ -73,18 +73,6 @@ module.exports = {
         babel: {
             configFile: './babel.config.js',
         },
-        terser: {
-            parallel: true,
-            sourceMap: true,
-            extractComments: {
-                filename: 'LICENSES',
-            },
-            terserOptions: {
-                output: {
-                    comments: /^\**!|@preserve|@license|@cc_on/,
-                },
-            },
-        },
         optimizeCSS: true,
         extend(config, { isDev, isClient }) {
             const alias = config.resolve.alias || {};
@@ -112,11 +100,6 @@ module.exports = {
             splitChunks: {
                 maxSize: 200000,
             },
-        },
-    },
-    vue: {
-        config: {
-            performance: true,
         },
     },
     env: {

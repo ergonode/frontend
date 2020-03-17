@@ -7,6 +7,8 @@ import {
     getMappedLayoutElement,
     getMappedLayoutSectionElement,
 } from '@Templates/models/templateMapper';
+import { TYPES } from '@Attributes/defaults/attributes';
+import { SKU_MODEL } from '@Templates/defaults/product';
 import { types } from './mutations';
 
 export default {
@@ -19,34 +21,40 @@ export default {
         return this.app.$axios.$get(path).then(({
             name,
             image_id: imageID,
+            default_text: defaultText,
+            default_image: defaultImage,
             elements,
         }) => {
             const { language: languageCode } = rootState.authentication.user;
-            const attributesId = elements.map(el => el.id);
+            const attributesId = elements.map(el => el.properties.attribute_id);
             const params = {
-                filter: `id${attributesId.join(',')}`,
+                filter: `id=${attributesId.join(',')}`,
                 view: 'list',
             };
 
-            return this.app.$axios.$get(`${languageCode}/attributes`, { params }).then(({ collection }) => {
-                const elementsDescription = collection.map(
-                    ({ id, code, label }) => ({ id, code, label }),
-                );
-                const layoutElements = getMappedLayoutElements(
-                    elements,
-                    elementsDescription,
-                    state.types,
-                );
+            return Promise.all([
+                this.app.$axios.$get(`${languageCode}/attributes`, { params }).then(({ collection }) => {
+                    const elementsDescription = collection.map(
+                        ({ id, code, label }) => ({ id, code, label }),
+                    );
+                    const layoutElements = getMappedLayoutElements(
+                        elements,
+                        elementsDescription,
+                        state.types,
+                    );
 
-                for (let i = layoutElements.length - 1; i > -1; i -= 1) {
-                    const { id } = layoutElements[i];
-                    dispatch('list/setDisabledElement', { languageCode, elementId: id, disabled: true }, { root: true });
-                }
+                    for (let i = layoutElements.length - 1; i > -1; i -= 1) {
+                        const { id } = layoutElements[i];
+                        dispatch('list/setDisabledElement', { languageCode, elementId: id, disabled: true }, { root: true });
+                    }
 
-                commit(types.INITIALIZE_LAYOUT_ELEMENTS, layoutElements);
-                commit(types.SET_TEMPLATE_DESIGNER_TITLE, name);
-                commit(types.SET_TEMPLATE_DESIGNER_IMAGE, imageID);
-            });
+                    commit(types.INITIALIZE_LAYOUT_ELEMENTS, layoutElements);
+                    commit(types.SET_TEMPLATE_DESIGNER_TITLE, name);
+                    commit(types.SET_TEMPLATE_DESIGNER_IMAGE, imageID);
+                }),
+                dispatch('getTextAttributes', defaultText),
+                dispatch('getImageAttributes', defaultImage),
+            ]);
         });
     },
     async updateTemplateDesigner(
@@ -64,10 +72,66 @@ export default {
         await this.app.$axios.$put(`${userLanguageCode}/templates/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
     },
+    getTextAttributes({ commit, rootState }, defaultTextAttributeId = null) {
+        const { language: languageCode } = rootState.authentication.user;
+
+        const params = {
+            filter: `type=${TYPES.TEXT}`,
+            view: 'list',
+        };
+
+        return this.app.$axios.$get(`${languageCode}/attributes`, { params }).then(({ collection }) => {
+            const textAttributes = collection.map(attribute => ({
+                id: attribute.id,
+                key: attribute.code,
+                value: attribute.name,
+                hint: attribute.name ? `#${attribute.code}` : '',
+            }));
+
+            commit(types.SET_TEXT_ATTRIBUTES_OPTIONS, [
+                ...textAttributes,
+                SKU_MODEL,
+            ]);
+
+            if (defaultTextAttributeId) {
+                const attribute = textAttributes.find(({ id }) => id === defaultTextAttributeId);
+
+                if (attribute) {
+                    commit(types.SET_DEFAULT_IMAGE_ATTRIBUTE, attribute);
+                }
+            }
+        });
+    },
+    getImageAttributes({ commit, rootState }, defaultImageAttributeId = null) {
+        const { language: languageCode } = rootState.authentication.user;
+
+        const params = {
+            filter: `type=${TYPES.IMAGE}`,
+            view: 'list',
+        };
+
+        return this.app.$axios.$get(`${languageCode}/attributes`, { params }).then(({ collection }) => {
+            const imageAttributes = collection.map(attribute => ({
+                id: attribute.id,
+                key: attribute.code,
+                value: attribute.name,
+                hint: attribute.name ? `#${attribute.code}` : '',
+            }));
+            commit(types.SET_IMAGE_ATTRIBUTES_OPTIONS, imageAttributes);
+
+            if (defaultImageAttributeId) {
+                const attribute = imageAttributes.find(({ id }) => id === defaultImageAttributeId);
+
+                if (attribute) {
+                    commit(types.SET_DEFAULT_IMAGE_ATTRIBUTE, attribute);
+                }
+            }
+        });
+    },
     getTypes({ commit }, {
-        path, params,
+        path,
     }) {
-        return this.app.$axios.$get(path, { params }).then(({ collection }) => {
+        return this.app.$axios.$get(path).then(({ collection }) => {
             commit(types.SET_TYPES, collection);
         });
     },
@@ -125,11 +189,17 @@ export default {
         dispatch('list/removeDisabledElement', { languageCode: user.language, elementId: layoutElements[index].id }, { root: true });
         commit(types.REMOVE_LAYOUT_ELEMENT_AT_INDEX, index);
     },
-    setTemplateDesignerTitle: ({ commit }, title) => {
+    setTitle: ({ commit }, title) => {
         commit(types.SET_TEMPLATE_DESIGNER_TITLE, title);
     },
-    setTemplateDesignerImage: ({ commit }, image) => {
+    setImage: ({ commit }, image) => {
         commit(types.SET_TEMPLATE_DESIGNER_IMAGE, image);
+    },
+    setDefaultTextAttribute: ({ commit }, defaultTextAttribute) => {
+        commit(types.SET_DEFAULT_TEXT_ATTRIBUTE, defaultTextAttribute);
+    },
+    setDefaultImageAttribute: ({ commit }, defaultImageAttribute) => {
+        commit(types.SET_DEFAULT_IMAGE_ATTRIBUTE, defaultImageAttribute);
     },
     setLayoutElementRequirement: ({ commit }, payload) => {
         commit(types.SET_LAYOUT_ELEMENT_REQUIREMENT, payload);

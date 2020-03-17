@@ -19,7 +19,7 @@
                     :state="arrowIconState" />
             </div>
         </template>
-        <template #selectContent>
+        <template #dropdown>
             <NavigationBarUserSelectContent
                 :avatar-id="user.avatar_id"
                 :initials="userInitials"

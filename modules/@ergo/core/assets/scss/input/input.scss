@@ -9,13 +9,13 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    background-color: $WHITE;
 
     &__activator {
         position: relative;
         display: flex;
         flex: 1;
         align-items: center;
+        background-color: $WHITE;
 
         input::placeholder, textarea::placeholder, input, textarea, #{$input}__value {
             color: $GRAPHITE_DARK;
@@ -77,12 +77,16 @@
     }
 
     &.floating-label {
+        padding-top: 8px;
+
         #{$input}__label {
             position: absolute;
             padding: 0 2px;
             background-color: $WHITE;
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+            transform-origin: left;
             color: $GRAPHITE_LIGHT;
+            font: $FONT_MEDIUM_14_20;
             cursor: text;
 
             &--required {
@@ -106,7 +110,6 @@
 
         #{$input}__label {
             position: absolute;
-            margin-left: 8px;
             color: $GRAPHITE_LIGHT;
         }
     }
@@ -150,6 +153,10 @@
                 margin-left: 8px;
             }
         }
+
+        #{$input}__label {
+            margin-left: 8px;
+        }
     }
 
     &.small:not(.left-alignment):not(.underline):not(.center-alignment) {
@@ -191,6 +198,10 @@
             input::placeholder, input, #{$input}__value {
                 margin-left: 9px;
             }
+        }
+
+        #{$input}__label {
+            margin-left: 8px;
         }
     }
 

@@ -58,7 +58,7 @@ export default [
                 path: 'general',
                 component: Tabs.StatusTransitionBaseTab,
                 meta: {
-                    title: 'General options',
+                    title: 'General',
                     breadcrumbs: [
                         {
                             title: 'Workflow',
