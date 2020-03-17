@@ -7,6 +7,7 @@ export default {
     type: 'local',
     relations: [
         '@ergo/products',
+        '@ergo/attributes',
     ],
     aliases: {
         '@Templates': '/',
