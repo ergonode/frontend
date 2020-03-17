@@ -5,11 +5,9 @@
 <template>
     <div
         :class="['badge', `badge--${size}`]"
-        :style="backgroundColorStyle">
+        :style="badgeStyles">
         <slot name="prepend" />
-        <BadgeLabel
-            :style="textColorStyle"
-            :label="title" />
+        <BadgeLabel :label="title" />
     </div>
 </template>
 
@@ -45,13 +43,9 @@ export default {
         },
     },
     computed: {
-        backgroundColorStyle() {
+        badgeStyles() {
             return {
                 backgroundColor: this.background,
-            };
-        },
-        textColorStyle() {
-            return {
                 color: this.color,
             };
         },
