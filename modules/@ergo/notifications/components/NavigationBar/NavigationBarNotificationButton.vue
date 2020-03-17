@@ -11,7 +11,7 @@
                 v-if="notificationsCount > 0"
                 :number="notificationsCount" />
         </template>
-        <template #selectContent>
+        <template #dropdown>
             <div class="notifications-dropdown">
                 <List v-if="notifications.length">
                     <NotificationsListElement

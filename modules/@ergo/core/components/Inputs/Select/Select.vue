@@ -51,7 +51,7 @@
                 :offset="dropDownOffset"
                 :fixed="fixedContent">
                 <template #body>
-                    <slot name="selectContent">
+                    <slot name="dropdown">
                         <List>
                             <DropDownListSearch
                                 v-if="searchable"
@@ -64,7 +64,7 @@
                                 :small="small"
                                 :regular="regular"
                                 :selected="isOptionSelected(index)"
-                                @click.native.prevent="onSelectValue(option)">
+                                @click.native.prevent="onSelectValue(option, index)">
                                 <template #default="{ isSelected }">
                                     <slot
                                         name="option"
@@ -96,7 +96,7 @@
                         name="footer"
                         :clear="onClear"
                         :apply="onDismiss">
-                        <ContentBaseFooter
+                        <DropDownFooter
                             :small="small"
                             :space-between="multiselect">
                             <Button
@@ -109,7 +109,7 @@
                                 :title="multiselect ? 'CLEAR ALL' : 'CLEAR'"
                                 :theme="secondaryTheme"
                                 @click.native="onClear" />
-                        </ContentBaseFooter>
+                        </DropDownFooter>
                     </slot>
                 </template>
             </DropDown>
@@ -126,7 +126,7 @@
 import { SIZE, THEME } from '@Core/defaults/theme';
 import { ARROW } from '@Core/defaults/icons';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
-import DropDown from '@Core/components/Inputs/Select/Contents/DropDown';
+import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
@@ -142,11 +142,11 @@ export default {
         List: () => import('@Core/components/List/List'),
         ListElement: () => import('@Core/components/List/ListElement'),
         ListElementAction: () => import('@Core/components/List/ListElementAction'),
-        DropDownListSearch: () => import('@Core/components/Inputs/Select/Contents/DropDownListSearch'),
+        DropDownListSearch: () => import('@Core/components/Inputs/Select/DropDown/DropDownListSearch'),
         CheckBox: () => import('@Core/components/Inputs/CheckBox'),
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
         ErrorHint: () => import('@Core/components/Hints/ErrorHint'),
-        ContentBaseFooter: () => import('@Core/components/Inputs/Select/Contents/Footers/ContentBaseFooter'),
+        DropDownFooter: () => import('@Core/components/Inputs/Select/DropDown/Footers/DropDownFooter'),
         Button: () => import('@Core/components/Buttons/Button'),
     },
     props: {
@@ -246,7 +246,6 @@ export default {
             isMouseMoving: false,
             isMenuActive: false,
             isClickedOutside: false,
-            hasMouseDown: false,
             associatedLabel: '',
             isSearchFocused: false,
         };
@@ -281,9 +280,6 @@ export default {
         isEmptyOptions() {
             return Object.keys(this.selectedOptions).length === 0;
         },
-        isFloatingLabel() {
-            return this.label !== '' && this.label !== null;
-        },
         isDescription() {
             return this.description !== '' && this.description !== null;
         },
@@ -317,30 +313,25 @@ export default {
         floatingLabelTransforms() {
             if (this.isMenuActive || !this.isEmptyOptions) {
                 return {
-                    transform: this.small
-                        ? 'translateY(calc(-100%))'
-                        : 'translateY(calc(-100% - 4px))',
+                    transform: 'translateY(-100%) scale(0.8)',
                 };
             }
 
-            return {
-                transform: 'translateY(0)',
-            };
+            return null;
         },
         floatingLabelClasses() {
             return [
                 'input__label',
-                this.isEmptyOptions && !this.isMenuActive ? 'font--medium-14-20' : 'font--medium-12-16',
                 { 'input__label--required': this.required },
             ];
         },
         informationLabel() {
-            return this.isError ? this.parsedErrorMessages : this.hint;
+            return this.parsedErrorMessages || this.hint;
         },
         isError() {
-            return Boolean(Array.isArray(this.errorMessages)
-                ? this.errorMessages.length
-                : this.errorMessages);
+            if (this.errorMessages === null) return false;
+
+            return Boolean(this.errorMessages.length);
         },
         parsedErrorMessages() {
             return Array.isArray(this.errorMessages)
@@ -351,14 +342,23 @@ export default {
             return this.isEmptyOptions ? this.placeholder : null;
         },
     },
-    created() {
-        if (this.multiselect) {
-            this.value.forEach((option) => {
-                this.selectedOptions[JSON.stringify(option)] = option;
-            });
-        } else if (this.value || this.value === 0) {
-            this.selectedOptions = { [JSON.stringify(this.value)]: this.value };
-        }
+    watch: {
+        value: {
+            immediate: true,
+            handler() {
+                let selectedOptions = {};
+
+                if (this.multiselect) {
+                    this.value.forEach((option) => {
+                        selectedOptions[JSON.stringify(option)] = option;
+                    });
+                } else if (this.value || this.value === 0) {
+                    selectedOptions = { [JSON.stringify(this.value)]: this.value };
+                }
+
+                this.selectedOptions = selectedOptions;
+            },
+        },
     },
     mounted() {
         if (this.autofocus) {
@@ -373,9 +373,6 @@ export default {
         window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
-        isOptionValid(option) {
-            return typeof option !== 'object';
-        },
         isOptionSelected(index) {
             return typeof this.selectedOptions[this.stringifiedOptions[index]] !== 'undefined';
         },
@@ -390,22 +387,18 @@ export default {
 
             this.$emit('input', this.multiselect ? [] : '');
         },
-        onSelectValue(value) {
-            const valueKey = JSON.stringify(value);
-
+        onSelectValue(value, index) {
             if (this.multiselect) {
-                if (typeof this.selectedOptions[valueKey] !== 'undefined') {
-                    delete this.selectedOptions[valueKey];
+                const selectedOptions = { ...this.selectedOptions };
+
+                if (this.isOptionSelected(index)) {
+                    delete selectedOptions[this.stringifiedOptions[index]];
                 } else {
-                    this.selectedOptions[valueKey] = value;
+                    selectedOptions[this.stringifiedOptions[index]] = value;
                 }
 
-                this.selectedOptions = { ...this.selectedOptions };
-
-                this.$emit('input', Object.values(this.selectedOptions));
+                this.$emit('input', Object.values(selectedOptions));
             } else {
-                this.selectedOptions = { [valueKey]: value };
-
                 this.$emit('input', value);
             }
         },
@@ -415,14 +408,11 @@ export default {
             this.onBlur();
         },
         onFocus() {
-            if (!this.isMenuActive) {
-                this.isMenuActive = true;
-                this.hasMouseDown = false;
+            this.isMenuActive = true;
 
-                window.addEventListener('click', this.onClickOutside);
+            window.addEventListener('click', this.onClickOutside);
 
-                this.$emit('focus', true);
-            }
+            this.$emit('focus', true);
         },
         onBlur() {
             if (this.isClickedOutside) {
@@ -445,38 +435,25 @@ export default {
         onMouseDown(event) {
             this.$refs.activator.addEventListener('mousemove', this.onMouseMove);
 
-            const isClickedInsideInput = event.target === this.$refs.input;
+            event.preventDefault();
+            event.stopPropagation();
 
-            if (!isClickedInsideInput) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-
-            this.hasMouseDown = true;
             this.isMouseMoving = false;
         },
-        onMouseUp(event) {
+        onMouseUp() {
             this.$refs.activator.removeEventListener('mousemove', this.onMouseMove);
 
-            const isClickedInsideActivator = this.$refs.activator.contains(event.target);
-            const isDblClicked = event.detail > 1;
-
-            if (isDblClicked) return;
-
             if (this.dismissible) {
-                if (isClickedInsideActivator) {
-                    if (this.isMenuActive && this.hasMouseDown && !this.isMouseMoving) {
-                        this.isClickedOutside = true;
-                        this.$refs.input.blur();
-                    } else {
-                        this.$refs.input.focus();
-                    }
+                if (this.isMenuActive) {
+                    this.isClickedOutside = true;
+                    this.$refs.input.blur();
+                } else {
+                    this.$refs.input.focus();
                 }
-            } else if (!isClickedInsideActivator) {
+            } else {
                 this.$refs.input.focus();
             }
 
-            this.hasMouseDown = false;
             this.isMouseMoving = false;
         },
         onMouseMove() {
@@ -505,3 +482,7 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    @import "@Core/assets/scss/input/input.scss";
+</style>

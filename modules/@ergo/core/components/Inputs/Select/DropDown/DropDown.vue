@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        :class="['drop-down', {'drop-down--fixed': fixed}]"
+        class="dropdown"
         :style="position">
         <slot name="body" />
         <slot name="footer" />
@@ -63,7 +63,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .drop-down {
+    .dropdown {
         position: fixed;
         z-index: $Z_INDEX_DROP_DOWN;
         display: flex;

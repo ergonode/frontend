@@ -7,7 +7,6 @@
         <TextArea
             :style="{height: '134px'}"
             :value="value"
-            :dismissible="false"
             :autofocus="true"
             :left-alignment="true"
             :error-messages="errorMessages"
