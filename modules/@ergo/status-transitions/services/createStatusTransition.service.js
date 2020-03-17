@@ -10,7 +10,6 @@ export default function ({ $axios, $store }) {
     const data = {
         source: isObject(source) ? source.key : null,
         destination: isObject(destination) ? destination.key : null,
-        // roles: roles.map(role => role.key),
     };
 
     if (roles.length > 0) {
