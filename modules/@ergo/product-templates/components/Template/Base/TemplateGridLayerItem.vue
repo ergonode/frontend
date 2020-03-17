@@ -14,7 +14,6 @@
             :style="ghostItemBoundsStyle" />
     </div>
 </template>
-
 <script>
 import { mapState } from 'vuex';
 
@@ -54,14 +53,12 @@ export default {
         },
         isTopNeighbour() {
             const { row: rowPos, column: columnPos } = this.position;
-
             return this.highlightingPositions.some(
                 ({ row, column }) => row === rowPos - 1 && column === columnPos,
             );
         },
         isRightNeighbour() {
             const { row: rowPos, column: columnPos } = this.position;
-
             return this.highlightingPositions.some(
                 ({ row, column }) => row === rowPos && column === columnPos + 1,
             );
@@ -69,12 +66,10 @@ export default {
         ghostItemBoundsStyle() {
             let draggedElementWidth = 1;
             let draggedElementHeight = 1;
-
             if (typeof this.draggedElement === 'object') {
                 draggedElementWidth = this.draggedElement.width;
                 draggedElementHeight = this.draggedElement.height;
             }
-
             const elementsGap = 16;
             const {
                 width, height,
@@ -83,7 +78,6 @@ export default {
             } = this.$el.getBoundingClientRect();
             const normalizedWidth = width * draggedElementWidth - elementsGap;
             const normalizedHeight = height * draggedElementHeight - elementsGap;
-
             return {
                 top: `${top + (elementsGap / 2)}px`,
                 left: `${left + (elementsGap / 2)}px`,
@@ -115,13 +109,11 @@ export default {
         },
         isEqualToPosition(position) {
             const { row, column } = this.position;
-
             return row === position.row && column === position.column;
         },
     },
 };
 </script>
-
 <style lang="scss" scoped>
     .template-grid-layer-item {
         position: relative;
@@ -130,18 +122,15 @@ export default {
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         border-left: $BORDER_DASHED_GREY;
         border-bottom: $BORDER_DASHED_GREY;
-
         &--highlighted {
             flex: 1;
             background-color: $GREEN_LIGHT;
             border-left: $BORDER_DASHED_GREEN;
             border-bottom: $BORDER_DASHED_GREEN;
         }
-
         &--top-border {
             border-top: $BORDER_DASHED_GREEN;
         }
-
         &--right-border {
             border-right: $BORDER_DASHED_GREEN;
         }
