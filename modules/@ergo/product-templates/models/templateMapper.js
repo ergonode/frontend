@@ -69,6 +69,8 @@ export function getMappedLayoutSectionElement(
 }
 
 export function getMappedLayoutElements(elements, elementsDescription, types) {
+    if (!elementsDescription.length) return [];
+
     return elements.map((element) => {
         const {
             position, size, properties, type,

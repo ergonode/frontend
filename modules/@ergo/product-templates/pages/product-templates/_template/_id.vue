@@ -14,6 +14,7 @@
 import { mapState, mapActions } from 'vuex';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { SKU_MODEL } from '@Templates/defaults/product';
 
 export default {
     name: 'Edit',
@@ -45,6 +46,8 @@ export default {
             templateTitle: state => state.title,
             templateImage: state => state.image,
             layoutElements: state => state.layoutElements,
+            defaultTextAttribute: state => state.defaultTextAttribute,
+            defaultImageAttribute: state => state.defaultImageAttribute,
         }),
     },
     destroyed() {
@@ -90,6 +93,12 @@ export default {
                     data: {
                         name: this.templateTitle,
                         image: this.templateImage,
+                        defaultText: this.defaultTextAttribute.id !== SKU_MODEL.id
+                            ? this.defaultTextAttribute.id
+                            : null,
+                        defaultImage: this.defaultImageAttribute
+                            ? this.defaultImageAttribute.id
+                            : null,
                         elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
                     },
                     onSuccess: this.onUpdateTemplateDesignerSuccess,

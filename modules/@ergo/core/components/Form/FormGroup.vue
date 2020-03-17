@@ -4,13 +4,13 @@
  */
 <template>
     <section class="form-group">
-        <h3
+        <legend
             v-if="title"
             class="form-group__title"
             v-text="title" />
-        <div class="form-group__fields">
+        <fieldset class="form-group__fields">
             <slot />
-        </div>
+        </fieldset>
     </section>
 </template>
 
@@ -31,18 +31,15 @@ export default {
         display: grid;
         grid-template-columns: 352px;
         grid-auto-flow: row;
-        grid-row-gap: 24px;
+        grid-row-gap: 16px;
 
         &__title {
             color: $GRAPHITE_DARK;
-            font: $FONT_MEDIUM_14_20;
+            font: $FONT_SEMI_BOLD_14_20;
         }
 
         &__fields {
-            display: grid;
-            grid-template-columns: 352px;
-            grid-auto-flow: row;
-            grid-row-gap: 16px;
+            display: contents;
         }
     }
 </style>

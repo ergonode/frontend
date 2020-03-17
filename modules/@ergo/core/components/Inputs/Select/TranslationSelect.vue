@@ -37,6 +37,8 @@
 import Select from '@Core/components/Inputs/Select/Select';
 import ListElementDescription from '@Core/components/List/ListElementDescription';
 import ListElementTitle from '@Core/components/List/ListElementTitle';
+import ListElementAction from '@Core/components/List/ListElementAction';
+import CheckBox from '@Core/components/Inputs/CheckBox';
 
 export default {
     name: 'TranslationSelect',
@@ -44,8 +46,8 @@ export default {
         Select,
         ListElementDescription,
         ListElementTitle,
-        ListElementAction: () => import('@Core/components/List/ListElementAction'),
-        CheckBox: () => import('@Core/components/Inputs/CheckBox'),
+        ListElementAction,
+        CheckBox,
     },
     inheritAttrs: false,
     computed: {

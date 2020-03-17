@@ -114,19 +114,6 @@ module.exports = {
         babel: {
             configFile: './babel.config.js',
         },
-        terser: {
-            parallel: true,
-            sourceMap: false,
-            // exclude: /\/store/,
-            extractComments: {
-                filename: 'LICENSES',
-            },
-            terserOptions: {
-                output: {
-                    comments: /^\**!|@preserve|@license|@cc_on/,
-                },
-            },
-        },
         // hardSource: true, // TODO: check if it works correctly
         // extractCSS: true, //TODO: check webpack CSS plugins for optimize files
         optimizeCSS: true,
@@ -213,11 +200,6 @@ module.exports = {
             //         ...NUXT_CONFIG.chunks,
             //     },
             },
-        },
-    },
-    vue: {
-        config: {
-            performance: true,
         },
     },
     env: {

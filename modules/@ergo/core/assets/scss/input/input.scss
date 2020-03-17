@@ -9,13 +9,13 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    background-color: $WHITE;
 
     &__activator {
         position: relative;
         display: flex;
         flex: 1;
         align-items: center;
+        background-color: $WHITE;
 
         input::placeholder, textarea::placeholder, input, textarea, #{$input}__value {
             color: $GRAPHITE_DARK;
