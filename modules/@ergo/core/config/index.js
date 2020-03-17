@@ -8,6 +8,9 @@ export default {
     aliases: {
         '@Core': '/',
     },
+    relations: [
+        '@ergo/attributes',
+    ],
     plugins: [
         { ssr: true, src: './plugins/axios' },
         { ssr: true, src: './plugins/register-store' },

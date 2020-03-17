@@ -49,7 +49,7 @@ export default {
     data() {
         return {
             columnsNumber: 4,
-            templateRowHeight: 40,
+            templateRowHeight: 48,
         };
     },
     computed: {

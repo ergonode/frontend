@@ -9,7 +9,6 @@ export default async function () {
     const {
         name = '',
         type,
-        aliases = {},
         plugins = [],
         css = [],
         styleResources = {},
@@ -23,16 +22,7 @@ export default async function () {
     if (!this.options.ergoModules) this.options.ergoModules = {};
 
     this.options.ergoModules[name] = type;
-    this.extendBuild((config) => {
-        const alias = config.resolve.alias || {};
 
-        Object.keys(aliases).forEach((key) => {
-            alias[key] = (type === 'npm'
-                ? join(name, aliases[key], '/src')
-                : join(__dirname, aliases[key])
-            ).replace(/\/$/g, '');
-        });
-    });
     css.forEach((style) => {
         this.options.css.push(join(modulePath, style));
     });
@@ -47,4 +37,3 @@ export default async function () {
         });
     });
 }
-export const config = configuration;

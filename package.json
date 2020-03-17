@@ -35,6 +35,7 @@
         "@babel/preset-env": "^7.8.4",
         "@babel/register": "^7.8.3",
         "@babel/runtime": "^7.8.4",
+        "@ergonode/vuems": "^0.7.5",
         "@nuxtjs/axios": "^5.9.3",
         "@nuxtjs/component-cache": "^1.1.5",
         "@nuxtjs/router": "^1.5",

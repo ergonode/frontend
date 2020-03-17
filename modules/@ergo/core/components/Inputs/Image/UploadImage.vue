@@ -3,35 +3,35 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        :class="['upload-image', { 'upload-image--required': required }]"
-        :style="{ height }">
-        <div :class="['upload-image__activator', { 'upload-image__activator--border': border}]">
-            <label
+    <div :class="['upload-image', { 'upload-image--required': required }]">
+        <fieldset class="upload-image__activator">
+            <legend
                 class="upload-image__label"
                 :for="associatedLabel"
-                v-text="label" />
+                v-text="label"
+                v-if="label" />
             <input
                 type="file"
                 accept="image/*"
                 :disabled="disabled"
                 @input="onUpload">
             <template v-if="!image">
-                <div class="upload-image__placeholder">
+                <div
+                    class="upload-image__placeholder"
+                    :style="{ height: height }">
                     <img
                         :src="require('@Core/assets/images/placeholders/upload_file.svg')"
                         alt="Place to drag or browse file">
                     <span class="upload-image__description">
-                        Drag image here or browse
+                        Drag the file here or browse
                     </span>
                 </div>
             </template>
             <template v-else>
-                <div class="upload-image__container">
-                    <img
-                        :src="image"
-                        alt="Uploaded file">
-                </div>
+                <img
+                    class="upload-image__image"
+                    :src="image"
+                    alt="Uploaded file">
                 <div class="upload-image__remove-button">
                     <Fab
                         :theme="secondaryTheme"
@@ -42,7 +42,7 @@
                     </Fab>
                 </div>
             </template>
-        </div>
+        </fieldset>
         <span
             v-if="uploadError"
             class="upload-image__error-label"
@@ -170,16 +170,19 @@ export default {
             display: flex;
             flex: 1;
             flex-direction: column;
+            height: 100%;
+            border: $BORDER_1_GREY;
             padding: 12px;
             box-sizing: border-box;
-
-            &--border {
-                border: $BORDER_1_GREY;
-            }
+            overflow: hidden;
         }
 
         input {
             position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
             width: 100%;
             height: 100%;
             padding: 0;
@@ -189,21 +192,19 @@ export default {
         }
 
         &__label {
-            position: absolute;
-            top: -9px;
-            left: 9px;
-            padding: 0 2px;
+            margin-bottom: -6px;
             background-color: $WHITE;
             color: $GRAPHITE_LIGHT;
         }
 
         &__placeholder {
             display: flex;
-            flex: 1;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            height: calc(100% - 18px);
             border: $BORDER_DASHED_GREY;
+            box-sizing: border-box;
         }
 
         &__description {
@@ -228,26 +229,11 @@ export default {
             border-radius: 999px;
         }
 
-        &__container {
-            display: flex;
-            flex: 1;
-            justify-content: center;
-            align-items: center;
-            height: 0;
-            overflow: hidden;
-
-            img {
-                width: 100%;
-                max-width: 100%;
-                height: 100%;
-                object-fit: cover;
-                transform: scale(1);
-                transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-
-                &:hover {
-                    transform: scale(1.1);
-                }
-            }
+        &__image {
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         &--required {

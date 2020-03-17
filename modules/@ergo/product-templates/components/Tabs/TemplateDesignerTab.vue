@@ -161,7 +161,7 @@ export default {
     },
     methods: {
         ...mapActions('templateDesigner', [
-            'setTemplateDesignerTitle',
+            'setTitle',
             'addListElementToLayout',
             'updateLayoutElementPosition',
         ]),

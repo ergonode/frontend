@@ -9,7 +9,6 @@ export default async function () {
     const {
         name,
         type,
-        aliases = {},
         plugins = [],
     } = configuration;
     const moduleName = name.replace(/[^a-zA-Z]/g, '');
@@ -17,16 +16,7 @@ export default async function () {
     if (!this.options.ergoModules) this.options.ergoModules = {};
 
     this.options.ergoModules[name] = type;
-    this.extendBuild((config) => {
-        const alias = config.resolve.alias || {};
 
-        Object.keys(aliases).forEach((key) => {
-            alias[key] = (type === 'npm'
-                ? join(name, aliases[key], '/src')
-                : join(__dirname, aliases[key])
-            ).replace(/\/$/g, '');
-        });
-    });
     plugins.forEach(({ ssr, src }) => {
         this.addPlugin({
             src: resolve(__dirname, `${src}.js`),
@@ -35,4 +25,3 @@ export default async function () {
         });
     });
 }
-export const config = configuration;

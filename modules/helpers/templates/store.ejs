@@ -1,9 +1,0 @@
-/*
- * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
- * See LICENSE for license details.
- */
-<%= options.store.map(({ path }) =>`import ${'store_' + hash(path)} from '${path.replace(/\\/g,'/')}';`).join('\n') %>
-
-export default {
-<%= options.store.map(({ path, name }) =>`\t\t${name}: store_${hash(path)},`).join('\n') %>
-};
