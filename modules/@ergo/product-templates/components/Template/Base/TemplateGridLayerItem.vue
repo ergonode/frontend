@@ -122,15 +122,18 @@ export default {
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         border-left: $BORDER_DASHED_GREY;
         border-bottom: $BORDER_DASHED_GREY;
+
         &--highlighted {
             flex: 1;
             background-color: $GREEN_LIGHT;
             border-left: $BORDER_DASHED_GREEN;
             border-bottom: $BORDER_DASHED_GREEN;
         }
+
         &--top-border {
             border-top: $BORDER_DASHED_GREEN;
         }
+
         &--right-border {
             border-right: $BORDER_DASHED_GREEN;
         }
