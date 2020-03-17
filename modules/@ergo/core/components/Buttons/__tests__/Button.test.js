@@ -42,10 +42,6 @@ describe('Buttons/Button', () => {
             'button',
             'button--primary',
             'button--regular',
-            {
-                'button--plain': false,
-                'button--fab': false,
-            },
         ]);
     });
 
@@ -53,16 +49,11 @@ describe('Buttons/Button', () => {
         wrapper.setProps({
             theme: 'secondary',
             size: 'small',
-            plain: true,
         });
         expect(wrapper.vm.buttonClasses).toStrictEqual([
             'button',
             'button--secondary',
             'button--small',
-            {
-                'button--plain': true,
-                'button--fab': false,
-            },
         ]);
     });
 });

@@ -14,6 +14,7 @@
 import { mapState, mapActions } from 'vuex';
 import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
     name: 'EditAttributeGroup',
@@ -72,10 +73,10 @@ export default {
         },
         onUpdateAttributeGroupSuccess() {
             this.removeValidationErrors();
-            this.$addAlert({ type: 'success', message: 'Attribute Group updated' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Attribute Group updated' });
         },
         onRemoveSuccess() {
-            this.$addAlert({ type: 'success', message: 'Attribute Group removed' });
+            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Attribute Group removed' });
             this.$router.push({ name: 'attribute-groups-grid' });
         },
     },

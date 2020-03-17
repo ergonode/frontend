@@ -36,7 +36,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { SIZES } from '@Core/defaults/buttons';
+import { SIZE } from '@Core/defaults/theme';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
@@ -62,7 +62,7 @@ export default {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
         smallSize() {
-            return SIZES.SMALL;
+            return SIZE.SMALL;
         },
     },
     head() {

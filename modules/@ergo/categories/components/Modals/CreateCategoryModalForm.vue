@@ -25,7 +25,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
 
 const createCategory = () => import('@Categories/services/createCategory.service');
@@ -40,7 +40,7 @@ export default {
     mixins: [createModalFormMixin({ namespace: 'Category', createRequest: createCategory })],
     computed: {
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
     },
     methods: {

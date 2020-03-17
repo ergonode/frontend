@@ -15,21 +15,20 @@
                 :class="[typeLabelClasses, typeLabelRequireClass]"
                 v-text="element.type" />
             <span
-                class="element-content__subheader font--medium-14-20"
+                class="element-content__subheader"
                 v-text="element.label" />
         </div>
         <div
             v-if="!disabled"
             :class="['element-content__contextual-menu', contextualMenuHoveStateClasses]">
-            <MenuButton
-                :theme="secondaryTheme"
-                :size="smallSize"
-                :plain="true"
+            <ActionIconButton
+                :theme="secondaryPlainTheme"
+                :size="tinySize"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
                 @focus="onSelectFocus">
-                <template #icon="{ fillColor }">
-                    <IconDots :fill-color="fillColor" />
+                <template #icon="{ color }">
+                    <IconDots :fill-color="color" />
                 </template>
                 <template #option="{ option }">
                     <ListElementDescription>
@@ -44,16 +43,16 @@
                             :value="element.required" />
                     </ListElementAction>
                 </template>
-            </MenuButton>
+            </ActionIconButton>
         </div>
     </ElementContentBase>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
-import MenuButton from '@Core/components/Buttons/MenuButton';
+import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
 import IconDots from '@Core/components/Icons/Others/IconDots';
 import CheckBox from '@Core/components/Inputs/CheckBox';
 import ElementContentBase from '@Templates/components/Template/ProductDesigner/ElementContentBase';
@@ -66,7 +65,7 @@ export default {
     name: 'AttributeElementContent',
     components: {
         IconDots,
-        MenuButton,
+        ActionIconButton,
         ElementContentBase,
         ListElement,
         ListElementAction,
@@ -96,20 +95,17 @@ export default {
         };
     },
     computed: {
-        smallSize() {
-            return SIZES.SMALL;
+        tinySize() {
+            return SIZE.TINY;
         },
-        secondaryTheme() {
-            return THEMES.SECONDARY;
+        secondaryPlainTheme() {
+            return THEME.SECONDARY_PLAIN;
         },
         typeLabelRequireClass() {
             return { 'element-content--required': this.element.required };
         },
         typeLabelClasses() {
-            return [
-                'element-content__header',
-                'font--semi-bold-12-16',
-            ];
+            return 'element-content__header';
         },
         attributeIconComponent() {
             if (!this.element.type) return '';
@@ -175,11 +171,13 @@ export default {
         &__header {
             letter-spacing: 0.5px;
             color: $GRAPHITE_LIGHT;
+            font: $FONT_SEMI_BOLD_12_16;
         }
 
         &__subheader {
             height: 20px;
             color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_14_20;
         }
 
         &__header, &__subheader {

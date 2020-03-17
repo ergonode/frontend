@@ -45,7 +45,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
-import { SIZES } from '@Core/defaults/buttons';
+import { SIZE } from '@Core/defaults/theme';
 
 export default {
     name: 'Templates',
@@ -80,7 +80,7 @@ export default {
             sectionElementsByID: 'sectionElementsByID',
         }),
         smallSize() {
-            return SIZES.SMALL;
+            return SIZE.SMALL;
         },
     },
     methods: {

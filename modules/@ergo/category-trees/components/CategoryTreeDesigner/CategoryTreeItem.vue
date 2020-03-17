@@ -27,29 +27,28 @@
             class="grid-item__categories-length"
             v-if="hasChildren"
             :number="numberOfChildren"
-            theme="transparent" />
+            :theme="secondaryTheme" />
         <div
             :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
-            <MenuButton
+            <ActionIconButton
                 :theme="secondaryTheme"
-                :size="smallSize"
-                :plain="true"
+                :size="tinySize"
                 :options="contextualMenuItems"
                 @input="onSelectValue"
                 @focus="onSelectFocus">
-                <template #icon="{ fillColor }">
-                    <IconDots :fill-color="fillColor" />
+                <template #icon="{ color }">
+                    <IconDots :fill-color="color" />
                 </template>
-            </MenuButton>
+            </ActionIconButton>
         </div>
     </div>
 </template>
 <script>
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { ACTION } from '@Core/defaults/icons';
 import IconDots from '@Core/components/Icons/Others/IconDots';
 import IconPlusMinus from '@Core/components/Icons/Actions/IconPlusMinus';
-import MenuButton from '@Core/components/Buttons/MenuButton';
+import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
 import NumericBadge from '@Core/components/Badges/NumericBadge';
 
 export default {
@@ -57,7 +56,7 @@ export default {
     components: {
         IconDots,
         IconPlusMinus,
-        MenuButton,
+        ActionIconButton,
         NumericBadge,
     },
     props: {
@@ -82,11 +81,11 @@ export default {
         };
     },
     computed: {
-        smallSize() {
-            return SIZES.SMALL;
+        tinySize() {
+            return SIZE.TINY;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         hasChildren() {
             return this.numberOfChildren > 0;

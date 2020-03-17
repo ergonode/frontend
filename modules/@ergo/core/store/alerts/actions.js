@@ -28,9 +28,11 @@ export default {
             alert => alert.id === id,
         );
 
-        clearTimeout(state.alerts[indexToRemove].timeOut);
+        if (indexToRemove > -1) {
+            clearTimeout(state.alerts[indexToRemove].timeOut);
 
-        commit(types.REMOVE_ALERT, indexToRemove);
+            commit(types.REMOVE_ALERT, indexToRemove);
+        }
     },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);

@@ -18,13 +18,13 @@
             </ListScrollableContainer>
         </List>
         <template #fab>
-            <FabButton
+            <Fab
                 :disabled="!$hasAccess(['CATEGORY_CREATE'])"
                 @click.native="onShowModal">
-                <template #icon="{ fillColor }">
-                    <IconAdd :fill-color="fillColor" />
+                <template #icon="{ color }">
+                    <IconAdd :fill-color="color" />
                 </template>
-            </FabButton>
+            </Fab>
         </template>
         <CreateCategoryModalForm
             v-if="isModalVisible"
@@ -48,7 +48,7 @@ export default {
         VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
-        FabButton: () => import('@Core/components/Buttons/FabButton'),
+        Fab: () => import('@Core/components/Buttons/Fab'),
     },
     mixins: [gridModalMixin, fetchListDataMixin({ namespace: 'categories' })],
     computed: {

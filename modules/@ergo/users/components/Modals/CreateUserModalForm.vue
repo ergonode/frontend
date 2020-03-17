@@ -25,7 +25,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
 
 const createUser = () => import('@Users/services/createUser.service');
@@ -40,7 +40,7 @@ export default {
     mixins: [createModalFormMixin({ namespace: 'User', createRequest: createUser })],
     computed: {
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
     },
     created() {

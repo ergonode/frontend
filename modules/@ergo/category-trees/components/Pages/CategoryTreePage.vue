@@ -17,8 +17,7 @@
                     :disabled="!$hasAccess(['CATEGORY_TREE_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
-                        <IconDelete
-                            :fill-color="color" />
+                        <IconDelete :fill-color="color" />
                     </template>
                 </Button>
             </template>
@@ -40,7 +39,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { Z_INDEX_LVL_0 } from '@Core/assets/scss/_js-variables/indexes.scss';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import categoryManagementPageBaseMixin from '@Core/mixins/page/categoryManagementPageBaseMixin';
@@ -61,10 +60,10 @@ export default {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },
         smallSize() {
-            return SIZES.SMALL;
+            return SIZE.SMALL;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         isBlurVisible() {
             return this.isListElementDragging || this.draggedElementOnGrid;

@@ -26,25 +26,24 @@
                 :sorting-order="sortingOrder"
                 :fill-color="graphiteLightColor"
                 @click.native="onClickSort" />
-            <MenuButton
+            <ActionIconButton
                 v-if="column.deletable"
                 :theme="secondaryTheme"
                 :size="tinySize"
-                :plain="true"
                 :options="contextualMenuItems"
                 @focus="onSelectFocus"
                 @input="onSelectOption">
-                <template #icon="{ fillColor }">
-                    <IconDots :fill-color="fillColor" />
+                <template #icon="{ color }">
+                    <IconDots :fill-color="color" />
                 </template>
-            </MenuButton>
+            </ActionIconButton>
         </div>
     </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { removeCookieById } from '@Core/models/cookies';
 import { COLUMNS_IDS } from '@Core/defaults/grid/cookies';
 import { SORTING_ORDER } from '@Core/defaults/icons';
@@ -54,7 +53,7 @@ export default {
     name: 'GridPresentationInteractiveHeaderCell',
     inject: ['getEditingCellCoordinates'],
     components: {
-        MenuButton: () => import('@Core/components/Buttons/MenuButton'),
+        ActionIconButton: () => import('@Core/components/Buttons/ActionIconButton'),
         IconArrowSort: () => import('@Core/components/Icons/Arrows/IconArrowSort'),
         IconDots: () => import('@Core/components/Icons/Others/IconDots'),
         GridPresentationHeaderCell: () => import('@Core/components/Grid/PresentationCells/GridPresentationHeaderCell'),
@@ -90,10 +89,10 @@ export default {
             draggedElement: state => state.draggedElement,
         }),
         tinySize() {
-            return SIZES.TINY;
+            return SIZE.TINY;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;

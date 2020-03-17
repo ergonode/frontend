@@ -6,42 +6,42 @@
     <div :class="['alert', typeClass]">
         <Component :is="feedbackIconComponent" />
         <span
-            class="alert__title font--medium-14-20"
+            class="alert__title"
             v-text="alert.message" />
-        <FabButton
-            :theme="secondaryTheme"
-            :plain="true"
+        <Fab
+            :theme="secondaryPlainTheme"
             @click.native="removeAlert(alert)">
-            <template #icon="{ fillColor }">
-                <IconClose :fill-color="fillColor" />
+            <template #icon="{ color }">
+                <IconClose :fill-color="color" />
             </template>
-        </FabButton>
+        </Fab>
     </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { toCapitalize } from '@Core/models/stringWrapper';
-import FabButton from '@Core/components/Buttons/FabButton';
+import Fab from '@Core/components/Buttons/Fab';
 import IconClose from '@Core/components/Icons/Window/IconClose';
 
 export default {
     name: 'Alert',
     components: {
-        FabButton,
+        Fab,
         IconClose,
     },
     props: {
         alert: {
             type: Object,
             required: true,
-            validator: value => ['success', 'info', 'warning', 'error'].indexOf(value.type) !== -1,
+            validator: value => Object.values(ALERT_TYPE).indexOf(value.type) !== -1,
         },
     },
     computed: {
-        secondaryTheme() {
-            return THEMES.SECONDARY;
+        secondaryPlainTheme() {
+            return THEME.SECONDARY_PLAIN;
         },
         typeClass() {
             return `alert--${this.alert.type}`;
@@ -76,6 +76,7 @@ export default {
             margin-left: 16px;
             flex: 1;
             word-break: break-word;
+            font: $FONT_MEDIUM_14_20;
         }
 
         &--error {

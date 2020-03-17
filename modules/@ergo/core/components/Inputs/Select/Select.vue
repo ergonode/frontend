@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import { SIZES, THEMES } from '@Core/defaults/buttons';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { ARROW } from '@Core/defaults/icons';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import DropDown from '@Core/components/Inputs/Select/Contents/DropDown';
@@ -265,10 +265,10 @@ export default {
             return this.options.map(option => JSON.stringify(option));
         },
         tinySize() {
-            return SIZES.TINY;
+            return SIZE.TINY;
         },
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
         isOptionsValid() {
             return this.options.length && typeof this.options[0] !== 'object';

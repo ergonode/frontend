@@ -25,7 +25,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { THEMES } from '@Core/defaults/buttons';
+import { THEME } from '@Core/defaults/theme';
 import navigationBarUserMenu from '@Core/models/navigation/navigationBarUserMenu';
 
 export default {
@@ -57,7 +57,7 @@ export default {
     },
     computed: {
         secondaryTheme() {
-            return THEMES.SECONDARY;
+            return THEME.SECONDARY;
         },
     },
     methods: {

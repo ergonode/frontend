@@ -4,9 +4,7 @@
  */
 <template>
     <div class="interactive-header">
-        <span
-            class="font--medium-12-16"
-            v-text="header" />
+        <span v-text="header" />
         <TextField
             :value="value"
             :placeholder="dateFormat"
@@ -58,5 +56,6 @@ export default {
         align-items: center;
         column-gap: 8px;
         color: $GRAPHITE;
+        font: $FONT_MEDIUM_12_16;
     }
 </style>
