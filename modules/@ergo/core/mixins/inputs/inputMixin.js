@@ -81,12 +81,7 @@ export default {
             ];
         },
         informationLabel() {
-            return this.parsedErrorMessages || this.hint;
-        },
-        parsedErrorMessages() {
-            return Array.isArray(this.errorMessages)
-                ? this.errorMessages.join(', ')
-                : this.errorMessages;
+            return this.errorMessages || this.hint;
         },
         placeholderValue() {
             if (!this.value && this.label && !this.isFocused) return null;

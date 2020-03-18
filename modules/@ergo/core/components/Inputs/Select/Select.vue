@@ -37,7 +37,7 @@
                 <slot name="append" />
                 <ErrorHint
                     v-if="isError"
-                    :hint="parsedErrorMessages" />
+                    :hint="errorMessages" />
                 <InfoHint
                     v-if="isDescription"
                     :hint="description" />
@@ -195,7 +195,7 @@ export default {
             default: null,
         },
         errorMessages: {
-            type: [String, Array],
+            type: String,
             default: '',
         },
         hint: {
@@ -326,17 +326,12 @@ export default {
             ];
         },
         informationLabel() {
-            return this.parsedErrorMessages || this.hint;
+            return this.errorMessages || this.hint;
         },
         isError() {
             if (this.errorMessages === null) return false;
 
             return Boolean(this.errorMessages.length);
-        },
-        parsedErrorMessages() {
-            return Array.isArray(this.errorMessages)
-                ? this.errorMessages.join(', ')
-                : this.errorMessages;
         },
         placeholderValue() {
             return this.isEmptyOptions ? this.placeholder : null;

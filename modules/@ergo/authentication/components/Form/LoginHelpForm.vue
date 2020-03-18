@@ -20,7 +20,7 @@
                 class="help-form__info" />
             <LinkButton title="team@ergonode.com">
                 <template #prepend>
-                    <IconEmail />
+                    <IconEmail class="email-icon" />
                 </template>
             </LinkButton>
         </template>
@@ -89,5 +89,9 @@ export default {
         &__info, &__header {
             color: $GRAPHITE_DARK;
         }
+    }
+
+    .email-icon {
+        margin-right: 8px;
     }
 </style>

@@ -3,35 +3,38 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form title="General">
-        <FormGroup>
-            <TextField
-                :value="code"
-                solid
-                required
-                :error-messages="errorCodeMessage"
-                :disabled="isDisabled || isDisabledByPrivileges"
-                regular
-                label="System name"
-                hint="Product collection code must be unique"
-                @input="setCode" />
-            <TranslationSelect
-                :value="type"
-                solid
-                required
-                label="Type"
-                regular
-                :disabled="isDisabledByPrivileges"
-                :options="types"
-                :error-messages="errorTypeMessage"
-                @input="setType" />
-        </FormGroup>
+    <Form
+        title="General"
+        :fields-keys="[typeIdFieldKey, codeFieldKey]">
+        <template #body="{ errorMessages }">
+            <FormGroup>
+                <TextField
+                    :value="code"
+                    solid
+                    required
+                    :error-messages="errorMessages[codeFieldKey]"
+                    :disabled="isDisabled || isDisabledByPrivileges"
+                    regular
+                    label="System name"
+                    hint="Product collection code must be unique"
+                    @input="setCode" />
+                <TranslationSelect
+                    :value="type"
+                    solid
+                    required
+                    label="Type"
+                    regular
+                    :disabled="isDisabledByPrivileges"
+                    :options="types"
+                    :error-messages="errorMessages[typeIdFieldKey]"
+                    @input="setType" />
+            </FormGroup>
+        </template>
     </Form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 
 export default {
     name: 'CollectionForm',
@@ -41,7 +44,6 @@ export default {
         TextField: () => import('@Core/components/Inputs/TextField'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
     },
-    mixins: [errorValidationMixin],
     computed: {
         ...mapState('collections', {
             id: state => state.id,
@@ -56,13 +58,11 @@ export default {
         isDisabled() {
             return Boolean(this.id);
         },
-        errorCodeMessage() {
-            const codeIndex = 'code';
-            return this.elementIsValidate(codeIndex);
+        typeIdFieldKey() {
+            return 'typeId';
         },
-        errorTypeMessage() {
-            const codeIndex = 'typeId';
-            return this.elementIsValidate(codeIndex);
+        codeFieldKey() {
+            return 'code';
         },
     },
     created() {

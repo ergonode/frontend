@@ -56,7 +56,7 @@ export default {
     },
     computed: {
         errorMessages() {
-            return this.elementIsValidate(this.label);
+            return this.getValidationErrorForKey(this.label);
         },
         isError() {
             return this.errorMessages !== null && this.errorMessages.length > 0;

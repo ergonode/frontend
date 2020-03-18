@@ -9,12 +9,14 @@
                 <slot name="header" />
             </header>
         </template>
-        <FormGroup>
-            <slot name="body" />
-        </FormGroup>
-        <footer>
-            <slot name="footer" />
-        </footer>
+        <template #body>
+            <FormGroup>
+                <slot name="body" />
+            </FormGroup>
+            <footer>
+                <slot name="footer" />
+            </footer>
+        </template>
     </Form>
 </template>
 
