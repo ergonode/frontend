@@ -7,7 +7,7 @@ export default {
         Page: () => import('@Core/components/Layout/Page'),
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
-        Footer: () => import('@Core/components/ReusableFooter/Footer'),
+        Footer: () => import('@Core/components/Layout/Footer/Footer'),
         Button: () => import('@Core/components/Buttons/Button'),
         IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
     },

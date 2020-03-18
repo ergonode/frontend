@@ -6,10 +6,12 @@
     <form
         class="form"
         @submit.prevent>
-        <h2
-            v-if="title"
-            class="form__title"
-            v-text="title" />
+        <slot name="header">
+            <h2
+                v-if="title"
+                class="form__title"
+                v-text="title" />
+        </slot>
         <slot />
     </form>
 </template>

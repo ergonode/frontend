@@ -4,7 +4,7 @@
  */
 <template>
     <TransitionGroup
-        moude="out-in"
+        mode="out-in"
         name="slide">
         <slot />
     </TransitionGroup>

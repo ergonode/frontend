@@ -24,7 +24,7 @@ import { mapActions } from 'vuex';
 import languageSettingsModule from '@Core/reusableStore/languageSettings/state';
 import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import FooterActions from '@Core/components/ReusableFooter/FooterActions';
+import FooterActions from '@Core/components/Layout/Footer/FooterActions';
 import Button from '@Core/components/Buttons/Button';
 import { SIZE } from '@Core/defaults/theme';
 

@@ -8,7 +8,7 @@
             <template #prepend>
                 <Fab
                     v-if="isNavigationBack"
-                    @click.native="onClick">
+                    @click.native="onBack">
                     <template #icon="{ color }">
                         <IconArrowPointer :fill-color="color" />
                     </template>
@@ -82,7 +82,7 @@ export default {
         },
     },
     methods: {
-        onClick() {
+        onBack() {
             this.$emit('navigateBack');
         },
     },
