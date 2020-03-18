@@ -80,7 +80,7 @@ context('Attribute add', () => {
             cy.url().should('include', '/attributes/attribute/edit');
         });
         it('Check added attribute', () => {
-            cy.get('input[aria-label="Code"]')
+            cy.get('input[aria-label="System name"]')
                 .should('have.value', `test${timestamp}`)
                 .should('be.disabled');
             cy.get('.toggler').should('have.class', 'toggler--disabled');

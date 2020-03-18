@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TemplateGrid/TemplateGridPresentationLayer Check main classes witch default props 1`] = `
+<div class="presentation-layer presentation-layer__border-top">
+  <div shadow-id="0" class="shadow-grid-item"></div>
+  <div shadow-id="1" class="shadow-grid-item"></div>
+  <div shadow-id="2" class="shadow-grid-item shadow-grid-item--last-row"></div>
+  <div shadow-id="3" class="shadow-grid-item shadow-grid-item--last-row"></div>
+</div>
+`;

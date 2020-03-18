@@ -3,7 +3,7 @@ This changelog references the relevant changes.
 
 ## CHANGELOG FOR v0.6.1
 - bugfix - Vuex store for Grid crashed after f5 - store had been removed
-- bugfix - App crash after f5 when page has FabButton at TitleBar
+- bugfix - App crash after f5 when page has Fab at TitleBar
 - bugfix - Attribute Select/Multiselect options were removing at edition
 - bugfix - Product Template fields validation
 - bugfix - Resizing at Template Designer

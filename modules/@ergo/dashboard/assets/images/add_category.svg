@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="90px" height="90px" viewBox="0 0 90 90" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51 (57462) - http://www.bohemiancoding.com/sketch -->
+    <title>add_category</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="10" height="10" rx="5"></rect>
+        <filter x="-10.0%" y="-10.0%" width="140.0%" height="140.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="2" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="SourceAlpha" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.062745098   0 0 0 0 0.6   0 0 0 0 0.639215686  0 0 0 0.25 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+        <rect id="path-3" x="60" y="76" width="28" height="14" rx="1"></rect>
+        <filter x="-3.6%" y="-7.1%" width="114.3%" height="128.6%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="2" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="SourceAlpha" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.062745098   0 0 0 0 0.6   0 0 0 0 0.639215686  0 0 0 0.25 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+        <rect id="path-5" x="18" y="47" width="28" height="14" rx="1"></rect>
+        <filter x="-3.6%" y="-7.1%" width="114.3%" height="128.6%" filterUnits="objectBoundingBox" id="filter-6">
+            <feOffset dx="2" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="SourceAlpha" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.062745098   0 0 0 0 0.6   0 0 0 0 0.639215686  0 0 0 0.25 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+        <rect id="path-7" x="60" y="47" width="28" height="14" rx="1"></rect>
+        <filter x="-3.6%" y="-7.1%" width="114.3%" height="128.6%" filterUnits="objectBoundingBox" id="filter-8">
+            <feOffset dx="2" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="SourceAlpha" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.062745098   0 0 0 0 0.6   0 0 0 0 0.639215686  0 0 0 0.25 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="add_category" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-2" transform="translate(1.000000, 0.000000)" fill-rule="nonzero">
+            <rect id="Rectangle-8" fill="#9FD6DA" x="4" y="8" width="2" height="47" rx="1"></rect>
+            <g id="Rectangle-8-Copy-2">
+                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                <rect stroke="#1099A3" stroke-width="4" stroke-linejoin="square" fill="#1099A3" fill-rule="evenodd" x="2" y="2" width="6" height="6" rx="3"></rect>
+            </g>
+            <rect id="Rectangle-8-Copy-6" fill="#9FD6DA" transform="translate(53.000000, 70.000000) rotate(-360.000000) translate(-53.000000, -70.000000) " x="52" y="54" width="2" height="32" rx="1"></rect>
+            <g id="Rectangle-9-Copy-4">
+                <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                <rect stroke="#1099A3" stroke-width="4" stroke-linejoin="square" fill="#1099A3" fill-rule="evenodd" x="62" y="78" width="24" height="10" rx="1"></rect>
+            </g>
+            <g id="Rectangle-9-Copy">
+                <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+                <rect stroke="#1099A3" stroke-width="4" stroke-linejoin="square" fill="#1099A3" fill-rule="evenodd" x="20" y="49" width="24" height="10" rx="1"></rect>
+            </g>
+            <g id="Rectangle-9-Copy-3">
+                <use fill="black" fill-opacity="1" filter="url(#filter-8)" xlink:href="#path-7"></use>
+                <rect stroke="#1099A3" stroke-width="4" stroke-linejoin="square" fill="#1099A3" fill-rule="evenodd" x="62" y="49" width="24" height="10" rx="1"></rect>
+            </g>
+            <rect id="Rectangle-9" fill="#9FD6DA" x="5" y="53" width="11" height="2"></rect>
+            <rect id="Rectangle-9-Copy-2" fill="#9FD6DA" x="48" y="53" width="10" height="2"></rect>
+            <rect id="Rectangle-9-Copy-2" fill="#9FD6DA" x="53" y="84" width="5" height="2"></rect>
+        </g>
+        <path d="M75,15 L75,9 L71,9 L71,15 L65,15 L65,19 L71,19 L71,25 L75,25 L75,19 L81,19 L81,15 L75,15 Z M73,34 C63.6111593,34 56,26.3888407 56,17 C56,7.61115925 63.6111593,0 73,0 C82.3888407,0 90,7.61115925 90,17 C90,26.3888407 82.3888407,34 73,34 Z" id="Combined-Shape" fill="#00D66C" fill-rule="nonzero"></path>
+    </g>
+</svg>
