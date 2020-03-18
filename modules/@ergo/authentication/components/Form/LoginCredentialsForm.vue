@@ -69,13 +69,17 @@ export default {
             'authenticateUser',
         ]),
         async onSubmit() {
-            await this.authenticateUser({
-                data: {
-                    username: this.email,
-                    password: this.password,
-                },
-            });
-            this.$router.push({ name: 'dashboard' });
+            try {
+                await this.authenticateUser({
+                    data: {
+                        username: this.email,
+                        password: this.password,
+                    },
+                });
+                this.$router.push({ name: 'dashboard' });
+            } catch (e) {
+                console.error(e);
+            }
         },
     },
 };
