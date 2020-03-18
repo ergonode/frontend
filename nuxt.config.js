@@ -83,18 +83,18 @@ module.exports = {
             alias['@Modules'] = join(__dirname, '/modules');
             alias['@Vendor'] = join(__dirname, '/vendor');
 
-            // if (isDev) {
-            //     config.devtool = isClient ? 'source-map' : 'inline-source-map';
-            // }
+            if (isDev) {
+                config.devtool = isClient ? 'source-map' : 'inline-source-map';
+            }
             config.module.rules.push(
                 {
                     test: /\.ejs$/,
                     loader: 'ejs-loader',
                 },
             );
-            // config.node = {
-            //     fs: 'empty',
-            // };
+            config.node = {
+                fs: 'empty',
+            };
         },
         optimization: {
             splitChunks: {
