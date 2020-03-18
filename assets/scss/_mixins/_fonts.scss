@@ -1,0 +1,20 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+/// Mixin to customize font-face
+/// @param {String} $name - Name of font file
+/// @param {String} $style - Font style
+/// @param {Number} $weight - Font weight
+/// @example scss - FontFace loader
+///   @include fontFace("Regular", normal, 400);
+
+@mixin fontFace($name, $style, $weight) {
+    @font-face {
+        font-family: "Inter UI";
+        font-display: swap;
+        font-style: $style;
+        font-weight: $weight;
+        src: url("~assets/fonts/intern/Inter-UI-#{$name}.woff2") format("woff2");
+    }
+}

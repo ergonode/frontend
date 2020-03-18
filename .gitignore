@@ -1,11 +1,12 @@
 # dependencies
 node_modules
+package-lock.json
 report
 
 # tests
-coverage
-screenshotsFolder
-videosFolder
+/coverage
+/screenshotsFolder
+/videosFolder
 cypress.env.json
 
 # logs
@@ -16,11 +17,11 @@ npm-debug.log
 
 # Nuxt generate
 dist
-build
-!build/.gitkeep
-tmp
-foto
-ftp
+/build
+!/build/.gitkeep
+/tmp
+/foto
+/ftp
 
 # ESLint generate
 .eslintcache
@@ -37,7 +38,7 @@ ftp
 lerna-debug.log
 npm-debug.log
 yarn-error.log
-**/npm-debug.log
+/**/npm-debug.log
 .env
 
 # configurations
@@ -45,6 +46,3 @@ yarn-error.log
 config/*
 # exception to the rule
 !config/.copyright
-modules.config.js
-vendor
-.huskyrc

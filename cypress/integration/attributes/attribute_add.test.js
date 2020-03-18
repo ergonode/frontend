@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getUUID } from "@Core/models/stringWrapper";
+import { getUUID } from "../../../model/stringWrapper";
 
 context('Add Attribute', () => {
     const uuid = getUUID();
@@ -40,7 +40,7 @@ context('Add Attribute', () => {
 
     describe('Insert Attribute values - valid', () => {
         it('Insert code', () => {
-            cy.get('input[aria-label="System name"]')
+            cy.get('input[aria-label="Code"]')
                 .type(uuid)
                 .should('have.value', uuid);
         });
