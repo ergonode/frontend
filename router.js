@@ -4,12 +4,12 @@
  * See LICENSE for license details.
  */
 import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Router from 'vue-router';
 import routerModules from '~/.nuxt/router.modules';
 import extendsModules from '~/.nuxt/extends.modules';
 import routerLocal from './router.local';
 
-Vue.use(VueRouter);
+Vue.use(Router);
 
 const scrollBehavior = (to, from, savedPosition) => {
     let position = false;
@@ -59,16 +59,14 @@ const extendRoutes = () => {
     return extendedRoutes;
 };
 
-const Router = new VueRouter({
-    mode: 'history',
-    base: '/',
-    linkActiveClass: 'nuxt-link-active',
-    linkExactActiveClass: 'nuxt-link-exact-active',
-    scrollBehavior,
-    routes: extendRoutes(),
-    fallback: false,
-});
-
 export function createRouter() {
-    return Router;
+    return new Router({
+        mode: 'history',
+        base: '/',
+        linkActiveClass: 'nuxt-link-active',
+        linkExactActiveClass: 'nuxt-link-exact-active',
+        scrollBehavior,
+        routes: extendRoutes(),
+        fallback: false,
+    });
 }

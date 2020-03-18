@@ -73,6 +73,8 @@ module.exports = {
         babel: {
             configFile: './babel.config.js',
         },
+        parallel: true,
+        cssSourceMap: false,
         optimizeCSS: true,
         extend(config, { isDev, isClient }) {
             const alias = config.resolve.alias || {};
@@ -81,25 +83,29 @@ module.exports = {
             alias['@Modules'] = join(__dirname, '/modules');
             alias['@Vendor'] = join(__dirname, '/vendor');
 
-            if (isDev) {
-                config.devtool = isClient ? 'source-map' : 'inline-source-map';
-            }
+            // if (isDev) {
+            //     config.devtool = isClient ? 'source-map' : 'inline-source-map';
+            // }
             config.module.rules.push(
                 {
                     test: /\.ejs$/,
                     loader: 'ejs-loader',
                 },
             );
-            config.node = {
-                fs: 'empty',
-            };
+            // config.node = {
+            //     fs: 'empty',
+            // };
         },
         optimization: {
-            runtimeChunk: 'single',
-            minimize: true,
             splitChunks: {
+                chunks: 'all',
                 maxSize: 200000,
             },
+        },
+    },
+    vue: {
+        config: {
+            performance: true,
         },
     },
     env: {
