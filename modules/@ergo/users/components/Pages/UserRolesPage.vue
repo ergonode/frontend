@@ -23,7 +23,7 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
-        <Footer>
+        <Footer flex-end>
             <Button
                 title="SAVE ROLE"
                 :size="smallSize"

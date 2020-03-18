@@ -110,7 +110,7 @@ export default {
             position: relative;
             display: grid;
             grid-auto-flow: column;
-            column-gap: 12px;
+            column-gap: 8px;
             align-items: center;
             cursor: pointer;
         }

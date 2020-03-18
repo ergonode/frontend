@@ -52,7 +52,9 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
-        <Footer v-if="!$route.path.includes('history')">
+        <Footer
+            v-if="!$route.path.includes('history')"
+            flex-end>
             <Button
                 title="SAVE PRODUCT"
                 :size="smallSize"
