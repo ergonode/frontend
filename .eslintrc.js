@@ -9,35 +9,37 @@ module.exports = {
         es6: true,
         node: true,
         jest: true,
-        "cypress/globals": true
+        'cypress/globals': true,
     },
     parserOptions: {
-        parser: 'babel-eslint'
+        parser: 'babel-eslint',
+
     },
     extends: [
-        // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
-        // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
         'airbnb-base',
         'plugin:vue/strongly-recommended',
         'plugin:jest/recommended',
-        'plugin:cypress/recommended'
+        'plugin:cypress/recommended',
     ],
-    // required to lint *.vue files
     plugins: [
         'vue',
         'jest',
         'notice',
-        'cypress'
+        'cypress',
+        'markdown',
     ],
-    // add your custom rules here
     rules: {
-        'notice/notice':[
-          "error", {
-            "templateFile":"./config/.copyright",
-            "messages":{
-              "whenFailedToMatch":"Couldn't find 'License Header', are you sure you added it?"
-            }
-          },
+        'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
+        'import/no-mutable-exports': 'error',
+        'import/order': 'error',
+        'import/first': 'error',
+        'notice/notice': [
+            'error', {
+                templateFile: './config/.copyright',
+                messages: {
+                    whenFailedToMatch: "Couldn't find 'License Header', are you sure you added it?",
+                },
+            },
         ],
         'import/extensions': 'off',
         'no-console': 'off',
@@ -54,30 +56,60 @@ module.exports = {
                 'state',
             ],
         }],
-        'class-methods-use-this':['off'],
+        'camelcase': ['off'],
+        'class-methods-use-this': ['off'],
         'global-require': ['off'],
         'import/no-dynamic-require': ['off'],
         'no-underscore-dangle': 'off',
-        'no-unused-vars':['error', { 'argsIgnorePattern': 'commit' }],
+        'no-unused-vars': ['error', { argsIgnorePattern: 'commit' }],
         'max-len': ['error', {
-            'code': 100,
-            'ignoreTrailingComments': true,
-            'ignoreComments': true,
-            'ignoreUrls': true,
-            'ignoreStrings': true,
-            'ignoreTemplateLiterals': true,
+            code: 100,
+            ignoreTrailingComments: true,
+            ignoreComments: true,
+            ignoreUrls: true,
+            ignoreStrings: true,
+            ignoreTemplateLiterals: true,
         }],
         'vue/component-name-in-template-casing': ['error',
-             'PascalCase',
-             {
-                'ignores': ['nuxt', 'nuxt-link'],
-             }
+            'PascalCase',
         ],
         'vue/order-in-components': ['error', {
-              'order': [
-                'asyncData',
+            order: [
+                'el',
+                'name',
+                'parent',
+                'functional',
+                ['delimiters', 'comments'],
+                ['components', 'directives', 'filters'],
+                'extends',
+                'mixins',
+                'beforeRouteEnter',
+                'beforeRouteUpdate',
+                'beforeRouteLeave',
+                'middleware',
+                'validate',
+                'inheritAttrs',
+                'model',
+                ['props', 'propsData'],
                 'fetch',
+                'asyncData',
+                'data',
+                'computed',
+                'watch',
+                'watchQuery',
+                'LIFECYCLE_HOOKS',
+                'methods',
+                'head',
+                'layout',
+                ['template', 'render'],
+                'renderError',
+                'transition',
+                'loading',
+                'scrollToTop',
             ],
         }],
-    }
+        'jest/no-commented-out-tests': 'off',
+        'jest/expect-expect': 'off',
+        'jest/no-mocks-import': 'off',
+    },
 };
