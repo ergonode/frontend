@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`TitleBar/TitleBarHeader Header has breadcrumb 1`] = `
-<div class="title-bar-header" isbreadcrumb="true">
-  <h1 class="title-bar-header__title">test</h1>
-</div>
-`;
