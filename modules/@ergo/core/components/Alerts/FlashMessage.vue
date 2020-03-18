@@ -18,13 +18,11 @@
 <script>
 import { mapState } from 'vuex';
 import Alert from '@Core/components/Alerts/Alert';
-import SlideInGroupTransition from '@Core/components/Transitions/SlideInGroupTransition';
 
 export default {
     name: 'FlashMessage',
     components: {
         Alert,
-        SlideInGroupTransition,
     },
     computed: {
         ...mapState('alerts', {
