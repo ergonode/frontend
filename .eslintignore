@@ -1,7 +1,9 @@
-package.json
-router.js
 node_modules/
 cypress/
 build/
+dist/
 coverage/
-lib/
+vendor/
+.history/
+.vscode/
+modules.config.js

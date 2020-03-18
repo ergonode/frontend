@@ -1,0 +1,15 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+// Available only SCSS varibales and mixins, but not css styles
+
+// variables
+@import "_variables/typography";
+@import "_variables/colors";
+@import "_variables/borders";
+@import "_variables/elevators";
+@import "_variables/indexes";
+
+//mixins
+@import "_mixins/fonts";

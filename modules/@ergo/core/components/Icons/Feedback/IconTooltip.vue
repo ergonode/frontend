@@ -1,0 +1,41 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+<template>
+    <BaseIcon
+        :width="size"
+        :height="size"
+        :icon-color="ovalFillColor">
+        <path :d="ovalDrawingCommands" />
+        <path
+            :fill="questionMarkFillColor"
+            :d="questionMarkDrawingCommands" />
+    </BaseIcon>
+</template>
+
+<script>
+import BaseIcon from '@Core/components/Icons/BaseIcon';
+import { GRAPHITE, WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+
+export default {
+    name: 'IconTooltip',
+    components: {
+        BaseIcon,
+    },
+    props: {
+        size: {
+            type: [String, Number],
+            default: '24',
+        },
+    },
+    data() {
+        return {
+            ovalDrawingCommands: 'M12,4 C7.584,4 4,7.584 4,12 C4,16.416 7.584,20 12,20 C16.416,20 20,16.416 20,12 C20,7.584 16.416,4 12,4 L12,4 Z',
+            questionMarkDrawingCommands: 'M10.9744295,14.1654857 C10.8867165,12.577419 11.3206649,11.9357293 12.1885618,11.3956019 C12.7979362,11.0216676 13.1949529,10.624651 13.1949529,10.0429754 C13.1949529,9.40128566 12.6917574,8.9858031 12.0685335,8.9858031 C11.4637756,8.9858031 10.9051824,9.38743624 10.8774835,10.1399213 L8.9939626,10.1399213 C9.03551085,8.29333217 10.4019868,7.41620232 12.0777665,7.41620232 C13.9105062,7.41620232 15.2123516,8.35796279 15.2123516,9.97372829 C15.2123516,10.9755029 14.7230054,11.6725903 13.8735744,12.1942517 C13.0195269,12.7205296 12.7240727,13.0713816 12.7240727,14.1654857 L10.9744295,14.1654857 Z M11.8884911,17.1246448 C11.2698837,17.1246448 10.7713047,16.658381 10.7666882,16.072089 C10.7713047,15.4904134 11.2698837,15.0195331 11.8884911,15.0195331 C12.5117149,15.0195331 13.010294,15.4904134 13.0056775,16.072089 C13.010294,16.658381 12.5117149,17.1246448 11.8884911,17.1246448 Z',
+            ovalFillColor: GRAPHITE,
+            questionMarkFillColor: WHITE,
+        };
+    },
+};
+</script>
