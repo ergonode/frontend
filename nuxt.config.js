@@ -73,6 +73,8 @@ module.exports = {
         babel: {
             configFile: './babel.config.js',
         },
+        parallel: true,
+        cssSourceMap: false,
         optimizeCSS: true,
         extend(config, { isDev, isClient }) {
             const alias = config.resolve.alias || {};
@@ -95,11 +97,15 @@ module.exports = {
             };
         },
         optimization: {
-            runtimeChunk: 'single',
-            minimize: true,
             splitChunks: {
+                chunks: 'all',
                 maxSize: 200000,
             },
+        },
+    },
+    vue: {
+        config: {
+            performance: true,
         },
     },
     env: {
