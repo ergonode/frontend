@@ -26,7 +26,7 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
-        <Footer>
+        <Footer flex-end>
             <Button
                 :title="isEdit ? 'SAVE SEGMENT' : 'CREATE SEGMENT'"
                 :disabled="$isLoading('footerButton')"

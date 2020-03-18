@@ -6,13 +6,13 @@
     <div class="title-bar">
         <TitleBarHeader :title="title">
             <template #prepend>
-                <FabButton
+                <Fab
                     v-if="isNavigationBack"
-                    @click.native="onClick">
-                    <template #icon="{ fillColor }">
-                        <IconArrowPointer :fill-color="fillColor" />
+                    @click.native="onBack">
+                    <template #icon="{ color }">
+                        <IconArrowPointer :fill-color="color" />
                     </template>
-                </FabButton>
+                </Fab>
             </template>
             <template #append>
                 <slot name="prependBadge" />
@@ -21,10 +21,10 @@
                     :background="blueColor"
                     :color="whiteColor"
                     title="READ ONLY">
-                    <template #icon>
+                    <template #icon="{ color }">
                         <IconLock
                             size="24"
-                            :fill-color="whiteColor" />
+                            :fill-color="color" />
                     </template>
                 </InformationIconBadge>
             </template>
@@ -37,20 +37,20 @@
 </template>
 
 <script>
-import { WHITE, BLUE, GREEN } from '~/assets/scss/_variables/_colors.scss';
-import TitleBarHeader from '~/core/components/TitleBar/TitleBarHeader';
-import TitleBarActions from '~/core/components/TitleBar/TitleBarActions';
-import FabButton from '~/core/components/Buttons/FabButton';
+import { WHITE, BLUE, GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
+import TitleBarHeader from '@Core/components/TitleBar/TitleBarHeader';
+import TitleBarActions from '@Core/components/TitleBar/TitleBarActions';
+import Fab from '@Core/components/Buttons/Fab';
 
 export default {
     name: 'TitleBar',
     components: {
         TitleBarHeader,
         TitleBarActions,
-        IconLock: () => import('~/components/Icon/Feedback/IconLock'),
-        IconArrowPointer: () => import('~/components/Icon/Arrows/IconArrowPointer'),
-        InformationIconBadge: () => import('~/core/components/Badges/InformationIconBadge'),
-        FabButton,
+        Fab,
+        IconLock: () => import('@Core/components/Icons/Feedback/IconLock'),
+        IconArrowPointer: () => import('@Core/components/Icons/Arrows/IconArrowPointer'),
+        InformationIconBadge: () => import('@Core/components/Badges/InformationIconBadge'),
     },
     props: {
         title: {
@@ -82,7 +82,7 @@ export default {
         },
     },
     methods: {
-        onClick() {
+        onBack() {
             this.$emit('navigateBack');
         },
     },

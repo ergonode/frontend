@@ -25,7 +25,7 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
-        <Footer>
+        <Footer flex-end>
             <Button
                 :title="isEdit ? 'SAVE GROUP' : 'CREATE GROUP'"
                 :disabled="$isLoading('footerButton')"

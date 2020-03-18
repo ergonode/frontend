@@ -3,13 +3,15 @@
  * See LICENSE for license details.
  */
 <template>
-    <fieldset class="form-group">
+    <section class="form-group">
         <legend
             v-if="title"
             class="form-group__title"
             v-text="title" />
-        <slot />
-    </fieldset>
+        <fieldset class="form-group__fields">
+            <slot />
+        </fieldset>
+    </section>
 </template>
 
 <script>
@@ -26,11 +28,17 @@ export default {
 
 <style lang="scss" scoped>
     .form-group {
-        display: contents;
+        display: grid;
+        grid-auto-flow: row;
+        grid-row-gap: 16px;
 
         &__title {
             color: $GRAPHITE_DARK;
-            font: $FONT_MEDIUM_16_24;
+            font: $FONT_SEMI_BOLD_14_20;
+        }
+
+        &__fields {
+            display: contents;
         }
     }
 </style>

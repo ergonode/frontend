@@ -12,12 +12,19 @@
             :checked="value"
             :disabled="disabled"
             @input="onValueChange">
-        <label :for="associatedLabel" />
+        <label :for="associatedLabel">
+            <div class="checkbox__check" />
+            <span
+                v-if="label"
+                class="checkbox__label"
+                v-text="label" />
+        </label>
+        <slot name="append" />
     </div>
 </template>
 
 <script>
-import { STATE } from '~/defaults/inputs/checkbox';
+import { STATE } from '@Core/defaults/inputs/checkbox';
 
 export default {
     name: 'CheckBox',
@@ -29,6 +36,10 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        label: {
+            type: String,
+            default: '',
         },
     },
     data() {
@@ -67,17 +78,54 @@ export default {
 
 <style lang="scss" scoped>
     .checkbox {
+        $checkbox: &;
+
         position: relative;
+        display: grid;
+        grid-template-columns: max-content;
+        grid-auto-flow: column;
+        column-gap: 8px;
+        align-items: center;
+
+        & label {
+            position: relative;
+            display: grid;
+            grid-auto-flow: column;
+            column-gap: 8px;
+            align-items: center;
+        }
+
+        &__label {
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_12_16;
+            cursor: pointer;
+        }
+
+        &__check {
+            position: relative;
+            display: flex;
+            width: 16px;
+            height: 16px;
+            border: 1px solid $GREY;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
 
         & input[type="checkbox"] {
             position: absolute;
             top: 0;
             left: 0;
             margin: 0;
-            visibility: hidden;
+            opacity: 0;
+
+            &:focus + label {
+                #{$checkbox}__check {
+                    box-shadow: $ELEVATOR_HOVER_FOCUS;
+                }
+            }
 
             &:checked + label, &:indeterminate + label {
-                &::before {
+                #{$checkbox}__check::before {
                     position: absolute;
                     transform: rotate(45deg);
                     content: "";
@@ -85,7 +133,7 @@ export default {
             }
 
             &:not(:indeterminate):checked + label {
-                &::before {
+                #{$checkbox}__check::before {
                     width: 4px;
                     height: 8px;
                     border-right: 2px solid $WHITE;
@@ -94,7 +142,7 @@ export default {
             }
 
             &:indeterminate + label {
-                &::before {
+                #{$checkbox}__check::before {
                     width: 10px;
                     height: 2px;
                     background-color: $WHITE;
@@ -104,19 +152,21 @@ export default {
 
             &:not(:disabled) {
                 &:checked + label, &:indeterminate + label {
-                    border: none;
-                    background-color: $GREEN;
+                    #{$checkbox}__check {
+                        border: none;
+                        background-color: $GREEN;
+                    }
                 }
 
                 &:not(:indeterminate):checked + label {
-                    &::before {
+                    #{$checkbox}__check::before {
                         top: 2px;
                         left: 5px;
                     }
                 }
 
                 &:indeterminate + label {
-                    &::before {
+                    #{$checkbox}__check::before {
                         top: 7px;
                         left: 3px;
                     }
@@ -125,11 +175,13 @@ export default {
 
             &:disabled {
                 & + label {
-                    background-color: $GREY_LIGHT;
+                    #{$checkbox}__check {
+                        background-color: $GREY_LIGHT;
+                    }
                 }
 
                 &:checked + label {
-                    &::before {
+                    #{$checkbox}__check::before {
                         top: 1px;
                         left: 4px;
                         border-color: $GREY_DARK;
@@ -137,23 +189,13 @@ export default {
                 }
 
                 &:indeterminate + label {
-                    &::before {
+                    #{$checkbox}__check::before {
                         top: 6px;
                         left: 2px;
                         background-color: $GREY_DARK;
                     }
                 }
             }
-        }
-
-        & label {
-            position: relative;
-            display: flex;
-            width: 16px;
-            height: 16px;
-            border: 1px solid $GREY;
-            box-sizing: border-box;
-            cursor: pointer;
         }
     }
 </style>

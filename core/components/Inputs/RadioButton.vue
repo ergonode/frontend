@@ -12,10 +12,17 @@
             :value="label"
             :name="name">
         <label :for="associatedLabel">
-            <div
-                v-show="isSelected"
-                class="radio__mark" />
+            <div class="radio__content">
+                <div
+                    v-show="isSelected"
+                    class="radio__mark" />
+            </div>
+            <span
+                v-if="label"
+                class="radio__label"
+                v-text="label" />
         </label>
+        <slot name="append" />
     </div>
 </template>
 
@@ -46,9 +53,6 @@ export default {
             associatedLabel: '',
         };
     },
-    mounted() {
-        this.associatedLabel = `radio-${this._uid}`;
-    },
     computed: {
         isSelected() {
             return this.value === this.label;
@@ -70,6 +74,9 @@ export default {
             ];
         },
     },
+    mounted() {
+        this.associatedLabel = `radio-${this._uid}`;
+    },
 };
 </script>
 
@@ -79,30 +86,47 @@ export default {
         $radio: &;
 
         position: relative;
-
-        &, & input[type="radio"], & label {
-            width: 18px;
-            height: 18px;
-        }
+        display: grid;
+        grid-template-columns: max-content;
+        grid-auto-flow: column;
+        column-gap: 8px;
+        align-items: center;
 
         & input[type="radio"] {
-            margin: 0;
-            visibility: hidden;
-        }
-
-        & label {
             position: absolute;
             top: 0;
             left: 0;
+            margin: 0;
+            opacity: 0;
+
+            &:focus + label {
+                #{$radio}__content {
+                    box-shadow: $ELEVATOR_HOVER_FOCUS;
+                }
+            }
+        }
+
+        & label {
+            position: relative;
+            display: grid;
+            grid-auto-flow: column;
+            column-gap: 8px;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        &__content {
             display: flex;
             justify-content: center;
             align-items: center;
+            width: 18px;
+            height: 18px;
             border: 1px solid $GREY;
             box-sizing: border-box;
             cursor: pointer;
         }
 
-        & label, &__mark {
+        &__content, &__mark {
             border-radius: 50%;
         }
 
@@ -112,9 +136,15 @@ export default {
             background-color: $GREEN;
         }
 
+        &__label {
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_12_16;
+            cursor: pointer;
+        }
+
         &--selected {
             &:not(#{$radio}--disabled) {
-                & label {
+                #{$radio}__content {
                     border: $BORDER_2_GREEN;
                 }
             }
@@ -123,7 +153,7 @@ export default {
         &--disabled {
             pointer-events: none;
 
-            label {
+            #{$radio}__content {
                 background-color: $GREY_LIGHT;
             }
 
