@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { Pages, Tabs, Icons } from './imports';
+// import Privileges from './privileges';
 
 export default [
     {
@@ -41,15 +42,70 @@ export default [
             ],
             isMenu: true,
             menuPosition: 1000,
-            redirectTo: 'settings-main',
+            redirectTo: 'settings-languages',
+            // privileges: {
+            //     namespace: Privileges.SETTINGS.namespace,
+            //     read: Privileges.SETTINGS.read,
+            // },
         },
         children: [
             {
-                name: 'settings-main',
-                path: 'main',
+                name: 'settings-languages',
+                path: 'languages',
                 component: Tabs.MainSettingsTab,
                 meta: {
-                    title: 'Main settings',
+                    title: 'Languages',
+                    breadcrumbs: [
+                        {
+                            title: 'System',
+                            icon: Icons.Settings,
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+            {
+                name: 'settings-units',
+                path: 'units',
+                component: Tabs.UnitsSettingsGridTab,
+                meta: {
+                    title: 'Units',
+                    breadcrumbs: [
+                        {
+                            title: 'System',
+                            icon: Icons.Settings,
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+        ],
+    },
+    {
+        name: 'unit-id',
+        path: '/units/unit/:id',
+        component: Pages.UnitEdit,
+        meta: {
+            isMenu: false,
+            redirectTo: 'unit-id-general',
+        },
+        children: [
+            {
+                name: 'unit-id-general',
+                path: 'general',
+                component: Tabs.UnitBaseTab,
+                meta: {
+                    title: 'General',
+                    breadcrumbs: [
+                        {
+                            title: 'System',
+                            icon: Icons.Settings,
+                        },
+                        {
+                            title: 'Units',
+                            routeName: 'settings-units',
+                        },
+                    ],
                     privileges: [],
                 },
             },
