@@ -1,0 +1,107 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+@import "reset";
+
+html, body {
+    font-family:
+        "Inter UI",
+        sans-serif;
+    -webkit-text-size-adjust: 100%; //fix for iOS
+}
+
+strong {
+    font-weight: 700;
+}
+
+.font--medium-12-16 {
+    font: $FONT_MEDIUM_12_16;
+}
+
+.font--medium-14-20 {
+    font: $FONT_MEDIUM_14_20;
+}
+
+.font--medium-16-24 {
+    font: $FONT_MEDIUM_16_24;
+}
+
+.font--medium-24-32 {
+    font: $FONT_MEDIUM_24_32;
+}
+
+.font--semi-bold-10-12 {
+    font: $FONT_SEMI_BOLD_10_12;
+}
+
+.font--semi-bold-12-16 {
+    font: $FONT_SEMI_BOLD_12_16;
+}
+
+.font--semi-bold-14-16 {
+    font: $FONT_SEMI_BOLD_14_16;
+}
+
+.font--semi-bold-14-20 {
+    font: $FONT_SEMI_BOLD_14_20;
+}
+
+.font--bold-12-16 {
+    font: $FONT_BOLD_12_16;
+}
+
+.txt {
+    //  Colors
+    &--primary {
+        color: $GREEN;
+    }
+
+    &--information {
+        color: $BLUE;
+    }
+
+    &--error {
+        color: $RED;
+    }
+
+    &--warning {
+        color: $YELLOW;
+    }
+
+    &--success {
+        color: $GREEN;
+    }
+
+    &--dark-graphite {
+        color: $GRAPHITE_DARK;
+    }
+
+    &--graphite {
+        color: $GRAPHITE;
+    }
+
+    &--light-graphite {
+        color: $GRAPHITE_LIGHT;
+    }
+
+    &--dark-grey {
+        color: $GREY_DARK;
+    }
+
+    &--grey {
+        color: $GREY;
+    }
+
+    &--light-grey {
+        color: $GREY_LIGHT;
+    }
+
+    &--background {
+        color: $WHITESMOKE;
+    }
+
+    &--white {
+        color: $WHITE;
+    }
+}
