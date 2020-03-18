@@ -46,17 +46,17 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            columnsNumber: 4,
-            templateRowHeight: 48,
-        };
-    },
     computed: {
         ...mapState('productsDraft', {
             layoutElements: state => state.layoutElements,
             draft: state => state.draft,
         }),
+        templateRowHeight() {
+            return 48;
+        },
+        columnsNumber() {
+            return 4;
+        },
         maxRows() {
             const layoutElement = getObjectWithMaxValueInArrayByObjectKey(this.layoutElements, 'row');
 

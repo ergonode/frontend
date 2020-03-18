@@ -7,9 +7,7 @@
         class="link-button"
         type="button">
         <slot name="prepend" />
-        <span
-            v-text="title"
-            class="link-button__title" />
+        <span v-text="title" />
         <slot name="append" />
     </button>
 </template>
@@ -46,10 +44,6 @@ export default {
 
         &:hover:not(:disabled), &:focus {
             box-shadow: $ELEVATOR_HOVER_FOCUS;
-        }
-
-        &__title {
-            margin: 0 8px;
         }
     }
 </style>

@@ -4,23 +4,24 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form>
-            <FormGroup>
-                <TextField
-                    :value="translations.name[languageCode]"
-                    solid
-                    regular
-                    label="Group name"
-                    :disabled="!isUserAllowedToUpdate"
-                    :error-messages="errorNameMessage"
-                    @input="(value) => setTranslationPropertyValue(value, 'name')" />
-            </FormGroup>
+        <Form :fields-keys="[nameKeyField]">
+            <template #body="{ errorMessages }">
+                <FormGroup>
+                    <TextField
+                        :value="translations.name[languageCode]"
+                        solid
+                        regular
+                        label="Group name"
+                        :disabled="!isUserAllowedToUpdate"
+                        :error-messages="errorMessages[nameKeyField]"
+                        @input="(value) => setTranslationPropertyValue(value, 'name')" />
+                </FormGroup>
+            </template>
         </Form>
     </Card>
 </template>
 
 <script>
-import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import TextField from '@Core/components/Inputs/TextField';
 import Card from '@Core/components/Card/Card';
@@ -35,14 +36,13 @@ export default {
         Card,
         TextField,
     },
-    mixins: [errorValidationMixin, translationCardMixin],
+    mixins: [translationCardMixin],
     computed: {
         isUserAllowedToUpdate() {
             return this.$hasAccess(['ATTRIBUTE_UPDATE']);
         },
-        errorNameMessage() {
-            const nameIndex = `name_${this.languageCode}`;
-            return this.elementIsValidate(nameIndex);
+        nameKeyField() {
+            return `name_${this.languageCode}`;
         },
     },
 };

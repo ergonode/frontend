@@ -4,32 +4,33 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form>
-            <FormGroup>
-                <TextField
-                    :value="translations.name[languageCode]"
-                    solid
-                    regular
-                    label="Product collection name"
-                    :disabled="!isUserAllowedToUpdate"
-                    :error-messages="errorNameMessage"
-                    @input="(value) => setTranslationPropertyValue(value, 'name')" />
-                <TextArea
-                    :value="translations.description[languageCode]"
-                    solid
-                    label="Description"
-                    resize="vertical"
-                    :style="{height: '150px'}"
-                    :error-messages="errorDescriptionMessage"
-                    :disabled="!isUserAllowedToUpdate"
-                    @input="(value) => setTranslationPropertyValue(value, 'description')" />
-            </FormGroup>
+        <Form :fields-keys="[descriptionKeyField, nameKeyField]">
+            <template #body="{ errorMessages }">
+                <FormGroup>
+                    <TextField
+                        :value="translations.name[languageCode]"
+                        solid
+                        regular
+                        label="Product collection name"
+                        :disabled="!isUserAllowedToUpdate"
+                        :error-messages="errorMessages[nameKeyField]"
+                        @input="(value) => setTranslationPropertyValue(value, 'name')" />
+                    <TextArea
+                        :value="translations.description[languageCode]"
+                        solid
+                        label="Description"
+                        resize="vertical"
+                        :style="{height: '150px'}"
+                        :error-messages="errorMessages[descriptionKeyField]"
+                        :disabled="!isUserAllowedToUpdate"
+                        @input="(value) => setTranslationPropertyValue(value, 'description')" />
+                </FormGroup>
+            </template>
         </Form>
     </Card>
 </template>
 
 <script>
-import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import TextField from '@Core/components/Inputs/TextField';
 import TextArea from '@Core/components/Inputs/TextArea';
@@ -46,18 +47,16 @@ export default {
         TextArea,
         TextField,
     },
-    mixins: [errorValidationMixin, translationCardMixin],
+    mixins: [translationCardMixin],
     computed: {
         isUserAllowedToUpdate() {
             return this.$hasAccess(['PRODUCT_COLLECTION_UPDATE']);
         },
-        errorDescriptionMessage() {
-            const placeholderIndex = `description_${this.languageCode}`;
-            return this.elementIsValidate(placeholderIndex);
+        descriptionKeyField() {
+            return `description_${this.languageCode}`;
         },
-        errorNameMessage() {
-            const nameIndex = `name_${this.languageCode}`;
-            return this.elementIsValidate(nameIndex);
+        nameKeyField() {
+            return `name_${this.languageCode}`;
         },
     },
 };

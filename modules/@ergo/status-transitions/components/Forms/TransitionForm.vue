@@ -3,50 +3,55 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form title="Status change">
-        <FormGroup>
-            <TranslationSelect
-                :value="source"
-                :solid="true"
-                :regular="true"
-                :required="true"
-                label="From"
-                :options="sourceOptions"
-                :disabled="isDisabled || isDisabledByPrivileges"
-                :error-messages="errorSourceMessage"
-                @input="setSource" />
-            <TranslationSelect
-                :value="destination"
-                :solid="true"
-                :regular="true"
-                :required="true"
-                label="To"
-                :options="destinationOptions"
-                :disabled="isDisabled || isDisabledByPrivileges"
-                :error-messages="errorDestinationMessage"
-                @input="setDestination" />
-        </FormGroup>
-        <Divider />
-        <FormGroup title="Send notification to">
-            <TranslationSelect
-                :value="transitionRoles"
-                :solid="true"
-                :regular="true"
-                :clearable="true"
-                :multiselect="true"
-                label="Role"
-                :options="roles"
-                :disabled="isDisabledByPrivileges"
-                :error-messages="errorRoleMessage"
-                @input="setRoles" />
-        </FormGroup>
+    <Form
+        title="Status change"
+        :fields-keys="[roleFieldKey, destinationFieldKey, sourceFieldKey]">
+        <template #body="{ errorMessages }">
+            <FormGroup>
+                <TranslationSelect
+                    :value="source"
+                    :solid="true"
+                    :regular="true"
+                    :required="true"
+                    label="From"
+                    :clearable="true"
+                    :options="sourceOptions"
+                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :error-messages="errorMessages[sourceFieldKey]"
+                    @input="setSource" />
+                <TranslationSelect
+                    :value="destination"
+                    :solid="true"
+                    :regular="true"
+                    :required="true"
+                    label="To"
+                    :clearable="true"
+                    :options="destinationOptions"
+                    :disabled="isDisabled || isDisabledByPrivileges"
+                    :error-messages="errorMessages[destinationFieldKey]"
+                    @input="setDestination" />
+            </FormGroup>
+            <Divider />
+            <FormGroup title="Send notification to">
+                <TranslationSelect
+                    :value="transitionRoles"
+                    :solid="true"
+                    :regular="true"
+                    :clearable="true"
+                    :multiselect="true"
+                    label="Role"
+                    :options="roles"
+                    :disabled="isDisabledByPrivileges"
+                    :error-messages="errorMessages[roleFieldKey]"
+                    @input="setRoles" />
+            </FormGroup>
+        </template>
     </Form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import { isEmpty } from '@Core/models/objectWrapper';
-import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 
 export default {
@@ -57,7 +62,6 @@ export default {
         FormGroup: () => import('@Core/components/Form/FormGroup'),
         Divider: () => import('@Core/components/Dividers/Divider'),
     },
-    mixins: [errorValidationMixin],
     computed: {
         ...mapState('transitions', {
             source: state => state.source,
@@ -91,17 +95,14 @@ export default {
             return (this.isDisabled && !this.$hasAccess(['WORKFLOW_UPDATE']))
             || (!this.isDisabled && !this.$hasAccess(['WORKFLOW_CREATE']));
         },
-        errorSourceMessage() {
-            const sourceIndex = 'source';
-            return this.elementIsValidate(sourceIndex);
+        roleFieldKey() {
+            return 'roleId';
         },
-        errorDestinationMessage() {
-            const destinationIndex = 'destination';
-            return this.elementIsValidate(destinationIndex);
+        destinationFieldKey() {
+            return 'destination';
         },
-        errorRoleMessage() {
-            const roleIndex = 'roleId';
-            return this.elementIsValidate(roleIndex);
+        sourceFieldKey() {
+            return 'source';
         },
     },
     methods: {

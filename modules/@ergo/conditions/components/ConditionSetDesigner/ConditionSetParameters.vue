@@ -99,7 +99,7 @@ export default {
             return !isEmpty(this.validationErrors)
             && this.validationErrors[index]
             && this.validationErrors[index][key]
-                ? this.validationErrors[index][key].join(', ') : null;
+                ? this.validationErrors[index][key] : null;
         },
     },
 };

@@ -5,17 +5,17 @@
 import defaultState from './state';
 
 export const types = {
-    SET_ERRORS: 'SET_ERRORS',
+    SET_VALIDATION_ERRORS: 'SET_VALIDATION_ERRORS',
     REMOVE_VALIDATION_ERROR: 'REMOVE_VALIDATION_ERROR',
     REMOVE_VALIDATION_ERRORS: 'REMOVE_VALIDATION_ERRORS',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 export default {
-    [types.SET_ERRORS](state, errors) {
+    [types.SET_VALIDATION_ERRORS](state, errors) {
         state.validationErrors = { ...state.validationErrors, ...errors };
     },
-    [types.REMOVE_VALIDATION_ERROR](state, errorKey) {
-        delete state.validationErrors[errorKey];
+    [types.REMOVE_VALIDATION_ERROR](state, key) {
+        delete state.validationErrors[key];
         state.validationErrors = { ...state.validationErrors };
     },
     [types.REMOVE_VALIDATION_ERRORS](state) {

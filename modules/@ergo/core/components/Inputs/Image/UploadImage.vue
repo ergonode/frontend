@@ -46,7 +46,7 @@
         <span
             v-if="uploadError"
             class="upload-image__error-label"
-            v-text="uploadError.join(', ')" />
+            v-text="uploadError" />
     </div>
 </template>
 
