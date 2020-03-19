@@ -16,6 +16,7 @@
                 :cell-values="cellValues"
                 :row-ids="rowIds"
                 :row-links="rowLinks"
+                :is-advanced-filters="true"
                 :is-header-visible="true"
                 :is-basic-filters="true"
                 :is-draggable="true"

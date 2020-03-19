@@ -5,8 +5,7 @@
 <template>
     <Page>
         <TitleBar title="Settings" />
-        <HorizontalTabBar
-            :items="tabs" />
+        <HorizontalTabBar :items="tabs" />
     </Page>
 </template>
 
@@ -16,9 +15,9 @@ import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 export default {
     name: 'Settings',
     components: {
-        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
+        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
     },
     computed: {
         tabs() {
