@@ -29,7 +29,6 @@ export default {
 <style lang="scss" scoped>
     .form-group {
         display: grid;
-        grid-template-columns: 352px;
         grid-auto-flow: row;
         grid-row-gap: 16px;
 

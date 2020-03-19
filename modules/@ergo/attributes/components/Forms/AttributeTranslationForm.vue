@@ -4,42 +4,44 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form>
-            <FormGroup>
-                <TextField
-                    :value="parsedValue('label')"
-                    solid
-                    label="Attribute name"
-                    regular
-                    :error-messages="errorLabelMessage"
-                    :disabled="!isUserAllowedToUpdate"
-                    @input="(value) => setTranslationPropertyValue(value, 'label')" />
-                <TextArea
-                    v-if="hasPlaceholder"
-                    :value="parsedValue('placeholder')"
-                    solid
-                    label="Placeholder"
-                    resize="none"
-                    :style="{height: '150px'}"
-                    :error-messages="errorPlaceholderMessage"
-                    :disabled="!isUserAllowedToUpdate"
-                    @input="(value) => setTranslationPropertyValue(value, 'placeholder')" />
-                <TextArea
-                    :value="parsedValue('hint')"
-                    solid
-                    label="Tooltip for writers"
-                    resize="none"
-                    :style="{height: '150px'}"
-                    :error-messages="errorHintMessage"
-                    :disabled="!isUserAllowedToUpdate"
-                    @input="(value) => setTranslationPropertyValue(value, 'hint')" />
-                <template v-if="hasOptions">
-                    <Divider />
-                    <AttributeOptionValues
-                        :language-code="languageCode"
-                        :disabled="!isUserAllowedToUpdate" />
-                </template>
-            </FormGroup>
+        <Form :fields-keys="[labelFieldKey, placeholderFieldKey, hintFieldKey]">
+            <template #body="{ errorMessages }">
+                <FormGroup>
+                    <TextField
+                        :value="parsedValue('label')"
+                        solid
+                        label="Attribute name"
+                        regular
+                        :error-messages="errorMessages[labelFieldKey]"
+                        :disabled="!isUserAllowedToUpdate"
+                        @input="(value) => setTranslationPropertyValue(value, 'label')" />
+                    <TextArea
+                        v-if="hasPlaceholder"
+                        :value="parsedValue('placeholder')"
+                        solid
+                        label="Placeholder"
+                        resize="none"
+                        :style="{height: '150px'}"
+                        :error-messages="errorMessages[placeholderFieldKey]"
+                        :disabled="!isUserAllowedToUpdate"
+                        @input="(value) => setTranslationPropertyValue(value, 'placeholder')" />
+                    <TextArea
+                        :value="parsedValue('hint')"
+                        solid
+                        label="Tooltip for writers"
+                        resize="none"
+                        :style="{height: '150px'}"
+                        :error-messages="errorMessages[hintFieldKey]"
+                        :disabled="!isUserAllowedToUpdate"
+                        @input="(value) => setTranslationPropertyValue(value, 'hint')" />
+                    <template v-if="hasOptions">
+                        <Divider />
+                        <AttributeOptionValues
+                            :language-code="languageCode"
+                            :disabled="!isUserAllowedToUpdate" />
+                    </template>
+                </FormGroup>
+            </template>
         </Form>
     </Card>
 </template>
@@ -49,7 +51,6 @@ import { mapState } from 'vuex';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 import { hasPlaceholder, hasOptions } from '@Attributes/models/attributeTypes';
 import AttributeOptionValues from '@Attributes/components/Forms/Sections/AttributeOptionValues';
-import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import TextField from '@Core/components/Inputs/TextField';
 import TextArea from '@Core/components/Inputs/TextArea';
@@ -69,7 +70,7 @@ export default {
         TextArea,
         AttributeOptionValues,
     },
-    mixins: [errorValidationMixin, translationCardMixin],
+    mixins: [translationCardMixin],
     computed: {
         ...mapState('dictionaries', {
             attrTypes: state => state.attrTypes,
@@ -89,17 +90,14 @@ export default {
         isUserAllowedToUpdate() {
             return this.$hasAccess(['ATTRIBUTE_UPDATE']);
         },
-        errorLabelMessage() {
-            const labelIndex = `label_${this.languageCode}`;
-            return this.elementIsValidate(labelIndex);
+        hintFieldKey() {
+            return `hint_${this.languageCode}`;
         },
-        errorPlaceholderMessage() {
-            const placeholderIndex = `placeholder_${this.languageCode}`;
-            return this.elementIsValidate(placeholderIndex);
+        placeholderFieldKey() {
+            return `placeholder_${this.languageCode}`;
         },
-        errorHintMessage() {
-            const hintIndex = `hint_${this.languageCode}`;
-            return this.elementIsValidate(hintIndex);
+        labelFieldKey() {
+            return `label_${this.languageCode}`;
         },
     },
 };

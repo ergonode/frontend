@@ -37,7 +37,7 @@
                 <slot name="append" />
                 <ErrorHint
                     v-if="isError"
-                    :hint="parsedErrorMessages" />
+                    :hint="errorMessages" />
                 <InfoHint
                     v-if="isDescription"
                     :hint="description" />

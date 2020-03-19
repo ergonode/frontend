@@ -11,16 +11,18 @@
         </template>
         <template #body>
             <Form>
-                <FormGroup>
-                    <TextField
-                        :value="title"
-                        solid
-                        label="Section title"
-                        regular
-                        required
-                        :error-messages="error"
-                        @input="onTitleChange" />
-                </FormGroup>
+                <template #body>
+                    <FormGroup>
+                        <TextField
+                            :value="title"
+                            solid
+                            label="Section title"
+                            regular
+                            required
+                            :error-messages="error"
+                            @input="onTitleChange" />
+                    </FormGroup>
+                </template>
             </Form>
         </template>
         <template #footer>

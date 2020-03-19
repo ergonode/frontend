@@ -1,0 +1,70 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import LinkButton from '@Core/components/Buttons/LinkButton';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
+
+<Meta title="Components API|LinkButton" />
+
+# LinkButton
+
+`LinkButton` is a default link component. It may have any icon component inside `prepend` and `append` slots.
+
+```
+    import LinkButton from '@Core/components/Buttons/LinkButton'
+```
+
+<Preview>
+    <Story name="basic">
+        {{
+            components: { LinkButton },
+            template: `<LinkButton title="Link" />`,
+        }}
+    </Story>
+</Preview>
+
+### Slots
+
+<Preview>
+    <Story name="append">
+        {{
+            components: { LinkButton, IconAdd },
+            template: `
+                <LinkButton title="Append">
+                    <template #append>
+                        <IconAdd />
+                    </template>
+                </Button>
+            `,
+        }}
+    </Story>
+    <Story name="prepend">
+        {{
+            components: { LinkButton, IconAdd },
+            template: `
+                <LinkButton title="Prepend">
+                    <template #prepend>
+                        <IconAdd />
+                    </template>
+                </Button>
+            `,
+        }}
+    </Story>
+    <Story name="append-prepend">
+        {{
+            components: { LinkButton, IconAdd },
+            template: `
+                <LinkButton title="Append | Prepend">
+                    <template #append>
+                        <IconAdd />
+                    </template>
+                    <template #prepend>
+                        <IconAdd />
+                    </template>
+                </Button>
+            `,
+        }}
+    </Story>
+</Preview>
+
+### Props
+
+<Props of={LinkButton} />

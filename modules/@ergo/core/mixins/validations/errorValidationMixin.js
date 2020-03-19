@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import { mapState, mapActions } from 'vuex';
-import { isEmpty } from '@Core/models/objectWrapper';
 
 export default {
     destroyed() {
@@ -18,10 +17,8 @@ export default {
         ...mapActions('validations', [
             'removeValidationErrors',
         ]),
-        elementIsValidate(index) {
-            return !isEmpty(this.validationErrors)
-            && this.validationErrors[index]
-                ? this.validationErrors[index].join(', ') : null;
+        getValidationErrorForKey(key) {
+            return this.validationErrors[key] || null;
         },
     },
 };

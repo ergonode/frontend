@@ -79,7 +79,7 @@ export default {
         },
         errorCommentMessage() {
             const placeholderIndex = 'content';
-            return this.elementIsValidate(placeholderIndex);
+            return this.getValidationErrorForKey(placeholderIndex);
         },
     },
     methods: {
@@ -89,7 +89,6 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
-            'removeValidationErrors',
         ]),
         saveComment() {
             if (this.isEdit && this.commentId) {

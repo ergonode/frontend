@@ -42,7 +42,7 @@
             v-if="isModalVisible"
             @close="onCloseModal"
             @added="onCreatedData" />
-        <Footer>
+        <Footer flex-end>
             <Button
                 title="SAVE PRODUCT COLLECTION"
                 :size="smallSize"

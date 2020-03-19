@@ -56,7 +56,6 @@ import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import CommentsList from '@Comments/components/List/CommentsList';
 import CommentStateChanger from '@Comments/components/Comments/CommentStateChanger';
 import EditableComment from '@Comments/components/Comments/EditableComment';
-import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 
 export default {
     name: 'ProductCommentsForm',
@@ -69,7 +68,6 @@ export default {
         EditableComment,
         ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
     },
-    mixins: [errorValidationMixin],
     data() {
         return {
             showForm: false,

@@ -126,7 +126,7 @@ export default {
                 });
             }
             onSuccess(name);
-        }).catch(e => onError({ errors: e.data.errors, name }));
+        }).catch(e => onError({ errors: e.data.errors, fieldKey: name }));
     },
     updateProductStatus({ state, rootState, dispatch }, {
         attributeId,

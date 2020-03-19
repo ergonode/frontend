@@ -4,11 +4,15 @@
  */
 <template>
     <div class="logo">
-        <IconLogoName :is-expanded="isExpanded" />
+        <IconLogoName
+            :full-logo="isExpanded"
+            :name-color="whiteColor" />
     </div>
 </template>
 
 <script>
+import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+
 export default {
     name: 'SideBarLogo',
     components: {
@@ -18,6 +22,11 @@ export default {
         isExpanded: {
             type: Boolean,
             required: true,
+        },
+    },
+    computed: {
+        whiteColor() {
+            return WHITE;
         },
     },
 };

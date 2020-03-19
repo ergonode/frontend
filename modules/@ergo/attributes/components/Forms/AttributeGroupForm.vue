@@ -3,25 +3,28 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form title="General">
-        <FormGroup>
-            <TextField
-                :value="code"
-                solid
-                regular
-                required
-                :error-messages="errorCodeMessage"
-                :disabled="isDisabled || isDisabledByPrivileges"
-                label="System name"
-                hint="Attribute group code must be unique"
-                @input="setAttributeGroupCode" />
-        </FormGroup>
+    <Form
+        title="General"
+        :fields-keys="[codeFieldKey]">
+        <template #body="{ errorMessages }">
+            <FormGroup>
+                <TextField
+                    :value="code"
+                    solid
+                    regular
+                    required
+                    :error-messages="errorMessages[codeFieldKey]"
+                    :disabled="isDisabled || isDisabledByPrivileges"
+                    label="System name"
+                    hint="Attribute group code must be unique"
+                    @input="setAttributeGroupCode" />
+            </FormGroup>
+        </template>
     </Form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 
 export default {
     name: 'AttributeGroupForm',
@@ -30,7 +33,6 @@ export default {
         FormGroup: () => import('@Core/components/Form/FormGroup'),
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
-    mixins: [errorValidationMixin],
     computed: {
         ...mapState('attributeGroup', {
             attributeID: state => state.id,
@@ -43,9 +45,8 @@ export default {
             return (this.isDisabled && !this.$hasAccess(['ATTRIBUTE_UPDATE']))
             || (!this.isDisabled && !this.$hasAccess(['ATTRIBUTE_CREATE']));
         },
-        errorCodeMessage() {
-            const codeIndex = 'code';
-            return this.elementIsValidate(codeIndex);
+        codeFieldKey() {
+            return 'code';
         },
     },
     methods: {
