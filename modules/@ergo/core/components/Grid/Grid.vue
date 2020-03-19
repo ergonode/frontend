@@ -53,6 +53,14 @@ export default {
             type: Array,
             default: () => [],
         },
+        isAdvancedFilters: {
+            type: Boolean,
+            default: false,
+        },
+        isCenteredView: {
+            type: Boolean,
+            default: false,
+        },
         advancedFilters: {
             type: Array,
             default: () => [],
@@ -629,6 +637,8 @@ export default {
                 attrs: {
                     rowHeight: this.rowHeight,
                     layout: this.layout,
+                    isAdvancedFilters: this.isAdvancedFilters,
+                    isCenteredView: this.isCenteredView,
                     filters: this.advancedFilters,
                     isActionsSelected: this.isSelectedAllRows
                             || Object.keys(this.selectedRows).length !== 0,
@@ -646,6 +656,9 @@ export default {
                     swapFilters: this.onSwapFiltersPosition,
                     applyFilter: this.emitFetchData,
                     removeAllFilters: this.onRemoveAll,
+                },
+                scopedSlots: {
+                    actions: () => this.$slots.actions,
                 },
             }));
         }

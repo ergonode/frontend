@@ -44,8 +44,8 @@ export default [
             menuPosition: 1000,
             redirectTo: 'settings-languages',
             // privileges: {
-            //     namespace: Privileges.SETTINGS.namespace,
-            //     read: Privileges.SETTINGS.read,
+            // namespace: Privileges.SETTINGS.namespace,
+            // read: Privileges.SETTINGS.read,
             // },
         },
         children: [
@@ -64,26 +64,27 @@ export default [
                     privileges: [],
                 },
             },
-            {
-                name: 'settings-units',
-                path: 'units',
-                component: Tabs.UnitsSettingsGridTab,
-                meta: {
-                    title: 'Units',
-                    breadcrumbs: [
-                        {
-                            title: 'System',
-                            icon: Icons.Settings,
-                        },
-                    ],
-                    privileges: [],
-                },
-            },
+            // TODO: uncomment when API ready
+            // {
+            //     name: 'settings-units',
+            //     path: 'units',
+            //     component: Tabs.UnitsSettingsGridTab,
+            //     meta: {
+            //         title: 'Units',
+            //         breadcrumbs: [
+            //             {
+            //                 title: 'System',
+            //                 icon: Icons.Settings,
+            //             },
+            //         ],
+            //         privileges: [],
+            //     },
+            // },
         ],
     },
     {
         name: 'unit-id',
-        path: '/units/unit/:id',
+        path: '/settings/units/unit/:id',
         component: Pages.UnitEdit,
         meta: {
             isMenu: false,

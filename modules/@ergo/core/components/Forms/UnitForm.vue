@@ -3,29 +3,33 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form title="Options">
-        <FormGroup>
-            <TextField
-                :value="name"
-                solid
-                regular
-                required
-                label="Unit name"
-                :disabled="isDisabledByPrivileges"
-                :error-messages="errorNameMessage"
-                hint="Unit name must be unique"
-                @input="setName" />
-            <TextField
-                :value="symbol"
-                solid
-                regular
-                required
-                label="Unit symbol"
-                :disabled="isDisabledByPrivileges"
-                :error-messages="errorSymbolMessage"
-                hint="Unit symbol must be unique"
-                @input="setSymbol" />
-        </FormGroup>
+    <Form
+        title="Options"
+        :fields-keys="[nameFieldKey, symbolFieldKey]">
+        <template #body="{ errorMessages }">
+            <FormGroup>
+                <TextField
+                    :value="name"
+                    solid
+                    required
+                    :error-messages="errorMessages[nameFieldKey]"
+                    :disabled="isDisabledByPrivileges"
+                    regular
+                    label="Unit name"
+                    hint="Unit name must be unique"
+                    @input="setName" />
+                <TextField
+                    :value="symbol"
+                    solid
+                    required
+                    :error-messages="errorMessages[symbolFieldKey]"
+                    :disabled="isDisabledByPrivileges"
+                    regular
+                    label="Unit symbol"
+                    hint="Unit symbol must be unique"
+                    @input="setSymbol" />
+            </FormGroup>
+        </template>
     </Form>
 </template>
 
@@ -47,17 +51,14 @@ export default {
             symbol: state => state.symbol,
         }),
         isDisabledByPrivileges() {
-            return false;
-            // return (this.isDisabled && !this.$hasAccess(['SETTINGS_UPDATE']))
-            // || (!this.isDisabled && !this.$hasAccess(['SETTINGS_CREATE']));
+            return (this.isDisabled && !this.$hasAccess(['SETTINGS_UPDATE']))
+            || (!this.isDisabled && !this.$hasAccess(['SETTINGS_CREATE']));
         },
-        errorNameMessage() {
-            const codeIndex = 'name';
-            return this.elementIsValidate(codeIndex);
+        nameFieldKey() {
+            return 'name';
         },
-        errorSymbolMessage() {
-            const codeIndex = 'symbol';
-            return this.elementIsValidate(codeIndex);
+        symbolFieldKey() {
+            return 'symbol';
         },
     },
     methods: {

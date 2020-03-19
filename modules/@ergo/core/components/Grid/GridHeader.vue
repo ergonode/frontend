@@ -3,24 +3,30 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['grid-header', {'grid-header--disabled': isFilterExists}]">
+    <div
+        :class="['grid-header', {
+            'grid-header--borders': isCenteredView,
+            'grid-header--disabled': isFilterExists
+        }]">
         <div class="grid-header__settings">
             <div class="grid-header__actions">
-                <!--                TODO: Uncomment when mass actions are implemented-->
-                <!--                <ActionIconButton-->
-                <!--                    title="ACTIONS"-->
-                <!--      :theme="isActionsSelected ? theme.PRIMARY : theme.SECONDARY"-->
-                <!--                    :size="smallSize"-->
-                <!--                    :options="[]">-->
-                <!--                    <template #icon="{ color }">-->
-                <!--                        <IconArrowDropDown :fill-color="color" />-->
-                <!--                    </template>-->
-                <!--                </ActionIconButton>-->
+                <!-- TODO: Uncomment when mass actions are implemented-->
+                <!-- <ActionButton
+                    title="ACTIONS"
+                    :theme="isActionsSelected ? theme.PRIMARY : theme.SECONDARY"
+                    :size="smallSize"
+                    :options="[]">
+                    <template #icon="{ color }">
+                        <IconArrowDropDown :fill-color="color" />
+                    </template>
+                </ActionButton> -->
                 <ExpandNumericButton
+                    v-if="isAdvancedFilters"
                     title="FILTERS"
                     :number="filtersNumber"
                     :is-expanded="isFiltersExpanded"
                     @click.native="onFiltersExpand" />
+                <slot name="actions" />
             </div>
             <div class="grid-header__layout-configuration">
                 <Fab
@@ -33,17 +39,17 @@
                                 : color" />
                     </template>
                 </Fab>
-                <!--                TODO: Uncomment when Image layout is rdy-->
-                <!--                <Fab-->
-                <!--                    :theme="theme.SECONDARY"-->
-                <!--                    @click.native="onSelectLayout(gridLayouts.GRID)">-->
-                <!--                    <template #icon="{ color }">-->
-                <!--                        <IconGrid-->
-                <!--                            :fill-color="layout === gridLayouts.GRID-->
-                <!--                                ? greenColor-->
-                <!--                                : color" />-->
-                <!--                    </template>-->
-                <!--                </Fab>-->
+                <!-- TODO: Uncomment when Image layout is rdy-->
+                <!-- <Fab
+                    :theme="theme.SECONDARY"
+                    @click.native="onSelectLayout(gridLayouts.GRID)">
+                    <template #icon="{ color }">
+                        <IconGrid
+                            :fill-color="layout === gridLayouts.GRID
+                                ? greenColor
+                                : color" />
+                    </template>
+                </Fab> -->
                 <Fab
                     :theme="theme.SECONDARY"
                     @click.native="isSettingsModal = true">
@@ -83,7 +89,7 @@
             </template>
         </ModalForm>
         <GridAdvancedFiltersContainer
-            v-show="isFiltersExpanded"
+            v-show="isFiltersExpanded && isAdvancedFilters"
             @mouseOverFilters="onMouseOverFilters">
             <GridAdvancedFilter
                 v-for="(filter, index) in filters"
@@ -124,7 +130,7 @@ export default {
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
         Form: () => import('@Core/components/Form/Form'),
         FormGroup: () => import('@Core/components/Form/FormGroup'),
-        // ActionIconButton: () => import('@Core/components/Buttons/ActionIconButton'),
+        // ActionButton: () => import('@Core/components/Buttons/ActionButton'),
         Button: () => import('@Core/components/Buttons/Button'),
         ExpandNumericButton: () => import('@Core/components/Buttons/ExpandNumericButton'),
         Fab: () => import('@Core/components/Buttons/Fab'),
@@ -143,6 +149,14 @@ export default {
             default: ROW_HEIGHT.SMALL,
         },
         isActionsSelected: {
+            type: Boolean,
+            default: false,
+        },
+        isCenteredView: {
+            type: Boolean,
+            default: false,
+        },
+        isAdvancedFilters: {
             type: Boolean,
             default: false,
         },
@@ -176,7 +190,7 @@ export default {
                 filter => filter.id === this.draggedElement,
             );
 
-            return draggedElIndex !== -1;
+            return draggedElIndex !== -1 && this.isAdvancedFilters;
         },
         theme() {
             return THEME;
@@ -325,6 +339,11 @@ export default {
             display: grid;
             grid-auto-flow: column;
             grid-column-gap: 8px;
+        }
+
+        &--borders {
+            border-top: $BORDER_1_GREY;
+            border-right: $BORDER_1_GREY;
         }
 
         &--disabled {
