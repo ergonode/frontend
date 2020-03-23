@@ -154,6 +154,10 @@ export default {
             return Object.values(this.attrTypes);
         },
         attributeParametersOptions() {
+            // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
+            if (Array.isArray(this.params)) {
+                return this.params.map(data => data.name);
+            }
             return Object.values(this.params);
         },
         codeFieldKey() {

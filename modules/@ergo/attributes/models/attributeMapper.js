@@ -18,6 +18,11 @@ export function getMappedParameterValues(type, parameters, data) {
     );
     const [parsedParameters] = Object.values(parameters);
 
+    // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
+    if (Array.isArray(typeParameters)) {
+        return typeParameters.find(option => option.id === parsedParameters).name;
+    }
+
     return typeParameters[parsedParameters];
 }
 

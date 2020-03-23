@@ -24,7 +24,7 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
-        <Footer>
+        <Footer flex-end>
             <Button
                 title="SAVE UNIT"
                 :size="smallSize"

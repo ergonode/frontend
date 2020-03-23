@@ -47,18 +47,23 @@ export default {
         ...mapActions('units', [
             'clearStorage',
         ]),
+        ...mapActions('dictionaries', [
+            'getCurrentDictionary',
+        ]),
         onClose() {
             this.clearStorage();
             this.$emit('close');
         },
         onCreate() {
-            this.onCreateRequest(() => {
-                this.clearStorage();
+            this.onCreateRequest(async () => {
+                await this.getCurrentDictionary({ dictionaryName: 'units' });
+                await this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.onCreateRequest((id) => {
-                this.$router.push({
+            this.onCreateRequest(async (id) => {
+                await this.getCurrentDictionary({ dictionaryName: 'units' });
+                await this.$router.push({
                     name: 'unit-id-general',
                     params: {
                         id,

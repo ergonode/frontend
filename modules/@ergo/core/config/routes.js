@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { Pages, Tabs, Icons } from './imports';
-// import Privileges from './privileges';
+import Privileges from './privileges';
 
 export default [
     {
@@ -43,10 +43,10 @@ export default [
             isMenu: true,
             menuPosition: 1000,
             redirectTo: 'settings-languages',
-            // privileges: {
-            // namespace: Privileges.SETTINGS.namespace,
-            // read: Privileges.SETTINGS.read,
-            // },
+            privileges: {
+                namespace: Privileges.SETTINGS.namespace,
+                read: Privileges.SETTINGS.read,
+            },
         },
         children: [
             {
@@ -64,22 +64,21 @@ export default [
                     privileges: [],
                 },
             },
-            // TODO: uncomment when API ready
-            // {
-            //     name: 'settings-units',
-            //     path: 'units',
-            //     component: Tabs.UnitsSettingsGridTab,
-            //     meta: {
-            //         title: 'Units',
-            //         breadcrumbs: [
-            //             {
-            //                 title: 'System',
-            //                 icon: Icons.Settings,
-            //             },
-            //         ],
-            //         privileges: [],
-            //     },
-            // },
+            {
+                name: 'settings-units',
+                path: 'units',
+                component: Tabs.UnitsSettingsGridTab,
+                meta: {
+                    title: 'Units',
+                    breadcrumbs: [
+                        {
+                            title: 'System',
+                            icon: Icons.Settings,
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
         ],
     },
     {
