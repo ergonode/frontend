@@ -5,12 +5,13 @@
 <template>
     <FormSection :title="title">
         <Component
-            :is="widgetComponent"
+            :is="arrayComponent"
             v-bind="items" />
     </FormSection>
 </template>
 
 <script>
+import { toCapitalize } from '@Core/models/stringWrapper';
 import FormSection from '@Core/components/Form/FormSection';
 
 export default {
@@ -20,10 +21,6 @@ export default {
     },
     props: {
         title: {
-            type: String,
-            default: '',
-        },
-        errorMessage: {
             type: String,
             default: '',
         },
@@ -37,14 +34,12 @@ export default {
         },
     },
     computed: {
-        widgetComponent() {
-            switch (this.widget) {
-            case 'table':
-                return () => import('@Core/components/Form/JSONSchemaFormTableWidget');
-            default:
-                console.error(`Not supported widget: ${this.widget}`);
-                return null;
+        arrayComponent() {
+            if (this.widget && this.widget === 'table') {
+                return () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormTableWidget');
             }
+
+            return () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(this.items.type)}`);
         },
     },
 };

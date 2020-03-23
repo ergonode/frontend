@@ -7,8 +7,8 @@
         :value="localValue"
         solid
         regular
-        :label="title"
-        :error-messages="errorMessage"
+        :label="$attrs.title"
+        :error-messages="$attrs.errorMessage"
         @input="onValueChange" />
 </template>
 
@@ -20,27 +20,14 @@ export default {
     components: {
         TextField,
     },
-    props: {
-        title: {
-            type: String,
-            default: '',
-        },
-        errorMessage: {
-            type: String,
-            default: '',
-        },
-        default: {
-            type: String,
-            default: '',
-        },
-    },
+    inheritAttrs: false,
     data() {
         return {
             localValue: '',
         };
     },
     created() {
-        this.localValue = this.default;
+        this.localValue = this.$attrs.default;
     },
     methods: {
         onValueChange(value) {

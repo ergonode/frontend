@@ -12,7 +12,7 @@
 
 <script>
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import JSONSchemaForm from '@Core/components/Form/JSONSchemaForm';
+import JSONSchemaForm from '@Core/components/Form/JSONSchemaForm/JSONSchemaForm';
 
 export default {
     name: 'CollectionBaseTab',

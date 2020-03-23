@@ -24,7 +24,7 @@
 <script>
 import { SIZE, THEME } from '@Core/defaults/theme';
 import FormSection from '@Core/components/Form/FormSection';
-import JSONSchemaFormTableRowWidget from '@Core/components/Form/JSONSchemaFormTableRowWidget';
+import JSONSchemaFormTableRowWidget from '@Core/components/Form/JSONSchemaForm/JSONSchemaFormTableRowWidget';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import Button from '@Core/components/Buttons/Button';
 

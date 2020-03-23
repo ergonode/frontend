@@ -7,9 +7,9 @@
         :value="localValue"
         solid
         regular
-        :label="title"
-        :options="options"
-        :error-messages="errorMessage"
+        :label="$attrs.title"
+        :options="$attrs.enum_titles"
+        :error-messages="$attrs.errorMessage"
         @input="onValueChange" />
 </template>
 
@@ -21,31 +21,15 @@ export default {
     components: {
         Select,
     },
-    props: {
-        title: {
-            type: String,
-            default: '',
-        },
-        options: {
-            type: Array,
-            default: () => [],
-        },
-        errorMessage: {
-            type: String,
-            default: '',
-        },
-        default: {
-            type: String,
-            default: '',
-        },
-    },
+    inheritAttrs: false,
     data() {
         return {
             localValue: '',
         };
     },
     created() {
-        this.localValue = this.default;
+        console.log(this.$attrs);
+        this.localValue = this.$attrs.default;
     },
     methods: {
         onValueChange(value) {

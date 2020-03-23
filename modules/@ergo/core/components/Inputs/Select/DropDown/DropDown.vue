@@ -48,8 +48,6 @@ export default {
                 maxHeight = height;
             }
 
-            console.log(this.offset.y);
-
             if (innerHeight - this.offset.y < maxHeight) {
                 const offsetBottom = innerHeight - this.offset.y;
 
