@@ -5,7 +5,7 @@
 <template>
     <Form :fields-keys="[skusFieldKey]">
         <template #body="{ errorMessages }">
-            <FormGroup>
+            <FormSection>
                 <TranslationSelect
                     :value="segments"
                     solid
@@ -25,7 +25,7 @@
                     :error-messages="errorMessages[skusFieldKey]"
                     :disabled="isDisabledByPrivileges"
                     @input="(value) => $emit('input', { key: 'productSkus', value })" />
-            </FormGroup>
+            </FormSection>
         </template>
     </Form>
 </template>
@@ -36,7 +36,7 @@ export default {
     name: 'AddProductsToCollectionForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
         TextArea: () => import('@Core/components/Inputs/TextArea'),
     },

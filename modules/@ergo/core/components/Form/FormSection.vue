@@ -3,12 +3,12 @@
  * See LICENSE for license details.
  */
 <template>
-    <section class="form-group">
+    <section class="form-section">
         <legend
             v-if="title"
-            class="form-group__title"
+            class="form-section__title"
             v-text="title" />
-        <fieldset class="form-group__fields">
+        <fieldset class="form-section__fields">
             <slot />
         </fieldset>
     </section>
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-    name: 'FormGroup',
+    name: 'FormSection',
     props: {
         title: {
             type: String,
@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .form-group {
+    .form-section {
         display: grid;
         grid-auto-flow: row;
         grid-row-gap: 16px;

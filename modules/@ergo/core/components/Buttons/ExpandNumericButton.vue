@@ -69,7 +69,7 @@ export default {
         margin: 0 4px;
 
         &--selected {
-            .primary-badge {
+            .badge--primary {
                 background-color: $GREEN_DARK;
             }
         }

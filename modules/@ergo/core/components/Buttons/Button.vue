@@ -110,6 +110,7 @@ export default {
         flex-shrink: 0;
         justify-content: center;
         align-items: center;
+        width: max-content;
         border: none;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         text-transform: uppercase;

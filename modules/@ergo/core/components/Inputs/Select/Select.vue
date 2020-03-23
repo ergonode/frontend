@@ -48,7 +48,7 @@
             <DropDown
                 v-if="isMenuActive"
                 ref="menu"
-                :offset="dropDownOffset"
+                :offset="getDropDownOffset()"
                 :fixed="fixedContent">
                 <template #body>
                     <slot name="dropdown">
@@ -251,15 +251,6 @@ export default {
         };
     },
     computed: {
-        dropDownOffset() {
-            const {
-                x, y, width, height,
-            } = this.$refs.activator.getBoundingClientRect();
-
-            return {
-                x, y, width, height,
-            };
-        },
         stringifiedOptions() {
             return this.options.map(option => JSON.stringify(option));
         },
@@ -293,7 +284,7 @@ export default {
                     regular: this.regular,
                     'left-alignment': this.leftAlignment,
                     'center-alignment': this.centerAlignment,
-                    'floating-label': this.label,
+                    'floating-label': Boolean(this.label) && this.label.length > 0,
                     'input--error': this.isError,
                     'input--focused': this.isMenuActive,
                     'input--disabled': this.disabled,
@@ -368,6 +359,15 @@ export default {
         window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
+        getDropDownOffset() {
+            const {
+                x, y, width, height,
+            } = this.$refs.activator.getBoundingClientRect();
+
+            return {
+                x, y, width, height,
+            };
+        },
         isOptionSelected(index) {
             return typeof this.selectedOptions[this.stringifiedOptions[index]] !== 'undefined';
         },

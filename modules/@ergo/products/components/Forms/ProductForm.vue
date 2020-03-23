@@ -7,7 +7,7 @@
         title="General"
         :fields-keys="[skuFieldKey, templateIdFieldKey]">
         <template #body="{ errorMessages }">
-            <FormGroup>
+            <FormSection>
                 <TextField
                     :value="sku"
                     hint="Products SKU must be unique"
@@ -38,7 +38,7 @@
                     :options="categoryOptions"
                     :disabled="isDisabledByPrivileges"
                     @input="setProductCategories" />
-            </FormGroup>
+            </FormSection>
         </template>
     </Form>
 </template>
@@ -50,7 +50,7 @@ export default {
     name: 'ProductForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
     },

@@ -48,7 +48,7 @@ export default {
                     regular: this.regular,
                     'left-alignment': this.leftAlignment,
                     'center-alignment': this.centerAlignment,
-                    'floating-label': this.label,
+                    'floating-label': Boolean(this.label) && this.label.length > 0,
                     'input--error': this.isError,
                     'input--focused': this.isFocused,
                     'input--disabled': this.disabled,

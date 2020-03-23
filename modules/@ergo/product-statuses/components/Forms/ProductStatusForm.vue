@@ -7,7 +7,7 @@
         title="General"
         :fields-keys="[codeFieldKey, colorFieldKey]">
         <template #body="{ errorMessages }">
-            <FormGroup>
+            <FormSection>
                 <TextField
                     :value="code"
                     solid
@@ -39,7 +39,7 @@
                     hint="Badge color is needed for presentation purpose"
                     :disabled="isDisabledByPrivileges"
                     @input="setColor" />
-            </FormGroup>
+            </FormSection>
         </template>
     </Form>
 </template>
@@ -52,7 +52,7 @@ export default {
     name: 'ProductStatusForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         ColorPicker: () => import('@Core/components/Inputs/ColorPicker/ColorPicker'),
         CheckBox: () => import('@Core/components/Inputs/CheckBox'),

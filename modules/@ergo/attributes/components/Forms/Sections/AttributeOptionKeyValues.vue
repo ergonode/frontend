@@ -40,7 +40,6 @@
 import { mapState, mapActions } from 'vuex';
 import { SIZE, THEME } from '@Core/defaults/theme';
 
-
 export default {
     name: 'AttributeOptionKeyValues',
     components: {

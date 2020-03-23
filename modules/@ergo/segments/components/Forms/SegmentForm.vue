@@ -7,7 +7,7 @@
         title="General"
         :fields-keys="[codeFieldKey]">
         <template #body="{ errorMessages }">
-            <FormGroup>
+            <FormSection>
                 <TextField
                     :value="code"
                     solid
@@ -18,7 +18,7 @@
                     :error-messages="errorMessages[codeFieldKey]"
                     hint="Code must be unique"
                     @input="setCode" />
-            </FormGroup>
+            </FormSection>
         </template>
     </Form>
 </template>
@@ -30,7 +30,7 @@ export default {
     name: 'SegmentForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     computed: {

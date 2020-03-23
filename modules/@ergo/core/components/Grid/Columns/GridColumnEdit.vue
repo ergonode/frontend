@@ -7,36 +7,32 @@
         <GridCell
             :column="columnIndex"
             :row="rowsOffset"
-            :spacebar-edition="false"
             :locked="true" />
         <GridCell
             v-if="isBasicFilters"
             :column="columnIndex"
             :row="rowsOffset + basicFiltersOffset"
-            :spacebar-edition="false"
             :locked="true" />
-        <GridCell
-            v-for="(rowLink, index) in rowLinks"
-            :key="rowLink.id"
+        <GridEditRowCell
+            v-for="(links, index) in rowLinks"
+            :key="index"
+            :links="links"
             :column="columnIndex"
-            :spacebar-edition="true"
             :row="rowsOffset + index + basicFiltersOffset + 1"
             :is-selected="isSelectedAllRows
                 || selectedRows[rowsOffset + index + basicFiltersOffset + 1]"
-            @edit="onEdit(rowLink)">
-            <GridEditRowCell
-                :params="rowLink"
-                @edit="onEdit" />
-        </GridCell>
+            @edit="onEdit" />
     </div>
 </template>
 
 <script>
+import GridEditRowCell from '@Core/components/Grid/EditCells/GridEditRowCell';
+
 export default {
     name: 'GridColumnEdit',
     components: {
         GridCell: () => import('@Core/components/Grid/GridCell'),
-        GridEditRowCell: () => import('@Core/components/Grid/EditCells/GridEditRowCell'),
+        GridEditRowCell,
     },
     props: {
         columnIndex: {

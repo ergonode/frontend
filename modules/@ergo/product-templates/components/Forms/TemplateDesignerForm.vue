@@ -7,7 +7,7 @@
         title="General"
         :fields-keys="[nameFieldKey]">
         <template #body="{ errorMessages }">
-            <FormGroup>
+            <FormSection>
                 <TextField
                     :value="templateTitle"
                     solid
@@ -23,8 +23,8 @@
                     :disabled="isDisabledByPrivileges"
                     @upload="setImage"
                     @remove="setImage" />
-            </FormGroup>
-            <FormGroup title="Presentation product">
+            </FormSection>
+            <FormSection title="Presentation product">
                 <TranslationSelect
                     :value="defaultTextAttribute"
                     solid
@@ -41,7 +41,7 @@
                     label="Default image attribute"
                     :options="imageAttributesOptions"
                     @input="setDefaultImageAttribute" />
-            </FormGroup>
+            </FormSection>
         </template>
     </Form>
 </template>
@@ -53,7 +53,7 @@ export default {
     name: 'TemplateDesignerForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
         UploadImage: () => import('@Core/components/Inputs/Image/UploadImage'),

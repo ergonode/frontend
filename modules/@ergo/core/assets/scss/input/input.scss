@@ -83,7 +83,7 @@
             position: absolute;
             padding: 0 2px;
             background-color: $WHITE;
-            transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             transform-origin: left;
             color: $GRAPHITE_LIGHT;
             font: $FONT_MEDIUM_14_20;

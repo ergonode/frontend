@@ -32,8 +32,7 @@ export default {
     },
     mixins: [fetchGridDataMixin({ path: 'collections' })],
     methods: {
-        onEditRow({ links: { value: { edit } } }) {
-            const args = edit.href.split('/');
+        onEditRow(args) {
             const lastIndex = args.length - 1;
 
             this.$router.push({ name: 'collection-id-general', params: { id: args[lastIndex] } });

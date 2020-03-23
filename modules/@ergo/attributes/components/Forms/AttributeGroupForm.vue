@@ -7,7 +7,7 @@
         title="General"
         :fields-keys="[codeFieldKey]">
         <template #body="{ errorMessages }">
-            <FormGroup>
+            <FormSection>
                 <TextField
                     :value="code"
                     solid
@@ -18,7 +18,7 @@
                     label="System name"
                     hint="Attribute group code must be unique"
                     @input="setAttributeGroupCode" />
-            </FormGroup>
+            </FormSection>
         </template>
     </Form>
 </template>
@@ -30,16 +30,16 @@ export default {
     name: 'AttributeGroupForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     computed: {
         ...mapState('attributeGroup', {
-            attributeID: state => state.id,
+            id: state => state.id,
             code: state => state.code,
         }),
         isDisabled() {
-            return Boolean(this.attributeID);
+            return Boolean(this.id);
         },
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['ATTRIBUTE_UPDATE']))

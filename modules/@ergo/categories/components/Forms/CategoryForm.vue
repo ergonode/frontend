@@ -7,7 +7,7 @@
         title="General"
         :fields-keys="[codeFieldKey]">
         <template #body="{ errorMessages }">
-            <FormGroup>
+            <FormSection>
                 <TextField
                     :value="code"
                     solid
@@ -18,7 +18,7 @@
                     label="System name"
                     hint="Category code must be unique"
                     @input="setCategoryCode" />
-            </FormGroup>
+            </FormSection>
         </template>
     </Form>
 </template>
@@ -30,7 +30,7 @@ export default {
     name: 'CategoryForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     computed: {

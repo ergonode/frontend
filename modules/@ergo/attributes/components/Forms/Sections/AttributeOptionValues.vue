@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormGroup title="Option values">
+    <FormSection title="Option values">
         <AttributeOptionValue
             v-for="index in optionIndexes"
             :key="index"
@@ -11,7 +11,7 @@
             :option="options[index]"
             :disabled="disabled"
             :language-code="languageCode" />
-    </FormGroup>
+    </FormSection>
 </template>
 
 <script>
@@ -21,7 +21,7 @@ export default {
     name: 'AttributeOptionValues',
     components: {
         AttributeOptionValue: () => import('@Attributes/components/Forms/Sections/AttributeOptionValue'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
     },
     props: {
         languageCode: {

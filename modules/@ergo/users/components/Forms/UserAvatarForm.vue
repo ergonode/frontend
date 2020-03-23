@@ -4,14 +4,14 @@
  */
 <template>
     <Form>
-        <FormGroup>
+        <FormSection>
             <UploadImage
                 :value="avatarId"
                 label="Profile picture"
                 :disabled="!isUserAllowedToUpdate"
                 @upload="uploadValue"
                 @remove="uploadValue" />
-        </FormGroup>
+        </FormSection>
     </Form>
 </template>
 
@@ -23,7 +23,7 @@ export default {
     name: 'UserAvatarForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         UploadImage,
     },
     computed: {
