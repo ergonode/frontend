@@ -10,20 +10,5 @@ export default function ({ $axios, $store }) {
     const { sources } = $store.state.dictionaries;
     const typeId = getKeyByValue(sources, type);
 
-    const data = {
-        type: 'magento-1-csv',
-        name: 'name',
-        host: 'http://test.host',
-        import: {
-            templates: true,
-            attributes: true,
-            categories: true,
-            multimedia: false,
-            products: true,
-        },
-        default_language: 'EN',
-        languages: [],
-    };
-
-    return $axios.$post(`${language}/sources`, data);
+    return $axios.$post(`${language}/sources`, { type: typeId, name });
 }
