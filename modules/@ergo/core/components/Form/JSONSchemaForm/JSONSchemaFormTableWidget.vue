@@ -4,10 +4,16 @@
  */
 <template>
     <FormSection>
-        <JSONSchemaFormTableRowWidget
-            v-for="(rowValue, index) in rowValues"
-            :key="index"
-            :properties="properties" />
+        <FormSubsection>
+            <JSONSchemaFormTableRowWidget
+                v-for="(rowValue, index) in rowValues"
+                :key="index"
+                :index="index"
+                :properties="$attrs.properties"
+                :required="$attrs.required"
+                @remove="onRemoveRowAtIndex"
+                @input="onValueChangeAtIndex" />
+        </FormSubsection>
         <Button
             ref="addSectionButton"
             title="ADD NEXT"
@@ -24,6 +30,7 @@
 <script>
 import { SIZE, THEME } from '@Core/defaults/theme';
 import FormSection from '@Core/components/Form/FormSection';
+import FormSubsection from '@Core/components/Form/FormSubsection';
 import JSONSchemaFormTableRowWidget from '@Core/components/Form/JSONSchemaForm/JSONSchemaFormTableRowWidget';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import Button from '@Core/components/Buttons/Button';
@@ -32,19 +39,15 @@ export default {
     name: 'JSONSchemaFormTableWidget',
     components: {
         FormSection,
+        FormSubsection,
         JSONSchemaFormTableRowWidget,
         IconAdd,
         Button,
     },
-    props: {
-        properties: {
-            type: Object,
-            required: true,
-        },
-    },
+    inheritAttrs: false,
     data() {
         return {
-            rowValues: [],
+            rowValues: [{}],
         };
     },
     computed: {
@@ -55,24 +58,17 @@ export default {
             return THEME.SECONDARY;
         },
     },
-    created() {
-        this.rowValues.push(this.getDefaultRowModel());
-    },
     methods: {
-        getDefaultRowModel() {
-            return Object.keys(this.properties).reduce(((previousValue, currentValue) => {
-                const obj = previousValue;
-                obj[currentValue] = null;
-                return obj;
-            }), {});
-        },
         onAddRow() {
             this.$refs.addSectionButton.$el.scrollIntoView(true);
-            this.rowValues.push(this.getDefaultRowModel());
+            this.rowValues.push({});
         },
-        onValueChange(value) {
-            this.rowValues = value;
-            this.$emit('input', value);
+        onRemoveRowAtIndex(index) {
+            this.rowValues.splice(index, 1);
+        },
+        onValueChangeAtIndex({ index, value }) {
+            this.rowValues[index] = value;
+            this.$emit('input', this.rowValues);
         },
     },
 };

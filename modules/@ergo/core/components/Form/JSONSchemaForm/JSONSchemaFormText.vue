@@ -6,8 +6,10 @@
     <TextField
         :value="localValue"
         solid
-        regular
+        :regular="!$attrs.small"
+        :small="$attrs.small"
         :label="$attrs.title"
+        :required="$attrs.isRequired"
         :error-messages="$attrs.errorMessage"
         @input="onValueChange" />
 </template>
@@ -32,7 +34,7 @@ export default {
     methods: {
         onValueChange(value) {
             this.localValue = value;
-            this.$emit('input', value);
+            this.$emit('input', { key: this.$attrs.propKey, value });
         },
     },
 };

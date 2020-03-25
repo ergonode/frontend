@@ -3,10 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSection :title="title">
+    <FormSection :title="$attrs.title">
         <Component
             :is="arrayComponent"
-            v-bind="items" />
+            v-bind="$attrs.items"
+            @input="onValueChange" />
     </FormSection>
 </template>
 
@@ -19,27 +20,19 @@ export default {
     components: {
         FormSection,
     },
-    props: {
-        title: {
-            type: String,
-            default: '',
-        },
-        items: {
-            type: Object,
-            required: true,
-        },
-        widget: {
-            type: String,
-            default: '',
-        },
-    },
+    inheritAttrs: false,
     computed: {
         arrayComponent() {
-            if (this.widget && this.widget === 'table') {
+            if (this.$attrs.widget && this.$attrs.widget === 'table') {
                 return () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormTableWidget');
             }
 
-            return () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(this.items.type)}`);
+            return () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaFormArray${toCapitalize(this.$attrs.items.type)}`);
+        },
+    },
+    methods: {
+        onValueChange(value) {
+            this.$emit('input', { key: this.$attrs.propKey, value });
         },
     },
 };

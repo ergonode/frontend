@@ -8,6 +8,7 @@ export const types = {
     SET_ID: 'SET_ID',
     SET_NAME: 'SET_NAME',
     SET_TYPE: 'SET_TYPE',
+    SET_CONFIGURATION: 'SET_CONFIGURATION',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 
@@ -20,6 +21,9 @@ export default {
     },
     [types.SET_TYPE](state, type) {
         state.type = type;
+    },
+    [types.SET_CONFIGURATION](state, configuration) {
+        state.configuration = configuration;
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

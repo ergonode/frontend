@@ -10,20 +10,29 @@
             v-for="element in rowComponents"
             :is="element.component"
             v-bind="element.props"
-            :key="element.key" />
-        <IconDelete />
+            :key="element.key"
+            @input="onValueChange" />
+        <Fab
+            :theme="secondaryTheme"
+            @click.native="onRemoveRow">
+            <template #icon="{ color }">
+                <IconDelete :fill-color="color" />
+            </template>
+        </Fab>
     </div>
 </template>
 
 <script>
 import { toCapitalize } from '@Core/models/stringWrapper';
+import { THEME } from '@Core/defaults/theme';
+import { ARROW } from '@Core/defaults/icons';
 import IconDelete from '@Core/components/Icons/Actions/IconDelete';
-import Button from '@Core/components/Buttons/Button';
+import Fab from '@Core/components/Buttons/Fab';
 
 export default {
     name: 'JSONSchemaFormTableRowWidget',
     components: {
-        Button,
+        Fab,
         IconDelete,
     },
     props: {
@@ -31,11 +40,27 @@ export default {
             type: Object,
             required: true,
         },
+        index: {
+            type: Number,
+            required: true,
+        },
+        required: {
+            type: Array,
+            default: () => [],
+        },
+    },
+    data() {
+        return {
+            localValue: {},
+        };
     },
     computed: {
+        secondaryTheme() {
+            return THEME.SECONDARY;
+        },
         gridTemplateTemplate() {
             return {
-                gridTemplateColumns: this.fieldsKeys.map(() => '1fr').join(' '),
+                gridTemplateColumns: this.rowComponents.map((component, index) => (index % 2 === 0 ? '1fr' : 'max-content')).join(' '),
             };
         },
         fieldsKeys() {
@@ -53,12 +78,36 @@ export default {
 
                 components.push({
                     key,
-                    props: rest,
+                    props: {
+                        propKey: key,
+                        small: true,
+                        isRequired: this.required.indexOf(key) !== -1,
+                        ...rest,
+                    },
                     component: () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
                 });
+
+                if (i % 2 === 0) {
+                    components.push({
+                        key: `[${i}]-arrow`,
+                        props: {
+                            state: ARROW.RIGHT,
+                        },
+                        component: () => import('@Core/components/Icons/Arrows/IconArrowSingle'),
+                    });
+                }
             }
 
             return components;
+        },
+    },
+    methods: {
+        onValueChange({ key, value }) {
+            this.localValue[key] = value;
+            this.$emit('input', { index: this.index, value: this.localValue });
+        },
+        onRemoveRow() {
+            this.$emit('remove', this.index);
         },
     },
 };
@@ -70,6 +119,15 @@ export default {
         align-items: center;
         grid-auto-flow: column;
         grid-template-columns: max-content;
-        grid-column-gap: 8px;
+        grid-column-gap: 4px;
+
+        & > .fab {
+            margin-top: 8px;
+            margin-left: 4px;
+        }
+
+        & > svg {
+            margin-top: 8px;
+        }
     }
 </style>

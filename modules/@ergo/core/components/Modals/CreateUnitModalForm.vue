@@ -26,7 +26,8 @@
 <script>
 import { mapActions } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
-import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
+import { MODAL_ACTION } from '@Core/defaults/modals';
+import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
 
 const createUnit = () => import('@Core/services/settings/createUnit.service');
 
@@ -37,7 +38,7 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         UnitForm: () => import('@Core/components/Forms/UnitForm'),
     },
-    mixins: [createModalFormMixin({ namespace: 'Unit', createRequest: createUnit })],
+    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Unit', request: createUnit })],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -52,12 +53,12 @@ export default {
             this.$emit('close');
         },
         onCreate() {
-            this.onCreateRequest(() => {
+            this.onActionRequest(() => {
                 this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.onCreateRequest((id) => {
+            this.onActionRequest((id) => {
                 this.$router.push({
                     name: 'unit-id-general',
                     params: {

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <UploadImage
+    <UploadImageFile
         :value="value"
         :label="label"
         :required="required"
@@ -15,12 +15,12 @@
 
 <script>
 import productTemplateElementMixin from '@Templates/mixins/productTemplateElementMixin';
-import UploadImage from '@Core/components/Inputs/Image/UploadImage';
+import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
 
 export default {
     name: 'ProductTemplateImage',
     components: {
-        UploadImage,
+        UploadImageFile,
     },
     mixins: [productTemplateElementMixin],
 };

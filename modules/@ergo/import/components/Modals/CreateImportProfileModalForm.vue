@@ -26,7 +26,8 @@
 <script>
 import { mapActions } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
-import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
+import { MODAL_ACTION } from '@Core/defaults/modals';
+import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
 
 const createImportProfile = () => import('@Import/services/createImportProfile.service');
 
@@ -37,7 +38,7 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         ImportProfileForm: () => import('@Import/components/Forms/ImportProfileForm'),
     },
-    mixins: [createModalFormMixin({ namespace: 'Import profile', createRequest: createImportProfile })],
+    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Import profile', request: createImportProfile })],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -52,12 +53,12 @@ export default {
             this.$emit('close');
         },
         onCreate() {
-            this.onCreateRequest(() => {
+            this.onActionRequest(() => {
                 this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.onCreateRequest((id) => {
+            this.onActionRequest((id) => {
                 this.$router.push({
                     name: 'import-id-general',
                     params: {

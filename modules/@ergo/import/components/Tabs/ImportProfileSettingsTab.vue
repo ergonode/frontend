@@ -5,12 +5,15 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #centeredContent>
-            <JSONSchemaForm :schema="schema" />
+            <JSONSchemaForm
+                :schema="schema"
+                @input="setConfiguration" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import JSONSchemaForm from '@Core/components/Form/JSONSchemaForm/JSONSchemaForm';
 
@@ -28,9 +31,9 @@ export default {
         }));
     },
     methods: {
-        onValueChange(payload) {
-            console.log(payload);
-        },
+        ...mapActions('import', [
+            'setConfiguration',
+        ]),
     },
 };
 </script>

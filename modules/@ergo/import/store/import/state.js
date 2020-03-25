@@ -5,4 +5,5 @@
 export default () => ({
     name: '',
     type: null,
+    configuration: null,
 });

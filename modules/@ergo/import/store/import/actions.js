@@ -11,6 +11,9 @@ export default {
     setType({ commit }, type) {
         commit(types.SET_TYPE, type);
     },
+    setConfiguration({ commit }, configuration) {
+        commit(types.SET_CONFIGURATION, configuration);
+    },
     getImportProfileById(
         {
             commit, rootState,

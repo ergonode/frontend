@@ -3,50 +3,33 @@
  * See LICENSE for license details.
  */
 <template>
-    <Component
-        :is="booleanComponent"
-        :label="title" />
+    <CheckBox
+        :value="localValue"
+        :label="$attrs.label"
+        @input="onValueChange" />
 </template>
 
 <script>
+import CheckBox from '@Core/components/Inputs/CheckBox';
+
 export default {
     name: 'JSONSchemaFormBoolean',
-    props: {
-        title: {
-            type: String,
-            default: '',
-        },
-        widget: {
-            type: String,
-            default: '',
-        },
-        default: {
-            type: Boolean,
-            default: false,
-        },
+    components: {
+        CheckBox,
     },
+    inheritAttrs: false,
     data() {
         return {
             localValue: false,
         };
     },
-    computed: {
-        booleanComponent() {
-            switch (this.widget) {
-            case 'checkbox':
-                return () => import('@Core/components/Inputs/CheckBox');
-            default: console.error(`Widget with type ${this.widget} is not supported`);
-                return null;
-            }
-        },
-    },
     created() {
-        this.localValue = this.default;
+        this.localValue = this.$attrs.default;
     },
     methods: {
         onValueChange(value) {
             this.localValue = value;
-            this.$emit('input', value);
+            this.$emit('input', { key: this.$attrs.propKey, value });
         },
     },
 };

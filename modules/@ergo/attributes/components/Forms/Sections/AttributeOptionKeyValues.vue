@@ -10,7 +10,7 @@
             class="option">
             <IconDelete
                 class="option__remove-icon"
-                @click.native="removeAttributeOptionKey(index)" />
+                @click.native="removeAttributeOptionKey({ index, id: options[index].id })" />
             <TextField
                 :value="options[index].key"
                 solid
@@ -18,7 +18,11 @@
                 small
                 :disabled="disabled"
                 label="Option code"
-                @input="value => updateAttributeOptionKey({ index, key: value })" />
+                @input="value => updateAttributeOptionKey({
+                    index,
+                    id: options[index].id,
+                    key: value,
+                })" />
         </li>
         <div
             class="options__add"

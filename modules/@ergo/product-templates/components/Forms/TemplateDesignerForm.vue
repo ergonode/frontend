@@ -17,7 +17,7 @@
                     label="Template name"
                     :disabled="isDisabledByPrivileges"
                     @input="setTitle" />
-                <UploadImage
+                <UploadImageFile
                     :value="templateImage"
                     label="Template cover image"
                     :disabled="isDisabledByPrivileges"
@@ -56,7 +56,7 @@ export default {
         FormSection: () => import('@Core/components/Form/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
-        UploadImage: () => import('@Core/components/Inputs/Image/UploadImage'),
+        UploadImageFile: () => import('@Core/components/Inputs/UploadFile/UploadImageFile'),
     },
     computed: {
         ...mapState('templateDesigner', {

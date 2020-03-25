@@ -16,7 +16,7 @@ import { mapState, mapActions } from 'vuex';
 import { isEmpty, getKeyByValue } from '@Core/models/objectWrapper';
 import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
-import { getParsedOptions, getParsedParameterKeys } from '@Attributes/models/attributeMapper';
+import { getParsedParameterKeys } from '@Attributes/models/attributeMapper';
 import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
@@ -30,9 +30,10 @@ export default {
     },
     async fetch({ store, params }) {
         await store.dispatch('attribute/getAttributeGroups');
-        await store.dispatch('attribute/getAttributeById', {
-            attributeId: params.id,
-        });
+        await Promise.all([
+            store.dispatch('attribute/getAttributeById', { id: params.id }),
+            store.dispatch('attribute/getAttributeOptionsById', { id: params.id }),
+        ]);
     },
     computed: {
         ...mapState('attribute', {
@@ -110,8 +111,6 @@ export default {
                     this.$addAlert({ type: ALERT_TYPE.WARNING, message: 'Option code must be unique' });
                     return;
                 }
-
-                propertiesToUpdate.options = getParsedOptions(this.options);
             }
 
             if (this.parameter) {

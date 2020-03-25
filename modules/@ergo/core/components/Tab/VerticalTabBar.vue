@@ -14,17 +14,16 @@
                     :is-selected="index === selectedTabIndex && isExpanded"
                     @select="onSelectTabBarItem" />
             </VerticalFixedScroll>
-            <div class="tab-bar__expand-button">
-                <Fab
-                    :theme="secondaryTheme"
-                    @click.native="onExpand">
-                    <template #icon="{ color }">
-                        <IconArrowDouble
-                            :fill-color="color"
-                            :state="expendStateIcon" />
-                    </template>
-                </Fab>
-            </div>
+            <Fab
+                :floating="{ bottom: '16px' }"
+                :theme="secondaryTheme"
+                @click.native="onExpand">
+                <template #icon="{ color }">
+                    <IconArrowDouble
+                        :fill-color="color"
+                        :state="expendStateIcon" />
+                </template>
+            </Fab>
         </div>
         <VerticalTabContent
             v-show="isExpanded"
@@ -94,11 +93,6 @@ export default {
             width: 80px;
             box-sizing: border-box;
             background-color: $WHITESMOKE;
-        }
-
-        &__expand-button {
-            position: absolute;
-            bottom: 16px;
         }
     }
 </style>

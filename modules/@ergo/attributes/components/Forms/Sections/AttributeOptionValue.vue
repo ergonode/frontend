@@ -13,6 +13,7 @@
             index,
             languageCode,
             value,
+            id: option.id,
         })" />
 </template>
 

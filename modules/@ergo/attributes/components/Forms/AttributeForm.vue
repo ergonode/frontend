@@ -42,8 +42,7 @@
             </FormSection>
             <template v-if="isMultilingual || hasParams">
                 <Divider />
-                <FormSection
-                    title="Configuration">
+                <FormSection title="Configuration">
                     <FadeGroupTransition>
                         <Toggler
                             v-if="isMultilingual"

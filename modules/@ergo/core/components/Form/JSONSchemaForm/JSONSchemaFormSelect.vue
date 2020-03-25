@@ -6,9 +6,11 @@
     <Select
         :value="localValue"
         solid
-        regular
+        :regular="!$attrs.small"
+        :small="$attrs.small"
         :label="$attrs.title"
-        :options="$attrs.enum_titles"
+        :required="$attrs.isRequired"
+        :options="$attrs.enum_titles || $attrs.enum"
         :error-messages="$attrs.errorMessage"
         @input="onValueChange" />
 </template>
@@ -27,14 +29,31 @@ export default {
             localValue: '',
         };
     },
+    computed: {
+        mappedOptions() {
+            if (!this.$attrs.enum_titles) return null;
+
+            const { length } = this.$attrs.enum;
+            const mappedOptions = {};
+
+            for (let i = 0; i < length; i += 1) {
+                mappedOptions[this.$attrs.enum_titles[i]] = this.$attrs.enum[i];
+            }
+
+            return mappedOptions;
+        },
+    },
     created() {
-        console.log(this.$attrs);
         this.localValue = this.$attrs.default;
     },
     methods: {
         onValueChange(value) {
             this.localValue = value;
-            this.$emit('input', value);
+
+            this.$emit('input', {
+                key: this.$attrs.propKey,
+                value: this.mappedOptions ? this.mappedOptions[value] : value,
+            });
         },
     },
 };

@@ -24,17 +24,26 @@ export default {
     addAttributeOptionKey({ commit }, index) {
         commit(types.ADD_ATTRIBUTE_OPTION_KEY, index);
     },
-    removeAttributeOptionKey({ commit }, key) {
-        commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, key);
+    removeAttributeOptionKey({ commit, dispatch }, { id, index }) {
+        if (id) {
+            dispatch('removeOptionById', id);
+        }
+        commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index);
     },
     removeAttributeOptions({ commit }) {
         commit(types.INITIALIZE_OPTIONS);
     },
+    removeOptionById({ commit, state, rootState }, id) {
+        return this.app.$axios.$delete(`${rootState.authentication.user.language}/attributes/${state.id}/options/${id}`);
+    },
     updateAttributeOptionKey({ commit }, payload) {
+        if (payload.id) {
+            commit(types.SET_UPDATED_OPTION, payload.id);
+        }
         commit(types.SET_ATTRIBUTE_OPTION_KEY, payload);
     },
     setOptionValueForLanguageCode({ commit, state }, {
-        index, languageCode, value,
+        index, languageCode, value, id,
     }) {
         const { isMultilingual } = state;
 
@@ -49,11 +58,13 @@ export default {
         } else {
             commit(types.SET_OPTION_VALUE, { index, value });
         }
+
+        if (id) {
+            commit(types.SET_UPDATED_OPTION, id);
+        }
     },
     getAttributeGroups({ commit, rootState }) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-
-        return this.app.$axios.$get(`${userLanguageCode}/attributes/groups`).then(({ collection }) => {
+        return this.app.$axios.$get(`${rootState.authentication.user.language}/attributes/groups`).then(({ collection }) => {
             commit(types.SET_ATTRIBUTE_GROUPS_OPTIONS, collection.map(group => ({
                 id: group.id,
                 key: group.code,
@@ -62,24 +73,22 @@ export default {
             })));
         });
     },
-    getAttributeById(
-        {
-            dispatch, commit, state, rootState,
-        },
-        { attributeId, onError = () => {} },
-    ) {
+    getAttributeOptionsById({ commit, rootState }, { id }) {
+        return this.app.$axios.$get(`${rootState.authentication.user.language}/attributes/${id}/options`).then(options => commit(types.INITIALIZE_OPTIONS, getMappedOptions(options)));
+    },
+    getAttributeById({
+        dispatch, commit, state, rootState,
+    }, { id }) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { attrTypes } = rootState.dictionaries;
         const { groupOptions } = state;
 
-        return this.app.$axios.$get(`${userLanguageCode}/attributes/${attributeId}`).then(({
-            id,
+        return this.app.$axios.$get(`${userLanguageCode}/attributes/${id}`).then(({
             code,
             type,
             hint = '',
             label = '',
             groups: groupIds,
-            options,
             parameters,
             placeholder = '',
             multilingual,
@@ -106,14 +115,10 @@ export default {
                     getMappedParameterValues(type, parameters, rootState.dictionaries),
                 );
             }
-
-            if (options) {
-                commit(types.INITIALIZE_OPTIONS, getMappedOptions(options));
-            }
-        }).catch(e => onError(e.data));
+        });
     },
     async updateAttribute(
-        { rootState },
+        { state, rootState },
         {
             id,
             data,
@@ -122,11 +127,36 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
+        const optionsToAddRequests = [];
+        const optionsToUpdateRequests = [];
+
+        Object.keys(state.options).forEach((key) => {
+            const option = state.options[key];
+
+            if (!option.id) {
+                optionsToAddRequests.push(
+                    this.app.$axios.$post(`${userLanguageCode}/attributes/${id}/options`, {
+                        code: option.key,
+                        label: option.value,
+                    }).catch(e => onError(e.data)),
+                );
+            } else if (state.updatedOptions[option.id]) {
+                optionsToUpdateRequests.push(
+                    this.app.$axios.$put(`${userLanguageCode}/attributes/${id}/options/${option.id}`, {
+                        code: option.key,
+                        label: option.value,
+                    }).catch(e => onError(e.data)),
+                );
+            }
+        });
 
         await this.$setLoader('footerButton');
-        await this.app.$axios.$put(`${userLanguageCode}/attributes/${id}`, data).then(() => {
-            onSuccess();
-        }).catch(e => onError(e.data));
+        await Promise.all([
+            this.app.$axios.$put(`${userLanguageCode}/attributes/${id}`, data).catch(e => onError(e.data)),
+            ...optionsToAddRequests,
+            ...optionsToUpdateRequests,
+        ]).then(() => onSuccess());
+
         await this.$removeLoader('footerButton');
     },
     removeAttribute({ state, rootState }, { onSuccess }) {

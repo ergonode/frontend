@@ -34,7 +34,7 @@
             <CreateUnitModalForm
                 v-if="isModalVisible"
                 @close="onCloseModal"
-                @created="onCreatedData" />
+                @create="onCreatedData" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>

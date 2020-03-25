@@ -6,7 +6,7 @@
     <label
         class="info-hint"
         :title="hint">
-        <IconError size="24" />
+        <IconError />
     </label>
 </template>
 

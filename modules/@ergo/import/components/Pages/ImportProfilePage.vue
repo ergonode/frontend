@@ -12,6 +12,7 @@
                 <Button
                     title="IMPORT NOW"
                     :size="smallSize"
+                    :theme="secondaryTheme"
                     :disabled="!$hasAccess(['IMPORT_UPDATE'])"
                     @click.native="onShowModal" />
             </template>
@@ -24,6 +25,10 @@
                 :disabled="$isLoading('footerButton')"
                 @click.native="onSave" />
         </Footer>
+        <UploadImportFileModalForm
+            v-if="isModalVisible"
+            @close="onCloseModal"
+            @create="onCreatedData" />
     </Page>
 </template>
 
@@ -35,6 +40,9 @@ import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'ImportProfilePage',
+    components: {
+        UploadImportFileModalForm: () => import('@Import/components/Modals/UploadImportFileModalForm'),
+    },
     mixins: [categoryManagementPageBaseMixin, gridModalMixin],
     computed: {
         tabs() {

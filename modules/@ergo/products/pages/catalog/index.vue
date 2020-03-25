@@ -29,7 +29,7 @@
         <CreateProductModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedData" />
+            @create="onCreatedData" />
         <TrashCan v-show="draggedElementOnGrid" />
     </Page>
 </template>

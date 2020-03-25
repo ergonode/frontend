@@ -13,7 +13,8 @@
                 :is="element.component"
                 :error-message="errorMessages[element.key]"
                 v-bind="element.props"
-                :key="element.key" />
+                :key="element.key"
+                @input="onValueChange" />
         </template>
     </Form>
 </template>
@@ -33,6 +34,11 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            model: {},
+        };
+    },
     computed: {
         fieldsKeys() {
             return Object.keys(this.schema.properties);
@@ -49,12 +55,31 @@ export default {
 
                 components.push({
                     key,
-                    props: rest,
+                    props: {
+                        propKey: key,
+                        isRequired: this.schema.required
+                            && this.schema.required.indexOf(key) !== -1,
+                        ...rest,
+                    },
                     component: () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
                 });
+
+                if (i + 1 !== length) {
+                    components.push({
+                        key: `[${i}]-divider`,
+                        props: {},
+                        component: () => import('@Core/components/Dividers/Divider'),
+                    });
+                }
             }
 
             return components;
+        },
+    },
+    methods: {
+        onValueChange({ key, value }) {
+            this.model[key] = value;
+            this.$emit('input', this.model);
         },
     },
 };

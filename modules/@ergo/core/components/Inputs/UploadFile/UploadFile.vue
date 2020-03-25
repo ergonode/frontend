@@ -3,74 +3,83 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['upload-image', { 'upload-image--required': required }]">
-        <fieldset class="upload-image__activator">
+    <div :class="['upload-file', { 'upload-file--required': required }]">
+        <fieldset class="upload-file__activator">
             <legend
-                class="upload-image__label"
+                class="upload-file__label"
                 :for="associatedLabel"
                 v-text="label"
                 v-if="label" />
             <input
                 type="file"
-                accept="image/*"
+                ref="input"
+                :accept="acceptFiles"
                 :disabled="disabled"
                 @input="onUpload">
-            <template v-if="!image">
-                <div
-                    class="upload-image__placeholder"
-                    :style="{ height: height }">
-                    <img
-                        :src="require('@Core/assets/images/placeholders/upload_file.svg')"
-                        alt="Place to drag or browse file">
-                    <span class="upload-image__description">
-                        Drag the file here or browse
-                    </span>
-                </div>
-            </template>
-            <template v-else>
+            <div
+                v-if="requestPending"
+                :style="{ height: height }"
+                class="upload-file__loader">
+                <IconRefresh />
+                Uploading the file...
+            </div>
+            <div
+                v-else-if="!value"
+                class="upload-file__placeholder"
+                :style="{ height: height }">
                 <img
-                    class="upload-image__image"
-                    :src="image"
-                    alt="Uploaded file">
-                <div class="upload-image__remove-button">
-                    <Fab
-                        :theme="secondaryTheme"
-                        @click.native="onRemove">
-                        <template #icon="{ color, isHovered }">
-                            <IconDelete :fill-color="isHovered ? redColor : color" />
-                        </template>
-                    </Fab>
-                </div>
+                    :src="require('@Core/assets/images/placeholders/upload_file.svg')"
+                    alt="Place to drag or browse file">
+                <span class="upload-file__description">
+                    Drag the file here or browse
+                </span>
+            </div>
+            <template v-else>
+                <slot name="file" />
+                <Fab
+                    :style="{ backgroundColor: whiteColor }"
+                    :floating="{ top: '24px', right: '24px'}"
+                    :theme="secondaryTheme"
+                    @click.native="onRemove">
+                    <template #icon="{ color, isHovered }">
+                        <IconDelete :fill-color="isHovered ? redColor : color" />
+                    </template>
+                </Fab>
             </template>
         </fieldset>
         <span
             v-if="uploadError"
-            class="upload-image__error-label"
+            class="upload-file__error-label"
             v-text="uploadError" />
     </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
-import { GRAPHITE, GREEN, RED } from '@Core/assets/scss/_js-variables/colors.scss';
-import { getImageData } from '@Core/models/multimedia';
-import { ALERT_TYPE } from '@Core/defaults/alerts';
+import {
+    GRAPHITE, GREEN, RED, WHITE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
-    name: 'UploadImage',
+    name: 'UploadFile',
     components: {
         Fab: () => import('@Core/components/Buttons/Fab'),
         IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
+        IconRefresh: () => import('@Core/components/Icons/Actions/IconRefresh'),
     },
     props: {
         label: {
             type: String,
             default: '',
         },
-        value: {
+        acceptFiles: {
             type: String,
-            default: '',
+            required: true,
+        },
+        value: {
+            type: Boolean,
+            default: false,
         },
         required: {
             type: Boolean,
@@ -80,9 +89,13 @@ export default {
             type: Boolean,
             default: false,
         },
+        requestPending: {
+            type: Boolean,
+            default: false,
+        },
         height: {
             type: String,
-            default: '150px',
+            default: '136px',
         },
         border: {
             type: Boolean,
@@ -91,7 +104,6 @@ export default {
     },
     data() {
         return {
-            image: null,
             deleteIconFillColor: GRAPHITE,
             associatedLabel: '',
         };
@@ -106,19 +118,14 @@ export default {
         redColor() {
             return RED;
         },
+        whiteColor() {
+            return WHITE;
+        },
     },
     mounted() {
-        if (this.value) {
-            this.getImageById(this.value);
-        }
-
         this.associatedLabel = `input-${this._uid}`;
     },
     methods: {
-        ...mapActions('validations', [
-            'onError',
-            'removeValidationError',
-        ]),
         onMouseEnter() {
             this.deleteIconFillColor = GREEN;
         },
@@ -126,40 +133,22 @@ export default {
             this.deleteIconFillColor = GRAPHITE;
         },
         onRemove() {
-            this.image = null;
+            this.$refs.input.value = '';
             this.$emit('remove');
         },
         onUpload(event) {
             const [file] = event.target.files;
 
-            if (file) {
-                const { name } = file;
+            console.log(file);
 
-                const formData = new FormData();
-                formData.append('upload', file, name);
-
-                this.$axios.$post('multimedia/upload', formData).then(({ id }) => {
-                    this.getImageById(id);
-                    this.$emit('upload', id);
-
-                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'File uploaded' });
-                    this.removeValidationError('upload');
-                }).catch(e => this.onError(e.data));
-            }
-        },
-        getImageById(id) {
-            this.$axios.$get(`multimedia/${id}`, {
-                responseType: 'arraybuffer',
-            }).then((response) => {
-                this.image = getImageData(response);
-            });
+            this.$emit('upload', file);
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .upload-image {
+    .upload-file {
         $upload: &;
 
         display: flex;
@@ -175,6 +164,19 @@ export default {
             padding: 12px;
             box-sizing: border-box;
             overflow: hidden;
+        }
+
+        &__loader {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_14_20;
+
+            & > svg {
+                margin-bottom: 16px;
+            }
         }
 
         input {
@@ -219,21 +221,6 @@ export default {
 
         &__description, &__label, &__error-label {
             font: $FONT_MEDIUM_12_16;
-        }
-
-        &__remove-button {
-            position: absolute;
-            top: 24px;
-            right: 24px;
-            background-color: $WHITE;
-            border-radius: 999px;
-        }
-
-        &__image {
-            width: 100%;
-            max-width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
         &--required {
