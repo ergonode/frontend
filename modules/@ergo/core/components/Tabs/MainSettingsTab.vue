@@ -64,12 +64,12 @@ export default {
             'updateData',
         ]),
         ...mapActions('dictionaries', [
-            'getLanguagesDictionary',
+            'getCurrentDictionary',
         ]),
         async onSave() {
             await this.$setLoader('saveSettings');
             await this.updateData();
-            await this.getLanguagesDictionary();
+            await this.getCurrentDictionary({ dictionaryName: 'languages' });
             await this.$removeLoader('saveSettings');
         },
     },
