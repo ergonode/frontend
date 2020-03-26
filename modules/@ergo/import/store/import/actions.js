@@ -26,22 +26,12 @@ export default {
         return this.app.$axios.$get(`${userLanguageCode}/sources/${id}`).then(({
             name,
             type,
+            ...rest
         }) => {
             commit(types.SET_ID, id);
             commit(types.SET_NAME, name);
             commit(types.SET_TYPE, sources[type]);
-        }).catch(onError);
-    },
-    getConfigurationByTypeId(
-        {
-            commit, rootState,
-        },
-        { id, onError = () => {} },
-    ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-
-        return this.app.$axios.$get(`${userLanguageCode}/sources/${id}/configuration`).then((response) => {
-            console.log(response);
+            commit(types.SET_CONFIGURATION, rest);
         }).catch(onError);
     },
     updateImportProfile(
@@ -53,9 +43,7 @@ export default {
             onError,
         },
     ) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-        // TODO: It's not supported via BE yet - to refinement
-        return this.app.$axios.$put(`${userLanguageCode}/sources/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
+        return this.app.$axios.$put(`${rootState.authentication.user.language}/sources/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
     },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);

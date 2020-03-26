@@ -11,7 +11,7 @@
         :label="$attrs.title"
         :required="$attrs.isRequired"
         :options="$attrs.enum_titles || $attrs.enum"
-        :error-messages="$attrs.errorMessage"
+        :error-messages="$attrs.errorMessages"
         @input="onValueChange" />
 </template>
 
@@ -44,7 +44,14 @@ export default {
         },
     },
     created() {
-        this.localValue = this.$attrs.default;
+        const { default: value, enum: options, enum_titles } = this.$attrs;
+
+        if (!enum_titles) {
+            this.localValue = value;
+        } else {
+            const optionIndex = options.findIndex(option => option === value);
+            this.localValue = enum_titles[optionIndex];
+        }
     },
     methods: {
         onValueChange(value) {

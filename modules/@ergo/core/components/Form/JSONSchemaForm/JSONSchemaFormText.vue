@@ -10,7 +10,7 @@
         :small="$attrs.small"
         :label="$attrs.title"
         :required="$attrs.isRequired"
-        :error-messages="$attrs.errorMessage"
+        :error-messages="$attrs.errorMessages"
         @input="onValueChange" />
 </template>
 

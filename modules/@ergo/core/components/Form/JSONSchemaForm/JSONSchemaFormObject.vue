@@ -46,6 +46,7 @@ export default {
                     key,
                     props: {
                         propKey: key,
+                        default: this.$attrs.default[key],
                         small: true,
                         isRequired: this.$attrs.required
                             && this.$attrs.required.indexOf(key) !== -1,

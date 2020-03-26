@@ -14,7 +14,7 @@
 
 <script>
 export default {
-    name: 'Link',
+    name: 'LinkButton',
     props: {
         title: {
             type: String,

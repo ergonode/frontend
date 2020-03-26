@@ -11,9 +11,11 @@
                 <template #body>
                     <FormSection>
                         <FormParagraph :text="paragraphText" />
-                        <UploadImageFile
+                        <UploadCSVFile
                             label="Upload file"
-                            required />
+                            required
+                            :source-type="type"
+                            @progress="onUploadingCSVFile" />
                     </FormSection>
                 </template>
             </Form>
@@ -22,7 +24,7 @@
             <div>
                 <Button
                     title="IMPORT NOW"
-                    :disabled="isRequestPending"
+                    :disabled="isRequestPending || isCSVUploading"
                     @click.native="onUpload" />
             </div>
         </template>
@@ -30,7 +32,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
 import { MODAL_ACTION } from '@Core/defaults/modals';
 import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
@@ -39,7 +41,7 @@ import Button from '@Core/components/Buttons/Button';
 import FormParagraph from '@Core/components/Form/FormParagraph';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/FormSection';
-import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
+import UploadCSVFile from '@Core/components/Inputs/UploadFile/UploadCSVFile';
 
 const uploadImportProfile = () => import('@Import/services/uploadImportProfile.service');
 
@@ -50,11 +52,19 @@ export default {
         FormSection,
         FormParagraph,
         ModalForm,
-        UploadImageFile,
+        UploadCSVFile,
         Button,
     },
     mixins: [actionModalFormMixin({ action: MODAL_ACTION.UPLOAD, namespace: 'Import profile', request: uploadImportProfile })],
+    data() {
+        return {
+            isCSVUploading: false,
+        };
+    },
     computed: {
+        ...mapState('import', {
+            type: state => state.type,
+        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -74,6 +84,9 @@ export default {
             this.onActionRequest(() => {
                 this.clearStorage();
             });
+        },
+        onUploadingCSVFile(progress) {
+            this.isCSVUploading = progress;
         },
     },
 };

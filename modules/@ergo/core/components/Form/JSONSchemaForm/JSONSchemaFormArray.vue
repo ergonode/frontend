@@ -6,7 +6,7 @@
     <FormSection :title="$attrs.title">
         <Component
             :is="arrayComponent"
-            v-bind="$attrs.items"
+            v-bind="{ ...$attrs.items, ...$attrs.default, ...$attrs.errorMessages }"
             @input="onValueChange" />
     </FormSection>
 </template>

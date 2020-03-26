@@ -5,15 +5,13 @@
 <template>
     <div class="tab-bar">
         <div class="tab-bar__items">
-            <VerticalFixedScroll>
-                <VerticalTabBarItem
-                    v-for="(item, index) in items"
-                    :key="index"
-                    :index="index"
-                    :item="item"
-                    :is-selected="index === selectedTabIndex && isExpanded"
-                    @select="onSelectTabBarItem" />
-            </VerticalFixedScroll>
+            <VerticalTabBarItem
+                v-for="(item, index) in items"
+                :key="index"
+                :index="index"
+                :item="item"
+                :is-selected="index === selectedTabIndex && isExpanded"
+                @select="onSelectTabBarItem" />
             <Fab
                 :floating="{ bottom: '16px' }"
                 :theme="secondaryTheme"
@@ -43,7 +41,6 @@ export default {
         VerticalTabBarItem: () => import('@Core/components/Tab/VerticalTabBarItem'),
         Fab: () => import('@Core/components/Buttons/Fab'),
         IconArrowDouble: () => import('@Core/components/Icons/Arrows/IconArrowDouble'),
-        VerticalFixedScroll: () => import('@Core/components/Layout/Scroll/VerticalFixedScroll'),
     },
     props: {
         items: {
@@ -88,7 +85,6 @@ export default {
             display: flex;
             flex-flow: column nowrap;
             flex-direction: column;
-            justify-content: space-between;
             align-items: center;
             width: 80px;
             box-sizing: border-box;

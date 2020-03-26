@@ -26,15 +26,17 @@ export default {
     },
     removeAttributeOptionKey({ commit, dispatch }, { id, index }) {
         if (id) {
-            dispatch('removeOptionById', id);
+            dispatch('removeOptionById', { id, index });
+        } else {
+            commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index);
         }
-        commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index);
     },
     removeAttributeOptions({ commit }) {
         commit(types.INITIALIZE_OPTIONS);
     },
-    removeOptionById({ commit, state, rootState }, id) {
-        return this.app.$axios.$delete(`${rootState.authentication.user.language}/attributes/${state.id}/options/${id}`);
+    removeOptionById({ commit, state, rootState }, { id, index }) {
+        return this.app.$axios.$delete(`${rootState.authentication.user.language}/attributes/${state.id}/options/${id}`)
+            .then(() => commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index));
     },
     updateAttributeOptionKey({ commit }, payload) {
         if (payload.id) {

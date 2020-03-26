@@ -74,8 +74,11 @@ export default {
             this.$axios.$get(`${this.$store.state.authentication.user.language}/collections/${id}/elements`).then(({ collection }) => {
                 this.collections[index].items = collection.map(({
                     sku,
+                    default_image,
+                    system_name,
                 }) => ({
-                    sku,
+                    description: system_name || sku,
+                    image: default_image,
                 }));
             });
         },

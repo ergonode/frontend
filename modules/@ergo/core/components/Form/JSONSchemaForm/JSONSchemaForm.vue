@@ -11,8 +11,7 @@
             <Component
                 v-for="element in schemaComponents"
                 :is="element.component"
-                :error-message="errorMessages[element.key]"
-                v-bind="element.props"
+                v-bind="{ ...element.props, errorMessages: errorMessages[element.key] }"
                 :key="element.key"
                 @input="onValueChange" />
         </template>
@@ -32,6 +31,10 @@ export default {
         schema: {
             type: Object,
             required: true,
+        },
+        value: {
+            type: Object,
+            default: () => ({}),
         },
     },
     data() {
@@ -57,6 +60,7 @@ export default {
                     key,
                     props: {
                         propKey: key,
+                        default: this.model[key],
                         isRequired: this.schema.required
                             && this.schema.required.indexOf(key) !== -1,
                         ...rest,
@@ -75,6 +79,9 @@ export default {
 
             return components;
         },
+    },
+    created() {
+        this.model = this.value;
     },
     methods: {
         onValueChange({ key, value }) {

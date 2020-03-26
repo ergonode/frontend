@@ -31,10 +31,11 @@ export default {
         ...mapState('import', {
             name: state => state.name,
             type: state => state.type,
+            configuration: state => state.configuration,
         }),
     },
     methods: {
-        ...mapActions('collections', [
+        ...mapActions('import', [
             'updateImportProfile',
         ]),
         ...mapActions('validations', [
@@ -47,8 +48,8 @@ export default {
         onSave() {
             this.removeValidationErrors();
             this.updateImportProfile({
-                id: this.$route.params,
-                data: { type: this.type, name: this.name },
+                id: this.$route.params.id,
+                data: { type: this.type, name: this.name, ...this.configuration },
                 onSuccess: this.onUpdateImportProfileSuccess,
                 onError: this.onError,
             });
