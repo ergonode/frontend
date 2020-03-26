@@ -49,7 +49,7 @@ export default {
             this.removeValidationErrors();
             this.updateImportProfile({
                 id: this.$route.params.id,
-                data: { type: this.type, name: this.name, ...this.configuration },
+                data: { type: this.type, name: this.name, ...JSON.parse(this.configuration) },
                 onSuccess: this.onUpdateImportProfileSuccess,
                 onError: this.onError,
             });

@@ -44,7 +44,7 @@ export default {
         },
     },
     created() {
-        const { default: value, enum: options, enum_titles } = this.$attrs;
+        const { value, enum: options, enum_titles } = this.$attrs;
 
         if (!enum_titles) {
             this.localValue = value;

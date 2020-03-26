@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSection :title="$attrs.title">
+    <FormSection :title="title">
         <Component
             v-for="element in objectComponents"
             :is="element.component"
@@ -22,7 +22,28 @@ export default {
     components: {
         FormSection,
     },
-    inheritAttrs: false,
+    props: {
+        title: {
+            type: String,
+            default: '',
+        },
+        propKey: {
+            type: String,
+            required: true,
+        },
+        value: {
+            type: Object,
+            default: () => ({}),
+        },
+        properties: {
+            type: Object,
+            required: true,
+        },
+        required: {
+            type: Array,
+            default: () => [],
+        },
+    },
     data() {
         return {
             localValue: {},
@@ -30,7 +51,7 @@ export default {
     },
     computed: {
         fieldsKeys() {
-            return Object.keys(this.$attrs.properties);
+            return Object.keys(this.properties);
         },
         objectComponents() {
             const { length } = this.fieldsKeys;
@@ -40,16 +61,15 @@ export default {
                 const key = this.fieldsKeys[i];
                 const {
                     type, ...rest
-                } = this.$attrs.properties[key];
+                } = this.properties[key];
 
                 components.push({
                     key,
                     props: {
                         propKey: key,
-                        default: this.$attrs.default[key],
+                        value: this.value[key],
                         small: true,
-                        isRequired: this.$attrs.required
-                            && this.$attrs.required.indexOf(key) !== -1,
+                        isRequired: this.required.indexOf(key) !== -1,
                         ...rest,
                     },
                     component: () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
@@ -62,7 +82,7 @@ export default {
     methods: {
         onValueChange({ key, value }) {
             this.localValue[key] = value;
-            this.$emit('input', { key: this.$attrs.propKey, value: this.localValue });
+            this.$emit('input', { key: this.propKey, value: this.localValue });
         },
     },
 };

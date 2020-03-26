@@ -14,14 +14,16 @@
 export default {
     name: 'JSONSchemaFormString',
     inheritAttrs: false,
-    computed: {
-        stringComponent() {
-            const { enum: options } = this.$attrs;
+    data() {
+        return {
+            stringComponent: null,
+        };
+    },
+    created() {
+        const { enum: options } = this.$attrs;
 
-            if (options) return () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormSelect');
-
-            return () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormText');
-        },
+        if (options) this.stringComponent = () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormSelect');
+        else this.stringComponent = () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormText');
     },
 };
 </script>

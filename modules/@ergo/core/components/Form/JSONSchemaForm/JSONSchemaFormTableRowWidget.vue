@@ -48,7 +48,7 @@ export default {
             type: Array,
             default: () => [],
         },
-        default: {
+        value: {
             type: Object,
             default: () => ({}),
         },
@@ -84,7 +84,7 @@ export default {
                     key,
                     props: {
                         propKey: key,
-                        default: this.default[key],
+                        value: this.value[key],
                         small: true,
                         isRequired: this.required.indexOf(key) !== -1,
                         ...rest,

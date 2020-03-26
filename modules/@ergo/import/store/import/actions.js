@@ -31,7 +31,7 @@ export default {
             commit(types.SET_ID, id);
             commit(types.SET_NAME, name);
             commit(types.SET_TYPE, sources[type]);
-            commit(types.SET_CONFIGURATION, rest);
+            commit(types.SET_CONFIGURATION, JSON.stringify(rest));
         }).catch(onError);
     },
     updateImportProfile(

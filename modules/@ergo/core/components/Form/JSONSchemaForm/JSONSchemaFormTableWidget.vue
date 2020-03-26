@@ -6,7 +6,7 @@
     <FormSection>
         <FormSubsection>
             <JSONSchemaFormTableRowWidget
-                v-for="(rowValue, index) in rowValues"
+                v-for="index in rowValues.length"
                 :key="index"
                 :index="index"
                 :properties="$attrs.properties"

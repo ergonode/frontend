@@ -139,8 +139,6 @@ export default {
         onUpload(event) {
             const [file] = event.target.files;
 
-            console.log(file);
-
             this.$emit('upload', file);
         },
     },

@@ -33,20 +33,28 @@ export default {
             required: true,
         },
         value: {
-            type: Object,
-            default: () => ({}),
+            type: String,
+            default: '',
         },
     },
     data() {
         return {
             model: {},
+            schemaComponents: [],
         };
     },
     computed: {
         fieldsKeys() {
             return Object.keys(this.schema.properties);
         },
-        schemaComponents() {
+    },
+    created() {
+        this.model = JSON.parse(this.value);
+
+        this.schemaComponents = this.initializeSchemaComponents();
+    },
+    methods: {
+        initializeSchemaComponents() {
             const { length } = this.fieldsKeys;
             const components = [];
 
@@ -60,7 +68,7 @@ export default {
                     key,
                     props: {
                         propKey: key,
-                        default: this.model[key],
+                        value: this.model[key],
                         isRequired: this.schema.required
                             && this.schema.required.indexOf(key) !== -1,
                         ...rest,
@@ -76,17 +84,11 @@ export default {
                     });
                 }
             }
-
             return components;
         },
-    },
-    created() {
-        this.model = this.value;
-    },
-    methods: {
         onValueChange({ key, value }) {
             this.model[key] = value;
-            this.$emit('input', this.model);
+            this.$emit('input', JSON.stringify(this.model));
         },
     },
 };

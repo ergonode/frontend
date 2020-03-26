@@ -29,7 +29,7 @@ export default {
         };
     },
     created() {
-        this.localValue = this.$attrs.default;
+        this.localValue = this.$attrs.value;
     },
     methods: {
         onValueChange(value) {
