@@ -115,10 +115,18 @@ export default {
             }
 
             if (this.parameter) {
-                const paramKey = getKeyByValue(getParamsOptionsForType(
+                let paramKey = null;
+                const paramsOptions = getParamsOptionsForType(
                     typeKey,
                     this.$store.state.dictionaries,
-                ), this.parameter);
+                );
+
+                // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
+                if (Array.isArray(paramsOptions)) {
+                    paramKey = paramsOptions.find(option => option.name === this.parameter).id;
+                } else {
+                    paramKey = getKeyByValue(paramsOptions, this.parameter);
+                }
 
                 propertiesToUpdate.parameters = getParsedParameterKeys({
                     selectedType: typeKey,

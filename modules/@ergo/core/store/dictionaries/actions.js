@@ -5,29 +5,44 @@
 import extendsModules from '~/.nuxt/extends.modules';
 import { types } from './mutations';
 
+const modulesDictionaries = Object.values(extendsModules)
+    .reduce((acc, current) => {
+        let connectedArray = acc;
+
+        if (current.dictionaries) {
+            connectedArray = [...acc, ...current.dictionaries];
+        }
+        return connectedArray;
+    }, []);
+
 export default {
     getDictionaries({ commit, rootState }) {
-        const modulesDictionaries = Object.values(extendsModules)
-            .reduce((acc, current) => {
-                let connectedArray = acc;
-
-                if (current.dictionaries) {
-                    connectedArray = [...acc, ...current.dictionaries];
-                }
-                return connectedArray;
-            }, []);
         const { language: userLanguageCode } = rootState.authentication.user;
-        const promises = modulesDictionaries.map(({ stateProp, requestPath }) => this.app.$axios.$get(`${userLanguageCode}${requestPath}`).then((response) => {
-            commit(types.SET_CUSTOM_STATE_PROPERTY, { stateProp, value: response });
-        }));
+        const promises = modulesDictionaries.map(({ stateProp, requestPath, isGrid = false }) => {
+            const path = `${userLanguageCode}${requestPath}${isGrid ? '?view=list' : ''}`;
+
+            return this.app.$axios.$get(path).then((response) => {
+                const value = isGrid ? response.collection : response;
+
+                commit(types.SET_CUSTOM_STATE_PROPERTY, { stateProp, value });
+            });
+        });
 
         return Promise.all(promises);
     },
-    getLanguagesDictionary({ commit, rootState }) {
+    getCurrentDictionary({ commit, rootState }, { dictionaryName }) {
         const { language: userLanguageCode } = rootState.authentication.user;
+        const {
+            stateProp,
+            requestPath,
+            isGrid = false,
+        } = modulesDictionaries.find(({ stateProp: name }) => name === dictionaryName);
+        const path = `${userLanguageCode}${requestPath}${isGrid ? '?view=list' : ''}`;
 
-        return this.app.$axios.$get(`${userLanguageCode}/dictionary/languages`).then((response) => {
-            commit(types.SET_CUSTOM_STATE_PROPERTY, { stateProp: 'languages', value: response });
+        return this.app.$axios.$get(path).then((response) => {
+            const value = isGrid ? response.collection : response;
+
+            commit(types.SET_CUSTOM_STATE_PROPERTY, { stateProp, value });
         });
     },
     clearStorage({ commit }) {

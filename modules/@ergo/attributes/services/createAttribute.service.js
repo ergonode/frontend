@@ -51,10 +51,15 @@ export default function ({
         data.options = getParsedOptions(options);
     }
     if (parameter) {
-        const paramKey = getKeyByValue(getParamsOptionsForType(
-            typeKey,
-            $store.state.dictionaries,
-        ), parameter);
+        const paramsOptions = getParamsOptionsForType(typeKey, $store.state.dictionaries);
+        let paramKey = null;
+
+        // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
+        if (Array.isArray(paramsOptions)) {
+            paramKey = paramsOptions.find(option => option.name === parameter).id;
+        } else {
+            paramKey = getKeyByValue(paramsOptions, parameter);
+        }
 
         data.parameters = getParsedParameterKeys({
             selectedType: typeKey,
