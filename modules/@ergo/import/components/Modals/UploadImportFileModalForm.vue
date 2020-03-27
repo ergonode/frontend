@@ -24,8 +24,8 @@
             <div>
                 <Button
                     title="IMPORT NOW"
-                    :disabled="isRequestPending || isCSVUploading"
-                    @click.native="onUpload" />
+                    :disabled="isCSVUploading"
+                    @click.native="onClose" />
             </div>
         </template>
     </ModalForm>
@@ -34,16 +34,12 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
-import { MODAL_ACTION } from '@Core/defaults/modals';
-import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
 import ModalForm from '@Core/components/Modal/ModalForm';
 import Button from '@Core/components/Buttons/Button';
 import FormParagraph from '@Core/components/Form/FormParagraph';
 import Form from '@Core/components/Form/Form';
 import FormSection from '@Core/components/Form/FormSection';
 import UploadCSVFile from '@Core/components/Inputs/UploadFile/UploadCSVFile';
-
-const uploadImportProfile = () => import('@Import/services/uploadImportProfile.service');
 
 export default {
     name: 'UploadImportFileModalForm',
@@ -55,7 +51,6 @@ export default {
         UploadCSVFile,
         Button,
     },
-    mixins: [actionModalFormMixin({ action: MODAL_ACTION.UPLOAD, namespace: 'Import profile', request: uploadImportProfile })],
     data() {
         return {
             isCSVUploading: false,
@@ -79,11 +74,6 @@ export default {
         onClose() {
             this.clearStorage();
             this.$emit('close');
-        },
-        onUpload() {
-            this.onActionRequest(() => {
-                this.clearStorage();
-            });
         },
         onUploadingCSVFile(progress) {
             this.isCSVUploading = progress;

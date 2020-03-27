@@ -32,6 +32,10 @@ export default {
             type: Object,
             required: true,
         },
+        widget: {
+            type: Object,
+            required: true,
+        },
         value: {
             type: String,
             default: '',

@@ -43,7 +43,7 @@ export default {
                     key,
                     props: {
                         propKey: key,
-                        // default: this.$attrs.default[key],
+                        value: this.$attrs.value[key],
                         small: true,
                         label: enum_titles[i],
                     },

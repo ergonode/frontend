@@ -10,7 +10,7 @@ import {
 } from '@Attributes/models/attributeMapper';
 import { isMultilingual, getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 
-export default async function ({
+export default function ({
     $axios,
     $addAlert,
     $store,

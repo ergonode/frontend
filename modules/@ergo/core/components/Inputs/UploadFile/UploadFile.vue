@@ -18,7 +18,7 @@
                 @input="onUpload">
             <div
                 v-if="requestPending"
-                :style="{ height: height }"
+                :style="{ height }"
                 class="upload-file__loader">
                 <IconRefresh />
                 Uploading the file...

@@ -52,10 +52,6 @@ export default {
     },
     computed: {
         arrayComponent() {
-            if (this.widget === 'table') {
-                return () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormTableWidget');
-            }
-
             return () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaFormArray${toCapitalize(this.items.type)}`);
         },
     },
