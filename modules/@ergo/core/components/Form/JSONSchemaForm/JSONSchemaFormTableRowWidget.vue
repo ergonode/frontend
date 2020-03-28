@@ -5,7 +5,7 @@
 <template>
     <div
         class="row-widget"
-        :style="gridTemplateTemplate">
+        :style="gridTemplateColumns">
         <Component
             v-for="element in rowComponents"
             :is="element.component"
@@ -62,10 +62,10 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        gridTemplateTemplate() {
-            return {
-                gridTemplateColumns: this.rowComponents.map((component, index) => (index % 2 === 0 ? '1fr' : 'max-content')).join(' '),
-            };
+        gridTemplateColumns() {
+            const gridTemplateColumns = this.rowComponents.map((component, index) => (index % 2 === 0 ? '1fr' : 'max-content')).join(' ');
+
+            return { gridTemplateColumns };
         },
         fieldsKeys() {
             return Object.keys(this.properties);
