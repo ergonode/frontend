@@ -26,7 +26,8 @@
 <script>
 import { mapActions } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
-import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
+import { MODAL_ACTION } from '@Core/defaults/modals';
+import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
 
 const createCategoryTree = () => import('@Trees/services/createCategoryTree.service');
 
@@ -37,7 +38,7 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         CategoryTreeForm: () => import('@Trees/components/Forms/CategoryTreeForm'),
     },
-    mixins: [createModalFormMixin({ namespace: 'Category tree', createRequest: createCategoryTree })],
+    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Category tree', request: createCategoryTree })],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -56,12 +57,12 @@ export default {
             this.$emit('close');
         },
         onCreate() {
-            this.onCreateRequest(() => {
+            this.onActionRequest(() => {
                 this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.onCreateRequest((id) => {
+            this.onActionRequest((id) => {
                 this.$router.push({
                     name: 'category-tree-id-general',
                     params: {

@@ -32,8 +32,7 @@ export default {
     },
     mixins: [fetchGridDataMixin({ path: 'workflow/default/transitions' })],
     methods: {
-        onEditRow({ links: { value: { edit } } }) {
-            const args = edit.href.split('/');
+        onEditRow(args) {
             const lastIndex = args.length - 1;
             const id = `${args[lastIndex - 1].replace(/%20/g, ' ')}--${args[lastIndex].replace(/%20/g, ' ')}`;
 

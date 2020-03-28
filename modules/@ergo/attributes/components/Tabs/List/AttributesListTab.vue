@@ -29,19 +29,18 @@
                     @expand="onGroupExpand" />
             </ListScrollableContainer>
         </List>
-        <template #fab>
-            <Fab
-                :disabled="!isUserAllowedToCreateAttribute"
-                @click.native="onShowModal">
-                <template #icon="{ color }">
-                    <IconAdd :fill-color="color" />
-                </template>
-            </Fab>
-        </template>
+        <Fab
+            :floating="{ bottom: '16px', right: '16px' }"
+            :disabled="!isUserAllowedToCreateAttribute"
+            @click.native="onShowModal">
+            <template #icon="{ color }">
+                <IconAdd :fill-color="color" />
+            </template>
+        </Fab>
         <CreateAttributeModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedAttribute" />
+            @create="onCreatedAttribute" />
     </VerticalTabBarListWrapper>
 </template>
 

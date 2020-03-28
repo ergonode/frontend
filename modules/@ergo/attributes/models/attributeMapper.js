@@ -43,8 +43,9 @@ export function getMappedOptions(options) {
     return options.reduce((acc, current, currentIndex) => {
         const newObject = acc;
         newObject[currentIndex] = {
-            key: current.key,
-            value: current.value,
+            id: current.id,
+            key: current.code,
+            value: current.label,
         };
         return newObject;
     }, {});
@@ -52,7 +53,7 @@ export function getMappedOptions(options) {
 
 export function getParsedOptions(options) {
     return Object.keys(options).map(key => ({
-        key: options[key].key,
-        value: options[key].value,
+        code: options[key].key,
+        label: options[key].value,
     }));
 }

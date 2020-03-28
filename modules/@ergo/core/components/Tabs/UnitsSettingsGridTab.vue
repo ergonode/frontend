@@ -34,7 +34,7 @@
             <CreateUnitModalForm
                 v-if="isModalVisible"
                 @close="onCloseModal"
-                @created="onCreatedData" />
+                @create="onCreatedData" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -72,8 +72,7 @@ export default {
         },
     },
     methods: {
-        onEditRow({ links: { value: { edit } } }) {
-            const args = edit.href.split('/');
+        onEditRow(args) {
             const lastIndex = args.length - 1;
 
             this.$router.push({ name: 'unit-id-general', params: { id: args[lastIndex] } });

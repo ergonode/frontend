@@ -3,11 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="title-bar">
+    <header class="title-bar">
         <TitleBarHeader :title="title">
             <template #prepend>
                 <Fab
-                    v-if="isNavigationBack"
+                    v-if="hasNavigateBackListener"
                     @click.native="onBack">
                     <template #icon="{ color }">
                         <IconArrowPointer :fill-color="color" />
@@ -33,24 +33,25 @@
             <slot name="subActions" />
             <slot name="mainAction" />
         </TitleBarActions>
-    </div>
+    </header>
 </template>
 
 <script>
 import { WHITE, BLUE, GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
 import TitleBarHeader from '@Core/components/TitleBar/TitleBarHeader';
 import TitleBarActions from '@Core/components/TitleBar/TitleBarActions';
-import Fab from '@Core/components/Buttons/Fab';
+import IconLock from '@Core/components/Icons/Feedback/IconLock';
+import InformationIconBadge from '@Core/components/Badges/InformationIconBadge';
 
 export default {
     name: 'TitleBar',
     components: {
         TitleBarHeader,
         TitleBarActions,
-        Fab,
-        IconLock: () => import('@Core/components/Icons/Feedback/IconLock'),
+        IconLock,
+        InformationIconBadge,
+        Fab: () => import('@Core/components/Buttons/Fab'),
         IconArrowPointer: () => import('@Core/components/Icons/Arrows/IconArrowPointer'),
-        InformationIconBadge: () => import('@Core/components/Badges/InformationIconBadge'),
     },
     props: {
         title: {
@@ -60,10 +61,6 @@ export default {
         icon: {
             type: String,
             default: null,
-        },
-        isNavigationBack: {
-            type: Boolean,
-            default: false,
         },
         isReadOnly: {
             type: Boolean,
@@ -79,6 +76,9 @@ export default {
         },
         greenColor() {
             return GREEN;
+        },
+        hasNavigateBackListener() {
+            return this.$listeners && this.$listeners.navigateBack;
         },
     },
     methods: {

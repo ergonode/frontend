@@ -30,10 +30,6 @@ export default {
     name: 'GridCell',
     inject: ['getEditingCellCoordinates', 'setEditingCellCoordinates'],
     props: {
-        spacebarEdition: {
-            type: Boolean,
-            required: true,
-        },
         column: {
             type: Number,
             required: true,
@@ -63,6 +59,10 @@ export default {
             default: false,
         },
         draft: {
+            type: Boolean,
+            default: false,
+        },
+        spacebarEdition: {
             type: Boolean,
             default: false,
         },

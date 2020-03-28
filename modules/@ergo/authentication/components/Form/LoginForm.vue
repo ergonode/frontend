@@ -10,9 +10,9 @@
             </header>
         </template>
         <template #body>
-            <FormGroup>
+            <FormSection>
                 <slot name="body" />
-            </FormGroup>
+            </FormSection>
             <footer>
                 <slot name="footer" />
             </footer>
@@ -22,13 +22,13 @@
 
 <script>
 import Form from '@Core/components/Form/Form';
-import FormGroup from '@Core/components/Form/FormGroup';
+import FormSection from '@Core/components/Form/FormSection';
 
 export default {
     name: 'LoginForm',
     components: {
         Form,
-        FormGroup,
+        FormSection,
     },
 };
 </script>

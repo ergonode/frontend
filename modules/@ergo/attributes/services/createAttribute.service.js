@@ -50,6 +50,7 @@ export default function ({
 
         data.options = getParsedOptions(options);
     }
+
     if (parameter) {
         const paramsOptions = getParamsOptionsForType(typeKey, $store.state.dictionaries);
         let paramKey = null;
@@ -67,5 +68,15 @@ export default function ({
         });
     }
 
-    return $axios.$post(`${language}/attributes`, data);
+    return $axios.$post(`${language}/attributes`, data)
+        .then((
+            { id },
+        ) => {
+            Promise.all(
+                Object.keys(options)
+                    .map(key => $axios.$post(`${language}/attributes/${id}/options`, { code: options[key].key })),
+            );
+
+            return { id };
+        });
 }

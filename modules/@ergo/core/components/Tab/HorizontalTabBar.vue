@@ -5,19 +5,15 @@
 <template>
     <div class="tab-bar">
         <div
-            class="tab-bar__items-background"
+            class="tab-bar__items"
             v-if="isTabVisible">
-            <HorizontalFixedScroll>
-                <div class="tab-bar__items">
-                    <HorizontalTabBarItem
-                        v-for="(item, index) in items"
-                        :key="index"
-                        :index="index"
-                        :is-selected="index === selectedTabIndex"
-                        :item="item"
-                        @select="onSelectTabBarItem" />
-                </div>
-            </HorizontalFixedScroll>
+            <HorizontalTabBarItem
+                v-for="(item, index) in items"
+                :key="index"
+                :index="index"
+                :is-selected="index === selectedTabIndex"
+                :item="item"
+                @select="onSelectTabBarItem" />
         </div>
         <slot
             name="item"
@@ -34,7 +30,6 @@ export default {
     components: {
         HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
         HorizontalTabBarItem: () => import('@Core/components/Tab/HorizontalTabBarItem'),
-        HorizontalFixedScroll: () => import('@Core/components/Layout/Scroll/HorizontalFixedScroll'),
     },
     props: {
         items: {
@@ -70,13 +65,11 @@ export default {
         flex: 1;
         flex-direction: column;
 
-        &__items-background {
-            background-image: linear-gradient($WHITESMOKE, $WHITE);
-        }
-
-        &__items, &__items-background {
+        &__items {
             display: flex;
             height: 40px;
+            background-image: linear-gradient($WHITESMOKE, $WHITE);
+            overflow: auto;
         }
     }
 </style>

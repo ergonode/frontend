@@ -61,7 +61,7 @@
         <DropDown
             v-if="isMenuActive"
             ref="menu"
-            :offset="dropDownOffset"
+            :offset="getDropDownOffset()"
             :fixed-content="isSelectKind">
             <template #body>
                 <Component
@@ -140,15 +140,6 @@ export default {
             draggedElementOnGrid: state => state.draggedElementOnGrid,
             draggedElement: state => state.draggedElement,
         }),
-        dropDownOffset() {
-            const {
-                x, y, width, height,
-            } = this.$refs.activator.getBoundingClientRect();
-
-            return {
-                x, y, width, height,
-            };
-        },
         parameter() {
             if (!this.filter.parameters) return null;
 
@@ -226,6 +217,15 @@ export default {
         ...mapActions('list', [
             'setDisabledElement',
         ]),
+        getDropDownOffset() {
+            const {
+                x, y, width, height,
+            } = this.$refs.activator.getBoundingClientRect();
+
+            return {
+                x, y, width, height,
+            };
+        },
         onDragStart(event) {
             const { width } = this.$el.getBoundingClientRect();
 

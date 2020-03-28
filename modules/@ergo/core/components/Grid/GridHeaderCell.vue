@@ -6,8 +6,7 @@
     <GridCell
         :row="rowIndex"
         :column="columnIndex"
-        :locked="true"
-        :spacebar-edition="false">
+        :locked="true">
         <Component
             :is="headerComponent"
             v-bind="headerComponentProps"

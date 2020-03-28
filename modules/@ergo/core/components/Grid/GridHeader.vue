@@ -65,15 +65,17 @@
             @close="onDismissSettingsModal">
             <template #body>
                 <Form title="Table settings">
-                    <FormGroup>
-                        <Select
-                            :value="rowHeightDescription"
-                            solid
-                            regular
-                            label="Row height"
-                            :options="rowHeightsDescriptions"
-                            @input="onRowHeightChange" />
-                    </FormGroup>
+                    <template #body>
+                        <FormSection>
+                            <Select
+                                :value="rowHeightDescription"
+                                solid
+                                regular
+                                label="Row height"
+                                :options="rowHeightsDescriptions"
+                                @input="onRowHeightChange" />
+                        </FormSection>
+                    </template>
                 </Form>
             </template>
             <template #footer>
@@ -129,7 +131,7 @@ export default {
         Select: () => import('@Core/components/Inputs/Select/Select'),
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         // ActionButton: () => import('@Core/components/Buttons/ActionButton'),
         Button: () => import('@Core/components/Buttons/Button'),
         ExpandNumericButton: () => import('@Core/components/Buttons/ExpandNumericButton'),

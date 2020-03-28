@@ -10,6 +10,7 @@ export const types = {
     SET_ATTRIBUTE_CODE: 'SET_ATTRIBUTE_CODE',
     SET_ATTRIBUTE_PARAMETER: 'SET_ATTRIBUTE_PARAMETER',
     SET_ATTRIBUTE_GROUPS: 'SET_ATTRIBUTE_GROUPS',
+    SET_UPDATED_OPTION: 'SET_UPDATED_OPTION',
     SET_ATTRIBUTE_GROUPS_OPTIONS: 'SET_ATTRIBUTE_GROUPS_OPTIONS',
     SET_ATTRIBUTE_TYPE: 'SET_ATTRIBUTE_TYPE',
     INITIALIZE_OPTIONS: 'INITIALIZE_OPTIONS',
@@ -26,6 +27,9 @@ export const types = {
 export default {
     [types.SET_ATTRIBUTE_ID](state, id) {
         state.id = id;
+    },
+    [types.SET_UPDATED_OPTION](state, id) {
+        state.updatedOptions[id] = true;
     },
     [types.INITIALIZE_OPTIONS](state, options = {}) {
         state.options = options;

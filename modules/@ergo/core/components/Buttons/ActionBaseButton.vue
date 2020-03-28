@@ -15,7 +15,7 @@
         <FadeTransition>
             <DropDown
                 v-if="isFocused"
-                :offset="dropDownOffset"
+                :offset="getDropDownOffset()"
                 :fixed="fixedContent">
                 <template #body>
                     <List>
@@ -81,17 +81,6 @@ export default {
             isHovered: false,
         };
     },
-    computed: {
-        dropDownOffset() {
-            const {
-                x, y, width, height,
-            } = this.$refs.activator.getBoundingClientRect();
-
-            return {
-                x, y, width, height: height + 1,
-            };
-        },
-    },
     watch: {
         isFocused() {
             if (!this.isFocused) {
@@ -106,6 +95,15 @@ export default {
         window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
+        getDropDownOffset() {
+            const {
+                x, y, width, height,
+            } = this.$refs.activator.getBoundingClientRect();
+
+            return {
+                x, y, width, height: height + 1,
+            };
+        },
         onMouseEnter() {
             this.isHovered = true;
             this.$emit('hover', true);

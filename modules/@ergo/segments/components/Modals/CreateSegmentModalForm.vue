@@ -26,7 +26,8 @@
 <script>
 import { mapActions } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
-import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
+import { MODAL_ACTION } from '@Core/defaults/modals';
+import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
 
 const createSegment = () => import('@Segments/services/createSegment.service');
 
@@ -37,7 +38,7 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         SegmentForm: () => import('@Segments/components/Forms/SegmentForm'),
     },
-    mixins: [createModalFormMixin({ namespace: 'Segment', createRequest: createSegment })],
+    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Segment', request: createSegment })],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -52,12 +53,12 @@ export default {
             this.$emit('close');
         },
         onCreate() {
-            this.onCreateRequest(() => {
+            this.onActionRequest(() => {
                 this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.onCreateRequest((id) => {
+            this.onActionRequest((id) => {
                 this.$router.push({
                     name: 'segment-id-general',
                     params: {

@@ -4,19 +4,19 @@
  */
 <template>
     <BaseIcon
-        :width="size"
-        :height="size"
+        width="48"
+        height="32"
         :icon-color="fillColor">
         <path :d="drawingCommands" />
     </BaseIcon>
 </template>
 
 <script>
-import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import BaseIcon from '@Core/components/Icons/BaseIcon';
+import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
-    name: 'IconHamburger',
+    name: 'IconFile',
     components: {
         BaseIcon,
     },
@@ -25,14 +25,10 @@ export default {
             type: String,
             default: GRAPHITE,
         },
-        size: {
-            type: [String, Number],
-            default: 24,
-        },
     },
     data() {
         return {
-            drawingCommands: 'M3,18 L21,18 L21,16 L3,16 L3,18 Z M3,13 L21,13 L21,11 L3,11 L3,13 Z M3,6 L3,8 L21,8 L21,6 L3,6 Z',
+            drawingCommands: 'M15 1H27L36 10V28C36 29.65 34.65 31 33 31H14.985C13.335 31 12 29.65 12 28L12.015 4C12.015 2.35 13.35 1 15 1ZM17.9999 25H29.9999V22H17.9999V25ZM29.9999 19H17.9999V16H29.9999V19ZM25.4999 3.24999V11.5H33.7499L25.4999 3.24999Z',
         };
     },
 };

@@ -7,7 +7,7 @@
         title="Options"
         :fields-keys="[nameFieldKey, symbolFieldKey]">
         <template #body="{ errorMessages }">
-            <FormGroup>
+            <FormSection>
                 <TextField
                     :value="name"
                     solid
@@ -28,7 +28,7 @@
                     label="Unit symbol"
                     hint="Unit symbol must be unique"
                     @input="setSymbol" />
-            </FormGroup>
+            </FormSection>
         </template>
     </Form>
 </template>
@@ -41,7 +41,7 @@ export default {
     name: 'UnitForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     mixins: [errorValidationMixin],

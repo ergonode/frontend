@@ -4,7 +4,7 @@
  */
 <template>
     <div class="image-cell">
-        <UploadImage
+        <UploadImageFile
             :value="value"
             @upload="updateValue"
             @remove="updateValue" />
@@ -15,7 +15,7 @@
 export default {
     name: 'GridEditImageCell',
     components: {
-        UploadImage: () => import('@Core/components/Inputs/Image/UploadImage'),
+        UploadImageFile: () => import('@Core/components/Inputs/UploadFile/UploadImageFile'),
     },
     props: {
         value: {

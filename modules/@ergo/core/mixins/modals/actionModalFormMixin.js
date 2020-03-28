@@ -6,7 +6,7 @@
 import { mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
-export default function ({ namespace, createRequest }) {
+export default function ({ action, namespace, request }) {
     return {
         data() {
             return {
@@ -18,21 +18,21 @@ export default function ({ namespace, createRequest }) {
                 'onError',
                 'removeValidationErrors',
             ]),
-            onCreateRequest(onSuccess) {
+            onActionRequest(onSuccess) {
                 this.isRequestPending = true;
                 this.removeValidationErrors();
 
-                createRequest().then(response => response.default({
+                request().then(response => response.default({
                     $axios: this.$axios,
                     $store: this.$store,
                 }).then(({ id }) => {
                     this.isRequestPending = false;
                     this.removeValidationErrors();
-                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: `${namespace} has been created` });
+                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: `${namespace} has been ${action.toLowerCase()}d` });
 
                     onSuccess(id);
 
-                    this.$emit('created');
+                    this.$emit(action.toLowerCase());
                 }).catch((e) => {
                     this.isRequestPending = false;
                     this.onError(e.data);

@@ -6,7 +6,7 @@
     <Card :title="selectedLanguage">
         <Form :fields-keys="[labelFieldKey, placeholderFieldKey, hintFieldKey]">
             <template #body="{ errorMessages }">
-                <FormGroup>
+                <FormSection>
                     <TextField
                         :value="parsedValue('label')"
                         solid
@@ -40,7 +40,7 @@
                             :language-code="languageCode"
                             :disabled="!isUserAllowedToUpdate" />
                     </template>
-                </FormGroup>
+                </FormSection>
             </template>
         </Form>
     </Card>
@@ -57,14 +57,14 @@ import TextArea from '@Core/components/Inputs/TextArea';
 import Divider from '@Core/components/Dividers/Divider';
 import Card from '@Core/components/Card/Card';
 import Form from '@Core/components/Form/Form';
-import FormGroup from '@Core/components/Form/FormGroup';
+import FormSection from '@Core/components/Form/FormSection';
 
 export default {
     name: 'AttributeTranslationForm',
     components: {
         Card,
         Form,
-        FormGroup,
+        FormSection,
         Divider,
         TextField,
         TextArea,

@@ -4,27 +4,31 @@
  */
 <template>
     <Form>
-        <FormGroup>
-            <UploadImage
-                :value="avatarId"
-                label="Profile picture"
-                :disabled="!isUserAllowedToUpdate"
-                @upload="uploadValue"
-                @remove="uploadValue" />
-        </FormGroup>
+        <template #body>
+            <FormSection>
+                <UploadImageFile
+                    :value="avatarId"
+                    label="Profile picture"
+                    :disabled="!isUserAllowedToUpdate"
+                    @upload="uploadValue"
+                    @remove="uploadValue" />
+            </FormSection>
+        </template>
     </Form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import UploadImage from '@Core/components/Inputs/Image/UploadImage';
+import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
+import Form from '@Core/components/Form/Form';
+import FormSection from '@Core/components/Form/FormSection';
 
 export default {
     name: 'UserAvatarForm',
     components: {
-        Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
-        UploadImage,
+        Form,
+        FormSection,
+        UploadImageFile,
     },
     computed: {
         ...mapState('users', {

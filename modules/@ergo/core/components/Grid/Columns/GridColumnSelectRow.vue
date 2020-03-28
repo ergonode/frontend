@@ -22,7 +22,6 @@
         <GridCell
             v-if="isBasicFilters"
             :locked="true"
-            :spacebar-edition="false"
             :row="rowsOffset + basicFiltersOffset"
             :column="0">
             <GridCheckPlaceholderCell />

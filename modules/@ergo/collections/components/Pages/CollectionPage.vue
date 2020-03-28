@@ -6,7 +6,6 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-navigation-back="true"
             :is-read-only="$isReadOnly('PRODUCT_COLLECTION')"
             @navigateBack="onDismiss">
             <template #mainAction>

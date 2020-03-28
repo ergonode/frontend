@@ -113,8 +113,7 @@ export default {
             'removeDraft',
             'forceDraftsMutation',
         ]),
-        onEditRow({ links: { value: { edit } } }) {
-            const args = edit.href.split('/');
+        onEditRow(args) {
             const lastIndex = args.length - 1;
 
             this.$router.push({ name: 'product-id-general', params: { id: args[lastIndex] } });

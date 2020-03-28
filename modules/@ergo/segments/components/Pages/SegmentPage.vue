@@ -6,7 +6,6 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-navigation-back="true"
             :is-read-only="$isReadOnly('SEGMENT')"
             @navigateBack="onDismiss">
             <template #mainAction>
@@ -17,8 +16,7 @@
                     :disabled="!$hasAccess(['SEGMENT_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
-                        <IconDelete
-                            :fill-color="color" />
+                        <IconDelete :fill-color="color" />
                     </template>
                 </Button>
             </template>

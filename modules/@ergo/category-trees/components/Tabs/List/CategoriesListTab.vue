@@ -17,19 +17,18 @@
                     :language-code="userLanguageCode" />
             </ListScrollableContainer>
         </List>
-        <template #fab>
-            <Fab
-                :disabled="!$hasAccess(['CATEGORY_CREATE'])"
-                @click.native="onShowModal">
-                <template #icon="{ color }">
-                    <IconAdd :fill-color="color" />
-                </template>
-            </Fab>
-        </template>
+        <Fab
+            :floating="{ bottom: '16px', right: '16px' }"
+            :disabled="!$hasAccess(['CATEGORY_CREATE'])"
+            @click.native="onShowModal">
+            <template #icon="{ color }">
+                <IconAdd :fill-color="color" />
+            </template>
+        </Fab>
         <CreateCategoryModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedCategory" />
+            @create="onCreatedCategory" />
     </VerticalTabBarListWrapper>
 </template>
 

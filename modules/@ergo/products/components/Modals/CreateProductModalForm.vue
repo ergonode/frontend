@@ -26,7 +26,8 @@
 <script>
 import { mapActions } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
-import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
+import { MODAL_ACTION } from '@Core/defaults/modals';
+import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
 
 const createProduct = () => import('@Products/services/createProduct.service');
 
@@ -37,7 +38,7 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         ProductForm: () => import('@Products/components/Forms/ProductForm'),
     },
-    mixins: [createModalFormMixin({ namespace: 'Product', createRequest: createProduct })],
+    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Product', request: createProduct })],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -60,12 +61,12 @@ export default {
             this.$emit('close');
         },
         onCreate() {
-            this.onCreateRequest(() => {
+            this.onActionRequest(() => {
                 this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.onCreateRequest((id) => {
+            this.onActionRequest((id) => {
                 this.$router.push({
                     name: 'product-id-general',
                     params: {
