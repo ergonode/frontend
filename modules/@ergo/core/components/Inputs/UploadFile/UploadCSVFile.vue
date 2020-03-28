@@ -97,7 +97,7 @@ export default {
                 formData.append('upload', file, name);
                 formData.append('source_id', this.sourceType);
 
-                this.$axios.$post(`${this.languageCode}/imports/upload`, formData).then((response) => {
+                this.$axios.$post(`${this.languageCode}/imports/upload`, formData).then(() => {
                     this.file = file;
                     this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'File uploaded' });
                     this.removeValidationError('upload');
