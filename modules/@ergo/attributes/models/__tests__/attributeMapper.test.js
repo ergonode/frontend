@@ -18,12 +18,12 @@ describe('attributeMapper/getParsedOptions', () => {
             };
             const result = [
                 {
-                    key: 'key1',
-                    value: 'val1',
+                    code: 'key1',
+                    label: 'val1',
                 },
                 {
-                    key: 'key2',
-                    value: 'val2',
+                    code: 'key2',
+                    label: 'val2',
                 },
             ];
 
@@ -38,12 +38,12 @@ describe('attributeMapper/getParsedOptions', () => {
                 };
                 const result = [
                     {
-                        key: 'key1',
-                        value: { EN: 'val1' },
+                        code: 'key1',
+                        label: { EN: 'val1' },
                     },
                     {
-                        key: 'key2',
-                        value: { EN: 'val2' },
+                        code: 'key2',
+                        label: { EN: 'val2' },
                     },
                 ];
 
@@ -67,16 +67,16 @@ describe('attributeMapper/getParsedOptions', () => {
                 };
                 const result = [
                     {
-                        key: 'key1',
-                        value: { EN: 'val1' },
+                        code: 'key1',
+                        label: { EN: 'val1' },
                     },
                     {
-                        key: 'key2',
-                        value: null,
+                        code: 'key2',
+                        label: null,
                     },
                     {
-                        key: 'key3',
-                        value: { PL: 'val3' },
+                        code: 'key3',
+                        label: { PL: 'val3' },
                     },
                 ];
 
@@ -91,17 +91,19 @@ describe('attributeMapper/getMappedOptions', () => {
         it('Non multilingual attribute', () => {
             const apiData = [
                 {
-                    key: 'key1',
-                    value: 'val1',
+                    id: 1,
+                    code: 'key1',
+                    label: 'val1',
                 },
                 {
-                    key: 'key2',
-                    value: null,
+                    id: 2,
+                    code: 'key2',
+                    label: null,
                 },
             ];
             const result = {
-                0: { key: 'key1', value: 'val1' },
-                1: { key: 'key2', value: null },
+                0: { id: 1, key: 'key1', value: 'val1' },
+                1: { id: 2, key: 'key2', value: null },
             };
             expect(getMappedOptions(apiData)).toStrictEqual(result);
         });
@@ -109,22 +111,26 @@ describe('attributeMapper/getMappedOptions', () => {
         it('Multilingual attribute', () => {
             const apiData = [
                 {
-                    key: 'key1',
-                    value: {
+                    id: 1,
+                    code: 'key1',
+                    label: {
                         EN: 'val1',
                     },
                 },
                 {
-                    key: 'key2',
-                    value: null,
+                    id: 2,
+                    code: 'key2',
+                    label: null,
                 },
             ];
             const result = {
                 0: {
+                    id: 1,
                     key: 'key1',
                     value: { EN: 'val1' },
                 },
                 1: {
+                    id: 2,
                     key: 'key2',
                     value: null,
                 },

@@ -6,7 +6,7 @@
     <Component
         :is="stringComponent"
         v-bind="$attrs"
-        v-on="$listeners" />
+        @input="onValueChange" />
 </template>
 
 <script>
@@ -24,6 +24,11 @@ export default {
 
         if (options) this.stringComponent = () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormSelect');
         else this.stringComponent = () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormText');
+    },
+    methods: {
+        onValueChange(value) {
+            this.$emit('input', { key: this.$vnode.key, value });
+        },
     },
 };
 </script>

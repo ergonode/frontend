@@ -83,7 +83,6 @@ export default {
                 components.push({
                     key,
                     props: {
-                        propKey: key,
                         value: this.value[key],
                         small: true,
                         isRequired: this.required.indexOf(key) !== -1,

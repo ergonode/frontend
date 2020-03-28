@@ -27,10 +27,6 @@ export default {
             type: String,
             default: '',
         },
-        propKey: {
-            type: String,
-            required: true,
-        },
         value: {
             type: Object,
             default: () => ({}),
@@ -46,14 +42,20 @@ export default {
     },
     data() {
         return {
-            localValue: {},
+            objectComponents: [],
+            localValue: this.value,
         };
     },
     computed: {
         fieldsKeys() {
             return Object.keys(this.properties);
         },
-        objectComponents() {
+    },
+    created() {
+        this.objectComponents = this.initializeComponents();
+    },
+    methods: {
+        initializeComponents() {
             const { length } = this.fieldsKeys;
             const components = [];
 
@@ -66,7 +68,6 @@ export default {
                 components.push({
                     key,
                     props: {
-                        propKey: key,
                         value: this.value[key],
                         small: true,
                         isRequired: this.required.indexOf(key) !== -1,
@@ -78,11 +79,9 @@ export default {
 
             return components;
         },
-    },
-    methods: {
         onValueChange({ key, value }) {
             this.localValue[key] = value;
-            this.$emit('input', { key: this.propKey, value: this.localValue });
+            this.$emit('input', { key: this.$vnode.key, value: this.localValue });
         },
     },
 };

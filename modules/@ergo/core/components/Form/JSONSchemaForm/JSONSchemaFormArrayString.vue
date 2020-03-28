@@ -24,11 +24,15 @@ export default {
     inheritAttrs: false,
     data() {
         return {
+            enumComponents: [],
             localValue: [],
         };
     },
-    computed: {
-        enumComponents() {
+    created() {
+        this.enumComponents = this.initializeComponents();
+    },
+    methods: {
+        initializeComponents() {
             const { enum: options, enum_titles } = this.$attrs;
 
             if (!options && !enum_titles) return [];
@@ -42,8 +46,7 @@ export default {
                 components.push({
                     key,
                     props: {
-                        propKey: key,
-                        value: this.$attrs.value[key],
+                        // value: this.$attrs.value[key],
                         small: true,
                         label: enum_titles[i],
                     },
@@ -53,8 +56,6 @@ export default {
 
             return components;
         },
-    },
-    methods: {
         onValueChange({ key, value }) {
             if (value) {
                 this.localValue.push(key);

@@ -6,7 +6,7 @@
     <FormSection :title="title">
         <Component
             :is="arrayComponent"
-            v-bind="{ ...items, ...value, ...errorMessages }"
+            v-bind="{ ...items, value, errorMessages }"
             @input="onValueChange" />
     </FormSection>
 </template>
@@ -25,17 +25,9 @@ export default {
             type: String,
             default: '',
         },
-        widget: {
-            type: String,
-            default: '',
-        },
         errorMessages: {
-            type: String,
-            default: '',
-        },
-        propKey: {
-            type: String,
-            required: true,
+            type: Object,
+            default: () => ({}),
         },
         value: {
             type: Array,
@@ -43,21 +35,20 @@ export default {
         },
         items: {
             type: Object,
-            required: true,
-        },
-        required: {
-            type: Array,
-            default: () => [],
+            default: () => ({}),
         },
     },
-    computed: {
-        arrayComponent() {
-            return () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaFormArray${toCapitalize(this.items.type)}`);
-        },
+    data() {
+        return {
+            arrayComponent: null,
+        };
+    },
+    created() {
+        this.arrayComponent = () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaFormArray${toCapitalize(this.items.type)}`);
     },
     methods: {
         onValueChange(value) {
-            this.$emit('input', { key: this.propKey, value });
+            this.$emit('input', { key: this.$vnode.key, value });
         },
     },
 };

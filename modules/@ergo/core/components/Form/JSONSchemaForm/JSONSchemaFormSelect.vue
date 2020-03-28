@@ -57,10 +57,7 @@ export default {
         onValueChange(value) {
             this.localValue = value;
 
-            this.$emit('input', {
-                key: this.$attrs.propKey,
-                value: this.mappedOptions ? this.mappedOptions[value] : value,
-            });
+            this.$emit('input', this.mappedOptions ? this.mappedOptions[value] : value);
         },
     },
 };

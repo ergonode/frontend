@@ -6,11 +6,12 @@
     <FormSection>
         <FormSubsection>
             <JSONSchemaFormTableRowWidget
-                v-for="index in rowValues.length"
+                v-for="(row, index) in rowValues"
                 :key="index"
                 :index="index"
-                :properties="$attrs.properties"
-                :required="$attrs.required"
+                :value="row"
+                :properties="properties"
+                :required="required"
                 @remove="onRemoveRowAtIndex"
                 @input="onValueChangeAtIndex" />
         </FormSubsection>
@@ -36,7 +37,7 @@ import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import Button from '@Core/components/Buttons/Button';
 
 export default {
-    name: 'JSONSchemaFormTableWidget',
+    name: 'JSONSchemaFormArrayObject',
     components: {
         FormSection,
         FormSubsection,
@@ -44,10 +45,27 @@ export default {
         IconAdd,
         Button,
     },
-    inheritAttrs: false,
+    props: {
+        properties: {
+            type: Object,
+            default: () => ({}),
+        },
+        errorMessages: {
+            type: Object,
+            default: () => ({}),
+        },
+        value: {
+            type: Array,
+            default: () => [],
+        },
+        required: {
+            type: Array,
+            default: () => [],
+        },
+    },
     data() {
         return {
-            rowValues: [{}],
+            rowValues: this.value.length ? this.value : [{}],
         };
     },
     computed: {
@@ -62,6 +80,7 @@ export default {
         onAddRow() {
             this.$refs.addSectionButton.$el.scrollIntoView(true);
             this.rowValues.push({});
+            this.$emit('input', this.rowValues);
         },
         onRemoveRowAtIndex(index) {
             this.rowValues.splice(index, 1);

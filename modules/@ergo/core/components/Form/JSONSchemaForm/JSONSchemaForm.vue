@@ -32,9 +32,9 @@ export default {
             type: Object,
             required: true,
         },
-        widget: {
+        uiSchema: {
             type: Object,
-            required: true,
+            default: () => ({}),
         },
         value: {
             type: String,
@@ -55,10 +55,10 @@ export default {
     created() {
         this.model = JSON.parse(this.value);
 
-        this.schemaComponents = this.initializeSchemaComponents();
+        this.schemaComponents = this.initializeComponents();
     },
     methods: {
-        initializeSchemaComponents() {
+        initializeComponents() {
             const { length } = this.fieldsKeys;
             const components = [];
 
@@ -71,7 +71,6 @@ export default {
                 components.push({
                     key,
                     props: {
-                        propKey: key,
                         value: this.model[key],
                         isRequired: this.schema.required
                             && this.schema.required.indexOf(key) !== -1,

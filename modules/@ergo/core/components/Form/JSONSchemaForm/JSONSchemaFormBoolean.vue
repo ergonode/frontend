@@ -29,7 +29,7 @@ export default {
     methods: {
         onValueChange(value) {
             this.localValue = value;
-            this.$emit('input', { key: this.$attrs.propKey, value });
+            this.$emit('input', value);
         },
     },
 };
