@@ -5,6 +5,7 @@
 export const Pages = {
     Imports: () => import('@Import/pages/imports/index').then(m => m.default || m),
     ImportProfileEdit: () => import('@Import/pages/imports/_import/_id').then(m => m.default || m),
+    Placeholder: () => import('@Core/pages/placeholder/index').then(m => m.default || m),
 };
 
 export const Tabs = {

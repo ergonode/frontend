@@ -15,16 +15,15 @@
         @remove="onRemoveFile"
         @upload="onFileUpload">
         <template #file>
-            <div class="csv-file">
-                <IconFile />
-                <LinkButton :title="file.name" />
-            </div>
+            <IconFile :fill-color="greenColor" />
+            <LinkButton :title="file.name" />
         </template>
     </UploadFile>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import UploadFile from '@Core/components/Inputs/UploadFile/UploadFile';
 import IconFile from '@Core/components/Icons/Others/IconFile';
@@ -46,7 +45,7 @@ export default {
             type: String,
             default: '',
         },
-        sourceType: {
+        sourceId: {
             type: String,
             required: true,
         },
@@ -77,6 +76,9 @@ export default {
         ...mapState('authentication', {
             languageCode: state => state.user.language,
         }),
+        greenColor() {
+            return GREEN;
+        },
     },
     methods: {
         ...mapActions('validations', [
@@ -95,9 +97,8 @@ export default {
 
                 const formData = new FormData();
                 formData.append('upload', file, name);
-                formData.append('source_id', this.sourceType);
 
-                this.$axios.$post(`${this.languageCode}/imports/upload`, formData).then(() => {
+                this.$axios.$post(`${this.languageCode}/sources/${this.sourceId}/upload`, formData).then(() => {
                     this.file = file;
                     this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'File uploaded' });
                     this.removeValidationError('upload');
@@ -115,14 +116,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .csv-file {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        & > .link-button {
-            margin-top: 16px;
-        }
+    .link-button {
+        margin-top: 16px;
     }
 </style>

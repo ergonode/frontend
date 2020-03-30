@@ -70,7 +70,6 @@ export default {
     data() {
         return {
             isResizing: false,
-            isFocused: false,
             startY: 0,
             startHeight: 0,
             currentHeight: 0,

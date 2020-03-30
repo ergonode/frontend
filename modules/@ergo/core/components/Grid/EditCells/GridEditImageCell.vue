@@ -6,6 +6,7 @@
     <div class="image-cell">
         <UploadImageFile
             :value="value"
+            height="unset"
             @upload="updateValue"
             @remove="updateValue" />
     </div>
@@ -43,7 +44,6 @@ export default {
 
 <style lang="scss" scoped>
     .image-cell {
-        width: 300px;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_6_DP;
     }
