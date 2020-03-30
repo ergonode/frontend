@@ -4,13 +4,16 @@
  */
 <template>
     <div :class="['upload-file', { 'upload-file--required': required }]">
-        <fieldset class="upload-file__activator">
+        <fieldset
+            class="upload-file__activator"
+            :style="{ height: height }">
             <legend
                 class="upload-file__label"
                 :for="associatedLabel"
                 v-text="label"
                 v-if="label" />
             <input
+                v-if="!value"
                 type="file"
                 ref="input"
                 :accept="acceptFiles"
@@ -18,34 +21,36 @@
                 @input="onUpload">
             <div
                 v-if="requestPending"
-                :style="{ height }"
                 class="upload-file__loader">
                 <IconRefresh />
                 Uploading the file...
             </div>
             <div
-                v-else-if="!value"
-                class="upload-file__placeholder"
-                :style="{ height: height }">
-                <img
-                    :src="require('@Core/assets/images/placeholders/upload_file.svg')"
-                    alt="Place to drag or browse file">
-                <span class="upload-file__description">
-                    Drag the file here or browse
-                </span>
+                v-else
+                class="upload-file__content">
+                <div
+                    class="upload-file__placeholder"
+                    v-if="!value">
+                    <img
+                        :src="require('@Core/assets/images/placeholders/upload_file.svg')"
+                        alt="Place to drag or browse file">
+                    <span class="upload-file__description">
+                        Drag the file here or browse
+                    </span>
+                </div>
+                <template v-else>
+                    <slot name="file" />
+                    <Fab
+                        :style="{ backgroundColor: whiteColor }"
+                        :floating="{ top: '20px', right: '20px'}"
+                        :theme="secondaryTheme"
+                        @click.native="onRemove">
+                        <template #icon="{ color, isHovered }">
+                            <IconDelete :fill-color="isHovered ? redColor : color" />
+                        </template>
+                    </Fab>
+                </template>
             </div>
-            <template v-else>
-                <slot name="file" />
-                <Fab
-                    :style="{ backgroundColor: whiteColor }"
-                    :floating="{ top: '24px', right: '24px'}"
-                    :theme="secondaryTheme"
-                    @click.native="onRemove">
-                    <template #icon="{ color, isHovered }">
-                        <IconDelete :fill-color="isHovered ? redColor : color" />
-                    </template>
-                </Fab>
-            </template>
         </fieldset>
         <span
             v-if="uploadError"
@@ -133,7 +138,6 @@ export default {
             this.deleteIconFillColor = GRAPHITE;
         },
         onRemove() {
-            this.$refs.input.value = '';
             this.$emit('remove');
         },
         onUpload(event) {
@@ -197,12 +201,20 @@ export default {
             color: $GRAPHITE_LIGHT;
         }
 
-        &__placeholder {
+        &__content {
+            height: calc(100% - 10px);
+        }
+
+        &__content, &__placeholder {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: calc(100% - 18px);
+        }
+
+        &__placeholder {
+            width: 100%;
+            height: 100%;
             border: $BORDER_DASHED_GREY;
             box-sizing: border-box;
         }

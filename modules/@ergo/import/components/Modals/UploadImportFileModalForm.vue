@@ -14,7 +14,7 @@
                         <UploadCSVFile
                             label="Upload file"
                             required
-                            :source-type="type"
+                            :source-id="$route.params.id"
                             @progress="onUploadingCSVFile" />
                     </FormSection>
                 </template>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
 import ModalForm from '@Core/components/Modal/ModalForm';
 import Button from '@Core/components/Buttons/Button';
@@ -57,9 +57,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('import', {
-            type: state => state.type,
-        }),
         secondaryTheme() {
             return THEME.SECONDARY;
         },

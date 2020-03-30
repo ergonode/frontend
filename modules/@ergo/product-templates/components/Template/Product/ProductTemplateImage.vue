@@ -8,7 +8,7 @@
         :label="label"
         :required="required"
         :disabled="disabled"
-        height="unset"
+        height="100%"
         @upload="onValueChange"
         @remove="onValueChange" />
 </template>
