@@ -15,7 +15,7 @@
                 <template #headerSelectAllRowsCell="{ row, column }">
                     <GridCell
                         editing-allowed
-                        spacebar-edition
+                        :edit-key-code="32"
                         :row="row"
                         :column="column"
                         :editing="Boolean(rowsSelectionState)"
@@ -28,7 +28,7 @@
                 <template #selectRowCell="{ row, column }">
                     <GridCell
                         editing-allowed
-                        spacebar-edition
+                        :edit-key-code="32"
                         :row="row"
                         :column="column"
                         @edit="onSelectRow(row - 1)">
@@ -43,7 +43,7 @@
                         :row="rowIndex"
                         :column="columnIndex"
                         :locked="isColumnTypeText(column.type) || !isEditingAllowed"
-                        :spacebar-edition="!isColumnTypeText(column.type)"
+                        :edit-key-code="isColumnTypeText(column.type) ? 13 : 32"
                         @edit="onValueChange(rowId, column.id, cellData)">
                         <Component
                             :is="getCellComponent(column.type, rowId)"

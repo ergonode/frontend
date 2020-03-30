@@ -7,7 +7,7 @@
         :column="0"
         :row="row"
         editing-allowed
-        spacebar-edition
+        :edit-key-code="32"
         :selected="isSelected"
         @edit="onSelect">
         <GridPresentationCheckCell
