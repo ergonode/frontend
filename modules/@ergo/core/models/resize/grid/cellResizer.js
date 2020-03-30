@@ -102,9 +102,7 @@ export function bind(element) {
 }
 
 export function unbind(element) {
-    element.removeChild(resizeElement);
-
     parentElement = null;
-
+    element.removeChild(resizeElement);
     resizeElement.removeEventListener('mousedown', initResizingDrag);
 }
