@@ -4,7 +4,7 @@
  */
 <template>
     <ModalForm
-        title="Create product template"
+        title="Create product"
         @close="onClose">
         <template #body>
             <ProductForm />

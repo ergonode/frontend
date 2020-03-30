@@ -7,24 +7,17 @@
         :tabindex="-1"
         :class="gridCellClasses"
         @mousedown="onMouseDown"
-        @keydown="onKeyDown">
-        <template v-if="copyable">
-            <div
-                class="grid-cell__resizer"
-                @mousedown="initResizeDrag" />
-            <div
-                v-if="isResizing"
-                ref="resizerBorder"
-                class="grid-cell__resizer-border" />
-        </template>
+        @keydown="onKeyDown"
+        @focus="onFocus"
+        @blur="onBlur"
+        @resizeend="onResizeEnd">
         <slot :is-editing="isEditing" />
     </div>
 </template>
 
 <script>
 
-const registerResizeEventListeners = () => import('@Core/models/resize/registerResizeEventListeners');
-const unregisterResizeEventListeners = () => import('@Core/models/resize/unregisterResizeEventListeners');
+const cellResizer = () => import('@Core/models/resize/grid/cellResizer');
 
 export default {
     name: 'GridCell',
@@ -62,18 +55,10 @@ export default {
             type: Boolean,
             default: false,
         },
-        spacebarEdition: {
-            type: Boolean,
-            default: false,
+        editKeyCode: {
+            type: Number,
+            default: 13,
         },
-    },
-    data() {
-        return {
-            isResizing: false,
-            startY: 0,
-            startHeight: 0,
-            currentHeight: 0,
-        };
     },
     computed: {
         gridCellClasses() {
@@ -118,8 +103,34 @@ export default {
         }
     },
     methods: {
+        onFocus() {
+            if (this.copyable) {
+                cellResizer().then((response) => {
+                    response.bind(this.$el);
+                });
+            }
+        },
+        onResizeEnd(event) {
+            this.$emit('copy', {
+                from: {
+                    row: this.row,
+                    column: this.column,
+                },
+                to: {
+                    row: this.row + event.detail,
+                    column: this.column,
+                },
+            });
+        },
+        onBlur() {
+            if (this.copyable) {
+                cellResizer().then((response) => {
+                    response.unbind(this.$el);
+                });
+            }
+        },
         onMouseDown() {
-            if (!this.spacebarEdition && !this.isEditing) {
+            if (this.editKeyCode !== 32 && !this.isEditing) {
                 this.isEditing = false;
                 this.$emit('edit', this.isEditing);
             }
@@ -129,7 +140,7 @@ export default {
 
             let element;
 
-            if (this.isEditing && !this.spacebarEdition && keyCode !== 13) {
+            if (this.isEditing && keyCode !== this.editKeyCode) {
                 if (keyCode === 9) {
                     event.preventDefault();
                     event.stopPropagation();
@@ -141,19 +152,13 @@ export default {
             const gridColumnsEl = document.documentElement.querySelector('.grid__columns');
 
             switch (keyCode) {
-            case 13:
-                // Key: ENTER
+            case this.editKeyCode:
                 if (!this.locked && !this.disabled) {
-                    element = this.$el;
+                    if (this.editKeyCode !== 32) {
+                        element = this.$el;
+                        this.isEditing = !this.isEditing;
+                    }
 
-                    this.isEditing = !this.isEditing;
-                    this.$emit('edit', this.isEditing);
-                }
-                break;
-            case 32:
-                // Key: SPACE BAR
-                if (!this.locked && !this.disabled && this.spacebarEdition) {
-                    this.isEditing = !this.isEditing;
                     this.$emit('edit', this.isEditing);
                 }
                 break;
@@ -198,66 +203,10 @@ export default {
             return true;
         },
         onDblcClick() {
-            if (!this.locked && !this.disabled && !this.spacebarEdition) {
+            if (!this.locked && !this.disabled && this.editKeyCode !== 32) {
                 this.isEditing = true;
                 this.$emit('edit', this.isEditing);
             }
-        },
-        initResizeDrag(event) {
-            const { pageY } = event;
-            this.isResizing = true;
-            this.startY = pageY;
-            this.startHeight = parseInt(this.$el.getBoundingClientRect().height, 10);
-            this.currentHeight = this.startHeight;
-
-            registerResizeEventListeners().then((response) => {
-                response.default(this.doResizeDrag, this.stopResizeDrag);
-            });
-        },
-        doResizeDrag(event) {
-            const { pageY } = event;
-            const height = this.startHeight + pageY - this.startY;
-            const factor = Math.ceil(height / this.startHeight);
-            const fixedHeight = factor * this.startHeight;
-
-            if (fixedHeight !== this.currentHeight) {
-                if (height < 0) {
-                    this.$refs.resizerBorder.style.height = `${-1 * fixedHeight + 2 * this.startHeight}px`;
-                    this.$refs.resizerBorder.classList.add('grid-cell__resizer-border--negative-height');
-                } else {
-                    this.$refs.resizerBorder.style.height = `${fixedHeight}px`;
-                    this.$refs.resizerBorder.classList.remove('grid-cell__resizer-border--negative-height');
-                }
-
-                this.currentHeight = fixedHeight;
-
-                // TODO: It's not optimized form - gotta think about better solution
-                // const element = document.querySelector(`.coordinates-${this.column}-${this.row + factor}`);
-                // if (element) {
-                //     element.scrollIntoView(false);
-                // }
-            }
-        },
-        stopResizeDrag() {
-            const factor = Math.ceil(this.currentHeight / this.startHeight) - 1;
-
-            this.isResizing = false;
-            this.$refs.resizerBorder.style.height = null;
-            this.$refs.resizerBorder.classList.remove('grid-cell__resizer-border--negative-height');
-            this.$emit('copy', {
-                from: {
-                    row: this.row,
-                    column: this.column,
-                },
-                to: {
-                    row: this.row + factor,
-                    column: this.column,
-                },
-            });
-
-            unregisterResizeEventListeners().then((response) => {
-                response.default(this.doResizeDrag, this.stopResizeDrag);
-            });
         },
     },
 };
@@ -308,44 +257,6 @@ export default {
 
         &--disabled {
             background-color: $WHITESMOKE;
-        }
-
-        &__resizer {
-            position: absolute;
-            left: 50%;
-            bottom: -3px;
-            transform: translate(-50%, 0);
-            z-index: $Z_INDEX_LVL_1;
-            display: none;
-            width: 8px;
-            height: 8px;
-            border-radius: 4px;
-            background-color: $GREEN;
-            cursor: row-resize;
-        }
-
-        &__resizer-border {
-            position: absolute;
-            left: 0;
-            right: 0;
-            z-index: $Z_INDEX_LVL_1;
-            height: 100%;
-            border: $BORDER_2_DASHED_GREEN;
-            box-sizing: border-box;
-
-            &--negative-height {
-                bottom: 0;
-            }
-
-            &:not(&--negative-height) {
-                top: 0;
-            }
-        }
-
-        &:focus {
-            #{$cell}__resizer {
-                display: inline-block;
-            }
         }
     }
 </style>

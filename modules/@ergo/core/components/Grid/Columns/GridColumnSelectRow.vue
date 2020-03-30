@@ -10,7 +10,7 @@
             :row="rowsOffset">
             <GridCell
                 editing-allowed
-                spacebar-edition
+                :edit-key-code="32"
                 :row="rowsOffset"
                 :column="0"
                 @edit="onRowsSelect">
