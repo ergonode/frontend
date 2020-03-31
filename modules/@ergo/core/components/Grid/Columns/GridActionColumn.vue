@@ -16,7 +16,7 @@
             :locked="true" />
         <template v-for="(links, index) in rowLinks">
             <GridEditRowCell
-                :key="index + 'b'"
+                :key="`${index}|edit`"
                 :link="links.get"
                 :column="columnIndex"
                 :row="rowsOffset + index + basicFiltersOffset + 1"
@@ -24,7 +24,7 @@
                     || selectedRows[rowsOffset + index + basicFiltersOffset + 1]"
                 @edit="onEdit" />
             <GridRemoveRowCell
-                :key="index + 'a'"
+                :key="`${index}|remove`"
                 :link="links.delete"
                 :index="index"
                 :column="columnIndex + 1"
