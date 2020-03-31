@@ -106,8 +106,8 @@ export default {
             this.$emit('edit');
         },
         onRemove() {
-            const isConfirm = confirm('Are you sure you want to delete this role?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirm) {
+            const isConfirmed = confirm('Are you sure you want to delete this role?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirmed) {
                 const { id } = this.comment;
                 this.removeComment({
                     id,

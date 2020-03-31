@@ -25,9 +25,9 @@ export default {
     name: 'Grid',
     components: {
         GridHeader: () => import('@Core/components/Grid/GridHeader'),
-        GridColumnData: () => import('@Core/components/Grid/Columns/GridColumnData'),
-        GridColumnSentinel: () => import('@Core/components/Grid/Columns/GridColumnSentinel'),
-        GridColumnEdit: () => import('@Core/components/Grid/Columns/GridColumnEdit'),
+        GridDataColumn: () => import('@Core/components/Grid/Columns/GridDataColumn'),
+        GridSentinelColumn: () => import('@Core/components/Grid/Columns/GridSentinelColumn'),
+        GridActionColumn: () => import('@Core/components/Grid/Columns/GridActionColumn'),
         GridDataCell: () => import('@Core/components/Grid/GridDataCell'),
         GridFilterCell: () => import('@Core/components/Grid/GridFilterCell'),
         GridHeaderCell: () => import('@Core/components/Grid/GridHeaderCell'),
@@ -89,7 +89,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        isEditColumn: {
+        isActionColumn: {
             type: Boolean,
             default: false,
         },
@@ -104,7 +104,7 @@ export default {
             isHeaderFocused: false,
             isMouseOverGrid: false,
             isSelectColumnPinned: false,
-            isEditColumnPinned: false,
+            isActionColumnPinned: false,
             editingCellCoordinates: { row: null, column: null },
             rowHeight: ROW_HEIGHT.MEDIUM,
             layout: GRID_LAYOUT.TABLE,
@@ -170,9 +170,6 @@ export default {
 
             return draggedElIndex !== -1;
         },
-        isPlaceholder() {
-            return !this.rowIds.length;
-        },
     },
     watch: {
         isListElementDragging() {
@@ -184,7 +181,7 @@ export default {
         },
     },
     created() {
-        if (this.isSelectColumn) this.columnWidths.push(COLUMN_WIDTH.ACTION);
+        if (this.isSelectColumn) this.columnWidths.push(COLUMN_WIDTH.SELECT_ROW);
 
         const { length } = this.columns;
 
@@ -196,7 +193,7 @@ export default {
             }
         }
 
-        if (this.isEditColumn) this.columnWidths.push(COLUMN_WIDTH.ACTION);
+        if (this.isActionColumn) this.columnWidths.push(COLUMN_WIDTH.ACTION);
     },
     mounted() {
         window.addEventListener('click', this.onClickOutside);
@@ -224,7 +221,7 @@ export default {
             if (state === PINNED_COLUMN_STATE.LEFT) {
                 this.isSelectColumnPinned = isSticky;
             } else {
-                this.isEditColumnPinned = isSticky;
+                this.isActionColumnPinned = isSticky;
             }
         },
         onClickOutside({ pageX, pageY }) {
@@ -240,8 +237,11 @@ export default {
                 this.setEditingCellCoordinates();
             }
         },
-        onEditRow(route) {
-            this.$emit('editRow', route);
+        onEditRow(args) {
+            this.$emit('editRow', args);
+        },
+        onRemoveRowAtIndex(index) {
+            this.$emit('removeRowAtIndex', index);
         },
         onMouseOverGrid(isOver) {
             this.isMouseOverGrid = isOver;
@@ -481,7 +481,7 @@ export default {
                 columnIndex += 1;
                 const { headerSelectAllRowsCell, selectRowCell } = this.$scopedSlots;
 
-                gridColumns.push(createElement('GridColumnSelectRow', {
+                gridColumns.push(createElement('GridSelectRowColumn', {
                     key: columnIndex,
                     style: this.templateRows,
                     attrs: {
@@ -510,7 +510,7 @@ export default {
             }
 
             for (let i = 0; i < length; i += 1) {
-                gridColumns.push(createElement('GridColumnData', {
+                gridColumns.push(createElement('GridDataColumn', {
                     key: this.columns[i].id,
                     style: this.templateRows,
                     attrs: {
@@ -536,7 +536,7 @@ export default {
             }
 
             if (this.isSelectColumn) {
-                gridColumns.push(createElement('GridColumnSentinel', {
+                gridColumns.push(createElement('GridSentinelColumn', {
                     attrs: {
                         pinnedState: PINNED_COLUMN_STATE.LEFT,
                     },
@@ -546,8 +546,8 @@ export default {
                 }));
             }
 
-            if (this.isEditColumn) {
-                gridColumns.push(createElement('GridColumnEdit', {
+            if (this.isActionColumn) {
+                gridColumns.push(createElement('GridActionColumn', {
                     key: columnIndex,
                     style: this.templateRows,
                     attrs: {
@@ -557,16 +557,17 @@ export default {
                         columnIndex,
                         isBasicFilters: this.isBasicFilters,
                         rowLinks: this.rowLinks,
-                        isPinned: this.isEditColumnPinned,
+                        isPinned: this.isActionColumnPinned,
                     },
                     on: {
                         editRow: this.onEditRow,
+                        removeRowAtIndex: this.onRemoveRowAtIndex,
                     },
                 }));
 
                 columnIndex += 1;
 
-                gridColumns.push(createElement('GridColumnSentinel', {
+                gridColumns.push(createElement('GridSentinelColumn', {
                     style: ({
                         gridColumn: (`${columnIndex} / ${columnIndex}`),
                     }),
@@ -588,7 +589,7 @@ export default {
         }, getGridColumns());
         const gridBodyElements = [gridColumns];
 
-        if (this.isPlaceholder) {
+        if (!this.rowIds.length) {
             gridBodyElements.push(createElement('GridPlaceholder'));
         }
 
@@ -672,7 +673,6 @@ export default {
         return createElement('div', {
             staticClass: 'grid',
             class: {
-                'grid--placeholder': this.isPlaceholder,
                 'grid--disabled': this.isColumnExists,
             },
         }, gridElements);
@@ -696,12 +696,6 @@ export default {
         flex-direction: column;
         min-width: 0;
         overflow: hidden;
-
-        &--placeholder {
-            #{$grid}__body {
-                flex-shrink: 0;
-            }
-        }
 
         &--disabled {
             #{$grid}__body::after {

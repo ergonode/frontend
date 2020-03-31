@@ -59,9 +59,9 @@ export default {
             this.$router.push(getParentRoutePath(this.$route, 2));
         },
         onRemove() {
-            const isConfirm = confirm('Are you sure you want to delete this unit?'); /* eslint-disable-line no-restricted-globals */
+            const isConfirmed = confirm('Are you sure you want to delete this unit?'); /* eslint-disable-line no-restricted-globals */
 
-            if (isConfirm) {
+            if (isConfirmed) {
                 this.removeUnit({
                     onSuccess: this.onRemoveUnitSuccess,
                 });

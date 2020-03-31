@@ -214,22 +214,12 @@ export default {
 
 <style lang="scss" scoped>
     .grid-cell {
-        $cell: &;
-
-        position: relative;
         display: flex;
         align-items: center;
         outline: none;
         box-sizing: border-box;
         border-bottom: 1px solid $GREY;
-        background-color: $WHITE;
-
-        &:nth-child(1) {
-            position: sticky;
-            top: 0;
-            z-index: $Z_INDEX_LVL_2;
-            background-color: $WHITESMOKE;
-        }
+        cursor: pointer;
 
         &:not(&--error):not(&--locked):not(&--disabled) {
             &:focus {

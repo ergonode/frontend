@@ -12,9 +12,10 @@
                 :cell-values="cellValues"
                 :row-ids="rowIds"
                 :row-links="rowLinks"
-                :is-edit-column="true"
+                :is-action-column="true"
                 :is-basic-filters="true"
                 @editRow="onEditRow"
+                @removeRowAtIndex="removeRowAtIndex"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>

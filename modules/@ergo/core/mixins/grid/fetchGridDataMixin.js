@@ -202,6 +202,12 @@ export default function ({ path }) {
 
                 this.$emit('fetched');
             },
+            removeRowAtIndex(index) {
+                this.rowIds.splice(index, 1);
+                this.rowLinks.splice(index, 1);
+                this.count -= 1;
+                this.filtered -= 1;
+            },
             removeColumnAtIndex(index) {
                 this.columns.splice(index, 1);
             },

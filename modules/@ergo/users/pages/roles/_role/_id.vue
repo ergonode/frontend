@@ -88,8 +88,8 @@ export default {
             });
         },
         onRemove() {
-            const isConfirm = confirm('Are you sure you want to delete this role?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirm) {
+            const isConfirmed = confirm('Are you sure you want to delete this role?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirmed) {
                 this.removeRole({
                     id: this.roleID,
                     onSuccess: this.onRemoveRoleSuccess,

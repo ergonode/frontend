@@ -4,7 +4,7 @@
  */
 export default {
     components: {
-        GridColumnSelectRow: () => import('@Core/components/Grid/Columns/GridColumnSelectRow'),
+        GridSelectRowColumn: () => import('@Core/components/Grid/Columns/GridSelectRowColumn'),
     },
     props: {
         selectColumn: {

@@ -17,7 +17,7 @@ export default {
 <style lang="scss" scoped>
     .edit-cell {
         position: absolute;
-        z-index: $Z_INDEX_LVL_3;
+        z-index: $Z_INDEX_LVL_4;
         display: flex;
         justify-content: center;
     }

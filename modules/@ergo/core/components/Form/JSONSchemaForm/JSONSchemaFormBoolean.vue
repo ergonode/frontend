@@ -29,7 +29,12 @@ export default {
     methods: {
         onValueChange(value) {
             this.localValue = value;
-            this.$emit('input', value);
+
+            if (this.$vnode.key) {
+                this.$emit('input', { key: this.$vnode.key, value });
+            } else {
+                this.$emit('input', value);
+            }
         },
     },
 };
