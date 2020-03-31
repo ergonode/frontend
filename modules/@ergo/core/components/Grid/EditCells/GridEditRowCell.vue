@@ -8,7 +8,7 @@
         :row="row"
         :selected="isSelected"
         @edit="onEdit">
-        <IconEdit class="edit-link" />
+        <IconEdit />
     </GridCell>
 </template>
 
@@ -27,7 +27,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        links: {
+        link: {
             type: Object,
             required: true,
         },
@@ -42,10 +42,8 @@ export default {
     },
     methods: {
         onEdit() {
-            const { links: { value: { edit } } } = this.links;
-
-            if (edit) {
-                const args = edit.href.split('/');
+            if (this.link) {
+                const args = this.link.href.split('/');
 
                 this.$emit('edit', args);
             }
@@ -53,10 +51,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .edit-link {
-        flex: 1;
-        cursor: pointer;
-    }
-</style>

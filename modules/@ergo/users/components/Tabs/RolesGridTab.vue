@@ -13,8 +13,9 @@
                 :row-ids="rowIds"
                 :row-links="rowLinks"
                 :is-basic-filters="true"
-                :is-edit-column="true"
+                :is-action-column="true"
                 @editRow="onEditRow"
+                @removeRowAtIndex="removeRowAtIndex"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>

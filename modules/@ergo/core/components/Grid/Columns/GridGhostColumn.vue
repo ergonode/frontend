@@ -17,7 +17,7 @@ import {
 } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
-    name: 'GridColumnGhost',
+    name: 'GridGhostColumn',
     components: {
         IconAddColumn: () => import('@Core/components/Icons/Actions/IconAddColumn'),
     },

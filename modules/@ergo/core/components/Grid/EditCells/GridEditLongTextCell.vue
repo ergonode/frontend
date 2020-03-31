@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridEditTextBaseCell :style="{width: `${fixedWidth + 8}px` }">
+    <GridEditTextCell :style="{width: `${fixedWidth + 8}px` }">
         <TextArea
             :style="{height: '134px'}"
             :value="value"
@@ -12,14 +12,14 @@
             :error-messages="errorMessages"
             resize="none"
             @input="onValueChange" />
-    </GridEditTextBaseCell>
+    </GridEditTextCell>
 </template>
 
 <script>
 export default {
     name: 'GridEditLongTextCell',
     components: {
-        GridEditTextBaseCell: () => import('@Core/components/Grid/EditCells/Base/GridEditTextBaseCell'),
+        GridEditTextCell: () => import('@Core/components/Grid/EditCells/GridEditTextCell'),
         TextArea: () => import('@Core/components/Inputs/TextArea'),
     },
     props: {

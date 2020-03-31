@@ -76,8 +76,8 @@ export default {
             this.$router.push({ name: 'product-templates' });
         },
         onRemove() {
-            const isConfirm = confirm('Are you sure you want to delete this template?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirm) {
+            const isConfirmed = confirm('Are you sure you want to delete this template?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirmed) {
                 const { id } = this.$route.params;
                 this.removeTemplate({
                     id,

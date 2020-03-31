@@ -10,7 +10,7 @@
 
 <script>
 export default {
-    name: 'GridEditTextBaseCell',
+    name: 'GridEditTextCell',
 };
 </script>
 

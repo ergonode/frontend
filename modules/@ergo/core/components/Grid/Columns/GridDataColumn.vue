@@ -3,15 +3,16 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridBaseColumn
-        :class="{
-            'column--dragged': isDraggedColumn,
-        }"
+    <div
+        :class="[
+            'column',
+            { 'column--dragged': isDraggedColumn },
+        ]"
         :draggable="isColumnDraggable"
-        @dragstart.native="onDragStart"
-        @dragend.native="onDragEnd"
-        @dragover.native="onDragOver"
-        @drop.native="onDrop">
+        @dragstart="onDragStart"
+        @dragend="onDragEnd"
+        @dragover="onDragOver"
+        @drop="onDrop">
         <template v-if="!isDraggedColumn">
             <slot />
             <div
@@ -22,9 +23,9 @@
                 @mousedown="initResizeDrag" />
         </template>
         <template v-else>
-            <GridColumnGhost :is-mouse-over-grid="isMouseOverGrid" />
+            <GridGhostColumn :is-mouse-over-grid="isMouseOverGrid" />
         </template>
-    </GridBaseColumn>
+    </div>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
@@ -46,10 +47,9 @@ const unregisterResizeEventListeners = () => import('@Core/models/resize/unregis
 const updateColumnsTransform = () => import('@Core/models/drag_and_drop/updateColumnsTransform');
 
 export default {
-    name: 'GridColumnData',
+    name: 'GridDataColumn',
     components: {
-        GridBaseColumn: () => import('@Core/components/Grid/Columns/GridBaseColumn'),
-        GridColumnGhost: () => import('@Core/components/Grid/Columns/GridColumnGhost'),
+        GridGhostColumn: () => import('@Core/components/Grid/Columns/GridGhostColumn'),
     },
     props: {
         draggable: {
@@ -334,6 +334,27 @@ export default {
         position: relative;
         display: grid;
         box-sizing: border-box;
+        background-color: $WHITE;
+
+        &::after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: $ELEVATOR_2_DP;
+            opacity: 0;
+            pointer-events: none;
+            content: "";
+        }
+
+        &--hovered {
+            z-index: $Z_INDEX_LVL_4;
+
+            &::after {
+                opacity: 1;
+            }
+        }
 
         &--dragged {
             will-change: transform;

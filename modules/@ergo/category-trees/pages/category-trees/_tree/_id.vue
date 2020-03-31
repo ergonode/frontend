@@ -65,8 +65,8 @@ export default {
             this.$router.push(getParentRoutePath(this.$route));
         },
         onRemove() {
-            const isConfirm = confirm('Are you sure you want to delete this category tree?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirm) {
+            const isConfirmed = confirm('Are you sure you want to delete this category tree?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirmed) {
                 this.removeCategoryTree({
                     onSuccess: this.onRemoveSuccess,
                 });

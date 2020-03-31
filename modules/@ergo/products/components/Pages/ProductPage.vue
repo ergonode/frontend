@@ -112,8 +112,8 @@ export default {
             'getProduct',
         ]),
         onUpdateStatus({ code }) {
-            const isConfirm = confirm(`Are you sure you want to change status to ${code}?`); /* eslint-disable-line no-restricted-globals */
-            if (isConfirm) {
+            const isConfirmed = confirm(`Are you sure you want to change status to ${code}?`); /* eslint-disable-line no-restricted-globals */
+            if (isConfirmed) {
                 this.updateProductStatus({
                     value: code,
                     attributeId: this.status.attribute_id,

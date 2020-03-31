@@ -45,7 +45,7 @@
 
 <script>
 export default {
-    name: 'GridColumnSelectRow',
+    name: 'GridSelectRowColumn',
     components: {
         GridCell: () => import('@Core/components/Grid/GridCell'),
         GridPresentationCheckCell: () => import('@Core/components/Grid/PresentationCells/GridPresentationCheckCell'),
@@ -118,9 +118,17 @@ export default {
         z-index: $Z_INDEX_LVL_3;
         display: grid;
         box-sizing: border-box;
+        background-color: $WHITE;
 
         &--left {
             box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        & > .grid-cell:nth-child(1) {
+            position: sticky;
+            top: 0;
+            z-index: $Z_INDEX_LVL_2;
+            background-color: $WHITESMOKE;
         }
     }
 </style>
