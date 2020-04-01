@@ -46,7 +46,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('attribute', [
+        ...mapActions('attributeGroup', [
             'clearStorage',
         ]),
         onClose() {
