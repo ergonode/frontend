@@ -284,7 +284,7 @@ export default {
             return +this.$el.style.transform.replace(/[^0-9\-.,]/g, '');
         },
         getGridContentElement() {
-            return document.documentElement.querySelector('.grid__columns');
+            return document.documentElement.querySelector('.grid-table-layout');
         },
         removeColumnWrapper(index) {
             if (this.column.element_id) {

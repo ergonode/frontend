@@ -9,7 +9,7 @@
         </template>
         <template #grid>
             <Grid
-                :editing-privilege-allowed="isUserAllowedToUpdate"
+                :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"

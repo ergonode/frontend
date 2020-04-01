@@ -3,39 +3,21 @@
  * See LICENSE for license details.
  */
 <script>
-import { mapState, mapActions } from 'vuex';
 import {
     ROW_HEIGHT,
     GRID_LAYOUT,
-    GHOST_ELEMENT_MODEL,
-    PINNED_COLUMN_STATE,
-    COLUMN_WIDTH,
     DATA_LIMIT,
-    GHOST_ID,
 } from '@Core/defaults/grid';
-import {
-    isMouseOutOfBoundsElement,
-    isTrashBelowMouse,
-    getPositionForBrowser,
-} from '@Core/models/drag_and_drop/helpers';
-import selectGridRowMixin from '@Core/mixins/grid/selectGridRowMixin';
-import { swapItemPosition, insertValueAtIndex } from '@Core/models/arrayWrapper';
 
 export default {
     name: 'Grid',
     components: {
         GridHeader: () => import('@Core/components/Grid/GridHeader'),
-        GridDataColumn: () => import('@Core/components/Grid/Columns/GridDataColumn'),
-        GridSentinelColumn: () => import('@Core/components/Grid/Columns/GridSentinelColumn'),
-        GridActionColumn: () => import('@Core/components/Grid/Columns/GridActionColumn'),
-        GridDataCell: () => import('@Core/components/Grid/GridDataCell'),
-        GridFilterCell: () => import('@Core/components/Grid/GridFilterCell'),
-        GridHeaderCell: () => import('@Core/components/Grid/GridHeaderCell'),
+        GridTableLayout: () => import('@Core/components/Grid/Layout/GridTableLayout/GridTableLayout'),
         GridPlaceholder: () => import('@Core/components/Grid/GridPlaceholder'),
         GridPagination: () => import('@Core/components/Grid/GridPagination'),
         GridPageSelector: () => import('@Core/components/Grid/GridPageSelector'),
     },
-    mixins: [selectGridRowMixin],
     props: {
         columns: {
             type: Array,
@@ -53,6 +35,10 @@ export default {
             type: Array,
             default: () => [],
         },
+        advancedFilters: {
+            type: Array,
+            default: () => [],
+        },
         isAdvancedFilters: {
             type: Boolean,
             default: false,
@@ -61,11 +47,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        advancedFilters: {
-            type: Array,
-            default: () => [],
-        },
-        editingPrivilegeAllowed: {
+        isEditable: {
             type: Boolean,
             default: true,
         },
@@ -100,44 +82,19 @@ export default {
     },
     data() {
         return {
-            isColumnDropped: false,
-            isHeaderFocused: false,
-            isMouseOverGrid: false,
-            isSelectColumnPinned: false,
-            isActionColumnPinned: false,
-            editingCellCoordinates: { row: null, column: null },
             rowHeight: ROW_HEIGHT.MEDIUM,
             layout: GRID_LAYOUT.TABLE,
             maxRows: DATA_LIMIT,
             currentPage: 1,
-            columnWidths: [],
             filters: {},
             sortedColumn: {},
         };
     },
     computed: {
-        ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
-            ghostIndex: state => state.ghostIndex,
-            ghostFilterIndex: state => state.ghostFilterIndex,
-            draggedElIndex: state => state.draggedElIndex,
-            draggedElement: state => state.draggedElement,
-        }),
-        ...mapState('gridDraft', {
-            drafts: state => state.drafts,
-        }),
         maxPage() {
             const result = Math.ceil(this.dataCount / this.maxRows);
 
             return result > 0 ? result : 1;
-        },
-        templateColumns() {
-            return {
-                gridTemplateColumns: this.columnWidths.join(' '),
-            };
-        },
-        rowsOffset() {
-            return (this.currentPage - 1) * this.maxRows;
         },
         advancedFiltersValues() {
             const { length } = this.advancedFilters;
@@ -152,90 +109,10 @@ export default {
 
             return advancedFiltersValues;
         },
-        columnsOffset() {
-            return this.isSelectColumn ? 1 : 0;
-        },
-        templateRows() {
-            const headerRowsTemplate = this.isBasicFilters ? `${ROW_HEIGHT.MEDIUM}px ${ROW_HEIGHT.MEDIUM}px` : `${ROW_HEIGHT.MEDIUM}px`;
-            const dataRowsTemplate = this.rowIds.length > 0 ? `repeat(${this.rowIds.length}, ${this.rowHeight}px)` : '';
-
-            return {
-                gridTemplateRows: `${headerRowsTemplate} ${dataRowsTemplate}`,
-            };
-        },
-        isColumnExists() {
-            const draggedElIndex = this.columns.findIndex(
-                column => column.id === this.draggedElement,
-            );
-
-            return draggedElIndex !== -1;
-        },
-    },
-    watch: {
-        isListElementDragging() {
-            if (this.isListElementDragging) {
-                this.addGhostColumn();
-            } else {
-                this.removeGhostColumn();
-            }
-        },
-    },
-    created() {
-        if (this.isSelectColumn) this.columnWidths.push(COLUMN_WIDTH.SELECT_ROW);
-
-        const { length } = this.columns;
-
-        for (let i = 0; i < length; i += 1) {
-            if (this.columns[i].id === GHOST_ID) {
-                this.columnWidths.push(COLUMN_WIDTH.GHOST);
-            } else {
-                this.columnWidths.push(COLUMN_WIDTH.DEFAULT);
-            }
-        }
-
-        if (this.isActionColumn) this.columnWidths.push(COLUMN_WIDTH.ACTION);
-    },
-    mounted() {
-        window.addEventListener('click', this.onClickOutside);
-    },
-    beforeDestroy() {
-        window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
-        ...mapActions('draggable', [
-            'setDraggableState',
-            'setDraggedElement',
-            'setDraggedElIndex',
-            'setGhostElXTranslation',
-            'setGhostIndex',
-        ]),
-        setEditingCellCoordinates(coordinates = { row: null, column: null }) {
-            this.editingCellCoordinates = coordinates;
-        },
-        getEditingCellCoordinates() {
-            return this.editingCellCoordinates;
-        },
-        onStickyChange({
-            isSticky, state,
-        }) {
-            if (state === PINNED_COLUMN_STATE.LEFT) {
-                this.isSelectColumnPinned = isSticky;
-            } else {
-                this.isActionColumnPinned = isSticky;
-            }
-        },
-        onClickOutside({ pageX, pageY }) {
-            const { gridColumns } = this.$refs;
-            const {
-                top, left, width, height,
-            } = gridColumns.getBoundingClientRect();
-
-            if (!(pageX > left
-                 && pageX < left + width
-                 && pageY > top
-                 && pageY < top + height)) {
-                this.setEditingCellCoordinates();
-            }
+        onInsertColumn(payload) {
+            this.$emit('insertColumn', payload);
         },
         onEditRow(args) {
             this.$emit('editRow', args);
@@ -243,107 +120,29 @@ export default {
         onRemoveRowAtIndex(index) {
             this.$emit('removeRowAtIndex', index);
         },
-        onMouseOverGrid(isOver) {
-            this.isMouseOverGrid = isOver;
-        },
-        onDragLeave(event) {
-            const { xPos, yPos } = getPositionForBrowser(event);
-
-            if (xPos === 0 && yPos === 0) return false;
-
-            const { gridColumns } = this.$refs;
-            const isOutOfBounds = isMouseOutOfBoundsElement(gridColumns, xPos, yPos);
-
-            if (isOutOfBounds || isTrashBelowMouse(xPos, yPos)) {
-                this.isMouseOverGrid = false;
-            }
-
-            return true;
-        },
         onRowHeightChange(height) {
             this.rowHeight = height;
         },
         onLayoutChange(layout) {
             this.layout = layout;
         },
-        onHeaderFocus(isFocused) {
-            this.isHeaderFocused = isFocused;
-        },
-        onDrop(payload) {
-            this.isColumnDropped = true;
-            let tmpColumnWidths = [...this.columnWidths];
-            tmpColumnWidths = swapItemPosition(
-                tmpColumnWidths,
-                this.draggedElIndex,
-                this.ghostIndex,
-            );
-            tmpColumnWidths[this.ghostIndex] = COLUMN_WIDTH.DEFAULT;
-            this.columnWidths = tmpColumnWidths;
-            this.$emit('removeColumn', this.draggedElement);
+        onDropColumn(payload) {
             this.$emit('dropColumn', payload);
             this.emitFetchData();
         },
-        onUpdateColumnWidthAtIndex({ index, width }) {
-            this.columnWidths[index] = width;
-            this.columnWidths = [...this.columnWidths];
+        onSwapColumns(payload) {
+            this.$emit('swapColumns', payload);
         },
-        onChangeColumnsPosition({ from, to }) {
-            this.$emit('swapColumns', { from, to });
-
-            this.columnWidths = swapItemPosition(
-                this.columnWidths,
-                from + this.columnsOffset,
-                to + this.columnsOffset,
-            );
-        },
-        onRemoveColumnAtIndex(index) {
-            this.columnWidths.splice(index, 1);
-            this.$emit('removeColumn', index - this.columnsOffset);
+        onRemoveColumn(index) {
+            this.$emit('removeColumn', index);
         },
         onSortColumn(sortedColumn) {
             this.sortedColumn = sortedColumn;
             this.emitFetchData();
         },
-        onFilterChange({ id, value, operator }) {
-            if (!value || !value.length) {
-                delete this.filters[id];
-            } else {
-                this.filters[id] = { value, operator };
-            }
-
+        onFilterChange(filters) {
+            this.filters = filters;
             this.emitFetchData();
-        },
-        addGhostColumn() {
-            if (!this.isColumnExists) {
-                const ghostIndex = 0; // 0 because we cannot drag select row column
-
-                this.$emit('insertColumn', { column: GHOST_ELEMENT_MODEL, index: ghostIndex });
-                this.columnWidths = insertValueAtIndex(
-                    this.columnWidths,
-                    COLUMN_WIDTH.GHOST,
-                    ghostIndex + this.columnsOffset,
-                );
-                this.setGhostIndex(ghostIndex + this.columnsOffset);
-                this.setDraggedElIndex(ghostIndex + this.columnsOffset);
-            }
-        },
-        removeGhostColumn() {
-            if (!this.isColumnDropped
-                && this.columnWidths.findIndex(width => width === COLUMN_WIDTH.GHOST) !== -1) {
-                const { gridColumns } = this.$refs;
-                const { length } = gridColumns.children;
-
-                for (let i = 0; i < length; i += 1) {
-                    gridColumns.children[i].style.transform = null;
-                }
-
-                this.columnWidths = this.columnWidths.filter(width => width !== COLUMN_WIDTH.GHOST);
-                this.$emit('removeColumn', this.draggedElement);
-                this.setDraggedElIndex();
-                this.setGhostIndex();
-            }
-
-            this.isColumnDropped = false;
         },
         setCurrentPage(page) {
             this.currentPage = page;
@@ -399,195 +198,35 @@ export default {
         },
     },
     render(createElement) {
-        const getColumnCells = (column, columnIndex) => {
-            const cells = [];
-            const GridHeaderCell = createElement('GridHeaderCell', {
+        const gridBodyElements = [
+            createElement('GridTableLayout', {
                 attrs: {
-                    columnIndex,
-                    sortedColumn: this.sortedColumn,
-                    column,
-                    rowIndex: this.rowsOffset,
+                    columns: this.columns,
+                    cellValues: this.cellValues,
+                    rowIds: this.rowIds,
+                    rowLinks: this.rowLinks,
+                    advancedFiltersValues: this.advancedFiltersValues,
+                    currentPage: this.currentPage,
+                    maxRows: this.maxRows,
+                    rowHeight: this.rowHeight,
+                    isEditable: this.isEditable,
+                    isSelectColumn: this.isSelectColumn,
+                    isBasicFilters: this.isBasicFilters,
+                    isDraggable: this.isDraggable,
+                    isActionColumn: this.isActionColumn,
                 },
                 on: {
-                    focus: this.onHeaderFocus,
                     sort: this.onSortColumn,
-                    removeColumnAtIndex: this.onRemoveColumnAtIndex,
+                    filter: this.onFilterChange,
+                    editRow: this.onEditRow,
+                    removeRowAtIndex: this.onRemoveRowAtIndex,
+                    removeColumn: this.onRemoveColumn,
+                    swapColumns: this.onSwapColumns,
+                    dropColumn: this.onDropColumn,
+                    insertColumn: this.onInsertColumn,
                 },
-            });
-            let rowIndex = 0;
-
-            cells.push(GridHeaderCell);
-
-            if (this.isBasicFilters) {
-                rowIndex += 1;
-                const GridFilterCell = createElement('GridFilterCell', {
-                    attrs: {
-                        columnIndex,
-                        rowIndex: this.rowsOffset + rowIndex,
-                        column,
-                        filter: this.filters[column.id],
-                        disabled: typeof this.advancedFiltersValues[column.id] !== 'undefined',
-                    },
-                    on: {
-                        filter: this.onFilterChange,
-                    },
-                });
-
-                cells.push(GridFilterCell);
-            }
-
-            const { length } = this.rowIds;
-
-            for (let i = 0; i < length; i += 1) {
-                rowIndex += 1;
-                const fixedRowIndex = this.rowsOffset + rowIndex;
-                const id = this.rowIds[i];
-
-                if (this.$scopedSlots && this.$scopedSlots.cell) {
-                    cells.push(this.$scopedSlots.cell({
-                        column,
-                        rowId: id,
-                        rowIndex: fixedRowIndex,
-                        columnIndex,
-                        cellData: this.cellValues[id][column.id],
-                    }));
-                } else {
-                    cells.push(createElement('GridDataCell', {
-                        key: (`${id}-${column.id}`),
-                        attrs: {
-                            columnIndex,
-                            rowIndex: fixedRowIndex,
-                            rowId: id,
-                            rowIds: this.rowIds,
-                            cellData: this.cellValues[id][column.id],
-                            column,
-                            draft: this.drafts[id],
-                            isSelected: this.isSelectedAllRows
-                                    || this.selectedRows[fixedRowIndex],
-                            editingPrivilegeAllowed: this.editingPrivilegeAllowed,
-                        },
-                    }));
-                }
-            }
-
-            return cells;
-        };
-        const getGridColumns = () => {
-            const { length } = this.columns;
-            const gridColumns = [];
-            let columnIndex = 0;
-
-            if (this.isSelectColumn) {
-                columnIndex += 1;
-                const { headerSelectAllRowsCell, selectRowCell } = this.$scopedSlots;
-
-                gridColumns.push(createElement('GridSelectRowColumn', {
-                    key: columnIndex,
-                    style: this.templateRows,
-                    attrs: {
-                        rowIds: this.rowIds,
-                        rowsOffset: this.rowsOffset,
-                        rowHeight: this.rowHeight,
-                        isSelectedAllRows: this.isSelectedAllRows,
-                        selectedRows: this.selectedRows,
-                        isBasicFilters: this.isBasicFilters,
-                        isPinned: this.isSelectColumnPinned,
-                    },
-                    slot: ['headerSelectAllRowsCell', 'selectRowCell'],
-                    on: {
-                        rowSelect: this.onSelectRow,
-                        rowsSelect: this.onSelectAllRows,
-                    },
-                    scopedSlots: {
-                        headerCheckCell(props) {
-                            return headerSelectAllRowsCell ? headerSelectAllRowsCell(props) : null;
-                        },
-                        checkCell(props) {
-                            return selectRowCell ? selectRowCell(props) : null;
-                        },
-                    },
-                }));
-            }
-
-            for (let i = 0; i < length; i += 1) {
-                gridColumns.push(createElement('GridDataColumn', {
-                    key: this.columns[i].id,
-                    style: this.templateRows,
-                    attrs: {
-                        draggable: this.isDraggable,
-                        index: i + this.columnsOffset,
-                        column: this.columns[i],
-                        columnOffset: this.columnsOffset,
-                        rowHeight: this.rowHeight,
-                        isHeaderFocused: this.isHeaderFocused,
-                        isMouseOverGrid: this.isMouseOverGrid,
-                    },
-                    slot: 'cell',
-                    on: {
-                        mouseOverGrid: this.onMouseOverGrid,
-                        removeColumnAtIndex: this.onRemoveColumnAtIndex,
-                        changeColumnsPosition: this.onChangeColumnsPosition,
-                        updateColumnWidthAtIndex: this.onUpdateColumnWidthAtIndex,
-                        drop: this.onDrop,
-                    },
-                }, getColumnCells(this.columns[i], columnIndex)));
-
-                columnIndex += 1;
-            }
-
-            if (this.isSelectColumn) {
-                gridColumns.push(createElement('GridSentinelColumn', {
-                    attrs: {
-                        pinnedState: PINNED_COLUMN_STATE.LEFT,
-                    },
-                    on: {
-                        sticky: this.onStickyChange,
-                    },
-                }));
-            }
-
-            if (this.isActionColumn) {
-                gridColumns.push(createElement('GridActionColumn', {
-                    key: columnIndex,
-                    style: this.templateRows,
-                    attrs: {
-                        isSelectedAllRows: this.isSelectedAllRows,
-                        selectedRows: this.selectedRows,
-                        rowsOffset: this.rowsOffset,
-                        columnIndex,
-                        isBasicFilters: this.isBasicFilters,
-                        rowLinks: this.rowLinks,
-                        isPinned: this.isActionColumnPinned,
-                    },
-                    on: {
-                        editRow: this.onEditRow,
-                        removeRowAtIndex: this.onRemoveRowAtIndex,
-                    },
-                }));
-
-                columnIndex += 1;
-
-                gridColumns.push(createElement('GridSentinelColumn', {
-                    style: ({
-                        gridColumn: (`${columnIndex} / ${columnIndex}`),
-                    }),
-                    attrs: {
-                        pinnedState: PINNED_COLUMN_STATE.RIGHT,
-                    },
-                    on: {
-                        sticky: this.onStickyChange,
-                    },
-                }));
-            }
-
-            return gridColumns;
-        };
-        const gridColumns = createElement('div', {
-            ref: 'gridColumns',
-            staticClass: 'grid__columns',
-            style: this.templateColumns,
-        }, getGridColumns());
-        const gridBodyElements = [gridColumns];
+            }),
+        ];
 
         if (!this.rowIds.length) {
             gridBodyElements.push(createElement('GridPlaceholder'));
@@ -595,41 +234,7 @@ export default {
 
         const gridBody = createElement('div', {
             staticClass: 'grid__body',
-            on: {
-                dragleave: this.onDragLeave,
-            },
         }, gridBodyElements);
-        const gridFooterElements = [
-            createElement('GridPageSelector', {
-                attrs: {
-                    value: this.maxRows,
-                    maxRows: this.dataCount,
-                },
-                on: {
-                    input: this.setMaxRows,
-                },
-            }),
-        ];
-
-        if (this.maxPage > 1) {
-            gridFooterElements.push(
-                createElement('GridPagination', {
-                    attrs: {
-                        value: this.currentPage,
-                        maxPage: this.maxPage,
-                    },
-                    on: {
-                        input: this.setCurrentPage,
-                    },
-                }),
-            );
-        }
-
-        gridFooterElements.push(this.$slots.appendFooter);
-
-        const gridFooter = createElement('div', {
-            staticClass: 'grid__footer',
-        }, gridFooterElements);
 
         const gridElements = [];
 
@@ -641,8 +246,8 @@ export default {
                     isAdvancedFilters: this.isAdvancedFilters,
                     isCenteredView: this.isCenteredView,
                     filters: this.advancedFilters,
-                    isActionsSelected: this.isSelectedAllRows
-                            || Object.keys(this.selectedRows).length !== 0,
+                    // isActionsSelected: this.isSelectedAllRows
+                    //         || Object.keys(this.selectedRows).length !== 0,
                 },
                 on: {
                     rowHeightChange: this.onRowHeightChange,
@@ -667,21 +272,41 @@ export default {
         gridElements.push(gridBody);
 
         if (this.isFooterVisible) {
-            gridElements.push(gridFooter);
+            const gridFooterElements = [
+                createElement('GridPageSelector', {
+                    attrs: {
+                        value: this.maxRows,
+                        maxRows: this.dataCount,
+                    },
+                    on: {
+                        input: this.setMaxRows,
+                    },
+                }),
+            ];
+
+            if (this.maxPage > 1) {
+                gridFooterElements.push(
+                    createElement('GridPagination', {
+                        attrs: {
+                            value: this.currentPage,
+                            maxPage: this.maxPage,
+                        },
+                        on: {
+                            input: this.setCurrentPage,
+                        },
+                    }),
+                );
+            }
+
+            gridFooterElements.push(this.$slots.appendFooter);
+            gridElements.push(createElement('div', {
+                staticClass: 'grid__footer',
+            }, gridFooterElements));
         }
 
         return createElement('div', {
             staticClass: 'grid',
-            class: {
-                'grid--disabled': this.isColumnExists,
-            },
         }, gridElements);
-    },
-    provide() {
-        return {
-            setEditingCellCoordinates: this.setEditingCellCoordinates,
-            getEditingCellCoordinates: this.getEditingCellCoordinates,
-        };
     },
 };
 </script>
@@ -697,12 +322,6 @@ export default {
         min-width: 0;
         overflow: hidden;
 
-        &--disabled {
-            #{$grid}__body::after {
-                z-index: $Z_INDEX_LVL_4;
-            }
-        }
-
         &__body {
             display: flex;
             flex: 1 1 auto;
@@ -713,19 +332,6 @@ export default {
             border-top: $BORDER_1_GREY;
             border-left: $BORDER_1_GREY;
             border-right: $BORDER_1_GREY;
-
-            &::after {
-                position: absolute;
-                z-index: $Z_INDEX_NEGATIVE;
-                width: 100%;
-                height: 100%;
-                content: "";
-            }
-        }
-
-        &__columns {
-            position: relative;
-            display: grid;
         }
 
         &__footer {

@@ -56,6 +56,7 @@ export default {
     data() {
         return {
             localValue: {},
+            rowComponents: [],
         };
     },
     computed: {
@@ -70,7 +71,12 @@ export default {
         fieldsKeys() {
             return Object.keys(this.properties);
         },
-        rowComponents() {
+    },
+    created() {
+        this.rowComponents = this.initializeComponents();
+    },
+    methods: {
+        initializeComponents() {
             const { length } = this.fieldsKeys;
             const components = [];
 
@@ -104,8 +110,6 @@ export default {
 
             return components;
         },
-    },
-    methods: {
         onValueChange({ key, value }) {
             this.localValue[key] = value;
             this.$emit('input', { index: this.index, value: this.localValue });
