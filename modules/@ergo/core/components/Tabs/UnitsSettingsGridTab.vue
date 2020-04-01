@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :editing-privilege-allowed="isUserAllowedToUpdate"
+                :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
                 :cell-values="cellValues"

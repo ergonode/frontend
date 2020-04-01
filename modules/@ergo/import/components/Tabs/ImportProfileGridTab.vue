@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :editing-privilege-allowed="$hasAccess(['IMPORT_UPDATE'])"
+                :is-editable="$hasAccess(['IMPORT_UPDATE'])"
                 :columns="columns"
                 :data-count="filtered"
                 :cell-values="cellValues"

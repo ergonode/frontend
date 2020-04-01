@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :editing-privilege-allowed="$hasAccess(['WORKFLOW_UPDATE'])"
+                :is-editable="$hasAccess(['WORKFLOW_UPDATE'])"
                 :columns="columns"
                 :data-count="filtered"
                 :cell-values="cellValues"

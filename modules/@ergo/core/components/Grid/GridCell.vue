@@ -149,7 +149,7 @@ export default {
                 return false;
             }
 
-            const gridColumnsEl = document.documentElement.querySelector('.grid__columns');
+            const gridColumnsEl = document.documentElement.querySelector('.grid-table-layout');
 
             switch (keyCode) {
             case this.editKeyCode:
@@ -223,6 +223,7 @@ export default {
 
         &:not(&--error):not(&--locked):not(&--disabled) {
             &:focus {
+                position: relative;
                 box-shadow: inset 0 0 0 2px $GREEN;
             }
         }

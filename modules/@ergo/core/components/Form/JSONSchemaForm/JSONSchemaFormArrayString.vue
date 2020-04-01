@@ -25,7 +25,7 @@ export default {
     data() {
         return {
             enumComponents: [],
-            localValue: [],
+            localValue: this.$attrs.value,
         };
     },
     created() {
@@ -46,7 +46,9 @@ export default {
                 components.push({
                     key,
                     props: {
-                        // value: this.$attrs.value[key],
+                        value: this.$attrs.value
+                            ? this.$attrs.value.findIndex(option => option === key) !== -1
+                            : false,
                         small: true,
                         label: enum_titles[i],
                     },

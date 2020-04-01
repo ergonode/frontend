@@ -15,7 +15,7 @@ export const ROW_INTERVALS = [
 export const COLUMN_WIDTH = {
     SELECT_ROW: '40px',
     ACTION: 'max-content',
-    DEFAULT: 'minmax(max-content, 1fr)',
+    DEFAULT: 'minmax(150px, 1fr)',
     GHOST: '100px',
 };
 
