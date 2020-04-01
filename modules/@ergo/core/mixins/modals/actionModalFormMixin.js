@@ -13,6 +13,9 @@ export default function ({ action, namespace, request }) {
                 isRequestPending: false,
             };
         },
+        mounted() {
+            this.clearStorage();
+        },
         methods: {
             ...mapActions('validations', [
                 'onError',

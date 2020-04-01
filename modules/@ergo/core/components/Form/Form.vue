@@ -124,6 +124,7 @@ export default {
             display: grid;
             grid-auto-flow: row;
             grid-row-gap: 8px;
+            overflow: auto;
 
             &__header {
                 color: $GRAPHITE_DARK;

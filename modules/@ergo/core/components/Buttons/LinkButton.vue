@@ -32,7 +32,7 @@ export default {
         align-items: center;
         text-decoration-color: $GRAPHITE_DARK;
         text-decoration-line: underline;
-        width: max-content;
+        width: auto;
         border: none;
         padding: 0;
         margin: 0;
@@ -40,6 +40,7 @@ export default {
         background-color: transparent;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_12_16;
+        text-align: left;
         cursor: pointer;
 
         &:hover:not(:disabled), &:focus {
