@@ -53,6 +53,7 @@ export default {
             .navigation-section {
                 display: flex;
                 flex-direction: column;
+                align-items: center;
                 width: 285px;
 
                 &__header {
