@@ -6,7 +6,6 @@ import { isEmpty, getKeyByValue } from '@Core/models/objectWrapper';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import {
     getParsedParameterKeys,
-    getParsedOptions,
 } from '@Attributes/models/attributeMapper';
 import { isMultilingual, getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 
@@ -19,7 +18,7 @@ export default function ({
         code,
         groups,
         type,
-        multilingual,
+        isMultilingual: multilingual,
         parameter,
         options,
     } = $store.state.attribute;
@@ -47,8 +46,6 @@ export default function ({
         if (optionKeys.length !== uniqueOptions.size) {
             $addAlert({ type: ALERT_TYPE.WARNING, message: 'Option code must be unique' });
         }
-
-        data.options = getParsedOptions(options);
     }
 
     if (parameter) {
@@ -73,8 +70,10 @@ export default function ({
             { id },
         ) => {
             Promise.all(
-                Object.keys(options)
-                    .map(key => $axios.$post(`${language}/attributes/${id}/options`, { code: options[key].key })),
+                Object.keys(options).map(key => $axios.$post(
+                    `${language}/attributes/${id}/options`,
+                    { code: options[key].key },
+                )),
             );
 
             return { id };

@@ -95,6 +95,7 @@ export default {
 
         &__body {
             flex: 1;
+            padding: 24px;
             overflow: auto;
         }
 
