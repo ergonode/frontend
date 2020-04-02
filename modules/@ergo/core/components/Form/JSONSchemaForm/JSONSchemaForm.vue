@@ -21,7 +21,6 @@
 <script>
 import { toCapitalize } from '@Core/models/stringWrapper';
 import Form from '@Core/components/Form/Form';
-import DeepDiff from 'deep-diff';
 
 export default {
     name: 'JSONSchemaForm',
