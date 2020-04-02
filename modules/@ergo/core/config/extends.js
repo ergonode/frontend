@@ -10,6 +10,12 @@ export default {
             requestPath: '/dictionary/languages',
         },
         {
+            stateProp: 'allLanguages',
+            dataFormat: [],
+            requestPath: '/languages',
+            isGrid: true,
+        },
+        {
             stateProp: 'currencies',
             dataFormat: {},
             requestPath: '/dictionary/currencies',

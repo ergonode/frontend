@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { getMappedParameterValues, getMappedOptions } from '@Attributes/models/attributeMapper';
+import { isEmpty, isObject } from '@Core/models/objectWrapper';
 import { types } from './mutations';
 
 export default {
@@ -120,7 +121,7 @@ export default {
         });
     },
     async updateAttribute(
-        { state, rootState },
+        { state, commit, rootState },
         {
             id,
             data,
@@ -129,24 +130,33 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
+        const { allLanguages } = rootState.dictionaries;
         const optionsToAddRequests = [];
         const optionsToUpdateRequests = [];
 
         Object.keys(state.options).forEach((key) => {
             const option = state.options[key];
+            const optionValue = !state.isMultilingual
+                ? allLanguages.reduce((acc, e) => {
+                    const opt = acc;
+
+                    opt[e.code] = isObject(option.value) && isEmpty(option.value) ? '' : option.value;
+                    return opt;
+                }, {})
+                : option.value;
 
             if (!option.id) {
                 optionsToAddRequests.push(
                     this.app.$axios.$post(`${userLanguageCode}/attributes/${id}/options`, {
                         code: option.key,
-                        label: option.value,
+                        label: option.value ? optionValue : {},
                     }).catch(e => onError(e.data)),
                 );
             } else if (state.updatedOptions[option.id]) {
                 optionsToUpdateRequests.push(
                     this.app.$axios.$put(`${userLanguageCode}/attributes/${id}/options/${option.id}`, {
                         code: option.key,
-                        label: option.value,
+                        label: optionValue,
                     }).catch(e => onError(e.data)),
                 );
             }
@@ -157,7 +167,10 @@ export default {
             this.app.$axios.$put(`${userLanguageCode}/attributes/${id}`, data).catch(e => onError(e.data)),
             ...optionsToAddRequests,
             ...optionsToUpdateRequests,
-        ]).then(() => onSuccess());
+        ]).then(() => {
+            commit(types.REMOVE_UPDATED_OPTION);
+            onSuccess();
+        });
 
         await this.$removeLoader('footerButton');
     },
