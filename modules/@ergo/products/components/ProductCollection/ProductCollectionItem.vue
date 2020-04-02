@@ -4,19 +4,26 @@
  */
 <template>
     <div class="product-collection-item">
+        <Picture
+            v-if="item.image"
+            :image-id="item.image" />
         <img
+            v-else
             class="product-collection-item__placeholder"
             :src="placeholderImage"
             alt="template icon">
         <span
             class="product-collection-item__title"
-            v-text="item.sku" />
+            v-text="item.description" />
     </div>
 </template>
 
 <script>
 export default {
     name: 'ProductCollectionItem',
+    components: {
+        Picture: () => import('@Core/components/Multimedia/Picture'),
+    },
     props: {
         item: {
             type: Object,
@@ -33,12 +40,14 @@ export default {
 
 <style lang="scss" scoped>
     .product-collection-item {
-        display: grid;
-        grid-template-rows: 156px 32px;
+        display: flex;
+        flex-direction: column;
+        height: 188px;
         border: $BORDER_1_GREY;
         box-sizing: border-box;
 
         &__title {
+            height: 32px;
             padding: 8px;
             box-sizing: border-box;
             color: $GRAPHITE_DARK;
@@ -49,6 +58,10 @@ export default {
         &__placeholder {
             justify-self: center;
             align-self: center;
+        }
+
+        &__placeholder, & > .image {
+            height: 156px;
         }
     }
 </style>

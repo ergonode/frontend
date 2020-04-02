@@ -3,39 +3,51 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="action-link"
-        @click="onEdit">
+    <GridCell
+        :column="column"
+        :row="row"
+        :selected="isSelected"
+        @edit="onEdit">
         <IconEdit />
-    </div>
+    </GridCell>
 </template>
 
 <script>
+import IconEdit from '@Core/components/Icons/Actions/IconEdit';
+import GridCell from '@Core/components/Grid/GridCell';
+
 export default {
     name: 'GridEditRowCell',
     components: {
-        IconEdit: () => import('@Core/components/Icons/Actions/IconEdit'),
+        GridCell,
+        IconEdit,
     },
     props: {
-        params: {
+        isSelected: {
+            type: Boolean,
+            default: false,
+        },
+        link: {
             type: Object,
+            required: true,
+        },
+        column: {
+            type: Number,
+            required: true,
+        },
+        row: {
+            type: Number,
             required: true,
         },
     },
     methods: {
         onEdit() {
-            this.$emit('edit', this.params);
+            if (this.link) {
+                const args = this.link.href.split('/');
+
+                this.$emit('edit', args);
+            }
         },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .action-link {
-        display: flex;
-        flex: 1;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-    }
-</style>

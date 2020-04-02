@@ -4,6 +4,7 @@
  */
 <template>
     <button
+        :style="floatingStyle"
         :class="fabClasses"
         :disabled="disabled"
         @mouseenter="onFocus"
@@ -56,6 +57,14 @@ export default {
             type: Boolean,
             default: false,
         },
+        /**
+         * The floating state, absolute position relative to parent
+         * @values top, left, bottom, right
+         */
+        floating: {
+            type: Object,
+            default: null,
+        },
     },
     data() {
         return {
@@ -75,6 +84,14 @@ export default {
             }
 
             return WHITE;
+        },
+        floatingStyle() {
+            if (!this.floating) return null;
+
+            return {
+                position: 'absolute',
+                ...this.floating,
+            };
         },
         fabClasses() {
             return [
@@ -97,7 +114,6 @@ export default {
 
 <style lang="scss" scoped>
     .fab {
-        position: relative;
         display: flex;
         flex-shrink: 0;
         justify-content: center;

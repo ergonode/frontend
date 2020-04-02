@@ -7,7 +7,7 @@
         title="General"
         :fields-keys="[codeFieldKey, typeFieldKey, groupsFieldKey, paramsFieldKey]">
         <template #body="{ errorMessages }">
-            <FormGroup>
+            <FormSection>
                 <TextField
                     :value="code"
                     solid
@@ -39,11 +39,10 @@
                     :options="attributeTypeOptions"
                     :error-messages="errorMessages[typeFieldKey]"
                     @input="onTypeChange" />
-            </FormGroup>
+            </FormSection>
             <template v-if="isMultilingual || hasParams">
                 <Divider />
-                <FormGroup
-                    title="Configuration">
+                <FormSection title="Configuration">
                     <FadeGroupTransition>
                         <Toggler
                             v-if="isMultilingual"
@@ -73,7 +72,7 @@
                             key="attrHasOptions"
                             :disabled="isDisabledByPrivileges" />
                     </FadeGroupTransition>
-                </FormGroup>
+                </FormSection>
             </template>
         </template>
     </Form>
@@ -92,7 +91,7 @@ export default {
     components: {
         AttributeOptionKeyValues: () => import('@Attributes/components/Forms/Sections/AttributeOptionKeyValues'),
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
         TextField: () => import('@Core/components/Inputs/TextField'),
@@ -154,6 +153,10 @@ export default {
             return Object.values(this.attrTypes);
         },
         attributeParametersOptions() {
+            // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
+            if (Array.isArray(this.params)) {
+                return this.params.map(data => data.name);
+            }
             return Object.values(this.params);
         },
         codeFieldKey() {

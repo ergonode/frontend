@@ -7,7 +7,7 @@
         title="General"
         :fields-keys="[typeIdFieldKey, codeFieldKey]">
         <template #body="{ errorMessages }">
-            <FormGroup>
+            <FormSection>
                 <TextField
                     :value="code"
                     solid
@@ -28,7 +28,7 @@
                     :options="types"
                     :error-messages="errorMessages[typeIdFieldKey]"
                     @input="setType" />
-            </FormGroup>
+            </FormSection>
         </template>
     </Form>
 </template>
@@ -40,7 +40,7 @@ export default {
     name: 'CollectionForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
     },

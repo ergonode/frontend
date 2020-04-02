@@ -6,8 +6,7 @@
     <GridCell
         :row="rowIndex"
         :column="columnIndex"
-        :locked="true"
-        :spacebar-edition="false">
+        :locked="true">
         <Component
             :is="headerComponent"
             v-bind="headerComponentProps"
@@ -88,3 +87,12 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .grid-cell {
+        position: sticky;
+        top: 0;
+        z-index: $Z_INDEX_LVL_2;
+        background-color: $WHITESMOKE;
+    }
+</style>

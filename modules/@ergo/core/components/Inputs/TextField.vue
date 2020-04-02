@@ -16,7 +16,7 @@
                 :value="value"
                 :placeholder="placeholderValue"
                 :autofocus="autofocus"
-                :type="inputType"
+                :type="input.type"
                 :min="minRange"
                 :max="maxRange"
                 autocomplete="on"
@@ -96,7 +96,7 @@ export default {
             default: null,
         },
         errorMessages: {
-            type: [String, Array],
+            type: String,
             default: '',
         },
         hint: {
@@ -129,18 +129,13 @@ export default {
         },
     },
     computed: {
-        inputType() {
-            const { type } = this.input;
-
-            return type;
-        },
         minRange() {
-            if (this.inputType === 'number') return this.input.min;
+            if (this.input.type === 'number') return this.input.min;
 
             return null;
         },
         maxRange() {
-            if (this.inputType === 'number') return this.input.max;
+            if (this.input === 'number') return this.input.max;
 
             return null;
         },

@@ -26,9 +26,10 @@ export default {
             elements,
         }) => {
             const { language: languageCode } = rootState.authentication.user;
-            const attributesId = elements.map(el => el.properties.attribute_id);
+            // TODO: BE has no filter via ID's - we gonna wait for them
+            // const attributesId = elements.map(el => el.properties.attribute_id);
             const params = {
-                filter: `id=${attributesId.join(',')}`,
+                // filter: `id=${attributesId.join(',')}`,
                 view: 'list',
             };
 
@@ -97,7 +98,7 @@ export default {
                 const attribute = textAttributes.find(({ id }) => id === defaultTextAttributeId);
 
                 if (attribute) {
-                    commit(types.SET_DEFAULT_IMAGE_ATTRIBUTE, attribute);
+                    commit(types.SET_DEFAULT_TEXT_ATTRIBUTE, attribute);
                 }
             }
         });

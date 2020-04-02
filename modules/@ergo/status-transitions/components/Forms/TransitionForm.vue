@@ -7,7 +7,7 @@
         title="Status change"
         :fields-keys="[roleFieldKey, destinationFieldKey, sourceFieldKey]">
         <template #body="{ errorMessages }">
-            <FormGroup>
+            <FormSection>
                 <TranslationSelect
                     :value="source"
                     :solid="true"
@@ -30,9 +30,9 @@
                     :disabled="isDisabled || isDisabledByPrivileges"
                     :error-messages="errorMessages[destinationFieldKey]"
                     @input="setDestination" />
-            </FormGroup>
+            </FormSection>
             <Divider />
-            <FormGroup title="Send notification to">
+            <FormSection title="Send notification to">
                 <TranslationSelect
                     :value="transitionRoles"
                     :solid="true"
@@ -44,7 +44,7 @@
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[roleFieldKey]"
                     @input="setRoles" />
-            </FormGroup>
+            </FormSection>
         </template>
     </Form>
 </template>
@@ -59,7 +59,7 @@ export default {
     components: {
         TranslationSelect,
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         Divider: () => import('@Core/components/Dividers/Divider'),
     },
     computed: {

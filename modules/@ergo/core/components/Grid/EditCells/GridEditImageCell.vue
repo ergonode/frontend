@@ -4,8 +4,9 @@
  */
 <template>
     <div class="image-cell">
-        <UploadImage
+        <UploadImageFile
             :value="value"
+            height="unset"
             @upload="updateValue"
             @remove="updateValue" />
     </div>
@@ -15,7 +16,7 @@
 export default {
     name: 'GridEditImageCell',
     components: {
-        UploadImage: () => import('@Core/components/Inputs/Image/UploadImage'),
+        UploadImageFile: () => import('@Core/components/Inputs/UploadFile/UploadImageFile'),
     },
     props: {
         value: {
@@ -43,7 +44,6 @@ export default {
 
 <style lang="scss" scoped>
     .image-cell {
-        width: 300px;
         background-color: $WHITE;
         box-shadow: $ELEVATOR_6_DP;
     }

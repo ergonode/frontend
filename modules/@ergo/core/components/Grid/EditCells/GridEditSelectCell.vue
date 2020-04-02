@@ -11,7 +11,6 @@
         :clearable="true"
         :autofocus="true"
         :multiselect="multiselect"
-        :dismissible="false"
         :error-messages="errorMessages"
         :options="options"
         @focus="onFocus"

@@ -9,7 +9,6 @@
         :locked="!isEditingAllowed"
         :error="errorValue !== null"
         :draft="draftValue !== null"
-        :spacebar-edition="false"
         :copyable="isEditingAllowed"
         :selected="isSelected"
         @copy="onDataCopy">
@@ -54,7 +53,7 @@ export default {
         GridEditDataCell: () => import('@Core/components/Grid/EditCells/GridEditDataCell'),
     },
     props: {
-        editingPrivilegeAllowed: {
+        isEditable: {
             type: Boolean,
             default: true,
         },
@@ -102,7 +101,7 @@ export default {
             return this.column.type === COLUMN_TYPE.MULTI_SELECT;
         },
         isEditingAllowed() {
-            return this.column.editable && this.editingPrivilegeAllowed;
+            return this.column.editable && this.isEditable;
         },
         infoComponent() {
             const { type } = this.column;

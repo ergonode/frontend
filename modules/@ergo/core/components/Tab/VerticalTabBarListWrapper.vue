@@ -5,9 +5,6 @@
 <template>
     <div class="list-wrapper">
         <slot />
-        <div class="list-wrapper__fab">
-            <slot name="fab" />
-        </div>
     </div>
 </template>
 
@@ -25,11 +22,5 @@ export default {
         flex: 1;
         flex-direction: column;
         width: 275px;
-
-        &__fab {
-            position: absolute;
-            bottom: 16px;
-            right: 16px;
-        }
     }
 </style>

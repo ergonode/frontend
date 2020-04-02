@@ -5,7 +5,7 @@
 <template>
     <Form title="General">
         <template #body>
-            <FormGroup>
+            <FormSection>
                 <TranslationSelect
                     :value="selectedLanguages"
                     :options="languages"
@@ -18,7 +18,7 @@
                     :drop-down-height="400"
                     @input="setSelectedLanguages"
                     @search="getFilteredData" />
-            </FormGroup>
+            </FormSection>
         </template>
     </Form>
 </template>
@@ -30,7 +30,7 @@ export default {
     name: 'MainSettingsForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
     },
     computed: {

@@ -3,20 +3,20 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import GridColumnGhost from '@Core/components/Grid/Columns/GridColumnGhost';
+import GridGhostColumn from '@Core/components/Grid/Columns/GridGhostColumn';
 import {
     WHITE, GRAPHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
 
-describe('Grid/GridColumnGhost', () => {
+describe('Grid/GridGhostColumn', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(GridColumnGhost);
+        wrapper = shallowMount(GridGhostColumn);
     });
 
     it('Component is named well', () => {
-        expect(typeof GridColumnGhost.name).toBe('string');
-        expect(GridColumnGhost.name).toEqual('GridColumnGhost');
+        expect(typeof GridGhostColumn.name).toBe('string');
+        expect(GridGhostColumn.name).toEqual('GridGhostColumn');
     });
 
     describe('Mouse position', () => {

@@ -12,7 +12,7 @@
         <template #body>
             <Form>
                 <template #body>
-                    <FormGroup>
+                    <FormSection>
                         <TextField
                             :value="title"
                             solid
@@ -21,7 +21,7 @@
                             required
                             :error-messages="error"
                             @input="onTitleChange" />
-                    </FormGroup>
+                    </FormSection>
                 </template>
             </Form>
         </template>
@@ -44,14 +44,14 @@ import ModalForm from '@Core/components/Modal/ModalForm';
 import TextField from '@Core/components/Inputs/TextField';
 import Button from '@Core/components/Buttons/Button';
 import Form from '@Core/components/Form/Form';
-import FormGroup from '@Core/components/Form/FormGroup';
+import FormSection from '@Core/components/Form/FormSection';
 import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
 
 export default {
     name: 'SectionTemplateModalForm',
     components: {
         IconFontSize,
-        FormGroup,
+        FormSection,
         Form,
         TextField,
         ModalForm,

@@ -26,7 +26,9 @@
 <script>
 import { mapActions } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
-import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
+import { MODAL_ACTION } from '@Core/defaults/modals';
+
+import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
 
 const createAttributeGroup = () => import('@Attributes/services/createAttributeGroup.service');
 
@@ -37,14 +39,14 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         AttributeGroupForm: () => import('@Attributes/components/Forms/AttributeGroupForm'),
     },
-    mixins: [createModalFormMixin({ namespace: 'Attribute group', createRequest: createAttributeGroup })],
+    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Attribute group', request: createAttributeGroup })],
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
     },
     methods: {
-        ...mapActions('attribute', [
+        ...mapActions('attributeGroup', [
             'clearStorage',
         ]),
         onClose() {
@@ -52,14 +54,14 @@ export default {
             this.$emit('close');
         },
         onCreate() {
-            this.onCreateRequest(() => {
+            this.onActionRequest(() => {
                 this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.onCreateRequest((id) => {
+            this.onActionRequest((id) => {
                 this.$router.push({
-                    name: 'attribute-group-id',
+                    name: 'attribute-group-id-general',
                     params: {
                         id,
                     },

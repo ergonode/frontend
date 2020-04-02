@@ -9,7 +9,7 @@
         </template>
         <template #grid>
             <Grid
-                :editing-privilege-allowed="isUserAllowedToUpdate"
+                :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"
@@ -20,9 +20,10 @@
                 :is-header-visible="true"
                 :is-basic-filters="true"
                 :is-draggable="true"
-                :is-edit-column="true"
+                :is-action-column="true"
                 :is-select-column="true"
                 @editRow="onEditRow"
+                @removeRowAtIndex="removeRowAtIndex"
                 @swapColumns="swapColumnsPosition"
                 @insertColumn="insertColumnAtIndex"
                 @removeColumn="removeColumnAtIndex"
@@ -113,8 +114,7 @@ export default {
             'removeDraft',
             'forceDraftsMutation',
         ]),
-        onEditRow({ links: { value: { edit } } }) {
-            const args = edit.href.split('/');
+        onEditRow(args) {
             const lastIndex = args.length - 1;
 
             this.$router.push({ name: 'product-id-general', params: { id: args[lastIndex] } });

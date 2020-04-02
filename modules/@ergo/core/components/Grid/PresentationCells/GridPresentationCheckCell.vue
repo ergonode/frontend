@@ -3,20 +3,21 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="check-cell">
-        <CheckBox
-            :value="value"
-            :disabled="disabled"
-            @input="onSelect" />
-    </div>
+    <CheckBox
+        class="check-cell"
+        :value="value"
+        :disabled="disabled"
+        @input="onSelect" />
 </template>
 
 <script>
 
+import CheckBox from '@Core/components/Inputs/CheckBox';
+
 export default {
     name: 'GridPresentationCheckCell',
     components: {
-        CheckBox: () => import('@Core/components/Inputs/CheckBox'),
+        CheckBox,
     },
     props: {
         value: {
@@ -38,10 +39,6 @@ export default {
 
 <style lang="scss" scoped>
     .check-cell {
-        display: flex;
-        flex: 1;
-        justify-content: center;
-        align-items: center;
-        padding: 8px;
+        margin: 12px;
     }
 </style>

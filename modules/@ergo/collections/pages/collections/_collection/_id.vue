@@ -53,8 +53,8 @@ export default {
             this.$router.push(getParentRoutePath(this.$route));
         },
         onRemove() {
-            const isConfirm = confirm('Are you sure you want to delete this group?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirm) {
+            const isConfirmed = confirm('Are you sure you want to delete this group?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirmed) {
                 this.removeCollection({
                     onSuccess: this.onRemoveSuccess,
                 });
@@ -70,11 +70,11 @@ export default {
             this.updateCollection({
                 id: this.id,
                 data: { typeId: this.type.id, name, description },
-                onSuccess: this.onUpdateAttributeGroupSuccess,
+                onSuccess: this.onUpdateCollectionSuccess,
                 onError: this.onError,
             });
         },
-        onUpdateAttributeGroupSuccess() {
+        onUpdateCollectionSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product collection updated' });
         },

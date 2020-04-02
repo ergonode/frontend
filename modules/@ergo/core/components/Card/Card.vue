@@ -9,7 +9,7 @@
                 class="card__header"
                 v-text="title" />
         </section>
-        <section>
+        <section class="card__body">
             <slot />
         </section>
     </div>
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-    name: 'Modal',
+    name: 'Card',
     props: {
         title: {
             type: String,
@@ -38,6 +38,10 @@ export default {
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_24_32;
             border-bottom: $BORDER_1_GREY;
+        }
+
+        &__body {
+            padding: 24px;
         }
     }
 </style>

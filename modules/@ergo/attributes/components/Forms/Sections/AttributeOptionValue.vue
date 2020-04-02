@@ -13,11 +13,13 @@
             index,
             languageCode,
             value,
+            id: option.id,
         })" />
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { isObject, isEmpty } from '@Core/models/objectWrapper';
 
 export default {
     name: 'AttributeOptionValue',
@@ -48,11 +50,16 @@ export default {
         }),
         translationOptionValue() {
             if (!this.isMultilingual) {
+                if (isObject(this.option.value)) {
+                    return !isEmpty(this.option.value)
+                        ? this.option.value[Object.keys(this.option.value)[0]]
+                        : '';
+                }
                 return this.option.value;
             }
 
             if (this.option.value) {
-                return this.option.value[this.languageCode];
+                return this.option.value[this.languageCode] || '';
             }
 
             return '';

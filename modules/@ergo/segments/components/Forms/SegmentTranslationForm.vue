@@ -6,7 +6,7 @@
     <Card :title="selectedLanguage">
         <Form :fields-keys="[descriptionKeyField, nameKeyField]">
             <template #body="{ errorMessages }">
-                <FormGroup>
+                <FormSection>
                     <TextField
                         :value="translations.name[languageCode]"
                         solid
@@ -24,7 +24,7 @@
                         :error-messages="errorMessages[descriptionKeyField]"
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'description')" />
-                </FormGroup>
+                </FormSection>
             </template>
         </Form>
     </Card>
@@ -35,14 +35,14 @@ import translationCardMixin from '@Core/mixins/card/translationCardMixin';
 import TextField from '@Core/components/Inputs/TextField';
 import TextArea from '@Core/components/Inputs/TextArea';
 import Card from '@Core/components/Card/Card';
-import FormGroup from '@Core/components/Form/FormGroup';
+import FormSection from '@Core/components/Form/FormSection';
 import Form from '@Core/components/Form/Form';
 
 export default {
     name: 'SegmentTranslationForm',
     components: {
         Form,
-        FormGroup,
+        FormSection,
         Card,
         TextField,
         TextArea,

@@ -9,6 +9,7 @@ export default () => ({
     type: null,
     parameter: null,
     options: {},
+    updatedOptions: {},
     groupOptions: [],
     isMultilingual: true,
 });

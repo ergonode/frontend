@@ -6,15 +6,16 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :editing-privilege-allowed="$hasAccess(['SEGMENT_UPDATE'])"
+                :is-editable="$hasAccess(['SEGMENT_UPDATE'])"
                 :columns="columns"
                 :data-count="filtered"
                 :cell-values="cellValues"
                 :row-ids="rowIds"
                 :row-links="rowLinks"
                 :is-basic-filters="true"
-                :is-edit-column="true"
+                :is-action-column="true"
                 @editRow="onEditRow"
+                @removeRowAtIndex="removeRowAtIndex"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>
@@ -32,8 +33,7 @@ export default {
     },
     mixins: [fetchGridDataMixin({ path: 'segments' })],
     methods: {
-        onEditRow({ links: { value: { edit } } }) {
-            const args = edit.href.split('/');
+        onEditRow(args) {
             const lastIndex = args.length - 1;
 
             this.$router.push({ name: 'segment-id-general', params: { id: args[lastIndex] } });

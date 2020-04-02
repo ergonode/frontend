@@ -16,7 +16,7 @@ import { mapState, mapActions } from 'vuex';
 import { isEmpty, getKeyByValue } from '@Core/models/objectWrapper';
 import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
-import { getParsedOptions, getParsedParameterKeys } from '@Attributes/models/attributeMapper';
+import { getParsedParameterKeys } from '@Attributes/models/attributeMapper';
 import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
@@ -30,9 +30,10 @@ export default {
     },
     async fetch({ store, params }) {
         await store.dispatch('attribute/getAttributeGroups');
-        await store.dispatch('attribute/getAttributeById', {
-            attributeId: params.id,
-        });
+        await Promise.all([
+            store.dispatch('attribute/getAttributeById', { id: params.id }),
+            store.dispatch('attribute/getAttributeOptionsById', { id: params.id }),
+        ]);
     },
     computed: {
         ...mapState('attribute', {
@@ -82,8 +83,8 @@ export default {
             this.$router.push({ name: 'attributes-grid' });
         },
         onRemove() {
-            const isConfirm = confirm('Are you sure you want to delete this attribute?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirm) {
+            const isConfirmed = confirm('Are you sure you want to delete this attribute?'); /* eslint-disable-line no-restricted-globals */
+            if (isConfirmed) {
                 this.removeAttribute({
                     onSuccess: this.onRemoveSuccess,
                 });
@@ -110,15 +111,21 @@ export default {
                     this.$addAlert({ type: ALERT_TYPE.WARNING, message: 'Option code must be unique' });
                     return;
                 }
-
-                propertiesToUpdate.options = getParsedOptions(this.options);
             }
 
             if (this.parameter) {
-                const paramKey = getKeyByValue(getParamsOptionsForType(
+                let paramKey = null;
+                const paramsOptions = getParamsOptionsForType(
                     typeKey,
                     this.$store.state.dictionaries,
-                ), this.parameter);
+                );
+
+                // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
+                if (Array.isArray(paramsOptions)) {
+                    paramKey = paramsOptions.find(option => option.name === this.parameter).id;
+                } else {
+                    paramKey = getKeyByValue(paramsOptions, this.parameter);
+                }
 
                 propertiesToUpdate.parameters = getParsedParameterKeys({
                     selectedType: typeKey,

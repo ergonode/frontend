@@ -15,7 +15,7 @@
             roleIdFieldKey,
         ]">
         <template #body="{ errorMessages }">
-            <FormGroup>
+            <FormSection>
                 <TextField
                     :value="email"
                     solid
@@ -93,7 +93,7 @@
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[roleIdFieldKey]"
                     @input="onRoleChange" />
-            </FormGroup>
+            </FormSection>
         </template>
     </Form>
 </template>
@@ -105,7 +105,7 @@ export default {
     name: 'UserForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
         Select: () => import('@Core/components/Inputs/Select/Select'),

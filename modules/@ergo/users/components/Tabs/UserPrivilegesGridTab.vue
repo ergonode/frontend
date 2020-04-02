@@ -6,7 +6,6 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :editing-privilege-allowed="false"
                 :columns="columns"
                 :cell-values="cellValues"
                 :row-ids="rowIds"
@@ -14,7 +13,6 @@
                 <template #cell="{ column, columnIndex, rowId, rowIndex, cellData }">
                     <GridCell
                         :key="`${rowId}-${column.id}`"
-                        :spacebar-edition="false"
                         :column="columnIndex"
                         :row="rowIndex"
                         :locked="true">

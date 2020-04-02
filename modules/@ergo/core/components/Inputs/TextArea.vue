@@ -94,7 +94,7 @@ export default {
             default: null,
         },
         errorMessages: {
-            type: [String, Array],
+            type: String,
             default: '',
         },
         hint: {

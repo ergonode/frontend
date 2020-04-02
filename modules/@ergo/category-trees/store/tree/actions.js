@@ -23,9 +23,11 @@ export default {
                     $axios: this.app.$axios,
                     path: `${userLanguageCode}/categories`,
                     params: {
-                        limit: categories.length,
+                        // limit: categories.length,
+                        limit: 99999,
                         offset: 0,
-                        filter: `category_id=${categories.map(category => category.id).join(',')}`,
+                        // TODO: BE has no filter via ID's - we gonna wait for them
+                        // filter: `category_id=${categories.map(category => category.id).join(',')}`,
                         field: 'code',
                         order: 'ASC',
                     },

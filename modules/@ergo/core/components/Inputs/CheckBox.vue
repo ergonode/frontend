@@ -86,6 +86,7 @@ export default {
         grid-auto-flow: column;
         column-gap: 8px;
         align-items: center;
+        margin: 4px;
 
         & label {
             position: relative;

@@ -39,7 +39,7 @@
         <CreateProductTemplateModalForm
             v-if="isCreateProductTemplateVisible"
             @close="onCloseModal"
-            @created="onCreatedProductTemplate" />
+            @create="onCreatedProductTemplate" />
     </Page>
 </template>
 

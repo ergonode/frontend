@@ -6,13 +6,15 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :editing-privilege-allowed="$hasAccess(['PRODUCT_COLLECTION_UPDATE'])"
+                :is-editable="$hasAccess(['PRODUCT_COLLECTION_UPDATE'])"
                 :columns="columns"
                 :data-count="filtered"
                 :cell-values="cellValues"
                 :row-ids="rowIds"
                 :row-links="rowLinks"
                 :is-basic-filters="true"
+                :is-action-column="true"
+                @removeRowAtIndex="removeRowAtIndex"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>

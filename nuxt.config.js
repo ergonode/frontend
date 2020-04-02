@@ -95,6 +95,12 @@ module.exports = {
             config.node = {
                 fs: 'empty',
             };
+
+            for (let i = 0; i < config.plugins.length; i += 1) {
+                if (config.plugins[i].constructor.name === 'HtmlWebpackPlugin') {
+                    config.plugins[i].options.chunksSortMode = 'none';
+                }
+            }
         },
         optimization: {
             splitChunks: {

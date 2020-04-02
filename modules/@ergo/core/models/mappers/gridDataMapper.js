@@ -208,14 +208,13 @@ export function getMappedRows(rows) {
     for (let i = 0; i < length; i += 1) {
         const { id, _links } = rows[i];
 
-        if (typeof id !== 'object') {
-            const index = i + 1;
-            rowIds.push(index);
-            rowLinks.push({ id: index, links: _links });
-        } else {
-            rowIds.push(id.value);
-            rowLinks.push({ id: id.value, links: _links });
-        }
+        rowIds.push(
+            typeof id !== 'object'
+                ? i + 1
+                : id.value,
+        );
+
+        rowLinks.push(_links ? _links.value : {});
     }
 
     return { rowIds, rowLinks };

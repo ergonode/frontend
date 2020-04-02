@@ -103,7 +103,6 @@ export default {
         grid-template-columns: 352px;
         grid-auto-flow: row;
         grid-row-gap: 24px;
-        padding: 24px;
 
         &__title {
             color: $GRAPHITE_DARK;
@@ -124,6 +123,7 @@ export default {
             display: grid;
             grid-auto-flow: row;
             grid-row-gap: 8px;
+            overflow: auto;
 
             &__header {
                 color: $GRAPHITE_DARK;

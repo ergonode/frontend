@@ -26,7 +26,8 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
-import createModalFormMixin from '@Core/mixins/modals/createModalFormMixin';
+import { MODAL_ACTION } from '@Core/defaults/modals';
+import actionModalFormMixin from '@Core/mixins/modals/actionModalFormMixin';
 
 const createStatusTransition = () => import('@Transitions/services/createStatusTransition.service');
 
@@ -37,7 +38,7 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
         TransitionForm: () => import('@Transitions/components/Forms/TransitionForm'),
     },
-    mixins: [createModalFormMixin({ namespace: 'Status transition', createRequest: createStatusTransition })],
+    mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Status transition', request: createStatusTransition })],
     computed: {
         ...mapState('transitions', {
             source: state => state.source,
@@ -74,12 +75,12 @@ export default {
             this.$emit('close');
         },
         onCreate() {
-            this.onCreateRequest(() => {
+            this.onActionRequest(() => {
                 this.clearStorage();
             });
         },
         onCreatedAndEdit() {
-            this.onCreateRequest(() => {
+            this.onActionRequest(() => {
                 this.$router.push({
                     name: 'transition-id-general',
                     params: {

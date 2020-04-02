@@ -29,7 +29,7 @@
         <CreateCategoryTreeModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
-            @created="onCreatedData" />
+            @create="onCreatedData" />
     </Page>
 </template>
 

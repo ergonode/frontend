@@ -7,7 +7,7 @@
         title="General"
         :fields-key="[codeFieldKey]">
         <template #body="{ errorMessages }">
-            <FormGroup>
+            <FormSection>
                 <TextField
                     :value="code"
                     solid
@@ -18,7 +18,7 @@
                     label="System name"
                     hint="Tree code must be unique"
                     @input="setTreeCode" />
-            </FormGroup>
+            </FormSection>
         </template>
     </Form>
 </template>
@@ -30,7 +30,7 @@ export default {
     name: 'CategoryTreeForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormGroup: () => import('@Core/components/Form/FormGroup'),
+        FormSection: () => import('@Core/components/Form/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     computed: {
