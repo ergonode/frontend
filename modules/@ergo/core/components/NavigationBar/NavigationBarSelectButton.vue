@@ -21,7 +21,6 @@
 <script>
 import {
     isMouseOutOfBoundsElement,
-    getPositionForBrowser,
 } from '@Core/models/drag_and_drop/helpers';
 
 export default {
@@ -36,6 +35,13 @@ export default {
             isClickedOutside: false,
         };
     },
+    watch: {
+        $route(to, from) {
+            if (from.name !== to.name) {
+                this.isFocused = false;
+            }
+        },
+    },
     destroyed() {
         window.removeEventListener('click', this.onClickOutside);
     },
@@ -49,10 +55,11 @@ export default {
             let isClickedInsideMenu = false;
 
             if (this.isFocused) {
-                const { xPos, yPos } = getPositionForBrowser(event);
+                const { pageX, pageY } = event;
                 const { menu } = this.$refs;
 
-                isClickedInsideMenu = !isMouseOutOfBoundsElement(menu, xPos, yPos);
+                isClickedInsideMenu = !isMouseOutOfBoundsElement(menu, pageX, pageY);
+
                 if (!isClickedInsideMenu) {
                     this.isFocused = false;
                 }
