@@ -10,9 +10,9 @@
         <template #body="{ errorMessages }">
             <Component
                 v-for="element in schemaComponents"
+                :key="element.key"
                 :is="element.component"
                 v-bind="{ ...element.props, errorMessages: errorMessages[element.key] }"
-                :key="element.key"
                 @input="onValueChange" />
         </template>
     </Form>
