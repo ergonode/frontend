@@ -77,7 +77,7 @@ export default {
         });
     },
     getProductTemplate({ commit }, { languageCode, id }) {
-        return this.app.$axios.$get(`${languageCode}/products/${id}/template`).then(async ({ elements }) => {
+        this.app.$axios.$get(`${languageCode}/products/${id}/template`).then(async ({ elements }) => {
             const templateElements = elements.map(async (element) => {
                 const { type, properties: { attribute_id } } = element;
 
