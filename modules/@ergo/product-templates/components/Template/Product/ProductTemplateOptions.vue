@@ -56,13 +56,17 @@ export default {
     methods: {
         initializeValues(value) {
             if (Array.isArray(value)) {
-                this.localValue = value.map(val => ({
-                    id: val,
-                    key: val,
-                    value: this.options.find(option => option.key === val).value,
-                }));
+                this.localValue = value.map((val) => {
+                    const option = this.options.find(opt => opt.id === val) || {};
+
+                    return {
+                        id: val,
+                        key: option.key || val,
+                        value: option.value || null,
+                    };
+                });
             } else if (value) {
-                this.localValue = this.options.find(option => option.key === value);
+                this.localValue = this.options.find(option => option.id === value);
             } else {
                 this.localValue = this.multiselect ? [] : null;
             }
@@ -74,9 +78,9 @@ export default {
             this.localValue = value;
 
             if (Array.isArray(value)) {
-                this.debounceFunc(value.length > 0 ? value.map(val => val.key) : '');
+                this.debounceFunc(value.length > 0 ? value.map(val => val.id) : '');
             } else {
-                this.debounceFunc(value.key);
+                this.debounceFunc(value.id);
             }
         },
     },

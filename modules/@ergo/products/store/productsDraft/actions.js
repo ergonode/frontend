@@ -3,8 +3,10 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedLayoutElements,
+    getMappedLayoutSectionElement,
+    getMappedLayoutElement,
 } from '@Products/models/productMapper';
+import { hasOptions } from '@Attributes/models/attributeTypes';
 import { types } from './mutations';
 
 export default {
@@ -30,18 +32,19 @@ export default {
             commit(types.SET_PRODUCT_DRAFT, draft);
         });
     },
-    getProduct({ commit, state }, { languageCode, id }) {
+    getProductById({ commit, state, rootState }, id) {
         const { categories, templates } = state;
+        const { language: userLanguageCode } = rootState.authentication.user;
         const parseCategories = (category) => {
             const {
                 id: categoryId, name, code,
-            } = categories.find(c => c.code === category);
+            } = categories.find(c => c.id === category);
 
             return {
                 id: categoryId,
                 key: code,
                 value: name,
-                hint: name ? `#${code} ${this.userLanguageCode}` : '',
+                hint: name ? `#${code} ${userLanguageCode}` : '',
             };
         };
         const parseTemplate = (templateId) => {
@@ -52,15 +55,15 @@ export default {
             };
         };
 
-        return this.app.$axios.$get(`${languageCode}/products/${id}`).then(({
+        return this.app.$axios.$get(`${userLanguageCode}/products/${id}`).then(({
             design_template_id: templateId,
-            categories: categoryCodes,
+            categories: categoryIds,
             sku,
             status,
             workflow = [],
         }) => {
-            if (categoryCodes) {
-                commit(types.SET_PRODUCT_CATEGORIES, categoryCodes.map(parseCategories));
+            if (categoryIds) {
+                commit(types.SET_PRODUCT_CATEGORIES, categoryIds.map(parseCategories));
             }
 
             if (templateId) {
@@ -73,10 +76,31 @@ export default {
             commit(types.SET_PRODUCT_WORKFLOW, workflow);
         });
     },
-    getProductTemplate({ commit }, { languageCode, id }) {
-        return this.app.$axios.$get(`${languageCode}/products/${id}/template`).then(({ elements }) => {
-            commit(types.SET_LAYOUT_ELEMENTS, getMappedLayoutElements(elements));
+    async getProductTemplate({ commit }, { languageCode, id }) {
+        const { elements } = await this.app.$axios.$get(`${languageCode}/products/${id}/template`);
+        const templateElements = elements.map(async (element) => {
+            const { type, properties: { attribute_id } } = element;
+
+            if (hasOptions(type)) {
+                const elementWithOptions = await this.app.$axios.$get(`${languageCode}/attributes/${attribute_id}/options`)
+                    .then(options => ({
+                        ...element,
+                        properties: {
+                            ...element.properties,
+                            options,
+                        },
+                    }));
+                return getMappedLayoutElement(languageCode, elementWithOptions);
+            }
+            if (type === 'SECTION') {
+                return getMappedLayoutSectionElement(element);
+            }
+
+            return getMappedLayoutElement(languageCode, element);
         });
+        const preparedElements = await Promise.all(templateElements);
+
+        commit(types.SET_LAYOUT_ELEMENTS, preparedElements);
     },
     getTemplates({ commit, rootState }) {
         const { authentication: { user: { language } } } = rootState;
