@@ -86,9 +86,6 @@ export default {
     },
     mixins: [categoryManagementPageBaseMixin],
     computed: {
-        ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
-        }),
         ...mapState('productsDraft', {
             status: state => state.status,
             workflow: state => state.workflow,
@@ -109,17 +106,19 @@ export default {
     methods: {
         ...mapActions('productsDraft', [
             'updateProductStatus',
-            'getProduct',
+            'getProductById',
         ]),
         onUpdateStatus({ code }) {
             const isConfirmed = confirm(`Are you sure you want to change status to ${code}?`); /* eslint-disable-line no-restricted-globals */
+
             if (isConfirmed) {
                 this.updateProductStatus({
                     value: code,
                     attributeId: this.status.attribute_id,
                     onSuccess: () => {
                         const { params: { id } } = this.$route;
-                        this.getProduct({ languageCode: this.userLanguageCode, id });
+
+                        this.getProductById(id);
                         this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Status updated' });
                     },
                 });
