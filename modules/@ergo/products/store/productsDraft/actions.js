@@ -76,33 +76,31 @@ export default {
             commit(types.SET_PRODUCT_WORKFLOW, workflow);
         });
     },
-    getProductTemplate({ commit }, { languageCode, id }) {
-        this.app.$axios.$get(`${languageCode}/products/${id}/template`).then(async ({ elements }) => {
-            const templateElements = elements.map(async (element) => {
-                const { type, properties: { attribute_id } } = element;
+    async getProductTemplate({ commit }, { languageCode, id }) {
+        const { elements } = await this.app.$axios.$get(`${languageCode}/products/${id}/template`);
+        const templateElements = elements.map(async (element) => {
+            const { type, properties: { attribute_id } } = element;
 
-                if (hasOptions(type)) {
-                    const elementWithOptions = await this.app.$axios.$get(`${languageCode}/attributes/${attribute_id}/options`)
-                        .then(options => ({
-                            ...element,
-                            properties: {
-                                ...element.properties,
-                                options,
-                            },
-                        }));
-                    return getMappedLayoutElement(languageCode, elementWithOptions);
-                }
-                if (type === 'SECTION') {
-                    return getMappedLayoutSectionElement(element);
-                }
+            if (hasOptions(type)) {
+                const elementWithOptions = await this.app.$axios.$get(`${languageCode}/attributes/${attribute_id}/options`)
+                    .then(options => ({
+                        ...element,
+                        properties: {
+                            ...element.properties,
+                            options,
+                        },
+                    }));
+                return getMappedLayoutElement(languageCode, elementWithOptions);
+            }
+            if (type === 'SECTION') {
+                return getMappedLayoutSectionElement(element);
+            }
 
-                return getMappedLayoutElement(languageCode, element);
-            });
-
-            Promise.all(templateElements).then((preparedElements) => {
-                commit(types.SET_LAYOUT_ELEMENTS, preparedElements);
-            });
+            return getMappedLayoutElement(languageCode, element);
         });
+        const preparedElements = await Promise.all(templateElements);
+
+        commit(types.SET_LAYOUT_ELEMENTS, preparedElements);
     },
     getTemplates({ commit, rootState }) {
         const { authentication: { user: { language } } } = rootState;
