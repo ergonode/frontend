@@ -44,6 +44,7 @@
 
 <script>
 import { format as formatDate } from 'date-fns';
+import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
 import Select from '@Core/components/Inputs/Select/Select';
 
 export default {
@@ -60,7 +61,7 @@ export default {
         },
         format: {
             type: String,
-            default: 'YY-MM-DD',
+            default: DEFAULT_FORMAT,
         },
         solid: {
             type: Boolean,

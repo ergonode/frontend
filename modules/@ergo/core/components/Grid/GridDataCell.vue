@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridCell
+    <GridTableCell
         :row="rowIndex"
         :column="columnIndex"
         :locked="!isEditingAllowed"
@@ -16,7 +16,7 @@
             <Component
                 :is="infoComponent"
                 v-bind="infoComponentProps" />
-            <GridEditActivatorCell v-if="isEditing">
+            <GridActivatorEditCell v-if="isEditing">
                 <GridEditDataCell
                     :row-id="rowId"
                     :multiselect="isMultiSelect"
@@ -31,16 +31,16 @@
                     :fixed-height="$el.offsetHeight"
                     @focus="onFocus"
                     @updateValue="onUpdateDraft" />
-            </GridEditActivatorCell>
+            </GridActivatorEditCell>
         </template>
-    </GridCell>
+    </GridTableCell>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import { hasParams } from '@Attributes/models/attributeTypes';
 import { COLUMN_TYPE } from '@Core/defaults/grid';
-import GridPresentationCell from '@Core/components/Grid/PresentationCells/GridPresentationCell';
+import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 
 const getMappedDraftValues = () => import('@Core/models/mappers/getMappedDraftValues');
 
@@ -48,8 +48,8 @@ export default {
     name: 'GridDataCell',
     inject: ['setEditingCellCoordinates'],
     components: {
-        GridCell: () => import('@Core/components/Grid/GridCell'),
-        GridEditActivatorCell: () => import('@Core/components/Grid/EditCells/GridEditActivatorCell'),
+        GridTableCell: () => import('@Core/components/Grid/Layout/Table/Cells/GridTableCell'),
+        GridActivatorEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell'),
         GridEditDataCell: () => import('@Core/components/Grid/EditCells/GridEditDataCell'),
     },
     props: {
@@ -110,13 +110,13 @@ export default {
             case COLUMN_TYPE.LABEL:
                 return () => import('@Core/components/Grid/PresentationCells/GridPresentationColorPickerCell');
             case COLUMN_TYPE.IMAGE:
-                return () => import('@Core/components/Grid/PresentationCells/GridPresentationImageCell');
+                return () => import('@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationImageCell');
             case COLUMN_TYPE.CHECK:
                 return () => import('@Core/components/Grid/EditCells/GridEditSelectRowCell');
             case COLUMN_TYPE.SELECT:
             case COLUMN_TYPE.MULTI_SELECT:
                 if (this.isEditingAllowed) {
-                    return () => import('@Core/components/Grid/PresentationCells/GridPresentationSelectCell');
+                    return () => import('@Core/components/Grid/Layout/Table/Cells/Presentation/GridSelectPresentationCell');
                 }
                 return GridPresentationCell;
             default:
@@ -181,7 +181,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('gridDraft', [
+        ...mapActions('grid', [
             'removeDraftValue',
             'updateDraftValue',
         ]),

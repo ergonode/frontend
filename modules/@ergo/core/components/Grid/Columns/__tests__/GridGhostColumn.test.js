@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import GridGhostColumn from '@Core/components/Grid/Columns/GridGhostColumn';
+import GridGhostColumn from '@Core/components/Grid/Layout/TableColumns/GridGhostColumn';
 import {
     WHITE, GRAPHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';

@@ -4,7 +4,7 @@
  */
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { Store } from 'vuex-mock-store';
-import GridDataColumn from '@Core/components/Grid/Columns/GridDataColumn';
+import GridDraggableColumn from '@Core/components/Grid/Columns/GridDraggableColumn';
 import draggableMutations from '@Core/store/draggable/mutations';
 
 const localVue = createLocalVue();
@@ -33,10 +33,10 @@ const mocks = {
     $store: store,
 };
 
-describe('Grid/GridDataColumn', () => {
+describe('Grid/GridDraggableColumn', () => {
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(GridDataColumn, {
+        wrapper = shallowMount(GridDraggableColumn, {
             localVue,
             mocks,
             propsData: {
@@ -49,8 +49,8 @@ describe('Grid/GridDataColumn', () => {
     });
 
     it('Component is named well', () => {
-        expect(typeof GridDataColumn.name).toBe('string');
-        expect(GridDataColumn.name).toEqual('GridDataColumn');
+        expect(typeof GridDraggableColumn.name).toBe('string');
+        expect(GridDraggableColumn.name).toEqual('GridDraggableColumn');
     });
 
     describe('Drag & Drop', () => {

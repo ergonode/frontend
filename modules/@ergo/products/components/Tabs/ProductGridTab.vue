@@ -11,23 +11,17 @@
             <Grid
                 :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
+                :data="data"
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"
-                :cell-values="cellValues"
-                :row-ids="rowIds"
-                :row-links="rowLinks"
                 :is-advanced-filters="true"
                 :is-header-visible="true"
-                :is-basic-filters="true"
-                :is-draggable="true"
+                :is-basic-filter="true"
                 :is-action-column="true"
                 :is-select-column="true"
                 @editRow="onEditRow"
-                @removeRowAtIndex="removeRowAtIndex"
-                @swapColumns="swapColumnsPosition"
-                @insertColumn="insertColumnAtIndex"
-                @removeColumn="removeColumnAtIndex"
-                @dropColumn="dropColumnAtIndex"
+                @removeRow="onRemoveRow"
+                @dropColumn="onDropColumn"
                 @insertFilter="insertFilterAtIndex"
                 @setGhostFilter="setGhostFilterAtIndex"
                 @removeFilter="removeFilterAtIndex"
@@ -75,7 +69,7 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('gridDraft', {
+        ...mapState('grid', {
             drafts: state => state.drafts,
         }),
         smallSize() {
@@ -110,7 +104,7 @@ export default {
         ...mapActions('productsDraft', [
             'applyDraft',
         ]),
-        ...mapActions('gridDraft', [
+        ...mapActions('grid', [
             'removeDraft',
             'forceDraftsMutation',
         ]),

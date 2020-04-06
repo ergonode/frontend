@@ -8,12 +8,10 @@
             <Grid
                 :is-editable="isEditingAllowed"
                 :columns="columns"
-                :cell-values="cellValues"
-                :row-ids="rowIds"
                 :is-select-column="true"
                 :is-footer-visible="false">
-                <template #headerSelectAllRowsCell="{ row, column }">
-                    <GridCell
+                <template #headerCheckCell="{ row, column }">
+                    <GridTableCell
                         editing-allowed
                         :edit-key-code="32"
                         :row="row"
@@ -23,10 +21,10 @@
                         <GridPresentationCheckCell
                             :value="rowsSelectionState"
                             @input="onSelectAllRows" />
-                    </GridCell>
+                    </GridTableCell>
                 </template>
-                <template #selectRowCell="{ row, column }">
-                    <GridCell
+                <template #checkCell="{ row, column }">
+                    <GridTableCell
                         editing-allowed
                         :edit-key-code="32"
                         :row="row"
@@ -35,10 +33,10 @@
                         <GridPresentationCheckCell
                             :value="selectedRows[row - 1]"
                             @input="onSelectRow(row - 1)" />
-                    </GridCell>
+                    </GridTableCell>
                 </template>
                 <template #cell="{ column, columnIndex, rowId, rowIndex, cellData }">
-                    <GridCell
+                    <GridTableCell
                         :key="`${rowId}-${column.id}`"
                         :row="rowIndex"
                         :column="columnIndex"
@@ -53,7 +51,7 @@
                             :hint="descriptions[rowId]"
                             :disabled="!isEditingAllowed"
                             @input="onValueChange(rowId, column.id, cellData)" />
-                    </GridCell>
+                    </GridTableCell>
                 </template>
             </Grid>
         </template>
@@ -64,16 +62,14 @@
 import { mapState, mapActions } from 'vuex';
 import { getMappedGridData } from '@Users/models/privilegesMapper';
 import {
-    getMappedCellValues,
-    getMappedRows,
     getMappedColumns,
 } from '@Core/models/mappers/gridDataMapper';
 import { COLUMN_TYPE } from '@Core/defaults/grid';
 import { STATE } from '@Core/defaults/inputs/checkbox';
 import Grid from '@Core/components/Grid/Grid';
-import GridCell from '@Core/components/Grid/GridCell';
+import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridPresentationHintCell from '@Core/components/Grid/PresentationCells/GridPresentationHintCell';
-import GridPresentationCell from '@Core/components/Grid/PresentationCells/GridPresentationCell';
+import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 import GridPresentationCheckCell from '@Core/components/Grid/PresentationCells/GridPresentationCheckCell';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
@@ -81,7 +77,7 @@ export default {
     name: 'RolePrivilegesTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        GridCell,
+        GridTableCell,
         GridPresentationCheckCell,
         GridPresentationCell,
         Grid,
@@ -132,15 +128,13 @@ export default {
         const {
             rows, columns, descriptions,
         } = getMappedGridData(this.privilegesDictionary, this.privileges);
-        const { mappedColumns } = getMappedColumns(columns);
-        const { rowIds } = getMappedRows(rows);
-        const cellValues = getMappedCellValues(columns, rows, rowIds);
+        const mappedColumns = getMappedColumns(columns);
+        // const { rowIds } = getMappedRows(rows);
+        // const cellValues = getMappedCellValues(columns, rows, rowIds);
 
         this.description = descriptions;
-        this.rowIds = rowIds;
-        this.cellValues = cellValues;
         this.columns = mappedColumns;
-        this.setSelectedRolePrivileges(JSON.parse(JSON.stringify(cellValues)));
+        // this.setSelectedRolePrivileges(JSON.parse(JSON.stringify(cellValues)));
     },
     mounted() {
         this.initializeRowsSelections();

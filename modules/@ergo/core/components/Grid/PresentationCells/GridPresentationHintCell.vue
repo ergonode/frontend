@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import GridPresentationCell from '@Core/components/Grid/PresentationCells/GridPresentationCell';
+import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 import InfoHint from '@Core/components/Hints/InfoHint';
 
 export default {

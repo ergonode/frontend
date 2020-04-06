@@ -53,7 +53,7 @@ function resetData() {
     parentElement.removeChild(resizeBorderElement);
 }
 
-function doResizeDrag(event) {
+function onResize(event) {
     const { pageY } = event;
     const height = startHeight + pageY - startY;
     const factor = Math.ceil(height / startHeight);
@@ -74,14 +74,14 @@ function doResizeDrag(event) {
     }
 }
 
-function stopResizeDrag() {
+function onStopResizing() {
     const factor = Math.ceil(currentHeight / startHeight) - 1;
     const event = new CustomEvent('resizeend', { detail: factor });
 
     parentElement.dispatchEvent(event);
 
     resetData();
-    unregisterResizeEventListeners(doResizeDrag, stopResizeDrag);
+    unregisterResizeEventListeners(onResize, onStopResizing);
 }
 
 function initResizingDrag(event) {
@@ -92,7 +92,7 @@ function initResizingDrag(event) {
     currentHeight = startHeight;
     parentElement.appendChild(resizeBorderElement);
 
-    registerResizeEventListeners(doResizeDrag, stopResizeDrag);
+    registerResizeEventListeners(onResize, onStopResizing);
 }
 
 export function bind(element) {

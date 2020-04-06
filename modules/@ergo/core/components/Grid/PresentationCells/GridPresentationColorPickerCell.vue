@@ -11,7 +11,7 @@
 
 <script>
 import PointBadge from '@Core/components/Badges/PointBadge';
-import GridPresentationCell from '@Core/components/Grid/PresentationCells/GridPresentationCell';
+import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 
 export default {
     name: 'GridPresentationColorPickerCell',

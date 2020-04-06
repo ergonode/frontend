@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridEditTextCell :style="{width: `${fixedWidth + 8}px`}">
+    <GridTextEditContentCell :style="{width: `${fixedWidth + 8}px`}">
         <TextField
             :value="value"
             :autofocus="true"
@@ -12,15 +12,16 @@
             :error-messages="errorMessages"
             small
             @input="onValueChange" />
-    </GridEditTextCell>
+    </GridTextEditContentCell>
 </template>
 
 <script>
+import GridTextEditContentCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Content/GridTextEditContentCell';
 
 export default {
     name: 'GridEditShortTextCell',
     components: {
-        GridEditTextCell: () => import('@Core/components/Grid/EditCells/GridEditTextCell'),
+        GridTextEditContentCell,
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     props: {

@@ -3,36 +3,27 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedCellValues,
-    getMappedRows,
+    getMappedData,
     getMappedColumns,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
-import { COLUMNS_IDS } from '@Core/defaults/grid/cookies';
 
-export const getGridData = ($axios, $cookies, path, params) => $axios
+export const getGridData = ($axios, path, params) => $axios
     .$get(path, { params })
     .then(({
         collection,
         columns,
         info: { count, filtered },
     }) => {
-        const sortedColumns = params.columns ? getSortedColumnsByIDs(columns, params.columns, 'id') : columns;
-        const {
-            mappedColumnsId, mappedColumns,
-        } = getMappedColumns(sortedColumns);
-        const { rowIds, rowLinks } = getMappedRows(collection);
-        const cellValues = getMappedCellValues(columns, collection, rowIds);
-
-        if (typeof params.columns !== 'undefined') {
-            $cookies.set(COLUMNS_IDS, mappedColumnsId.join(','));
-        }
+        const sortedColumns = params.columns
+            ? getSortedColumnsByIDs(columns, params.columns, 'id')
+            : columns;
+        const mappedColumns = getMappedColumns(sortedColumns);
+        const mappedData = getMappedData(columns, collection);
 
         return {
             columns: mappedColumns,
-            rowIds,
-            rowLinks,
-            cellValues,
+            data: mappedData,
             count,
             filtered,
         };

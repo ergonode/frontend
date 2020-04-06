@@ -9,13 +9,11 @@
                 :is-editable="$hasAccess(['PRODUCT_COLLECTION_UPDATE'])"
                 :columns="columns"
                 :data-count="filtered"
-                :cell-values="cellValues"
-                :row-ids="rowIds"
-                :row-links="rowLinks"
-                :is-basic-filters="true"
+                :data="data"
+                :is-basic-filter="true"
                 :is-action-column="true"
                 @editRow="onEditRow"
-                @removeRowAtIndex="removeRowAtIndex"
+                @removeRow="onRemoveRow"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>

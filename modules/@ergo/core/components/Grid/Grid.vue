@@ -2,6 +2,69 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+
+<template>
+    <div class="grid">
+        <GridHeader
+            v-if="isHeaderVisible"
+            :row-height="rowHeight"
+            :layout="layout"
+            :is-advanced-filters="isAdvancedFilters"
+            :is-centered-view="isCenteredView"
+            :filters="advancedFilters"
+            @rowHeightChange="onRowHeightChange"
+            @layoutChange="onLayoutChange"
+            @dropFilter="onDropFilterAtIndex"
+            @updateFilter="onUpdateFilterAtIndex"
+            @removeFilter="onRemoveFilterAtIndex"
+            @removeGhostFilter="onRemoveGhostFilterAtIndex"
+            @insertFilter="onInsertFilterAtIndex"
+            @clearFilter="onClearFilterAtIndex"
+            @setGhostFilter="onSetGhostFilterAtIndex"
+            @swapFilters="onSwapFiltersPosition"
+            @applyFilter="emitFetchData"
+            @removeAllFilters="onRemoveAll">
+            <template #actions>
+                <slot name="actions" />
+            </template>
+        </GridHeader>
+        <div class="grid__body">
+            <GridTableLayout
+                :columns="columns"
+                :data="data"
+                :advanced-filters-values="advancedFiltersValues"
+                :current-page="currentPage"
+                :data-count="dataCount"
+                :max-rows="maxRows"
+                :row-height="rowHeight"
+                :is-editable="isEditable"
+                :is-select-column="isSelectColumn"
+                :is-basic-filter="isBasicFilter"
+                :is-action-column="isActionColumn"
+                @sort="onSortColumn"
+                @filter="onFilterChange"
+                @editRow="onEditRow"
+                @removeRow="onRemoveRow"
+                @removeColumn="onRemoveColumn"
+                @swapColumns="onSwapColumns"
+                @dropColumn="onDropColumn"
+                @insertColumn="onInsertColumn" />
+            <GridPlaceholder v-if="dataCount === 0" />
+            <div class="grid__footer">
+                <GridPageSelector
+                    :value="maxRows"
+                    :max-rows="dataCount"
+                    @input="setMaxRows" />
+                <GridPagination
+                    :value="currentPage"
+                    :max-page="maxPage"
+                    @input="setCurrentPage" />
+                <slot name="appendFooter" />
+            </div>
+        </div>
+    </div>
+</template>
+
 <script>
 import {
     ROW_HEIGHT,
@@ -13,7 +76,7 @@ export default {
     name: 'Grid',
     components: {
         GridHeader: () => import('@Core/components/Grid/GridHeader'),
-        GridTableLayout: () => import('@Core/components/Grid/Layout/GridTableLayout/GridTableLayout'),
+        GridTableLayout: () => import('@Core/components/Grid/Layout/Table/GridTableLayout'),
         GridPlaceholder: () => import('@Core/components/Grid/GridPlaceholder'),
         GridPagination: () => import('@Core/components/Grid/GridPagination'),
         GridPageSelector: () => import('@Core/components/Grid/GridPageSelector'),
@@ -23,17 +86,9 @@ export default {
             type: Array,
             default: () => [],
         },
-        cellValues: {
+        data: {
             type: Object,
             default: () => ({}),
-        },
-        rowIds: {
-            type: Array,
-            default: () => [],
-        },
-        rowLinks: {
-            type: Array,
-            default: () => [],
         },
         advancedFilters: {
             type: Array,
@@ -59,11 +114,7 @@ export default {
             type: Boolean,
             default: true,
         },
-        isDraggable: {
-            type: Boolean,
-            default: false,
-        },
-        isBasicFilters: {
+        isBasicFilter: {
             type: Boolean,
             default: false,
         },
@@ -117,8 +168,8 @@ export default {
         onEditRow(args) {
             this.$emit('editRow', args);
         },
-        onRemoveRowAtIndex(index) {
-            this.$emit('removeRowAtIndex', index);
+        onRemoveRow(index) {
+            this.$emit('removeRow', index);
         },
         onRowHeightChange(height) {
             this.rowHeight = height;
@@ -126,9 +177,8 @@ export default {
         onLayoutChange(layout) {
             this.layout = layout;
         },
-        onDropColumn(payload) {
-            this.$emit('dropColumn', payload);
-            this.emitFetchData();
+        onDropColumn(columnId) {
+            this.$emit('dropColumn', columnId);
         },
         onSwapColumns(payload) {
             this.$emit('swapColumns', payload);
@@ -197,117 +247,6 @@ export default {
             this.$emit('swapFilters', payload);
         },
     },
-    render(createElement) {
-        const gridBodyElements = [
-            createElement('GridTableLayout', {
-                attrs: {
-                    columns: this.columns,
-                    cellValues: this.cellValues,
-                    rowIds: this.rowIds,
-                    rowLinks: this.rowLinks,
-                    advancedFiltersValues: this.advancedFiltersValues,
-                    currentPage: this.currentPage,
-                    maxRows: this.maxRows,
-                    rowHeight: this.rowHeight,
-                    isEditable: this.isEditable,
-                    isSelectColumn: this.isSelectColumn,
-                    isBasicFilters: this.isBasicFilters,
-                    isDraggable: this.isDraggable,
-                    isActionColumn: this.isActionColumn,
-                },
-                on: {
-                    sort: this.onSortColumn,
-                    filter: this.onFilterChange,
-                    editRow: this.onEditRow,
-                    removeRowAtIndex: this.onRemoveRowAtIndex,
-                    removeColumn: this.onRemoveColumn,
-                    swapColumns: this.onSwapColumns,
-                    dropColumn: this.onDropColumn,
-                    insertColumn: this.onInsertColumn,
-                },
-            }),
-        ];
-
-        if (!this.rowIds.length) {
-            gridBodyElements.push(createElement('GridPlaceholder'));
-        }
-
-        const gridBody = createElement('div', {
-            staticClass: 'grid__body',
-        }, gridBodyElements);
-
-        const gridElements = [];
-
-        if (this.isHeaderVisible) {
-            gridElements.push(createElement('GridHeader', {
-                attrs: {
-                    rowHeight: this.rowHeight,
-                    layout: this.layout,
-                    isAdvancedFilters: this.isAdvancedFilters,
-                    isCenteredView: this.isCenteredView,
-                    filters: this.advancedFilters,
-                    // isActionsSelected: this.isSelectedAllRows
-                    //         || Object.keys(this.selectedRows).length !== 0,
-                },
-                on: {
-                    rowHeightChange: this.onRowHeightChange,
-                    layoutChange: this.onLayoutChange,
-                    dropFilter: this.onDropFilterAtIndex,
-                    updateFilter: this.onUpdateFilterAtIndex,
-                    removeFilter: this.onRemoveFilterAtIndex,
-                    removeGhostFilter: this.onRemoveGhostFilterAtIndex,
-                    insertFilter: this.onInsertFilterAtIndex,
-                    clearFilter: this.onClearFilterAtIndex,
-                    setGhostFilter: this.onSetGhostFilterAtIndex,
-                    swapFilters: this.onSwapFiltersPosition,
-                    applyFilter: this.emitFetchData,
-                    removeAllFilters: this.onRemoveAll,
-                },
-                scopedSlots: {
-                    actions: () => this.$slots.actions,
-                },
-            }));
-        }
-
-        gridElements.push(gridBody);
-
-        if (this.isFooterVisible) {
-            const gridFooterElements = [
-                createElement('GridPageSelector', {
-                    attrs: {
-                        value: this.maxRows,
-                        maxRows: this.dataCount,
-                    },
-                    on: {
-                        input: this.setMaxRows,
-                    },
-                }),
-            ];
-
-            if (this.maxPage > 1) {
-                gridFooterElements.push(
-                    createElement('GridPagination', {
-                        attrs: {
-                            value: this.currentPage,
-                            maxPage: this.maxPage,
-                        },
-                        on: {
-                            input: this.setCurrentPage,
-                        },
-                    }),
-                );
-            }
-
-            gridFooterElements.push(this.$slots.appendFooter);
-            gridElements.push(createElement('div', {
-                staticClass: 'grid__footer',
-            }, gridFooterElements));
-        }
-
-        return createElement('div', {
-            staticClass: 'grid',
-        }, gridElements);
-    },
 };
 </script>
 
@@ -326,12 +265,10 @@ export default {
             display: flex;
             flex: 1 1 auto;
             flex-direction: column;
+            justify-content: space-between;
             height: 0;
+            border: $BORDER_1_GREY;
             background-color: $WHITESMOKE;
-            overflow: auto;
-            border-top: $BORDER_1_GREY;
-            border-left: $BORDER_1_GREY;
-            border-right: $BORDER_1_GREY;
         }
 
         &__footer {
@@ -339,9 +276,6 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-left: $BORDER_1_GREY;
-            border-right: $BORDER_1_GREY;
-            border-bottom: $BORDER_1_GREY;
             height: 56px;
             padding: 12px 16px;
             box-sizing: border-box;

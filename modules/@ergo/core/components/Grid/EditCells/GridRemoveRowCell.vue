@@ -3,23 +3,23 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridCell
+    <GridTableCell
         :column="column"
         :row="row"
         :selected="isSelected"
         @edit="onRemove">
         <IconDelete />
-    </GridCell>
+    </GridTableCell>
 </template>
 
 <script>
 import IconDelete from '@Core/components/Icons/Actions/IconDelete';
-import GridCell from '@Core/components/Grid/GridCell';
+import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 
 export default {
     name: 'GridRemoveRowCell',
     components: {
-        GridCell,
+        GridTableCell,
         IconDelete,
     },
     props: {
@@ -57,7 +57,7 @@ export default {
                             element.focus();
                         }
 
-                        this.$emit('removeAtIndex', this.index);
+                        this.$emit('remove', this.index);
                     });
                 }
             }

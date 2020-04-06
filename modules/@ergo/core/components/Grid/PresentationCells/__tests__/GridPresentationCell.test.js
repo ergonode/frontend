@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { shallowMount } from '@vue/test-utils';
-import GridPresentationCell from '@Core/components/Grid/PresentationCells/GridPresentationCell';
+import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 
 describe('Grid/PresentationCells/GridPresentationCell', () => {
     let wrapper;

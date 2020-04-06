@@ -3,23 +3,23 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridCell
+    <GridTableCell
         :column="column"
         :row="row"
         :selected="isSelected"
         @edit="onEdit">
         <IconEdit />
-    </GridCell>
+    </GridTableCell>
 </template>
 
 <script>
 import IconEdit from '@Core/components/Icons/Actions/IconEdit';
-import GridCell from '@Core/components/Grid/GridCell';
+import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 
 export default {
     name: 'GridEditRowCell',
     components: {
-        GridCell,
+        GridTableCell,
         IconEdit,
     },
     props: {

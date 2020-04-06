@@ -11,7 +11,7 @@
                 :row-ids="rowIds"
                 :is-footer-visible="false">
                 <template #cell="{ column, columnIndex, rowId, rowIndex, cellData }">
-                    <GridCell
+                    <GridTableCell
                         :key="`${rowId}-${column.id}`"
                         :column="columnIndex"
                         :row="rowIndex"
@@ -23,7 +23,7 @@
                             :value="cellData.editValue"
                             :hint="descriptions[rowId]"
                             :disabled="true" />
-                    </GridCell>
+                    </GridTableCell>
                 </template>
             </Grid>
         </template>
@@ -33,16 +33,14 @@
 <script>
 import { getMappedGridData } from '@Users/models/privilegesMapper';
 import {
-    getMappedCellValues,
-    getMappedRows,
     getMappedColumns,
 } from '@Core/models/mappers/gridDataMapper';
 import { COLUMN_TYPE } from '@Core/defaults/grid';
 import { STATE } from '@Core/defaults/inputs/checkbox';
 import Grid from '@Core/components/Grid/Grid';
-import GridCell from '@Core/components/Grid/GridCell';
+import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridPresentationHintCell from '@Core/components/Grid/PresentationCells/GridPresentationHintCell';
-import GridPresentationCell from '@Core/components/Grid/PresentationCells/GridPresentationCell';
+import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 import GridPresentationCheckCell from '@Core/components/Grid/PresentationCells/GridPresentationCheckCell';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
@@ -50,7 +48,7 @@ export default {
     name: 'UserPrivilegesGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        GridCell,
+        GridTableCell,
         Grid,
     },
     asyncData({ store }) {
@@ -59,14 +57,12 @@ export default {
         const {
             rows, columns, descriptions,
         } = getMappedGridData(privilegesDictionary, privileges);
-        const { mappedColumns } = getMappedColumns(columns);
-        const { rowIds } = getMappedRows(rows);
-        const cellValues = getMappedCellValues(columns, rows, rowIds);
+        const mappedColumns = getMappedColumns(columns);
+        // const { rowIds } = getMappedRows(rows);
+        // const cellValues = getMappedCellValues(columns, rows, rowIds);
 
         return {
             descriptions,
-            rowIds,
-            cellValues,
             columns: mappedColumns,
         };
     },

@@ -28,7 +28,7 @@
                 @click.native="onClickSort" />
             <ActionIconButton
                 v-if="column.deletable"
-                :theme="secondaryTheme"
+                :theme="secondaryPlainTheme"
                 :size="tinySize"
                 :options="contextualMenuItems"
                 @focus="onSelectFocus"
@@ -91,8 +91,8 @@ export default {
         tinySize() {
             return SIZE.TINY;
         },
-        secondaryTheme() {
-            return THEME.SECONDARY;
+        secondaryPlainTheme() {
+            return THEME.SECONDARY_PLAIN;
         },
         graphiteLightColor() {
             return GRAPHITE_LIGHT;

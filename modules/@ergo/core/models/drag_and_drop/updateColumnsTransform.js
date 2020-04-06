@@ -69,7 +69,6 @@ function getUpperBoundsTransforms(
                 colWidth, colTransform,
             } = getColumnElBounds(contentGrid, index);
 
-
             if (colTransform < 0) {
                 transforms[index] = 0;
                 updatedGhostTransform -= colWidth;
@@ -90,24 +89,34 @@ function getUpperBoundsTransforms(
 }
 
 export default function (targetGhostIndex, draggedElIndex, ghostIndex) {
-    const gridColumns = document.documentElement.querySelector('.grid-table-layout');
-    const { width: ghostWidth } = gridColumns.children[draggedElIndex]
+    const gridTableLayout = document.documentElement.querySelector('.grid-table-layout');
+    const { width: ghostWidth } = gridTableLayout.children[draggedElIndex]
         .getBoundingClientRect();
-    const ghostTransform = +gridColumns.children[draggedElIndex].style.transform.replace(/[^0-9\-.,]/g, '');
+    const ghostTransform = +gridTableLayout.children[draggedElIndex].style.transform.replace(/[^0-9\-.,]/g, '');
     let bounds = {};
 
     if (targetGhostIndex < ghostIndex) {
         bounds = getLowerBoundsTransforms(
-            gridColumns, ghostWidth, ghostTransform, targetGhostIndex, draggedElIndex, ghostIndex,
+            gridTableLayout,
+            ghostWidth,
+            ghostTransform,
+            targetGhostIndex,
+            draggedElIndex,
+            ghostIndex,
         );
     } else {
         bounds = getUpperBoundsTransforms(
-            gridColumns, ghostWidth, ghostTransform, targetGhostIndex, draggedElIndex, ghostIndex,
+            gridTableLayout,
+            ghostWidth,
+            ghostTransform,
+            targetGhostIndex,
+            draggedElIndex,
+            ghostIndex,
         );
     }
     Object.keys(bounds.transforms).forEach((index) => {
-        gridColumns.children[index].style.transform = `translateX(${bounds.transforms[index]}px)`;
+        gridTableLayout.children[index].style.transform = `translateX(${bounds.transforms[index]}px)`;
     });
 
-    gridColumns.children[draggedElIndex].style.transform = `translateX(${bounds.updatedGhostTransform}px)`;
+    gridTableLayout.children[draggedElIndex].style.transform = `translateX(${bounds.updatedGhostTransform}px)`;
 }

@@ -5,6 +5,7 @@
 import {
     GRID_HEADER_TYPE,
     COLUMN_TYPE,
+    COLUMN_ACTIONS_ID,
 } from '@Core/defaults/grid';
 
 export function getParsedFilters(filters, advancedFilters = []) {
@@ -94,128 +95,47 @@ export function getSortedColumnsByIDs(columns, columnsID) {
 
 export function getMappedColumns(columns) {
     const mappedColumns = [];
-    const mappedColumnsId = [];
     const { length } = columns;
 
     for (let i = 0; i < length; i += 1) {
         const column = columns[i];
 
-        if (column.visible && column.type !== 'CHECK') {
-            mappedColumns.push({
-                ...column,
-                header: getMappedColumnHeader(column),
-            });
-            mappedColumnsId.push(column.id);
-        }
+        mappedColumns.push({
+            ...column,
+            header: getMappedColumnHeader(column),
+        });
     }
 
-    return {
-        mappedColumnsId,
-        mappedColumns,
-    };
+    return mappedColumns;
 }
 
-export function getMappedGridColumnOptions(value, options, languageCode) {
-    if (Array.isArray(value)) {
-        const { length } = value;
-        const editValue = [];
-        let presentationValue = '';
-
-        for (let i = 0; i < length; i += 1) {
-            const val = value[i];
-
-            presentationValue += options[val] || `#${val}`;
-
-            if (i + 1 < length) {
-                presentationValue += ', ';
-            }
-
-            editValue.push({
-                id: val,
-                key: val,
-                value: options[val],
-                hint: options[val] ? `#${val} ${languageCode}` : '',
-            });
-        }
-
-        return {
-            presentationValue,
-            editValue,
-        };
-    }
-
-    let presentationValue = '';
-
-    if (value !== null && value.length) {
-        presentationValue = options[value] || `#${value}`;
-    }
-
-    return {
-        presentationValue,
-        editValue: {
-            id: value, key: value, value: options[value] || '', hint: options[value] ? `#${value} ${languageCode}` : '',
-        },
-    };
-}
-
-export function getMappedCellValues(columns, rows, rowIds) {
+export function getMappedData(columns, collection) {
     const { length: columnsNumber } = columns;
-    const { length: rowsNumber } = rows;
-    const values = {};
+    const { length: rowsNumber } = collection;
+    const data = {};
 
     for (let i = 0; i < columnsNumber; i += 1) {
-        const column = columns[i];
-        const { id: columnId, filter } = column;
+        const { id } = columns[i];
+        const columnData = [];
 
         for (let j = 0; j < rowsNumber; j += 1) {
-            const row = rows[j];
-            const rowId = rowIds[j];
-            const { value, prefix = '', suffix = '' } = row[column.id];
-
-            if (!values[rowId]) values[rowId] = {};
-            if (filter && filter.options) {
-                const { presentationValue, editValue } = getMappedGridColumnOptions(
-                    value,
-                    filter.options,
-                    column.language,
-                );
-
-                values[rowId][columnId] = {
-                    presentationValue, editValue, prefix, suffix,
-                };
-            } else if (typeof value === 'boolean') {
-                values[rowId][columnId] = {
-                    presentationValue: value ? 'Yes' : 'No', editValue: value, prefix, suffix,
-                };
-            } else {
-                const parsedValue = value === null || typeof value === 'undefined' ? '' : value;
-
-                values[rowId][columnId] = {
-                    presentationValue: parsedValue, editValue: parsedValue, prefix, suffix,
-                };
-            }
+            columnData.push(collection[j][id]);
         }
+
+        data[id] = columnData;
     }
 
-    return values;
-}
+    const hasAnyActionLink = collection.some(element => typeof element._links !== 'undefined');
 
-export function getMappedRows(rows) {
-    const rowIds = [];
-    const rowLinks = [];
-    const { length } = rows;
+    if (hasAnyActionLink) {
+        const actionColumn = [];
 
-    for (let i = 0; i < length; i += 1) {
-        const { id, _links } = rows[i];
+        for (let i = 0; i < rowsNumber; i += 1) {
+            actionColumn.push(collection[i]._links.value);
+        }
 
-        rowIds.push(
-            typeof id !== 'object'
-                ? i + 1
-                : id.value,
-        );
-
-        rowLinks.push(_links ? _links.value : {});
+        data[COLUMN_ACTIONS_ID] = actionColumn;
     }
 
-    return { rowIds, rowLinks };
+    return data;
 }
