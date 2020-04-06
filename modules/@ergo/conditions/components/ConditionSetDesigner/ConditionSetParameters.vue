@@ -39,6 +39,11 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            affectedByOptionId: null,
+        };
+    },
     computed: {
         ...mapState('conditions', {
             conditionsValues: state => state.conditionsValues,
@@ -70,6 +75,15 @@ export default {
             return this.conditionsValues[this.itemId][name];
         },
         conditionOptions() {
+            if (this.parameter.complexOptions) {
+                const options = this.parameter.complexOptions[this.affectedByOptionId];
+
+                return options
+                    ? Object.keys(options).map(key => ({
+                        id: key, key, value: options[key],
+                    }))
+                    : [];
+            }
             return this.parameter.options
                 ? Object.keys(this.parameter.options).map(key => ({
                     id: key, key, value: this.parameter.options[key],
@@ -79,7 +93,23 @@ export default {
         errorParamsMessage() {
             const { name } = this.parameter;
             const parametersIndex = `conditions_element-${this.itemRow}`;
+
             return this.conditionParametersAreValidate(parametersIndex, name) || null;
+        },
+    },
+    watch: {
+        conditionsValues: {
+            deep: true,
+            immediate: true,
+            handler(value) {
+                if (this.parameter.affectedBy && value[this.itemId]) {
+                    if (value[this.itemId][this.parameter.affectedBy]) {
+                        const selectedValue = value[this.itemId][this.parameter.affectedBy].id;
+
+                        this.affectedByOptionId = selectedValue || null;
+                    }
+                }
+            },
         },
     },
     methods: {
