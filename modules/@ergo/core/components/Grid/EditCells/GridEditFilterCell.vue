@@ -38,6 +38,7 @@ export default {
         },
     },
     destroyed() {
+        console.log(this.localValue);
         this.$emit('updateValue', this.localValue);
     },
     methods: {

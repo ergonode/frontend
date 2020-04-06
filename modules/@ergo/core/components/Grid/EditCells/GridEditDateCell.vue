@@ -19,8 +19,8 @@
 
 <script>
 import { format as formatDate, parse as parseDate } from 'date-fns';
-import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
+import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 
 export default {
     name: 'GridEditDateCell',
@@ -38,7 +38,9 @@ export default {
         },
         parameters: {
             type: Object,
-            required: true,
+            default: () => ({
+                format: DEFAULT_FORMAT,
+            }),
         },
         fixedHeight: {
             type: Number,

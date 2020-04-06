@@ -224,18 +224,19 @@ export default {
                 this.isActionColumnPinned = isSticky;
             }
         },
-        onClickOutside({ pageX, pageY }) {
-            const { gridColumns } = this.$refs;
-            const {
-                top, left, width, height,
-            } = gridColumns.getBoundingClientRect();
+        onClickOutside(event) {
+            const { xPos, yPos } = getPositionForBrowser(event);
 
-            if (!(pageX > left
-                 && pageX < left + width
-                 && pageY > top
-                 && pageY < top + height)) {
+            if (xPos === 0 && yPos === 0) return false;
+
+            const { gridColumns } = this.$refs;
+
+            if (isMouseOutOfBoundsElement(gridColumns, xPos, yPos)
+                && !gridColumns.contains(event.target)) {
                 this.setEditingCellCoordinates();
             }
+
+            return true;
         },
         onEditRow(args) {
             this.$emit('editRow', args);
