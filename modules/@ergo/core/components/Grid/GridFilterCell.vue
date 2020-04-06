@@ -101,7 +101,6 @@ export default {
                 return '';
             }
 
-
             if (this.isSelectKind) {
                 return getMappedGridColumnOptions(
                     this.filter.value,
