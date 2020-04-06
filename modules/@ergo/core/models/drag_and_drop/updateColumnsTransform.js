@@ -90,7 +90,7 @@ function getUpperBoundsTransforms(
 }
 
 export default function (targetGhostIndex, draggedElIndex, ghostIndex) {
-    const gridColumns = document.documentElement.querySelector('.grid-table-layout');
+    const gridColumns = document.documentElement.querySelector('.grid__columns');
     const { width: ghostWidth } = gridColumns.children[draggedElIndex]
         .getBoundingClientRect();
     const ghostTransform = +gridColumns.children[draggedElIndex].style.transform.replace(/[^0-9\-.,]/g, '');
