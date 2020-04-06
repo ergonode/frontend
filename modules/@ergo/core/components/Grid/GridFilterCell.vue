@@ -105,6 +105,7 @@ export default {
                 return getMappedGridColumnOptions(
                     this.filter.value,
                     this.column.filter.options,
+                    this.column.language,
                 ).editValue;
             }
 

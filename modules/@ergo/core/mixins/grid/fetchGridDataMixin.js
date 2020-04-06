@@ -184,15 +184,6 @@ export default function ({ path }) {
                     params,
                 );
 
-                columns.forEach(({ language, element_id }) => {
-                    if (element_id) {
-                        this.disableListElement({
-                            languageCode: language,
-                            attributeId: element_id,
-                        });
-                    }
-                });
-
                 this.columns = columns;
                 this.rowIds = rowIds;
                 this.rowLinks = rowLinks;
@@ -221,6 +212,18 @@ export default function ({ path }) {
                     ghostIndex,
                 );
                 this.$cookies.set(COLUMNS_IDS, columnIds.join(','));
+
+                this.getGridData(this.localParams).then(() => {
+                    const column = this.columns.find(({ id }) => id === columnId);
+
+                    if (column && column.element_id) {
+                        this.setDisabledElement({
+                            languageCode: column.language,
+                            elementId: column.element_id,
+                            disabled: false,
+                        });
+                    }
+                });
             },
             swapColumnsPosition({ from, to }) {
                 this.columns = [
@@ -259,12 +262,12 @@ export default function ({ path }) {
                 this.advancedFilters.splice(index, 1);
             },
             removeAllFilters() {
-                this.setDisabledElements(
-                    this.advancedFilters
-                        .map(({ attributeId, languageCode }) => (
-                            { languageCode, elementId: attributeId, isDisabled: false }
-                        )),
-                );
+                this.advancedFilters.forEach(({ attributeId, languageCode }) => {
+                    this.setDisabledElement({
+                        languageCode, elementId: attributeId, disabled: false,
+                    });
+                });
+
                 this.advancedFilters = [];
                 this.$cookies.remove(ADV_FILTERS_IDS);
             },

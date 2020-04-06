@@ -512,7 +512,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .grid-table-layout {
+    .grid__columns {
         position: relative;
         display: grid;
 
