@@ -24,8 +24,8 @@
 <script>
 import { mapState } from 'vuex';
 import GridBoolEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridBoolEditCell';
-import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
+import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
 
 export default {
     name: 'GridBoolDataCell',

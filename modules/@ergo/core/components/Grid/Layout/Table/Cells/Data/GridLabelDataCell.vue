@@ -36,8 +36,8 @@
 <script>
 import { mapState } from 'vuex';
 import GridLabelPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridLabelPresentationCell';
-import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
+import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
 
 export default {
     name: 'GridLabelDataCell',

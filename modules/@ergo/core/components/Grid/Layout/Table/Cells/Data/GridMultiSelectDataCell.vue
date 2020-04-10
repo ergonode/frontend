@@ -35,8 +35,8 @@
 import { mapState } from 'vuex';
 import GridMultiSelectPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridMultiSelectPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
-import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
 import { arraysAreEqual } from '@Core/models/arrayWrapper';
+import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
 
 export default {
     name: 'GridMultiSelectDataCell',

@@ -30,8 +30,8 @@
 <script>
 import { mapState } from 'vuex';
 import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
-import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
+import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
 
 export default {
     name: 'GridNumericDataCell',
