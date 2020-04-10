@@ -23,6 +23,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
 import GridCheckEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 
@@ -37,20 +38,10 @@ export default {
             drafts: state => state.drafts,
         }),
         mappedValue() {
-            if (this.drafts[this.rowId]
-                && typeof this.drafts[this.rowId][this.columnId] !== 'undefined') {
-                const draftValue = this.drafts[this.rowId][this.columnId];
+            const check = (data, draftValue) => Boolean(data) !== Boolean(draftValue);
+            const getMappedValue = mappedValueCompose(check);
 
-                return {
-                    value: draftValue,
-                    isDraft: Boolean(this.data.value) !== Boolean(draftValue),
-                };
-            }
-
-            return {
-                value: this.data.value,
-                isDraft: false,
-            };
+            return getMappedValue(this.data.value, this.drafts[this.rowId], this.columnId);
         },
     },
 };
