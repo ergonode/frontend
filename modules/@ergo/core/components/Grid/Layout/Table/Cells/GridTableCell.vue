@@ -136,7 +136,7 @@ export default {
                 return false;
             }
 
-            const gridColumnsEl = document.documentElement.querySelector('.grid__columns');
+            const tableLayout = document.documentElement.querySelector('.grid-table-layout');
 
             switch (keyCode) {
             case this.editKeyCode:
@@ -151,41 +151,35 @@ export default {
                 break;
             case 37:
                 // Key: LEFT
-                element = gridColumnsEl.querySelector(`.coordinates-${this.column - 1}-${this.row}`);
+                element = tableLayout.querySelector(`.coordinates-${this.column - 1}-${this.row}`);
                 break;
             case 38:
                 // Key: UP
-                element = gridColumnsEl.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
+                element = tableLayout.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
                 break;
             case 39:
             case 9:
                 // Key: RIGHT || TAB
-                element = gridColumnsEl.querySelector(`.coordinates-${this.column + 1}-${this.row}`);
+                element = tableLayout.querySelector(`.coordinates-${this.column + 1}-${this.row}`);
                 if (!element) {
                     // We get out of bounds - go to the next line
-                    element = gridColumnsEl.querySelector(`.coordinates-0-${this.row + 1}`);
+                    element = tableLayout.querySelector(`.coordinates-0-${this.row + 1}`);
                 }
                 break;
             case 40:
                 // Key: DOWN
-                element = gridColumnsEl.querySelector(`.coordinates-${this.column}-${this.row + 1}`);
+                element = tableLayout.querySelector(`.coordinates-${this.column}-${this.row + 1}`);
                 break;
             default: break;
             }
 
             event.preventDefault();
 
-            if (element && keyCode !== this.editKeyCode) {
-                const isElementInsideViewPort = element.offsetTop + element.offsetHeight
-                    > gridColumnsEl.offsetHeight + gridColumnsEl.scrollTop;
-                if (isElementInsideViewPort) {
-                    element.scrollIntoView(false);
-                }
-            }
-
             if ((keyCode === 13 && !this.isEditing && element) || (keyCode !== 13 && element)) {
                 element.focus();
             }
+
+            element = null;
 
             return true;
         },
@@ -215,7 +209,7 @@ export default {
                 box-shadow: inset 0 0 0 2px $GREEN;
 
                 & > .cell-resizer {
-                    display: inline-block;
+                    opacity: 1;
                 }
             }
         }

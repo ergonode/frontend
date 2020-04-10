@@ -278,6 +278,7 @@ export default {
             height: 0;
             border: $BORDER_1_GREY;
             background-color: $WHITESMOKE;
+            overflow: hidden;
         }
 
         &__footer {

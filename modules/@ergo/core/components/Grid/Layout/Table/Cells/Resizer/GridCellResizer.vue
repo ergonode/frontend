@@ -80,8 +80,9 @@ export default {
     .cell-resizer {
         position: absolute;
         bottom: 0;
-        display: none;
+        display: inline-block;
         width: 100%;
+        opacity: 0;
 
         .cell-resizer__content {
             position: relative;
