@@ -80,7 +80,6 @@ export default {
         onAddRow() {
             this.$refs.addSectionButton.$el.scrollIntoView(true);
             this.rowValues.push({});
-            this.$emit('input', this.rowValues);
         },
         onRemoveRowAtIndex(index) {
             this.rowValues.splice(index, 1);

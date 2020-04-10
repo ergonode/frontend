@@ -35,7 +35,7 @@ export default {
             store.dispatch('productsDraft/getTemplates'),
             store.dispatch('productsDraft/getProductDraft', { languageCode, id }),
         ]);
-        await store.dispatch('productsDraft/getProduct', { languageCode, id });
+        await store.dispatch('productsDraft/getProductById', id);
     },
     computed: {
         ...mapState('productsDraft', {

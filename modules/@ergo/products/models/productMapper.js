@@ -3,27 +3,15 @@
  * See LICENSE for license details.
  */
 
-function getParsedOptions(options) {
-    // TODO:
-    // BE needs to unify options for select / multiselect - when those attrs does not have options they are returning [], but whenever they do - returning { key: value }
-
+function getParsedOptions({ language, options }) {
     if (!options) return null;
-    if (Array.isArray(options)) return [];
 
-    const optionKeys = Object.keys(options);
-    const { length } = optionKeys;
-    const parsedOptions = [];
-
-    for (let i = 0; i < length; i += 1) {
-        const key = optionKeys[i];
-
-        parsedOptions.push({ id: key, key, value: options[key] });
-    }
-
-    return parsedOptions;
+    return options.map(({ id, code, label }) => (
+        { id, key: code, value: label[language] || null }
+    ));
 }
 
-export function getMappedLayoutElement({
+export function getMappedLayoutElement(language, {
     label,
     type,
     properties,
@@ -49,7 +37,7 @@ export function getMappedLayoutElement({
         placeholder,
         required,
         parameters,
-        options: getParsedOptions(options),
+        options: getParsedOptions({ language, options }),
     };
 }
 
@@ -78,14 +66,4 @@ export function getMappedTemplateID(templates, selectedTemplate) {
     return templateByName
         ? templateByName.id
         : null;
-}
-
-export function getMappedLayoutElements(elements) {
-    return elements.map((element) => {
-        if (element.type === 'SECTION') {
-            return getMappedLayoutSectionElement(element);
-        }
-
-        return getMappedLayoutElement(element);
-    });
 }

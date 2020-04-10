@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import { JWT_KEY } from '@Authentication/defaults/cookies';
-import storeModules from '~/.nuxt/store.modules';
 
 export const actions = {
     async nuxtServerInit({ dispatch }) {
@@ -20,11 +19,4 @@ export const actions = {
             console.error(e);
         }
     },
-    resetState({ dispatch }) {
-        Object.keys(storeModules).forEach((storeName) => {
-            dispatch(`${storeName}/clearStorage`);
-        });
-    },
 };
-
-export const modules = storeModules;

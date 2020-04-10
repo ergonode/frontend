@@ -30,10 +30,6 @@
                     </Button>
                 </template>
             </Grid>
-            <CreateUnitModalForm
-                v-if="isModalVisible"
-                @close="onCloseModal"
-                @create="onCreatedData" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -44,18 +40,16 @@ import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/Re
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'UnitsSettingsGridTab',
     components: {
         Grid: () => import('@Core/components/Grid/Grid'),
-        CreateUnitModalForm: () => import('@Core/components/Modals/CreateUnitModalForm'),
         ResponsiveCenteredViewTemplate,
         Button,
         IconAdd,
     },
-    mixins: [fetchGridDataMixin({ path: 'units' }), gridModalMixin],
+    mixins: [fetchGridDataMixin({ path: 'units' })],
     computed: {
         smallSize() {
             return SIZE.SMALL;
@@ -75,6 +69,9 @@ export default {
             const lastIndex = args.length - 1;
 
             this.$router.push({ name: 'unit-id-general', params: { id: args[lastIndex] } });
+        },
+        onShowModal() {
+            this.$emit('showModal');
         },
     },
 };

@@ -23,6 +23,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { TRANSLATIONS_LANGUAGES } from '@Core/defaults/cookies';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 
@@ -53,14 +54,29 @@ export default {
             return this.selectedLanguages.map(language => language.id);
         },
     },
+    watch: {
+        selectedLanguages(value) {
+            this.$cookies.set(TRANSLATIONS_LANGUAGES, value);
+        },
+    },
     created() {
-        this.selectedLanguages = [
-            {
-                id: this.userLanguageCode,
-                key: this.userLanguageCode,
-                value: this.languages[this.userLanguageCode],
-            },
-        ];
+        const cookieValue = this.$cookies.get(TRANSLATIONS_LANGUAGES);
+        const isEveryLanguageExist = cookieValue
+            ? cookieValue.every(e => this.languages[e.key])
+            : null;
+
+        if (cookieValue && isEveryLanguageExist) {
+            this.selectedLanguages = cookieValue;
+        } else {
+            this.$cookies.remove(TRANSLATIONS_LANGUAGES);
+            this.selectedLanguages = [
+                {
+                    id: this.userLanguageCode,
+                    key: this.userLanguageCode,
+                    value: this.languages[this.userLanguageCode],
+                },
+            ];
+        }
     },
 };
 </script>

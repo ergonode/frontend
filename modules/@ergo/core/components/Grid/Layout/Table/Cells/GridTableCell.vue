@@ -136,7 +136,7 @@ export default {
                 return false;
             }
 
-            const gridColumnsEl = document.documentElement.querySelector('.grid-table-layout');
+            const gridColumnsEl = document.documentElement.querySelector('.grid__columns');
 
             switch (keyCode) {
             case this.editKeyCode:

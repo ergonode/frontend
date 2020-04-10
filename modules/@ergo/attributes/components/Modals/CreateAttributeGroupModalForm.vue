@@ -61,7 +61,7 @@ export default {
         onCreatedAndEdit() {
             this.onActionRequest((id) => {
                 this.$router.push({
-                    name: 'attribute-group-id',
+                    name: 'attribute-group-id-general',
                     params: {
                         id,
                     },

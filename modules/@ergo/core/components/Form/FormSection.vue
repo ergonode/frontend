@@ -30,6 +30,7 @@ export default {
     .form-section {
         display: grid;
         grid-auto-flow: row;
+        grid-template-columns: inherit;
         grid-row-gap: 16px;
 
         &__title {

@@ -15,7 +15,7 @@ export function getMappedConditionSetData(conditionSetData, conditions) {
         Object.keys(conditionData).forEach((conditionKey) => {
             const parameter = parameters.find(({ name }) => name === conditionKey);
 
-            if (parameter && parameter.options) {
+            if (parameter && (parameter.options || parameter.complexOptions)) {
                 if (Array.isArray(conditionData[conditionKey])) {
                     conditionData[conditionKey] = conditionData[conditionKey].map(
                         option => option.id,
@@ -37,14 +37,28 @@ export function getMappedConditionSetData(conditionSetData, conditions) {
 
 export function getParsedConditionSetData(conditions, conditionsData) {
     const parsedData = { conditionsData: {}, conditionsTree: [] };
+
     for (let i = 0; i < conditions.length; i += 1) {
         const { type, ...parameters } = conditions[i];
         const uniqId = `${type}--${getUUID()}`;
 
 
         Object.keys(parameters).forEach((key) => {
-            const { options } = conditionsData[type].parameters.find(param => param.name === key);
+            const {
+                options,
+                complexOptions = null,
+                affectedBy = null,
+            } = conditionsData[type].parameters.find(param => param.name === key);
 
+            if (affectedBy && complexOptions) {
+                const affectedByOptionId = conditions[i][affectedBy];
+
+                parameters[key] = {
+                    id: parameters[key],
+                    key: parameters[key],
+                    value: complexOptions[affectedByOptionId][parameters[key]],
+                };
+            }
             if (options) {
                 if (Array.isArray(parameters[key])) {
                     parameters[key] = parameters[key].map(option => ({

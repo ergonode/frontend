@@ -51,6 +51,7 @@ export default {
         }),
     },
     destroyed() {
+        this.listClearStorage();
         this.clearStorage();
     },
     methods: {
@@ -60,6 +61,9 @@ export default {
             'getTemplateByID',
             'clearStorage',
         ]),
+        ...mapActions('list', {
+            listClearStorage: 'clearStorage',
+        }),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',

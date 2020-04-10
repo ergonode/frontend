@@ -99,6 +99,7 @@ export default {
         flex: 1;
         flex-direction: column;
         justify-content: space-between;
+        background-color: $WHITESMOKE;
 
         &__body {
             position: relative;
