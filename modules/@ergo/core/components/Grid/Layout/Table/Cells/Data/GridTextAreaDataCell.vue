@@ -28,9 +28,9 @@
 </template>
 <script>
 import { mapState } from 'vuex';
+import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
 import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
-import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
 
 export default {
     name: 'GridTextDataCell',

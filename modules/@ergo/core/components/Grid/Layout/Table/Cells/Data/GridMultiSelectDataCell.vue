@@ -33,10 +33,10 @@
 
 <script>
 import { mapState } from 'vuex';
-import GridMultiSelectPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridMultiSelectPresentationCell';
-import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 import { arraysAreEqual } from '@Core/models/arrayWrapper';
 import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
+import GridMultiSelectPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridMultiSelectPresentationCell';
+import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 
 export default {
     name: 'GridMultiSelectDataCell',

@@ -29,9 +29,9 @@
 
 <script>
 import { mapState } from 'vuex';
+import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 import GridImagePresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridImagePresentationCell';
-import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
 
 export default {
     name: 'GridImageDataCell',
