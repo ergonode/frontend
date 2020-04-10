@@ -3,17 +3,17 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridCell
+    <GridTableCell
         :column="0"
         :row="row"
         editing-allowed
         :edit-key-code="32"
         :selected="isSelected"
         @edit="onSelect">
-        <GridPresentationCheckCell
+        <GridCheckEditCell
             :value="isSelected"
             @input="onSelect" />
-    </GridCell>
+    </GridTableCell>
 </template>
 
 <script>
@@ -21,8 +21,8 @@
 export default {
     name: 'GridEditSelectRowCell',
     components: {
-        GridCell: () => import('@Core/components/Grid/GridCell'),
-        GridPresentationCheckCell: () => import('@Core/components/Grid/PresentationCells/GridPresentationCheckCell'),
+        GridTableCell: () => import('@Core/components/Grid/Layout/Table/Cells/GridTableCell'),
+        GridCheckEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell'),
     },
     props: {
         row: {

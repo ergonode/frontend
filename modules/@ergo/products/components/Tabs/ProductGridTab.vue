@@ -11,23 +11,18 @@
             <Grid
                 :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
+                :data="data"
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"
-                :cell-values="cellValues"
-                :row-ids="rowIds"
-                :row-links="rowLinks"
                 :is-advanced-filters="true"
                 :is-header-visible="true"
-                :is-basic-filters="true"
-                :is-draggable="true"
+                :is-basic-filter="true"
                 :is-action-column="true"
-                :is-select-column="true"
                 @editRow="onEditRow"
-                @removeRowAtIndex="removeRowAtIndex"
-                @swapColumns="swapColumnsPosition"
-                @insertColumn="insertColumnAtIndex"
-                @removeColumn="removeColumnAtIndex"
-                @dropColumn="dropColumnAtIndex"
+                @editCell="onEditCell"
+                @editCells="onEditCells"
+                @removeRow="onRemoveRow"
+                @dropColumn="onDropColumn"
                 @insertFilter="insertFilterAtIndex"
                 @setGhostFilter="setGhostFilterAtIndex"
                 @removeFilter="removeFilterAtIndex"
@@ -58,6 +53,8 @@ import Button from '@Core/components/Buttons/Button';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
+const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
+
 export default {
     name: 'ProductGridTab',
     components: {
@@ -75,7 +72,7 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('gridDraft', {
+        ...mapState('grid', {
             drafts: state => state.drafts,
         }),
         smallSize() {
@@ -110,10 +107,37 @@ export default {
         ...mapActions('productsDraft', [
             'applyDraft',
         ]),
-        ...mapActions('gridDraft', [
-            'removeDraft',
-            'forceDraftsMutation',
+        ...mapActions('grid', [
+            'removeDraftRow',
         ]),
+        onEditCell({ rowId, columnId, value }) {
+            const { element_id } = this.columns.find(column => column.id === columnId);
+
+            updateProductDraft().then(response => response.default({
+                $axios: this.$axios,
+                $store: this.$store,
+                productId: rowId,
+                columnId,
+                elementId: element_id,
+                value,
+            }));
+        },
+        onEditCells(editedCells) {
+            const requests = editedCells.map(({ rowId, columnId, value }) => {
+                const { element_id } = this.columns.find(column => column.id === columnId);
+
+                return updateProductDraft().then(response => response.default({
+                    $axios: this.$axios,
+                    $store: this.$store,
+                    productId: rowId,
+                    columnId,
+                    elementId: element_id,
+                    value,
+                }));
+            });
+
+            Promise.all(requests);
+        },
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
@@ -122,20 +146,15 @@ export default {
         saveDrafts() {
             const promises = [];
 
-            Object.keys(this.drafts).forEach((productId) => {
+            Object.keys(this.drafts).forEach((rowId) => {
                 promises.push(this.applyDraft({
-                    id: productId,
-                    onSuccess: () => {
-                        Object.keys(this.drafts[productId]).forEach((columnId) => {
-                            this.cellValues[productId][columnId] = this.drafts[productId][columnId];
-                        });
-                        this.removeDraft(productId);
-                    },
+                    id: rowId,
+                    onSuccess: () => this.removeDraftRow(rowId),
                 }));
             });
 
             Promise.all(promises).then(() => {
-                this.forceDraftsMutation();
+                this.getGridData(this.localParams);
                 this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product changes saved' });
             });
         },

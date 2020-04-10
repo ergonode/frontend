@@ -4,105 +4,114 @@
  */
 
 import { toCapitalize } from '@Core/models/stringWrapper';
-import { COLUMN_TYPE } from '@Core/defaults/grid';
+import { STATE } from '@Core/defaults/inputs/checkbox';
 
-const getCheckColumn = privilegeType => ({
+const getCheckColumn = (privilegeType, isEditable) => ({
     id: privilegeType,
     label: toCapitalize(privilegeType),
-    type: COLUMN_TYPE.CHECK_CELL,
-    width: '1fr',
-    editable: true,
+    type: 'PRIVILEGE',
+    editable: isEditable,
     visible: true,
 });
 
-const getNameColumn = () => ({
+const nameColumn = {
     id: 'name',
-    label: '',
-    type: COLUMN_TYPE.TEXT,
-    width: '1fr',
+    label: 'Name',
+    type: 'PRIVILEGE_NAME',
     editable: false,
     visible: true,
-});
+};
 
-export function getMappedGridData(privileges, rolePrivileges) {
-    const rows = [];
-    const columns = [
-        getNameColumn(),
-    ];
-    const columnWidths = ['1fr'];
-    const tmpRowKeys = {};
-    const tmpColumnKeys = {};
-    const systemPrivilegesEntries = Object.entries(privileges);
-    const { length: systemPrivilegesLength } = systemPrivilegesEntries;
-    const descriptions = {};
-    let rowIndex = 0;
+const selectRowColumn = {
+    id: 'selectRow',
+    label: '',
+    type: 'PRIVILEGE_SELECT_ROW',
+    editable: true,
+    visible: true,
+};
 
-    for (let i = 0; i < systemPrivilegesLength; i += 1) {
-        const [, entry] = systemPrivilegesEntries[i];
-        const { name, privileges: systemPrivileges, description } = entry;
-        const privilegeNames = Object.values(systemPrivileges);
-        const { length: privilegeNamesNumber } = privilegeNames;
+export function getMappedGridData({
+    systemPrivileges,
+    rolePrivileges,
+    isEditable = false,
+}) {
+    const data = {};
+    const columns = [];
 
-        if (!tmpRowKeys[name]) {
-            tmpRowKeys[name] = '+';
-            rows.push({
-                id: { value: rowIndex },
-                name: { value: name },
-            });
-            descriptions[rowIndex] = description;
-            rowIndex += 1;
+    if (isEditable) {
+        data.selectRow = [];
+        columns.push(selectRowColumn);
+    }
+
+    data.name = [];
+    data.id = [];
+    columns.push(nameColumn);
+
+    for (let i = 0; i < systemPrivileges.length; i += 1) {
+        const { name, description, privileges } = systemPrivileges[i];
+
+        data.name.push({
+            value: name,
+            hint: description,
+        });
+        data.id.push(name);
+
+        const privilegeTypes = Object.keys(privileges);
+
+        for (let j = 0; j < privilegeTypes.length; j += 1) {
+            const type = privilegeTypes[j];
+
+            if (!data[type]) {
+                data[type] = [];
+                columns.push(getCheckColumn(type, isEditable));
+            }
+            const value = rolePrivileges[privileges[type]] || false;
+
+            data[type].push({ value });
         }
 
-        for (let j = 0; j < privilegeNamesNumber; j += 1) {
-            const rolePrivilege = privilegeNames[j];
-            const rolePrivilegeName = rolePrivilege.split('_');
-            const rolePrivilegeType = rolePrivilegeName[rolePrivilegeName.length - 1].toLowerCase();
-
-            if (!tmpColumnKeys[rolePrivilegeType]) {
-                columns.push(getCheckColumn(rolePrivilegeType));
-                columnWidths.push('1fr');
-                tmpColumnKeys[rolePrivilegeType] = '+';
+        if (data.selectRow) {
+            if (privilegeTypes.every(type => data[type][i].value)) {
+                data.selectRow.push({ value: STATE.CHECK });
+            } else if (privilegeTypes.every(type => !data[type][i].value)) {
+                data.selectRow.push({ value: STATE.UNCHECK });
+            } else {
+                data.selectRow.push({ value: STATE.CHECK_ANY });
             }
-
-            rows[rowIndex - 1][rolePrivilegeType] = {
-                value: Boolean(rolePrivileges[rolePrivilege]),
-            };
         }
     }
 
     return {
-        rows,
+        data,
         columns,
-        descriptions,
-        columnWidths,
     };
 }
 
-export function getMappedPrivilegesBasedOnGridData(privilegesDic, gridData) {
-    const tmpPrivilegesDic = [...privilegesDic];
-    const rows = Object.entries(gridData);
-    const { length: rowsNumber } = rows;
-    const mappedPrivileges = [];
+export function getMappedPrivilegesBasedOnGridData({
+    rolePrivileges,
+    drafts,
+}) {
+    const privilegeNames = Object.keys(drafts);
+    let mappedPrivileges = Object.keys(rolePrivileges);
 
-    for (let i = 0; i < rowsNumber; i += 1) {
-        const [, role] = rows[i];
-        const privilegeKeys = Object.keys(role);
-        const { length: privilegesKeysNumber } = privilegeKeys;
-        const privilegeIndex = tmpPrivilegesDic.findIndex(
-            privilege => privilege.name === role.name.presentationValue,
-        );
+    for (let i = 0; i < privilegeNames.length; i += 1) {
+        const privilegeName = privilegeNames[i];
+        const privilegeRole = drafts[privilegeName];
+        const privilegeTypes = Object.keys(privilegeRole);
 
-        if (privilegeIndex > -1) {
-            for (let j = 0; j < privilegesKeysNumber; j += 1) {
-                if (privilegeKeys[j] !== 'name' && role[privilegeKeys[j]].editValue) {
-                    const privilegeName = tmpPrivilegesDic[privilegeIndex]
-                        .privileges[privilegeKeys[j]];
+        for (let j = 0; j < privilegeTypes.length; j += 1) {
+            const type = privilegeTypes[j];
+            const capitalizedPrivilegeName = privilegeName
+                .split(' ')
+                .map(name => name.toUpperCase())
+                .join('_');
+            const mappedPrivilege = `${capitalizedPrivilegeName}_${type.toUpperCase()}`;
 
-                    mappedPrivileges.push(privilegeName);
-                }
+            if (!rolePrivileges[mappedPrivilege] && drafts[privilegeName][type]) {
+                mappedPrivileges.push(mappedPrivilege);
+            } else {
+                mappedPrivileges = mappedPrivileges.filter(priv => priv !== mappedPrivilege);
             }
-
-            tmpPrivilegesDic.splice(privilegeIndex, 1);
         }
     }
 

@@ -2,15 +2,15 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export default function (doResizeDrag, stopResizeDrag) {
+export default function (onResize, onStopResizing) {
     document.documentElement.addEventListener(
         'mousemove',
-        doResizeDrag,
+        onResize,
         false,
     );
     document.documentElement.addEventListener(
         'mouseup',
-        stopResizeDrag,
+        onStopResizing,
         false,
     );
 }

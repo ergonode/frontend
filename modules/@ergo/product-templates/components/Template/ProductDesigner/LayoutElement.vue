@@ -14,7 +14,7 @@
             v-if="!disabled"
             size="8"
             class="layout-element__resizer"
-            @mousedown.native="initResizeDrag" />
+            @mousedown.native="onInitResize" />
     </div>
 </template>
 
@@ -155,7 +155,7 @@ export default {
 
             this.$emit('highlightedPositionChange', []);
         },
-        initResizeDrag(event) {
+        onInitResize(event) {
             this.highlightingPositions = getHighlightingPositions(
                 this.element,
                 this.layoutElements,
@@ -181,12 +181,12 @@ export default {
             this.minHeight = this.getElementMinHeight();
 
             registerResizeEventListeners().then((response) => {
-                response.default(this.doResizeDrag, this.stopResizeDrag);
+                response.default(this.onResize, this.onStopResizing);
             });
 
             this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
-        doResizeDrag(event) {
+        onResize(event) {
             const { pageX, pageY } = event;
             const width = this.getElementWidthBasedOnMouseXPosition(pageX);
             const height = this.getElementHeightBasedOnMouseYPosition(pageY);
@@ -194,7 +194,7 @@ export default {
             this.updateElementWidth(width);
             this.updateElementHeight(height);
         },
-        stopResizeDrag() {
+        onStopResizing() {
             this.updateLayoutElementBounds({
                 index: this.index,
                 width: this.newWidth,
@@ -207,7 +207,7 @@ export default {
             removeResizablePlaceholder();
 
             unregisterResizeEventListeners().then((response) => {
-                response.default(this.doResizeDrag, this.stopResizeDrag);
+                response.default(this.onResize, this.onStopResizing);
             });
 
             this.$emit('highlightedPositionChange', []);

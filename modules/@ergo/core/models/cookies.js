@@ -13,10 +13,22 @@ export const removeCookieById = ({ cookies, cookieName, id }) => {
     cookies.set(cookieName, parsedData.filter(value => value !== id).join(','));
 };
 
+export const removeCookieAtIndex = ({ cookies, cookieName, index }) => {
+    const cookiesData = cookies.get(cookieName);
+
+    if (!cookiesData) throw new Error('Cookies are not set');
+
+    const parsedData = cookiesData.split(',');
+    parsedData.splice(index, 1);
+
+    cookies.set(cookieName, parsedData.join(','));
+};
+
 export const insertCookieAtIndex = ({
     cookies, cookieName, index, data,
 }) => {
     const cookiesData = cookies.get(cookieName);
+
     if (!cookiesData) throw new Error('Cookies are not set');
 
     const parsedData = cookiesData.split(',');
@@ -29,9 +41,10 @@ export const changeCookiePosition = ({
     cookies, cookieName, from, to,
 }) => {
     const cookiesData = cookies.get(cookieName);
+
     if (!cookiesData) throw new Error('Cookies are not set');
 
-    cookies.set(cookieName, [
-        ...swapItemPosition(cookiesData.split(','), from, to),
-    ].join(','));
+    const separatedCookies = cookiesData.split(',');
+
+    cookies.set(cookieName, swapItemPosition(separatedCookies, from, to).join(','));
 };

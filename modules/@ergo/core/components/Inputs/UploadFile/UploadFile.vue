@@ -155,6 +155,7 @@ export default {
 
         display: flex;
         flex-direction: column;
+        border: $BORDER_1_GREY;
 
         &__activator {
             position: relative;
@@ -162,7 +163,6 @@ export default {
             flex: 1;
             flex-direction: column;
             height: 100%;
-            border: $BORDER_1_GREY;
             padding: 12px;
             box-sizing: border-box;
             overflow: hidden;

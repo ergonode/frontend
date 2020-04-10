@@ -9,15 +9,13 @@
                 :is-editable="isUserAllowedToUpdate"
                 :columns="columns"
                 :data-count="filtered"
-                :cell-values="cellValues"
-                :row-ids="rowIds"
-                :row-links="rowLinks"
+                :data="data"
                 :is-header-visible="true"
                 :is-centered-view="true"
-                :is-basic-filters="true"
+                :is-basic-filter="true"
                 :is-action-column="true"
                 @editRow="onEditRow"
-                @removeRowAtIndex="removeRowAtIndex"
+                @removeRow="onRemoveRow"
                 @fetchData="getGridData">
                 <template #actions>
                     <Button

@@ -36,11 +36,12 @@ export default {
         ...mapState('roles', {
             roleID: state => state.id,
             name: state => state.name,
+            privileges: state => state.privileges,
             description: state => state.description,
             selectedPrivileges: state => state.selectedPrivileges,
         }),
-        ...mapState('dictionaries', {
-            privileges: state => state.privileges,
+        ...mapState('grid', {
+            drafts: state => state.drafts,
         }),
     },
     destroyed() {
@@ -74,10 +75,10 @@ export default {
             const role = {
                 name: this.name,
                 description: this.description,
-                privileges: getMappedPrivilegesBasedOnGridData(
-                    this.privileges,
-                    this.selectedPrivileges,
-                ),
+                privileges: getMappedPrivilegesBasedOnGridData({
+                    rolePrivileges: this.privileges,
+                    drafts: this.drafts,
+                }),
             };
 
             this.updateRole({

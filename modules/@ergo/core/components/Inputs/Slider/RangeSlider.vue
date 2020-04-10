@@ -7,13 +7,13 @@
         <div
             class="slider__lower-sphere"
             :style="lowerSpherePositionStyle"
-            @mousedown="initResizeDrag"
+            @mousedown="onInitResize"
             @mouseenter="onMouseEnter"
             @mouseleave="onMouseLeave" />
         <div
             class="slider__upper-sphere"
             :style="upperSpherePositionStyle"
-            @mousedown="initResizeDrag"
+            @mousedown="onInitResize"
             @mouseenter="onMouseEnter"
             @mouseleave="onMouseLeave" />
         <div
@@ -73,10 +73,10 @@ export default {
         this.xPos = x;
     },
     methods: {
-        initResizeDrag(event) {
+        onInitResize(event) {
             this.isDraggingUpperSphere = event.target.classList.contains('slider__upper-sphere');
             registerResizeEventListeners().then((response) => {
-                response.default(this.doResizeDrag, this.stopResizeDrag);
+                response.default(this.onResize, this.onStopResizing);
             });
         },
         onMouseEnter(event) {
@@ -85,7 +85,7 @@ export default {
         onMouseLeave(event) {
             event.target.classList.remove('column--hovered');
         },
-        doResizeDrag(event) {
+        onResize(event) {
             if (this.xPos < event.pageX) {
                 const progress = this.getProgress(event.pageX);
 
@@ -102,9 +102,9 @@ export default {
                 }
             }
         },
-        stopResizeDrag() {
+        onStopResizing() {
             unregisterResizeEventListeners().then((response) => {
-                response.default(this.doResizeDrag, this.stopResizeDrag);
+                response.default(this.onResize, this.onStopResizing);
             });
         },
         getProgress(pageX) {

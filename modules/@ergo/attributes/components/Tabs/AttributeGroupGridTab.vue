@@ -9,13 +9,11 @@
                 :is-editable="$hasAccess(['ATTRIBUTE_GROUP_UPDATE'])"
                 :columns="columns"
                 :data-count="filtered"
-                :cell-values="cellValues"
-                :row-ids="rowIds"
-                :row-links="rowLinks"
+                :data="data"
                 :is-action-column="true"
-                :is-basic-filters="true"
+                :is-basic-filter="true"
                 @editRow="onEditRow"
-                @removeRowAtIndex="removeRowAtIndex"
+                @removeRow="onRemoveRow"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>
