@@ -18,7 +18,7 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
-import { TYPES } from '@Conditions/defaults/conditions';
+import { TYPES } from '@Conditions/defaults/conditionsDesigner';
 import { isEmpty } from '@Core/models/objectWrapper';
 import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 

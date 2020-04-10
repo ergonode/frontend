@@ -11,10 +11,12 @@
         :is-dragging-enabled="true"
         :is-multi-draggable="true"
         :dragged-element-size="{ width: 600, height: 60 }"
+        :context-name="contextName"
         @afterDrop="onGetConditionConfigurationById"
         @afterRemove="removeConditionValue">
-        <template #gridItem="{item}">
+        <template #gridItem="{item, gridItemStyles}">
             <ConditionSetItem
+                :style="gridItemStyles"
                 :condition="getCondition(item.id)"
                 :item-id="item.id"
                 :item-row="item.row"
@@ -25,6 +27,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { ROW_HEIGHT, COLUMNS, CONTEXT_NAME } from '@Conditions/defaults/conditionsDesigner';
 import TemplateGridWrapper from '@Core/components/TemplateGrid/TemplateGridWrapper';
 
 export default {
@@ -34,14 +37,18 @@ export default {
         ConditionSetItem: () => import('@Conditions/components/ConditionSetDesigner/ConditionSetItem'),
     },
     computed: {
-        ...mapState('gridDesigner', {
-            gridData: state => state.gridData,
-        }),
         ...mapState('conditions', {
-            columns: state => state.columns,
-            rowHeight: state => state.rowHeight,
             conditions: state => state.conditions,
         }),
+        contextName() {
+            return CONTEXT_NAME;
+        },
+        columns() {
+            return COLUMNS;
+        },
+        rowHeight() {
+            return ROW_HEIGHT;
+        },
     },
     methods: {
         ...mapActions('conditions', [

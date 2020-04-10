@@ -4,10 +4,10 @@
  */
 <template>
     <div
-        :class="['grid-item',{ 'grid-item--menu-active': isContextualMenuActive }]"
+        class="grid-item"
         @mouseover="onMouseOver"
         @mouseout="onMouseOut">
-        <IconPlusMinus
+        <IconArrowDouble
             v-if="hasChildren"
             class="grid-item__icon"
             :state="buttonExpanderIconState"
@@ -16,21 +16,17 @@
             class="grid-item__title"
             :title="item.name ? `#${item.code}`: ''">
             <span
-                class="font--medium-14-20"
+                class="title__name"
                 v-text="item.name || `#${item.code}`" />
             <span
-                v-if="item.name"
-                class="font--semi-bold-10-12"
-                v-text="`#${item.code}`" />
+                v-if="hasChildren"
+                class="title__subname"
+                v-text="`Inheriting ${contextName.toLowerCase()}: ${numberOfChildren}`" />
         </div>
-        <NumericBadge
-            class="grid-item__categories-length"
-            v-if="hasChildren"
-            :number="numberOfChildren"
-            :theme="secondaryTheme" />
         <div
             :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
             <ActionIconButton
+                v-if="isDraggingEnabled"
                 :theme="secondaryTheme"
                 :size="tinySize"
                 :options="contextualMenuItems"
@@ -45,28 +41,34 @@
 </template>
 <script>
 import { SIZE, THEME } from '@Core/defaults/theme';
-import { ACTION } from '@Core/defaults/icons';
+import { ARROW } from '@Core/defaults/icons';
 import IconDots from '@Core/components/Icons/Others/IconDots';
-import IconPlusMinus from '@Core/components/Icons/Actions/IconPlusMinus';
+import IconArrowDouble from '@Core/components/Icons/Arrows/IconArrowDouble';
 import ActionIconButton from '@Core/components/Buttons/ActionIconButton';
-import NumericBadge from '@Core/components/Badges/NumericBadge';
 
 export default {
-    name: 'CategoryTreeItem',
+    name: 'TemplateGridItem',
     components: {
         IconDots,
-        IconPlusMinus,
+        IconArrowDouble,
         ActionIconButton,
-        NumericBadge,
     },
     props: {
         isExpanded: {
             type: Boolean,
             default: false,
         },
+        isDraggingEnabled: {
+            type: Boolean,
+            default: false,
+        },
         item: {
             type: Object,
             required: true,
+        },
+        contextName: {
+            type: String,
+            default: 'element',
         },
         numberOfChildren: {
             type: Number,
@@ -75,7 +77,6 @@ export default {
     },
     data() {
         return {
-            isContextualMenuActive: false,
             contextualMenuItems: ['Remove'],
             isHovered: false,
         };
@@ -91,9 +92,7 @@ export default {
             return this.numberOfChildren > 0;
         },
         buttonExpanderIconState() {
-            return this.isExpanded
-                ? ACTION.PLUS
-                : ACTION.MINUS;
+            return this.isExpanded ? ARROW.DOWN : ARROW.UP;
         },
         contextualMenuHoveStateClasses() {
             return { 'grid-item__contextual-menu--hovered': this.isHovered };
@@ -128,20 +127,18 @@ export default {
 
 <style lang="scss" scoped>
     .grid-item {
-        $item: &;
-
+        position: relative;
         z-index: $Z_INDEX_LVL_1;
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        grid-column: 1 / 4;
+        grid-column: 1 / 3;
         height: 100%;
         border: 1px solid $GREY;
-        padding-left: 8px;
+        padding-left: 10px;
         background-color: $WHITESMOKE;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         cursor: grab;
-        overflow: hidden;
 
         &--menu-active {
             z-index: $Z_INDEX_LVL_3;
@@ -153,6 +150,11 @@ export default {
             box-shadow: $ELEVATOR_2_DP;
         }
 
+        &__icon {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
         &__title {
             display: flex;
             flex: 1;
@@ -162,6 +164,14 @@ export default {
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
+
+            .title__name {
+                font: $FONT_SEMI_BOLD_14_20;
+            }
+
+            .title__subname {
+                font: $FONT_SEMI_BOLD_10_12;
+            }
         }
 
         &__contextual-menu {
@@ -172,6 +182,16 @@ export default {
             &--hovered {
                 opacity: 1;
             }
+        }
+
+        &::before {
+            position: absolute;
+            left: -8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: $GREEN;
+            content: "";
         }
     }
 </style>

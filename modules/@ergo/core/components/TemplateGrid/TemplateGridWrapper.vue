@@ -9,6 +9,7 @@
             :columns="columns"
             :rows="rows"
             :row-height="rowHeight"
+            :constant-root="constantRoot"
             :grid-data="filteredGridData"
             :is-dragging-enabled="isDraggingEnabled"
             :is-multi-draggable="isMultiDraggable"
@@ -17,10 +18,14 @@
             @toggleItem="toggleItem"
             @afterDrop="id => $emit('afterDrop', id)"
             @afterRemove="id => $emit('afterRemove', id)">
-            <TemplateGridPresentationLayer
-                :style="gridStyles"
-                :columns="columns"
-                :rows="rows" />
+            <slot
+                name="gridPresentationLayer"
+                :rows="rows">
+                <TemplateGridPresentationLayer
+                    :style="gridStyles"
+                    :columns="columns"
+                    :rows="rows" />
+            </slot>
             <TemplateGridItemsContainer
                 :style="gridStyles">
                 <TemplateGridItemArea
@@ -29,14 +34,31 @@
                     :item="item"
                     :columns="columns"
                     :grid-gap="gridGap">
-                    <TemplateGridGhostItem
-                        v-if="item.id === 'ghost_item'" />
+                    <slot
+                        name="gridGhostItem"
+                        v-if="item.id === 'ghost_item'"
+                        :grid-item-styles="gridItemStyles">
+                        <TemplateGridGhostItem
+                            :style="gridItemStyles"
+                            :context-name="contextName" />
+                    </slot>
                     <slot
                         v-else
                         name="gridItem"
                         :item="item"
+                        :grid-item-styles="gridItemStyles"
                         :toggle-item="toggleItem"
-                        :remove-item="removeItem" />
+                        :remove-item="removeItem">
+                        <TemplateGridItem
+                            :style="gridItemStyles"
+                            :number-of-children="getChildrenLengthById(item.id)"
+                            :is-expanded="getExpandStateById(item.id)"
+                            :is-dragging-enabled="isDraggingEnabled"
+                            :item="item"
+                            :context-name="contextName"
+                            @toggleItem="toggleItem(item)"
+                            @removeItem="removeItem(item)" />
+                    </slot>
                     <template
                         v-if="isConnectionsVisible"
                         #connection>
@@ -51,13 +73,14 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import { getNearestNeighborRowId } from '@Core/models/template_grid/TreeCalculations';
 import TemplateGridPresentationLayer from '@Core/components/TemplateGrid/TemplateGridPresentationLayer';
 import TemplateGridItemsContainer from '@Core/components/TemplateGrid/TemplateGridItemsContainer';
 import TemplateGridContainer from '@Core/components/TemplateGrid/TemplateGridContainer';
 import TemplateGridGhostItem from '@Core/components/TemplateGrid/TemplateGridGhostItem';
 import TemplateGridItemArea from '@Core/components/TemplateGrid/TemplateGridItemArea';
+import TemplateGridItem from '@Core/components/TemplateGrid/TemplateGridItem';
 
 export default {
     name: 'TemplateGridWrapper',
@@ -67,6 +90,7 @@ export default {
         TemplateGridContainer,
         TemplateGridGhostItem,
         TemplateGridItemArea,
+        TemplateGridItem,
     },
     props: {
         isDraggingEnabled: {
@@ -84,6 +108,14 @@ export default {
         isConnectionsVisible: {
             type: Boolean,
             default: true,
+        },
+        constantRoot: {
+            type: Boolean,
+            default: false,
+        },
+        contextName: {
+            type: String,
+            default: 'element',
         },
         columns: {
             type: Number,
@@ -110,6 +142,10 @@ export default {
             gridData: state => state.gridData,
             hiddenItems: state => state.hiddenItems,
         }),
+        ...mapGetters('gridDesigner', [
+            'getChildrenLengthById',
+            'getExpandStateById',
+        ]),
         filteredGridData() {
             return this.gridData.filter(
                 item => item.column < this.columns,
@@ -119,6 +155,12 @@ export default {
             return {
                 gridTemplateColumns: `repeat(${this.columns}, 1fr)`,
                 gridAutoRows: `${this.rowHeight}px`,
+            };
+        },
+        gridItemStyles() {
+            return {
+                marginLeft: `${this.gridGap}px`,
+                marginRight: `${this.gridGap}px`,
             };
         },
     },
@@ -168,19 +210,18 @@ export default {
             }
         },
         connectionLineStyle({ id, row, parent }) {
+            if (this.constantRoot && row === 0) return { display: 'none' };
             const children = this.filteredGridData.filter(e => e.parent === parent);
             const connectionHeight = this.rowHeight * (
                 row - (children.length ? children[0].row : 0) + 1
             );
             const borderStyle = id === 'ghost_item' ? 'dashed' : 'solid';
             const linePosition = {
-                left: `-${100 - this.gridGap}%`,
-                width: `${100 - this.gridGap}%`,
+                left: `calc(-100% + (${this.gridGap}px + 22px))`,
             };
 
             if (parent === 'root') {
-                linePosition.left = `-${this.gridGap}px`;
-                linePosition.width = `${this.gridGap}px`;
+                linePosition.left = '0';
             }
 
             return {

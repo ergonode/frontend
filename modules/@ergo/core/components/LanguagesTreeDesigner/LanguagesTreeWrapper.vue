@@ -4,18 +4,19 @@
  */
 <template>
     <TemplateGridWrapper
+        constant-root
         :columns="columns"
         :row-height="rowHeight"
         :context-name="contextName"
-        :is-dragging-enabled="$hasAccess(['CATEGORY_TREE_UPDATE'])" />
+        :is-dragging-enabled="$hasAccess(['SETTINGS_UPDATE'])" />
 </template>
 
 <script>
-import { ROW_HEIGHT, COLUMNS, CONTEXT_NAME } from '@Trees/defaults/designer';
+import { ROW_HEIGHT, COLUMNS, CONTEXT_NAME } from '@Core/defaults/languagesDesigner';
 import TemplateGridWrapper from '@Core/components/TemplateGrid/TemplateGridWrapper';
 
 export default {
-    name: 'CategoryTreeWrapper',
+    name: 'LanguagesTreeWrapper',
     components: {
         TemplateGridWrapper,
     },
