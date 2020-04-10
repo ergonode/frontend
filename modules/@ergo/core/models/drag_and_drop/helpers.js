@@ -37,7 +37,11 @@ export function getDraggedColumnPositionState(pageX, elXPos, width) {
 export function isTrashBelowMouse(xPos, yPos) {
     const trash = document.querySelector('.trash-can');
 
-    return !isMouseOutOfBoundsElement(trash, xPos, yPos);
+    if (trash) {
+        return !isMouseOutOfBoundsElement(trash, xPos, yPos);
+    }
+
+    return false;
 }
 
 export function getPositionForBrowser(event) {

@@ -5,8 +5,9 @@
 <template>
     <div class="bool-presentation-cell">
         <Toggler
-            :value="value"
-            :disabled="isDisabled" />
+            :value="Boolean(value)"
+            :disabled="isDisabled"
+            @input="onValueChange" />
     </div>
 </template>
 
@@ -15,16 +16,21 @@
 import Toggler from '@Core/components/Inputs/Toggler/Toggler';
 
 export default {
-    name: 'GridBoolPresentationCell',
+    name: 'GridBoolEditCell',
     components: { Toggler },
     props: {
         value: {
-            type: Boolean,
+            type: [Boolean, Number],
             default: false,
         },
         isDisabled: {
             type: Boolean,
             default: false,
+        },
+    },
+    methods: {
+        onValueChange(value) {
+            this.$emit('input', value);
         },
     },
 };

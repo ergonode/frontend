@@ -15,7 +15,7 @@
 import CheckBox from '@Core/components/Inputs/CheckBox';
 
 export default {
-    name: 'GridPresentationCheckCell',
+    name: 'GridCheckEditCell',
     components: {
         CheckBox,
     },

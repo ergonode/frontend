@@ -17,8 +17,9 @@ export const ROW_INTERVALS = [
 export const COLUMN_WIDTH = {
     SELECT_ROW: '40px',
     ACTION: 'max-content',
-    DEFAULT: 'minmax(150px, 1fr)',
-    GHOST: '150px',
+    DEFAULT: 'minmax(max-content, 1fr)',
+    DYNAMIC: '1fr',
+    GHOST: 'min-content',
 };
 
 export const PINNED_COLUMN_STATE = {
@@ -65,7 +66,6 @@ export const COLUMN_GHOST = {
 };
 
 export const COLUMN_TYPE = {
-    CHECK: 'CHECK',
     ACTION: 'ACTION',
     IMAGE: 'IMAGE',
     LABEL: 'LABEL',
@@ -73,7 +73,7 @@ export const COLUMN_TYPE = {
     RANGE: 'RANGE',
     TEXT: 'TEXT',
     MULTI_SELECT: 'MULTI_SELECT',
-    CHECK_CELL: 'CHECK_CELL',
+    CHECK: 'CHECK',
 };
 
 export const COLUMN_FILTER_TYPE = {

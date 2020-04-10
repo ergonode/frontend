@@ -18,30 +18,38 @@
                 :filter="filter"
                 :column-index="columnIndex"
                 :row-index="rowIndex"
-                @filter="onFilterChange" />
+                @filter="$listeners.filter" />
         </template>
         <template
             #cell="{
                 data,
+                dataIndex,
                 columnIndex,
                 rowIndex,
                 rowId,
+                columnId,
+                languageCode,
                 isLocked,
                 isCopyable,
             }">
             <GridTextAreaDataCell
-                :key="rowId"
+                :key="`${rowId}|${columnId}`"
                 :data="data"
+                :data-index="dataIndex"
+                :row-id="rowId"
+                :column-id="columnId"
                 :column-index="columnIndex"
                 :row-index="rowIndex"
+                :language-code="languageCode"
                 :is-locked="isLocked"
-                :is-copyable="isCopyable" />
+                :is-copyable="isCopyable"
+                @input="$listeners.editCell"
+                @copy="$listeners.copyCells" />
         </template>
     </GridColumn>
 </template>
 
 <script>
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
 import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 import GridTextAreaDataCell from '@Core/components/Grid/Layout/Table/Cells/Data/GridTextAreaDataCell';
 
@@ -53,14 +61,5 @@ export default {
         GridTextFilterCell: () => import('@Core/components/Grid/Layout/Table/Cells/Filter/GridTextFilterCell'),
     },
     inheritAttrs: false,
-    methods: {
-        onFilterChange(value) {
-            this.$emit('filter', {
-                id: this.$attrs.column.id,
-                value,
-                operator: FILTER_OPERATOR.EQUAL,
-            });
-        },
-    },
 };
 </script>

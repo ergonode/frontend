@@ -11,15 +11,26 @@
         @remove="onRemoveColumn"
         @updateWidth="onUpdateWidth"
         @drop="onDrop">
-        <GridHeaderCell
-            :column-index="columnIndex"
-            :row-index="rowsOffset"
-            :column="column"
-            :sorted-column="sortedColumn"
-            @focus="onHeaderFocus"
-            @sort="onSortColumn"
-            @remove="onRemoveColumn" />
+        <GridTableCell
+            :row="0"
+            :column="columnIndex"
+            :locked="true">
+            <slot
+                name="header"
+                :column-index="columnIndex"
+                :title="column.label"
+                :sorted-column="sortedColumn">
+                <GridInteractiveHeaderCell
+                    :column-index="columnIndex"
+                    :column="column"
+                    :sorted-column="sortedColumn"
+                    @focus="onHeaderFocus"
+                    @sort="onSortColumn"
+                    @remove="onRemoveColumn" />
+            </slot>
+        </GridTableCell>
         <slot
+            v-if="isBasicFilter"
             name="filter"
             :is-locked="isFilterLocked"
             :filter="filter"
@@ -40,26 +51,22 @@
                 :language-code="column.language"
                 :column-index="columnIndex"
                 :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
-                :draft-value="getDraftValue(rowIndex)"
                 :is-locked="!isEditingAllowed"
-                :is-copyable="isEditingAllowed"
-                :on-value-change="onValueChange"
-                :on-copy-values="onCopyValues" />
+                :is-copyable="isEditingAllowed" />
         </template>
     </GridDraggableColumn>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
 import GridDraggableColumn from '@Core/components/Grid/Layout/Table/Columns/GridDraggableColumn';
-import GridHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridHeaderCell';
+import GridInteractiveHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridInteractiveHeaderCell';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 
 export default {
     name: 'GridColumn',
     components: {
         GridDraggableColumn,
-        GridHeaderCell,
+        GridInteractiveHeaderCell,
         GridTableCell,
     },
     props: {
@@ -106,9 +113,6 @@ export default {
         };
     },
     computed: {
-        ...mapState('grid', {
-            drafts: state => state.drafts,
-        }),
         basicFiltersOffset() {
             return this.isBasicFilter ? 1 : 0;
         },
@@ -120,17 +124,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('grid', [
-            'setDraftValue',
-        ]),
-        getDraftValue(index) {
-            if (this.drafts[this.rowIds[index]]
-                && this.drafts[this.rowIds[index]][this.column.id]) {
-                return this.drafts[this.rowIds[index]][this.column.id];
-            }
-
-            return null;
-        },
         onHeaderFocus(isFocused) {
             this.isHeaderFocused = isFocused;
         },
@@ -148,37 +141,6 @@ export default {
         },
         onDrop(payload) {
             this.$emit('drop', payload);
-        },
-        onValueChange({ rowId, columnId, value }) {
-            this.setDraftValue({
-                rowId,
-                columnId,
-                value,
-            });
-        },
-        onCopyValues({
-            from, to, rowId, columnId, value,
-        }) {
-            const rowIndex = this.$attrs.rowIds.findIndex(id => id === rowId);
-            const offset = from.row - rowIndex;
-
-            if (from.row < to.row) {
-                for (let i = from.row - offset + 1; i < to.row - offset + 1; i += 1) {
-                    this.setDraftValue({
-                        rowId: this.$attrs.rowIds[i],
-                        columnId,
-                        value,
-                    });
-                }
-            } else {
-                for (let i = to.row - offset; i < from.row - offset; i += 1) {
-                    this.setDraftValue({
-                        rowId: this.$attrs.rowIds[i],
-                        columnId,
-                        value,
-                    });
-                }
-            }
         },
     },
 };

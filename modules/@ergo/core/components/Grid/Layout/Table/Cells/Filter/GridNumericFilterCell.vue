@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { FILTER_OPERATOR } from '@Core/defaults/operators';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 import GridFilterPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridFilterPresentationCell';
 
@@ -63,7 +64,11 @@ export default {
     },
     methods: {
         onValueChange(value) {
-            this.$emit('filter', value);
+            this.$emit('filter', {
+                index: this.columnIndex,
+                value,
+                operator: FILTER_OPERATOR.EQUAL,
+            });
         },
     },
 };

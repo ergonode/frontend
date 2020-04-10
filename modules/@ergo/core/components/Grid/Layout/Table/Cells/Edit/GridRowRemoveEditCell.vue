@@ -17,7 +17,7 @@ import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 
 export default {
-    name: 'GridRemoveRowCell',
+    name: 'GridRowRemoveEditCell',
     components: {
         GridTableCell,
         IconDelete,

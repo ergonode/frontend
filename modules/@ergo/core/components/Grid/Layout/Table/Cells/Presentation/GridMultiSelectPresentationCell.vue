@@ -3,37 +3,44 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="info-hint-cell">
-        <GridPresentationCell :value="value" />
-        <InfoHint :hint="hint" />
+    <div class="presentation-multi-select-cell">
+        <GridPresentationCell :value="presentationValue" />
+        <IconArrowDropDown />
     </div>
 </template>
 
 <script>
 import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
-import InfoHint from '@Core/components/Hints/InfoHint';
+import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 
 export default {
-    name: 'GridPresentationHintCell',
+    name: 'GridSelectPresentationCell',
     components: {
         GridPresentationCell,
-        InfoHint,
+        IconArrowDropDown,
     },
     props: {
         value: {
-            type: String,
+            type: Array,
             required: true,
         },
-        hint: {
-            type: String,
-            required: true,
+        options: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
+    computed: {
+        presentationValue() {
+            if (!this.value) return '';
+
+            return this.value.map(option => this.options[option]).join(', ');
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .info-hint-cell {
+    .presentation-multi-select-cell {
         display: flex;
         flex: 1;
         justify-content: space-between;

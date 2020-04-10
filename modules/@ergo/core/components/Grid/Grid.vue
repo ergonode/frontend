@@ -34,7 +34,6 @@
                 :data="data"
                 :advanced-filters-values="advancedFiltersValues"
                 :current-page="currentPage"
-                :data-count="dataCount"
                 :max-rows="maxRows"
                 :row-height="rowHeight"
                 :is-editable="isEditable"
@@ -43,6 +42,8 @@
                 :is-action-column="isActionColumn"
                 @sort="onSortColumn"
                 @filter="onFilterChange"
+                @editCell="onEditCell"
+                @editCells="onEditCells"
                 @editRow="onEditRow"
                 @removeRow="onRemoveRow"
                 @removeColumn="onRemoveColumn"
@@ -50,7 +51,9 @@
                 @dropColumn="onDropColumn"
                 @insertColumn="onInsertColumn" />
             <GridPlaceholder v-if="dataCount === 0" />
-            <div class="grid__footer">
+            <div
+                class="grid__footer"
+                v-if="isFooterVisible">
                 <GridPageSelector
                     :value="maxRows"
                     :max-rows="dataCount"
@@ -108,7 +111,7 @@ export default {
         },
         dataCount: {
             type: Number,
-            default: 0,
+            required: true,
         },
         isFooterVisible: {
             type: Boolean,
@@ -164,6 +167,12 @@ export default {
     methods: {
         onInsertColumn(payload) {
             this.$emit('insertColumn', payload);
+        },
+        onEditCell(payload) {
+            this.$emit('editCell', payload);
+        },
+        onEditCells(payload) {
+            this.$emit('editCells', payload);
         },
         onEditRow(args) {
             this.$emit('editRow', args);

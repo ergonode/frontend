@@ -7,69 +7,57 @@
         :row="rowIndex"
         :column="columnIndex"
         :locked="isLocked"
+        :draft="mappedValue.isDraft"
+        :error="Boolean(errorMessages)"
+        :edit-key-code="editKeyCode"
         :disabled="isDisabled"
-        :copyable="isCopyable">
+        :copyable="isCopyable"
+        @copy="onCopyValues">
         <template #default="{ isEditing }">
             <GridImageEditCell
                 v-if="isEditing"
-                :value="value"
+                :value="mappedValue.value"
                 :width="$el.offsetWidth"
                 @input="onValueChange" />
             <GridImagePresentationCell
-                v-show="!isEditing && value"
-                :value="value"
+                v-else-if="!isEditing"
+                :value="mappedValue.value"
                 :suffix="data.suffix" />
         </template>
     </GridTableCell>
 </template>
 
 <script>
-import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
+import { mapState } from 'vuex';
+import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 import GridImagePresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridImagePresentationCell';
 
 export default {
     name: 'GridImageDataCell',
     components: {
         GridImagePresentationCell,
-        GridTableCell,
         GridImageEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridImageEditCell'),
     },
-    props: {
-        data: {
-            type: Object,
-            default: () => ({}),
-        },
-        rowIndex: {
-            type: Number,
-            required: true,
-        },
-        columnIndex: {
-            type: Number,
-            required: true,
-        },
-        isDisabled: {
-            type: Boolean,
-            default: false,
-        },
-        isLocked: {
-            type: Boolean,
-            default: false,
-        },
-        isCopyable: {
-            type: Boolean,
-            default: false,
-        },
-    },
+    mixins: [gridDataCellMixin],
     computed: {
-        value() {
-            if (!this.data.value) return '';
+        ...mapState('grid', {
+            drafts: state => state.drafts,
+        }),
+        mappedValue() {
+            if (this.drafts[this.rowId]
+                && typeof this.drafts[this.rowId][this.columnId] !== 'undefined') {
+                const draftValue = this.drafts[this.rowId][this.columnId];
 
-            return this.data.value;
-        },
-    },
-    methods: {
-        onValueChange(value) {
-            this.$emit('data', value);
+                return {
+                    value: draftValue,
+                    isDraft: this.data.value !== draftValue,
+                };
+            }
+
+            return {
+                value: this.data.value,
+                isDraft: false,
+            };
         },
     },
 };

@@ -141,6 +141,7 @@ export default {
         background-color: $GREY_LIGHT;
         box-shadow: $ELEVATOR_HOLE;
         overflow: auto;
+        min-width: 150px;
 
         &__title {
             margin-top: 8px;

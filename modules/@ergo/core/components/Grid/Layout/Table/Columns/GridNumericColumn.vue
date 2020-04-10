@@ -7,7 +7,6 @@
         v-bind="$attrs"
         v-on="$listeners">
         <template
-            v-if="$attrs.isBasicFilter"
             #filter="{
                 columnIndex,
                 isLocked,
@@ -19,43 +18,36 @@
                 :filter="filter"
                 :column-index="columnIndex"
                 :row-index="rowIndex"
-                @filter="onFilterChange" />
+                @filter="$listeners.filter" />
         </template>
         <template
             #cell="{
-                draftValue,
                 data,
                 dataIndex,
                 columnIndex,
                 rowIndex,
                 rowId,
                 columnId,
-                languageCode,
                 isLocked,
                 isCopyable,
-                onValueChange,
-                onCopyValues,
             }">
             <GridNumericDataCell
                 :key="`${rowId}|${columnId}`"
-                :draft-value="draftValue"
                 :data="data"
                 :data-index="dataIndex"
                 :row-id="rowId"
                 :column-id="columnId"
                 :column-index="columnIndex"
                 :row-index="rowIndex"
-                :language-code="languageCode"
                 :is-locked="isLocked"
                 :is-copyable="isCopyable"
-                @input="onValueChange"
-                @copy="onCopyValues" />
+                @input="$listeners.editCell"
+                @copy="$listeners.copyCells" />
         </template>
     </GridColumn>
 </template>
 
 <script>
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
 import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 import GridNumericDataCell from '@Core/components/Grid/Layout/Table/Cells/Data/GridNumericDataCell';
 
@@ -67,14 +59,5 @@ export default {
         GridNumericFilterCell: () => import('@Core/components/Grid/Layout/Table/Cells/Filter/GridNumericFilterCell'),
     },
     inheritAttrs: false,
-    methods: {
-        onFilterChange(value) {
-            this.$emit('filter', {
-                id: this.column.id,
-                value,
-                operator: FILTER_OPERATOR.EQUAL,
-            });
-        },
-    },
 };
 </script>

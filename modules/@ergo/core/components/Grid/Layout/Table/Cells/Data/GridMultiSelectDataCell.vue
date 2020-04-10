@@ -7,85 +7,72 @@
         :row="rowIndex"
         :column="columnIndex"
         :locked="isLocked"
+        :draft="mappedValue.isDraft"
+        :error="Boolean(errorMessages)"
+        :edit-key-code="editKeyCode"
         :disabled="isDisabled"
-        :copyable="isCopyable">
+        :copyable="isCopyable"
+        @copy="onCopyValues">
         <template #default="{ isEditing }">
             <GridMultiSelectEditCell
                 v-if="isEditing"
-                :value="value"
-                :options="options"
+                :value="mappedValue.value"
                 :language-code="languageCode"
+                :options="options"
                 :width="$el.offsetWidth"
                 :height="$el.offsetHeight"
                 @input="onValueChange" />
-            <GridSelectPresentationCell
-                v-else-if="!isEditing && value.length"
-                :value="presentationValue"
-                :suffix="data.suffix" />
+            <GridMultiSelectPresentationCell
+                v-else-if="!isEditing"
+                :value="mappedValue.value"
+                :suffix="data.suffix"
+                :options="options" />
         </template>
     </GridTableCell>
 </template>
 
 <script>
-import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import GridSelectPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridSelectPresentationCell';
+import { mapState } from 'vuex';
+import GridMultiSelectPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridMultiSelectPresentationCell';
+import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
+import { arraysAreEqual } from '@Core/models/arrayWrapper';
 
 export default {
     name: 'GridMultiSelectDataCell',
     components: {
-        GridTableCell,
-        GridSelectPresentationCell,
+        GridMultiSelectPresentationCell,
         GridMultiSelectEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridMultiSelectEditCell'),
     },
+    mixins: [gridDataCellMixin],
     props: {
-        data: {
-            type: Object,
-            default: () => ({}),
+        languageCode: {
+            type: String,
+            default: 'EN',
         },
         options: {
             type: Object,
             default: () => ({}),
         },
-        languageCode: {
-            type: String,
-            default: 'EN',
-        },
-        rowIndex: {
-            type: Number,
-            required: true,
-        },
-        columnIndex: {
-            type: Number,
-            required: true,
-        },
-        isDisabled: {
-            type: Boolean,
-            default: false,
-        },
-        isLocked: {
-            type: Boolean,
-            default: false,
-        },
-        isCopyable: {
-            type: Boolean,
-            default: false,
-        },
     },
     computed: {
-        presentationValue() {
-            if (!this.data.value) return '';
+        ...mapState('grid', {
+            drafts: state => state.drafts,
+        }),
+        mappedValue() {
+            if (this.drafts[this.rowId]
+                && typeof this.drafts[this.rowId][this.columnId] !== 'undefined') {
+                const draftValue = this.drafts[this.rowId][this.columnId];
 
-            return this.data.value.map(option => this.options[option]).join(', ');
-        },
-        value() {
-            if (!this.data.value) return [];
+                return {
+                    value: draftValue,
+                    isDraft: !arraysAreEqual(this.data.value, draftValue),
+                };
+            }
 
-            return this.data.value;
-        },
-    },
-    methods: {
-        onValueChange(value) {
-            this.$emit('data', value);
+            return {
+                value: this.data.value,
+                isDraft: false,
+            };
         },
     },
 };

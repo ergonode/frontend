@@ -4,7 +4,6 @@
  */
 import {
     getMappedData,
-    getMappedColumns,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
 
@@ -15,14 +14,14 @@ export const getGridData = ($axios, path, params) => $axios
         columns,
         info: { count, filtered },
     }) => {
+        const visibleColumns = columns.filter(({ visible }) => visible);
         const sortedColumns = params.columns
-            ? getSortedColumnsByIDs(columns, params.columns, 'id')
-            : columns;
-        const mappedColumns = getMappedColumns(sortedColumns);
-        const mappedData = getMappedData(columns, collection);
+            ? getSortedColumnsByIDs(visibleColumns, params.columns)
+            : visibleColumns;
+        const mappedData = getMappedData(visibleColumns, collection);
 
         return {
-            columns: mappedColumns,
+            columns: sortedColumns,
             data: mappedData,
             count,
             filtered,

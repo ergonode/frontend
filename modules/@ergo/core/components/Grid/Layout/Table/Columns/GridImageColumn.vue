@@ -9,19 +9,26 @@
         <template
             #cell="{
                 data,
+                dataIndex,
                 columnIndex,
                 rowIndex,
                 rowId,
+                columnId,
                 isLocked,
                 isCopyable,
             }">
             <GridImageDataCell
-                :key="rowId"
+                :key="`${rowId}|${columnId}`"
                 :data="data"
+                :data-index="dataIndex"
+                :row-id="rowId"
+                :column-id="columnId"
                 :column-index="columnIndex"
                 :row-index="rowIndex"
                 :is-locked="isLocked"
-                :is-copyable="isCopyable" />
+                :is-copyable="isCopyable"
+                @input="$listeners.editCell"
+                @copy="$listeners.copyCells" />
         </template>
     </GridColumn>
 </template>

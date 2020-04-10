@@ -5,7 +5,7 @@
 import {
     swapItemPosition,
     getObjectWithMaxValueInArrayByObjectKey,
-    isArrayEqualToArray,
+    arraysAreEqual,
     arrayToObject,
     removeValueAtIndex,
     sumIntegers,
@@ -50,19 +50,19 @@ describe('arrayWrapper/maxObjectValueInArrayByObjectKeyByObjectKey', () => {
     });
 });
 
-describe('arrayWrapper/isArrayEqualToArray', () => {
+describe('arrayWrapper/arraysAreEqual', () => {
     it('Arrays are equal', () => {
         let arr1 = [1, 2, 3, 4];
         let arr2 = [1, 2, 3, 4];
 
-        let areEqual = isArrayEqualToArray(arr1, arr2);
+        let areEqual = arraysAreEqual(arr1, arr2);
 
         expect(areEqual).toEqual(true);
 
         arr1 = [];
         arr2 = [];
 
-        areEqual = isArrayEqualToArray(arr1, arr2);
+        areEqual = arraysAreEqual(arr1, arr2);
 
         expect(areEqual).toEqual(true);
     });
@@ -71,21 +71,21 @@ describe('arrayWrapper/isArrayEqualToArray', () => {
         let arr1 = [1, 2, 3];
         let arr2 = [1, 2, 3, 4];
 
-        let areEqual = isArrayEqualToArray(arr1, arr2);
+        let areEqual = arraysAreEqual(arr1, arr2);
 
         expect(areEqual).toEqual(false);
 
         arr1 = [1];
         arr2 = [2, 3];
 
-        areEqual = isArrayEqualToArray(arr1, arr2);
+        areEqual = arraysAreEqual(arr1, arr2);
 
         expect(areEqual).toEqual(false);
 
         arr1 = [1, 2];
         arr2 = [2, 3];
 
-        areEqual = isArrayEqualToArray(arr1, arr2);
+        areEqual = arraysAreEqual(arr1, arr2);
 
         expect(areEqual).toEqual(false);
     });

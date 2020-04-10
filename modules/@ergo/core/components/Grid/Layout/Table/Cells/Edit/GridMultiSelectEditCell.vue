@@ -21,7 +21,7 @@
 <script>
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
-import { isArrayEqualToArray } from '@Core/models/arrayWrapper';
+import { arraysAreEqual } from '@Core/models/arrayWrapper';
 
 export default {
     name: 'GridMultiSelectEditCell',
@@ -85,7 +85,7 @@ export default {
     beforeDestroy() {
         const optionIds = this.localValue.map(option => option.id);
 
-        if (!isArrayEqualToArray(optionIds, this.value.map(option => option.id))) {
+        if (!arraysAreEqual(optionIds, this.value.map(option => option.id))) {
             this.$emit('input', optionIds);
         }
     },

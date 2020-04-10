@@ -9,19 +9,28 @@
         <template
             #cell="{
                 data,
+                dataIndex,
                 columnIndex,
                 rowIndex,
                 rowId,
+                columnId,
+                languageCode,
                 isLocked,
                 isCopyable,
             }">
             <GridBoolDataCell
-                :key="rowId"
+                :key="`${rowId}|${columnId}`"
                 :data="data"
+                :data-index="dataIndex"
+                :row-id="rowId"
+                :column-id="columnId"
                 :column-index="columnIndex"
                 :row-index="rowIndex"
+                :language-code="languageCode"
                 :is-locked="isLocked"
-                :is-copyable="isCopyable" />
+                :is-copyable="isCopyable"
+                @input="$listeners.editCell"
+                @copy="$listeners.copyCells" />
         </template>
     </GridColumn>
 </template>
@@ -31,7 +40,7 @@ import GridBoolDataCell from '@Core/components/Grid/Layout/Table/Cells/Data/Grid
 import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 
 export default {
-    name: 'GridTextColumn',
+    name: 'GridBoolColumn',
     components: {
         GridColumn,
         GridBoolDataCell,

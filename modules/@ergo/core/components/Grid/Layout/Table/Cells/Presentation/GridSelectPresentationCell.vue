@@ -4,7 +4,7 @@
  */
 <template>
     <div class="presentation-select-cell">
-        <GridPresentationCell :value="value" />
+        <GridPresentationCell :value="presentationValue" />
         <IconArrowDropDown />
     </div>
 </template>
@@ -23,6 +23,15 @@ export default {
         value: {
             type: [String, Number],
             required: true,
+        },
+        options: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
+    computed: {
+        presentationValue() {
+            return this.options[this.value] || this.value;
         },
     },
 };

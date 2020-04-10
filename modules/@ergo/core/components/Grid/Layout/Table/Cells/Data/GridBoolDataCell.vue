@@ -7,62 +7,55 @@
         :row="rowIndex"
         :column="columnIndex"
         :locked="isLocked"
+        :draft="mappedValue.isDraft"
+        :edit-key-code="32"
         :disabled="isDisabled"
-        :copyable="isCopyable">
-        <template>
-            <GridBoolPresentationCell
-                :value="value"
-                :is-disabled="isLocked" />
-        </template>
+        :copyable="isCopyable"
+        @edit="onEditValue"
+        @copy="onCopyValues">
+        <GridBoolEditCell
+            :value="mappedValue.value"
+            :suffix="data.suffix"
+            :is-disabled="isLocked"
+            @input="onValueChange" />
     </GridTableCell>
 </template>
 
 <script>
-import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
-import GridBoolPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridBoolPresentationCell';
+import { mapState } from 'vuex';
+import GridBoolEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridBoolEditCell';
+import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 
 export default {
-    name: 'GridTextDataCell',
+    name: 'GridBoolDataCell',
     components: {
-        GridBoolPresentationCell,
-        GridTableCell,
+        GridBoolEditCell,
     },
-    props: {
-        data: {
-            type: Object,
-            default: () => ({}),
-        },
-        rowIndex: {
-            type: Number,
-            required: true,
-        },
-        columnIndex: {
-            type: Number,
-            required: true,
-        },
-        isDisabled: {
-            type: Boolean,
-            default: false,
-        },
-        isLocked: {
-            type: Boolean,
-            default: false,
-        },
-        isCopyable: {
-            type: Boolean,
-            default: false,
-        },
-    },
+    mixins: [gridDataCellMixin],
     computed: {
-        value() {
-            if (!this.data.value) return '';
+        ...mapState('grid', {
+            drafts: state => state.drafts,
+        }),
+        mappedValue() {
+            if (this.drafts[this.rowId]
+                && typeof this.drafts[this.rowId][this.columnId] !== 'undefined') {
+                const draftValue = this.drafts[this.rowId][this.columnId];
 
-            return this.data.value;
+                return {
+                    value: draftValue,
+                    isDraft: Boolean(this.data.value) !== Boolean(draftValue),
+                };
+            }
+
+            return {
+                value: this.data.value,
+                isDraft: false,
+            };
         },
     },
     methods: {
-        onValueChange(value) {
-            this.$emit('data', value);
+        onEditValue() {
+            this.$emit('input', !this.mappedValue.value);
         },
     },
 };

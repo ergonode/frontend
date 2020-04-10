@@ -21,33 +21,39 @@
                 :language-code="languageCode"
                 :column-index="columnIndex"
                 :row-index="rowIndex"
-                @filter="onFilterChange" />
+                @filter="$listeners.filter" />
         </template>
         <template
             #cell="{
-                data,
                 languageCode,
+                data,
+                dataIndex,
                 columnIndex,
                 rowIndex,
                 rowId,
+                columnId,
                 isLocked,
                 isCopyable,
             }">
             <GridMultiSelectDataCell
-                :key="rowId"
-                :data="data"
-                :options="options"
                 :language-code="languageCode"
+                :key="`${rowId}|${columnId}`"
+                :data="data"
+                :data-index="dataIndex"
+                :row-id="rowId"
+                :column-id="columnId"
                 :column-index="columnIndex"
                 :row-index="rowIndex"
+                :options="options"
                 :is-locked="isLocked"
-                :is-copyable="isCopyable" />
+                :is-copyable="isCopyable"
+                @input="$listeners.editCell"
+                @copy="$listeners.copyCells" />
         </template>
     </GridColumn>
 </template>
 
 <script>
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
 import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 import GridMultiSelectDataCell from '@Core/components/Grid/Layout/Table/Cells/Data/GridMultiSelectDataCell';
 
@@ -70,15 +76,6 @@ export default {
             }
 
             return {};
-        },
-    },
-    methods: {
-        onFilterChange(value) {
-            this.$emit('filter', {
-                id: this.$attrs.column.id,
-                value,
-                operator: FILTER_OPERATOR.EQUAL,
-            });
         },
     },
 };

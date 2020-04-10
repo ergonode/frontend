@@ -115,7 +115,12 @@ export default {
 
             this.isDragged = true;
 
-            addElementCopyToDocumentBody(event, headerWidth, this.column.id);
+            addElementCopyToDocumentBody({
+                event,
+                element: this.$el,
+                width: headerWidth,
+                id: this.column.id,
+            });
             this.setGhostIndex(this.index);
             this.setDraggedElIndex(this.index);
             this.setDraggedElement({ ...this.column, index: this.index });
@@ -254,6 +259,13 @@ export default {
         box-sizing: border-box;
         background-color: $WHITE;
         will-change: width;
+
+        & > .grid-table-cell:nth-child(1) {
+            position: sticky;
+            top: 0;
+            z-index: $Z_INDEX_LVL_2;
+            background-color: $WHITESMOKE;
+        }
 
         &::after {
             position: absolute;

@@ -18,31 +18,37 @@
                 :filter="filter"
                 :column-index="columnIndex"
                 :row-index="rowIndex"
-                @filter="onFilterChange" />
+                @filter="$listeners.filter" />
         </template>
         <template
             #cell="{
                 data,
+                dataIndex,
                 columnIndex,
                 rowIndex,
                 rowId,
+                columnId,
                 isLocked,
                 isCopyable,
             }">
             <GridDateDataCell
-                :key="rowId"
+                :key="`${rowId}|${columnId}`"
                 :data="data"
+                :data-index="dataIndex"
+                :row-id="rowId"
+                :column-id="columnId"
                 :column-index="columnIndex"
                 :row-index="rowIndex"
                 :is-locked="isLocked"
-                :is-copyable="isCopyable" />
+                :is-copyable="isCopyable"
+                @input="$listeners.editCell"
+                @copy="$listeners.copyCells" />
         </template>
     </GridColumn>
 </template>
 
 <script>
 import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
-import { FILTER_OPERATOR } from '@Core/defaults/operators';
 import GridDateDataCell from '@Core/components/Grid/Layout/Table/Cells/Data/GridDateDataCell';
 import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 
@@ -60,16 +66,7 @@ export default {
                 return DEFAULT_FORMAT;
             }
 
-            return this.$attrs.column.paramaters.format;
-        },
-    },
-    methods: {
-        onFilterChange(value) {
-            this.$emit('filter', {
-                id: this.$attrs.column.id,
-                value,
-                operator: FILTER_OPERATOR.EQUAL,
-            });
+            return this.$attrs.column.parameters.format;
         },
     },
 };

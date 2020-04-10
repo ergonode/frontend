@@ -7,7 +7,7 @@
         <GridImageEditContentCell :style="{width: `${width + 8}px`}">
             <UploadImageFile
                 :value="value"
-                height="unset"
+                :height="this.localValue ? 'unset' : '132px'"
                 @upload="updateValue"
                 @remove="updateValue" />
         </GridImageEditContentCell>

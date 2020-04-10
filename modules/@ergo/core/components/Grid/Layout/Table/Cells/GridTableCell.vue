@@ -8,17 +8,21 @@
         :class="gridCellClasses"
         @mousedown="onMouseDown"
         @keydown="onKeyDown">
+        <GridCellResizer
+            v-if="copyable"
+            @copy="onCopy" />
         <slot :is-editing="isEditing" />
     </div>
 </template>
 
 <script>
 
-// const cellResizer = () => import('@Core/models/resize/grid/cellResizer');
-
 export default {
     name: 'GridTableCell',
     inject: ['getEditingCellCoordinates', 'setEditingCellCoordinates'],
+    components: {
+        GridCellResizer: () => import('@Core/components/Grid/Layout/Table/Cells/Resizer/GridCellResizer'),
+    },
     props: {
         column: {
             type: Number,
@@ -89,13 +93,6 @@ export default {
             },
         },
     },
-    created() {
-        // if (this.copyable) {
-        //     cellResizer().then((response) => {
-        //         response.bind(this.$el);
-        //     });
-        // }
-    },
     mounted() {
         if (!this.locked && !this.disabled) {
             this.$el.addEventListener('dblclick', this.onDblcClick);
@@ -105,22 +102,16 @@ export default {
         if (!this.locked && !this.disabled) {
             this.$el.removeEventListener('dblclick', this.onDblcClick);
         }
-
-        // if (this.copyable) {
-        //     cellResizer().then((response) => {
-        //         response.unbind(this.$el);
-        //     });
-        // }
     },
     methods: {
-        onResizeEnd(event) {
+        onCopy(factor) {
             this.$emit('copy', {
                 from: {
                     row: this.row,
                     column: this.column,
                 },
                 to: {
-                    row: this.row + event.detail,
+                    row: this.row + factor,
                     column: this.column,
                 },
             });
@@ -128,7 +119,7 @@ export default {
         onMouseDown() {
             if (this.editKeyCode !== 32 && !this.isEditing) {
                 this.isEditing = false;
-                this.$emit('edit', this.isEditing);
+                this.$emit('edit');
             }
         },
         onKeyDown(event) {
@@ -153,9 +144,9 @@ export default {
                     if (this.editKeyCode !== 32) {
                         element = this.$el;
                         this.isEditing = !this.isEditing;
+                    } else {
+                        this.$emit('edit');
                     }
-
-                    this.$emit('edit', this.isEditing);
                 }
                 break;
             case 37:
@@ -222,6 +213,10 @@ export default {
             &:focus {
                 position: relative;
                 box-shadow: inset 0 0 0 2px $GREEN;
+
+                & > .cell-resizer {
+                    display: inline-block;
+                }
             }
         }
 

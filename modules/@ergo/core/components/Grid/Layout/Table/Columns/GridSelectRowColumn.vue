@@ -4,31 +4,31 @@
  */
 <template>
     <div :class="pinnedColumnClass">
-        <!--        <GridTableCell-->
-        <!--            editing-allowed-->
-        <!--            :edit-key-code="32"-->
-        <!--            :row="rowsOffset"-->
-        <!--            :column="0"-->
-        <!--            @edit="onSelectAllRows">-->
-        <!--            <GridPresentationCheckCell-->
-        <!--                :value="rowsSelectionState"-->
-        <!--                @input="onSelectAllRows" />-->
-        <!--        </GridTableCell>-->
-        <!--        <GridTableCell-->
-        <!--            v-if="isBasicFilter"-->
-        <!--            :locked="true"-->
-        <!--            :row="rowsOffset + basicFiltersOffset"-->
-        <!--            :column="0">-->
-        <!--            <GridCheckPlaceholderCell />-->
-        <!--        </GridTableCell>-->
-        <!--        <GridEditSelectRowCell-->
-        <!--            v-for="(id, rowIndex) in rowIds"-->
-        <!--            :key="id"-->
-        <!--            :column="0"-->
-        <!--            :row="rowsOffset + rowIndex + basicFiltersOffset + 1"-->
-        <!--            :is-selected="isSelectedAllRows-->
-        <!--                || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"-->
-        <!--            @select="onSelectRow" />-->
+        <GridTableCell
+            editing-allowed
+            :edit-key-code="32"
+            :row="rowsOffset"
+            :column="0"
+            @edit="onSelectAllRows">
+            <GridCheckEditCell
+                :value="rowsSelectionState"
+                @input="onSelectAllRows" />
+        </GridTableCell>
+        <GridTableCell
+            v-if="isBasicFilter"
+            :locked="true"
+            :row="rowsOffset + basicFiltersOffset"
+            :column="0">
+            <GridCheckPlaceholderCell />
+        </GridTableCell>
+        <GridEditSelectRowCell
+            v-for="(id, rowIndex) in rowIds"
+            :key="id"
+            :column="0"
+            :row="rowsOffset + rowIndex + basicFiltersOffset + 1"
+            :is-selected="isSelectedAllRows
+                || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
+            @select="onSelectRow" />
     </div>
 </template>
 
@@ -39,7 +39,7 @@ export default {
     name: 'GridSelectRowColumn',
     components: {
         GridTableCell,
-        GridPresentationCheckCell: () => import('@Core/components/Grid/PresentationCells/GridPresentationCheckCell'),
+        GridCheckEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell'),
         GridEditSelectRowCell: () => import('@Core/components/Grid/EditCells/GridEditSelectRowCell'),
         GridCheckPlaceholderCell: () => import('@Core/components/Grid/GridCheckPlaceholderCell'),
     },
@@ -122,6 +122,8 @@ export default {
                     this.isSelectedAllRows = false;
                 }
             }
+
+            this.selectedRows = { ...this.selectedRows };
 
             this.$emit('rowSelect', this.selectedRows);
             this.$emit('rowsSelect', this.isSelectedAllRows);

@@ -3,40 +3,47 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="status-presentation-cell">
-        <PointBadge :color="color" />
-        <GridPresentationCell :value="value" />
+    <div class="info-hint-cell">
+        <GridPresentationCell
+            :value="value"
+            :suffix="suffix" />
+        <InfoHint :hint="hint" />
     </div>
 </template>
 
 <script>
-import PointBadge from '@Core/components/Badges/PointBadge';
 import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
+import InfoHint from '@Core/components/Hints/InfoHint';
 
 export default {
-    name: 'GridPresentationColorPickerCell',
+    name: 'GridHintPresentationCell',
     components: {
-        PointBadge,
         GridPresentationCell,
+        InfoHint,
     },
     props: {
         value: {
             type: String,
             required: true,
         },
-        color: {
+        hint: {
             type: String,
             required: true,
+        },
+        suffix: {
+            type: String,
+            default: '',
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .status-presentation-cell {
+    .info-hint-cell {
         display: flex;
         flex: 1;
+        justify-content: space-between;
         align-items: center;
-        padding-left: 8px;
+        padding-right: 6px;
     }
 </style>

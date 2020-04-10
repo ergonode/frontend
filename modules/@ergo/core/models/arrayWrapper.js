@@ -66,7 +66,7 @@ export function swapItemPosition(array, pos1, pos2) {
  * @param {Array} arr2
  * @returns {boolean}
  */
-export function isArrayEqualToArray(arr1, arr2) {
+export function arraysAreEqual(arr1, arr2) {
     const { length: arr1Length } = arr1;
     const { length: arr2Length } = arr2;
 

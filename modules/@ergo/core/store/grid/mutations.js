@@ -8,9 +8,10 @@ export const types = {
     INITIALIZE_ROW_DRAFT: 'INITIALIZE_ROW_DRAFT',
     INITIALIZE_COLUMN_DRAFT: 'INITIALIZE_COLUMN_DRAFT',
     SET_DRAFT_VALUE: 'SET_DRAFT_VALUE',
-    REMOVE_DRAFT: 'REMOVE_DRAFT',
-    REMOVE_DRAFT_VALUE: 'REMOVE_DRAFT_VALUE',
-    FORCE_DRAFT_MUTATION: 'FORCE_DRAFT_MUTATION',
+    SET_DRAFTS_VALUES: 'SET_DRAFTS_VALUES',
+    SET_DRAFT_ROW_VALUES: 'SET_DRAFT_ROW_VALUES',
+    SET_DRAFTS: 'SET_DRAFTS',
+    REMOVE_DRAFT_ROW: 'REMOVE_DRAFT_ROW',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 export default {
@@ -20,22 +21,21 @@ export default {
     [types.INITIALIZE_COLUMN_DRAFT](state, { rowId, columnId }) {
         state.drafts[rowId][columnId] = {};
     },
+    [types.SET_DRAFTS_VALUES](state, drafts) {
+        state.drafts = { ...state.drafts, ...drafts };
+    },
+    [types.SET_DRAFT_ROW_VALUES](state, { rowId, value }) {
+        state.drafts[rowId] = value;
+        state.drafts = { ...state.drafts };
+    },
     [types.SET_DRAFT_VALUE](state, {
         rowId, columnId, value,
     }) {
         state.drafts[rowId][columnId] = value;
-        state.drafts[rowId] = { ...state.drafts[rowId] };
         state.drafts = { ...state.drafts };
     },
-    [types.REMOVE_DRAFT](state, productId) {
-        delete state.drafts[productId];
-    },
-    [types.REMOVE_DRAFT_VALUE](state, { productId, attributeId }) {
-        delete state.drafts[productId][attributeId];
-        state.drafts[productId] = { ...state.drafts[productId] };
-    },
-    [types.FORCE_DRAFT_MUTATION](state) {
-        state.drafts = { ...state.drafts };
+    [types.REMOVE_DRAFT_ROW](state, rowId) {
+        delete state.drafts[rowId];
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

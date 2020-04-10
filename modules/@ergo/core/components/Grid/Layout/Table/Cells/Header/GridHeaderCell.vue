@@ -3,96 +3,36 @@
  * See LICENSE for license details.
  */
 <template>
-    <GridTableCell
-        :row="rowIndex"
-        :column="columnIndex"
-        :locked="true">
-        <Component
-            :is="headerComponent"
-            v-bind="headerComponentProps"
-            @sort="onSort"
-            @focus="onFocus"
-            @removeColumn="onRemoveColumn" />
-    </GridTableCell>
+    <span
+        class="presentation-header-cell"
+        :title="hint"
+        v-text="title" />
 </template>
 
 <script>
-import { GRID_HEADER_TYPE } from '@Core/defaults/grid';
-import GridPresentationHeaderCell from '@Core/components/Grid/PresentationCells/GridPresentationHeaderCell';
-
 export default {
     name: 'GridHeaderCell',
-    components: {
-        GridTableCell: () => import('@Core/components/Grid/Layout/Table/Cells/GridTableCell'),
-    },
     props: {
-        columnIndex: {
-            type: Number,
-            required: true,
+        title: {
+            type: String,
+            default: 'Header',
         },
-        rowIndex: {
-            type: Number,
-            required: true,
-        },
-        column: {
-            type: Object,
-            required: true,
-        },
-        sortedColumn: {
-            type: Object,
-            required: true,
-        },
-    },
-    computed: {
-        headerComponent() {
-            const { type } = this.column.header;
-
-            if (type === GRID_HEADER_TYPE.PLAIN) return GridPresentationHeaderCell;
-
-            return () => import('@Core/components/Grid/PresentationCells/GridPresentationInteractiveHeaderCell');
-        },
-        headerComponentProps() {
-            const {
-                title,
-                hint,
-                type,
-                suffix,
-            } = this.column.header;
-
-            if (type === GRID_HEADER_TYPE.INTERACTIVE) {
-                return {
-                    columnIndex: this.columnIndex,
-                    column: this.column,
-                    sortedColumn: this.sortedColumn,
-                };
-            }
-
-            return {
-                title,
-                hint,
-                suffix,
-            };
-        },
-    },
-    methods: {
-        onFocus(isFocused) {
-            this.$emit('focus', isFocused);
-        },
-        onSort(sortState) {
-            this.$emit('sort', sortState);
-        },
-        onRemoveColumn(index) {
-            this.$emit('remove', index);
+        hint: {
+            type: String,
+            default: '',
         },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-    .grid-table-cell {
-        position: sticky !important;
-        top: 0;
-        z-index: $Z_INDEX_LVL_2;
-        background-color: $WHITESMOKE;
+    .presentation-header-cell {
+        padding: 8px;
+        color: $GRAPHITE_DARK;
+        font: $FONT_BOLD_12_16;
+        user-select: none;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
 </style>

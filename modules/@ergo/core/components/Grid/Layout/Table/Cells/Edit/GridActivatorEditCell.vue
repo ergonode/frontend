@@ -19,7 +19,7 @@ export default {
         position: absolute;
         top: 0;
         left: 0;
-        z-index: $Z_INDEX_LVL_4;
+        z-index: $Z_INDEX_LVL_5;
         display: flex;
         justify-content: center;
     }

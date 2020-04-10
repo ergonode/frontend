@@ -13,6 +13,7 @@
             :clearable="true"
             :options="mappedOptions"
             :error-messages="errorMessages"
+            @focus="onFocus"
             @input="onValueChange" />
     </GridActivatorEditCell>
 </template>
@@ -62,6 +63,9 @@ export default {
                 id: this.value,
                 key: this.value,
                 value: this.options[this.value],
+                hint: this.options[this.value]
+                    ? `#${this.value} ${this.languageCode}`
+                    : '',
             };
         }
 
@@ -84,11 +88,16 @@ export default {
         },
     },
     methods: {
-        onValueChange(value) {
-            if (value.id !== this.value) {
-                this.$emit('input', value.id);
+        onFocus(isFocused) {
+            if (!isFocused) {
+                if (this.localValue.id !== this.value) {
+                    this.$emit('input', this.localValue.id || this.localValue);
+                }
+                this.setEditingCellCoordinates();
             }
-            this.setEditingCellCoordinates();
+        },
+        onValueChange(value) {
+            this.localValue = value;
         },
     },
 };

@@ -108,7 +108,7 @@
                 @setGhost="onSetGhostFilterAtIndex"
                 @swap="onSwapFiltersPosition"
                 @drop="onDropFilterAtIndex" />
-            <GridAdvancedFilterPlaceholder v-if="!filters.length" />
+            <GridAdvancedFilterPlaceholder v-if="!filters.length && !isListElementDragging" />
             <GridAdvancedFiltersRemoveAllButton
                 v-show="filtersNumber"
                 @click.native="onRemoveAll" />
@@ -324,7 +324,6 @@ export default {
 
         &__settings {
             display: flex;
-            flex: 1;
             justify-content: space-between;
             align-items: center;
             padding: 16px 16px 0;

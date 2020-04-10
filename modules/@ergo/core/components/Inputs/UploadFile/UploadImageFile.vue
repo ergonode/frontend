@@ -78,7 +78,7 @@ export default {
         ]),
         onRemoveFile() {
             this.image = null;
-            this.$emit('remove');
+            this.$emit('remove', '');
         },
         onFileUpload(file) {
             this.isRequestPending = true;

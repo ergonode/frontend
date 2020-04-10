@@ -4,15 +4,14 @@
  */
 <template>
     <div
-        :class="['header-cell', {
-            'header-cell--exists': isColumnExists,
-            'header-cell--draggable': !isCellEditing,
-        }
+        :class="[
+            'header-cell',
+            { 'header-cell--exists': isColumnExists }
         ]">
-        <GridPresentationHeaderCell
-            :title="column.header.title"
-            :hint="column.header.hint"
-            :suffix="column.header.suffix" />
+        <GridHeaderCell
+            :title="title"
+            :hint="hint"
+            :suffix="suffix" />
         <div
             :class="[
                 'header-cell__actions',
@@ -44,19 +43,16 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { SIZE, THEME } from '@Core/defaults/theme';
-import { removeCookieById } from '@Core/models/cookies';
-import { COLUMNS_IDS } from '@Core/defaults/grid/cookies';
 import { SORTING_ORDER } from '@Core/defaults/icons';
 import { GRAPHITE_LIGHT } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
-    name: 'GridPresentationInteractiveHeaderCell',
-    inject: ['getEditingCellCoordinates'],
+    name: 'GridInteractiveHeaderCell',
     components: {
         ActionIconButton: () => import('@Core/components/Buttons/ActionIconButton'),
         IconArrowSort: () => import('@Core/components/Icons/Arrows/IconArrowSort'),
         IconDots: () => import('@Core/components/Icons/Others/IconDots'),
-        GridPresentationHeaderCell: () => import('@Core/components/Grid/PresentationCells/GridPresentationHeaderCell'),
+        GridHeaderCell: () => import('@Core/components/Grid/Layout/Table/Cells/Header/GridHeaderCell'),
     },
     props: {
         column: {
@@ -71,14 +67,9 @@ export default {
             type: Number,
             required: true,
         },
-        isColumnSorted: {
-            type: Boolean,
-            default: false,
-        },
     },
     data() {
         return {
-            contextualMenuItems: ['Remove'],
             isMenuSelected: false,
             isColumnHovered: false,
         };
@@ -88,6 +79,9 @@ export default {
             draggedElementOnGrid: state => state.draggedElementOnGrid,
             draggedElement: state => state.draggedElement,
         }),
+        contextualMenuItems() {
+            return ['Remove'];
+        },
         tinySize() {
             return SIZE.TINY;
         },
@@ -100,11 +94,6 @@ export default {
         isColumnExists() {
             return this.draggedElement === this.column.id;
         },
-        isCellEditing() {
-            const { row, column } = this.getEditingCellCoordinates();
-
-            return row !== null && column !== null;
-        },
         isSorted() {
             return this.sortedColumn.index === this.column.id;
         },
@@ -112,6 +101,23 @@ export default {
             if (!this.isSorted) return null;
 
             return this.sortedColumn.orderState;
+        },
+        title() {
+            const [code] = this.column.id.split(':');
+
+            return this.column.label || `#${code}`;
+        },
+        hint() {
+            const [code, languageCode] = this.column.id.split(':');
+
+            return this.column.label ? `${code} ${languageCode}` : null;
+        },
+        suffix() {
+            if (this.column.parameters) {
+                return Object.keys(this.column.parameters).map(key => this.column.parameters[key]).join(', ');
+            }
+
+            return null;
         },
     },
     mounted() {
@@ -153,20 +159,7 @@ export default {
         onSelectOption(option) {
             switch (option) {
             case 'Remove': {
-                if (this.column.element_id) {
-                    this.setDisabledElement({
-                        languageCode: this.column.language,
-                        elementId: this.column.element_id,
-                        disabled: false,
-                    });
-                }
-
-                removeCookieById({
-                    cookies: this.$cookies,
-                    cookieName: COLUMNS_IDS,
-                    id: this.column.id,
-                });
-                this.$emit('removeColumn', this.columnIndex);
+                this.$emit('remove', this.columnIndex);
                 this.$emit('focus', false);
                 break;
             }
@@ -180,11 +173,11 @@ export default {
             return children[index];
         },
         onMouseEnter() {
-            if (this.draggedElementOnGrid || this.isHeaderFocused() || this.isCellEditing) return;
+            if (this.draggedElementOnGrid || this.isHeaderFocused()) return;
             this.addColumnHover();
         },
         onMouseLeave() {
-            if (this.draggedElementOnGrid || this.isHeaderFocused() || this.isCellEditing) return;
+            if (this.draggedElementOnGrid || this.isHeaderFocused()) return;
             this.removeColumnHover();
         },
         isHeaderFocused() {
@@ -220,10 +213,10 @@ export default {
         flex: 1 1 auto;
         justify-content: space-between;
         align-items: center;
-        width: 0;
         height: 100%;
         user-select: none;
         pointer-events: auto;
+        cursor: grab;
 
         &--exists {
             background-color: $GREEN;
@@ -232,10 +225,6 @@ export default {
             span {
                 color: $WHITE;
             }
-        }
-
-        &--draggable {
-            cursor: grab;
         }
 
         &__actions {

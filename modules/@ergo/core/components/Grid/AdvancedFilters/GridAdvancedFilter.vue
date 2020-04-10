@@ -28,13 +28,13 @@
             <label
                 class="advanced-filter__label"
                 :for="associatedLabel"
-                v-text="filterHeader.title" />
+                v-text="title" />
             <input
                 :id="associatedLabel"
                 ref="input"
                 class="advanced-filter__input"
                 readonly
-                :title="filterHeader.hint"
+                :title="hint"
                 @focus="onFocus"
                 @blur="onBlur">
             <div class="advanced-filter__details">
@@ -100,7 +100,6 @@ import {
 } from '@Core/models/drag_and_drop/helpers';
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 import { changeCookiePosition, removeCookieById } from '@Core/models/cookies';
-import { getMappedColumnHeaderTitle } from '@Core/models/mappers/gridDataMapper';
 import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
 
 export default {
@@ -153,8 +152,15 @@ export default {
         arrowIconFillColor() {
             return this.isFilterExists ? WHITE : GRAPHITE_DARK;
         },
-        filterHeader() {
-            return getMappedColumnHeaderTitle(this.filter);
+        title() {
+            const [code] = this.filter.id.split(':');
+
+            return this.filter.label || `#${code}`;
+        },
+        hint() {
+            const [code, languageCode] = this.filter.id.split(':');
+
+            return this.filter.label ? `${code} ${languageCode}` : null;
         },
         filterValue() {
             if (this.filter.value.isEmptyRecord) return 'Empty records';
@@ -229,7 +235,12 @@ export default {
         onDragStart(event) {
             const { width } = this.$el.getBoundingClientRect();
 
-            addElementCopyToDocumentBody(event, width, JSON.stringify(this.filter));
+            addElementCopyToDocumentBody({
+                event,
+                element: this.$el,
+                width,
+                id: JSON.stringify(this.filter),
+            });
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.FILTER });
 
             window.requestAnimationFrame(() => {

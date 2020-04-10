@@ -4,7 +4,9 @@
  */
 <template>
     <div class="image-cell">
-        <Picture :image-id="value" />
+        <Picture
+            v-if="value"
+            :image-id="value" />
     </div>
 </template>
 

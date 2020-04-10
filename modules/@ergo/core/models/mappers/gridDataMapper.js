@@ -3,10 +3,9 @@
  * See LICENSE for license details.
  */
 import {
-    GRID_HEADER_TYPE,
-    COLUMN_TYPE,
     COLUMN_ACTIONS_ID,
 } from '@Core/defaults/grid';
+import { getUUID } from '@Core/models/stringWrapper';
 
 export function getParsedFilters(filters, advancedFilters = []) {
     const entries = Object.entries(filters);
@@ -54,59 +53,8 @@ export function getParsedAdvancedFilters(filters) {
     return mappedFilter.join(';');
 }
 
-const getMappedColumnHeaderType = ({ filter, type }) => {
-    if (type === COLUMN_TYPE.CHECK) return GRID_HEADER_TYPE.CHECK;
-    if (filter || type === COLUMN_TYPE.IMAGE) return GRID_HEADER_TYPE.INTERACTIVE;
-
-    return GRID_HEADER_TYPE.PLAIN;
-};
-
-export const getMappedColumnHeaderTitle = ({
-    id, label, parameters,
-}) => {
-    let suffix = '';
-    const [code, language = ''] = id.split(':');
-
-    if (parameters) suffix = Object.keys(parameters).map(key => parameters[key]).join(', ');
-
-    return {
-        title: label || `#${code}`,
-        hint: label ? `${code} ${language}` : null,
-        suffix,
-    };
-};
-
-export const getMappedColumnHeader = ({
-    id,
-    label,
-    parameters,
-    filter,
-    type,
-}) => ({
-    ...getMappedColumnHeaderTitle({
-        id, label, parameters,
-    }),
-    type: getMappedColumnHeaderType({ filter, type }),
-});
-
 export function getSortedColumnsByIDs(columns, columnsID) {
-    return columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id));
-}
-
-export function getMappedColumns(columns) {
-    const mappedColumns = [];
-    const { length } = columns;
-
-    for (let i = 0; i < length; i += 1) {
-        const column = columns[i];
-
-        mappedColumns.push({
-            ...column,
-            header: getMappedColumnHeader(column),
-        });
-    }
-
-    return mappedColumns;
+    return [...columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id))];
 }
 
 export function getMappedData(columns, collection) {
@@ -136,6 +84,14 @@ export function getMappedData(columns, collection) {
 
         data[COLUMN_ACTIONS_ID] = actionColumn;
     }
+
+    const idColumn = [];
+
+    for (let i = 0; i < rowsNumber; i += 1) {
+        idColumn.push(collection[i].id ? collection[i].id.value : getUUID());
+    }
+
+    data.id = idColumn;
 
     return data;
 }

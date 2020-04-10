@@ -17,7 +17,7 @@ import IconEdit from '@Core/components/Icons/Actions/IconEdit';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 
 export default {
-    name: 'GridEditRowCell',
+    name: 'GridRowEditCell',
     components: {
         GridTableCell,
         IconEdit,

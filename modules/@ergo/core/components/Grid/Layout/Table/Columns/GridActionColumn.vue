@@ -15,7 +15,7 @@
             :row="rowsOffset + basicFiltersOffset"
             :locked="true" />
         <template v-for="(links, index) in data">
-            <GridEditRowCell
+            <GridRowEditCell
                 :key="`${index}|edit`"
                 :link="links.get"
                 :column="columnIndex"
@@ -23,7 +23,7 @@
                 :is-selected="isSelectedAllRows
                     || selectedRows[rowsOffset + index + basicFiltersOffset + 1]"
                 @edit="onEdit" />
-            <GridRemoveRowCell
+            <GridRowRemoveEditCell
                 :key="`${index}|remove`"
                 :link="links.delete"
                 :index="index"
@@ -37,16 +37,16 @@
 </template>
 
 <script>
-import GridEditRowCell from '@Core/components/Grid/EditCells/GridEditRowCell';
-import GridRemoveRowCell from '@Core/components/Grid/EditCells/GridRemoveRowCell';
+import GridRowEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridRowEditCell';
+import GridRowRemoveEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridRowRemoveEditCell';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
 
 export default {
     name: 'GridActionColumn',
     components: {
         GridTableCell,
-        GridEditRowCell,
-        GridRemoveRowCell,
+        GridRowEditCell,
+        GridRowRemoveEditCell,
     },
     props: {
         columnIndex: {

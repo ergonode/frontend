@@ -10,7 +10,7 @@
         :edit-key-code="32"
         :selected="isSelected"
         @edit="onSelect">
-        <GridPresentationCheckCell
+        <GridCheckEditCell
             :value="isSelected"
             @input="onSelect" />
     </GridTableCell>
@@ -22,7 +22,7 @@ export default {
     name: 'GridEditSelectRowCell',
     components: {
         GridTableCell: () => import('@Core/components/Grid/Layout/Table/Cells/GridTableCell'),
-        GridPresentationCheckCell: () => import('@Core/components/Grid/PresentationCells/GridPresentationCheckCell'),
+        GridCheckEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell'),
     },
     props: {
         row: {

@@ -18,8 +18,9 @@
                 :is-header-visible="true"
                 :is-basic-filter="true"
                 :is-action-column="true"
-                :is-select-column="true"
                 @editRow="onEditRow"
+                @editCell="onEditCell"
+                @editCells="onEditCells"
                 @removeRow="onRemoveRow"
                 @dropColumn="onDropColumn"
                 @insertFilter="insertFilterAtIndex"
@@ -51,6 +52,8 @@ import { ALERT_TYPE } from '@Core/defaults/alerts';
 import Button from '@Core/components/Buttons/Button';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+
+const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
 
 export default {
     name: 'ProductGridTab',
@@ -105,9 +108,36 @@ export default {
             'applyDraft',
         ]),
         ...mapActions('grid', [
-            'removeDraft',
-            'forceDraftsMutation',
+            'removeDraftRow',
         ]),
+        onEditCell({ rowId, columnId, value }) {
+            const { element_id } = this.columns.find(column => column.id === columnId);
+
+            updateProductDraft().then(response => response.default({
+                $axios: this.$axios,
+                $store: this.$store,
+                productId: rowId,
+                columnId,
+                elementId: element_id,
+                value,
+            }));
+        },
+        onEditCells(editedCells) {
+            const requests = editedCells.map(({ rowId, columnId, value }) => {
+                const { element_id } = this.columns.find(column => column.id === columnId);
+
+                return updateProductDraft().then(response => response.default({
+                    $axios: this.$axios,
+                    $store: this.$store,
+                    productId: rowId,
+                    columnId,
+                    elementId: element_id,
+                    value,
+                }));
+            });
+
+            Promise.all(requests);
+        },
         onEditRow(args) {
             const lastIndex = args.length - 1;
 
@@ -116,20 +146,15 @@ export default {
         saveDrafts() {
             const promises = [];
 
-            Object.keys(this.drafts).forEach((productId) => {
+            Object.keys(this.drafts).forEach((rowId) => {
                 promises.push(this.applyDraft({
-                    id: productId,
-                    onSuccess: () => {
-                        Object.keys(this.drafts[productId]).forEach((columnId) => {
-                            this.cellValues[productId][columnId] = this.drafts[productId][columnId];
-                        });
-                        this.removeDraft(productId);
-                    },
+                    id: rowId,
+                    onSuccess: () => this.removeDraftRow(rowId),
                 }));
             });
 
             Promise.all(promises).then(() => {
-                this.forceDraftsMutation();
+                this.getGridData(this.localParams);
                 this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product changes saved' });
             });
         },
