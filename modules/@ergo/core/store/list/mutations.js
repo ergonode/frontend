@@ -19,8 +19,8 @@ export default {
         };
         state.disabledElements = { ...state.disabledElements };
     },
-    [types.SET_DISABLED_ELEMENTS](state, setDisabledElements) {
-        state.disabledElements = setDisabledElements;
+    [types.SET_DISABLED_ELEMENTS](state, disabledElements) {
+        state.disabledElements = disabledElements;
     },
     [types.REMOVE_DISABLED_ELEMENT](state, { languageCode, elementId }) {
         delete state.disabledElements[languageCode][elementId];

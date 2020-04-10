@@ -2,7 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export const GHOST_ID = 'ghost';
+export const GHOST_ID = 'GHOST';
+export const COLUMN_SELECT_ROW_ID = 'COLUMN_SELECT_ROW';
+export const COLUMN_ACTIONS_ID = 'COLUMN_ACTIONS';
 
 export const GHOST_ELEMENT_MODEL = {
     id: GHOST_ID,
@@ -15,8 +17,9 @@ export const ROW_INTERVALS = [
 export const COLUMN_WIDTH = {
     SELECT_ROW: '40px',
     ACTION: 'max-content',
-    DEFAULT: 'minmax(150px, 1fr)',
-    GHOST: '100px',
+    DEFAULT: 'minmax(max-content, 1fr)',
+    DYNAMIC: '1fr',
+    GHOST: 'min-content',
 };
 
 export const PINNED_COLUMN_STATE = {
@@ -47,8 +50,22 @@ export const DRAGGED_ELEMENT = {
     TEMPLATE: 'TEMPLATE',
 };
 
+export const COLUMN_SELECT_ROW = {
+    id: COLUMN_SELECT_ROW_ID,
+    type: 'SELECT_ROW',
+};
+
+export const COLUMN_ACTIONS = {
+    id: COLUMN_ACTIONS_ID,
+    type: 'ACTION',
+};
+
+export const COLUMN_GHOST = {
+    id: GHOST_ID,
+    type: GHOST_ID,
+};
+
 export const COLUMN_TYPE = {
-    CHECK: 'CHECK',
     ACTION: 'ACTION',
     IMAGE: 'IMAGE',
     LABEL: 'LABEL',
@@ -56,7 +73,7 @@ export const COLUMN_TYPE = {
     RANGE: 'RANGE',
     TEXT: 'TEXT',
     MULTI_SELECT: 'MULTI_SELECT',
-    CHECK_CELL: 'CHECK_CELL',
+    CHECK: 'CHECK',
 };
 
 export const COLUMN_FILTER_TYPE = {

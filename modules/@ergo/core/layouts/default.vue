@@ -15,7 +15,7 @@
                     </template>
                     <template #actions>
                         <NavigationBarUserButton />
-                        <template v-for="(component, index) in extenededComponents">
+                        <template v-for="(component, index) in extendedComponents">
                             <Component
                                 :is="component.component"
                                 :key="index"
@@ -58,7 +58,7 @@ export default {
         ...mapState('authentication', {
             user: state => state.user,
         }),
-        extenededComponents() {
+        extendedComponents() {
             return this.$getExtendedComponents(COMPONENTS.NAVIGATION_BAR);
         },
     },

@@ -2,8 +2,13 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export function addElementCopyToDocumentBody(event, width, id) {
-    const clonedDOMElement = event.target.cloneNode(true);
+export function addElementCopyToDocumentBody({
+    event,
+    element,
+    width,
+    id,
+}) {
+    const clonedDOMElement = element.cloneNode(true);
     const clonedDOMElementStyle = `
         position: absolute;
         background-color: white;

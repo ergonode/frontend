@@ -8,7 +8,7 @@ import { getGridData, getAdvancedFiltersData } from '@Core/services/grid/getGrid
 import { DATA_LIMIT } from '@Core/defaults/grid';
 import { getParsedFilters, getParsedAdvancedFilters } from '@Core/models/mappers/gridDataMapper';
 import { swapItemPosition, insertValueAtIndex } from '@Core/models/arrayWrapper';
-import { COLUMNS_IDS, ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
+import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 
 export default function ({ path }) {
     return {
@@ -18,13 +18,21 @@ export default function ({ path }) {
                 default: false,
             },
         },
-        async asyncData({ app, store, params }) {
+        async asyncData({
+            app, store, params, route,
+        }) {
             const gridParams = {
                 offset: 0,
                 limit: DATA_LIMIT,
                 extended: true,
             };
-            const isProductsRequest = path === 'products';
+
+            const columnsConfig = app.$cookies.get(`GRID_CONFIG:${route.name}`);
+
+            if (columnsConfig) {
+                gridParams.columns = columnsConfig;
+            }
+
             let dynamicPath = path;
 
             Object.keys(params).forEach((key) => {
@@ -33,14 +41,9 @@ export default function ({ path }) {
                 }
             });
 
-            if (isProductsRequest) {
-                gridParams.columns = app.$cookies.get(COLUMNS_IDS) || '';
-            }
-
             const requests = [
                 getGridData(
                     app.$axios,
-                    app.$cookies,
                     `${store.state.authentication.user.language}/${dynamicPath}`,
                     gridParams,
                 ),
@@ -48,7 +51,7 @@ export default function ({ path }) {
 
             const advFiltersIds = app.$cookies.get(ADV_FILTERS_IDS);
 
-            if (advFiltersIds && isProductsRequest) {
+            if (advFiltersIds && path === 'products') {
                 const filtersParams = {
                     offset: 0,
                     limit: advFiltersIds.split(',').length,
@@ -124,9 +127,8 @@ export default function ({ path }) {
         methods: {
             ...mapActions('list', [
                 'setDisabledElement',
-                'setDisabledElements',
             ]),
-            async getGridData({
+            getGridData({
                 offset, limit, filters, sortedColumn,
             }) {
                 const parsedFilter = getParsedFilters(filters, this.advancedFilters);
@@ -143,17 +145,13 @@ export default function ({ path }) {
                     filter = parsedAdvancedFilter;
                 }
 
-                const isProductsRequest = path === 'products';
                 const params = {
                     offset,
                     limit,
                     extended: true,
                     filter,
+                    columns: this.$cookies.get(`GRID_CONFIG:${this.$route.name}`),
                 };
-
-                if (isProductsRequest) {
-                    params.columns = this.$cookies.get(COLUMNS_IDS);
-                }
 
                 if (Object.keys(sortedColumn).length) {
                     const { index: colSortID, orderState } = sortedColumn;
@@ -170,67 +168,42 @@ export default function ({ path }) {
                     }
                 });
 
-                const {
-                    columns,
-                    rowIds,
-                    rowLinks,
-                    cellValues,
-                    count,
-                    filtered,
-                } = await getGridData(
+                return getGridData(
                     this.$axios,
-                    this.$cookies,
                     `${this.languageCode}/${dynamicPath}`,
                     params,
-                );
+                ).then(({
+                    columns,
+                    data,
+                    count,
+                    filtered,
+                }) => {
+                    this.columns = columns;
+                    this.data = data;
+                    this.count = count;
+                    this.filtered = filtered;
 
-                this.columns = columns;
-                this.rowIds = rowIds;
-                this.rowLinks = rowLinks;
-                this.cellValues = cellValues;
-                this.count = count;
-                this.filtered = filtered;
-
-                this.$emit('fetched');
+                    this.$emit('fetched');
+                });
             },
-            removeRowAtIndex(index) {
-                this.rowIds.splice(index, 1);
-                this.rowLinks.splice(index, 1);
+            onRemoveRow(index) {
+                const tmpData = { ...this.data };
+                Object.keys(this.data).forEach(columnId => tmpData[columnId].splice(index, 1));
+                this.data = tmpData;
                 this.count -= 1;
                 this.filtered -= 1;
             },
-            removeColumnAtIndex(index) {
-                this.columns.splice(index, 1);
-            },
-            insertColumnAtIndex({ index, column }) {
-                this.columns = insertValueAtIndex([...this.columns], column, index);
-            },
-            dropColumnAtIndex({ columnId, ghostIndex }) {
-                const columnIds = insertValueAtIndex(
-                    this.$cookies.get(COLUMNS_IDS).split(','),
-                    columnId,
-                    ghostIndex,
-                );
-                this.$cookies.set(COLUMNS_IDS, columnIds.join(','));
-
+            onDropColumn(columnId) {
                 this.getGridData(this.localParams).then(() => {
                     const column = this.columns.find(({ id }) => id === columnId);
 
                     if (column && column.element_id) {
-                        this.setDisabledElement({
+                        this.disableListElement({
                             languageCode: column.language,
-                            elementId: column.element_id,
-                            disabled: false,
+                            attributeId: column.element_id,
                         });
                     }
                 });
-            },
-            swapColumnsPosition({ from, to }) {
-                this.columns = [
-                    ...swapItemPosition(this.columns, from, to),
-                ];
-
-                this.$cookies.set(COLUMNS_IDS, this.columns.map(column => column.id).join(','));
             },
             dropFilterAtIndex({ data, index }) {
                 try {

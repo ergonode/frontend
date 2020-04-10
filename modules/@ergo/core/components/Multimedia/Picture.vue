@@ -4,8 +4,15 @@
  */
 <template>
     <img
-        :class="['image', { 'image--fab': fab, 'image--placeholder': isPlaceholder }]"
-        :src="image"
+        ref="img"
+        :src="require('@Core/assets/images/placeholders/no_image.svg')"
+        :class="[
+            'image',
+            {
+                'image--fab': fab,
+                'image--placeholder': isPlaceholder,
+            }
+        ]"
         alt="picture">
 </template>
 
@@ -28,7 +35,6 @@ export default {
     data() {
         return {
             isPlaceholder: false,
-            image: null,
             observer: null,
         };
     },
@@ -57,18 +63,17 @@ export default {
         ]),
         getImageById() {
             this.isPlaceholder = true;
-            this.image = require('@Core/assets/images/placeholders/no_image.svg'); // eslint-disable-line global-require, import/no-dynamic-require
             this.$axios.$get(`multimedia/${this.imageId}`, {
                 responseType: 'arraybuffer',
             }).then(response => this.onSuccess(response)).catch(this.imageLoadOnError);
         },
         onSuccess(response) {
-            this.image = getImageData(response);
+            this.$refs.img.src = getImageData(response);
             this.isPlaceholder = false;
         },
         imageLoadOnError() {
             this.isPlaceholder = true;
-            this.image = require('@Core/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
+            this.$refs.img.src = require('@Core/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
         },
     },
 };

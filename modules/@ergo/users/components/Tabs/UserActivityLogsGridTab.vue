@@ -8,8 +8,7 @@
             <Grid
                 :columns="columns"
                 :data-count="filtered"
-                :cell-values="cellValues"
-                :row-ids="rowIds"
+                :data="data"
                 @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>

@@ -7,7 +7,7 @@
         <div
             class="slider__sphere"
             :style="spherePositionStyle"
-            @mousedown="initResizeDrag"
+            @mousedown="onInitResize"
             @mouseenter="onMouseEnter"
             @mouseleave="onMouseLeave" />
         <div
@@ -64,9 +64,9 @@ export default {
         this.xPos = x;
     },
     methods: {
-        initResizeDrag() {
+        onInitResize() {
             registerResizeEventListeners().then((response) => {
-                response.default(this.doResizeDrag, this.stopResizeDrag);
+                response.default(this.onResize, this.onStopResizing);
             });
         },
         onClick(event) {
@@ -78,14 +78,14 @@ export default {
         onMouseLeave(event) {
             event.target.classList.remove('column--hovered');
         },
-        doResizeDrag(event) {
+        onResize(event) {
             if (this.xPos < event.pageX) {
                 this.$emit('input', this.getProgress(event.pageX));
             }
         },
-        stopResizeDrag() {
+        onStopResizing() {
             unregisterResizeEventListeners().then((response) => {
-                response.default(this.doResizeDrag, this.stopResizeDrag);
+                response.default(this.onResize, this.onStopResizing);
             });
         },
         getProgress(pageX) {

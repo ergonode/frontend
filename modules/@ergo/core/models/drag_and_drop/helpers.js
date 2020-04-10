@@ -17,6 +17,17 @@ export function isMouseOutOfBoundsElement(element, xPos, yPos) {
         || leftAtTheRight);
 }
 
+export function isMouseInsideElement(element, xPos, yPos) {
+    const {
+        top, left, width, height,
+    } = element.getBoundingClientRect();
+
+    return xPos >= left
+        && xPos <= left + width
+        && yPos >= top
+        && yPos <= top + height;
+}
+
 export function getDraggedColumnPositionState(pageX, elXPos, width) {
     const normalizedHalfWidthFactor = 0.5;
 
@@ -26,7 +37,11 @@ export function getDraggedColumnPositionState(pageX, elXPos, width) {
 export function isTrashBelowMouse(xPos, yPos) {
     const trash = document.querySelector('.trash-can');
 
-    return !isMouseOutOfBoundsElement(trash, xPos, yPos);
+    if (trash) {
+        return !isMouseOutOfBoundsElement(trash, xPos, yPos);
+    }
+
+    return false;
 }
 
 export function getPositionForBrowser(event) {
