@@ -7,6 +7,23 @@ import {
 } from '@Core/defaults/grid';
 import { getUUID } from '@Core/models/stringWrapper';
 
+export function mappedValueCompose(check) {
+    return (data, draftByRowId, colId) => {
+        if (draftByRowId && typeof draftByRowId[colId] !== 'undefined') {
+            const draftValue = draftByRowId[colId];
+
+            return {
+                value: draftValue,
+                isDraft: check(data, draftValue),
+            };
+        }
+        return {
+            value: data,
+            isDraft: false,
+        };
+    };
+}
+
 export function getParsedFilters(filters, advancedFilters = []) {
     const entries = Object.entries(filters);
     const { length: entriesLength } = entries;
