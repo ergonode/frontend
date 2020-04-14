@@ -176,7 +176,7 @@ export default {
         },
     },
     methods: {
-        onApplySettings({ table, collection }) {
+        onApplySettings({ table /* collection */ }) {
             this.rowHeight = table.rowHeight;
             // TODO:
             // Add support for collection settings
