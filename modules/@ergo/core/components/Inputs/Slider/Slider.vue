@@ -73,10 +73,10 @@ export default {
             this.$emit('input', this.getProgress(event.pageX));
         },
         onMouseEnter(event) {
-            event.target.classList.add('column--hovered');
+            event.target.classList.add('draggable-column--hovered');
         },
         onMouseLeave(event) {
-            event.target.classList.remove('column--hovered');
+            event.target.classList.remove('draggable-column--hovered');
         },
         onResize(event) {
             if (this.xPos < event.pageX) {

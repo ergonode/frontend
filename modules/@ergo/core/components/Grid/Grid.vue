@@ -12,8 +12,8 @@
             :is-advanced-filters="isAdvancedFilters"
             :is-centered-view="isCenteredView"
             :filters="advancedFilters"
-            @rowHeightChange="onRowHeightChange"
             @layoutChange="onLayoutChange"
+            @applySettings="onApplySettings"
             @dropFilter="onDropFilterAtIndex"
             @updateFilter="onUpdateFilterAtIndex"
             @removeFilter="onRemoveFilterAtIndex"
@@ -30,6 +30,7 @@
         </GridHeader>
         <div class="grid__body">
             <GridTableLayout
+                v-if="isTableLayout"
                 :columns="columns"
                 :data="data"
                 :advanced-filters-values="advancedFiltersValues"
@@ -50,20 +51,21 @@
                 @swapColumns="onSwapColumns"
                 @dropColumn="onDropColumn"
                 @insertColumn="onInsertColumn" />
+            <GridCollectionLayout v-else />
             <GridPlaceholder v-if="dataCount === 0" />
-            <div
-                class="grid__footer"
-                v-if="isFooterVisible">
-                <GridPageSelector
-                    :value="maxRows"
-                    :max-rows="dataCount"
-                    @input="setMaxRows" />
-                <GridPagination
-                    :value="currentPage"
-                    :max-page="maxPage"
-                    @input="setCurrentPage" />
-                <slot name="appendFooter" />
-            </div>
+        </div>
+        <div
+            class="grid__footer"
+            v-if="isFooterVisible">
+            <GridPageSelector
+                :value="maxRows"
+                :max-rows="dataCount"
+                @input="setMaxRows" />
+            <GridPagination
+                :value="currentPage"
+                :max-page="maxPage"
+                @input="setCurrentPage" />
+            <slot name="appendFooter" />
         </div>
     </div>
 </template>
@@ -78,11 +80,12 @@ import {
 export default {
     name: 'Grid',
     components: {
-        GridHeader: () => import('@Core/components/Grid/GridHeader'),
+        GridHeader: () => import('@Core/components/Grid/Header/GridHeader'),
         GridTableLayout: () => import('@Core/components/Grid/Layout/Table/GridTableLayout'),
+        GridCollectionLayout: () => import('@Core/components/Grid/Layout/Collection/GridCollectionLayout'),
         GridPlaceholder: () => import('@Core/components/Grid/GridPlaceholder'),
-        GridPagination: () => import('@Core/components/Grid/GridPagination'),
-        GridPageSelector: () => import('@Core/components/Grid/GridPageSelector'),
+        GridPagination: () => import('@Core/components/Grid/Footer/GridPagination'),
+        GridPageSelector: () => import('@Core/components/Grid/Footer/GridPageSelector'),
     },
     props: {
         columns: {
@@ -163,8 +166,17 @@ export default {
 
             return advancedFiltersValues;
         },
+        isTableLayout() {
+            return this.layout === GRID_LAYOUT.TABLE;
+        },
     },
     methods: {
+        onApplySettings({ table, collection }) {
+            this.rowHeight = table.rowHeight;
+        },
+        onLayoutChange(layout) {
+            this.layout = layout;
+        },
         onInsertColumn(payload) {
             this.$emit('insertColumn', payload);
         },
@@ -179,12 +191,6 @@ export default {
         },
         onRemoveRow(index) {
             this.$emit('removeRow', index);
-        },
-        onRowHeightChange(height) {
-            this.rowHeight = height;
-        },
-        onLayoutChange(layout) {
-            this.layout = layout;
         },
         onDropColumn(columnId) {
             this.$emit('dropColumn', columnId);
@@ -278,7 +284,6 @@ export default {
             height: 0;
             border: $BORDER_1_GREY;
             background-color: $WHITESMOKE;
-            overflow: hidden;
         }
 
         &__footer {
@@ -287,6 +292,8 @@ export default {
             justify-content: space-between;
             align-items: center;
             height: 56px;
+            border: $BORDER_1_GREY;
+            border-top: unset;
             padding: 12px 16px;
             box-sizing: border-box;
             background-color: $WHITE;

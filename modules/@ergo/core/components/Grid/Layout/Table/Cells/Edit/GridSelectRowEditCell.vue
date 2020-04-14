@@ -19,7 +19,7 @@
 <script>
 
 export default {
-    name: 'GridEditSelectRowCell',
+    name: 'GridSelectRowEditCell',
     components: {
         GridTableCell: () => import('@Core/components/Grid/Layout/Table/Cells/GridTableCell'),
         GridCheckEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell'),

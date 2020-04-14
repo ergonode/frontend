@@ -17,7 +17,7 @@ export const ROW_INTERVALS = [
 export const COLUMN_WIDTH = {
     SELECT_ROW: '40px',
     ACTION: 'max-content',
-    DEFAULT: 'minmax(max-content, 1fr)',
+    DEFAULT: 'minmax(150px, 1fr)',
     DYNAMIC: '1fr',
     GHOST: 'min-content',
 };
@@ -33,9 +33,19 @@ export const ROW_HEIGHT = {
     LARGE: 80,
 };
 
+export const IMAGE_SCALING = {
+    FIT_TO_SIZE: 'Fit to size',
+};
+
+export const COLUMNS_NUMBER = {
+    TWO_COLUMNS: '2 columns',
+    FOURTH_COLUMNS: '4 columns',
+    EIGHT_COLUMNS: '8 columns',
+};
+
 export const GRID_LAYOUT = {
     TABLE: 'TABLE',
-    GRID: 'GRID',
+    COLLECTION: 'COLLECTION',
 };
 
 export const GRID_HEADER_TYPE = {

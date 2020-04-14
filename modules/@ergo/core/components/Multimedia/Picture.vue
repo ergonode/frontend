@@ -68,12 +68,16 @@ export default {
             }).then(response => this.onSuccess(response)).catch(this.imageLoadOnError);
         },
         onSuccess(response) {
-            this.$refs.img.src = getImageData(response);
+            if (this.$refs.img) {
+                this.$refs.img.src = getImageData(response);
+            }
             this.isPlaceholder = false;
         },
         imageLoadOnError() {
             this.isPlaceholder = true;
-            this.$refs.img.src = require('@Core/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
+            if (this.$refs.img) {
+                this.$refs.img.src = require('@Core/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
+            }
         },
     },
 };

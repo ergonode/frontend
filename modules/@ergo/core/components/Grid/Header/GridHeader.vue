@@ -29,67 +29,27 @@
                 <slot name="actions" />
             </div>
             <div class="grid-header__layout-configuration">
+                <GridTableLayoutActivator
+                    :is-selected="layout === gridLayouts.TABLE"
+                    @active="onLayoutActivate" />
+                <GridCollectionLayoutActivator
+                    :is-selected="layout === gridLayouts.COLLECTION"
+                    @active="onLayoutActivate" />
                 <Fab
                     :theme="theme.SECONDARY"
-                    @click.native="onSelectLayout(gridLayouts.TABLE)">
-                    <template #icon="{ color }">
-                        <IconListMedium
-                            :fill-color="layout === gridLayouts.TABLE
-                                ? greenColor
-                                : color" />
-                    </template>
-                </Fab>
-                <!-- TODO: Uncomment when Image layout is rdy-->
-                <!-- <Fab
-                    :theme="theme.SECONDARY"
-                    @click.native="onSelectLayout(gridLayouts.GRID)">
-                    <template #icon="{ color }">
-                        <IconGrid
-                            :fill-color="layout === gridLayouts.GRID
-                                ? greenColor
-                                : color" />
-                    </template>
-                </Fab> -->
-                <Fab
-                    :theme="theme.SECONDARY"
-                    @click.native="isSettingsModal = true">
+                    @click.native="onShowModal">
                     <template #icon="{ color }">
                         <IconSettings :fill-color="color" />
                     </template>
                 </Fab>
             </div>
         </div>
-        <ModalForm
+        <GridSettingsModalForm
             v-if="isSettingsModal"
-            title="Display settings"
-            @close="onDismissSettingsModal">
-            <template #body>
-                <Form title="Table settings">
-                    <template #body>
-                        <FormSection>
-                            <Select
-                                :value="rowHeightDescription"
-                                solid
-                                regular
-                                label="Row height"
-                                :options="rowHeightsDescriptions"
-                                @input="onRowHeightChange" />
-                        </FormSection>
-                    </template>
-                </Form>
-            </template>
-            <template #footer>
-                <Button
-                    title="SAVE SETTINGS"
-                    :size="smallSize"
-                    @click.native="onApplySettings" />
-                <Button
-                    :theme="theme.SECONDARY"
-                    title="CANCEL"
-                    :size="smallSize"
-                    @click.native="onDismissSettingsModal" />
-            </template>
-        </ModalForm>
+            :row-height="rowHeight"
+            :layout="layout"
+            @close="onCloseModal"
+            @apply="onApplySettings" />
         <GridAdvancedFiltersContainer
             v-show="isFiltersExpanded && isAdvancedFilters"
             @mouseOverFilters="onMouseOverFilters">
@@ -118,28 +78,24 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { SIZE, THEME } from '@Core/defaults/theme';
+import { THEME } from '@Core/defaults/theme';
 import { ROW_HEIGHT, GRID_LAYOUT } from '@Core/defaults/grid';
 import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
 import { ARROW } from '@Core/defaults/icons';
-import { toCapitalize } from '@Core/models/stringWrapper';
-import { getKeyByValue } from '@Core/models/objectWrapper';
+import GridTableLayoutActivator from '@Core/components/Grid/Layout/Table/GridTableLayoutActivator';
+import GridCollectionLayoutActivator from '@Core/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
 
 export default {
     name: 'GridHeader',
     components: {
-        Select: () => import('@Core/components/Inputs/Select/Select'),
-        ModalForm: () => import('@Core/components/Modal/ModalForm'),
-        Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/FormSection'),
+        GridTableLayoutActivator,
+        GridCollectionLayoutActivator,
+        GridSettingsModalForm: () => import('@Core/components/Grid/Modals/GridSettingsModalForm'),
         // ActionButton: () => import('@Core/components/Buttons/ActionButton'),
-        Button: () => import('@Core/components/Buttons/Button'),
         ExpandNumericButton: () => import('@Core/components/Buttons/ExpandNumericButton'),
         Fab: () => import('@Core/components/Buttons/Fab'),
-        // IconGrid: () => import('@Core/components/Icons/Others/IconGrid'),
         IconSettings: () => import('@Core/components/Icons/Actions/IconSettings'),
         // IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
-        IconListMedium: () => import('@Core/components/Icons/Others/IconListMedium'),
         GridAdvancedFiltersContainer: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFiltersContainer'),
         GridAdvancedFilter: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFilter'),
         GridAdvancedFiltersRemoveAllButton: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFiltersRemoveAllButton'),
@@ -149,6 +105,14 @@ export default {
         rowHeight: {
             type: Number,
             default: ROW_HEIGHT.SMALL,
+        },
+        layout: {
+            type: String,
+            default: GRID_LAYOUT.TABLE,
+        },
+        filters: {
+            type: Array,
+            default: () => [],
         },
         isActionsSelected: {
             type: Boolean,
@@ -161,14 +125,6 @@ export default {
         isAdvancedFilters: {
             type: Boolean,
             default: false,
-        },
-        layout: {
-            type: String,
-            default: GRID_LAYOUT.TABLE,
-        },
-        filters: {
-            type: Array,
-            default: () => [],
         },
     },
     data() {
@@ -197,20 +153,11 @@ export default {
         theme() {
             return THEME;
         },
-        greenColor() {
-            return GREEN;
-        },
         iconExpandedState() {
             return this.isFiltersExpanded ? ARROW.UP : ARROW.DOWN;
         },
-        rowHeightsDescriptions() {
-            return Object.keys(ROW_HEIGHT).map(key => toCapitalize(key.toLowerCase()));
-        },
         gridLayouts() {
             return GRID_LAYOUT;
-        },
-        smallSize() {
-            return SIZE.SMALL;
         },
     },
     watch: {
@@ -227,34 +174,25 @@ export default {
             }
         },
     },
-    created() {
-        this.initializeRowHeightDescription();
-    },
     methods: {
         ...mapActions('draggable', [
             'setGhostFilterIndex',
         ]),
-        initializeRowHeightDescription() {
-            this.rowHeightDescription = toCapitalize(
-                getKeyByValue(ROW_HEIGHT, this.rowHeight).toLowerCase(),
-            );
-        },
-        onSelectLayout(layout) {
+        onLayoutActivate(layout) {
             this.$emit('layoutChange', layout);
         },
         onFiltersExpand() {
             this.isFiltersExpanded = !this.isFiltersExpanded;
         },
-        onRowHeightChange(value) {
-            this.rowHeightDescription = value;
+        onShowModal() {
+            this.isSettingsModal = true;
         },
-        onApplySettings() {
+        onCloseModal() {
             this.isSettingsModal = false;
-            this.$emit('rowHeightChange', ROW_HEIGHT[this.rowHeightDescription.toUpperCase()]);
         },
-        onDismissSettingsModal() {
+        onApplySettings(payload) {
             this.isSettingsModal = false;
-            this.initializeRowHeightDescription();
+            this.$emit('applySettings', payload);
         },
         onMouseOverFilters(isOver) {
             this.isMouseOverFilters = isOver;

@@ -70,7 +70,7 @@ export default {
         presentationValue() {
             if (!this.filter) return '';
 
-            return this.filter.value.map(option => this.options[option]).join(', ');
+            return this.filter.value.map(option => this.options[option].label || `#${this.options[option].code}`).join(', ');
         },
         value() {
             if (!this.filter) return [];

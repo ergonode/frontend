@@ -60,10 +60,10 @@ export default {
         return {
             localValue: this.value.map(option => ({
                 id: option,
-                key: option,
-                value: this.options[option],
-                hint: this.options[option]
-                    ? `#${option} ${this.languageCode}`
+                key: this.options[option].code,
+                value: this.options[option].label,
+                hint: this.options[option].label
+                    ? `#${this.options[option].code} ${this.languageCode}`
                     : '',
             })),
         };
@@ -74,10 +74,10 @@ export default {
 
             return optionKeys.map(key => ({
                 id: key,
-                key,
-                value: this.options[key],
-                hint: this.options[key]
-                    ? `#${key} ${this.languageCode}`
+                key: this.options[key].code,
+                value: this.options[key].label,
+                hint: this.options[key].label
+                    ? `#${this.options[key].code} ${this.languageCode}`
                     : '',
             }));
         },

@@ -191,14 +191,14 @@ export default {
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
-            columnElement.classList.add('column--hovered');
+            columnElement.classList.add('draggable-column--hovered');
         },
         removeColumnHover() {
             this.isColumnHovered = false;
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
-            columnElement.classList.remove('column--hovered');
+            columnElement.classList.remove('draggable-column--hovered');
         },
     },
 };

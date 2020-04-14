@@ -48,15 +48,21 @@ import {
     COLUMN_GHOST,
     ROW_HEIGHT,
 } from '@Core/defaults/grid';
-import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
-import { swapItemPosition, insertValueAtIndex } from '@Core/models/arrayWrapper';
-import { insertCookieAtIndex, changeCookiePosition, removeCookieAtIndex } from '@Core/models/cookies';
+import {
+    capitalizeAndConcatenationArray,
+} from '@Core/models/stringWrapper';
+import {
+    swapItemPosition,
+    insertValueAtIndex,
+} from '@Core/models/arrayWrapper';
+import {
+    insertCookieAtIndex,
+    changeCookiePosition,
+    removeCookieAtIndex,
+} from '@Core/models/cookies';
 
 export default {
     name: 'GridTableLayout',
-    components: {
-        GridSentinelColumn: () => import('@Core/components/Grid/Columns/GridSentinelColumn'),
-    },
     props: {
         columns: {
             type: Array,

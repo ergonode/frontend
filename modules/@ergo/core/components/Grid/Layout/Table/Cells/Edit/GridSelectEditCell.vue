@@ -59,12 +59,14 @@ export default {
         let localValue = null;
 
         if (this.value) {
+            const { code, label } = this.options[this.value];
+
             localValue = {
                 id: this.value,
-                key: this.value,
-                value: this.options[this.value],
-                hint: this.options[this.value]
-                    ? `#${this.value} ${this.languageCode}`
+                key: code,
+                value: label,
+                hint: label
+                    ? `#${code} ${this.languageCode}`
                     : '',
             };
         }
@@ -79,10 +81,10 @@ export default {
 
             return optionKeys.map(key => ({
                 id: key,
-                key,
-                value: this.options[key],
-                hint: this.options[key]
-                    ? `#${key} ${this.languageCode}`
+                key: this.options[key].code,
+                value: this.options[key].label,
+                hint: this.options[key].label
+                    ? `#${this.options[key].code} ${this.languageCode}`
                     : '',
             }));
         },

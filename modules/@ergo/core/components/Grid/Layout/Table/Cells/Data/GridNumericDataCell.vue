@@ -20,7 +20,7 @@
                 :width="$el.offsetWidth"
                 @input="onValueChange" />
             <GridPresentationCell
-                v-else-if="!isEditing"
+                v-else-if="!isEditing && (mappedValue || mappedValue === 0)"
                 :value="mappedValue.value"
                 :suffix="data.suffix" />
         </template>
