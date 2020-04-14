@@ -63,10 +63,13 @@ export default {
             }
         },
         onStopResizing() {
-            const factor = Math.ceil(this.currentHeight / this.startHeight);
+            if (this.currentHeight !== this.startHeight) {
+                const factor = Math.ceil(this.currentHeight / this.startHeight);
+
+                this.$emit('copy', factor);
+            }
 
             this.isResizing = false;
-            this.$emit('copy', factor);
 
             unregisterResizeEventListeners().then((response) => {
                 response.default(this.onResize, this.onStopResizing);

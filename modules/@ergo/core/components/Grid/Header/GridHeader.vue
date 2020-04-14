@@ -80,7 +80,6 @@
 import { mapActions, mapState } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
 import { ROW_HEIGHT, GRID_LAYOUT } from '@Core/defaults/grid';
-import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
 import { ARROW } from '@Core/defaults/icons';
 import GridTableLayoutActivator from '@Core/components/Grid/Layout/Table/GridTableLayoutActivator';
 import GridCollectionLayoutActivator from '@Core/components/Grid/Layout/Collection/GridCollectionLayoutActivator';

@@ -7,14 +7,14 @@
         :row="rowIndex"
         :column="columnIndex"
         :locked="isLocked"
-        :draft="mappedValue.isDraft"
+        :draft="cellData.isDraft"
         :edit-key-code="32"
         :disabled="isDisabled"
         :copyable="isCopyable"
         @edit="onEditValue"
         @copy="onCopyValues">
         <GridBoolEditCell
-            :value="mappedValue.value"
+            :value="cellData.value"
             :suffix="data.suffix"
             :is-disabled="isLocked"
             @input="onValueChange" />
@@ -23,7 +23,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
+import { cellDataCompose } from '@Core/models/mappers/gridDataMapper';
 import GridBoolEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridBoolEditCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 
@@ -37,16 +37,16 @@ export default {
         ...mapState('grid', {
             drafts: state => state.drafts,
         }),
-        mappedValue() {
+        cellData() {
             const check = (data, draftValue) => Boolean(data) !== Boolean(draftValue);
-            const getMappedValue = mappedValueCompose(check);
+            const getMappedValue = cellDataCompose(check);
 
             return getMappedValue(this.data.value, this.drafts[this.rowId], this.columnId);
         },
     },
     methods: {
         onEditValue() {
-            this.$emit('input', !this.mappedValue.value);
+            this.$emit('input', !this.cellData.value);
         },
     },
 };

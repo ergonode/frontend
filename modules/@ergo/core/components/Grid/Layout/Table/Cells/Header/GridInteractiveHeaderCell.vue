@@ -10,8 +10,7 @@
         ]">
         <GridHeaderCell
             :title="title"
-            :hint="hint"
-            :suffix="suffix" />
+            :hint="hint" />
         <div
             :class="[
                 'header-cell__actions',
@@ -103,21 +102,21 @@ export default {
             return this.sortedColumn.orderState;
         },
         title() {
-            const [code] = this.column.id.split(':');
+            const [code, languageCode] = this.column.id.split(':');
+            const title = this.column.label || `#${code}`;
+            const languageTitle = languageCode ? languageCode.toUpperCase() : '';
+            let suffix = '';
 
-            return this.column.label || `#${code}`;
+            if (this.column.parameters) {
+                suffix = Object.keys(this.column.parameters).map(key => this.column.parameters[key]).join(', ');
+            }
+
+            return `${title} ${languageTitle} ${suffix}`;
         },
         hint() {
             const [code, languageCode] = this.column.id.split(':');
 
             return this.column.label ? `${code} ${languageCode}` : null;
-        },
-        suffix() {
-            if (this.column.parameters) {
-                return Object.keys(this.column.parameters).map(key => this.column.parameters[key]).join(', ');
-            }
-
-            return null;
         },
     },
     mounted() {

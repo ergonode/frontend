@@ -51,7 +51,9 @@
                 @swapColumns="onSwapColumns"
                 @dropColumn="onDropColumn"
                 @insertColumn="onInsertColumn" />
-            <GridCollectionLayout v-else />
+            <GridCollectionLayout
+                v-else
+                :data="collectionData" />
             <GridPlaceholder v-if="dataCount === 0" />
         </div>
         <div
@@ -100,6 +102,10 @@ export default {
             type: Array,
             default: () => [],
         },
+        dataCount: {
+            type: Number,
+            required: true,
+        },
         isAdvancedFilters: {
             type: Boolean,
             default: false,
@@ -109,14 +115,6 @@ export default {
             default: false,
         },
         isEditable: {
-            type: Boolean,
-            default: true,
-        },
-        dataCount: {
-            type: Number,
-            required: true,
-        },
-        isFooterVisible: {
             type: Boolean,
             default: true,
         },
@@ -131,6 +129,10 @@ export default {
         isActionColumn: {
             type: Boolean,
             default: false,
+        },
+        isFooterVisible: {
+            type: Boolean,
+            default: true,
         },
         isHeaderVisible: {
             type: Boolean,
@@ -169,10 +171,15 @@ export default {
         isTableLayout() {
             return this.layout === GRID_LAYOUT.TABLE;
         },
+        collectionData() {
+            return [];
+        },
     },
     methods: {
         onApplySettings({ table, collection }) {
             this.rowHeight = table.rowHeight;
+            // TODO:
+            // Add support for collection settings
         },
         onLayoutChange(layout) {
             this.layout = layout;

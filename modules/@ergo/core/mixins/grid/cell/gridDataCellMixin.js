@@ -62,7 +62,7 @@ export default {
         onCopyValues(payload) {
             this.$emit('copy', {
                 ...payload,
-                value: this.mappedValue.value,
+                value: this.cellData.value,
                 rowId: this.rowId,
                 columnId: this.columnId,
             });

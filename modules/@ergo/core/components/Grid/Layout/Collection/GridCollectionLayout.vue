@@ -4,7 +4,11 @@
  */
 <template>
     <div class="grid-collection-layout">
-        <GridCollectionCell />
+        <GridCollectionCell
+            v-for="(element, index) in data"
+            :key="index"
+            :image="element.image"
+            :description="element.description" />
     </div>
 </template>
 
@@ -18,8 +22,8 @@ export default {
     },
     props: {
         data: {
-            type: Object,
-            default: () => ({}),
+            type: Array,
+            default: () => [],
         },
     },
 };

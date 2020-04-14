@@ -14,7 +14,7 @@
             alt="template icon">
         <span
             class="collection-cell__title"
-            v-text="item.description" />
+            v-text="description" />
     </div>
 </template>
 
@@ -23,6 +23,10 @@ export default {
     name: 'GridCollectionCell',
     props: {
         image: {
+            type: String,
+            default: '',
+        },
+        description: {
             type: String,
             default: '',
         },

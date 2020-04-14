@@ -7,7 +7,7 @@ import {
 } from '@Core/defaults/grid';
 import { getUUID } from '@Core/models/stringWrapper';
 
-export function mappedValueCompose(check) {
+export function cellDataCompose(check) {
     return (data, draftByRowId, colId) => {
         if (draftByRowId && typeof draftByRowId[colId] !== 'undefined') {
             const draftValue = draftByRowId[colId];

@@ -2,11 +2,11 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template>
+<template functional>
     <span
         class="presentation-header-cell"
-        :title="hint"
-        v-text="title" />
+        :title="props.hint"
+        v-text="props.title" />
 </template>
 
 <script>
