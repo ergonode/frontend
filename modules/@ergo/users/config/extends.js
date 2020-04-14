@@ -13,6 +13,12 @@ export default {
             dataFormat: {},
             requestPath: '/dictionary/privileges',
         },
+        // TODO:
+        // {
+        //     stateProp: 'languageRestrictions',
+        //     dataFormat: {},
+        //     requestPath: '/dictionary/languageRestrictions',
+        // },
     ],
     extendComponents: {
         GRID: {
@@ -30,9 +36,19 @@ export default {
                             component: Components.GridPrivilegeSelectRowColumn,
                         },
                         {
-                            type: 'PRIVILEGE_NAME',
+                            type: 'ELEMENT_NAME',
                             width: COLUMN_WIDTH.DYNAMIC,
-                            component: Components.GridPrivilegeNameColumn,
+                            component: Components.GridElementNameColumn,
+                        },
+                        {
+                            type: 'LANGUAGE_RESTRICTIONS',
+                            width: COLUMN_WIDTH.DYNAMIC,
+                            component: Components.GridLanguageRestrictionsColumn,
+                        },
+                        {
+                            type: 'LANGUAGE_SELECT_ROW',
+                            width: COLUMN_WIDTH.SELECT_ROW,
+                            component: Components.GridLanguageSelectRowColumn,
                         },
                     ],
                 },

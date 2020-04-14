@@ -18,6 +18,7 @@ export const Tabs = {
     RolesGridTab: () => import('@Users/components/Tabs/RolesGridTab').then(m => m.default || m),
     RoleBaseTab: () => import('@Users/components/Tabs/RoleBaseTab').then(m => m.default || m),
     RolePrivilegesTab: () => import('@Users/components/Tabs/RolePrivilegesTab').then(m => m.default || m),
+    UserLanguageRestrictionsTab: () => import('@Users/components/Tabs/UserLanguageRestrictionsTab').then(m => m.default || m),
     UserActivityLogsGridTab: () => import('@Users/components/Tabs/UserActivityLogsGridTab').then(m => m.default || m),
     UserPrivilegesGridTab: () => import('@Users/components/Tabs/UserPrivilegesGridTab').then(m => m.default || m),
 };
@@ -28,6 +29,8 @@ export const Icons = {
 
 export const Components = {
     GridPrivilegeSelectRowColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeSelectRowColumn'),
+    GridLanguageSelectRowColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageSelectRowColumn'),
     GridPrivilegeColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeColumn'),
-    GridPrivilegeNameColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeNameColumn'),
+    GridLanguageRestrictionsColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageRestrictionsColumn'),
+    GridElementNameColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridElementNameColumn'),
 };

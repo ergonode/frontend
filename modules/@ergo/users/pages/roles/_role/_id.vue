@@ -12,7 +12,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getMappedPrivilegesBasedOnGridData } from '@Users/models/privilegesMapper';
+import { getMappedDataBasedOnGridData } from '@Users/models/gridDataMapper';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
@@ -75,8 +75,8 @@ export default {
             const role = {
                 name: this.name,
                 description: this.description,
-                privileges: getMappedPrivilegesBasedOnGridData({
-                    rolePrivileges: this.privileges,
+                privileges: getMappedDataBasedOnGridData({
+                    selectedData: this.privileges,
                     drafts: this.drafts,
                 }),
             };

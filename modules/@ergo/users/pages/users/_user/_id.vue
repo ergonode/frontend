@@ -12,6 +12,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getParentRoutePath } from '@Core/models/navigation/tabs';
+// import { getMappedDataBasedOnGridData } from '@Users/models/gridDataMapper';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
@@ -42,6 +43,10 @@ export default {
         ...mapState('dictionaries', {
             languages: state => state.languages,
         }),
+        // TODO:
+        // ...mapState('grid', {
+        //     drafts: state => state.drafts,
+        // }),
         ...mapState('users', {
             id: state => state.id,
             avatarId: state => state.avatarId,
@@ -53,6 +58,7 @@ export default {
             passwordRepeat: state => state.passwordRepeat,
             isActive: state => state.isActive,
             role: state => state.role,
+            // languageRestrictions: state => state.languageRestrictions,
         }),
         title() {
             return `${this.firstName} ${this.lastName}`;
@@ -94,6 +100,10 @@ export default {
                 passwordRepeat: this.passwordRepeat,
                 roleId: this.role.id,
                 isActive: this.isActive,
+                // languageRestrictions: getMappedDataBasedOnGridData({
+                //     selectedData: this.languageRestrictions,
+                //     drafts: this.drafts,
+                // }),
             };
             this.updateUser({
                 id: this.id,
