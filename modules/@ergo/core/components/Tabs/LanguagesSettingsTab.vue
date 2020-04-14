@@ -27,8 +27,11 @@
 </template>
 
 <script>
-import { /* mapActions, */ } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { SIZE } from '@Core/defaults/theme';
+// import { ALERT_TYPE } from '@Core/defaults/alerts';
+// import { getMappedTreeData, getParsedTreeData } from '@Trees/models/treeMapper';
+// import { updateLanguages } from '@Core/services/settings/languages.service';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import FooterActions from '@Core/components/Layout/Footer/FooterActions';
@@ -44,10 +47,10 @@ export default {
         LanguagesTreeWrapper: () => import('@Core/components/LanguagesTreeDesigner/LanguagesTreeWrapper'),
         VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
     },
-    // async fetch({ store }) {
-    //     await store.dispatch('languageSettings/getData');
-    // },
     computed: {
+        ...mapState('gridDesigner', {
+            fullGridData: state => state.fullGridData,
+        }),
         verticalTabs() {
             return [
                 {
@@ -61,19 +64,48 @@ export default {
             return SIZE.SMALL;
         },
     },
+    mounted() {
+        // const { language: languageCode } = this.$store.authentication.user;
+        // const treeToSet = getParsedTreeData(categories, items);
+
+        // treeToSet.forEach((e) => {
+        //     this.setDisabledElement({
+        //         languageCode,
+        //         elementId: e.id,
+        //         disabled: true,
+        //     });
+        // });
+        // this.setGridData(treeToSet);
+        // this.setFullGridData(treeToSet);
+    },
+    destroyed() {
+        this.clearGridDesignerStorage();
+    },
     methods: {
-        // ...mapActions('languageSettings', [
-        //     'updateData',
-        // ]),
-        // ...mapActions('dictionaries', [
-        //     'getCurrentDictionary',
-        // ]),
+        ...mapActions('gridDesigner', {
+            clearGridDesignerStorage: 'clearStorage',
+            setGridData: 'setGridData',
+            setFullGridData: 'setFullGridData',
+        }),
+        ...mapActions('dictionaries', [
+            'getCurrentDictionary',
+        ]),
+        ...mapActions('list', [
+            'setDisabledElement',
+        ]),
         async onSave() {
-            console.log('save languages');
-            // await this.$setLoader('saveSettings');
-            // await this.updateData();
-            // await this.getCurrentDictionary({ dictionaryName: 'languages' });
-            // await this.$removeLoader('saveSettings');
+            await this.$setLoader('saveSettings');
+            // await updateLanguages({
+            //     $axios: this.$axios,
+            //     $store: this.$store,
+            //     data: {
+            //         languages: getMappedTreeData(this.fullGridData),
+            //     },
+            // }).then(() => {
+            //     this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Languages updated' });
+            // });
+            await this.getCurrentDictionary({ dictionaryName: 'languages' });
+            await this.$removeLoader('saveSettings');
         },
     },
 };
