@@ -7,7 +7,7 @@
     <div class="grid">
         <GridHeader
             v-if="isHeaderVisible"
-            :row-height="rowHeight"
+            :row-height="tableLayoutConfig.rowHeight"
             :layout="layout"
             :is-advanced-filters="isAdvancedFilters"
             :is-centered-view="isCenteredView"
@@ -36,7 +36,7 @@
                 :advanced-filters-values="advancedFiltersValues"
                 :current-page="currentPage"
                 :max-rows="maxRows"
-                :row-height="rowHeight"
+                :row-height="tableLayoutConfig.rowHeight"
                 :is-editable="isEditable"
                 :is-select-column="isSelectColumn"
                 :is-basic-filter="isBasicFilter"
@@ -54,7 +54,8 @@
             <GridCollectionLayout
                 v-else-if="!isTableLayout && isCollectionLayout"
                 :data="collectionData"
-                :config="collectionLayoutConfig" />
+                :columns-number="collectionLayoutConfig.columnsNumber"
+                :object-fit="collectionLayoutConfig.objectFit" />
             <GridPlaceholder v-if="dataCount === 0" />
         </div>
         <div
@@ -78,6 +79,8 @@ import {
     ROW_HEIGHT,
     GRID_LAYOUT,
     DATA_LIMIT,
+    IMAGE_SCALING,
+    COLUMNS_NUMBER,
 } from '@Core/defaults/grid';
 
 export default {
@@ -153,16 +156,24 @@ export default {
     },
     data() {
         return {
-            rowHeight: ROW_HEIGHT.MEDIUM,
             layout: GRID_LAYOUT.TABLE,
             maxRows: DATA_LIMIT,
             currentPage: 1,
             filters: {},
             sortedColumn: {},
-            collectionLayoutConfig: {},
+            collectionLayoutConfig: {
+                columnsNumber: COLUMNS_NUMBER.FOURTH_COLUMNS.value,
+                objectFit: IMAGE_SCALING.FIT_TO_SIZE.value,
+            },
+            tableLayoutConfig: {
+                rowHeight: ROW_HEIGHT.MEDIUM,
+            },
         };
     },
     computed: {
+        isTableLayout() {
+            return this.layout === GRID_LAYOUT.TABLE;
+        },
         maxPage() {
             const result = Math.ceil(this.dataCount / this.maxRows);
 
@@ -180,9 +191,6 @@ export default {
             }
 
             return advancedFiltersValues;
-        },
-        isTableLayout() {
-            return this.layout === GRID_LAYOUT.TABLE;
         },
         collectionData() {
             const { imageColumn, descriptionColumn } = this.collectionCellBinding;
@@ -208,9 +216,9 @@ export default {
         },
     },
     methods: {
-        onApplySettings({ table, collection }) {
-            this.rowHeight = table.rowHeight;
-            this.collectionLayoutConfig = collection;
+        onApplySettings({ tableConfig, collectionConfig }) {
+            this.tableLayoutConfig = tableConfig;
+            this.collectionLayoutConfig = collectionConfig;
         },
         onLayoutChange(layout) {
             this.layout = layout;

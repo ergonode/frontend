@@ -434,24 +434,26 @@ export default {
             if (!this.isColumnExists) {
                 const ghostIndex = this.isSelectColumn ? 1 : 0;
 
-                this.columnComponents = insertValueAtIndex(
-                    this.columnComponents,
-                    () => import('@Core/components/Grid/Layout/Table/Columns/GridGhostColumn'),
-                    ghostIndex,
-                );
-                this.orderedColumns = insertValueAtIndex(
-                    this.orderedColumns,
-                    COLUMN_GHOST,
-                    ghostIndex,
-                );
-                this.columnWidths = insertValueAtIndex(
-                    this.columnWidths,
-                    COLUMN_WIDTH.GHOST,
-                    ghostIndex,
-                );
+                window.requestAnimationFrame(() => {
+                    this.columnComponents = insertValueAtIndex(
+                        this.columnComponents,
+                        () => import('@Core/components/Grid/Layout/Table/Columns/GridGhostColumn'),
+                        ghostIndex,
+                    );
+                    this.columnWidths = insertValueAtIndex(
+                        this.columnWidths,
+                        COLUMN_WIDTH.GHOST,
+                        ghostIndex,
+                    );
+                    this.orderedColumns = insertValueAtIndex(
+                        this.orderedColumns,
+                        COLUMN_GHOST,
+                        ghostIndex,
+                    );
 
-                this.setGhostIndex(ghostIndex);
-                this.setDraggedElIndex(ghostIndex);
+                    this.setGhostIndex(ghostIndex);
+                    this.setDraggedElIndex(ghostIndex);
+                });
             }
         },
         removeGhostColumn() {
