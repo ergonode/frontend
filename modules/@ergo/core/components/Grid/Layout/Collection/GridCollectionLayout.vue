@@ -3,12 +3,15 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="grid-collection-layout">
+    <div
+        class="grid-collection-layout"
+        :style="gridTemplateColumns">
         <GridCollectionCell
             v-for="(element, index) in data"
             :key="index"
             :image="element.image"
-            :description="element.description" />
+            :description="element.description"
+            :object-fit="config.objectFit" />
     </div>
 </template>
 
@@ -25,6 +28,20 @@ export default {
             type: Array,
             default: () => [],
         },
+        config: {
+            type: Object,
+            default: () => ({
+                columnsNumber: 4,
+                objectFit: 'cover',
+            }),
+        },
+    },
+    computed: {
+        gridTemplateColumns() {
+            return {
+                gridTemplateColumns: `repeat(${this.config.columnsNumber}, 1fr)`,
+            };
+        },
     },
 };
 </script>
@@ -34,5 +51,9 @@ export default {
         display: grid;
         grid-template-rows: 190px;
         grid-gap: 24px;
+        padding: 24px;
+        box-sizing: border-box;
+        background-color: $WHITE;
+        overflow: auto;
     }
 </style>

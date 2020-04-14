@@ -17,22 +17,22 @@
                             label="Row height"
                             :options="rowHeightOptions" />
                     </FormSection>
-                    <FormSection title="Image grid">
-                        <Select
-                            v-model="columnsNumberDescription"
-                            solid
-                            regular
-                            label="Number of columns"
-                            :options="columnsNumberOptions"
-                        />
-                        <Select
-                            v-model="imageScalingDescription"
-                            solid
-                            regular
-                            label="Image scaling"
-                            :options="imageScalingOptions"
-                        />
-                    </FormSection>
+                    <!--                    <FormSection title="Image grid">-->
+                    <!--                        <Select-->
+                    <!--                            v-model="columnsNumberDescription"-->
+                    <!--                            solid-->
+                    <!--                            regular-->
+                    <!--                            label="Number of columns"-->
+                    <!--                            :options="columnsNumberOptions"-->
+                    <!--                        />-->
+                    <!--                        <Select-->
+                    <!--                            v-model="imageScalingDescription"-->
+                    <!--                            solid-->
+                    <!--                            regular-->
+                    <!--                            label="Image scaling"-->
+                    <!--                            :options="imageScalingOptions"-->
+                    <!--                        />-->
+                    <!--                    </FormSection>-->
                 </template>
             </Form>
         </template>
@@ -78,24 +78,33 @@ export default {
         },
         columnsNumber: {
             type: Number,
-            default: +COLUMNS_NUMBER.TWO_COLUMNS.split(' ')[0],
+            default: COLUMNS_NUMBER.FOURTH_COLUMNS.value,
+            validator: value => Object.keys(COLUMNS_NUMBER)
+                .map(key => COLUMNS_NUMBER[key].value)
+                .indexOf(value) !== -1,
         },
         imageScaling: {
             type: String,
-            default: IMAGE_SCALING.FIT_TO_SIZE,
+            default: IMAGE_SCALING.FIT_TO_SIZE.value,
+            validator: value => Object.keys(IMAGE_SCALING)
+                .map(key => IMAGE_SCALING[key].value)
+                .indexOf(value) !== -1,
         },
     },
     data() {
         const columnsNumberValues = Object.values(COLUMNS_NUMBER);
+        const imageScalingValues = Object.values(IMAGE_SCALING);
 
         return {
             rowHeightDescription: toCapitalize(
                 getKeyByValue(ROW_HEIGHT, this.rowHeight).toLowerCase(),
             ),
             columnsNumberDescription: columnsNumberValues.find(
-                value => value.includes(String(this.columnsNumber)),
-            ),
-            imageScalingDescription: this.imageScaling,
+                ({ value }) => value === this.columnsNumber,
+            ).description,
+            imageScalingDescription: imageScalingValues.find(
+                ({ value }) => value === this.imageScaling,
+            ).description,
         };
     },
     computed: {
@@ -103,10 +112,10 @@ export default {
             return Object.keys(ROW_HEIGHT).map(key => toCapitalize(key.toLowerCase()));
         },
         columnsNumberOptions() {
-            return Object.values(COLUMNS_NUMBER).map(value => value.split('_')[0]);
+            return Object.values(COLUMNS_NUMBER).map(({ description }) => description);
         },
         imageScalingOptions() {
-            return Object.values(IMAGE_SCALING);
+            return Object.values(IMAGE_SCALING).map(({ description }) => description);
         },
         smallSize() {
             return SIZE.SMALL;
@@ -120,13 +129,20 @@ export default {
             this.$emit('close');
         },
         onApply() {
+            const columnsNumberValues = Object.values(COLUMNS_NUMBER);
+            const imageScalingValues = Object.values(IMAGE_SCALING);
+
             this.$emit('apply', {
                 table: {
                     rowHeight: ROW_HEIGHT[this.rowHeightDescription.toUpperCase()],
                 },
                 collection: {
-                    columnsNumber: 0,
-                    scaling: null,
+                    columnsNumber: columnsNumberValues.find(
+                        ({ description }) => description === this.columnsNumberDescription,
+                    ),
+                    scaling: imageScalingValues.find(
+                        ({ description }) => description === this.imageScalingDescription,
+                    ),
                 },
             });
         },

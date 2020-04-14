@@ -14,6 +14,11 @@
                 :data="data"
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"
+                :collection-cell-binding="{
+                    imageColumn: 'image_attribute:en',
+                    descriptionColumn: 'sku'
+                }"
+                :is-collection-layout="true"
                 :is-advanced-filters="true"
                 :is-header-visible="true"
                 :is-basic-filter="true"
