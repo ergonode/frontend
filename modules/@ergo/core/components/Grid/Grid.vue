@@ -52,8 +52,9 @@
                 @dropColumn="onDropColumn"
                 @insertColumn="onInsertColumn" />
             <GridCollectionLayout
-                v-else
-                :data="collectionData" />
+                v-else-if="!isTableLayout && isCollectionLayout"
+                :data="collectionData"
+                :config="collectionLayoutConfig" />
             <GridPlaceholder v-if="dataCount === 0" />
         </div>
         <div
@@ -102,11 +103,22 @@ export default {
             type: Array,
             default: () => [],
         },
+        collectionCellBinding: {
+            type: Object,
+            default: () => ({
+                imageColumn: '',
+                descriptionColumn: '',
+            }),
+        },
         dataCount: {
             type: Number,
             required: true,
         },
         isAdvancedFilters: {
+            type: Boolean,
+            default: false,
+        },
+        isCollectionLayout: {
             type: Boolean,
             default: false,
         },
@@ -147,6 +159,7 @@ export default {
             currentPage: 1,
             filters: {},
             sortedColumn: {},
+            collectionLayoutConfig: {},
         };
     },
     computed: {
@@ -172,14 +185,32 @@ export default {
             return this.layout === GRID_LAYOUT.TABLE;
         },
         collectionData() {
-            return [];
+            const { imageColumn, descriptionColumn } = this.collectionCellBinding;
+
+            if (!(imageColumn && descriptionColumn)) {
+                return [];
+            }
+
+            const collectionData = [];
+
+            for (let i = 0; i < this.data[descriptionColumn].length; i += 1) {
+                collectionData.push({
+                    image: this.data[imageColumn]
+                        ? this.data[imageColumn][i].value
+                        : '',
+                    description: this.data[descriptionColumn]
+                        ? this.data[descriptionColumn][i].value
+                        : '',
+                });
+            }
+
+            return collectionData;
         },
     },
     methods: {
-        onApplySettings({ table /* collection */ }) {
+        onApplySettings({ table, collection }) {
             this.rowHeight = table.rowHeight;
-            // TODO:
-            // Add support for collection settings
+            this.collectionLayoutConfig = collection;
         },
         onLayoutChange(layout) {
             this.layout = layout;

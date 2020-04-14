@@ -6,6 +6,7 @@
     <div class="collection-cell">
         <Picture
             v-if="image"
+            :height="157"
             :image-id="image" />
         <img
             v-else
@@ -43,10 +44,14 @@ export default {
     .collection-cell {
         display: flex;
         flex-direction: column;
+        border: $BORDER_1_GREY;
+        background-color: $WHITE;
 
         &__placeholder {
             justify-self: center;
             align-self: center;
+            height: 157px;
+            object-fit: none;
         }
 
         &__title {

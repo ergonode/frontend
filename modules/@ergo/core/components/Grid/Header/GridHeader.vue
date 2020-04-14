@@ -32,9 +32,9 @@
                 <GridTableLayoutActivator
                     :is-selected="layout === gridLayouts.TABLE"
                     @active="onLayoutActivate" />
-                <GridCollectionLayoutActivator
-                    :is-selected="layout === gridLayouts.COLLECTION"
-                    @active="onLayoutActivate" />
+                <!--                <GridCollectionLayoutActivator-->
+                <!--                    :is-selected="layout === gridLayouts.COLLECTION"-->
+                <!--                    @active="onLayoutActivate" />-->
                 <Fab
                     :theme="theme.SECONDARY"
                     @click.native="onShowModal">
@@ -82,13 +82,13 @@ import { THEME } from '@Core/defaults/theme';
 import { ROW_HEIGHT, GRID_LAYOUT } from '@Core/defaults/grid';
 import { ARROW } from '@Core/defaults/icons';
 import GridTableLayoutActivator from '@Core/components/Grid/Layout/Table/GridTableLayoutActivator';
-import GridCollectionLayoutActivator from '@Core/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
+// import GridCollectionLayoutActivator from '@Core/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
 
 export default {
     name: 'GridHeader',
     components: {
         GridTableLayoutActivator,
-        GridCollectionLayoutActivator,
+        // GridCollectionLayoutActivator,
         GridSettingsModalForm: () => import('@Core/components/Grid/Modals/GridSettingsModalForm'),
         // ActionButton: () => import('@Core/components/Buttons/ActionButton'),
         ExpandNumericButton: () => import('@Core/components/Buttons/ExpandNumericButton'),

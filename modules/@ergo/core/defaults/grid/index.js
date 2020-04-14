@@ -34,13 +34,18 @@ export const ROW_HEIGHT = {
 };
 
 export const IMAGE_SCALING = {
-    FIT_TO_SIZE: 'Fit to size',
+    FIT_TO_SIZE: { value: 'cover', description: 'Fit to size' },
+    FILL_CONTAINER: { value: 'fill', description: 'Fill container' },
 };
 
 export const COLUMNS_NUMBER = {
-    TWO_COLUMNS: '2 columns',
-    FOURTH_COLUMNS: '4 columns',
-    EIGHT_COLUMNS: '8 columns',
+    TWO_COLUMNS: { value: 2, description: '2 columns' },
+    THREE_COLUMNS: { value: 3, description: '3 columns' },
+    FOURTH_COLUMNS: { value: 4, description: '4 columns' },
+    FIVE_COLUMNS: { value: 5, description: '5 columns' },
+    SIX_COLUMNS: { value: 6, description: '6 columns' },
+    SEVENTH_COLUMNS: { value: 7, description: '7 columns' },
+    EIGHT_COLUMNS: { value: 8, description: '8 columns' },
 };
 
 export const GRID_LAYOUT = {
