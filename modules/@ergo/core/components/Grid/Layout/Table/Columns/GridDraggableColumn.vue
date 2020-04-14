@@ -5,8 +5,8 @@
 <template>
     <div
         :class="[
-            'column',
-            { 'column--dragged': isDragged },
+            'draggable-column',
+            { 'draggable-column--dragged': isDragged },
         ]"
         :draggable="isDraggable"
         @dragstart="onDragStart"
@@ -253,12 +253,13 @@ export default {
 
 
 <style lang="scss" scoped>
-    .column {
+    .draggable-column {
         position: relative;
         display: grid;
         box-sizing: border-box;
         background-color: $WHITE;
         will-change: width;
+        min-width: 150px;
 
         & > .grid-table-cell:nth-child(1) {
             position: sticky;

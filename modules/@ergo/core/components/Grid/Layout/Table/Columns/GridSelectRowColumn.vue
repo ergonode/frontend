@@ -21,7 +21,7 @@
             :column="0">
             <GridCheckPlaceholderCell />
         </GridTableCell>
-        <GridEditSelectRowCell
+        <GridSelectRowEditCell
             v-for="(id, rowIndex) in rowIds"
             :key="id"
             :column="0"
@@ -40,7 +40,7 @@ export default {
     components: {
         GridTableCell,
         GridCheckEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell'),
-        GridEditSelectRowCell: () => import('@Core/components/Grid/EditCells/GridEditSelectRowCell'),
+        GridSelectRowEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridSelectRowEditCell'),
         GridCheckPlaceholderCell: () => import('@Core/components/Grid/GridCheckPlaceholderCell'),
     },
     props: {

@@ -33,7 +33,7 @@ export default {
         presentationValue() {
             if (!this.value) return '';
 
-            return this.value.map(option => this.options[option]).join(', ');
+            return this.value.map(option => this.options[option].label || `#${this.options[option].code}`).join(', ');
         },
     },
 };

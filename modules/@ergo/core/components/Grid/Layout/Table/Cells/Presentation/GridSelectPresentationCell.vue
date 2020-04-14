@@ -31,7 +31,9 @@ export default {
     },
     computed: {
         presentationValue() {
-            return this.options[this.value] || this.value;
+            const { code, label } = this.options[this.value];
+
+            return label || `${code}`;
         },
     },
 };
