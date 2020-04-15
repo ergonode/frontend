@@ -53,8 +53,6 @@ export default {
             type: String,
             default: '',
         },
-        // TODO:
-        // When we create dynamic form generator it will be replaced by *scheme*
         fieldsKeys: {
             type: Array,
             default: () => [],

@@ -34,9 +34,7 @@ export default {
             return this.description !== '' && this.description !== null;
         },
         isError() {
-            if (this.errorMessages === null) return false;
-
-            return Boolean(this.errorMessages.length);
+            return Boolean(this.errorMessages);
         },
         inputClasses() {
             return [
@@ -85,6 +83,7 @@ export default {
         },
         placeholderValue() {
             if (!this.value && this.label && !this.isFocused) return null;
+
             return !this.value ? this.placeholder : null;
         },
     },

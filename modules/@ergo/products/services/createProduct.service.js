@@ -6,7 +6,7 @@ import { isObject } from '@Core/models/objectWrapper';
 
 export default function ({ $axios, $store }) {
     const { language } = $store.state.authentication.user;
-    const { sku, template, selectedCategories } = $store.state.productsDraft;
+    const { sku, template, selectedCategories } = $store.state.product;
     const data = {
         sku,
         templateId: isObject(template) ? template.id : null,

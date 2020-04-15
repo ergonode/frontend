@@ -4,14 +4,13 @@
  */
 export default () => ({
     draft: {},
+    data: {},
     id: null,
     sku: '',
     status: null,
     workflow: [],
     template: null,
     selectedCategories: [],
-    layoutElements: [],
-    completeness: {},
     templates: [],
     categories: [],
 });

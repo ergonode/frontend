@@ -86,7 +86,7 @@ export default {
     },
     mixins: [categoryManagementPageBaseMixin],
     computed: {
-        ...mapState('productsDraft', {
+        ...mapState('product', {
             status: state => state.status,
             workflow: state => state.workflow,
         }),
@@ -104,7 +104,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('productsDraft', [
+        ...mapActions('product', [
             'updateProductStatus',
             'getProductById',
         ]),

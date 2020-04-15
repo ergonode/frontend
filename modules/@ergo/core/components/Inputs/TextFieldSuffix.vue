@@ -28,5 +28,6 @@ export default {
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_14_20;
         margin-right: 4px;
+        white-space: nowrap;
     }
 </style>

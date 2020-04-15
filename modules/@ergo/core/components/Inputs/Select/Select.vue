@@ -12,7 +12,9 @@
             @mousedown="onMouseDown"
             @mouseup="onMouseUp">
             <slot name="prepend" />
-            <div class="input__value">
+            <div
+                class="input__value"
+                v-if="hasAnyValueSelected">
                 <slot name="value">
                     <span v-text="multiselect ? value.join(', ') : value" />
                 </slot>
@@ -268,8 +270,8 @@ export default {
                 ? ARROW.UP
                 : ARROW.DOWN;
         },
-        isEmptyOptions() {
-            return Object.keys(this.selectedOptions).length === 0;
+        hasAnyValueSelected() {
+            return Object.keys(this.selectedOptions).length > 0;
         },
         isDescription() {
             return this.description !== '' && this.description !== null;
@@ -302,7 +304,7 @@ export default {
             ];
         },
         floatingLabelTransforms() {
-            if (this.isMenuActive || !this.isEmptyOptions) {
+            if (this.hasAnyValueSelected || this.isMenuActive) {
                 return {
                     transform: 'translateY(-100%) scale(0.8)',
                 };
@@ -320,12 +322,12 @@ export default {
             return this.errorMessages || this.hint;
         },
         isError() {
-            if (this.errorMessages === null) return false;
-
-            return Boolean(this.errorMessages.length);
+            return Boolean(this.errorMessages);
         },
         placeholderValue() {
-            return this.isEmptyOptions ? this.placeholder : null;
+            if (!this.hasAnyValueSelected && this.label && !this.isMenuActive) return null;
+
+            return !this.hasAnyValueSelected ? this.placeholder : null;
         },
     },
     watch: {
