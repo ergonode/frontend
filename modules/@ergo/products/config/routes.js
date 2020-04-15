@@ -46,7 +46,7 @@ export default [
     },
     {
         name: 'product-id',
-        path: '/catalog/product/:id',
+        path: '/catalog/products/product/:id',
         component: Pages.ProductEdit,
         meta: {
             isMenu: false,

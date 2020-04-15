@@ -31,14 +31,14 @@ export default {
         const { id } = params;
 
         await Promise.all([
-            store.dispatch('productsDraft/getCategories'),
-            store.dispatch('productsDraft/getTemplates'),
-            store.dispatch('productsDraft/getProductDraft', { languageCode, id }),
+            store.dispatch('product/getCategories'),
+            store.dispatch('product/getTemplates'),
+            store.dispatch('product/getProductDraft', { languageCode, id }),
         ]);
-        await store.dispatch('productsDraft/getProductById', id);
+        await store.dispatch('product/getProductById', id);
     },
     computed: {
-        ...mapState('productsDraft', {
+        ...mapState('product', {
             id: state => state.id,
             sku: state => state.sku,
             selectedCategories: state => state.selectedCategories,
@@ -48,7 +48,7 @@ export default {
         this.clearStorage();
     },
     methods: {
-        ...mapActions('productsDraft', [
+        ...mapActions('product', [
             'updateProduct',
             'removeProduct',
             'applyDraft',

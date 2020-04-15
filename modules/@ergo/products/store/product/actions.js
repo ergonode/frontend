@@ -2,34 +2,20 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import {
-    getMappedLayoutSectionElement,
-    getMappedLayoutElement,
-} from '@Products/models/productMapper';
-import { hasOptions } from '@Attributes/models/attributeTypes';
 import { types } from './mutations';
 
 export default {
     setProductSku: ({ commit }, sku) => commit(types.SET_PRODUCT_SKU, sku),
+    setDraftValue: ({ commit }, payload) => commit(types.SET_DRAFT_VALUE, payload),
     setProductStatus: ({ commit }, status) => commit(types.SET_PRODUCT_STATUS, status),
     setProductTemplate: ({ commit }, template) => commit(types.SET_PRODUCT_TEMPLATE, template),
-    setProductCategories: ({ commit }, categories = []) => {
-        commit(types.SET_PRODUCT_CATEGORIES, categories);
-    },
-    async getDraftForLanguage({ commit, dispatch }, data) {
-        const productTemplateRequest = dispatch('getProductTemplate', data);
-        const completenessRequest = dispatch('getProductCompleteness', data);
-        const productDraftRequest = dispatch('getProductDraft', data);
-
-        await Promise.all([
-            completenessRequest,
-            productTemplateRequest,
-            productDraftRequest,
-        ]);
-    },
+    setProductCategories: (
+        { commit },
+        categories = [],
+    ) => commit(types.SET_PRODUCT_CATEGORIES, categories),
     getProductDraft({ commit }, { languageCode, id }) {
-        return this.app.$axios.$get(`${languageCode}/products/${id}/draft`).then((draft) => {
-            commit(types.SET_PRODUCT_DRAFT, draft);
+        return this.app.$axios.$get(`${languageCode}/products/${id}/draft`).then(({ attributes }) => {
+            commit(types.SET_PRODUCT_DRAFT, attributes);
         });
     },
     getProductById({ commit, state, rootState }, id) {
@@ -58,6 +44,7 @@ export default {
         return this.app.$axios.$get(`${userLanguageCode}/products/${id}`).then(({
             design_template_id: templateId,
             categories: categoryIds,
+            attributes,
             sku,
             status,
             workflow = [],
@@ -74,33 +61,8 @@ export default {
             commit(types.SET_PRODUCT_SKU, sku);
             commit(types.SET_PRODUCT_STATUS, status);
             commit(types.SET_PRODUCT_WORKFLOW, workflow);
+            commit(types.SET_PRODUCT_DATA, attributes);
         });
-    },
-    async getProductTemplate({ commit }, { languageCode, id }) {
-        const { elements } = await this.app.$axios.$get(`${languageCode}/products/${id}/template`);
-        const templateElements = elements.map(async (element) => {
-            const { type, properties: { attribute_id } } = element;
-
-            if (hasOptions(type)) {
-                const elementWithOptions = await this.app.$axios.$get(`${languageCode}/attributes/${attribute_id}/options`)
-                    .then(options => ({
-                        ...element,
-                        properties: {
-                            ...element.properties,
-                            options,
-                        },
-                    }));
-                return getMappedLayoutElement(languageCode, elementWithOptions);
-            }
-            if (type === 'SECTION') {
-                return getMappedLayoutSectionElement(element);
-            }
-
-            return getMappedLayoutElement(languageCode, element);
-        });
-        const preparedElements = await Promise.all(templateElements);
-
-        commit(types.SET_LAYOUT_ELEMENTS, preparedElements);
     },
     getTemplates({ commit, rootState }) {
         const { authentication: { user: { language } } } = rootState;
@@ -115,42 +77,6 @@ export default {
         return this.app.$axios.$get(`${language}/categories?limit=5000&offset=0`).then(({ collection: categories }) => {
             commit(types.SET_CATEGORIES, categories);
         });
-    },
-    getProductCompleteness({ commit }, {
-        id,
-        languageCode,
-    }) {
-        return this.app.$axios.$get(`${languageCode}/products/${id}/draft/completeness`).then((completeness) => {
-            commit(types.SET_PRODUCT_COMPLETENESS, completeness);
-        });
-    },
-    async setProductTemplateElementValue({ commit, state, dispatch }, {
-        attributeId,
-        value,
-        required,
-        name,
-        languageCode,
-        onSuccess,
-        onError,
-    }) {
-        const {
-            id,
-        } = state;
-        const index = state.layoutElements.findIndex(
-            element => element.id === attributeId,
-        );
-
-        await this.app.$axios.$put(`${languageCode}/products/${id}/draft/${attributeId}/value`, { value }).then(() => {
-            commit(types.SET_PRODUCT_TEMPLATE_ELEMENT_VALUE, { index, value });
-            // Update completeness only for required elements
-            if (required) {
-                dispatch('getProductCompleteness', {
-                    id,
-                    languageCode,
-                });
-            }
-            onSuccess(name);
-        }).catch(e => onError({ errors: e.data.errors, fieldKey: name }));
     },
     updateProductStatus({ state, rootState, dispatch }, {
         attributeId,

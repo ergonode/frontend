@@ -4,7 +4,9 @@
  */
 <template>
     <div class="completeness-progress">
-        {{ caption }}
+        <span
+            class="completeness-progress__title"
+            v-text="title" />
         <ProgressBar
             :value="progress"
             :color="color" />
@@ -12,7 +14,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import {
     GREEN, RED, YELLOW,
 } from '@Core/assets/scss/_js-variables/colors.scss';
@@ -22,11 +23,14 @@ export default {
     components: {
         ProgressBar: () => import('@Core/components/Inputs/ProgressBar'),
     },
+    props: {
+        completeness: {
+            type: Object,
+            required: true,
+        },
+    },
     computed: {
-        ...mapState('productsDraft', {
-            completeness: state => state.completeness,
-        }),
-        caption() {
+        title() {
             return `${this.progress}% Completed`;
         },
         progress() {
@@ -47,9 +51,16 @@ export default {
 
 <style lang="scss" scoped>
     .completeness-progress {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         width: 160px;
-        color: $GRAPHITE_DARK;
-        font: $FONT_MEDIUM_12_16;
-        text-align: center;
+
+        &__title {
+            color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_12_16;
+            margin-bottom: 4px;
+        }
     }
 </style>

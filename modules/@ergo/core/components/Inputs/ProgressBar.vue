@@ -35,7 +35,8 @@ export default {
 <style lang="scss" scoped>
     .progress-bar {
         display: flex;
+        width: 100%;
         height: 4px;
-        background: $GREY_LIGHT;
+        background-color: $GREY_LIGHT;
     }
 </style>

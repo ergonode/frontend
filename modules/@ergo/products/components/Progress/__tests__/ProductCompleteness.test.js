@@ -9,7 +9,7 @@ import ProductCompleteness from '../ProductCompleteness.vue';
 const localVue = createLocalVue();
 const store = new Store({
     state: {
-        productsDraft: {
+        product: {
             completeness: {
                 filled: 1,
                 required: 1,

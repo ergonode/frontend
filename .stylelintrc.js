@@ -3,7 +3,10 @@
  * See LICENSE for license details.
  */
 module.exports = {
-    extends: 'stylelint-config-recommended-scss',
+    extends: [
+        'stylelint-config-recommended-scss',
+        'stylelint-config-sass-guidelines',
+    ],
     plugins: [
         'stylelint-order',
     ],

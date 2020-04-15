@@ -8,9 +8,9 @@ import {
 import { getUUID } from '@Core/models/stringWrapper';
 
 export function cellDataCompose(check) {
-    return (data, draftByRowId, colId) => {
-        if (draftByRowId && typeof draftByRowId[colId] !== 'undefined') {
-            const draftValue = draftByRowId[colId];
+    return (data, draft, colId) => {
+        if (draft && typeof draft[colId] !== 'undefined') {
+            const draftValue = draft[colId];
 
             return {
                 value: draftValue,

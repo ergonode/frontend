@@ -51,7 +51,7 @@ export default {
         ]);
     },
     methods: {
-        ...mapActions('productsDraft', [
+        ...mapActions('product', [
             'getTemplates',
             'getCategories',
             'clearStorage',

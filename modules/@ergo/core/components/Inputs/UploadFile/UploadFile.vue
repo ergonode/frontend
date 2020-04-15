@@ -3,7 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['upload-file', { 'upload-file--required': required }]">
+    <div
+        :class="[
+            'upload-file',
+            {
+                'upload-file--required': required,
+                'upload-file--floating-label': Boolean(label),
+            },
+        ]">
         <fieldset
             class="upload-file__activator"
             :style="{ height: height }">
@@ -201,8 +208,8 @@ export default {
             color: $GRAPHITE_LIGHT;
         }
 
-        &__content {
-            height: calc(100% - 10px);
+        &__content:not(&--floating-label) {
+            height: 100%;
         }
 
         &__content, &__placeholder {
@@ -231,6 +238,12 @@ export default {
 
         &__description, &__label, &__error-label {
             font: $FONT_MEDIUM_12_16;
+        }
+
+        &--floating-label {
+            #{$upload}__content {
+                height: calc(100% - 10px);
+            }
         }
 
         &--required {

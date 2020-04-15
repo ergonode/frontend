@@ -7,16 +7,15 @@ import defaultState from './state';
 export const types = {
     SET_PRODUCT_ID: 'SET_PRODUCT_ID',
     SET_PRODUCT_SKU: 'SET_PRODUCT_SKU',
+    SET_DRAFT_VALUE: 'SET_DRAFT_VALUE',
     SET_PRODUCT_STATUS: 'SET_PRODUCT_STATUS',
     SET_PRODUCT_WORKFLOW: 'SET_PRODUCT_WORKFLOW',
+    SET_PRODUCT_DATA: 'SET_PRODUCT_DATA',
     SET_PRODUCT_TEMPLATE: 'SET_PRODUCT_TEMPLATE',
     SET_PRODUCT_CATEGORIES: 'SET_PRODUCT_CATEGORIES',
     SET_TEMPLATES: 'SET_TEMPLATES',
     SET_CATEGORIES: 'SET_CATEGORIES',
-    SET_PRODUCT_COMPLETENESS: 'SET_PRODUCT_COMPLETENESS',
-    SET_LAYOUT_ELEMENTS: 'SET_LAYOUT_ELEMENTS',
     SET_PRODUCT_DRAFT: 'SET_PRODUCT_DRAFT',
-    SET_PRODUCT_TEMPLATE_ELEMENT_VALUE: 'SET_PRODUCT_TEMPLATE_ELEMENT_VALUE',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 
@@ -45,17 +44,14 @@ export default {
     [types.SET_CATEGORIES](state, categories) {
         state.categories = categories;
     },
-    [types.SET_PRODUCT_COMPLETENESS](state, completeness) {
-        state.completeness = completeness;
-    },
-    [types.SET_LAYOUT_ELEMENTS](state, layoutElements) {
-        state.layoutElements = layoutElements;
+    [types.SET_PRODUCT_DATA](state, data) {
+        state.data = data;
     },
     [types.SET_PRODUCT_DRAFT](state, draft) {
         state.draft = draft;
     },
-    [types.SET_PRODUCT_TEMPLATE_ELEMENT_VALUE](state, { index, value }) {
-        state.layoutElements[index].value = value;
+    [types.SET_DRAFT_VALUE](state, { key, value }) {
+        state.draft = { ...state.draft, [key]: value };
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();
