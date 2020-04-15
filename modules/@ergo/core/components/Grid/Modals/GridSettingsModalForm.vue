@@ -133,10 +133,10 @@ export default {
             const imageScalingValues = Object.values(IMAGE_SCALING);
 
             this.$emit('apply', {
-                table: {
+                tableConfig: {
                     rowHeight: ROW_HEIGHT[this.rowHeightDescription.toUpperCase()],
                 },
-                collection: {
+                collectionConfig: {
                     columnsNumber: columnsNumberValues.find(
                         ({ description }) => description === this.columnsNumberDescription,
                     ),

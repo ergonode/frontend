@@ -11,7 +11,7 @@
             :key="index"
             :image="element.image"
             :description="element.description"
-            :object-fit="config.objectFit" />
+            :object-fit="objectFit" />
     </div>
 </template>
 
@@ -28,18 +28,19 @@ export default {
             type: Array,
             default: () => [],
         },
-        config: {
-            type: Object,
-            default: () => ({
-                columnsNumber: 4,
-                objectFit: 'cover',
-            }),
+        columnsNumber: {
+            type: Number,
+            required: true,
+        },
+        objectFit: {
+            type: String,
+            required: true,
         },
     },
     computed: {
         gridTemplateColumns() {
             return {
-                gridTemplateColumns: `repeat(${this.config.columnsNumber}, 1fr)`,
+                gridTemplateColumns: `repeat(${this.columnsNumber}, 1fr)`,
             };
         },
     },
