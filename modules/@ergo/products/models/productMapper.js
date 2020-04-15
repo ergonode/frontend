@@ -7,7 +7,7 @@ export function fieldDataCompose(check) {
     return ({ data, draft, defaultValue }) => {
         const dataValue = data || defaultValue;
 
-        if (draft) {
+        if (typeof draft !== 'undefined') {
             return {
                 value: draft,
                 isDraft: check(dataValue, draft),

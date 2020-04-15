@@ -28,7 +28,10 @@ describe('Badges/ProductCompleteness', () => {
             localVue,
             mocks,
             propsData: {
-                language: 'PL',
+                completeness: {
+                    filled: 1,
+                    required: 1,
+                },
             },
             computed: {
                 color() {
@@ -44,7 +47,7 @@ describe('Badges/ProductCompleteness', () => {
     });
 
     it('Check caption', () => {
-        expect(wrapper.vm.caption).toBe('100% Completed');
+        expect(wrapper.vm.title).toBe('100% Completed');
     });
 
     it('Check progress', () => {

@@ -94,7 +94,7 @@ export default {
 
             return getMappedValue({
                 data: this.data[attribute_code],
-                draft: this.draft[attribute_code],
+                draft: this.draft[this.languageCode][attribute_code],
                 defaultValue: '',
             });
         },
@@ -118,6 +118,7 @@ export default {
         ]),
         onValueChange(value) {
             this.setDraftValue({
+                languageCode: this.languageCode,
                 key: this.properties.attribute_code,
                 value,
             });

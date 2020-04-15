@@ -15,7 +15,7 @@ export default {
     ) => commit(types.SET_PRODUCT_CATEGORIES, categories),
     getProductDraft({ commit }, { languageCode, id }) {
         return this.app.$axios.$get(`${languageCode}/products/${id}/draft`).then(({ attributes }) => {
-            commit(types.SET_PRODUCT_DRAFT, attributes);
+            commit(types.SET_PRODUCT_DRAFT, { languageCode, draft: attributes });
         });
     },
     getProductById({ commit, state, rootState }, id) {

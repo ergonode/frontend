@@ -47,11 +47,11 @@ export default {
     [types.SET_PRODUCT_DATA](state, data) {
         state.data = data;
     },
-    [types.SET_PRODUCT_DRAFT](state, draft) {
-        state.draft = draft;
+    [types.SET_PRODUCT_DRAFT](state, { languageCode, draft }) {
+        state.draft = { ...state.draft, [languageCode]: draft };
     },
-    [types.SET_DRAFT_VALUE](state, { key, value }) {
-        state.draft = { ...state.draft, [key]: value };
+    [types.SET_DRAFT_VALUE](state, { languageCode, key, value }) {
+        state.draft[languageCode] = { ...state.draft[languageCode], [key]: value };
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

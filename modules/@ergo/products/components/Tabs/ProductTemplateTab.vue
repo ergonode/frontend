@@ -81,26 +81,27 @@ export default {
             'getProductDraft',
         ]),
         onLanguageChange(value) {
-            this.language = value;
+            const languageCode = getKeyByValue(this.languages, value);
 
             Promise.all([
                 getProductTemplate({
                     $axios: this.$axios,
-                    languageCode: this.languageCode,
+                    languageCode,
                     id: this.id,
                 }),
                 getProductCompleteness({
                     $axios: this.$axios,
-                    languageCode: this.languageCode,
+                    languageCode,
                     id: this.id,
                 }),
                 this.getProductDraft({
-                    languageCode: this.languageCode,
+                    languageCode,
                     id: this.id,
                 }),
             ]).then(([templateResponse, completenessResponse]) => {
                 this.elements = templateResponse.elements;
                 this.completeness = completenessResponse;
+                this.language = value;
             });
         },
         onValueUpdated() {

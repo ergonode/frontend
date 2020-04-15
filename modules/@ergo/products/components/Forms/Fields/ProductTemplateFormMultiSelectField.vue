@@ -113,7 +113,7 @@ export default {
             const getMappedValue = fieldDataCompose(check);
             const { isDraft, value } = getMappedValue({
                 data: this.data[attribute_code],
-                draft: this.draft[attribute_code],
+                draft: this.draft[this.languageCode][attribute_code],
                 defaultValue: [],
             });
 
@@ -139,6 +139,7 @@ export default {
             const ids = value.map(({ id }) => id);
 
             this.setDraftValue({
+                languageCode: this.languageCode,
                 key: this.properties.attribute_code,
                 value: ids,
             });
