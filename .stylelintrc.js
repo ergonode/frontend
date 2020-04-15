@@ -5,7 +5,6 @@
 module.exports = {
     extends: [
         'stylelint-config-recommended-scss',
-        'stylelint-config-sass-guidelines',
     ],
     plugins: [
         'stylelint-order',

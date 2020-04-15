@@ -128,7 +128,7 @@ export default {
 
             this.setDraftValue({
                 key: this.properties.attribute_code,
-                value,
+                value: date,
             });
 
             this.$emit('input', {

@@ -12,6 +12,7 @@
                     :value="fieldData.value"
                     solid
                     regular
+                    :input="{ type: 'number' }"
                     :label="label"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
@@ -32,7 +33,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { debounce } from 'debounce';
 import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
@@ -113,6 +114,9 @@ export default {
         this.debounceValueChange = debounce(value => this.onValueChange(value));
     },
     methods: {
+        ...mapActions('product', [
+            'setDraftValue',
+        ]),
         onValueChange(value) {
             this.setDraftValue({
                 key: this.properties.attribute_code,

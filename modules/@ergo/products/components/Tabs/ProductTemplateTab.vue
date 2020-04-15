@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 import getProductTemplate from '@Products/services/getProductTemplate.service';
 import getProductCompleteness from '@Products/services/getProductCompleteness.service';
@@ -77,6 +77,9 @@ export default {
         this.language = this.languages[this.user.language];
     },
     methods: {
+        ...mapActions('product', [
+            'getProductDraft',
+        ]),
         onLanguageChange(value) {
             this.language = value;
 
@@ -88,6 +91,10 @@ export default {
                 }),
                 getProductCompleteness({
                     $axios: this.$axios,
+                    languageCode: this.languageCode,
+                    id: this.id,
+                }),
+                this.getProductDraft({
                     languageCode: this.languageCode,
                     id: this.id,
                 }),

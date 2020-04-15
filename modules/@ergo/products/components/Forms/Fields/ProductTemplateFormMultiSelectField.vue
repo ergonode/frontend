@@ -5,8 +5,7 @@
 <template>
     <ProductTemplateFormField
         :size="size"
-        :position="position"
-        :draft="fieldData.isDraft">
+        :position="position">
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
                 <TranslationSelect
