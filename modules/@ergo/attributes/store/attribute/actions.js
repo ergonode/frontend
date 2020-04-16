@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getMappedParameterValues, getMappedOptions } from '@Attributes/models/attributeMapper';
+import { getMappedParameterValues, getMappedArrayOptions } from '@Attributes/models/attributeMapper';
 import { isEmpty, isObject } from '@Core/models/objectWrapper';
 import { types } from './mutations';
 
@@ -77,7 +77,7 @@ export default {
         });
     },
     getAttributeOptionsById({ commit, rootState }, { id }) {
-        return this.app.$axios.$get(`${rootState.authentication.user.language}/attributes/${id}/options`).then(options => commit(types.INITIALIZE_OPTIONS, getMappedOptions(options)));
+        return this.app.$axios.$get(`${rootState.authentication.user.language}/attributes/${id}/options`).then(options => commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options)));
     },
     getAttributeById({
         dispatch, commit, state, rootState,

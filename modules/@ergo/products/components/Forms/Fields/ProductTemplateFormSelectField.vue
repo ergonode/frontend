@@ -34,6 +34,7 @@ import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import { getMappedObjectOptions, getMappedObjectOption } from '@Core/models/mappers/translationsMapper';
 
 export default {
     name: 'ProductTemplateFormSelectField',
@@ -101,12 +102,13 @@ export default {
 
             return {
                 isDraft,
-                value: {
-                    id: value,
-                    code: this.properties.options[value].code,
-                    value: this.properties.options[value].label,
-                    hint: this.properties.options[value].label ? `#${this.properties.options[value].code}` : '',
-                },
+                value: getMappedObjectOption({
+                    option: {
+                        id: value,
+                        ...this.properties.options[value],
+                    },
+                    languageCode: this.languageCode,
+                }),
             };
         },
         fieldKey() {
@@ -118,12 +120,10 @@ export default {
         options() {
             if (!this.hasOptions) return [];
 
-            return Object.keys(this.properties.options).map(id => ({
-                id,
-                code: this.properties.options[id].code,
-                value: this.properties.options[id].label,
-                hint: this.properties.options[id].label ? `#${this.properties.options[id].code}` : '',
-            }));
+            return getMappedObjectOptions({
+                options: this.properties.options,
+                languageCode: this.languageCode,
+            });
         },
     },
     created() {
