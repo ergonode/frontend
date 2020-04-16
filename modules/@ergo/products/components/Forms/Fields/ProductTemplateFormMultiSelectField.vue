@@ -36,6 +36,7 @@ import { arraysAreEqual } from '@Core/models/arrayWrapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import { getMappedMatchedArrayOptions, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
 
 export default {
     name: 'ProductTemplateFormMultiSelectField',
@@ -93,12 +94,10 @@ export default {
         options() {
             if (!this.hasOptions) return [];
 
-            return Object.keys(this.properties.options).map(id => ({
-                id,
-                code: this.properties.options[id].code,
-                value: this.properties.options[id].label,
-                hint: this.properties.options[id].label ? `#${this.properties.options[id].code}` : '',
-            }));
+            return getMappedObjectOptions({
+                options: this.properties.options,
+                languageCode: this.languageCode,
+            });
         },
         fieldData() {
             if (!this.hasOptions) {
@@ -119,12 +118,11 @@ export default {
 
             return {
                 isDraft,
-                value: value.map(id => ({
-                    id,
-                    code: this.properties.options[id].code,
-                    value: this.properties.options[id].label,
-                    hint: this.properties.options[id].label ? `#${this.properties.options[id].code}` : '',
-                })),
+                value: getMappedMatchedArrayOptions({
+                    optionIds: value,
+                    options: this.properties.options,
+                    languageCode: this.languageCode,
+                }),
             };
         },
     },

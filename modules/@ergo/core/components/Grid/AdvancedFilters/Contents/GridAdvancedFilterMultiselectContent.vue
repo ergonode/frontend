@@ -14,14 +14,13 @@
                 @click.native.prevent="onSelectValue(option, index)">
                 <template #default="{ isSelected }">
                     <ListElementAction :small="true">
-                        <CheckBox
-                            :value="isSelected" />
+                        <CheckBox :value="isSelected" />
                     </ListElementAction>
                     <ListElementDescription>
                         <ListElementTitle
                             :small="true"
-                            :hint="option.value ? `#${option.key} ${languageCode}` : ''"
-                            :title="option.value || `#${option.key}`" />
+                            :hint="option.hint"
+                            :title="option.value || `#${option.code}`" />
                     </ListElementDescription>
                 </template>
             </ListElement>
@@ -93,7 +92,7 @@ export default {
 
                 for (let i = 0; i < length; i += 1) {
                     const optionIndex = this.options
-                        .findIndex(option => option.key === this.filterValue[i]);
+                        .findIndex(option => option.id === this.filterValue[i]);
 
                     this.selectedOptions[optionIndex] = this.filterValue[i];
                 }
@@ -103,7 +102,7 @@ export default {
             if (typeof this.selectedOptions[index] !== 'undefined') {
                 delete this.selectedOptions[index];
             } else {
-                this.selectedOptions[index] = value.key;
+                this.selectedOptions[index] = value.id;
             }
 
             this.$emit('input', { value: Object.values(this.selectedOptions).join(', '), operator: FILTER_OPERATOR.EQUAL });
