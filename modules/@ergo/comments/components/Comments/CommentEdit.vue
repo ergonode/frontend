@@ -3,22 +3,26 @@
  * See LICENSE for license details.
  */
 <template>
-    <CommentWrapper>
+    <Comment>
         <template #header>
             <span
                 class="font--medium-16-24"
                 v-text="isEdit ? 'Edit comment' : 'Add new comment'" />
         </template>
-        <template #content>
-            <TextArea
-                :value="content"
-                solid
-                label="Comment"
-                resize="none"
-                :required="true"
-                :style="{height: '128px'}"
-                :error-messages="errorCommentMessage"
-                @input="setCommentValue" />
+        <template #body>
+            <FormValidatorField field-key="content">
+                <template #validator="{ errorMessage }">
+                    <TextArea
+                        :value="content"
+                        solid
+                        label="Comment"
+                        resize="none"
+                        :required="true"
+                        :style="{height: '128px'}"
+                        :error-messages="errorMessage"
+                        @input="setCommentValue" />
+                </template>
+            </FormValidatorField>
         </template>
         <template #footer>
             <Button
@@ -32,25 +36,25 @@
                 title="CANCEL"
                 @click.native="closeComment" />
         </template>
-    </CommentWrapper>
+    </Comment>
 </template>
 <script>
 import { mapActions } from 'vuex';
 import { SIZE, THEME } from '@Core/defaults/theme';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
-import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
-import CommentWrapper from '@Comments/components/Comments/CommentWrapper';
+import Comment from '@Comments/components/Comments/Comment';
 import Button from '@Core/components/Buttons/Button';
 import TextArea from '@Core/components/Inputs/TextArea';
+import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 
 export default {
-    name: 'EditableComment',
+    name: 'CommentEdit',
     components: {
-        CommentWrapper,
+        Comment,
         Button,
         TextArea,
+        FormValidatorField,
     },
-    mixins: [errorValidationMixin],
     props: {
         commentValue: {
             type: String,
@@ -77,10 +81,6 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        errorCommentMessage() {
-            const placeholderIndex = 'content';
-            return this.getValidationErrorForKey(placeholderIndex);
-        },
     },
     methods: {
         ...mapActions('comments', [
@@ -89,6 +89,7 @@ export default {
         ]),
         ...mapActions('validations', [
             'onError',
+            'removeValidationErrors',
         ]),
         saveComment() {
             if (this.isEdit && this.commentId) {

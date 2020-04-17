@@ -81,7 +81,7 @@ export default {
             return Object.values(this.errorMessages).length > 0 || this.formGlobalError;
         },
     },
-    destroyed() {
+    beforeDestroy() {
         this.removeValidationErrors();
     },
     methods: {

@@ -48,7 +48,7 @@ export default {
         };
     },
     beforeDestroy() {
-        if (this.localValue !== this.value) {
+        if (+this.localValue !== +this.value) {
             this.$emit('input', this.localValue !== '' ? +this.localValue : '');
         }
     },

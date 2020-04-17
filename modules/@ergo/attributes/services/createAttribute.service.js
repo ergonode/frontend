@@ -9,7 +9,7 @@ import {
 } from '@Attributes/models/attributeMapper';
 import { isMultilingual, getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 
-export default function ({
+export default async function ({
     $axios,
     $addAlert,
     $store,
@@ -65,17 +65,13 @@ export default function ({
         });
     }
 
-    return $axios.$post(`${language}/attributes`, data)
-        .then((
-            { id },
-        ) => {
-            Promise.all(
-                Object.keys(options).map(key => $axios.$post(
-                    `${language}/attributes/${id}/options`,
-                    { code: options[key].key },
-                )),
-            );
+    const { id } = await $axios.$post(`${language}/attributes`, data);
+    await Promise.all(
+        Object.keys(options).map(key => $axios.$post(
+            `${language}/attributes/${id}/options`,
+            { code: options[key].key },
+        )),
+    );
 
-            return { id };
-        });
+    return { id };
 }

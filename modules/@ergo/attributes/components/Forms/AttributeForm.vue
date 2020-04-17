@@ -5,7 +5,13 @@
 <template>
     <Form
         title="General"
-        :fields-keys="[codeFieldKey, typeFieldKey, groupsFieldKey, paramsFieldKey]">
+        :fields-keys="[
+            codeFieldKey,
+            typeFieldKey,
+            groupsFieldKey,
+            paramsFieldKey,
+            ...optionsFieldKeys,
+        ]">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
@@ -107,6 +113,7 @@ export default {
         ...mapState('attribute', {
             attrID: state => state.id,
             code: state => state.code,
+            options: state => state.options,
             groups: state => state.groups,
             groupOptions: state => state.groupOptions,
             type: state => state.type,
@@ -158,6 +165,9 @@ export default {
                 return this.params.map(data => data.name);
             }
             return Object.values(this.params);
+        },
+        optionsFieldKeys() {
+            return Object.keys(this.options).map(key => `code_${key}`);
         },
         codeFieldKey() {
             return 'code';
