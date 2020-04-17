@@ -12,8 +12,10 @@
         <slot name="content" />
         <IconResize
             v-if="!disabled"
-            size="8"
             class="layout-element__resizer"
+            :width="8"
+            :height="8"
+            view-box="0 0 8 8"
             @mousedown.native="onInitResize" />
     </div>
 </template>

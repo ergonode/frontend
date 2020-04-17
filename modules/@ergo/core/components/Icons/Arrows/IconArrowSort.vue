@@ -3,63 +3,44 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseIcon
-        class="sort-icon"
-        :width="size"
-        :height="size"
-        :icon-color="fillColor">
+    <Icon v-bind="$attrs">
         <polygon
-            class="upper-arrow"
             :fill="lowerArrowFill"
             :points="lowerArrow.points" />
         <polygon
-            class="lower-arrow"
             :points="upperArrow.points"
             :fill="upperArrowFill"
             :transform="upperArrow.transform" />
-    </BaseIcon>
+    </Icon>
 </template>
 
 <script>
 import { SORTING_ORDER } from '@Core/defaults/icons';
-import { GRAPHITE, GREY, GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
-import BaseIcon from '@Core/components/Icons/BaseIcon';
+import { GREY, GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
+import Icon from '@Core/components/Icons/Icon';
 
 export default {
     name: 'IconArrowSort',
     components: {
-        BaseIcon,
+        Icon,
     },
-    props: {
-        sortingOrder: {
-            type: String,
-            default: SORTING_ORDER.NONE,
-        },
-        fillColor: {
-            type: String,
-            default: GRAPHITE,
-        },
-        size: {
-            type: [String, Number],
-            default: '24',
-        },
-    },
-    data() {
-        return {
-            lowerArrow: {
+    inheritAttrs: false,
+    computed: {
+        lowerArrow() {
+            return {
                 points: '8 14 12 18 16 14',
                 fillColor: null,
-            },
-            upperArrow: {
+            };
+        },
+        upperArrow() {
+            return {
                 points: '8 6 12 10 16 6',
                 transform: 'translate(12, 8) rotate(-180) translate(-12, -8)',
                 fillColor: null,
-            },
-        };
-    },
-    computed: {
+            };
+        },
         upperArrowFill() {
-            switch (this.sortingOrder) {
+            switch (this.$attrs.sortingOrder) {
             case SORTING_ORDER.ASC:
                 return GREY;
             case SORTING_ORDER.DESC:
@@ -69,7 +50,7 @@ export default {
             }
         },
         lowerArrowFill() {
-            switch (this.sortingOrder) {
+            switch (this.$attrs.sortingOrder) {
             case SORTING_ORDER.ASC:
                 return GREEN;
             case SORTING_ORDER.DESC:

@@ -3,47 +3,29 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseIcon
-        :width="size"
-        :height="size"
-        :style="iconTransform"
-        :icon-color="fillColor">
+    <Icon
+        v-bind="$attrs"
+        :style="iconTransform">
         <polygon :points="points" />
-    </BaseIcon>
+    </Icon>
 </template>
 
 <script>
 import { ARROW } from '@Core/defaults/icons';
-import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import BaseIcon from '@Core/components/Icons/BaseIcon';
+import Icon from '@Core/components/Icons/Icon';
 
 export default {
     name: 'IconArrowDropDown',
     components: {
-        BaseIcon,
+        Icon,
     },
-    props: {
-        state: {
-            type: String,
-            default: ARROW.DOWN,
-        },
-        fillColor: {
-            type: String,
-            default: GRAPHITE,
-        },
-        size: {
-            type: [String, Number],
-            default: '24',
-        },
-    },
-    data() {
-        return {
-            points: '8 10 12 14 16 10',
-        };
-    },
+    inheritAttrs: false,
     computed: {
+        points() {
+            return '8 10 12 14 16 10';
+        },
         iconTransform() {
-            if (this.state === ARROW.UP) return { transform: 'rotate(-180deg)' };
+            if (this.$attrs.state === ARROW.UP) return { transform: 'rotate(-180deg)' };
 
             return null;
         },

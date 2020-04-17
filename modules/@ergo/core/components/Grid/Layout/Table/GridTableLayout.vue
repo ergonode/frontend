@@ -390,6 +390,7 @@ export default {
             this.$emit('dropColumn', columnId);
         },
         onEditCell(payload) {
+            console.log(payload);
             this.setDraftValue(payload);
             this.$emit('editCell', payload);
         },

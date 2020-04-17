@@ -3,37 +3,24 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseIcon
-        :width="size"
-        :height="size"
-        :icon-color="fillColor">
+    <Icon v-bind="$attrs">
         <path :d="drawingCommands" />
-    </BaseIcon>
+    </Icon>
 </template>
 
 <script>
-import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import BaseIcon from '@Core/components/Icons/BaseIcon';
+import Icon from '@Core/components/Icons/Icon';
 
 export default {
     name: 'IconImport',
     components: {
-        BaseIcon,
+        Icon,
     },
-    props: {
-        fillColor: {
-            type: String,
-            default: GRAPHITE,
+    inheritAttrs: false,
+    computed: {
+        drawingCommands() {
+            return 'M20,10.0769231 L15.4285714,10.0769231 L15.4285714,17 L8.57142857,17 L8.57142857,10.0769231 L4,10.0769231 L12,2 L20,10.0769231 Z M4,20 L4,22 L20,22 L20,20 L4,20 Z';
         },
-        size: {
-            type: [String, Number],
-            default: 24,
-        },
-    },
-    data() {
-        return {
-            drawingCommands: 'M20,10.0769231 L15.4285714,10.0769231 L15.4285714,17 L8.57142857,17 L8.57142857,10.0769231 L4,10.0769231 L12,2 L20,10.0769231 Z M4,20 L4,22 L20,22 L20,20 L4,20 Z',
-        };
     },
 };
 </script>

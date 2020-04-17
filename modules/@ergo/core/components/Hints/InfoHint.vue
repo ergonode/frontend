@@ -6,7 +6,7 @@
     <span
         class="info-hint"
         :title="hint">
-        <IconTooltip size="24" />
+        <IconTooltip />
     </span>
 </template>
 
