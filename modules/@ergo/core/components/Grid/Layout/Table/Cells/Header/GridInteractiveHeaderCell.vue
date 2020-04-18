@@ -21,7 +21,7 @@
                 }
             ]">
             <IconArrowSort
-                :sorting-order="sortingOrder"
+                :order="sortingOrder"
                 :fill-color="graphiteLightColor"
                 @click.native="onClickSort" />
             <ActionIconButton

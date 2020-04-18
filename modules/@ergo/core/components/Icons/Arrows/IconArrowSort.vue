@@ -3,13 +3,15 @@
  * See LICENSE for license details.
  */
 <template>
-    <Icon v-bind="$attrs">
+    <Icon
+        v-bind="$attrs"
+        :style="{ transform: arrowStyle.transform }">
         <polygon
-            :fill="lowerArrowFill"
+            :fill="arrowStyle.color"
             :points="lowerArrow.points" />
         <polygon
             :points="upperArrow.points"
-            :fill="upperArrowFill"
+            :fill="upperArrow.fillColor"
             :transform="upperArrow.transform" />
     </Icon>
 </template>
@@ -29,34 +31,32 @@ export default {
         lowerArrow() {
             return {
                 points: '8 14 12 18 16 14',
-                fillColor: null,
             };
         },
         upperArrow() {
             return {
                 points: '8 6 12 10 16 6',
+                fillColor: this.$attrs.order !== null ? GREY : null,
                 transform: 'translate(12, 8) rotate(-180) translate(-12, -8)',
-                fillColor: null,
             };
         },
-        upperArrowFill() {
-            switch (this.$attrs.sortingOrder) {
+        arrowStyle() {
+            switch (this.$attrs.order) {
             case SORTING_ORDER.ASC:
-                return GREY;
+                return {
+                    transform: 'rotate(180deg)',
+                    color: GREEN,
+                };
             case SORTING_ORDER.DESC:
-                return GREEN;
+                return {
+                    transform: 'rotate(0)',
+                    color: GREEN,
+                };
             default:
-                return null;
-            }
-        },
-        lowerArrowFill() {
-            switch (this.$attrs.sortingOrder) {
-            case SORTING_ORDER.ASC:
-                return GREEN;
-            case SORTING_ORDER.DESC:
-                return GREY;
-            default:
-                return null;
+                return {
+                    transform: 'rotate(0)',
+                    color: null,
+                };
             }
         },
     },
