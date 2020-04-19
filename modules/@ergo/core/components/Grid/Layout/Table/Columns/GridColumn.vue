@@ -12,7 +12,7 @@
         @updateWidth="onUpdateWidth"
         @drop="onDrop">
         <GridTableCell
-            :row="0"
+            :row="rowsOffset"
             :column="columnIndex"
             :locked="true">
             <slot

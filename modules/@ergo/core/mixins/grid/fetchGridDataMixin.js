@@ -187,12 +187,8 @@ export default function ({ path }) {
                     this.$emit('fetched');
                 });
             },
-            onRemoveRow(index) {
-                const tmpData = { ...this.data };
-                Object.keys(this.data).forEach(columnId => tmpData[columnId].splice(index, 1));
-                this.data = tmpData;
-                this.count -= 1;
-                this.filtered -= 1;
+            onRemoveRow() {
+                this.getGridData(this.localParams);
             },
             onDropColumn(columnId) {
                 this.getGridData(this.localParams).then(() => {

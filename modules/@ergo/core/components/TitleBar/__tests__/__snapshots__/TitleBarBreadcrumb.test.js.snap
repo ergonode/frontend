@@ -2,8 +2,8 @@
 
 exports[`TitleBar/TitleBarBreadcrumb Renders breadcrumb with category 1`] = `
 <nuxtlink-stub class="breadcrumb">
-  <baseicon-stub iconname="box" width="16" height="16" iconcolor="currentColor">
+  <icon-stub iconname="box" width="16" height="16" viewbox="0 0 24 24">
     <path d="M10.2,5 L4.8,5 C3.81,5 3,6.04408987 3,7.00658987 L3,18.25 C3,19.2125 3.81,20 4.8,20 L19.2,20 C20.19,20 21,19.2125 21,18.25 L21,8.75658987 C21,7.79408987 20.19,7.00658987 19.2,7.00658987 L12,7.00658987 L10.2,5 Z"></path>
-  </baseicon-stub> <span class="breadcrumb__title">Categories</span>
+  </icon-stub> <span class="breadcrumb__title">Categories</span>
 </nuxtlink-stub>
 `;

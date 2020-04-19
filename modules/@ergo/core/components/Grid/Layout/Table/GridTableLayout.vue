@@ -4,36 +4,58 @@
  */
 <template>
     <div
-        :style="templateColumns"
         :class="[
             'grid-table-layout',
             { 'grid-table-layout--disabled': isColumnExists },
         ]"
         ref="gridTemplateLayout">
-        <Component
-            v-for="(column, index) in orderedColumns"
-            :style="templateRows"
-            :key="column.id"
-            :is="columnComponents[index]"
-            :data="data[column.id]"
-            :sorted-column="sortedColumn"
-            :column="column"
-            :column-index="index"
-            :row-ids="data.id"
-            :rows-offset="rowsOffset"
-            :filter="filters[column.id]"
-            :is-basic-filter="isBasicFilter"
-            :is-editable="isEditable"
-            @sort="onSortColumn"
-            @filter="onFilterChange"
-            @remove="onRemoveColumn"
-            @swapColumns="onSwapColumns"
-            @updateWidth="onUpdateWidth"
-            @drop="onDrop"
-            @editCell="onEditCell"
-            @copyCells="onCopyCells"
-            @editRow="onEditRow"
-            @removeRow="onRemoveRow" />
+        <GridTableLayoutColumnsSection
+            :style="templateColumns"
+            ref="columnsSection">
+            <Component
+                v-for="(column, index) in orderedColumns"
+                :style="templateRows"
+                :key="column.id"
+                :is="columnComponents[index]"
+                :data="data[column.id]"
+                :sorted-column="sortedColumn"
+                :column="column"
+                :column-index="index"
+                :row-ids="data.id"
+                :rows-offset="rowsOffset"
+                :filter="filters[column.id]"
+                :is-basic-filter="isBasicFilter"
+                :is-editable="isEditable"
+                @sort="onSortColumn"
+                @filter="onFilterChange"
+                @remove="onRemoveColumn"
+                @swapColumns="onSwapColumns"
+                @updateWidth="onUpdateWidth"
+                @drop="onDrop"
+                @editCell="onEditCell"
+                @copyCells="onCopyCells" />
+            <GridSentinelColumn
+                v-if="typeof data[columnActionId] !== 'undefined'"
+                :style="{ gridColumn: `${orderedColumns.length}`}"
+                :pinned-state="pinnedState.RIGHT"
+                @sticky="onStickyChange" />
+        </GridTableLayoutColumnsSection>
+        <GridTableLayoutPinnedSection
+            v-if="typeof data[columnActionId] !== 'undefined'"
+            :is-pinned="pinnedSections[pinnedState.RIGHT]">
+            <Component
+                v-for="(column, index) in actionColumns"
+                :style="templateRows"
+                :key="column"
+                :data="data[columnActionId][column]"
+                :column-index="orderedColumns.length + index"
+                :column-id="column"
+                :data-count="dataCount"
+                :rows-offset="rowsOffset"
+                :is-basic-filter="isBasicFilter"
+                :is="actionColumnComponents[column]"
+                @action="onActionRow" />
+        </GridTableLayoutPinnedSection>
     </div>
 </template>
 
@@ -44,12 +66,13 @@ import {
     COLUMN_WIDTH,
     GHOST_ID,
     COLUMN_SELECT_ROW,
-    COLUMN_ACTIONS,
+    COLUMN_ACTIONS_ID,
     COLUMN_GHOST,
     ROW_HEIGHT,
 } from '@Core/defaults/grid';
 import {
     capitalizeAndConcatenationArray,
+    toCapitalize,
 } from '@Core/models/stringWrapper';
 import {
     swapItemPosition,
@@ -60,9 +83,15 @@ import {
     changeCookiePosition,
     removeCookieAtIndex,
 } from '@Core/models/cookies';
+import GridTableLayoutColumnsSection from '@Core/components/Grid/Layout/Table/Sections/GridTableLayoutColumnsSection';
 
 export default {
     name: 'GridTableLayout',
+    components: {
+        GridTableLayoutColumnsSection,
+        GridTableLayoutPinnedSection: () => import('@Core/components/Grid/Layout/Table/Sections/GridTableLayoutPinnedSection'),
+        GridSentinelColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSentinelColumn'),
+    },
     props: {
         columns: {
             type: Array,
@@ -100,16 +129,10 @@ export default {
             type: Boolean,
             default: false,
         },
-        isActionColumn: {
-            type: Boolean,
-            default: false,
-        },
     },
     data() {
         return {
             isHeaderFocused: false,
-            isSelectColumnPinned: false,
-            isActionColumnPinned: false,
             isColumnDropped: false,
             hasInitialWidths: true,
             editingCellCoordinates: { row: null, column: null },
@@ -118,6 +141,7 @@ export default {
             columnWidths: [],
             filters: {},
             sortedColumn: {},
+            pinnedSections: {},
         };
     },
     computed: {
@@ -131,6 +155,22 @@ export default {
             draggedElIndex: state => state.draggedElIndex,
             draggedElement: state => state.draggedElement,
         }),
+        columnActionId() {
+            return COLUMN_ACTIONS_ID;
+        },
+        actionColumns() {
+            return ['edit', 'delete'];
+        },
+        actionColumnComponents() {
+            return this.actionColumns.reduce((prev, acc) => {
+                const tmp = prev;
+                if (this.data[COLUMN_ACTIONS_ID][acc]) {
+                    tmp[acc] = () => import(`@Core/components/Grid/Layout/Table/Columns/Action/Grid${toCapitalize(acc)}ActionColumn`);
+                }
+
+                return tmp;
+            }, {});
+        },
         dataCount() {
             const keys = Object.keys(this.data);
 
@@ -167,6 +207,9 @@ export default {
             return {
                 gridTemplateRows: headerRowsTemplate,
             };
+        },
+        pinnedState() {
+            return PINNED_COLUMN_STATE;
         },
     },
     watch: {
@@ -228,14 +271,6 @@ export default {
                 );
                 columnWidths.push(COLUMN_WIDTH.DEFAULT);
             }
-        }
-
-        if (this.isActionColumn) {
-            orderedColumns.push(COLUMN_ACTIONS);
-            columnComponents.push(
-                () => import('@Core/components/Grid/Layout/Table/Columns/GridActionColumn'),
-            );
-            columnWidths.push(COLUMN_WIDTH.ACTION);
         }
 
         this.orderedColumns = orderedColumns;
@@ -370,11 +405,7 @@ export default {
         onStickyChange({
             isSticky, state,
         }) {
-            if (state === PINNED_COLUMN_STATE.LEFT) {
-                this.isSelectColumnPinned = isSticky;
-            } else {
-                this.isActionColumnPinned = isSticky;
-            }
+            this.pinnedSections = { ...this.pinnedSections, [state]: isSticky };
         },
         onDrop({ from, to, columnId }) {
             this.isColumnDropped = true;
@@ -390,7 +421,6 @@ export default {
             this.$emit('dropColumn', columnId);
         },
         onEditCell(payload) {
-            console.log(payload);
             this.setDraftValue(payload);
             this.$emit('editCell', payload);
         },
@@ -425,11 +455,8 @@ export default {
             this.setDraftsValues(drafts);
             this.$emit('editCells', editedCells);
         },
-        onEditRow(args) {
-            this.$emit('editRow', args);
-        },
-        onRemoveRow(index) {
-            this.$emit('removeRow', index);
+        onActionRow({ action, value }) {
+            this.$emit(action, value);
         },
         addGhostColumn() {
             if (!this.isColumnExists) {
@@ -473,11 +500,11 @@ export default {
             this.isColumnDropped = false;
         },
         initialColumnWidths() {
-            const { gridTemplateLayout } = this.$refs;
-            const { length } = gridTemplateLayout.children;
+            const { columnsSection } = this.$refs;
+            const { length } = columnsSection.$el.children;
 
             for (let i = 0; i < length; i += 1) {
-                const { width } = gridTemplateLayout.children[i].getBoundingClientRect();
+                const { width } = columnsSection.$el.children[i].getBoundingClientRect();
 
                 this.columnWidths[i] = `${width}px`;
             }
@@ -485,11 +512,11 @@ export default {
             this.hasInitialWidths = false;
         },
         removeColumnsTransform() {
-            const { gridTemplateLayout } = this.$refs;
-            const { length } = gridTemplateLayout.children;
+            const { columnsSection } = this.$refs;
+            const { length } = columnsSection.$el.children;
 
             for (let i = 0; i < length; i += 1) {
-                gridTemplateLayout.children[i].style.transform = null;
+                columnsSection.$el.children[i].style.transform = null;
             }
         },
     },
@@ -506,6 +533,8 @@ export default {
     .grid-table-layout {
         position: relative;
         display: grid;
+        grid-auto-flow: column;
+        grid-template-columns: 1fr;
         overflow: auto;
 
         &::after {

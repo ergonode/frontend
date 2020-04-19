@@ -166,7 +166,7 @@ export default {
             }
         },
         getColumnAtIndex(index) {
-            const gridColumns = document.querySelector('.grid-table-layout');
+            const gridColumns = document.querySelector('.columns-section');
             const { children } = gridColumns;
 
             return children[index];
@@ -180,7 +180,7 @@ export default {
             this.removeColumnHover();
         },
         isHeaderFocused() {
-            const gridColumns = document.querySelector('.grid-table-layout');
+            const gridColumns = document.querySelector('.columns-section');
             const headerEls = gridColumns.querySelectorAll('.header-cell__actions--focused');
 
             return headerEls.length;

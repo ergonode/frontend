@@ -11,7 +11,6 @@
                 :data-count="filtered"
                 :data="data"
                 :is-basic-filter="true"
-                :is-action-column="true"
                 @removeRow="onRemoveRow"
                 @fetchData="getGridData" />
         </template>

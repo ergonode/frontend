@@ -91,7 +91,7 @@ export default {
             }
         },
         getTableLayoutElement() {
-            return document.documentElement.querySelector('.grid-table-layout');
+            return document.documentElement.querySelector('.columns-section');
         },
         onDragEnter(event) {
             const { xPos, yPos } = getPositionForBrowser(event);

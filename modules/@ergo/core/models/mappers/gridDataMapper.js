@@ -75,31 +75,37 @@ export function getSortedColumnsByIDs(columns, columnsID) {
 }
 
 export function getMappedData(columns, collection) {
+    const hasAnyActionLink = collection.some(element => typeof element._links !== 'undefined');
     const { length: columnsNumber } = columns;
     const { length: rowsNumber } = collection;
     const data = {};
 
-    for (let i = 0; i < columnsNumber; i += 1) {
-        const { id } = columns[i];
-        const columnData = [];
+    for (let j = 0; j < rowsNumber; j += 1) {
+        for (let i = 0; i < columnsNumber; i += 1) {
+            const { id } = columns[i];
 
-        for (let j = 0; j < rowsNumber; j += 1) {
-            columnData.push(collection[j][id]);
+            if (!data[id]) {
+                data[id] = [];
+            }
+
+            data[id].push(collection[j][id]);
         }
 
-        data[id] = columnData;
-    }
+        if (hasAnyActionLink && collection[j]._links) {
+            const linkKeys = Object.keys(collection[j]._links.value);
 
-    const hasAnyActionLink = collection.some(element => typeof element._links !== 'undefined');
+            if (!data[COLUMN_ACTIONS_ID]) {
+                data[COLUMN_ACTIONS_ID] = {};
+            }
 
-    if (hasAnyActionLink) {
-        const actionColumn = [];
+            linkKeys.forEach((key) => {
+                if (!data[COLUMN_ACTIONS_ID][key]) {
+                    data[COLUMN_ACTIONS_ID][key] = {};
+                }
 
-        for (let i = 0; i < rowsNumber; i += 1) {
-            actionColumn.push(collection[i]._links.value);
+                data[COLUMN_ACTIONS_ID][key][j] = collection[j]._links.value[key];
+            });
         }
-
-        data[COLUMN_ACTIONS_ID] = actionColumn;
     }
 
     const idColumn = [];

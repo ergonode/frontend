@@ -10,7 +10,6 @@
                 :columns="columns"
                 :data-count="filtered"
                 :data="data"
-                :is-action-column="true"
                 :is-basic-filter="true"
                 @editRow="onEditRow"
                 @removeRow="onRemoveRow"
