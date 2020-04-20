@@ -13,10 +13,13 @@
                 label="Edit language"
                 :options="languageOptions"
                 @input="onLanguageChange" />
-            <ProductCompleteness />
+            <ProductCompleteness :completeness="completeness" />
         </template>
         <template #centeredContent>
-            <ProductTemplateForm :language-code="languageCode" />
+            <ProductTemplateForm
+                :language-code="languageCode"
+                :elements="elements"
+                @valueUpdated="onValueUpdated" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -24,6 +27,8 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getKeyByValue } from '@Core/models/objectWrapper';
+import getProductTemplate from '@Products/services/getProductTemplate.service';
+import getProductCompleteness from '@Products/services/getProductCompleteness.service';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm';
 
@@ -35,11 +40,16 @@ export default {
         Select: () => import('@Core/components/Inputs/Select/Select'),
         ProductCompleteness: () => import('@Products/components/Progress/ProductCompleteness'),
     },
-    async fetch({ store, params }) {
-        const { id } = params;
+    asyncData({ app: { $axios }, store, params: { id } }) {
         const { language } = store.state.authentication.user;
 
-        await store.dispatch('productsDraft/getDraftForLanguage', { languageCode: language, id });
+        return Promise.all([
+            getProductTemplate({ $axios, languageCode: language, id }),
+            getProductCompleteness({ $axios, languageCode: language, id }),
+        ]).then(([templateResponse, completenessResponse]) => ({
+            elements: templateResponse.elements,
+            completeness: completenessResponse,
+        }));
     },
     data() {
         return {
@@ -53,9 +63,8 @@ export default {
         ...mapState('dictionaries', {
             languages: state => state.languages,
         }),
-        ...mapState('productsDraft', {
+        ...mapState('product', {
             id: state => state.id,
-            completeness: state => state.completeness,
         }),
         languageCode() {
             return getKeyByValue(this.languages, this.language);
@@ -68,12 +77,41 @@ export default {
         this.language = this.languages[this.user.language];
     },
     methods: {
-        ...mapActions('productsDraft', [
-            'getDraftForLanguage',
+        ...mapActions('product', [
+            'getProductDraft',
         ]),
         onLanguageChange(value) {
-            this.language = value;
-            this.getDraftForLanguage({ languageCode: this.languageCode, id: this.id });
+            const languageCode = getKeyByValue(this.languages, value);
+
+            Promise.all([
+                getProductTemplate({
+                    $axios: this.$axios,
+                    languageCode,
+                    id: this.id,
+                }),
+                getProductCompleteness({
+                    $axios: this.$axios,
+                    languageCode,
+                    id: this.id,
+                }),
+                this.getProductDraft({
+                    languageCode,
+                    id: this.id,
+                }),
+            ]).then(([templateResponse, completenessResponse]) => {
+                this.elements = templateResponse.elements;
+                this.completeness = completenessResponse;
+                this.language = value;
+            });
+        },
+        onValueUpdated() {
+            getProductCompleteness({
+                $axios: this.$axios,
+                languageCode: this.languageCode,
+                id: this.id,
+            }).then((response) => {
+                this.completeness = response;
+            });
         },
     },
 };

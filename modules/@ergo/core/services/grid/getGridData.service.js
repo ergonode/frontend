@@ -6,8 +6,9 @@ import {
     getMappedData,
     getSortedColumnsByIDs,
 } from '@Core/models/mappers/gridDataMapper';
+import { getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
 
-export const getGridData = ($axios, path, params) => $axios
+export const getGridData = ({ $axios, path, params }) => $axios
     .$get(path, { params })
     .then(({
         collection,
@@ -28,7 +29,7 @@ export const getGridData = ($axios, path, params) => $axios
         };
     });
 
-export const getAdvancedFiltersData = ($axios, path, params) => $axios
+export const getAdvancedFiltersData = ({ $axios, path, params }) => $axios
     .$get(path, { params })
     .then(({
         columns,
@@ -38,11 +39,10 @@ export const getAdvancedFiltersData = ($axios, path, params) => $axios
 
         for (let i = 0; i < length; i += 1) {
             const options = columns[i].filter && columns[i].filter.options
-                ? Object.keys(columns[i].filter.options)
-                    .map(key => ({
-                        key,
-                        value: columns[i].filter.options[key],
-                    }))
+                ? getMappedObjectOptions({
+                    options: columns[i].filter.options,
+                    languageCode: columns[i].language,
+                })
                 : [];
 
             advancedFilters.push({

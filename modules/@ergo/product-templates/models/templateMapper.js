@@ -63,7 +63,7 @@ export function getMappedLayoutSectionElement(
         maxWidth,
         minHeight,
         maxHeight,
-        type: 'SECTION TITLE',
+        type: 'SECTION',
         label: title,
     };
 }
@@ -123,7 +123,7 @@ export function getMappedLayoutElementsForAPIUpdate(elements) {
         const properties = {};
         let parsedType = type;
 
-        if (type !== 'SECTION TITLE') {
+        if (type !== 'SECTION') {
             properties.attribute_id = id;
             properties.required = required;
         } else {

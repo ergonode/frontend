@@ -39,7 +39,7 @@ export function getParsedParameterKeys({
     return { [paramKey]: selectedParam };
 }
 
-export function getMappedOptions(options) {
+export function getMappedArrayOptions(options) {
     return options.reduce((acc, current, currentIndex) => {
         const newObject = acc;
         newObject[currentIndex] = {
@@ -49,11 +49,4 @@ export function getMappedOptions(options) {
         };
         return newObject;
     }, {});
-}
-
-export function getParsedOptions(options) {
-    return Object.keys(options).map(key => ({
-        code: options[key].key,
-        label: options[key].value,
-    }));
 }

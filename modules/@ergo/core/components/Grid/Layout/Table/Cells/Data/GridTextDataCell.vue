@@ -7,7 +7,7 @@
         :row="rowIndex"
         :column="columnIndex"
         :locked="isLocked"
-        :draft="mappedValue.isDraft"
+        :draft="cellData.isDraft"
         :error="Boolean(errorMessages)"
         :edit-key-code="editKeyCode"
         :disabled="isDisabled"
@@ -16,19 +16,19 @@
         <template #default="{ isEditing }">
             <GridTextEditCell
                 v-if="isEditing"
-                :value="mappedValue.value"
+                :value="cellData.value"
                 :width="$el.offsetWidth"
                 @input="onValueChange" />
             <GridPresentationCell
-                v-else-if="!isEditing && mappedValue.value !== null"
-                :value="mappedValue.value"
+                v-else-if="!isEditing && cellData.value"
+                :value="cellData.value"
                 :suffix="data.suffix" />
         </template>
     </GridTableCell>
 </template>
 <script>
 import { mapState } from 'vuex';
-import { mappedValueCompose } from '@Core/models/mappers/gridDataMapper';
+import { cellDataCompose } from '@Core/models/mappers/gridDataMapper';
 import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 
@@ -43,9 +43,9 @@ export default {
         ...mapState('grid', {
             drafts: state => state.drafts,
         }),
-        mappedValue() {
+        cellData() {
             const check = (data, draftValue) => data !== draftValue;
-            const getMappedValue = mappedValueCompose(check);
+            const getMappedValue = cellDataCompose(check);
 
             return getMappedValue(this.data.value, this.drafts[this.rowId], this.columnId);
         },

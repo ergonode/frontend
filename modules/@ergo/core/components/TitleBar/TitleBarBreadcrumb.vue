@@ -9,7 +9,8 @@
         <Component
             :is="breadcrumbIconComponent"
             :fill-color="greenColor"
-            size="16" />
+            width="16"
+            height="16" />
         <span
             class="breadcrumb__title"
             v-text="breadcrumb.title" />

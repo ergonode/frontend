@@ -3,67 +3,20 @@
  * See LICENSE for license details.
  */
 
-function getParsedOptions({ language, options }) {
-    if (!options) return null;
+export function fieldDataCompose(check) {
+    return ({ data, draft, defaultValue }) => {
+        const dataValue = data || defaultValue;
 
-    return options.map(({ id, code, label }) => (
-        { id, key: code, value: label[language] || null }
-    ));
-}
+        if (typeof draft !== 'undefined') {
+            return {
+                value: draft,
+                isDraft: check(dataValue, draft),
+            };
+        }
 
-export function getMappedLayoutElement(language, {
-    label,
-    type,
-    properties,
-    position,
-    size,
-}) {
-    const { x: column, y: row } = position;
-    const {
-        attribute_id: id, attribute_code: code, required, hint, placeholder, parameters, options,
-    } = properties;
-    const { width, height } = size;
-
-    return {
-        id,
-        code,
-        row: row + 1,
-        column: column + 1,
-        width,
-        height,
-        type,
-        label,
-        hint,
-        placeholder,
-        required,
-        parameters,
-        options: getParsedOptions({ language, options }),
+        return {
+            value: dataValue,
+            isDraft: false,
+        };
     };
-}
-
-export function getMappedLayoutSectionElement({
-    label,
-    position,
-    size,
-}) {
-    const { x: column, y: row } = position;
-    const { width, height } = size;
-
-    return {
-        row: row + 1,
-        column: column + 1,
-        width,
-        height,
-        type: 'SECTION TITLE',
-        label,
-    };
-}
-
-export function getMappedTemplateID(templates, selectedTemplate) {
-    const templateByName = templates.find(
-        template => template.name === selectedTemplate,
-    );
-    return templateByName
-        ? templateByName.id
-        : null;
 }

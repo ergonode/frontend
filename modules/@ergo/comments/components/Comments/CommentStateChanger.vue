@@ -5,12 +5,12 @@
 <template>
     <li class="comment-list__element">
         <FadeTransition>
-            <EditableComment
+            <CommentEdit
                 v-if="showEditingForm"
                 :comment-value="comment.content"
                 :comment-id="comment.id"
                 @close="toggleState" />
-            <Comment
+            <CommentPresentation
                 v-else
                 :comment="comment"
                 @edit="toggleState" />
@@ -21,8 +21,8 @@
 export default {
     name: 'CommentStateChanger',
     components: {
-        Comment: () => import('@Comments/components/Comments/Comment'),
-        EditableComment: () => import('@Comments/components/Comments/EditableComment'),
+        CommentPresentation: () => import('@Comments/components/Comments/CommentPresentation'),
+        CommentEdit: () => import('@Comments/components/Comments/CommentEdit'),
         FadeTransition: () => import('@Core/components/Transitions/FadeTransition'),
     },
     props: {

@@ -27,6 +27,8 @@ export default {
 
 <style lang="scss" scoped>
     .presentation-header-cell {
+        flex: 1 1 auto;
+        width: 0;
         padding: 8px;
         color: $GRAPHITE_DARK;
         font: $FONT_BOLD_12_16;

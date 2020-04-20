@@ -58,7 +58,7 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('productsDraft', {
+        ...mapState('product', {
             productID: state => state.id,
             sku: state => state.sku,
             template: state => state.template,
@@ -91,7 +91,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('productsDraft', [
+        ...mapActions('product', [
             'setProductSku',
             'setProductTemplate',
             'setProductCategories',

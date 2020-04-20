@@ -46,9 +46,16 @@
     }
 
     &__value {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
+        display: flex;
+        width: 100%;
+
+        & > span {
+            flex: 1 1 auto;
+            width: 0;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
     }
 
     &__information-label {

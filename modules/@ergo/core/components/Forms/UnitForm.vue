@@ -35,7 +35,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
 
 export default {
     name: 'UnitForm',
@@ -44,7 +43,6 @@ export default {
         FormSection: () => import('@Core/components/Form/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
-    mixins: [errorValidationMixin],
     computed: {
         ...mapState('units', {
             name: state => state.name,

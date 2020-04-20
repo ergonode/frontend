@@ -3,90 +3,12 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedOptions,
+    getMappedArrayOptions,
     getParsedType,
     getParsedParameterKeys,
-    getParsedOptions,
 } from '../attributeMapper';
 
-describe('attributeMapper/getParsedOptions', () => {
-    describe('Based on form data, data is mapped into API structure', () => {
-        it('Non multilingual attribute', () => {
-            const options = {
-                0: { key: 'key1', value: 'val1' },
-                1: { key: 'key2', value: 'val2' },
-            };
-            const result = [
-                {
-                    code: 'key1',
-                    label: 'val1',
-                },
-                {
-                    code: 'key2',
-                    label: 'val2',
-                },
-            ];
-
-            expect(getParsedOptions(options)).toStrictEqual(result);
-        });
-
-        describe('Multilingual attribute', () => {
-            it('All values has translation', () => {
-                const options = {
-                    0: { key: 'key1', value: { EN: 'val1' } },
-                    1: { key: 'key2', value: { EN: 'val2' } },
-                };
-                const result = [
-                    {
-                        code: 'key1',
-                        label: { EN: 'val1' },
-                    },
-                    {
-                        code: 'key2',
-                        label: { EN: 'val2' },
-                    },
-                ];
-
-                expect(getParsedOptions(options)).toStrictEqual(result);
-            });
-
-            it('Some of them are not', () => {
-                const options = {
-                    0: {
-                        key: 'key1',
-                        value: { EN: 'val1' },
-                    },
-                    1: {
-                        key: 'key2',
-                        value: null,
-                    },
-                    2: {
-                        key: 'key3',
-                        value: { PL: 'val3' },
-                    },
-                };
-                const result = [
-                    {
-                        code: 'key1',
-                        label: { EN: 'val1' },
-                    },
-                    {
-                        code: 'key2',
-                        label: null,
-                    },
-                    {
-                        code: 'key3',
-                        label: { PL: 'val3' },
-                    },
-                ];
-
-                expect(getParsedOptions(options)).toStrictEqual(result);
-            });
-        });
-    });
-});
-
-describe('attributeMapper/getMappedOptions', () => {
+describe('attributeMapper/getMappedArrayOptions', () => {
     describe('Based on API data, data is mapped into data structure', () => {
         it('Non multilingual attribute', () => {
             const apiData = [
@@ -105,7 +27,7 @@ describe('attributeMapper/getMappedOptions', () => {
                 0: { id: 1, key: 'key1', value: 'val1' },
                 1: { id: 2, key: 'key2', value: null },
             };
-            expect(getMappedOptions(apiData)).toStrictEqual(result);
+            expect(getMappedArrayOptions(apiData)).toStrictEqual(result);
         });
 
         it('Multilingual attribute', () => {
@@ -135,7 +57,7 @@ describe('attributeMapper/getMappedOptions', () => {
                     value: null,
                 },
             };
-            expect(getMappedOptions(apiData)).toStrictEqual(result);
+            expect(getMappedArrayOptions(apiData)).toStrictEqual(result);
         });
     });
 });

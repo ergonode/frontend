@@ -19,9 +19,10 @@
 </template>
 
 <script>
+import { arraysAreEqual } from '@Core/models/arrayWrapper';
+import { getMappedObjectOptions, getMappedMatchedArrayOptions } from '@Core/models/mappers/translationsMapper';
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
-import { arraysAreEqual } from '@Core/models/arrayWrapper';
 
 export default {
     name: 'GridMultiSelectEditCell',
@@ -58,28 +59,19 @@ export default {
     },
     data() {
         return {
-            localValue: this.value.map(option => ({
-                id: option,
-                key: option,
-                value: this.options[option],
-                hint: this.options[option]
-                    ? `#${option} ${this.languageCode}`
-                    : '',
-            })),
+            localValue: getMappedMatchedArrayOptions({
+                optionIds: this.value,
+                options: this.options,
+                languageCode: this.languageCode,
+            }),
         };
     },
     computed: {
         mappedOptions() {
-            const optionKeys = Object.keys(this.options);
-
-            return optionKeys.map(key => ({
-                id: key,
-                key,
-                value: this.options[key],
-                hint: this.options[key]
-                    ? `#${key} ${this.languageCode}`
-                    : '',
-            }));
+            return getMappedObjectOptions({
+                options: this.options,
+                languageCode: this.languageCode,
+            });
         },
     },
     beforeDestroy() {

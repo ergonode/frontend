@@ -15,7 +15,7 @@
                         :fill-color="color" />
                 </template>
             </Button>
-            <EditableComment
+            <CommentEdit
                 v-if="showForm"
                 :is-edit="false"
                 @close="closeForm" />
@@ -55,7 +55,7 @@ import Loader from '@Core/components/Loader/Loader';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import CommentsList from '@Comments/components/List/CommentsList';
 import CommentStateChanger from '@Comments/components/Comments/CommentStateChanger';
-import EditableComment from '@Comments/components/Comments/EditableComment';
+import CommentEdit from '@Comments/components/Comments/CommentEdit';
 
 export default {
     name: 'ProductCommentsForm',
@@ -65,7 +65,7 @@ export default {
         IconAdd,
         CommentsList,
         CommentStateChanger,
-        EditableComment,
+        CommentEdit,
         ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
     },
     data() {

@@ -6,34 +6,26 @@
     <TemplateGridDesigner :row-height="templateRowHeight">
         <div
             class="products-template-grid"
-            :style="gridStyle">
+            :style="gridTemplateRows">
             <Component
-                :is="getComponentViaType(element.type)"
-                v-for="(element, index) in layoutElements"
+                :is="formField"
+                v-for="(formField, index) in formFieldComponents"
                 :key="index"
-                :style="getItemPosition(element)"
-                :value="getElementValueByCode(element.code)"
-                :multiselect="isMultiSelect(element.type)"
-                :language-code="languageCode"
-                :disabled="!isUserAllowedToUpdate"
-                v-bind="element" />
+                v-bind="{
+                    ...elements[index],
+                    disabled: !isUserAllowedToUpdate,
+                    languageCode,
+                }"
+                @input="onValueChange" />
         </div>
     </TemplateGridDesigner>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { TYPES } from '@Attributes/defaults/attributes';
-import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
-import { isObject } from '@Core/models/objectWrapper';
+import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
-import ProductTemplateSection from '@Templates/components/Template/Product/ProductTemplateSection';
-import ProductTemplateDate from '@Templates/components/Template/Product/ProductTemplateDate';
-import ProductTemplateImage from '@Templates/components/Template/Product/ProductTemplateImage';
-import ProductTemplateMultiLine from '@Templates/components/Template/Product/ProductTemplateMultiLine';
-import ProductTemplateOptions from '@Templates/components/Template/Product/ProductTemplateOptions';
-import ProductTemplateSingleLine from '@Templates/components/Template/Product/ProductTemplateSingleLine';
-import ProductTemplateNumeric from '@Templates/components/Template/Product/ProductTemplateNumeric';
+
+const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
 
 export default {
     name: 'ProductTemplateForm',
@@ -45,23 +37,25 @@ export default {
             type: String,
             required: true,
         },
+        elements: {
+            type: Array,
+            default: () => [],
+        },
+    },
+    data() {
+        return {
+            formFieldComponents: [],
+        };
     },
     computed: {
-        ...mapState('productsDraft', {
-            layoutElements: state => state.layoutElements,
-            draft: state => state.draft,
-        }),
         templateRowHeight() {
             return 48;
         },
-        columnsNumber() {
-            return 4;
-        },
         maxRows() {
-            const layoutElement = getObjectWithMaxValueInArrayByObjectKey(this.layoutElements, 'row');
+            const heights = this.elements.map(({ position, size }) => position.y + size.height);
 
-            if (layoutElement) {
-                return layoutElement.row + layoutElement.height - 1;
+            if (heights) {
+                return Math.max(...heights);
             }
 
             return 0;
@@ -69,53 +63,26 @@ export default {
         isUserAllowedToUpdate() {
             return this.$hasAccess(['PRODUCT_UPDATE']);
         },
-        gridStyle() {
+        gridTemplateRows() {
             return {
                 gridTemplateRows: `repeat(${this.maxRows}, ${this.templateRowHeight}px)`,
             };
         },
     },
+    created() {
+        this.formFieldComponents = this.elements.map(({ type }) => () => import(`@Products/components/Forms/Fields/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
+    },
     methods: {
-        getItemPosition({
-            row, column, width, height,
-        }) {
-            return { gridArea: `${row} / ${column} / ${row + height} / ${column + width}` };
-        },
-        isMultiSelect(type) {
-            return type === TYPES.MULTI_SELECT;
-        },
-        getComponentViaType(type) {
-            switch (type) {
-            case TYPES.DATE:
-                return ProductTemplateDate;
-            case TYPES.IMAGE:
-                return ProductTemplateImage;
-            case TYPES.TEXT_AREA:
-                return ProductTemplateMultiLine;
-            case TYPES.SELECT:
-            case TYPES.MULTI_SELECT:
-                return ProductTemplateOptions;
-            case TYPES.NUMERIC:
-            case TYPES.UNIT:
-            case TYPES.PRICE:
-                return ProductTemplateNumeric;
-            case TYPES.TEXT:
-                return ProductTemplateSingleLine;
-            case 'SECTION TITLE':
-                return ProductTemplateSection;
-            default:
-                return null;
-            }
-        },
-        getElementValueByCode(code) {
-            if (!this.draft.attributes[code]) return '';
+        onValueChange(payload) {
+            updateProductDraft().then(async (response) => {
+                await response.default({
+                    $axios: this.$axios,
+                    $store: this.$store,
+                    ...payload,
+                });
 
-            const { value } = this.draft.attributes[code];
-
-            if (isObject(value) && !Array.isArray(value)) {
-                return value[this.languageCode] || '';
-            }
-            return value;
+                this.$emit('valueUpdated');
+            });
         },
     },
 };

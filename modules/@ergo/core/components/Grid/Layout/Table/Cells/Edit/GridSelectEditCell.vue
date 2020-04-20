@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { getMappedObjectOption, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
 import GridActivatorEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/GridActivatorEditCell';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 
@@ -59,14 +60,13 @@ export default {
         let localValue = null;
 
         if (this.value) {
-            localValue = {
-                id: this.value,
-                key: this.value,
-                value: this.options[this.value],
-                hint: this.options[this.value]
-                    ? `#${this.value} ${this.languageCode}`
-                    : '',
-            };
+            localValue = getMappedObjectOption({
+                option: {
+                    id: this.value,
+                    ...this.options[this.value],
+                },
+                languageCode: this.languageCode,
+            });
         }
 
         return {
@@ -75,16 +75,10 @@ export default {
     },
     computed: {
         mappedOptions() {
-            const optionKeys = Object.keys(this.options);
-
-            return optionKeys.map(key => ({
-                id: key,
-                key,
-                value: this.options[key],
-                hint: this.options[key]
-                    ? `#${key} ${this.languageCode}`
-                    : '',
-            }));
+            return getMappedObjectOptions({
+                options: this.options,
+                languageCode: this.languageCode,
+            });
         },
     },
     methods: {

@@ -30,7 +30,7 @@
                             @resizingElMaxRow="onResizingElMaxRow">
                             <template #content>
                                 <AttributeElementContent
-                                    v-if="element.type !== 'SECTION TITLE'"
+                                    v-if="element.type !== 'SECTION'"
                                     :element="element"
                                     :disabled="!isUserAllowedToUpdate"
                                     :index="index" />

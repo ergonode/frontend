@@ -14,10 +14,14 @@
                 :data="data"
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"
+                :collection-cell-binding="{
+                    imageColumn: 'image_attribute:en',
+                    descriptionColumn: 'sku'
+                }"
+                :is-collection-layout="true"
                 :is-advanced-filters="true"
                 :is-header-visible="true"
                 :is-basic-filter="true"
-                :is-action-column="true"
                 @editRow="onEditRow"
                 @editCell="onEditCell"
                 @editCells="onEditCells"
@@ -104,7 +108,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('productsDraft', [
+        ...mapActions('product', [
             'applyDraft',
         ]),
         ...mapActions('grid', [
@@ -112,12 +116,14 @@ export default {
         ]),
         onEditCell({ rowId, columnId, value }) {
             const { element_id } = this.columns.find(column => column.id === columnId);
+            const [, languageCode] = columnId.split(':');
 
             updateProductDraft().then(response => response.default({
                 $axios: this.$axios,
                 $store: this.$store,
+                fieldKey: `${rowId}/${columnId}`,
+                languageCode,
                 productId: rowId,
-                columnId,
                 elementId: element_id,
                 value,
             }));
@@ -125,12 +131,14 @@ export default {
         onEditCells(editedCells) {
             const requests = editedCells.map(({ rowId, columnId, value }) => {
                 const { element_id } = this.columns.find(column => column.id === columnId);
+                const [, languageCode] = columnId.split(':');
 
                 return updateProductDraft().then(response => response.default({
                     $axios: this.$axios,
                     $store: this.$store,
+                    fieldKey: `${rowId}/${columnId}`,
+                    languageCode,
                     productId: rowId,
-                    columnId,
                     elementId: element_id,
                     value,
                 }));

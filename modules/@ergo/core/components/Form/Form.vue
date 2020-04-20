@@ -14,7 +14,7 @@
         </slot>
         <template v-if="hasAnyError">
             <section class="form__errors">
-                <IconError />
+                <IconError :fill-color="redColor" />
                 <div class="errors-list">
                     <h3 class="errors-list__header">
                         Please review errors bellow
@@ -40,6 +40,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { RED } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'Form',
@@ -53,8 +54,6 @@ export default {
             type: String,
             default: '',
         },
-        // TODO:
-        // When we create dynamic form generator it will be replaced by *scheme*
         fieldsKeys: {
             type: Array,
             default: () => [],
@@ -82,8 +81,11 @@ export default {
         hasAnyError() {
             return Object.values(this.errorMessages).length > 0 || this.formGlobalError;
         },
+        redColor() {
+            return RED;
+        },
     },
-    destroyed() {
+    beforeDestroy() {
         this.removeValidationErrors();
     },
     methods: {

@@ -3,41 +3,24 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseIcon
-        :width="size"
-        :height="size"
-        :icon-color="fillColor">
+    <Icon v-bind="$attrs">
         <polygon :points="iconPoints" />
-    </BaseIcon>
+    </Icon>
 </template>
 
 <script>
 import { ACTION } from '@Core/defaults/icons';
-import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import BaseIcon from '@Core/components/Icons/BaseIcon';
+import Icon from '@Core/components/Icons/Icon';
 
 export default {
     name: 'IconPlusMinus',
     components: {
-        BaseIcon,
+        Icon,
     },
-    props: {
-        fillColor: {
-            type: String,
-            default: GRAPHITE,
-        },
-        size: {
-            type: [String, Number],
-            default: '24',
-        },
-        state: {
-            type: String,
-            default: ACTION.PLUS,
-        },
-    },
+    inheritAttrs: false,
     computed: {
         iconPoints() {
-            if (this.state === ACTION.MINUS) return '5 11 19 11 19 13 5 13 5 11';
+            if (this.$attrs.state === ACTION.MINUS) return '5 11 19 11 19 13 5 13 5 11';
             return '11 5 11 11 5 11 5 13 11 13 11 19 13 19 13 13 19 13 19 11 13 11 13 5';
         },
     },

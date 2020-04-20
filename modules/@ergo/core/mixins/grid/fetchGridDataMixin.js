@@ -9,6 +9,7 @@ import { DATA_LIMIT } from '@Core/defaults/grid';
 import { getParsedFilters, getParsedAdvancedFilters } from '@Core/models/mappers/gridDataMapper';
 import { swapItemPosition, insertValueAtIndex } from '@Core/models/arrayWrapper';
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
+import { getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
 
 export default function ({ path }) {
     return {
@@ -42,11 +43,11 @@ export default function ({ path }) {
             });
 
             const requests = [
-                getGridData(
-                    app.$axios,
-                    `${store.state.authentication.user.language}/${dynamicPath}`,
-                    gridParams,
-                ),
+                getGridData({
+                    $axios: app.$axios,
+                    path: `${store.state.authentication.user.language}/${dynamicPath}`,
+                    params: gridParams,
+                }),
             ];
 
             const advFiltersIds = app.$cookies.get(ADV_FILTERS_IDS);
@@ -58,11 +59,11 @@ export default function ({ path }) {
                     columns: advFiltersIds,
                 };
 
-                requests.push(getAdvancedFiltersData(
-                    app.$axios,
-                    `${store.state.authentication.user.language}/${dynamicPath}`,
-                    filtersParams,
-                ));
+                requests.push(getAdvancedFiltersData({
+                    $axios: app.$axios,
+                    path: `${store.state.authentication.user.language}/${dynamicPath}`,
+                    params: filtersParams,
+                }));
             }
 
             const [gridData, advancedFilters = []] = await Promise.all(requests);
@@ -168,11 +169,11 @@ export default function ({ path }) {
                     }
                 });
 
-                return getGridData(
-                    this.$axios,
-                    `${this.languageCode}/${dynamicPath}`,
+                return getGridData({
+                    $axios: this.$axios,
+                    path: `${this.languageCode}/${dynamicPath}`,
                     params,
-                ).then(({
+                }).then(({
                     columns,
                     data,
                     count,
@@ -186,12 +187,8 @@ export default function ({ path }) {
                     this.$emit('fetched');
                 });
             },
-            onRemoveRow(index) {
-                const tmpData = { ...this.data };
-                Object.keys(this.data).forEach(columnId => tmpData[columnId].splice(index, 1));
-                this.data = tmpData;
-                this.count -= 1;
-                this.filtered -= 1;
+            onRemoveRow() {
+                this.getGridData(this.localParams);
             },
             onDropColumn(columnId) {
                 this.getGridData(this.localParams).then(() => {
@@ -284,11 +281,9 @@ export default function ({ path }) {
                     .then(({ columns }) => {
                         const [attribute] = columns;
                         const options = attribute.filter && attribute.filter.options
-                            ? Object.keys(attribute.filter.options)
-                                .map(key => ({
-                                    key,
-                                    value: attribute.filter.options[key],
-                                }))
+                            ? getMappedObjectOptions({
+                                options: attribute.filter.options, languageCode,
+                            })
                             : [];
                         const filter = {
                             id: attributeCode,

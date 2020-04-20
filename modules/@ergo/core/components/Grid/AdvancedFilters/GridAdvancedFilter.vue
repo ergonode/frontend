@@ -169,7 +169,22 @@ export default {
 
             Object.keys(this.filter.value).forEach((key) => {
                 if (this.filter.value[key]) {
-                    value.push(this.filter.value[key]);
+                    if (this.filter.options) {
+                        const optionIds = this.filter.value[key].split(', ');
+                        const values = [];
+
+                        optionIds.forEach((id) => {
+                            const option = this.filter.options.find(opt => opt.id === id);
+
+                            if (option) {
+                                values.push(option.value || `#${option.key}`);
+                            }
+                        });
+
+                        value.push(values.join(', '));
+                    } else {
+                        value.push(this.filter.value[key]);
+                    }
                 }
             });
 

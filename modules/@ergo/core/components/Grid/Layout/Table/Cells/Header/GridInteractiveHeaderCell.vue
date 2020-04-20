@@ -10,8 +10,7 @@
         ]">
         <GridHeaderCell
             :title="title"
-            :hint="hint"
-            :suffix="suffix" />
+            :hint="hint" />
         <div
             :class="[
                 'header-cell__actions',
@@ -22,7 +21,7 @@
                 }
             ]">
             <IconArrowSort
-                :sorting-order="sortingOrder"
+                :order="sortingOrder"
                 :fill-color="graphiteLightColor"
                 @click.native="onClickSort" />
             <ActionIconButton
@@ -103,21 +102,21 @@ export default {
             return this.sortedColumn.orderState;
         },
         title() {
-            const [code] = this.column.id.split(':');
+            const [code, languageCode] = this.column.id.split(':');
+            const title = this.column.label || `#${code}`;
+            const languageTitle = languageCode ? languageCode.toUpperCase() : '';
+            let suffix = '';
 
-            return this.column.label || `#${code}`;
+            if (this.column.parameters) {
+                suffix = Object.keys(this.column.parameters).map(key => this.column.parameters[key]).join(', ');
+            }
+
+            return `${title} ${languageTitle} ${suffix}`;
         },
         hint() {
             const [code, languageCode] = this.column.id.split(':');
 
             return this.column.label ? `${code} ${languageCode}` : null;
-        },
-        suffix() {
-            if (this.column.parameters) {
-                return Object.keys(this.column.parameters).map(key => this.column.parameters[key]).join(', ');
-            }
-
-            return null;
         },
     },
     mounted() {
@@ -167,7 +166,7 @@ export default {
             }
         },
         getColumnAtIndex(index) {
-            const gridColumns = document.querySelector('.grid-table-layout');
+            const gridColumns = document.querySelector('.columns-section');
             const { children } = gridColumns;
 
             return children[index];
@@ -181,7 +180,7 @@ export default {
             this.removeColumnHover();
         },
         isHeaderFocused() {
-            const gridColumns = document.querySelector('.grid-table-layout');
+            const gridColumns = document.querySelector('.columns-section');
             const headerEls = gridColumns.querySelectorAll('.header-cell__actions--focused');
 
             return headerEls.length;
@@ -191,14 +190,14 @@ export default {
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
-            columnElement.classList.add('column--hovered');
+            columnElement.classList.add('draggable-column--hovered');
         },
         removeColumnHover() {
             this.isColumnHovered = false;
 
             const columnElement = this.getColumnAtIndex(this.columnIndex);
 
-            columnElement.classList.remove('column--hovered');
+            columnElement.classList.remove('draggable-column--hovered');
         },
     },
 };

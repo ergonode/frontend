@@ -3,28 +3,18 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseIcon
-        width="48"
-        height="32"
-        :icon-color="fillColor">
+    <Icon v-bind="$attrs">
         <path :d="drawingCommands" />
-    </BaseIcon>
+    </Icon>
 </template>
 
 <script>
-import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import BaseIcon from '@Core/components/Icons/BaseIcon';
+import Icon from '@Core/components/Icons/Icon';
 
 export default {
     name: 'IconRefresh',
     components: {
-        BaseIcon,
-    },
-    props: {
-        fillColor: {
-            type: String,
-            default: GRAPHITE,
-        },
+        Icon,
     },
     computed: {
         drawingCommands() {

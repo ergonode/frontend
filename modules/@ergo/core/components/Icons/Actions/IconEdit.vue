@@ -3,40 +3,29 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseIcon
-        :width="size"
-        :height="size"
-        :icon-color="fillColor">
+    <Icon v-bind="$attrs">
         <path
             :d="drawingCommands"
             :transform="transform" />
-    </BaseIcon>
+    </Icon>
 </template>
 
 <script>
-import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import BaseIcon from '@Core/components/Icons/BaseIcon';
+import Icon from '@Core/components/Icons/Icon';
 
 export default {
     name: 'IconEdit',
     components: {
-        BaseIcon,
+        Icon,
     },
-    props: {
-        fillColor: {
-            type: String,
-            default: GRAPHITE,
+    inheritAttrs: false,
+    computed: {
+        drawingCommands() {
+            return 'M14,6 L10,6 L10,4 C10,3.44771525 10.4477153,3 11,3 L13,3 C13.5522847,3 14,3.44771525 14,4 L14,6 Z M14,8 L14,18.5 L12,21 L10,18.5 L10,8 L14,8 Z';
         },
-        size: {
-            type: [String, Number],
-            default: '24',
+        transform() {
+            return 'translate(12, 12) rotate(-315) translate(-12, -12)';
         },
-    },
-    data() {
-        return {
-            drawingCommands: 'M14,6 L10,6 L10,4 C10,3.44771525 10.4477153,3 11,3 L13,3 C13.5522847,3 14,3.44771525 14,4 L14,6 Z M14,8 L14,18.5 L12,21 L10,18.5 L10,8 L14,8 Z',
-            transform: 'translate(12, 12) rotate(-315) translate(-12, -12)',
-        };
     },
 };
 </script>

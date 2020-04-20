@@ -3,28 +3,33 @@
  * See LICENSE for license details.
  */
 <template>
-    <Component
-        :is="getComponentViaType"
-        :solid="true"
-        :required="true"
-        :clearable="true"
-        :small="true"
-        :label="parameter.name"
-        :options="conditionOptions"
-        :value="conditionValue"
-        :multiselect="isConditionTypeMultiSelect"
-        :error-messages="errorParamsMessage"
-        @input="setConditionValueByType" />
+    <FormValidatorField :field-key="paramFieldKeys">
+        <template #validator="{ errorMessages }">
+            <Component
+                :is="getComponentViaType"
+                :solid="true"
+                :required="true"
+                :clearable="true"
+                :small="true"
+                :label="parameter.name"
+                :options="conditionOptions"
+                :value="conditionValue"
+                :multiselect="isConditionTypeMultiSelect"
+                :error-messages="errorMessages"
+                @input="setConditionValueByType" />
+        </template>
+    </FormValidatorField>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
 import { TYPES } from '@Conditions/defaults/conditionsDesigner';
-import { isEmpty } from '@Core/models/objectWrapper';
-import errorValidationMixin from '@Core/mixins/validations/errorValidationMixin';
+import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 
 export default {
     name: 'ConditionSetParameters',
-    mixins: [errorValidationMixin],
+    components: {
+        FormValidatorField,
+    },
     props: {
         parameter: {
             type: Object,
@@ -90,11 +95,8 @@ export default {
                 }))
                 : [];
         },
-        errorParamsMessage() {
-            const { name } = this.parameter;
-            const parametersIndex = `conditions_element-${this.itemRow}`;
-
-            return this.conditionParametersAreValidate(parametersIndex, name) || null;
+        paramFieldKeys() {
+            return [`conditions_element-${this.itemRow}`, this.parameter.name];
         },
     },
     watch: {
@@ -124,12 +126,6 @@ export default {
                 parameterName: name,
                 parameterValue: value,
             });
-        },
-        conditionParametersAreValidate(index, key) {
-            return !isEmpty(this.validationErrors)
-            && this.validationErrors[index]
-            && this.validationErrors[index][key]
-                ? this.validationErrors[index][key] : null;
         },
     },
 };

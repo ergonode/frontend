@@ -5,18 +5,18 @@
 export default function ({
     $axios,
     $store,
+    fieldKey,
+    languageCode,
     productId,
-    columnId,
     elementId,
     value,
 }) {
-    const [, languageCode] = columnId.split(':');
     const path = `${languageCode}/products/${productId}/draft/${elementId}/value`;
 
     return $axios.$put(path, { value }).then(() => {
         $store.dispatch(
             'validations/removeValidationError',
-            `${productId}/${columnId}`,
+            fieldKey,
             { root: true },
         );
     }).catch((e) => {
@@ -28,7 +28,7 @@ export default function ({
                 {
                     code: statusCode,
                     errors,
-                    fieldKey: `${productId}/${columnId}`,
+                    fieldKey,
                 },
                 { root: true },
             );
@@ -39,7 +39,7 @@ export default function ({
                 {
                     code: statusCode,
                     errors: internalServerError,
-                    fieldKey: `${productId}/${columnId}`,
+                    fieldKey,
                 },
                 { root: true },
             );

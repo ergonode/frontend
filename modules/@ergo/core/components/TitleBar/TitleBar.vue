@@ -22,9 +22,7 @@
                     :color="whiteColor"
                     title="READ ONLY">
                     <template #icon="{ color }">
-                        <IconLock
-                            size="24"
-                            :fill-color="color" />
+                        <IconLock :fill-color="color" />
                     </template>
                 </InformationIconBadge>
             </template>
