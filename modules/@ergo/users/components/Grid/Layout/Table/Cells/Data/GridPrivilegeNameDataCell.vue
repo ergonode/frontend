@@ -26,7 +26,7 @@ import GridHintPresentationCell from '@Core/components/Grid/Layout/Table/Cells/P
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 
 export default {
-    name: 'GridTextHintDataCell',
+    name: 'GridPrivilegeNameDataCell',
     components: {
         GridHintPresentationCell,
     },

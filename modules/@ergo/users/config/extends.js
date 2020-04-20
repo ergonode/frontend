@@ -18,6 +18,18 @@ export default {
         GRID: {
             layout: {
                 table: {
+                    cells: {
+                        data: [
+                            {
+                                type: 'PRIVILEGE_NAME',
+                                component: Components.GridPrivilegeNameDataCell,
+                            },
+                            {
+                                type: 'PRIVILEGE_CHECK',
+                                component: Components.GridPrivilegeCheckDataCell,
+                            },
+                        ],
+                    },
                     columns: [
                         {
                             type: 'PRIVILEGE',

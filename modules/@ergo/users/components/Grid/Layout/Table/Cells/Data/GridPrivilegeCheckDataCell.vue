@@ -28,7 +28,7 @@ import GridCheckEditCell from '@Core/components/Grid/Layout/Table/Cells/Edit/Gri
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 
 export default {
-    name: 'GridCheckDataCell',
+    name: 'GridPrivilegeCheckDataCell',
     components: {
         GridCheckEditCell,
     },

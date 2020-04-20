@@ -30,4 +30,6 @@ export const Components = {
     GridPrivilegeSelectRowColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeSelectRowColumn'),
     GridPrivilegeColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeColumn'),
     GridPrivilegeNameColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeNameColumn'),
+    GridPrivilegeNameDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridPrivilegeNameDataCell'),
+    GridPrivilegeCheckDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridPrivilegeCheckDataCell'),
 };
