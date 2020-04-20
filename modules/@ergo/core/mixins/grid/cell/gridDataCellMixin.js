@@ -14,16 +14,16 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        column: {
+            type: Object,
+            required: true,
+        },
         rowIndex: {
             type: Number,
             required: true,
         },
         columnIndex: {
             type: Number,
-            required: true,
-        },
-        columnId: {
-            type: String,
             required: true,
         },
         rowId: {
@@ -55,23 +55,23 @@ export default {
             validationErrors: state => state.validationErrors,
         }),
         errorMessages() {
-            return this.validationErrors[`${this.rowId}/${this.columnId}`];
+            return this.validationErrors[`${this.rowId}/${this.column.id}`];
         },
     },
     methods: {
         onCopyValues(payload) {
-            this.$emit('copy', {
+            this.$emit('copyCells', {
                 ...payload,
                 value: this.cellData.value,
                 rowId: this.rowId,
-                columnId: this.columnId,
+                columnId: this.column.id,
             });
         },
         onValueChange(value) {
-            this.$emit('input', {
-                rowId: this.rowId,
-                columnId: this.columnId,
+            this.$emit('editCell', {
                 value,
+                rowId: this.rowId,
+                columnId: this.column.id,
             });
         },
     },

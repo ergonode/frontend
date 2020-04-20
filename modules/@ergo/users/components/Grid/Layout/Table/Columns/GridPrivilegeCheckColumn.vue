@@ -5,50 +5,22 @@
 <template>
     <GridColumn
         v-bind="$attrs"
-        v-on="$listeners">
+        @editCell="onValueChange">
         <template #header="{ title }">
             <GridHeaderCell :title="title" />
-        </template>
-        <template
-            #cell="{
-                data,
-                dataIndex,
-                columnIndex,
-                rowIndex,
-                rowId,
-                columnId,
-                languageCode,
-                isLocked,
-                isCopyable,
-            }">
-            <GridCheckDataCell
-                :key="`${rowId}|${columnId}`"
-                :data="data"
-                :data-index="dataIndex"
-                :row-id="rowId"
-                :column-id="columnId"
-                :column-index="columnIndex"
-                :row-index="rowIndex"
-                :language-code="languageCode"
-                :edit-key-code="32"
-                :is-locked="isLocked"
-                :is-copyable="isCopyable"
-                @input="onValueChange" />
         </template>
     </GridColumn>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import GridCheckDataCell from '@Users/components/Grid/Layout/Table/Cells/Data/GridCheckDataCell';
 import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 import GridHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridHeaderCell';
 
 export default {
-    name: 'GridPrivilegeColumn',
+    name: 'GridPrivilegeCheckColumn',
     components: {
         GridColumn,
-        GridCheckDataCell,
         GridHeaderCell,
     },
     inheritAttrs: false,

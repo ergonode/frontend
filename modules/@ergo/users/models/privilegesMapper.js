@@ -9,7 +9,7 @@ import { STATE } from '@Core/defaults/inputs/checkbox';
 const getCheckColumn = (privilegeType, isEditable) => ({
     id: privilegeType,
     label: toCapitalize(privilegeType),
-    type: 'PRIVILEGE',
+    type: 'PRIVILEGE_CHECK',
     editable: isEditable,
     visible: true,
 });
@@ -54,9 +54,12 @@ export function getMappedGridData({
             value: name,
             hint: description,
         });
-        data.id.push(name);
 
         const privilegeTypes = Object.keys(privileges);
+        const mappedId = privileges[privilegeTypes[0]].split('_');
+        mappedId.pop();
+
+        data.id.push(mappedId.join('_'));
 
         for (let j = 0; j < privilegeTypes.length; j += 1) {
             const type = privilegeTypes[j];
@@ -101,15 +104,11 @@ export function getMappedPrivilegesBasedOnGridData({
 
         for (let j = 0; j < privilegeTypes.length; j += 1) {
             const type = privilegeTypes[j];
-            const capitalizedPrivilegeName = privilegeName
-                .split(' ')
-                .map(name => name.toUpperCase())
-                .join('_');
-            const mappedPrivilege = `${capitalizedPrivilegeName}_${type.toUpperCase()}`;
+            const mappedPrivilege = `${privilegeName}_${type.toUpperCase()}`;
 
             if (!rolePrivileges[mappedPrivilege] && drafts[privilegeName][type]) {
                 mappedPrivileges.push(mappedPrivilege);
-            } else {
+            } else if (!drafts[privilegeName][type]) {
                 mappedPrivileges = mappedPrivileges.filter(priv => priv !== mappedPrivilege);
             }
         }
