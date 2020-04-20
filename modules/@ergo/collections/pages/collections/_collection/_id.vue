@@ -36,6 +36,9 @@ export default {
             code: state => state.code,
             type: state => state.type,
         }),
+        ...mapState('grid', {
+            drafts: state => state.drafts,
+        }),
         ...mapState('translations', {
             translations: state => state.translations,
         }),
