@@ -46,7 +46,11 @@ export default {
     },
     methods: {
         onEditValue() {
-            this.$emit('input', !this.cellData.value);
+            this.$emit('input', {
+                rowId: this.rowId,
+                columnId: this.columnId,
+                value: !this.cellData.value,
+            });
         },
     },
 };

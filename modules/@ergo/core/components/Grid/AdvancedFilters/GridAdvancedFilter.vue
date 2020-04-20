@@ -177,7 +177,7 @@ export default {
                             const option = this.filter.options.find(opt => opt.id === id);
 
                             if (option) {
-                                values.push(option.value || `#${option.code}`);
+                                values.push(option.value || `#${option.key}`);
                             }
                         });
 

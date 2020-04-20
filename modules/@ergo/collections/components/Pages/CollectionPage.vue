@@ -12,7 +12,7 @@
                 <Button
                     :theme="secondaryTheme"
                     :size="smallSize"
-                    title="REMOVE PRODUCT COLLECTION"
+                    title="REMOVE COLLECTION"
                     :disabled="!$hasAccess(['PRODUCT_COLLECTION_DELETE'])"
                     @click.native="onRemove">
                     <template #prepend="{ color }">
@@ -43,7 +43,7 @@
             @added="onCreatedData" />
         <Footer flex-end>
             <Button
-                title="SAVE PRODUCT COLLECTION"
+                title="SAVE COLLECTION"
                 :size="smallSize"
                 :disabled="$isLoading('footerButton')"
                 @click.native="onSave" />

@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="pinnedColumnClass">
+    <div class="action-column">
         <GridTableCell
             editing-allowed
             :edit-key-code="32"
@@ -52,10 +52,6 @@ export default {
             type: Number,
             default: 0,
         },
-        isPinned: {
-            type: Boolean,
-            default: false,
-        },
         isBasicFilter: {
             type: Boolean,
             default: false,
@@ -68,14 +64,6 @@ export default {
         };
     },
     computed: {
-        pinnedColumnClass() {
-            return [
-                'pinned-column',
-                {
-                    'pinned-column--left': this.isPinned,
-                },
-            ];
-        },
         rowsSelectionState() {
             const rowsAreSelected = Boolean(Object.keys(this.selectedRows).length);
 
@@ -131,25 +119,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .pinned-column {
-        position: sticky;
-        left: 0;
-        z-index: $Z_INDEX_LVL_3;
-        display: grid;
-        box-sizing: border-box;
-        background-color: $WHITE;
-
-        &--left {
-            box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.2);
-        }
-
-        & > .grid-table-cell:nth-child(1) {
-            position: sticky;
-            top: 0;
-            z-index: $Z_INDEX_LVL_2;
-            background-color: $WHITESMOKE;
-        }
-    }
-</style>

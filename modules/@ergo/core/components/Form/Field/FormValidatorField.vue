@@ -9,7 +9,7 @@ export default {
     name: 'FormValidatorField',
     props: {
         fieldKey: {
-            type: [String, Number],
+            type: [Array, String, Number],
             required: true,
         },
     },
@@ -18,6 +18,20 @@ export default {
             validationErrors: state => state.validationErrors,
         }),
         errorMessages() {
+            if (Array.isArray(this.fieldKey)) {
+                let validationError = null;
+
+                this.fieldKey.forEach((key) => {
+                    if (!validationError && this.validationErrors[key]) {
+                        validationError = this.validationErrors[key];
+                    } else if (validationError && validationError[key]) {
+                        validationError = validationError[key];
+                    }
+                });
+
+                return validationError;
+            }
+
             return this.validationErrors[this.fieldKey];
         },
     },

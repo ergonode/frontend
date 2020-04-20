@@ -6,12 +6,13 @@
     <label
         class="info-hint"
         :title="hint">
-        <IconError />
+        <IconError :fill-color="redColor" />
     </label>
 </template>
 
 <script>
 import IconError from '@Core/components/Icons/Feedback/IconError';
+import { RED } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'ErrorHint',
@@ -22,6 +23,11 @@ export default {
         hint: {
             type: String,
             required: true,
+        },
+    },
+    computed: {
+        redColor() {
+            return RED;
         },
     },
 };

@@ -26,7 +26,7 @@ export function getMappedObjectOption({ option, languageCode }) {
     return {
         id: option.id,
         key: option.code,
-        value: option.label,
+        value: option.label || '',
         hint: option.label
             ? `#${option.code} ${languageCode}`
             : '',
@@ -40,7 +40,8 @@ export function getMappedArrayOptions({ options, languageCode }) {
 export function getMappedMatchedArrayOptions({ optionIds, options, languageCode }) {
     return optionIds.map(id => getMappedObjectOption({
         option: {
-            id, ...options[id],
+            id,
+            ...options[id],
         },
         languageCode,
     }));

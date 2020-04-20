@@ -3,37 +3,24 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseIcon
-        :width="size"
-        :height="size"
-        :icon-color="fillColor">
+    <Icon v-bind="$attrs">
         <path :d="drawingCommands" />
-    </BaseIcon>
+    </Icon>
 </template>
 
 <script>
-import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import BaseIcon from '@Core/components/Icons/BaseIcon';
+import Icon from '@Core/components/Icons/Icon';
 
 export default {
     name: 'IconFilters',
     components: {
-        BaseIcon,
+        Icon,
     },
-    props: {
-        fillColor: {
-            type: String,
-            default: GRAPHITE,
+    inheritAttrs: false,
+    computed: {
+        drawingCommands() {
+            return 'M9,20 L15,20 L15,17 L9,17 L9,20 Z M2,5 L2,8 L22,8 L22,5 L2,5 Z M5,14 L19,14 L19,11 L5,11 L5,14 Z';
         },
-        size: {
-            type: [String, Number],
-            default: 24,
-        },
-    },
-    data() {
-        return {
-            drawingCommands: 'M9,20 L15,20 L15,17 L9,17 L9,20 Z M2,5 L2,8 L22,8 L22,5 L2,5 Z M5,14 L19,14 L19,11 L5,11 L5,14 Z',
-        };
     },
 };
 </script>

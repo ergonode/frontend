@@ -20,7 +20,7 @@
                         <ListElementTitle
                             :small="true"
                             :hint="option.hint"
-                            :title="option.value || `#${option.code}`" />
+                            :title="option.value || `#${option.key}`" />
                     </ListElementDescription>
                 </template>
             </ListElement>

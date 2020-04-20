@@ -22,7 +22,6 @@
                 :is-advanced-filters="true"
                 :is-header-visible="true"
                 :is-basic-filter="true"
-                :is-action-column="true"
                 @editRow="onEditRow"
                 @editCell="onEditCell"
                 @editCells="onEditCells"

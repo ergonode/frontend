@@ -4,7 +4,9 @@
  */
 <template>
     <div :class="['alert', typeClass]">
-        <Component :is="feedbackIconComponent" />
+        <Component
+            :is="feedbackIconComponent"
+            :fill-color="feedbackIconFillColor" />
         <span
             class="alert__title"
             v-text="alert.message" />
@@ -25,6 +27,12 @@ import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { toCapitalize } from '@Core/models/stringWrapper';
 import Fab from '@Core/components/Buttons/Fab';
 import IconClose from '@Core/components/Icons/Window/IconClose';
+import {
+    RED,
+    YELLOW,
+    GREEN,
+    BLUE,
+} from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'Alert',
@@ -51,6 +59,17 @@ export default {
         },
         feedbackIconComponent() {
             return () => import(`@Core/components/Icons/Feedback/Icon${this.capitalizedAlertType}`);
+        },
+        feedbackIconFillColor() {
+            switch (this.alert.type) {
+            case ALERT_TYPE.SUCCESS:
+                return GREEN;
+            case ALERT_TYPE.ERROR:
+                return RED;
+            case ALERT_TYPE.WARNING:
+                return YELLOW;
+            default: return BLUE;
+            }
         },
     },
     methods: {

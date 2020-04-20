@@ -6,18 +6,20 @@
     <svg
         class="icon"
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
+        :viewBox="viewBox"
         :width="width"
         :height="height"
         :aria-label="iconName"
         role="presentation">
-        <g :fill="iconColor">
+        <g :fill="fillColor">
             <slot />
         </g>
     </svg>
 </template>
 
 <script>
+import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+
 export default {
     props: {
         iconName: {
@@ -26,15 +28,19 @@ export default {
         },
         width: {
             type: [Number, String],
-            default: 16,
+            default: 24,
         },
         height: {
             type: [Number, String],
-            default: 16,
+            default: 24,
         },
-        iconColor: {
+        viewBox: {
             type: String,
-            default: 'currentColor',
+            default: '0 0 24 24',
+        },
+        fillColor: {
+            type: String,
+            default: GRAPHITE,
         },
     },
 };

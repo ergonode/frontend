@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
@@ -98,7 +98,13 @@ export default {
     created() {
         this.language = this.languages[this.userLanguageCode];
     },
+    beforeDestroy() {
+        this.setDisabledElements({});
+    },
     methods: {
+        ...mapActions('list', [
+            'setDisabledElements',
+        ]),
         onCreatedAttribute() {
             this.onCloseModal();
             this.getGroupsAndExpandedGroupItems({

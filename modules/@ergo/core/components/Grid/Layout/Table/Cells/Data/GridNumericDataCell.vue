@@ -45,7 +45,7 @@ export default {
             drafts: state => state.drafts,
         }),
         cellData() {
-            const check = (data, draftValue) => data !== draftValue;
+            const check = (data, draftValue) => +data !== +draftValue;
             const getMappedValue = cellDataCompose(check);
 
             return getMappedValue(this.data.value, this.drafts[this.rowId], this.columnId);

@@ -3,37 +3,24 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseIcon
-        :width="size"
-        :height="size"
-        :icon-color="fillColor">
+    <Icon v-bind="$attrs">
         <path :d="drawingCommands" />
-    </BaseIcon>
+    </Icon>
 </template>
 
 <script>
-import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import BaseIcon from '@Core/components/Icons/BaseIcon';
+import Icon from '@Core/components/Icons/Icon';
 
 export default {
     name: 'IconHTML',
     components: {
-        BaseIcon,
+        Icon,
     },
-    props: {
-        fillColor: {
-            type: String,
-            default: GRAPHITE,
+    inheritAttrs: false,
+    computed: {
+        drawingCommands() {
+            return 'M6.86485459,17 L2,12 L6.86485459,7 L8,8.16664063 L4.27029081,12 L8,15.8333203 L6.86485459,17 Z M17.1351454,7 L22,12 L17.1351454,17 L16,15.8333594 L19.7297092,12 L16,8.16667969 L17.1351454,7 Z M13.1041839,5 L14.6570982,5 L10.9058095,19 L9.35289525,19 L13.1041839,5 Z';
         },
-        size: {
-            type: [String, Number],
-            default: '24',
-        },
-    },
-    data() {
-        return {
-            drawingCommands: 'M6.86485459,17 L2,12 L6.86485459,7 L8,8.16664063 L4.27029081,12 L8,15.8333203 L6.86485459,17 Z M17.1351454,7 L22,12 L17.1351454,17 L16,15.8333594 L19.7297092,12 L16,8.16667969 L17.1351454,7 Z M13.1041839,5 L14.6570982,5 L10.9058095,19 L9.35289525,19 L13.1041839,5 Z',
-        };
     },
 };
 </script>

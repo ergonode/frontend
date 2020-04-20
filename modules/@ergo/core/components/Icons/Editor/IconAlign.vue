@@ -3,44 +3,25 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseIcon
-        :width="size"
-        :height="size"
-        :icon-color="fillColor">
+    <Icon v-bind="$attrs">
         <path :d="drawingCommands" />
-    </BaseIcon>
+    </Icon>
 </template>
 
 <script>
 import { ALIGN } from '@Core/defaults/icons';
-import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import BaseIcon from '@Core/components/Icons/BaseIcon';
+import Icon from '@Core/components/Icons/Icon';
 
 export default {
     name: 'IconAlignLeft',
     components: {
-        BaseIcon,
+        Icon,
     },
-    props: {
-        state: {
-            type: String,
-            default: ALIGN.LEFT,
-        },
-        fillColor: {
-            type: String,
-            default: GRAPHITE,
-        },
-        size: {
-            type: [String, Number],
-            default: '24',
-        },
-    },
-    data() {
-        return {
-            drawingCommands: 'M3,17 L21,17 L21,19 L3,19 L3,17 Z M3,14 L15,14 L15,16 L3,16 L3,14 Z M3,8 L15,8 L15,10 L3,10 L3,8 Z M3,11 L21,11 L21,13 L3,13 L3,11 Z M3,5 L21,5 L21,7 L3,7 L3,5 Z',
-        };
-    },
+    inheritAttrs: false,
     computed: {
+        drawingCommands() {
+            return 'M3,17 L21,17 L21,19 L3,19 L3,17 Z M3,14 L15,14 L15,16 L3,16 L3,14 Z M3,8 L15,8 L15,10 L3,10 L3,8 Z M3,11 L21,11 L21,13 L3,13 L3,11 Z M3,5 L21,5 L21,7 L3,7 L3,5 Z';
+        },
         iconTransform() {
             if (this.state === ALIGN.RIGHT) return 'translate(12, 12) scale(-1, 1) translate(-12, -12)';
 

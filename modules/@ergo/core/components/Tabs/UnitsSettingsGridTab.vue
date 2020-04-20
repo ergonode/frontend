@@ -13,7 +13,6 @@
                 :is-header-visible="true"
                 :is-centered-view="true"
                 :is-basic-filter="true"
-                :is-action-column="true"
                 @editRow="onEditRow"
                 @removeRow="onRemoveRow"
                 @fetchData="getGridData">

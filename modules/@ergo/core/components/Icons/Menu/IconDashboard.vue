@@ -3,37 +3,24 @@
  * See LICENSE for license details.
  */
 <template>
-    <BaseIcon
-        :width="size"
-        :height="size"
-        :icon-color="fillColor">
+    <Icon v-bind="$attrs">
         <polygon :points="points" />
-    </BaseIcon>
+    </Icon>
 </template>
 
 <script>
-import { GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
-import BaseIcon from '@Core/components/Icons/BaseIcon';
+import Icon from '@Core/components/Icons/Icon';
 
 export default {
     name: 'IconDashboard',
     components: {
-        BaseIcon,
+        Icon,
     },
-    props: {
-        fillColor: {
-            type: String,
-            default: GRAPHITE,
+    inheritAttrs: false,
+    computed: {
+        points() {
+            return '10 21 10 15 14 15 14 21 19 21 19 13 22 13 12 4 2 13 5 13 5 21';
         },
-        size: {
-            type: [String, Number],
-            default: 24,
-        },
-    },
-    data() {
-        return {
-            points: '10 21 10 15 14 15 14 21 19 21 19 13 22 13 12 4 2 13 5 13 5 21',
-        };
     },
 };
 </script>

@@ -40,7 +40,6 @@
                 :is-editable="isEditable"
                 :is-select-column="isSelectColumn"
                 :is-basic-filter="isBasicFilter"
-                :is-action-column="isActionColumn"
                 @sort="onSortColumn"
                 @filter="onFilterChange"
                 @editCell="onEditCell"
@@ -138,10 +137,6 @@ export default {
             default: false,
         },
         isSelectColumn: {
-            type: Boolean,
-            default: false,
-        },
-        isActionColumn: {
             type: Boolean,
             default: false,
         },

@@ -11,18 +11,23 @@
             <IconDelete
                 class="option__remove-icon"
                 @click.native="removeAttributeOptionKey({ index, id: options[index].id })" />
-            <TextField
-                :value="options[index].key"
-                solid
-                required
-                small
-                :disabled="disabled"
-                label="Option code"
-                @input="value => updateAttributeOptionKey({
-                    index,
-                    id: options[index].id,
-                    key: value,
-                })" />
+            <FormValidatorField :field-key="`code_${index}`">
+                <template #validator="{ errorMessages }">
+                    <TextField
+                        :value="options[index].key"
+                        solid
+                        required
+                        small
+                        :disabled="disabled"
+                        label="Option code"
+                        :error-messages="errorMessages"
+                        @input="value => updateAttributeOptionKey({
+                            index,
+                            id: options[index].id,
+                            key: value,
+                        })" />
+                </template>
+            </FormValidatorField>
         </li>
         <div
             class="options__add"
@@ -43,10 +48,12 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { SIZE, THEME } from '@Core/defaults/theme';
+import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 
 export default {
     name: 'AttributeOptionKeyValues',
     components: {
+        FormValidatorField,
         TextField: () => import('@Core/components/Inputs/TextField'),
         IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
