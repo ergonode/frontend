@@ -29,19 +29,23 @@
                     @remove="onRemoveColumn" />
             </slot>
         </GridTableCell>
-        <slot
-            v-if="isBasicFilter"
-            name="filter"
-            :is-locked="isFilterLocked"
-            :filter="filter"
-            :language-code="column.language"
-            :column-index="columnIndex"
-            :row-index="rowsOffset + basicFiltersOffset">
+        <template v-if="isBasicFilter">
+            <Component
+                v-if="filterComponent"
+                :is-locked="isFilterLocked"
+                :filter="filter"
+                :language-code="column.language"
+                :column-index="columnIndex"
+                :data="column.filter"
+                :row-index="rowsOffset + basicFiltersOffset"
+                :is="filterComponent"
+                @filter="onFilterChange" />
             <GridTableCell
+                v-else
                 :locked="true"
                 :row="rowsOffset + basicFiltersOffset"
                 :column="columnIndex" />
-        </slot>
+        </template>
         <template v-for="(row, rowIndex) in data">
             <slot
                 name="cell"
@@ -58,6 +62,9 @@
 </template>
 
 <script>
+import {
+    capitalizeAndConcatenationArray,
+} from '@Core/models/stringWrapper';
 import GridDraggableColumn from '@Core/components/Grid/Layout/Table/Columns/GridDraggableColumn';
 import GridInteractiveHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridInteractiveHeaderCell';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
@@ -122,6 +129,11 @@ export default {
         isFilterLocked() {
             return typeof this.column.filter === 'undefined';
         },
+        filterComponent() {
+            if (!this.column.filter) return null;
+
+            return () => import(`@Core/components/Grid/Layout/Table/Cells/Filter/Grid${capitalizeAndConcatenationArray(this.column.filter.type.split('_'))}FilterCell`);
+        },
     },
     methods: {
         onHeaderFocus(isFocused) {
@@ -132,6 +144,9 @@ export default {
         },
         onRemoveColumn(index) {
             this.$emit('remove', index);
+        },
+        onFilterChange(payload) {
+            this.$emit('filter', payload);
         },
         onSwapColumns(payload) {
             this.$emit('swapColumns', payload);

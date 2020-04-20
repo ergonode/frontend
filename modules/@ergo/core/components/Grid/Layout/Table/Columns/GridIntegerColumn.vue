@@ -7,20 +7,6 @@
         v-bind="$attrs"
         v-on="$listeners">
         <template
-            #filter="{
-                columnIndex,
-                isLocked,
-                rowIndex,
-                filter,
-            }">
-            <GridNumericFilterCell
-                :is-locked="isLocked"
-                :filter="filter"
-                :column-index="columnIndex"
-                :row-index="rowIndex"
-                @filter="$listeners.filter" />
-        </template>
-        <template
             #cell="{
                 data,
                 dataIndex,
@@ -56,7 +42,6 @@ export default {
     components: {
         GridColumn,
         GridNumericDataCell,
-        GridNumericFilterCell: () => import('@Core/components/Grid/Layout/Table/Cells/Filter/GridNumericFilterCell'),
     },
     inheritAttrs: false,
 };

@@ -30,7 +30,7 @@ export default {
         this.emitRowsNumber();
         window.addEventListener('resize', this.debounceFunc);
     },
-    destroyed() {
+    beforeDestroy() {
         window.removeEventListener('resize', this.debounceFunc);
         delete this.debounceFunc;
     },

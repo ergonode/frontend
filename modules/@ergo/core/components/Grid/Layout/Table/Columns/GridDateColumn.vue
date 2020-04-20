@@ -7,20 +7,6 @@
         v-bind="$attrs"
         v-on="$listeners">
         <template
-            #filter="{
-                columnIndex,
-                isLocked,
-                rowIndex,
-                filter,
-            }">
-            <GridDateFilterCell
-                :is-locked="isLocked"
-                :filter="filter"
-                :column-index="columnIndex"
-                :row-index="rowIndex"
-                @filter="$listeners.filter" />
-        </template>
-        <template
             #cell="{
                 data,
                 dataIndex,
@@ -48,7 +34,6 @@
 </template>
 
 <script>
-import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
 import GridDateDataCell from '@Core/components/Grid/Layout/Table/Cells/Data/GridDateDataCell';
 import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 
@@ -57,17 +42,7 @@ export default {
     components: {
         GridColumn,
         GridDateDataCell,
-        GridDateFilterCell: () => import('@Core/components/Grid/Layout/Table/Cells/Filter/GridDateFilterCell'),
     },
     inheritAttrs: false,
-    computed: {
-        dateFormat() {
-            if (!this.$attrs.column.parameters) {
-                return DEFAULT_FORMAT;
-            }
-
-            return this.$attrs.column.parameters.format;
-        },
-    },
 };
 </script>
