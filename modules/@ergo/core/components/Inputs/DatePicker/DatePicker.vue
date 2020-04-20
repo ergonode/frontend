@@ -56,8 +56,8 @@ export default {
     },
     props: {
         value: {
-            type: Date,
-            default: null,
+            type: [Date, Object],
+            default: () => null,
         },
         format: {
             type: String,
@@ -131,9 +131,7 @@ export default {
             this.$emit('focus', isFocused);
         },
         formatDate(date) {
-            if (!date) return null;
-
-            return formatDate(date, this.format);
+            return date ? formatDate(date, this.format) : null;
         },
     },
 };
