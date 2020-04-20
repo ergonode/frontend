@@ -54,7 +54,7 @@ export default {
 
         this.observer.observe(this.$el);
     },
-    destroyed() {
+    beforeDestroy() {
         this.observer.disconnect();
     },
     methods: {

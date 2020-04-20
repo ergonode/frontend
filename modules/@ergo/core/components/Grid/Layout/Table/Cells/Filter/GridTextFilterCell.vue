@@ -42,6 +42,10 @@ export default {
             type: Number,
             required: true,
         },
+        data: {
+            type: Object,
+            default: () => ({}),
+        },
         filter: {
             type: Object,
             default: null,

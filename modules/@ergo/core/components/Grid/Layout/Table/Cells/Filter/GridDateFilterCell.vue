@@ -40,13 +40,13 @@ export default {
             type: Number,
             required: true,
         },
-        format: {
-            type: String,
-            default: DEFAULT_FORMAT,
-        },
         columnIndex: {
             type: Number,
             required: true,
+        },
+        data: {
+            type: Object,
+            default: () => ({}),
         },
         filter: {
             type: Object,
@@ -62,6 +62,13 @@ export default {
         },
     },
     computed: {
+        dateFormat() {
+            if (!this.data.parameters) {
+                return DEFAULT_FORMAT;
+            }
+
+            return this.data.parameters.format;
+        },
         value() {
             if (!this.filter) return '';
 

@@ -57,7 +57,7 @@ export default {
     created() {
         this.debouncedSearch = debounce(this.onSearch, 500);
     },
-    destroyed() {
+    beforeDestroy() {
         delete this.debouncedSearch;
     },
     methods: {

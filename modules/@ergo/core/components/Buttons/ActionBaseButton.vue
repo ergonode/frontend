@@ -91,7 +91,7 @@ export default {
             this.$emit('focus', this.isFocused);
         },
     },
-    destroyed() {
+    beforeDestroy() {
         window.removeEventListener('click', this.onClickOutside);
     },
     methods: {

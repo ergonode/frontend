@@ -35,14 +35,7 @@ export default {
             isClickedOutside: false,
         };
     },
-    watch: {
-        $route(to, from) {
-            if (from.name !== to.name) {
-                this.isFocused = false;
-            }
-        },
-    },
-    destroyed() {
+    beforeDestroy() {
         window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
@@ -57,6 +50,8 @@ export default {
             if (this.isFocused) {
                 const { pageX, pageY } = event;
                 const { menu } = this.$refs;
+
+                console.log('Clicked outside!!');
 
                 isClickedInsideMenu = !isMouseOutOfBoundsElement(menu, pageX, pageY);
 

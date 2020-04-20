@@ -45,7 +45,7 @@ export default {
             type: Number,
             required: true,
         },
-        options: {
+        data: {
             type: Object,
             default: () => ({}),
         },
@@ -67,6 +67,16 @@ export default {
         },
     },
     computed: {
+        options() {
+            if (this.data.options) {
+                // TODO: BE has to unify types!
+                if (Array.isArray(this.data.options)) return {};
+
+                return this.data.options;
+            }
+
+            return {};
+        },
         presentationValue() {
             if (!this.filter) return '';
 

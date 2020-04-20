@@ -357,7 +357,7 @@ export default {
 
         this.associatedLabel = `input-${this._uid}`;
     },
-    destroyed() {
+    beforeDestroy() {
         window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
