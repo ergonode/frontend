@@ -28,7 +28,7 @@ export const Icons = {
 
 export const Components = {
     GridPrivilegeSelectRowColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeSelectRowColumn'),
-    GridPrivilegeColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeColumn'),
+    GridPrivilegeCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeCheckColumn'),
     GridPrivilegeNameColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeNameColumn'),
     GridPrivilegeNameDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridPrivilegeNameDataCell'),
     GridPrivilegeCheckDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridPrivilegeCheckDataCell'),

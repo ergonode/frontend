@@ -17,7 +17,7 @@
             <GridMultiSelectEditCell
                 v-if="isEditing"
                 :value="cellData.value"
-                :language-code="languageCode"
+                :language-code="column.language"
                 :options="options"
                 :width="$el.offsetWidth"
                 :height="$el.offsetHeight"
@@ -45,16 +45,6 @@ export default {
         GridMultiSelectEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridMultiSelectEditCell'),
     },
     mixins: [gridDataCellMixin],
-    props: {
-        languageCode: {
-            type: String,
-            default: 'EN',
-        },
-        options: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         ...mapState('grid', {
             drafts: state => state.drafts,
@@ -63,7 +53,17 @@ export default {
             const check = (data, draftValue) => !arraysAreEqual(data, draftValue);
             const getMappedValue = cellDataCompose(check);
 
-            return getMappedValue(this.data.value, this.drafts[this.rowId], this.columnId);
+            return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
+        },
+        options() {
+            if (this.column.filter && this.column.filter.options) {
+                // TODO: BE has to unify types!
+                if (Array.isArray(this.column.filter.options)) return {};
+
+                return this.column.filter.options;
+            }
+
+            return {};
         },
     },
 };

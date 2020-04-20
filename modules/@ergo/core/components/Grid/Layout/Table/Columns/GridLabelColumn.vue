@@ -5,61 +5,17 @@
 <template>
     <GridColumn
         v-bind="$attrs"
-        v-on="$listeners">
-        <template
-            #cell="{
-                languageCode,
-                data,
-                dataIndex,
-                columnIndex,
-                rowIndex,
-                rowId,
-                columnId,
-                isLocked,
-                isCopyable,
-            }">
-            <GridLabelDataCell
-                :language-code="languageCode"
-                :key="`${rowId}|${columnId}`"
-                :data="data"
-                :data-index="dataIndex"
-                :row-id="rowId"
-                :column-id="columnId"
-                :column-index="columnIndex"
-                :row-index="rowIndex"
-                :options="options"
-                :colors="$attrs.column.colors"
-                :is-locked="isLocked"
-                :is-copyable="isCopyable"
-                @input="$listeners.editCell"
-                @copy="$listeners.copyCells" />
-        </template>
-    </GridColumn>
+        v-on="$listeners" />
 </template>
 
 <script>
 import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
-import GridLabelDataCell from '@Core/components/Grid/Layout/Table/Cells/Data/GridLabelDataCell';
 
 export default {
     name: 'GridLabelColumn',
     components: {
         GridColumn,
-        GridLabelDataCell,
     },
     inheritAttrs: false,
-    computed: {
-        options() {
-            if (this.$attrs.column.filter
-                && this.$attrs.column.filter.options) {
-                // TODO: BE has to unify types!
-                if (Array.isArray(this.$attrs.column.filter.options)) return {};
-
-                return this.$attrs.column.filter.options;
-            }
-
-            return {};
-        },
-    },
 };
 </script>

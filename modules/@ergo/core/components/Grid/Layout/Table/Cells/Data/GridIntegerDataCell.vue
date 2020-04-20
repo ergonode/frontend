@@ -13,22 +13,31 @@
         :disabled="isDisabled"
         :copyable="isCopyable"
         @copy="onCopyValues">
-        <GridHintPresentationCell
-            :value="cellData.value"
-            :hint="data.hint"
-            :suffix="data.suffix" />
+        <template #default="{ isEditing }">
+            <GridNumericEditCell
+                v-if="isEditing"
+                :value="cellData.value"
+                :width="$el.offsetWidth"
+                @input="onValueChange" />
+            <GridPresentationCell
+                v-else-if="!isEditing && (cellData.value || cellData.value === 0)"
+                :value="cellData.value"
+                :suffix="data.suffix" />
+        </template>
     </GridTableCell>
 </template>
+
 <script>
 import { mapState } from 'vuex';
 import { cellDataCompose } from '@Core/models/mappers/gridDataMapper';
-import GridHintPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridHintPresentationCell';
+import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 
 export default {
-    name: 'GridPrivilegeNameDataCell',
+    name: 'GridIntegerDataCell',
     components: {
-        GridHintPresentationCell,
+        GridPresentationCell,
+        GridNumericEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridNumericEditCell'),
     },
     mixins: [gridDataCellMixin],
     computed: {
@@ -36,7 +45,7 @@ export default {
             drafts: state => state.drafts,
         }),
         cellData() {
-            const check = (data, draftValue) => data !== draftValue;
+            const check = (data, draftValue) => +data !== +draftValue;
             const getMappedValue = cellDataCompose(check);
 
             return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);

@@ -32,9 +32,9 @@ export default {
                     },
                     columns: [
                         {
-                            type: 'PRIVILEGE',
+                            type: 'PRIVILEGE_CHECK',
                             width: COLUMN_WIDTH.DYNAMIC,
-                            component: Components.GridPrivilegeColumn,
+                            component: Components.GridPrivilegeCheckColumn,
                         },
                         {
                             type: 'PRIVILEGE_SELECT_ROW',

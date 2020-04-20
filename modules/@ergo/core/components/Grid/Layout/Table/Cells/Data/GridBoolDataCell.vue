@@ -11,7 +11,7 @@
         :edit-key-code="32"
         :disabled="isDisabled"
         :copyable="isCopyable"
-        @edit="onEditValue"
+        @edit="onValueChange(!cellData.value)"
         @copy="onCopyValues">
         <GridBoolEditCell
             :value="cellData.value"
@@ -41,16 +41,7 @@ export default {
             const check = (data, draftValue) => Boolean(data) !== Boolean(draftValue);
             const getMappedValue = cellDataCompose(check);
 
-            return getMappedValue(this.data.value, this.drafts[this.rowId], this.columnId);
-        },
-    },
-    methods: {
-        onEditValue() {
-            this.$emit('input', {
-                rowId: this.rowId,
-                columnId: this.columnId,
-                value: !this.cellData.value,
-            });
+            return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
         },
     },
 };
