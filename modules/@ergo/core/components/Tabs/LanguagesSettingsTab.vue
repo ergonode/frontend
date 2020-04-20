@@ -65,6 +65,7 @@ export default {
         },
     },
     mounted() {
+        // TODO: uncomment when languages API will be ready
         // const { language: languageCode } = this.$store.authentication.user;
         // const treeToSet = getParsedTreeData(categories, items);
 

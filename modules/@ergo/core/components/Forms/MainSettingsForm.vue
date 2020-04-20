@@ -46,6 +46,7 @@ export default {
     },
     data() {
         return {
+            // TODO: remove when languages API will be ready
             treeValue: [
                 {
                     id: 'pl_PL',
