@@ -51,8 +51,6 @@ export default {
                 const { pageX, pageY } = event;
                 const { menu } = this.$refs;
 
-                console.log('Clicked outside!!');
-
                 isClickedInsideMenu = !isMouseOutOfBoundsElement(menu, pageX, pageY);
 
                 if (!isClickedInsideMenu) {
