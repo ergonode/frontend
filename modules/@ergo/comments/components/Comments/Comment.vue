@@ -38,7 +38,7 @@ export default {
             align-items: center;
         }
 
-        &__content {
+        &__body {
             padding: 16px 0;
         }
 

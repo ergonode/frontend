@@ -3,27 +3,34 @@
  * See LICENSE for license details.
  */
 <template>
-    <TextField
-        :value="translationOptionValue"
-        :label="option.key"
-        solid
-        small
-        :disabled="disabled"
-        @input="value => setOptionValueForLanguageCode({
-            index,
-            languageCode,
-            value,
-            id: option.id,
-        })" />
+    <FormValidatorField :field-key="`option_${languageCode}_${index}`">
+        <template #validator="{ errorMessages }">
+            <TextField
+                :value="translationOptionValue"
+                :label="option.key"
+                solid
+                small
+                :disabled="disabled"
+                :error-messages="errorMessages"
+                @input="value => setOptionValueForLanguageCode({
+                    index,
+                    languageCode,
+                    value,
+                    id: option.id,
+                })" />
+        </template>
+    </FormValidatorField>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import { isObject, isEmpty } from '@Core/models/objectWrapper';
+import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 
 export default {
     name: 'AttributeOptionValue',
     components: {
+        FormValidatorField,
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     props: {

@@ -99,16 +99,23 @@ export default {
             };
 
             if (!isEmpty(this.options)) {
-                const optionKeys = Object.keys(this.options);
-                const uniqueOptions = new Set(optionKeys);
+                const preValidationErrors = {};
 
-                if (optionKeys.some(key => key === '')) {
-                    this.$addAlert({ type: ALERT_TYPE.WARNING, message: 'Options cannot have an empty keys' });
-                    return;
-                }
+                Object.keys(this.options).forEach((optionKey) => {
+                    const fieldKey = `option_${optionKey}`;
+                    const dupications = Object.values(this.options)
+                        .filter(({ key }) => key === this.options[optionKey].key);
 
-                if (optionKeys.length !== uniqueOptions.size) {
-                    this.$addAlert({ type: ALERT_TYPE.WARNING, message: 'Option code must be unique' });
+                    if (dupications.length > 1) {
+                        preValidationErrors[fieldKey] = ['Option code must be unique'];
+                    }
+                    if (!this.options[optionKey].key) {
+                        preValidationErrors[fieldKey] = ['Option cannot be empty'];
+                    }
+                });
+
+                if (!isEmpty(preValidationErrors)) {
+                    this.onError({ errors: preValidationErrors });
                     return;
                 }
             }

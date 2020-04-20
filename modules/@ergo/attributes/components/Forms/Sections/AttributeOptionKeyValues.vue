@@ -11,7 +11,7 @@
             <IconDelete
                 class="option__remove-icon"
                 @click.native="removeAttributeOptionKey({ index, id: options[index].id })" />
-            <FormValidatorField :field-key="`code_${index}`">
+            <FormValidatorField :field-key="`option_${index}`">
                 <template #validator="{ errorMessages }">
                     <TextField
                         :value="options[index].key"
