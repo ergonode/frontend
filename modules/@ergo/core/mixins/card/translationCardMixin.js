@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { mapState, mapActions } from 'vuex';
-import { isObject, getValueByKey } from '@Core/models/objectWrapper';
+import { getValueByKey } from '@Core/models/objectWrapper';
 
 export default {
     props: {
