@@ -14,7 +14,7 @@ import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Prese
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 
 export default {
-    name: 'GridSelectPresentationCell',
+    name: 'GridMultiSelectPresentationCell',
     components: {
         GridPresentationCell,
         IconArrowDropDown,
