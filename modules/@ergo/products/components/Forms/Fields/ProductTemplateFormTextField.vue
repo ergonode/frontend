@@ -117,7 +117,6 @@ export default {
             'setDraftValue',
         ]),
         onValueChange(value) {
-            console.log(value);
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,

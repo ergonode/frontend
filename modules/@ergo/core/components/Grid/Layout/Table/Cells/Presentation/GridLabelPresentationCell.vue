@@ -9,7 +9,8 @@
             :color="color" />
         <GridSelectPresentationCell
             :value="value"
-            :options="options" />
+            :options="options"
+            :is-locked="isLocked" />
     </div>
 </template>
 
@@ -35,6 +36,10 @@ export default {
         colors: {
             type: Object,
             default: () => ({}),
+        },
+        isLocked: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {

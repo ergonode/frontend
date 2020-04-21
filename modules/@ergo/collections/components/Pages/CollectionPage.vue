@@ -6,8 +6,8 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-read-only="$isReadOnly('PRODUCT_COLLECTION')"
-            @navigateBack="onDismiss">
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('PRODUCT_COLLECTION')">
             <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
@@ -52,29 +52,14 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
-import categoryManagementPageBaseMixin from '@Core/mixins/page/categoryManagementPageBaseMixin';
+import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 
 export default {
     name: 'CollectionPage',
     components: {
-        IconAdd,
         AddProductsToCollectionModalForm: () => import('@Collections/components/Modals/AddProductsToCollectionModalForm'),
     },
-    mixins: [categoryManagementPageBaseMixin, gridModalMixin],
-    computed: {
-        tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
-    },
+    mixins: [categoryManagementPageMixin, gridModalMixin],
 };
 </script>

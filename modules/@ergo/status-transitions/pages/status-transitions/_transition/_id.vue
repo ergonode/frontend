@@ -5,7 +5,6 @@
 <template>
     <TransitionPage
         :title="`${params[0]} -> ${params[1]}`"
-        @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
 </template>
@@ -13,7 +12,6 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getMappedConditionSetData } from '@Conditions/models/conditionSetMapper';
-import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
@@ -112,9 +110,6 @@ export default {
                 onSuccess: this.onTransitionUpdated,
                 onError: this.onError,
             });
-        },
-        onDismiss() {
-            this.$router.push(getParentRoutePath(this.$route));
         },
         onRemove() {
             const isConfirmed = confirm('Are you sure you want to delete this transition?'); /* eslint-disable-line no-restricted-globals */

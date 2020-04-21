@@ -7,7 +7,7 @@
         <TitleBarHeader :title="title">
             <template #prepend>
                 <Fab
-                    v-if="hasNavigateBackListener"
+                    v-if="isNavigationBack"
                     @click.native="onBack">
                     <template #icon="{ color }">
                         <IconArrowPointer :fill-color="color" />
@@ -64,6 +64,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        isNavigationBack: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         whiteColor() {
@@ -75,13 +79,22 @@ export default {
         greenColor() {
             return GREEN;
         },
-        hasNavigateBackListener() {
-            return this.$listeners && this.$listeners.navigateBack;
-        },
     },
     methods: {
         onBack() {
-            this.$emit('navigateBack');
+            const { breadcrumbs } = this.$route.meta;
+
+            if (!breadcrumbs) {
+                if (process.env.NODE_ENV !== 'production') {
+                    console.error(`Route ${this.$route.fullPath} has no breadcrumbs initialised!`);
+                }
+
+                return false;
+            }
+
+            this.$router.push({ name: breadcrumbs[breadcrumbs.length - 1].routeName });
+
+            return true;
         },
     },
 };

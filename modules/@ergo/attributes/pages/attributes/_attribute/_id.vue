@@ -5,7 +5,6 @@
 <template>
     <AttributePage
         :title="code"
-        @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
 </template>
@@ -14,8 +13,6 @@
 
 import { mapState, mapActions } from 'vuex';
 import { isEmpty, getKeyByValue } from '@Core/models/objectWrapper';
-import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
-import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { getParsedParameterKeys } from '@Attributes/models/attributeMapper';
 import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
@@ -72,9 +69,6 @@ export default {
         ...mapActions('translations', {
             clearTranslationsStorage: 'clearStorage',
         }),
-        onDismiss() {
-            this.$router.push(getParentRoutePath(this.$route));
-        },
         onUpdateAttributeSuccess() {
             this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Attribute updated' });
         },
@@ -94,8 +88,11 @@ export default {
             this.removeValidationErrors();
             const typeKey = getKeyByValue(this.attrTypes, this.type);
             const { label, placeholder, hint } = this.translations;
-            const propertiesToUpdate = {
+            const data = {
                 groups: this.groups.map(group => group.id),
+                label,
+                hint,
+                placeholder,
             };
 
             if (!isEmpty(this.options)) {
@@ -134,27 +131,15 @@ export default {
                     paramKey = getKeyByValue(paramsOptions, this.parameter);
                 }
 
-                propertiesToUpdate.parameters = getParsedParameterKeys({
+                data.parameters = getParsedParameterKeys({
                     selectedType: typeKey,
                     selectedParam: paramKey,
                 });
             }
 
-            if (isThereAnyTranslation(label)) {
-                propertiesToUpdate.label = getParsedTranslations(label);
-            }
-
-            if (isThereAnyTranslation(hint)) {
-                propertiesToUpdate.hint = getParsedTranslations(hint);
-            }
-
-            if (isThereAnyTranslation(placeholder)) {
-                propertiesToUpdate.placeholder = getParsedTranslations(placeholder);
-            }
-
             this.updateAttribute({
                 id: this.id,
-                data: propertiesToUpdate,
+                data,
                 onSuccess: this.onUpdateAttributeSuccess,
                 onError: this.onError,
             });
