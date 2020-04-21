@@ -56,7 +56,7 @@ export default {
     },
     props: {
         value: {
-            type: Date,
+            type: [Date, Object],
             default: null,
         },
         format: {
@@ -120,7 +120,7 @@ export default {
         parsedDate() {
             if (!this.value) return null;
 
-            return this.formatDate(this.value);
+            return formatDate(this.value, this.format);
         },
     },
     methods: {
@@ -129,11 +129,6 @@ export default {
         },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);
-        },
-        formatDate(date) {
-            if (!date) return null;
-
-            return formatDate(date, this.format);
         },
     },
 };

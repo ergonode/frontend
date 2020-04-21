@@ -97,12 +97,12 @@ export default {
             const { isDraft, value } = getMappedValue({
                 data: this.data[attribute_code],
                 draft: this.draft[this.languageCode][attribute_code],
-                defaultValue: '',
+                defaultValue: null,
             });
 
             return {
                 isDraft,
-                value: parseDate(value, DEFAULT_FORMAT, new Date()),
+                value: value ? parseDate(value, DEFAULT_FORMAT, new Date()) : null,
             };
         },
         parameter() {
@@ -124,7 +124,8 @@ export default {
             'setDraftValue',
         ]),
         onValueChange(value) {
-            const date = formatDate(value, DEFAULT_FORMAT);
+            const date = value ? formatDate(value, DEFAULT_FORMAT) : null;
+
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
