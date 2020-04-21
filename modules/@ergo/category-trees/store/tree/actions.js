@@ -7,19 +7,19 @@ import { getListItems } from '@Core/services/list/getList.service';
 import { types } from './mutations';
 
 export default {
-    getTreeById(
+    async getTreeById(
         { commit, dispatch, rootState },
         { treeId },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
 
-        return this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(({
+        await this.app.$axios.$get(`${userLanguageCode}/trees/${treeId}`).then(async ({
             code,
             name = '',
             categories,
         }) => {
             if (categories.length) {
-                getListItems({
+                await getListItems({
                     $axios: this.app.$axios,
                     path: `${userLanguageCode}/categories`,
                     params: {
@@ -44,9 +44,9 @@ export default {
                 name,
             };
 
-            commit(types.SET_TREE_ID, treeId);
-            commit(types.SET_CODE, code);
-            dispatch('translations/setTabTranslations', translations, { root: true });
+            await commit(types.SET_TREE_ID, treeId);
+            await commit(types.SET_CODE, code);
+            await dispatch('translations/setTabTranslations', translations, { root: true });
         });
     },
     async updateTree(
