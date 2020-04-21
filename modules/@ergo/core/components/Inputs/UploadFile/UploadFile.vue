@@ -29,7 +29,10 @@
             <div
                 v-if="requestPending"
                 class="upload-file__loader">
-                <IconRefresh />
+                <IconRefresh
+                    :height="32"
+                    :width="48"
+                    view-box="0 0 48 32" />
                 Uploading the file...
             </div>
             <div
@@ -180,6 +183,7 @@ export default {
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 18px 20px;
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_14_20;
 

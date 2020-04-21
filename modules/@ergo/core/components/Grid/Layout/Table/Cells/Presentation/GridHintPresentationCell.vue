@@ -7,7 +7,9 @@
         <GridPresentationCell
             :value="value"
             :suffix="suffix" />
-        <InfoHint :hint="hint" />
+        <InfoHint
+            v-if="hint"
+            :hint="hint" />
     </div>
 </template>
 
@@ -28,7 +30,7 @@ export default {
         },
         hint: {
             type: String,
-            required: true,
+            default: '',
         },
         suffix: {
             type: String,

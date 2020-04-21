@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="completeness-progress">
+    <div
+        class="completeness-progress"
+        :title="hint">
         <span
             class="completeness-progress__title"
             v-text="title" />
@@ -30,6 +32,9 @@ export default {
         },
     },
     computed: {
+        hint() {
+            return this.completeness.missing.map(field => field.name);
+        },
         title() {
             return `${this.progress}% Completed`;
         },
@@ -56,6 +61,7 @@ export default {
         justify-content: center;
         align-items: center;
         width: 160px;
+        cursor: help;
 
         &__title {
             color: $GRAPHITE_DARK;
