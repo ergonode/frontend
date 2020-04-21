@@ -127,7 +127,7 @@ export default {
         },
     },
     created() {
-        this.debounceValueChange = debounce(value => this.onValueChange(value));
+        this.debounceValueChange = debounce(this.onValueChange, 500);
     },
     methods: {
         ...mapActions('product', [

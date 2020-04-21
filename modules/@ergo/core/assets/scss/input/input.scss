@@ -16,6 +16,7 @@
         flex: 1;
         align-items: center;
         background-color: $WHITE;
+        will-change: border;
 
         input::placeholder, textarea::placeholder, input, textarea, #{$input}__value {
             color: $GRAPHITE_DARK;
@@ -64,6 +65,12 @@
         margin-top: 4px;
         margin-left: 12px;
         word-break: break-word;
+    }
+
+    &__label {
+        will-change:
+            transform,
+            color;
     }
 
     textarea ~ &__label {
@@ -303,6 +310,14 @@
                 #{$input}__content::after {
                     transform: scaleX(0);
                 }
+            }
+        }
+    }
+
+    &--focused, &--has-value {
+        &.floating-label {
+            #{$input}__label {
+                transform: translateY(-100%) scale(0.8);
             }
         }
     }
