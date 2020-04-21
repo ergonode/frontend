@@ -27,10 +27,6 @@ export default {
         ...mapActions('translations', [
             'setMultilingualTranslationPropertyValue',
         ]),
-        parsedValue(propertyName) {
-            const property = this.translations[propertyName];
-            return isObject(property) ? property[this.languageCode] : property;
-        },
         setTranslationPropertyValue(value, propertyName) {
             this.setMultilingualTranslationPropertyValue({
                 languageCode: this.languageCode,
