@@ -102,7 +102,7 @@ export default {
 
             return {
                 isDraft,
-                value: parseDate(value, DEFAULT_FORMAT, new Date()),
+                value: value ? parseDate(value, DEFAULT_FORMAT, new Date()) : null,
             };
         },
         parameter() {
