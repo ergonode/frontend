@@ -65,7 +65,7 @@ export default {
     },
     beforeDestroy() {
         if (this.localValue) {
-            this.$emit('input', this.localValue ? formatDate(this.localValue, this.format) : null);
+            this.$emit('input', formatDate(this.localValue, this.format));
         } else if (Boolean(this.localValue) !== Boolean(this.value)) {
             this.$emit('input', '');
         }

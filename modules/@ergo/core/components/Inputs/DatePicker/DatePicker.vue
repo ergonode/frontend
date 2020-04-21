@@ -120,7 +120,7 @@ export default {
         parsedDate() {
             if (!this.value) return null;
 
-            return this.formatDate(this.value);
+            return formatDate(this.value, this.format);
         },
     },
     methods: {
@@ -129,9 +129,6 @@ export default {
         },
         onFocus(isFocused) {
             this.$emit('focus', isFocused);
-        },
-        formatDate(date) {
-            return date ? formatDate(date, this.format) : null;
         },
     },
 };

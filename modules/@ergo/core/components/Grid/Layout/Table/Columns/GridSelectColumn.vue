@@ -48,7 +48,17 @@ export default {
     },
     inheritAttrs: false,
     computed: {
+        options() {
+            if (this.$attrs.column.filter
+                && this.$attrs.column.filter.options) {
+                // TODO: BE has to unify types!
+                if (Array.isArray(this.$attrs.column.filter.options)) return {};
 
+                return this.$attrs.column.filter.options;
+            }
+
+            return {};
+        },
     },
 };
 </script>
