@@ -39,6 +39,7 @@ import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import TextField from '@Core/components/Inputs/TextField';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
 
 export default {
     name: 'ProductTemplateFormNumericField',
@@ -46,7 +47,7 @@ export default {
         ProductTemplateFormField,
         TextField,
         FormValidatorField,
-        TextFieldSuffix: () => import('@Core/components/Inputs/TextFieldSuffix'),
+        TextFieldSuffix,
     },
     props: {
         size: {
