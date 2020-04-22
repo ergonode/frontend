@@ -42,9 +42,5 @@ export default {
         font: $FONT_MEDIUM_12_16;
         text-align: left;
         cursor: pointer;
-
-        &:hover:not(:disabled), &:focus {
-            box-shadow: $ELEVATOR_HOVER_FOCUS;
-        }
     }
 </style>
