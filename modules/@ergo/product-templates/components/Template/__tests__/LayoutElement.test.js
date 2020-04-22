@@ -53,17 +53,6 @@ describe('Template/ProductDesigner/LayoutElement', () => {
     });
 
     describe('Setting data', () => {
-        it('Element width and height is set', () => {
-            wrapper.setData({
-                startWidth: 200,
-                startHeight: 50,
-            });
-            wrapper.vm.initElementStyleForResizeState();
-
-            expect(wrapper.vm.$el.style.width).toEqual('200px');
-            expect(wrapper.vm.$el.style.height).toEqual('50px');
-        });
-
         it('Data is reseted', () => {
             wrapper.vm.resetDataForEndResizeInteraction();
 
