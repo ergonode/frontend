@@ -46,10 +46,11 @@ export default {
                     regular: this.regular,
                     'left-alignment': this.leftAlignment,
                     'center-alignment': this.centerAlignment,
-                    'floating-label': Boolean(this.label) && this.label.length > 0,
+                    'floating-label': this.label && this.label.length > 0,
                     'input--error': this.isError,
                     'input--focused': this.isFocused,
                     'input--disabled': this.disabled,
+                    'input--has-value': !this.isEmpty,
                 },
             ];
         },
@@ -62,15 +63,6 @@ export default {
             return [
                 'input__information-label',
             ];
-        },
-        floatingLabelTransforms() {
-            if (this.isFocused || !this.isEmpty) {
-                return {
-                    transform: 'translateY(-100%) scale(0.8)',
-                };
-            }
-
-            return null;
         },
         floatingLabelClasses() {
             return [

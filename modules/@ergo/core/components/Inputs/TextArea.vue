@@ -26,7 +26,6 @@
                 v-if="label"
                 :for="associatedLabel"
                 :class="floatingLabelClasses"
-                :style="floatingLabelTransforms"
                 v-text="label" />
             <div
                 v-if="isAppendSlotVisible"

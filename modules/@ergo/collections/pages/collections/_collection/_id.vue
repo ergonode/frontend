@@ -5,16 +5,15 @@
 <template>
     <CollectionPage
         :title="code"
-        @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
-import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+
+const updateCollectionProduct = () => import('@Collections/services/updateCollectionProduct.service');
 
 export default {
     name: 'EditCollection',
@@ -39,6 +38,9 @@ export default {
         ...mapState('translations', {
             translations: state => state.translations,
         }),
+        ...mapState('grid', {
+            drafts: state => state.drafts,
+        }),
     },
     methods: {
         ...mapActions('collections', [
@@ -49,9 +51,6 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
-        onDismiss() {
-            this.$router.push(getParentRoutePath(this.$route));
-        },
         onRemove() {
             const isConfirmed = confirm('Are you sure you want to delete this group?'); /* eslint-disable-line no-restricted-globals */
             if (isConfirmed) {
@@ -62,14 +61,17 @@ export default {
         },
         onSave() {
             this.removeValidationErrors();
-            const { description } = this.translations;
-            let { name } = this.translations;
-            if (isThereAnyTranslation(name)) {
-                name = getParsedTranslations(name);
-            }
+            const { name, description } = this.translations;
+            const data = { typeId: this.type.id, name, description };
+
+            updateCollectionProduct().then(response => response.default({
+                $axios: this.$axios,
+                $store: this.$store,
+            }));
+
             this.updateCollection({
                 id: this.id,
-                data: { typeId: this.type.id, name, description },
+                data,
                 onSuccess: this.onUpdateCollectionSuccess,
                 onError: this.onError,
             });

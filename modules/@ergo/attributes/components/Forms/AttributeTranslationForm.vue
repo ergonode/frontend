@@ -8,7 +8,7 @@
             <template #body="{ errorMessages }">
                 <FormSection>
                     <TextField
-                        :value="parsedValue('label')"
+                        :value="translations.label[languageCode]"
                         solid
                         label="Attribute name"
                         regular
@@ -17,7 +17,7 @@
                         @input="(value) => setTranslationPropertyValue(value, 'label')" />
                     <TextArea
                         v-if="hasPlaceholder"
-                        :value="parsedValue('placeholder')"
+                        :value="translations.placeholder[languageCode]"
                         solid
                         label="Placeholder"
                         resize="none"
@@ -26,7 +26,7 @@
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'placeholder')" />
                     <TextArea
-                        :value="parsedValue('hint')"
+                        :value="translations.hint[languageCode]"
                         solid
                         label="Tooltip for writers"
                         resize="none"

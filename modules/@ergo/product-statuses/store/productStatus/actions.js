@@ -2,7 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
 import { types } from './mutations';
 
 export default {
@@ -59,18 +58,7 @@ export default {
     },
     async updateProductStatus({ commit, state, rootState }, { onError }) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        const { translations } = rootState.translations;
-
-        let { name, description } = translations;
-
-        if (isThereAnyTranslation(name)) {
-            name = getParsedTranslations(name);
-        }
-
-        if (isThereAnyTranslation(description)) {
-            description = getParsedTranslations(description);
-        }
-
+        const { translations: { name, description } } = rootState.translations;
         const data = {
             color: state.color,
             name,

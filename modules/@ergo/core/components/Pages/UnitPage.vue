@@ -7,8 +7,7 @@
         <TitleBar
             :title="title"
             :is-navigation-back="true"
-            :is-read-only="$isReadOnly('SETTINGS')"
-            @navigateBack="onDismiss">
+            :is-read-only="$isReadOnly('SETTINGS')">
             <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
@@ -35,23 +34,10 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
-import categoryManagementPageBaseMixin from '@Core/mixins/page/categoryManagementPageBaseMixin';
+import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
 
 export default {
     name: 'UnitPage',
-    mixins: [categoryManagementPageBaseMixin],
-    computed: {
-        tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
-    },
+    mixins: [categoryManagementPageMixin],
 };
 </script>
