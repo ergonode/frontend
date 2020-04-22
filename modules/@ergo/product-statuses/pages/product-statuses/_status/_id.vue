@@ -5,7 +5,6 @@
 <template>
     <ProductStatusPage
         :title="code"
-        @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
 </template>
@@ -13,7 +12,6 @@
 <script>
 
 import { mapState, mapActions } from 'vuex';
-import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
@@ -60,9 +58,6 @@ export default {
             Promise.all(requests).then(() => {
                 this.onProductStatusUpdated();
             });
-        },
-        onDismiss() {
-            this.$router.push(getParentRoutePath(this.$route));
         },
         onRemove() {
             const isConfirmed = confirm('Are you sure you want to delete this product status?'); /* eslint-disable-line no-restricted-globals */

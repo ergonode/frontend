@@ -193,14 +193,15 @@ export default {
             };
         },
         removeItem(item) {
-            const { id, parent } = item;
+            const { id, row, parent } = item;
+
             this.toggleItem(item);
             this.removeDisabledElementsOnList(id);
             this.removeHiddenItem(id);
             if (parent !== 'root') {
                 this.setChildrenLength({ id: parent, value: -1 });
             }
-            this.removeGridItem(id);
+            this.removeGridItem(row);
         },
         removeDisabledElementsOnList(id) {
             if (this.hiddenItems[id]) {

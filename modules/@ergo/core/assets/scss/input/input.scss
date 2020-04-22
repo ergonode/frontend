@@ -307,6 +307,14 @@
         }
     }
 
+    &--focused, &--has-value {
+        &.floating-label {
+            #{$input}__label {
+                transform: translateY(-100%) scale(0.8);
+            }
+        }
+    }
+
     &:not(&--error):not(&--focused) {
         &.solid {
             #{$input}__activator:hover {

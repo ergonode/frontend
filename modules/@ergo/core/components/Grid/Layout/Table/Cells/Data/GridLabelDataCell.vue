@@ -28,7 +28,8 @@
                 :value="cellData.value"
                 :options="options"
                 :colors="column.colors"
-                :suffix="data.suffix" />
+                :suffix="data.suffix"
+                :is-locked="isLocked" />
         </template>
     </GridTableCell>
 </template>

@@ -100,12 +100,6 @@ export default {
             placeholder = '',
             multilingual,
         }) => {
-            const translations = {
-                hint,
-                label,
-                placeholder,
-            };
-
             commit(types.SET_ATTRIBUTE_ID, id);
             commit(types.SET_ATTRIBUTE_CODE, code);
             commit(types.SET_ATTRIBUTE_TYPE, attrTypes[type]);
@@ -114,7 +108,11 @@ export default {
                 group => groupIds.some(groupId => group.id === groupId),
             ));
 
-            dispatch('translations/setTabTranslations', translations, { root: true });
+            dispatch(
+                'translations/setTabTranslations',
+                { hint, label, placeholder },
+                { root: true },
+            );
 
             if (parameters) {
                 commit(

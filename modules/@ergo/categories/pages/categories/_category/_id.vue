@@ -5,15 +5,12 @@
 <template>
     <CategoryPage
         :title="code"
-        @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
-import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
@@ -54,9 +51,6 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
-        onDismiss() {
-            this.$router.push(getParentRoutePath(this.$route));
-        },
         onRemove() {
             const isConfirmed = confirm('Are you sure you want to delete this category?'); /* eslint-disable-line no-restricted-globals */
             if (isConfirmed) {
@@ -67,13 +61,12 @@ export default {
         },
         onSave() {
             this.removeValidationErrors();
-            let { name } = this.translations;
-            if (isThereAnyTranslation(name)) {
-                name = getParsedTranslations(name);
-            }
+            const { name } = this.translations;
+            const data = { name };
+
             this.updateCategory({
                 id: this.id,
-                data: { name },
+                data,
                 onSuccess: this.onUpdateCategorySuccess,
                 onError: this.onError,
             });

@@ -6,8 +6,8 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-read-only="$isReadOnly('PRODUCT')"
-            @navigateBack="onDismiss">
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('PRODUCT')">
             <template #prependBadge>
                 <ProductStatusBadge
                     v-if="status"
@@ -64,13 +64,11 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import Button from '@Core/components/Buttons/Button';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
 import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
-import categoryManagementPageBaseMixin from '@Core/mixins/page/categoryManagementPageBaseMixin';
+import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
 
 export default {
     name: 'ProductPage',
@@ -84,21 +82,12 @@ export default {
         ActionButton: () => import('@Core/components/Buttons/ActionButton'),
         PointBadge: () => import('@Core/components/Badges/PointBadge'),
     },
-    mixins: [categoryManagementPageBaseMixin],
+    mixins: [categoryManagementPageMixin],
     computed: {
         ...mapState('product', {
             status: state => state.status,
             workflow: state => state.workflow,
         }),
-        tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
         isUserAllowedToUpdateProduct() {
             return this.$hasAccess(['PRODUCT_UPDATE']);
         },

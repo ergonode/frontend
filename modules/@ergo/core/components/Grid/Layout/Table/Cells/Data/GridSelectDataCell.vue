@@ -26,7 +26,8 @@
                 v-else-if="!isEditing && cellData.value"
                 :value="cellData.value"
                 :suffix="data.suffix"
-                :options="options" />
+                :options="options"
+                :is-locked="isLocked" />
         </template>
     </GridTableCell>
 </template>

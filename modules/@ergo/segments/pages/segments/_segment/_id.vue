@@ -5,7 +5,6 @@
 <template>
     <SegmentPage
         :title="code"
-        @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
 </template>
@@ -13,8 +12,6 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getMappedConditionSetData } from '@Conditions/models/conditionSetMapper';
-import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
-import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
@@ -70,9 +67,6 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
-        onDismiss() {
-            this.$router.push(getParentRoutePath(this.$route));
-        },
         onRemove() {
             const isConfirmed = confirm('Are you sure you want to delete this segment?'); /* eslint-disable-line no-restricted-globals */
             if (isConfirmed) {
@@ -103,21 +97,16 @@ export default {
             }
         },
         onUpdateSegment(conditionSetId) {
-            const propertiesToUpdate = {
-                condition_set_id: conditionSetId,
-            };
             const { name, description } = this.translations;
-
-            if (isThereAnyTranslation(name)) {
-                propertiesToUpdate.name = getParsedTranslations(name);
-            }
-            if (isThereAnyTranslation(description)) {
-                propertiesToUpdate.description = getParsedTranslations(description);
-            }
+            const data = {
+                condition_set_id: conditionSetId,
+                name,
+                description,
+            };
 
             this.updateSegment({
                 id: this.id,
-                data: propertiesToUpdate,
+                data,
                 onSuccess: this.onUpdateSegmentsSuccess,
                 onError: this.onError,
             });

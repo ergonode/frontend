@@ -33,7 +33,6 @@
                 v-if="label"
                 :for="associatedLabel"
                 :class="floatingLabelClasses"
-                :style="floatingLabelTransforms"
                 v-text="label" />
             <div class="input__append">
                 <slot name="append" />
@@ -234,6 +233,7 @@ export default {
                     'input--error': this.isError,
                     'input--focused': this.isMenuActive,
                     'input--disabled': this.disabled,
+                    'input--has-value': this.hasAnyValueSelected,
                 },
             ];
         },
@@ -246,15 +246,6 @@ export default {
             return [
                 'input__information-label',
             ];
-        },
-        floatingLabelTransforms() {
-            if (this.hasAnyValueSelected || this.isMenuActive) {
-                return {
-                    transform: 'translateY(-100%) scale(0.8)',
-                };
-            }
-
-            return null;
         },
         floatingLabelClasses() {
             return [

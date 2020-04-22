@@ -6,8 +6,8 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-read-only="$isReadOnly('WORKFLOW')"
-            @navigateBack="onDismiss">
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('WORKFLOW')">
             <template #mainAction>
                 <Button
                     :theme="secondaryTheme"
@@ -38,10 +38,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import { SIZE, THEME } from '@Core/defaults/theme';
 import { Z_INDEX_LVL_0 } from '@Core/assets/scss/_js-variables/indexes.scss';
-import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
-import categoryManagementPageBaseMixin from '@Core/mixins/page/categoryManagementPageBaseMixin';
+import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
 
 export default {
     name: 'TransitionPage',
@@ -49,21 +47,12 @@ export default {
         TrashCan: () => import('@Core/components/DragAndDrop/TrashCan'),
         Blur: () => import('@Core/components/Blur/Blur'),
     },
-    mixins: [categoryManagementPageBaseMixin],
+    mixins: [categoryManagementPageMixin],
     computed: {
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,
             draggedElementOnGrid: state => state.draggedElementOnGrid,
         }),
-        tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
         isBlurVisible() {
             return this.isListElementDragging || this.draggedElementOnGrid;
         },

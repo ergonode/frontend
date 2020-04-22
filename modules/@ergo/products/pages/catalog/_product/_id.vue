@@ -5,14 +5,12 @@
 <template>
     <ProductPage
         :title="sku"
-        @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
@@ -60,9 +58,6 @@ export default {
         onRemoveSuccess() {
             this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product removed' });
             this.$router.push({ name: 'catalog-products' });
-        },
-        onDismiss() {
-            this.$router.push(getParentRoutePath(this.$route));
         },
         onRemove() {
             const isConfirmed = confirm('Are you sure you want to delete this product?'); /* eslint-disable-line no-restricted-globals */
