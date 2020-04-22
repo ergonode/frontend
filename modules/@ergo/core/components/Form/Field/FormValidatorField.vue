@@ -26,6 +26,8 @@ export default {
                         validationError = this.validationErrors[key];
                     } else if (validationError && validationError[key]) {
                         validationError = validationError[key];
+                    } else {
+                        validationError = null;
                     }
                 });
 
