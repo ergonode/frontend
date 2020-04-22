@@ -150,6 +150,6 @@ export default {
 
     .comment-content {
         font: $FONT_MEDIUM_14_20;
-        word-break: break-all;
+        white-space: pre;
     }
 </style>
