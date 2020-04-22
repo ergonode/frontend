@@ -250,7 +250,6 @@ export default {
             associatedLabel: '',
             isSearchFocused: false,
             hasAnyValueSelected: false,
-            isValueSelected: false,
         };
     },
     computed: {
