@@ -7,7 +7,8 @@
         <div
             v-if="isMounted"
             class="dialog-overlay"
-            @click="onClick">
+            @mousedown="onMouseDown"
+            @mouseup="onMouseUp">
             <slot />
         </div>
     </FadeTransition>
@@ -24,15 +25,34 @@ export default {
     data() {
         return {
             isMounted: false,
+            isClosed: {
+                mouseUp: false,
+                mouseDown: false,
+            },
         };
+    },
+    watch: {
+        isClosed: {
+            deep: true,
+            handler(value) {
+                if (value.mouseUp && value.mouseDown) {
+                    this.$emit('close');
+                }
+            },
+        },
     },
     mounted() {
         this.isMounted = true;
     },
     methods: {
-        onClick(event) {
+        onMouseDown(event) {
             if (event.target.classList.contains('dialog-overlay')) {
-                this.$emit('close');
+                this.isClosed.mouseDown = true;
+            }
+        },
+        onMouseUp(event) {
+            if (event.target.classList.contains('dialog-overlay')) {
+                this.isClosed.mouseUp = true;
             }
         },
     },

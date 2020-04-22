@@ -28,6 +28,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import { isEmpty } from '@Core/models/objectWrapper';
 import { THEME } from '@Core/defaults/theme';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
@@ -80,10 +81,20 @@ export default {
         },
         onAdd() {
             this.removeValidationErrors();
+            const preValidationErrors = {};
             const data = {
                 segments: this.segments.map(segment => segment.id),
                 skus: this.productSkus,
             };
+
+            if (data.segments.length < 1 || data.skus === '') {
+                preValidationErrors.skus = ['Both fields can not be empty'];
+                preValidationErrors.segments = ['Both fields can not be empty'];
+            }
+            if (!isEmpty(preValidationErrors)) {
+                this.onError({ errors: preValidationErrors });
+                return;
+            }
 
             this.isRequestPending = true;
             this.$axios.$post(`${this.language}/collections/${this.id}/elements/multiple`, data).then(() => {
