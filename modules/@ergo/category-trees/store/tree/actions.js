@@ -44,9 +44,9 @@ export default {
                 name,
             };
 
-            await commit(types.SET_TREE_ID, treeId);
-            await commit(types.SET_CODE, code);
-            await dispatch('translations/setTabTranslations', translations, { root: true });
+            commit(types.SET_TREE_ID, treeId);
+            commit(types.SET_CODE, code);
+            dispatch('translations/setTabTranslations', translations, { root: true });
         });
     },
     async updateTree(
