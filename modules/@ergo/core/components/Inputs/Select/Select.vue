@@ -249,6 +249,8 @@ export default {
             isClickedOutside: false,
             associatedLabel: '',
             isSearchFocused: false,
+            hasAnyValueSelected: false,
+            isValueSelected: false,
         };
     },
     computed: {
@@ -268,9 +270,6 @@ export default {
             return this.isMenuActive
                 ? ARROW.UP
                 : ARROW.DOWN;
-        },
-        hasAnyValueSelected() {
-            return Object.keys(this.selectedOptions).length > 0;
         },
         isDescription() {
             return this.description !== '' && this.description !== null;
@@ -327,7 +326,7 @@ export default {
             handler() {
                 let selectedOptions = {};
 
-                if (this.multiselect) {
+                if (this.multiselect && this.value) {
                     this.value.forEach((option) => {
                         selectedOptions[JSON.stringify(option)] = option;
                     });
@@ -346,6 +345,7 @@ export default {
             });
         }
 
+        this.hasAnyValueSelected = Object.keys(this.selectedOptions).length > 0;
         this.associatedLabel = `input-${this._uid}`;
     },
     beforeDestroy() {
@@ -372,10 +372,13 @@ export default {
         },
         onClear() {
             this.selectedOptions = {};
+            this.hasAnyValueSelected = false;
 
             this.$emit('input', this.multiselect ? [] : '');
         },
         onSelectValue(value, index) {
+            this.hasAnyValueSelected = true;
+
             if (this.multiselect) {
                 const selectedOptions = { ...this.selectedOptions };
 

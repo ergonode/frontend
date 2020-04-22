@@ -22,7 +22,8 @@
                     :required="properties.required"
                     :disabled="disabled"
                     :description="properties.hint"
-                    @input="debounceValueChange" />
+                    @focus="onFocus"
+                    @input="onValueChange" />
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
@@ -30,7 +31,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { debounce } from 'debounce';
 import { fieldDataCompose } from '@Products/models/productMapper';
 import { arraysAreEqual } from '@Core/models/arrayWrapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
@@ -75,11 +75,6 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            debounceValueChange: null,
-        };
-    },
     computed: {
         ...mapState('product', {
             data: state => state.data,
@@ -100,14 +95,17 @@ export default {
             });
         },
         fieldData() {
-            if (!this.hasOptions) {
+            const { attribute_code } = this.properties;
+
+            if (!this.hasOptions
+                    || (!this.data[attribute_code]
+                            && !this.draft[this.languageCode][attribute_code])) {
                 return {
-                    value: null,
+                    value: [],
                     isDraft: false,
                 };
             }
 
-            const { attribute_code } = this.properties;
             const check = (data, draftValue) => !arraysAreEqual(data, draftValue);
             const getMappedValue = fieldDataCompose(check);
             const { isDraft, value } = getMappedValue({
@@ -126,28 +124,26 @@ export default {
             };
         },
     },
-    created() {
-        this.debounceValueChange = debounce(this.onValueChange, 500);
-    },
     methods: {
         ...mapActions('product', [
             'setDraftValue',
         ]),
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.$emit('input', {
+                    fieldKey: this.fieldKey,
+                    languageCode: this.languageCode,
+                    productId: this.$route.params.id,
+                    elementId: this.properties.attribute_id,
+                    value: this.fieldData.value.map(({ id }) => id),
+                });
+            }
+        },
         onValueChange(value) {
-            const ids = value.map(({ id }) => id);
-
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
-                value: ids,
-            });
-
-            this.$emit('input', {
-                fieldKey: this.fieldKey,
-                languageCode: this.languageCode,
-                productId: this.$route.params.id,
-                elementId: this.properties.attribute_id,
-                value: ids,
+                value: value.map(({ id }) => id),
             });
         },
     },

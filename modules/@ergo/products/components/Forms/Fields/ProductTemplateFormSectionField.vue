@@ -28,6 +28,6 @@ export default {
         align-items: center;
         height: 100%;
         color: $GRAPHITE_DARK;
-        font: $FONT_SEMI_BOLD_16_24;
+        font: $FONT_MEDIUM_24_32;
     }
 </style>
