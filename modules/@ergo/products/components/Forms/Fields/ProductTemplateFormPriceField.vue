@@ -38,8 +38,8 @@ import { debounce } from 'debounce';
 import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import TextField from '@Core/components/Inputs/TextField';
+import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-
 
 export default {
     name: 'ProductTemplateFormPriceField',
@@ -47,7 +47,7 @@ export default {
         ProductTemplateFormField,
         TextField,
         FormValidatorField,
-        TextFieldSuffix: () => import('@Core/components/Inputs/TextFieldSuffix'),
+        TextFieldSuffix,
     },
     props: {
         size: {

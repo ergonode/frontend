@@ -84,7 +84,7 @@ export default {
     methods: {
         onFocus(isFocused) {
             if (!isFocused) {
-                if (this.localValue.id !== this.value) {
+                if (this.localValue && this.localValue.id !== this.value) {
                     this.$emit('input', this.localValue.id || this.localValue);
                 }
                 this.setEditingCellCoordinates();
