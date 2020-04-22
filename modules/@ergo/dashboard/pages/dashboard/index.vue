@@ -4,6 +4,11 @@
  */
 <template>
     <div class="grid-wrapper">
+        <Test>
+            <template #test>
+                <div>Hey! It's working</div>
+            </template>
+        </Test>
         <SimpleGrid
             class="grid"
             :title="title"
@@ -18,6 +23,7 @@ export default {
     name: 'Dashboard',
     components: {
         SimpleGrid: () => import('@Dashboard/components/SimpleGrid'),
+        Test: () => import('@Core/components/Inputs/Test'),
     },
     data() {
         return {
