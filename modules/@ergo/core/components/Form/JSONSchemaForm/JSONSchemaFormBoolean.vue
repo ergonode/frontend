@@ -5,7 +5,7 @@
 <template>
     <CheckBox
         :value="localValue"
-        :label="$attrs.label"
+        :label="label"
         @input="onValueChange" />
 </template>
 
@@ -17,14 +17,23 @@ export default {
     components: {
         CheckBox,
     },
-    inheritAttrs: false,
+    props: {
+        label: {
+            type: String,
+            default: '',
+        },
+        value: {
+            type: Boolean,
+            default: false,
+        },
+    },
     data() {
         return {
             localValue: false,
         };
     },
     created() {
-        this.localValue = this.$attrs.value;
+        this.localValue = this.value;
     },
     methods: {
         onValueChange(value) {
