@@ -115,7 +115,7 @@ export default {
 
         &__description {
             margin-top: 8px;
-            white-space: pre;
+            white-space: pre-wrap;
             text-overflow: ellipsis;
             overflow: hidden;
             word-break: break-all;
