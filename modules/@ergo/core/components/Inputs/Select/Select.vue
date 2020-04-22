@@ -93,6 +93,7 @@
 
 <script>
 import { ARROW } from '@Core/defaults/icons';
+import Vue from 'vue';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import SelectDropDown from '@Core/components/Inputs/Select/DropDown/SelectDropDown';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
