@@ -32,7 +32,6 @@
         <Blur
             v-show="isBlurVisible"
             :style="blurZIndex" />
-        <TrashCan v-show="draggedElementOnGrid" />
     </Page>
 </template>
 
@@ -44,7 +43,6 @@ import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPag
 export default {
     name: 'TransitionPage',
     components: {
-        TrashCan: () => import('@Core/components/DragAndDrop/TrashCan'),
         Blur: () => import('@Core/components/Blur/Blur'),
     },
     mixins: [categoryManagementPageMixin],
