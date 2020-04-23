@@ -41,6 +41,7 @@ import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
 
 export default {
     name: 'ProductTemplateFormDateField',
@@ -48,7 +49,7 @@ export default {
         ProductTemplateFormField,
         DatePicker,
         FormValidatorField,
-        TextFieldSuffix: () => import('@Core/components/Inputs/TextFieldSuffix'),
+        TextFieldSuffix,
     },
     props: {
         size: {

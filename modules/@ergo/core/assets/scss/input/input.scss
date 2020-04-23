@@ -9,6 +9,7 @@
     display: flex;
     flex: 1;
     flex-direction: column;
+    box-sizing: border-box;
 
     &__activator {
         position: relative;
@@ -292,8 +293,8 @@
 
             &.solid {
                 #{$input}__activator {
-                    border: $BORDER_2_GREEN;
-                    padding: 0;
+                    border-color: $GREEN;
+                    box-shadow: inset 0 0 0 1px $GREEN;
 
                     &::after {
                         transform: scaleX(0);
@@ -318,8 +319,7 @@
     &:not(&--error):not(&--focused) {
         &.solid {
             #{$input}__activator:hover {
-                border: $BORDER_2_GREY;
-                padding: 0;
+                border-color: $GREY_DARK;
             }
         }
     }
@@ -345,8 +345,8 @@
 
         &.solid {
             #{$input}__activator {
-                border: $BORDER_2_RED;
-                padding: 0;
+                border-color: $RED;
+                box-shadow: inset 0 0 0 1px $RED;
             }
         }
 

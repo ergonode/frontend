@@ -30,7 +30,6 @@
             v-if="isModalVisible"
             @close="onCloseModal"
             @create="onCreatedData" />
-        <TrashCan v-show="draggedElementOnGrid" />
     </Page>
 </template>
 
@@ -47,7 +46,6 @@ export default {
     components: {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
-        TrashCan: () => import('@Core/components/DragAndDrop/TrashCan'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
         CreateProductModalForm: () => import('@Products/components/Modals/CreateProductModalForm'),
         Button,
@@ -55,9 +53,6 @@ export default {
     },
     mixins: [gridModalMixin],
     computed: {
-        ...mapState('draggable', {
-            draggedElementOnGrid: state => state.draggedElementOnGrid,
-        }),
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },

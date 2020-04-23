@@ -34,6 +34,7 @@ export default function ({
             );
         } else {
             const internalServerError = { value: [e.statusText] };
+
             $store.dispatch(
                 'validations/onError',
                 {

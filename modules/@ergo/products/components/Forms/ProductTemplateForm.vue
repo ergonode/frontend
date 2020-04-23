@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <TemplateGridDesigner :row-height="templateRowHeight">
+    <TemplateGridDesigner
+        :row-height="templateRowHeight"
+        :max-row="maxRows">
         <div
             class="products-template-grid"
             :style="gridTemplateRows">
@@ -91,7 +93,7 @@ export default {
 <style lang="scss" scoped>
     .products-template-grid {
         display: grid;
-        grid-gap: 24px;
+        grid-gap: 16px 24px;
         grid-template-columns: repeat(4, 1fr);
         width: 1008px;
         padding: 24px;

@@ -10,8 +10,7 @@
                 :key="index"
                 :index="index"
                 :value="row"
-                :properties="properties"
-                :required="required"
+                :schema="schema.items"
                 @remove="onRemoveRowAtIndex"
                 @input="onValueChangeAtIndex" />
         </FormSubsection>
@@ -46,19 +45,15 @@ export default {
         Button,
     },
     props: {
-        properties: {
+        schema: {
             type: Object,
-            default: () => ({}),
+            required: true,
         },
         errorMessages: {
             type: Object,
             default: () => ({}),
         },
         value: {
-            type: Array,
-            default: () => [],
-        },
-        required: {
             type: Array,
             default: () => [],
         },

@@ -39,6 +39,7 @@ import { WHITE, BLUE, GREEN } from '@Core/assets/scss/_js-variables/colors.scss'
 import TitleBarHeader from '@Core/components/TitleBar/TitleBarHeader';
 import TitleBarActions from '@Core/components/TitleBar/TitleBarActions';
 import IconLock from '@Core/components/Icons/Feedback/IconLock';
+import Fab from '@Core/components/Buttons/Fab';
 import InformationIconBadge from '@Core/components/Badges/InformationIconBadge';
 
 export default {
@@ -48,7 +49,7 @@ export default {
         TitleBarActions,
         IconLock,
         InformationIconBadge,
-        Fab: () => import('@Core/components/Buttons/Fab'),
+        Fab,
         IconArrowPointer: () => import('@Core/components/Icons/Arrows/IconArrowPointer'),
     },
     props: {

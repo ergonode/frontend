@@ -6,12 +6,12 @@
     <Select
         :value="localValue"
         solid
-        :regular="!$attrs.small"
-        :small="$attrs.small"
-        :label="$attrs.title"
-        :required="$attrs.isRequired"
-        :options="$attrs.enum_titles || $attrs.enum"
-        :error-messages="$attrs.errorMessages"
+        :regular="!schema.small"
+        :small="schema.small"
+        :label="schema.title"
+        :required="schema.isRequired"
+        :options="schema.enum_titles || schema.enum"
+        :error-messages="errorMessages"
         @input="onValueChange" />
 </template>
 
@@ -23,35 +23,48 @@ export default {
     components: {
         Select,
     },
-    inheritAttrs: false,
+    props: {
+        schema: {
+            type: Object,
+            required: true,
+        },
+        value: {
+            type: String,
+            default: '',
+        },
+        errorMessages: {
+            type: String,
+            default: '',
+        },
+    },
     data() {
+        const { enum: options, enum_titles } = this.schema;
+        let localValue = '';
+
+        if (!enum_titles) {
+            localValue = this.value;
+        } else {
+            const optionIndex = options.findIndex(option => option === this.value);
+            localValue = enum_titles[optionIndex];
+        }
+
         return {
-            localValue: '',
+            localValue,
         };
     },
     computed: {
         mappedOptions() {
-            if (!this.$attrs.enum_titles) return null;
+            if (!this.schema.enum_titles) return null;
 
-            const { length } = this.$attrs.enum;
+            const { length } = this.schema.enum;
             const mappedOptions = {};
 
             for (let i = 0; i < length; i += 1) {
-                mappedOptions[this.$attrs.enum_titles[i]] = this.$attrs.enum[i];
+                mappedOptions[this.schema.enum_titles[i]] = this.schema.enum[i];
             }
 
             return mappedOptions;
         },
-    },
-    created() {
-        const { value, enum: options, enum_titles } = this.$attrs;
-
-        if (!enum_titles) {
-            this.localValue = value;
-        } else {
-            const optionIndex = options.findIndex(option => option === value);
-            this.localValue = enum_titles[optionIndex];
-        }
     },
     methods: {
         onValueChange(value) {

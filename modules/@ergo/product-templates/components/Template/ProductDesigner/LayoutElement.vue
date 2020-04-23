@@ -324,12 +324,16 @@ export default {
             this.newHeight = height;
         },
         initElementStyleForResizeState() {
-            this.$el.style.width = `${this.startWidth}px`;
-            this.$el.style.height = `${this.startHeight}px`;
+            window.requestAnimationFrame(() => {
+                this.$el.style.width = `${this.startWidth}px`;
+                this.$el.style.height = `${this.startHeight}px`;
+            });
         },
         resetElementStyleForEndResizeInteraction() {
-            this.$el.style.width = null;
-            this.$el.style.height = null;
+            window.requestAnimationFrame(() => {
+                this.$el.style.width = null;
+                this.$el.style.height = null;
+            });
         },
         resetDataForEndResizeInteraction() {
             this.isDraggingEnabled = true;

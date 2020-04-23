@@ -3,12 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSection :title="title">
+    <FormSection :title="schema.title">
         <Component
             v-for="element in objectComponents"
-            :is="element.component"
-            v-bind="element.props"
             :key="element.key"
+            :is="element.component"
+            :small="true"
+            :value="value[element.key]"
+            :schema="element.props"
             @input="onValueChange" />
     </FormSection>
 </template>
@@ -23,21 +25,17 @@ export default {
         FormSection,
     },
     props: {
-        title: {
-            type: String,
-            default: '',
-        },
         value: {
             type: Object,
             default: () => ({}),
         },
-        properties: {
+        schema: {
             type: Object,
             required: true,
         },
-        required: {
-            type: Array,
-            default: () => [],
+        errorMessages: {
+            type: Object,
+            default: () => ({}),
         },
     },
     data() {
@@ -48,7 +46,7 @@ export default {
     },
     computed: {
         fieldsKeys() {
-            return Object.keys(this.properties);
+            return Object.keys(this.schema.properties);
         },
     },
     created() {
@@ -63,14 +61,12 @@ export default {
                 const key = this.fieldsKeys[i];
                 const {
                     type, ...rest
-                } = this.properties[key];
+                } = this.schema.properties[key];
 
                 components.push({
                     key,
                     props: {
-                        value: this.value[key],
-                        small: true,
-                        isRequired: this.required.indexOf(key) !== -1,
+                        isRequired: this.schema.required.indexOf(key) !== -1,
                         ...rest,
                     },
                     component: () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),
