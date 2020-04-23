@@ -148,9 +148,9 @@ export default {
         stringifiedOptions() {
             return this.options.map(option => JSON.stringify(option));
         },
-	    isOptionsValid() {
-		    return this.options.length && typeof this.options[0] !== 'object';
-	    },
+        isOptionsValid() {
+            return this.options.length && typeof this.options[0] !== 'object';
+        },
     },
     methods: {
         onDismiss() {
