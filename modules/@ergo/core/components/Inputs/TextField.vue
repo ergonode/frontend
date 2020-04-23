@@ -11,8 +11,8 @@
             @mouseup="onMouseUp">
             <slot name="prepend" />
             <input
-                :id="associatedLabel"
                 v-test-id-generator="`input_${label}`"
+                :id="associatedLabel"
                 ref="input"
                 :value="value"
                 :placeholder="placeholderValue"
