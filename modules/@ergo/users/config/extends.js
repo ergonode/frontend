@@ -24,11 +24,32 @@ export default {
         GRID: {
             layout: {
                 table: {
+                    cells: {
+                        data: [
+                            {
+                                type: 'PRIVILEGE_CHECK',
+                                component: Components.GridCheckDataCell,
+                            },
+                            {
+                                type: 'LANGUAGE_CHECK',
+                                component: Components.GridCheckDataCell,
+                            },
+                            {
+                                type: 'ROW_NAME',
+                                component: Components.GridRowNameDataCell,
+                            },
+                        ],
+                    },
                     columns: [
                         {
-                            type: 'PRIVILEGE',
+                            type: 'PRIVILEGE_CHECK',
                             width: COLUMN_WIDTH.DYNAMIC,
-                            component: Components.GridPrivilegeColumn,
+                            component: Components.GridPrivilegeCheckColumn,
+                        },
+                        {
+                            type: 'LANGUAGE_CHECK',
+                            width: COLUMN_WIDTH.DYNAMIC,
+                            component: Components.GridLanguageCheckColumn,
                         },
                         {
                             type: 'PRIVILEGE_SELECT_ROW',
@@ -36,19 +57,14 @@ export default {
                             component: Components.GridPrivilegeSelectRowColumn,
                         },
                         {
-                            type: 'ELEMENT_NAME',
-                            width: COLUMN_WIDTH.DYNAMIC,
-                            component: Components.GridElementNameColumn,
-                        },
-                        {
-                            type: 'LANGUAGE_RESTRICTIONS',
-                            width: COLUMN_WIDTH.DYNAMIC,
-                            component: Components.GridLanguageRestrictionsColumn,
-                        },
-                        {
                             type: 'LANGUAGE_SELECT_ROW',
                             width: COLUMN_WIDTH.SELECT_ROW,
                             component: Components.GridLanguageSelectRowColumn,
+                        },
+                        {
+                            type: 'ROW_NAME',
+                            width: COLUMN_WIDTH.DYNAMIC,
+                            component: Components.GridRowNameColumn,
                         },
                     ],
                 },

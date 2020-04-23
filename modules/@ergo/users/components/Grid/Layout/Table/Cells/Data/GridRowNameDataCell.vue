@@ -26,7 +26,7 @@ import GridHintPresentationCell from '@Core/components/Grid/Layout/Table/Cells/P
 import gridDataCellMixin from '@Core/mixins/grid/cell/gridDataCellMixin';
 
 export default {
-    name: 'GridTextHintDataCell',
+    name: 'GridRowNameDataCell',
     components: {
         GridHintPresentationCell,
     },
@@ -39,7 +39,7 @@ export default {
             const check = (data, draftValue) => data !== draftValue;
             const getMappedValue = cellDataCompose(check);
 
-            return getMappedValue(this.data.value, this.drafts[this.rowId], this.columnId);
+            return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
         },
     },
 };

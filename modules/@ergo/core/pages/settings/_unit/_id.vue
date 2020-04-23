@@ -5,14 +5,12 @@
 <template>
     <UnitPage
         :title="name"
-        @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
@@ -55,9 +53,6 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
-        onDismiss() {
-            this.$router.push(getParentRoutePath(this.$route, 2));
-        },
         onRemove() {
             const isConfirmed = confirm('Are you sure you want to delete this unit?'); /* eslint-disable-line no-restricted-globals */
 

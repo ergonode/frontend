@@ -5,14 +5,12 @@
 <template>
     <TemplatePage
         :title="templateTitle"
-        @dismiss="onDismiss"
         @remove="onRemove"
         @save="onCreate" />
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { SKU_MODEL } from '@Templates/defaults/product';
 
@@ -68,9 +66,6 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
-        onDismiss() {
-            this.$router.push(getParentRoutePath(this.$route));
-        },
         onUpdateTemplateDesignerSuccess() {
             this.removeValidationErrors();
             this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Template updated' });

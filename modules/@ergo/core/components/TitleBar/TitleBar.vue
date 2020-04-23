@@ -7,7 +7,7 @@
         <TitleBarHeader :title="title">
             <template #prepend>
                 <Fab
-                    v-if="hasNavigateBackListener"
+                    v-if="isNavigationBack"
                     @click.native="onBack">
                     <template #icon="{ color }">
                         <IconArrowPointer :fill-color="color" />
@@ -39,6 +39,7 @@ import { WHITE, BLUE, GREEN } from '@Core/assets/scss/_js-variables/colors.scss'
 import TitleBarHeader from '@Core/components/TitleBar/TitleBarHeader';
 import TitleBarActions from '@Core/components/TitleBar/TitleBarActions';
 import IconLock from '@Core/components/Icons/Feedback/IconLock';
+import Fab from '@Core/components/Buttons/Fab';
 import InformationIconBadge from '@Core/components/Badges/InformationIconBadge';
 
 export default {
@@ -48,7 +49,7 @@ export default {
         TitleBarActions,
         IconLock,
         InformationIconBadge,
-        Fab: () => import('@Core/components/Buttons/Fab'),
+        Fab,
         IconArrowPointer: () => import('@Core/components/Icons/Arrows/IconArrowPointer'),
     },
     props: {
@@ -64,6 +65,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        isNavigationBack: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         whiteColor() {
@@ -75,13 +80,22 @@ export default {
         greenColor() {
             return GREEN;
         },
-        hasNavigateBackListener() {
-            return this.$listeners && this.$listeners.navigateBack;
-        },
     },
     methods: {
         onBack() {
-            this.$emit('navigateBack');
+            const { breadcrumbs } = this.$route.meta;
+
+            if (!breadcrumbs) {
+                if (process.env.NODE_ENV !== 'production') {
+                    console.error(`Route ${this.$route.fullPath} has no breadcrumbs initialised!`);
+                }
+
+                return false;
+            }
+
+            this.$router.push({ name: breadcrumbs[breadcrumbs.length - 1].routeName });
+
+            return true;
         },
     },
 };

@@ -31,6 +31,7 @@ describe('Badges/ProductCompleteness', () => {
                 completeness: {
                     filled: 1,
                     required: 1,
+                    missing: [],
                 },
             },
             computed: {

@@ -5,7 +5,6 @@
 <template>
     <AttributePage
         :title="code"
-        @dismiss="onDismiss"
         @remove="onRemove"
         @save="onSave" />
 </template>
@@ -14,8 +13,6 @@
 
 import { mapState, mapActions } from 'vuex';
 import { isEmpty, getKeyByValue } from '@Core/models/objectWrapper';
-import { isThereAnyTranslation, getParsedTranslations } from '@Core/models/mappers/translationsMapper';
-import { getParentRoutePath } from '@Core/models/navigation/tabs';
 import { getParsedParameterKeys } from '@Attributes/models/attributeMapper';
 import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
@@ -72,9 +69,6 @@ export default {
         ...mapActions('translations', {
             clearTranslationsStorage: 'clearStorage',
         }),
-        onDismiss() {
-            this.$router.push(getParentRoutePath(this.$route));
-        },
         onUpdateAttributeSuccess() {
             this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Attribute updated' });
         },
@@ -94,21 +88,31 @@ export default {
             this.removeValidationErrors();
             const typeKey = getKeyByValue(this.attrTypes, this.type);
             const { label, placeholder, hint } = this.translations;
-            const propertiesToUpdate = {
+            const data = {
                 groups: this.groups.map(group => group.id),
+                label,
+                hint,
+                placeholder,
             };
 
             if (!isEmpty(this.options)) {
-                const optionKeys = Object.keys(this.options);
-                const uniqueOptions = new Set(optionKeys);
+                const preValidationErrors = {};
 
-                if (optionKeys.some(key => key === '')) {
-                    this.$addAlert({ type: ALERT_TYPE.WARNING, message: 'Options cannot have an empty keys' });
-                    return;
-                }
+                Object.keys(this.options).forEach((optionKey) => {
+                    const fieldKey = `option_${optionKey}`;
+                    const dupications = Object.values(this.options)
+                        .filter(({ key }) => key === this.options[optionKey].key);
 
-                if (optionKeys.length !== uniqueOptions.size) {
-                    this.$addAlert({ type: ALERT_TYPE.WARNING, message: 'Option code must be unique' });
+                    if (dupications.length > 1) {
+                        preValidationErrors[fieldKey] = ['Option code must be unique'];
+                    }
+                    if (!this.options[optionKey].key) {
+                        preValidationErrors[fieldKey] = ['Option cannot be empty'];
+                    }
+                });
+
+                if (!isEmpty(preValidationErrors)) {
+                    this.onError({ errors: preValidationErrors });
                     return;
                 }
             }
@@ -127,27 +131,15 @@ export default {
                     paramKey = getKeyByValue(paramsOptions, this.parameter);
                 }
 
-                propertiesToUpdate.parameters = getParsedParameterKeys({
+                data.parameters = getParsedParameterKeys({
                     selectedType: typeKey,
                     selectedParam: paramKey,
                 });
             }
 
-            if (isThereAnyTranslation(label)) {
-                propertiesToUpdate.label = getParsedTranslations(label);
-            }
-
-            if (isThereAnyTranslation(hint)) {
-                propertiesToUpdate.hint = getParsedTranslations(hint);
-            }
-
-            if (isThereAnyTranslation(placeholder)) {
-                propertiesToUpdate.placeholder = getParsedTranslations(placeholder);
-            }
-
             this.updateAttribute({
                 id: this.id,
-                data: propertiesToUpdate,
+                data,
                 onSuccess: this.onUpdateAttributeSuccess,
                 onError: this.onError,
             });

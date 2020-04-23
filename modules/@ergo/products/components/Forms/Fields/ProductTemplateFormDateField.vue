@@ -41,6 +41,7 @@ import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
 
 export default {
     name: 'ProductTemplateFormDateField',
@@ -48,7 +49,7 @@ export default {
         ProductTemplateFormField,
         DatePicker,
         FormValidatorField,
-        TextFieldSuffix: () => import('@Core/components/Inputs/TextFieldSuffix'),
+        TextFieldSuffix,
     },
     props: {
         size: {
@@ -97,12 +98,12 @@ export default {
             const { isDraft, value } = getMappedValue({
                 data: this.data[attribute_code],
                 draft: this.draft[this.languageCode][attribute_code],
-                defaultValue: '',
+                defaultValue: null,
             });
 
             return {
                 isDraft,
-                value: parseDate(value, DEFAULT_FORMAT, new Date()),
+                value: value ? parseDate(value, DEFAULT_FORMAT, new Date()) : null,
             };
         },
         parameter() {
@@ -117,14 +118,15 @@ export default {
         },
     },
     created() {
-        this.debounceValueChange = debounce(value => this.onValueChange(value));
+        this.debounceValueChange = debounce(this.onValueChange, 500);
     },
     methods: {
         ...mapActions('product', [
             'setDraftValue',
         ]),
         onValueChange(value) {
-            const date = formatDate(value, DEFAULT_FORMAT);
+            const date = value ? formatDate(value, DEFAULT_FORMAT) : null;
+
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,

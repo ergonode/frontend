@@ -114,7 +114,7 @@ export default {
         this.calculateRowsCount();
         window.addEventListener('resize', this.debounceFunc);
     },
-    destroyed() {
+    beforeDestroy() {
         window.removeEventListener('resize', this.debounceFunc);
     },
     methods: {

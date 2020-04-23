@@ -9,6 +9,7 @@
     display: flex;
     flex: 1;
     flex-direction: column;
+    box-sizing: border-box;
 
     &__activator {
         position: relative;
@@ -303,6 +304,14 @@
                 #{$input}__content::after {
                     transform: scaleX(0);
                 }
+            }
+        }
+    }
+
+    &--focused, &--has-value {
+        &.floating-label {
+            #{$input}__label {
+                transform: translateY(-100%) scale(0.8);
             }
         }
     }

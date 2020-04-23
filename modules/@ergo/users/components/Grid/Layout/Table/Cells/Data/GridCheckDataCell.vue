@@ -41,7 +41,7 @@ export default {
             const check = (data, draftValue) => Boolean(data) !== Boolean(draftValue);
             const getMappedValue = cellDataCompose(check);
 
-            return getMappedValue(this.data.value, this.drafts[this.rowId], this.columnId);
+            return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
         },
     },
 };

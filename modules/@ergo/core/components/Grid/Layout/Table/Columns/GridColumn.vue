@@ -29,35 +29,55 @@
                     @remove="onRemoveColumn" />
             </slot>
         </GridTableCell>
-        <slot
-            v-if="isBasicFilter"
-            name="filter"
-            :is-locked="isFilterLocked"
-            :filter="filter"
-            :language-code="column.language"
-            :column-index="columnIndex"
-            :row-index="rowsOffset + basicFiltersOffset">
+        <template v-if="isBasicFilter">
+            <Component
+                v-if="filterCellComponent"
+                :is-locked="isFilterLocked"
+                :filter="filter"
+                :language-code="column.language"
+                :column-index="columnIndex"
+                :data="column.filter"
+                :row-index="rowsOffset + basicFiltersOffset"
+                :is="filterCellComponent"
+                @filter="onFilterChange" />
             <GridTableCell
+                v-else
                 :locked="true"
                 :row="rowsOffset + basicFiltersOffset"
                 :column="columnIndex" />
-        </slot>
+        </template>
         <template v-for="(row, rowIndex) in data">
             <slot
                 name="cell"
                 :data="row"
                 :row-id="rowIds[rowIndex]"
-                :column-id="column.id"
-                :language-code="column.language"
+                :column="column"
                 :column-index="columnIndex"
                 :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
                 :is-locked="!isEditingAllowed"
-                :is-copyable="isEditingAllowed" />
+                :is-copyable="isEditingAllowed">
+                <Component
+                    v-if="dataCellComponent"
+                    :is="dataCellComponent"
+                    :key="`${rowIds[rowIndex]}|${column.id}`"
+                    :data="row"
+                    :column="column"
+                    :row-id="rowIds[rowIndex]"
+                    :column-index="columnIndex"
+                    :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
+                    :is-locked="!isEditingAllowed"
+                    :is-copyable="isEditingAllowed"
+                    @editCell="onEditCell"
+                    @copyCells="onCopyCells" />
+            </slot>
         </template>
     </GridDraggableColumn>
 </template>
 
 <script>
+import {
+    capitalizeAndConcatenationArray,
+} from '@Core/models/stringWrapper';
 import GridDraggableColumn from '@Core/components/Grid/Layout/Table/Columns/GridDraggableColumn';
 import GridInteractiveHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridInteractiveHeaderCell';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
@@ -122,6 +142,28 @@ export default {
         isFilterLocked() {
             return typeof this.column.filter === 'undefined';
         },
+        filterCellComponent() {
+            if (!this.column.filter) return null;
+
+            return () => import(`@Core/components/Grid/Layout/Table/Cells/Filter/Grid${capitalizeAndConcatenationArray(this.column.filter.type.split('_'))}FilterCell`);
+        },
+        dataCellComponent() {
+            const extendedComponents = this.$getExtendedComponents('GRID');
+            const isDataCellExtended = typeof extendedComponents !== 'undefined'
+                    && typeof extendedComponents.layout !== 'undefined'
+                    && typeof extendedComponents.layout.table !== 'undefined'
+                    && typeof extendedComponents.layout.table.cells !== 'undefined'
+                    && typeof extendedComponents.layout.table.cells.data !== 'undefined';
+            const extendedDataCell = isDataCellExtended
+                ? extendedComponents.layout.table.cells.data.find(
+                    cell => cell.type === this.column.type,
+                )
+                : null;
+
+            return extendedDataCell
+                ? extendedDataCell.component
+                : () => import(`@Core/components/Grid/Layout/Table/Cells/Data/Grid${capitalizeAndConcatenationArray(this.column.type.split('_'))}DataCell`);
+        },
     },
     methods: {
         onHeaderFocus(isFocused) {
@@ -133,6 +175,9 @@ export default {
         onRemoveColumn(index) {
             this.$emit('remove', index);
         },
+        onFilterChange(payload) {
+            this.$emit('filter', payload);
+        },
         onSwapColumns(payload) {
             this.$emit('swapColumns', payload);
         },
@@ -141,6 +186,12 @@ export default {
         },
         onDrop(payload) {
             this.$emit('drop', payload);
+        },
+        onEditCell(payload) {
+            this.$emit('editCell', payload);
+        },
+        onCopyCells(payload) {
+            this.$emit('copyCells', payload);
         },
     },
 };

@@ -113,7 +113,7 @@ export default {
         onSelectValue(value) {
             switch (value) {
             case 'Remove':
-                this.$emit('remove', this.itemId);
+                this.$emit('remove', this.itemRow, this.itemId);
                 break;
             default: break;
             }

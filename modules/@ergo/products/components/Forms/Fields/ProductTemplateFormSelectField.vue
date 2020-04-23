@@ -84,14 +84,17 @@ export default {
             draft: state => state.draft,
         }),
         fieldData() {
-            if (!this.hasOptions) {
+            const { attribute_code } = this.properties;
+
+            if (!this.hasOptions
+                    || (!this.data[attribute_code]
+                            && !this.draft[this.languageCode][attribute_code])) {
                 return {
-                    value: null,
+                    value: '',
                     isDraft: false,
                 };
             }
 
-            const { attribute_code } = this.properties;
             const check = (data, draftValue) => data !== draftValue;
             const getMappedValue = fieldDataCompose(check);
             const { isDraft, value } = getMappedValue({
@@ -127,7 +130,7 @@ export default {
         },
     },
     created() {
-        this.debounceValueChange = debounce(value => this.onValueChange(value));
+        this.debounceValueChange = debounce(this.onValueChange, 500);
     },
     methods: {
         ...mapActions('product', [

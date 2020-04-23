@@ -75,9 +75,9 @@ export default {
                 parameterValue: null,
             });
         },
-        removeCondition(id) {
+        removeCondition(row, id) {
             this.removeConditionValue(id);
-            this.removeGridItem(id);
+            this.removeGridItem(row);
         },
     },
 };

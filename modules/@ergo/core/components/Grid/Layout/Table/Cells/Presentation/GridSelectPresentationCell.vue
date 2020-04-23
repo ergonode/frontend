@@ -5,19 +5,18 @@
 <template>
     <div class="presentation-select-cell">
         <GridPresentationCell :value="presentationValue" />
-        <IconArrowDropDown />
+        <IconArrowDropDown v-if="!isLocked" />
     </div>
 </template>
 
 <script>
 import GridPresentationCell from '@Core/components/Grid/Layout/Table/Cells/Presentation/GridPresentationCell';
-import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 
 export default {
     name: 'GridSelectPresentationCell',
     components: {
         GridPresentationCell,
-        IconArrowDropDown,
+        IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
     },
     props: {
         value: {
@@ -27,6 +26,10 @@ export default {
         options: {
             type: Object,
             default: () => ({}),
+        },
+        isLocked: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {

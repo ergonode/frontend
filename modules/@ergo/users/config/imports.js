@@ -28,9 +28,11 @@ export const Icons = {
 };
 
 export const Components = {
+    GridPrivilegeCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeCheckColumn'),
+    GridLanguageCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageCheckColumn'),
     GridPrivilegeSelectRowColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeSelectRowColumn'),
     GridLanguageSelectRowColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageSelectRowColumn'),
-    GridPrivilegeColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeColumn'),
-    GridLanguageRestrictionsColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageRestrictionsColumn'),
-    GridElementNameColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridElementNameColumn'),
+    GridRowNameColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridRowNameColumn'),
+    GridCheckDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridCheckDataCell'),
+    GridRowNameDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridRowNameDataCell'),
 };

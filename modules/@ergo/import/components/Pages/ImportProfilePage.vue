@@ -6,8 +6,8 @@
     <Page>
         <TitleBar
             :title="title"
-            :is-read-only="$isReadOnly('IMPORT')"
-            @navigateBack="onDismiss">
+            :is-navigation-back="true"
+            :is-read-only="$isReadOnly('IMPORT')">
             <template #mainAction>
                 <Button
                     title="IMPORT NOW"
@@ -33,9 +33,7 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
-import categoryManagementPageBaseMixin from '@Core/mixins/page/categoryManagementPageBaseMixin';
+import categoryManagementPageMixin from '@Core/mixins/page/categoryManagementPageMixin';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
@@ -43,17 +41,6 @@ export default {
     components: {
         UploadImportFileModalForm: () => import('@Import/components/Modals/UploadImportFileModalForm'),
     },
-    mixins: [categoryManagementPageBaseMixin, gridModalMixin],
-    computed: {
-        tabs() {
-            return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
-        },
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
-    },
+    mixins: [categoryManagementPageMixin, gridModalMixin],
 };
 </script>

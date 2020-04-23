@@ -7,7 +7,7 @@ import { toCapitalize } from '@Core/models/stringWrapper';
 export const getCheckColumn = (optionType, isEditable) => ({
     id: optionType,
     label: toCapitalize(optionType),
-    type: 'PRIVILEGE',
+    type: 'PRIVILEGE_CHECK',
     editable: isEditable,
     visible: true,
 });
@@ -15,7 +15,7 @@ export const getCheckColumn = (optionType, isEditable) => ({
 export const nameColumn = {
     id: 'name',
     label: 'Name',
-    type: 'ELEMENT_NAME',
+    type: 'ROW_NAME',
     editable: false,
     visible: true,
 };

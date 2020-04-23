@@ -203,7 +203,7 @@ export default {
                 return () => import('@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownFooter');
             case COLUMN_FILTER_TYPE.MULTI_SELECT:
             case COLUMN_FILTER_TYPE.DATE:
-            case COLUMN_FILTER_TYPE.RANGE:
+            case COLUMN_FILTER_TYPE.NUMERIC:
                 return () => import('@Core/components/Inputs/Select/DropDown/Footers/MultiselectDropdownFooter');
             default: return () => import('@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownApplyFooter');
             }
@@ -218,7 +218,7 @@ export default {
                 return () => import('@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
             case COLUMN_FILTER_TYPE.DATE:
                 return () => import('@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterDateContent');
-            case COLUMN_FILTER_TYPE.RANGE:
+            case COLUMN_FILTER_TYPE.NUMERIC:
                 return () => import('@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterRangeContent');
             default: return () => import('@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
             }
@@ -227,7 +227,7 @@ export default {
     mounted() {
         this.associatedLabel = `input-${this._uid}`;
     },
-    destroyed() {
+    beforeDestroy() {
         window.removeEventListener('click', this.onClickOutside);
     },
     methods: {

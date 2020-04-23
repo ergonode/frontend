@@ -118,7 +118,7 @@ export default {
             return this.sortRoutes(subMenuSorted);
         },
     },
-    destroyed() {
+    beforeDestroy() {
         window.removeEventListener('click', this.onClickOutside);
     },
     methods: {

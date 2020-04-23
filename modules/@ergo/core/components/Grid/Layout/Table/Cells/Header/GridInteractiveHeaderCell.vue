@@ -123,7 +123,7 @@ export default {
         this.$el.addEventListener('mouseenter', this.onMouseEnter);
         this.$el.addEventListener('mouseleave', this.onMouseLeave);
     },
-    destroyed() {
+    beforeDestroy() {
         this.$el.removeEventListener('mouseenter', this.onMouseEnter);
         this.$el.removeEventListener('mouseleave', this.onMouseLeave);
     },

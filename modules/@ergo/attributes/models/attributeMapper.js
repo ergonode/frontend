@@ -42,10 +42,11 @@ export function getParsedParameterKeys({
 export function getMappedArrayOptions(options) {
     return options.reduce((acc, current, currentIndex) => {
         const newObject = acc;
+
         newObject[currentIndex] = {
             id: current.id,
-            key: current.code,
-            value: current.label,
+            key: current.code || null,
+            value: !current.label || current.label.length < 1 ? null : current.label,
         };
         return newObject;
     }, {});

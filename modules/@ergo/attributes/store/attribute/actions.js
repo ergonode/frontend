@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 import { getMappedParameterValues, getMappedArrayOptions } from '@Attributes/models/attributeMapper';
-import { isEmpty, isObject } from '@Core/models/objectWrapper';
+import { isObject } from '@Core/models/objectWrapper';
 import { types } from './mutations';
 
 export default {
@@ -39,11 +39,11 @@ export default {
         return this.app.$axios.$delete(`${rootState.authentication.user.language}/attributes/${state.id}/options/${id}`)
             .then(() => commit(types.REMOVE_ATTRIBUTE_OPTION_KEY, index));
     },
-    updateAttributeOptionKey({ commit }, payload) {
-        if (payload.id) {
-            commit(types.SET_UPDATED_OPTION, payload.id);
+    updateAttributeOptionKey({ commit }, option) {
+        if (option.id) {
+            commit(types.SET_UPDATED_OPTION, option.id);
         }
-        commit(types.SET_ATTRIBUTE_OPTION_KEY, payload);
+        commit(types.SET_ATTRIBUTE_OPTION_KEY, option);
     },
     setOptionValueForLanguageCode({ commit, state }, {
         index, languageCode, value, id,
@@ -77,7 +77,11 @@ export default {
         });
     },
     getAttributeOptionsById({ commit, rootState }, { id }) {
-        return this.app.$axios.$get(`${rootState.authentication.user.language}/attributes/${id}/options`).then(options => commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options)));
+        const params = {
+            order: 'ASC',
+            field: 'code',
+        };
+        return this.app.$axios.$get(`${rootState.authentication.user.language}/attributes/${id}/options`, { params }).then(options => commit(types.INITIALIZE_OPTIONS, getMappedArrayOptions(options)));
     },
     getAttributeById({
         dispatch, commit, state, rootState,
@@ -96,12 +100,6 @@ export default {
             placeholder = '',
             multilingual,
         }) => {
-            const translations = {
-                hint,
-                label,
-                placeholder,
-            };
-
             commit(types.SET_ATTRIBUTE_ID, id);
             commit(types.SET_ATTRIBUTE_CODE, code);
             commit(types.SET_ATTRIBUTE_TYPE, attrTypes[type]);
@@ -110,7 +108,11 @@ export default {
                 group => groupIds.some(groupId => group.id === groupId),
             ));
 
-            dispatch('translations/setTabTranslations', translations, { root: true });
+            dispatch(
+                'translations/setTabTranslations',
+                { hint, label, placeholder },
+                { root: true },
+            );
 
             if (parameters) {
                 commit(
@@ -121,7 +123,9 @@ export default {
         });
     },
     async updateAttribute(
-        { state, commit, rootState },
+        {
+            state, commit, dispatch, rootState,
+        },
         {
             id,
             data,
@@ -136,47 +140,58 @@ export default {
 
         Object.keys(state.options).forEach((key) => {
             const option = state.options[key];
-            const optionValue = !state.isMultilingual
-                ? allLanguages.reduce((acc, e) => {
+            let optionValue = option.value || null;
+
+            if (!state.isMultilingual) {
+                optionValue = allLanguages.reduce((acc, e) => {
                     const opt = acc;
 
-                    opt[e.code] = isObject(option.value) && isEmpty(option.value) ? '' : option.value;
+                    if (option.value) {
+                        opt[e.code] = isObject(option.value)
+                            ? option.value[userLanguageCode]
+                            : option.value;
+                    }
                     return opt;
-                }, {})
-                : option.value;
-
+                }, {});
+            }
+            // TODO: add option validation when new languages are implemented
             if (!option.id) {
                 optionsToAddRequests.push(
                     this.app.$axios.$post(`${userLanguageCode}/attributes/${id}/options`, {
                         code: option.key,
-                        label: option.value ? optionValue : {},
-                    }).catch(e => onError(e.data)),
+                        label: optionValue,
+                    }).then(({ id: optionId }) => dispatch('updateAttributeOptionKey',
+                        {
+                            index: key,
+                            id: optionId,
+                            key: option.key,
+                        })),
                 );
             } else if (state.updatedOptions[option.id]) {
                 optionsToUpdateRequests.push(
                     this.app.$axios.$put(`${userLanguageCode}/attributes/${id}/options/${option.id}`, {
                         code: option.key,
                         label: optionValue,
-                    }).catch(e => onError(e.data)),
+                    }),
                 );
             }
         });
 
         await this.$setLoader('footerButton');
         await Promise.all([
-            this.app.$axios.$put(`${userLanguageCode}/attributes/${id}`, data).catch(e => onError(e.data)),
             ...optionsToAddRequests,
             ...optionsToUpdateRequests,
+            this.app.$axios.$put(`${userLanguageCode}/attributes/${id}`, data).catch(e => onError(e.data)),
         ]).then(() => {
             commit(types.REMOVE_UPDATED_OPTION);
             onSuccess();
         });
-
         await this.$removeLoader('footerButton');
     },
     removeAttribute({ state, rootState }, { onSuccess }) {
         const { id } = state;
         const { language: userLanguageCode } = rootState.authentication.user;
+
         return this.app.$axios.$delete(`${userLanguageCode}/attributes/${id}`).then(() => onSuccess());
     },
     clearStorage({ commit }) {

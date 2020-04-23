@@ -38,10 +38,10 @@ export default {
                 preview:
                   [
                       'pl_PL',
+                      'en_US',
                   ],
                 edit:
                   [
-                      'en_US',
                       'pl_PL',
                   ],
             },

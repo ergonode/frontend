@@ -12,13 +12,14 @@
             :label="label"
             :required="properties.required"
             :disabled="disabled"
-            height="100%" />
+            height="100%"
+            @upload="onValueChange"
+            @remove="onValueChange" />
     </ProductTemplateFormField>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { debounce } from 'debounce';
 import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
@@ -59,11 +60,6 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            debounceValueChange: null,
-        };
-    },
     computed: {
         ...mapState('product', {
             data: state => state.data,
@@ -90,9 +86,6 @@ export default {
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
-    },
-    created() {
-        this.debounceValueChange = debounce(value => this.onValueChange(value));
     },
     methods: {
         ...mapActions('product', [

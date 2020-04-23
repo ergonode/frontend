@@ -80,18 +80,19 @@ export default {
     .expanding-collection {
         display: flex;
         flex-direction: column;
+        width: inherit;
         border: $BORDER_1_GREY;
 
         &__header {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 80% 20%;
             padding: 15px;
             background-color: $WHITESMOKE;
         }
 
         &__body {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4, minmax(50px, 1fr));
             grid-gap: 24px;
             padding: 24px;
             border-top: $BORDER_1_GREY;
@@ -114,6 +115,10 @@ export default {
 
         &__description {
             margin-top: 8px;
+            white-space: pre-wrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            word-break: break-all;
         }
 
         &__subtitle, &__description {
@@ -127,5 +132,6 @@ export default {
 
     .append-header {
         display: flex;
+        justify-content: center;
     }
 </style>

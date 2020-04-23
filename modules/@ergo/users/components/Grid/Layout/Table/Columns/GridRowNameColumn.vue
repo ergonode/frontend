@@ -5,16 +5,22 @@
 <template>
     <GridColumn
         v-bind="$attrs"
-        v-on="$listeners" />
+        v-on="$listeners">
+        <template #header="{ title }">
+            <GridHeaderCell :title="title" />
+        </template>
+    </GridColumn>
 </template>
 
 <script>
 import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
+import GridHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridHeaderCell';
 
 export default {
-    name: 'GridIntegerColumn',
+    name: 'GridRowNameColumn',
     components: {
         GridColumn,
+        GridHeaderCell,
     },
     inheritAttrs: false,
 };

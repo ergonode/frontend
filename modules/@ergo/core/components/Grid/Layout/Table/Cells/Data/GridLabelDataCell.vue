@@ -17,8 +17,8 @@
             <GridLabelEditCell
                 v-if="isEditing"
                 :value="cellData.value"
-                :language-code="languageCode"
-                :colors="colors"
+                :language-code="column.language"
+                :colors="column.colors"
                 :row-id="rowId"
                 :width="$el.offsetWidth"
                 :height="$el.offsetHeight"
@@ -27,8 +27,9 @@
                 v-else-if="!isEditing && cellData.value"
                 :value="cellData.value"
                 :options="options"
-                :colors="colors"
-                :suffix="data.suffix" />
+                :colors="column.colors"
+                :suffix="data.suffix"
+                :is-locked="isLocked" />
         </template>
     </GridTableCell>
 </template>
@@ -46,20 +47,6 @@ export default {
         GridLabelEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridLabelEditCell'),
     },
     mixins: [gridDataCellMixin],
-    props: {
-        languageCode: {
-            type: String,
-            default: 'EN',
-        },
-        options: {
-            type: Object,
-            default: () => ({}),
-        },
-        colors: {
-            type: Object,
-            default: () => ({}),
-        },
-    },
     computed: {
         ...mapState('grid', {
             drafts: state => state.drafts,
@@ -68,7 +55,17 @@ export default {
             const check = (data, draftValue) => data !== draftValue;
             const getMappedValue = cellDataCompose(check);
 
-            return getMappedValue(this.data.value, this.drafts[this.rowId], this.columnId);
+            return getMappedValue(this.data.value, this.drafts[this.rowId], this.column.id);
+        },
+        options() {
+            if (this.column.filter && this.column.filter.options) {
+                // TODO: BE has to unify types!
+                if (Array.isArray(this.column.filter.options)) return {};
+
+                return this.column.filter.options;
+            }
+
+            return {};
         },
     },
 };

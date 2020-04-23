@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form :fields-keys="[skusFieldKey]">
+    <Form :fields-keys="[skusFieldKey, segmentsFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
                 <TranslationSelect
@@ -13,6 +13,7 @@
                     label="From segmentation rules"
                     regular
                     :disabled="isDisabledByPrivileges"
+                    :error-messages="errorMessages[segmentsFieldKey]"
                     :options="segmentOptions"
                     @input="(value) => $emit('input', { key: 'segments', value })" />
                 <TextArea
@@ -61,6 +62,9 @@ export default {
         },
         skusFieldKey() {
             return 'skus';
+        },
+        segmentsFieldKey() {
+            return 'segments';
         },
     },
 };

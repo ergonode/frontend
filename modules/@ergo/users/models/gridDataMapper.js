@@ -44,9 +44,12 @@ export function getMappedGridData({
             value: name,
             hint: description,
         });
-        data.id.push(name);
 
         const optionTypes = Object.keys(types);
+        const mappedId = types[optionTypes[0]].split('_');
+        mappedId.pop();
+
+        data.id.push(mappedId.join('_'));
 
         for (let j = 0; j < optionTypes.length; j += 1) {
             const type = optionTypes[j];
@@ -91,15 +94,11 @@ export function getMappedDataBasedOnGridData({
 
         for (let j = 0; j < privilegeTypes.length; j += 1) {
             const type = privilegeTypes[j];
-            const capitalizedPrivilegeName = privilegeName
-                .split(' ')
-                .map(name => name.toUpperCase())
-                .join('_');
-            const mappedPrivilege = `${capitalizedPrivilegeName}_${type.toUpperCase()}`;
+            const mappedPrivilege = `${privilegeName}_${type.toUpperCase()}`;
 
             if (!selectedData[mappedPrivilege] && drafts[privilegeName][type]) {
                 mappedPrivileges.push(mappedPrivilege);
-            } else {
+            } else if (!drafts[privilegeName][type]) {
                 mappedPrivileges = mappedPrivileges.filter(priv => priv !== mappedPrivilege);
             }
         }

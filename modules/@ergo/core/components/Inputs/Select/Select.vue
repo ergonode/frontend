@@ -33,7 +33,6 @@
                 v-if="label"
                 :for="associatedLabel"
                 :class="floatingLabelClasses"
-                :style="floatingLabelTransforms"
                 v-text="label" />
             <div class="input__append">
                 <slot name="append" />
@@ -250,6 +249,7 @@ export default {
             isClickedOutside: false,
             associatedLabel: '',
             isSearchFocused: false,
+            hasAnyValueSelected: false,
         };
     },
     computed: {
@@ -270,9 +270,6 @@ export default {
                 ? ARROW.UP
                 : ARROW.DOWN;
         },
-        hasAnyValueSelected() {
-            return Object.keys(this.selectedOptions).length > 0;
-        },
         isDescription() {
             return this.description !== '' && this.description !== null;
         },
@@ -286,10 +283,11 @@ export default {
                     regular: this.regular,
                     'left-alignment': this.leftAlignment,
                     'center-alignment': this.centerAlignment,
-                    'floating-label': Boolean(this.label) && this.label.length > 0,
+                    'floating-label': this.label && this.label.length > 0,
                     'input--error': this.isError,
                     'input--focused': this.isMenuActive,
                     'input--disabled': this.disabled,
+                    'input--has-value': this.hasAnyValueSelected,
                 },
             ];
         },
@@ -302,15 +300,6 @@ export default {
             return [
                 'input__information-label',
             ];
-        },
-        floatingLabelTransforms() {
-            if (this.hasAnyValueSelected || this.isMenuActive) {
-                return {
-                    transform: 'translateY(-100%) scale(0.8)',
-                };
-            }
-
-            return null;
         },
         floatingLabelClasses() {
             return [
@@ -336,7 +325,7 @@ export default {
             handler() {
                 let selectedOptions = {};
 
-                if (this.multiselect) {
+                if (this.multiselect && this.value) {
                     this.value.forEach((option) => {
                         selectedOptions[JSON.stringify(option)] = option;
                     });
@@ -355,9 +344,10 @@ export default {
             });
         }
 
+        this.hasAnyValueSelected = Object.keys(this.selectedOptions).length > 0;
         this.associatedLabel = `input-${this._uid}`;
     },
-    destroyed() {
+    beforeDestroy() {
         window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
@@ -381,10 +371,13 @@ export default {
         },
         onClear() {
             this.selectedOptions = {};
+            this.hasAnyValueSelected = false;
 
             this.$emit('input', this.multiselect ? [] : '');
         },
         onSelectValue(value, index) {
+            this.hasAnyValueSelected = true;
+
             if (this.multiselect) {
                 const selectedOptions = { ...this.selectedOptions };
 

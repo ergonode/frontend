@@ -8,7 +8,9 @@
             <VerticalTabBar :items="verticalTabs" />
         </template>
         <template #grid>
-            <TemplateGridDesigner @rowsCount="onRowsCountChange">
+            <TemplateGridDesigner
+                :max-row="maxLayoutRow"
+                @rowsCount="onRowsCountChange">
                 <TemplateGridDraggableLayer
                     :style="gridStyles"
                     :rows-number="maxLayoutRow"
