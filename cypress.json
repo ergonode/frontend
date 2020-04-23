@@ -3,7 +3,8 @@
   "viewportWidth": 1400,
   "viewportHeight": 800,
   "env": {
-    "adminEmail": "admin_login@ergonode.com",
-    "adminPass": "admin_pass"
+    "e2eMode": true,
+    "adminEmail": "test@ergonode.com",
+    "adminPass": "abcd1234"
   }
 }

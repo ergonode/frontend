@@ -35,3 +35,12 @@ Cypress.Commands.add('selectRandomUser', () => {
     cy.url().should('include', 'users/edit');
 });
 
+Cypress.Commands.add('resetDB', () => {
+    cy.exec('echo "test"');
+});
+
+Cypress.Commands.add('request', (type, url) => {
+    cy.server();
+    cy.route(type, `/api/v1/${url}`);
+});
+

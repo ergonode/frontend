@@ -15,6 +15,7 @@ export default {
         { ssr: true, src: './plugins/axios' },
         { ssr: true, src: './plugins/register-store' },
         { ssr: true, src: './plugins/core' },
+        { ssr: false, src: './plugins/directiveTestId' },
         { ssr: false, src: './plugins/alerts' },
     ],
     css: [

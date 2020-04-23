@@ -14,12 +14,14 @@
                 v-model="email"
                 solid
                 regular
+                data-cy="loginEmail"
                 label="E-mail" />
             <TextField
                 v-model="password"
                 solid
                 :input="passwordInputType"
                 regular
+                data-cy="loginPass"
                 label="Password"
                 @keyup.13="onSubmit" />
             <Toggler
@@ -30,6 +32,7 @@
             <Button
                 title="LOG IN"
                 type="submit"
+                data-cy="loginButton"
                 @click.stop.prevent.native="onSubmit" />
         </template>
     </LoginForm>
