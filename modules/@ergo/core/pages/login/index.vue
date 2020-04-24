@@ -6,8 +6,9 @@
     <main class="login">
         <section class="login__body">
             <span
+                v-if="showReleaseInfo"
                 class="release-info"
-                v-text="showInfo" />
+                v-text="showReleaseInfo" />
             <FluidBlob />
             <Component
                 :is="loginFormComponents.loginFormComponent"
@@ -27,6 +28,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { format as formatDate } from 'date-fns';
+import { DEFAULT_DATA_HOUR_FORMAT } from '@Core/defaults/date';
 import { LOGIN_STATE } from '@Authentication/defaults/login-state';
 import Footer from '@Core/components/Layout/Footer/Footer';
 import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
@@ -75,15 +78,18 @@ export default {
             default: return null;
             }
         },
-        showInfo() {
-            const commitHash = process.env.VUE_APP_GIT_HASH;
-            const releaseVersion = process.env.RELEASE_VERSION;
+        showReleaseInfo() {
+            const releaseVersion = process.env.VUE_APP_VERSION;
+            const gitInfo = process.env.VUE_APP_GIT_INFO;
 
-            return `Release: v${releaseVersion}, ${commitHash}`;
+            if (!process.env.SHOW_RELEASE_INFO) return null;
+
+            return `Commit hash: ${gitInfo.abbreviatedSha}
+            Date: ${formatDate(new Date(gitInfo.committerDate), DEFAULT_DATA_HOUR_FORMAT)}
+            Release: v${releaseVersion}`;
         },
     },
     created() {
-        console.log(process.env.VUE_APP_GIT_HASH);
         if (!this.isLogged) {
             this.resetState();
         }
@@ -123,7 +129,10 @@ export default {
                 top: 0;
                 right: 0;
                 padding: 10px;
+                white-space: pre-wrap;
+                color: $GREY_DARK;
                 font: $FONT_MEDIUM_12_16;
+                text-align: right;
             }
         }
 
