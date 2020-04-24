@@ -379,12 +379,17 @@ export default {
             this.isMouseMoving = true;
         },
         onClickOutside(event) {
+            const footerElement = this.$refs.menu.$el.querySelector('.dropdown-footer');
             const isClickedInsideMenu = this.$refs.menu.$el.contains(event.target);
             const isClickedInsideActivator = this.$refs.activator.contains(event.target);
+            const isClickedInsideMenuFooter = footerElement
+                ? footerElement.contains(event.target)
+                : false;
             this.isClickedOutside = !isClickedInsideMenu
                 && !isClickedInsideActivator;
 
             if (this.isClickedOutside || (isClickedInsideMenu
+                && !isClickedInsideMenuFooter
                 && !this.multiselect
                 && this.dismissible
                 && !this.isSearchFocused)

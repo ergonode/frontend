@@ -105,13 +105,8 @@ export default {
             const [code, languageCode] = this.column.id.split(':');
             const title = this.column.label || `#${code}`;
             const languageTitle = languageCode ? languageCode.toUpperCase() : '';
-            let suffix = '';
 
-            if (this.column.parameters) {
-                suffix = Object.keys(this.column.parameters).map(key => this.column.parameters[key]).join(', ');
-            }
-
-            return `${title} ${languageTitle} ${suffix}`;
+            return `${title} ${languageTitle}`;
         },
         hint() {
             const [code, languageCode] = this.column.id.split(':');

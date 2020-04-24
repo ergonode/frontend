@@ -20,7 +20,8 @@
                     :required="properties.required"
                     :disabled="disabled"
                     :description="properties.hint"
-                    @input="debounceValueChange">
+                    @focus="onFocus"
+                    @input="onValueChange">
                     <template #append>
                         <TextFieldSuffix
                             v-if="parameter"
@@ -34,7 +35,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { debounce } from 'debounce';
 import { fieldDataCompose } from '@Products/models/productMapper';
 import { format as formatDate, parse as parseDate } from 'date-fns';
 import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
@@ -81,11 +81,6 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            debounceValueChange: null,
-        };
-    },
     computed: {
         ...mapState('product', {
             data: state => state.data,
@@ -107,7 +102,7 @@ export default {
             };
         },
         parameter() {
-            if (!this.properties.parameters) return null;
+            if (!this.properties.parameters) return DEFAULT_FORMAT;
 
             const [key] = Object.keys(this.properties.parameters);
 
@@ -117,27 +112,29 @@ export default {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
     },
-    created() {
-        this.debounceValueChange = debounce(this.onValueChange, 500);
-    },
     methods: {
         ...mapActions('product', [
             'setDraftValue',
         ]),
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.$emit('input', {
+                    fieldKey: this.fieldKey,
+                    languageCode: this.languageCode,
+                    productId: this.$route.params.id,
+                    elementId: this.properties.attribute_id,
+                    value: this.fieldData.value
+                        ? formatDate(this.fieldData.value, DEFAULT_FORMAT)
+                        : '',
+                });
+            }
+        },
         onValueChange(value) {
             const date = value ? formatDate(value, DEFAULT_FORMAT) : null;
 
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
-                value: date,
-            });
-
-            this.$emit('input', {
-                fieldKey: this.fieldKey,
-                languageCode: this.languageCode,
-                productId: this.$route.params.id,
-                elementId: this.properties.attribute_id,
                 value: date,
             });
         },

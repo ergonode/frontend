@@ -21,6 +21,7 @@
                     :required="properties.required"
                     :disabled="disabled"
                     :description="properties.hint"
+                    @focus="onFocus"
                     @input="debounceValueChange" />
             </template>
         </FormValidatorField>
@@ -104,18 +105,21 @@ export default {
         ...mapActions('product', [
             'setDraftValue',
         ]),
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.$emit('input', {
+                    fieldKey: this.fieldKey,
+                    languageCode: this.languageCode,
+                    productId: this.$route.params.id,
+                    elementId: this.properties.attribute_id,
+                    value: this.fieldData.value,
+                });
+            }
+        },
         onValueChange(value) {
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
-                value,
-            });
-
-            this.$emit('input', {
-                fieldKey: this.fieldKey,
-                languageCode: this.languageCode,
-                productId: this.$route.params.id,
-                elementId: this.properties.attribute_id,
                 value,
             });
         },
