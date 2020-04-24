@@ -2,9 +2,10 @@
   "baseUrl": "http://localhost:3000",
   "viewportWidth": 1400,
   "viewportHeight": 800,
+  "testFiles": "**/*.feature",
   "env": {
-    "e2eMode": true,
+    "apiServer": "http://localhost:8000/api/v1/",
     "adminEmail": "test@ergonode.com",
-    "adminPass": "abcd1234"
+    "adminPass": "test"
   }
 }

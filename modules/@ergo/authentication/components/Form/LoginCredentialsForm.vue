@@ -11,17 +11,17 @@
         </template>
         <template #body>
             <TextField
+                data-cy="loginEmail"
                 v-model="email"
                 solid
                 regular
-                data-cy="loginEmail"
                 label="E-mail" />
             <TextField
+                data-cy="loginPass"
                 v-model="password"
                 solid
                 :input="passwordInputType"
                 regular
-                data-cy="loginPass"
                 label="Password"
                 @keyup.13="onSubmit" />
             <Toggler
@@ -30,9 +30,9 @@
         </template>
         <template #footer>
             <Button
+                data-cy="loginButton"
                 title="LOG IN"
                 type="submit"
-                data-cy="loginButton"
                 @click.stop.prevent.native="onSubmit" />
         </template>
     </LoginForm>

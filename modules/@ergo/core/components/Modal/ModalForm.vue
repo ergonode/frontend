@@ -4,7 +4,9 @@
  */
 <template>
     <ModalOverlay @close="onClose">
-        <div class="modal">
+        <div
+            data-cy="modal"
+            class="modal">
             <div class="modal__header">
                 <div class="header-title">
                     <slot name="headerPrepend" />
