@@ -5,6 +5,9 @@
 <template>
     <main class="login">
         <section class="login__body">
+            <span
+                class="release-info"
+                v-text="showInfo" />
             <FluidBlob />
             <Component
                 :is="loginFormComponents.loginFormComponent"
@@ -72,8 +75,15 @@ export default {
             default: return null;
             }
         },
+        showInfo() {
+            const commitHash = process.env.VUE_APP_GIT_HASH;
+            const releaseVersion = process.env.RELEASE_VERSION;
+
+            return `Release: v${releaseVersion}, ${commitHash}`;
+        },
     },
     created() {
+        console.log(process.env.VUE_APP_GIT_HASH);
         if (!this.isLogged) {
             this.resetState();
         }
@@ -107,6 +117,14 @@ export default {
             flex: 1;
             justify-content: center;
             align-items: center;
+
+            .release-info {
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 10px;
+                font: $FONT_MEDIUM_12_16;
+            }
         }
 
         &__infographic {

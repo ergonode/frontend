@@ -5,8 +5,12 @@
  */
 import { join } from 'path';
 import dotenv from 'dotenv';
-import { keywords, description } from './package';
+import { gitDescribeSync } from 'git-describe';
+import { keywords, description, version } from './package';
 import modulesConfig from './modules.config';
+
+process.env.VUE_APP_GIT_HASH = gitDescribeSync().hash;
+process.env.RELEASE_VERSION = version;
 
 dotenv.config({ path: '.env' });
 
