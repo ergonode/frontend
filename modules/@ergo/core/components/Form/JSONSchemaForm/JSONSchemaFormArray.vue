@@ -46,6 +46,7 @@ export default {
     },
     methods: {
         onValueChange(value) {
+            console.log(value);
             this.$emit('input', { key: this.$vnode.key, value });
         },
     },
