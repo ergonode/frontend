@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://vuejs.org" rel="noopener noreferrer">
+  <a href="https://ergonode.com" rel="noopener noreferrer">
     <img width="300" src="https://ergonode.com/wp-content/themes/ergonode/assets/img/logo.svg" alt="Egronode logo">
   </a>
 </p>
@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="https://ergonode.com">
-    <img src="https://img.shields.io/badge/version-0.6.1-4c9aff.svg" alt="Version">
+    <img src="https://img.shields.io/badge/version-0.7.0-4c9aff.svg" alt="Version">
   </a>
   <a href="https://ergonode.com">
     <img src="https://img.shields.io/badge/version%20code-Vegas-00bc87.svg" alt="Code Version">
@@ -24,37 +24,58 @@
 </p>
 <br>
 
-## Instalation
+## Installation
 
 **1) Manual**
 
-Download project repository (ergonode) to your local directory:
+Clone project repository to your local directory:
+
 ```bash
 git clone git@github.com:ergonode/frontend.git
 ```
-Open your terminal in local project, and execute:
+
+Install project dependencies:
+
 ```bash
 npm install
 ```
-Execute CLI command and set you API URL:
+
+Follow cli steps to configure project:
+
 ```bash
-npm run cli:run
+npm run modules
 ```
-> *You can also copy .env.dist file as .env and set your API URL configuration.*
 
-Run server
+You might want automatically setup all modules by executing command:
 ```bash
-#development
-npm run dev
+npm run modules:all
+```
 
-#production
+> *You may want to override created .env file by other settings*
+
+Run development mode
+
+```bash
+npm run dev
+```
+
+Run production mode
+
+```bash
 npm run build
 npm run start
 ```
 
-**2) Using Docker**
+> *After you set up [backend application][backend] and generated default fixtures you may login into application with credentials `test@ergonode.com`, password: `abcd1234`*
 
-Documentation how to install: [docker repository][docker]
+**2) Docker**
+
+Installation guide at [docker repository][docker]
+
+## Browser
+
+We recommend using the latest version of **Chrome** browser.
+On other browsers some functionalities may not work as intended.
 
 ## Documentation
 
@@ -62,8 +83,7 @@ The project is in early stage and we have got a lot of milestones to develop.  W
 
 **Please find out what we've already prepared on [docs.ergonode.com][docs]**
 
-
-#### Front-End Technologies
+## Technologies
 
 - Vue.js
 - Nuxt.js
@@ -72,31 +92,20 @@ The project is in early stage and we have got a lot of milestones to develop.  W
 - Axios
 - BEM (CSS)
 - ESLint (Airbnb standard)
-
-
-#### Tests
-
 - Cypress
 - JestJS
 
-## Build with us community on Slack
+## Contact us
 
 If you have any questions or ideas feel free to join our [slack][slack].
 
-## Is it production ready?
+## Is it production ready
 
-No! At the moment we have only one testing implementation to production environment (with more than 150k+ product indexes and integration with Magento Commerce 2.3), but in our opinion system still needs to be stabilised and we recommend not to use it at the moment in production mode. We still develop the core and there could be a lot of changes in the near future. If you want to know when it will be production ready look at Ergonode Roadmap. 
+No! At the moment we have only one testing implementation to production environment (with more than 150k+ product indexes and integration with Magento Commerce 2.3), but in our opinion system still needs to be stabilised and we recommend not to use it at the moment in production mode. We still develop the core and there could be a lot of changes in the near future. If you want to know when it will be production ready look at Ergonode Roadmap.
 
+## Contributing
 
-## Roadmap
-
-If you would like to find the current and future milestones for our project go to our [Roadmap][roadmap] page.
-
-At the moment we finalize development of Milestone 1 of the project. 
-
-## Build Ergonode with us!
-
-We are looking for Contributors: Back-end Dev, JS Devs, Tech Writers and Designers. Please read our [contribution rules][contribut] before making any pull request. If you have any questions or ideas feel free to join our [slack][slack] or send us an email: contributors@ergonode.com
+Before you start making any pull requests checkout our [contribution guide][contribut]. If you have any questions or ideas feel free to join our [slack][slack] or send us an email: contributors@ergonode.com
 
 ## Partners
 
@@ -115,5 +124,6 @@ Ergonode source code is released under the [OSL 3.0 License][license].
 [ddd]: https://en.wikipedia.org/wiki/Domain-driven_design
 [cqrs]: https://en.wikipedia.org/wiki/Command%E2%80%93query_separation
 [es]: https://dev.to/barryosull/event-sourcing-what-it-is-and-why-its-awesome
+[backend]: https://github.com/ergonode/backend
 [frontend]: https://github.com/ergonode/frontend
 [docker]: https://github.com/ergonode/docker

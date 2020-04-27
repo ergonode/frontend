@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TitleBar/TitleBar TitleBar is rendered with information badge 1`] = `
+<header class="title-bar">
+  <titlebarheader-stub title="test"></titlebarheader-stub>
+  <titlebaractions-stub> </titlebaractions-stub>
+</header>
+`;

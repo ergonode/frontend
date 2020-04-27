@@ -1,0 +1,34 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
+export function addElementCopyToDocumentBody({
+    event,
+    element,
+    width,
+    id,
+}) {
+    const clonedDOMElement = element.cloneNode(true);
+    const clonedDOMElementStyle = `
+        position: absolute;
+        background-color: white;
+        width: ${width}px;
+    `;
+
+    clonedDOMElement.setAttribute('style', clonedDOMElementStyle);
+    clonedDOMElement.classList.add('cloned-element');
+    document.body.appendChild(clonedDOMElement);
+    event.dataTransfer.setDragImage(clonedDOMElement, clonedDOMElement.offsetWidth / 2, 0);
+    event.dataTransfer.setData('text/plain', id);
+}
+
+export function removeElementCopyFromDocumentBody(event) {
+    const clonedDOMElement = document.documentElement.querySelector('.cloned-element');
+    document.body.removeChild(clonedDOMElement);
+
+    if (navigator.userAgent.toLowerCase().indexOf('firefox') === -1) {
+        // TODO: Only Firefox Error: Modifications are not allowed for this document
+        // check why firefox does not support clearData
+        event.dataTransfer.clearData();
+    }
+}

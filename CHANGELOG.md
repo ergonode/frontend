@@ -1,19 +1,31 @@
 # CHANGELOG
 This changelog references the relevant changes.
 
+## CHANGELOG FOR v0.7.0
+ - feature - Change of architecture to the micro frontend approach
+ - feature - Add unit management
+ - feature - Add product collections
+ - feature - Add creating elements from modal
+ - feature - Add import from Magento 1
+ - feature - Add new login page
+ - feature - Implementation storybook library
+ - perf - Performance improvement in grid
+ - perf - Performance improvement in UI elements
+
+
 ## CHANGELOG FOR v0.6.1
 - bugfix - Vuex store for Grid crashed after f5 - store had been removed
-- bugfix - App crash after f5 when page has FabButton at TitleBar
+- bugfix - App crash after f5 when page has Fab at TitleBar
 - bugfix - Attribute Select/Multiselect options were removing at edition
 - bugfix - Product Template fields validation
 - bugfix - Resizing at Template Designer
 - bugfix - AdvancedFilters had been established - dragging bugs
 
-## CHANGELOG FOR v0.6.0 
+## CHANGELOG FOR v0.6.0
  - feature - Add product history log
- - feature - Add core notifications 
+ - feature - Add core notifications
  - feature - Add workflow notifications
- - feature - Add comment module 
+ - feature - Add comment module
  - feature - Add system attribute
  - feature - Add advanced filter support
  - feature - Add excel-like mechanisms to grid
@@ -34,7 +46,7 @@ This changelog references the relevant changes.
 - bugfix [#138](https://github.com/ergonode/frontend/issues/138) Users - no validation on activity status
 - bugfix [#144](https://github.com/ergonode/frontend/issues/144) Hidden children not show again
 - bugfix [#145](https://github.com/ergonode/frontend/issues/145) Privileges bugs
-- perf [#147](https://github.com/ergonode/frontend/issues/147) Change communication wit API
+- perf [#147](https://github.com/ergonode/frontend/issues/147) Change communication with API
 
 ## CHANGELOG FOR v0.3.0
 
@@ -74,11 +86,11 @@ This changelog references the relevant changes.
 
 ## CHANGELOG FOR v0.1.1
 
-- bugfix [#1](https://github.com/ergonode/frontend/issues/1) many bugs fixed 
+- bugfix [#1](https://github.com/ergonode/frontend/issues/1) many bugs fixed
 - bugfix [#12](https://github.com/ergonode/frontend/issues/12) input floating label
-- bugfix [#20](https://github.com/ergonode/frontend/issues/20) inputs FF support 
-- refactor [#6](https://github.com/ergonode/frontend/issues/16) Code refactor 
+- bugfix [#20](https://github.com/ergonode/frontend/issues/20) inputs FF support
+- refactor [#6](https://github.com/ergonode/frontend/issues/16) Code refactor
 - feature [#4](https://github.com/ergonode/frontend/issues/4) application meta tags / favicon
-- feature [#18](https://github.com/ergonode/frontend/issues/18) multilingual attribute support 
-- configuration - [travis init](https://github.com/ergonode/frontend/issues/7) 
+- feature [#18](https://github.com/ergonode/frontend/issues/18) multilingual attribute support
+- configuration - [travis init](https://github.com/ergonode/frontend/issues/7)
 - configuration - [CLI](https://github.com/ergonode/frontend/issues/8)

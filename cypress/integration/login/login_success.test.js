@@ -7,7 +7,7 @@ context('Login ', () => {
         cy.visit('');
         cy.server();
         cy.route('POST', '/api/v1/login').as('postLogin');
-        cy.get('button').contains('span', 'Log in').as('loginBtn');
+        cy.get('button').contains('span', 'Log in').as('loginButton');
     });
 
     it('Login success', () => {
@@ -16,7 +16,7 @@ context('Login ', () => {
 
         cy.get('input[aria-label="Username"]').type(email).should('have.value', email);
         cy.get('input[aria-label="Password"]').type(pass).should('have.value', pass);
-        cy.get('@loginBtn').click();
+        cy.get('@loginButton').click();
         cy.wait('@postLogin').its('status').should('eq', 200);
         cy.url().should('include', '/dashboard');
     });
