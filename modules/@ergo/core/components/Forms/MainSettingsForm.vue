@@ -15,7 +15,6 @@
                     :multiselect="true"
                     :clearable="true"
                     :searchable="true"
-                    :drop-down-height="400"
                     @input="setSelectedLanguages"
                     @search="getFilteredData" />
             </FormSection>
