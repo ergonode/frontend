@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="dropdown"
-        ref="dropdown">
+    <div class="dropdown">
         <slot name="body" />
         <slot name="footer" />
     </div>
