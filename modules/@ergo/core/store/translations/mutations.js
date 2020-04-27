@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { removeFromObjectByKey } from '@Core/models/objectWrapper';
 import defaultState from './state';
 
 export const types = {
@@ -16,10 +17,17 @@ export default {
     [types.SET_MULTILINGUAL_TRANSLATION_PROPERTY_VALUE](state, {
         languageCode, propertyName, value,
     }) {
-        state.translations[propertyName] = {
-            ...state.translations[propertyName],
-            [languageCode]: value,
-        };
+        if (!value) {
+            state.translations[propertyName] = removeFromObjectByKey(
+                state.translations[propertyName],
+                languageCode,
+            );
+        } else {
+            state.translations[propertyName] = {
+                ...state.translations[propertyName],
+                [languageCode]: value,
+            };
+        }
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

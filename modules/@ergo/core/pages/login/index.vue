@@ -5,6 +5,10 @@
 <template>
     <main class="login">
         <section class="login__body">
+            <span
+                v-if="showReleaseInfo"
+                class="release-info"
+                v-text="showReleaseInfo" />
             <FluidBlob />
             <Component
                 :is="loginFormComponents.loginFormComponent"
@@ -24,6 +28,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { format as formatDate } from 'date-fns';
+import { DEFAULT_DATA_HOUR_FORMAT } from '@Core/defaults/date';
 import { LOGIN_STATE } from '@Authentication/defaults/login-state';
 import Footer from '@Core/components/Layout/Footer/Footer';
 import IconLogoName from '@Core/components/Icons/Logo/IconLogoName';
@@ -72,6 +78,16 @@ export default {
             default: return null;
             }
         },
+        showReleaseInfo() {
+            const releaseVersion = process.env.VUE_APP_VERSION;
+            const gitInfo = process.env.VUE_APP_GIT_INFO;
+
+            if (!process.env.SHOW_RELEASE_INFO) return null;
+
+            return `Commit hash: ${gitInfo.abbreviatedSha}
+            Date: ${formatDate(new Date(gitInfo.committerDate), DEFAULT_DATA_HOUR_FORMAT)}
+            Release: v${releaseVersion}`;
+        },
     },
     created() {
         if (!this.isLogged) {
@@ -107,6 +123,17 @@ export default {
             flex: 1;
             justify-content: center;
             align-items: center;
+
+            .release-info {
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 10px;
+                white-space: pre-wrap;
+                color: $GREY_DARK;
+                font: $FONT_MEDIUM_12_16;
+                text-align: right;
+            }
         }
 
         &__infographic {

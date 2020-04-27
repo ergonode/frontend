@@ -6,9 +6,12 @@
     <FormSubsection>
         <Component
             v-for="element in enumComponents"
-            :is="element.component"
             :key="element.key"
-            v-bind="element.props"
+            :is="element.component"
+            :value="element.value"
+            :small="true"
+            :label="element.label"
+            :error-messages="errorMessages"
             @input="onValueChange" />
     </FormSubsection>
 </template>
@@ -21,11 +24,24 @@ export default {
     components: {
         FormSubsection,
     },
-    inheritAttrs: false,
+    props: {
+        schema: {
+            type: Object,
+            required: true,
+        },
+        value: {
+            type: Array,
+            default: () => [],
+        },
+        errorMessages: {
+            type: Object,
+            default: () => ({}),
+        },
+    },
     data() {
         return {
             enumComponents: [],
-            localValue: this.$attrs.value,
+            localValue: this.value,
         };
     },
     created() {
@@ -33,7 +49,7 @@ export default {
     },
     methods: {
         initializeComponents() {
-            const { enum: options, enum_titles } = this.$attrs;
+            const { enum: options, enum_titles } = this.schema.items;
 
             if (!options && !enum_titles) return [];
 
@@ -45,13 +61,10 @@ export default {
 
                 components.push({
                     key,
-                    props: {
-                        value: this.$attrs.value
-                            ? this.$attrs.value.findIndex(option => option === key) !== -1
-                            : false,
-                        small: true,
-                        label: enum_titles[i],
-                    },
+                    value: this.value
+                        ? this.value.findIndex(option => option === key) !== -1
+                        : false,
+                    label: enum_titles[i],
                     component: () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormBoolean'),
                 });
             }
