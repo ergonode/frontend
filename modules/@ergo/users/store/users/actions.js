@@ -34,17 +34,7 @@ export default {
             password_repeat = '',
             is_active = false,
             role_id,
-            language_restrictions = {
-                preview:
-                  [
-                      'pl_PL',
-                      'en_US',
-                  ],
-                edit:
-                  [
-                      'pl_PL',
-                  ],
-            },
+            language_privileges_collection = null,
         }) => {
             commit(types.SET_STATE, { key: 'id', value: id });
             commit(types.SET_STATE, { key: 'avatarId', value: avatar_id });
@@ -55,7 +45,7 @@ export default {
             commit(types.SET_STATE, { key: 'password', value: password });
             commit(types.SET_STATE, { key: 'passwordRepeat', value: password_repeat });
             commit(types.SET_STATE, { key: 'isActive', value: is_active });
-            commit(types.SET_STATE, { key: 'languageRestrictions', value: getMappedRestrictions(language_restrictions) });
+            commit(types.SET_STATE, { key: 'languagePrivilegesCollection', value: getMappedRestrictions(language_privileges_collection) });
             if (role_id) {
                 commit(types.SET_STATE, { key: 'role', value: roles.find(role => role.id === role_id) });
             }

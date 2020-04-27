@@ -35,33 +35,30 @@ export default {
             columns: [],
             data: {},
             dataCount: 0,
-            languages: [
-                { name: 'pl_PL', description: 'polski', restriction: { edit: 'pl_PL_EDIT', preview: 'pl_PL_PREVIEW' } },
-                { name: 'en_US', description: 'angielski', restriction: { edit: 'en_US_EDIT', preview: 'en_US_PREVIEW' } },
-                { name: 'US', description: 'amarykanski', restriction: { edit: 'US_EDIT', preview: 'US_PREVIEW' } },
-                { name: 'XX', description: 'xx', restriction: { edit: 'XX_EDIT', preview: 'XX_PREVIEW' } },
-            ],
-            // languageRestrictions: { PL_pl_EDIT: true, PL_pl_PREVIEW: true, XX_EDIT: true },
         };
     },
     computed: {
-        // TODO: remove mock when API will be ready
-        // ...mapState('dictionaries', {
-        //     languages: state => state.languages,
-        // }),
+        ...mapState('dictionaries', {
+            languages: state => state.languages,
+        }),
         ...mapState('users', {
-            languageRestrictions: state => state.languageRestrictions,
+            languagePrivilegesCollection: state => state.languagePrivilegesCollection,
         }),
         isEditingAllowed() {
             return this.$hasAccess(['USER_UPDATE']);
         },
     },
     created() {
+        const fullDataList = Object.keys(this.languages).map(languageKey => ({
+            name: this.languages[languageKey],
+            description: languageKey,
+            privileges: { edit: `${languageKey}_EDIT`, read: `${languageKey}_READ` },
+        }));
         const {
             data, columns,
         } = getMappedGridData({
-            fullDataList: this.languages,
-            selectedData: this.languageRestrictions,
+            fullDataList,
+            selectedData: this.languagePrivilegesCollection,
             defaults: languagesDefaults,
             isEditable: true,
         });
@@ -71,7 +68,7 @@ export default {
             : columns;
 
         this.columns = sortedColumns;
-        this.dataCount = this.languages.length;
+        this.dataCount = fullDataList.length;
         this.data = data;
     },
 };

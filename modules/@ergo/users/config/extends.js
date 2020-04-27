@@ -13,12 +13,6 @@ export default {
             dataFormat: {},
             requestPath: '/dictionary/privileges',
         },
-        // TODO:
-        // {
-        //     stateProp: 'languageRestrictions',
-        //     dataFormat: {},
-        //     requestPath: '/dictionary/languageRestrictions',
-        // },
     ],
     extendComponents: {
         GRID: {

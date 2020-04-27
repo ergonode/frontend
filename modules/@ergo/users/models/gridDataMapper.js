@@ -3,13 +3,19 @@
  * See LICENSE for license details.
  */
 import { STATE } from '@Core/defaults/inputs/checkbox';
+import { isObject } from '@Core/models/objectWrapper';
 
 export function getMappedRestrictions(data) {
-    return Object.keys(data).reduce((acc, restriction) => {
-        const response = acc;
+    if (!isObject(data)) return null;
 
-        for (let i = 0; i < data[restriction].length; i += 1) {
-            response[`${data[restriction][i]}_${restriction.toUpperCase()}`] = true;
+    return Object.keys(data).reduce((acc, languageKey) => {
+        const response = acc;
+        const restriction = Object.keys(data[languageKey]);
+
+        for (let i = 0; i < restriction.length; i += 1) {
+            if (data[languageKey][restriction[i]]) {
+                response[`${languageKey}_${restriction[i].toUpperCase()}`] = true;
+            }
         }
         return response;
     }, {});
@@ -58,7 +64,7 @@ export function getMappedGridData({
                 data[type] = [];
                 columns.push(defaults.getCheckColumn(type, isEditable));
             }
-            const value = selectedData[types[type]] || false;
+            const value = isObject(selectedData) ? selectedData[types[type]] : false;
 
             data[type].push({ value });
         }

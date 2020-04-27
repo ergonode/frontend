@@ -31,7 +31,7 @@ export const selectRowColumn = {
 export const dataStructure = {
     name: 'name',
     description: 'description',
-    types: 'restriction',
+    types: 'privileges',
 };
 
 export default {

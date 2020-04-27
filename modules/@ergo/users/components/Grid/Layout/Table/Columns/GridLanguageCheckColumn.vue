@@ -29,7 +29,7 @@ export default {
             'setDraftValue',
         ]),
         onValueChange({ rowId, columnId, value }) {
-            if (columnId !== 'preview' && value) {
+            if (columnId !== 'read' && value) {
                 this.setDraftValue({
                     rowId,
                     columnId,
@@ -37,11 +37,11 @@ export default {
                 });
                 this.setDraftValue({
                     rowId,
-                    columnId: 'preview',
+                    columnId: 'read',
                     value: true,
                 });
             }
-            if (columnId === 'preview') {
+            if (columnId === 'read') {
                 this.setDraftValue({
                     rowId,
                     columnId: 'edit',

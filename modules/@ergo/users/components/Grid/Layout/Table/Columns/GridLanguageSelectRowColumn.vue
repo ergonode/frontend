@@ -105,11 +105,11 @@ export default {
             this.rowIds.forEach((rowId) => {
                 if (!draftValues[rowId]) draftValues[rowId] = {};
                 if (!draftValues[rowId].edit) draftValues[rowId].edit = {};
-                if (!draftValues[rowId].preview) draftValues[rowId].preview = {};
+                if (!draftValues[rowId].read) draftValues[rowId].read = {};
 
                 draftValues[rowId] = {
                     edit: value,
-                    preview: value,
+                    read: value,
                 };
 
                 this.selectedRows[rowId] = +value;
@@ -126,7 +126,7 @@ export default {
                 rowId,
                 value: {
                     edit: +value,
-                    preview: +value,
+                    read: +value,
                 },
             });
         },

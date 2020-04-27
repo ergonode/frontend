@@ -41,10 +41,9 @@ export default {
         ...mapState('dictionaries', {
             languages: state => state.languages,
         }),
-        // TODO:
-        // ...mapState('grid', {
-        //     drafts: state => state.drafts,
-        // }),
+        ...mapState('grid', {
+            drafts: state => state.drafts,
+        }),
         ...mapState('users', {
             id: state => state.id,
             avatarId: state => state.avatarId,
@@ -56,7 +55,7 @@ export default {
             passwordRepeat: state => state.passwordRepeat,
             isActive: state => state.isActive,
             role: state => state.role,
-            // languageRestrictions: state => state.languageRestrictions,
+            languagePrivilegesCollection: state => state.languagePrivilegesCollection,
         }),
         title() {
             return `${this.firstName} ${this.lastName}`;
@@ -95,8 +94,8 @@ export default {
                 passwordRepeat: this.passwordRepeat,
                 roleId: this.role.id,
                 isActive: this.isActive,
-                // languageRestrictions: getMappedDataBasedOnGridData({
-                //     selectedData: this.languageRestrictions,
+                // languagePrivilegesCollection: getMappedDataBasedOnGridData({
+                //     selectedData: this.languagePrivilegesCollection,
                 //     drafts: this.drafts,
                 // }),
             };

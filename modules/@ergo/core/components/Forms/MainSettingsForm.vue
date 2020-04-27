@@ -18,6 +18,7 @@
                     :drop-down-height="400"
                     @input="setSelectedLanguages"
                     @search="getFilteredData" />
+                <!-- TODO: uncomment when language tree ready
                 <TreeSelect
                     :value="treeValue"
                     :options="tree"
@@ -27,7 +28,7 @@
                     :multiselect="true"
                     :searchable="true"
                     @input="setLanguageTree"
-                    @search="getFilteredTree" />
+                    @search="getFilteredTree" /> -->
             </FormSection>
         </template>
     </Form>
@@ -42,7 +43,7 @@ export default {
         Form: () => import('@Core/components/Form/Form'),
         FormSection: () => import('@Core/components/Form/FormSection'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
-        TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
+        // TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
     },
     data() {
         return {
