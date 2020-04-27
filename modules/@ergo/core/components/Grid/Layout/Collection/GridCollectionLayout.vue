@@ -9,9 +9,11 @@
         <GridCollectionCell
             v-for="(element, index) in data"
             :key="index"
+            :actions="element.actions"
             :image="element.image"
             :description="element.description"
-            :object-fit="objectFit" />
+            :object-fit="objectFit"
+            @edit="onEditCell" />
     </div>
 </template>
 
@@ -44,6 +46,11 @@ export default {
             };
         },
     },
+    methods: {
+        onEditCell(args) {
+            this.$emit('editRow', args);
+        },
+    },
 };
 </script>
 
@@ -52,6 +59,7 @@ export default {
         display: grid;
         grid-template-rows: 190px;
         grid-gap: 24px;
+        height: 100%;
         padding: 24px;
         box-sizing: border-box;
         background-color: $WHITE;
