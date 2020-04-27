@@ -4,7 +4,7 @@
  */
 <template>
     <Card :title="selectedLanguage">
-        <Form :fields-keys="[nameKeyField]">
+        <Form :fields-keys="[nameFieldKey]">
             <template #body="{ errorMessages }">
                 <FormSection>
                     <TextField
