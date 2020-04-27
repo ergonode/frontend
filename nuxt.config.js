@@ -5,7 +5,8 @@
  */
 import { join } from 'path';
 import dotenv from 'dotenv';
-import { keywords, description } from './package';
+import getRepoInfo from 'git-repo-info';
+import { keywords, description, version } from './package';
 import modulesConfig from './modules.config';
 
 dotenv.config({ path: '.env' });
@@ -117,5 +118,8 @@ module.exports = {
     env: {
         baseURL: BASE_URL,
         NUXT_ENV: process.env.NUXT_ENV || process.env.NODE_ENV || 'development',
+        VUE_APP_VERSION: version,
+        VUE_APP_GIT_INFO: getRepoInfo(),
+        SHOW_RELEASE_INFO: process.env.SHOW_RELEASE_INFO || false,
     },
 };

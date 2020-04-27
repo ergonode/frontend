@@ -8,9 +8,11 @@
         :style="gridTemplateColumns">
         <Component
             v-for="element in rowComponents"
-            :is="element.component"
-            v-bind="element.props"
             :key="element.key"
+            :is="element.component"
+            :value="value[element.key]"
+            :small="true"
+            :schema="element.props"
             @input="onValueChange" />
         <Fab
             :theme="secondaryTheme"
@@ -36,17 +38,13 @@ export default {
         IconDelete,
     },
     props: {
-        properties: {
+        schema: {
             type: Object,
             required: true,
         },
         index: {
             type: Number,
             required: true,
-        },
-        required: {
-            type: Array,
-            default: () => [],
         },
         value: {
             type: Object,
@@ -69,7 +67,7 @@ export default {
             return { gridTemplateColumns };
         },
         fieldsKeys() {
-            return Object.keys(this.properties);
+            return Object.keys(this.schema.properties);
         },
     },
     created() {
@@ -84,14 +82,12 @@ export default {
                 const key = this.fieldsKeys[i];
                 const {
                     type, ...rest
-                } = this.properties[key];
+                } = this.schema.properties[key];
 
                 components.push({
                     key,
                     props: {
-                        value: this.value[key],
-                        small: true,
-                        isRequired: this.required.indexOf(key) !== -1,
+                        isRequired: this.schema.required.indexOf(key) !== -1,
                         ...rest,
                     },
                     component: () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaForm${toCapitalize(type)}`),

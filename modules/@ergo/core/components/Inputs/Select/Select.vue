@@ -46,74 +46,42 @@
             </div>
         </div>
         <FadeTransition>
-            <DropDown
+            <SelectDropDown
                 v-if="isMenuActive"
                 ref="menu"
                 :offset="getDropDownOffset()"
-                :fixed="fixedContent">
-                <template #body>
-                    <slot name="dropdown">
-                        <List>
-                            <DropDownListSearch
-                                v-if="searchable"
-                                :value="searchResult"
-                                @input="onSearch"
-                                @searchFocused="onSearchFocused" />
-                            <ListElement
-                                v-for="(option, index) in options"
-                                :key="index"
-                                :small="small"
-                                :regular="regular"
-                                :selected="isOptionSelected(index)"
-                                @click.native.prevent="onSelectValue(option, index)">
-                                <template #default="{ isSelected }">
-                                    <slot
-                                        name="option"
-                                        :option="option"
-                                        :is-selected="isSelected"
-                                        :index="index">
-                                        <template v-if="isOptionsValid">
-                                            <ListElementAction
-                                                v-if="multiselect"
-                                                :small="small">
-                                                <CheckBox :value="isSelected" />
-                                            </ListElementAction>
-                                            <ListElementDescription>
-                                                <ListElementTitle
-                                                    :small="small"
-                                                    :title="option" />
-                                            </ListElementDescription>
-                                        </template>
-                                    </slot>
-                                </template>
-                            </ListElement>
-                        </List>
-                    </slot>
+                :fixed="fixedContent"
+                :small="small"
+                :regular="regular"
+                :multiselect="multiselect"
+                :clearable="clearable"
+                :fixed-content="fixedContent"
+                :searchable="searchable"
+                :options="options"
+                :selected-options="selectedOptions"
+                :search-result="searchResult"
+                @dismiss="onDismiss"
+                @clear="onClear"
+                @search="onSearch"
+                @searchFocus="onSearchFocused"
+                @input="onSelectValue">
+                <template #dropdown>
+                    <slot name="dropdown" />
                 </template>
-                <template
-                    v-if="clearable"
-                    #footer>
+                <template #option="{ option, isSelected, index }">
+                    <slot
+                        name="option"
+                        :option="option"
+                        :is-selected="isSelected"
+                        :index="index" />
+                </template>
+                <template #footer>
                     <slot
                         name="footer"
                         :clear="onClear"
-                        :apply="onDismiss">
-                        <DropDownFooter
-                            :small="small"
-                            :space-between="multiselect">
-                            <Button
-                                v-if="multiselect"
-                                :size="tinySize"
-                                title="OK"
-                                @click.native="onDismiss" />
-                            <Button
-                                :size="tinySize"
-                                :title="multiselect ? 'CLEAR ALL' : 'CLEAR'"
-                                :theme="secondaryTheme"
-                                @click.native="onClear" />
-                        </DropDownFooter>
-                    </slot>
+                        :apply="onDismiss" />
                 </template>
-            </DropDown>
+            </SelectDropDown>
         </FadeTransition>
         <label
             v-if="informationLabel"
@@ -124,31 +92,19 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
 import { ARROW } from '@Core/defaults/icons';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
-import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
+import SelectDropDown from '@Core/components/Inputs/Select/DropDown/SelectDropDown';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
-import ListElementDescription from '@Core/components/List/ListElementDescription';
-import ListElementTitle from '@Core/components/List/ListElementTitle';
 
 export default {
     name: 'Select',
     components: {
         FadeTransition,
-        DropDown,
+        SelectDropDown,
         IconArrowDropDown,
-        ListElementDescription,
-        ListElementTitle,
-        List: () => import('@Core/components/List/List'),
-        ListElement: () => import('@Core/components/List/ListElement'),
-        ListElementAction: () => import('@Core/components/List/ListElementAction'),
-        DropDownListSearch: () => import('@Core/components/Inputs/Select/DropDown/DropDownListSearch'),
-        CheckBox: () => import('@Core/components/Inputs/CheckBox'),
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
         ErrorHint: () => import('@Core/components/Hints/ErrorHint'),
-        DropDownFooter: () => import('@Core/components/Inputs/Select/DropDown/Footers/DropDownFooter'),
-        Button: () => import('@Core/components/Buttons/Button'),
     },
     props: {
         value: {
@@ -253,18 +209,6 @@ export default {
         };
     },
     computed: {
-        stringifiedOptions() {
-            return this.options.map(option => JSON.stringify(option));
-        },
-        tinySize() {
-            return SIZE.TINY;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
-        isOptionsValid() {
-            return this.options.length && typeof this.options[0] !== 'object';
-        },
         dropDownState() {
             return this.isMenuActive
                 ? ARROW.UP
@@ -360,9 +304,6 @@ export default {
                 x, y, width, height,
             };
         },
-        isOptionSelected(index) {
-            return typeof this.selectedOptions[this.stringifiedOptions[index]] !== 'undefined';
-        },
         onSearch(value) {
             this.$emit('search', value);
         },
@@ -375,22 +316,10 @@ export default {
 
             this.$emit('input', this.multiselect ? [] : '');
         },
-        onSelectValue(value, index) {
+        onSelectValue(value) {
             this.hasAnyValueSelected = true;
 
-            if (this.multiselect) {
-                const selectedOptions = { ...this.selectedOptions };
-
-                if (this.isOptionSelected(index)) {
-                    delete selectedOptions[this.stringifiedOptions[index]];
-                } else {
-                    selectedOptions[this.stringifiedOptions[index]] = value;
-                }
-
-                this.$emit('input', Object.values(selectedOptions));
-            } else {
-                this.$emit('input', value);
-            }
+            this.$emit('input', value);
         },
         onDismiss() {
             this.isClickedOutside = true;
@@ -450,12 +379,17 @@ export default {
             this.isMouseMoving = true;
         },
         onClickOutside(event) {
+            const footerElement = this.$refs.menu.$el.querySelector('.dropdown-footer');
             const isClickedInsideMenu = this.$refs.menu.$el.contains(event.target);
             const isClickedInsideActivator = this.$refs.activator.contains(event.target);
+            const isClickedInsideMenuFooter = footerElement
+                ? footerElement.contains(event.target)
+                : false;
             this.isClickedOutside = !isClickedInsideMenu
                 && !isClickedInsideActivator;
 
             if (this.isClickedOutside || (isClickedInsideMenu
+                && !isClickedInsideMenuFooter
                 && !this.multiselect
                 && this.dismissible
                 && !this.isSearchFocused)

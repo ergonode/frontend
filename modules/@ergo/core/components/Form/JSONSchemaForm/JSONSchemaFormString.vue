@@ -5,22 +5,36 @@
 <template>
     <Component
         :is="stringComponent"
-        v-bind="$attrs"
+        :value="value"
+        :schema="schema"
+        :error-messages="errorMessages"
         @input="onValueChange" />
 </template>
 
 <script>
-
 export default {
     name: 'JSONSchemaFormString',
-    inheritAttrs: false,
+    props: {
+        schema: {
+            type: Object,
+            required: true,
+        },
+        errorMessages: {
+            type: String,
+            default: '',
+        },
+        value: {
+            type: String,
+            default: '',
+        },
+    },
     data() {
         return {
             stringComponent: null,
         };
     },
     created() {
-        const { enum: options } = this.$attrs;
+        const { enum: options } = this.schema;
 
         if (options) this.stringComponent = () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormSelect');
         else this.stringComponent = () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormText');
