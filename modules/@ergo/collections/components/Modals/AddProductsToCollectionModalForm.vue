@@ -87,7 +87,7 @@ export default {
                 skus: this.productSkus,
             };
 
-            if (data.segments.length < 1 || data.skus === '') {
+            if (data.segments.length < 1 && data.skus === '') {
                 preValidationErrors.skus = ['Both fields can not be empty'];
                 preValidationErrors.segments = ['Both fields can not be empty'];
             }

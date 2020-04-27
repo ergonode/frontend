@@ -6,11 +6,11 @@
     <TextField
         :value="localValue"
         solid
-        :regular="!$attrs.small"
-        :small="$attrs.small"
-        :label="$attrs.title"
-        :required="$attrs.isRequired"
-        :error-messages="$attrs.errorMessages"
+        :regular="!schema.small"
+        :small="schema.small"
+        :label="schema.title"
+        :required="schema.isRequired"
+        :error-messages="errorMessages"
         @input="onValueChange" />
 </template>
 
@@ -22,14 +22,27 @@ export default {
     components: {
         TextField,
     },
-    inheritAttrs: false,
+    props: {
+        schema: {
+            type: Object,
+            required: true,
+        },
+        value: {
+            type: String,
+            default: '',
+        },
+        errorMessages: {
+            type: String,
+            default: '',
+        },
+    },
     data() {
         return {
             localValue: '',
         };
     },
     created() {
-        this.localValue = this.$attrs.value;
+        this.localValue = this.value;
     },
     methods: {
         onValueChange(value) {

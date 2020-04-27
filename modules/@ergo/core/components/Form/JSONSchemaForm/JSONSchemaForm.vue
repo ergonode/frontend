@@ -12,7 +12,9 @@
                 v-for="element in schemaComponents"
                 :key="element.key"
                 :is="element.component"
-                v-bind="{ ...element.props, errorMessages: errorMessages[element.key] }"
+                :value="model[element.key]"
+                :schema="element.props"
+                :error-messages="errorMessages[element.key]"
                 @input="onValueChange" />
         </template>
     </Form>
@@ -71,7 +73,6 @@ export default {
                 components.push({
                     key,
                     props: {
-                        value: this.model[key],
                         isRequired: this.schema.required
                             && this.schema.required.indexOf(key) !== -1,
                         ...rest,

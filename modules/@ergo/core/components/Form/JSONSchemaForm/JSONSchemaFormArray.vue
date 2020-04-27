@@ -3,10 +3,12 @@
  * See LICENSE for license details.
  */
 <template>
-    <FormSection :title="title">
+    <FormSection :title="schema.title">
         <Component
             :is="arrayComponent"
-            v-bind="{ ...items, value, errorMessages }"
+            :value="value"
+            :schema="schema"
+            :error-messages="errorMessages"
             @input="onValueChange" />
     </FormSection>
 </template>
@@ -21,19 +23,15 @@ export default {
         FormSection,
     },
     props: {
-        title: {
-            type: String,
-            default: '',
-        },
-        errorMessages: {
+        schema: {
             type: Object,
-            default: () => ({}),
+            required: true,
         },
         value: {
             type: Array,
             default: () => [],
         },
-        items: {
+        errorMessages: {
             type: Object,
             default: () => ({}),
         },
@@ -44,7 +42,7 @@ export default {
         };
     },
     created() {
-        this.arrayComponent = () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaFormArray${toCapitalize(this.items.type)}`);
+        this.arrayComponent = () => import(`@Core/components/Form/JSONSchemaForm/JSONSchemaFormArray${toCapitalize(this.schema.items.type)}`);
     },
     methods: {
         onValueChange(value) {
