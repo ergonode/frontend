@@ -28,20 +28,18 @@ context('Attribute add', () => {
     });
 
     describe('Insert attribute values - invalid', () => {
-      beforeEach(() => {
-          cy.server();
-          cy.route('POST', '/api/v1/EN/attributes').as('attrRoute');
-      });
-      it('Create attribute', () => {
-          cy.wait(500);
-          cy.get('button').contains('NEW ATTRIBUTE').click({ force: true });
-          cy.wait('@attrRoute').its('status').should('eq', 400);
-          cy.url().should('include', '/attributes/attribute/new');
-      });
+        beforeEach(() => {
+            cy.server();
+            cy.route('POST', '/api/v1/EN/attributes').as('attrRoute');
+        });
+        it('Create attribute', () => {
+            cy.get('button').contains('NEW ATTRIBUTE').click({ force: true });
+            cy.wait('@attrRoute').its('status').should('eq', 400);
+            cy.url().should('include', '/attributes/attribute/new');
+        });
     });
 
     describe('Insets attribute values - valid', () => {
-
         it('Insert code', () => {
             cy.get('.base-card').find('label')
                 .contains('Code')
@@ -68,7 +66,6 @@ context('Attribute add', () => {
             cy.get('.list').contains('Text').click({ force: true });
             cy.get('input[aria-label="Type"]').should('have.value', 'Text');
         });
-
     });
 
     describe('Confirm attribute', () => {

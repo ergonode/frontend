@@ -1,3 +1,7 @@
+/*
+ * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
+ * See LICENSE for license details.
+ */
 // ***********************************************************
 // This example plugins/index.js can be used to load plugins
 //
@@ -13,8 +17,8 @@
 
 const cucumber = require('cypress-cucumber-preprocessor').default;
 
-module.exports = (on, config) => {
-  on('file:preprocessor', cucumber());
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
-}
+module.exports = (on /* config */) => {
+    on('file:preprocessor', cucumber());
+    // `on` is used to hook into various events Cypress emits
+    // `config` is the resolved Cypress config
+};

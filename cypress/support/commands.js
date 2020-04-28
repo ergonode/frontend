@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 Cypress.Commands.add('apiRequest', (type, url) => {
-  cy.server();
-  cy.route(type, `${Cypress.env('apiServer')}${url}`);
+    cy.server();
+    cy.route(type, `${Cypress.env('apiServer')}${url}`);
 });
 
 Cypress.Commands.add('login', (email, pass) => {
@@ -18,7 +18,6 @@ Cypress.Commands.add('login', (email, pass) => {
 });
 
 Cypress.Commands.add('logout', () => {
-    cy.wait(1000);
     cy.get('[data-cy=navBarDropDown]').click();
     cy.get('[data-cy=navBarContent]').should('be.visible');
     cy.get('[data-cy=logoutButton]').click();
@@ -33,3 +32,7 @@ Cypress.Commands.add('selectRandomUser', () => {
     cy.url().should('include', 'users/edit');
 });
 
+Cypress.on('uncaught:exception', (err) => {
+    console.log(err);
+    return false;
+});

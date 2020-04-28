@@ -5,11 +5,11 @@
 const data = {
     incorrect: {
         email: 'test@test.pl',
-        pass: '123'
+        pass: '123',
     },
     incorrectEmail: {
         email: 'test',
-        pass: '123'
+        pass: '123',
     },
     correct: {
         email: Cypress.env('adminEmail'),
@@ -25,7 +25,7 @@ const data = {
         priv: 'en/dictionary/privileges',
         sour: 'en/dictionary/sources',
     },
-}
+};
 
 context('Login page', () => {
     beforeEach(() => {
@@ -73,8 +73,6 @@ context('Login page', () => {
                 cy.wait(`@${d}`).its('status').should('eq', 200);
             });
             cy.url().should('include', '/dashboard');
-            cy.wait(1000);
-            cy.logout();
         });
     });
 });

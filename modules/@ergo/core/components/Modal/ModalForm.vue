@@ -13,6 +13,7 @@
                     <span v-text="title" />
                 </div>
                 <Fab
+                    data-cy="modalClose"
                     :theme="secondaryTheme"
                     @click.native="onClose">
                     <template #icon="{ color }">

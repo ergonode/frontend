@@ -136,6 +136,6 @@
         "@ergo/import": "local"
     },
     "cypress-cucumber-preprocessor": {
-      "nonGlobalStepDefinitions": true
+        "nonGlobalStepDefinitions": true
     }
 }
