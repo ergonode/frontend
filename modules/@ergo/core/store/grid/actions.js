@@ -33,6 +33,9 @@ export default {
     removeDraftRow({ commit }, rowId) {
         commit(types.REMOVE_DRAFT_ROW, rowId);
     },
+    removeDraft({ commit }) {
+        commit(types.REMOVE_DRAFT);
+    },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);
     },

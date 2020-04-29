@@ -12,6 +12,7 @@ export const types = {
     SET_DRAFT_ROW_VALUES: 'SET_DRAFT_ROW_VALUES',
     SET_DRAFTS: 'SET_DRAFTS',
     REMOVE_DRAFT_ROW: 'REMOVE_DRAFT_ROW',
+    REMOVE_DRAFT: 'REMOVE_DRAFT',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 export default {
@@ -36,6 +37,9 @@ export default {
     },
     [types.REMOVE_DRAFT_ROW](state, rowId) {
         delete state.drafts[rowId];
+    },
+    [types.REMOVE_DRAFT](state) {
+        state.drafts = {};
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

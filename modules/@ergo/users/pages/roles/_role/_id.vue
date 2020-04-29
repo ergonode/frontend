@@ -11,7 +11,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getMappedDataBasedOnGridData } from '@Users/models/gridDataMapper';
+import { getMappedPrivilegesBasedOnGridData } from '@Users/models/gridDataMapper';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
@@ -47,6 +47,7 @@ export default {
     },
     methods: {
         ...mapActions('roles', [
+            'setPrivileges',
             'clearStorage',
             'updateRole',
             'removeRole',
@@ -55,10 +56,9 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
-        onUpdateRoleSuccess() {
-            this.removeValidationErrors();
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Role updated' });
-        },
+        ...mapActions('grid', [
+            'removeDraft',
+        ]),
         onRemoveRoleSuccess() {
             this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Role removed' });
             this.$router.push({ name: 'user-roles-grid' });
@@ -70,7 +70,7 @@ export default {
             const role = {
                 name: this.name,
                 description: this.description,
-                privileges: getMappedDataBasedOnGridData({
+                privileges: getMappedPrivilegesBasedOnGridData({
                     selectedData: this.privileges,
                     drafts: this.drafts,
                 }),
@@ -79,7 +79,15 @@ export default {
             this.updateRole({
                 id: this.roleID,
                 data: role,
-                onSuccess: this.onUpdateRoleSuccess,
+                onSuccess: () => {
+                    const privileges = role.privileges
+                        .reduce((acc, ele) => ({ ...acc, [ele]: true }), {});
+
+                    this.removeValidationErrors();
+                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Role updated' });
+                    this.setPrivileges(privileges);
+                    this.removeDraft();
+                },
                 onError: this.onError,
             });
         },

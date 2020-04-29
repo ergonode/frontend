@@ -18,7 +18,7 @@
 <script>
 import { mapState } from 'vuex';
 import languagesDefaults from '@Users/defaults/languages';
-import { getMappedGridData } from '@Users/models/gridDataMapper';
+import { getMappedGridData, getMappedRestrictions } from '@Users/models/gridDataMapper';
 import { getSortedColumnsByIDs } from '@Core/models/mappers/gridDataMapper';
 import Grid from '@Core/components/Grid/Grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
@@ -31,7 +31,6 @@ export default {
     },
     data() {
         return {
-            rowIds: [],
             columns: [],
             data: {},
             dataCount: 0,
@@ -48,28 +47,41 @@ export default {
             return this.$hasAccess(['USER_UPDATE']);
         },
     },
+    watch: {
+        languagePrivilegesCollection: {
+            deep: true,
+            handler() {
+                this.updateGridData();
+            },
+        },
+    },
     created() {
-        const fullDataList = Object.keys(this.languages).map(languageKey => ({
-            name: this.languages[languageKey],
-            description: languageKey,
-            privileges: { edit: `${languageKey}_EDIT`, read: `${languageKey}_READ` },
-        }));
-        const {
-            data, columns,
-        } = getMappedGridData({
-            fullDataList,
-            selectedData: this.languagePrivilegesCollection,
-            defaults: languagesDefaults,
-            isEditable: true,
-        });
-        const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
-        const sortedColumns = config
-            ? getSortedColumnsByIDs(columns, config.split(','))
-            : columns;
+        this.updateGridData();
+    },
+    methods: {
+        updateGridData() {
+            const fullDataList = Object.keys(this.languages).map(languageKey => ({
+                name: this.languages[languageKey],
+                description: languageKey,
+                privileges: { edit: `${languageKey}_EDIT`, read: `${languageKey}_READ` },
+            }));
+            const {
+                data, columns,
+            } = getMappedGridData({
+                fullDataList,
+                selectedData: getMappedRestrictions(this.languagePrivilegesCollection),
+                defaults: languagesDefaults,
+                isEditable: true,
+            });
+            const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
+            const sortedColumns = config
+                ? getSortedColumnsByIDs(columns, config.split(','))
+                : columns;
 
-        this.columns = sortedColumns;
-        this.dataCount = fullDataList.length;
-        this.data = data;
+            this.columns = sortedColumns;
+            this.dataCount = fullDataList.length;
+            this.data = data;
+        },
     },
 };
 </script>

@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import { getKeyByValue } from '@Core/models/objectWrapper';
-import { getMappedRestrictions } from '@Users/models/gridDataMapper';
 import { types } from './mutations';
 
 export default {
@@ -13,6 +12,7 @@ export default {
     setUserLanguage({ commit, rootState }, { language }) {
         const { languages } = rootState.dictionaries;
         const lang = getKeyByValue(languages, language);
+
         commit(types.SET_STATE, { key: 'language', value: lang });
     },
     getUserById(
@@ -45,7 +45,7 @@ export default {
             commit(types.SET_STATE, { key: 'password', value: password });
             commit(types.SET_STATE, { key: 'passwordRepeat', value: password_repeat });
             commit(types.SET_STATE, { key: 'isActive', value: is_active });
-            commit(types.SET_STATE, { key: 'languagePrivilegesCollection', value: getMappedRestrictions(language_privileges_collection) });
+            commit(types.SET_STATE, { key: 'languagePrivilegesCollection', value: language_privileges_collection });
             if (role_id) {
                 commit(types.SET_STATE, { key: 'role', value: roles.find(role => role.id === role_id) });
             }

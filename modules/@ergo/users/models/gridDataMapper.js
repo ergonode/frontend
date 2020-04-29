@@ -86,7 +86,36 @@ export function getMappedGridData({
     };
 }
 
-export function getMappedDataBasedOnGridData({
+export function getMappedLanguagesBasedOnGridData({
+    selectedData,
+    drafts,
+}) {
+    const languageCodes = Object.keys(drafts);
+    const mappedLanguages = { ...selectedData };
+
+    for (let i = 0; i < languageCodes.length; i += 1) {
+        const languageCode = languageCodes[i];
+
+        if (selectedData[languageCode]) {
+            const languagePrivileges = {
+                ...selectedData[languageCode],
+                ...drafts[languageCode],
+            };
+
+            if (Object.values(languagePrivileges).find(e => e)) {
+                mappedLanguages[languageCode] = languagePrivileges;
+            } else {
+                delete mappedLanguages[languageCode];
+            }
+        } else {
+            mappedLanguages[languageCode] = drafts[languageCode];
+        }
+    }
+
+    return mappedLanguages;
+}
+
+export function getMappedPrivilegesBasedOnGridData({
     selectedData,
     drafts,
 }) {

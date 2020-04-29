@@ -23,12 +23,10 @@
                     :value="treeValue"
                     :options="tree"
                     :solid="true"
-                    label="Languages2"
+                    label="Languages"
                     :regular="true"
                     :multiselect="true"
-                    :searchable="true"
-                    @input="setLanguageTree"
-                    @search="getFilteredTree" /> -->
+                    @input="setLanguageTree" /> -->
             </FormSection>
         </template>
     </Form>
@@ -45,72 +43,6 @@ export default {
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
         // TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
     },
-    data() {
-        return {
-            // TODO: remove when languages API will be ready
-            treeValue: [
-                {
-                    id: 'pl_PL',
-                    key: 'pl_PL',
-                    name: 'Polska',
-                },
-            ],
-            tree: [
-                {
-                    id: 'pl_PL',
-                    key: 'pl_PL',
-                    name: 'Polska',
-                    childrens: [
-                        {
-                            id: 'en_EN',
-                            key: 'en_EN',
-                            name: 'Anglia',
-                            childrens: [
-                                {
-                                    id: 'en_XX',
-                                    key: 'en_XX',
-                                    name: 'XXXXX',
-                                    childrens: [
-                                        {
-                                            id: 'en_y',
-                                            key: 'en_y',
-                                            name: 'yyyy',
-                                            childrens: [
-                                                {
-                                                    id: 'zzz',
-                                                    key: 'zzz',
-                                                    name: 'zzzzzzz',
-                                                    childrens: [],
-                                                },
-                                            ],
-                                        },
-                                    ],
-                                },
-                                {
-                                    id: 'en_XXx',
-                                    key: 'en_XXx',
-                                    name: 'XXdfgdgdgXXX',
-                                    childrens: [],
-                                },
-                                {
-                                    id: 'en_XXxx',
-                                    key: 'en_XXxx',
-                                    name: 'asdasdad',
-                                    childrens: [],
-                                },
-                            ],
-                        },
-                        {
-                            id: 'us_US',
-                            key: 'us_US',
-                            name: 'Ameryka',
-                            childrens: [],
-                        },
-                    ],
-                },
-            ],
-        };
-    },
     computed: {
         ...mapState('languageSettings', {
             languages: state => state.languages,
@@ -122,12 +54,6 @@ export default {
             'setSelectedLanguages',
             'getFilteredData',
         ]),
-        setLanguageTree(/* val */) {
-            // console.log(val);
-        },
-        getFilteredTree(/* val */) {
-            // console.log(val);
-        },
     },
 };
 </script>
