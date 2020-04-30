@@ -16,7 +16,6 @@
                     :label="label"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
-                    :is-information-label="false"
                     :required="properties.required"
                     :disabled="disabled"
                     :description="properties.hint"
@@ -26,6 +25,9 @@
                         <TextFieldSuffix
                             v-if="parameter"
                             :suffix="parameter" />
+                    </template>
+                    <template #informationLabel>
+                        <div />
                     </template>
                 </TextField>
             </template>

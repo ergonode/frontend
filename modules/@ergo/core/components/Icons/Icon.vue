@@ -49,5 +49,6 @@ export default {
 <style lang="scss" scoped>
     .icon {
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        will-change: transform;
     }
 </style>
