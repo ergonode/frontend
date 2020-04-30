@@ -3,9 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="dropdown"
-        :style="position">
+    <div class="dropdown">
         <slot name="body" />
         <slot name="footer" />
     </div>
@@ -27,36 +25,33 @@ export default {
             }),
         },
     },
-    data() {
-        return {
-            position: {},
-        };
-    },
     mounted() {
-        window.requestAnimationFrame(() => {
-            const {
-                height,
-            } = this.$el.getBoundingClientRect();
-            const { innerHeight } = window;
-            let maxHeight = 200;
-            const position = { left: `${this.offset.x}px` };
+        this.$nextTick(() => {
+            window.requestAnimationFrame(() => {
+                const { innerHeight } = window;
+                const position = {};
+                let maxHeight = 200;
 
-            if (this.fixed) {
-                position.maxHeight = `${maxHeight}px`;
-                position.width = `${this.offset.width}px`;
-            } else {
-                maxHeight = height;
-            }
+                if (this.fixed) {
+                    position.maxHeight = `${maxHeight}px`;
+                    position.width = `${this.offset.width}px`;
+                } else {
+                    maxHeight = this.$el.clientHeight;
+                }
 
-            if (innerHeight - this.offset.y < maxHeight) {
-                const offsetBottom = innerHeight - this.offset.y;
+                if (innerHeight - this.offset.y < maxHeight) {
+                    const offsetBottom = innerHeight - this.offset.y;
 
-                position.bottom = `${offsetBottom}px`;
-            } else {
-                position.top = `${this.offset.y + this.offset.height}px`;
-            }
+                    position.bottom = `${offsetBottom}px`;
+                } else {
+                    position.top = `${this.offset.y + this.offset.height}px`;
+                }
 
-            this.position = position;
+                this.$refs.dropdown.style.maxHeight = position.maxHeight;
+                this.$refs.dropdown.style.width = position.width;
+                this.$refs.dropdown.style.bottom = position.bottom || null;
+                this.$refs.dropdown.style.top = position.top;
+            });
         });
     },
 };

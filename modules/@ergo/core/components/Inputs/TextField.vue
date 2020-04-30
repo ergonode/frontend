@@ -42,10 +42,12 @@
                     :hint="description" />
             </div>
         </div>
-        <label
-            v-if="informationLabel && isInformationLabel"
-            :class="informationLabelClasses"
-            v-text="informationLabel" />
+        <slot name="informationLabel">
+            <label
+                v-if="informationLabel"
+                :class="informationLabelClasses"
+                v-text="informationLabel" />
+        </slot>
     </div>
 </template>
 
@@ -105,10 +107,6 @@ export default {
         required: {
             type: Boolean,
             default: false,
-        },
-        isInformationLabel: {
-            type: Boolean,
-            default: true,
         },
         autofocus: {
             type: Boolean,

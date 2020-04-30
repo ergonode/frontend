@@ -12,6 +12,9 @@ export default {
     setDescription({ commit }, value) {
         commit(types.SET_ROLE_DESCRIPTION, value);
     },
+    setPrivileges({ commit }, value) {
+        commit(types.SET_ROLE_PRIVILEGES, value);
+    },
     getRoles({ commit, rootState }, params) {
         const { language: userLanguageCode } = rootState.authentication.user;
         return this.app.$axios.$get(`${userLanguageCode}/roles`, { params }).then(({ collection: roles }) => {

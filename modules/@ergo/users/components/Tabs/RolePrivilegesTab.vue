@@ -17,7 +17,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import { getMappedGridData } from '@Users/models/privilegesMapper';
+import privilegesDefaults from '@Users/defaults/privileges';
+import { getMappedGridData } from '@Users/models/gridDataMapper';
 import { getSortedColumnsByIDs } from '@Core/models/mappers/gridDataMapper';
 import Grid from '@Core/components/Grid/Grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
@@ -30,7 +31,6 @@ export default {
     },
     data() {
         return {
-            rowIds: [],
             columns: [],
             data: {},
             dataCount: 0,
@@ -47,22 +47,36 @@ export default {
             return this.$hasAccess(['USER_ROLE_UPDATE']);
         },
     },
+    watch: {
+        privileges: {
+            deep: true,
+            handler() {
+                this.updateGridData();
+            },
+        },
+    },
     created() {
-        const {
-            data, columns,
-        } = getMappedGridData({
-            systemPrivileges: this.privilegesDictionary,
-            rolePrivileges: this.privileges,
-            isEditable: true,
-        });
-        const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
-        const sortedColumns = config
-            ? getSortedColumnsByIDs(columns, config.split(','))
-            : columns;
+        this.updateGridData();
+    },
+    methods: {
+        updateGridData() {
+            const {
+                data, columns,
+            } = getMappedGridData({
+                fullDataList: this.privilegesDictionary,
+                selectedData: this.privileges,
+                defaults: privilegesDefaults,
+                isEditable: true,
+            });
+            const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
+            const sortedColumns = config
+                ? getSortedColumnsByIDs(columns, config.split(','))
+                : columns;
 
-        this.columns = sortedColumns;
-        this.dataCount = this.privilegesDictionary.length;
-        this.data = data;
+            this.columns = sortedColumns;
+            this.dataCount = this.privilegesDictionary.length;
+            this.data = data;
+        },
     },
 };
 </script>

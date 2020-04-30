@@ -11,11 +11,13 @@
         </template>
         <template #body>
             <TextField
+                data-cy="loginEmail"
                 v-model="email"
                 solid
                 regular
                 label="E-mail" />
             <TextField
+                data-cy="loginPass"
                 v-model="password"
                 solid
                 :input="passwordInputType"
@@ -28,6 +30,7 @@
         </template>
         <template #footer>
             <Button
+                data-cy="loginButton"
                 title="LOG IN"
                 type="submit"
                 @click.stop.prevent.native="onSubmit" />

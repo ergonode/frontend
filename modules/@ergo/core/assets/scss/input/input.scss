@@ -84,28 +84,27 @@
         margin: 0 6px;
     }
 
-    &.floating-label {
-        padding-top: 8px;
+    &.floating-label &__label {
+        position: absolute;
+        padding: 0 2px;
+        background-color: $WHITE;
+        transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+        transform-origin: left;
+        color: $GRAPHITE_LIGHT;
+        font: $FONT_MEDIUM_14_20;
+        cursor: text;
+        will-change:
+            transform,
+            color;
 
-        #{$input}__label {
+        &--required {
+            padding-right: 8px;
+        }
+
+        &--required::after {
             position: absolute;
-            padding: 0 2px;
-            background-color: $WHITE;
-            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
-            transform-origin: left;
-            color: $GRAPHITE_LIGHT;
-            font: $FONT_MEDIUM_14_20;
-            cursor: text;
-
-            &--required {
-                padding-right: 8px;
-            }
-
-            &--required::after {
-                position: absolute;
-                color: $RED;
-                content: "*";
-            }
+            color: $RED;
+            content: "*";
         }
     }
 
@@ -213,13 +212,11 @@
         }
     }
 
-    &.regular {
-        #{$input}__activator {
-            flex-basis: 40px;
+    &.regular &__activator {
+        flex-basis: 40px;
 
-            input::placeholder, input, #{$input}__value {
-                font: $FONT_MEDIUM_14_20;
-            }
+        input::placeholder, input, #{$input}__value {
+            font: $FONT_MEDIUM_14_20;
         }
     }
 
@@ -229,6 +226,7 @@
             left: 0;
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
             content: "";
+            will-change: transform;
         }
     }
 

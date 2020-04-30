@@ -17,12 +17,15 @@
                     :label="label"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
-                    :is-information-label="false"
                     :required="properties.required"
                     :disabled="disabled"
                     :description="properties.hint"
                     @focus="onFocus"
-                    @input="debounceValueChange" />
+                    @input="debounceValueChange">
+                    <template #informationLabel>
+                        <div />
+                    </template>
+                </TextArea>
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>

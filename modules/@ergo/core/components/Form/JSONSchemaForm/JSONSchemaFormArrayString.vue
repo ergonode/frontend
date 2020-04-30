@@ -4,25 +4,24 @@
  */
 <template>
     <FormSubsection>
-        <Component
-            v-for="element in enumComponents"
-            :key="element.key"
-            :is="element.component"
-            :value="element.value"
-            :small="true"
-            :label="element.label"
-            :error-messages="errorMessages"
+        <CheckBox
+            v-for="title in schema.items.enum_titles"
+            :key="title"
+            :value="localValue"
+            :label="title"
             @input="onValueChange" />
     </FormSubsection>
 </template>
 
 <script>
 import FormSubsection from '@Core/components/Form/FormSubsection';
+import CheckBox from '@Core/components/Inputs/CheckBox';
 
 export default {
     name: 'JSONSchemaFormArrayString',
     components: {
         FormSubsection,
+        CheckBox,
     },
     props: {
         schema: {
@@ -40,47 +39,27 @@ export default {
     },
     data() {
         return {
-            enumComponents: [],
-            localValue: this.value,
+            localValue: this.getMappedTitles({ key: 'enum', value: 'enum_titles', data: this.value }),
         };
     },
-    created() {
-        this.enumComponents = this.initializeComponents();
-    },
     methods: {
-        initializeComponents() {
-            const { enum: options, enum_titles } = this.schema.items;
+        getMappedTitles({ key, value, data }) {
+            const titles = [];
 
-            if (!options && !enum_titles) return [];
+            for (let i = 0; i < data.length; i += 1) {
+                const titleIndex = this.schema.items[key].findIndex(
+                    option => option === data[i],
+                );
 
-            const { length } = options;
-            const components = [];
-
-            for (let i = 0; i < length; i += 1) {
-                const key = options[i];
-
-                components.push({
-                    key,
-                    value: this.value
-                        ? this.value.findIndex(option => option === key) !== -1
-                        : false,
-                    label: enum_titles[i],
-                    component: () => import('@Core/components/Form/JSONSchemaForm/JSONSchemaFormBoolean'),
-                });
+                titles.push(this.schema.items[value][titleIndex]);
             }
 
-            return components;
+            return titles;
         },
-        onValueChange({ key, value }) {
-            if (value) {
-                this.localValue.push(key);
-            } else {
-                const index = this.localValue.findIndex(option => option === key);
+        onValueChange(value) {
+            this.localValue = value;
 
-                this.localValue.splice(index);
-            }
-
-            this.$emit('input', this.localValue);
+            this.$emit('input', this.getMappedTitles({ key: 'enum_titles', value: 'enum', data: value }));
         },
     },
 };

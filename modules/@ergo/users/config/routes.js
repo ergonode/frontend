@@ -91,6 +91,25 @@ export default [
                     privileges: [],
                 },
             },
+            {
+                name: 'user-id-language-restrictions',
+                path: 'language-restrictions',
+                component: Tabs.UserLanguageRestrictionsTab,
+                meta: {
+                    title: 'Language restrictions',
+                    breadcrumbs: [
+                        {
+                            title: 'System',
+                            icon: Icons.Settings,
+                        },
+                        {
+                            title: 'Users',
+                            routeName: 'users-grid',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
         ],
     },
     {

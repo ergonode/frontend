@@ -37,9 +37,9 @@ describe('TemplateGrid/TemplateGridItemArea', () => {
     it('Check item style with default props', () => {
         expect(wrapper.vm.gridItemStyles).toStrictEqual({
             gridColumn: '2 / 3',
-            gridGap: '0px',
             gridTemplateColumns: 'repeat(1, 1fr)',
-            padding: '0px',
+            paddingBottom: '0px',
+            paddingTop: '0px',
         });
     });
     it('Check item style with new props', () => {
@@ -53,9 +53,9 @@ describe('TemplateGrid/TemplateGridItemArea', () => {
         });
         expect(wrapper.vm.gridItemStyles).toStrictEqual({
             gridColumn: '4 / 7',
-            gridGap: '10px',
             gridTemplateColumns: 'repeat(3, 1fr)',
-            padding: '10px',
+            paddingBottom: '10px',
+            paddingTop: '10px',
         });
     });
 });

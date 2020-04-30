@@ -17,11 +17,14 @@
                     :options="options"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
-                    :is-information-label="false"
                     :required="properties.required"
                     :disabled="disabled"
                     :description="properties.hint"
-                    @input="debounceValueChange" />
+                    @input="debounceValueChange">
+                    <template #informationLabel>
+                        <div />
+                    </template>
+                </TranslationSelect>
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
