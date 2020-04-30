@@ -18,12 +18,15 @@
                     :options="options"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
-                    :is-information-label="false"
                     :required="properties.required"
                     :disabled="disabled"
                     :description="properties.hint"
                     @focus="onFocus"
-                    @input="onValueChange" />
+                    @input="onValueChange">
+                    <template #informationLabel>
+                        <div />
+                    </template>
+                </TranslationSelect>
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>

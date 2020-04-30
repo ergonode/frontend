@@ -15,9 +15,7 @@
             :class="[
                 'header-cell__actions',
                 {
-                    'header-cell__actions--sorted': isSorted,
-                    'header-cell__actions--focused': isMenuSelected,
-                    'header-cell__actions--hovered': isColumnHovered,
+                    'header-cell__actions--visible': isSorted || isMenuSelected || isColumnHovered,
                 }
             ]">
             <IconArrowSort
@@ -227,7 +225,7 @@ export default {
             opacity: 0;
             cursor: pointer;
 
-            &--focused, &--sorted, &--hovered {
+            &--visible {
                 opacity: 1;
             }
         }

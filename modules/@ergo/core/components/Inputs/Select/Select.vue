@@ -83,11 +83,12 @@
                 </template>
             </SelectDropDown>
         </FadeTransition>
-        <label
-            v-if="informationLabel"
-            ref="informationLabel"
-            :class="informationLabelClasses"
-            v-text="informationLabel" />
+        <slot name="informationLabel">
+            <label
+                v-if="informationLabel"
+                :class="informationLabelClasses"
+                v-text="informationLabel" />
+        </slot>
     </div>
 </template>
 
@@ -186,10 +187,6 @@ export default {
         regular: {
             type: Boolean,
             default: false,
-        },
-        dropDownHeight: {
-            type: Number,
-            default: 200,
         },
         searchable: {
             type: Boolean,
