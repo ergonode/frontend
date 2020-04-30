@@ -4,13 +4,16 @@
  */
 <template>
     <ModalOverlay @close="onClose">
-        <div class="modal">
+        <div
+            data-cy="modal"
+            class="modal">
             <div class="modal__header">
                 <div class="header-title">
                     <slot name="headerPrepend" />
                     <span v-text="title" />
                 </div>
                 <Fab
+                    data-cy="modalClose"
                     :theme="secondaryTheme"
                     @click.native="onClose">
                     <template #icon="{ color }">
