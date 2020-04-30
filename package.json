@@ -28,7 +28,8 @@
         "modules": "./lib/index.js modules",
         "modules:all": "./lib/index.js modules-all",
         "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook"
+        "build-storybook": "build-storybook",
+        "cypress:open": "cypress open"
     },
     "dependencies": {
         "@babel/plugin-transform-runtime": "^7.8.3",
@@ -47,7 +48,6 @@
         "clear": "^0.1.0",
         "commander": "^4.1.1",
         "cookie-universal-nuxt": "^2.1.2",
-        "cypress-cucumber-preprocessor": "^2.3.1",
         "date-fns": "^2.10.0",
         "debounce": "^1.2.0",
         "deepmerge": "^4.2.2",
@@ -78,6 +78,7 @@
         "babel-preset-vue": "^2.0.2",
         "cross-env": "^7.0.2",
         "cypress": "^4.1.0",
+        "cypress-cucumber-preprocessor": "^2.3.1",
         "eslint": "^6.8.0",
         "eslint-config-airbnb-base": "^14.1.0",
         "eslint-loader": "^3.0.3",
