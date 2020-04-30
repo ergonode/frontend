@@ -3,7 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="rich-text-editor">
+    <div
+        :class="['rich-text-editor', richTextEditorStateClasses]">
         <fieldset class="rich-text-editor__fieldset">
             <legend
                 class="rich-text-editor__label"
@@ -66,6 +67,13 @@ export default {
             editor: null,
         };
     },
+    computed: {
+        richTextEditorStateClasses() {
+            return {
+                'rich-text-editor--has-label': Boolean(this.label),
+            };
+        },
+    },
     mounted() {
         this.editor = new Editor({
             extensions: [
@@ -80,7 +88,6 @@ export default {
                 }),
             ],
             content: this.value,
-            onFocus: this.onFocus,
             onBlur: this.onBlur,
         });
     },
@@ -88,11 +95,9 @@ export default {
         this.editor.destroy();
     },
     methods: {
-        onFocus() {
-            console.log('focus');
-        },
-        onBlur() {
-            console.log('blur');
+        onBlur(test) {
+            console.log(test);
+            console.log(this.editor.getJSON());
         },
     },
 };
@@ -110,15 +115,22 @@ export default {
         box-sizing: border-box;
 
         &__label {
+            background-color: $WHITE;
             color: $GRAPHITE_LIGHT;
             font: $FONT_MEDIUM_12_16;
-            padding-bottom: 6px;
+        }
+
+        &--has-label &__menu {
+            padding: 6px 0 8px;
+        }
+
+        &:not(&--has-label) &__menu {
+            padding: 2px 0 8px;
         }
 
         &__menu {
             display: flex;
             flex-wrap: wrap;
-            padding: 2px 0 8px;
         }
 
         &__fieldset {

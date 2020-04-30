@@ -8,21 +8,25 @@
         :position="position">
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
-                <TextArea
-                    :style="{ height: '100%' }"
-                    :value="fieldData.value"
-                    solid
-                    regular
-                    resize="none"
+                <RichTextEditor
+                    :actionable-extensions="actionableExtensions"
                     :label="label"
-                    :placeholder="properties.placeholder"
-                    :error-messages="errorMessages"
-                    :is-information-label="false"
-                    :required="properties.required"
-                    :disabled="disabled"
-                    :description="properties.hint"
-                    @focus="onFocus"
-                    @input="debounceValueChange" />
+                    :placeholder="properties.placeholder" />
+                <!--                <TextArea-->
+                <!--                    :style="{ height: '100%' }"-->
+                <!--                    :value="fieldData.value"-->
+                <!--                    solid-->
+                <!--                    regular-->
+                <!--                    resize="none"-->
+                <!--                    :label="label"-->
+                <!--                    :placeholder="properties.placeholder"-->
+                <!--                    :error-messages="errorMessages"-->
+                <!--                    :is-information-label="false"-->
+                <!--                    :required="properties.required"-->
+                <!--                    :disabled="disabled"-->
+                <!--                    :description="properties.hint"-->
+                <!--                    @focus="onFocus"-->
+                <!--                    @input="debounceValueChange" />-->
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
@@ -35,6 +39,15 @@ import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import TextArea from '@Core/components/Inputs/TextArea';
+import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
+import {
+    Blockquote,
+    OrderedList,
+    BulletList,
+    Bold,
+    Italic,
+    Underline,
+} from 'tiptap-extensions';
 
 export default {
     name: 'ProductTemplateFormTextAreaField',
@@ -42,6 +55,7 @@ export default {
         TextArea,
         ProductTemplateFormField,
         FormValidatorField,
+        RichTextEditor,
     },
     props: {
         size: {
@@ -75,6 +89,14 @@ export default {
     },
     data() {
         return {
+            actionableExtensions: [
+                new Bold(),
+                new Italic(),
+                new Underline(),
+                new Blockquote(),
+                new OrderedList(),
+                new BulletList(),
+            ],
             debounceValueChange: null,
         };
     },
