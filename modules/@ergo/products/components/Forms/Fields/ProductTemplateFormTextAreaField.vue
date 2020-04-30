@@ -21,7 +21,7 @@
                     :disabled="disabled"
                     :description="properties.hint"
                     @focus="onFocus"
-                    @input="debounceValueChange">
+                    @input="onValueChange">
                     <template #informationLabel>
                         <div />
                     </template>
@@ -33,7 +33,6 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { debounce } from 'debounce';
 import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import TextArea from '@Core/components/Inputs/TextArea';
@@ -76,11 +75,6 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            debounceValueChange: null,
-        };
-    },
     computed: {
         ...mapState('product', {
             data: state => state.data,
@@ -100,9 +94,6 @@ export default {
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
-    },
-    created() {
-        this.debounceValueChange = debounce(this.onValueChange, 500);
     },
     methods: {
         ...mapActions('product', [
