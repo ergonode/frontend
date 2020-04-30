@@ -21,7 +21,7 @@
             <span
                 v-if="hasChildren"
                 class="title__subname"
-                v-text="`Inheriting ${contextName.toLowerCase()}: ${numberOfChildren}`" />
+                v-text="`Inherited ${contextName.toLowerCase()}: ${numberOfChildren}`" />
         </div>
         <div
             :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
@@ -68,7 +68,7 @@ export default {
         },
         contextName: {
             type: String,
-            default: 'element',
+            default: '',
         },
         numberOfChildren: {
             type: Number,

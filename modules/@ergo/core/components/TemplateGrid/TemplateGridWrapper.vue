@@ -115,7 +115,7 @@ export default {
         },
         contextName: {
             type: String,
-            default: 'element',
+            default: '',
         },
         columns: {
             type: Number,
@@ -159,8 +159,7 @@ export default {
         },
         gridItemStyles() {
             return {
-                marginLeft: `${this.gridGap}px`,
-                marginRight: `${this.gridGap}px`,
+                margin: `0 ${this.gridGap}px`,
             };
         },
     },

@@ -57,7 +57,7 @@ export default {
             'removeValidationErrors',
         ]),
         ...mapActions('grid', [
-            'removeDraft',
+            'removeDrafts',
         ]),
         onRemoveRoleSuccess() {
             this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Role removed' });
@@ -86,7 +86,7 @@ export default {
                     this.removeValidationErrors();
                     this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Role updated' });
                     this.setPrivileges(privileges);
-                    this.removeDraft();
+                    this.removeDrafts();
                 },
                 onError: this.onError,
             });

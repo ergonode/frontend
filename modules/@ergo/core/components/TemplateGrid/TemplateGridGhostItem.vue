@@ -6,7 +6,7 @@
     <div class="grid__ghost-item">
         <div class="ghost-item__info">
             <IconAddFilter :fill-color="whiteColor" />
-            ADD {{ contextName }}
+            ADD {{ contextName || 'ITEM' }}
         </div>
     </div>
 </template>
@@ -21,7 +21,7 @@ export default {
     props: {
         contextName: {
             type: String,
-            default: 'element',
+            default: '',
         },
     },
     computed: {

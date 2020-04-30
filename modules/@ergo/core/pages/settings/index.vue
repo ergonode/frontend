@@ -24,7 +24,6 @@
         <Blur
             v-show="isBlurVisible"
             :style="blurZIndex" />
-        <TrashCan v-show="draggedElementOnGrid" />
     </Page>
 </template>
 
@@ -40,7 +39,6 @@ export default {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
         HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
-        TrashCan: () => import('@Core/components/DragAndDrop/TrashCan'),
         Blur: () => import('@Core/components/Blur/Blur'),
     },
     mixins: [gridModalMixin],
