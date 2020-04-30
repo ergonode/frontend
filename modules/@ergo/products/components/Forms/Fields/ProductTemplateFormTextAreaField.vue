@@ -33,14 +33,14 @@ import { mapActions, mapState } from 'vuex';
 import { debounce } from 'debounce';
 import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
-import TextArea from '@Core/components/Inputs/TextArea';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import TextArea from '@Core/components/Inputs/TextArea';
 
 export default {
     name: 'ProductTemplateFormTextAreaField',
     components: {
-        ProductTemplateFormField,
         TextArea,
+        ProductTemplateFormField,
         FormValidatorField,
     },
     props: {

@@ -12,14 +12,14 @@
 import Icon from '@Core/components/Icons/Icon';
 
 export default {
-    name: 'IconQuote',
+    name: 'IconBulletList',
     components: {
         Icon,
     },
     inheritAttrs: false,
     computed: {
         drawingCommands() {
-            return 'M5,13 L5,7 L11,7 L11,13 L9,17 L6,17 L8,13 L5,13 Z M13.0000067,7 L19.0000067,7 L19.0000067,13 L17.0000067,17 L14.0000067,17 L16.0000067,13 L13.0000067,13 L13.0000067,7 Z';
+            return 'M4,5 L6,5 L6,7 L4,7 L4,5 Z M4,11 L6,11 L6,13 L4,13 L4,11 Z M4,17 L6,17 L6,19 L4,19 L4,17 Z M8,17 L21,17 L21,19 L8,19 L8,17 Z M8,5 L21,5 L21,7 L8,7 L8,5 Z M8,11 L21,11 L21,13 L8,13 L8,11 Z';
         },
     },
 };
