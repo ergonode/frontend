@@ -10,8 +10,8 @@
             class="products-template-grid"
             :style="gridTemplateRows">
             <Component
-                :is="formField"
                 v-for="(formField, index) in formFieldComponents"
+                :is="formField"
                 :key="index"
                 v-bind="{
                     ...elements[index],
