@@ -9,24 +9,13 @@
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
                 <RichTextEditor
+                    :value="fieldData.value"
                     :actionable-extensions="actionableExtensions"
                     :label="label"
-                    :placeholder="properties.placeholder" />
-                <!--                <TextArea-->
-                <!--                    :style="{ height: '100%' }"-->
-                <!--                    :value="fieldData.value"-->
-                <!--                    solid-->
-                <!--                    regular-->
-                <!--                    resize="none"-->
-                <!--                    :label="label"-->
-                <!--                    :placeholder="properties.placeholder"-->
-                <!--                    :error-messages="errorMessages"-->
-                <!--                    :is-information-label="false"-->
-                <!--                    :required="properties.required"-->
-                <!--                    :disabled="disabled"-->
-                <!--                    :description="properties.hint"-->
-                <!--                    @focus="onFocus"-->
-                <!--                    @input="debounceValueChange" />-->
+                    :description="properties.hint"
+                    :error-messages="errorMessages"
+                    :placeholder="properties.placeholder"
+                    @blur="onBlur" />
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
@@ -34,11 +23,9 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { debounce } from 'debounce';
 import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import TextArea from '@Core/components/Inputs/TextArea';
 import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
 import {
     Blockquote,
@@ -52,7 +39,6 @@ import {
 export default {
     name: 'ProductTemplateFormTextAreaField',
     components: {
-        TextArea,
         ProductTemplateFormField,
         FormValidatorField,
         RichTextEditor,
@@ -97,7 +83,6 @@ export default {
                 new OrderedList(),
                 new BulletList(),
             ],
-            debounceValueChange: null,
         };
     },
     computed: {
@@ -120,28 +105,22 @@ export default {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
     },
-    created() {
-        this.debounceValueChange = debounce(this.onValueChange, 500);
-    },
     methods: {
         ...mapActions('product', [
             'setDraftValue',
         ]),
-        onFocus(isFocused) {
-            if (!isFocused) {
-                this.$emit('input', {
-                    fieldKey: this.fieldKey,
-                    languageCode: this.languageCode,
-                    productId: this.$route.params.id,
-                    elementId: this.properties.attribute_id,
-                    value: this.fieldData.value,
-                });
-            }
-        },
-        onValueChange(value) {
+        onBlur(value) {
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
+                value,
+            });
+
+            this.$emit('input', {
+                fieldKey: this.fieldKey,
+                languageCode: this.languageCode,
+                productId: this.$route.params.id,
+                elementId: this.properties.attribute_id,
                 value,
             });
         },

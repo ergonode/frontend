@@ -16,7 +16,6 @@
                     :placeholder="properties.placeholder"
                     :foramt="parameter"
                     :error-messages="errorMessages"
-                    :is-information-label="false"
                     :required="properties.required"
                     :disabled="disabled"
                     :description="properties.hint"
@@ -26,6 +25,9 @@
                         <TextFieldSuffix
                             v-if="parameter"
                             :suffix="parameter" />
+                    </template>
+                    <template #informationLabel>
+                        <div />
                     </template>
                 </DatePicker>
             </template>

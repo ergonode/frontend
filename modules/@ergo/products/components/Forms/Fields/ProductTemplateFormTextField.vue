@@ -15,16 +15,18 @@
                     :label="label"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
-                    :is-information-label="false"
                     :required="properties.required"
                     :disabled="disabled"
                     :description="properties.hint"
                     @focus="onFocus"
-                    @input="debounceValueChange">
+                    @input="onValueChange">
                     <template #append>
                         <TextFieldSuffix
                             v-if="parameter"
                             :suffix="parameter" />
+                    </template>
+                    <template #informationLabel>
+                        <div />
                     </template>
                 </TextField>
             </template>
@@ -34,7 +36,6 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { debounce } from 'debounce';
 import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import TextField from '@Core/components/Inputs/TextField';
@@ -79,11 +80,6 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            debounceValueChange: null,
-        };
-    },
     computed: {
         ...mapState('product', {
             data: state => state.data,
@@ -110,9 +106,6 @@ export default {
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
-    },
-    created() {
-        this.debounceValueChange = debounce(this.onValueChange, 500);
     },
     methods: {
         ...mapActions('product', [

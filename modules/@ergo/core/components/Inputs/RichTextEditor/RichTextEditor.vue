@@ -4,29 +4,44 @@
  */
 <template>
     <div
-        :class="['rich-text-editor', richTextEditorStateClasses]">
+        :class="['rich-text-editor', richTextEditorStateClasses]"
+        ref="editor">
         <fieldset class="rich-text-editor__fieldset">
             <legend
                 class="rich-text-editor__label"
                 v-text="label" />
         </fieldset>
-        <EditorMenuBar :editor="editor">
-            <template #default="{ commands, isActive }">
-                <div class="rich-text-editor__menu">
-                    <RichTextEditorActionButton
-                        v-for="action in actionableExtensions"
-                        :key="action.name"
-                        :name="action.name"
-                        :is-active="isActive"
-                        :command-callback="commands[action.name]" />
-                </div>
-            </template>
-        </EditorMenuBar>
-        <VerticalFixedScroll>
-            <EditorContent
-                class="rich-text-editor__content"
-                :editor="editor" />
-        </VerticalFixedScroll>
+        <div class="rich-text-editor__activator">
+            <slot #prepand />
+            <div class="rich-text-editor__wrapper">
+                <EditorMenuBar :editor="editor">
+                    <template #default="{ commands, isActive }">
+                        <div class="rich-text-editor__menu">
+                            <RichTextEditorActionButton
+                                v-for="action in actionableExtensions"
+                                :key="action.name"
+                                :name="action.name"
+                                :is-active="isActive"
+                                :command-callback="commands[action.name]" />
+                        </div>
+                    </template>
+                </EditorMenuBar>
+                <VerticalFixedScroll>
+                    <EditorContent
+                        class="rich-text-editor__content"
+                        :editor="editor" />
+                </VerticalFixedScroll>
+            </div>
+            <div class="rich-text-editor__append">
+                <slot #append />
+                <ErrorHint
+                    v-if="errorMessages"
+                    :hint="errorMessages" />
+                <InfoHint
+                    v-if="description"
+                    :hint="description" />
+            </div>
+        </div>
     </div>
 </template>
 
@@ -43,6 +58,8 @@ export default {
         EditorContent,
         RichTextEditorActionButton,
         VerticalFixedScroll,
+        InfoHint: () => import('@Core/components/Hints/InfoHint'),
+        ErrorHint: () => import('@Core/components/Hints/ErrorHint'),
     },
     props: {
         value: {
@@ -50,6 +67,14 @@ export default {
             default: '',
         },
         label: {
+            type: String,
+            default: '',
+        },
+        errorMessages: {
+            type: String,
+            default: '',
+        },
+        description: {
             type: String,
             default: '',
         },
@@ -88,17 +113,13 @@ export default {
                 }),
             ],
             content: this.value,
-            onBlur: this.onBlur,
+            onBlur: () => {
+                this.$emit('blur', this.editor.getHTML());
+            },
         });
     },
     beforeDestroy() {
         this.editor.destroy();
-    },
-    methods: {
-        onBlur(test) {
-            console.log(test);
-            console.log(this.editor.getJSON());
-        },
     },
 };
 </script>
@@ -111,8 +132,18 @@ export default {
         display: flex;
         flex-direction: column;
         height: 100%;
-        padding: 12px;
         box-sizing: border-box;
+
+        &__activator {
+            display: flex;
+            flex: 1 1 auto;
+        }
+
+        &__wrapper {
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+        }
 
         &__label {
             background-color: $WHITE;
@@ -142,6 +173,14 @@ export default {
             border: $BORDER_1_GREY;
             padding: 10px;
             box-sizing: border-box;
+        }
+
+        &__append {
+            display: grid;
+            grid-auto-flow: column;
+            justify-items: center;
+            align-items: center;
+            margin: 0 6px;
         }
 
         &__content {
