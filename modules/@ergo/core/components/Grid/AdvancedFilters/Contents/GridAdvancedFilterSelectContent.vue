@@ -8,7 +8,7 @@
         @input="onEmptyRecordChange">
         <List>
             <ListElement
-                v-for="(option, index) in options"
+                v-for="(option, index) in filter.options"
                 :key="index"
                 :selected="index === selectedOptionIndex"
                 @click.native="onSelectValue(option, index)">
@@ -45,10 +45,6 @@ export default {
             type: Object,
             required: true,
         },
-        options: {
-            type: Array,
-            default: () => [],
-        },
         languageCode: {
             type: String,
             default: '',
@@ -74,7 +70,7 @@ export default {
     },
     methods: {
         initSelectedOptions() {
-            this.selectedOptionIndex = this.options
+            this.selectedOptionIndex = this.filter.options
                 .findIndex(option => option.key === this.filterValue);
         },
         onSelectValue(value) {

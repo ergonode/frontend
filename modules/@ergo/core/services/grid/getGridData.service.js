@@ -52,7 +52,7 @@ export const getAdvancedFiltersData = ({ $axios, path, params }) => $axios
             };
 
             if (columns[i].filter && columns[i].filter.options) {
-                filter.option = getMappedObjectOptions({
+                filter.options = getMappedObjectOptions({
                     options: columns[i].filter.options,
                     languageCode: columns[i].language,
                 });
