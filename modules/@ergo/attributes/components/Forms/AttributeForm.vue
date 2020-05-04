@@ -55,6 +55,7 @@
                     <FadeGroupTransition>
                         <Toggler
                             v-if="isMultilingual"
+                            data-cy="attributeMultilingual"
                             key="attrMultilingual"
                             :value="multilingual"
                             :disabled="isDisabled || isDisabledByPrivileges"
@@ -66,6 +67,7 @@
                         </Toggler>
                         <Select
                             v-if="hasParams"
+                            data-cy="attributeParams"
                             key="attrHasParams"
                             :value="parameter"
                             solid

@@ -29,7 +29,8 @@
         "modules:all": "./lib/index.js modules-all",
         "storybook": "start-storybook -p 6006",
         "build-storybook": "build-storybook",
-        "cypress:open": "cypress open"
+        "cypress:open": "cypress open",
+        "cypress:run": "cypress run"
     },
     "dependencies": {
         "@babel/plugin-transform-runtime": "^7.8.3",

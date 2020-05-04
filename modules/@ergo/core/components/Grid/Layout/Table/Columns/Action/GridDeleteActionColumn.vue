@@ -10,6 +10,7 @@
         :is-basic-filter="isBasicFilter">
         <template #cell="{ index, rowIndex }">
             <GridRowRemoveEditCell
+                data-cy="removeGridItem"
                 :key="index"
                 :link="data[index]"
                 :index="index"

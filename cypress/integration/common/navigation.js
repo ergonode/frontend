@@ -2,7 +2,9 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Given, Then, When } from 'cypress-cucumber-preprocessor/steps';
+import {
+    Given, Then, When, And,
+} from 'cypress-cucumber-preprocessor/steps';
 
 Given('I open {string} page', (page) => {
     cy.visit(`/${page}`);
@@ -11,6 +13,10 @@ Given('I open {string} page', (page) => {
 
 When('I click on {string} button', (id) => {
     cy.get(`[data-cy=${id}]`).click();
+});
+
+And('I click {string} check', (id) => {
+    cy.get(`[data-cy=${id}]`).find('label').click();
 });
 
 When('On {string} element I click button with {string} text', (id, text) => {
@@ -28,9 +34,4 @@ Then('I can see {string} text on {string} element', (text, id) => {
 Then('I close modal', () => {
     cy.get('[data-cy=modal]').should('be.visible');
     cy.get('[data-cy=modalClose]').click();
-});
-
-Then('I send a {string} request to {string} and the response status code should be {string}', (reqType, reqUrl, status) => {
-    cy.apiRequest(reqType, reqUrl).as('req');
-    cy.wait('@req').its('status').should('eq', status);
 });
