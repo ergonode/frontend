@@ -25,6 +25,7 @@
                             <slot
                                 name="option"
                                 :option="option"
+                                :small="small"
                                 :is-selected="isSelected"
                                 :index="index">
                                 <template v-if="isOptionsValid">

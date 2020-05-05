@@ -8,9 +8,10 @@
         @input="onEmptyRecordChange">
         <List>
             <ListElement
-                v-for="(option, index) in options"
+                v-for="(option, index) in filter.options"
                 :key="index"
                 :selected="typeof selectedOptions[index] !== 'undefined'"
+                :small="true"
                 @click.native.prevent="onSelectValue(option, index)">
                 <template #default="{ isSelected }">
                     <ListElementAction :small="true">
@@ -54,10 +55,6 @@ export default {
             type: Object,
             required: true,
         },
-        options: {
-            type: Array,
-            default: () => [],
-        },
         languageCode: {
             type: String,
             default: '',
@@ -91,7 +88,7 @@ export default {
                 const { length } = this.filterValue;
 
                 for (let i = 0; i < length; i += 1) {
-                    const optionIndex = this.options
+                    const optionIndex = this.filter.options
                         .findIndex(option => option.id === this.filterValue[i]);
 
                     this.selectedOptions[optionIndex] = this.filterValue[i];
