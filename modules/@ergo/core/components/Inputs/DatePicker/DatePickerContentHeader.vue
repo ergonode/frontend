@@ -7,7 +7,7 @@
         <span
             v-for="header in headers"
             :key="header"
-            class="header font--semi-bold-12-16">
+            class="header">
             {{ header }}
         </span>
     </div>
@@ -38,6 +38,7 @@ export default {
             flex-basis: 32px;
             height: 32px;
             color: $GRAPHITE;
+            font: $FONT_SEMI_BOLD_10_12;
         }
     }
 </style>

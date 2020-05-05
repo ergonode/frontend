@@ -14,7 +14,6 @@
 <script>
 import {
     isMouseOutOfBoundsElement,
-    isTrashBelowMouse,
     getPositionForBrowser,
 } from '@Core/models/drag_and_drop/helpers';
 
@@ -29,7 +28,7 @@ export default {
             const { filtersContent } = this.$refs;
             const isOutOfBounds = isMouseOutOfBoundsElement(filtersContent, xPos, yPos);
 
-            if (isOutOfBounds || isTrashBelowMouse(xPos, yPos)) {
+            if (isOutOfBounds) {
                 this.$emit('mouseOverFilters', false);
             }
 

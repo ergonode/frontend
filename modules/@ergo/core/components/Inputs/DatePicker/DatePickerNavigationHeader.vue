@@ -16,7 +16,7 @@
             </Fab>
         </slot>
         <span
-            class="header font--medium-14-20"
+            class="date-picker-header__title"
             @click="onClick"
             v-text="header" />
         <slot name="next">
@@ -81,13 +81,14 @@ export default {
         display: flex;
         align-items: center;
 
-        .header {
+        &__title {
             display: flex;
             flex: 1;
             justify-content: center;
             align-items: center;
             height: 32px;
             color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_14_20;
             cursor: pointer;
 
             &:hover {

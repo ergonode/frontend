@@ -10,9 +10,7 @@
                     :image-id="comment.avatar_id"
                     :name="comment.author"
                     :avatar-size="32" />
-                <span
-                    class="font--medium-16-24"
-                    v-text="comment.author" />
+                <span v-text="comment.author" />
             </div>
             <div class="header__actions">
                 <Fab
@@ -40,11 +38,11 @@
         </template>
         <template #footer>
             <span
-                class="font--medium-12-16"
+                class="comment-info"
                 v-text="`Created ${formatDate(comment.created_at)}`" />
             <span
                 v-if="comment.edited_at"
-                class="font--medium-12-16"
+                class="comment-info"
                 v-text="`Edited ${formatDate(comment.edited_at)}`" />
         </template>
     </Comment>
@@ -133,6 +131,7 @@ export default {
     .header__user {
         display: flex;
         align-items: center;
+        font: $FONT_MEDIUM_16_24;
 
         .user-avatar {
             margin-right: 12px;
@@ -149,7 +148,10 @@ export default {
     }
 
     .comment-content {
-        font: $FONT_MEDIUM_14_20;
         white-space: pre-wrap;
+    }
+
+    .comment-info, .comment-content {
+        font: $FONT_MEDIUM_14_20;
     }
 </style>

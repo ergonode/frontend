@@ -5,10 +5,10 @@
 <template>
     <div class="grid-placeholder">
         <div class="grid-placeholder__description">
-            <span class="grid-placeholder__title font--medium-24-32">
+            <span class="grid-placeholder__title">
                 Nothing to see here
             </span>
-            <span class="grid-placeholder__subtitle font--semi-bold-12-16">
+            <span class="grid-placeholder__subtitle">
                 You have used too many filters or there are no records in the system
             </span>
         </div>

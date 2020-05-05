@@ -5,7 +5,7 @@
 <template>
     <div class="date-range-picker">
         <div class="date-range-picker__left">
-            <DatePickerInteractiveHeader
+            <DatePickerInputHeader
                 v-if="inputHeader"
                 header="From"
                 :value="headerFromValue"
@@ -33,14 +33,14 @@
                 </template>
             </DatePickerNavigationHeader>
             <DatePickerContentHeader :headers="weekDays" />
-            <DatePickerMonthDays
+            <DatePickerDays
                 :dates="lowerBoundCalendarDates"
                 :selected-dates="parsedRange"
                 @select="onSelectRange" />
         </div>
         <Divider vertical />
         <div class="date-range-picker__right">
-            <DatePickerInteractiveHeader
+            <DatePickerInputHeader
                 v-if="inputHeader"
                 header="To"
                 :value="headerToValue"
@@ -68,7 +68,7 @@
                 </template>
             </DatePickerNavigationHeader>
             <DatePickerContentHeader :headers="weekDays" />
-            <DatePickerMonthDays
+            <DatePickerDays
                 :dates="upperBoundCalendarDates"
                 :selected-dates="parsedRange"
                 @select="onSelectRange" />
@@ -87,24 +87,24 @@ import calendar, {
 } from '@Core/models/calendar/calendar';
 import Fab from '@Core/components/Buttons/Fab';
 import IconArrowSingle from '@Core/components/Icons/Arrows/IconArrowSingle';
-import DatePickerMonthDays from '@Core/components/Inputs/DatePicker/DatePickerMonthDays';
+import DatePickerDays from '@Core/components/Inputs/DatePicker/DatePickerDays';
 import DatePickerContentHeader from '@Core/components/Inputs/DatePicker/DatePickerContentHeader';
 import DatePickerNavigationHeader from '@Core/components/Inputs/DatePicker/DatePickerNavigationHeader';
 import Divider from '@Core/components/Dividers/Divider';
 import DatePickerHeader from '@Core/components/Inputs/DatePicker/DatePickerHeader';
-import DatePickerInteractiveHeader from '@Core/components/Inputs/DatePicker/DatePickerInteractiveHeader';
+import DatePickerInputHeader from '@Core/components/Inputs/DatePicker/DatePickerInputHeader';
 
 export default {
     name: 'DateRangePickerContent',
     components: {
         Fab,
-        DatePickerMonthDays,
+        DatePickerDays,
         DatePickerContentHeader,
         DatePickerNavigationHeader,
         IconArrowSingle,
         Divider,
         DatePickerHeader,
-        DatePickerInteractiveHeader,
+        DatePickerInputHeader,
     },
     props: {
         value: {

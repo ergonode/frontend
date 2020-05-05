@@ -7,7 +7,7 @@ exports[`Errors/403 Component is named well 1`] = `
       <h1 class="navigation-section__header">
         Access denied
       </h1>
-      <p class="navigation-section__description font--medium-16-24">
+      <p class="navigation-section__description">
         You do not have permission to view this page.
       </p>
     </div>

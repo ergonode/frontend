@@ -11,6 +11,7 @@
         position: relative;
         padding: 12px 16px;
         color: $GREY_DARK;
+        font: $FONT_MEDIUM_12_16;
         text-align: left;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -68,6 +69,7 @@
                 & .link-text {
                     margin-left: 24px;
                     color: $GRAPHITE;
+                    font: $FONT_MEDIUM_16_24;
                     text-align: left;
                     text-overflow: ellipsis;
                     overflow: hidden;

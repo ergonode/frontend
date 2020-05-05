@@ -13,7 +13,7 @@
                     Error
                 </h1>
                 <p
-                    class="navigation-section__description font--medium-16-24">
+                    class="navigation-section__description">
                     Internal server error. Please contact with the system administrator.
                 </p>
             </div>
@@ -64,6 +64,7 @@ export default {
                 &__description {
                     margin: 8px 0 16px;
                     color: $GRAPHITE_DARK;
+                    font: $FONT_MEDIUM_16_24;
                 }
 
                 &__header, &__description {
