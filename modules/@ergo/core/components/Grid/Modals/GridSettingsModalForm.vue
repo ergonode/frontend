@@ -58,7 +58,7 @@ import { getKeyByValue } from '@Core/models/objectWrapper';
 import { SIZE, THEME } from '@Core/defaults/theme';
 import Button from '@Core/components/Buttons/Button';
 import ModalForm from '@Core/components/Modal/ModalForm';
-import FormSection from '@Core/components/Form/FormSection';
+import FormSection from '@Core/components/Form/Section/FormSection';
 import Select from '@Core/components/Inputs/Select/Select';
 import Form from '@Core/components/Form/Form';
 

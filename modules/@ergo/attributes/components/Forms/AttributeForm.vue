@@ -49,35 +49,33 @@
             <template v-if="isMultilingual || hasParams">
                 <Divider />
                 <FormSection title="Configuration">
-                    <FadeGroupTransition>
-                        <Toggler
-                            v-if="isMultilingual"
-                            key="attrMultilingual"
-                            :value="multilingual"
-                            :disabled="isDisabled || isDisabledByPrivileges"
-                            label="Multilingual attribute"
-                            @input="setMultilingualAttribute">
-                            <template #append>
-                                <InfoHint :hint="multilingualHint" />
-                            </template>
-                        </Toggler>
-                        <Select
-                            v-if="hasParams"
-                            key="attrHasParams"
-                            :value="parameter"
-                            solid
-                            required
-                            regular
-                            :label="paramsLabel"
-                            :options="attributeParametersOptions"
-                            :error-messages="errorMessages[paramsFieldKey]"
-                            :disabled="isDisabledByPrivileges"
-                            @input="setAttributeParameter" />
-                        <AttributeOptionKeyValues
-                            v-show="hasOptions"
-                            key="attrHasOptions"
-                            :disabled="isDisabledByPrivileges" />
-                    </FadeGroupTransition>
+                    <Toggler
+                        v-if="isMultilingual"
+                        key="attrMultilingual"
+                        :value="multilingual"
+                        :disabled="isDisabled || isDisabledByPrivileges"
+                        label="Multilingual attribute"
+                        @input="setMultilingualAttribute">
+                        <template #append>
+                            <InfoHint :hint="multilingualHint" />
+                        </template>
+                    </Toggler>
+                    <Select
+                        v-if="hasParams"
+                        key="attrHasParams"
+                        :value="parameter"
+                        solid
+                        required
+                        regular
+                        :label="paramsLabel"
+                        :options="attributeParametersOptions"
+                        :error-messages="errorMessages[paramsFieldKey]"
+                        :disabled="isDisabledByPrivileges"
+                        @input="setAttributeParameter" />
+                    <AttributeOptionKeyValues
+                        v-show="hasOptions"
+                        key="attrHasOptions"
+                        :disabled="isDisabledByPrivileges" />
                 </FormSection>
             </template>
         </template>
@@ -97,13 +95,12 @@ export default {
     components: {
         AttributeOptionKeyValues: () => import('@Attributes/components/Forms/Sections/AttributeOptionKeyValues'),
         Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/FormSection'),
+        FormSection: () => import('@Core/components/Form/Section/FormSection'),
         Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         Select: () => import('@Core/components/Inputs/Select/Select'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
-        FadeGroupTransition: () => import('@Core/components/Transitions/FadeGroupTransition'),
         Divider: () => import('@Core/components/Dividers/Divider'),
     },
     computed: {

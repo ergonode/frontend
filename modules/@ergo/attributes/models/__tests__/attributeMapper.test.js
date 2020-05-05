@@ -3,64 +3,9 @@
  * See LICENSE for license details.
  */
 import {
-    getMappedArrayOptions,
     getParsedType,
     getParsedParameterKeys,
 } from '../attributeMapper';
-
-describe('attributeMapper/getMappedArrayOptions', () => {
-    describe('Based on API data, data is mapped into data structure', () => {
-        it('Non multilingual attribute', () => {
-            const apiData = [
-                {
-                    id: 1,
-                    code: 'key1',
-                    label: 'val1',
-                },
-                {
-                    id: 2,
-                    code: 'key2',
-                    label: null,
-                },
-            ];
-            const result = {
-                0: { id: 1, key: 'key1', value: 'val1' },
-                1: { id: 2, key: 'key2', value: null },
-            };
-            expect(getMappedArrayOptions(apiData)).toStrictEqual(result);
-        });
-
-        it('Multilingual attribute', () => {
-            const apiData = [
-                {
-                    id: 1,
-                    code: 'key1',
-                    label: {
-                        EN: 'val1',
-                    },
-                },
-                {
-                    id: 2,
-                    code: 'key2',
-                    label: null,
-                },
-            ];
-            const result = {
-                0: {
-                    id: 1,
-                    key: 'key1',
-                    value: { EN: 'val1' },
-                },
-                1: {
-                    id: 2,
-                    key: 'key2',
-                    value: null,
-                },
-            };
-            expect(getMappedArrayOptions(apiData)).toStrictEqual(result);
-        });
-    });
-});
 
 describe('attributeMapper/getParsedParameterKeys', () => {
     describe('Based on attribute parameters data, data is mapped into API structure', () => {
