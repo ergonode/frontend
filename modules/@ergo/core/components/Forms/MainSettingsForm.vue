@@ -48,29 +48,28 @@ export default {
                 {
                     id: 'pl_PL',
                     key: 'pl_PL',
-                    name: 'Polska',
+                    value: 'Polska',
+                    level: 0,
                 },
             ],
             tree: [
                 {
                     id: 'pl_PL',
                     key: 'pl_PL',
-                    name: 'Polska',
-                    childrens: [
-                        {
-                            id: 'en_EN',
-                            key: 'en_EN',
-                            name: 'Angielski',
-                            childrens: [
-                                {
-                                    id: 'us_US',
-                                    key: 'us_US',
-                                    name: 'Angielski USA',
-                                    childrens: [],
-                                },
-                            ],
-                        },
-                    ],
+                    value: 'Polska',
+                    level: 0,
+                },
+                {
+                    id: 'en_EN',
+                    key: 'en_EN',
+                    value: 'Angielski',
+                    level: 1,
+                },
+                {
+                    id: 'us_US',
+                    key: 'us_US',
+                    value: 'Angielski USA',
+                    level: 2,
                 },
             ],
         };
@@ -86,7 +85,8 @@ export default {
             'setSelectedLanguages',
             'getFilteredData',
         ]),
-        setLanguageTree() {
+        setLanguageTree(value) {
+            this.treeValue = value;
         },
     },
 };
