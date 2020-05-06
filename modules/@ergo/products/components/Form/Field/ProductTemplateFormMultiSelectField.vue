@@ -8,12 +8,14 @@
         :position="position">
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
-                <TextField
+                <TranslationSelect
                     :value="fieldData.value"
                     solid
                     regular
-                    :input="{ type: 'number' }"
+                    :clearable="true"
+                    :multiselect="true"
                     :label="label"
+                    :options="options"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
                     :required="properties.required"
@@ -21,35 +23,30 @@
                     :description="properties.hint"
                     @focus="onFocus"
                     @input="onValueChange">
-                    <template #append>
-                        <TextFieldSuffix
-                            v-if="parameter"
-                            :suffix="parameter" />
-                    </template>
                     <template #informationLabel>
                         <div />
                     </template>
-                </TextField>
+                </TranslationSelect>
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { fieldDataCompose } from '@Products/models/productMapper';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
-import TextField from '@Core/components/Inputs/TextField';
-import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
+import { arraysAreEqual } from '@Core/models/arrayWrapper';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import { getMappedMatchedArrayOptions, getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
 
 export default {
-    name: 'ProductTemplateFormUnitField',
+    name: 'ProductTemplateFormMultiSelectField',
     components: {
         ProductTemplateFormField,
-        TextField,
+        TranslationSelect,
         FormValidatorField,
-        TextFieldSuffix,
     },
     props: {
         size: {
@@ -86,26 +83,48 @@ export default {
             data: state => state.data,
             draft: state => state.draft,
         }),
-        fieldData() {
-            const { attribute_code } = this.properties;
-            const check = (data, draftValue) => data !== draftValue;
-            const getMappedValue = fieldDataCompose(check);
-
-            return getMappedValue({
-                data: this.data[attribute_code],
-                draft: this.draft[this.languageCode][attribute_code],
-                defaultValue: '',
-            });
-        },
-        parameter() {
-            if (!this.properties.parameters) return null;
-
-            const [key] = Object.keys(this.properties.parameters);
-
-            return this.properties.parameters[key];
-        },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
+        },
+        hasOptions() {
+            return typeof this.properties.options !== 'undefined';
+        },
+        options() {
+            if (!this.hasOptions) return [];
+
+            return getMappedObjectOptions({
+                options: this.properties.options,
+                languageCode: this.languageCode,
+            });
+        },
+        fieldData() {
+            const { attribute_code } = this.properties;
+
+            if (!this.hasOptions
+                    || (!this.data[attribute_code]
+                            && !this.draft[this.languageCode][attribute_code])) {
+                return {
+                    value: [],
+                    isDraft: false,
+                };
+            }
+
+            const check = (data, draftValue) => !arraysAreEqual(data, draftValue);
+            const getMappedValue = fieldDataCompose(check);
+            const { isDraft, value } = getMappedValue({
+                data: this.data[attribute_code],
+                draft: this.draft[this.languageCode][attribute_code],
+                defaultValue: [],
+            });
+
+            return {
+                isDraft,
+                value: getMappedMatchedArrayOptions({
+                    optionIds: value,
+                    options: this.properties.options,
+                    languageCode: this.languageCode,
+                }),
+            };
         },
     },
     methods: {
@@ -119,7 +138,7 @@ export default {
                     languageCode: this.languageCode,
                     productId: this.$route.params.id,
                     elementId: this.properties.attribute_id,
-                    value: this.fieldData.value,
+                    value: this.fieldData.value.map(({ id }) => id),
                 });
             }
         },
@@ -127,7 +146,7 @@ export default {
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
-                value,
+                value: value.map(({ id }) => id),
             });
         },
     },

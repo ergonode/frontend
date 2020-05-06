@@ -6,44 +6,29 @@
     <ProductTemplateFormField
         :size="size"
         :position="position">
-        <FormValidatorField :field-key="fieldKey">
-            <template #validator="{ errorMessages }">
-                <TextArea
-                    :style="{ height: '100%' }"
-                    :value="fieldData.value"
-                    solid
-                    regular
-                    resize="none"
-                    :label="label"
-                    :placeholder="properties.placeholder"
-                    :error-messages="errorMessages"
-                    :required="properties.required"
-                    :disabled="disabled"
-                    :description="properties.hint"
-                    @focus="onFocus"
-                    @input="onValueChange">
-                    <template #informationLabel>
-                        <div />
-                    </template>
-                </TextArea>
-            </template>
-        </FormValidatorField>
+        <UploadImageFile
+            :style="{ height: '100%' }"
+            :value="fieldData.value"
+            :label="label"
+            :required="properties.required"
+            :disabled="disabled"
+            height="100%"
+            @upload="onValueChange"
+            @remove="onValueChange" />
     </ProductTemplateFormField>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex';
 import { fieldDataCompose } from '@Products/models/productMapper';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
-import TextArea from '@Core/components/Inputs/TextArea';
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
 
 export default {
-    name: 'ProductTemplateFormTextAreaField',
+    name: 'ProductTemplateFormNumericField',
     components: {
         ProductTemplateFormField,
-        TextArea,
-        FormValidatorField,
+        UploadImageFile,
     },
     props: {
         size: {
@@ -91,6 +76,13 @@ export default {
                 defaultValue: '',
             });
         },
+        parameter() {
+            if (!this.properties.parameters) return null;
+
+            const [key] = Object.keys(this.properties.parameters);
+
+            return this.properties.parameters[key];
+        },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
@@ -99,21 +91,18 @@ export default {
         ...mapActions('product', [
             'setDraftValue',
         ]),
-        onFocus(isFocused) {
-            if (!isFocused) {
-                this.$emit('input', {
-                    fieldKey: this.fieldKey,
-                    languageCode: this.languageCode,
-                    productId: this.$route.params.id,
-                    elementId: this.properties.attribute_id,
-                    value: this.fieldData.value,
-                });
-            }
-        },
         onValueChange(value) {
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
+                value,
+            });
+
+            this.$emit('input', {
+                fieldKey: this.fieldKey,
+                languageCode: this.languageCode,
+                productId: this.$route.params.id,
+                elementId: this.properties.attribute_id,
                 value,
             });
         },

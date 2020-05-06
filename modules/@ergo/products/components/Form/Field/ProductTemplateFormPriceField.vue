@@ -6,29 +6,50 @@
     <ProductTemplateFormField
         :size="size"
         :position="position">
-        <UploadImageFile
-            :style="{ height: '100%' }"
-            :value="fieldData.value"
-            :label="label"
-            :required="properties.required"
-            :disabled="disabled"
-            height="100%"
-            @upload="onValueChange"
-            @remove="onValueChange" />
+        <FormValidatorField :field-key="fieldKey">
+            <template #validator="{ errorMessages }">
+                <TextField
+                    :value="fieldData.value"
+                    solid
+                    regular
+                    :label="label"
+                    :input="{ type: 'number'}"
+                    :placeholder="properties.placeholder"
+                    :error-messages="errorMessages"
+                    :required="properties.required"
+                    :disabled="disabled"
+                    :description="properties.hint"
+                    @focus="onFocus"
+                    @input="onValueChange">
+                    <template #append>
+                        <TextFieldSuffix
+                            v-if="parameter"
+                            :suffix="parameter" />
+                    </template>
+                    <template #informationLabel>
+                        <div />
+                    </template>
+                </TextField>
+            </template>
+        </FormValidatorField>
     </ProductTemplateFormField>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex';
 import { fieldDataCompose } from '@Products/models/productMapper';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
-import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import TextField from '@Core/components/Inputs/TextField';
+import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
+import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 
 export default {
-    name: 'ProductTemplateFormNumericField',
+    name: 'ProductTemplateFormPriceField',
     components: {
         ProductTemplateFormField,
-        UploadImageFile,
+        TextField,
+        FormValidatorField,
+        TextFieldSuffix,
     },
     props: {
         size: {
@@ -91,18 +112,21 @@ export default {
         ...mapActions('product', [
             'setDraftValue',
         ]),
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.$emit('input', {
+                    fieldKey: this.fieldKey,
+                    languageCode: this.languageCode,
+                    productId: this.$route.params.id,
+                    elementId: this.properties.attribute_id,
+                    value: this.fieldData.value,
+                });
+            }
+        },
         onValueChange(value) {
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
-                value,
-            });
-
-            this.$emit('input', {
-                fieldKey: this.fieldKey,
-                languageCode: this.languageCode,
-                productId: this.$route.params.id,
-                elementId: this.properties.attribute_id,
                 value,
             });
         },

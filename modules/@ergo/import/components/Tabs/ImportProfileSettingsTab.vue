@@ -19,7 +19,7 @@ import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/Re
 import JSONSchemaForm from '@Core/components/Form/JSONSchemaForm/JSONSchemaForm';
 
 export default {
-    name: 'CollectionBaseTab',
+    name: 'CollectionGeneralTab',
     components: {
         ResponsiveCenteredViewTemplate,
         JSONSchemaForm,

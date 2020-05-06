@@ -43,7 +43,6 @@ import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 export default {
     name: 'UnitsSettingsGridTab',
     components: {
-        Grid: () => import('@Core/components/Grid/Grid'),
         ResponsiveCenteredViewTemplate,
         Button,
         IconAdd,

@@ -60,12 +60,11 @@ import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
 
 export default {
-    name: 'ProductGridTab',
+    name: 'ProductCatalogTab',
     components: {
         GridViewTemplate,
         Button,
         VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
-        Grid: () => import('@Core/components/Grid/Grid'),
     },
     mixins: [fetchGridDataMixin({ path: 'products' })],
     computed: {

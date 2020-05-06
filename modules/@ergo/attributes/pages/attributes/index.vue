@@ -55,9 +55,6 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },

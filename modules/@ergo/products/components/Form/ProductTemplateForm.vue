@@ -72,7 +72,7 @@ export default {
         },
     },
     created() {
-        this.formFieldComponents = this.elements.map(({ type }) => () => import(`@Products/components/Forms/Fields/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
+        this.formFieldComponents = this.elements.map(({ type }) => () => import(`@Products/components/Form/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
     },
     methods: {
         onValueChange(payload) {

@@ -19,7 +19,7 @@
 
 export default {
     name: 'GridTableCell',
-    inject: ['getEditingCellCoordinates', 'setEditingCellCoordinates'],
+    inject: ['getEditingCellCoordinates', 'setEditingCellCoordinates', 'getTableLayoutElement'],
     components: {
         GridCellResizer: () => import('@Core/components/Grid/Layout/Table/Cells/Resizer/GridCellResizer'),
     },
@@ -136,7 +136,7 @@ export default {
                 return false;
             }
 
-            const tableLayout = document.documentElement.querySelector('.grid-table-layout');
+            const tableLayout = this.getTableLayoutElement();
 
             switch (keyCode) {
             case this.editKeyCode:

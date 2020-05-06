@@ -8,13 +8,13 @@
         :position="position">
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
-                <TextField
+                <DatePicker
                     :value="fieldData.value"
                     solid
                     regular
                     :label="label"
-                    :input="{ type: 'number'}"
                     :placeholder="properties.placeholder"
+                    :foramt="parameter"
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
@@ -29,25 +29,27 @@
                     <template #informationLabel>
                         <div />
                     </template>
-                </TextField>
+                </DatePicker>
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { fieldDataCompose } from '@Products/models/productMapper';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
-import TextField from '@Core/components/Inputs/TextField';
+import { format as formatDate, parse as parseDate } from 'date-fns';
+import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
 
 export default {
-    name: 'ProductTemplateFormNumericField',
+    name: 'ProductTemplateFormDateField',
     components: {
         ProductTemplateFormField,
-        TextField,
+        DatePicker,
         FormValidatorField,
         TextFieldSuffix,
     },
@@ -90,15 +92,19 @@ export default {
             const { attribute_code } = this.properties;
             const check = (data, draftValue) => data !== draftValue;
             const getMappedValue = fieldDataCompose(check);
-
-            return getMappedValue({
+            const { isDraft, value } = getMappedValue({
                 data: this.data[attribute_code],
                 draft: this.draft[this.languageCode][attribute_code],
-                defaultValue: '',
+                defaultValue: null,
             });
+
+            return {
+                isDraft,
+                value: value ? parseDate(value, DEFAULT_FORMAT, new Date()) : null,
+            };
         },
         parameter() {
-            if (!this.properties.parameters) return null;
+            if (!this.properties.parameters) return DEFAULT_FORMAT;
 
             const [key] = Object.keys(this.properties.parameters);
 
@@ -119,15 +125,19 @@ export default {
                     languageCode: this.languageCode,
                     productId: this.$route.params.id,
                     elementId: this.properties.attribute_id,
-                    value: this.fieldData.value,
+                    value: this.fieldData.value
+                        ? formatDate(this.fieldData.value, DEFAULT_FORMAT)
+                        : '',
                 });
             }
         },
         onValueChange(value) {
+            const date = value ? formatDate(value, DEFAULT_FORMAT) : null;
+
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
-                value,
+                value: date,
             });
         },
     },

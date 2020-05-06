@@ -26,7 +26,6 @@ export default {
     name: 'CollectionGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        Grid: () => import('@Core/components/Grid/Grid'),
     },
     mixins: [fetchGridDataMixin({ path: 'collections' })],
     methods: {

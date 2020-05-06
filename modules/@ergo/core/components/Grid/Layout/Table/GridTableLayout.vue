@@ -8,10 +8,23 @@
             'grid-table-layout',
             { 'grid-table-layout--disabled': isColumnExists },
         ]"
-        ref="gridTemplateLayout">
+        ref="gridTableLayout">
+        <GridTableLayoutPinnedSection
+            v-if="isSelectColumn"
+            :is-pinned="pinnedSections[pinnedState.LEFT]">
+            <GridSelectRowColumn
+                :column-index="0"
+                :data-count="dataCount"
+                :rows-offset="rowsOffset"
+                :is-basic-filter="isBasicFilter" />
+        </GridTableLayoutPinnedSection>
         <GridTableLayoutColumnsSection
             :style="templateColumns"
             ref="columnsSection">
+            <GridSentinelColumn
+                v-if="isSelectColumn"
+                :pinned-state="pinnedState.LEFT"
+                @sticky="onStickyChange" />
             <Component
                 v-for="(column, index) in orderedColumns"
                 :style="templateRows"
@@ -65,7 +78,6 @@ import {
     PINNED_COLUMN_STATE,
     COLUMN_WIDTH,
     GHOST_ID,
-    COLUMN_SELECT_ROW,
     COLUMN_ACTIONS_ID,
     COLUMN_GHOST,
     ROW_HEIGHT,
@@ -91,6 +103,7 @@ export default {
         GridTableLayoutColumnsSection,
         GridTableLayoutPinnedSection: () => import('@Core/components/Grid/Layout/Table/Sections/GridTableLayoutPinnedSection'),
         GridSentinelColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSentinelColumn'),
+        GridSelectRowColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSelectRowColumn'),
     },
     props: {
         columns: {
@@ -238,21 +251,12 @@ export default {
         const orderedColumns = [];
         const columnComponents = [];
         const columnWidths = [];
+        const { length } = this.columns;
         const extendedComponents = this.$getExtendedComponents('GRID');
         const isColumnExtended = typeof extendedComponents !== 'undefined'
             && typeof extendedComponents.layout !== 'undefined'
             && typeof extendedComponents.layout.table !== 'undefined'
             && typeof extendedComponents.layout.table.columns !== 'undefined';
-
-        if (this.isSelectColumn) {
-            orderedColumns.push(COLUMN_SELECT_ROW);
-            columnComponents.push(
-                () => import('@Core/components/Grid/Layout/Table/Columns/GridSelectRowColumn'),
-            );
-            columnWidths.push(COLUMN_WIDTH.SELECT_ROW);
-        }
-
-        const { length } = this.columns;
 
         for (let i = 0; i < length; i += 1) {
             orderedColumns.push(this.columns[i]);
@@ -388,17 +392,20 @@ export default {
         getEditingCellCoordinates() {
             return this.editingCellCoordinates;
         },
+        getTableLayoutElement() {
+            return this.$refs.gridTableLayout;
+        },
         onClickOutside({ pageX, pageY, target }) {
-            const { gridTemplateLayout } = this.$refs;
+            const { gridTableLayout } = this.$refs;
             const {
                 top, left, width, height,
-            } = gridTemplateLayout.getBoundingClientRect();
+            } = gridTableLayout.getBoundingClientRect();
 
             if (!(pageX > left
                 && pageX < left + width
                 && pageY > top
                 && pageY < top + height)
-                && !gridTemplateLayout.contains(target)) {
+                && !gridTableLayout.contains(target)) {
                 this.setEditingCellCoordinates();
             }
         },
@@ -524,6 +531,7 @@ export default {
         return {
             setEditingCellCoordinates: this.setEditingCellCoordinates,
             getEditingCellCoordinates: this.getEditingCellCoordinates,
+            getTableLayoutElement: this.getTableLayoutElement,
         };
     },
 };

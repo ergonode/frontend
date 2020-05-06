@@ -3,26 +3,22 @@
  * See LICENSE for license details.
  */
 <template>
-    <ResponsiveCenteredViewTemplate>
-        <template #content>
-            <Grid
-                :columns="columns"
-                :data-count="filtered"
-                :data="data"
-                @fetchData="getGridData" />
+    <ResponsiveCenteredViewTemplate :fixed="true">
+        <template #centeredContent>
+            <CollectionForm />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
+import CollectionForm from '@Collections/components/Forms/CollectionForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 
 export default {
-    name: 'UserActivityLogsGridTab',
+    name: 'CollectionGeneralTab',
     components: {
         ResponsiveCenteredViewTemplate,
+        CollectionForm,
     },
-    mixins: [fetchGridDataMixin({ path: 'profile/log' })],
 };
 </script>

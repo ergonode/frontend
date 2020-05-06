@@ -26,7 +26,6 @@ export default {
     name: 'CategoryTreesGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        Grid: () => import('@Core/components/Grid/Grid'),
     },
     mixins: [fetchGridDataMixin({ path: 'trees' })],
     methods: {

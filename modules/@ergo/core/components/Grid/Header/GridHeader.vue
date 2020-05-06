@@ -42,6 +42,7 @@
                         <IconSettings :fill-color="color" />
                     </template>
                 </Fab>
+                <slot name="configuration" />
             </div>
         </div>
         <GridSettingsModalForm

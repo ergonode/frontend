@@ -8,10 +8,12 @@
         :position="position">
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
-                <TextField
+                <TextArea
+                    :style="{ height: '100%' }"
                     :value="fieldData.value"
                     solid
                     regular
+                    resize="none"
                     :label="label"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
@@ -20,15 +22,10 @@
                     :description="properties.hint"
                     @focus="onFocus"
                     @input="onValueChange">
-                    <template #append>
-                        <TextFieldSuffix
-                            v-if="parameter"
-                            :suffix="parameter" />
-                    </template>
                     <template #informationLabel>
                         <div />
                     </template>
-                </TextField>
+                </TextArea>
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
@@ -37,18 +34,16 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { fieldDataCompose } from '@Products/models/productMapper';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
-import TextField from '@Core/components/Inputs/TextField';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import TextArea from '@Core/components/Inputs/TextArea';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
 
 export default {
-    name: 'ProductTemplateFormTextField',
+    name: 'ProductTemplateFormTextAreaField',
     components: {
         ProductTemplateFormField,
-        TextField,
+        TextArea,
         FormValidatorField,
-        TextFieldSuffix,
     },
     props: {
         size: {
@@ -95,13 +90,6 @@ export default {
                 draft: this.draft[this.languageCode][attribute_code],
                 defaultValue: '',
             });
-        },
-        parameter() {
-            if (!this.properties.parameters) return null;
-
-            const [key] = Object.keys(this.properties.parameters);
-
-            return this.properties.parameters[key];
         },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;

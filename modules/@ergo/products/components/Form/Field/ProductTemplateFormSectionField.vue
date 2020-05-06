@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 
 export default {
     name: 'ProductTemplateFormSectionField',

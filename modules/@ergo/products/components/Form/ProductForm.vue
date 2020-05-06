@@ -8,6 +8,18 @@
         :fields-keys="[skuFieldKey, templateIdFieldKey]">
         <template #body="{ errorMessages }">
             <FormSection>
+                <Select
+                    v-model="productType"
+                    solid
+                    regular
+                    required
+                    :disabled="isDisabled"
+                    label="Product type"
+                    :options="productTypes" />
+                <ProductAttributesBindingFormSection
+                    v-if="productType === 'Product with variants'"
+                    :attributes="[]"
+                    :disabled="isDisabledByPrivileges" />
                 <TextField
                     :value="sku"
                     hint="Products SKU must be unique"
@@ -52,7 +64,15 @@ export default {
         Form: () => import('@Core/components/Form/Form'),
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
+        Select: () => import('@Core/components/Inputs/Select/Select'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
+        ProductAttributesBindingFormSection: () => import('@Products/components/Form/Section/ProductAttributesBindingFormSection'),
+    },
+    data() {
+        return {
+            // TODO: Remove when BE is ready
+            productType: 'Simple product',
+        };
     },
     computed: {
         ...mapState('authentication', {
@@ -66,6 +86,10 @@ export default {
             selectedCategories: state => state.selectedCategories,
             categories: state => state.categories,
         }),
+        productTypes() {
+            // TODO: Remove when BE is ready
+            return ['Simple product', 'Product with variants', 'Grouped product'];
+        },
         templateOptions() {
             return this.templates.map(({ id, name }) => ({
                 id, key: '', value: name, hint: '',

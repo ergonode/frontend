@@ -9,6 +9,9 @@ export default {
     setDraftValue: ({ commit }, payload) => commit(types.SET_DRAFT_VALUE, payload),
     setProductStatus: ({ commit }, status) => commit(types.SET_PRODUCT_STATUS, status),
     setProductTemplate: ({ commit }, template) => commit(types.SET_PRODUCT_TEMPLATE, template),
+    setBindingAttribute: ({ commit }, payload) => commit(types.SET_BINDING_ATTRIBUTE, payload),
+    addBindingAttribute: ({ commit }) => commit(types.ADD_BINDING_ATTRIBUTE),
+    removeBindingAttribute: ({ commit }, index) => commit(types.REMOVE_BINDING_ATTRIBUTE, index),
     setProductCategories: (
         { commit },
         categories = [],
@@ -56,6 +59,10 @@ export default {
             if (templateId) {
                 commit(types.SET_PRODUCT_TEMPLATE, parseTemplate(templateId));
             }
+
+            // TODO:
+            // - Set product type
+            // - Set attribute bindings
 
             commit(types.SET_PRODUCT_ID, id);
             commit(types.SET_PRODUCT_SKU, sku);

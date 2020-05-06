@@ -12,8 +12,8 @@
                     :value="fieldData.value"
                     solid
                     regular
+                    :input="{ type: 'number' }"
                     :label="label"
-                    :input="{ type: 'number'}"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
                     :required="properties.required"
@@ -38,13 +38,13 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { fieldDataCompose } from '@Products/models/productMapper';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import TextField from '@Core/components/Inputs/TextField';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 
 export default {
-    name: 'ProductTemplateFormPriceField',
+    name: 'ProductTemplateFormUnitField',
     components: {
         ProductTemplateFormField,
         TextField,

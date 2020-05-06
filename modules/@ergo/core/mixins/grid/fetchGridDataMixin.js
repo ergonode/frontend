@@ -13,6 +13,9 @@ import { getMappedObjectOptions } from '@Core/models/mappers/translationsMapper'
 
 export default function ({ path }) {
     return {
+        components: {
+            Grid: () => import('@Core/components/Grid/Grid'),
+        },
         props: {
             isFetchingNeeded: {
                 type: Boolean,
@@ -106,7 +109,10 @@ export default function ({ path }) {
             return {
                 advancedFilters: [],
                 localParams: {
-                    offset: 0, limit: DATA_LIMIT, filters: {}, sortedColumn: {},
+                    offset: 0,
+                    limit: DATA_LIMIT,
+                    filters: {},
+                    sortedColumn: {},
                 },
             };
         },

@@ -7,11 +7,15 @@ import defaultState from './state';
 export const types = {
     SET_PRODUCT_ID: 'SET_PRODUCT_ID',
     SET_PRODUCT_SKU: 'SET_PRODUCT_SKU',
+    SET_PRODUCT_TYPE: 'SET_PRODUCT_TYPE',
     SET_DRAFT_VALUE: 'SET_DRAFT_VALUE',
     SET_PRODUCT_STATUS: 'SET_PRODUCT_STATUS',
     SET_PRODUCT_WORKFLOW: 'SET_PRODUCT_WORKFLOW',
     SET_PRODUCT_DATA: 'SET_PRODUCT_DATA',
     SET_PRODUCT_TEMPLATE: 'SET_PRODUCT_TEMPLATE',
+    SET_BINDING_ATTRIBUTE: 'SET_BINDING_ATTRIBUTE',
+    ADD_BINDING_ATTRIBUTE: 'ADD_BINDING_ATTRIBUTE',
+    REMOVE_BINDING_ATTRIBUTE: 'REMOVE_BINDING_ATTRIBUTE',
     SET_PRODUCT_CATEGORIES: 'SET_PRODUCT_CATEGORIES',
     SET_TEMPLATES: 'SET_TEMPLATES',
     SET_CATEGORIES: 'SET_CATEGORIES',
@@ -23,11 +27,23 @@ export default {
     [types.SET_PRODUCT_ID](state, id) {
         state.id = id;
     },
+    [types.SET_PRODUCT_TYPE](state, type) {
+        state.type = type;
+    },
     [types.SET_PRODUCT_SKU](state, sku) {
         state.sku = sku;
     },
     [types.SET_PRODUCT_STATUS](state, status) {
         state.status = status;
+    },
+    [types.SET_BINDING_ATTRIBUTE](state, { index, attribute }) {
+        state.bindingAttributes[index] = attribute;
+    },
+    [types.ADD_BINDING_ATTRIBUTE](state) {
+        state.bindingAttributes.push(null);
+    },
+    [types.REMOVE_BINDING_ATTRIBUTE](state, index) {
+        state.bindingAttributes.splice(index, 1);
     },
     [types.SET_PRODUCT_WORKFLOW](state, workflow) {
         state.workflow = workflow;

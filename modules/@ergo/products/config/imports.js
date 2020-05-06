@@ -8,12 +8,14 @@ export const Pages = {
 };
 
 export const Tabs = {
-    ProductGridTab: () => import('@Products/components/Tabs/ProductGridTab').then(m => m.default || m),
-    ProductBaseTab: () => import('@Products/components/Tabs/ProductBaseTab').then(m => m.default || m),
+    ProductCatalogTab: () => import('@Products/components/Tabs/ProductCatalogTab').then(m => m.default || m),
+    ProductGeneralTab: () => import('@Products/components/Tabs/ProductGeneralTab').then(m => m.default || m),
     ProductTemplateTab: () => import('@Products/components/Tabs/ProductTemplateTab').then(m => m.default || m),
     ProductCollectionTab: () => import('@Products/components/Tabs/ProductCollectionTab').then(m => m.default || m),
+    ProductVariantsTab: () => import('@Products/components/Tabs/ProductVariantsTab').then(m => m.default || m),
+    ProductGroupTab: () => import('@Products/components/Tabs/ProductGroupTab').then(m => m.default || m),
     ProductCommentsTab: () => import('@Products/components/Tabs/ProductCommentsTab').then(m => m.default || m),
-    ProductHistoryGridTab: () => import('@Products/components/Tabs/ProductHistoryGridTab').then(m => m.default || m),
+    ProductHistoryTab: () => import('@Products/components/Tabs/ProductHistoryTab').then(m => m.default || m),
 };
 
 export const Icons = {

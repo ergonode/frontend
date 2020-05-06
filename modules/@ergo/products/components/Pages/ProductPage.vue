@@ -51,9 +51,7 @@
             </template>
         </TitleBar>
         <HorizontalTabBar :items="tabs" />
-        <Footer
-            v-if="!$route.path.includes('history')"
-            flex-end>
+        <Footer flex-end>
             <Button
                 title="SAVE PRODUCT"
                 :size="smallSize"
@@ -65,6 +63,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import Button from '@Core/components/Buttons/Button';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
 import TitleBarSubActions from '@Core/components/TitleBar/TitleBarSubActions';
@@ -90,6 +89,25 @@ export default {
         }),
         isUserAllowedToUpdateProduct() {
             return this.$hasAccess(['PRODUCT_UPDATE']);
+        },
+        tabs() {
+            const tabs = getNestedTabRoutes(
+                this.$hasAccess,
+                this.$router.options.routes,
+                this.$route,
+            );
+
+            // TODO: Refactor types - maybe think at better solution
+
+            // switch (this.type) {
+            // case 'Product with variants':
+            //     return tabs.filter(tab => tab.title !== 'Group');
+            // case 'Grouped product':
+            //     return tabs.filter(tab => tab.title !== 'Variants');
+            // default: return tabs.filter(tab => tab.title !== 'Variants' && tab.title !== 'Group');
+            // }
+
+            return tabs;
         },
     },
     methods: {

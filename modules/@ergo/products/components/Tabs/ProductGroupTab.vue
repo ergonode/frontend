@@ -4,21 +4,17 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
-        <template #centeredContent>
-            <CollectionForm />
-        </template>
+        // TODO: Waiting for design
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
-import CollectionForm from '@Collections/components/Forms/CollectionForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
-    name: 'CollectionBaseTab',
+    name: 'ProductGroupTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        CollectionForm,
     },
 };
 </script>

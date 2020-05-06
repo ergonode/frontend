@@ -4,13 +4,12 @@
  */
 <template>
     <ModalForm
-        title="Add products to collection"
+        title="Add products from segment"
         @close="onClose">
         <template #body>
-            <AddProductsToCollectionForm
+            <AddProductsFromSegmentForm
                 :segment-options="segmentOptions"
                 :segments="segments"
-                :product-skus="productSkus"
                 @input="onFormValueChange" />
         </template>
         <template #footer>
@@ -33,9 +32,9 @@ import { THEME } from '@Core/defaults/theme';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
-    name: 'AddProductsToCollectionModalForm',
+    name: 'AddProductsFromSegmentModalForm',
     components: {
-        AddProductsToCollectionForm: () => import('@Collections/components/Forms/AddProductsToCollectionForm'),
+        AddProductsFromSegmentForm: () => import('@Collections/components/Forms/AddProductsFromSegmentForm'),
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
         Button: () => import('@Core/components/Buttons/Button'),
     },
@@ -43,7 +42,6 @@ export default {
         return {
             segmentOptions: [],
             segments: [],
-            productSkus: '',
             isRequestPending: false,
         };
     },
@@ -73,8 +71,8 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
-        onFormValueChange({ key, value }) {
-            this[key] = value;
+        onFormValueChange(value) {
+            this.segments = value;
         },
         onClose() {
             this.$emit('close');
@@ -84,13 +82,8 @@ export default {
             const preValidationErrors = {};
             const data = {
                 segments: this.segments.map(segment => segment.id),
-                skus: this.productSkus,
             };
 
-            if (data.segments.length < 1 && data.skus === '') {
-                preValidationErrors.skus = ['Both fields can not be empty'];
-                preValidationErrors.segments = ['Both fields can not be empty'];
-            }
             if (!isEmpty(preValidationErrors)) {
                 this.onError({ errors: preValidationErrors });
                 return;
