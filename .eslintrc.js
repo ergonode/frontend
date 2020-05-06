@@ -111,5 +111,7 @@ module.exports = {
         'jest/no-commented-out-tests': 'off',
         'jest/expect-expect': 'off',
         'jest/no-mocks-import': 'off',
+        'jest/valid-expect': 'off',
+        'jest/no-standalone-expect': 'off',
     },
 };

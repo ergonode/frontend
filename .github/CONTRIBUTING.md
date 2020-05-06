@@ -28,7 +28,7 @@ If you find a bug in the source code, you can help us by [submitting an issue](#
 
 To ensure consistency throughout the source code, keep these rules in mind as you are working:
 
-* All features or bug fixes **must be tested** by one or more specs (unit-tests).
+* All features or bug fixes **should be tested** by one or more specs (unit-tests).
 * Add **e2e** tests if needed.
 * All features should have **documentation**.
 
@@ -46,7 +46,7 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 - Make sure the documentation is up to date
 
 - If adding a new feature:
-  - Add accompanying test case.
+  - Add accompanying test case if needed.
   - Provide a convincing reason to add this feature. Ideally, you should open a suggestion issue first and have it approved before working on it.
   - Add `(#xxxx[,#xxxx])` (#xxxx is the issue id) in your PR title for a better release log.
 
