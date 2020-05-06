@@ -3,9 +3,9 @@
  * See LICENSE for license details.
  */
 <template functional>
-    <div class="header font--medium-12-16">
-        <span v-text="props.header" />
-    </div>
+    <span
+        class="header"
+        v-text="props.header" />
 </template>
 
 <script>
@@ -27,5 +27,6 @@ export default {
         align-items: center;
         height: 32px;
         color: $GRAPHITE;
+        font: $FONT_MEDIUM_12_16;
     }
 </style>

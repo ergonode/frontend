@@ -23,10 +23,6 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import {
-    isTrashBelowMouse,
-    getPositionForBrowser,
-} from '@Core/models/drag_and_drop/helpers';
-import {
     getHighlightingPositions,
     getHighlightingLayoutDropPositions,
     getMaxRowForGivenColumn,
@@ -141,14 +137,7 @@ export default {
             this.$emit('highlightedPositionChange', this.highlightingPositions);
         },
         onDragEnd(event) {
-            const { xPos, yPos } = getPositionForBrowser(event);
-
-            if (isTrashBelowMouse(xPos, yPos)) {
-                this.removeLayoutElementAtIndex(this.index);
-            } else {
-                this.isDragged = false;
-            }
-
+            this.isDragged = false;
             this.highlightingPositions = [];
             this.setDraggedElement();
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });

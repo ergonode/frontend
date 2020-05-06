@@ -33,8 +33,6 @@ import {
 } from '@Core/models/layout/ElementCopy';
 import {
     getDraggedColumnPositionState,
-    isTrashBelowMouse,
-    getPositionForBrowser,
 } from '@Core/models/drag_and_drop/helpers';
 import {
     DRAGGED_ELEMENT,
@@ -129,13 +127,9 @@ export default {
             return true;
         },
         onDragEnd(event) {
-            const { xPos, yPos } = getPositionForBrowser(event);
-
             removeElementCopyFromDocumentBody(event);
 
-            if (isTrashBelowMouse(xPos, yPos) && this.column.deletable) {
-                this.$emit('remove', this.index);
-            } else if (this.ghostIndex !== this.draggedElIndex) {
+            if (this.ghostIndex !== this.draggedElIndex) {
                 this.$emit('swapColumns', {
                     from: this.draggedElIndex,
                     to: this.ghostIndex,

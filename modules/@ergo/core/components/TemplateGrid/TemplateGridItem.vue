@@ -174,6 +174,15 @@ export default {
             }
         }
 
+        &__name {
+            font: $FONT_MEDIUM_14_20;
+        }
+
+        &__code {
+            color: $GRAPHITE;
+            font: $FONT_SEMI_BOLD_10_12;
+        }
+
         &__contextual-menu {
             flex: 0 1 auto;
             align-items: flex-start;

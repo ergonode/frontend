@@ -94,11 +94,9 @@ import {
 import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT, COLUMN_FILTER_TYPE } from '@Core/defaults/grid';
 import {
     getDraggedColumnPositionState,
-    getPositionForBrowser,
-    isTrashBelowMouse,
 } from '@Core/models/drag_and_drop/helpers';
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
-import { changeCookiePosition, removeCookieById } from '@Core/models/cookies';
+import { changeCookiePosition } from '@Core/models/cookies';
 import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
 
 export default {
@@ -273,31 +271,13 @@ export default {
             });
         },
         onDragEnd(event) {
-            const { xPos, yPos } = getPositionForBrowser(event);
-
-            if (isTrashBelowMouse(xPos, yPos)) {
-                const { id, attributeId } = this.filter;
-                const [, languageCode] = id.split(':');
-
-                this.$emit('remove', this.index);
-                this.setDisabledElement({
-                    languageCode, elementId: attributeId, disabled: false,
-                });
-
-                removeCookieById({
-                    cookies: this.$cookies,
-                    cookieName: ADV_FILTERS_IDS,
-                    id: this.filter.id,
-                });
-            } else {
-                changeCookiePosition({
-                    cookies: this.$cookies,
-                    cookieName: ADV_FILTERS_IDS,
-                    from: this.index,
-                    to: this.ghostFilterIndex,
-                });
-                this.$emit('setGhost', { index: this.index, isGhost: false });
-            }
+            changeCookiePosition({
+                cookies: this.$cookies,
+                cookieName: ADV_FILTERS_IDS,
+                from: this.index,
+                to: this.ghostFilterIndex,
+            });
+            this.$emit('setGhost', { index: this.index, isGhost: false });
 
             removeElementCopyFromDocumentBody(event);
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });

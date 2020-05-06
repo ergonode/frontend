@@ -4,7 +4,7 @@
  */
 <template>
     <div class="months">
-        <DatePickerCalendarNode
+        <DatePickerNode
             v-for="month in months"
             :key="month"
             :selected="isSelectedMonth(month)"
@@ -15,12 +15,12 @@
 </template>
 
 <script>
-import DatePickerCalendarNode from '@Core/components/Inputs/DatePicker/DatePickerCalendarNode';
+import DatePickerNode from '@Core/components/Inputs/DatePicker/Node/DatePickerNode';
 
 export default {
     name: 'DatePickerMonths',
     components: {
-        DatePickerCalendarNode,
+        DatePickerNode,
     },
     props: {
         months: {
@@ -38,7 +38,7 @@ export default {
     },
     methods: {
         onClick(month) {
-            this.$emit('monthSelected', month);
+            this.$emit('select', month);
         },
         isSelectedMonth(month) {
             return this.selectedMonth === month;

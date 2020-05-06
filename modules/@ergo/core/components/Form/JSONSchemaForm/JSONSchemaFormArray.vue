@@ -15,7 +15,7 @@
 
 <script>
 import { toCapitalize } from '@Core/models/stringWrapper';
-import FormSection from '@Core/components/Form/FormSection';
+import FormSection from '@Core/components/Form/Section/FormSection';
 
 export default {
     name: 'JSONSchemaFormArray',

@@ -44,7 +44,7 @@ import ModalForm from '@Core/components/Modal/ModalForm';
 import TextField from '@Core/components/Inputs/TextField';
 import Button from '@Core/components/Buttons/Button';
 import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/FormSection';
+import FormSection from '@Core/components/Form/Section/FormSection';
 import IconFontSize from '@Core/components/Icons/Editor/IconFontSize';
 
 export default {

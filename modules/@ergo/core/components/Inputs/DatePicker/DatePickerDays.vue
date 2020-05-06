@@ -4,11 +4,10 @@
  */
 <template>
     <div class="month">
-        <DatePickerCalendarNode
+        <DatePickerNode
             v-for="date in dates"
             :key="`${date.year}|${date.month}|${date.day}`"
             :selected="isSelectedDate(date)"
-            :hovered="false"
             :disabled="date.disabled"
             :current="isToday(date)"
             :title="date.day"
@@ -20,12 +19,12 @@
 import {
     isSameDay,
 } from '@Core/models/calendar/calendar';
-import DatePickerCalendarNode from '@Core/components/Inputs/DatePicker/DatePickerCalendarNode';
+import DatePickerNode from '@Core/components/Inputs/DatePicker/Node/DatePickerNode';
 
 export default {
-    name: 'DatePickerMonthDays',
+    name: 'DatePickerDays',
     components: {
-        DatePickerCalendarNode,
+        DatePickerNode,
     },
     props: {
         dates: {

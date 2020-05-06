@@ -3,7 +3,7 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="interactive-header">
+    <div class="input-header">
         <span v-text="header" />
         <TextField
             :value="value"
@@ -20,7 +20,7 @@ import TextField from '@Core/components/Inputs/TextField';
 import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
 
 export default {
-    name: 'DatePickerHeader',
+    name: 'DatePickerInputHeader',
     components: {
         TextField,
     },
@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .interactive-header {
+    .input-header {
         display: grid;
         grid-template-columns: auto 80px;
         grid-auto-flow: column;

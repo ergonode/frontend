@@ -26,7 +26,7 @@
                 </Fab>
             </FadeTransition>
         </div>
-        <span class="pagination__text font--medium-12-16">
+        <span class="pagination__text">
             Page
         </span>
         <TextField
@@ -37,11 +37,11 @@
             center-alignment
             :input="inputNumberType"
             @input="onValueChange" />
-        <span class="pagination__text font--medium-12-16">
+        <span class="pagination__text">
             of
         </span>
         <span
-            class="pagination__number font--medium-12-16"
+            class="pagination__number"
             v-text="maxPage" />
         <div :class="['pagination__increase', {'non-visible': !isRightArrowVisible}]">
             <FadeTransition>
@@ -154,6 +154,7 @@ export default {
 
         &__text, &__number {
             color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_12_16;
         }
 
         &__icon {

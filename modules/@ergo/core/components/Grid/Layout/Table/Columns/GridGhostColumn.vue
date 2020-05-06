@@ -12,7 +12,7 @@
         @drop="onDrop">
         <div class="container">
             <IconAddColumn :fill-color="addIconFillColor" />
-            <span class="ghost-column__title font--bold-12-16">ADD COLUMN</span>
+            <span class="ghost-column__title">ADD COLUMN</span>
         </div>
     </div>
 </template>
@@ -25,7 +25,6 @@ import {
 import {
     isMouseOutOfBoundsElement,
     isMouseInsideElement,
-    isTrashBelowMouse,
     getPositionForBrowser,
 } from '@Core/models/drag_and_drop/helpers';
 
@@ -106,7 +105,7 @@ export default {
                 yPos + borderOffset,
             );
 
-            if (isInside && !isTrashBelowMouse(xPos, yPos)) {
+            if (isInside) {
                 this.isHighlighted = true;
             }
 
@@ -120,7 +119,7 @@ export default {
             const gridTableLayoutElement = this.getTableLayoutElement();
             const isOutOfBounds = isMouseOutOfBoundsElement(gridTableLayoutElement, xPos, yPos);
 
-            if (isOutOfBounds || isTrashBelowMouse(xPos, yPos)) {
+            if (isOutOfBounds) {
                 this.isHighlighted = false;
             }
 
@@ -146,6 +145,7 @@ export default {
         &__title {
             margin-top: 8px;
             color: $GRAPHITE;
+            font: $FONT_BOLD_12_16;
         }
 
         &--highlighted {

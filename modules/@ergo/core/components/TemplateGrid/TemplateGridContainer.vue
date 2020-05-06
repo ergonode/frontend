@@ -29,7 +29,6 @@ import {
 import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
 import {
     isMouseOutOfBoundsElement,
-    isTrashBelowMouse,
     getPositionForBrowser,
 } from '@Core/models/drag_and_drop/helpers';
 import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
@@ -193,13 +192,9 @@ export default {
             if (row !== null && column !== null) this.insertElementIntoGrid();
         },
         onDragEnd(event) {
-            const { id } = this.draggedElement;
-            const { isOutOfBounds, isTrash } = this.getElementBelowMouse(event);
+            const { isOutOfBounds } = this.getElementBelowMouse(event);
 
-            if (isTrash) {
-                this.removeElementFromGrid(id);
-            }
-            if (isOutOfBounds && !isTrash) {
+            if (isOutOfBounds) {
                 this.insertElementIntoGrid();
             }
             removeElementCopyFromDocumentBody(event);
@@ -207,9 +202,9 @@ export default {
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
         },
         onDragLeave(event) {
-            const { isOutOfBounds, isTrash } = this.getElementBelowMouse(event);
+            const { isOutOfBounds } = this.getElementBelowMouse(event);
 
-            if (isOutOfBounds || isTrash) {
+            if (isOutOfBounds) {
                 this.removeGhostElement();
             }
         },
@@ -295,7 +290,6 @@ export default {
             return {
                 itemsContainer,
                 isOutOfBounds: isMouseOutOfBoundsElement(itemsContainer, xPos, yPos),
-                isTrash: isTrashBelowMouse(xPos, yPos),
             };
         },
         removeGhostElement() {
