@@ -17,7 +17,8 @@
                     :searchable="true"
                     @input="setSelectedLanguages"
                     @search="getFilteredData" />
-                <TreeSelect
+                <!-- Only for example
+                  <TreeSelect
                     :value="treeValue"
                     :options="tree"
                     :solid="true"
@@ -25,7 +26,7 @@
                     :regular="true"
                     :clearable="true"
                     :multiselect="true"
-                    @input="setLanguageTree" />
+                    @input="setLanguageTree" /> -->
             </FormSection>
         </template>
     </Form>
@@ -40,7 +41,7 @@ export default {
         Form: () => import('@Core/components/Form/Form'),
         FormSection: () => import('@Core/components/Form/FormSection'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
-        TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
+        // TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
     },
     data() {
         return {
