@@ -148,10 +148,11 @@ export default {
     }
 
     .comment-content {
+        font: $FONT_MEDIUM_14_20;
         white-space: pre-wrap;
     }
 
     .comment-info, .comment-content {
-        font: $FONT_MEDIUM_14_20;
+        font: $FONT_MEDIUM_12_16;
     }
 </style>
