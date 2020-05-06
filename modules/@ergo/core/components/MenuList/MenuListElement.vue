@@ -14,7 +14,7 @@
                 :is="iconComponent"
                 :fill-color="iconFillColor" />
             <span
-                class="link-text font--medium-16-24"
+                class="link-text"
                 v-text="item.title" />
         </NuxtLink>
     </li>

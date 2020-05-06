@@ -7,11 +7,11 @@ exports[`Errors/404 Component is named well 1`] = `
       <h1 class="navigation-section__header">
         Not found
       </h1>
-      <p class="navigation-section__description font--medium-16-24">
+      <p class="navigation-section__description">
         The link you clicked may be broken or the page may have been removed.
       </p> <button type="button" aria-label="Go to dashboard" class="button button--primary button--regular"> <span class="button__title">Go to dashboard</span> </button>
     </div>
-  </div> <span class="error-section font--medium-16-24 section__quotation">
+  </div> <span class="error-section section__quotation">
         The page you were looking for doesn’t exist. If you think this is an
         <br> error, please report it to the system administrator.
     </span>

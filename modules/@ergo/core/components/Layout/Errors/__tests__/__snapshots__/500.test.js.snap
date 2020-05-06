@@ -7,7 +7,7 @@ exports[`Errors/500 Component is named well 1`] = `
       <h1 class="navigation-section__header">
         Error
       </h1>
-      <p class="navigation-section__description font--medium-16-24">
+      <p class="navigation-section__description">
         Internal server error. Please contact with the system administrator.
       </p>
     </div>

@@ -6,10 +6,10 @@
     <div>
         <template v-if="isCalendarDayType">
             <DatePickerContentHeader :headers="weekDays" />
-            <DatePickerMonthDays
+            <DatePickerDays
                 :dates="calendarDates"
                 :selected-dates="parsedDate"
-                @select="onDateSelect" />
+                @select="onDaySelect" />
         </template>
         <template v-if="isCalendarMonthType">
             <DatePickerContentHeader :headers="['Months']" />
@@ -17,7 +17,7 @@
                 :months="months"
                 :selected-month="parsedSelectedMonth"
                 :current-month="parsedCurrentMonth"
-                @monthSelected="onMonthSelect" />
+                @select="onMonthSelect" />
         </template>
         <template v-if="isCalendarYearType">
             <DatePickerContentHeader :headers="['Years']" />
@@ -25,13 +25,13 @@
                 :years="years"
                 :selected-year="parsedSelectedYear"
                 :current-year="currentYear"
-                @yearSelected="onYearSelect" />
+                @select="onYearSelect" />
         </template>
     </div>
 </template>
 
 <script>
-import DatePickerMonthDays from '@Core/components/Inputs/DatePicker/DatePickerMonthDays';
+import DatePickerDays from '@Core/components/Inputs/DatePicker/DatePickerDays';
 import DatePickerContentHeader from '@Core/components/Inputs/DatePicker/DatePickerContentHeader';
 import DatePickerMonths from '@Core/components/Inputs/DatePicker/DatePickerMonths';
 import DatePickerYears from '@Core/components/Inputs/DatePicker/DatePickerYears';
@@ -44,9 +44,9 @@ import calendar, {
 import { CalendarType } from '@Core/models/calendar/CalendarType';
 
 export default {
-    name: 'DatePickerCalendarContent',
+    name: 'DatePickerCalendar',
     components: {
-        DatePickerMonthDays,
+        DatePickerDays,
         DatePickerContentHeader,
         DatePickerMonths,
         DatePickerYears,
@@ -140,7 +140,7 @@ export default {
         },
     },
     methods: {
-        onDateSelect(date) {
+        onDaySelect(date) {
             this.$emit('input', new Date(date.year, date.month - 1, date.day));
         },
         onMonthSelect(month) {
