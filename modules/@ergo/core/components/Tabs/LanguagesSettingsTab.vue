@@ -29,9 +29,10 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { SIZE } from '@Core/defaults/theme';
-// import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { isEmpty } from '@Core/models/objectWrapper';
 import { getMappedTreeData, getParsedTreeData } from '@Core/models/mappers/languageTreeMapper';
-import { getLanguageTree /* updateLanguageTree */ } from '@Core/services/settings/languages.service';
+import { getLanguageTree, updateLanguageTree } from '@Core/services/settings/languages.service';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import FooterActions from '@Core/components/Layout/Footer/FooterActions';
@@ -51,23 +52,21 @@ export default {
         const { language: languageCode } = store.state.authentication.user;
         const { allLanguages } = store.state.dictionaries;
 
-        return Promise.all([
-            store.dispatch('gridDesigner/clearStorage'),
-            getLanguageTree({ $axios, $store: store }),
-        ]).then(([, languahesResponse]) => {
-            const { languages } = languahesResponse;
-            const treeToSet = getParsedTreeData(languages, allLanguages);
+        return getLanguageTree({ $axios, $store: store })
+            .then((languahesResponse) => {
+                const { languages } = languahesResponse;
+                const treeToSet = getParsedTreeData(languages, allLanguages);
 
-            treeToSet.forEach((e) => {
-                store.dispatch('list/setDisabledElement', {
-                    languageCode,
-                    elementId: e.id,
-                    disabled: true,
+                treeToSet.forEach((e) => {
+                    store.dispatch('list/setDisabledElement', {
+                        languageCode,
+                        elementId: e.id,
+                        disabled: true,
+                    });
                 });
+                store.dispatch('gridDesigner/setGridData', treeToSet);
+                store.dispatch('gridDesigner/setFullGridData', treeToSet);
             });
-            store.dispatch('gridDesigner/setGridData', treeToSet);
-            store.dispatch('gridDesigner/setFullGridData', treeToSet);
-        });
     },
     computed: {
         ...mapState('gridDesigner', {
@@ -94,18 +93,33 @@ export default {
             clearGridDesignerStorage: 'clearStorage',
         }),
         async onSave() {
-            console.log(this.fullGridData, getMappedTreeData(this.fullGridData));
-            await this.$setLoader('saveSettings');
-            // await updateLanguages({
-            //     $axios: this.$axios,
-            //     $store: this.$store,
-            //     data: {
-            //         languages: getMappedTreeData(this.fullGridData),
-            //     },
-            // }).then(() => {
-            //     this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Languages updated' });
-            // });
-            await this.$removeLoader('saveSettings');
+            let isUpdated = false;
+
+            try {
+                await this.$setLoader('saveSettings');
+
+                if (isEmpty(this.fullGridData)) {
+                    this.$addAlert({ type: ALERT_TYPE.ERROR, message: 'Tree must have a root branch' });
+                    throw new Error();
+                }
+
+                isUpdated = await updateLanguageTree({
+                    $axios: this.$axios,
+                    $store: this.$store,
+                    data: {
+                        languages: getMappedTreeData(this.fullGridData)[0],
+                    },
+                });
+            } catch {
+                return false;
+            } finally {
+                if (isUpdated !== false) {
+                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Languages updated' });
+                }
+                await this.$removeLoader('saveSettings');
+            }
+
+            return true;
         },
     },
 };

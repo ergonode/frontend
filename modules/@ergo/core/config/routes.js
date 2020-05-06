@@ -65,11 +65,11 @@ export default [
                 },
             },
             {
-                name: 'settings-languages2',
-                path: 'languages2',
+                name: 'settings-languages-inheritance',
+                path: 'languages-inheritance',
                 component: Tabs.LanguagesSettingsTab,
                 meta: {
-                    title: 'Languages2',
+                    title: 'Languages inheritance',
                     breadcrumbs: [
                         {
                             title: 'System',

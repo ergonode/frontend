@@ -34,7 +34,7 @@ export default {
         VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
     },
-    mixins: [fetchListDataMixin({ namespace: 'languages' })],
+    mixins: [fetchListDataMixin({ namespace: 'languages', extraFilters: 'active=true' })],
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,

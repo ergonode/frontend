@@ -9,12 +9,12 @@ export function getParsedTreeData(tree, languages) {
     const newTree = [];
     const buildTree = (treeArray, parent, column) => {
         for (let i = 0; i < treeArray.length; i += 1) {
-            const languageCode = treeArray[i].language;
+            const languageId = treeArray[i].language_id;
             const { length: childrenLength } = treeArray[i].children;
             const {
-                id: languageId,
+                code: languageCode,
                 name: languageName,
-            } = languages.find(e => e.code === languageCode);
+            } = languages.find(e => e.id === languageId);
             newTree.push({
                 id: languageId,
                 code: languageCode,
@@ -38,10 +38,10 @@ export function getMappedTreeData(treeArray) {
 
     for (let i = 0; i < treeArray.length; i += 1) {
         const { parent, id } = treeArray[i];
-        const childrenElement = { language: id, children: [] };
+        const childrenElement = { language_id: id, children: [] };
         const setChild = (childArray) => {
             for (let j = 0; j < childArray.length; j += 1) {
-                if (childArray[j].language === parent) {
+                if (childArray[j].language_id === parent) {
                     childArray[j].children.push(childrenElement);
                 } else {
                     setChild(childArray[j].children);

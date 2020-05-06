@@ -23,6 +23,7 @@
                     :solid="true"
                     label="Languages tree example"
                     :regular="true"
+                    :clearable="true"
                     :multiselect="true"
                     @input="setLanguageTree" />
             </FormSection>
