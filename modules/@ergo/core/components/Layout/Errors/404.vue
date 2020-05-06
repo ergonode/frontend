@@ -13,7 +13,7 @@
                     Not found
                 </h1>
                 <p
-                    class="navigation-section__description font--medium-16-24">
+                    class="navigation-section__description">
                     The link you clicked may be broken or the page may have been removed.
                 </p>
                 <Button
@@ -22,7 +22,7 @@
             </div>
         </div>
         <span
-            class="error-section font--medium-16-24 section__quotation">
+            class="error-section section__quotation">
             The page you were looking for doesn’t exist. If you think this is an
             <br> error, please report it to the system administrator.
         </span>
@@ -68,6 +68,7 @@ export default {
                 &__description {
                     margin: 8px 0 16px;
                     color: $GRAPHITE_DARK;
+                    font: $FONT_MEDIUM_16_24;
                 }
 
                 &__header, &__description {
@@ -79,6 +80,7 @@ export default {
         .error-section {
             margin-top: 64px;
             color: $GRAPHITE;
+            font: $FONT_MEDIUM_16_24;
             text-align: center;
         }
 

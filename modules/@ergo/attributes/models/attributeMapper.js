@@ -6,6 +6,7 @@ import {
     isObject, getKeyByValue,
 } from '@Core/models/objectWrapper';
 import { getParamsKeyForType, getParamsOptionsForType } from '@Attributes/models/attributeTypes';
+import { getUUID } from '@Core/models/stringWrapper';
 
 export function getParsedType(types, selectedType) {
     return getKeyByValue(types, selectedType);
@@ -40,10 +41,10 @@ export function getParsedParameterKeys({
 }
 
 export function getMappedArrayOptions(options) {
-    return options.reduce((acc, current, currentIndex) => {
+    return options.reduce((acc, current) => {
         const newObject = acc;
 
-        newObject[currentIndex] = {
+        newObject[getUUID()] = {
             id: current.id,
             key: current.code || null,
             value: !current.label || current.label.length < 1 ? null : current.label,

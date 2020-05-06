@@ -16,13 +16,18 @@
             class="grid-item__title"
             :title="item.name ? `#${item.code}`: ''">
             <span
-                class="title__name"
+                class="grid-item__name"
                 v-text="item.name || `#${item.code}`" />
             <span
                 v-if="hasChildren"
-                class="title__subname"
+                class="grid-item__code"
                 v-text="`Inherited ${contextName.toLowerCase()}: ${numberOfChildren}`" />
         </div>
+        <NumericBadge
+            class="grid-item__categories-length"
+            v-if="hasChildren"
+            :number="numberOfChildren"
+            :theme="secondaryTheme" />
         <div
             :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
             <ActionIconButton
@@ -164,14 +169,15 @@ export default {
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
+        }
 
-            .title__name {
-                font: $FONT_SEMI_BOLD_14_20;
-            }
+        &__name {
+            font: $FONT_MEDIUM_14_20;
+        }
 
-            .title__subname {
-                font: $FONT_SEMI_BOLD_10_12;
-            }
+        &__code {
+            color: $GRAPHITE;
+            font: $FONT_SEMI_BOLD_10_12;
         }
 
         &__contextual-menu {

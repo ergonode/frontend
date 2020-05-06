@@ -37,7 +37,7 @@ export default {
     name: 'MainSettingsForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/FormSection'),
+        FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
         TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
     },

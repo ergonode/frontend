@@ -4,7 +4,7 @@
  */
 <template functional>
     <h3
-        class="menu-section__title font--medium-12-16"
+        class="menu-section__title"
         v-text="props.title" />
 </template>
 

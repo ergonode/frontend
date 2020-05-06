@@ -4,15 +4,13 @@
  */
 <template>
     <div class="date-picker">
-        <slot name="header">
-            <DatePickerHeader :header="header" />
-        </slot>
+        <DatePickerHeader :header="header" />
         <DatePickerNavigationHeader
             :header="calendarHeader"
             @changeCalendarType="onChangeCalendarType"
             @previousDate="onPreviousDate"
             @nextDate="onNextDate" />
-        <DatePickerCalendarContent
+        <DatePickerCalendar
             :date="value"
             :month="month"
             :current-month="currentMonth"
@@ -31,7 +29,7 @@
 <script>
 import DatePickerHeader from '@Core/components/Inputs/DatePicker/DatePickerHeader';
 import DatePickerNavigationHeader from '@Core/components/Inputs/DatePicker/DatePickerNavigationHeader';
-import DatePickerCalendarContent from '@Core/components/Inputs/DatePicker/DatePickerCalendarContent';
+import DatePickerCalendar from '@Core/components/Inputs/DatePicker/Calendar/DatePickerCalendar';
 import {
     getNextYear,
     getPreviousYear,
@@ -52,7 +50,7 @@ export default {
     components: {
         DatePickerHeader,
         DatePickerNavigationHeader,
-        DatePickerCalendarContent,
+        DatePickerCalendar,
     },
     props: {
         value: {

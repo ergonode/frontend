@@ -5,7 +5,7 @@
 <template>
     <div class="list-header">
         <span
-            class="list-header__title font--medium-16-24"
+            class="list-header__title"
             v-text="header" />
         <slot />
     </div>
@@ -38,6 +38,7 @@ export default {
             grid-row: 1;
             margin-left: 4px;
             color: $GRAPHITE_DARK;
+            font: $FONT_MEDIUM_16_24;
         }
     }
 </style>

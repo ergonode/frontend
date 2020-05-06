@@ -3,22 +3,16 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="calendarNodeStateClasses">
-        <span
-            class="node__title font--medium-12-16"
-            v-text="title" />
-    </div>
+    <span
+        :class="calendarNodeStateClasses"
+        v-text="title" />
 </template>
 
 <script>
 export default {
-    name: 'DatePickerCalendarNode',
+    name: 'DatePickerNode',
     props: {
         selected: {
-            type: Boolean,
-            default: false,
-        },
-        hovered: {
             type: Boolean,
             default: false,
         },
@@ -43,7 +37,6 @@ export default {
                     'node--selected': this.selected,
                     'node--disabled': this.disabled,
                     'node--current': this.current,
-                    'node--hovered': this.hovered,
                 },
             ];
         },
@@ -53,24 +46,17 @@ export default {
 
 <style lang="scss" scoped>
     .node {
-        $node: &;
-
         position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
         width: 100%;
         height: 100%;
+        font: $FONT_MEDIUM_12_16;
         cursor: pointer;
 
-        &--hovered {
-            box-shadow: $ELEVATOR_2_DP;
-        }
-
-        &:not(&--selected) &:not(&--disabled) {
-            #{$node}__title {
-                color: $GRAPHITE_DARK;
-            }
+        &:not(&--selected):not(&--disabled) {
+            color: $GRAPHITE_DARK;
         }
 
         &--current {
@@ -82,18 +68,15 @@ export default {
                 background-color: $GRAPHITE_DARK;
                 content: "";
             }
+        }
 
-            #{$node}__title {
-                font-weight: 700;
-            }
+        &--current, &--selected {
+            font: $FONT_BOLD_12_16;
         }
 
         &--selected {
             background-color: $GREEN;
-
-            #{$node}__title {
-                color: $WHITE;
-            }
+            color: $WHITE;
 
             &::after {
                 background-color: $WHITE;
@@ -101,9 +84,7 @@ export default {
         }
 
         &--disabled {
-            #{$node}__title {
-                color: $GRAPHITE_LIGHT;
-            }
+            color: $GRAPHITE_LIGHT;
         }
     }
 </style>

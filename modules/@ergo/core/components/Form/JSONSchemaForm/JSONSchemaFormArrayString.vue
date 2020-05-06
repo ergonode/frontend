@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import FormSubsection from '@Core/components/Form/FormSubsection';
+import FormSubsection from '@Core/components/Form/Subsection/FormSubsection';
 import CheckBox from '@Core/components/Inputs/CheckBox';
 
 export default {
