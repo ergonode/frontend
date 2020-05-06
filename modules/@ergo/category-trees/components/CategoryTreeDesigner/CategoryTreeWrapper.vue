@@ -6,44 +6,29 @@
     <TemplateGridWrapper
         :columns="columns"
         :row-height="rowHeight"
-        :is-dragging-enabled="$hasAccess(['CATEGORY_TREE_UPDATE'])">
-        <template #gridHeader>
-            <TemplateGridHeader :columns="columns" />
-        </template>
-        <template
-            #gridItem="{item, toggleItem, removeItem}">
-            <CategoryTreeItem
-                :number-of-children="getChildrenLengthById(item.id)"
-                :is-expanded="getExpandStateById(item.id)"
-                :item="item"
-                @toggleItem="toggleItem(item)"
-                @removeItem="removeItem(item)" />
-        </template>
-    </TemplateGridWrapper>
+        :context-name="contextName"
+        :is-dragging-enabled="$hasAccess(['CATEGORY_TREE_UPDATE'])" />
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { ROW_HEIGHT, COLUMNS, CONTEXT_NAME } from '@Trees/defaults/designer';
 import TemplateGridWrapper from '@Core/components/TemplateGrid/TemplateGridWrapper';
-import TemplateGridHeader from '@Core/components/TemplateGrid/TemplateGridHeader';
-import CategoryTreeItem from '@Trees/components/CategoryTreeDesigner/CategoryTreeItem';
 
 export default {
     name: 'CategoryTreeWrapper',
     components: {
         TemplateGridWrapper,
-        TemplateGridHeader,
-        CategoryTreeItem,
     },
     computed: {
-        ...mapState('tree', {
-            columns: state => state.treeLevels,
-            rowHeight: state => state.rowHeight,
-        }),
-        ...mapGetters('gridDesigner', [
-            'getChildrenLengthById',
-            'getExpandStateById',
-        ]),
+        contextName() {
+            return CONTEXT_NAME;
+        },
+        columns() {
+            return COLUMNS;
+        },
+        rowHeight() {
+            return ROW_HEIGHT;
+        },
     },
 };
 </script>

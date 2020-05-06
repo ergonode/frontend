@@ -1,3 +1,4 @@
+/* eslint-disable jest/valid-expect-in-promise */
 /*
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
@@ -19,7 +20,7 @@ context('Change User password', () => {
             cy.get('input[aria-label="Password"]')
                 .type('123')
                 .should('have.value', '123');
-            cy.url().then(url => {
+            cy.url().then((url) => {
                 const urlElements = url.split('/');
                 const { length } = urlElements;
                 const userId = urlElements[length - 2];

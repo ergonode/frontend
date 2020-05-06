@@ -33,9 +33,9 @@ export default {
             const { column } = this.item;
             return {
                 gridColumn: `${column + 1} / ${this.columns + 1}`,
-                padding: `${this.gridGap}px`,
+                paddingTop: `${this.gridGap}px`,
+                paddingBottom: `${this.gridGap}px`,
                 gridTemplateColumns: `repeat(${this.columns - column}, 1fr)`,
-                gridGap: `${this.gridGap}px`,
             };
         },
     },
@@ -58,16 +58,6 @@ export default {
             border-left: $BORDER_2_GREEN;
             border-bottom: $BORDER_2_GREEN;
             transition: width 0.3s;
-
-            &::before {
-                position: absolute;
-                bottom: -4px;
-                right: 0;
-                width: 7px;
-                height: 6px;
-                background-color: $GREEN;
-                content: "";
-            }
         }
     }
 

@@ -65,6 +65,21 @@ export default [
                 },
             },
             {
+                name: 'settings-languages2',
+                path: 'languages2',
+                component: Tabs.LanguagesSettingsTab,
+                meta: {
+                    title: 'Languages2',
+                    breadcrumbs: [
+                        {
+                            title: 'System',
+                            icon: Icons.Settings,
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+            {
                 name: 'settings-units',
                 path: 'units',
                 component: Tabs.UnitsSettingsGridTab,

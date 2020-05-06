@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getUUID } from "@Core/models/stringWrapper";
+import { getUUID } from '@Core/models/stringWrapper';
 
 context('Add Attribute', () => {
     const uuid = getUUID();
@@ -26,16 +26,16 @@ context('Add Attribute', () => {
     });
 
     describe('Insert Attribute values - invalid', () => {
-      before(() => {
-          cy.server();
-          cy.route('POST', '/api/v1/EN/attributes').as('addAttribute');
-      });
+        before(() => {
+            cy.server();
+            cy.route('POST', '/api/v1/EN/attributes').as('addAttribute');
+        });
 
-      it('Create Attribute', () => {
-          cy.get('button').contains('NEW ATTRIBUTE').click();
-          cy.wait('@addAttribute').its('status').should('eq', 400);
-          cy.url().should('include', '/attributes/attribute/new');
-      });
+        it('Create Attribute', () => {
+            cy.get('button').contains('NEW ATTRIBUTE').click();
+            cy.wait('@addAttribute').its('status').should('eq', 400);
+            cy.url().should('include', '/attributes/attribute/new');
+        });
     });
 
     describe('Insert Attribute values - valid', () => {

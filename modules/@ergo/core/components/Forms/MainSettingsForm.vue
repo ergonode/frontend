@@ -17,6 +17,14 @@
                     :searchable="true"
                     @input="setSelectedLanguages"
                     @search="getFilteredData" />
+                <TreeSelect
+                    :value="treeValue"
+                    :options="tree"
+                    :solid="true"
+                    label="Languages tree example"
+                    :regular="true"
+                    :multiselect="true"
+                    @input="setLanguageTree" />
             </FormSection>
         </template>
     </Form>
@@ -31,6 +39,41 @@ export default {
         Form: () => import('@Core/components/Form/Form'),
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
+        TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
+    },
+    data() {
+        return {
+            // TODO: remove when languages tree will be ready
+            treeValue: [
+                {
+                    id: 'pl_PL',
+                    key: 'pl_PL',
+                    name: 'Polska',
+                },
+            ],
+            tree: [
+                {
+                    id: 'pl_PL',
+                    key: 'pl_PL',
+                    name: 'Polska',
+                    childrens: [
+                        {
+                            id: 'en_EN',
+                            key: 'en_EN',
+                            name: 'Angielski',
+                            childrens: [
+                                {
+                                    id: 'us_US',
+                                    key: 'us_US',
+                                    name: 'Angielski USA',
+                                    childrens: [],
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        };
     },
     computed: {
         ...mapState('languageSettings', {
@@ -43,6 +86,8 @@ export default {
             'setSelectedLanguages',
             'getFilteredData',
         ]),
+        setLanguageTree() {
+        },
     },
 };
 </script>
