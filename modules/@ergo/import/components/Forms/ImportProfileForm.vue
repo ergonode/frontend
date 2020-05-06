@@ -36,7 +36,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/FormSection';
+import FormSection from '@Core/components/Form/Section/FormSection';
 import TextField from '@Core/components/Inputs/TextField';
 import Select from '@Core/components/Inputs/Select/Select';
 

@@ -53,7 +53,7 @@ export default {
     name: 'TemplateDesignerForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/FormSection'),
+        FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
         UploadImageFile: () => import('@Core/components/Inputs/UploadFile/UploadImageFile'),

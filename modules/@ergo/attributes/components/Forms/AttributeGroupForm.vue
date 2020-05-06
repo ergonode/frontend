@@ -30,7 +30,7 @@ export default {
     name: 'AttributeGroupForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/FormSection'),
+        FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     computed: {
