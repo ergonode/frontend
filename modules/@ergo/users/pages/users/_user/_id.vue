@@ -9,8 +9,8 @@
 </template>
 
 <script>
+import deepmerge from 'deepmerge';
 import { mapState, mapActions } from 'vuex';
-import { getMappedLanguagesBasedOnGridData } from '@Users/models/gridDataMapper';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
@@ -89,10 +89,10 @@ export default {
                 passwordRepeat: this.passwordRepeat,
                 roleId: this.role.id,
                 isActive: this.isActive,
-                languagePrivilegesCollection: getMappedLanguagesBasedOnGridData({
-                    selectedData: this.languagePrivilegesCollection,
-                    drafts: this.drafts,
-                }),
+                languagePrivilegesCollection: deepmerge(
+                    this.languagePrivilegesCollection,
+                    this.drafts,
+                ),
             };
 
             this.updateUser({
