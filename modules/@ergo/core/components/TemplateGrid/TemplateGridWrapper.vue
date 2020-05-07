@@ -238,9 +238,7 @@ export default {
             this.toggleItem(item);
             this.removeDisabledElementsOnList(id);
             this.removeHiddenItem(id);
-            if (parent !== 'root') {
-                this.setChildrenLength({ id: parent, value: -1 });
-            }
+            this.setChildrenLength({ id: parent, value: -1 });
             this.removeGridItem(row);
         },
         removeDisabledElementsOnList(id) {

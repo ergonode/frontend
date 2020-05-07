@@ -23,11 +23,6 @@
                 class="grid-item__code"
                 v-text="`Inherited ${contextName.toLowerCase()}: ${numberOfChildren}`" />
         </div>
-        <NumericBadge
-            class="grid-item__categories-length"
-            v-if="hasChildren"
-            :number="numberOfChildren"
-            :theme="secondaryTheme" />
         <div
             :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
             <ActionIconButton
