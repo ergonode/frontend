@@ -32,8 +32,8 @@
                     :is-basic-filter="true"
                     :is-centered-view="true"
                     :collection-cell-binding="{
-                        imageColumn: 'default_image',
-                        descriptionColumn: 'default_text'
+                        imageColumn: 'image_id',
+                        descriptionColumn: 'name'
                     }"
                     @editRow="onEditRow"
                     @removeRow="onRemoveRow"
