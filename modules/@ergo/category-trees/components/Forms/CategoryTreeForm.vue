@@ -9,6 +9,7 @@
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
+                    data-cy="categoryTreeName"
                     :value="code"
                     solid
                     regular
