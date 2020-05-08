@@ -31,10 +31,10 @@ export default {
     computed: {
         gridItemStyles() {
             const { column } = this.item;
+
             return {
                 gridColumn: `${column + 1} / ${this.columns + 1}`,
-                paddingTop: `${this.gridGap}px`,
-                paddingBottom: `${this.gridGap}px`,
+                padding: `${this.gridGap}px 0`,
                 gridTemplateColumns: `repeat(${this.columns - column}, 1fr)`,
             };
         },

@@ -23,11 +23,6 @@
                 class="grid-item__code"
                 v-text="`Inherited ${contextName.toLowerCase()}: ${numberOfChildren}`" />
         </div>
-        <NumericBadge
-            class="grid-item__categories-length"
-            v-if="hasChildren"
-            :number="numberOfChildren"
-            :theme="secondaryTheme" />
         <div
             :class="['grid-item__contextual-menu', contextualMenuHoveStateClasses]">
             <ActionIconButton
@@ -140,7 +135,8 @@ export default {
         grid-column: 1 / 3;
         height: 100%;
         border: 1px solid $GREY;
-        padding-left: 10px;
+        padding: 0 12px 0 10px;
+        box-sizing: border-box;
         background-color: $WHITESMOKE;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         cursor: grab;
@@ -156,7 +152,7 @@ export default {
         }
 
         &__icon {
-            margin-right: 10px;
+            margin-right: 8px;
             cursor: pointer;
         }
 
@@ -164,7 +160,6 @@ export default {
             display: flex;
             flex: 1;
             flex-direction: column;
-            margin-right: 8px;
             color: $GRAPHITE_DARK;
             text-overflow: ellipsis;
             overflow: hidden;

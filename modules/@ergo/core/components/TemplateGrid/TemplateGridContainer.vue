@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import { debounce } from 'debounce';
 import {
     addElementCopyToDocumentBody,
@@ -74,6 +74,7 @@ export default {
     },
     data: () => ({
         positionBetweenRows: 0.5,
+        additionalRows: 3,
         ghostElement: {
             id: 'ghost_item',
             column: null,
@@ -99,6 +100,9 @@ export default {
         ...mapState('draggable', {
             draggedElement: state => state.draggedElement,
         }),
+        ...mapGetters('gridDesigner', [
+            'getItemById',
+        ]),
         dataWithoutGhostElement() {
             return this.gridData.filter(element => element.id !== this.ghostElement.id);
         },
@@ -133,16 +137,16 @@ export default {
             'removeHiddenItem',
         ]),
         calculateRowsCount() {
-            const { clientHeight } = document.querySelector('.grid-container');
+            const { clientHeight } = this.$el;
             const visibleRows = Math.ceil(clientHeight / this.rowHeight);
-            const totalRows = Math.max(this.fullGridData.length, visibleRows) + 1;
+            const totalRows = Math.max(this.fullGridData.length, visibleRows) + this.additionalRows;
 
             this.setRowsCount(totalRows);
         },
         onDragStart(event) {
             const { pageY } = event;
             const itemsContainer = this.$el.querySelector('.grid-items-container');
-            const { children: items } = itemsContainer;
+            const { children: elements } = itemsContainer;
             const {
                 top: containerTop,
                 height: containerHeight,
@@ -154,30 +158,25 @@ export default {
             }
             getRowBellowMouse({
                 pageY,
-                elements: items,
-                elementBounds: getRowBounds(items),
-            }, ({ index, category }) => {
-                if (category) {
-                    const hasChildren = category.querySelector('.title__subname');
-                    const categoryItem = this.dataWithoutGhostElement[index];
-                    const {
-                        row, column, expanded,
-                    } = categoryItem;
-                    const parentId = this.getParentId(row, column);
+                elements,
+                elementBounds: getRowBounds(elements),
+            }, ({ index, element }) => {
+                if (element) {
+                    const itemId = element.getAttribute('item-id');
+                    const item = this.getItemById(itemId);
+                    const { children, parent, expanded } = item;
 
-                    if (hasChildren && !expanded) {
-                        this.$emit('toggleItem', categoryItem);
+                    if (children && !expanded) {
+                        this.$emit('toggleItem', item);
                     }
-                    this.setDraggedElement(categoryItem);
+                    this.setDraggedElement(item);
                     this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.TEMPLATE });
                     addElementCopyToDocumentBody(event, {
-                        element: category,
+                        element,
                         width: this.draggedElementSize.width,
                         height: this.draggedElementSize.height,
                     });
-                    if (parentId !== 'root') {
-                        this.setChildrenLength({ id: parentId, value: -1 });
-                    }
+                    this.setChildrenLength({ id: parent, value: -1 });
                     this.removeGridItem(index);
                 } else {
                     event.preventDefault();
@@ -241,20 +240,20 @@ export default {
             this.$emit('afterRemove', id);
         },
         insertElementIntoGrid() {
-            const { id: draggedId, row: draggedRow, column: draggedColumn } = this.draggedElement;
-            const { row, column } = this.ghostElement;
-            const rowToInsert = row === null ? draggedRow - this.positionBetweenRows : row;
-            const columnToInsert = row === null ? draggedColumn : column;
-            const { code: categoryCode, name: categoryName } = this.draggedElement;
-            this.removeGhostElement();
+            const { row: ghostRow, column: ghostColumn } = this.ghostElement;
+            const {
+                id, code, name, row, column,
+            } = this.draggedElement;
+            const rowToInsert = ghostRow === null ? row - this.positionBetweenRows : ghostRow;
+            const columnToInsert = ghostRow === null ? column : ghostColumn;
             const parentId = this.getParentId(rowToInsert, columnToInsert);
-            const childrenLength = this.hiddenItems[draggedId]
-                ? this.hiddenItems[draggedId].length
+            const childrenLength = this.hiddenItems[id]
+                ? this.hiddenItems[id].filter(el => el.parent === id).length
                 : 0;
             const droppedItem = {
-                id: draggedId,
-                code: categoryCode,
-                name: categoryName,
+                id,
+                code,
+                name,
                 column: columnToInsert,
                 row: rowToInsert,
                 children: childrenLength,
@@ -262,18 +261,17 @@ export default {
                 parent: parentId,
             };
 
+            this.removeGhostElement();
             this.addGridItem(droppedItem);
             if (!this.isMultiDraggable) {
                 this.setDisabledElement({
                     languageCode: this.language,
-                    elementId: draggedId,
+                    elementId: id,
                     disabled: true,
                 });
             }
-            if (parentId !== 'root') {
-                this.setChildrenLength({ id: parentId, value: 1 });
-            }
-            this.rebuildGridById(draggedId);
+            this.setChildrenLength({ id: parentId, value: 1 });
+            this.rebuildGridById(id);
             if (childrenLength > 0) {
                 this.$emit('toggleItem', {
                     ...droppedItem,
@@ -281,11 +279,11 @@ export default {
                 });
             }
             this.calculateRowsCount();
-            this.$emit('afterDrop', draggedId);
+            this.$emit('afterDrop', id);
         },
         getElementBelowMouse(event) {
             const { xPos, yPos } = getPositionForBrowser(event);
-            const itemsContainer = document.querySelector('.grid-container');
+            const itemsContainer = this.$el;
 
             return {
                 itemsContainer,

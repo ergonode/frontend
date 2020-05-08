@@ -213,7 +213,7 @@ export default {
             const children = this.filteredGridData.filter(e => e.parent === parent);
             const connectionHeight = this.rowHeight * (
                 row - (children.length ? children[0].row : 0) + 1
-            );
+            ) + 10;
             const borderStyle = id === 'ghost_item' ? 'dashed' : 'solid';
             const linePosition = {
                 left: `calc(-100% + (${this.gridGap}px + 22px))`,
@@ -238,9 +238,7 @@ export default {
             this.toggleItem(item);
             this.removeDisabledElementsOnList(id);
             this.removeHiddenItem(id);
-            if (parent !== 'root') {
-                this.setChildrenLength({ id: parent, value: -1 });
-            }
+            this.setChildrenLength({ id: parent, value: -1 });
             this.removeGridItem(row);
         },
         removeDisabledElementsOnList(id) {

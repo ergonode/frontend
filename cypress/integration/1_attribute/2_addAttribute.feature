@@ -9,12 +9,13 @@ Feature: Attribute adding
 
   Scenario: Add text attibute
     When I fill the "attributeName" input with the "text_attribute" term
+    And I choose "[0]" options from "attributeGroup" multi select
     And I choose "0" option from "attributeType" select
     Then I can see "Configuration" text on "modal" element
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see 0 row with data on column: "{'1': 'text_attribute', '3': 'Text', '4': 'true'}"
+    Then On "grid" I can see row 0 with columns data: "{'1': 'text_attribute', '3': 'Text', '4': 'true'}"
     And I remove "this" element by "DELETE" request
 
   Scenario: Add not multilingual text attibute
@@ -25,7 +26,7 @@ Feature: Attribute adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see 0 row with data on column: "{'1': 'text_attribute2', '3': 'Text', '4': 'false'}"
+    Then On "grid" I can see row 0 with columns data: "{'1': 'text_attribute2', '3': 'Text', '4': 'false'}"
     And I remove "this" element by "DELETE" request
 
   Scenario: Add textarea attibute
@@ -35,7 +36,7 @@ Feature: Attribute adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see 0 row with data on column: "{'1': 'textarea_attribute', '3': 'Textarea', '4': 'true'}"
+    Then On "grid" I can see row 0 with columns data: "{'1': 'textarea_attribute', '3': 'Textarea', '4': 'true'}"
     And I remove "this" element by "DELETE" request
 
   Scenario: Add not multilingual textarea attibute
@@ -46,7 +47,7 @@ Feature: Attribute adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see 0 row with data on column: "{'1': 'textarea_attribute2', '3': 'Textarea', '4': 'false'}"
+    Then On "grid" I can see row 0 with columns data: "{'1': 'textarea_attribute2', '3': 'Textarea', '4': 'false'}"
     And I remove "this" element by "DELETE" request
 
   Scenario: Add numeric attibute
@@ -55,7 +56,7 @@ Feature: Attribute adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see 0 row with data on column: "{'1': 'numeric_attribute', '3': 'Numeric', '4': 'false'}"
+    Then On "grid" I can see row 0 with columns data: "{'1': 'numeric_attribute', '3': 'Numeric', '4': 'false'}"
     And I remove "this" element by "DELETE" request
 
   Scenario: Add price attibute
@@ -66,7 +67,7 @@ Feature: Attribute adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see 0 row with data on column: "{'1': 'price_attribute', '3': 'Price', '4': 'false'}"
+    Then On "grid" I can see row 0 with columns data: "{'1': 'price_attribute', '3': 'Price', '4': 'false'}"
     And I remove "this" element by "DELETE" request
 
   Scenario: Add date attibute
@@ -77,7 +78,7 @@ Feature: Attribute adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see 0 row with data on column: "{'1': 'date_attribute', '3': 'Date', '4': 'false'}"
+    Then On "grid" I can see row 0 with columns data: "{'1': 'date_attribute', '3': 'Date', '4': 'false'}"
     And I remove "this" element by "DELETE" request
 
   Scenario: Add unit attibute
@@ -88,7 +89,7 @@ Feature: Attribute adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see 0 row with data on column: "{'1': 'unit_attribute', '3': 'Unit', '4': 'false'}"
+    Then On "grid" I can see row 0 with columns data: "{'1': 'unit_attribute', '3': 'Unit', '4': 'false'}"
     And I remove "this" element by "DELETE" request
 
   Scenario: Add image attibute
@@ -97,6 +98,6 @@ Feature: Attribute adding
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see 0 row with data on column: "{'1': 'image_attribute', '3': 'Image', '4': 'false'}"
+    Then On "grid" I can see row 0 with columns data: "{'1': 'image_attribute', '3': 'Image', '4': 'false'}"
     And I remove "this" element by "DELETE" request
 

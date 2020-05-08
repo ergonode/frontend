@@ -50,13 +50,11 @@ export default {
     watch: {
         privileges: {
             deep: true,
+            immediate: true,
             handler() {
                 this.updateGridData();
             },
         },
-    },
-    created() {
-        this.updateGridData();
     },
     methods: {
         updateGridData() {

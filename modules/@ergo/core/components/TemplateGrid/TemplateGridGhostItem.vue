@@ -54,5 +54,15 @@ export default {
             font: $FONT_BOLD_12_16;
             text-transform: uppercase;
         }
+
+        &::before {
+            position: absolute;
+            left: 0;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: $GREEN;
+            content: "";
+        }
     }
 </style>
