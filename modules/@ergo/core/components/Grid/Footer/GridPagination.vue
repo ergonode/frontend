@@ -4,8 +4,10 @@
  */
 <template>
     <div class="pagination">
-        <div :class="['pagination__decrease', {'non-visible': !isLeftArrowVisible}]">
-            <FadeTransition>
+        <FadeTransition>
+            <div
+                class="pagination__decrease"
+                v-show="isLeftArrowVisible">
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="toFirstPage">
@@ -13,8 +15,6 @@
                         <IconArrowPointerBlock :fill-color="color" />
                     </template>
                 </Fab>
-            </FadeTransition>
-            <FadeTransition>
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="decrementPage">
@@ -24,8 +24,8 @@
                             :state="arrow.LEFT" />
                     </template>
                 </Fab>
-            </FadeTransition>
-        </div>
+            </div>
+        </FadeTransition>
         <span class="pagination__text">
             Page
         </span>
@@ -43,8 +43,10 @@
         <span
             class="pagination__number"
             v-text="maxPage" />
-        <div :class="['pagination__increase', {'non-visible': !isRightArrowVisible}]">
-            <FadeTransition>
+        <FadeTransition>
+            <div
+                class="pagination__increase"
+                v-show="isRightArrowVisible">
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="incrementPage">
@@ -54,8 +56,6 @@
                             :state="arrow.RIGHT" />
                     </template>
                 </Fab>
-            </FadeTransition>
-            <FadeTransition>
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="toLastPage">
@@ -65,8 +65,8 @@
                             :state="arrow.RIGHT" />
                     </template>
                 </Fab>
-            </FadeTransition>
-        </div>
+            </div>
+        </FadeTransition>
     </div>
 </template>
 
@@ -157,17 +157,9 @@ export default {
             font: $FONT_MEDIUM_12_16;
         }
 
-        &__icon {
-            color: $GRAPHITE_LIGHT;
-        }
-
         &__increase, &__decrease {
             display: flex;
             align-items: center;
-        }
-
-        .non-visible {
-            visibility: hidden;
         }
     }
 </style>

@@ -29,6 +29,9 @@
             <template #actions>
                 <slot name="actions" />
             </template>
+            <template #configuration>
+                <slot name="configuration" />
+            </template>
         </GridHeader>
         <div class="grid__body">
             <GridTableLayout

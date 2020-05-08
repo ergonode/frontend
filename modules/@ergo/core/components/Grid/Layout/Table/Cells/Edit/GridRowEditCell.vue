@@ -8,7 +8,7 @@
         :row="row"
         :selected="isSelected"
         @edit="onEdit">
-        <IconEdit />
+        <IconEdit :width="32" />
     </GridTableCell>
 </template>
 

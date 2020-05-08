@@ -19,7 +19,11 @@ export const getGridData = ({ $axios, path, params }) => $axios
         const sortedColumns = params.columns
             ? getSortedColumnsByIDs(visibleColumns, params.columns)
             : visibleColumns;
-        const mappedData = getMappedData(visibleColumns, collection);
+        const mappedData = getMappedData({
+            columns: visibleColumns,
+            rows: collection,
+            hasLinks: columns.findIndex(({ id }) => id === '_links') !== -1,
+        });
 
         return {
             columns: sortedColumns,
