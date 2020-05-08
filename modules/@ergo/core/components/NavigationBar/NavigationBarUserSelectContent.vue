@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="user-content">
+    <div
+        data-cy="navBarContent"
+        class="user-content">
         <NavigationBarUserSelectContentHeader
             :initials="initials"
             :avatar-id="avatarId"
@@ -16,6 +18,7 @@
             :section-menu="item.menu" />
         <div class="footer">
             <Button
+                data-cy="logoutButton"
                 :theme="secondaryTheme"
                 title="LOG OUT"
                 @click.native="onLogout" />

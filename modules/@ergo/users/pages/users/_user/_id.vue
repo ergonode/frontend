@@ -10,6 +10,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { getMappedLanguagesBasedOnGridData } from '@Users/models/gridDataMapper';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
@@ -40,6 +41,9 @@ export default {
         ...mapState('dictionaries', {
             languages: state => state.languages,
         }),
+        ...mapState('grid', {
+            drafts: state => state.drafts,
+        }),
         ...mapState('users', {
             id: state => state.id,
             avatarId: state => state.avatarId,
@@ -51,6 +55,7 @@ export default {
             passwordRepeat: state => state.passwordRepeat,
             isActive: state => state.isActive,
             role: state => state.role,
+            languagePrivilegesCollection: state => state.languagePrivilegesCollection,
         }),
         title() {
             return `${this.firstName} ${this.lastName}`;
@@ -62,24 +67,19 @@ export default {
     methods: {
         ...mapActions('users', [
             'clearStorage',
+            'setAction',
             'updateUser',
         ]),
         ...mapActions('authentication', [
             'getUser',
         ]),
+        ...mapActions('grid', [
+            'removeDrafts',
+        ]),
         ...mapActions('validations', [
             'onError',
             'removeValidationErrors',
         ]),
-        onUpdateUserSuccess() {
-            this.removeValidationErrors();
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'User updated' });
-
-            // TODO: Along Notification introduce - remove it from it - this solution is preventing from relogging to see newly edited data for user if edited user is logged one
-            if (this.user.id === this.id) {
-                this.getUser();
-            }
-        },
         onSave() {
             const user = {
                 firstName: this.firstName,
@@ -89,12 +89,30 @@ export default {
                 passwordRepeat: this.passwordRepeat,
                 roleId: this.role.id,
                 isActive: this.isActive,
+                languagePrivilegesCollection: getMappedLanguagesBasedOnGridData({
+                    selectedData: this.languagePrivilegesCollection,
+                    drafts: this.drafts,
+                }),
             };
+
             this.updateUser({
                 id: this.id,
                 data: user,
                 avatarId: this.avatarId,
-                onSuccess: this.onUpdateUserSuccess,
+                onSuccess: () => {
+                    this.removeValidationErrors();
+                    this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'User updated' });
+                    this.setAction({
+                        key: 'languagePrivilegesCollection',
+                        value: user.languagePrivilegesCollection,
+                    });
+                    this.removeDrafts();
+
+                    // TODO: Along Notification introduce - remove it from it - this solution is preventing from relogging to see newly edited data for user if edited user is logged one
+                    if (this.user.id === this.id) {
+                        this.getUser();
+                    }
+                },
                 onError: this.onError,
             });
         },

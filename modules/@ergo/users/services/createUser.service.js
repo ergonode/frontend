@@ -20,6 +20,8 @@ export default function ({ $axios, $store }) {
         language: getKeyByValue(languages, language),
         roleId,
         isActive,
+        languagePrivilegesCollection: Object.keys(languages)
+            .reduce((acc, ele) => ({ ...acc, [ele]: { edit: true, read: true } }), {}),
     };
 
     return $axios.$post(`${loggedUserLanguage}/accounts`, data);
