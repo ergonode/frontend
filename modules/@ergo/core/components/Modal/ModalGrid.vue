@@ -32,8 +32,7 @@
                     <Button
                         :theme="secondaryTheme"
                         :size="smallSize"
-                        title="ADD SELECTED"
-                        @click.native="onAddSelected">
+                        title="ADD SELECTED">
                         <template #prepend="{ color }">
                             <IconAdd :fill-color="color" />
                         </template>
@@ -125,9 +124,6 @@ export default {
         },
         onClose() {
             this.$emit('close');
-        },
-        onAddSelected() {
-
         },
     },
 };
