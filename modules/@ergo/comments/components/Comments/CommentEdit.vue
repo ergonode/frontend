@@ -6,7 +6,7 @@
     <Comment>
         <template #header>
             <span
-                class="font--medium-16-24"
+                class="comment-header"
                 v-text="isEdit ? 'Edit comment' : 'Add new comment'" />
         </template>
         <template #body>
@@ -121,3 +121,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .comment-header {
+        font: $FONT_MEDIUM_16_24;
+    }
+</style>

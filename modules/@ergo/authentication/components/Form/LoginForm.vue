@@ -22,7 +22,7 @@
 
 <script>
 import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/FormSection';
+import FormSection from '@Core/components/Form/Section/FormSection';
 
 export default {
     name: 'LoginForm',

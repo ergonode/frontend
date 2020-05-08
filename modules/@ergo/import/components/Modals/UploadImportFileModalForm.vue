@@ -38,7 +38,7 @@ import ModalForm from '@Core/components/Modal/ModalForm';
 import Button from '@Core/components/Buttons/Button';
 import FormParagraph from '@Core/components/Form/FormParagraph';
 import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/FormSection';
+import FormSection from '@Core/components/Form/Section/FormSection';
 import UploadCSVFile from '@Core/components/Inputs/UploadFile/UploadCSVFile';
 
 export default {

@@ -16,11 +16,11 @@
             class="grid-item__title"
             :title="item.name ? `#${item.code}`: ''">
             <span
-                class="font--medium-14-20"
+                class="grid-item__name"
                 v-text="item.name || `#${item.code}`" />
             <span
                 v-if="item.name"
-                class="font--semi-bold-10-12"
+                class="grid-item__code"
                 v-text="`#${item.code}`" />
         </div>
         <NumericBadge
@@ -162,6 +162,15 @@ export default {
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
+        }
+
+        &__name {
+            font: $FONT_MEDIUM_14_20;
+        }
+
+        &__code {
+            color: $GRAPHITE;
+            font: $FONT_SEMI_BOLD_10_12;
         }
 
         &__contextual-menu {

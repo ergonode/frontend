@@ -57,7 +57,7 @@ import TextArea from '@Core/components/Inputs/TextArea';
 import Divider from '@Core/components/Dividers/Divider';
 import Card from '@Core/components/Card/Card';
 import Form from '@Core/components/Form/Form';
-import FormSection from '@Core/components/Form/FormSection';
+import FormSection from '@Core/components/Form/Section/FormSection';
 
 export default {
     name: 'AttributeTranslationForm',

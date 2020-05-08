@@ -84,6 +84,10 @@
         margin: 0 6px;
     }
 
+    &.floating-label {
+        padding-top: 8px;
+    }
+
     &.floating-label &__label {
         position: absolute;
         padding: 0 2px;
@@ -355,6 +359,7 @@
 
     &--disabled {
         pointer-events: none;
+        cursor: not-allowed;
 
         #{$input}__activator {
             background-color: $WHITESMOKE;
@@ -365,7 +370,6 @@
             }
 
             #{$input}__label {
-                background-color: unset;
                 background-image: linear-gradient($WHITE, $WHITESMOKE);
             }
         }

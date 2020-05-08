@@ -21,7 +21,7 @@ export default {
     name: 'AttributeOptionValues',
     components: {
         AttributeOptionValue: () => import('@Attributes/components/Forms/Sections/AttributeOptionValue'),
-        FormSection: () => import('@Core/components/Form/FormSection'),
+        FormSection: () => import('@Core/components/Form/Section/FormSection'),
     },
     props: {
         languageCode: {

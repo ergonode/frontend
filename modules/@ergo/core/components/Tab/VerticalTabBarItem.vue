@@ -63,7 +63,6 @@ export default {
         border: none;
         padding: 12px 8px;
         box-sizing: border-box;
-        background-color: unset;
         color: $GRAPHITE;
         font: $FONT_MEDIUM_12_16;
         outline: none;
