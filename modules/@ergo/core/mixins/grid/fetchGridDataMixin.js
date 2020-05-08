@@ -13,6 +13,9 @@ import { getMappedObjectOptions } from '@Core/models/mappers/translationsMapper'
 
 export default function ({ path }) {
     return {
+        components: {
+            Grid: () => import('@Core/components/Grid/Grid'),
+        },
         props: {
             isFetchingNeeded: {
                 type: Boolean,
@@ -31,7 +34,7 @@ export default function ({ path }) {
             const columnsConfig = app.$cookies.get(`GRID_CONFIG:${route.name}`);
 
             if (columnsConfig) {
-                gridParams.columns = columnsConfig;
+                gridParams.columns = `${columnsConfig},_links`;
             }
 
             let dynamicPath = path;
@@ -106,7 +109,10 @@ export default function ({ path }) {
             return {
                 advancedFilters: [],
                 localParams: {
-                    offset: 0, limit: DATA_LIMIT, filters: {}, sortedColumn: {},
+                    offset: 0,
+                    limit: DATA_LIMIT,
+                    filters: {},
+                    sortedColumn: {},
                 },
             };
         },
@@ -151,7 +157,7 @@ export default function ({ path }) {
                     limit,
                     extended: true,
                     filter,
-                    columns: this.$cookies.get(`GRID_CONFIG:${this.$route.name}`),
+                    columns: `${this.$cookies.get(`GRID_CONFIG:${this.$route.name}`)},_links`,
                 };
 
                 if (Object.keys(sortedColumn).length) {

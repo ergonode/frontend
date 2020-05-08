@@ -54,6 +54,8 @@
                 :column="column"
                 :column-index="columnIndex"
                 :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
+                :is-selected="isSelectedAllRows
+                    || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
                 :is-locked="!isEditingAllowed"
                 :is-copyable="isEditingAllowed">
                 <Component
@@ -67,6 +69,8 @@
                     :row-index="rowsOffset + rowIndex + basicFiltersOffset + 1"
                     :is-locked="!isEditingAllowed"
                     :is-copyable="isEditingAllowed"
+                    :is-selected="isSelectedAllRows
+                        || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
                     @editCell="onEditCell"
                     @copyCells="onCopyCells" />
             </slot>
@@ -102,6 +106,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        selectedRows: {
+            type: Object,
+            default: () => ({}),
+        },
         data: {
             type: Array,
             default: () => [],
@@ -117,6 +125,10 @@ export default {
         rowsOffset: {
             type: Number,
             default: 0,
+        },
+        isSelectedAllRows: {
+            type: Boolean,
+            default: false,
         },
         isBasicFilter: {
             type: Boolean,
