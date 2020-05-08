@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import deepmerge from 'deepmerge';
 import { mapState, mapActions } from 'vuex';
 import { STATE } from '@Core/defaults/inputs/checkbox';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
@@ -85,6 +86,28 @@ export default {
         },
         rowsAreSelected() {
             return this.selectedRowsValues.every(rowState => rowState === STATE.CHECK);
+        },
+    },
+    watch: {
+        drafts: {
+            deep: true,
+            handler(value) {
+                const draftValues = {};
+
+                Object.keys(value).forEach((rowId) => {
+                    const checkValues = state => Object.values(value[rowId])
+                        .every(rowState => +rowState === state);
+
+                    if (checkValues(STATE.UNCHECK)) {
+                        draftValues[rowId] = STATE.UNCHECK;
+                    } else if (checkValues(STATE.CHECK)) {
+                        draftValues[rowId] = STATE.CHECK;
+                    } else {
+                        draftValues[rowId] = STATE.CHECK_ANY;
+                    }
+                });
+                this.selectedRows = deepmerge(this.selectedRows, draftValues);
+            },
         },
     },
     mounted() {

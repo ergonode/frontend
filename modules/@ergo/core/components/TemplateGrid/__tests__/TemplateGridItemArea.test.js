@@ -38,8 +38,7 @@ describe('TemplateGrid/TemplateGridItemArea', () => {
         expect(wrapper.vm.gridItemStyles).toStrictEqual({
             gridColumn: '2 / 3',
             gridTemplateColumns: 'repeat(1, 1fr)',
-            paddingBottom: '0px',
-            paddingTop: '0px',
+            padding: '0px 0',
         });
     });
     it('Check item style with new props', () => {
@@ -54,8 +53,7 @@ describe('TemplateGrid/TemplateGridItemArea', () => {
         expect(wrapper.vm.gridItemStyles).toStrictEqual({
             gridColumn: '4 / 7',
             gridTemplateColumns: 'repeat(3, 1fr)',
-            paddingBottom: '10px',
-            paddingTop: '10px',
+            padding: '10px 0',
         });
     });
 });

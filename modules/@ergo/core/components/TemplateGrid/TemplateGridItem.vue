@@ -135,7 +135,8 @@ export default {
         grid-column: 1 / 3;
         height: 100%;
         border: 1px solid $GREY;
-        padding-left: 10px;
+        padding: 0 12px;
+        box-sizing: border-box;
         background-color: $WHITESMOKE;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         cursor: grab;
@@ -151,7 +152,7 @@ export default {
         }
 
         &__icon {
-            margin-right: 10px;
+            margin: 0 10px 0 -2px;
             cursor: pointer;
         }
 
@@ -159,7 +160,6 @@ export default {
             display: flex;
             flex: 1;
             flex-direction: column;
-            margin-right: 8px;
             color: $GRAPHITE_DARK;
             text-overflow: ellipsis;
             overflow: hidden;
@@ -179,6 +179,7 @@ export default {
             flex: 0 1 auto;
             align-items: flex-start;
             opacity: 0;
+            margin-right: -10px;
 
             &--hovered {
                 opacity: 1;
