@@ -17,7 +17,7 @@ import GridColumn from '@Core/components/Grid/Layout/Table/Columns/GridColumn';
 import GridHeaderCell from '@Core/components/Grid/Layout/Table/Cells/Header/GridHeaderCell';
 
 export default {
-    name: 'GridPrivilegeNameColumn',
+    name: 'GridRowNameColumn',
     components: {
         GridColumn,
         GridHeaderCell,

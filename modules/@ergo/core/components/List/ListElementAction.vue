@@ -26,6 +26,9 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0 4px;
+
+        &:not(&--small) {
+            margin: 0 4px;
+        }
     }
 </style>

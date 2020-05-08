@@ -41,6 +41,7 @@ module.exports = {
             },
         ],
         'import/extensions': 'off',
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": ["cypress/**/*.js", "**/**/*.test.js", "**/**/*.spec.js"]}],
         'no-console': 'off',
         'no-alert': 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
@@ -110,5 +111,7 @@ module.exports = {
         'jest/no-commented-out-tests': 'off',
         'jest/expect-expect': 'off',
         'jest/no-mocks-import': 'off',
+        'jest/valid-expect': 'off',
+        'jest/no-standalone-expect': 'off',
     },
 };

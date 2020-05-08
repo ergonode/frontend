@@ -18,6 +18,7 @@ export const Tabs = {
     RolesGridTab: () => import('@Users/components/Tabs/RolesGridTab').then(m => m.default || m),
     RoleBaseTab: () => import('@Users/components/Tabs/RoleBaseTab').then(m => m.default || m),
     RolePrivilegesTab: () => import('@Users/components/Tabs/RolePrivilegesTab').then(m => m.default || m),
+    UserLanguageRestrictionsTab: () => import('@Users/components/Tabs/UserLanguageRestrictionsTab').then(m => m.default || m),
     UserActivityLogsGridTab: () => import('@Users/components/Tabs/UserActivityLogsGridTab').then(m => m.default || m),
     UserPrivilegesGridTab: () => import('@Users/components/Tabs/UserPrivilegesGridTab').then(m => m.default || m),
 };
@@ -27,9 +28,11 @@ export const Icons = {
 };
 
 export const Components = {
-    GridPrivilegeSelectRowColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeSelectRowColumn'),
     GridPrivilegeCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeCheckColumn'),
-    GridPrivilegeNameColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeNameColumn'),
-    GridPrivilegeNameDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridPrivilegeNameDataCell'),
-    GridPrivilegeCheckDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridPrivilegeCheckDataCell'),
+    GridLanguageCheckColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageCheckColumn'),
+    GridPrivilegeSelectRowColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridPrivilegeSelectRowColumn'),
+    GridLanguageSelectRowColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridLanguageSelectRowColumn'),
+    GridRowNameColumn: () => import('@Users/components/Grid/Layout/Table/Columns/GridRowNameColumn'),
+    GridCheckDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridCheckDataCell'),
+    GridRowNameDataCell: () => import('@Users/components/Grid/Layout/Table/Cells/Data/GridRowNameDataCell'),
 };

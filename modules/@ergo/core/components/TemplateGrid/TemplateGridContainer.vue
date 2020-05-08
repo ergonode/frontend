@@ -60,6 +60,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        constantRoot: {
+            type: Boolean,
+            default: false,
+        },
         draggedElementSize: {
             type: Object,
             default: () => ({
@@ -154,7 +158,7 @@ export default {
                 elementBounds: getRowBounds(items),
             }, ({ index, category }) => {
                 if (category) {
-                    const hasChildren = category.querySelector('.grid-item__categories-length');
+                    const hasChildren = category.querySelector('.title__subname');
                     const categoryItem = this.dataWithoutGhostElement[index];
                     const {
                         row, column, expanded,
@@ -182,8 +186,10 @@ export default {
             return true;
         },
         onDrop(event) {
+            const { row, column } = this.ghostElement;
+
             event.preventDefault();
-            this.insertElementIntoGrid();
+            if (row !== null && column !== null) this.insertElementIntoGrid();
         },
         onDragEnd(event) {
             const { isOutOfBounds } = this.getElementBelowMouse(event);
@@ -216,10 +222,16 @@ export default {
             if (isElementHasCollision) {
                 this.setGhostItemPosition(this.getCollidingPosition(collidingItem));
             } else if (isElementBeyondCollision) {
-                this.setGhostItemPosition({
-                    column: this.getAllowedColumn(),
-                    row: this.maxRow + this.positionBetweenRows,
-                });
+                let coordinates = { column: null, row: null };
+                const allowedColumn = this.getAllowedColumn();
+
+                if ((this.constantRoot && allowedColumn !== 0) || !this.constantRoot) {
+                    coordinates = {
+                        column: allowedColumn,
+                        row: this.maxRow + this.positionBetweenRows,
+                    };
+                }
+                this.setGhostItemPosition(coordinates);
             }
             return true;
         },
@@ -334,6 +346,9 @@ export default {
                 ];
                 const columnForLastRow = !bottomNeighbor ? this.getAllowedColumn() : 0;
 
+                if (this.constantRoot && columnForLastRow === 0) {
+                    return { row: null, column: null };
+                }
                 return {
                     column: bottomNeighbor && topNeighbor
                         ? this.getGhostCollidingColumn(topNeighbor.column, bottomNeighbor.column)
@@ -351,6 +366,10 @@ export default {
                 neighborElColumn: neighborEl ? neighborEl.column : null,
                 collidingElColumn,
             };
+
+            if (this.constantRoot && collidingElColumn === 0) {
+                return { row: null, column: null };
+            }
 
             if (isFirstElement) {
                 return { column: 0, row: -this.positionBetweenRows };

@@ -16,7 +16,8 @@
 </template>
 
 <script>
-import { getMappedGridData } from '@Users/models/privilegesMapper';
+import privilegesDefaults from '@Users/defaults/privileges';
+import { getMappedGridData } from '@Users/models/gridDataMapper';
 import { getSortedColumnsByIDs } from '@Core/models/mappers/gridDataMapper';
 import Grid from '@Core/components/Grid/Grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
@@ -33,8 +34,9 @@ export default {
         const {
             data, columns,
         } = getMappedGridData({
-            systemPrivileges: privilegesDictionary,
-            rolePrivileges: privileges,
+            fullDataList: privilegesDictionary,
+            selectedData: privileges,
+            defaults: privilegesDefaults,
         });
         const config = app.$cookies.get(`GRID_CONFIG:${route.name}`);
         const sortedColumns = config

@@ -4,7 +4,9 @@
  */
 
 <template>
-    <div class="grid">
+    <div
+        data-cy="grid"
+        class="grid">
         <GridHeader
             v-if="isHeaderVisible"
             :row-height="tableLayoutConfig.rowHeight"
