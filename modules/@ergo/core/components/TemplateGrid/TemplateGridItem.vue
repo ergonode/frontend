@@ -135,7 +135,7 @@ export default {
         grid-column: 1 / 3;
         height: 100%;
         border: 1px solid $GREY;
-        padding: 0 12px;
+        padding: 0 12px 0 10px;
         box-sizing: border-box;
         background-color: $WHITESMOKE;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
@@ -152,7 +152,7 @@ export default {
         }
 
         &__icon {
-            margin: 0 10px 0 -2px;
+            margin-right: 8px;
             cursor: pointer;
         }
 
@@ -179,7 +179,6 @@ export default {
             flex: 0 1 auto;
             align-items: flex-start;
             opacity: 0;
-            margin-right: -10px;
 
             &--hovered {
                 opacity: 1;
