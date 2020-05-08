@@ -12,7 +12,8 @@
                 :is-select-column="true"
                 :is-header-visible="true"
                 :is-centered-view="true"
-                :is-basic-filter="true">
+                :is-basic-filter="true"
+                @fetchData="getGridData">
                 <template #actions>
                     <h2
                         class="modal-grid__header"
@@ -27,19 +28,32 @@
                         </template>
                     </Fab>
                 </template>
+                <template #appendFooter>
+                    <Button
+                        :theme="secondaryTheme"
+                        :size="smallSize"
+                        title="ADD SELECTED"
+                        @click.native="onAddSelected">
+                        <template #prepend="{ color }">
+                            <IconAdd :fill-color="color" />
+                        </template>
+                    </Button>
+                </template>
             </Grid>
         </div>
     </ModalOverlay>
 </template>
 
 <script>
-import { THEME } from '@Core/defaults/theme';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { DATA_LIMIT } from '@Core/defaults/grid';
 import { getGridData } from '@Core/services/grid/getGridData.service';
 import ModalOverlay from '@Core/components/Modal/ModalOverlay';
-import Fab from '@Core/components/Buttons/Fab';
+import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import IconClose from '@Core/components/Icons/Window/IconClose';
 import Grid from '@Core/components/Grid/Grid';
+import Fab from '@Core/components/Buttons/Fab';
+import Button from '@Core/components/Buttons/Button';
 
 export default {
     name: 'ModalGrid',
@@ -47,7 +61,9 @@ export default {
         ModalOverlay,
         Fab,
         IconClose,
+        IconAdd,
         Grid,
+        Button,
     },
     props: {
         title: {
@@ -58,27 +74,16 @@ export default {
             type: String,
             required: true,
         },
+        columnParams: {
+            type: String,
+            default: '',
+        },
     },
-    async fetch() {
-        const {
-            columns,
-            data,
-            count,
-            filtered,
-        } = await getGridData({
-            $axios: this.$axios,
-            path: this.apiPath,
-            params: {
-                offset: 0,
-                limit: DATA_LIMIT,
-                extended: true,
-            },
+    fetch() {
+        this.getGridData({
+            offset: 0,
+            limit: DATA_LIMIT,
         });
-
-        this.columns = columns;
-        this.data = data;
-        this.count = count;
-        this.filtered = filtered;
     },
     data() {
         return {
@@ -89,13 +94,40 @@ export default {
         };
     },
     computed: {
+        smallSize() {
+            return SIZE.SMALL;
+        },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
     },
     methods: {
+        async getGridData(params) {
+            const {
+                columns,
+                data,
+                count,
+                filtered,
+            } = await getGridData({
+                $axios: this.$axios,
+                path: this.apiPath,
+                params: {
+                    ...params,
+                    extended: true,
+                    columns: this.columnParams,
+                },
+            });
+
+            this.columns = columns;
+            this.data = data;
+            this.count = count;
+            this.filtered = filtered;
+        },
         onClose() {
             this.$emit('close');
+        },
+        onAddSelected() {
+
         },
     },
 };
@@ -105,7 +137,7 @@ export default {
     .modal-grid {
         display: flex;
         width: 960px;
-        height: 100%;
+        height: 80%;
         box-shadow: $ELEVATOR_6_DP;
 
         &__header {

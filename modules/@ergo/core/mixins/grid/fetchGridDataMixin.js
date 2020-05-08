@@ -34,7 +34,7 @@ export default function ({ path }) {
             const columnsConfig = app.$cookies.get(`GRID_CONFIG:${route.name}`);
 
             if (columnsConfig) {
-                gridParams.columns = columnsConfig;
+                gridParams.columns = `${columnsConfig},_links`;
             }
 
             let dynamicPath = path;
@@ -157,7 +157,7 @@ export default function ({ path }) {
                     limit,
                     extended: true,
                     filter,
-                    columns: this.$cookies.get(`GRID_CONFIG:${this.$route.name}`),
+                    columns: `${this.$cookies.get(`GRID_CONFIG:${this.$route.name}`)},_links`,
                 };
 
                 if (Object.keys(sortedColumn).length) {

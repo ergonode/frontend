@@ -13,10 +13,13 @@
             v-if="isSelectColumn"
             :is-pinned="pinnedSections[pinnedState.LEFT]">
             <GridSelectRowColumn
+                :style="templateRows"
                 :column-index="0"
                 :data-count="dataCount"
                 :rows-offset="rowsOffset"
-                :is-basic-filter="isBasicFilter" />
+                :is-basic-filter="isBasicFilter"
+                @rowSelect="onRowSelect"
+                @rowsSelect="onRowsSelect" />
         </GridTableLayoutPinnedSection>
         <GridTableLayoutColumnsSection
             :style="templateColumns"
@@ -33,10 +36,12 @@
                 :data="data[column.id]"
                 :sorted-column="sortedColumn"
                 :column="column"
-                :column-index="index"
+                :column-index="index + columnsOffset"
                 :row-ids="data.id"
                 :rows-offset="rowsOffset"
                 :filter="filters[column.id]"
+                :selected-rows="selectedRows"
+                :is-selected-all-rows="isSelectedAllRows"
                 :is-basic-filter="isBasicFilter"
                 :is-editable="isEditable"
                 @sort="onSortColumn"
@@ -57,16 +62,17 @@
             v-if="typeof data[columnActionId] !== 'undefined'"
             :is-pinned="pinnedSections[pinnedState.RIGHT]">
             <Component
-                v-for="(column, index) in actionColumns"
+                v-for="(column, index) in actionColumnComponents"
                 :style="templateRows"
-                :key="column"
-                :data="data[columnActionId][column]"
-                :column-index="orderedColumns.length + index"
-                :column-id="column"
+                :key="column.key"
+                :data="data[columnActionId][column.key]"
+                :column-index="orderedColumns.length + index + columnsOffset"
+                :column-id="column.key"
                 :data-count="dataCount"
                 :rows-offset="rowsOffset"
+                :index="index"
                 :is-basic-filter="isBasicFilter"
-                :is="actionColumnComponents[column]"
+                :is="column.component"
                 @action="onActionRow" />
         </GridTableLayoutPinnedSection>
     </div>
@@ -148,7 +154,10 @@ export default {
             isHeaderFocused: false,
             isColumnDropped: false,
             hasInitialWidths: true,
+            isSelectedAllRows: false,
+            selectedRows: {},
             editingCellCoordinates: { row: null, column: null },
+            focusedCellCoordinates: { row: null, column: null },
             orderedColumns: [],
             columnComponents: [],
             columnWidths: [],
@@ -171,18 +180,19 @@ export default {
         columnActionId() {
             return COLUMN_ACTIONS_ID;
         },
-        actionColumns() {
-            return ['edit', 'delete'];
-        },
         actionColumnComponents() {
-            return this.actionColumns.reduce((prev, acc) => {
+            return ['edit', 'delete'].reduce((prev, acc) => {
                 const tmp = prev;
+
                 if (this.data[COLUMN_ACTIONS_ID][acc]) {
-                    tmp[acc] = () => import(`@Core/components/Grid/Layout/Table/Columns/Action/Grid${toCapitalize(acc)}ActionColumn`);
+                    tmp.push({
+                        key: acc,
+                        component: () => import(`@Core/components/Grid/Layout/Table/Columns/Action/Grid${toCapitalize(acc)}ActionColumn`),
+                    });
                 }
 
                 return tmp;
-            }, {});
+            }, []);
         },
         dataCount() {
             const keys = Object.keys(this.data);
@@ -195,6 +205,9 @@ export default {
         },
         rowsOffset() {
             return (this.currentPage - 1) * this.maxRows;
+        },
+        columnsOffset() {
+            return this.isSelectColumn ? 1 : 0;
         },
         templateColumns() {
             return {
@@ -234,52 +247,24 @@ export default {
             }
         },
         columns() {
-            const droppedColumn = this.columns
-                .find(column => this.orderedColumns
-                    .filter(orderedColumn => orderedColumn.id === column.id).length === 0);
+            const ghostIndex = this.orderedColumns
+                .findIndex(orderedColumn => orderedColumn.id === GHOST_ID);
 
-            if (droppedColumn) {
-                const ghostIndex = this.orderedColumns
-                    .findIndex(orderedColumn => orderedColumn.id === GHOST_ID);
+            if (ghostIndex !== -1) {
+                const droppedColumn = this.columns
+                    .find(column => this.orderedColumns
+                        .filter(orderedColumn => orderedColumn.id === column.id).length === 0);
 
                 this.columnComponents[ghostIndex] = () => import(`@Core/components/Grid/Layout/Table/Columns/Grid${capitalizeAndConcatenationArray(droppedColumn.type.split('_'))}Column`);
                 this.orderedColumns[ghostIndex] = droppedColumn;
+            } else if (this.orderedColumns.length !== this.columns.length) {
+                // Columns might be lazy loaded - we need to handle that
+                this.initializeDataColumns();
             }
         },
     },
     created() {
-        const orderedColumns = [];
-        const columnComponents = [];
-        const columnWidths = [];
-        const { length } = this.columns;
-        const extendedComponents = this.$getExtendedComponents('GRID');
-        const isColumnExtended = typeof extendedComponents !== 'undefined'
-            && typeof extendedComponents.layout !== 'undefined'
-            && typeof extendedComponents.layout.table !== 'undefined'
-            && typeof extendedComponents.layout.table.columns !== 'undefined';
-
-        for (let i = 0; i < length; i += 1) {
-            orderedColumns.push(this.columns[i]);
-            const extendedColumn = isColumnExtended
-                ? extendedComponents.layout.table.columns.find(
-                    column => column.type === this.columns[i].type,
-                )
-                : null;
-
-            if (extendedColumn) {
-                columnComponents.push(extendedColumn.component);
-                columnWidths.push(extendedColumn.width);
-            } else {
-                columnComponents.push(
-                    () => import(`@Core/components/Grid/Layout/Table/Columns/Grid${capitalizeAndConcatenationArray(this.columns[i].type.split('_'))}Column`),
-                );
-                columnWidths.push(COLUMN_WIDTH.DEFAULT);
-            }
-        }
-
-        this.orderedColumns = orderedColumns;
-        this.columnComponents = columnComponents;
-        this.columnWidths = columnWidths;
+        this.initializeDataColumns();
     },
     mounted() {
         const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
@@ -389,6 +374,9 @@ export default {
         setEditingCellCoordinates(coordinates = { row: null, column: null }) {
             this.editingCellCoordinates = coordinates;
         },
+        setFocusedCellCoordinates(coordinates = { row: null, column: null }) {
+            this.focusedCellCoordinates = coordinates;
+        },
         getEditingCellCoordinates() {
             return this.editingCellCoordinates;
         },
@@ -413,6 +401,16 @@ export default {
             isSticky, state,
         }) {
             this.pinnedSections = { ...this.pinnedSections, [state]: isSticky };
+        },
+        onRowSelect(selectedRows) {
+            this.selectedRows = selectedRows;
+
+            this.$emit('rowSelect', this.selectedRows);
+        },
+        onRowsSelect(isSelectedAllRows) {
+            this.isSelectedAllRows = isSelectedAllRows;
+
+            this.$emit('rowsSelect', this.isSelectedAllRows);
         },
         onDrop({ from, to, columnId }) {
             this.isColumnDropped = true;
@@ -491,6 +489,40 @@ export default {
                 });
             }
         },
+        initializeDataColumns() {
+            const orderedColumns = [];
+            const columnComponents = [];
+            const columnWidths = [];
+            const { length } = this.columns;
+            const extendedComponents = this.$getExtendedComponents('GRID');
+            const isColumnExtended = typeof extendedComponents !== 'undefined'
+                && typeof extendedComponents.layout !== 'undefined'
+                && typeof extendedComponents.layout.table !== 'undefined'
+                && typeof extendedComponents.layout.table.columns !== 'undefined';
+
+            for (let i = 0; i < length; i += 1) {
+                orderedColumns.push(this.columns[i]);
+                const extendedColumn = isColumnExtended
+                    ? extendedComponents.layout.table.columns.find(
+                        column => column.type === this.columns[i].type,
+                    )
+                    : null;
+
+                if (extendedColumn) {
+                    columnComponents.push(extendedColumn.component);
+                    columnWidths.push(extendedColumn.width);
+                } else {
+                    columnComponents.push(
+                        () => import(`@Core/components/Grid/Layout/Table/Columns/Grid${capitalizeAndConcatenationArray(this.columns[i].type.split('_'))}Column`),
+                    );
+                    columnWidths.push(COLUMN_WIDTH.DEFAULT);
+                }
+            }
+
+            this.orderedColumns = orderedColumns;
+            this.columnComponents = columnComponents;
+            this.columnWidths = columnWidths;
+        },
         removeGhostColumn() {
             if (!this.isColumnDropped) {
                 if (this.ghostIndex > -1) {
@@ -530,6 +562,7 @@ export default {
     provide() {
         return {
             setEditingCellCoordinates: this.setEditingCellCoordinates,
+            setFocusedCellCoordinates: this.setFocusedCellCoordinates,
             getEditingCellCoordinates: this.getEditingCellCoordinates,
             getTableLayoutElement: this.getTableLayoutElement,
         };
@@ -540,9 +573,7 @@ export default {
 <style lang="scss" scoped>
     .grid-table-layout {
         position: relative;
-        display: grid;
-        grid-auto-flow: column;
-        grid-template-columns: 1fr;
+        display: flex;
         overflow: auto;
 
         &::after {

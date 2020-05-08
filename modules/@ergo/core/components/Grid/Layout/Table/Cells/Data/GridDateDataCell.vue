@@ -12,6 +12,7 @@
         :edit-key-code="editKeyCode"
         :disabled="isDisabled"
         :copyable="isCopyable"
+        :selected="isSelected"
         @copy="onCopyValues">
         <template #default="{ isEditing }">
             <GridDateEditCell

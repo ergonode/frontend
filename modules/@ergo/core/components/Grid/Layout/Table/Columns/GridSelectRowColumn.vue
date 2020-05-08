@@ -98,6 +98,8 @@ export default {
 
             if (anyRowsSelected) {
                 this.selectedRows = {};
+
+                this.$emit('rowSelect', this.selectedRows);
             } else {
                 this.isSelectedAllRows = !this.isSelectedAllRows;
 
@@ -122,13 +124,14 @@ export default {
                     }
 
                     this.isSelectedAllRows = false;
+
+                    this.$emit('rowsSelect', this.isSelectedAllRows);
                 }
             }
 
             this.selectedRows = { ...this.selectedRows };
 
             this.$emit('rowSelect', this.selectedRows);
-            this.$emit('rowsSelect', this.isSelectedAllRows);
         },
     },
 };

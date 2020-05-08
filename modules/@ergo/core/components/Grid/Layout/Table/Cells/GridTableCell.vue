@@ -7,7 +7,9 @@
         :tabindex="-1"
         :class="gridCellClasses"
         @mousedown="onMouseDown"
-        @keydown="onKeyDown">
+        @keydown="onKeyDown"
+        @focus="onFocus"
+        @blur="onBlur">
         <GridCellResizer
             v-if="copyable"
             @copy="onCopy" />
@@ -19,7 +21,12 @@
 
 export default {
     name: 'GridTableCell',
-    inject: ['getEditingCellCoordinates', 'setEditingCellCoordinates', 'getTableLayoutElement'],
+    inject: [
+        'getEditingCellCoordinates',
+        'setEditingCellCoordinates',
+        'setFocusedCellCoordinates',
+        'getTableLayoutElement',
+    ],
     components: {
         GridCellResizer: () => import('@Core/components/Grid/Layout/Table/Cells/Resizer/GridCellResizer'),
     },
@@ -104,6 +111,12 @@ export default {
         }
     },
     methods: {
+        onFocus() {
+            this.setFocusedCellCoordinates({ row: this.row, column: this.column });
+        },
+        onBlur() {
+            this.setFocusedCellCoordinates();
+        },
         onCopy(factor) {
             this.$emit('copy', {
                 from: {
