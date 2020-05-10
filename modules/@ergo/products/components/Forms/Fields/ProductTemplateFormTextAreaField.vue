@@ -10,7 +10,6 @@
             <template #validator="{ errorMessages }">
                 <RichTextEditor
                     :value="fieldData.value"
-                    :actionable-extensions="actionableExtensions"
                     :label="label"
                     :description="properties.hint"
                     :error-messages="errorMessages"
@@ -27,14 +26,6 @@ import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
-import {
-    Blockquote,
-    OrderedList,
-    BulletList,
-    Bold,
-    Italic,
-    Underline,
-} from 'tiptap-extensions';
 
 export default {
     name: 'ProductTemplateFormTextAreaField',
@@ -72,18 +63,6 @@ export default {
             type: String,
             required: true,
         },
-    },
-    data() {
-        return {
-            actionableExtensions: [
-                new Bold(),
-                new Italic(),
-                new Underline(),
-                new Blockquote(),
-                new OrderedList(),
-                new BulletList(),
-            ],
-        };
     },
     computed: {
         ...mapState('product', {

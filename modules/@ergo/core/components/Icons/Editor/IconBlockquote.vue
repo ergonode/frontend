@@ -19,7 +19,7 @@ export default {
     inheritAttrs: false,
     computed: {
         drawingCommands() {
-            return 'M5,13 L5,7 L11,7 L11,13 L9,17 L6,17 L8,13 L5,13 Z M13.0000067,7 L19.0000067,7 L19.0000067,13 L17.0000067,17 L14.0000067,17 L16.0000067,13 L13.0000067,13 L13.0000067,7 Z';
+            return 'M5 17H8L10 13V7H4V13H7L5 17ZM15 17H18L20 13V7H14V13H17L15 17Z';
         },
     },
 };

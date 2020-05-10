@@ -14,23 +14,23 @@
         <div class="rich-text-editor__activator">
             <slot #prepand />
             <div class="rich-text-editor__wrapper">
-                <EditorMenuBar :editor="editor">
-                    <template #default="{ commands, isActive }">
-                        <div class="rich-text-editor__menu">
-                            <RichTextEditorActionButton
-                                v-for="action in actionableExtensions"
-                                :key="action.name"
-                                :name="action.name"
-                                :is-active="isActive"
-                                :command-callback="commands[action.name]" />
-                        </div>
-                    </template>
-                </EditorMenuBar>
                 <VerticalFixedScroll>
                     <EditorContent
                         class="rich-text-editor__content"
                         :editor="editor" />
                 </VerticalFixedScroll>
+                <EditorMenuBar :editor="editor">
+                    <template #default="{ commands, isActive }">
+                        <div class="rich-text-editor__menu">
+                            <RichTextEditorActionButton
+                                v-for="(extension, index) in extensions"
+                                :key="`${extension.name}|${index}`"
+                                :extension="extension"
+                                :is-active="isActive"
+                                :commands="commands" />
+                        </div>
+                    </template>
+                </EditorMenuBar>
             </div>
             <div class="rich-text-editor__append">
                 <slot #append />
@@ -47,7 +47,20 @@
 
 <script>
 import { Editor, EditorMenuBar, EditorContent } from 'tiptap';
-import { ListItem, Placeholder } from 'tiptap-extensions';
+import {
+    ListItem,
+    Placeholder,
+    Blockquote,
+    OrderedList,
+    BulletList,
+    Bold,
+    Italic,
+    Underline,
+    HorizontalRule,
+    Strike,
+    Heading,
+    History,
+} from 'tiptap-extensions';
 import RichTextEditorActionButton from '@Core/components/Inputs/RichTextEditor/Button/RichTextEditorActionButton';
 import VerticalFixedScroll from '@Core/components/Layout/Scroll/VerticalFixedScroll';
 
@@ -98,12 +111,90 @@ export default {
                 'rich-text-editor--has-label': Boolean(this.label),
             };
         },
+        extensions() {
+            return [
+                {
+                    icon: 'IconUndo',
+                    name: 'undo',
+                },
+                {
+                    icon: 'IconRedo',
+                    name: 'redo',
+                },
+                {
+                    icon: 'IconBold',
+                    name: 'bold',
+                },
+                {
+                    icon: 'IconItalic',
+                    name: 'italic',
+                },
+                {
+                    icon: 'IconStrike',
+                    name: 'strike',
+                },
+                {
+                    icon: 'IconUnderline',
+                    name: 'underline',
+                },
+                {
+                    icon: 'IconOrderedList',
+                    name: 'ordered_list',
+                },
+                {
+                    icon: 'IconBulletList',
+                    name: 'bullet_list',
+                },
+                {
+                    icon: 'IconBlockquote',
+                    name: 'blockquote',
+                },
+                {
+                    icon: 'IconHorizontalRule',
+                    name: 'horizontal_rule',
+                },
+                {
+                    icon: 'IconParagraph',
+                    name: 'paragraph',
+                },
+                {
+                    icon: 'IconHeadingOne',
+                    name: 'heading',
+                    params: {
+                        level: 1,
+                    },
+                },
+                {
+                    icon: 'IconHeadingTwo',
+                    name: 'heading',
+                    params: {
+                        level: 2,
+                    },
+                },
+                {
+                    icon: 'IconHeadingThree',
+                    name: 'heading',
+                    params: {
+                        level: 3,
+                    },
+                },
+            ];
+        },
     },
     mounted() {
         this.editor = new Editor({
             extensions: [
-                ...this.actionableExtensions,
+                new Bold(),
+                new Italic(),
+                new Underline(),
+                new Blockquote(),
+                new OrderedList(),
+                new HorizontalRule(),
+                new BulletList(),
+                new Strike(),
                 new ListItem(),
+                new History(),
+                new Heading({ levels: [1, 2, 3] }),
                 new Placeholder({
                     emptyEditorClass: 'is-editor-empty',
                     emptyNodeClass: 'is-empty',
@@ -141,6 +232,7 @@ export default {
 
         &__wrapper {
             display: flex;
+            flex: 1;
             flex-direction: column;
             padding: 12px;
         }
@@ -151,17 +243,12 @@ export default {
             font: $FONT_MEDIUM_12_16;
         }
 
-        &--has-label &__menu {
-            padding: 6px 0 8px;
-        }
-
-        &:not(&--has-label) &__menu {
-            padding: 2px 0 8px;
-        }
-
         &__menu {
             display: flex;
             flex-wrap: wrap;
+            padding: 3px;
+            background-color: $WHITESMOKE;
+            box-shadow: $ELEVATOR_2_DP;
         }
 
         &__fieldset {
@@ -186,6 +273,7 @@ export default {
         &__content {
             position: relative;
             height: 100%;
+            padding: 10px 0;
             overflow: auto;
             overflow-wrap: break-word;
             word-wrap: break-word;

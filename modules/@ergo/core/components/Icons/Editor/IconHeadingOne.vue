@@ -4,7 +4,8 @@
  */
 <template>
     <Icon v-bind="$attrs">
-        <path :d="drawingCommands" />
+        <path :d="drawingCommands1" />
+        <path :d="drawingCommands2" />
     </Icon>
 </template>
 
@@ -12,14 +13,17 @@
 import Icon from '@Core/components/Icons/Icon';
 
 export default {
-    name: 'IconClearStyle',
+    name: 'IconHeadingOne',
     components: {
         Icon,
     },
     inheritAttrs: false,
     computed: {
-        drawingCommands() {
-            return 'M20 7.99999V4.99999H6.39L9.39 7.99999H11.22L10.67 9.27999L12.76 11.38L14.21 7.99999H20ZM3.41 4.85999L2 6.26999L8.97 13.24L6.5 19H9.5L11.07 15.34L16.73 21L18.14 19.59L3.41 4.85999Z';
+        drawingCommands1() {
+            return 'M4 17.0001L6 17V13H11V17H13V7H11V11.0192H6V7H4V17.0001Z';
+        },
+        drawingCommands2() {
+            return 'M20 7H18.0293L15 9.09091V11L18.0293 9V17.0001H20V7Z';
         },
     },
 };
