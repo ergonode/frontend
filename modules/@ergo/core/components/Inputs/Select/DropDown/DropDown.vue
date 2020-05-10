@@ -31,8 +31,10 @@ export default {
         this.$nextTick(() => {
             window.requestAnimationFrame(() => {
                 const { innerHeight } = window;
-                const position = {};
+                const position = { left: `${this.offset.x}px` };
                 let maxHeight = 200;
+
+                console.log(this.$parent.$el);
 
                 if (this.fixed) {
                     position.maxHeight = `${maxHeight}px`;
@@ -53,6 +55,7 @@ export default {
                 this.$refs.dropdown.style.width = position.width;
                 this.$refs.dropdown.style.bottom = position.bottom || null;
                 this.$refs.dropdown.style.top = position.top;
+                this.$refs.dropdown.style.left = position.left;
             });
         });
     },
@@ -61,8 +64,8 @@ export default {
 
 <style lang="scss" scoped>
     .dropdown {
-        position: fixed;
-        z-index: $Z_INDEX_DROP_DOWN;
+        position: absolute;
+        z-index: $Z_INDEX_MAX;
         display: flex;
         flex-direction: column;
         background-color: $WHITE;

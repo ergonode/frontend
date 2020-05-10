@@ -16,6 +16,7 @@ export default {
 
 <style lang="scss" scoped>
     .app {
+        position: relative;
         display: flex;
         height: 100vh;
     }

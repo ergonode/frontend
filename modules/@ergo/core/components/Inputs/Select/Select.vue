@@ -45,7 +45,7 @@
                 <IconArrowDropDown :state="dropDownState" />
             </div>
         </div>
-        <FadeTransition>
+        <FadeTransition ref="test">
             <SelectDropDown
                 v-if="isMenuActive"
                 ref="menu"
@@ -285,11 +285,18 @@ export default {
             });
         }
 
+        const app = document.documentElement.querySelector('.app');
+
+        app.appendChild(this.$refs.test.$el);
+
         this.hasAnyValueSelected = Object.keys(this.selectedOptions).length > 0;
         this.associatedLabel = `input-${this._uid}`;
     },
     beforeDestroy() {
         window.removeEventListener('click', this.onClickOutside);
+        const app = document.documentElement.querySelector('.app');
+
+        app.removeChild(this.$refs.test.$el);
     },
     methods: {
         getDropDownOffset() {
