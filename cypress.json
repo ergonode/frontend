@@ -2,8 +2,11 @@
   "baseUrl": "http://localhost:3000",
   "viewportWidth": 1400,
   "viewportHeight": 800,
+  "testFiles": "**/*.feature",
+  "video": false,
   "env": {
-    "adminEmail": "admin_login@ergonode.com",
-    "adminPass": "admin_pass"
+    "apiServer": "http://localhost:8000/api/v1/",
+    "adminEmail": "test@ergonode.com",
+    "adminPass": "test"
   }
 }

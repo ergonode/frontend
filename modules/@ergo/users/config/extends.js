@@ -21,12 +21,16 @@ export default {
                     cells: {
                         data: [
                             {
-                                type: 'PRIVILEGE_NAME',
-                                component: Components.GridPrivilegeNameDataCell,
+                                type: 'PRIVILEGE_CHECK',
+                                component: Components.GridCheckDataCell,
                             },
                             {
-                                type: 'PRIVILEGE_CHECK',
-                                component: Components.GridPrivilegeCheckDataCell,
+                                type: 'LANGUAGE_CHECK',
+                                component: Components.GridCheckDataCell,
+                            },
+                            {
+                                type: 'ROW_NAME',
+                                component: Components.GridRowNameDataCell,
                             },
                         ],
                     },
@@ -37,14 +41,24 @@ export default {
                             component: Components.GridPrivilegeCheckColumn,
                         },
                         {
+                            type: 'LANGUAGE_CHECK',
+                            width: COLUMN_WIDTH.DYNAMIC,
+                            component: Components.GridLanguageCheckColumn,
+                        },
+                        {
                             type: 'PRIVILEGE_SELECT_ROW',
                             width: COLUMN_WIDTH.SELECT_ROW,
                             component: Components.GridPrivilegeSelectRowColumn,
                         },
                         {
-                            type: 'PRIVILEGE_NAME',
+                            type: 'LANGUAGE_SELECT_ROW',
+                            width: COLUMN_WIDTH.SELECT_ROW,
+                            component: Components.GridLanguageSelectRowColumn,
+                        },
+                        {
+                            type: 'ROW_NAME',
                             width: COLUMN_WIDTH.DYNAMIC,
-                            component: Components.GridPrivilegeNameColumn,
+                            component: Components.GridRowNameColumn,
                         },
                     ],
                 },

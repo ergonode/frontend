@@ -13,6 +13,7 @@
             @mouseup="onMouseUp">
             <slot name="prepend" />
             <div
+                data-cy="selectValue"
                 class="input__value"
                 v-if="hasAnyValueSelected">
                 <slot name="value">
@@ -47,6 +48,7 @@
         </div>
         <SelectDropDown
             v-if="needsToRender"
+            data-cy="selectDropDown"
             ref="menu"
             :offset="offset"
             :fixed="fixedContent"

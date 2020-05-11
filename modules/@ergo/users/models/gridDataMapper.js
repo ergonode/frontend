@@ -2,37 +2,29 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-
-import { toCapitalize } from '@Core/models/stringWrapper';
 import { STATE } from '@Core/defaults/inputs/checkbox';
+import { isObject } from '@Core/models/objectWrapper';
 
-const getCheckColumn = (privilegeType, isEditable) => ({
-    id: privilegeType,
-    label: toCapitalize(privilegeType),
-    type: 'PRIVILEGE_CHECK',
-    editable: isEditable,
-    visible: true,
-});
+export function getMappedRestrictions(data) {
+    if (!isObject(data)) return null;
 
-const nameColumn = {
-    id: 'name',
-    label: 'Name',
-    type: 'PRIVILEGE_NAME',
-    editable: false,
-    visible: true,
-};
+    return Object.keys(data).reduce((acc, languageKey) => {
+        const response = acc;
+        const restriction = Object.keys(data[languageKey]);
 
-const selectRowColumn = {
-    id: 'selectRow',
-    label: '',
-    type: 'PRIVILEGE_SELECT_ROW',
-    editable: true,
-    visible: true,
-};
+        for (let i = 0; i < restriction.length; i += 1) {
+            if (data[languageKey][restriction[i]]) {
+                response[`${languageKey}_${restriction[i].toUpperCase()}`] = true;
+            }
+        }
+        return response;
+    }, {});
+}
 
 export function getMappedGridData({
-    systemPrivileges,
-    rolePrivileges,
+    fullDataList,
+    selectedData,
+    defaults,
     isEditable = false,
 }) {
     const data = {};
@@ -40,43 +32,47 @@ export function getMappedGridData({
 
     if (isEditable) {
         data.selectRow = [];
-        columns.push(selectRowColumn);
+        columns.push(defaults.selectRowColumn);
     }
 
     data.name = [];
     data.id = [];
-    columns.push(nameColumn);
+    columns.push(defaults.nameColumn);
 
-    for (let i = 0; i < systemPrivileges.length; i += 1) {
-        const { name, description, privileges } = systemPrivileges[i];
+    for (let i = 0; i < fullDataList.length; i += 1) {
+        const {
+            [defaults.dataStructure.name]: name,
+            [defaults.dataStructure.description]: description,
+            [defaults.dataStructure.types]: types,
+        } = fullDataList[i];
 
         data.name.push({
             value: name,
             hint: description,
         });
 
-        const privilegeTypes = Object.keys(privileges);
-        const mappedId = privileges[privilegeTypes[0]].split('_');
+        const optionTypes = Object.keys(types);
+        const mappedId = types[optionTypes[0]].split('_');
         mappedId.pop();
 
         data.id.push(mappedId.join('_'));
 
-        for (let j = 0; j < privilegeTypes.length; j += 1) {
-            const type = privilegeTypes[j];
+        for (let j = 0; j < optionTypes.length; j += 1) {
+            const type = optionTypes[j];
 
             if (!data[type]) {
                 data[type] = [];
-                columns.push(getCheckColumn(type, isEditable));
+                columns.push(defaults.getCheckColumn(type, isEditable));
             }
-            const value = rolePrivileges[privileges[type]] || false;
+            const value = isObject(selectedData) ? selectedData[types[type]] : false;
 
             data[type].push({ value });
         }
 
         if (data.selectRow) {
-            if (privilegeTypes.every(type => data[type][i].value)) {
+            if (optionTypes.every(type => data[type][i].value)) {
                 data.selectRow.push({ value: STATE.CHECK });
-            } else if (privilegeTypes.every(type => !data[type][i].value)) {
+            } else if (optionTypes.every(type => !data[type][i].value)) {
                 data.selectRow.push({ value: STATE.UNCHECK });
             } else {
                 data.selectRow.push({ value: STATE.CHECK_ANY });
@@ -91,11 +87,11 @@ export function getMappedGridData({
 }
 
 export function getMappedPrivilegesBasedOnGridData({
-    rolePrivileges,
+    selectedData,
     drafts,
 }) {
     const privilegeNames = Object.keys(drafts);
-    let mappedPrivileges = Object.keys(rolePrivileges);
+    let mappedPrivileges = Object.keys(selectedData);
 
     for (let i = 0; i < privilegeNames.length; i += 1) {
         const privilegeName = privilegeNames[i];
@@ -106,7 +102,7 @@ export function getMappedPrivilegesBasedOnGridData({
             const type = privilegeTypes[j];
             const mappedPrivilege = `${privilegeName}_${type.toUpperCase()}`;
 
-            if (!rolePrivileges[mappedPrivilege] && drafts[privilegeName][type]) {
+            if (!selectedData[mappedPrivilege] && drafts[privilegeName][type]) {
                 mappedPrivileges.push(mappedPrivilege);
             } else if (!drafts[privilegeName][type]) {
                 mappedPrivileges = mappedPrivileges.filter(priv => priv !== mappedPrivilege);

@@ -11,6 +11,7 @@
         :edit-key-code="32"
         :disabled="isDisabled"
         :copyable="isCopyable"
+        :selected="isSelected"
         @edit="onValueChange(!cellData.value)"
         @copy="onCopyValues">
         <GridBoolEditCell

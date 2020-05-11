@@ -3,50 +3,65 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="action-column">
-        <GridTableCell
-            editing-allowed
-            :edit-key-code="32"
-            :row="rowsOffset"
-            :column="0"
-            @edit="onSelectAllRows">
-            <GridCheckEditCell
-                :value="rowsSelectionState"
-                @input="onSelectAllRows" />
-        </GridTableCell>
-        <GridTableCell
-            v-if="isBasicFilter"
-            :locked="true"
-            :row="rowsOffset + basicFiltersOffset"
-            :column="0">
-            <GridCheckPlaceholderCell />
-        </GridTableCell>
-        <GridSelectRowEditCell
-            v-for="(id, rowIndex) in rowIds"
-            :key="id"
-            :column="0"
-            :row="rowsOffset + rowIndex + basicFiltersOffset + 1"
-            :is-selected="isSelectedAllRows
-                || selectedRows[rowsOffset + rowIndex + basicFiltersOffset + 1]"
-            @select="onSelectRow" />
-    </div>
+    <GridActionColumn
+        :column-index="columnIndex"
+        :rows-offset="rowsOffset"
+        :data-count="dataCount"
+        :is-basic-filter="isBasicFilter">
+        <template #headerCell>
+            <GridTableCell
+                editing-allowed
+                :edit-key-code="32"
+                :row="rowsOffset"
+                :column="0"
+                @edit="onSelectAllRows">
+                <GridCheckEditCell
+                    :value="rowsSelectionState"
+                    @input="onSelectAllRows" />
+            </GridTableCell>
+        </template>
+        <template #filterCell="{ rowIndex }">
+            <GridTableCell
+                v-if="isBasicFilter"
+                :locked="true"
+                :row="rowIndex"
+                :column="0">
+                <GridCheckPlaceholderCell />
+            </GridTableCell>
+        </template>
+        <template #cell="{ index, rowIndex }">
+            <GridSelectRowEditCell
+                :key="index"
+                :column="0"
+                :row="rowIndex"
+                :is-selected="isSelectedAllRows
+                    || selectedRows[rowIndex]"
+                @select="onSelectRow" />
+        </template>
+    </GridActionColumn>
 </template>
 
 <script>
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
+import GridActionColumn from '@Core/components/Grid/Layout/Table/Columns/Action/GridActionColumn';
 
 export default {
     name: 'GridSelectRowColumn',
     components: {
+        GridActionColumn,
         GridTableCell,
         GridCheckEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridCheckEditCell'),
         GridSelectRowEditCell: () => import('@Core/components/Grid/Layout/Table/Cells/Edit/GridSelectRowEditCell'),
         GridCheckPlaceholderCell: () => import('@Core/components/Grid/GridCheckPlaceholderCell'),
     },
     props: {
-        rowIds: {
-            type: Array,
-            default: () => [],
+        columnIndex: {
+            type: Number,
+            required: true,
+        },
+        dataCount: {
+            type: Number,
+            default: 0,
         },
         rowsOffset: {
             type: Number,
@@ -83,6 +98,8 @@ export default {
 
             if (anyRowsSelected) {
                 this.selectedRows = {};
+
+                this.$emit('rowSelect', this.selectedRows);
             } else {
                 this.isSelectedAllRows = !this.isSelectedAllRows;
 
@@ -99,22 +116,22 @@ export default {
                     // If we had chosen option with selected all of the options, we need to remove it
                     // and mark visible rows as selected
                     const fixedIndex = this.isBasicFilter ? 2 : 1;
-                    const { length } = this.rowIds;
 
-                    for (let i = fixedIndex; i < length + fixedIndex; i += 1) {
+                    for (let i = fixedIndex; i < this.dataCount + fixedIndex; i += 1) {
                         if (i !== row) {
                             this.selectedRows[i] = true;
                         }
                     }
 
                     this.isSelectedAllRows = false;
+
+                    this.$emit('rowsSelect', this.isSelectedAllRows);
                 }
             }
 
             this.selectedRows = { ...this.selectedRows };
 
             this.$emit('rowSelect', this.selectedRows);
-            this.$emit('rowsSelect', this.isSelectedAllRows);
         },
     },
 };

@@ -47,4 +47,5 @@ config/*
 !config/.copyright
 modules.config.js
 vendor
+cypress/videos
 .huskyrc
