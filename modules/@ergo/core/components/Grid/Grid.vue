@@ -12,6 +12,7 @@
             :table-layout-config="tableLayoutConfig"
             :collection-layout-config="collectionLayoutConfig"
             :is-advanced-filters="isAdvancedFilters"
+            :is-collection-layout="isCollectionLayout"
             :is-centered-view="isCenteredView"
             :filters="advancedFilters"
             @layoutChange="onLayoutChange"

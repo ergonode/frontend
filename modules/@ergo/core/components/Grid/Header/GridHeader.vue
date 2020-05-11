@@ -33,6 +33,7 @@
                     :is-selected="layout === gridLayouts.TABLE"
                     @active="onLayoutActivate" />
                 <GridCollectionLayoutActivator
+                    v-if="isCollectionLayout"
                     :is-selected="layout === gridLayouts.COLLECTION"
                     @active="onLayoutActivate" />
                 <Fab
@@ -48,6 +49,7 @@
             v-if="isSettingsModal"
             :table-layout-config="tableLayoutConfig"
             :collection-layout-config="collectionLayoutConfig"
+            :is-collection-layout="isCollectionLayout"
             @close="onCloseModal"
             @apply="onApplySettings" />
         <GridAdvancedFiltersContainer
@@ -126,6 +128,10 @@ export default {
             default: false,
         },
         isAdvancedFilters: {
+            type: Boolean,
+            default: false,
+        },
+        isCollectionLayout: {
             type: Boolean,
             default: false,
         },
