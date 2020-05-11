@@ -27,37 +27,49 @@ export default {
             }),
         },
     },
-    mounted() {
-        this.$nextTick(() => {
-            window.requestAnimationFrame(() => {
-                const { innerHeight } = window;
-                const position = { left: `${this.offset.x}px` };
-                let maxHeight = 200;
+    watch: {
+        offset: {
+            immediate: true,
+            handler() {
+                this.$nextTick(() => {
+                    window.requestAnimationFrame(() => {
+                        const { innerHeight } = window;
+                        const position = { left: `${this.offset.x}px` };
+                        let maxHeight = 200;
 
-                console.log(this.$parent.$el);
+                        if (this.fixed) {
+                            position.maxHeight = `${maxHeight}px`;
+                            position.width = `${this.offset.width}px`;
+                        } else {
+                            maxHeight = this.$el.clientHeight;
+                        }
 
-                if (this.fixed) {
-                    position.maxHeight = `${maxHeight}px`;
-                    position.width = `${this.offset.width}px`;
-                } else {
-                    maxHeight = this.$el.clientHeight;
-                }
+                        if (innerHeight - this.offset.y < maxHeight) {
+                            const offsetBottom = innerHeight - this.offset.y;
 
-                if (innerHeight - this.offset.y < maxHeight) {
-                    const offsetBottom = innerHeight - this.offset.y;
+                            position.bottom = `${offsetBottom}px`;
+                        } else {
+                            position.top = `${this.offset.y + this.offset.height}px`;
+                        }
 
-                    position.bottom = `${offsetBottom}px`;
-                } else {
-                    position.top = `${this.offset.y + this.offset.height}px`;
-                }
+                        this.$refs.dropdown.style.maxHeight = position.maxHeight;
+                        this.$refs.dropdown.style.width = position.width;
+                        this.$refs.dropdown.style.bottom = position.bottom || null;
+                        this.$refs.dropdown.style.top = position.top;
+                        this.$refs.dropdown.style.left = position.left;
 
-                this.$refs.dropdown.style.maxHeight = position.maxHeight;
-                this.$refs.dropdown.style.width = position.width;
-                this.$refs.dropdown.style.bottom = position.bottom || null;
-                this.$refs.dropdown.style.top = position.top;
-                this.$refs.dropdown.style.left = position.left;
-            });
-        });
+                        const app = document.documentElement.querySelector('.app');
+
+                        app.appendChild(this.$refs.dropdown);
+                    });
+                });
+            },
+        },
+    },
+    beforeDestroy() {
+        const app = document.documentElement.querySelector('.app');
+
+        app.removeChild(this.$refs.dropdown);
     },
 };
 </script>

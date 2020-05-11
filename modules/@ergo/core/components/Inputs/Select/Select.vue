@@ -45,44 +45,43 @@
                 <IconArrowDropDown :state="dropDownState" />
             </div>
         </div>
-        <FadeTransition ref="test">
-            <SelectDropDown
-                v-if="isMenuActive"
-                ref="menu"
-                :offset="getDropDownOffset()"
-                :fixed="fixedContent"
-                :small="small"
-                :regular="regular"
-                :multiselect="multiselect"
-                :clearable="clearable"
-                :fixed-content="fixedContent"
-                :searchable="searchable"
-                :options="options"
-                :selected-options="selectedOptions"
-                :search-result="searchResult"
-                @dismiss="onDismiss"
-                @clear="onClear"
-                @search="onSearch"
-                @searchFocus="onSearchFocused"
-                @input="onSelectValue">
-                <template #dropdown>
-                    <slot name="dropdown" />
-                </template>
-                <template #option="{ option, isSelected, index }">
-                    <slot
-                        name="option"
-                        :option="option"
-                        :is-selected="isSelected"
-                        :index="index" />
-                </template>
-                <template #footer>
-                    <slot
-                        name="footer"
-                        :clear="onClear"
-                        :apply="onDismiss" />
-                </template>
-            </SelectDropDown>
-        </FadeTransition>
+        <SelectDropDown
+            v-if="needsToRender"
+            ref="menu"
+            :offset="offset"
+            :fixed="fixedContent"
+            :small="small"
+            :regular="regular"
+            :multiselect="multiselect"
+            :clearable="clearable"
+            :fixed-content="fixedContent"
+            :searchable="searchable"
+            :options="options"
+            :selected-options="selectedOptions"
+            :search-result="searchResult"
+            :is-visible="isMenuActive"
+            @dismiss="onDismiss"
+            @clear="onClear"
+            @search="onSearch"
+            @searchFocus="onSearchFocused"
+            @input="onSelectValue">
+            <template #dropdown>
+                <slot name="dropdown" />
+            </template>
+            <template #option="{ option, isSelected, index }">
+                <slot
+                    name="option"
+                    :option="option"
+                    :is-selected="isSelected"
+                    :index="index" />
+            </template>
+            <template #footer>
+                <slot
+                    name="footer"
+                    :clear="onClear"
+                    :apply="onDismiss" />
+            </template>
+        </SelectDropDown>
         <slot name="informationLabel">
             <label
                 v-if="informationLabel"
@@ -94,14 +93,12 @@
 
 <script>
 import { ARROW } from '@Core/defaults/icons';
-import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import SelectDropDown from '@Core/components/Inputs/Select/DropDown/SelectDropDown';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 
 export default {
     name: 'Select',
     components: {
-        FadeTransition,
         SelectDropDown,
         IconArrowDropDown,
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
@@ -203,6 +200,8 @@ export default {
             associatedLabel: '',
             isSearchFocused: false,
             hasAnyValueSelected: false,
+            needsToRender: false,
+            offset: {},
         };
     },
     computed: {
@@ -285,18 +284,11 @@ export default {
             });
         }
 
-        const app = document.documentElement.querySelector('.app');
-
-        app.appendChild(this.$refs.test.$el);
-
         this.hasAnyValueSelected = Object.keys(this.selectedOptions).length > 0;
         this.associatedLabel = `input-${this._uid}`;
     },
     beforeDestroy() {
         window.removeEventListener('click', this.onClickOutside);
-        const app = document.documentElement.querySelector('.app');
-
-        app.removeChild(this.$refs.test.$el);
     },
     methods: {
         getDropDownOffset() {
@@ -331,7 +323,12 @@ export default {
             this.onBlur();
         },
         onFocus() {
+            this.offset = this.getDropDownOffset();
             this.isMenuActive = true;
+
+            if (!this.needsToRender) {
+                this.needsToRender = true;
+            }
 
             window.addEventListener('click', this.onClickOutside);
 
