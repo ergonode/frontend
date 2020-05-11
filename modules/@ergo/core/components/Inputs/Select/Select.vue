@@ -46,45 +46,44 @@
                 <IconArrowDropDown :state="dropDownState" />
             </div>
         </div>
-        <FadeTransition>
-            <SelectDropDown
-                v-if="isMenuActive"
-                data-cy="selectDropDown"
-                ref="menu"
-                :offset="getDropDownOffset()"
-                :fixed="fixedContent"
-                :small="small"
-                :regular="regular"
-                :multiselect="multiselect"
-                :clearable="clearable"
-                :fixed-content="fixedContent"
-                :searchable="searchable"
-                :options="options"
-                :selected-options="selectedOptions"
-                :search-result="searchResult"
-                @dismiss="onDismiss"
-                @clear="onClear"
-                @search="onSearch"
-                @searchFocus="onSearchFocused"
-                @input="onSelectValue">
-                <template #dropdown>
-                    <slot name="dropdown" />
-                </template>
-                <template #option="{ option, isSelected, index }">
-                    <slot
-                        name="option"
-                        :option="option"
-                        :is-selected="isSelected"
-                        :index="index" />
-                </template>
-                <template #footer>
-                    <slot
-                        name="footer"
-                        :clear="onClear"
-                        :apply="onDismiss" />
-                </template>
-            </SelectDropDown>
-        </FadeTransition>
+        <SelectDropDown
+            v-if="needsToRender"
+            data-cy="selectDropDown"
+            ref="menu"
+            :offset="offset"
+            :fixed="fixedContent"
+            :small="small"
+            :regular="regular"
+            :multiselect="multiselect"
+            :clearable="clearable"
+            :fixed-content="fixedContent"
+            :searchable="searchable"
+            :options="options"
+            :selected-options="selectedOptions"
+            :search-result="searchResult"
+            :is-visible="isMenuActive"
+            @dismiss="onDismiss"
+            @clear="onClear"
+            @search="onSearch"
+            @searchFocus="onSearchFocused"
+            @input="onSelectValue">
+            <template #dropdown>
+                <slot name="dropdown" />
+            </template>
+            <template #option="{ option, isSelected, index }">
+                <slot
+                    name="option"
+                    :option="option"
+                    :is-selected="isSelected"
+                    :index="index" />
+            </template>
+            <template #footer>
+                <slot
+                    name="footer"
+                    :clear="onClear"
+                    :apply="onDismiss" />
+            </template>
+        </SelectDropDown>
         <slot name="informationLabel">
             <label
                 v-if="informationLabel"
@@ -96,14 +95,12 @@
 
 <script>
 import { ARROW } from '@Core/defaults/icons';
-import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import SelectDropDown from '@Core/components/Inputs/Select/DropDown/SelectDropDown';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 
 export default {
     name: 'Select',
     components: {
-        FadeTransition,
         SelectDropDown,
         IconArrowDropDown,
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
@@ -205,6 +202,8 @@ export default {
             associatedLabel: '',
             isSearchFocused: false,
             hasAnyValueSelected: false,
+            needsToRender: false,
+            offset: {},
         };
     },
     computed: {
@@ -326,7 +325,12 @@ export default {
             this.onBlur();
         },
         onFocus() {
+            this.offset = this.getDropDownOffset();
             this.isMenuActive = true;
+
+            if (!this.needsToRender) {
+                this.needsToRender = true;
+            }
 
             window.addEventListener('click', this.onClickOutside);
 
