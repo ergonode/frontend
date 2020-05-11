@@ -11,6 +11,7 @@ export const Pages = {
 
 export const Tabs = {
     MainSettingsTab: () => import('@Core/components/Tabs/MainSettingsTab').then(m => m.default || m),
+    LanguagesSettingsTab: () => import('@Core/components/Tabs/LanguagesSettingsTab').then(m => m.default || m),
     UnitsSettingsGridTab: () => import('@Core/components/Tabs/UnitsSettingsGridTab').then(m => m.default || m),
     UnitBaseTab: () => import('@Core/components/Tabs/UnitBaseTab').then(m => m.default || m),
 };

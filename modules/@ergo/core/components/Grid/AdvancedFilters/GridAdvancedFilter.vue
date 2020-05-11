@@ -68,7 +68,6 @@
                     :is="selectBodyComponent"
                     :filter="filter"
                     :value="filter.value"
-                    :options="filter.options"
                     :language-code="filter.languageCode"
                     @emptyRecord="onEmptyRecordChange"
                     @input="onValueChange" />

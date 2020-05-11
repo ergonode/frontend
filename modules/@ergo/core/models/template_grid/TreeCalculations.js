@@ -4,18 +4,16 @@
  */
 const positionBetweenRows = 0.5;
 
-export function getCoordinatesForHiddenCategories(hiddenElements, { row, column }) {
+export function getCoordinatesForHiddenElements(hiddenElements, { row, column }) {
     const [{ row: firstRow, column: firstColumn }] = hiddenElements;
     const getFixedRow = oldRow => oldRow - ((firstRow - 1) - row);
     const getFixedColumn = oldColumn => oldColumn - ((firstColumn - 1) - column);
-    return hiddenElements.map((ele) => {
-        const item = {
-            ...ele,
-            row: getFixedRow(ele.row),
-            column: getFixedColumn(ele.column),
-        };
-        return item;
-    });
+
+    return hiddenElements.map(ele => ({
+        ...ele,
+        row: getFixedRow(ele.row),
+        column: getFixedColumn(ele.column),
+    }));
 }
 
 export function getNearestNeighborRowId(tree, column, row) {
@@ -39,9 +37,11 @@ export function getTreeWhenElementRemoved(oldTree, index) {
 
 export function getTreeWhenGhostElementRemoved(oldTree, index) {
     const newTree = [];
+
     for (let i = 0; i < oldTree.length; i += 1) {
         const currentElement = oldTree[i];
         let newRow = null;
+
         if (i >= index && (index !== 0 || (index === 0 && currentElement.row < 0))) {
             newRow = currentElement.row + (i === index ? positionBetweenRows : 1);
         } else {
@@ -54,6 +54,7 @@ export function getTreeWhenGhostElementRemoved(oldTree, index) {
 
 export function getTreeWhenElementCollapse(oldTree, index) {
     const newTree = [];
+
     for (let i = 0; i < oldTree.length; i += 1) {
         newTree.push(i > index ? { ...oldTree[i], row: i } : oldTree[i]);
     }
@@ -62,10 +63,13 @@ export function getTreeWhenElementCollapse(oldTree, index) {
 
 export function getTreeWhenElementExpand(hiddenChildren, oldTree, index) {
     let newTree = [];
+
     for (let i = 0; i < oldTree.length; i += 1) {
         const current = oldTree[i];
+
         if (i === index && hiddenChildren.length) {
-            const hiddenElement = getCoordinatesForHiddenCategories(hiddenChildren, current);
+            const hiddenElement = getCoordinatesForHiddenElements(hiddenChildren, current);
+
             newTree = [...newTree, current, ...hiddenElement];
         } else if (i > index) {
             newTree.push({ ...current, row: current.row + hiddenChildren.length });
@@ -78,6 +82,7 @@ export function getTreeWhenElementExpand(hiddenChildren, oldTree, index) {
 
 export function getRowBounds(elements) {
     const elementBounds = [];
+
     for (let i = 0; i < elements.length; i += 1) {
         const bounds = elements[i].getBoundingClientRect();
         elementBounds.push(bounds);
@@ -88,8 +93,9 @@ export function getRowBounds(elements) {
 export function getRowBellowMouse({ pageY, elements, elementBounds }, completion) {
     for (let i = 0; i < elements.length; i += 1) {
         const { y, height } = elementBounds[i];
+
         if (y <= pageY && y + height >= pageY) {
-            return completion({ index: i, category: elements[i] });
+            return completion({ index: i, element: elements[i] });
         }
     }
     return null;
@@ -98,9 +104,11 @@ export function getRowBellowMouse({ pageY, elements, elementBounds }, completion
 export function getFullTree(hiddenChildren, oldTree) {
     let newTree = oldTree.filter(el => el.id !== 'ghost_item');
     const arr = Object.keys(hiddenChildren);
+
     for (let i = arr.length - 1; i >= 0; i -= 1) {
         const key = arr[i];
         const index = newTree.findIndex(el => el.id === key);
+
         newTree = getTreeWhenElementExpand(hiddenChildren[key], newTree, index);
     }
     return newTree;

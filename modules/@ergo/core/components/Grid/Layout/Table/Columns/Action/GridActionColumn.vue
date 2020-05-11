@@ -4,15 +4,21 @@
  */
 <template>
     <div class="action-column">
-        <GridTableCell
-            :column="columnIndex"
-            :row="rowsOffset"
-            :locked="true" />
-        <GridTableCell
-            v-if="isBasicFilter"
-            :column="columnIndex"
-            :row="rowsOffset + basicFiltersOffset"
-            :locked="true" />
+        <slot name="headerCell">
+            <GridTableCell
+                :column="columnIndex"
+                :row="rowsOffset"
+                :locked="true" />
+        </slot>
+        <slot
+            name="filterCell"
+            :row-index="rowsOffset + basicFiltersOffset">
+            <GridTableCell
+                v-if="isBasicFilter"
+                :column="columnIndex"
+                :row="rowsOffset + basicFiltersOffset"
+                :locked="true" />
+        </slot>
         <template v-for="(key, index) in dataCount">
             <slot
                 name="cell"

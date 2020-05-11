@@ -4,7 +4,9 @@
  */
 
 <template>
-    <div class="grid">
+    <div
+        data-cy="grid"
+        class="grid">
         <GridHeader
             v-if="isHeaderVisible"
             :row-height="tableLayoutConfig.rowHeight"
@@ -26,6 +28,9 @@
             @removeAllFilters="onRemoveAll">
             <template #actions>
                 <slot name="actions" />
+            </template>
+            <template #configuration>
+                <slot name="configuration" />
             </template>
         </GridHeader>
         <div class="grid__body">

@@ -13,6 +13,7 @@
             @mouseup="onMouseUp">
             <slot name="prepend" />
             <div
+                data-cy="selectValue"
                 class="input__value"
                 v-if="hasAnyValueSelected">
                 <slot name="value">
@@ -48,6 +49,7 @@
         <FadeTransition>
             <SelectDropDown
                 v-if="isMenuActive"
+                data-cy="selectDropDown"
                 ref="menu"
                 :offset="getDropDownOffset()"
                 :fixed="fixedContent"

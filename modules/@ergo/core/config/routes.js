@@ -65,6 +65,21 @@ export default [
                 },
             },
             {
+                name: 'settings-languages-inheritance',
+                path: 'languages-inheritance',
+                component: Tabs.LanguagesSettingsTab,
+                meta: {
+                    title: 'Languages inheritance',
+                    breadcrumbs: [
+                        {
+                            title: 'System',
+                            icon: Icons.Settings,
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+            {
                 name: 'settings-units',
                 path: 'units',
                 component: Tabs.UnitsSettingsGridTab,
