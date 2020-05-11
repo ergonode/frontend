@@ -17,7 +17,9 @@
                             label="Row height"
                             :options="rowHeightOptions" />
                     </FormSection>
-                    <FormSection title="Image grid">
+                    <FormSection
+                        title="Image grid"
+                        v-if="isCollectionLayout">
                         <Select
                             v-model="columnsNumberDescription"
                             solid
@@ -79,6 +81,10 @@ export default {
         collectionLayoutConfig: {
             type: Object,
             required: true,
+        },
+        isCollectionLayout: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
