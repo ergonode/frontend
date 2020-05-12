@@ -25,6 +25,8 @@ export default {
                 privileges: getMappedPrivileges(user.privileges),
             });
             commit(types.SET_LOGGED_STATE, true);
+        }).catch((e) => {
+            console.error(e);
         });
     },
     setLoggedState({ commit }, isLogged) {
