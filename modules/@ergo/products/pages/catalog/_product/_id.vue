@@ -25,14 +25,13 @@ export default {
         store,
         params,
     }) {
-        const activeLanguage = Object.values(store.state.dictionaries.languagesTree)
-            .find(ele => ele.privileges.read);
+        const { languagePrivilegesDefaultCode } = store.state.authentication.user;
         const { id } = params;
 
         await Promise.all([
             store.dispatch('product/getCategories'),
             store.dispatch('product/getTemplates'),
-            store.dispatch('product/getProductDraft', { languageCode: activeLanguage.code, id }),
+            store.dispatch('product/getProductDraft', { languageCode: languagePrivilegesDefaultCode, id }),
         ]);
         await store.dispatch('product/getProductById', id);
     },

@@ -40,12 +40,11 @@ export default {
         TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
     },
     asyncData({ app: { $axios }, store, params: { id } }) {
-        const activeLanguage = Object.values(store.state.dictionaries.languagesTree)
-            .find(ele => ele.privileges.read);
+        const { languagePrivilegesDefaultCode } = store.state.authentication.user;
 
         return Promise.all([
-            getProductTemplate({ $axios, languageCode: activeLanguage.code, id }),
-            getProductCompleteness({ $axios, languageCode: activeLanguage.code, id }),
+            getProductTemplate({ $axios, languageCode: languagePrivilegesDefaultCode, id }),
+            getProductCompleteness({ $axios, languageCode: languagePrivilegesDefaultCode, id }),
         ]).then(([templateResponse, completenessResponse]) => ({
             elements: templateResponse.elements,
             completeness: completenessResponse,
@@ -57,6 +56,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('authentication', {
+            user: state => state.user,
+        }),
         ...mapState('dictionaries', {
             languagesTree: state => state.languagesTree,
         }),
@@ -68,12 +70,15 @@ export default {
                 ...language,
                 key: language.code,
                 value: language.name,
-                disabled: !language.privileges.edit && !language.privileges.read,
+                disabled: !language.privileges.read,
             }));
         },
     },
     created() {
-        this.language = this.languageOptions.find(ele => !ele.disabled);
+        const { languagePrivilegesDefaultCode } = this.user;
+
+        this.language = this.languageOptions
+            .find(languegeCode => languegeCode.code === languagePrivilegesDefaultCode);
     },
     methods: {
         ...mapActions('product', [

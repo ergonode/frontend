@@ -19,9 +19,10 @@ export default function ({ namespace }) {
             };
         },
         async created() {
-            const { language: languageCode } = this.$store.state.authentication.user;
-            await this.getGroups(languageCode);
-            await this.getUnassignedGroupItems(languageCode);
+            const { languagePrivilegesDefaultCode } = this.$store.state.authentication.user;
+
+            await this.getGroups(languagePrivilegesDefaultCode);
+            await this.getUnassignedGroupItems(languagePrivilegesDefaultCode);
             this.expandedGroupId = UNASSIGNED_GROUP_ID;
         },
         computed: {

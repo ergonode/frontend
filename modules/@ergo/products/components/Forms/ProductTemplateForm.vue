@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 
@@ -50,6 +51,9 @@ export default {
         };
     },
     computed: {
+        ...mapState('authentication', {
+            user: state => state.user,
+        }),
         templateRowHeight() {
             return 48;
         },
@@ -63,7 +67,10 @@ export default {
             return 0;
         },
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['PRODUCT_UPDATE']) && this.language.privileges.edit;
+            const { languagePrivileges } = this.user;
+            const { code } = this.language;
+
+            return this.$hasAccess(['PRODUCT_UPDATE']) && languagePrivileges[code].edit;
         },
         gridTemplateRows() {
             return {
