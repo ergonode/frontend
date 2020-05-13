@@ -92,6 +92,9 @@ export default {
         ...mapActions('gridDesigner', {
             clearGridDesignerStorage: 'clearStorage',
         }),
+        ...mapActions('dictionaries', [
+            'getCurrentDictionary',
+        ]),
         async onSave() {
             let isUpdated = false;
 
@@ -115,6 +118,7 @@ export default {
             } finally {
                 if (isUpdated !== false) {
                     this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Languages updated' });
+                    await this.getCurrentDictionary({ dictionaryName: 'languagesTree' });
                 }
                 await this.$removeLoader('saveSettings');
             }

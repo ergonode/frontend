@@ -88,8 +88,8 @@ export default {
             } finally {
                 if (isUpdated !== false) {
                     this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Languages updated' });
+                    await this.getCurrentDictionary({ dictionaryName: 'languages' });
                 }
-                await this.getCurrentDictionary({ dictionaryName: 'languages' });
                 await this.$removeLoader('saveSettings');
             }
 

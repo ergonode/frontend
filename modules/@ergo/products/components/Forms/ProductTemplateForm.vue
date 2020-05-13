@@ -16,7 +16,7 @@
                 v-bind="{
                     ...elements[index],
                     disabled: !isUserAllowedToUpdate,
-                    languageCode,
+                    languageCode: language.code,
                 }"
                 @input="onValueChange" />
         </div>
@@ -35,8 +35,8 @@ export default {
         TemplateGridDesigner,
     },
     props: {
-        languageCode: {
-            type: String,
+        language: {
+            type: Object,
             required: true,
         },
         elements: {
@@ -63,7 +63,7 @@ export default {
             return 0;
         },
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['PRODUCT_UPDATE']);
+            return this.$hasAccess(['PRODUCT_UPDATE']) && this.language.privileges.edit;
         },
         gridTemplateRows() {
             return {

@@ -13,18 +13,23 @@
             <span v-text="parsedValue" />
         </template>
         <template #option="{ option, isSelected }">
-            <ListElementTree :level="option.level">
+            <ListElementTree
+                :level="option.level"
+                :small="$attrs.small"
+                :multiselect="$attrs.multiselect">
                 <ListElementAction
                     v-if="$attrs.multiselect"
                     :small="$attrs.small">
-                    <CheckBox :value="isSelected" />
-                    <ListElementDescription>
-                        <ListElementTitle
-                            :small="$attrs.small"
-                            :hint="option.hint"
-                            :title="option.value || `#${option.key}`" />
-                    </ListElementDescription>
-                </listelementaction>
+                    <CheckBox
+                        :value="isSelected"
+                        :disabled="option.disabled" />
+                </ListElementAction>
+                <ListElementDescription>
+                    <ListElementTitle
+                        :small="$attrs.small"
+                        :hint="option.hint"
+                        :title="option.value || `#${option.key}`" />
+                </ListElementDescription>
             </ListElementTree>
         </template>
     </Select>

@@ -21,6 +21,7 @@
                             :key="index"
                             :small="small"
                             :regular="regular"
+                            :disabled="option.disabled || false"
                             :selected="isOptionSelected(index)"
                             @click.native.prevent="onSelectValue(option, index)">
                             <template #default="{ isSelected }">
@@ -34,7 +35,9 @@
                                         <ListElementAction
                                             v-if="multiselect"
                                             :small="small">
-                                            <CheckBox :value="isSelected" />
+                                            <CheckBox
+                                                :value="isSelected"
+                                                :disabled="option.disabled || false" />
                                         </ListElementAction>
                                         <ListElementDescription>
                                             <ListElementTitle
@@ -176,6 +179,7 @@ export default {
             this.$emit('searchFocus', isFocused);
         },
         onSelectValue(value, index) {
+            if (value.disabled) return false;
             if (this.multiselect) {
                 const selectedOptions = { ...this.selectedOptions };
 
@@ -189,6 +193,7 @@ export default {
             } else {
                 this.$emit('input', value);
             }
+            return true;
         },
         isOptionSelected(index) {
             return typeof this.selectedOptions[this.stringifiedOptions[index]] !== 'undefined';
