@@ -46,7 +46,7 @@ export default {
             background-color: $GREY;
 
             &--small {
-                margin: 0 4px 0 5px;
+                margin: 0 6px 0 7px;
             }
 
             &--multiselect {

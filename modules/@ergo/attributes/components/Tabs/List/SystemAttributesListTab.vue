@@ -4,7 +4,7 @@
  */
 <template>
     <VerticalTabBarListWrapper>
-        <ListSearchSelectHeader
+        <ListSearchTreeSelectHeader
             v-if="isSelectLanguage"
             header="System attributes"
             :options="languageOptions"
@@ -22,7 +22,7 @@
                     :key="item.id"
                     :item="item"
                     :is-draggable="isUserAllowedToDragAttributes"
-                    :language-code="languageCode" />
+                    :language-code="language.code" />
             </ListScrollableContainer>
         </List>
     </VerticalTabBarListWrapper>
@@ -30,14 +30,13 @@
 
 <script>
 import { mapState } from 'vuex';
-import { getKeyByValue } from '@Core/models/objectWrapper';
 import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
 
 export default {
     name: 'SystemAttributesListTab',
     components: {
         VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
-        ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
+        ListSearchTreeSelectHeader: () => import('@Core/components/List/ListSearchTreeSelectHeader'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
@@ -53,37 +52,45 @@ export default {
     },
     data() {
         return {
-            language: '',
+            language: {},
         };
     },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
+            user: state => state.user,
         }),
         ...mapState('dictionaries', {
-            languages: state => state.languages,
+            languagesTree: state => state.languagesTree,
         }),
-        languageOptions() {
-            return Object.values(this.languages);
-        },
-        languageCode() {
-            return getKeyByValue(this.languages, this.language);
-        },
         isUserAllowedToDragAttributes() {
-            return this.$hasAccess(['ATTRIBUTE_UPDATE']);
+            const { languagePrivileges } = this.user;
+            const { code } = this.language;
+
+            return this.$hasAccess(['ATTRIBUTE_UPDATE']) && languagePrivileges[code].read;
+        },
+        languageOptions() {
+            return Object.values(this.languagesTree).map(language => ({
+                ...language,
+                key: language.code,
+                value: language.name,
+                disabled: !language.privileges.read,
+            }));
         },
     },
     created() {
-        this.language = this.languages[this.userLanguageCode];
+        const { languagePrivilegesDefaultCode } = this.user;
+
+        this.language = this.languageOptions
+            .find(languegeCode => languegeCode.code === languagePrivilegesDefaultCode);
     },
     methods: {
         onSearch(value) {
             this.codeFilter = value;
-            this.getItems(this.languageCode);
+            this.getItems(this.language.code);
         },
         onSelect(value) {
             this.language = value;
-            this.getItems(this.languageCode);
+            this.getItems(value.code);
         },
     },
 };

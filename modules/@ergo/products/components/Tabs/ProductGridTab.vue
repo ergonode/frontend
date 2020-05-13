@@ -37,6 +37,22 @@
                 @clearAllFilters="clearAllFilters"
                 @dropFilter="dropFilterAtIndex"
                 @fetchData="getGridData">
+                <template #actions>
+                    <Button
+                        :theme="secondaryTheme"
+                        :size="smallSize"
+                        title="RESTORE"
+                        :disabled="!isUserAllowedToUpdate"
+                        @click.native="onShowModal">
+                        <template #prepend="{ color }">
+                            <IconRestore :fill-color="color" />
+                        </template>
+                    </Button>
+                    <RestoreParentAttributeValue
+                        v-if="isModalVisible"
+                        @close="onCloseModal"
+                        @create="onCreatedData" />
+                </template>
                 <template #appendFooter>
                     <Button
                         title="SAVE CHANGES"
@@ -51,11 +67,12 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { SIZE } from '@Core/defaults/theme';
+import { SIZE, THEME } from '@Core/defaults/theme';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import Button from '@Core/components/Buttons/Button';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 const updateProductDraft = () => import('@Products/services/updateProductDraft.service');
 
@@ -64,10 +81,12 @@ export default {
     components: {
         GridViewTemplate,
         Button,
+        RestoreParentAttributeValue: () => import('@Products/components/Modals/RestoreParentAttributeValue'),
         VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
         Grid: () => import('@Core/components/Grid/Grid'),
+        IconRestore: () => import('@Core/components/Icons/Actions/IconRestore'),
     },
-    mixins: [fetchGridDataMixin({ path: 'products' })],
+    mixins: [gridModalMixin, fetchGridDataMixin({ path: 'products' })],
     computed: {
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,
@@ -81,6 +100,9 @@ export default {
         }),
         smallSize() {
             return SIZE.SMALL;
+        },
+        secondaryTheme() {
+            return THEME.SECONDARY;
         },
         verticalTabs() {
             const isUserAllowedToReadProduct = this.$hasAccess(['PRODUCT_READ']);

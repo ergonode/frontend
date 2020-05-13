@@ -119,14 +119,14 @@ export default {
             });
         },
         onSearch(value) {
-            this.codeFilter = value.code;
+            this.codeFilter = value;
             this.getAllGroupsItems({ languageCode: this.language.code });
         },
         onSelect(value) {
             this.language = value;
 
             this.getGroupsAndExpandedGroupItems({
-                languageCode: this.language.code,
+                languageCode: value.code,
             });
         },
     },

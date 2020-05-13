@@ -21,7 +21,6 @@
                     </template>
                 </Fab>
             </div>
-            <Divider />
             <div class="modal-form__body">
                 <slot name="body" />
             </div>
@@ -35,7 +34,6 @@
 <script>
 import { THEME } from '@Core/defaults/theme';
 import ModalOverlay from '@Core/components/Modal/ModalOverlay';
-import Divider from '@Core/components/Dividers/Divider';
 import Fab from '@Core/components/Buttons/Fab';
 import IconClose from '@Core/components/Icons/Window/IconClose';
 
@@ -43,7 +41,6 @@ export default {
     name: 'ModalForm',
     components: {
         ModalOverlay,
-        Divider,
         Fab,
         IconClose,
     },
@@ -80,7 +77,7 @@ export default {
             display: flex;
             flex: 0;
             justify-content: space-between;
-            padding: 16px 24px;
+            padding: 24px 12px 0 24px;
 
             .header-title {
                 display: grid;
@@ -88,13 +85,13 @@ export default {
                 grid-column-gap: 4px;
                 align-items: center;
                 color: $GRAPHITE_DARK;
-                font: $FONT_MEDIUM_24_32;
+                font: $FONT_SEMI_BOLD_20_24;
             }
         }
 
         &__body {
             flex: 1;
-            padding: 24px;
+            padding: 24px 24px 32px;
             overflow: auto;
         }
 
