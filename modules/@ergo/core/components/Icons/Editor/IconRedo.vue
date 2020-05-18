@@ -12,14 +12,14 @@
 import Icon from '@Core/components/Icons/Icon';
 
 export default {
-    name: 'IconListBullet',
+    name: 'IconRedo',
     components: {
         Icon,
     },
     inheritAttrs: false,
     computed: {
         drawingCommands() {
-            return 'M4,5 L6,5 L6,7 L4,7 L4,5 Z M4,11 L6,11 L6,13 L4,13 L4,11 Z M4,17 L6,17 L6,19 L4,19 L4,17 Z M8,17 L21,17 L21,19 L8,19 L8,17 Z M8,5 L21,5 L21,7 L8,7 L8,5 Z M8,11 L21,11 L21,13 L8,13 L8,11 Z';
+            return 'M18.4 10.6C16.55 8.99 14.15 8 11.5 8C6.85004 8 2.92004 11.03 1.54004 15.22L3.90004 16C4.95004 12.81 7.95004 10.5 11.5 10.5C13.45 10.5 15.23 11.22 16.62 12.38L13 16H22V7L18.4 10.6Z';
         },
     },
 };

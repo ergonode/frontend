@@ -12,14 +12,14 @@
 import Icon from '@Core/components/Icons/Icon';
 
 export default {
-    name: 'IconQuote',
+    name: 'IconHorizontalRule',
     components: {
         Icon,
     },
     inheritAttrs: false,
     computed: {
         drawingCommands() {
-            return 'M5,13 L5,7 L11,7 L11,13 L9,17 L6,17 L8,13 L5,13 Z M13.0000067,7 L19.0000067,7 L19.0000067,13 L17.0000067,17 L14.0000067,17 L16.0000067,13 L13.0000067,13 L13.0000067,7 Z';
+            return 'M11 6H8L12 2L16 6H13V9H11L11 6ZM4 11V13H20V11H4ZM16 18H13V15H11V18H8L12 22L16 18Z';
         },
     },
 };

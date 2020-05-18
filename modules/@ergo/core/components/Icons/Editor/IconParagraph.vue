@@ -12,14 +12,14 @@
 import Icon from '@Core/components/Icons/Icon';
 
 export default {
-    name: 'IconClearStyle',
+    name: 'IconParagraph',
     components: {
         Icon,
     },
     inheritAttrs: false,
     computed: {
         drawingCommands() {
-            return 'M20 7.99999V4.99999H6.39L9.39 7.99999H11.22L10.67 9.27999L12.76 11.38L14.21 7.99999H20ZM3.41 4.85999L2 6.26999L8.97 13.24L6.5 19H9.5L11.07 15.34L16.73 21L18.14 19.59L3.41 4.85999Z';
+            return 'M9.37184 5V5.00725C7.78917 5.04484 6.97453 5.44291 6.20014 6.13946C5.4472 6.79044 5 7.78754 5 9.00662C5 10.2486 5.36611 11.2243 6.05748 11.9364C7.11818 13.0668 8.5 13.5 11 13V19H13V7H15V19H17V7H19V5H9.37184Z';
         },
     },
 };
