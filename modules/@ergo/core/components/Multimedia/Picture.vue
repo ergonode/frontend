@@ -85,7 +85,6 @@ export default {
 
 <style lang="scss" scoped>
     .image {
-        flex: 1;
         max-height: 100%;
 
         &:not(&--fab) {

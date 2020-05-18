@@ -12,6 +12,7 @@
         @mouseleave="onMouseLeave">
         <Picture
             v-if="image"
+            :style="{ objectFit }"
             :height="157"
             :image-id="image" />
         <img
@@ -55,6 +56,10 @@ export default {
             default: '',
         },
         description: {
+            type: String,
+            default: '',
+        },
+        objectFit: {
             type: String,
             default: '',
         },
@@ -105,6 +110,7 @@ export default {
         cursor: pointer;
 
         &__edit {
+            background-color: $WHITE;
             opacity: 0;
         }
 
