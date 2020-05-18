@@ -15,6 +15,7 @@
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
+                    data-cy="attributeName"
                     :value="code"
                     solid
                     required
@@ -25,6 +26,7 @@
                     hint="Attribute code must be unique"
                     @input="setAttributeCode" />
                 <TranslationSelect
+                    data-cy="attributeGroup"
                     :value="groups"
                     label="Groups"
                     :solid="true"
@@ -36,6 +38,7 @@
                     :error-messages="errorMessages[groupsFieldKey]"
                     @input="setAttributeGroups" />
                 <Select
+                    data-cy="attributeType"
                     :value="type"
                     solid
                     required
@@ -51,6 +54,7 @@
                 <FormSection title="Configuration">
                     <Toggler
                         v-if="isMultilingual"
+                        data-cy="attributeMultilingual"
                         key="attrMultilingual"
                         :value="multilingual"
                         :disabled="isDisabled || isDisabledByPrivileges"
@@ -62,6 +66,7 @@
                     </Toggler>
                     <Select
                         v-if="hasParams"
+                        data-cy="attributeParams"
                         key="attrHasParams"
                         :value="parameter"
                         solid

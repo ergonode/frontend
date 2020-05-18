@@ -74,10 +74,9 @@ export function getSortedColumnsByIDs(columns, columnsID) {
     return [...columns.sort((a, b) => columnsID.indexOf(a.id) - columnsID.indexOf(b.id))];
 }
 
-export function getMappedData(columns, collection) {
-    const hasAnyActionLink = collection.some(element => typeof element._links !== 'undefined');
+export function getMappedData({ columns, rows, hasLinks }) {
     const { length: columnsNumber } = columns;
-    const { length: rowsNumber } = collection;
+    const { length: rowsNumber } = rows;
     const data = {};
 
     for (let j = 0; j < rowsNumber; j += 1) {
@@ -88,11 +87,11 @@ export function getMappedData(columns, collection) {
                 data[id] = [];
             }
 
-            data[id].push(collection[j][id]);
+            data[id].push(rows[j][id]);
         }
 
-        if (hasAnyActionLink && collection[j]._links) {
-            const linkKeys = Object.keys(collection[j]._links.value);
+        if (hasLinks) {
+            const linkKeys = Object.keys(rows[j]._links.value);
 
             if (!data[COLUMN_ACTIONS_ID]) {
                 data[COLUMN_ACTIONS_ID] = {};
@@ -103,7 +102,7 @@ export function getMappedData(columns, collection) {
                     data[COLUMN_ACTIONS_ID][key] = {};
                 }
 
-                data[COLUMN_ACTIONS_ID][key][j] = collection[j]._links.value[key];
+                data[COLUMN_ACTIONS_ID][key][j] = rows[j]._links.value[key];
             });
         }
     }
@@ -111,7 +110,7 @@ export function getMappedData(columns, collection) {
     const idColumn = [];
 
     for (let i = 0; i < rowsNumber; i += 1) {
-        idColumn.push(collection[i].id ? collection[i].id.value : getUUID());
+        idColumn.push(rows[i].id ? rows[i].id.value : getUUID());
     }
 
     data.id = idColumn;

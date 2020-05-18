@@ -4,7 +4,7 @@
  */
 import { mappingTree, hiddenItems } from './__mocks__/categoryTree.mock';
 import {
-    getCoordinatesForHiddenCategories,
+    getCoordinatesForHiddenElements,
     getNearestNeighborRowId,
     getTreeWhenElementRemoved,
     getTreeWhenGhostElementRemoved,
@@ -13,7 +13,7 @@ import {
     getFullTree,
 } from '../TreeCalculations';
 
-describe('TreeCalculations/getCoordinatesForHiddenCategories', () => {
+describe('TreeCalculations/getCoordinatesForHiddenElements', () => {
     it('New positions for hidden elements (col: 2, row: 3)', () => {
         const expectedData = [
             {
@@ -39,7 +39,7 @@ describe('TreeCalculations/getCoordinatesForHiddenCategories', () => {
         ];
         const column = 2;
         const row = 3;
-        const result = getCoordinatesForHiddenCategories(hiddenItems, { column, row });
+        const result = getCoordinatesForHiddenElements(hiddenItems, { column, row });
         expect(result.length).toBe(2);
         expect(result).toStrictEqual(expectedData);
     });
@@ -69,7 +69,7 @@ describe('TreeCalculations/getCoordinatesForHiddenCategories', () => {
         ];
         const column = null;
         const row = null;
-        const result = getCoordinatesForHiddenCategories(hiddenItems, { column, row });
+        const result = getCoordinatesForHiddenElements(hiddenItems, { column, row });
         expect(result.length).toBe(2);
         expect(result).toStrictEqual(expectedData);
     });

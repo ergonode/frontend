@@ -53,7 +53,6 @@ export default {
     .presentation-layer {
         display: grid;
         height: auto;
-        border-left: $BORDER_DASHED_GREY;
         border-right: $BORDER_DASHED_GREY;
 
         &__border-top {

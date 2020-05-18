@@ -8,13 +8,24 @@
         :position="position">
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
-                <RichTextEditor
+                <TextArea
+                    :style="{ height: '100%' }"
                     :value="fieldData.value"
+                    solid
+                    regular
+                    resize="none"
                     :label="label"
-                    :description="properties.hint"
-                    :error-messages="errorMessages"
                     :placeholder="properties.placeholder"
-                    @blur="onBlur" />
+                    :error-messages="errorMessages"
+                    :required="properties.required"
+                    :disabled="disabled"
+                    :description="properties.hint"
+                    @focus="onFocus"
+                    @input="onValueChange">
+                    <template #informationLabel>
+                        <div />
+                    </template>
+                </TextArea>
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
@@ -24,15 +35,15 @@
 import { mapActions, mapState } from 'vuex';
 import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import TextArea from '@Core/components/Inputs/TextArea';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
-import RichTextEditor from '@Core/components/Inputs/RichTextEditor/RichTextEditor';
 
 export default {
     name: 'ProductTemplateFormTextAreaField',
     components: {
         ProductTemplateFormField,
+        TextArea,
         FormValidatorField,
-        RichTextEditor,
     },
     props: {
         size: {
@@ -88,18 +99,21 @@ export default {
         ...mapActions('product', [
             'setDraftValue',
         ]),
-        onBlur(value) {
+        onFocus(isFocused) {
+            if (!isFocused) {
+                this.$emit('input', {
+                    fieldKey: this.fieldKey,
+                    languageCode: this.languageCode,
+                    productId: this.$route.params.id,
+                    elementId: this.properties.attribute_id,
+                    value: this.fieldData.value,
+                });
+            }
+        },
+        onValueChange(value) {
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
-                value,
-            });
-
-            this.$emit('input', {
-                fieldKey: this.fieldKey,
-                languageCode: this.languageCode,
-                productId: this.$route.params.id,
-                elementId: this.properties.attribute_id,
                 value,
             });
         },

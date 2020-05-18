@@ -19,7 +19,7 @@ context('Change User Avatar', () => {
 
         it('Upload file', () => {
             cy.fixture('images/avatar.png', 'base64').as('avatar');
-            cy.get('input[type=file]').then((el) => {
+            cy.get('input[type=file]').then(() => {
                 // FIXME: Cypress does not work - InvalidCharacterError: Failed to execute 'atob' on 'Window': The string to be decoded is not correctly encoded.
                 // return Cypress.Blob.base64StringToBlob('@avatar', 'image/png').then((blob) => {
                 //

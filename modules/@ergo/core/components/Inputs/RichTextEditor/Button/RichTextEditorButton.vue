@@ -6,6 +6,8 @@
     <IconButton
         :size="tinySize"
         :theme="secondaryTheme"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
         @click.native="commandCallback">
         <template #icon>
             <Component
@@ -23,7 +25,7 @@ import { GREEN, GRAPHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import IconButton from '@Core/components/Buttons/IconButton';
 
 export default {
-    name: 'RichTextEditorActionButton',
+    name: 'RichTextEditorButton',
     components: {
         IconButton,
     },
@@ -40,6 +42,11 @@ export default {
             type: Object,
             required: true,
         },
+    },
+    data() {
+        return {
+            isHovered: false,
+        };
     },
     computed: {
         iconComponent() {
@@ -75,6 +82,14 @@ export default {
             }
 
             return false;
+        },
+    },
+    methods: {
+        onMouseEnter() {
+            this.isHovered = true;
+        },
+        onMouseLeave() {
+            this.isHovered = false;
         },
     },
 };

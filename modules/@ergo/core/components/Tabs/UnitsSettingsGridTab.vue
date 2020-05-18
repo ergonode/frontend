@@ -43,7 +43,6 @@ import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 export default {
     name: 'UnitsSettingsGridTab',
     components: {
-        Grid: () => import('@Core/components/Grid/Grid'),
         ResponsiveCenteredViewTemplate,
         Button,
         IconAdd,
@@ -70,7 +69,7 @@ export default {
             this.$router.push({ name: 'unit-id-general', params: { id: args[lastIndex] } });
         },
         onShowModal() {
-            this.$emit('showModal');
+            this.$emit('showModal', 'units');
         },
     },
 };
