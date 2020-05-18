@@ -15,3 +15,8 @@ export const TYPES = {
     DATE: 'DATE',
     LABEL: 'LABEL',
 };
+
+export const SCOPE = {
+    GLOBAL: 'global',
+    LOCAL: 'local',
+};

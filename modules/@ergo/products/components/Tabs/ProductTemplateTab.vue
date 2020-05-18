@@ -26,17 +26,19 @@
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="RESTORE"
-                    :disabled="!isUserAllowedToUpdate"
+                    :disabled="!isUserAllowedToRestore"
                     @click.native="onShowModal">
                     <template #prepend="{ color }">
                         <IconRestore :fill-color="color" />
                     </template>
                 </Button>
             </div>
-            <RestoreParentAttributeValue
+            <RestoreAttributeParentModalForm
                 v-if="isModalVisible"
-                @close="onCloseModal"
-                @create="onCreatedData" />
+                :language="language"
+                :elements="elements"
+                @restore="onRestoreDraftValues"
+                @close="onCloseModal" />
         </template>
         <template #centeredContent>
             <ProductTemplateForm
@@ -61,7 +63,7 @@ export default {
     components: {
         ResponsiveCenteredViewTemplate,
         ProductTemplateForm,
-        RestoreParentAttributeValue: () => import('@Products/components/Modals/RestoreParentAttributeValue'),
+        RestoreAttributeParentModalForm: () => import('@Products/components/Modals/RestoreAttributeParentModalForm'),
         ProductCompleteness: () => import('@Products/components/Progress/ProductCompleteness'),
         TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
         // Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
@@ -101,6 +103,11 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
+        languageRootCode() {
+            return Object
+                .keys(this.languagesTree)
+                .find(language => this.languagesTree[language].level === 0);
+        },
         languageOptions() {
             return Object.values(this.languagesTree).map(language => ({
                 ...language,
@@ -109,8 +116,13 @@ export default {
                 disabled: !language.privileges.read,
             }));
         },
-        isUserAllowedToUpdate() {
-            return this.$hasAccess(['PRODUCT_UPDATE']);
+        isUserAllowedToRestore() {
+            const { languagePrivileges } = this.user;
+            const { code } = this.language;
+
+            return this.$hasAccess(['PRODUCT_UPDATE'])
+                && languagePrivileges[code].edit
+                && this.languageRootCode !== code;
         },
     },
     created() {
@@ -145,6 +157,23 @@ export default {
                 this.elements = templateResponse.elements;
                 this.completeness = completenessResponse;
                 this.language = value;
+            });
+        },
+        onRestoreDraftValues() {
+            const { code: languageCode } = this.language;
+
+            Promise.all([
+                getProductCompleteness({
+                    $axios: this.$axios,
+                    languageCode,
+                    id: this.id,
+                }),
+                this.getProductDraft({
+                    languageCode,
+                    id: this.id,
+                }),
+            ]).then(([completenessResponse]) => {
+                this.completeness = completenessResponse;
             });
         },
         onValueUpdated() {

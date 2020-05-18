@@ -3,7 +3,6 @@
  * See LICENSE for license details.
  */
 import { getMappedParameterValues, getMappedArrayOptions } from '@Attributes/models/attributeMapper';
-import { isObject } from '@Core/models/objectWrapper';
 import { types } from './mutations';
 
 export default {
@@ -19,8 +18,8 @@ export default {
     setAttributeType({ commit }, type) {
         commit(types.SET_ATTRIBUTE_TYPE, type);
     },
-    setMultilingualAttribute({ commit }, isMultilingual) {
-        commit(types.SET_MULTILINGUAL_ATTRIBUTE, isMultilingual);
+    setAttributeScope({ commit }, scope) {
+        commit(types.SET_ATTRIBUTE_SCOPE, scope);
     },
     addAttributeOptionKey({ commit }, index) {
         commit(types.ADD_ATTRIBUTE_OPTION_KEY, index);
@@ -48,19 +47,13 @@ export default {
     setOptionValueForLanguageCode({ commit, state }, {
         index, languageCode, value, id,
     }) {
-        const { isMultilingual } = state;
-
-        if (isMultilingual) {
-            if (!state.options[index].value || !state.options[index].value[languageCode]) {
-                commit(types.SET_OPTION_LANGUAGE_CODE_FOR_VALUE, { index, languageCode });
-            }
-
-            commit(types.SET_OPTION_VALUE_FOR_LANGUAGE_CODE, {
-                index, languageCode, value,
-            });
-        } else {
-            commit(types.SET_OPTION_VALUE, { index, value });
+        if (!state.options[index].value || !state.options[index].value[languageCode]) {
+            commit(types.SET_OPTION_LANGUAGE_CODE_FOR_VALUE, { index, languageCode });
         }
+
+        commit(types.SET_OPTION_VALUE_FOR_LANGUAGE_CODE, {
+            index, languageCode, value,
+        });
 
         if (id) {
             commit(types.SET_UPDATED_OPTION, id);
@@ -98,12 +91,12 @@ export default {
             groups: groupIds,
             parameters,
             placeholder = '',
-            multilingual,
+            scope,
         }) => {
             commit(types.SET_ATTRIBUTE_ID, id);
             commit(types.SET_ATTRIBUTE_CODE, code);
             commit(types.SET_ATTRIBUTE_TYPE, attrTypes[type]);
-            commit(types.SET_MULTILINGUAL_ATTRIBUTE, multilingual);
+            commit(types.SET_ATTRIBUTE_SCOPE, scope);
             commit(types.SET_ATTRIBUTE_GROUPS, groupOptions.filter(
                 group => groupIds.some(groupId => group.id === groupId),
             ));
@@ -134,27 +127,13 @@ export default {
         },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        const { allLanguages } = rootState.dictionaries;
         const optionsToAddRequests = [];
         const optionsToUpdateRequests = [];
 
         Object.keys(state.options).forEach((key) => {
             const option = state.options[key];
-            let optionValue = option.value || null;
+            const optionValue = option.value || null;
 
-            if (!state.isMultilingual) {
-                optionValue = allLanguages.reduce((acc, e) => {
-                    const opt = acc;
-
-                    if (option.value) {
-                        opt[e.code] = isObject(option.value)
-                            ? option.value[userLanguageCode]
-                            : option.value;
-                    }
-                    return opt;
-                }, {});
-            }
-            // TODO: add option validation when new languages are implemented
             if (!option.id) {
                 optionsToAddRequests.push(
                     this.app.$axios.$post(`${userLanguageCode}/attributes/${id}/options`, {

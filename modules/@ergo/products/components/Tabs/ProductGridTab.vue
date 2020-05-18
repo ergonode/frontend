@@ -25,6 +25,7 @@
                 @editRow="onEditRow"
                 @editCell="onEditCell"
                 @editCells="onEditCells"
+                @focusCell="onFocusCell"
                 @removeRow="onRemoveRow"
                 @dropColumn="onDropColumn"
                 @insertFilter="insertFilterAtIndex"
@@ -38,20 +39,23 @@
                 @dropFilter="dropFilterAtIndex"
                 @fetchData="getGridData">
                 <template #actions>
-                    <Button
+                    <!--
+                      Uncomment when product draft will be change on grid
+                      <Button
                         :theme="secondaryTheme"
                         :size="smallSize"
                         title="RESTORE"
-                        :disabled="!isUserAllowedToUpdate"
+                        :disabled="!isUserAllowedToRestore"
                         @click.native="onShowModal">
                         <template #prepend="{ color }">
                             <IconRestore :fill-color="color" />
                         </template>
-                    </Button>
-                    <RestoreParentAttributeValue
+                    </Button> -->
+                    <!-- <RestoreAttributeParentModalConfirm
                         v-if="isModalVisible"
-                        @close="onCloseModal"
-                        @create="onCreatedData" />
+                        :element="focusedCellToRestore"
+                        @close="onCloseConfirmModal"
+                        @restore="onRestoreDraftSuccess" /> -->
                 </template>
                 <template #appendFooter>
                     <Button
@@ -69,6 +73,7 @@
 import { mapState, mapActions } from 'vuex';
 import { SIZE, THEME } from '@Core/defaults/theme';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+// import getProductDraft from '@Products/services/getProductDraft.service';
 import Button from '@Core/components/Buttons/Button';
 import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
@@ -81,12 +86,17 @@ export default {
     components: {
         GridViewTemplate,
         Button,
-        RestoreParentAttributeValue: () => import('@Products/components/Modals/RestoreParentAttributeValue'),
         VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
         Grid: () => import('@Core/components/Grid/Grid'),
-        IconRestore: () => import('@Core/components/Icons/Actions/IconRestore'),
+        // RestoreAttributeParentModalConfirm: () => import('@Products/components/Modals/RestoreAttributeParentModalConfirm'),
+        // IconRestore: () => import('@Core/components/Icons/Actions/IconRestore'),
     },
     mixins: [gridModalMixin, fetchGridDataMixin({ path: 'products' })],
+    data() {
+        return {
+            focusedCellToRestore: null,
+        };
+    },
     computed: {
         ...mapState('draggable', {
             isListElementDragging: state => state.isListElementDragging,
@@ -128,10 +138,14 @@ export default {
         isUserAllowedToUpdate() {
             return this.$hasAccess(['PRODUCT_UPDATE']);
         },
+        isUserAllowedToRestore() {
+            return this.$hasAccess(['PRODUCT_UPDATE']) && this.focusedCellToRestore;
+        },
     },
     methods: {
         ...mapActions('product', [
             'applyDraft',
+            'getProductDraft',
         ]),
         ...mapActions('grid', [
             'removeDraftRow',
@@ -168,6 +182,34 @@ export default {
 
             Promise.all(requests);
         },
+        onFocusCell({ column, rowId }) {
+            if (column) {
+                if (rowId && column.element_id) {
+                    this.focusedCellToRestore = {
+                        languageCode: column.language,
+                        attribute: column,
+                        productId: rowId,
+                    };
+                } else {
+                    this.focusedCellToRestore = null;
+                }
+            } else {
+                this.focusedCellToRestore = null;
+            }
+        },
+        onCloseConfirmModal() {
+            this.focusedCellToRestore = null;
+            this.onCloseModal();
+        },
+        // async onRestoreDraftSuccess({ languageCode, productId, attribute }) {
+        //     const { attributes } = await getProductDraft({
+        //         $axios: this.$axios,
+        //         languageCode,
+        //         id: productId,
+        //     });
+        //     const [attributeKey] = attribute.id.split(':');
+        //     const restoredValue = attributes[attributeKey] || null;
+        // },
         onEditRow(args) {
             const lastIndex = args.length - 1;
 

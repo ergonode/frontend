@@ -15,7 +15,7 @@
                 :key="index"
                 v-bind="{
                     ...elements[index],
-                    disabled: !isUserAllowedToUpdate,
+                    disabled: isUserDisallowedToUpdate(elements[index].properties.scope),
                     languageCode: language.code,
                 }"
                 @input="onValueChange" />
@@ -54,8 +54,16 @@ export default {
         ...mapState('authentication', {
             user: state => state.user,
         }),
+        ...mapState('dictionaries', {
+            languagesTree: state => state.languagesTree,
+        }),
         templateRowHeight() {
             return 48;
+        },
+        languageRootCode() {
+            return Object
+                .keys(this.languagesTree)
+                .find(language => this.languagesTree[language].level === 0);
         },
         maxRows() {
             const heights = this.elements.map(({ position, size }) => position.y + size.height);
@@ -65,12 +73,6 @@ export default {
             }
 
             return 0;
-        },
-        isUserAllowedToUpdate() {
-            const { languagePrivileges } = this.user;
-            const { code } = this.language;
-
-            return this.$hasAccess(['PRODUCT_UPDATE']) && languagePrivileges[code].edit;
         },
         gridTemplateRows() {
             return {
@@ -82,6 +84,14 @@ export default {
         this.formFieldComponents = this.elements.map(({ type }) => () => import(`@Products/components/Forms/Fields/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
     },
     methods: {
+        isUserDisallowedToUpdate(scope) {
+            const { languagePrivileges } = this.user;
+            const { code } = this.language;
+
+            return !this.$hasAccess(['PRODUCT_UPDATE'])
+                || !languagePrivileges[code].edit
+                || (this.languageRootCode !== code && scope === 'global');
+        },
         onValueChange(payload) {
             updateProductDraft().then(async (response) => {
                 await response.default({

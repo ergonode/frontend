@@ -6,11 +6,11 @@
     <ModalOverlay @close="onClose">
         <div
             data-cy="modal"
-            class="modal-form">
-            <div class="modal-form__header">
+            class="modal-confirm">
+            <div class="modal-confirm__header">
                 <div class="header-title">
                     <slot name="headerPrepend" />
-                    <h2 v-text="title" />
+                    <h3 v-text="title" />
                 </div>
                 <Fab
                     data-cy="modalClose"
@@ -21,10 +21,7 @@
                     </template>
                 </Fab>
             </div>
-            <div class="modal-form__body">
-                <slot name="body" />
-            </div>
-            <div class="modal-form__footer">
+            <div class="modal-confirm__footer">
                 <slot name="footer" />
             </div>
         </div>
@@ -38,7 +35,7 @@ import Fab from '@Core/components/Buttons/Fab';
 import IconClose from '@Core/components/Icons/Window/IconClose';
 
 export default {
-    name: 'ModalForm',
+    name: 'ModalConfirm',
     components: {
         ModalOverlay,
         Fab,
@@ -64,7 +61,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .modal-form {
+    .modal-confirm {
         display: flex;
         flex-direction: column;
         width: 400px;
@@ -80,13 +77,9 @@ export default {
             padding: 24px 16px 0 24px;
 
             .header-title {
-                display: grid;
-                grid-auto-flow: column;
-                grid-column-gap: 4px;
-                align-items: center;
                 padding-right: 16px;
                 color: $GRAPHITE_DARK;
-                font: $FONT_SEMI_BOLD_20_24;
+                font: $FONT_SEMI_BOLD_16_24;
             }
         }
 
@@ -102,7 +95,6 @@ export default {
             flex: 0;
             justify-content: space-between;
             padding: 16px 24px;
-            box-shadow: $ELEVATOR_6_DP;
         }
     }
 </style>

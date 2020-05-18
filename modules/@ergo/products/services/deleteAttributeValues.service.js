@@ -2,8 +2,16 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export default function ({ $axios, $store }) {
-    const { language } = $store.state.authentication.user;
+export default async function ({
+    $axios, $store, languageCode, elements, productId = null,
+}) {
+    const id = productId || $store.state.product.id;
+    const elementsRequests = [];
 
-    return $axios.$get(`${language}/products`);
+    elements.forEach((attributeId) => {
+        elementsRequests.push($axios.$delete(`${languageCode}/products/${id}/draft/${attributeId}/value`));
+    });
+    await Promise.all([
+        ...elementsRequests,
+    ]);
 }

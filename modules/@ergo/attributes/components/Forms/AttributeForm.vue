@@ -9,6 +9,7 @@
             codeFieldKey,
             typeFieldKey,
             groupsFieldKey,
+            scopeFieldKey,
             paramsFieldKey,
             ...optionsFieldKeys,
         ]">
@@ -49,50 +50,52 @@
                     :error-messages="errorMessages[typeFieldKey]"
                     @input="onTypeChange" />
             </FormSection>
-            <template v-if="isMultilingual || hasParams">
-                <Divider />
-                <FormSection title="Configuration">
-                    <Toggler
-                        v-if="isMultilingual"
-                        data-cy="attributeMultilingual"
-                        key="attrMultilingual"
-                        :value="multilingual"
-                        :disabled="isDisabled || isDisabledByPrivileges"
-                        label="Multilingual attribute"
-                        @input="setMultilingualAttribute">
-                        <template #append>
-                            <InfoHint :hint="multilingualHint" />
-                        </template>
-                    </Toggler>
-                    <Select
-                        v-if="hasParams"
-                        data-cy="attributeParams"
-                        key="attrHasParams"
-                        :value="parameter"
-                        solid
-                        required
-                        regular
-                        :label="paramsLabel"
-                        :options="attributeParametersOptions"
-                        :error-messages="errorMessages[paramsFieldKey]"
-                        :disabled="isDisabledByPrivileges"
-                        @input="setAttributeParameter" />
-                    <AttributeOptionKeyValues
-                        v-show="hasOptions"
-                        key="attrHasOptions"
-                        :disabled="isDisabledByPrivileges" />
-                </FormSection>
-            </template>
+            <Divider />
+            <FormSection title="Configuration">
+                <Select
+                    data-cy="attributeScope"
+                    :value="scope"
+                    solid
+                    required
+                    label="Scope"
+                    regular
+                    :disabled="isDisabledByPrivileges"
+                    :options="attributeScopeOptions"
+                    :error-messages="errorMessages[scopeFieldKey]"
+                    @input="setAttributeScope">
+                    <template #append>
+                        <InfoHint :hint="scopeHint" />
+                    </template>
+                </Select>
+                <Select
+                    v-if="hasParams"
+                    data-cy="attributeParams"
+                    key="attrHasParams"
+                    :value="parameter"
+                    solid
+                    required
+                    regular
+                    :label="paramsLabel"
+                    :options="attributeParametersOptions"
+                    :error-messages="errorMessages[paramsFieldKey]"
+                    :disabled="isDisabledByPrivileges"
+                    @input="setAttributeParameter" />
+                <AttributeOptionKeyValues
+                    v-show="hasOptions"
+                    key="attrHasOptions"
+                    :disabled="isDisabledByPrivileges" />
+            </FormSection>
         </template>
     </Form>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { SCOPE } from '@Attributes/defaults/attributes';
 import { toCapitalize } from '@Core/models/stringWrapper';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 import {
-    hasParams, hasOptions, isMultilingual, getParamsKeyForType, getParamsOptionsForType,
+    hasParams, hasOptions, getParamsKeyForType, getParamsOptionsForType,
 } from '@Attributes/models/attributeTypes';
 
 export default {
@@ -101,7 +104,6 @@ export default {
         AttributeOptionKeyValues: () => import('@Attributes/components/Forms/Sections/AttributeOptionKeyValues'),
         Form: () => import('@Core/components/Form/Form'),
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         Select: () => import('@Core/components/Inputs/Select/Select'),
@@ -120,13 +122,13 @@ export default {
             groupOptions: state => state.groupOptions,
             type: state => state.type,
             parameter: state => state.parameter,
-            multilingual: state => state.isMultilingual,
+            scope: state => state.scope,
         }),
         ...mapState('dictionaries', {
             attrTypes: state => state.attrTypes,
         }),
-        multilingualHint() {
-            return 'Multilingual attribute is an attribute which has translations, by deselecting it attribute is going to display same values for each language.';
+        scopeHint() {
+            return 'Scope';
         },
         paramsLabel() {
             const paramsKey = getParamsKeyForType(this.typeKey);
@@ -135,9 +137,6 @@ export default {
         },
         isDisabled() {
             return Boolean(this.attrID);
-        },
-        isMultilingual() {
-            return isMultilingual(this.typeKey);
         },
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['ATTRIBUTE_UPDATE']))
@@ -161,6 +160,9 @@ export default {
         attributeTypeOptions() {
             return Object.values(this.attrTypes);
         },
+        attributeScopeOptions() {
+            return Object.values(SCOPE);
+        },
         attributeParametersOptions() {
             // TODO:(DICTIONARY_TYPE) remove condition when dictionary data consistency
             if (Array.isArray(this.params)) {
@@ -180,6 +182,9 @@ export default {
         groupsFieldKey() {
             return 'groups';
         },
+        scopeFieldKey() {
+            return 'scope';
+        },
         paramsFieldKey() {
             return `parameters_${this.paramsLabel.toLowerCase()}`;
         },
@@ -190,7 +195,7 @@ export default {
             'setAttributeGroups',
             'setAttributeType',
             'setAttributeParameter',
-            'setMultilingualAttribute',
+            'setAttributeScope',
             'removeAttributeOptions',
             'clearStorage',
         ]),

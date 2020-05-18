@@ -11,6 +11,10 @@
                 v-if="title"
                 class="form__title"
                 v-text="title" />
+            <h3
+                v-if="subtitle"
+                class="form__subtitle"
+                v-text="subtitle" />
         </slot>
         <template v-if="hasAnyError">
             <section class="form__errors">
@@ -51,6 +55,10 @@ export default {
     },
     props: {
         title: {
+            type: String,
+            default: '',
+        },
+        subtitle: {
             type: String,
             default: '',
         },
@@ -109,6 +117,11 @@ export default {
         &__title {
             color: $GRAPHITE_DARK;
             font: $FONT_SEMI_BOLD_16_24;
+        }
+
+        &__subtitle {
+            color: $GRAPHITE_DARK;
+            font: $FONT_SEMI_BOLD_14_20;
         }
 
         &__errors {
