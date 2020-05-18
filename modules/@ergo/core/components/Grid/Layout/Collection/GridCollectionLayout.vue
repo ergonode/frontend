@@ -59,7 +59,6 @@ export default {
         display: grid;
         grid-template-rows: 190px;
         grid-gap: 24px;
-        height: 100%;
         padding: 24px;
         box-sizing: border-box;
         background-color: $WHITE;
