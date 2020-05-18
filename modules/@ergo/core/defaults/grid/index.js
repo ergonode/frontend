@@ -44,8 +44,6 @@ export const COLUMNS_NUMBER = {
     FOURTH_COLUMNS: { value: 4, description: '4 columns' },
     FIVE_COLUMNS: { value: 5, description: '5 columns' },
     SIX_COLUMNS: { value: 6, description: '6 columns' },
-    SEVENTH_COLUMNS: { value: 7, description: '7 columns' },
-    EIGHT_COLUMNS: { value: 8, description: '8 columns' },
 };
 
 export const GRID_LAYOUT = {
