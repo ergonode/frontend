@@ -4,7 +4,7 @@
  */
 <template>
     <NavigationBarSelectButton
-        data-cy="navBarDropDown"
+        data-cy="nav-bar-dropdown"
         @focus="onFocus">
         <template #input>
             <UserAvatar

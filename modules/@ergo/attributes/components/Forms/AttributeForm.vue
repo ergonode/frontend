@@ -16,7 +16,7 @@
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
-                    data-cy="attributeName"
+                    :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     solid
                     required
@@ -27,7 +27,7 @@
                     hint="Attribute code must be unique"
                     @input="setAttributeCode" />
                 <TranslationSelect
-                    data-cy="attributeGroup"
+                    :data-cy="dataCyGenerator(groupsFieldKey)"
                     :value="groups"
                     label="Groups"
                     :solid="true"
@@ -39,7 +39,8 @@
                     :error-messages="errorMessages[groupsFieldKey]"
                     @input="setAttributeGroups" />
                 <Select
-                    data-cy="attributeType"
+                    :data-cy="dataCyGenerator(typeFieldKey)"
+                    :cy-id="cyID"
                     :value="type"
                     solid
                     required
@@ -53,7 +54,7 @@
             <Divider />
             <FormSection title="Configuration">
                 <Select
-                    data-cy="attributeScope"
+                    :data-cy="dataCyGenerator(scopeFieldKey)"
                     :value="scope"
                     solid
                     required
@@ -69,7 +70,7 @@
                 </Select>
                 <Select
                     v-if="hasParams"
-                    data-cy="attributeParams"
+                    :data-cy="dataCyGenerator('params')"
                     key="attrHasParams"
                     :value="parameter"
                     solid
@@ -180,7 +181,7 @@ export default {
             return 'type';
         },
         groupsFieldKey() {
-            return 'groups';
+            return 'group';
         },
         scopeFieldKey() {
             return 'scope';
@@ -199,6 +200,9 @@ export default {
             'removeAttributeOptions',
             'clearStorage',
         ]),
+        dataCyGenerator(key) {
+            return `attribute-${key}`;
+        },
         onTypeChange(type) {
             this.setAttributeType(type);
             this.setAttributeParameter();
