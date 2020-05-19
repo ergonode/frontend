@@ -72,7 +72,7 @@ export default {
     },
     mixins: [gridModalMixin],
     asyncData({ app: { $axios }, store, params: { id } }) {
-        const { languagePrivilegesDefaultCode } = store.state.authentication.user;
+        const { languagePrivilegesDefaultCode } = store.state.core;
 
         return Promise.all([
             getProductTemplate({ $axios, languageCode: languagePrivilegesDefaultCode, id }),
@@ -90,6 +90,9 @@ export default {
     computed: {
         ...mapState('authentication', {
             user: state => state.user,
+        }),
+        ...mapState('core', {
+            languagePrivilegesDefaultCode: state => state.languagePrivilegesDefaultCode,
         }),
         ...mapState('dictionaries', {
             languagesTree: state => state.languagesTree,
@@ -126,10 +129,8 @@ export default {
         },
     },
     created() {
-        const { languagePrivilegesDefaultCode } = this.user;
-
         this.language = this.languageOptions
-            .find(languegeCode => languegeCode.code === languagePrivilegesDefaultCode);
+            .find(languegeCode => languegeCode.code === this.languagePrivilegesDefaultCode);
     },
     methods: {
         ...mapActions('product', [

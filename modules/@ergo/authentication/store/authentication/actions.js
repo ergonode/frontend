@@ -23,16 +23,7 @@ export default {
         return this.app.$axios.$get('profile').then((user) => {
             const transformedUserData = camelcaseKeys(user);
 
-            // Variable with processed privileges
             transformedUserData.privileges = getMappedPrivileges(transformedUserData.privileges);
-            /**
-             * The variable is set from the first active language.
-             * The variable is used to specify the default language for the user according to his permissions.
-            */
-            transformedUserData.languagePrivilegesDefaultCode = Object
-                .keys(transformedUserData.languagePrivileges)
-                .find(language => transformedUserData.languagePrivileges[language].read === true);
-
             commit(types.SET_USER, transformedUserData);
             commit(types.SET_LOGGED_STATE, true);
         }).catch((e) => {

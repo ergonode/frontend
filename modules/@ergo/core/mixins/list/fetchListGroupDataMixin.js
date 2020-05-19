@@ -19,7 +19,7 @@ export default function ({ namespace }) {
             };
         },
         async created() {
-            const { languagePrivilegesDefaultCode } = this.$store.state.authentication.user;
+            const { languagePrivilegesDefaultCode } = this.$store.state.core;
 
             await this.getGroups(languagePrivilegesDefaultCode);
             await this.getUnassignedGroupItems(languagePrivilegesDefaultCode);

@@ -40,7 +40,6 @@
                     @input="setAttributeGroups" />
                 <Select
                     :data-cy="dataCyGenerator(typeFieldKey)"
-                    :cy-id="cyID"
                     :value="type"
                     solid
                     required
@@ -127,9 +126,14 @@ export default {
         }),
         ...mapState('dictionaries', {
             attrTypes: state => state.attrTypes,
+            languagesTree: state => state.languagesTree,
         }),
+        languageRootCode() {
+            return Object.values(this.languagesTree)
+                .find(({ level }) => level === 0);
+        },
         scopeHint() {
-            return 'Scope';
+            return `Global means the same attribute values for each language, inherited from the root language (${this.languageRootCode.name}). Option values can be translated, but cannot be changed in the product template.`;
         },
         paramsLabel() {
             const paramsKey = getParamsKeyForType(this.typeKey);

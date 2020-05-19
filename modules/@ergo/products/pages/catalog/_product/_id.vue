@@ -25,7 +25,7 @@ export default {
         store,
         params,
     }) {
-        const { languagePrivilegesDefaultCode } = store.state.authentication.user;
+        const { languagePrivilegesDefaultCode } = store.state.core;
         const { id } = params;
 
         await Promise.all([

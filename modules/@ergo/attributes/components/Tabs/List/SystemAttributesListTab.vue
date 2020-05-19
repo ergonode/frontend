@@ -59,6 +59,9 @@ export default {
         ...mapState('authentication', {
             user: state => state.user,
         }),
+        ...mapState('core', {
+            languagePrivilegesDefaultCode: state => state.languagePrivilegesDefaultCode,
+        }),
         ...mapState('dictionaries', {
             languagesTree: state => state.languagesTree,
         }),
@@ -78,10 +81,8 @@ export default {
         },
     },
     created() {
-        const { languagePrivilegesDefaultCode } = this.user;
-
         this.language = this.languageOptions
-            .find(languegeCode => languegeCode.code === languagePrivilegesDefaultCode);
+            .find(languegeCode => languegeCode.code === this.languagePrivilegesDefaultCode);
     },
     methods: {
         onSearch(value) {
