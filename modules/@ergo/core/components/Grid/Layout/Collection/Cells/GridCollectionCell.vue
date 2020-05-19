@@ -20,9 +20,13 @@
             class="collection-cell__placeholder"
             :src="placeholderImage"
             alt="template icon">
-        <span
-            class="collection-cell__title"
-            v-text="description" />
+        <div
+            class="collection-cell__fixed-title-content"
+            :title="description">
+            <span
+                class="collection-cell__title"
+                v-text="description" />
+        </div>
         <Fab
             v-if="isEditCell"
             class="collection-cell__edit"
@@ -117,17 +121,26 @@ export default {
         &__placeholder {
             justify-self: center;
             align-self: center;
+            width: 100%;
             height: 157px;
             object-fit: none;
         }
 
-        &__title {
+        &__fixed-title-content {
+            display: flex;
             height: 32px;
             padding: 8px;
+            border-top: $BORDER_1_GREY;
             box-sizing: border-box;
+        }
+
+        &__title {
+            flex: 1 1 auto;
+            width: 0;
             color: $GRAPHITE_DARK;
             font: $FONT_MEDIUM_12_16;
-            border-top: $BORDER_1_GREY;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
 
         &--hovered {
