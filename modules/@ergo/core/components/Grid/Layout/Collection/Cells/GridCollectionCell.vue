@@ -12,7 +12,7 @@
         @mouseleave="onMouseLeave">
         <Picture
             v-if="image"
-            :style="{ objectFit }"
+            :object-fit="objectFit"
             :height="157"
             :image-id="image" />
         <img
