@@ -65,8 +65,8 @@
             @dismiss="onDismiss"
             @clear="onClear"
             @search="onSearch"
-            @searchFocus="onSearchFocused"
-            @input="onSelectValue">
+            @input="onSelectValue"
+            @clickOutside="onClickOutside">
             <template #dropdown>
                 <slot name="dropdown" />
             </template>
@@ -200,7 +200,6 @@ export default {
             isMenuActive: false,
             isClickedOutside: false,
             associatedLabel: '',
-            isSearchFocused: false,
             hasAnyValueSelected: false,
             needsToRender: false,
             offset: {},
@@ -289,9 +288,6 @@ export default {
         this.hasAnyValueSelected = Object.keys(this.selectedOptions).length > 0;
         this.associatedLabel = `input-${this._uid}`;
     },
-    beforeDestroy() {
-        window.removeEventListener('click', this.onClickOutside);
-    },
     methods: {
         getDropDownOffset() {
             const {
@@ -304,9 +300,6 @@ export default {
         },
         onSearch(value) {
             this.$emit('search', value);
-        },
-        onSearchFocused(isFocused) {
-            this.isSearchFocused = isFocused;
         },
         onClear() {
             this.selectedOptions = {};
@@ -332,19 +325,13 @@ export default {
                 this.needsToRender = true;
             }
 
-            window.addEventListener('click', this.onClickOutside);
+            console.log('focusing');
 
             this.$emit('focus', true);
         },
         onBlur() {
             if (this.isClickedOutside) {
-                this.isMenuActive = false;
-                this.searchResult = '';
-
-                window.removeEventListener('click', this.onClickOutside);
-
-                this.onSearch(this.searchResult);
-                this.$emit('focus', false);
+                this.resetAfterLosingFocus();
             }
         },
         onKeyDown(event) {
@@ -381,30 +368,26 @@ export default {
         onMouseMove() {
             this.isMouseMoving = true;
         },
-        onClickOutside(event) {
-            const footerElement = this.$refs.menu.$el.querySelector('.dropdown-footer');
-            const isClickedInsideMenu = this.$refs.menu.$el.contains(event.target);
-            const isClickedInsideActivator = this.$refs.activator.contains(event.target);
-            const isClickedInsideMenuFooter = footerElement
-                ? footerElement.contains(event.target)
-                : false;
-            this.isClickedOutside = !isClickedInsideMenu
-                && !isClickedInsideActivator;
+        onClickOutside(isClickedOutside) {
+            // const isClickedInsideMenu = this.$refs.menu.$el.contains(event.target);
+            // const isClickedInsideActivator = this.$refs.activator.contains(event.target);
+            // this.isClickedOutside = !isClickedInsideMenu
+            //     && !isClickedInsideActivator;
+            //
+            // if (this.isClickedOutside || (isClickedInsideMenu
+            //     && !this.multiselect
+            //     && this.dismissible)
+            // ) {
+            //     this.resetAfterLosingFocus();
+            // }
+            console.log(isClickedOutside);
+        },
+        resetAfterLosingFocus() {
+            this.isMenuActive = false;
+            this.searchResult = '';
 
-            if (this.isClickedOutside || (isClickedInsideMenu
-                && !isClickedInsideMenuFooter
-                && !this.multiselect
-                && this.dismissible
-                && !this.isSearchFocused)
-            ) {
-                this.isMenuActive = false;
-                this.searchResult = '';
-
-                window.removeEventListener('click', this.onClickOutside);
-
-                this.onSearch(this.searchResult);
-                this.$emit('focus', false);
-            }
+            this.onSearch(this.searchResult);
+            this.$emit('focus', false);
         },
     },
 };

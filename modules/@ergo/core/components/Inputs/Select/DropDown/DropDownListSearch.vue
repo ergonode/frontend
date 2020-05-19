@@ -6,7 +6,8 @@
     <li
         :class="['search-element', {
             'search-element--small': small,
-        }]">
+        }]"
+        @click.stop>
         <input
             class="search-element__input"
             :input="value"
@@ -66,11 +67,9 @@ export default {
         },
         onSearchFocusLost() {
             this.isSearchFocused = false;
-            this.$emit('searchFocused', false);
         },
         onSearchFocus() {
             this.isSearchFocused = true;
-            this.$emit('searchFocused', true);
         },
     },
 };

@@ -5,6 +5,7 @@
 <template>
     <div
         class="dropdown"
+        :style="positionStyle"
         ref="dropdown">
         <slot name="body" />
         <slot name="footer" />
@@ -26,6 +27,11 @@ export default {
                 x: 0, y: 0, width: 0, height: 0,
             }),
         },
+    },
+    data() {
+        return {
+            positionStyle: null,
+        };
     },
     watch: {
         offset: {
@@ -52,24 +58,23 @@ export default {
                             position.top = `${this.offset.y + this.offset.height}px`;
                         }
 
-                        this.$refs.dropdown.style.maxHeight = position.maxHeight;
-                        this.$refs.dropdown.style.width = position.width;
-                        this.$refs.dropdown.style.bottom = position.bottom || null;
-                        this.$refs.dropdown.style.top = position.top;
-                        this.$refs.dropdown.style.left = position.left;
-
-                        const app = document.documentElement.querySelector('.app');
-
-                        app.appendChild(this.$refs.dropdown);
+                        this.positionStyle = position;
                     });
                 });
             },
         },
     },
+    mounted() {
+        const app = document.documentElement.querySelector('.app');
+
+        app.appendChild(this.$refs.dropdown);
+    },
     beforeDestroy() {
         const app = document.documentElement.querySelector('.app');
 
-        app.removeChild(this.$refs.dropdown);
+        if (app.contains(this.$refs.dropdown)) {
+            app.removeChild(this.$refs.dropdown);
+        }
     },
 };
 </script>

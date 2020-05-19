@@ -74,7 +74,7 @@ export default {
                 .findIndex(option => option.key === this.filterValue);
         },
         onSelectValue(value) {
-            this.$emit('input', { value: value.key, operator: FILTER_OPERATOR.EQUAL });
+            this.$emit('input', { value: value.key, key: FILTER_OPERATOR.EQUAL });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

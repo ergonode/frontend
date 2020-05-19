@@ -56,9 +56,9 @@ export default {
             const dateTo = to ? formatDate(to, this.dateFormat) : null;
 
             if (this.filter.value[FILTER_OPERATOR.GREATER_OR_EQUAL] !== dateFrom
-                && dateFrom) this.$emit('input', { value: dateFrom, operator: FILTER_OPERATOR.GREATER_OR_EQUAL });
+                && dateFrom) this.$emit('input', { value: dateFrom, key: FILTER_OPERATOR.GREATER_OR_EQUAL });
             else if (this.filter.value[FILTER_OPERATOR.SMALLER_OR_EQUAL] !== dateTo
-                && dateTo) this.$emit('input', { value: dateTo, operator: FILTER_OPERATOR.SMALLER_OR_EQUAL });
+                && dateTo) this.$emit('input', { value: dateTo, key: FILTER_OPERATOR.SMALLER_OR_EQUAL });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

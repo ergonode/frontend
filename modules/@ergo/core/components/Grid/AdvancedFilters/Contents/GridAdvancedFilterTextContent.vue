@@ -44,7 +44,7 @@ export default {
     methods: {
         onValueChange(value) {
             if (value !== this.filterValue) {
-                this.$emit('input', { value, operator: FILTER_OPERATOR.EQUAL });
+                this.$emit('input', { value, key: FILTER_OPERATOR.EQUAL });
             }
         },
         onEmptyRecordChange(value) {

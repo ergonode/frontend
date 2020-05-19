@@ -58,27 +58,16 @@
                     :fill-color="arrowIconFillColor" />
             </div>
         </div>
-        <DropDown
-            v-if="isMenuActive"
+        <AdvancedFilterDropDown
+            v-if="needsToRender"
             ref="menu"
-            :offset="getDropDownOffset()"
-            :fixed-content="isSelectKind">
-            <template #body>
-                <Component
-                    :is="selectBodyComponent"
-                    :filter="filter"
-                    :value="filter.value"
-                    :language-code="filter.languageCode"
-                    @emptyRecord="onEmptyRecordChange"
-                    @input="onValueChange" />
-            </template>
-            <template #footer>
-                <Component
-                    :is="selectFooterComponent"
-                    @apply="onApply"
-                    @clear="onClear" />
-            </template>
-        </DropDown>
+            :offset="offset"
+            :filter="filter"
+            :is-visible="isMenuActive"
+            @input="onValueChange"
+            @clear="onClear"
+            @apply="onApply"
+        />
     </div>
 </template>
 
@@ -91,20 +80,20 @@ import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
-import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT, COLUMN_FILTER_TYPE } from '@Core/defaults/grid';
+import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT } from '@Core/defaults/grid';
 import {
     getDraggedColumnPositionState,
 } from '@Core/models/drag_and_drop/helpers';
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 import { changeCookiePosition } from '@Core/models/cookies';
-import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
+import AdvancedFilterDropDown from '@Core/components/Grid/AdvancedFilters/DropDown/AdvancedFilterDropDown';
 
 export default {
     name: 'GridAdvancedFilter',
     components: {
+        AdvancedFilterDropDown,
         IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
         GridAdvancedFilterGhost: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFilterGhost'),
-        DropDown,
     },
     props: {
         index: {
@@ -128,6 +117,8 @@ export default {
             isClickedOutside: false,
             hasMouseDown: false,
             associatedLabel: '',
+            needsToRender: false,
+            offset: {},
         };
     },
     computed: {
@@ -189,36 +180,6 @@ export default {
         },
         arrowIconState() {
             return this.isFocused ? ARROW.UP : ARROW.DOWN;
-        },
-        isSelectKind() {
-            return this.filter.type === COLUMN_FILTER_TYPE.SELECT
-                || this.filter.type === COLUMN_FILTER_TYPE.MULTI_SELECT;
-        },
-        selectFooterComponent() {
-            switch (this.filter.type) {
-            case COLUMN_FILTER_TYPE.SELECT:
-                return () => import('@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownFooter');
-            case COLUMN_FILTER_TYPE.MULTI_SELECT:
-            case COLUMN_FILTER_TYPE.DATE:
-            case COLUMN_FILTER_TYPE.NUMERIC:
-                return () => import('@Core/components/Inputs/Select/DropDown/Footers/MultiselectDropdownFooter');
-            default: return () => import('@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownApplyFooter');
-            }
-        },
-        selectBodyComponent() {
-            switch (this.filter.type) {
-            case COLUMN_FILTER_TYPE.SELECT:
-                return () => import('@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterSelectContent');
-            case COLUMN_FILTER_TYPE.MULTI_SELECT:
-                return () => import('@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterMultiselectContent');
-            case COLUMN_FILTER_TYPE.TEXT:
-                return () => import('@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
-            case COLUMN_FILTER_TYPE.DATE:
-                return () => import('@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterDateContent');
-            case COLUMN_FILTER_TYPE.NUMERIC:
-                return () => import('@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterRangeContent');
-            default: return () => import('@Core/components/Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent');
-            }
         },
     },
     mounted() {
@@ -319,18 +280,11 @@ export default {
 
             return true;
         },
-        onEmptyRecordChange(isEmptyRecord) {
-            this.$emit('update', {
-                index: this.index,
-                key: 'isEmptyRecord',
-                value: isEmptyRecord,
-            });
-        },
-        onValueChange({ value, operator }) {
-            if (value.length) {
+        onValueChange({ key, value }) {
+            if (value) {
                 this.$emit('update', {
                     index: this.index,
-                    key: operator,
+                    key,
                     value,
                 });
             } else {
@@ -355,6 +309,11 @@ export default {
                 this.isFocused = true;
                 this.isMenuActive = true;
                 this.hasMouseDown = false;
+                this.offset = this.getDropDownOffset();
+
+                if (!this.needsToRender) {
+                    this.needsToRender = true;
+                }
 
                 window.addEventListener('click', this.onClickOutside);
                 this.$emit('focus', true);

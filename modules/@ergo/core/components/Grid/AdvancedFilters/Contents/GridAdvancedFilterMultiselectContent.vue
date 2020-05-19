@@ -102,7 +102,7 @@ export default {
                 this.selectedOptions[index] = value.id;
             }
 
-            this.$emit('input', { value: Object.values(this.selectedOptions).join(', '), operator: FILTER_OPERATOR.EQUAL });
+            this.$emit('input', { value: Object.values(this.selectedOptions).join(', '), key: FILTER_OPERATOR.EQUAL });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);
