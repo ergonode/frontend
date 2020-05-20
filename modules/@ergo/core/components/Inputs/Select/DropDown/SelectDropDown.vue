@@ -36,8 +36,7 @@
                                             v-if="multiselect"
                                             :small="small">
                                             <CheckBox
-                                                :value="isSelected"
-                                                :disabled="option.disabled || false" />
+                                                :value="isSelected" />
                                         </ListElementAction>
                                         <ListElementDescription>
                                             <ListElementTitle
@@ -179,7 +178,6 @@ export default {
             this.$emit('searchFocus', isFocused);
         },
         onSelectValue(value, index) {
-            if (value.disabled) return false;
             if (this.multiselect) {
                 const selectedOptions = { ...this.selectedOptions };
 

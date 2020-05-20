@@ -25,6 +25,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { SCOPE } from '@Attributes/defaults/attributes';
 import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 
@@ -90,7 +91,7 @@ export default {
 
             return !this.$hasAccess(['PRODUCT_UPDATE'])
                 || !languagePrivileges[code].edit
-                || (this.languageRootCode !== code && scope === 'global');
+                || (this.languageRootCode !== code && scope === SCOPE.GLOBAL);
         },
         onValueChange(payload) {
             updateProductDraft().then(async (response) => {

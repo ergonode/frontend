@@ -3,12 +3,11 @@
  * See LICENSE for license details.
  */
 <template>
-    <Form
-        :fields-keys="[restoreFieldKey]"
-        subtitle="Select attributes which values you want to restore to parent translation:">
+    <Form :fields-keys="[restoreFieldKey]">
         <template
             #body>
-            <FormSection>
+            <FormSection
+                title="Select attributes which values you want to restore to parent translation:">
                 <CheckBox
                     v-for="(element, index) in elements"
                     :key="index"
@@ -23,6 +22,8 @@
 </template>
 
 <script>
+import { SCOPE } from '@Attributes/defaults/attributes';
+
 export default {
     name: 'RestoreForm',
     components: {
@@ -56,13 +57,8 @@ export default {
             this.$emit('update', this.attributesToRestore);
         },
         isUserAllowedToRestore(scope) {
-            return scope !== 'global';
+            return scope !== SCOPE.GLOBAL;
         },
     },
 };
 </script>
-<style lang="scss" scoped>
-    .check-restore-element {
-        margin: 0;
-    }
-</style>

@@ -5,7 +5,6 @@
 <template>
     <ModalForm
         title="Restore parent value"
-        subtitle="Restore parent value"
         @close="onClose">
         <template #body>
             <RestoreForm
