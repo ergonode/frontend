@@ -68,7 +68,9 @@
             @input="onSelectValue"
             @clickOutside="onClickOutside">
             <template #dropdown>
-                <slot name="dropdown" />
+                <slot
+                    name="dropdown"
+                    :on-select-value-callback="onSelectValue" />
             </template>
             <template #option="{ option, isSelected, index }">
                 <slot
@@ -321,7 +323,11 @@ export default {
         },
         onDismiss() {
             this.isBlurringNeeded = true;
-            this.blur();
+            if (document.activeElement === this.$refs.input) {
+                this.$refs.input.blur();
+            } else {
+                this.blur();
+            }
         },
         onFocus() {
             this.isBlurringNeeded = false;
@@ -380,7 +386,12 @@ export default {
                 || (isClickedInsideActivator && !this.dismissible)
                 || (!isClickedOutside && !this.multiselect && this.dismissible)) {
                 this.isBlurringNeeded = true;
-                this.blur();
+
+                if (document.activeElement === this.$refs.input) {
+                    this.$refs.input.blur();
+                } else {
+                    this.blur();
+                }
             }
         },
     },
