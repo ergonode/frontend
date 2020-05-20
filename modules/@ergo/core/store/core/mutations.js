@@ -6,12 +6,16 @@ import { removeFromObjectByKey } from '@Core/models/objectWrapper';
 import defaultState from './state';
 
 export const types = {
+    SET_DEFAULT_LANGUAGE: 'SET_DEFAULT_LANGUAGE',
     SET_LOADER: 'SET_LOADER',
     REMOVE_LOADER: 'REMOVE_LOADER',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 
 export default {
+    [types.SET_DEFAULT_LANGUAGE](state, code) {
+        state.languagePrivilegesDefaultCode = code;
+    },
     [types.SET_LOADER](state, key) {
         state.loaders = { [key]: true };
     },

@@ -21,6 +21,7 @@
                             :key="index"
                             :small="small"
                             :regular="regular"
+                            :disabled="option.disabled || false"
                             :selected="isOptionSelected(index)"
                             @click.native.prevent="onSelectValue(option, index)">
                             <template #default="{ isSelected }">
@@ -34,7 +35,8 @@
                                         <ListElementAction
                                             v-if="multiselect"
                                             :small="small">
-                                            <CheckBox :value="isSelected" />
+                                            <CheckBox
+                                                :value="isSelected" />
                                         </ListElementAction>
                                         <ListElementDescription>
                                             <ListElementTitle
@@ -189,6 +191,7 @@ export default {
             } else {
                 this.$emit('input', value);
             }
+            return true;
         },
         isOptionSelected(index) {
             return typeof this.selectedOptions[this.stringifiedOptions[index]] !== 'undefined';

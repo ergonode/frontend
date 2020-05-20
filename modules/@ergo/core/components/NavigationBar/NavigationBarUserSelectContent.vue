@@ -4,7 +4,7 @@
  */
 <template>
     <div
-        data-cy="navBarContent"
+        data-cy="nav-bar-content"
         class="user-content">
         <NavigationBarUserSelectContentHeader
             :initials="initials"
@@ -18,7 +18,7 @@
             :section-menu="item.menu" />
         <div class="footer">
             <Button
-                data-cy="logoutButton"
+                data-cy="logout-button"
                 :theme="secondaryTheme"
                 title="LOG OUT"
                 @click.native="onLogout" />

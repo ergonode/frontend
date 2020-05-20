@@ -2,7 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { types } from './mutations';
 
 function mappedLanguage({ id, code, name }) {
@@ -10,16 +9,13 @@ function mappedLanguage({ id, code, name }) {
 }
 
 export default {
-    updateData({ state, rootState }) {
+    updateData({ rootState }, languageKeys) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        const { selectedLanguages } = state;
         const data = {
-            collection: selectedLanguages.map(language => language.key),
+            collection: languageKeys,
         };
 
-        return this.app.$axios.$put(`${userLanguageCode}/languages`, data).then(() => {
-            this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Languages updated' });
-        });
+        return this.app.$axios.$put(`${userLanguageCode}/languages`, data);
     },
     getData({ commit, rootState }) {
         const { language: userLanguageCode } = rootState.authentication.user;
@@ -49,6 +45,7 @@ export default {
             order: 'ASC',
             field: 'name',
         };
+
         return this.app.$axios.$get(path, { params }).then((data) => {
             commit(types.SET_LANGUAGES, data.map(mappedLanguage));
         });

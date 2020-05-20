@@ -4,100 +4,84 @@ Feature: Attribute adding
   Background:
     Given I am authenticated as "admin"
     Given I open "attributes/grid" page
-    When I click on "newAttribute" button
+    When I click on "new-attribute" button
     Then Element "modal" is "visible"
 
-  Scenario: Add text attibute
-    When I fill the "attributeName" input with the "text_attribute" term
-    And I choose "[0]" options from "attributeGroup" multi select
-    And I choose "0" option from "attributeType" select
+  Scenario: Add text attibute with local scope
+    When I fill the "attribute-code" input with the "text_attribute" term
+    And I choose 6 option from "attribute-type" select field
+    And I choose 1 option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see row 0 with columns data: "{'1': 'text_attribute', '3': 'Text', '4': 'true'}"
+    # Then On "grid" I can see row 0 with columns data: "{'1': 'text_attribute', '3': 'Text', '4': 'local'}"
     And I remove "this" element by "DELETE" request
 
-  Scenario: Add not multilingual text attibute
-    When I fill the "attributeName" input with the "text_attribute2" term
-    And I choose "0" option from "attributeType" select
-    Then I can see "Configuration" text on "modal" element
-    And I click "attributeMultilingual" check
-    When On "modal" element I click button with "CREATE" text
-    Then I send a "POST" request and status code should be 201
-    Then I close modal
-    Then On "grid" I can see row 0 with columns data: "{'1': 'text_attribute2', '3': 'Text', '4': 'false'}"
-    And I remove "this" element by "DELETE" request
-
-  Scenario: Add textarea attibute
-    When I fill the "attributeName" input with the "textarea_attribute" term
-    And I choose "1" option from "attributeType" select
+  Scenario: Add textarea attibute with local scope
+    When I fill the "attribute-code" input with the "textarea_attribute" term
+    And I choose 7 option from "attribute-type" select field
+    And I choose 1 option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see row 0 with columns data: "{'1': 'textarea_attribute', '3': 'Textarea', '4': 'true'}"
+    # Then On "grid" I can see row 0 with columns data: "{'1': 'textarea_attribute', '3': 'Textarea', '4': 'local'}"
     And I remove "this" element by "DELETE" request
 
-  Scenario: Add not multilingual textarea attibute
-    When I fill the "attributeName" input with the "textarea_attribute2" term
-    And I choose "1" option from "attributeType" select
+  Scenario: Add numeric attibute with global scope
+    When I fill the "attribute-code" input with the "numeric_attribute" term
+    And I choose 3 option from "attribute-type" select field
+    And I choose 0 option from "attribute-scope" select field
+    When On "modal" element I click button with "CREATE" text
+    Then I send a "POST" request and status code should be 201
+    Then I close modal
+    # Then On "grid" I can see row 0 with columns data: "{'1': 'numeric_attribute', '3': 'Numeric', '4': 'global'}"
+    And I remove "this" element by "DELETE" request
+
+  Scenario: Add price attibute with global scope
+    When I fill the "attribute-code" input with the "price_attribute" term
+    And I choose 4 option from "attribute-type" select field
+    And I choose 0 option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
-    And I click "attributeMultilingual" check
+    And I choose 0 option from "attribute-params" select field
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see row 0 with columns data: "{'1': 'textarea_attribute2', '3': 'Textarea', '4': 'false'}"
+    # Then On "grid" I can see row 0 with columns data: "{'1': 'price_attribute', '3': 'Price', '4': 'global'}"
     And I remove "this" element by "DELETE" request
 
-  Scenario: Add numeric attibute
-    When I fill the "attributeName" input with the "numeric_attribute" term
-    And I choose "2" option from "attributeType" select
-    When On "modal" element I click button with "CREATE" text
-    Then I send a "POST" request and status code should be 201
-    Then I close modal
-    Then On "grid" I can see row 0 with columns data: "{'1': 'numeric_attribute', '3': 'Numeric', '4': 'false'}"
-    And I remove "this" element by "DELETE" request
-
-  Scenario: Add price attibute
-    When I fill the "attributeName" input with the "price_attribute" term
-    And I choose "5" option from "attributeType" select
+  Scenario: Add date attibute with local scope
+    When I fill the "attribute-code" input with the "date_attribute" term
+    And I choose 0 option from "attribute-type" select field
+    And I choose 1 option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
-    And I choose "0" option from "attributeParams" select
+    And I choose 0 option from "attribute-params" select field
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see row 0 with columns data: "{'1': 'price_attribute', '3': 'Price', '4': 'false'}"
+    # Then On "grid" I can see row 0 with columns data: "{'1': 'date_attribute', '3': 'Date', '4': 'local'}"
     And I remove "this" element by "DELETE" request
 
-  Scenario: Add date attibute
-    When I fill the "attributeName" input with the "date_attribute" term
-    And I choose "6" option from "attributeType" select
+  Scenario: Add unit attibute with local scope
+    When I fill the "attribute-code" input with the "unit_attribute" term
+    And I choose 8 option from "attribute-type" select field
+    And I choose 1 option from "attribute-scope" select field
     Then I can see "Configuration" text on "modal" element
-    And I choose "0" option from "attributeParams" select
+    And I choose 0 option from "attribute-params" select field
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see row 0 with columns data: "{'1': 'date_attribute', '3': 'Date', '4': 'false'}"
+    # Then On "grid" I can see row 0 with columns data: "{'1': 'unit_attribute', '3': 'Unit', '4': 'local'}"
     And I remove "this" element by "DELETE" request
 
-  Scenario: Add unit attibute
-    When I fill the "attributeName" input with the "unit_attribute" term
-    And I choose "7" option from "attributeType" select
-    Then I can see "Configuration" text on "modal" element
-    And I choose "0" option from "attributeParams" select
+  Scenario: Add image attibute with global scope
+    When I fill the "attribute-code" input with the "image_attribute" term
+    And I choose 1 option from "attribute-type" select field
+    And I choose 1 option from "attribute-scope" select field
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
-    Then On "grid" I can see row 0 with columns data: "{'1': 'unit_attribute', '3': 'Unit', '4': 'false'}"
-    And I remove "this" element by "DELETE" request
-
-  Scenario: Add image attibute
-    When I fill the "attributeName" input with the "image_attribute" term
-    And I choose "8" option from "attributeType" select
-    When On "modal" element I click button with "CREATE" text
-    Then I send a "POST" request and status code should be 201
-    Then I close modal
-    Then On "grid" I can see row 0 with columns data: "{'1': 'image_attribute', '3': 'Image', '4': 'false'}"
+    # Then On "grid" I can see row 0 with columns data: "{'1': 'image_attribute', '3': 'Image', '4': 'global'}"
     And I remove "this" element by "DELETE" request
 

@@ -9,7 +9,7 @@
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
-                    data-cy="attributeGroupName"
+                    :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     solid
                     regular
@@ -52,6 +52,9 @@ export default {
     },
     methods: {
         ...mapActions('attributeGroup', ['setAttributeGroupCode']),
+        dataCyGenerator(key) {
+            return `attribute-group-${key}`;
+        },
     },
 };
 </script>

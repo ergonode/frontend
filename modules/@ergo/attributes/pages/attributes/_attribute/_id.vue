@@ -38,6 +38,7 @@ export default {
             groups: state => state.groups,
             code: state => state.code,
             type: state => state.type,
+            scope: state => state.scope,
             parameter: state => state.parameter,
             options: state => state.options,
         }),
@@ -90,6 +91,7 @@ export default {
             const { label, placeholder, hint } = this.translations;
             const data = {
                 groups: this.groups.map(group => group.id),
+                scope: this.scope,
                 label,
                 hint,
                 placeholder,

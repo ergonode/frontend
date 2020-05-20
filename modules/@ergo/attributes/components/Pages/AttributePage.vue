@@ -10,7 +10,6 @@
             :is-read-only="$isReadOnly('ATTRIBUTE')">
             <template #mainAction>
                 <Button
-                    data-cy="removeAttibute"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE ATTRIBUTE"

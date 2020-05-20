@@ -4,7 +4,7 @@
  */
 <template>
     <VerticalTabBarListWrapper>
-        <ListSearchSelectHeader
+        <ListSearchTreeSelectHeader
             v-if="isSelectLanguage"
             header="Attributes"
             :options="languageOptions"
@@ -22,8 +22,8 @@
                     :key="index"
                     :group="group"
                     :items-count="groupItemsCounts[group.id]"
-                    :items="items[group.id][languageCode]"
-                    :language-code="languageCode"
+                    :items="items[group.id][language.code]"
+                    :language-code="language.code"
                     :is-expanded="expandedGroupId === group.id"
                     :is-draggable="isUserAllowedToDragAttributes"
                     @expand="onGroupExpand" />
@@ -46,7 +46,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getKeyByValue } from '@Core/models/objectWrapper';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
 
@@ -57,7 +56,7 @@ export default {
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         AttributesListGroup: () => import('@Attributes/components/Lists/AttributesListGroup'),
-        ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
+        ListSearchTreeSelectHeader: () => import('@Core/components/List/ListSearchTreeSelectHeader'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         Fab: () => import('@Core/components/Buttons/Fab'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
@@ -72,31 +71,40 @@ export default {
     },
     data() {
         return {
-            language: '',
+            language: {},
         };
     },
     computed: {
         ...mapState('authentication', {
-            userLanguageCode: state => state.user.language,
+            user: state => state.user,
+        }),
+        ...mapState('core', {
+            languagePrivilegesDefaultCode: state => state.languagePrivilegesDefaultCode,
         }),
         ...mapState('dictionaries', {
-            languages: state => state.languages,
+            languagesTree: state => state.languagesTree,
         }),
-        languageCode() {
-            return getKeyByValue(this.languages, this.language);
-        },
         isUserAllowedToCreateAttribute() {
             return this.$hasAccess(['ATTRIBUTE_CREATE']);
         },
         isUserAllowedToDragAttributes() {
-            return this.$hasAccess(['ATTRIBUTE_UPDATE']);
+            const { languagePrivileges } = this.user;
+            const { code } = this.language;
+
+            return this.$hasAccess(['ATTRIBUTE_UPDATE']) && languagePrivileges[code].read;
         },
         languageOptions() {
-            return Object.values(this.languages);
+            return Object.values(this.languagesTree).map(language => ({
+                ...language,
+                key: language.code,
+                value: language.name,
+                disabled: !language.privileges.read,
+            }));
         },
     },
     created() {
-        this.language = this.languages[this.userLanguageCode];
+        this.language = this.languageOptions
+            .find(languegeCode => languegeCode.code === this.languagePrivilegesDefaultCode);
     },
     beforeDestroy() {
         this.setDisabledElements({});
@@ -108,18 +116,18 @@ export default {
         onCreatedAttribute() {
             this.onCloseModal();
             this.getGroupsAndExpandedGroupItems({
-                languageCode: this.languageCode,
+                languageCode: this.language.code,
             });
         },
         onSearch(value) {
             this.codeFilter = value;
-            this.getAllGroupsItems({ languageCode: this.languageCode });
+            this.getAllGroupsItems({ languageCode: this.language.code });
         },
         onSelect(value) {
             this.language = value;
 
             this.getGroupsAndExpandedGroupItems({
-                languageCode: this.languageCode,
+                languageCode: value.code,
             });
         },
     },

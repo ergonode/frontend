@@ -81,6 +81,15 @@ export default {
             'removeValidationErrors',
         ]),
         onSave() {
+            const activeLanguages = Object.keys(this.languagePrivilegesCollection)
+                .reduce((acc, languageCode) => {
+                    const languages = acc;
+
+                    if (Object.keys(this.languages).find(e => e === languageCode)) {
+                        languages[languageCode] = this.languagePrivilegesCollection[languageCode];
+                    }
+                    return languages;
+                }, {});
             const user = {
                 firstName: this.firstName,
                 lastName: this.lastName,
@@ -90,7 +99,7 @@ export default {
                 roleId: this.role.id,
                 isActive: this.isActive,
                 languagePrivilegesCollection: deepmerge(
-                    this.languagePrivilegesCollection,
+                    activeLanguages,
                     this.drafts,
                 ),
             };

@@ -7,9 +7,9 @@ export default () => ({
     code: '',
     groups: [],
     type: null,
+    scope: null,
     parameter: null,
     options: {},
     updatedOptions: {},
     groupOptions: [],
-    isMultilingual: true,
 });

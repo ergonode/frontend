@@ -11,8 +11,8 @@ const store = new Store({
     state: {
         authentication: {
             user: {
-                first_name: 'jan',
-                last_name: 'kowalski',
+                firstName: 'jan',
+                lastName: 'kowalski',
                 email: 'test@gmail.com',
             },
         },

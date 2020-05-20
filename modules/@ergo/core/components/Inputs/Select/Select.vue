@@ -4,6 +4,7 @@
  */
 <template>
     <div
+        :data-cy="dataCy"
         :class="inputClasses"
         @keydown="onKeyDown">
         <div
@@ -13,7 +14,7 @@
             @mouseup="onMouseUp">
             <slot name="prepend" />
             <div
-                data-cy="selectValue"
+                :data-cy="`${dataCy}-value`"
                 class="input__value"
                 v-if="hasAnyValueSelected">
                 <slot name="value">
@@ -48,7 +49,7 @@
         </div>
         <SelectDropDown
             v-if="needsToRender"
-            data-cy="selectDropDown"
+            :data-cy="`${dataCy}-drop-down`"
             ref="menu"
             :offset="offset"
             :fixed="fixedContent"
@@ -190,6 +191,10 @@ export default {
         searchable: {
             type: Boolean,
             default: false,
+        },
+        dataCy: {
+            type: String,
+            default: '',
         },
     },
     data() {

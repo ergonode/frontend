@@ -66,10 +66,17 @@ export default {
             image: null,
         };
     },
-    mounted() {
-        if (this.value) {
-            this.getImageById(this.value);
-        }
+    watch: {
+        value: {
+            immediate: true,
+            handler(value) {
+                if (value) {
+                    this.getImageById(value);
+                } else {
+                    this.image = null;
+                }
+            },
+        },
     },
     methods: {
         ...mapActions('validations', [

@@ -9,7 +9,7 @@
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
-                    data-cy="categoryName"
+                    :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     solid
                     regular
@@ -52,6 +52,9 @@ export default {
     },
     methods: {
         ...mapActions('categories', ['setCategoryCode']),
+        dataCyGenerator(key) {
+            return `category-${key}`;
+        },
     },
 };
 </script>

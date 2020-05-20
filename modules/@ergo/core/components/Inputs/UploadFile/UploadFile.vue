@@ -9,6 +9,7 @@
             {
                 'upload-file--required': required,
                 'upload-file--floating-label': Boolean(label),
+                'upload-file--disabled': disabled,
             },
         ]">
         <fieldset
@@ -51,6 +52,7 @@
                 <template v-else>
                     <slot name="file" />
                     <Fab
+                        v-if="!disabled"
                         :style="{ backgroundColor: whiteColor }"
                         :floating="{ top: '20px', right: '20px'}"
                         :theme="secondaryTheme"
@@ -247,6 +249,13 @@ export default {
         &--floating-label {
             #{$upload}__content {
                 height: calc(100% - 10px);
+            }
+        }
+
+        &--disabled {
+            #{$upload}__content, input {
+                background-color: $WHITESMOKE;
+                color: $GRAPHITE_LIGHT;
             }
         }
 
