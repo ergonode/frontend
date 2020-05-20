@@ -9,7 +9,7 @@
             <FormSection
                 title="Select attributes which values you want to restore to parent translation:">
                 <CheckBox
-                    v-for="(element, index) in elements"
+                    v-for="(element, index) in elementsToRestore"
                     :key="index"
                     class="check-restore-element"
                     :value="false"
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { SCOPE } from '@Attributes/defaults/attributes';
+import { SYSTEM_TYPES, SCOPE } from '@Attributes/defaults/attributes';
 
 export default {
     name: 'RestoreForm',
@@ -43,6 +43,9 @@ export default {
         };
     },
     computed: {
+        elementsToRestore() {
+            return this.elements.filter(element => element.type !== SYSTEM_TYPES.SECTION);
+        },
         restoreFieldKey() {
             return 'restored_elements';
         },

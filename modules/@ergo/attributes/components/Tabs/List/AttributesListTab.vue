@@ -4,13 +4,19 @@
  */
 <template>
     <VerticalTabBarListWrapper>
-        <ListSearchTreeSelectHeader
+        <ListSearchSelectHeader
             v-if="isSelectLanguage"
             header="Attributes"
-            :options="languageOptions"
-            :selected-option="language"
-            @searchResult="onSearch"
-            @selectOption="onSelect" />
+            @searchResult="onSearch">
+            <template #select>
+                <TreeSelect
+                    :value="language"
+                    solid
+                    small
+                    :options="languageOptions"
+                    @input="onSelect" />
+            </template>
+        </ListSearchSelectHeader>
         <ListSearchHeader
             v-else
             header="Attributes"
@@ -56,11 +62,12 @@ export default {
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         AttributesListGroup: () => import('@Attributes/components/Lists/AttributesListGroup'),
-        ListSearchTreeSelectHeader: () => import('@Core/components/List/ListSearchTreeSelectHeader'),
+        ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         Fab: () => import('@Core/components/Buttons/Fab'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
         CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
+        TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
     },
     mixins: [gridModalMixin, fetchListGroupDataMixin({ namespace: 'attributes' })],
     props: {

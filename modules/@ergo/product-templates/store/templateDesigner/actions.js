@@ -7,7 +7,7 @@ import {
     getMappedLayoutElement,
     getMappedLayoutSectionElement,
 } from '@Templates/models/templateMapper';
-import { TYPES } from '@Attributes/defaults/attributes';
+import { TYPES, SYSTEM_TYPES } from '@Attributes/defaults/attributes';
 import { SKU_MODEL } from '@Templates/defaults/product';
 import { types } from './mutations';
 
@@ -167,7 +167,7 @@ export default {
     }, { row, column, title }) => {
         const layoutElement = getMappedLayoutSectionElement(
             title,
-            state.types.find(attributeType => attributeType.type === 'SECTION'),
+            state.types.find(attributeType => attributeType.type === SYSTEM_TYPES.SECTION),
             { row, column },
         );
 

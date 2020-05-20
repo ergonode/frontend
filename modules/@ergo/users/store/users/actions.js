@@ -9,6 +9,9 @@ export default {
     setAction({ commit }, payload) {
         commit(types.SET_STATE, payload);
     },
+    setLanguagePrivileges({ commit }, privileges) {
+        commit(types.SET_LANGUAGE_PRIVILEGES, privileges);
+    },
     setUserLanguage({ commit, rootState }, { language }) {
         const { languages } = rootState.dictionaries;
         const lang = getKeyByValue(languages, language);
@@ -45,7 +48,7 @@ export default {
             commit(types.SET_STATE, { key: 'password', value: password });
             commit(types.SET_STATE, { key: 'passwordRepeat', value: password_repeat });
             commit(types.SET_STATE, { key: 'isActive', value: is_active });
-            commit(types.SET_STATE, { key: 'languagePrivilegesCollection', value: language_privileges_collection });
+            commit(types.SET_LANGUAGE_PRIVILEGES, language_privileges_collection);
             if (role_id) {
                 commit(types.SET_STATE, { key: 'role', value: roles.find(role => role.id === role_id) });
             }
