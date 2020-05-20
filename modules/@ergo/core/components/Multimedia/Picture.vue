@@ -5,20 +5,21 @@
 <template>
     <img
         ref="img"
-        :src="require('@Core/assets/images/placeholders/no_image.svg')"
+        :style="imageStyle"
         :class="[
             'image',
             {
                 'image--fab': fab,
-                'image--placeholder': isPlaceholder,
             }
         ]"
+        :src="require('@Core/assets/images/placeholders/no_image.svg')"
         alt="picture">
 </template>
 
 <script>
 import { mapActions } from 'vuex';
 import { getImageData } from '@Core/models/multimedia';
+import { WHITESMOKE } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'Picture',
@@ -31,12 +32,28 @@ export default {
             type: Boolean,
             default: false,
         },
+        objectFit: {
+            type: String,
+            default: 'cover',
+        },
     },
     data() {
         return {
             isPlaceholder: false,
             observer: null,
         };
+    },
+    computed: {
+        imageStyle() {
+            return this.isPlaceholder
+                ? {
+                    backgroundColor: WHITESMOKE,
+                    objectFit: 'none',
+                }
+                : {
+                    objectFit: this.objectFit,
+                };
+        },
     },
     watch: {
         imageId() {
@@ -85,20 +102,10 @@ export default {
 
 <style lang="scss" scoped>
     .image {
-        flex: 1;
         max-height: 100%;
 
         &:not(&--fab) {
             width: 100%;
-        }
-
-        &:not(&--placeholder) {
-            object-fit: cover;
-        }
-
-        &--placeholder {
-            object-fit: none;
-            background-color: $GREY_LIGHT;
         }
 
         &--fab {

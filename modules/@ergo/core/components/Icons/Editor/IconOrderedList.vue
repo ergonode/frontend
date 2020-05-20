@@ -12,7 +12,7 @@
 import Icon from '@Core/components/Icons/Icon';
 
 export default {
-    name: 'IconListNumber',
+    name: 'IconOrderedList',
     components: {
         Icon,
     },
