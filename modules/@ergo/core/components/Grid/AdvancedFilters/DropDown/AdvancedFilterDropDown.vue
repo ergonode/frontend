@@ -7,13 +7,12 @@
         <DropDown
             v-show="isVisible"
             :offset="offset"
-            :fixed-content="isSelectKind">
+            :fixed-content="isSelectKind"
+            @clickOutside="onClickOutside">
             <template #body>
                 <Component
                     :is="selectBodyComponent"
                     :filter="filter"
-                    :value="filter.value"
-                    :language-code="filter.languageCode"
                     @emptyRecord="onEmptyRecordChange"
                     @input="onValueChange" />
             </template>
@@ -85,6 +84,9 @@ export default {
         },
     },
     methods: {
+        onClickOutside(payload) {
+            this.$emit('clickOutside', payload);
+        },
         onValueChange(payload) {
             this.$emit('input', payload);
         },

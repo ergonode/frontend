@@ -6,8 +6,7 @@
 <template>
     <Select
         v-bind="$attrs"
-        v-on="$listeners"
-        :dismissible="false">
+        v-on="$listeners">
         <template #value>
             <span
                 :style="{ color: $attrs.value }"

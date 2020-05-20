@@ -196,9 +196,9 @@ export default {
         return {
             selectedOptions: {},
             searchResult: '',
+            isBlurringNeeded: false,
             isMouseMoving: false,
             isMenuActive: false,
-            isClickedOutside: false,
             associatedLabel: '',
             hasAnyValueSelected: false,
             needsToRender: false,
@@ -266,7 +266,7 @@ export default {
             handler() {
                 let selectedOptions = {};
 
-                if (this.multiselect && this.value) {
+                if (this.multiselect && this.value && Array.isArray(this.value)) {
                     this.value.forEach((option) => {
                         selectedOptions[JSON.stringify(option)] = option;
                     });
@@ -298,6 +298,13 @@ export default {
                 x, y, width, height,
             };
         },
+        blur() {
+            this.isMenuActive = false;
+            this.searchResult = '';
+
+            this.onSearch(this.searchResult);
+            this.$emit('focus', false);
+        },
         onSearch(value) {
             this.$emit('search', value);
         },
@@ -313,11 +320,11 @@ export default {
             this.$emit('input', value);
         },
         onDismiss() {
-            this.isClickedOutside = true;
-
-            this.onBlur();
+            this.isBlurringNeeded = true;
+            this.blur();
         },
         onFocus() {
+            this.isBlurringNeeded = false;
             this.offset = this.getDropDownOffset();
             this.isMenuActive = true;
 
@@ -325,19 +332,17 @@ export default {
                 this.needsToRender = true;
             }
 
-            console.log('focusing');
-
             this.$emit('focus', true);
         },
         onBlur() {
-            if (this.isClickedOutside) {
-                this.resetAfterLosingFocus();
+            if (this.isBlurringNeeded) {
+                this.blur();
             }
         },
         onKeyDown(event) {
             // TAB
             if (event.keyCode === 9) {
-                this.isClickedOutside = true;
+                this.isBlurringNeeded = true;
                 this.$refs.input.blur();
             }
         },
@@ -354,7 +359,7 @@ export default {
 
             if (this.dismissible) {
                 if (this.isMenuActive) {
-                    this.isClickedOutside = true;
+                    this.isBlurringNeeded = true;
                     this.$refs.input.blur();
                 } else {
                     this.$refs.input.focus();
@@ -368,26 +373,15 @@ export default {
         onMouseMove() {
             this.isMouseMoving = true;
         },
-        onClickOutside(isClickedOutside) {
-            // const isClickedInsideMenu = this.$refs.menu.$el.contains(event.target);
-            // const isClickedInsideActivator = this.$refs.activator.contains(event.target);
-            // this.isClickedOutside = !isClickedInsideMenu
-            //     && !isClickedInsideActivator;
-            //
-            // if (this.isClickedOutside || (isClickedInsideMenu
-            //     && !this.multiselect
-            //     && this.dismissible)
-            // ) {
-            //     this.resetAfterLosingFocus();
-            // }
-            console.log(isClickedOutside);
-        },
-        resetAfterLosingFocus() {
-            this.isMenuActive = false;
-            this.searchResult = '';
+        onClickOutside({ event, isClickedOutside }) {
+            const isClickedInsideActivator = this.$refs.activator.contains(event.target);
 
-            this.onSearch(this.searchResult);
-            this.$emit('focus', false);
+            if (isClickedOutside
+                || (isClickedInsideActivator && !this.dismissible)
+                || (!isClickedOutside && !this.multiselect && this.dismissible)) {
+                this.isBlurringNeeded = true;
+                this.blur();
+            }
         },
     },
 };

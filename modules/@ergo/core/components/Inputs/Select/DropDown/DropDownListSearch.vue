@@ -6,8 +6,7 @@
     <li
         :class="['search-element', {
             'search-element--small': small,
-        }]"
-        @click.stop>
+        }]">
         <input
             class="search-element__input"
             :input="value"

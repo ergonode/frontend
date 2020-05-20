@@ -5,6 +5,7 @@
 <template>
     <ActionBaseButton
         :options="options"
+        :dismissible="dismissible"
         :fixed-content="fixedContent"
         @focus="onFocus"
         @hover="onHover"
@@ -77,6 +78,14 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        /**
+         * The dismissible state of the dropdown
+         * @values primary, secondary
+         */
+        dismissible: {
+            type: Boolean,
+            default: true,
         },
         /**
          * The options of the dropdown

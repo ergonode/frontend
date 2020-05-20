@@ -15,7 +15,7 @@
                 <ListElementDescription>
                     <ListElementTitle
                         :small="true"
-                        :hint="option.value ? `#${option.key} ${languageCode}` : ''"
+                        :hint="option.value ? `#${option.key} ${filter.languageCode}` : ''"
                         :title="option.value || `#${option.key}`" />
                 </ListElementDescription>
             </ListElement>
@@ -44,10 +44,6 @@ export default {
         filter: {
             type: Object,
             required: true,
-        },
-        languageCode: {
-            type: String,
-            default: '',
         },
     },
     data() {

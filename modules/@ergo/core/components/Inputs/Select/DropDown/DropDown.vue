@@ -3,19 +3,25 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="dropdown"
-        :style="positionStyle"
-        ref="dropdown">
-        <slot name="body" />
-        <slot name="footer" />
-    </div>
+    <ClickOutsideGlobalEvent @clickOutside="onClickOutside">
+        <div
+            class="dropdown"
+            :style="positionStyle"
+            ref="dropdown">
+            <slot name="body" />
+            <slot name="footer" />
+        </div>
+    </ClickOutsideGlobalEvent>
 </template>
 
 <script>
+import ClickOutsideGlobalEvent from '@Core/components/Events/ClickOutsideGlobalEvent';
 
 export default {
     name: 'DropDown',
+    components: {
+        ClickOutsideGlobalEvent,
+    },
     props: {
         fixed: {
             type: Boolean,
@@ -75,6 +81,11 @@ export default {
         if (app.contains(this.$refs.dropdown)) {
             app.removeChild(this.$refs.dropdown);
         }
+    },
+    methods: {
+        onClickOutside(payload) {
+            this.$emit('clickOutside', payload);
+        },
     },
 };
 </script>

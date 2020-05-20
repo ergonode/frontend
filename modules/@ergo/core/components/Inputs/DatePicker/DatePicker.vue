@@ -16,10 +16,10 @@
         :required="required"
         :autofocus="autofocus"
         :disabled="disabled"
-        :dismissible="false"
         :small="small"
         :regular="regular"
         :fixed-content="false"
+        :dismissible="false"
         clearable
         @focus="onFocus"
         @input="onValueChange">

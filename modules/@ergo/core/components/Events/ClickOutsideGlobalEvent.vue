@@ -11,22 +11,34 @@ export default {
         };
     },
     mounted() {
-        this.observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                window.addEventListener('click', this.onClickOutside);
-            } else {
-                window.removeEventListener('click', this.onClickOutside);
-            }
-        });
+        this.$nextTick(() => {
+            this.observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    window.addEventListener('click', this.onClickOutside);
+                } else {
+                    window.removeEventListener('click', this.onClickOutside);
+                }
+            });
 
-        this.observer.observe(this.$el);
+            this.observer.observe(this.$el);
+        });
     },
     beforeDestroy() {
+        window.removeEventListener('click', this.onClickOutside);
         this.observer.disconnect();
     },
     methods: {
         onClickOutside(event) {
-            this.$emit('clickOutside', this.$el.contains(event.target));
+            const {
+                top, left, width, height,
+            } = this.$el.getBoundingClientRect();
+            const { pageX, pageY } = event;
+            const isClickedOutside = !(pageX > left
+                && pageX < left + width
+                && pageY > top
+                && pageY < top + height);
+
+            this.$emit('clickOutside', { event, isClickedOutside });
         },
     },
     render() {

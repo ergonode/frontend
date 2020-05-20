@@ -241,7 +241,6 @@ export default {
 <style lang="scss" scoped>
     .date-range-picker {
         display: grid;
-        grid-template-columns: max-content 1px max-content;
         grid-auto-flow: column;
 
         &__left, &__right {

@@ -67,7 +67,7 @@
             @input="onValueChange"
             @clear="onClear"
             @apply="onApply"
-        />
+            @clickOutside="onClickOutside" />
     </div>
 </template>
 
@@ -185,9 +185,6 @@ export default {
     mounted() {
         this.associatedLabel = `input-${this._uid}`;
     },
-    beforeDestroy() {
-        window.removeEventListener('click', this.onClickOutside);
-    },
     methods: {
         ...mapActions('draggable', [
             'setDraggableState',
@@ -299,8 +296,6 @@ export default {
             this.$emit('clear', this.index);
         },
         onApply() {
-            window.removeEventListener('click', this.onClickOutside);
-
             this.deactivateFilter();
             this.$emit('apply');
         },
@@ -315,7 +310,6 @@ export default {
                     this.needsToRender = true;
                 }
 
-                window.addEventListener('click', this.onClickOutside);
                 this.$emit('focus', true);
             }
         },
@@ -329,7 +323,6 @@ export default {
             this.isMenuActive = false;
             this.mouseUpTime = 0;
 
-            window.removeEventListener('click', this.onClickOutside);
             this.$emit('focus', false);
         },
         onMouseDown(event) {
@@ -358,11 +351,10 @@ export default {
 
             this.hasMouseDown = false;
         },
-        onClickOutside(event) {
-            const isClickedInsideMenu = this.$refs.menu.$el.contains(event.target);
+        onClickOutside({ event, isClickedOutside }) {
             const isClickedInsideActivator = this.$refs.activator.contains(event.target);
 
-            this.isClickedOutside = !isClickedInsideMenu
+            this.isClickedOutside = isClickedOutside
                 && !isClickedInsideActivator;
 
             if (this.isClickedOutside) {
