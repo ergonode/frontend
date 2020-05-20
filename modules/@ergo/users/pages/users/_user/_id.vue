@@ -67,7 +67,7 @@ export default {
     methods: {
         ...mapActions('users', [
             'clearStorage',
-            'setAction',
+            'setLanguagePrivileges',
             'updateUser',
         ]),
         ...mapActions('authentication', [
@@ -111,10 +111,7 @@ export default {
                 onSuccess: () => {
                     this.removeValidationErrors();
                     this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'User updated' });
-                    this.setAction({
-                        key: 'languagePrivilegesCollection',
-                        value: user.languagePrivilegesCollection,
-                    });
+                    this.setLanguagePrivileges(user.languagePrivilegesCollection);
                     this.removeDrafts();
 
                     // TODO: Along Notification introduce - remove it from it - this solution is preventing from relogging to see newly edited data for user if edited user is logged one

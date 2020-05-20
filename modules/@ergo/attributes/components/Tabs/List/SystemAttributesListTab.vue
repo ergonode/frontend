@@ -4,13 +4,19 @@
  */
 <template>
     <VerticalTabBarListWrapper>
-        <ListSearchTreeSelectHeader
+        <ListSearchSelectHeader
             v-if="isSelectLanguage"
             header="System attributes"
-            :options="languageOptions"
-            :selected-option="language"
-            @searchResult="onSearch"
-            @selectOption="onSelect" />
+            @searchResult="onSearch">
+            <template #select>
+                <TreeSelect
+                    :value="language"
+                    solid
+                    small
+                    :options="languageOptions"
+                    @input="onSelect" />
+            </template>
+        </ListSearchSelectHeader>
         <ListSearchHeader
             v-else
             header="System attributes"
@@ -36,12 +42,12 @@ export default {
     name: 'SystemAttributesListTab',
     components: {
         VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
-        ListSearchTreeSelectHeader: () => import('@Core/components/List/ListSearchTreeSelectHeader'),
+        ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         AttributesListElement: () => import('@Attributes/components/Lists/AttributesListElement'),
-
+        TreeSelect: () => import('@Core/components/Inputs/Select/Tree/TreeSelect'),
     },
     mixins: [fetchListDataMixin({ namespace: 'attributes/system' })],
     props: {
