@@ -9,9 +9,11 @@
         <GridCollectionCell
             v-for="(element, index) in data"
             :key="index"
+            :actions="element.actions"
             :image="element.image"
             :description="element.description"
-            :object-fit="objectFit" />
+            :object-fit="objectFit"
+            @edit="onEditCell" />
     </div>
 </template>
 
@@ -42,6 +44,11 @@ export default {
             return {
                 gridTemplateColumns: `repeat(${this.columnsNumber}, 1fr)`,
             };
+        },
+    },
+    methods: {
+        onEditCell(args) {
+            this.$emit('editRow', args);
         },
     },
 };

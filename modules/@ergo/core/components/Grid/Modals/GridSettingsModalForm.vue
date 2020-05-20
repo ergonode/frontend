@@ -17,22 +17,24 @@
                             label="Row height"
                             :options="rowHeightOptions" />
                     </FormSection>
-                    <!--                    <FormSection title="Image grid">-->
-                    <!--                        <Select-->
-                    <!--                            v-model="columnsNumberDescription"-->
-                    <!--                            solid-->
-                    <!--                            regular-->
-                    <!--                            label="Number of columns"-->
-                    <!--                            :options="columnsNumberOptions"-->
-                    <!--                        />-->
-                    <!--                        <Select-->
-                    <!--                            v-model="imageScalingDescription"-->
-                    <!--                            solid-->
-                    <!--                            regular-->
-                    <!--                            label="Image scaling"-->
-                    <!--                            :options="imageScalingOptions"-->
-                    <!--                        />-->
-                    <!--                    </FormSection>-->
+                    <FormSection
+                        title="Image grid"
+                        v-if="isCollectionLayout">
+                        <Select
+                            v-model="columnsNumberDescription"
+                            solid
+                            regular
+                            label="Number of columns"
+                            :options="columnsNumberOptions"
+                        />
+                        <Select
+                            v-model="imageScalingDescription"
+                            solid
+                            regular
+                            label="Image scaling"
+                            :options="imageScalingOptions"
+                        />
+                    </FormSection>
                 </template>
             </Form>
         </template>
@@ -72,23 +74,17 @@ export default {
         Select,
     },
     props: {
-        rowHeight: {
-            type: Number,
-            default: ROW_HEIGHT.SMALL,
+        tableLayoutConfig: {
+            type: Object,
+            required: true,
         },
-        columnsNumber: {
-            type: Number,
-            default: COLUMNS_NUMBER.FOURTH_COLUMNS.value,
-            validator: value => Object.keys(COLUMNS_NUMBER)
-                .map(key => COLUMNS_NUMBER[key].value)
-                .indexOf(value) !== -1,
+        collectionLayoutConfig: {
+            type: Object,
+            required: true,
         },
-        imageScaling: {
-            type: String,
-            default: IMAGE_SCALING.FIT_TO_SIZE.value,
-            validator: value => Object.keys(IMAGE_SCALING)
-                .map(key => IMAGE_SCALING[key].value)
-                .indexOf(value) !== -1,
+        isCollectionLayout: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
@@ -97,13 +93,13 @@ export default {
 
         return {
             rowHeightDescription: toCapitalize(
-                getKeyByValue(ROW_HEIGHT, this.rowHeight).toLowerCase(),
+                getKeyByValue(ROW_HEIGHT, this.tableLayoutConfig.rowHeight).toLowerCase(),
             ),
             columnsNumberDescription: columnsNumberValues.find(
-                ({ value }) => value === this.columnsNumber,
+                ({ value }) => value === this.collectionLayoutConfig.columnsNumber,
             ).description,
             imageScalingDescription: imageScalingValues.find(
-                ({ value }) => value === this.imageScaling,
+                ({ value }) => value === this.collectionLayoutConfig.scaling,
             ).description,
         };
     },
@@ -139,10 +135,10 @@ export default {
                 collectionConfig: {
                     columnsNumber: columnsNumberValues.find(
                         ({ description }) => description === this.columnsNumberDescription,
-                    ),
+                    ).value,
                     scaling: imageScalingValues.find(
                         ({ description }) => description === this.imageScalingDescription,
-                    ),
+                    ).value,
                 },
             });
         },
