@@ -25,7 +25,6 @@ describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent', () => {
 
     describe('Filter value', () => {
         it('Is not defined', () => {
-            console.log(wrapper.vm.filterValue);
             expect(wrapper.vm.filterValue).toBe('');
         });
 
