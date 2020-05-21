@@ -25,7 +25,7 @@
                     label="System name"
                     hint="Attribute code must be unique"
                     @input="setAttributeCode" />
-                <TranslationSelect
+                <TranslationLazySelect
                     data-cy="attributeGroup"
                     :value="groups"
                     label="Groups"
@@ -33,9 +33,9 @@
                     :regular="true"
                     :multiselect="true"
                     :clearable="true"
-                    :options="groupOptions"
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[groupsFieldKey]"
+                    :fetch-options-request="getAttributeGroupOptionsRequest"
                     @input="setAttributeGroups" />
                 <Select
                     data-cy="attributeType"
@@ -95,6 +95,8 @@ import {
     hasParams, hasOptions, isMultilingual, getParamsKeyForType, getParamsOptionsForType,
 } from '@Attributes/models/attributeTypes';
 
+const getAttributeGroupsOptions = () => import('@Attributes/services/getAttributeGroupsOptions.service');
+
 export default {
     name: 'AttributeForm',
     components: {
@@ -105,7 +107,7 @@ export default {
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         Select: () => import('@Core/components/Inputs/Select/Select'),
-        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
+        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
         Divider: () => import('@Core/components/Dividers/Divider'),
     },
     computed: {
@@ -117,7 +119,6 @@ export default {
             code: state => state.code,
             options: state => state.options,
             groups: state => state.groups,
-            groupOptions: state => state.groupOptions,
             type: state => state.type,
             parameter: state => state.parameter,
             multilingual: state => state.isMultilingual,
@@ -194,6 +195,11 @@ export default {
             'removeAttributeOptions',
             'clearStorage',
         ]),
+        getAttributeGroupOptionsRequest() {
+            return getAttributeGroupsOptions().then(response => response.default(
+                { $axios: this.$axios, $store: this.$store },
+            ));
+        },
         onTypeChange(type) {
             this.setAttributeType(type);
             this.setAttributeParameter();
