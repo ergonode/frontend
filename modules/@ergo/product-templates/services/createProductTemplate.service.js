@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { SKU_MODEL } from '@Templates/defaults/product';
+import { SKU_MODEL_ID } from '@Templates/defaults/product';
 
 export default function ({ $axios, $store }) {
     const { language } = $store.state.authentication.user;
@@ -13,11 +13,9 @@ export default function ({ $axios, $store }) {
     return $axios.$post(`${language}/templates`, {
         name: title,
         image,
-        defaultText: defaultTextAttribute.id !== SKU_MODEL.id
-            ? defaultTextAttribute.id
+        defaultText: defaultTextAttribute !== SKU_MODEL_ID
+            ? defaultTextAttribute
             : null,
-        defaultImage: defaultImageAttribute
-            ? defaultImageAttribute.id
-            : null,
+        defaultImage: defaultImageAttribute,
     });
 }

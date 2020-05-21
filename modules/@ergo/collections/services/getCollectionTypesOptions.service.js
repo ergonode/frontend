@@ -14,11 +14,11 @@ export default function ({ $axios, $store }) {
     };
 
     return $axios.$get(`${language}/collections/type`, { params }).then(({ collection }) => ({
-        options: collection.map(type => ({
-            id: type.id,
-            key: type.code,
-            value: type.name,
-            hint: type.name ? `#${type.code} ${language}` : '',
+        options: collection.map(element => ({
+            id: element.id,
+            key: element.code,
+            value: element.name,
+            hint: element.name ? `#${element.code} ${language}` : '',
         })),
     }));
 }

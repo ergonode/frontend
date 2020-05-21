@@ -20,7 +20,6 @@ export default {
         { userId, onError = () => {} },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        const { roles } = rootState.roles;
         const { languages } = rootState.dictionaries;
 
         return this.app.$axios.$get(`${userLanguageCode}/accounts/${userId}`).then(({
@@ -46,9 +45,7 @@ export default {
             commit(types.SET_STATE, { key: 'passwordRepeat', value: password_repeat });
             commit(types.SET_STATE, { key: 'isActive', value: is_active });
             commit(types.SET_STATE, { key: 'languagePrivilegesCollection', value: language_privileges_collection });
-            if (role_id) {
-                commit(types.SET_STATE, { key: 'role', value: roles.find(role => role.id === role_id) });
-            }
+            commit(types.SET_STATE, { key: 'role', value: role_id });
         }).catch(onError);
     },
     async updateUser(

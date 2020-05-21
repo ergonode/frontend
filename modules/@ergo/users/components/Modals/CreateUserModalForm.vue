@@ -44,18 +44,9 @@ export default {
             return THEME.SECONDARY;
         },
     },
-    created() {
-        this.getRoles({
-            limit: 9999,
-            offset: 0,
-        });
-    },
     methods: {
         ...mapActions('users', [
             'clearStorage',
-        ]),
-        ...mapActions('roles', [
-            'getRoles',
         ]),
         onClose() {
             this.clearStorage();

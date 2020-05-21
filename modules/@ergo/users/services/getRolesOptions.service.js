@@ -13,12 +13,12 @@ export default function ({ $axios, $store }) {
         columns: 'id,code,name',
     };
 
-    return $axios.$get(`${language}/categories`, { params }).then(({ collection }) => ({
+    return $axios.$get(`${language}/roles`, { params }).then(({ collection }) => ({
         options: collection.map(element => ({
             id: element.id,
-            key: element.code,
+            key: element.id,
             value: element.name,
-            hint: element.name ? `#${element.code} ${language}` : '',
+            hint: element.description,
         })),
     }));
 }

@@ -33,6 +33,7 @@
                     :error-messages="errorMessages[colorFieldKey]"
                     regular
                     clearable
+                    :dismissible="false"
                     :options="colorOptions"
                     :fixed-content="false"
                     label="Badge color"

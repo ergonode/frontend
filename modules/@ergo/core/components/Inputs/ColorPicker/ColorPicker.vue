@@ -12,11 +12,11 @@
                 :style="{ color: $attrs.value }"
                 v-text="$attrs.value" />
         </template>
-        <template #dropdown>
+        <template #dropdown="{ onSelectValueCallback }">
             <ColorPickerContent
                 :value="$attrs.value"
                 :options="$attrs.options"
-                @input="onSelectValue" />
+                @input="onSelectValueCallback" />
         </template>
         <template #footer="{ clear, apply }">
             <DropDownFooter
@@ -36,7 +36,6 @@
     </Select>
 </template>
 
-
 <script>
 import { SIZE, THEME } from '@Core/defaults/theme';
 import Select from '@Core/components/Inputs/Select/Select';
@@ -55,11 +54,6 @@ export default {
         },
         secondaryTheme() {
             return THEME.SECONDARY;
-        },
-    },
-    methods: {
-        onSelectValue(value) {
-            this.$emit('input', value);
         },
     },
 };

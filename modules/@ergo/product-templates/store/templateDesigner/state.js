@@ -2,7 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { SKU_MODEL } from '@Templates/defaults/product';
 
 export default () => ({
     layoutElements: [],
@@ -10,8 +9,6 @@ export default () => ({
     image: null,
     titleValidationError: null,
     types: [],
-    defaultTextAttribute: SKU_MODEL,
+    defaultTextAttribute: null,
     defaultImageAttribute: null,
-    textAttributesOptions: [],
-    imageAttributesOptions: [],
 });
