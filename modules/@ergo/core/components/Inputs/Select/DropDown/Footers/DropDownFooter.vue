@@ -7,7 +7,8 @@
         :class="['dropdown-footer', {
             'space-between': spaceBetween,
             'small': small,
-        }]">
+        }]"
+        @click.stop>
         <slot />
     </div>
 </template>

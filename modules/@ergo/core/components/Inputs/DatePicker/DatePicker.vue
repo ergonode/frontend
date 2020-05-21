@@ -16,10 +16,10 @@
         :required="required"
         :autofocus="autofocus"
         :disabled="disabled"
-        :dismissible="false"
         :small="small"
         :regular="regular"
         :fixed-content="false"
+        :dismissible="false"
         clearable
         @focus="onFocus"
         @input="onValueChange">
@@ -29,10 +29,10 @@
         <template #append>
             <slot name="append" />
         </template>
-        <template #dropdown>
+        <template #dropdown="{ onSelectValueCallback }">
             <DatePickerContent
                 :value="value"
-                @input="onValueChange" />
+                @input="onSelectValueCallback" />
         </template>
         <template #footer="{ clear, apply }">
             <SelectDropdownApplyFooter

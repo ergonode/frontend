@@ -7,7 +7,8 @@
         <DropDown
             v-show="isVisible"
             :offset="offset"
-            :fixed="fixedContent">
+            :fixed="fixedContent"
+            @clickOutside="onClickOutside">
             <template #body>
                 <slot name="dropdown">
                     <List>
@@ -163,6 +164,9 @@ export default {
         },
     },
     methods: {
+        onClickOutside(payload) {
+            this.$emit('clickOutside', payload);
+        },
         onDismiss() {
             this.$emit('dismiss');
         },

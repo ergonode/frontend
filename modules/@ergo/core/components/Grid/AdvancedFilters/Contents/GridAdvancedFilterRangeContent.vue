@@ -52,7 +52,7 @@ export default {
     },
     methods: {
         onValueChange(value, operator) {
-            this.$emit('input', { value, operator });
+            this.$emit('input', { value, key: operator });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

@@ -11,7 +11,7 @@ describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterBaseContent', () => {
     beforeEach(() => {
         const contentWrapper = {
             render(h) {
-                return h(GridAdvancedFilterTextContent, { props: { filter: null } });
+                return h(GridAdvancedFilterTextContent, { props: { filter: {} } });
             },
         };
 
