@@ -10,7 +10,7 @@ export default function ({ $axios, $store }) {
         offset: 0,
         view: 'list',
         order: 'ASC',
-        columns: 'id,code,name',
+        columns: 'id,name',
     };
 
     return $axios.$get(`${language}/templates`, { params }).then(({ collection }) => ({

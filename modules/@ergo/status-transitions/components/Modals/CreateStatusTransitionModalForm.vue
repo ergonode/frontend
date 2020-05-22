@@ -52,7 +52,7 @@ export default {
         this.getProductStatuses({
             limit: 9999,
             offset: 0,
-        })
+        });
     },
     methods: {
         ...mapActions('transitions', [
