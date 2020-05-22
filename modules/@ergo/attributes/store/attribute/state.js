@@ -10,6 +10,5 @@ export default () => ({
     parameter: null,
     options: {},
     updatedOptions: {},
-    groupOptions: [],
     isMultilingual: true,
 });

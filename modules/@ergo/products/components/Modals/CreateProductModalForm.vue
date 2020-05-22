@@ -44,16 +44,8 @@ export default {
             return THEME.SECONDARY;
         },
     },
-    created() {
-        Promise.all([
-            this.getTemplates(),
-            this.getCategories(),
-        ]);
-    },
     methods: {
         ...mapActions('product', [
-            'getTemplates',
-            'getCategories',
             'clearStorage',
         ]),
         onClose() {

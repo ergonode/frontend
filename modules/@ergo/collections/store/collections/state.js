@@ -6,5 +6,4 @@ export default () => ({
     id: null,
     code: '',
     type: null,
-    types: [],
 });

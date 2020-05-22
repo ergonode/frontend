@@ -28,18 +28,13 @@ export default {
         const { language: languageCode } = store.state.authentication.user;
         const { id } = params;
 
-        await Promise.all([
-            store.dispatch('product/getCategories'),
-            store.dispatch('product/getTemplates'),
-            store.dispatch('product/getProductDraft', { languageCode, id }),
-        ]);
+        await store.dispatch('product/getProductDraft', { languageCode, id });
         await store.dispatch('product/getProductById', id);
     },
     computed: {
         ...mapState('product', {
             id: state => state.id,
             sku: state => state.sku,
-            selectedCategories: state => state.selectedCategories,
         }),
     },
     destroyed() {
@@ -73,7 +68,7 @@ export default {
             await this.updateProduct({
                 id,
                 data: {
-                    categoryIds: this.selectedCategories.map(category => category.id),
+                    categoryIds: this.categories,
                 },
             });
             await this.applyDraft({

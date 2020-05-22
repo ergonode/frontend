@@ -10,7 +10,6 @@ export const types = {
     SET_ROLE_DESCRIPTION: 'SET_ROLE_DESCRIPTION',
     SET_ROLE_PRIVILEGES: 'SET_ROLE_PRIVILEGES',
     SET_SELECTED_ROLE_PRIVILEGES: 'SET_SELECTED_ROLE_PRIVILEGES',
-    SET_ROLES: 'SET_ROLES',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 
@@ -29,9 +28,6 @@ export default {
     },
     [types.SET_ROLE_PRIVILEGES](state, value) {
         state.privileges = value;
-    },
-    [types.SET_ROLES](state, value) {
-        state.roles = value;
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

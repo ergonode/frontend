@@ -268,12 +268,16 @@ export default {
             handler() {
                 let selectedOptions = {};
 
-                if (this.multiselect && this.value && Array.isArray(this.value)) {
+                if (Array.isArray(this.value) && this.value.length) {
                     this.value.forEach((option) => {
                         selectedOptions[JSON.stringify(option)] = option;
                     });
-                } else if (this.value || this.value === 0) {
+                    this.hasAnyValueSelected = true;
+                } else if (!Array.isArray(this.value) && (this.value || this.value === 0)) {
                     selectedOptions = { [JSON.stringify(this.value)]: this.value };
+                    this.hasAnyValueSelected = true;
+                } else {
+                    this.hasAnyValueSelected = false;
                 }
 
                 this.selectedOptions = selectedOptions;
@@ -287,7 +291,6 @@ export default {
             });
         }
 
-        this.hasAnyValueSelected = Object.keys(this.selectedOptions).length > 0;
         this.associatedLabel = `input-${this._uid}`;
     },
     methods: {
@@ -312,13 +315,10 @@ export default {
         },
         onClear() {
             this.selectedOptions = {};
-            this.hasAnyValueSelected = false;
 
             this.$emit('input', this.multiselect ? [] : '');
         },
         onSelectValue(value) {
-            this.hasAnyValueSelected = true;
-
             this.$emit('input', value);
         },
         onDismiss() {

@@ -46,13 +46,15 @@
 import { format as formatDate } from 'date-fns';
 import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
 import Select from '@Core/components/Inputs/Select/Select';
+import DatePickerContent from '@Core/components/Inputs/DatePicker/DatePickerContent';
+import SelectDropdownApplyFooter from '@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownApplyFooter';
 
 export default {
     name: 'DatePicker',
     components: {
         Select,
-        DatePickerContent: () => import('@Core/components/Inputs/DatePicker/DatePickerContent'),
-        SelectDropdownApplyFooter: () => import('@Core/components/Inputs/Select/DropDown/Footers/SelectDropdownApplyFooter'),
+        DatePickerContent,
+        SelectDropdownApplyFooter,
     },
     props: {
         value: {
