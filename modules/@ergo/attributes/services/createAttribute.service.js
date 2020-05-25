@@ -28,7 +28,7 @@ export default async function ({
     const data = {
         code,
         type: typeKey,
-        groups: groups.map(group => group.id),
+        groups,
     };
 
     if (isMultilingual(typeKey)) {
