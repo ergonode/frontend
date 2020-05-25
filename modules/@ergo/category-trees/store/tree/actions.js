@@ -28,6 +28,7 @@ export default {
                         offset: 0,
                         // TODO: BE has no filter via ID's - we gonna wait for them
                         // filter: `category_id=${categories.map(category => category.id).join(',')}`,
+                        view: 'list',
                         field: 'code',
                         order: 'ASC',
                     },

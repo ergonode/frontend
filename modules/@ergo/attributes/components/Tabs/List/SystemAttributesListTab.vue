@@ -24,7 +24,7 @@
         <List>
             <ListScrollableContainer>
                 <AttributesListElement
-                    v-for="item in items"
+                    v-for="item in items[language.code]"
                     :key="item.id"
                     :item="item"
                     :is-draggable="isUserAllowedToDragAttributes"
@@ -97,7 +97,10 @@ export default {
         },
         onSelect(value) {
             this.language = value;
-            this.getItems(value.code);
+
+            if (typeof this.items[value.code] === 'undefined') {
+                this.getItems(value.code);
+            }
         },
     },
 };

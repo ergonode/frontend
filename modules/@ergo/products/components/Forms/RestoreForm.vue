@@ -4,18 +4,16 @@
  */
 <template>
     <Form :fields-keys="[restoreFieldKey]">
-        <template
-            #body>
+        <template #body>
             <FormSection
                 title="Select attributes which values you want to restore to parent translation:">
-                <CheckBox
+                <RadioButton
                     v-for="(element, index) in elementsToRestore"
                     :key="index"
-                    class="check-restore-element"
-                    :value="false"
+                    :value="attributeToRestore"
                     :label="element.label"
                     :disabled="!isUserAllowedToRestore(element.properties.scope)"
-                    @input="value => setElementToRestore(value, element.properties.attribute_id)" />
+                    @input="setElementToRestore" />
             </FormSection>
         </template>
     </Form>
@@ -29,7 +27,7 @@ export default {
     components: {
         Form: () => import('@Core/components/Form/Form'),
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
-        CheckBox: () => import('@Core/components/Inputs/CheckBox'),
+        RadioButton: () => import('@Core/components/Inputs/RadioButton'),
     },
     props: {
         elements: {
@@ -39,7 +37,7 @@ export default {
     },
     data() {
         return {
-            attributesToRestore: {},
+            attributeToRestore: '',
         };
     },
     computed: {
@@ -51,13 +49,10 @@ export default {
         },
     },
     methods: {
-        setElementToRestore(value, id) {
-            if (value) {
-                this.attributesToRestore[id] = value;
-            } else {
-                delete this.attributesToRestore[id];
-            }
-            this.$emit('update', this.attributesToRestore);
+        setElementToRestore(value) {
+            this.attributeToRestore = value;
+
+            this.$emit('update', value);
         },
         isUserAllowedToRestore(scope) {
             return scope !== SCOPE.GLOBAL;
