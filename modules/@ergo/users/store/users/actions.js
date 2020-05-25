@@ -2,8 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getKeyByValue } from '@Core/models/objectWrapper';
-import { isObject } from '@Core/models/objectWrapper';
+import { getKeyByValue, isObject } from '@Core/models/objectWrapper';
 import { types } from './mutations';
 
 export default {
