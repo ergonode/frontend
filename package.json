@@ -45,6 +45,7 @@
         "@storybook/addon-docs": "^5.3.14",
         "@storybook/addon-knobs": "^5.3.14",
         "@vue/babel-preset-app": "^4.2.3",
+        "camelcase-keys": "^6.2.2",
         "chalk": "^3.0.0",
         "clear": "^0.1.0",
         "commander": "^4.1.1",

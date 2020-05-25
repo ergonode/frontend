@@ -11,7 +11,7 @@
         <List>
             <ListScrollableContainer>
                 <LanguagesListElement
-                    v-for="item in items"
+                    v-for="item in items[userLanguageCode]"
                     :key="item.id"
                     :item="item"
                     :is-draggable="isUserAllowedToUpdateTree"
@@ -39,8 +39,16 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
+        ...mapState('dictionaries', {
+            languages: state => state.languages,
+        }),
         isUserAllowedToUpdateTree() {
             return this.$hasAccess(['SETTINGS_UPDATE']);
+        },
+    },
+    watch: {
+        languages() {
+            this.getItems(this.userLanguageCode);
         },
     },
     methods: {

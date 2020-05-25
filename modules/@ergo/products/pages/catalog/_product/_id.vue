@@ -25,16 +25,17 @@ export default {
         store,
         params,
     }) {
-        const { language: languageCode } = store.state.authentication.user;
+        const { languagePrivilegesDefaultCode } = store.state.core;
         const { id } = params;
 
-        await store.dispatch('product/getProductDraft', { languageCode, id });
+        await store.dispatch('product/getProductDraft', { languageCode: languagePrivilegesDefaultCode, id });
         await store.dispatch('product/getProductById', id);
     },
     computed: {
         ...mapState('product', {
             id: state => state.id,
             sku: state => state.sku,
+            categories: state => state.categories,
         }),
     },
     destroyed() {
@@ -56,6 +57,7 @@ export default {
         },
         onRemove() {
             const isConfirmed = confirm('Are you sure you want to delete this product?'); /* eslint-disable-line no-restricted-globals */
+
             if (isConfirmed) {
                 this.removeProduct({
                     onSuccess: this.onRemoveSuccess,

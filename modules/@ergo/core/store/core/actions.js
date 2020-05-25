@@ -5,6 +5,9 @@
 import { types } from './mutations';
 
 export default {
+    setDefaultLanguage({ commit }, code) {
+        commit(types.SET_DEFAULT_LANGUAGE, code);
+    },
     setLoader({ commit }, key) {
         commit(types.SET_LOADER, key);
     },

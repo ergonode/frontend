@@ -52,6 +52,7 @@
                 @filter="onFilterChange"
                 @editCell="onEditCell"
                 @editCells="onEditCells"
+                @focusCell="onFocusCell"
                 @editRow="onEditRow"
                 @removeRow="onRemoveRow"
                 @removeColumn="onRemoveColumn"
@@ -253,6 +254,9 @@ export default {
         },
         onEditCells(payload) {
             this.$emit('editCells', payload);
+        },
+        onFocusCell(payload) {
+            this.$emit('focusCell', payload);
         },
         onEditRow(args) {
             this.$emit('editRow', args);

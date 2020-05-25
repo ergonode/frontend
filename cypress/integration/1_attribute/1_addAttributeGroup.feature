@@ -4,18 +4,18 @@ Feature: Attribute group adding
   Background:
     Given I am authenticated as "admin"
     Given I open "attribute-groups/grid" page
-    When I click on "newAttributeGroup" button
+    When I click on "new-attribute-group" button
     Then Element "modal" is "visible"
 
   Scenario: Add attibute group
-    When I fill the "attributeGroupName" input with the "text_attribute_group" term
+    When I fill the "attribute-group-code" input with the "text_attribute_group" term
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal
     Then On "grid" I can see row 0 with columns data: "{'0': 'text_attribute_group', '2': '0'}"
 
   Scenario: Add attibute group 2
-    When I fill the "attributeGroupName" input with the "text_attribute_group2" term
+    When I fill the "attribute-group-code" input with the "text_attribute_group2" term
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal

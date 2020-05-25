@@ -375,6 +375,14 @@ export default {
             this.editingCellCoordinates = coordinates;
         },
         setFocusedCellCoordinates(coordinates = { row: null, column: null }) {
+            const { row, column } = coordinates;
+
+            if (row !== null && column !== null) {
+                this.$emit('focusCell', {
+                    column: this.orderedColumns[column],
+                    rowId: this.data.id[row - 2],
+                });
+            }
             this.focusedCellCoordinates = coordinates;
         },
         getEditingCellCoordinates() {

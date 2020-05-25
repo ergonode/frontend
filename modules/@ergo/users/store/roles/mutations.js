@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import { isObject } from '@Core/models/objectWrapper';
 import defaultState from './state';
 
 export const types = {
@@ -27,7 +28,7 @@ export default {
         state.selectedPrivileges = value;
     },
     [types.SET_ROLE_PRIVILEGES](state, value) {
-        state.privileges = value;
+        state.privileges = isObject(value) ? { ...value } : value;
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

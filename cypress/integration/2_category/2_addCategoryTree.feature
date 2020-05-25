@@ -4,11 +4,11 @@ Feature: Category tree adding
   Background:
     Given I am authenticated as "admin"
     Given I open "category-trees/grid" page
-    When I click on "newCategoryTree" button
+    When I click on "new-category-tree" button
     Then Element "modal" is "visible"
 
   Scenario: Add category tree
-    When I fill the "categoryTreeName" input with the "category_tree_1" term
+    When I fill the "category-tree-code" input with the "category_tree_1" term
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal

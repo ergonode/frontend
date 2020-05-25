@@ -4,12 +4,12 @@
  */
 <template>
     <NavigationBarSelectButton
-        data-cy="navBarDropDown"
+        data-cy="nav-bar-dropdown"
         @focus="onFocus">
         <template #input>
             <UserAvatar
-                :image-id="user.avatar_id"
-                :name="user.first_name" />
+                :image-id="user.avatarId"
+                :name="user.firstName" />
             <span
                 class="title"
                 v-text="capitalizedUserFirstName || capitalizedUserLastName" />
@@ -21,7 +21,7 @@
         </template>
         <template #dropdown>
             <NavigationBarUserSelectContent
-                :avatar-id="user.avatar_id"
+                :avatar-id="user.avatarId"
                 :initials="userInitials"
                 :email="user.email" />
         </template>
@@ -58,12 +58,12 @@ export default {
             return this.isFocused ? ARROW.UP : ARROW.DOWN;
         },
         capitalizedUserFirstName() {
-            const { first_name: firstName } = this.user;
+            const { firstName } = this.user;
 
             return toCapitalize(firstName);
         },
         capitalizedUserLastName() {
-            const { last_name: lastName } = this.user;
+            const { lastName } = this.user;
 
             return toCapitalize(lastName);
         },

@@ -58,7 +58,7 @@ export default {
     },
     props: {
         value: {
-            type: [Date, Object],
+            type: Date,
             default: null,
         },
         format: {

@@ -8,7 +8,7 @@ export default function ({ namespace, extraFilters = null }) {
     return {
         data() {
             return {
-                items: [],
+                items: {},
                 codeFilter: '',
             };
         },
@@ -28,11 +28,15 @@ export default function ({ namespace, extraFilters = null }) {
                         limit: 9999,
                         offset: 0,
                         filter,
+                        view: 'list',
                         field: 'code',
                         order: 'ASC',
                     },
                 }).then(({ items }) => {
-                    this.items = items;
+                    this.items = {
+                        ...this.items,
+                        [languageCode]: items,
+                    };
                 });
             },
         },

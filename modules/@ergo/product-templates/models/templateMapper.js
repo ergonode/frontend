@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { getUUID } from '@Core/models/stringWrapper';
+import { SYSTEM_TYPES } from '@Attributes/defaults/attributes';
 
 export function getMappedLayoutElement(
     elementID,
@@ -63,7 +64,7 @@ export function getMappedLayoutSectionElement(
         maxWidth,
         minHeight,
         maxHeight,
-        type: 'SECTION',
+        type: SYSTEM_TYPES.SECTION,
         label: title,
     };
 }
@@ -77,7 +78,7 @@ export function getMappedLayoutElements(elements, elementsDescription, types) {
         } = element;
         const { attribute_id: attrID, required, label } = properties;
         const { x: column, y: row } = position;
-        if (type !== 'SECTION') {
+        if (type !== SYSTEM_TYPES.SECTION) {
             const {
                 code: descCode, label: descLabel,
             } = elementsDescription.find(el => el.id === attrID);
@@ -94,7 +95,7 @@ export function getMappedLayoutElements(elements, elementsDescription, types) {
 
         return getMappedLayoutSectionElement(
             label,
-            types.find(attributeType => attributeType.type === 'SECTION'),
+            types.find(attributeType => attributeType.type === SYSTEM_TYPES.SECTION),
             { row: row + 1, column: column + 1 },
             size,
         );
@@ -123,12 +124,12 @@ export function getMappedLayoutElementsForAPIUpdate(elements) {
         const properties = {};
         let parsedType = type;
 
-        if (type !== 'SECTION') {
+        if (type !== SYSTEM_TYPES.SECTION) {
             properties.attribute_id = id;
             properties.required = required;
         } else {
             properties.label = label;
-            parsedType = 'SECTION';
+            parsedType = SYSTEM_TYPES.SECTION;
         }
 
         return {

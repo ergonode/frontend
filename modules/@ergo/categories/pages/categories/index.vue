@@ -9,7 +9,7 @@
             :is-read-only="$isReadOnly('CATEGORY')">
             <template #mainAction>
                 <Button
-                    data-cy="newCategory"
+                    data-cy="new-category"
                     title="NEW CATEGORY"
                     :size="smallSize"
                     :disabled="!$hasAccess(['CATEGORY_CREATE'])"
