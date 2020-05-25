@@ -30,7 +30,7 @@ import { mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { THEME } from '@Core/defaults/theme';
 
-const deleteAttributeValues = () => import('@Products/services/deleteAttributeValues.service');
+const deleteAttributeValue = () => import('@Products/services/deleteAttributeValue.service');
 
 export default {
     name: 'RestoreAttributeParentModalForm',
@@ -52,7 +52,7 @@ export default {
     data() {
         return {
             isRequestPending: false,
-            restoredElementsIds: [],
+            restoredElement: '',
         };
     },
     computed: {
@@ -65,27 +65,29 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
-        updateRestoredElement(elements) {
-            this.restoredElementsIds = Object.keys(elements);
+        updateRestoredElement(element) {
+            this.restoredElement = element;
         },
         onClose() {
             this.$emit('close');
         },
         onRestore() {
-            if (this.restoredElementsIds.length <= 0) {
-                this.onError({ errors: { restored_elements: ['At least one attribute needed'] } });
+            if (!this.restoredElement) {
+                this.onError({ errors: { restored_elements: ['Please mark attribute to restore'] } });
                 return;
             }
 
-            deleteAttributeValues().then(response => response.default({
+            deleteAttributeValue().then(response => response.default({
                 $axios: this.$axios,
                 $store: this.$store,
                 languageCode: this.language.code,
-                elements: this.restoredElementsIds,
+                attributeId: this.elements.find(
+                    element => element.label === this.restoredElement,
+                ).properties.attribute_id,
             }).then(() => {
                 this.isRequestPending = false;
                 this.removeValidationErrors();
-                this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Values restored' });
+                this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: `${this.restoredElement} value restored` });
                 this.$emit('restore');
                 this.$emit('close');
             }).catch((e) => {

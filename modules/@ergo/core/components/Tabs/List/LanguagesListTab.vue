@@ -11,7 +11,7 @@
         <List>
             <ListScrollableContainer>
                 <LanguagesListElement
-                    v-for="item in items"
+                    v-for="item in items[userLanguageCode]"
                     :key="item.id"
                     :item="item"
                     :is-draggable="isUserAllowedToUpdateTree"

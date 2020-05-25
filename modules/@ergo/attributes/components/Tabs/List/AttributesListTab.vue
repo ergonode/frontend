@@ -24,11 +24,11 @@
         <List>
             <ListScrollableContainer>
                 <AttributesListGroup
-                    v-for="(group, index) in groupsWithItems"
+                    v-for="(group, index) in languageGroups"
                     :key="index"
                     :group="group"
-                    :items-count="groupItemsCounts[group.id]"
-                    :items="items[group.id][language.code]"
+                    :items-count="groupItemsCount[group.id]"
+                    :items="items[language.code][group.id]"
                     :language-code="language.code"
                     :is-expanded="expandedGroupId === group.id"
                     :is-draggable="isUserAllowedToDragAttributes"
@@ -52,6 +52,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { UNASSIGNED_GROUP_ID } from '@Core/defaults/list';
 import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
 
@@ -91,6 +92,15 @@ export default {
         ...mapState('dictionaries', {
             languagesTree: state => state.languagesTree,
         }),
+        languageGroups() {
+            const { code } = this.language;
+
+            if (!code || !this.groups[code]) {
+                return [];
+            }
+
+            return this.groups[code].filter(({ id }) => this.groupItemsCount[id]);
+        },
         isUserAllowedToCreateAttribute() {
             return this.$hasAccess(['ATTRIBUTE_CREATE']);
         },
@@ -130,12 +140,37 @@ export default {
             this.codeFilter = value;
             this.getAllGroupsItems({ languageCode: this.language.code });
         },
-        onSelect(value) {
-            this.language = value;
+        async onSelect(value) {
+            const { code: languageCode } = value;
 
-            this.getGroupsAndExpandedGroupItems({
-                languageCode: value.code,
-            });
+            if (typeof this.groups[languageCode] === 'undefined') {
+                await this.getGroups(value.code);
+            }
+
+            const requests = [];
+
+            if (!this.groups[languageCode].find(({ id }) => id === UNASSIGNED_GROUP_ID)) {
+                requests.push(
+                    this.getUnassignedGroupItems(languageCode),
+                );
+            }
+
+            if (this.expandedGroupId) {
+                const {
+                    id: groupId,
+                } = this.groups[languageCode].find(({ id }) => id === this.expandedGroupId);
+
+                requests.push(
+                    this.getGroupItems({
+                        groupId,
+                        languageCode,
+                    }),
+                );
+            }
+
+            await Promise.all(requests);
+
+            this.language = value;
         },
     },
 };
