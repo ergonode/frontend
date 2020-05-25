@@ -60,7 +60,7 @@
                 @dropColumn="onDropColumn"
                 @insertColumn="onInsertColumn" />
             <GridCollectionLayout
-                v-else-if="isCollectionLayout"
+                v-else-if="isCollectionLayout && collectionData.length"
                 :data="collectionData"
                 :columns-number="collectionLayoutConfig.columnsNumber"
                 :object-fit="collectionLayoutConfig.scaling"
@@ -206,7 +206,7 @@ export default {
         collectionData() {
             const { imageColumn, descriptionColumn } = this.collectionCellBinding;
 
-            if (!(imageColumn && descriptionColumn)) {
+            if (!(imageColumn && descriptionColumn) || !this.data[COLUMN_ACTIONS_ID]) {
                 return [];
             }
 

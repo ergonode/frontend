@@ -9,7 +9,6 @@ import { DATA_LIMIT } from '@Core/defaults/grid';
 import { getParsedFilters, getParsedAdvancedFilters } from '@Core/models/mappers/gridDataMapper';
 import { swapItemPosition, insertValueAtIndex } from '@Core/models/arrayWrapper';
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
-import { getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
 
 export default function ({ path }) {
     return {
@@ -275,7 +274,7 @@ export default function ({ path }) {
                     [key]: value,
                 };
             },
-            getAttributeFilter({ index, languageCode, code }) {
+            async getAttributeFilter({ index, languageCode, code }) {
                 const attributeCode = `${code}:${languageCode}`;
                 const params = {
                     limit: 1,
@@ -283,44 +282,30 @@ export default function ({ path }) {
                     columns: attributeCode,
                 };
 
-                return this.$axios.$get(`${languageCode}/${path}`, { params })
-                    .then(({ columns }) => {
-                        const [attribute] = columns;
-                        const options = attribute.filter && attribute.filter.options
-                            ? getMappedObjectOptions({
-                                options: attribute.filter.options, languageCode,
-                            })
-                            : [];
-                        const filter = {
-                            id: attributeCode,
-                            attributeId: attribute.element_id || '',
-                            languageCode,
-                            type: attribute.filter.type,
-                            label: attribute.label,
-                            parameters: attribute.parameters,
-                            options,
-                            isGhost: false,
-                            value: {
-                                isEmptyRecord: false,
-                            },
-                        };
-                        this.insertFilterAtIndex({
-                            index,
-                            filter,
-                        });
-                        try {
-                            insertCookieAtIndex({
-                                cookies: this.$cookies,
-                                cookieName: ADV_FILTERS_IDS,
-                                index,
-                                data: attributeCode,
-                            });
-                        } catch {
-                            this.$cookies.set(ADV_FILTERS_IDS, attributeCode);
-                        }
+                const advancedFilters = await getAdvancedFiltersData({
+                    $axios: this.$axios,
+                    path: `${languageCode}/${path}`,
+                    params,
+                });
 
-                        this.disableListElement({ languageCode, attributeId: filter.attributeId });
+                const [advancedFilter] = advancedFilters;
+
+                this.insertFilterAtIndex({
+                    index,
+                    filter: advancedFilter,
+                });
+                try {
+                    insertCookieAtIndex({
+                        cookies: this.$cookies,
+                        cookieName: ADV_FILTERS_IDS,
+                        index,
+                        data: attributeCode,
                     });
+                } catch {
+                    this.$cookies.set(ADV_FILTERS_IDS, attributeCode);
+                }
+
+                this.disableListElement({ languageCode, attributeId: advancedFilter.attributeId });
             },
             disableListElement({ languageCode, attributeId }) {
                 if (this.disabledElements[languageCode]

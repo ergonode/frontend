@@ -28,18 +28,14 @@ export default {
         const { languagePrivilegesDefaultCode } = store.state.core;
         const { id } = params;
 
-        await Promise.all([
-            store.dispatch('product/getCategories'),
-            store.dispatch('product/getTemplates'),
-            store.dispatch('product/getProductDraft', { languageCode: languagePrivilegesDefaultCode, id }),
-        ]);
+        await store.dispatch('product/getProductDraft', { languageCode: languagePrivilegesDefaultCode, id });
         await store.dispatch('product/getProductById', id);
     },
     computed: {
         ...mapState('product', {
             id: state => state.id,
             sku: state => state.sku,
-            selectedCategories: state => state.selectedCategories,
+            categories: state => state.categories,
         }),
     },
     destroyed() {
@@ -74,7 +70,7 @@ export default {
             await this.updateProduct({
                 id,
                 data: {
-                    categoryIds: this.selectedCategories.map(category => category.id),
+                    categoryIds: this.categories,
                 },
             });
             await this.applyDraft({

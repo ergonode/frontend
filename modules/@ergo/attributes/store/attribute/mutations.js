@@ -11,7 +11,6 @@ export const types = {
     SET_ATTRIBUTE_PARAMETER: 'SET_ATTRIBUTE_PARAMETER',
     SET_ATTRIBUTE_GROUPS: 'SET_ATTRIBUTE_GROUPS',
     SET_UPDATED_OPTION: 'SET_UPDATED_OPTION',
-    SET_ATTRIBUTE_GROUPS_OPTIONS: 'SET_ATTRIBUTE_GROUPS_OPTIONS',
     SET_ATTRIBUTE_TYPE: 'SET_ATTRIBUTE_TYPE',
     SET_ATTRIBUTE_SCOPE: 'SET_ATTRIBUTE_SCOPE',
     INITIALIZE_OPTIONS: 'INITIALIZE_OPTIONS',
@@ -86,9 +85,6 @@ export default {
     },
     [types.SET_ATTRIBUTE_GROUPS](state, groups) {
         state.groups = groups;
-    },
-    [types.SET_ATTRIBUTE_GROUPS_OPTIONS](state, groupOptions) {
-        state.groupOptions = groupOptions;
     },
     [types.SET_ATTRIBUTE_TYPE](state, type) {
         state.type = type;

@@ -7,11 +7,11 @@
         class="color-picker-content"
         :style="colorPickerContentTemplateStyle">
         <div
-            v-for="(color, index) in options"
+            v-for="(color) in options"
             :key="color"
-            :class="['color', {'color--selected': colorIndex === index}]"
+            :class="['color', {'color--selected': color === value}]"
             :style="{backgroundColor: color}"
-            @click="onSelect(color, index)" />
+            @click="onSelect(color)" />
     </div>
 </template>
 
@@ -28,11 +28,6 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            colorIndex: null,
-        };
-    },
     computed: {
         colorPickerContentTemplateStyle() {
             return {
@@ -40,12 +35,8 @@ export default {
             };
         },
     },
-    created() {
-        this.colorIndex = this.options.findIndex(color => color === this.value);
-    },
     methods: {
-        onSelect(color, index) {
-            this.colorIndex = index;
+        onSelect(color) {
             this.$emit('input', color);
         },
     },

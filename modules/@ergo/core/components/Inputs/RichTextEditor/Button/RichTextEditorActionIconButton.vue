@@ -6,6 +6,7 @@
     <ActionIconButton
         :options="options"
         :size="tinySize"
+        :dismissible="false"
         :theme="secondaryTheme">
         <template #icon="{ color }">
             <IconArrowDropDown :fill-color="color" />

@@ -241,6 +241,7 @@ export default {
                     index: ghostIndex,
                     filter: {
                         isGhost: true,
+                        value: {},
                     },
                 });
                 this.setGhostFilterIndex(ghostIndex);

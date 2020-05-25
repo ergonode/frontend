@@ -28,10 +28,6 @@ export default {
                 limit: 9999,
                 offset: 0,
             }),
-            store.dispatch('roles/getRoles', {
-                limit: 9999,
-                offset: 0,
-            }),
         ]);
         await store.dispatch('transitions/getTransitionById', params);
     },
@@ -89,7 +85,7 @@ export default {
                     onSuccess: () => {
                         this.updateTransition({
                             data: {
-                                roles: this.roles.map(role => role.key),
+                                roles: this.roles,
                             },
                             onSuccess: this.onTransitionUpdated,
                             onError: this.onError,
@@ -102,7 +98,7 @@ export default {
         onConditionCreated(conditionSetId) {
             const propertiesToUpdate = {
                 condition_set: conditionSetId,
-                roles: this.roles.map(role => role.key),
+                roles: this.roles,
             };
 
             this.updateTransition({

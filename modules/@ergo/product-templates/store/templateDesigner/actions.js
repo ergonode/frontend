@@ -7,8 +7,8 @@ import {
     getMappedLayoutElement,
     getMappedLayoutSectionElement,
 } from '@Templates/models/templateMapper';
-import { TYPES, SYSTEM_TYPES } from '@Attributes/defaults/attributes';
-import { SKU_MODEL } from '@Templates/defaults/product';
+import { SYSTEM_TYPES } from '@Attributes/defaults/attributes';
+import { SKU_MODEL_ID } from '@Templates/defaults/product';
 import { types } from './mutations';
 
 export default {
@@ -33,6 +33,9 @@ export default {
                 view: 'list',
             };
 
+            commit(types.SET_DEFAULT_TEXT_ATTRIBUTE, defaultText || SKU_MODEL_ID);
+            commit(types.SET_DEFAULT_IMAGE_ATTRIBUTE, defaultImage);
+
             return Promise.all([
                 this.app.$axios.$get(`${languageCode}/attributes`, { params }).then(({ collection }) => {
                     const elementsDescription = collection.map(
@@ -53,8 +56,6 @@ export default {
                     commit(types.SET_TEMPLATE_DESIGNER_TITLE, name);
                     commit(types.SET_TEMPLATE_DESIGNER_IMAGE, imageID);
                 }),
-                dispatch('getTextAttributes', defaultText),
-                dispatch('getImageAttributes', defaultImage),
             ]);
         });
     },
@@ -72,62 +73,6 @@ export default {
         await this.$setLoader('footerButton');
         await this.app.$axios.$put(`${userLanguageCode}/templates/${id}`, data).then(() => onSuccess()).catch(e => onError(e.data));
         await this.$removeLoader('footerButton');
-    },
-    getTextAttributes({ commit, rootState }, defaultTextAttributeId = null) {
-        const { language: languageCode } = rootState.authentication.user;
-
-        const params = {
-            filter: `type=${TYPES.TEXT}`,
-            view: 'list',
-        };
-
-        return this.app.$axios.$get(`${languageCode}/attributes`, { params }).then(({ collection }) => {
-            const textAttributes = collection.map(attribute => ({
-                id: attribute.id,
-                key: attribute.code,
-                value: attribute.name,
-                hint: attribute.name ? `#${attribute.code}` : '',
-            }));
-
-            commit(types.SET_TEXT_ATTRIBUTES_OPTIONS, [
-                ...textAttributes,
-                SKU_MODEL,
-            ]);
-
-            if (defaultTextAttributeId) {
-                const attribute = textAttributes.find(({ id }) => id === defaultTextAttributeId);
-
-                if (attribute) {
-                    commit(types.SET_DEFAULT_TEXT_ATTRIBUTE, attribute);
-                }
-            }
-        });
-    },
-    getImageAttributes({ commit, rootState }, defaultImageAttributeId = null) {
-        const { language: languageCode } = rootState.authentication.user;
-
-        const params = {
-            filter: `type=${TYPES.IMAGE}`,
-            view: 'list',
-        };
-
-        return this.app.$axios.$get(`${languageCode}/attributes`, { params }).then(({ collection }) => {
-            const imageAttributes = collection.map(attribute => ({
-                id: attribute.id,
-                key: attribute.code,
-                value: attribute.name,
-                hint: attribute.name ? `#${attribute.code}` : '',
-            }));
-            commit(types.SET_IMAGE_ATTRIBUTES_OPTIONS, imageAttributes);
-
-            if (defaultImageAttributeId) {
-                const attribute = imageAttributes.find(({ id }) => id === defaultImageAttributeId);
-
-                if (attribute) {
-                    commit(types.SET_DEFAULT_IMAGE_ATTRIBUTE, attribute);
-                }
-            }
-        });
     },
     getTypes({ commit }, {
         path,

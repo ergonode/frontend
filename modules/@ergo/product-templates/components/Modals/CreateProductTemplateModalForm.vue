@@ -44,17 +44,9 @@ export default {
             return THEME.SECONDARY;
         },
     },
-    created() {
-        Promise.all([
-            this.getTextAttributes(),
-            this.getImageAttributes(),
-        ]);
-    },
     methods: {
         ...mapActions('templateDesigner', [
             'clearStorage',
-            'getTextAttributes',
-            'getImageAttributes',
         ]),
         onClose() {
             this.clearStorage();

@@ -11,7 +11,9 @@ describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent', () => {
     beforeEach(() => {
         wrapper = shallowMount(GridAdvancedFilterTextContent, {
             propsData: {
-                filter: null,
+                filter: {
+                    value: '',
+                },
             },
         });
     });
@@ -28,7 +30,9 @@ describe('Grid/AdvancedFilters/Contents/GridAdvancedFilterTextContent', () => {
 
         it('Has value', () => {
             wrapper.setProps({
-                value: { [FILTER_OPERATOR.EQUAL]: 'Test value' },
+                filter: {
+                    value: { [FILTER_OPERATOR.EQUAL]: 'Test value' },
+                },
             });
 
             expect(wrapper.vm.filterValue).toBe('Test value');

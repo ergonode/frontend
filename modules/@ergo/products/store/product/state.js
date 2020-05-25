@@ -10,7 +10,6 @@ export default () => ({
     status: null,
     workflow: [],
     template: null,
-    selectedCategories: [],
-    templates: [],
     categories: [],
+    templates: [],
 });

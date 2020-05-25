@@ -25,7 +25,7 @@ export default {
     props: {
         isEmptyRecord: {
             type: Boolean,
-            required: true,
+            default: false,
         },
     },
     methods: {

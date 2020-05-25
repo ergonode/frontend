@@ -29,7 +29,7 @@ export default async function ({
         code,
         scope,
         type: typeKey,
-        groups: groups.map(group => group.id),
+        groups,
     };
 
     if (!isEmpty(options)) {

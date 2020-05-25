@@ -20,7 +20,7 @@
                     <ListElementDescription>
                         <ListElementTitle
                             :small="true"
-                            :hint="option.hint"
+                            :hint="option.value ? `#${option.key} ${filter.languageCode}` : ''"
                             :title="option.value || `#${option.key}`" />
                     </ListElementDescription>
                 </template>
@@ -54,10 +54,6 @@ export default {
         filter: {
             type: Object,
             required: true,
-        },
-        languageCode: {
-            type: String,
-            default: '',
         },
     },
     data() {
@@ -102,7 +98,7 @@ export default {
                 this.selectedOptions[index] = value.id;
             }
 
-            this.$emit('input', { value: Object.values(this.selectedOptions).join(', '), operator: FILTER_OPERATOR.EQUAL });
+            this.$emit('input', { value: Object.values(this.selectedOptions).join(', '), key: FILTER_OPERATOR.EQUAL });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

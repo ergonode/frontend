@@ -26,10 +26,6 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('roles/getRoles', {
-            limit: 9999,
-            offset: 0,
-        });
         await store.dispatch('users/getUserById', {
             userId: params.id,
         });
@@ -96,7 +92,7 @@ export default {
                 language: getKeyByValue(this.languages, this.language),
                 password: this.password,
                 passwordRepeat: this.passwordRepeat,
-                roleId: this.role.id,
+                roleId: this.role,
                 isActive: this.isActive,
                 languagePrivilegesCollection: deepmerge(
                     activeLanguages,

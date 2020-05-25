@@ -11,5 +11,4 @@ export default () => ({
     parameter: null,
     options: {},
     updatedOptions: {},
-    groupOptions: [],
 });

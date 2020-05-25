@@ -15,7 +15,7 @@
                 <ListElementDescription>
                     <ListElementTitle
                         :small="true"
-                        :hint="option.value ? `#${option.key} ${languageCode}` : ''"
+                        :hint="option.value ? `#${option.key} ${filter.languageCode}` : ''"
                         :title="option.value || `#${option.key}`" />
                 </ListElementDescription>
             </ListElement>
@@ -45,10 +45,6 @@ export default {
             type: Object,
             required: true,
         },
-        languageCode: {
-            type: String,
-            default: '',
-        },
     },
     data() {
         return {
@@ -74,7 +70,7 @@ export default {
                 .findIndex(option => option.key === this.filterValue);
         },
         onSelectValue(value) {
-            this.$emit('input', { value: value.key, operator: FILTER_OPERATOR.EQUAL });
+            this.$emit('input', { value: value.key, key: FILTER_OPERATOR.EQUAL });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);

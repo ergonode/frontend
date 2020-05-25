@@ -83,15 +83,15 @@
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[languageFieldKey]"
                     @input="onLanguageChange" />
-                <TranslationSelect
+                <TranslationLazySelect
                     :value="role"
                     :solid="true"
                     :required="true"
                     :regular="true"
                     label="Role"
-                    :options="roles"
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[roleIdFieldKey]"
+                    :fetch-options-request="getRolesOptionsRequest"
                     @input="onRoleChange" />
             </FormSection>
         </template>
@@ -101,6 +101,8 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 
+const getRolesOptions = () => import('@Users/services/getRolesOptions.service');
+
 export default {
     name: 'UserForm',
     components: {
@@ -109,7 +111,7 @@ export default {
         TextField: () => import('@Core/components/Inputs/TextField'),
         Toggler: () => import('@Core/components/Inputs/Toggler/Toggler'),
         Select: () => import('@Core/components/Inputs/Select/Select'),
-        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
+        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
     },
     data() {
         return {
@@ -122,9 +124,6 @@ export default {
     computed: {
         ...mapState('dictionaries', {
             languages: state => state.languages,
-        }),
-        ...mapState('roles', {
-            roles: state => state.roles,
         }),
         ...mapState('users', {
             userID: state => state.id,
@@ -176,6 +175,11 @@ export default {
         ...mapActions('users', [
             'setAction',
         ]),
+        getRolesOptionsRequest() {
+            return getRolesOptions().then(response => response.default(
+                { $axios: this.$axios, $store: this.$store },
+            ));
+        },
         onLanguageChange(language) {
             this.setAction({ key: 'language', value: language });
         },

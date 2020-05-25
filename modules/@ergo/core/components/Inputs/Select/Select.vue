@@ -66,10 +66,12 @@
             @dismiss="onDismiss"
             @clear="onClear"
             @search="onSearch"
-            @searchFocus="onSearchFocused"
-            @input="onSelectValue">
+            @input="onSelectValue"
+            @clickOutside="onClickOutside">
             <template #dropdown>
-                <slot name="dropdown" />
+                <slot
+                    name="dropdown"
+                    :on-select-value-callback="onSelectValue" />
             </template>
             <template #option="{ option, isSelected, index }">
                 <slot
@@ -201,11 +203,10 @@ export default {
         return {
             selectedOptions: {},
             searchResult: '',
+            isBlurringNeeded: false,
             isMouseMoving: false,
             isMenuActive: false,
-            isClickedOutside: false,
             associatedLabel: '',
-            isSearchFocused: false,
             hasAnyValueSelected: false,
             needsToRender: false,
             offset: {},
@@ -272,12 +273,16 @@ export default {
             handler() {
                 let selectedOptions = {};
 
-                if (this.multiselect && this.value) {
+                if (Array.isArray(this.value) && this.value.length) {
                     this.value.forEach((option) => {
                         selectedOptions[JSON.stringify(option)] = option;
                     });
-                } else if (this.value || this.value === 0) {
+                    this.hasAnyValueSelected = true;
+                } else if (!Array.isArray(this.value) && (this.value || this.value === 0)) {
                     selectedOptions = { [JSON.stringify(this.value)]: this.value };
+                    this.hasAnyValueSelected = true;
+                } else {
+                    this.hasAnyValueSelected = false;
                 }
 
                 this.selectedOptions = selectedOptions;
@@ -291,11 +296,7 @@ export default {
             });
         }
 
-        this.hasAnyValueSelected = Object.keys(this.selectedOptions).length > 0;
         this.associatedLabel = `input-${this._uid}`;
-    },
-    beforeDestroy() {
-        window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
         getDropDownOffset() {
@@ -307,29 +308,34 @@ export default {
                 x, y, width, height,
             };
         },
+        blur() {
+            this.isMenuActive = false;
+            this.searchResult = '';
+
+            this.onSearch(this.searchResult);
+            this.$emit('focus', false);
+        },
         onSearch(value) {
             this.$emit('search', value);
         },
-        onSearchFocused(isFocused) {
-            this.isSearchFocused = isFocused;
-        },
         onClear() {
             this.selectedOptions = {};
-            this.hasAnyValueSelected = false;
 
             this.$emit('input', this.multiselect ? [] : '');
         },
         onSelectValue(value) {
-            this.hasAnyValueSelected = true;
-
             this.$emit('input', value);
         },
         onDismiss() {
-            this.isClickedOutside = true;
-
-            this.onBlur();
+            this.isBlurringNeeded = true;
+            if (document.activeElement === this.$refs.input) {
+                this.$refs.input.blur();
+            } else {
+                this.blur();
+            }
         },
         onFocus() {
+            this.isBlurringNeeded = false;
             this.offset = this.getDropDownOffset();
             this.isMenuActive = true;
 
@@ -337,25 +343,17 @@ export default {
                 this.needsToRender = true;
             }
 
-            window.addEventListener('click', this.onClickOutside);
-
             this.$emit('focus', true);
         },
         onBlur() {
-            if (this.isClickedOutside) {
-                this.isMenuActive = false;
-                this.searchResult = '';
-
-                window.removeEventListener('click', this.onClickOutside);
-
-                this.onSearch(this.searchResult);
-                this.$emit('focus', false);
+            if (this.isBlurringNeeded) {
+                this.blur();
             }
         },
         onKeyDown(event) {
             // TAB
             if (event.keyCode === 9) {
-                this.isClickedOutside = true;
+                this.isBlurringNeeded = true;
                 this.$refs.input.blur();
             }
         },
@@ -372,7 +370,7 @@ export default {
 
             if (this.dismissible) {
                 if (this.isMenuActive) {
-                    this.isClickedOutside = true;
+                    this.isBlurringNeeded = true;
                     this.$refs.input.blur();
                 } else {
                     this.$refs.input.focus();
@@ -386,29 +384,19 @@ export default {
         onMouseMove() {
             this.isMouseMoving = true;
         },
-        onClickOutside(event) {
-            const footerElement = this.$refs.menu.$el.querySelector('.dropdown-footer');
-            const isClickedInsideMenu = this.$refs.menu.$el.contains(event.target);
+        onClickOutside({ event, isClickedOutside }) {
             const isClickedInsideActivator = this.$refs.activator.contains(event.target);
-            const isClickedInsideMenuFooter = footerElement
-                ? footerElement.contains(event.target)
-                : false;
-            this.isClickedOutside = !isClickedInsideMenu
-                && !isClickedInsideActivator;
 
-            if (this.isClickedOutside || (isClickedInsideMenu
-                && !isClickedInsideMenuFooter
-                && !this.multiselect
-                && this.dismissible
-                && !this.isSearchFocused)
-            ) {
-                this.isMenuActive = false;
-                this.searchResult = '';
+            if (isClickedOutside
+                || (isClickedInsideActivator && !this.dismissible)
+                || (!isClickedOutside && !this.multiselect && this.dismissible)) {
+                this.isBlurringNeeded = true;
 
-                window.removeEventListener('click', this.onClickOutside);
-
-                this.onSearch(this.searchResult);
-                this.$emit('focus', false);
+                if (document.activeElement === this.$refs.input) {
+                    this.$refs.input.blur();
+                } else {
+                    this.blur();
+                }
             }
         },
     },
