@@ -1,13 +1,13 @@
-<p align="center">
+<p align="center" style="padding: 20px; background: #252832">
   <a href="https://ergonode.com" rel="noopener noreferrer">
-    <img width="300" src="https://ergonode.com/wp-content/themes/ergonode/assets/img/logo.svg" alt="Egronode logo">
+    <img width="300" src="https://ergonode.com/img/logo.svg" alt="Egronode logo">
   </a>
 </p>
 <p align="center">Desktop PWA Ready Product Information Management Platform</p>
 
 <p align="center">
   <a href="https://ergonode.com">
-    <img src="https://img.shields.io/badge/version-0.7.0-4c9aff.svg" alt="Version">
+    <img src="https://img.shields.io/badge/version-0.8.0-4c9aff.svg" alt="Version">
   </a>
   <a href="https://ergonode.com">
     <img src="https://img.shields.io/badge/version%20code-Vegas-00bc87.svg" alt="Code Version">
