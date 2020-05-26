@@ -9,23 +9,25 @@
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
                 <TextField
-                    :value="fieldData.value"
+                    :value="fieldData"
                     solid
                     regular
                     :input="{ type: 'number' }"
                     :label="label"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
-                    :is-information-label="false"
                     :required="properties.required"
                     :disabled="disabled"
                     :description="properties.hint"
                     @focus="onFocus"
-                    @input="debounceValueChange">
+                    @input="onValueChange">
                     <template #append>
                         <TextFieldSuffix
                             v-if="parameter"
                             :suffix="parameter" />
+                    </template>
+                    <template #informationLabel>
+                        <div />
                     </template>
                 </TextField>
             </template>
@@ -35,8 +37,6 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { debounce } from 'debounce';
-import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import TextField from '@Core/components/Inputs/TextField';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
@@ -80,26 +80,14 @@ export default {
             required: true,
         },
     },
-    data() {
-        return {
-            debounceValueChange: null,
-        };
-    },
     computed: {
         ...mapState('product', {
-            data: state => state.data,
             draft: state => state.draft,
         }),
         fieldData() {
             const { attribute_code } = this.properties;
-            const check = (data, draftValue) => data !== draftValue;
-            const getMappedValue = fieldDataCompose(check);
 
-            return getMappedValue({
-                data: this.data[attribute_code],
-                draft: this.draft[this.languageCode][attribute_code],
-                defaultValue: '',
-            });
+            return this.draft[this.languageCode][attribute_code] || '';
         },
         parameter() {
             if (!this.properties.parameters) return null;
@@ -112,9 +100,6 @@ export default {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
     },
-    created() {
-        this.debounceValueChange = debounce(this.onValueChange, 500);
-    },
     methods: {
         ...mapActions('product', [
             'setDraftValue',
@@ -126,7 +111,7 @@ export default {
                     languageCode: this.languageCode,
                     productId: this.$route.params.id,
                     elementId: this.properties.attribute_id,
-                    value: this.fieldData.value,
+                    value: this.fieldData,
                 });
             }
         },

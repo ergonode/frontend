@@ -4,7 +4,7 @@
  */
 <template>
     <div class="years">
-        <DatePickerCalendarNode
+        <DatePickerNode
             v-for="year in years"
             :key="year"
             :selected="isSelectedYear(year)"
@@ -15,12 +15,12 @@
 </template>
 
 <script>
-import DatePickerCalendarNode from '@Core/components/Inputs/DatePicker/DatePickerCalendarNode';
+import DatePickerNode from '@Core/components/Inputs/DatePicker/Node/DatePickerNode';
 
 export default {
     name: 'DatePickerYears',
     components: {
-        DatePickerCalendarNode,
+        DatePickerNode,
     },
     props: {
         years: {
@@ -38,7 +38,7 @@ export default {
     },
     methods: {
         onClick(year) {
-            this.$emit('yearSelected', year);
+            this.$emit('select', year);
         },
         isSelectedYear(year) {
             return this.selectedYear === year;

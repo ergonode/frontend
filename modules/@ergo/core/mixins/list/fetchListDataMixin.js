@@ -4,21 +4,22 @@
  */
 import { getListItems } from '@Core/services/list/getList.service';
 
-export default function ({ namespace }) {
+export default function ({ namespace, extraFilters = null }) {
     return {
         data() {
             return {
-                items: [],
+                items: {},
                 codeFilter: '',
             };
         },
         async created() {
             const { language: languageCode } = this.$store.state.authentication.user;
+
             await this.getItems(languageCode);
         },
         methods: {
             getItems(languageCode) {
-                const filter = this.codeFilter ? `code=${this.codeFilter}` : '';
+                const filter = this.codeFilter ? `code=${this.codeFilter};${extraFilters}` : extraFilters;
 
                 return getListItems({
                     $axios: this.$axios,
@@ -27,11 +28,15 @@ export default function ({ namespace }) {
                         limit: 9999,
                         offset: 0,
                         filter,
+                        view: 'list',
                         field: 'code',
                         order: 'ASC',
                     },
                 }).then(({ items }) => {
-                    this.items = items;
+                    this.items = {
+                        ...this.items,
+                        [languageCode]: items,
+                    };
                 });
             },
         },

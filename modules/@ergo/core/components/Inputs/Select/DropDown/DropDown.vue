@@ -3,18 +3,25 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        class="dropdown"
-        :style="position">
-        <slot name="body" />
-        <slot name="footer" />
-    </div>
+    <ClickOutsideGlobalEvent @clickOutside="onClickOutside">
+        <div
+            class="dropdown"
+            :style="positionStyle"
+            ref="dropdown">
+            <slot name="body" />
+            <slot name="footer" />
+        </div>
+    </ClickOutsideGlobalEvent>
 </template>
 
 <script>
+import ClickOutsideGlobalEvent from '@Core/components/Events/ClickOutsideGlobalEvent';
 
 export default {
     name: 'DropDown',
+    components: {
+        ClickOutsideGlobalEvent,
+    },
     props: {
         fixed: {
             type: Boolean,
@@ -29,43 +36,64 @@ export default {
     },
     data() {
         return {
-            position: {},
+            positionStyle: null,
         };
     },
+    watch: {
+        offset: {
+            immediate: true,
+            handler() {
+                this.$nextTick(() => {
+                    window.requestAnimationFrame(() => {
+                        const { innerHeight } = window;
+                        const position = { left: `${this.offset.x}px` };
+                        let maxHeight = 200;
+
+                        if (this.fixed) {
+                            position.maxHeight = `${maxHeight}px`;
+                            position.width = `${this.offset.width}px`;
+                        } else {
+                            maxHeight = this.$el.clientHeight;
+                        }
+
+                        if (innerHeight - this.offset.y < maxHeight) {
+                            const offsetBottom = innerHeight - this.offset.y;
+
+                            position.bottom = `${offsetBottom}px`;
+                        } else {
+                            position.top = `${this.offset.y + this.offset.height}px`;
+                        }
+
+                        this.positionStyle = position;
+                    });
+                });
+            },
+        },
+    },
     mounted() {
-        window.requestAnimationFrame(() => {
-            const {
-                height,
-            } = this.$el.getBoundingClientRect();
-            const { innerHeight } = window;
-            let maxHeight = 200;
-            const position = { left: `${this.offset.x}px` };
+        const app = document.documentElement.querySelector('.app');
 
-            if (this.fixed) {
-                position.maxHeight = `${maxHeight}px`;
-                position.width = `${this.offset.width}px`;
-            } else {
-                maxHeight = height;
-            }
+        app.appendChild(this.$refs.dropdown);
+    },
+    beforeDestroy() {
+        const app = document.documentElement.querySelector('.app');
 
-            if (innerHeight - this.offset.y < maxHeight) {
-                const offsetBottom = innerHeight - this.offset.y;
-
-                position.bottom = `${offsetBottom}px`;
-            } else {
-                position.top = `${this.offset.y + this.offset.height}px`;
-            }
-
-            this.position = position;
-        });
+        if (app.contains(this.$refs.dropdown)) {
+            app.removeChild(this.$refs.dropdown);
+        }
+    },
+    methods: {
+        onClickOutside(payload) {
+            this.$emit('clickOutside', payload);
+        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
     .dropdown {
-        position: fixed;
-        z-index: $Z_INDEX_DROP_DOWN;
+        position: absolute;
+        z-index: $Z_INDEX_MAX;
         display: flex;
         flex-direction: column;
         background-color: $WHITE;

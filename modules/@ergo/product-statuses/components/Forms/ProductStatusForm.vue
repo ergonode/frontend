@@ -33,6 +33,7 @@
                     :error-messages="errorMessages[colorFieldKey]"
                     regular
                     clearable
+                    :dismissible="false"
                     :options="colorOptions"
                     :fixed-content="false"
                     label="Badge color"
@@ -52,7 +53,7 @@ export default {
     name: 'ProductStatusForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/FormSection'),
+        FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
         ColorPicker: () => import('@Core/components/Inputs/ColorPicker/ColorPicker'),
         CheckBox: () => import('@Core/components/Inputs/CheckBox'),

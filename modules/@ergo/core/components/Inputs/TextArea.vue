@@ -40,10 +40,12 @@
                     :hint="description" />
             </div>
         </div>
-        <label
-            v-if="informationLabel"
-            :class="informationLabelClasses"
-            v-text="informationLabel" />
+        <slot name="informationLabel">
+            <label
+                v-if="informationLabel"
+                :class="informationLabelClasses"
+                v-text="informationLabel" />
+        </slot>
     </div>
 </template>
 

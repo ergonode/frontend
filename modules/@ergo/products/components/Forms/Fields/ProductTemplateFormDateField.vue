@@ -9,14 +9,13 @@
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
                 <DatePicker
-                    :value="fieldData.value"
+                    :value="fieldData"
                     solid
                     regular
                     :label="label"
                     :placeholder="properties.placeholder"
                     :foramt="parameter"
                     :error-messages="errorMessages"
-                    :is-information-label="false"
                     :required="properties.required"
                     :disabled="disabled"
                     :description="properties.hint"
@@ -27,6 +26,9 @@
                             v-if="parameter"
                             :suffix="parameter" />
                     </template>
+                    <template #informationLabel>
+                        <div />
+                    </template>
                 </DatePicker>
             </template>
         </FormValidatorField>
@@ -35,8 +37,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { fieldDataCompose } from '@Products/models/productMapper';
-import { format as formatDate, parse as parseDate } from 'date-fns';
+import { format as formatDate } from 'date-fns';
 import { DEFAULT_FORMAT } from '@Core/models/calendar/calendar';
 import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
 import DatePicker from '@Core/components/Inputs/DatePicker/DatePicker';
@@ -83,23 +84,13 @@ export default {
     },
     computed: {
         ...mapState('product', {
-            data: state => state.data,
             draft: state => state.draft,
         }),
         fieldData() {
             const { attribute_code } = this.properties;
-            const check = (data, draftValue) => data !== draftValue;
-            const getMappedValue = fieldDataCompose(check);
-            const { isDraft, value } = getMappedValue({
-                data: this.data[attribute_code],
-                draft: this.draft[this.languageCode][attribute_code],
-                defaultValue: null,
-            });
+            const value = this.draft[this.languageCode][attribute_code];
 
-            return {
-                isDraft,
-                value: value ? parseDate(value, DEFAULT_FORMAT, new Date()) : null,
-            };
+            return value ? new Date(value) : null;
         },
         parameter() {
             if (!this.properties.parameters) return DEFAULT_FORMAT;
@@ -123,8 +114,8 @@ export default {
                     languageCode: this.languageCode,
                     productId: this.$route.params.id,
                     elementId: this.properties.attribute_id,
-                    value: this.fieldData.value
-                        ? formatDate(this.fieldData.value, DEFAULT_FORMAT)
+                    value: this.fieldData
+                        ? formatDate(this.fieldData, DEFAULT_FORMAT)
                         : '',
                 });
             }

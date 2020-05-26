@@ -9,11 +9,17 @@
             :id="associatedLabel"
             ref="checkbox"
             type="checkbox"
-            :checked="value"
+            :value="label"
             :disabled="disabled"
-            @input="onValueChange">
+            v-model="checkValue">
         <label :for="associatedLabel">
-            <div class="checkbox__check" />
+            <svg
+                class="checkbox__box"
+                viewBox="0 0 14 10">
+                <path
+                    class="checkbox__mark"
+                    :d="markDrawingCommands" />
+            </svg>
             <span
                 v-if="label"
                 class="checkbox__label"
@@ -24,13 +30,12 @@
 </template>
 
 <script>
-import { STATE } from '@Core/defaults/inputs/checkbox';
 
 export default {
     name: 'CheckBox',
     props: {
         value: {
-            type: [Boolean, Number],
+            type: [Array, Boolean, Number],
             default: false,
         },
         disabled: {
@@ -47,6 +52,19 @@ export default {
             associatedLabel: '',
         };
     },
+    computed: {
+        checkValue: {
+            get() {
+                return this.value;
+            },
+            set(value) {
+                this.$emit('input', value);
+            },
+        },
+        markDrawingCommands() {
+            return 'M5.22179 9.44443L0.777344 5.17093L2.02179 3.97435L5.22179 7.05127L11.9773 0.555542L13.2218 1.75212L5.22179 9.44443Z';
+        },
+    },
     watch: {
         value() {
             this.setIndeterminateState();
@@ -59,18 +77,6 @@ export default {
     methods: {
         setIndeterminateState() {
             this.$refs.checkbox.indeterminate = this.value === 2;
-        },
-        onValueChange() {
-            if (Number.isInteger(this.value)) {
-                if (this.value === STATE.CHECK_ANY) {
-                    this.$emit('input', STATE.UNCHECK);
-                } else {
-                    const value = this.value === STATE.UNCHECK ? this.value + 1 : this.value - 1;
-                    this.$emit('input', value);
-                }
-            } else {
-                this.$emit('input', !this.value);
-            }
         },
     },
 };
@@ -102,7 +108,7 @@ export default {
             cursor: pointer;
         }
 
-        &__check {
+        &__box {
             position: relative;
             display: flex;
             width: 16px;
@@ -112,6 +118,10 @@ export default {
             cursor: pointer;
         }
 
+        &__mark {
+            fill: none;
+        }
+
         & input[type="checkbox"] {
             position: absolute;
             top: 0;
@@ -119,81 +129,54 @@ export default {
             margin: 0;
             opacity: 0;
 
-            &:focus + label {
-                #{$checkbox}__check {
+            &:checked:focus + label {
+                #{$checkbox}__box {
                     box-shadow: $ELEVATOR_HOVER_FOCUS;
-                }
-            }
-
-            &:checked + label, &:indeterminate + label {
-                #{$checkbox}__check::before {
-                    position: absolute;
-                    transform: rotate(45deg);
-                    content: "";
-                }
-            }
-
-            &:not(:indeterminate):checked + label {
-                #{$checkbox}__check::before {
-                    width: 4px;
-                    height: 8px;
-                    border-right: 2px solid $WHITE;
-                    border-bottom: 2px solid $WHITE;
-                }
-            }
-
-            &:indeterminate + label {
-                #{$checkbox}__check::before {
-                    width: 10px;
-                    height: 2px;
-                    background-color: $WHITE;
-                    transform: none;
                 }
             }
 
             &:not(:disabled) {
                 &:checked + label, &:indeterminate + label {
-                    #{$checkbox}__check {
-                        border: none;
+                    #{$checkbox}__box {
                         background-color: $GREEN;
+                        border-color: $GREEN;
                     }
-                }
 
-                &:not(:indeterminate):checked + label {
-                    #{$checkbox}__check::before {
-                        top: 2px;
-                        left: 5px;
+                    #{$checkbox}__mark {
+                        fill: $WHITE;
                     }
                 }
 
                 &:indeterminate + label {
-                    #{$checkbox}__check::before {
-                        top: 7px;
-                        left: 3px;
+                    #{$checkbox}__mark {
+                        stroke: $WHITE;
                     }
+                }
+            }
+
+            &:indeterminate + label {
+                #{$checkbox}__mark {
+                    d: path("M2,5 h10");
+                    stroke-width: 2px;
                 }
             }
 
             &:disabled {
                 & + label {
-                    #{$checkbox}__check {
+                    #{$checkbox}__box {
                         background-color: $GREY_LIGHT;
                     }
                 }
 
                 &:checked + label {
-                    #{$checkbox}__check::before {
-                        top: 1px;
-                        left: 4px;
-                        border-color: $GREY_DARK;
+                    #{$checkbox}__mark {
+                        fill: $GREY_DARK;
                     }
                 }
 
                 &:indeterminate + label {
-                    #{$checkbox}__check::before {
-                        top: 6px;
-                        left: 2px;
-                        background-color: $GREY_DARK;
+                    #{$checkbox}__mark {
+                        stroke: $GREY_DARK;
                     }
                 }
             }

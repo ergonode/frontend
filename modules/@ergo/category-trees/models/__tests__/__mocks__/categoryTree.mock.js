@@ -15,17 +15,17 @@ Tree example
 export const parsingTree = [
     {
         category_id: 'a72bdcce-6bd6-5663-99ae-7bad19307aa6',
-        childrens: [
+        children: [
             {
                 category_id: '4c59d19f-e569-576b-a67f-e2d2094b19f5',
-                childrens: [
+                children: [
                     {
                         category_id: 'fb471778-cbe7-56ca-ace7-0edd936092d7',
-                        childrens: [],
+                        children: [],
                     },
                     {
                         category_id: 'f9e4f5a5-7a87-5efc-a680-cfbdb68b869f',
-                        childrens: [],
+                        children: [],
                     },
                 ],
             },
@@ -33,7 +33,7 @@ export const parsingTree = [
     },
     {
         category_id: 'b07154ca-3e19-5d69-9238-8fe2b0c5e49e',
-        childrens: [],
+        children: [],
     },
 ];
 

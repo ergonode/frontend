@@ -2,6 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+import deepmerge from 'deepmerge';
 import defaultState from './state';
 
 export const types = {
@@ -12,6 +13,7 @@ export const types = {
     SET_DRAFT_ROW_VALUES: 'SET_DRAFT_ROW_VALUES',
     SET_DRAFTS: 'SET_DRAFTS',
     REMOVE_DRAFT_ROW: 'REMOVE_DRAFT_ROW',
+    REMOVE_DRAFTS: 'REMOVE_DRAFTS',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 export default {
@@ -22,7 +24,7 @@ export default {
         state.drafts[rowId][columnId] = {};
     },
     [types.SET_DRAFTS_VALUES](state, drafts) {
-        state.drafts = { ...state.drafts, ...drafts };
+        state.drafts = deepmerge(state.drafts, drafts);
     },
     [types.SET_DRAFT_ROW_VALUES](state, { rowId, value }) {
         state.drafts[rowId] = value;
@@ -36,6 +38,9 @@ export default {
     },
     [types.REMOVE_DRAFT_ROW](state, rowId) {
         delete state.drafts[rowId];
+    },
+    [types.REMOVE_DRAFTS](state) {
+        state.drafts = {};
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();

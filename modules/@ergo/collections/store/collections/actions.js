@@ -11,26 +11,13 @@ export default {
     setType({ commit }, type) {
         commit(types.SET_TYPE, type);
     },
-    getCollectionTypes({ commit, rootState }) {
-        const { language: userLanguageCode } = rootState.authentication.user;
-
-        return this.app.$axios.$get(`${userLanguageCode}/collections/type`).then(({ collection }) => {
-            commit(types.SET_COLLECTION_TYPES_OPTIONS, collection.map(type => ({
-                id: type.id,
-                key: type.code,
-                value: type.name,
-                hint: type.name ? `#${type.code}` : '',
-            })));
-        });
-    },
     getCollectionById(
         {
-            commit, dispatch, state, rootState,
+            commit, dispatch, rootState,
         },
         { collectionId, onError = () => {} },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        const { types: collectionTypes } = state;
 
         return this.app.$axios.$get(`${userLanguageCode}/collections/${collectionId}`).then(({
             id,
@@ -46,9 +33,7 @@ export default {
 
             commit(types.SET_ID, id);
             commit(types.SET_CODE, code);
-            commit(types.SET_TYPE, collectionTypes.find(
-                type => type.id === type_id,
-            ));
+            commit(types.SET_TYPE, type_id);
 
             dispatch('translations/setTabTranslations', translations, { root: true });
         }).catch(onError);

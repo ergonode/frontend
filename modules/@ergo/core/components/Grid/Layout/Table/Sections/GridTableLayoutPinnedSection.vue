@@ -26,6 +26,8 @@ export default {
         right: 0;
         z-index: $Z_INDEX_LVL_3;
         display: flex;
+        width: max-content;
+        height: fit-content;
 
         &--pinned {
             box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.2);

@@ -18,25 +18,25 @@
                     :error-messages="errorMessages[skuFieldKey]"
                     :disabled="isDisabled || isDisabledByPrivileges"
                     @input="setProductSku" />
-                <TranslationSelect
+                <TranslationLazySelect
                     :value="template"
                     :solid="true"
                     :required="true"
                     :regular="true"
                     label="Product template"
                     :error-messages="errorMessages[templateIdFieldKey]"
-                    :options="templateOptions"
                     :disabled="isDisabled || isDisabledByPrivileges"
+                    :fetch-options-request="getTemplatesOptionsRequest"
                     @input="setProductTemplate" />
-                <TranslationSelect
-                    :value="selectedCategories"
+                <TranslationLazySelect
+                    :value="categories"
                     :solid="true"
                     :regular="true"
                     :multiselect="true"
                     :clearable="true"
                     label="Category"
-                    :options="categoryOptions"
                     :disabled="isDisabledByPrivileges"
+                    :fetch-options-request="getCategoriesOptionsRequest"
                     @input="setProductCategories" />
             </FormSection>
         </template>
@@ -46,13 +46,16 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 
+const getCategoriesOptions = () => import('@Categories/services/getCategoriesOptions.service');
+const getTemplatesOptions = () => import('@Templates/services/getTemplatesOptions.service');
+
 export default {
     name: 'ProductForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/FormSection'),
+        FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
-        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
+        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
     },
     computed: {
         ...mapState('authentication', {
@@ -62,20 +65,8 @@ export default {
             productID: state => state.id,
             sku: state => state.sku,
             template: state => state.template,
-            templates: state => state.templates,
-            selectedCategories: state => state.selectedCategories,
             categories: state => state.categories,
         }),
-        templateOptions() {
-            return this.templates.map(({ id, name }) => ({
-                id, key: '', value: name, hint: '',
-            }));
-        },
-        categoryOptions() {
-            return this.categories.map(({ id, code, name }) => ({
-                id, key: code, value: name, hint: name ? `#${code} ${this.userLanguageCode}` : '',
-            }));
-        },
         isDisabled() {
             return Boolean(this.productID);
         },
@@ -96,6 +87,16 @@ export default {
             'setProductTemplate',
             'setProductCategories',
         ]),
+        getCategoriesOptionsRequest() {
+            return getCategoriesOptions().then(response => response.default(
+                { $axios: this.$axios, $store: this.$store },
+            ));
+        },
+        getTemplatesOptionsRequest() {
+            return getTemplatesOptions().then(response => response.default(
+                { $axios: this.$axios, $store: this.$store },
+            ));
+        },
     },
 };
 </script>

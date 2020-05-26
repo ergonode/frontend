@@ -31,7 +31,11 @@ footer, header, hgroup, menu, nav, section {
 html, body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-family:
+        "Inter UI",
+        sans-serif;
     overflow: hidden;
+    -webkit-text-size-adjust: 100%; //fix for iOS
 }
 
 body {
@@ -48,7 +52,6 @@ blockquote, q {
 
 blockquote:before, blockquote:after,
 q:before, q:after {
-    content: "";
     content: none;
 }
 

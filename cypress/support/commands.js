@@ -2,29 +2,26 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
+Cypress.Commands.add('apiRequest', (type, url) => {
+    cy.server();
+    cy.route(type, `${Cypress.env('apiServer')}${url}`);
+});
 
 Cypress.Commands.add('login', (email, pass) => {
     cy.visit('');
-    cy.server();
-    cy.route('POST', '/api/v1/login').as('postLogin');
-    cy.get('input[aria-label="Username"]').type(email).should('have.value', email);
-    cy.get('input[aria-label="Password"]').type(pass).should('have.value', pass);
-    cy.get('button').contains('span', 'Log in').click();
+    cy.apiRequest('POST', 'login').as('postLogin');
+    cy.get('[data-cy=login-email]').find('input').type(email).should('have.value', email);
+    cy.get('[data-cy=login-pass]').find('input').type(pass).should('have.value', pass);
+    cy.get('[data-cy=login-button]').click();
     cy.wait('@postLogin').its('status').should('eq', 200);
     cy.url().should('include', '/dashboard');
 });
 
 Cypress.Commands.add('logout', () => {
-    cy.get('[data-cy=user-select]').click();
-    cy.get('button').contains('LOG OUT').click();
-});
-
-Cypress.Commands.add('menu', () => {
-    cy.get('nav.navigation-bar').should('be.ok');
-    cy.get('.left > :nth-child(1)').should('be.ok');
-    cy.get('.left > :nth-child(1) > svg').click();
-    cy.get('.left > :nth-child(1) > svg').click();
-    cy.get('.side-bar-wrapper').should('have.attr', 'class', 'side-bar-wrapper menu--hidden');
+    cy.get('[data-cy=nav-bar-dropdown]').click();
+    cy.get('[data-cy=nav-bar-content]').should('be.visible');
+    cy.get('[data-cy=logout-button]').click();
+    cy.url().should('include', '');
 });
 
 Cypress.Commands.add('selectRandomUser', () => {
@@ -35,3 +32,7 @@ Cypress.Commands.add('selectRandomUser', () => {
     cy.url().should('include', 'users/edit');
 });
 
+Cypress.on('uncaught:exception', (err) => {
+    console.log(err);
+    return false;
+});

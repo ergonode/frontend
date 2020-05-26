@@ -4,14 +4,18 @@
  */
 <template>
     <ListHeader :header="header">
-        <Select
-            v-show="!isSearchButtonClicked"
-            :value="selectedOption"
-            class="options-select"
-            solid
-            small
-            :options="options"
-            @input="onLanguageSelect" />
+        <div class="options-select">
+            <slot
+                v-show="!isSearchButtonClicked"
+                name="select">
+                <Select
+                    :value="selectedOption"
+                    solid
+                    small
+                    :options="options"
+                    @input="onLanguageSelect" />
+            </slot>
+        </div>
         <TextField
             v-if="isSearchButtonClicked"
             :value="searchResult"
@@ -65,11 +69,11 @@ export default {
         },
         options: {
             type: Array,
-            required: true,
+            default: () => ([]),
         },
         selectedOption: {
             type: String,
-            required: true,
+            default: '',
         },
     },
     data() {

@@ -4,33 +4,44 @@
  */
 export const getListGroups = ({
     $axios, path, languageCode,
-}) => $axios.$get(path).then(({ collection }) => {
-    const groups = [];
-    const items = {};
-    const groupItemsCounts = {};
-    const { length } = collection;
+}) => {
+    const params = {
+        limit: 9999,
+        offset: 0,
+        view: 'list',
+        order: 'ASC',
+        columns: 'id,code,name,elements_count',
+    };
 
-    for (let i = 0; i < length; i += 1) {
-        const {
-            id, code, name,
-        } = collection[i];
-        if (collection[i].elements_count > 0) {
-            const value = name || `#${code}`;
-            const hint = name ? `#${code} ${languageCode}` : '';
+    return $axios.$get(path, { params }).then(({ collection }) => {
+        const groups = [];
+        const items = {};
+        const groupItemsCount = {};
+        const { length } = collection;
 
-            groups.push({
-                id,
-                key: code,
-                value,
-                hint,
-            });
-            groupItemsCounts[id] = collection[i].elements_count;
-            items[id] = { [languageCode]: [] };
+        for (let i = 0; i < length; i += 1) {
+            const {
+                id, code, name,
+            } = collection[i];
+            if (collection[i].elements_count > 0) {
+                const value = name || `#${code}`;
+                const hint = name ? `#${code} ${languageCode}` : '';
+
+                groups.push({
+                    id,
+                    key: code,
+                    value,
+                    hint,
+                });
+
+                groupItemsCount[id] = collection[i].elements_count;
+                items[id] = [];
+            }
         }
-    }
 
-    return { groups, items, groupItemsCounts };
-});
+        return { groups, items, groupItemsCount };
+    });
+};
 
 export const getListItems = ({
     $axios,

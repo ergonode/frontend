@@ -13,7 +13,7 @@
                     Access denied
                 </h1>
                 <p
-                    class="navigation-section__description font--medium-16-24">
+                    class="navigation-section__description">
                     You do not have permission to view this page.
                 </p>
             </div>
@@ -57,6 +57,7 @@ export default {
                 &__description {
                     margin: 8px 0 16px;
                     color: $GRAPHITE_DARK;
+                    font: $FONT_MEDIUM_16_24;
                 }
 
                 &__header, &__description {

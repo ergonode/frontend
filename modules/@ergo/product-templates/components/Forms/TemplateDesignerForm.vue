@@ -25,21 +25,21 @@
                     @remove="setImage" />
             </FormSection>
             <FormSection title="Presentation product">
-                <TranslationSelect
+                <TranslationLazySelect
                     :value="defaultTextAttribute"
                     solid
                     regular
                     required
                     label="Default label attribute"
-                    :options="textAttributesOptions"
+                    :fetch-options-request="getDefaultTextAttributeOptionsRequest"
                     @input="setDefaultTextAttribute" />
-                <TranslationSelect
+                <TranslationLazySelect
                     :value="defaultImageAttribute"
                     solid
                     regular
                     clearable
                     label="Default image attribute"
-                    :options="imageAttributesOptions"
+                    :fetch-options-request="getDefaultImageAttributeOptionsRequest"
                     @input="setDefaultImageAttribute" />
             </FormSection>
         </template>
@@ -48,14 +48,17 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { TYPES } from '@Attributes/defaults/attributes';
+
+const getAttributesOptionsByType = () => import('@Attributes/services/getAttributesOptionsByType.service');
 
 export default {
     name: 'TemplateDesignerForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/FormSection'),
+        FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
-        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
+        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
         UploadImageFile: () => import('@Core/components/Inputs/UploadFile/UploadImageFile'),
     },
     computed: {
@@ -64,8 +67,6 @@ export default {
             templateImage: state => state.image,
             defaultTextAttribute: state => state.defaultTextAttribute,
             defaultImageAttribute: state => state.defaultImageAttribute,
-            textAttributesOptions: state => state.textAttributesOptions,
-            imageAttributesOptions: state => state.imageAttributesOptions,
         }),
         isDisabled() {
             return Boolean(this.templateTitle);
@@ -85,6 +86,16 @@ export default {
             'setDefaultImageAttribute',
             'setDefaultTextAttribute',
         ]),
+        getDefaultTextAttributeOptionsRequest() {
+            return getAttributesOptionsByType().then(response => response.default(
+                { $axios: this.$axios, $store: this.$store, type: TYPES.TEXT },
+            ));
+        },
+        getDefaultImageAttributeOptionsRequest() {
+            return getAttributesOptionsByType().then(response => response.default(
+                { $axios: this.$axios, $store: this.$store, type: TYPES.IMAGE },
+            ));
+        },
     },
 };
 </script>

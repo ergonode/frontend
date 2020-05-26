@@ -4,8 +4,10 @@
  */
 <template>
     <div class="pagination">
-        <div :class="['pagination__decrease', {'non-visible': !isLeftArrowVisible}]">
-            <FadeTransition>
+        <FadeTransition>
+            <div
+                class="pagination__decrease"
+                v-show="isLeftArrowVisible">
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="toFirstPage">
@@ -13,8 +15,6 @@
                         <IconArrowPointerBlock :fill-color="color" />
                     </template>
                 </Fab>
-            </FadeTransition>
-            <FadeTransition>
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="decrementPage">
@@ -24,9 +24,9 @@
                             :state="arrow.LEFT" />
                     </template>
                 </Fab>
-            </FadeTransition>
-        </div>
-        <span class="pagination__text font--medium-12-16">
+            </div>
+        </FadeTransition>
+        <span class="pagination__text">
             Page
         </span>
         <TextField
@@ -37,14 +37,16 @@
             center-alignment
             :input="inputNumberType"
             @input="onValueChange" />
-        <span class="pagination__text font--medium-12-16">
+        <span class="pagination__text">
             of
         </span>
         <span
-            class="pagination__number font--medium-12-16"
+            class="pagination__number"
             v-text="maxPage" />
-        <div :class="['pagination__increase', {'non-visible': !isRightArrowVisible}]">
-            <FadeTransition>
+        <FadeTransition>
+            <div
+                class="pagination__increase"
+                v-show="isRightArrowVisible">
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="incrementPage">
@@ -54,8 +56,6 @@
                             :state="arrow.RIGHT" />
                     </template>
                 </Fab>
-            </FadeTransition>
-            <FadeTransition>
                 <Fab
                     :theme="secondaryTheme"
                     @click.native="toLastPage">
@@ -65,8 +65,8 @@
                             :state="arrow.RIGHT" />
                     </template>
                 </Fab>
-            </FadeTransition>
-        </div>
+            </div>
+        </FadeTransition>
     </div>
 </template>
 
@@ -154,19 +154,12 @@ export default {
 
         &__text, &__number {
             color: $GRAPHITE_DARK;
-        }
-
-        &__icon {
-            color: $GRAPHITE_LIGHT;
+            font: $FONT_MEDIUM_12_16;
         }
 
         &__increase, &__decrease {
             display: flex;
             align-items: center;
-        }
-
-        .non-visible {
-            visibility: hidden;
         }
     }
 </style>

@@ -9,6 +9,7 @@
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
+                    :data-cy="dataCyGenerator(codeFieldKey)"
                     :value="code"
                     solid
                     regular
@@ -30,7 +31,7 @@ export default {
     name: 'AttributeGroupForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
-        FormSection: () => import('@Core/components/Form/FormSection'),
+        FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
     },
     computed: {
@@ -51,6 +52,9 @@ export default {
     },
     methods: {
         ...mapActions('attributeGroup', ['setAttributeGroupCode']),
+        dataCyGenerator(key) {
+            return `attribute-group-${key}`;
+        },
     },
 };
 </script>

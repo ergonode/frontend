@@ -7,7 +7,7 @@ import { ALERT_TYPE } from '@Core/defaults/alerts';
 import {
     getParsedParameterKeys,
 } from '@Attributes/models/attributeMapper';
-import { isMultilingual, getParamsOptionsForType } from '@Attributes/models/attributeTypes';
+import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 
 export default async function ({
     $axios,
@@ -18,22 +18,19 @@ export default async function ({
         code,
         groups,
         type,
-        isMultilingual: multilingual,
+        scope,
         parameter,
         options,
     } = $store.state.attribute;
     const { language } = $store.state.authentication.user;
     const { attrTypes } = $store.state.dictionaries;
-    const typeKey = getKeyByValue(attrTypes, type);
+    const typeKey = type ? getKeyByValue(attrTypes, type) : null;
     const data = {
         code,
+        scope,
         type: typeKey,
-        groups: groups.map(group => group.id),
+        groups,
     };
-
-    if (isMultilingual(typeKey)) {
-        data.multilingual = multilingual;
-    }
 
     if (!isEmpty(options)) {
         const optionKeys = Object.keys(options);
@@ -64,8 +61,8 @@ export default async function ({
             selectedParam: paramKey,
         });
     }
-
     const { id } = await $axios.$post(`${language}/attributes`, data);
+
     await Promise.all(
         Object.keys(options).map(key => $axios.$post(
             `${language}/attributes/${id}/options`,

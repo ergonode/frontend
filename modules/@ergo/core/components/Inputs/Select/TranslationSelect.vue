@@ -12,6 +12,9 @@
         <template #value>
             <span v-text="parsedValue" />
         </template>
+        <template #informationLabel>
+            <slot name="informationLabel" />
+        </template>
         <template #option="{ option, isSelected }">
             <slot
                 name="option"

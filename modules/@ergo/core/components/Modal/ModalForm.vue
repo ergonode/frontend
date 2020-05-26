@@ -4,13 +4,16 @@
  */
 <template>
     <ModalOverlay @close="onClose">
-        <div class="modal">
-            <div class="modal__header">
+        <div
+            data-cy="modal"
+            class="modal-form">
+            <div class="modal-form__header">
                 <div class="header-title">
                     <slot name="headerPrepend" />
-                    <span v-text="title" />
+                    <h2 v-text="title" />
                 </div>
                 <Fab
+                    data-cy="modal-close"
                     :theme="secondaryTheme"
                     @click.native="onClose">
                     <template #icon="{ color }">
@@ -18,11 +21,10 @@
                     </template>
                 </Fab>
             </div>
-            <Divider />
-            <div class="modal__body">
+            <div class="modal-form__body">
                 <slot name="body" />
             </div>
-            <div class="modal__footer">
+            <div class="modal-form__footer">
                 <slot name="footer" />
             </div>
         </div>
@@ -31,17 +33,14 @@
 
 <script>
 import { THEME } from '@Core/defaults/theme';
-import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
 import ModalOverlay from '@Core/components/Modal/ModalOverlay';
-import Divider from '@Core/components/Dividers/Divider';
 import Fab from '@Core/components/Buttons/Fab';
 import IconClose from '@Core/components/Icons/Window/IconClose';
 
 export default {
-    name: 'Modal',
+    name: 'ModalForm',
     components: {
         ModalOverlay,
-        Divider,
         Fab,
         IconClose,
     },
@@ -52,9 +51,6 @@ export default {
         },
     },
     computed: {
-        whiteColor() {
-            return WHITE;
-        },
         secondaryTheme() {
             return THEME.SECONDARY;
         },
@@ -68,7 +64,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .modal {
+    .modal-form {
         display: flex;
         flex-direction: column;
         width: 400px;
@@ -81,21 +77,22 @@ export default {
             display: flex;
             flex: 0;
             justify-content: space-between;
-            padding: 16px 24px;
+            padding: 24px 16px 0 24px;
 
             .header-title {
                 display: grid;
                 grid-auto-flow: column;
                 grid-column-gap: 4px;
                 align-items: center;
+                padding-right: 16px;
                 color: $GRAPHITE_DARK;
-                font: $FONT_MEDIUM_24_32;
+                font: $FONT_SEMI_BOLD_20_24;
             }
         }
 
         &__body {
             flex: 1;
-            padding: 24px;
+            padding: 24px 24px 32px;
             overflow: auto;
         }
 

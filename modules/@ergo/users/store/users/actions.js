@@ -2,16 +2,20 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { getKeyByValue } from '@Core/models/objectWrapper';
+import { getKeyByValue, isObject } from '@Core/models/objectWrapper';
 import { types } from './mutations';
 
 export default {
     setAction({ commit }, payload) {
         commit(types.SET_STATE, payload);
     },
+    setLanguagePrivileges({ commit }, privileges) {
+        commit(types.SET_LANGUAGE_PRIVILEGES, privileges);
+    },
     setUserLanguage({ commit, rootState }, { language }) {
         const { languages } = rootState.dictionaries;
         const lang = getKeyByValue(languages, language);
+
         commit(types.SET_STATE, { key: 'language', value: lang });
     },
     getUserById(
@@ -19,7 +23,6 @@ export default {
         { userId, onError = () => {} },
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
-        const { roles } = rootState.roles;
         const { languages } = rootState.dictionaries;
 
         return this.app.$axios.$get(`${userLanguageCode}/accounts/${userId}`).then(({
@@ -33,6 +36,7 @@ export default {
             password_repeat = '',
             is_active = false,
             role_id,
+            language_privileges_collection = null,
         }) => {
             commit(types.SET_STATE, { key: 'id', value: id });
             commit(types.SET_STATE, { key: 'avatarId', value: avatar_id });
@@ -43,9 +47,13 @@ export default {
             commit(types.SET_STATE, { key: 'password', value: password });
             commit(types.SET_STATE, { key: 'passwordRepeat', value: password_repeat });
             commit(types.SET_STATE, { key: 'isActive', value: is_active });
-            if (role_id) {
-                commit(types.SET_STATE, { key: 'role', value: roles.find(role => role.id === role_id) });
-            }
+            commit(types.SET_STATE, {
+                key: 'languagePrivilegesCollection',
+                value: isObject(language_privileges_collection)
+                    ? { ...language_privileges_collection }
+                    : language_privileges_collection,
+            });
+            commit(types.SET_STATE, { key: 'role', value: role_id });
         }).catch(onError);
     },
     async updateUser(

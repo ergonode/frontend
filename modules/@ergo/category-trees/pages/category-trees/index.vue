@@ -9,6 +9,7 @@
             :is-read-only="$isReadOnly('CATEGORY_TREE')">
             <template #mainAction>
                 <Button
+                    data-cy="new-category-tree"
                     title="NEW TREE"
                     :size="smallSize"
                     :disabled="!$hasAccess(['CATEGORY_TREE_CREATE'])"

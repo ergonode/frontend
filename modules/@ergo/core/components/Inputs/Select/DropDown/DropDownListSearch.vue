@@ -66,11 +66,9 @@ export default {
         },
         onSearchFocusLost() {
             this.isSearchFocused = false;
-            this.$emit('searchFocused', false);
         },
         onSearchFocus() {
             this.isSearchFocused = true;
-            this.$emit('searchFocused', true);
         },
     },
 };

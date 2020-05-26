@@ -15,7 +15,7 @@
                 center-alignment
                 small
                 @input="(fromValue) => onValueChange(fromValue, operators.GREATER_OR_EQUAL)" />
-            <span class="dash font--medium-12-16">-</span>
+            <span class="dash">-</span>
             <TextField
                 :value="filter.value[operators.SMALLER_OR_EQUAL]"
                 :input="{ type: 'number' }"
@@ -52,7 +52,7 @@ export default {
     },
     methods: {
         onValueChange(value, operator) {
-            this.$emit('input', { value, operator });
+            this.$emit('input', { value, key: operator });
         },
         onEmptyRecordChange(value) {
             this.$emit('emptyRecord', value);
@@ -74,5 +74,6 @@ export default {
         justify-content: center;
         align-items: center;
         color: $GRAPHITE_DARK;
+        font: $FONT_MEDIUM_12_16;
     }
 </style>

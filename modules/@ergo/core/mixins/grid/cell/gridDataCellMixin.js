@@ -42,6 +42,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        isSelected: {
+            type: Boolean,
+            default: false,
+        },
         isCopyable: {
             type: Boolean,
             default: false,

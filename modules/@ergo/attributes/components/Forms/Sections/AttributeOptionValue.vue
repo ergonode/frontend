@@ -23,8 +23,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import { isObject, isEmpty } from '@Core/models/objectWrapper';
+import { mapActions } from 'vuex';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 
 export default {
@@ -52,19 +51,7 @@ export default {
         },
     },
     computed: {
-        ...mapState('attribute', {
-            isMultilingual: state => state.isMultilingual,
-        }),
         translationOptionValue() {
-            if (!this.isMultilingual) {
-                if (isObject(this.option.value)) {
-                    return !isEmpty(this.option.value)
-                        ? this.option.value[Object.keys(this.option.value)[0]]
-                        : '';
-                }
-                return this.option.value;
-            }
-
             if (this.option.value) {
                 return this.option.value[this.languageCode] || '';
             }

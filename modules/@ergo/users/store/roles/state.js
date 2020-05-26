@@ -8,5 +8,4 @@ export default () => ({
     description: '',
     selectedPrivileges: {},
     privileges: [],
-    roles: [],
 });
