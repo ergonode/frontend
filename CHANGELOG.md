@@ -1,6 +1,15 @@
 # CHANGELOG
 This changelog references the relevant changes.
 
+## CHANGELOG FOR v0.8.0
+ - feature [#365](https://github.com/ergonode/frontend/issues/365) Language inheritance - privileges
+ - feature [#366](https://github.com/ergonode/frontend/issues/366) Language inheritance - product changes
+ - feature [#374](https://github.com/ergonode/frontend/issues/374) Unifying product templates
+ - feature [#376](https://github.com/ergonode/frontend/issues/376) WYSYWIG Editor
+ - feature [#405](https://github.com/ergonode/frontend/issues/405) Lazy loading for Select options
+ - perf [#396](https://github.com/ergonode/frontend/issues/396) Non dismissible dropdown menu for action buttons
+
+
 ## CHANGELOG FOR v0.7.0
  - feature - Change of architecture to the micro frontend approach
  - feature - Add unit management
