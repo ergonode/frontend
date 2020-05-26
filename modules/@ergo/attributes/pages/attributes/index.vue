@@ -9,7 +9,7 @@
             :is-read-only="$isReadOnly('ATTRIBUTE')">
             <template #mainAction>
                 <Button
-                    data-cy="newAttribute"
+                    data-cy="new-attribute"
                     title="NEW ATTRIBUTE"
                     :size="smallSize"
                     :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"

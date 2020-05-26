@@ -77,7 +77,7 @@ export default {
         },
         dismissible: {
             type: Boolean,
-            default: false,
+            default: true,
         },
     },
     data() {
@@ -113,9 +113,7 @@ export default {
             this.isFocused = !this.isFocused;
         },
         onClickOutside({ isClickedOutside }) {
-            if (this.dismissible) {
-                this.isFocused = isClickedOutside;
-            } else if (isClickedOutside) {
+            if (isClickedOutside || (this.dismissible && !isClickedOutside)) {
                 this.isFocused = false;
             }
         },

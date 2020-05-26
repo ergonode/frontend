@@ -31,9 +31,9 @@ context('Login page', () => {
     beforeEach(() => {
         cy.visit('');
         cy.apiRequest('POST', 'login').as('postLogin');
-        cy.get('[data-cy=loginEmail]').as('loginEmail');
-        cy.get('[data-cy=loginPass]').as('loginPass');
-        cy.get('[data-cy=loginButton]').as('loginButton');
+        cy.get('[data-cy=login-email]').as('loginEmail');
+        cy.get('[data-cy=login-pass]').as('loginPass');
+        cy.get('[data-cy=login-button]').as('loginButton');
     });
 
     describe('Login faild', () => {

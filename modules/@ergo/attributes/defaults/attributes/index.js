@@ -15,3 +15,12 @@ export const TYPES = {
     DATE: 'DATE',
     LABEL: 'LABEL',
 };
+
+export const SYSTEM_TYPES = {
+    SECTION: 'SECTION',
+};
+
+export const SCOPE = {
+    GLOBAL: 'global',
+    LOCAL: 'local',
+};

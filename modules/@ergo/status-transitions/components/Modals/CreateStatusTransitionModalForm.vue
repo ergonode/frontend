@@ -49,16 +49,10 @@ export default {
         },
     },
     created() {
-        Promise.all([
-            this.getProductStatuses({
-                limit: 9999,
-                offset: 0,
-            }),
-            this.getRoles({
-                limit: 9999,
-                offset: 0,
-            }),
-        ]);
+        this.getProductStatuses({
+            limit: 9999,
+            offset: 0,
+        });
     },
     methods: {
         ...mapActions('transitions', [
@@ -66,9 +60,6 @@ export default {
         ]),
         ...mapActions('productStatus', [
             'getProductStatuses',
-        ]),
-        ...mapActions('roles', [
-            'getRoles',
         ]),
         onClose() {
             this.clearStorage();

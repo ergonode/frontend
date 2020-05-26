@@ -44,12 +44,8 @@ export default {
             return THEME.SECONDARY;
         },
     },
-    created() {
-        this.getAttributeGroups();
-    },
     methods: {
         ...mapActions('attribute', [
-            'getAttributeGroups',
             'clearStorage',
         ]),
         onClose() {

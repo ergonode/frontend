@@ -10,11 +10,8 @@ export default function ({ $axios, $store }) {
     const data = {
         source: isObject(source) ? source.key : null,
         destination: isObject(destination) ? destination.key : null,
+        roles,
     };
-
-    if (roles.length > 0) {
-        data.roles = roles.map(role => role.key);
-    }
 
     return $axios.$post(`${language}/workflow/default/transitions`, data);
 }

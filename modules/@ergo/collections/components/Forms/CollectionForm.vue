@@ -18,15 +18,15 @@
                     label="System name"
                     hint="Product collection code must be unique"
                     @input="setCode" />
-                <TranslationSelect
+                <TranslationLazySelect
                     :value="type"
                     solid
                     required
                     label="Type"
                     regular
                     :disabled="isDisabledByPrivileges"
-                    :options="types"
                     :error-messages="errorMessages[typeIdFieldKey]"
+                    :fetch-options-request="getCollectionTypesOptionsRequest"
                     @input="setType" />
             </FormSection>
         </template>
@@ -36,20 +36,21 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 
+const getCollectionTypesOptions = () => import('@Collections/services/getCollectionTypesOptions.service');
+
 export default {
     name: 'CollectionForm',
     components: {
         Form: () => import('@Core/components/Form/Form'),
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TextField: () => import('@Core/components/Inputs/TextField'),
-        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
+        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
     },
     computed: {
         ...mapState('collections', {
             id: state => state.id,
             code: state => state.code,
             type: state => state.type,
-            types: state => state.types,
         }),
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['PRODUCT_COLLECTION_UPDATE']))
@@ -65,15 +66,16 @@ export default {
             return 'code';
         },
     },
-    created() {
-        this.getCollectionTypes();
-    },
     methods: {
         ...mapActions('collections', [
             'setCode',
             'setType',
-            'getCollectionTypes',
         ]),
+        getCollectionTypesOptionsRequest() {
+            return getCollectionTypesOptions().then(response => response.default(
+                { $axios: this.$axios, $store: this.$store },
+            ));
+        },
     },
 };
 </script>

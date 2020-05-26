@@ -4,11 +4,11 @@ Feature: Category adding
   Background:
     Given I am authenticated as "admin"
     Given I open "categories/grid" page
-    When I click on "newCategory" button
+    When I click on "new-category" button
     Then Element "modal" is "visible"
 
   Scenario: Add category
-    When I fill the "categoryName" input with the "category_1" term
+    When I fill the "category-code" input with the "category_1" term
     When On "modal" element I click button with "CREATE" text
     Then I send a "POST" request and status code should be 201
     Then I close modal

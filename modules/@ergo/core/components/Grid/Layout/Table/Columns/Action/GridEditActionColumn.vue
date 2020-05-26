@@ -10,7 +10,6 @@
         :is-basic-filter="isBasicFilter">
         <template #cell="{ index, rowIndex }">
             <GridRowEditCell
-                data-cy="editGridItem"
                 :key="index"
                 :link="data[index]"
                 :column="columnIndex"

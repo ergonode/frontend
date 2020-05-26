@@ -72,6 +72,9 @@ export default {
         ...mapState('gridDesigner', {
             fullGridData: state => state.fullGridData,
         }),
+        ...mapState('dictionaries', {
+            languagesTree: state => state.languagesTree,
+        }),
         verticalTabs() {
             return [
                 {
@@ -92,6 +95,12 @@ export default {
         ...mapActions('gridDesigner', {
             clearGridDesignerStorage: 'clearStorage',
         }),
+        ...mapActions('dictionaries', [
+            'getCurrentDictionary',
+        ]),
+        ...mapActions('core', [
+            'setDefaultLanguage',
+        ]),
         async onSave() {
             let isUpdated = false;
 
@@ -115,6 +124,12 @@ export default {
             } finally {
                 if (isUpdated !== false) {
                     this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Languages updated' });
+                    await this.getCurrentDictionary({ dictionaryName: 'languagesTree' });
+                    const defaultLanguage = Object
+                        .keys(this.languagesTree)
+                        .find(code => this.languagesTree[code].privileges.read === true);
+
+                    await this.setDefaultLanguage(defaultLanguage);
                 }
                 await this.$removeLoader('saveSettings');
             }

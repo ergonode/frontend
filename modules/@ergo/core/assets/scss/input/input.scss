@@ -370,6 +370,12 @@
             }
 
             #{$input}__label {
+                background-color: $WHITESMOKE;
+            }
+        }
+
+        &.input--has-value {
+            #{$input}__label {
                 background-image: linear-gradient($WHITE, $WHITESMOKE);
             }
         }

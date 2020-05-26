@@ -10,7 +10,7 @@
         <List>
             <ListScrollableContainer>
                 <CategoriesListElement
-                    v-for="item in items"
+                    v-for="item in items[userLanguageCode]"
                     :key="item.id"
                     :item="item"
                     :is-draggable="isUserAllowedToUpdateTree"
@@ -61,10 +61,6 @@ export default {
     methods: {
         onSearch(value) {
             this.codeFilter = value;
-            this.getItems(this.languageCode);
-        },
-        onSelect(value) {
-            this.language = value;
             this.getItems(this.languageCode);
         },
     },

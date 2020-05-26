@@ -10,6 +10,11 @@ export default {
             requestPath: '/dictionary/languages',
         },
         {
+            stateProp: 'languagesTree',
+            dataFormat: {},
+            requestPath: '/dictionary/languages/tree',
+        },
+        {
             stateProp: 'allLanguages',
             dataFormat: [],
             requestPath: '/languages',

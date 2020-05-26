@@ -33,36 +33,36 @@ Then('I can see {string} text on {string} element', (text, id) => {
 
 Then('I close modal', () => {
     cy.get('[data-cy=modal]').should('be.visible');
-    cy.get('[data-cy=modalClose]').click();
+    cy.get('[data-cy=modal-close]').click();
 });
 
 And('I click {string} check', (id) => {
     cy.get(`[data-cy=${id}]`).find('label').click();
 });
 
-And('I choose {string} option from {string} select', (optionNr, id) => {
-    cy.get(`[data-cy=${id}]`).click().should('be.visible');
-    cy.get('[data-cy=selectDropDown]')
+And('I choose {int} option from {string} select field', (optionNr, id) => {
+    cy.get(`[data-cy=${id}]`).click();
+    cy.get(`[data-cy=${id}-drop-down]`)
         .should('be.visible')
-        .find('ul > li').as('elementList');
+        .find('.list > .element').as('elementList');
     cy.get('@elementList').its('length').should('be.gt', 0);
     cy.get('@elementList').eq(optionNr).as('selectedOption');
-    cy.get('@selectedOption').click();
+    cy.get('@selectedOption').click({ force: true });
     cy.get('@selectedOption').then(($option) => {
         const optionValue = $option.text().trim();
 
-        cy.get(`[data-cy=${id}]`).find('[data-cy=selectValue] span').contains(optionValue);
+        cy.get(`[data-cy=${id}-value] span`).contains(optionValue);
     });
-    cy.get('[data-cy=selectDropDown]').should('not.exist');
+    cy.get(`[data-cy=${id}-drop-down]`).should('be.not.visible');
 });
 
-And('I choose {string} options from {string} multi select', (optionNrs, id) => {
+And('I choose {string} options from {string} multi select field', (optionNrs, id) => {
     const parsedOptions = JSON.parse(optionNrs);
 
     cy.get(`[data-cy=${id}]`).click().should('be.visible');
-    cy.get('[data-cy=selectDropDown]')
+    cy.get(`[data-cy=${id}-drop-down]`)
         .should('be.visible')
-        .find('ul > li').as('elementList');
+        .find('.list > .element').as('elementList');
     cy.get('@elementList').its('length').should('be.gt', 0);
     cy.wrap(parsedOptions).each((optionNr) => {
         cy.get('@elementList').eq(optionNr).as('selectedOption');
@@ -70,9 +70,9 @@ And('I choose {string} options from {string} multi select', (optionNrs, id) => {
         cy.get('@selectedOption').then(($option) => {
             const optionValue = $option.text().trim();
 
-            cy.get(`[data-cy=${id}]`).find('[data-cy=selectValue] span').contains(optionValue);
+            cy.get(`[data-cy=${id}-value] span`).contains(optionValue);
         });
     });
-    cy.get('[data-cy=selectDropDown]').find('button').contains('OK').click();
-    cy.get('[data-cy=selectDropDown]').should('not.exist');
+    cy.get(`[data-cy=${id}-drop-down]`).find('button').contains('OK').click();
+    cy.get(`[data-cy=${id}-drop-down]`).should('be.not.visible');
 });

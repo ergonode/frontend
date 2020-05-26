@@ -26,10 +26,6 @@ export default {
         store,
         params,
     }) {
-        await store.dispatch('roles/getRoles', {
-            limit: 9999,
-            offset: 0,
-        });
         await store.dispatch('users/getUserById', {
             userId: params.id,
         });
@@ -67,7 +63,7 @@ export default {
     methods: {
         ...mapActions('users', [
             'clearStorage',
-            'setAction',
+            'setLanguagePrivileges',
             'updateUser',
         ]),
         ...mapActions('authentication', [
@@ -81,16 +77,25 @@ export default {
             'removeValidationErrors',
         ]),
         onSave() {
+            const activeLanguages = Object.keys(this.languagePrivilegesCollection)
+                .reduce((acc, languageCode) => {
+                    const languages = acc;
+
+                    if (Object.keys(this.languages).find(e => e === languageCode)) {
+                        languages[languageCode] = this.languagePrivilegesCollection[languageCode];
+                    }
+                    return languages;
+                }, {});
             const user = {
                 firstName: this.firstName,
                 lastName: this.lastName,
                 language: getKeyByValue(this.languages, this.language),
                 password: this.password,
                 passwordRepeat: this.passwordRepeat,
-                roleId: this.role.id,
+                roleId: this.role,
                 isActive: this.isActive,
                 languagePrivilegesCollection: deepmerge(
-                    this.languagePrivilegesCollection,
+                    activeLanguages,
                     this.drafts,
                 ),
             };
@@ -102,10 +107,7 @@ export default {
                 onSuccess: () => {
                     this.removeValidationErrors();
                     this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'User updated' });
-                    this.setAction({
-                        key: 'languagePrivilegesCollection',
-                        value: user.languagePrivilegesCollection,
-                    });
+                    this.setLanguagePrivileges(user.languagePrivilegesCollection);
                     this.removeDrafts();
 
                     // TODO: Along Notification introduce - remove it from it - this solution is preventing from relogging to see newly edited data for user if edited user is logged one

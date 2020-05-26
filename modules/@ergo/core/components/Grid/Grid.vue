@@ -52,6 +52,7 @@
                 @filter="onFilterChange"
                 @editCell="onEditCell"
                 @editCells="onEditCells"
+                @focusCell="onFocusCell"
                 @editRow="onEditRow"
                 @removeRow="onRemoveRow"
                 @removeColumn="onRemoveColumn"
@@ -59,7 +60,7 @@
                 @dropColumn="onDropColumn"
                 @insertColumn="onInsertColumn" />
             <GridCollectionLayout
-                v-else-if="isCollectionLayout"
+                v-else-if="isCollectionLayout && collectionData.length"
                 :data="collectionData"
                 :columns-number="collectionLayoutConfig.columnsNumber"
                 :object-fit="collectionLayoutConfig.scaling"
@@ -205,7 +206,7 @@ export default {
         collectionData() {
             const { imageColumn, descriptionColumn } = this.collectionCellBinding;
 
-            if (!(imageColumn && descriptionColumn)) {
+            if (!(imageColumn && descriptionColumn) || !this.data[COLUMN_ACTIONS_ID]) {
                 return [];
             }
 
@@ -253,6 +254,9 @@ export default {
         },
         onEditCells(payload) {
             this.$emit('editCells', payload);
+        },
+        onFocusCell(payload) {
+            this.$emit('focusCell', payload);
         },
         onEditRow(args) {
             this.$emit('editRow', args);
