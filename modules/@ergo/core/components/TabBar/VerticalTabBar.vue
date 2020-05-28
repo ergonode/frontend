@@ -3,8 +3,8 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="tab-bar">
-        <div class="tab-bar__items">
+    <div class="vertical-tab-bar">
+        <div class="vertical-tab-bar__items">
             <VerticalTabBarItem
                 v-for="(item, index) in items"
                 :key="index"
@@ -37,8 +37,8 @@ import { ARROW } from '@Core/defaults/icons';
 export default {
     name: 'VerticalTabBar',
     components: {
-        VerticalTabContent: () => import('@Core/components/Tab/VerticalTabContent'),
-        VerticalTabBarItem: () => import('@Core/components/Tab/VerticalTabBarItem'),
+        VerticalTabContent: () => import('@Core/components/TabBar/VerticalTabContent'),
+        VerticalTabBarItem: () => import('@Core/components/TabBar/VerticalTabBarItem'),
         Fab: () => import('@Core/components/Buttons/Fab'),
         IconArrowDouble: () => import('@Core/components/Icons/Arrows/IconArrowDouble'),
     },
@@ -75,7 +75,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .tab-bar {
+    .vertical-tab-bar {
         display: flex;
         height: 100%;
 

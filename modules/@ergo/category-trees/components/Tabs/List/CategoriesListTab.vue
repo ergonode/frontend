@@ -44,7 +44,7 @@ export default {
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         CategoriesListElement: () => import('@Trees/components/Lists/CategoriesListElement'),
         CreateCategoryModalForm: () => import('@Categories/components/Modals/CreateCategoryModalForm'),
-        VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
+        VerticalTabBarListWrapper: () => import('@Core/components/TabBar/VerticalTabBarListWrapper'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         IconAdd: () => import('@Core/components/Icons/Actions/IconAdd'),
         Fab: () => import('@Core/components/Buttons/Fab'),

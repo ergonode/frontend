@@ -28,7 +28,7 @@
                             <slot
                                 name="option"
                                 :option="option">
-                                <ListElementDescription>
+                                <ListElementDescription v-if="isOptionsValid">
                                     <ListElementTitle
                                         :title="option"
                                         :small="true" />
@@ -85,6 +85,11 @@ export default {
             isFocused: false,
             isHovered: false,
         };
+    },
+    computed: {
+        isOptionsValid() {
+            return this.options.length && typeof this.options[0] !== 'object';
+        },
     },
     watch: {
         isFocused() {

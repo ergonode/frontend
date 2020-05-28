@@ -43,7 +43,7 @@ describe('Pages/CategoryTreePage', () => {
             },
             stubs: {
                 NuxtLink: true,
-                HorizontalTabBar: true,
+                HorizontalRoutingTabBar: true,
             },
         });
     });

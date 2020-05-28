@@ -25,7 +25,7 @@ import { mapState } from 'vuex';
 export default {
     name: 'ConditionsListTab',
     components: {
-        VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
+        VerticalTabBarListWrapper: () => import('@Core/components/TabBar/VerticalTabBarListWrapper'),
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         ConditionsListElement: () => import('@Conditions/components/Lists/ConditionsListElement'),

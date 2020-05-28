@@ -42,9 +42,11 @@
                 <div
                     class="upload-file__placeholder"
                     v-if="!value">
-                    <img
-                        :src="require('@Core/assets/images/placeholders/upload_file.svg')"
-                        alt="Place to drag or browse file">
+                    <IconUploadFile
+                        :fill-color="greenColor"
+                        view-box="0 0 48 32"
+                        width="48"
+                        height="32" />
                     <span class="upload-file__description">
                         Drag the file here or browse
                     </span>
@@ -84,6 +86,7 @@ export default {
         Fab: () => import('@Core/components/Buttons/Fab'),
         IconDelete: () => import('@Core/components/Icons/Actions/IconDelete'),
         IconRefresh: () => import('@Core/components/Icons/Actions/IconRefresh'),
+        IconUploadFile: () => import('@Core/components/Icons/Actions/IconUploadFile'),
     },
     props: {
         label: {
@@ -134,6 +137,9 @@ export default {
         },
         redColor() {
             return RED;
+        },
+        greenColor() {
+            return GREEN;
         },
         whiteColor() {
             return WHITE;

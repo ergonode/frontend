@@ -9,6 +9,7 @@
                 <UploadImageFile
                     :value="avatarId"
                     label="Profile picture"
+                    :fixed-height="true"
                     :disabled="!isUserAllowedToUpdate"
                     @upload="uploadValue"
                     @remove="uploadValue" />
