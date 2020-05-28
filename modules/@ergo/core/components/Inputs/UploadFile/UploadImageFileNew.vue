@@ -119,11 +119,7 @@ export default {
             return SIZE.SMALL;
         },
         title() {
-            if (this.multiple) {
-                return 'Add Images';
-            }
-
-            return 'Add Image';
+            return `Add Image${this.multiple ? 's' : ''}`;
         },
         tabs() {
             return [

@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { isObject } from '@Core/models/objectWrapper';
 import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
 import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';
@@ -88,7 +89,7 @@ export default {
     },
     computed: {
         isOptionsValid() {
-            return this.options.length && typeof this.options[0] !== 'object';
+            return this.options.length && !isObject(this.options[0]);
         },
     },
     watch: {

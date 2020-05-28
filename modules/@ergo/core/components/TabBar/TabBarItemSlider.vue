@@ -19,8 +19,10 @@ export default {
     },
     computed: {
         positionStyle() {
+            const elementWidth = 176;
+
             return {
-                transform: `translateX(${this.selectedIndex * 176}px)`,
+                transform: `translateX(${this.selectedIndex * elementWidth}px)`,
             };
         },
     },
