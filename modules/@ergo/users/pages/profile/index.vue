@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar title="Profile" />
-        <HorizontalTabBar
+        <HorizontalRoutingTabBar
             :items="tabs" />
     </Page>
 </template>
@@ -16,7 +16,7 @@ import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 export default {
     name: 'UserProfileTabs',
     components: {
-        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
     },

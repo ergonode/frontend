@@ -5,7 +5,6 @@
 <template>
     <NuxtChild
         :key="$route.name"
-        class="tab-content"
         keep-alive
         v-bind="$attrs"
         v-on="$listeners" />
@@ -13,13 +12,7 @@
 
 <script>
 export default {
-    name: 'HorizontalTabBarContent',
+    name: 'HorizontalRoutingTabBarContent',
     inheritAttrs: false,
 };
 </script>
-
-<style lang="scss" scoped>
-    .tab-content {
-        border-top: $BORDER_1_GREY;
-    }
-</style>

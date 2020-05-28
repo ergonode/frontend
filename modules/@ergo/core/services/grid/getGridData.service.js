@@ -13,7 +13,7 @@ export const getGridData = ({ $axios, path, params }) => $axios
     .then(({
         collection,
         columns,
-        info: { count, filtered },
+        info: { filtered },
     }) => {
         const visibleColumns = columns.filter(({ visible }) => visible);
         const sortedColumns = params.columns
@@ -28,7 +28,6 @@ export const getGridData = ({ $axios, path, params }) => $axios
         return {
             columns: sortedColumns,
             data: mappedData,
-            count,
             filtered,
         };
     });

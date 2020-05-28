@@ -7,15 +7,15 @@
         <TitleBar
             title="Settings"
             :is-read-only="$isReadOnly('SETTINGS')" />
-        <HorizontalTabBar
+        <HorizontalRoutingTabBar
             :items="tabs">
-            <template #item>
-                <HorizontalTabBarContent
+            <template #content>
+                <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
                     @fetched="onFetchedGridData"
                     @showModal="onShowModalByType" />
             </template>
-        </HorizontalTabBar>
+        </HorizontalRoutingTabBar>
         <Component
             :is="getModalComponentViaType"
             v-if="isModalVisible"
@@ -38,7 +38,7 @@ export default {
     components: {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
-        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
         Blur: () => import('@Core/components/Blur/Blur'),
     },
     mixins: [gridModalMixin],
