@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import { SCOPE } from '@Attributes/defaults/attributes';
 import { toCapitalize } from '@Core/models/stringWrapper';
 import { getKeyByValue } from '@Core/models/objectWrapper';
@@ -127,14 +127,12 @@ export default {
         }),
         ...mapState('dictionaries', {
             attrTypes: state => state.attrTypes,
-            languagesTree: state => state.languagesTree,
         }),
-        languageRootCode() {
-            return Object.values(this.languagesTree)
-                .find(({ level }) => level === 0);
-        },
+        ...mapGetters('core', [
+            'getRootOnLanguagesTree',
+        ]),
         scopeHint() {
-            return `Global means the same attribute values for each language, inherited from the root language (${this.languageRootCode.name}). Option values can be translated, but cannot be changed in the product template.`;
+            return `Global means the same attribute values for each language, inherited from the root language (${this.getRootOnLanguagesTree.name}). Option values can be translated, but cannot be changed in the product template.`;
         },
         paramsLabel() {
             const paramsKey = getParamsKeyForType(this.typeKey);

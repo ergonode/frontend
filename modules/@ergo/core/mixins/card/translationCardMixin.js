@@ -2,8 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { mapState, mapActions } from 'vuex';
-import { getValueByKey } from '@Core/models/objectWrapper';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
     props: {
@@ -13,14 +12,14 @@ export default {
         },
     },
     computed: {
-        ...mapState('dictionaries', {
-            languages: state => state.languages,
-        }),
         ...mapState('translations', {
             translations: state => state.translations,
         }),
+        ...mapGetters('core', [
+            'getActiveLanguageByCode',
+        ]),
         selectedLanguage() {
-            return getValueByKey(this.languages, this.languageCode);
+            return this.getActiveLanguageByCode(this.languageCode).name || null;
         },
     },
     methods: {

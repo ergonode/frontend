@@ -16,9 +16,7 @@ const data = {
         pass: Cypress.env('adminPass'),
     },
     dictionaries: {
-        lang: 'en/dictionary/languages',
         types: 'en/dictionary/attributes/types',
-        list: 'en/languages?view=list',
         curr: 'en/dictionary/currencies',
         units: 'en/units?view=list',
         date: 'en/dictionary/date_format',

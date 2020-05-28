@@ -5,23 +5,31 @@
 <template>
     <AttributePage
         :title="code"
-        @remove="onRemove"
-        @save="onSave" />
+        @remove="onShowModal"
+        @save="onSave">
+        <ConfirmModal
+            v-if="isModalVisible"
+            message="Are you sure you want to delete this attribute?"
+            @close="onCloseModal"
+            @agree="onRemove" />
+    </AttributePage>
 </template>
 
 <script>
-
 import { mapState, mapActions } from 'vuex';
 import { isEmpty, getKeyByValue } from '@Core/models/objectWrapper';
 import { getParsedParameterKeys } from '@Attributes/models/attributeMapper';
 import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'EditAttribute',
     components: {
         AttributePage: () => import('@Attributes/components/Pages/AttributePage'),
+        ConfirmModal: () => import('@Core/components/Modals/ConfirmModal'),
     },
+    mixins: [gridModalMixin],
     validate({ params }) {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
@@ -77,12 +85,9 @@ export default {
             this.$router.push({ name: 'attributes-grid' });
         },
         onRemove() {
-            const isConfirmed = confirm('Are you sure you want to delete this attribute?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirmed) {
-                this.removeAttribute({
-                    onSuccess: this.onRemoveSuccess,
-                });
-            }
+            this.removeAttribute({
+                onSuccess: this.onRemoveSuccess,
+            });
         },
         onSave() {
             this.removeValidationErrors();

@@ -5,7 +5,8 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #centeredContent>
-            <MainSettingsForm />
+            <MainSettingsForm
+                @selectedLanguages="setSelectedLanguages" />
         </template>
         <template #footer>
             <FooterActions>
@@ -15,6 +16,11 @@
                     :disabled="$isLoading('saveSettings')"
                     @click.native="onSave" />
             </FooterActions>
+            <ConfirmModal
+                v-if="isModalVisible"
+                message="Changes in language settings will affect the entire application."
+                @close="onCloseModal"
+                @agree="onAgree" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -22,12 +28,12 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
-import languageSettingsModule from '@Core/reusableStore/languageSettings/state';
+import { SIZE } from '@Core/defaults/theme';
 import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import FooterActions from '@Core/components/Layout/Footer/FooterActions';
 import Button from '@Core/components/Buttons/Button';
-import { SIZE } from '@Core/defaults/theme';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'MainSettingsTab',
@@ -36,64 +42,64 @@ export default {
         ResponsiveCenteredViewTemplate,
         FooterActions,
         Button,
+        ConfirmModal: () => import('@Core/components/Modals/ConfirmModal'),
     },
-    async fetch({ app, store }) {
-        app.$registerStore({
-            module: languageSettingsModule,
-            moduleName: 'languageSettings',
-            store,
-        });
-        await store.dispatch('languageSettings/getData');
+    mixins: [gridModalMixin],
+    data() {
+        return {
+            selectedLanguages: [],
+        };
     },
     computed: {
-        ...mapState('languageSettings', {
-            selectedLanguages: state => state.selectedLanguages,
+        ...mapState('core', {
+            languagesTree: state => state.languagesTree,
         }),
         smallSize() {
             return SIZE.SMALL;
         },
     },
-    beforeCreate() {
-        this.$registerStore({
-            module: languageSettingsModule,
-            moduleName: 'languageSettings',
-            store: this.$store,
-        });
-    },
-    beforeDestroy() {
-        this.$store.unregisterModule('languageSettings');
-    },
     methods: {
-        ...mapActions('languageSettings', [
-            'updateData',
+        ...mapActions('core', [
+            'getLanguages',
+            'updateLanguages',
         ]),
-        ...mapActions('dictionaries', [
-            'getCurrentDictionary',
-        ]),
-        async onSave() {
+        setSelectedLanguages(selectedLanguages) {
+            this.selectedLanguages = selectedLanguages;
+        },
+        onSave() {
+            const languageKeys = this.selectedLanguages.map(language => language.key);
+            const isUsedOnTree = this.languagesTree.find(
+                ({ code }) => !languageKeys.includes(code),
+            );
+
+            if (languageKeys.length <= 0) {
+                this.$addAlert({ type: ALERT_TYPE.ERROR, message: 'At least one language needed' });
+                return false;
+            }
+            if (isUsedOnTree) {
+                this.$addAlert({ type: ALERT_TYPE.ERROR, message: 'Language you want to deactivate is used on the language tree' });
+                return false;
+            }
+
+            this.onShowModal();
+            return true;
+        },
+        async onAgree() {
             let isUpdated = false;
             const languageKeys = this.selectedLanguages.map(language => language.key);
 
             try {
                 await this.$setLoader('saveSettings');
-
-                if (languageKeys.length <= 0) {
-                    this.$addAlert({ type: ALERT_TYPE.ERROR, message: 'At least one language needed' });
-                    throw new Error();
-                }
-
-                isUpdated = await await this.updateData(languageKeys);
+                isUpdated = await this.updateLanguages(languageKeys);
             } catch {
-                return false;
+                console.log('ddd');
             } finally {
                 if (isUpdated !== false) {
                     this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Languages updated' });
-                    await this.getCurrentDictionary({ dictionaryName: 'languages' });
+                    await this.getLanguages();
                 }
                 await this.$removeLoader('saveSettings');
             }
-
-            return true;
         },
     },
 };

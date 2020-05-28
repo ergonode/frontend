@@ -25,10 +25,10 @@ export default {
         store,
         params,
     }) {
-        const { languagePrivilegesDefaultCode } = store.state.core;
+        const { defaultLanguageCodeByPrivileges } = store.state.core;
         const { id } = params;
 
-        await store.dispatch('product/getProductDraft', { languageCode: languagePrivilegesDefaultCode, id });
+        await store.dispatch('product/getProductDraft', { languageCode: defaultLanguageCodeByPrivileges, id });
         await store.dispatch('product/getProductById', id);
     },
     computed: {

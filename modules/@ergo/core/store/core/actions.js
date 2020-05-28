@@ -5,8 +5,47 @@
 import { types } from './mutations';
 
 export default {
-    setDefaultLanguage({ commit }, code) {
-        commit(types.SET_DEFAULT_LANGUAGE, code);
+    async getLanguages({ dispatch, rootState }) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+        const params = {
+            limit: 9999,
+            offset: 0,
+            view: 'list',
+            field: 'name',
+            order: 'ASC',
+        };
+        const { collection } = await this.app.$axios.$get(`${userLanguageCode}/languages`, { params });
+
+        dispatch('setLanguages', collection);
+    },
+    async getLanguagesTree({ dispatch, rootState }) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+        const { languages } = await this.app.$axios.$get(`${userLanguageCode}/language/tree`);
+
+        dispatch('setLanguagesTree', languages);
+    },
+    async updateLanguages({ rootState }, collection) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+
+        await this.app.$axios.$put(`${userLanguageCode}/languages`, { collection });
+    },
+    async updateLanguageTree({ rootState }, languages) {
+        const { language: userLanguageCode } = rootState.authentication.user;
+
+        await this.app.$axios.$put(`${userLanguageCode}/language/tree`, { languages });
+    },
+    setLanguages({ commit }, languages) {
+        commit(types.SET_LANGUAGES, languages);
+    },
+    setLanguagesTree({ state, commit }, treeData) {
+        commit(types.SET_LANGUAGES_TREE, { treeData, fillingData: state.languages });
+    },
+    setDefaultLanguage({ state, commit, rootState }) {
+        const { languagePrivileges } = rootState.authentication.user;
+        const defaultLanguage = state.languagesTree
+            .find(({ code }) => languagePrivileges[code].read === true);
+
+        commit(types.SET_DEFAULT_LANGUAGE, defaultLanguage.code);
     },
     setLoader({ commit }, key) {
         commit(types.SET_LOADER, key);

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { TRANSLATIONS_LANGUAGES } from '@Core/defaults/cookies';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
@@ -42,12 +42,13 @@ export default {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('dictionaries', {
-            languages: state => state.languages,
-        }),
+        ...mapGetters('core', [
+            'getActiveLanguages',
+            'getActiveLanguageByCode',
+        ]),
         languageOptions() {
-            return Object.keys(this.languages).map(key => ({
-                id: key, key, value: this.languages[key],
+            return this.getActiveLanguages.map(({ code, name }) => ({
+                id: code, key: code, value: name,
             }));
         },
         selectedLanguageCodes() {
@@ -62,7 +63,7 @@ export default {
     created() {
         const cookieValue = this.$cookies.get(TRANSLATIONS_LANGUAGES);
         const isEveryLanguageExist = cookieValue
-            ? cookieValue.every(e => this.languages[e.key])
+            ? cookieValue.every(e => this.getActiveLanguageByCode(e.key).name)
             : null;
 
         if (cookieValue && isEveryLanguageExist) {
@@ -73,7 +74,7 @@ export default {
                 {
                     id: this.userLanguageCode,
                     key: this.userLanguageCode,
-                    value: this.languages[this.userLanguageCode],
+                    value: this.getActiveLanguageByCode(this.userLanguageCode).name,
                 },
             ];
         }

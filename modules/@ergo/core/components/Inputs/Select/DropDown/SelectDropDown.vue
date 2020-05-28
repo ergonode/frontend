@@ -15,6 +15,7 @@
                         <DropDownListSearch
                             v-if="searchable"
                             :value="searchResult"
+                            :sticky="stickySearch"
                             @input="onSearch"
                             @searchFocused="onSearchFocused" />
                         <ListElement
@@ -127,6 +128,10 @@ export default {
             default: false,
         },
         searchable: {
+            type: Boolean,
+            default: false,
+        },
+        stickySearch: {
             type: Boolean,
             default: false,
         },

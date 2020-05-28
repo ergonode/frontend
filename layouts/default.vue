@@ -34,12 +34,9 @@ export default {
         });
         if (emptyState > 0) {
             await store.dispatch('dictionaries/getDictionaries');
-            if (dictionaries.languagesTree && authentication.user) {
-                const defaultLanguage = Object
-                    .keys(dictionaries.languagesTree)
-                    .find(code => dictionaries.languagesTree[code].privileges.read === true);
-                await store.dispatch('core/setDefaultLanguage', defaultLanguage);
-            }
+            await store.dispatch('core/getLanguages');
+            await store.dispatch('core/getLanguagesTree');
+            await store.dispatch('core/setDefaultLanguage');
         }
     },
 };

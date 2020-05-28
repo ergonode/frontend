@@ -4,5 +4,7 @@
  */
 export default () => ({
     loaders: {},
-    languagePrivilegesDefaultCode: null,
+    languagesTree: [],
+    languages: [],
+    defaultLanguageCodeByPrivileges: null,
 });
