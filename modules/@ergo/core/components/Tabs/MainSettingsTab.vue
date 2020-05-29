@@ -16,11 +16,6 @@
                     :disabled="$isLoading('saveSettings')"
                     @click.native="onSave" />
             </FooterActions>
-            <ConfirmModal
-                v-if="isModalVisible"
-                message="Changes in language settings will affect the entire application."
-                @close="onCloseModal"
-                @agree="onAgree" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
@@ -29,11 +24,11 @@
 import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { SIZE } from '@Core/defaults/theme';
+import { MODAL_TYPE } from '@Core/defaults/modals';
 import MainSettingsForm from '@Core/components/Forms/MainSettingsForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import FooterActions from '@Core/components/Layout/Footer/FooterActions';
 import Button from '@Core/components/Buttons/Button';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'MainSettingsTab',
@@ -42,9 +37,7 @@ export default {
         ResponsiveCenteredViewTemplate,
         FooterActions,
         Button,
-        ConfirmModal: () => import('@Core/components/Modals/ConfirmModal'),
     },
-    mixins: [gridModalMixin],
     data() {
         return {
             selectedLanguages: [],
@@ -81,7 +74,11 @@ export default {
                 return false;
             }
 
-            this.onShowModal();
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Changes in language settings will affect the entire application.',
+                confirmCallback: () => this.onAgree(),
+            });
             return true;
         },
         async onAgree() {
@@ -92,7 +89,7 @@ export default {
                 await this.$setLoader('saveSettings');
                 isUpdated = await this.updateLanguages(languageKeys);
             } catch {
-                console.log('ddd');
+                return false;
             } finally {
                 if (isUpdated !== false) {
                     this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Languages updated' });
@@ -100,6 +97,7 @@ export default {
                 }
                 await this.$removeLoader('saveSettings');
             }
+            return true;
         },
     },
 };

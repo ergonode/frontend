@@ -4,7 +4,7 @@
  */
 <template>
     <ModalConfirm
-        :title="message"
+        :title="modalData.message"
         @close="onClose">
         <template #footer>
             <Button
@@ -28,7 +28,7 @@ export default {
         Button: () => import('@Core/components/Buttons/Button'),
     },
     props: {
-        message: {
+        type: {
             type: String,
             default: '',
         },
@@ -44,14 +44,17 @@ export default {
         agreeButtonText() {
             return this.agreeButton.toUpperCase();
         },
+        modalData() {
+            return this.$getModal(this.type);
+        },
     },
     methods: {
         onClose() {
-            this.$emit('close');
+            this.$closeModal(this.type);
         },
         onAgree() {
-            this.$emit('agree');
-            this.$emit('close');
+            this.modalData.confirmCallback();
+            this.onClose();
         },
     },
 };

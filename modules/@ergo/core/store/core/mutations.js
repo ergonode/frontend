@@ -12,6 +12,8 @@ export const types = {
     SET_LANGUAGES: 'SET_LANGUAGES',
     SET_LOADER: 'SET_LOADER',
     REMOVE_LOADER: 'REMOVE_LOADER',
+    OPEN_MODAL: 'OPEN_MODAL',
+    CLOSE_MODAL: 'CLOSE_MODAL',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 
@@ -30,6 +32,14 @@ export default {
     },
     [types.SET_DEFAULT_LANGUAGE](state, code) {
         state.defaultLanguageCodeByPrivileges = code;
+    },
+    [types.OPEN_MODAL](state, { key, ...params }) {
+        state.modals = {
+            [key]: params,
+        };
+    },
+    [types.CLOSE_MODAL](state, key) {
+        state.modals = removeFromObjectByKey(state.modals, key);
     },
     [types.SET_LOADER](state, key) {
         state.loaders = { [key]: true };

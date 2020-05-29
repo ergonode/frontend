@@ -53,6 +53,12 @@ export default {
     removeLoader({ commit }, key) {
         commit(types.REMOVE_LOADER, key);
     },
+    openModal({ commit }, payload) {
+        commit(types.OPEN_MODAL, payload);
+    },
+    closeModal({ commit }, key) {
+        commit(types.CLOSE_MODAL, key);
+    },
     clearStorage({ commit }) {
         commit(types.CLEAR_STATE);
     },

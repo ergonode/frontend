@@ -12,6 +12,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { MODAL_TYPE } from '@Core/defaults/modals';
 
 export default {
     name: 'EditCategory',
@@ -52,12 +53,13 @@ export default {
             'removeValidationErrors',
         ]),
         onRemove() {
-            const isConfirmed = confirm('Are you sure you want to delete this category?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirmed) {
-                this.removeCategory({
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Are you sure you want to delete this category?',
+                confirmCallback: () => this.removeCategory({
                     onSuccess: this.onRemoveSuccess,
-                });
-            }
+                }),
+            });
         },
         onSave() {
             this.removeValidationErrors();

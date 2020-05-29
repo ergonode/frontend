@@ -4,6 +4,7 @@
  */
 export default () => ({
     loaders: {},
+    modals: {},
     languagesTree: [],
     languages: [],
     defaultLanguageCodeByPrivileges: null,

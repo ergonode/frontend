@@ -40,9 +40,9 @@ export default {
     ) {
         const {
             language: userLanguageCode,
-            first_name: firstName,
-            last_name: lastName,
-            avatar_id: avatarId,
+            firstName,
+            lastName,
+            avatarId,
         } = rootState.authentication.user;
         const { objectId } = state;
         let { count } = state;
@@ -84,9 +84,9 @@ export default {
         };
         const {
             language: userLanguageCode,
-            first_name: firstName,
-            last_name: lastName,
-            avatar_id: avatarId,
+            firstName,
+            lastName,
+            avatarId,
         } = rootState.authentication.user;
 
         await this.$setLoader('commentButton');

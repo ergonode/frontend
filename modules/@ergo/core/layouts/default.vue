@@ -30,6 +30,9 @@
             <div class="app-content__body">
                 <slot />
                 <FlashMessage />
+                <ConfirmModal
+                    v-if="$getModal(modalConfirmType)"
+                    :type="modalConfirmType" />
             </div>
         </div>
     </App>
@@ -38,6 +41,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { COMPONENTS } from '@Core/defaults/extends';
+import { MODAL_TYPE } from '@Core/defaults/modals';
 
 export default {
     name: 'DefaultLayout',
@@ -48,6 +52,7 @@ export default {
         NavigationBarBreadcrumb: () => import('@Core/components/NavigationBar/NavigationBarBreadcrumb'),
         NavigationBarUserButton: () => import('@Core/components/NavigationBar/NavigationBarUserButton'),
         FlashMessage: () => import('@Core/components/Alerts/FlashMessage'),
+        ConfirmModal: () => import('@Core/components/Modals/ConfirmModal'),
     },
     data() {
         return {
@@ -60,6 +65,9 @@ export default {
         }),
         extendedComponents() {
             return this.$getExtendedComponents(COMPONENTS.NAVIGATION_BAR);
+        },
+        modalConfirmType() {
+            return MODAL_TYPE.GLOBAL_CONFIRM_MODAL;
         },
     },
     watch: {

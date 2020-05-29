@@ -29,7 +29,6 @@
                 :disabled="$isLoading('footerButton')"
                 @click.native="onSave" />
         </Footer>
-        <slot />
     </Page>
 </template>
 
