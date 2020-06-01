@@ -100,6 +100,7 @@ export default function ({ path }) {
             this.columns = columns;
             this.data = data;
             this.filtered = filtered;
+            this.advancedFilters = advancedFilters;
         },
         data() {
             return {

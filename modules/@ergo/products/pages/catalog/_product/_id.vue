@@ -35,6 +35,7 @@ export default {
         ...mapState('product', {
             id: state => state.id,
             sku: state => state.sku,
+            template: state => state.template,
             categories: state => state.categories,
         }),
     },

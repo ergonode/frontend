@@ -106,3 +106,9 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+    .filter-content {
+        max-height: 200px;
+    }
+</style>
