@@ -6,7 +6,7 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :is-editable="$hasAccess(['PRODUCT_PRODUCT_UPDATE'])"
+                :is-editable="$hasAccess(['PRODUCT_UPDATE'])"
                 :columns="columns"
                 :data-count="filtered"
                 :data="data"
@@ -54,7 +54,7 @@ export default {
         ActionButton,
         IconAdd,
     },
-    mixins: [fetchGridDataMixin({ path: 'products/_id/history' })],
+    mixins: [fetchGridDataMixin({ path: 'products/_id/children' })],
     data() {
         return {
             selectedAppModalOption: null,
@@ -75,12 +75,13 @@ export default {
         },
         modalComponent() {
             switch (this.selectedAppModalOption) {
-            case ADD_PRODUCT.FROM_LIST:
-                return null;
+            // TODO: We may delay this functionality - selecting from Grid might product performance issues - need planning
+            // case ADD_PRODUCT.FROM_LIST:
+            //     return null;
             case ADD_PRODUCT.FROM_SEGMENT:
-                return () => import('@Collections/components/Modals/AddProductsFromSegmentModalForm');
+                return () => import('@Products/components/Modals/AddProductsFromSegmentModalForm');
             case ADD_PRODUCT.BY_SKU:
-                return () => import('@Collections/components/Modals/AddProductsBySKUModalForm');
+                return () => import('@Products/components/Modals/AddProductsBySKUModalForm');
             default: return null;
             }
         },

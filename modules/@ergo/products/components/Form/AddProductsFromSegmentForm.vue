@@ -15,7 +15,7 @@
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[segmentsFieldKey]"
                     :options="segmentOptions"
-                    @input="(value) => $emit('input', { key: 'segments', value })" />
+                    @input="onSegmentChange" />
             </FormSection>
         </template>
     </Form>
@@ -47,6 +47,11 @@ export default {
         },
         segmentsFieldKey() {
             return 'segments';
+        },
+    },
+    methods: {
+        onSegmentChange(value) {
+            this.$emit('input', value);
         },
     },
 };

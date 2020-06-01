@@ -9,16 +9,16 @@
         <template #body="{ errorMessages }">
             <FormSection>
                 <Select
-                    v-model="productType"
+                    :value="type"
                     solid
                     regular
                     required
                     :disabled="isDisabled"
                     label="Product type"
-                    :options="productTypes" />
+                    :options="productTypesValues"
+                    @input="setProductType" />
                 <ProductAttributesBindingFormSection
-                    v-if="productType === 'Product with variants'"
-                    :attributes="[]"
+                    v-show="productTypeKey === 'VARIABLE-PRODUCT'"
                     :disabled="isDisabledByPrivileges" />
                 <TextField
                     :value="sku"
@@ -57,6 +57,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { getKeyByValue } from '@Core/models/objectWrapper';
 
 export default {
     name: 'ProductForm',
@@ -68,27 +69,27 @@ export default {
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
         ProductAttributesBindingFormSection: () => import('@Products/components/Form/Section/ProductAttributesBindingFormSection'),
     },
-    data() {
-        return {
-            // TODO: Remove when BE is ready
-            productType: 'Simple product',
-        };
-    },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
+        ...mapState('dictionaries', {
+            productTypes: state => state.productTypes,
+        }),
         ...mapState('product', {
             productID: state => state.id,
             sku: state => state.sku,
+            type: state => state.type,
             template: state => state.template,
             templates: state => state.templates,
             selectedCategories: state => state.selectedCategories,
             categories: state => state.categories,
         }),
-        productTypes() {
-            // TODO: Remove when BE is ready
-            return ['Simple product', 'Product with variants', 'Grouped product'];
+        productTypeKey() {
+            return getKeyByValue(this.productTypes, this.type);
+        },
+        productTypesValues() {
+            return Object.values(this.productTypes);
         },
         templateOptions() {
             return this.templates.map(({ id, name }) => ({
@@ -119,6 +120,7 @@ export default {
             'setProductSku',
             'setProductTemplate',
             'setProductCategories',
+            'setProductType',
         ]),
     },
 };

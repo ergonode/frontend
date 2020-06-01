@@ -15,7 +15,7 @@
                     :style="{height: '150px'}"
                     :error-messages="errorMessages[skusFieldKey]"
                     :disabled="isDisabledByPrivileges"
-                    @input="(value) => $emit('input', { key: 'productSkus', value })" />
+                    @input="onSKUChange" />
             </FormSection>
         </template>
     </Form>
@@ -43,6 +43,11 @@ export default {
         },
         skusFieldKey() {
             return 'skus';
+        },
+    },
+    methods: {
+        onSKUChange(value) {
+            this.$emit('input', value);
         },
     },
 };

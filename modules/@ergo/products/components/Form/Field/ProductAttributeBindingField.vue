@@ -13,8 +13,8 @@
             required
             small
             :disabled="disabled"
-            :options="attributes"
-            @input="setBindingAttribute" />
+            :options="filteredOptions"
+            @input="onValueChange" />
     </FormListElementField>
 </template>
 
@@ -34,9 +34,13 @@ export default {
             type: Number,
             required: true,
         },
-        attribute: {
-            type: Object,
-            default: null,
+        attributeId: {
+            type: String,
+            default: '',
+        },
+        attributes: {
+            type: Array,
+            default: () => [],
         },
         disabled: {
             type: Boolean,
@@ -45,14 +49,28 @@ export default {
     },
     computed: {
         ...mapState('product', {
-            attributes: state => state.attributes,
+            bindingAttributesIds: state => state.bindingAttributesIds,
         }),
+        attribute() {
+            return this.attributes.find(attribute => attribute.id === this.attributeId);
+        },
+        filteredOptions() {
+            return this.attributes
+                .filter(attribute => attribute.id === this.attributeId
+                    || !this.bindingAttributesIds.some(id => id === attribute.id));
+        },
     },
     methods: {
         ...mapActions('product', [
-            'setBindingAttribute',
+            'setBindingAttributeId',
             'removeBindingAttribute',
         ]),
+        onValueChange(value) {
+            this.setBindingAttributeId({
+                id: value.id,
+                index: this.index,
+            });
+        },
     },
 };
 </script>

@@ -14,6 +14,6 @@ export default () => ({
     selectedCategories: [],
     templates: [],
     categories: [],
-    attributes: [],
-    bindingAttributes: [],
+    bindingAttributesIds: [],
+    initialBindingAttributesIds: [],
 });

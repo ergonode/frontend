@@ -63,6 +63,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { getKeyByValue } from '@Core/models/objectWrapper';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import Button from '@Core/components/Buttons/Button';
 import ProductStatusBadge from '@Products/components/Badges/ProductStatusBadge';
@@ -85,7 +86,11 @@ export default {
     computed: {
         ...mapState('product', {
             status: state => state.status,
+            type: state => state.type,
             workflow: state => state.workflow,
+        }),
+        ...mapState('dictionaries', {
+            productTypes: state => state.productTypes,
         }),
         isUserAllowedToUpdateProduct() {
             return this.$hasAccess(['PRODUCT_UPDATE']);
@@ -97,17 +102,13 @@ export default {
                 this.$route,
             );
 
-            // TODO: Refactor types - maybe think at better solution
-
-            // switch (this.type) {
-            // case 'Product with variants':
-            //     return tabs.filter(tab => tab.title !== 'Group');
-            // case 'Grouped product':
-            //     return tabs.filter(tab => tab.title !== 'Variants');
-            // default: return tabs.filter(tab => tab.title !== 'Variants' && tab.title !== 'Group');
-            // }
-
-            return tabs;
+            switch (getKeyByValue(this.productTypes, this.type)) {
+            case 'VARIABLE-PRODUCT':
+                return tabs.filter(tab => tab.title !== 'Group');
+            case 'GROUPING-PRODUCT':
+                return tabs.filter(tab => tab.title !== 'Variants');
+            default: return tabs.filter(tab => tab.title !== 'Variants' && tab.title !== 'Group');
+            }
         },
     },
     methods: {

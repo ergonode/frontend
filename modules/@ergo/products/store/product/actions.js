@@ -9,7 +9,8 @@ export default {
     setDraftValue: ({ commit }, payload) => commit(types.SET_DRAFT_VALUE, payload),
     setProductStatus: ({ commit }, status) => commit(types.SET_PRODUCT_STATUS, status),
     setProductTemplate: ({ commit }, template) => commit(types.SET_PRODUCT_TEMPLATE, template),
-    setBindingAttribute: ({ commit }, payload) => commit(types.SET_BINDING_ATTRIBUTE, payload),
+    setProductType: ({ commit }, type) => commit(types.SET_PRODUCT_TYPE, type),
+    setBindingAttributeId: ({ commit }, payload) => commit(types.SET_BINDING_ATTRIBUTE_ID, payload),
     addBindingAttribute: ({ commit }) => commit(types.ADD_BINDING_ATTRIBUTE),
     removeBindingAttribute: ({ commit }, index) => commit(types.REMOVE_BINDING_ATTRIBUTE, index),
     setProductCategories: (
@@ -24,6 +25,7 @@ export default {
     getProductById({ commit, state, rootState }, id) {
         const { categories, templates } = state;
         const { language: userLanguageCode } = rootState.authentication.user;
+        const { productTypes } = rootState.dictionaries;
         const parseCategories = (category) => {
             const {
                 id: categoryId, name, code,
@@ -49,6 +51,7 @@ export default {
             categories: categoryIds,
             attributes,
             sku,
+            type,
             status,
             workflow = [],
         }) => {
@@ -61,7 +64,6 @@ export default {
             }
 
             // TODO:
-            // - Set product type
             // - Set attribute bindings
 
             commit(types.SET_PRODUCT_ID, id);
@@ -69,6 +71,9 @@ export default {
             commit(types.SET_PRODUCT_STATUS, status);
             commit(types.SET_PRODUCT_WORKFLOW, workflow);
             commit(types.SET_PRODUCT_DATA, attributes);
+            commit(types.SET_PRODUCT_TYPE, productTypes[type]);
+            commit(types.SET_BINDING_ATTRIBUTE_IDS, []);
+            commit(types.SET_INITIAL_BINDING_ATTRIBUTE_IDS, []);
         });
     },
     getTemplates({ commit, rootState }) {

@@ -14,7 +14,7 @@
         </template>
         <template #footer>
             <Button
-                title="ADD TO COLLECTION"
+                title="ADD TO PRODUCT"
                 :disabled="isRequestPending"
                 @click.native="onAdd" />
             <Button
@@ -34,7 +34,7 @@ import { ALERT_TYPE } from '@Core/defaults/alerts';
 export default {
     name: 'AddProductsFromSegmentModalForm',
     components: {
-        AddProductsFromSegmentForm: () => import('@Products/components/Forms/AddProductsFromSegmentForm'),
+        AddProductsFromSegmentForm: () => import('@Products/components/Form/AddProductsFromSegmentForm'),
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
         Button: () => import('@Core/components/Buttons/Button'),
     },
@@ -90,11 +90,11 @@ export default {
             }
 
             this.isRequestPending = true;
-            // TODO: 'Change request!!'
-            this.$axios.$post(`${this.language}/collections/${this.id}/elements/multiple`, data).then(() => {
+
+            this.$axios.$post(`${this.language}/products/${this.id}/children/add-from-segment`, data).then(() => {
                 this.isRequestPending = false;
                 this.removeValidationErrors();
-                this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been added to collection' });
+                this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been added' });
 
                 this.$emit('added');
             }).catch((e) => {

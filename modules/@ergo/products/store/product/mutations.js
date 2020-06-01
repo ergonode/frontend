@@ -13,7 +13,9 @@ export const types = {
     SET_PRODUCT_WORKFLOW: 'SET_PRODUCT_WORKFLOW',
     SET_PRODUCT_DATA: 'SET_PRODUCT_DATA',
     SET_PRODUCT_TEMPLATE: 'SET_PRODUCT_TEMPLATE',
-    SET_BINDING_ATTRIBUTE: 'SET_BINDING_ATTRIBUTE',
+    SET_BINDING_ATTRIBUTE_ID: 'SET_BINDING_ATTRIBUTE_ID',
+    SET_BINDING_ATTRIBUTE_IDS: 'SET_BINDING_ATTRIBUTE_IDS',
+    SET_INITIAL_BINDING_ATTRIBUTE_IDS: 'SET_INITIAL_BINDING_ATTRIBUTE_IDS',
     ADD_BINDING_ATTRIBUTE: 'ADD_BINDING_ATTRIBUTE',
     REMOVE_BINDING_ATTRIBUTE: 'REMOVE_BINDING_ATTRIBUTE',
     SET_PRODUCT_CATEGORIES: 'SET_PRODUCT_CATEGORIES',
@@ -36,14 +38,23 @@ export default {
     [types.SET_PRODUCT_STATUS](state, status) {
         state.status = status;
     },
-    [types.SET_BINDING_ATTRIBUTE](state, { index, attribute }) {
-        state.bindingAttributes[index] = attribute;
+    [types.SET_BINDING_ATTRIBUTE_ID](state, { index, id }) {
+        state.bindingAttributesIds[index] = id;
+        state.bindingAttributesIds = [
+            ...state.bindingAttributesIds,
+        ];
+    },
+    [types.SET_BINDING_ATTRIBUTE_IDS](state, bindingAttributesIds) {
+        state.bindingAttributesIds = bindingAttributesIds;
+    },
+    [types.SET_INITIAL_BINDING_ATTRIBUTE_IDS](state, initialBindingAttributesIds) {
+        state.initialBindingAttributesIds = initialBindingAttributesIds;
     },
     [types.ADD_BINDING_ATTRIBUTE](state) {
-        state.bindingAttributes.push(null);
+        state.bindingAttributesIds.push(null);
     },
     [types.REMOVE_BINDING_ATTRIBUTE](state, index) {
-        state.bindingAttributes.splice(index, 1);
+        state.bindingAttributesIds.splice(index, 1);
     },
     [types.SET_PRODUCT_WORKFLOW](state, workflow) {
         state.workflow = workflow;

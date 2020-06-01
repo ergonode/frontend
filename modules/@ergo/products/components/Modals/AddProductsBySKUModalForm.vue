@@ -13,7 +13,7 @@
         </template>
         <template #footer>
             <Button
-                title="ADD TO COLLECTION"
+                title="ADD TO PRODUCT"
                 :disabled="isRequestPending"
                 @click.native="onAdd" />
             <Button
@@ -33,7 +33,7 @@ import { ALERT_TYPE } from '@Core/defaults/alerts';
 export default {
     name: 'AddProductsBySKUModalForm',
     components: {
-        AddProductsBySKUForm: () => import('@Products/components/Forms/AddProductsBySKUForm'),
+        AddProductsBySKUForm: () => import('@Products/components/Form/AddProductsBySKUForm'),
         ModalForm: () => import('@Core/components/Modal/ModalForm'),
         Button: () => import('@Core/components/Buttons/Button'),
     },
@@ -47,7 +47,7 @@ export default {
         ...mapState('authentication', {
             language: state => state.user.language,
         }),
-        ...mapState('collections', {
+        ...mapState('product', {
             id: state => state.id,
         }),
         secondaryTheme() {
@@ -69,7 +69,7 @@ export default {
             this.removeValidationErrors();
             const preValidationErrors = {};
             const data = {
-                skus: this.productSkus,
+                child_id: this.productSkus,
             };
 
             if (!isEmpty(preValidationErrors)) {
@@ -78,10 +78,10 @@ export default {
             }
 
             this.isRequestPending = true;
-            this.$axios.$post(`${this.language}/collections/${this.id}/elements/multiple`, data).then(() => {
+            this.$axios.$post(`${this.language}/products/${this.id}/children`, data).then(() => {
                 this.isRequestPending = false;
                 this.removeValidationErrors();
-                this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been added to collection' });
+                this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been added' });
 
                 this.$emit('added');
             }).catch((e) => {

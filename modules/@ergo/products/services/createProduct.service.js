@@ -2,13 +2,22 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { isObject } from '@Core/models/objectWrapper';
+import { isObject, getKeyByValue } from '@Core/models/objectWrapper';
 
-export default function ({ $axios, $store }) {
+export default async function ({ $axios, $store }) {
     const { language } = $store.state.authentication.user;
-    const { sku, template, selectedCategories } = $store.state.product;
+    const { productTypes } = $store.state.dictionaries;
+    const {
+        sku,
+        type,
+        template,
+        selectedCategories,
+        bindingAttributesIds,
+        initialBindingAttributesIds,
+    } = $store.state.product;
     const data = {
         sku,
+        type: getKeyByValue(productTypes, type),
         templateId: isObject(template) ? template.id : null,
     };
 
@@ -16,5 +25,22 @@ export default function ({ $axios, $store }) {
         data.categoryIds = selectedCategories.map(category => category.id);
     }
 
-    return $axios.$post(`${language}/products`, data);
+    const { id } = await $axios.$post(`${language}/products`, data);
+
+    const toAddBindingRequests = bindingAttributesIds
+        .filter(bindingId => !initialBindingAttributesIds
+            .some(initialBindingId => initialBindingId === bindingId))
+        .map(bindingId => $axios.$post(`${language}/products/${id}/binding`, { bind_id: bindingId }));
+
+    const toRemoveBindingRequests = initialBindingAttributesIds
+        .filter(initialBindingId => !bindingAttributesIds
+            .some(bindingId => bindingId === initialBindingId))
+        .map(bindingId => $axios.$delete(`${language}/products/${id}/binding/${bindingId}`));
+
+    await Promise.all([
+        ...toAddBindingRequests,
+        ...toRemoveBindingRequests,
+    ]);
+
+    return { id };
 }

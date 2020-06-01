@@ -5,5 +5,6 @@
 export const ADD_PRODUCT = {
     BY_SKU: 'Add by SKU',
     FROM_SEGMENT: 'Add from segment',
-    FROM_LIST: 'Select from list',
+    // TODO: Uncomment when planned
+    // FROM_LIST: 'Select from list',
 };

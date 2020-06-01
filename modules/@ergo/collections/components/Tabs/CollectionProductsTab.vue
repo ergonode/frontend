@@ -79,8 +79,9 @@ export default {
         },
         modalComponent() {
             switch (this.selectedAppModalOption) {
-            case ADD_PRODUCT.FROM_LIST:
-                return () => import('@Collections/components/Modals/AddProductsFromListModalGrid');
+            // TODO: We may delay this functionality - selecting from Grid might product performance issues - need planning
+            // case ADD_PRODUCT.FROM_LIST:
+            //     return () => import('@Collections/components/Modals/AddProductsFromListModalGrid');
             case ADD_PRODUCT.FROM_SEGMENT:
                 return () => import('@Collections/components/Modals/AddProductsFromSegmentModalForm');
             case ADD_PRODUCT.BY_SKU:
