@@ -10,7 +10,14 @@
                 :columns="columns"
                 :data-count="filtered"
                 :data="data"
+                :collection-cell-binding="{
+                    imageColumn: 'default_image',
+                    descriptionColumn: 'default_label'
+                }"
                 :is-basic-filter="true"
+                :is-collection-layout="true"
+                :is-header-visible="true"
+                :is-centered-view="true"
                 @removeRow="onRemoveRow"
                 @fetchData="getGridData" />
         </template>

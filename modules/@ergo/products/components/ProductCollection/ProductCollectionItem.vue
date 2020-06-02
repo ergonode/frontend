@@ -64,6 +64,7 @@ export default {
         &__placeholder {
             justify-self: center;
             align-self: center;
+            object-fit: none;
         }
 
         &__placeholder, & > .image {
