@@ -134,6 +134,7 @@ export default {
         display: flex;
         width: 960px;
         height: 80%;
+        background-color: $WHITE;
         box-shadow: $ELEVATOR_6_DP;
 
         &__header {

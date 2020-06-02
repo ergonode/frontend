@@ -267,16 +267,6 @@ export default {
         this.initializeDataColumns();
     },
     mounted() {
-        const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
-
-        if (!config) {
-            this.$cookies.set(
-                `GRID_CONFIG:${this.$route.name}`,
-                this.columns
-                    .map(({ id }) => id)
-                    .join(','),
-            );
-        }
         window.addEventListener('click', this.onClickOutside);
     },
     beforeDestroy() {
@@ -498,6 +488,17 @@ export default {
             }
         },
         initializeDataColumns() {
+            const config = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
+
+            if (!config) {
+                this.$cookies.set(
+                    `GRID_CONFIG:${this.$route.name}`,
+                    this.columns
+                        .map(({ id }) => id)
+                        .join(','),
+                );
+            }
+
             const orderedColumns = [];
             const columnComponents = [];
             const columnWidths = [];

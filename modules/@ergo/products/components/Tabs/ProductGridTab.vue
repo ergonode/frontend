@@ -85,7 +85,7 @@ export default {
     components: {
         GridViewTemplate,
         Button,
-        VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
+        VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
         Grid: () => import('@Core/components/Grid/Grid'),
         // RestoreAttributeParentModalConfirm: () => import('@Products/components/Modals/RestoreAttributeParentModalConfirm'),
         // IconRestore: () => import('@Core/components/Icons/Actions/IconRestore'),

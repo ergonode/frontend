@@ -25,6 +25,8 @@ export default {
         display: flex;
         align-items: center;
         border: none;
+        padding: 0 8px;
+        background-color: $WHITE;
         color: $GRAPHITE_DARK;
         font: $FONT_MEDIUM_12_16;
         cursor: pointer;

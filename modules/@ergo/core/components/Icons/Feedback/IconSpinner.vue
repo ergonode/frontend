@@ -5,6 +5,8 @@
 <template>
     <svg
         class="spinner"
+        :width="width"
+        :height="height"
         viewBox="0 0 50 50">
         <circle
             class="path"
@@ -28,14 +30,20 @@ export default {
             type: String,
             default: WHITE,
         },
+        width: {
+            type: [Number, String],
+            default: 24,
+        },
+        height: {
+            type: [Number, String],
+            default: 24,
+        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
 .spinner {
-    width: 24px;
-    height: 24px;
     animation: rotate 2s linear infinite;
 
     & .path {

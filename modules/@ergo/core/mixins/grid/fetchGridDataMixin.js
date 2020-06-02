@@ -21,16 +21,14 @@ export default function ({ path }) {
                 default: false,
             },
         },
-        async asyncData({
-            app, store, params, route,
-        }) {
+        async fetch() {
             const gridParams = {
                 offset: 0,
                 limit: DATA_LIMIT,
                 extended: true,
             };
 
-            const columnsConfig = app.$cookies.get(`GRID_CONFIG:${route.name}`);
+            const columnsConfig = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
 
             if (columnsConfig) {
                 gridParams.columns = `${columnsConfig},_links`;
@@ -38,21 +36,21 @@ export default function ({ path }) {
 
             let dynamicPath = path;
 
-            Object.keys(params).forEach((key) => {
+            Object.keys(this.$route.params).forEach((key) => {
                 if (path.includes(key)) {
-                    dynamicPath = dynamicPath.replace(`_${key}`, params[key]);
+                    dynamicPath = dynamicPath.replace(`_${key}`, this.$route.params[key]);
                 }
             });
 
             const requests = [
                 getGridData({
-                    $axios: app.$axios,
-                    path: `${store.state.authentication.user.language}/${dynamicPath}`,
+                    $axios: this.$axios,
+                    path: `${this.$store.state.authentication.user.language}/${dynamicPath}`,
                     params: gridParams,
                 }),
             ];
 
-            const advFiltersIds = app.$cookies.get(ADV_FILTERS_IDS);
+            const advFiltersIds = this.$cookies.get(ADV_FILTERS_IDS);
 
             if (advFiltersIds && path === 'products') {
                 const filtersParams = {
@@ -62,14 +60,14 @@ export default function ({ path }) {
                 };
 
                 requests.push(getAdvancedFiltersData({
-                    $axios: app.$axios,
-                    path: `${store.state.authentication.user.language}/${dynamicPath}`,
+                    $axios: this.$axios,
+                    path: `${this.$store.state.authentication.user.language}/${dynamicPath}`,
                     params: filtersParams,
                 }));
             }
 
             const [gridData, advancedFilters = []] = await Promise.all(requests);
-            const { columns } = gridData;
+            const { columns, data, filtered } = gridData;
             const disabledElements = {};
             const setDisabledElement = ({ languageCode, attributeId }) => {
                 if (attributeId) {
@@ -97,15 +95,18 @@ export default function ({ path }) {
                 setDisabledElement({ languageCode, attributeId });
             });
 
-            store.dispatch('list/setDisabledElements', disabledElements);
+            this.setDisabledElements(disabledElements);
 
-            return {
-                ...gridData,
-                advancedFilters,
-            };
+            this.columns = columns;
+            this.data = data;
+            this.filtered = filtered;
+            this.advancedFilters = advancedFilters;
         },
         data() {
             return {
+                data: {},
+                columns: [],
+                filtered: 0,
                 advancedFilters: [],
                 localParams: {
                     offset: 0,
@@ -133,6 +134,7 @@ export default function ({ path }) {
         methods: {
             ...mapActions('list', [
                 'setDisabledElement',
+                'setDisabledElements',
             ]),
             getGridData({
                 offset, limit, filters, sortedColumn,
@@ -181,12 +183,10 @@ export default function ({ path }) {
                 }).then(({
                     columns,
                     data,
-                    count,
                     filtered,
                 }) => {
                     this.columns = columns;
                     this.data = data;
-                    this.count = count;
                     this.filtered = filtered;
 
                     this.$emit('fetched');

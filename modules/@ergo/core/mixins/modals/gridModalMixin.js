@@ -4,7 +4,7 @@
  */
 export default {
     components: {
-        HorizontalTabBarContent: () => import('@Core/components/Tab/HorizontalTabBarContent'),
+        HorizontalRoutingTabBarContent: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBarContent'),
     },
     data() {
         return {

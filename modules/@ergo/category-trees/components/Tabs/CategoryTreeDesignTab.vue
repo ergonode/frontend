@@ -19,7 +19,7 @@ import GridViewTemplate from '@Core/components/Layout/Templates/GridViewTemplate
 export default {
     name: 'CategoryTreeDesignTab',
     components: {
-        VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
+        VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
         CategoryTreeWrapper: () => import('@Trees/components/CategoryTreeDesigner/CategoryTreeWrapper'),
         GridViewTemplate,
     },

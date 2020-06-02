@@ -50,7 +50,7 @@
                 </TitleBarSubActions>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalRoutingTabBar :items="tabs" />
         <Footer
             v-if="!$route.path.includes('history')"
             flex-end>
