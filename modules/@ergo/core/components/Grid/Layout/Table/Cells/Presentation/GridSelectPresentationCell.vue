@@ -34,6 +34,10 @@ export default {
     },
     computed: {
         presentationValue() {
+            if (typeof this.options[this.value] === 'undefined') {
+                return '';
+            }
+
             const { code, label } = this.options[this.value];
 
             return label || `${code}`;
