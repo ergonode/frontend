@@ -71,6 +71,7 @@ export default {
             await this.updateProduct({
                 id,
                 data: {
+                    templateId: this.template,
                     categoryIds: this.categories,
                 },
             });
