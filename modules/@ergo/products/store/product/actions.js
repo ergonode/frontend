@@ -45,8 +45,7 @@ export default {
                 id: templateId, key: '', value: name, hint: '',
             };
         };
-
-        return this.app.$axios.$get(`${userLanguageCode}/products/${id}`).then(({
+        const getProductRequest = this.app.$axios.$get(`${userLanguageCode}/products/${id}`).then(({
             design_template_id: templateId,
             categories: categoryIds,
             attributes,
@@ -63,18 +62,22 @@ export default {
                 commit(types.SET_PRODUCT_TEMPLATE, parseTemplate(templateId));
             }
 
-            // TODO:
-            // - Set attribute bindings
-
             commit(types.SET_PRODUCT_ID, id);
             commit(types.SET_PRODUCT_SKU, sku);
             commit(types.SET_PRODUCT_STATUS, status);
             commit(types.SET_PRODUCT_WORKFLOW, workflow);
             commit(types.SET_PRODUCT_DATA, attributes);
             commit(types.SET_PRODUCT_TYPE, productTypes[type]);
-            commit(types.SET_BINDING_ATTRIBUTE_IDS, []);
-            commit(types.SET_INITIAL_BINDING_ATTRIBUTE_IDS, []);
         });
+        const getAttributesBindings = this.app.$axios.$get(`${userLanguageCode}/products/${id}/bindings`).then((bindings) => {
+            commit(types.SET_BINDING_ATTRIBUTE_IDS, bindings);
+            commit(types.SET_INITIAL_BINDING_ATTRIBUTE_IDS, bindings);
+        });
+
+        return Promise.all([
+            getProductRequest,
+            getAttributesBindings,
+        ]);
     },
     getTemplates({ commit, rootState }) {
         const { authentication: { user: { language } } } = rootState;

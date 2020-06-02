@@ -42,7 +42,7 @@ export default {
                 || (!this.isDisabled && !this.$hasAccess(['PRODUCT_COLLECTION_CREATE']));
         },
         skusFieldKey() {
-            return 'skus';
+            return 'child_id';
         },
     },
     methods: {

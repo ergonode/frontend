@@ -4,7 +4,7 @@
  */
 import { isObject, getKeyByValue } from '@Core/models/objectWrapper';
 
-export default async function ({ $axios, $store }) {
+export default function ({ $axios, $store }) {
     const { language } = $store.state.authentication.user;
     const { productTypes } = $store.state.dictionaries;
     const {
@@ -13,34 +13,17 @@ export default async function ({ $axios, $store }) {
         template,
         selectedCategories,
         bindingAttributesIds,
-        initialBindingAttributesIds,
     } = $store.state.product;
     const data = {
         sku,
         type: getKeyByValue(productTypes, type),
         templateId: isObject(template) ? template.id : null,
+        bindings: bindingAttributesIds,
     };
 
     if (selectedCategories.length > 0) {
         data.categoryIds = selectedCategories.map(category => category.id);
     }
 
-    const { id } = await $axios.$post(`${language}/products`, data);
-
-    const toAddBindingRequests = bindingAttributesIds
-        .filter(bindingId => !initialBindingAttributesIds
-            .some(initialBindingId => initialBindingId === bindingId))
-        .map(bindingId => $axios.$post(`${language}/products/${id}/binding`, { bind_id: bindingId }));
-
-    const toRemoveBindingRequests = initialBindingAttributesIds
-        .filter(initialBindingId => !bindingAttributesIds
-            .some(bindingId => bindingId === initialBindingId))
-        .map(bindingId => $axios.$delete(`${language}/products/${id}/binding/${bindingId}`));
-
-    await Promise.all([
-        ...toAddBindingRequests,
-        ...toRemoveBindingRequests,
-    ]);
-
-    return { id };
+    return $axios.$post(`${language}/products`, data);
 }

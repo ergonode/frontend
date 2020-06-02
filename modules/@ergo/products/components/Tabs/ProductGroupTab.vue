@@ -79,9 +79,9 @@ export default {
             // case ADD_PRODUCT.FROM_LIST:
             //     return null;
             case ADD_PRODUCT.FROM_SEGMENT:
-                return () => import('@Collections/components/Modals/AddProductsFromSegmentModalForm');
+                return () => import('@Products/components/Modals/AddProductsFromSegmentModalForm');
             case ADD_PRODUCT.BY_SKU:
-                return () => import('@Collections/components/Modals/AddProductsBySKUModalForm');
+                return () => import('@Products/components/Modals/AddProductsBySKUModalForm');
             default: return null;
             }
         },
