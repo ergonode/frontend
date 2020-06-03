@@ -52,9 +52,6 @@ export default {
             'removeValidationErrors',
         ]),
         onRemove() {
-            this.removeCollection({
-                onSuccess: this.onRemoveSuccess,
-            });
             this.$openModal({
                 key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
                 message: 'Are you sure you want to delete this collection?',

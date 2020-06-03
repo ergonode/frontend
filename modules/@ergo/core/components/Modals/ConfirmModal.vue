@@ -8,9 +8,11 @@
         @close="onClose">
         <template #footer>
             <Button
+                data-cy="modal-confirm"
                 :title="agreeButtonText"
                 @click.native="onAgree" />
             <Button
+                data-cy="modal-cancel"
                 title="CANCEL"
                 :theme="secondaryTheme"
                 @click.native="onClose" />

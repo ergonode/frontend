@@ -7,30 +7,30 @@ import {
     sendPostRequest,
     getToken,
     checkGridRow,
+    noGridRow,
     removeRequest,
     removeOnGrid,
-    noGridRow,
 } from '../../models/addingItems';
 
 beforeEach(() => {
-    cy.apiRequest('POST', 'en/attributes/groups').as('POST-REQUEST');
+    cy.apiRequest('POST', 'en/segments').as('POST-REQUEST');
 });
 
 Then('I send a {string} request and status code should be {int}', (reqType, status) => {
     getToken();
-    sendPostRequest({ reqType, status, urlRegExp: /\/en\/attributes\/groups$/ });
-});
-
-Then('On {string} I can see row {int} with columns data: {string}', (gridId, rowNr, columns) => {
-    checkGridRow({ gridId, rowNr, columns });
+    sendPostRequest({ reqType, status, urlRegExp: /\/en\/segments$/ });
 });
 
 And('On {string} I can not see row {int} with columns data: {string}', (gridId, rowNr, columns) => {
     noGridRow({ gridId, rowNr, columns });
 });
 
+Then('On {string} I can see row {int} with columns data: {string}', (gridId, rowNr, columns) => {
+    checkGridRow({ gridId, rowNr, columns });
+});
+
 Then('I remove {string} element by {string} request', (element, reqType) => {
-    removeRequest({ element, reqType, path: 'en/attributes/groups' });
+    removeRequest({ element, reqType, path: 'en/segments' });
 });
 
 And('On {string} I click on {string} button for row {int}', (gridId, action, rowNr) => {

@@ -10,6 +10,7 @@
             :is-read-only="$isReadOnly('CATEGORY')">
             <template #mainAction>
                 <Button
+                    data-cy="delete-category"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE CATEGORY"
@@ -24,6 +25,7 @@
         <HorizontalTabBar :items="tabs" />
         <Footer flex-end>
             <Button
+                data-cy="save-category"
                 title="SAVE CATEGORY"
                 :size="smallSize"
                 :disabled="$isLoading('footerButton')"

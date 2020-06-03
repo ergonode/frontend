@@ -6,6 +6,7 @@
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #header>
             <TranslationSelect
+                data-cy="translation-language-select"
                 :style="{ flex: '0 0 192px' }"
                 v-model="selectedLanguages"
                 :options="languageOptions"

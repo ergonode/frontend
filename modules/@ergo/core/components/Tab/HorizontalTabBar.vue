@@ -5,6 +5,7 @@
 <template>
     <div class="tab-bar">
         <div
+            data-cy="tab-bar__items"
             class="tab-bar__items"
             v-if="isTabVisible">
             <HorizontalTabBarItem

@@ -25,6 +25,7 @@
         :regular="regular"
         :searchable="searchable"
         :fetch-options-request="fetchOptionsRequest"
+        :data-cy="dataCy"
         @focus="onFocus"
         @search="onSearch"
         @input="onValueChange"
@@ -163,6 +164,10 @@ export default {
         fetchOptionsRequest: {
             type: Function,
             required: true,
+        },
+        dataCy: {
+            type: String,
+            default: '',
         },
     },
     data() {

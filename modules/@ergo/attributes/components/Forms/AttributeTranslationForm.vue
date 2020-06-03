@@ -8,6 +8,7 @@
             <template #body="{ errorMessages }">
                 <FormSection>
                     <TextField
+                        :data-cy="dataCyGenerator(labelFieldKey)"
                         :value="translations.label[languageCode]"
                         solid
                         label="Attribute name"
@@ -17,6 +18,7 @@
                         @input="(value) => setTranslationPropertyValue(value, 'label')" />
                     <TextArea
                         v-if="hasPlaceholder"
+                        :data-cy="dataCyGenerator(placeholderFieldKey)"
                         :value="translations.placeholder[languageCode]"
                         solid
                         label="Placeholder"
@@ -26,6 +28,7 @@
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'placeholder')" />
                     <TextArea
+                        :data-cy="dataCyGenerator(hintFieldKey)"
                         :value="translations.hint[languageCode]"
                         solid
                         label="Tooltip for writers"
@@ -98,6 +101,11 @@ export default {
         },
         labelFieldKey() {
             return `label_${this.languageCode}`;
+        },
+    },
+    methods: {
+        dataCyGenerator(key) {
+            return `attribute-${key}`;
         },
     },
 };

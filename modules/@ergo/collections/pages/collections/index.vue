@@ -9,6 +9,7 @@
             :is-read-only="$isReadOnly('PRODUCT_COLLECTION')">
             <template #mainAction>
                 <Button
+                    data-cy="new-collection"
                     title="NEW PRODUCT COLLECTION"
                     :size="smallSize"
                     :disabled="!$hasAccess(['PRODUCT_COLLECTION_CREATE'])"

@@ -9,6 +9,7 @@
             :is-read-only="$isReadOnly('TEMPLATE_DESIGNER')">
             <template #mainAction>
                 <Button
+                    data-cy="new-template"
                     title="NEW TEMPLATE"
                     :size="smallSize"
                     :disabled="!$hasAccess(['TEMPLATE_DESIGNER_CREATE'])"

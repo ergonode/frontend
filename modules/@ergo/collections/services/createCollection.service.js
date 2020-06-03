@@ -7,7 +7,7 @@ import { isObject } from '@Core/models/objectWrapper';
 export default function ({ $axios, $store }) {
     const { language } = $store.state.authentication.user;
     const { code, type } = $store.state.collections;
-    const typeId = isObject(type) ? type.id : null;
+    const typeId = isObject(type) ? type.id : type;
 
     return $axios.$post(`${language}/collections`, { code, typeId });
 }

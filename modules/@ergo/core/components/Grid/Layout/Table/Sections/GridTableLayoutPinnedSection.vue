@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div :class="['pinned-section', { 'pinned-section--pinned': isPinned }]">
+    <div
+        data-cy="pinned-section"
+        :class="['pinned-section', { 'pinned-section--pinned': isPinned }]">
         <slot />
     </div>
 </template>

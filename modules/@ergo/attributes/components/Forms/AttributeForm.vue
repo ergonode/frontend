@@ -162,7 +162,7 @@ export default {
             return hasOptions(this.typeKey);
         },
         attributeTypeOptions() {
-            return Object.values(this.attrTypes);
+            return Object.values(this.attrTypes).sort();
         },
         attributeScopeOptions() {
             return Object.values(SCOPE);

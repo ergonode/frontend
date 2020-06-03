@@ -10,6 +10,7 @@
             :is-read-only="$isReadOnly('SEGMENT')">
             <template #mainAction>
                 <Button
+                    data-cy="delete-segment"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE SEGMENT"
@@ -24,6 +25,7 @@
         <HorizontalTabBar :items="tabs" />
         <Footer flex-end>
             <Button
+                data-cy="save-segment"
                 title="SAVE SEGMENT"
                 :size="smallSize"
                 :disabled="$isLoading('footerButton')"
