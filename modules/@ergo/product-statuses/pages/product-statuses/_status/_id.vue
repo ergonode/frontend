@@ -13,6 +13,7 @@
 
 import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { MODAL_TYPE } from '@Core/defaults/modals';
 
 export default {
     name: 'StatusEdit',
@@ -60,12 +61,13 @@ export default {
             });
         },
         onRemove() {
-            const isConfirmed = confirm('Are you sure you want to delete this product status?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirmed) {
-                this.removeProductStatus({
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Are you sure you want to delete this product status?',
+                confirmCallback: () => this.removeProductStatus({
                     onSuccess: this.onRemoveProductStatusSuccess,
-                });
-            }
+                }),
+            });
         },
         onRemoveProductStatusSuccess() {
             this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Product status removed' });

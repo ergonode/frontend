@@ -4,12 +4,13 @@
  */
 <template>
     <FormListSection
+        data-cy="attribute-add-options"
         :disabled="disabled"
         add-list-title="ADD OPTION KEY"
         @add="addOptionKey">
         <FormListSubsection>
             <FormListElementField
-                v-for="fieldKey in optionIndexes"
+                v-for="(fieldKey, i) in optionIndexes"
                 :key="fieldKey"
                 :field-key="fieldKey"
                 :disabled="disabled"
@@ -17,6 +18,7 @@
                 <FormValidatorField :field-key="`option_${fieldKey}`">
                     <template #validator="{ errorMessages }">
                         <TextField
+                            :data-cy="dataCyGenerator(i)"
                             :value="options[fieldKey].key"
                             solid
                             required
@@ -84,6 +86,9 @@ export default {
         },
         addOptionKey() {
             this.addAttributeOptionKey(getUUID());
+        },
+        dataCyGenerator(key) {
+            return `attribute-option-${key}`;
         },
     },
 };

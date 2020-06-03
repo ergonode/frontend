@@ -24,6 +24,7 @@
         <HorizontalRoutingTabBar :items="tabs" />
         <Footer flex-end>
             <Button
+                data-cy="save-attribute"
                 title="SAVE ATTRIBUTE"
                 :size="smallSize"
                 :disabled="$isLoading('footerButton')"

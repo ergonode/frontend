@@ -13,6 +13,7 @@
 import { mapState, mapActions } from 'vuex';
 import { getMappedPrivilegesBasedOnGridData } from '@Users/models/gridDataMapper';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { MODAL_TYPE } from '@Core/defaults/modals';
 
 export default {
     name: 'EditUserRoles',
@@ -92,14 +93,15 @@ export default {
             });
         },
         onRemove() {
-            const isConfirmed = confirm('Are you sure you want to delete this role?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirmed) {
-                this.removeRole({
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Are you sure you want to delete this role?',
+                confirmCallback: () => this.removeRole({
                     id: this.roleID,
                     onSuccess: this.onRemoveRoleSuccess,
                     onError: this.onRemoveRoleError,
-                });
-            }
+                }),
+            });
         },
     },
 };

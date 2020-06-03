@@ -9,6 +9,7 @@
         <template #body="{ errorMessages }">
             <FormSection>
                 <TextField
+                    :data-cy="dataCyGenerator(nameFieldKey)"
                     :value="templateTitle"
                     solid
                     required
@@ -18,6 +19,7 @@
                     :disabled="isDisabledByPrivileges"
                     @input="setTitle" />
                 <UploadImageFile
+                    :data-cy="dataCyGenerator('image')"
                     :value="templateImage"
                     label="Template cover image"
                     :disabled="isDisabledByPrivileges"
@@ -26,6 +28,7 @@
             </FormSection>
             <FormSection title="Presentation product">
                 <TranslationLazySelect
+                    :data-cy="dataCyGenerator('default-label')"
                     :value="defaultTextAttribute"
                     solid
                     regular
@@ -34,6 +37,7 @@
                     :fetch-options-request="getDefaultTextAttributeOptionsRequest"
                     @input="setDefaultTextAttribute" />
                 <TranslationLazySelect
+                    :data-cy="dataCyGenerator('default-image')"
                     :value="defaultImageAttribute"
                     solid
                     regular
@@ -95,6 +99,9 @@ export default {
             return getAttributesOptionsByType().then(response => response.default(
                 { $axios: this.$axios, $store: this.$store, type: TYPES.IMAGE },
             ));
+        },
+        dataCyGenerator(key) {
+            return `template-${key}`;
         },
     },
 };

@@ -9,6 +9,7 @@
             :is-read-only="$isReadOnly('SEGMENT')">
             <template #mainAction>
                 <Button
+                    data-cy="new-segment"
                     title="NEW SEGMENT"
                     :size="smallSize"
                     :disabled="!$hasAccess(['SEGMENT_CREATE'])"

@@ -2,37 +2,6 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-export function getParsedTreeData(tree, languages) {
-    if (!Array.isArray(languages) || languages.length <= 0) return [];
-
-    let rowCounter = 0;
-    const newTree = [];
-    const buildTree = (treeArray, parent, column) => {
-        for (let i = 0; i < treeArray.length; i += 1) {
-            const languageId = treeArray[i].language_id;
-            const { length: childrenLength } = treeArray[i].children;
-            const {
-                code: languageCode,
-                name: languageName,
-            } = languages.find(e => e.id === languageId);
-            newTree.push({
-                id: languageId,
-                code: languageCode,
-                name: languageName,
-                row: rowCounter,
-                column,
-                parent,
-                children: childrenLength,
-                expanded: false,
-            });
-            rowCounter += 1;
-            buildTree(treeArray[i].children, languageId, column + 1);
-        }
-    };
-    buildTree([tree], 'root', 0);
-    return newTree;
-}
-
 export function getMappedTreeData(treeArray) {
     const newTree = [];
 

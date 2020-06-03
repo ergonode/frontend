@@ -3,18 +3,43 @@
  * See LICENSE for license details.
  */
 import { removeFromObjectByKey } from '@Core/models/objectWrapper';
+import { getFlattenedTreeData } from '@Core/models/mappers/treeMapper';
 import defaultState from './state';
 
 export const types = {
     SET_DEFAULT_LANGUAGE: 'SET_DEFAULT_LANGUAGE',
+    SET_LANGUAGES_TREE: 'SET_LANGUAGES_TREE',
+    SET_LANGUAGES: 'SET_LANGUAGES',
     SET_LOADER: 'SET_LOADER',
     REMOVE_LOADER: 'REMOVE_LOADER',
+    OPEN_MODAL: 'OPEN_MODAL',
+    CLOSE_MODAL: 'CLOSE_MODAL',
     CLEAR_STATE: 'CLEAR_STATE',
 };
 
 export default {
+    [types.SET_LANGUAGES_TREE](state, { treeData, fillingData }) {
+        const reducer = (id) => {
+            const { name, code } = fillingData.find(e => e.id === id);
+
+            return { name, code };
+        };
+
+        state.languagesTree = getFlattenedTreeData({ treeData, mappedId: 'language_id', reducer });
+    },
+    [types.SET_LANGUAGES](state, languages) {
+        state.languages = languages;
+    },
     [types.SET_DEFAULT_LANGUAGE](state, code) {
-        state.languagePrivilegesDefaultCode = code;
+        state.defaultLanguageCodeByPrivileges = code;
+    },
+    [types.OPEN_MODAL](state, { key, ...params }) {
+        state.modals = {
+            [key]: params,
+        };
+    },
+    [types.CLOSE_MODAL](state, key) {
+        state.modals = removeFromObjectByKey(state.modals, key);
     },
     [types.SET_LOADER](state, key) {
         state.loaders = { [key]: true };
@@ -24,6 +49,7 @@ export default {
     },
     [types.CLEAR_STATE](state) {
         const states = defaultState();
+
         Object.keys(states).forEach((key) => {
             state[key] = states[key];
         });

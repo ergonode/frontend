@@ -7,23 +7,25 @@
         <template #body>
             <FormSection>
                 <TranslationSelect
-                    :value="selectedLanguages"
-                    :options="languages"
+                    :value="activeLanguages"
+                    :options="languageOptions"
                     :solid="true"
                     label="Languages"
                     :regular="true"
                     :multiselect="true"
                     :clearable="true"
                     :searchable="true"
+                    :description="hint"
+                    :sticky-search="true"
                     @input="setSelectedLanguages"
-                    @search="getFilteredData" />
+                    @search="onSearch" />
             </FormSection>
         </template>
     </Form>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
     name: 'MainSettingsForm',
@@ -32,17 +34,54 @@ export default {
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
         TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
     },
+    data() {
+        return {
+            filteredValue: '',
+            tmpLanguages: [],
+            activeLanguages: [],
+        };
+    },
     computed: {
-        ...mapState('languageSettings', {
+        ...mapState('core', {
             languages: state => state.languages,
-            selectedLanguages: state => state.selectedLanguages,
         }),
+        languageOptions() {
+            if (this.filteredValue) {
+                const rgx = new RegExp(this.filteredValue, 'i');
+
+                return this.tmpLanguages.filter(
+                    ({ key, value }) => key.match(rgx) || value.match(rgx),
+                );
+            }
+            return this.tmpLanguages;
+        },
+        hint() {
+            return this.activeLanguages.map(({ value }) => value).join(', ');
+        },
+    },
+    watch: {
+        languages: {
+            deep: true,
+            immediate: true,
+            handler(value) {
+                const mappedLanguage = ({ id, name, code }) => ({ id, key: code, value: name });
+
+                this.tmpLanguages = value.map(mappedLanguage);
+                this.activeLanguages = value
+                    .filter(({ active }) => active === true)
+                    .map(mappedLanguage);
+                this.$emit('selectedLanguages', this.activeLanguages);
+            },
+        },
     },
     methods: {
-        ...mapActions('languageSettings', [
-            'setSelectedLanguages',
-            'getFilteredData',
-        ]),
+        setSelectedLanguages(selectedLanguages) {
+            this.activeLanguages = selectedLanguages;
+            this.$emit('selectedLanguages', selectedLanguages);
+        },
+        onSearch(value) {
+            this.filteredValue = value;
+        },
     },
 };
 </script>
