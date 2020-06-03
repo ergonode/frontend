@@ -19,7 +19,6 @@
 <script>
 import { mapActions } from 'vuex';
 import { getImageData } from '@Core/models/multimedia';
-import { WHITESMOKE } from '@Core/assets/scss/_js-variables/colors.scss';
 
 export default {
     name: 'Picture',
@@ -39,20 +38,14 @@ export default {
     },
     data() {
         return {
-            isPlaceholder: false,
             observer: null,
         };
     },
     computed: {
         imageStyle() {
-            return this.isPlaceholder
-                ? {
-                    backgroundColor: WHITESMOKE,
-                    objectFit: 'none',
-                }
-                : {
-                    objectFit: this.objectFit,
-                };
+            return {
+                objectFit: this.objectFit,
+            };
         },
     },
     watch: {
@@ -79,7 +72,6 @@ export default {
             'onError',
         ]),
         getImageById() {
-            this.isPlaceholder = true;
             this.$axios.$get(`multimedia/${this.imageId}`, {
                 responseType: 'arraybuffer',
             }).then(response => this.onSuccess(response)).catch(this.imageLoadOnError);
@@ -88,10 +80,8 @@ export default {
             if (this.$refs.img) {
                 this.$refs.img.src = getImageData(response);
             }
-            this.isPlaceholder = false;
         },
         imageLoadOnError() {
-            this.isPlaceholder = true;
             if (this.$refs.img) {
                 this.$refs.img.src = require('@Core/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
             }

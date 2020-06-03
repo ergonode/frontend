@@ -41,7 +41,7 @@ import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
 export default {
     name: 'SystemAttributesListTab',
     components: {
-        VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
+        VerticalTabBarListWrapper: () => import('@Core/components/TabBar/VerticalTabBarListWrapper'),
         ListSearchSelectHeader: () => import('@Core/components/List/ListSearchSelectHeader'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
         List: () => import('@Core/components/List/List'),

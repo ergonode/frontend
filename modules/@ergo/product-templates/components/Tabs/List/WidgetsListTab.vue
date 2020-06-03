@@ -23,7 +23,7 @@ import { mapState } from 'vuex';
 export default {
     name: 'WidgetsListTab',
     components: {
-        VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
+        VerticalTabBarListWrapper: () => import('@Core/components/TabBar/VerticalTabBarListWrapper'),
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         WidgetsListElement: () => import('@Templates/components/Lists/Widgets/WidgetsListElement'),

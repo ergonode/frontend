@@ -10,6 +10,7 @@ export default {
     },
     relations: [
         '@ergo/attributes',
+        '@ergo/media',
     ],
     plugins: [
         { ssr: true, src: './plugins/axios' },

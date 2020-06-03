@@ -30,7 +30,7 @@ export default {
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         LanguagesListElement: () => import('@Core/components/Lists/LanguagesListElement'),
-        VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
+        VerticalTabBarListWrapper: () => import('@Core/components/TabBar/VerticalTabBarListWrapper'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
     },
     data() {

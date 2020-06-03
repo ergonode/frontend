@@ -80,6 +80,7 @@
 </template>
 
 <script>
+import { isObject } from '@Core/models/objectWrapper';
 import { SIZE, THEME } from '@Core/defaults/theme';
 import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
@@ -167,7 +168,7 @@ export default {
             return this.options.map(option => JSON.stringify(option));
         },
         isOptionsValid() {
-            return this.options.length && typeof this.options[0] !== 'object';
+            return this.options.length && !isObject(this.options[0]);
         },
     },
     methods: {

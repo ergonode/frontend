@@ -59,7 +59,7 @@ import fetchListGroupDataMixin from '@Core/mixins/list/fetchListGroupDataMixin';
 export default {
     name: 'AttributesListTab',
     components: {
-        VerticalTabBarListWrapper: () => import('@Core/components/Tab/VerticalTabBarListWrapper'),
+        VerticalTabBarListWrapper: () => import('@Core/components/TabBar/VerticalTabBarListWrapper'),
         List: () => import('@Core/components/List/List'),
         ListScrollableContainer: () => import('@Core/components/List/ListScrollableContainer'),
         AttributesListGroup: () => import('@Attributes/components/Lists/AttributesListGroup'),

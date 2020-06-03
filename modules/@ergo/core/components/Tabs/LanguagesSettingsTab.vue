@@ -45,7 +45,7 @@ export default {
         FooterActions,
         Button,
         LanguagesTreeWrapper: () => import('@Core/components/LanguagesTreeDesigner/LanguagesTreeWrapper'),
-        VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
+        VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
     },
     asyncData({ store }) {
         const { language: languageCode } = store.state.authentication.user;

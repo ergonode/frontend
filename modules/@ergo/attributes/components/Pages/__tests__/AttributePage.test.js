@@ -33,7 +33,7 @@ describe('Pages/AttributePage', () => {
             },
             stubs: {
                 NuxtLink: true,
-                HorizontalTabBar: true,
+                HorizontalRoutingTabBar: true,
             },
         });
     });
