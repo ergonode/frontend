@@ -4,6 +4,7 @@
  */
 export default {
     getRootOnLanguagesTree: state => state.languagesTree.find(({ level }) => level === 0),
+    getLanguageById: state => languageId => state.languages.find(({ id }) => id === languageId),
     getActiveLanguages: state => state.languages.filter(({ active }) => active === true),
     getActiveLanguageByCode: (state, getters) => c => getters.getActiveLanguages.find(
         ({ code }) => code === c,

@@ -5,7 +5,7 @@
 <template>
     <ResponsiveCenteredViewTemplate :fixed="true">
         <template #content>
-            <GridViewTemplate>
+            <GridViewTemplate class="grid-view-template--no-border">
                 <template #sidebar>
                     <VerticalTabBar :items="verticalTabs" />
                 </template>

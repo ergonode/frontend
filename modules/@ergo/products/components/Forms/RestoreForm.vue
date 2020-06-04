@@ -6,7 +6,7 @@
     <Form :fields-keys="[restoreFieldKey]">
         <template #body>
             <FormSection
-                title="Select attributes which values you want to restore to parent translation:">
+                :title="modalTitle">
                 <RadioButton
                     v-for="(element, index) in elementsToRestore"
                     :key="index"
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { SYSTEM_TYPES, SCOPE } from '@Attributes/defaults/attributes';
 
 export default {
@@ -34,6 +35,10 @@ export default {
             type: Array,
             default: () => [],
         },
+        language: {
+            type: Object,
+            required: true,
+        },
     },
     data() {
         return {
@@ -41,8 +46,17 @@ export default {
         };
     },
     computed: {
+        ...mapGetters('core', [
+            'getLanguageById',
+        ]),
         elementsToRestore() {
             return this.elements.filter(element => element.type !== SYSTEM_TYPES.SECTION);
+        },
+        modalTitle() {
+            const { name, parent } = this.language;
+            const parentName = this.getLanguageById(parent).name;
+
+            return `Select attributes which values you want to restore from ${name} to parent translation (${parentName})`;
         },
         restoreFieldKey() {
             return 'restored_elements';
