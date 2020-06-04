@@ -9,6 +9,7 @@
         <template #body>
             <RestoreForm
                 :elements="elements"
+                :language="language"
                 @update="updateRestoredElement" />
         </template>
         <template #footer>

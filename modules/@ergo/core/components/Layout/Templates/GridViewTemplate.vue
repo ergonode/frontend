@@ -2,7 +2,7 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-<template functional>
+<template>
     <div class="grid-view-template">
         <div class="grid-view-template__sidebar">
             <slot name="sidebar" />
@@ -39,6 +39,10 @@ export default {
             flex-direction: column;
             grid-area: 1 / 2 / 3 / 3;
             min-width: 0;
+        }
+
+        &--no-border {
+            border-top: none;
         }
     }
 </style>
