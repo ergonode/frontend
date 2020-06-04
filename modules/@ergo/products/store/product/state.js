@@ -11,9 +11,8 @@ export default () => ({
     type: '',
     workflow: [],
     template: null,
-    selectedCategories: [],
-    templates: [],
     categories: [],
+    templates: [],
     bindingAttributesIds: [],
     initialBindingAttributesIds: [],
 });

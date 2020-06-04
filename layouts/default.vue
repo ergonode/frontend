@@ -16,12 +16,12 @@ export default {
     components: {
         DefaultLayout: () => import('@Core/layouts/default'),
     },
-    middleware({ store, redirect }) {
+    async middleware({ store, redirect }) {
         const { dictionaries, authentication } = store.state;
         let emptyState = 0;
 
         if (!authentication.isLogged) {
-            return redirect('/');
+            redirect('/');
         }
 
         Object.values(dictionaries).forEach((value) => {
@@ -33,10 +33,14 @@ export default {
             }
         });
         if (emptyState > 0) {
-            return store.dispatch('dictionaries/getDictionaries');
+            await store.dispatch('dictionaries/getDictionaries');
+            if (dictionaries.languagesTree && authentication.user) {
+                const defaultLanguage = Object
+                    .keys(dictionaries.languagesTree)
+                    .find(code => dictionaries.languagesTree[code].privileges.read === true);
+                await store.dispatch('core/setDefaultLanguage', defaultLanguage);
+            }
         }
-
-        return null;
     },
 };
 </script>

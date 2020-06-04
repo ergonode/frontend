@@ -6,11 +6,10 @@ import { JWT_KEY } from '@Authentication/defaults/cookies';
 
 export const actions = {
     async nuxtServerInit({ dispatch }) {
-        const token = this.$cookies.get(JWT_KEY) || null;
-
-        await dispatch('authentication/setAuth', token);
-
         try {
+            const token = this.$cookies.get(JWT_KEY) || null;
+
+            await dispatch('authentication/setAuth', token);
             if (token) {
                 await dispatch('authentication/getUser');
             }

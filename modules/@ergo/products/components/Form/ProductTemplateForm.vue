@@ -15,8 +15,8 @@
                 :key="index"
                 v-bind="{
                     ...elements[index],
-                    disabled: !isUserAllowedToUpdate,
-                    languageCode,
+                    disabled: isUserDisallowedToUpdate(elements[index].properties.scope),
+                    languageCode: language.code,
                 }"
                 @input="onValueChange" />
         </div>
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import { SCOPE } from '@Attributes/defaults/attributes';
 import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
 
@@ -35,8 +37,8 @@ export default {
         TemplateGridDesigner,
     },
     props: {
-        languageCode: {
-            type: String,
+        language: {
+            type: Object,
             required: true,
         },
         elements: {
@@ -50,8 +52,19 @@ export default {
         };
     },
     computed: {
+        ...mapState('authentication', {
+            user: state => state.user,
+        }),
+        ...mapState('dictionaries', {
+            languagesTree: state => state.languagesTree,
+        }),
         templateRowHeight() {
             return 48;
+        },
+        languageRootCode() {
+            return Object
+                .keys(this.languagesTree)
+                .find(language => this.languagesTree[language].level === 0);
         },
         maxRows() {
             const heights = this.elements.map(({ position, size }) => position.y + size.height);
@@ -61,9 +74,6 @@ export default {
             }
 
             return 0;
-        },
-        isUserAllowedToUpdate() {
-            return this.$hasAccess(['PRODUCT_UPDATE']);
         },
         gridTemplateRows() {
             return {
@@ -75,6 +85,14 @@ export default {
         this.formFieldComponents = this.elements.map(({ type }) => () => import(`@Products/components/Form/Field/ProductTemplateForm${capitalizeAndConcatenationArray(type.split('_'))}Field`));
     },
     methods: {
+        isUserDisallowedToUpdate(scope) {
+            const { languagePrivileges } = this.user;
+            const { code } = this.language;
+
+            return !this.$hasAccess(['PRODUCT_UPDATE'])
+                || !languagePrivileges[code].edit
+                || (this.languageRootCode !== code && scope === SCOPE.GLOBAL);
+        },
         onValueChange(payload) {
             updateProductDraft().then(async (response) => {
                 await response.default({

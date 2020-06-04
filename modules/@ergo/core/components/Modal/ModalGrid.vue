@@ -32,8 +32,7 @@
                     <Button
                         :theme="secondaryTheme"
                         :size="smallSize"
-                        title="ADD SELECTED"
-                        @click.native="onAddSelected">
+                        title="ADD SELECTED">
                         <template #prepend="{ color }">
                             <IconAdd :fill-color="color" />
                         </template>
@@ -126,9 +125,6 @@ export default {
         onClose() {
             this.$emit('close');
         },
-        onAddSelected() {
-
-        },
     },
 };
 </script>
@@ -138,6 +134,7 @@ export default {
         display: flex;
         width: 960px;
         height: 80%;
+        background-color: $WHITE;
         box-shadow: $ELEVATOR_6_DP;
 
         &__header {

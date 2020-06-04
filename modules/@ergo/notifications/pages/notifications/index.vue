@@ -5,7 +5,7 @@
 <template>
     <Page>
         <TitleBar title="Notifications" />
-        <HorizontalTabBar
+        <HorizontalRoutingTabBar
             :items="tabs" />
     </Page>
 </template>
@@ -15,7 +15,7 @@
 export default {
     name: 'NotificationTabs',
     components: {
-        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
     },

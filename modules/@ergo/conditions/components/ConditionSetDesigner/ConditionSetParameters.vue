@@ -22,7 +22,7 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
-import { TYPES } from '@Conditions/defaults/conditions';
+import { TYPES } from '@Conditions/defaults/conditionsDesigner';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 
 export default {

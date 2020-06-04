@@ -12,7 +12,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
-import { SKU_MODEL } from '@Templates/defaults/product';
+import { SKU_MODEL_ID } from '@Templates/defaults/product';
 
 export default {
     name: 'Edit',
@@ -92,12 +92,10 @@ export default {
                     data: {
                         name: this.templateTitle,
                         image: this.templateImage,
-                        defaultText: this.defaultTextAttribute.id !== SKU_MODEL.id
-                            ? this.defaultTextAttribute.id
+                        defaultText: this.defaultTextAttribute !== SKU_MODEL_ID
+                            ? this.defaultTextAttribute
                             : null,
-                        defaultImage: this.defaultImageAttribute
-                            ? this.defaultImageAttribute.id
-                            : null,
+                        defaultImage: this.defaultImageAttribute,
                         elements: getMappedLayoutElementsForAPIUpdate(this.layoutElements),
                     },
                     onSuccess: this.onUpdateTemplateDesignerSuccess,

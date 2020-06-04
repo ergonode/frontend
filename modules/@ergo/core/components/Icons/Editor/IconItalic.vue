@@ -4,7 +4,7 @@
  */
 <template>
     <Icon v-bind="$attrs">
-        <path :points="points" />
+        <path :d="drawingCommands" />
     </Icon>
 </template>
 
@@ -12,14 +12,14 @@
 import Icon from '@Core/components/Icons/Icon';
 
 export default {
-    name: 'Icon',
+    name: 'IconItalic',
     components: {
         Icon,
     },
     inheritAttrs: false,
     computed: {
-        points() {
-            return '9.96061929 5 9.96061929 7.99999665 12.1537796 7.99999665 8.75759058 16.0000033 6 16.0000033 6 19 13.9211922 19 13.9211922 16.0000033 11.7280318 16.0000033 15.1242209 7.99999665 17.881765 7.99999665 17.881765 5';
+        drawingCommands() {
+            return 'M10 5V8H12.21L8.79 16H6V19H14V16H11.79L15.21 8H18V5H10Z';
         },
     },
 };

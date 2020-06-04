@@ -16,7 +16,8 @@
             <DropDown
                 v-if="isFocused"
                 :offset="getDropDownOffset()"
-                :fixed="fixedContent">
+                :fixed="fixedContent"
+                @clickOutside="onClickOutside">
                 <template #body>
                     <List>
                         <ListElement
@@ -27,7 +28,7 @@
                             <slot
                                 name="option"
                                 :option="option">
-                                <ListElementDescription>
+                                <ListElementDescription v-if="isOptionsValid">
                                     <ListElementTitle
                                         :title="option"
                                         :small="true" />
@@ -42,6 +43,7 @@
 </template>
 
 <script>
+import { isObject } from '@Core/models/objectWrapper';
 import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
 import List from '@Core/components/List/List';
 import ListElement from '@Core/components/List/ListElement';
@@ -74,6 +76,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        dismissible: {
+            type: Boolean,
+            default: true,
+        },
     },
     data() {
         return {
@@ -81,18 +87,15 @@ export default {
             isHovered: false,
         };
     },
-    watch: {
-        isFocused() {
-            if (!this.isFocused) {
-                window.removeEventListener('click', this.onClickOutside);
-            } else {
-                window.addEventListener('click', this.onClickOutside);
-            }
-            this.$emit('focus', this.isFocused);
+    computed: {
+        isOptionsValid() {
+            return this.options.length && !isObject(this.options[0]);
         },
     },
-    beforeDestroy() {
-        window.removeEventListener('click', this.onClickOutside);
+    watch: {
+        isFocused() {
+            this.$emit('focus', this.isFocused);
+        },
     },
     methods: {
         getDropDownOffset() {
@@ -115,16 +118,8 @@ export default {
         onClick() {
             this.isFocused = !this.isFocused;
         },
-        onClickOutside(event) {
-            const {
-                top, left, width, height,
-            } = this.$el.getBoundingClientRect();
-            const { pageX, pageY } = event;
-
-            if (!(pageX > left
-                && pageX < left + width
-                && pageY > top
-                && pageY < top + height)) {
+        onClickOutside({ isClickedOutside }) {
+            if (isClickedOutside || (this.dismissible && !isClickedOutside)) {
                 this.isFocused = false;
             }
         },

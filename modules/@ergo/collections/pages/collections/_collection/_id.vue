@@ -24,7 +24,6 @@ export default {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({ store, params }) {
-        await store.dispatch('collections/getCollectionTypes');
         await store.dispatch('collections/getCollectionById', {
             collectionId: params.id,
         });
@@ -62,7 +61,7 @@ export default {
         onSave() {
             this.removeValidationErrors();
             const { name, description } = this.translations;
-            const data = { typeId: this.type.id, name, description };
+            const data = { typeId: this.type, name, description };
 
             updateCollectionProduct().then(response => response.default({
                 $axios: this.$axios,

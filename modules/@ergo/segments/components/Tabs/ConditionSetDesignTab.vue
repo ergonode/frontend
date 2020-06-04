@@ -21,7 +21,7 @@ export default {
     name: 'ConditionSetDesignTab',
     components: {
         GridViewTemplate,
-        VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
+        VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
         ConditionSetWrapper: () => import('@Conditions/components/ConditionSetDesigner/ConditionSetWrapper'),
     },
     fetch({ store }) {

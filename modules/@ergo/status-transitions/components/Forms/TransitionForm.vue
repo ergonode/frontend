@@ -33,16 +33,16 @@
             </FormSection>
             <Divider />
             <FormSection title="Send notification to">
-                <TranslationSelect
-                    :value="transitionRoles"
+                <TranslationLazySelect
+                    :value="roles"
                     :solid="true"
                     :regular="true"
                     :clearable="true"
                     :multiselect="true"
                     label="Role"
-                    :options="roles"
                     :disabled="isDisabledByPrivileges"
                     :error-messages="errorMessages[roleFieldKey]"
+                    :fetch-options-request="getRolesOptionsRequest"
                     @input="setRoles" />
             </FormSection>
         </template>
@@ -52,27 +52,26 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { isEmpty } from '@Core/models/objectWrapper';
-import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
+
+const getRolesOptions = () => import('@Users/services/getRolesOptions.service');
 
 export default {
     name: 'TransitionForm',
     components: {
-        TranslationSelect,
         Form: () => import('@Core/components/Form/Form'),
         FormSection: () => import('@Core/components/Form/Section/FormSection'),
         Divider: () => import('@Core/components/Dividers/Divider'),
+        TranslationLazySelect: () => import('@Core/components/Inputs/Select/TranslationLazySelect'),
+        TranslationSelect: () => import('@Core/components/Inputs/Select/TranslationSelect'),
     },
     computed: {
         ...mapState('transitions', {
             source: state => state.source,
             destination: state => state.destination,
-            transitionRoles: state => state.roles,
+            roles: state => state.roles,
         }),
         ...mapState('productStatus', {
             statuses: state => state.statuses,
-        }),
-        ...mapState('roles', {
-            roles: state => state.roles,
         }),
         isDisabled() {
             if (!isEmpty(this.$route.params)) {
@@ -111,6 +110,11 @@ export default {
             'setDestination',
             'setRoles',
         ]),
+        getRolesOptionsRequest() {
+            return getRolesOptions().then(response => response.default(
+                { $axios: this.$axios, $store: this.$store },
+            ));
+        },
     },
 };
 </script>

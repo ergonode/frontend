@@ -22,7 +22,7 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs" />
+        <HorizontalRoutingTabBar :items="tabs" />
         <Footer flex-end>
             <Button
                 title="SAVE UNIT"

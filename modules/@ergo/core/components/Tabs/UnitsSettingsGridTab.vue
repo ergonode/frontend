@@ -69,7 +69,7 @@ export default {
             this.$router.push({ name: 'unit-id-general', params: { id: args[lastIndex] } });
         },
         onShowModal() {
-            this.$emit('showModal');
+            this.$emit('showModal', 'units');
         },
     },
 };

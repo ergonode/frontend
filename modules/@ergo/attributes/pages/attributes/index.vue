@@ -9,6 +9,7 @@
             :is-read-only="$isReadOnly('ATTRIBUTE')">
             <template #mainAction>
                 <Button
+                    data-cy="new-attribute"
                     title="NEW ATTRIBUTE"
                     :size="smallSize"
                     :disabled="!$hasAccess(['ATTRIBUTE_CREATE'])"
@@ -19,13 +20,13 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs">
-            <template #item>
-                <HorizontalTabBarContent
+        <HorizontalRoutingTabBar :items="tabs">
+            <template #content>
+                <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
                     @fetched="onFetchedGridData" />
             </template>
-        </HorizontalTabBar>
+        </HorizontalRoutingTabBar>
         <CreateAttributeModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
@@ -45,7 +46,7 @@ export default {
     components: {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
-        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
         CreateAttributeModalForm: () => import('@Attributes/components/Modals/CreateAttributeModalForm'),
         Button,
         IconAdd,

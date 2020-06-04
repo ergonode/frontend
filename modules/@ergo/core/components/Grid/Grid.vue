@@ -4,12 +4,17 @@
  */
 
 <template>
-    <div class="grid">
+    <div
+        data-cy="grid"
+        class="grid">
         <GridHeader
             v-if="isHeaderVisible"
             :row-height="tableLayoutConfig.rowHeight"
             :layout="layout"
+            :table-layout-config="tableLayoutConfig"
+            :collection-layout-config="collectionLayoutConfig"
             :is-advanced-filters="isAdvancedFilters"
+            :is-collection-layout="isCollectionLayout"
             :is-centered-view="isCenteredView"
             :filters="advancedFilters"
             @layoutChange="onLayoutChange"
@@ -47,6 +52,7 @@
                 @filter="onFilterChange"
                 @editCell="onEditCell"
                 @editCells="onEditCells"
+                @focusCell="onFocusCell"
                 @editRow="onEditRow"
                 @removeRow="onRemoveRow"
                 @removeColumn="onRemoveColumn"
@@ -54,10 +60,11 @@
                 @dropColumn="onDropColumn"
                 @insertColumn="onInsertColumn" />
             <GridCollectionLayout
-                v-else-if="!isTableLayout && isCollectionLayout"
+                v-else-if="isCollectionLayout && collectionData.length"
                 :data="collectionData"
                 :columns-number="collectionLayoutConfig.columnsNumber"
-                :object-fit="collectionLayoutConfig.objectFit" />
+                :object-fit="collectionLayoutConfig.scaling"
+                @editRow="onEditRow" />
             <GridPlaceholder v-if="dataCount === 0" />
         </div>
         <div
@@ -83,6 +90,7 @@ import {
     DATA_LIMIT,
     IMAGE_SCALING,
     COLUMNS_NUMBER,
+    COLUMN_ACTIONS_ID,
 } from '@Core/defaults/grid';
 
 export default {
@@ -114,6 +122,11 @@ export default {
                 imageColumn: '',
                 descriptionColumn: '',
             }),
+        },
+        defaultLayout: {
+            type: String,
+            default: GRID_LAYOUT.TABLE,
+            validator: value => Object.values(GRID_LAYOUT).indexOf(value) !== -1,
         },
         dataCount: {
             type: Number,
@@ -154,14 +167,14 @@ export default {
     },
     data() {
         return {
-            layout: GRID_LAYOUT.TABLE,
+            layout: this.defaultLayout,
             maxRows: DATA_LIMIT,
             currentPage: 1,
             filters: {},
             sortedColumn: {},
             collectionLayoutConfig: {
                 columnsNumber: COLUMNS_NUMBER.FOURTH_COLUMNS.value,
-                objectFit: IMAGE_SCALING.FIT_TO_SIZE.value,
+                scaling: IMAGE_SCALING.FIT_TO_SIZE.value,
             },
             tableLayoutConfig: {
                 rowHeight: ROW_HEIGHT.MEDIUM,
@@ -193,14 +206,26 @@ export default {
         collectionData() {
             const { imageColumn, descriptionColumn } = this.collectionCellBinding;
 
-            if (!(imageColumn && descriptionColumn)) {
+            if (!(imageColumn && descriptionColumn) || !this.data[COLUMN_ACTIONS_ID]) {
                 return [];
             }
 
             const collectionData = [];
+            const actionKeys = Object.keys(this.data[COLUMN_ACTIONS_ID]);
 
             for (let i = 0; i < this.data[descriptionColumn].length; i += 1) {
+                const actions = {};
+
+                if (this.data[COLUMN_ACTIONS_ID]) {
+                    for (let j = 0; j < actionKeys.length; j += 1) {
+                        const actionKey = actionKeys[j];
+
+                        actions[actionKey] = this.data[COLUMN_ACTIONS_ID][actionKey][i];
+                    }
+                }
+
                 collectionData.push({
+                    actions,
                     image: this.data[imageColumn]
                         ? this.data[imageColumn][i].value
                         : '',
@@ -229,6 +254,9 @@ export default {
         },
         onEditCells(payload) {
             this.$emit('editCells', payload);
+        },
+        onFocusCell(payload) {
+            this.$emit('focusCell', payload);
         },
         onEditRow(args) {
             this.$emit('editRow', args);

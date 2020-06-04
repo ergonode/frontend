@@ -33,7 +33,9 @@ export default {
     },
     computed: {
         hint() {
-            return this.completeness.missing.map(field => field.name);
+            const missing = this.completeness.missing.map(field => field.name);
+
+            return missing.length ? `Missing fields: ${missing.join(', ')}` : 'All completed';
         },
         title() {
             return `${this.progress}% Completed`;

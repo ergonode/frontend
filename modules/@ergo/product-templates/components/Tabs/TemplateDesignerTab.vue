@@ -32,7 +32,7 @@
                             @resizingElMaxRow="onResizingElMaxRow">
                             <template #content>
                                 <AttributeElementContent
-                                    v-if="element.type !== 'SECTION'"
+                                    v-if="element.type !== sectionType"
                                     :element="element"
                                     :disabled="!isUserAllowedToUpdate"
                                     :index="index" />
@@ -59,6 +59,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { SYSTEM_TYPES } from '@Attributes/defaults/attributes';
 import { getObjectWithMaxValueInArrayByObjectKey } from '@Core/models/arrayWrapper';
 import {
     getHighlightingLayoutDropPositions,
@@ -77,7 +78,7 @@ export default {
         TemplateGridDraggableLayer,
         TemplateGridPlaceholderItem,
         LayoutElement,
-        VerticalTabBar: () => import('@Core/components/Tab/VerticalTabBar'),
+        VerticalTabBar: () => import('@Core/components/TabBar/VerticalTabBar'),
         SectionTemplateModalForm: () => import('@Templates/components/Modals/SectionTemplateModalForm'),
         AttributeElementContent: () => import('@Templates/components/Template/ProductDesigner/AttributeElementContent'),
         SectionElementContent: () => import('@Templates/components/Template/ProductDesigner/SectionElementContent'),
@@ -127,6 +128,9 @@ export default {
         },
         errorMessages() {
             return this.titleValidationError ? [this.titleValidationError] : null;
+        },
+        sectionType() {
+            return SYSTEM_TYPES.SECTION;
         },
         gridStyles() {
             return {
@@ -188,7 +192,7 @@ export default {
                 );
 
                 this.updateLayoutElementPosition({ index, row, column });
-            } else if (this.draggedElement === 'SECTION') {
+            } else if (this.draggedElement === this.sectionType) {
                 this.sectionPosition = position;
                 this.isSectionAdded = true;
             } else {

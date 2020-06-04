@@ -9,7 +9,7 @@
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
                 <TranslationSelect
-                    :value="fieldData.value"
+                    :value="fieldData"
                     solid
                     regular
                     :clearable="true"
@@ -22,7 +22,7 @@
                     :disabled="disabled"
                     :description="properties.hint"
                     @focus="onFocus"
-                    @input="onValueChange">
+                    @input="debounceValueChange">
                     <template #informationLabel>
                         <div />
                     </template>
@@ -34,8 +34,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { fieldDataCompose } from '@Products/models/productMapper';
-import { arraysAreEqual } from '@Core/models/arrayWrapper';
+import { debounce } from 'debounce';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
@@ -78,9 +77,13 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            debounceValueChange: null,
+        };
+    },
     computed: {
         ...mapState('product', {
-            data: state => state.data,
             draft: state => state.draft,
         }),
         fieldKey() {
@@ -99,33 +102,21 @@ export default {
         },
         fieldData() {
             const { attribute_code } = this.properties;
+            const value = this.draft[this.languageCode][attribute_code];
 
-            if (!this.hasOptions
-                    || (!this.data[attribute_code]
-                            && !this.draft[this.languageCode][attribute_code])) {
-                return {
-                    value: [],
-                    isDraft: false,
-                };
+            if (!this.hasOptions || !value) {
+                return [];
             }
 
-            const check = (data, draftValue) => !arraysAreEqual(data, draftValue);
-            const getMappedValue = fieldDataCompose(check);
-            const { isDraft, value } = getMappedValue({
-                data: this.data[attribute_code],
-                draft: this.draft[this.languageCode][attribute_code],
-                defaultValue: [],
+            return getMappedMatchedArrayOptions({
+                optionIds: value,
+                options: this.properties.options,
+                languageCode: this.languageCode,
             });
-
-            return {
-                isDraft,
-                value: getMappedMatchedArrayOptions({
-                    optionIds: value,
-                    options: this.properties.options,
-                    languageCode: this.languageCode,
-                }),
-            };
         },
+    },
+    created() {
+        this.debounceValueChange = debounce(this.onValueChange, 500);
     },
     methods: {
         ...mapActions('product', [
@@ -138,7 +129,7 @@ export default {
                     languageCode: this.languageCode,
                     productId: this.$route.params.id,
                     elementId: this.properties.attribute_id,
-                    value: this.fieldData.value.map(({ id }) => id),
+                    value: this.fieldData.map(({ id }) => id),
                 });
             }
         },

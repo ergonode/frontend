@@ -111,6 +111,11 @@ export default {
             font: $FONT_SEMI_BOLD_16_24;
         }
 
+        &__subtitle {
+            color: $GRAPHITE_DARK;
+            font: $FONT_SEMI_BOLD_14_20;
+        }
+
         &__errors {
             display: grid;
             grid-template-columns: max-content;

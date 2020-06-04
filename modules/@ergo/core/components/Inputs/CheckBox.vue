@@ -129,7 +129,7 @@ export default {
             margin: 0;
             opacity: 0;
 
-            &:focus + label {
+            &:checked:focus + label {
                 #{$checkbox}__box {
                     box-shadow: $ELEVATOR_HOVER_FOCUS;
                 }

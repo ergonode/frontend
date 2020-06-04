@@ -26,7 +26,6 @@ export default {
         return /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(params.id);
     },
     async fetch({ store, params }) {
-        await store.dispatch('attribute/getAttributeGroups');
         await Promise.all([
             store.dispatch('attribute/getAttributeById', { id: params.id }),
             store.dispatch('attribute/getAttributeOptionsById', { id: params.id }),
@@ -38,6 +37,7 @@ export default {
             groups: state => state.groups,
             code: state => state.code,
             type: state => state.type,
+            scope: state => state.scope,
             parameter: state => state.parameter,
             options: state => state.options,
         }),
@@ -89,7 +89,8 @@ export default {
             const typeKey = getKeyByValue(this.attrTypes, this.type);
             const { label, placeholder, hint } = this.translations;
             const data = {
-                groups: this.groups.map(group => group.id),
+                groups: this.groups,
+                scope: this.scope,
                 label,
                 hint,
                 placeholder,

@@ -23,7 +23,6 @@ export default {
     ) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { statuses: statusOptions } = rootState.productStatus;
-        const { roles } = rootState.roles;
         const [source, destination] = id.split('--');
 
         await this.app.$axios.$get(`${userLanguageCode}/workflow/default/transitions/${source}/${destination}`).then(async ({
@@ -40,9 +39,7 @@ export default {
             commit(types.SET_SOURCE, sourceOption);
             commit(types.SET_DESTINATION, destinationOption);
             commit(types.SET_CONDITION_SET_ID, conditionSetId);
-            commit(types.SET_ROLES, roles.filter(
-                role => rolesIds.some(roleId => role.id === roleId),
-            ));
+            commit(types.SET_ROLES, rolesIds);
 
             if (conditionSetId) {
                 await dispatch('conditions/getConditionSetById', {

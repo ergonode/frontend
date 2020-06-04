@@ -22,29 +22,9 @@ export default {
             commit(types.SET_PRODUCT_DRAFT, { languageCode, draft: attributes });
         });
     },
-    getProductById({ commit, state, rootState }, id) {
-        const { categories, templates } = state;
+    getProductById({ commit, rootState }, id) {
         const { language: userLanguageCode } = rootState.authentication.user;
         const { productTypes } = rootState.dictionaries;
-        const parseCategories = (category) => {
-            const {
-                id: categoryId, name, code,
-            } = categories.find(c => c.id === category);
-
-            return {
-                id: categoryId,
-                key: code,
-                value: name,
-                hint: name ? `#${code} ${userLanguageCode}` : '',
-            };
-        };
-        const parseTemplate = (templateId) => {
-            const { name } = templates.find(t => t.id === templateId);
-
-            return {
-                id: templateId, key: '', value: name, hint: '',
-            };
-        };
         const getProductRequest = this.app.$axios.$get(`${userLanguageCode}/products/${id}`).then(({
             design_template_id: templateId,
             categories: categoryIds,
@@ -55,11 +35,11 @@ export default {
             workflow = [],
         }) => {
             if (categoryIds) {
-                commit(types.SET_PRODUCT_CATEGORIES, categoryIds.map(parseCategories));
+                commit(types.SET_PRODUCT_CATEGORIES, categoryIds);
             }
 
             if (templateId) {
-                commit(types.SET_PRODUCT_TEMPLATE, parseTemplate(templateId));
+                commit(types.SET_PRODUCT_TEMPLATE, templateId);
             }
 
             commit(types.SET_PRODUCT_ID, id);
@@ -78,20 +58,6 @@ export default {
             getProductRequest,
             getAttributesBindings,
         ]);
-    },
-    getTemplates({ commit, rootState }) {
-        const { authentication: { user: { language } } } = rootState;
-
-        return this.app.$axios.$get(`${language}/templates?limit=5000&offset=0`).then(({ collection: templates }) => {
-            commit(types.SET_TEMPLATES, templates);
-        });
-    },
-    getCategories({ commit, rootState }) {
-        const { authentication: { user: { language } } } = rootState;
-
-        return this.app.$axios.$get(`${language}/categories?limit=5000&offset=0`).then(({ collection: categories }) => {
-            commit(types.SET_CATEGORIES, categories);
-        });
     },
     updateProductStatus({ state, rootState, dispatch }, {
         attributeId,

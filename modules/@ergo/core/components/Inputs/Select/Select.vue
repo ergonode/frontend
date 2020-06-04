@@ -4,6 +4,7 @@
  */
 <template>
     <div
+        :data-cy="dataCy"
         :class="inputClasses"
         @keydown="onKeyDown">
         <div
@@ -13,6 +14,7 @@
             @mouseup="onMouseUp">
             <slot name="prepend" />
             <div
+                :data-cy="`${dataCy}-value`"
                 class="input__value"
                 v-if="hasAnyValueSelected">
                 <slot name="value">
@@ -45,44 +47,46 @@
                 <IconArrowDropDown :state="dropDownState" />
             </div>
         </div>
-        <FadeTransition>
-            <SelectDropDown
-                v-if="isMenuActive"
-                ref="menu"
-                :offset="getDropDownOffset()"
-                :fixed="fixedContent"
-                :small="small"
-                :regular="regular"
-                :multiselect="multiselect"
-                :clearable="clearable"
-                :fixed-content="fixedContent"
-                :searchable="searchable"
-                :options="options"
-                :selected-options="selectedOptions"
-                :search-result="searchResult"
-                @dismiss="onDismiss"
-                @clear="onClear"
-                @search="onSearch"
-                @searchFocus="onSearchFocused"
-                @input="onSelectValue">
-                <template #dropdown>
-                    <slot name="dropdown" />
-                </template>
-                <template #option="{ option, isSelected, index }">
-                    <slot
-                        name="option"
-                        :option="option"
-                        :is-selected="isSelected"
-                        :index="index" />
-                </template>
-                <template #footer>
-                    <slot
-                        name="footer"
-                        :clear="onClear"
-                        :apply="onDismiss" />
-                </template>
-            </SelectDropDown>
-        </FadeTransition>
+        <SelectDropDown
+            v-if="needsToRender"
+            :data-cy="`${dataCy}-drop-down`"
+            ref="menu"
+            :offset="offset"
+            :fixed="fixedContent"
+            :small="small"
+            :regular="regular"
+            :multiselect="multiselect"
+            :clearable="clearable"
+            :fixed-content="fixedContent"
+            :searchable="searchable"
+            :options="options"
+            :selected-options="selectedOptions"
+            :search-result="searchResult"
+            :is-visible="isMenuActive"
+            @dismiss="onDismiss"
+            @clear="onClear"
+            @search="onSearch"
+            @input="onSelectValue"
+            @clickOutside="onClickOutside">
+            <template #dropdown>
+                <slot
+                    name="dropdown"
+                    :on-select-value-callback="onSelectValue" />
+            </template>
+            <template #option="{ option, isSelected, index }">
+                <slot
+                    name="option"
+                    :option="option"
+                    :is-selected="isSelected"
+                    :index="index" />
+            </template>
+            <template #footer>
+                <slot
+                    name="footer"
+                    :clear="onClear"
+                    :apply="onDismiss" />
+            </template>
+        </SelectDropDown>
         <slot name="informationLabel">
             <label
                 v-if="informationLabel"
@@ -94,14 +98,12 @@
 
 <script>
 import { ARROW } from '@Core/defaults/icons';
-import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import SelectDropDown from '@Core/components/Inputs/Select/DropDown/SelectDropDown';
 import IconArrowDropDown from '@Core/components/Icons/Arrows/IconArrowDropDown';
 
 export default {
     name: 'Select',
     components: {
-        FadeTransition,
         SelectDropDown,
         IconArrowDropDown,
         InfoHint: () => import('@Core/components/Hints/InfoHint'),
@@ -192,17 +194,22 @@ export default {
             type: Boolean,
             default: false,
         },
+        dataCy: {
+            type: String,
+            default: '',
+        },
     },
     data() {
         return {
             selectedOptions: {},
             searchResult: '',
+            isBlurringNeeded: false,
             isMouseMoving: false,
             isMenuActive: false,
-            isClickedOutside: false,
             associatedLabel: '',
-            isSearchFocused: false,
             hasAnyValueSelected: false,
+            needsToRender: false,
+            offset: {},
         };
     },
     computed: {
@@ -266,12 +273,16 @@ export default {
             handler() {
                 let selectedOptions = {};
 
-                if (this.multiselect && this.value) {
+                if (Array.isArray(this.value) && this.value.length) {
                     this.value.forEach((option) => {
                         selectedOptions[JSON.stringify(option)] = option;
                     });
-                } else if (this.value || this.value === 0) {
+                    this.hasAnyValueSelected = true;
+                } else if (!Array.isArray(this.value) && (this.value || this.value === 0)) {
                     selectedOptions = { [JSON.stringify(this.value)]: this.value };
+                    this.hasAnyValueSelected = true;
+                } else {
+                    this.hasAnyValueSelected = false;
                 }
 
                 this.selectedOptions = selectedOptions;
@@ -285,11 +296,7 @@ export default {
             });
         }
 
-        this.hasAnyValueSelected = Object.keys(this.selectedOptions).length > 0;
         this.associatedLabel = `input-${this._uid}`;
-    },
-    beforeDestroy() {
-        window.removeEventListener('click', this.onClickOutside);
     },
     methods: {
         getDropDownOffset() {
@@ -301,50 +308,52 @@ export default {
                 x, y, width, height,
             };
         },
+        blur() {
+            this.isMenuActive = false;
+            this.searchResult = '';
+
+            this.onSearch(this.searchResult);
+            this.$emit('focus', false);
+        },
         onSearch(value) {
             this.$emit('search', value);
         },
-        onSearchFocused(isFocused) {
-            this.isSearchFocused = isFocused;
-        },
         onClear() {
             this.selectedOptions = {};
-            this.hasAnyValueSelected = false;
 
             this.$emit('input', this.multiselect ? [] : '');
         },
         onSelectValue(value) {
-            this.hasAnyValueSelected = true;
-
             this.$emit('input', value);
         },
         onDismiss() {
-            this.isClickedOutside = true;
-
-            this.onBlur();
+            this.isBlurringNeeded = true;
+            if (document.activeElement === this.$refs.input) {
+                this.$refs.input.blur();
+            } else {
+                this.blur();
+            }
         },
         onFocus() {
+            this.isBlurringNeeded = false;
+            this.offset = this.getDropDownOffset();
             this.isMenuActive = true;
 
-            window.addEventListener('click', this.onClickOutside);
+            if (!this.needsToRender) {
+                this.needsToRender = true;
+            }
 
             this.$emit('focus', true);
         },
         onBlur() {
-            if (this.isClickedOutside) {
-                this.isMenuActive = false;
-                this.searchResult = '';
-
-                window.removeEventListener('click', this.onClickOutside);
-
-                this.onSearch(this.searchResult);
-                this.$emit('focus', false);
+            if (this.isBlurringNeeded) {
+                this.blur();
             }
         },
         onKeyDown(event) {
             // TAB
             if (event.keyCode === 9) {
-                this.isClickedOutside = true;
+                this.isBlurringNeeded = true;
                 this.$refs.input.blur();
             }
         },
@@ -361,7 +370,7 @@ export default {
 
             if (this.dismissible) {
                 if (this.isMenuActive) {
-                    this.isClickedOutside = true;
+                    this.isBlurringNeeded = true;
                     this.$refs.input.blur();
                 } else {
                     this.$refs.input.focus();
@@ -375,29 +384,19 @@ export default {
         onMouseMove() {
             this.isMouseMoving = true;
         },
-        onClickOutside(event) {
-            const footerElement = this.$refs.menu.$el.querySelector('.dropdown-footer');
-            const isClickedInsideMenu = this.$refs.menu.$el.contains(event.target);
+        onClickOutside({ event, isClickedOutside }) {
             const isClickedInsideActivator = this.$refs.activator.contains(event.target);
-            const isClickedInsideMenuFooter = footerElement
-                ? footerElement.contains(event.target)
-                : false;
-            this.isClickedOutside = !isClickedInsideMenu
-                && !isClickedInsideActivator;
 
-            if (this.isClickedOutside || (isClickedInsideMenu
-                && !isClickedInsideMenuFooter
-                && !this.multiselect
-                && this.dismissible
-                && !this.isSearchFocused)
-            ) {
-                this.isMenuActive = false;
-                this.searchResult = '';
+            if (isClickedOutside
+                || (isClickedInsideActivator && !this.dismissible)
+                || (!isClickedOutside && !this.multiselect && this.dismissible)) {
+                this.isBlurringNeeded = true;
 
-                window.removeEventListener('click', this.onClickOutside);
-
-                this.onSearch(this.searchResult);
-                this.$emit('focus', false);
+                if (document.activeElement === this.$refs.input) {
+                    this.$refs.input.blur();
+                } else {
+                    this.blur();
+                }
             }
         },
     },

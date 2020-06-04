@@ -5,14 +5,14 @@
 <template>
     <img
         ref="img"
-        :src="require('@Core/assets/images/placeholders/no_image.svg')"
+        :style="imageStyle"
         :class="[
             'image',
             {
                 'image--fab': fab,
-                'image--placeholder': isPlaceholder,
             }
         ]"
+        :src="require('@Core/assets/images/placeholders/no_image.svg')"
         alt="picture">
 </template>
 
@@ -31,12 +31,22 @@ export default {
             type: Boolean,
             default: false,
         },
+        objectFit: {
+            type: String,
+            default: 'cover',
+        },
     },
     data() {
         return {
-            isPlaceholder: false,
             observer: null,
         };
+    },
+    computed: {
+        imageStyle() {
+            return {
+                objectFit: this.objectFit,
+            };
+        },
     },
     watch: {
         imageId() {
@@ -62,7 +72,6 @@ export default {
             'onError',
         ]),
         getImageById() {
-            this.isPlaceholder = true;
             this.$axios.$get(`multimedia/${this.imageId}`, {
                 responseType: 'arraybuffer',
             }).then(response => this.onSuccess(response)).catch(this.imageLoadOnError);
@@ -71,10 +80,8 @@ export default {
             if (this.$refs.img) {
                 this.$refs.img.src = getImageData(response);
             }
-            this.isPlaceholder = false;
         },
         imageLoadOnError() {
-            this.isPlaceholder = true;
             if (this.$refs.img) {
                 this.$refs.img.src = require('@Core/assets/images/placeholders/image_error.svg'); // eslint-disable-line global-require, import/no-dynamic-require
             }
@@ -85,20 +92,10 @@ export default {
 
 <style lang="scss" scoped>
     .image {
-        flex: 1;
         max-height: 100%;
 
         &:not(&--fab) {
             width: 100%;
-        }
-
-        &:not(&--placeholder) {
-            object-fit: cover;
-        }
-
-        &--placeholder {
-            object-fit: none;
-            background-color: $GREY_LIGHT;
         }
 
         &--fab {

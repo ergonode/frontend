@@ -24,6 +24,14 @@ export default function ({
             notFound: /404/,
             conflict: /409/,
         };
+
+        if ($axios.isCancel(errorResponse)) {
+            return Promise.reject(errorResponse);
+        }
+
+        if (!errorResponse || !errorResponse.response) {
+            return Promise.reject(new Error('Network Error'));
+        }
         const { response: { data: { message }, status, config } } = errorResponse;
 
         switch (true) {

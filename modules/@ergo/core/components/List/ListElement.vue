@@ -8,6 +8,7 @@
             'element--small': small,
             'element--large': large,
             'element--selected': selected,
+            'element--disabled': disabled,
         }]">
         <slot :is-selected="selected" />
     </li>
@@ -26,6 +27,10 @@ export default {
             default: false,
         },
         selected: {
+            type: Boolean,
+            default: false,
+        },
+        disabled: {
             type: Boolean,
             default: false,
         },
@@ -58,7 +63,13 @@ export default {
             background-color: $GREEN_LIGHT;
         }
 
-        &:hover {
+        &--disabled {
+            color: $GRAPHITE_LIGHT;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        &:not(&--disabled):hover {
             background-color: $WHITESMOKE;
             box-shadow: $ELEVATOR_2_DP;
         }

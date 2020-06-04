@@ -9,6 +9,7 @@
             :is-read-only="$isReadOnly('CATEGORY')">
             <template #mainAction>
                 <Button
+                    data-cy="new-category"
                     title="NEW CATEGORY"
                     :size="smallSize"
                     :disabled="!$hasAccess(['CATEGORY_CREATE'])"
@@ -19,13 +20,13 @@
                 </Button>
             </template>
         </TitleBar>
-        <HorizontalTabBar :items="tabs">
-            <template #item>
-                <HorizontalTabBarContent
+        <HorizontalRoutingTabBar :items="tabs">
+            <template #content>
+                <HorizontalRoutingTabBarContent
                     :is-fetching-needed="fetchGridData"
                     @fetched="onFetchedGridData" />
             </template>
-        </HorizontalTabBar>
+        </HorizontalRoutingTabBar>
         <CreateCategoryModalForm
             v-if="isModalVisible"
             @close="onCloseModal"
@@ -44,7 +45,7 @@ export default {
     components: {
         TitleBar: () => import('@Core/components/TitleBar/TitleBar'),
         Page: () => import('@Core/components/Layout/Page'),
-        HorizontalTabBar: () => import('@Core/components/Tab/HorizontalTabBar'),
+        HorizontalRoutingTabBar: () => import('@Core/components/TabBar/Routing/HorizontalRoutingTabBar'),
         CreateCategoryModalForm: () => import('@Categories/components/Modals/CreateCategoryModalForm'),
         Button,
         IconAdd,

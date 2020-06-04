@@ -10,12 +10,14 @@ export default {
     },
     relations: [
         '@ergo/attributes',
+        '@ergo/media',
     ],
     plugins: [
         { ssr: true, src: './plugins/axios' },
         { ssr: true, src: './plugins/register-store' },
         { ssr: true, src: './plugins/core' },
         { ssr: false, src: './plugins/alerts' },
+        { ssr: false, src: './plugins/directives' },
     ],
     css: [
         './assets/scss/reset.scss',

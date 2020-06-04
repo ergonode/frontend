@@ -19,8 +19,6 @@ export const types = {
     ADD_BINDING_ATTRIBUTE: 'ADD_BINDING_ATTRIBUTE',
     REMOVE_BINDING_ATTRIBUTE: 'REMOVE_BINDING_ATTRIBUTE',
     SET_PRODUCT_CATEGORIES: 'SET_PRODUCT_CATEGORIES',
-    SET_TEMPLATES: 'SET_TEMPLATES',
-    SET_CATEGORIES: 'SET_CATEGORIES',
     SET_PRODUCT_DRAFT: 'SET_PRODUCT_DRAFT',
     CLEAR_STATE: 'CLEAR_STATE',
 };
@@ -62,13 +60,7 @@ export default {
     [types.SET_PRODUCT_TEMPLATE](state, template) {
         state.template = template;
     },
-    [types.SET_PRODUCT_CATEGORIES](state, selectedCategories) {
-        state.selectedCategories = selectedCategories;
-    },
-    [types.SET_TEMPLATES](state, templates) {
-        state.templates = templates;
-    },
-    [types.SET_CATEGORIES](state, categories) {
+    [types.SET_PRODUCT_CATEGORIES](state, categories) {
         state.categories = categories;
     },
     [types.SET_PRODUCT_DATA](state, data) {

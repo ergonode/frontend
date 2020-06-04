@@ -11,23 +11,19 @@ export default function ({ namespace }) {
     return {
         data() {
             return {
-                groups: [],
-                groupItemsCounts: {},
+                groups: {},
+                groupItemsCount: {},
                 items: {},
                 codeFilter: '',
                 expandedGroupId: '',
             };
         },
         async created() {
-            const { language: languageCode } = this.$store.state.authentication.user;
-            await this.getGroups(languageCode);
-            await this.getUnassignedGroupItems(languageCode);
+            const { languagePrivilegesDefaultCode } = this.$store.state.core;
+
+            await this.getGroups(languagePrivilegesDefaultCode);
+            await this.getUnassignedGroupItems(languagePrivilegesDefaultCode);
             this.expandedGroupId = UNASSIGNED_GROUP_ID;
-        },
-        computed: {
-            groupsWithItems() {
-                return this.groups.filter(({ id }) => this.groupItemsCounts[id]);
-            },
         },
         methods: {
             getGroups(languageCode) {
@@ -35,10 +31,16 @@ export default function ({ namespace }) {
                     $axios: this.$axios,
                     path: `${languageCode}/${namespace}/groups`,
                     languageCode,
-                }).then(({ groups, items, groupItemsCounts }) => {
-                    this.groups = groups;
-                    this.items = items;
-                    this.groupItemsCounts = groupItemsCounts;
+                }).then(({ groups, items, groupItemsCount }) => {
+                    this.groups = {
+                        ...this.groups,
+                        [languageCode]: groups,
+                    };
+                    this.items = {
+                        ...this.items,
+                        [languageCode]: items,
+                    };
+                    this.groupItemsCount = groupItemsCount;
                 });
             },
             async getUnassignedGroupItems(languageCode) {
@@ -48,27 +50,26 @@ export default function ({ namespace }) {
                     value: 'Not Assigned',
                     hint: '',
                 };
-                this.groups.push(unassignedGroup);
-                this.items[UNASSIGNED_GROUP_ID] = { [languageCode]: [] };
+                this.groups[languageCode].push(unassignedGroup);
+                this.items[languageCode][UNASSIGNED_GROUP_ID] = [];
 
                 await this.getGroupItems({
-                    group: unassignedGroup,
+                    groupId: UNASSIGNED_GROUP_ID,
                     languageCode,
                 });
 
-                this.groupItemsCounts = {
-                    ...this.groupItemsCounts,
-                    [UNASSIGNED_GROUP_ID]: this.items[UNASSIGNED_GROUP_ID][languageCode].length,
+                this.groupItemsCount = {
+                    ...this.groupItemsCount,
+                    [UNASSIGNED_GROUP_ID]: this.items[languageCode][UNASSIGNED_GROUP_ID].length,
                 };
             },
-            getGroupItems({ group, languageCode }) {
-                const { length: currentItemsCount } = this.items[group.id][languageCode];
+            getGroupItems({ groupId, languageCode }) {
+                const { length: currentItemsCount } = this.items[languageCode][groupId];
 
-                if (typeof this.groupItemsCounts[group.id] === 'undefined'
-                    || currentItemsCount !== this.groupItemsCounts[group.id]) {
+                if (currentItemsCount !== this.groupItemsCount[groupId]) {
                     const filter = this.codeFilter
-                        ? `groups=${group.id ? group.id : ''};code=${this.codeFilter}`
-                        : `groups=${group.id ? group.id : ''}`;
+                        ? `groups=${groupId || ''};code=${this.codeFilter}`
+                        : `groups=${groupId || ''}`;
 
                     return getListItems({
                         $axios: this.$axios,
@@ -77,11 +78,15 @@ export default function ({ namespace }) {
                             limit: 9999,
                             offset: 0,
                             filter,
+                            view: 'list',
                             field: 'code',
                             order: 'ASC',
                         },
                     }).then(({ items }) => {
-                        this.items[group.id] = { [languageCode]: items };
+                        this.items[languageCode] = {
+                            ...this.items[languageCode],
+                            [groupId]: items,
+                        };
                     });
                 }
 
@@ -97,6 +102,7 @@ export default function ({ namespace }) {
                         limit: 9999,
                         offset: 0,
                         filter,
+                        view: 'list',
                         field: 'code',
                         order: 'ASC',
                     },
@@ -111,33 +117,41 @@ export default function ({ namespace }) {
                         }) => (groups.length === 0 && isGroupUnassigned)
                             || isAnyGroupInsideGroups(groups));
 
-                        this.items[this.expandedGroupId] = { [languageCode]: groupItems };
+                        this.items[languageCode] = {
+                            ...this.items[languageCode],
+                            [this.expandedGroupId]: groupItems,
+                        };
                     }
 
-                    this.groupItemsCounts = getMappedGroupItemsCount(items);
+                    this.groupItemsCount = getMappedGroupItemsCount(items);
                 });
             },
-            async getGroupsAndExpandedGroupItems({ languageCode }) {
-                const requests = [
-                    this.getGroups(languageCode),
-                ];
+            getGroupsAndExpandedGroupItems({ languageCode }) {
+                return this.getGroups(languageCode).then(() => {
+                    const requests = [
+                        this.getUnassignedGroupItems(languageCode),
+                    ];
 
-                if (this.expandedGroupId) {
-                    requests.push(
-                        this.getGroupItems({
-                            group: this.groups.find(({ id }) => id === this.expandedGroupId),
-                            languageCode,
-                        }),
-                    );
-                }
+                    if (this.expandedGroupId) {
+                        const {
+                            id: groupId,
+                        } = this.groups[languageCode].find(({ id }) => id === this.expandedGroupId);
 
-                await Promise.all(requests);
-                await this.getUnassignedGroupItems(languageCode);
+                        requests.push(
+                            this.getGroupItems({
+                                groupId,
+                                languageCode,
+                            }),
+                        );
+                    }
+
+                    return Promise.all(requests);
+                });
             },
             onGroupExpand({ group, languageCode, isExpanded }) {
                 if (isExpanded) {
                     this.getGroupItems({
-                        group,
+                        groupId: group.id,
                         languageCode,
                     });
                 }

@@ -9,7 +9,7 @@
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
                 <TranslationSelect
-                    :value="fieldData.value"
+                    :value="fieldData"
                     solid
                     regular
                     :clearable="true"
@@ -33,7 +33,6 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { debounce } from 'debounce';
-import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
@@ -83,39 +82,23 @@ export default {
     },
     computed: {
         ...mapState('product', {
-            data: state => state.data,
             draft: state => state.draft,
         }),
         fieldData() {
             const { attribute_code } = this.properties;
+            const value = this.draft[this.languageCode][attribute_code];
 
-            if (!this.hasOptions
-                    || (!this.data[attribute_code]
-                            && !this.draft[this.languageCode][attribute_code])) {
-                return {
-                    value: '',
-                    isDraft: false,
-                };
+            if (!this.hasOptions || !value) {
+                return '';
             }
 
-            const check = (data, draftValue) => data !== draftValue;
-            const getMappedValue = fieldDataCompose(check);
-            const { isDraft, value } = getMappedValue({
-                data: this.data[attribute_code],
-                draft: this.draft[this.languageCode][attribute_code],
-                defaultValue: '',
+            return getMappedObjectOption({
+                option: {
+                    id: value,
+                    ...this.properties.options[value],
+                },
+                languageCode: this.languageCode,
             });
-
-            return {
-                isDraft,
-                value: getMappedObjectOption({
-                    option: {
-                        id: value,
-                        ...this.properties.options[value],
-                    },
-                    languageCode: this.languageCode,
-                }),
-            };
         },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;

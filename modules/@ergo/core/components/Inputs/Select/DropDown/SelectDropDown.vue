@@ -3,76 +3,85 @@
  * See LICENSE for license details.
  */
 <template>
-    <DropDown
-        :offset="offset"
-        :fixed="fixedContent">
-        <template #body>
-            <slot name="dropdown">
-                <List>
-                    <DropDownListSearch
-                        v-if="searchable"
-                        :value="searchResult"
-                        @input="onSearch"
-                        @searchFocused="onSearchFocused" />
-                    <ListElement
-                        v-for="(option, index) in options"
-                        :key="index"
+    <FadeTransition>
+        <DropDown
+            v-show="isVisible"
+            :offset="offset"
+            :fixed="fixedContent"
+            @clickOutside="onClickOutside">
+            <template #body>
+                <slot name="dropdown">
+                    <List>
+                        <DropDownListSearch
+                            v-if="searchable"
+                            :value="searchResult"
+                            @input="onSearch"
+                            @searchFocused="onSearchFocused" />
+                        <ListElement
+                            v-for="(option, index) in options"
+                            :key="index"
+                            :small="small"
+                            :regular="regular"
+                            :disabled="option.disabled || false"
+                            :selected="isOptionSelected(index)"
+                            @click.native.prevent="onSelectValue(option, index)">
+                            <template #default="{ isSelected }">
+                                <slot
+                                    name="option"
+                                    :option="option"
+                                    :small="small"
+                                    :is-selected="isSelected"
+                                    :index="index">
+                                    <template v-if="isOptionsValid">
+                                        <ListElementAction
+                                            v-if="multiselect"
+                                            :small="small">
+                                            <CheckBox
+                                                :value="isSelected" />
+                                        </ListElementAction>
+                                        <ListElementDescription>
+                                            <ListElementTitle
+                                                :small="small"
+                                                :title="option" />
+                                        </ListElementDescription>
+                                    </template>
+                                </slot>
+                            </template>
+                        </ListElement>
+                    </List>
+                </slot>
+            </template>
+            <template
+                v-if="clearable"
+                #footer>
+                <slot
+                    name="footer"
+                    :clear="onClear"
+                    :apply="onDismiss">
+                    <DropDownFooter
                         :small="small"
-                        :regular="regular"
-                        :selected="isOptionSelected(index)"
-                        @click.native.prevent="onSelectValue(option, index)">
-                        <template #default="{ isSelected }">
-                            <slot
-                                name="option"
-                                :option="option"
-                                :is-selected="isSelected"
-                                :index="index">
-                                <template v-if="isOptionsValid">
-                                    <ListElementAction
-                                        v-if="multiselect"
-                                        :small="small">
-                                        <CheckBox :value="isSelected" />
-                                    </ListElementAction>
-                                    <ListElementDescription>
-                                        <ListElementTitle
-                                            :small="small"
-                                            :title="option" />
-                                    </ListElementDescription>
-                                </template>
-                            </slot>
-                        </template>
-                    </ListElement>
-                </List>
-            </slot>
-        </template>
-        <template
-            v-if="clearable"
-            #footer>
-            <slot
-                name="footer"
-                :clear="onClear"
-                :apply="onDismiss">
-                <DropDownFooter
-                    :small="small"
-                    :space-between="multiselect">
-                    <Button
-                        v-if="multiselect"
-                        :size="tinySize"
-                        title="OK"
-                        @click.native="onDismiss" />
-                    <Button
-                        :size="tinySize"
-                        :title="multiselect ? 'CLEAR ALL' : 'CLEAR'"
-                        :theme="secondaryTheme"
-                        @click.native="onClear" />
-                </DropDownFooter>
-            </slot>
-        </template>
-    </DropDown>
+                        :space-between="multiselect">
+                        <Button
+                            v-if="multiselect"
+                            :size="tinySize"
+                            title="OK"
+                            @click.native="onDismiss" />
+                        <Button
+                            :size="tinySize"
+                            :title="multiselect ? 'CLEAR ALL' : 'CLEAR'"
+                            :theme="secondaryTheme"
+                            @click.native="onClear" />
+                    </DropDownFooter>
+                </slot>
+            </template>
+        </DropDown>
+    </FadeTransition>
 </template>
 
 <script>
+import { isObject } from '@Core/models/objectWrapper';
 import { SIZE, THEME } from '@Core/defaults/theme';
+import FadeTransition from '@Core/components/Transitions/FadeTransition';
 import DropDown from '@Core/components/Inputs/Select/DropDown/DropDown';
 import DropDownFooter from '@Core/components/Inputs/Select/DropDown/Footers/DropDownFooter';
 import List from '@Core/components/List/List';
@@ -85,6 +94,7 @@ import CheckBox from '@Core/components/Inputs/CheckBox';
 export default {
     name: 'SelectDropDown',
     components: {
+        FadeTransition,
         DropDown,
         DropDownFooter,
         List,
@@ -137,6 +147,10 @@ export default {
             type: String,
             default: '',
         },
+        isVisible: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         tinySize() {
@@ -149,10 +163,13 @@ export default {
             return this.options.map(option => JSON.stringify(option));
         },
         isOptionsValid() {
-            return this.options.length && typeof this.options[0] !== 'object';
+            return this.options.length && !isObject(this.options[0]);
         },
     },
     methods: {
+        onClickOutside(payload) {
+            this.$emit('clickOutside', payload);
+        },
         onDismiss() {
             this.$emit('dismiss');
         },
@@ -179,6 +196,7 @@ export default {
             } else {
                 this.$emit('input', value);
             }
+            return true;
         },
         isOptionSelected(index) {
             return typeof this.selectedOptions[this.stringifiedOptions[index]] !== 'undefined';

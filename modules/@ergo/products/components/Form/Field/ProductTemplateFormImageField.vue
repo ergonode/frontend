@@ -8,7 +8,7 @@
         :position="position">
         <UploadImageFile
             :style="{ height: '100%' }"
-            :value="fieldData.value"
+            :value="fieldData"
             :label="label"
             :required="properties.required"
             :disabled="disabled"
@@ -20,7 +20,6 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { fieldDataCompose } from '@Products/models/productMapper';
 import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
 
@@ -62,19 +61,12 @@ export default {
     },
     computed: {
         ...mapState('product', {
-            data: state => state.data,
             draft: state => state.draft,
         }),
         fieldData() {
             const { attribute_code } = this.properties;
-            const check = (data, draftValue) => data !== draftValue;
-            const getMappedValue = fieldDataCompose(check);
 
-            return getMappedValue({
-                data: this.data[attribute_code],
-                draft: this.draft[this.languageCode][attribute_code],
-                defaultValue: '',
-            });
+            return this.draft[this.languageCode][attribute_code] || null;
         },
         parameter() {
             if (!this.properties.parameters) return null;

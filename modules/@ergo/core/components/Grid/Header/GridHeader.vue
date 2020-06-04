@@ -32,9 +32,10 @@
                 <GridTableLayoutActivator
                     :is-selected="layout === gridLayouts.TABLE"
                     @active="onLayoutActivate" />
-                <!--                <GridCollectionLayoutActivator-->
-                <!--                    :is-selected="layout === gridLayouts.COLLECTION"-->
-                <!--                    @active="onLayoutActivate" />-->
+                <GridCollectionLayoutActivator
+                    v-if="isCollectionLayout"
+                    :is-selected="layout === gridLayouts.COLLECTION"
+                    @active="onLayoutActivate" />
                 <Fab
                     :theme="theme.SECONDARY"
                     @click.native="onShowModal">
@@ -47,8 +48,9 @@
         </div>
         <GridSettingsModalForm
             v-if="isSettingsModal"
-            :row-height="rowHeight"
-            :layout="layout"
+            :table-layout-config="tableLayoutConfig"
+            :collection-layout-config="collectionLayoutConfig"
+            :is-collection-layout="isCollectionLayout"
             @close="onCloseModal"
             @apply="onApplySettings" />
         <GridAdvancedFiltersContainer
@@ -80,16 +82,16 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
-import { ROW_HEIGHT, GRID_LAYOUT } from '@Core/defaults/grid';
+import { GRID_LAYOUT } from '@Core/defaults/grid';
 import { ARROW } from '@Core/defaults/icons';
 import GridTableLayoutActivator from '@Core/components/Grid/Layout/Table/GridTableLayoutActivator';
-// import GridCollectionLayoutActivator from '@Core/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
+import GridCollectionLayoutActivator from '@Core/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
 
 export default {
     name: 'GridHeader',
     components: {
         GridTableLayoutActivator,
-        // GridCollectionLayoutActivator,
+        GridCollectionLayoutActivator,
         GridSettingsModalForm: () => import('@Core/components/Grid/Modals/GridSettingsModalForm'),
         // ActionButton: () => import('@Core/components/Buttons/ActionButton'),
         ExpandNumericButton: () => import('@Core/components/Buttons/ExpandNumericButton'),
@@ -102,9 +104,13 @@ export default {
         GridAdvancedFilterPlaceholder: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFilterPlaceholder'),
     },
     props: {
-        rowHeight: {
-            type: Number,
-            default: ROW_HEIGHT.SMALL,
+        tableLayoutConfig: {
+            type: Object,
+            required: true,
+        },
+        collectionLayoutConfig: {
+            type: Object,
+            required: true,
         },
         layout: {
             type: String,
@@ -126,12 +132,15 @@ export default {
             type: Boolean,
             default: false,
         },
+        isCollectionLayout: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
             isFiltersExpanded: false,
             isSettingsModal: false,
-            rowHeightDescription: '',
             isMouseOverFilters: false,
         };
     },
@@ -232,6 +241,7 @@ export default {
                     index: ghostIndex,
                     filter: {
                         isGhost: true,
+                        value: {},
                     },
                 });
                 this.setGhostFilterIndex(ghostIndex);

@@ -9,7 +9,6 @@ import { DATA_LIMIT } from '@Core/defaults/grid';
 import { getParsedFilters, getParsedAdvancedFilters } from '@Core/models/mappers/gridDataMapper';
 import { swapItemPosition, insertValueAtIndex } from '@Core/models/arrayWrapper';
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
-import { getMappedObjectOptions } from '@Core/models/mappers/translationsMapper';
 
 export default function ({ path }) {
     return {
@@ -22,16 +21,14 @@ export default function ({ path }) {
                 default: false,
             },
         },
-        async asyncData({
-            app, store, params, route,
-        }) {
+        async fetch() {
             const gridParams = {
                 offset: 0,
                 limit: DATA_LIMIT,
                 extended: true,
             };
 
-            const columnsConfig = app.$cookies.get(`GRID_CONFIG:${route.name}`);
+            const columnsConfig = this.$cookies.get(`GRID_CONFIG:${this.$route.name}`);
 
             if (columnsConfig) {
                 gridParams.columns = `${columnsConfig},_links`;
@@ -39,21 +36,21 @@ export default function ({ path }) {
 
             let dynamicPath = path;
 
-            Object.keys(params).forEach((key) => {
+            Object.keys(this.$route.params).forEach((key) => {
                 if (path.includes(key)) {
-                    dynamicPath = dynamicPath.replace(`_${key}`, params[key]);
+                    dynamicPath = dynamicPath.replace(`_${key}`, this.$route.params[key]);
                 }
             });
 
             const requests = [
                 getGridData({
-                    $axios: app.$axios,
-                    path: `${store.state.authentication.user.language}/${dynamicPath}`,
+                    $axios: this.$axios,
+                    path: `${this.$store.state.authentication.user.language}/${dynamicPath}`,
                     params: gridParams,
                 }),
             ];
 
-            const advFiltersIds = app.$cookies.get(ADV_FILTERS_IDS);
+            const advFiltersIds = this.$cookies.get(ADV_FILTERS_IDS);
 
             if (advFiltersIds && path === 'products') {
                 const filtersParams = {
@@ -63,14 +60,14 @@ export default function ({ path }) {
                 };
 
                 requests.push(getAdvancedFiltersData({
-                    $axios: app.$axios,
-                    path: `${store.state.authentication.user.language}/${dynamicPath}`,
+                    $axios: this.$axios,
+                    path: `${this.$store.state.authentication.user.language}/${dynamicPath}`,
                     params: filtersParams,
                 }));
             }
 
             const [gridData, advancedFilters = []] = await Promise.all(requests);
-            const { columns } = gridData;
+            const { columns, data, filtered } = gridData;
             const disabledElements = {};
             const setDisabledElement = ({ languageCode, attributeId }) => {
                 if (attributeId) {
@@ -98,15 +95,18 @@ export default function ({ path }) {
                 setDisabledElement({ languageCode, attributeId });
             });
 
-            store.dispatch('list/setDisabledElements', disabledElements);
+            this.setDisabledElements(disabledElements);
 
-            return {
-                ...gridData,
-                advancedFilters,
-            };
+            this.columns = columns;
+            this.data = data;
+            this.filtered = filtered;
+            this.advancedFilters = advancedFilters;
         },
         data() {
             return {
+                data: {},
+                columns: [],
+                filtered: 0,
                 advancedFilters: [],
                 localParams: {
                     offset: 0,
@@ -134,6 +134,7 @@ export default function ({ path }) {
         methods: {
             ...mapActions('list', [
                 'setDisabledElement',
+                'setDisabledElements',
             ]),
             getGridData({
                 offset, limit, filters, sortedColumn,
@@ -182,12 +183,10 @@ export default function ({ path }) {
                 }).then(({
                     columns,
                     data,
-                    count,
                     filtered,
                 }) => {
                     this.columns = columns;
                     this.data = data;
-                    this.count = count;
                     this.filtered = filtered;
 
                     this.$emit('fetched');
@@ -275,7 +274,7 @@ export default function ({ path }) {
                     [key]: value,
                 };
             },
-            getAttributeFilter({ index, languageCode, code }) {
+            async getAttributeFilter({ index, languageCode, code }) {
                 const attributeCode = `${code}:${languageCode}`;
                 const params = {
                     limit: 1,
@@ -283,44 +282,30 @@ export default function ({ path }) {
                     columns: attributeCode,
                 };
 
-                return this.$axios.$get(`${languageCode}/${path}`, { params })
-                    .then(({ columns }) => {
-                        const [attribute] = columns;
-                        const options = attribute.filter && attribute.filter.options
-                            ? getMappedObjectOptions({
-                                options: attribute.filter.options, languageCode,
-                            })
-                            : [];
-                        const filter = {
-                            id: attributeCode,
-                            attributeId: attribute.element_id || '',
-                            languageCode,
-                            type: attribute.filter.type,
-                            label: attribute.label,
-                            parameters: attribute.parameters,
-                            options,
-                            isGhost: false,
-                            value: {
-                                isEmptyRecord: false,
-                            },
-                        };
-                        this.insertFilterAtIndex({
-                            index,
-                            filter,
-                        });
-                        try {
-                            insertCookieAtIndex({
-                                cookies: this.$cookies,
-                                cookieName: ADV_FILTERS_IDS,
-                                index,
-                                data: attributeCode,
-                            });
-                        } catch {
-                            this.$cookies.set(ADV_FILTERS_IDS, attributeCode);
-                        }
+                const advancedFilters = await getAdvancedFiltersData({
+                    $axios: this.$axios,
+                    path: `${languageCode}/${path}`,
+                    params,
+                });
 
-                        this.disableListElement({ languageCode, attributeId: filter.attributeId });
+                const [advancedFilter] = advancedFilters;
+
+                this.insertFilterAtIndex({
+                    index,
+                    filter: advancedFilter,
+                });
+                try {
+                    insertCookieAtIndex({
+                        cookies: this.$cookies,
+                        cookieName: ADV_FILTERS_IDS,
+                        index,
+                        data: attributeCode,
                     });
+                } catch {
+                    this.$cookies.set(ADV_FILTERS_IDS, attributeCode);
+                }
+
+                this.disableListElement({ languageCode, attributeId: advancedFilter.attributeId });
             },
             disableListElement({ languageCode, attributeId }) {
                 if (this.disabledElements[languageCode]
