@@ -21,7 +21,7 @@ export default {
         return this.app.$axios.$get(path).then(({
             name,
             image_id: imageID,
-            default_text: defaultText,
+            default_label: defaultLabel,
             default_image: defaultImage,
             elements,
         }) => {
@@ -33,7 +33,7 @@ export default {
                 view: 'list',
             };
 
-            commit(types.SET_DEFAULT_TEXT_ATTRIBUTE, defaultText || SKU_MODEL_ID);
+            commit(types.SET_DEFAULT_TEXT_ATTRIBUTE, defaultLabel || SKU_MODEL_ID);
             commit(types.SET_DEFAULT_IMAGE_ATTRIBUTE, defaultImage);
 
             return Promise.all([

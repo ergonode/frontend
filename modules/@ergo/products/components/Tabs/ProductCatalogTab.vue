@@ -15,12 +15,13 @@
                 :advanced-filters="advancedFilters"
                 :data-count="filtered"
                 :collection-cell-binding="{
-                    imageColumn: 'image_attribute:en',
-                    descriptionColumn: 'sku'
+                    imageColumn: 'esa_default_image:en',
+                    descriptionColumn: 'esa_default_label:en'
                 }"
                 :is-advanced-filters="true"
                 :is-header-visible="true"
                 :is-basic-filter="true"
+                :is-collection-layout="true"
                 @editRow="onEditRow"
                 @editCell="onEditCell"
                 @editCells="onEditCells"
