@@ -21,8 +21,8 @@ export default {
         return this.app.$axios.$get(path).then(({
             name,
             image_id: imageID,
-            default_label_attribute: defaultLabel,
-            default_image_attribute: defaultImage,
+            default_label: defaultLabel,
+            default_image: defaultImage,
             elements,
         }) => {
             const { language: languageCode } = rootState.authentication.user;
