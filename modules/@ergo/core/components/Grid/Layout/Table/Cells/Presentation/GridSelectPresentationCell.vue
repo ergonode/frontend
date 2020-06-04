@@ -34,6 +34,8 @@ export default {
     },
     computed: {
         presentationValue() {
+            if (!this.options[this.value]) return '';
+
             const { code, label } = this.options[this.value];
 
             return label || `${code}`;
