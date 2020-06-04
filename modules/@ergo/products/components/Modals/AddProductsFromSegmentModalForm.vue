@@ -91,7 +91,7 @@ export default {
 
             this.isRequestPending = true;
 
-            this.$axios.$post(`${this.language}/products/${this.id}/children/add-from-segment`, data).then(() => {
+            this.$axios.$post(`${this.language}/products/${this.id}/children/add-from-segments`, data).then(() => {
                 this.isRequestPending = false;
                 this.removeValidationErrors();
                 this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been added' });

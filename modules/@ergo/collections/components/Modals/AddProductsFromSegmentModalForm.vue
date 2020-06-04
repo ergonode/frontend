@@ -90,7 +90,7 @@ export default {
             }
 
             this.isRequestPending = true;
-            this.$axios.$post(`${this.language}/collections/${this.id}/elements/multiple`, data).then(() => {
+            this.$axios.$post(`${this.language}/collections/${this.id}/elements/add-from-segments`, data).then(() => {
                 this.isRequestPending = false;
                 this.removeValidationErrors();
                 this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Products has been added to collection' });

@@ -29,7 +29,6 @@ export default async function ({
         code,
         type: typeKey,
         groups: groups.map(group => group.id),
-        scope: 'local',
     };
 
     if (isMultilingual(typeKey)) {

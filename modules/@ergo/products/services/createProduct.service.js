@@ -4,7 +4,7 @@
  */
 import { isObject, getKeyByValue } from '@Core/models/objectWrapper';
 
-export default function ({ $axios, $store }) {
+export default async function ({ $axios, $store }) {
     const { language } = $store.state.authentication.user;
     const { productTypes } = $store.state.dictionaries;
     const {
@@ -18,12 +18,17 @@ export default function ({ $axios, $store }) {
         sku,
         type: getKeyByValue(productTypes, type),
         templateId: isObject(template) ? template.id : null,
-        bindings: bindingAttributesIds,
     };
+
+    if (bindingAttributesIds.length) {
+        data.bindings = bindingAttributesIds;
+    }
 
     if (selectedCategories.length > 0) {
         data.categoryIds = selectedCategories.map(category => category.id);
     }
 
-    return $axios.$post(`${language}/products`, data);
+    const { id } = await $axios.$post(`${language}/products`, data);
+
+    return { id };
 }
