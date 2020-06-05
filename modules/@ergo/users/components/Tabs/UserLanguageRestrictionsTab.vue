@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import languagesDefaults from '@Users/defaults/languages';
 import { getMappedGridData, getMappedRestrictions } from '@Users/models/gridDataMapper';
 import { getSortedColumnsByIDs } from '@Core/models/mappers/gridDataMapper';
@@ -37,9 +37,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('dictionaries', {
-            languages: state => state.languages,
-        }),
+        ...mapGetters('core', [
+            'getActiveLanguages',
+        ]),
         ...mapState('users', {
             languagePrivilegesCollection: state => state.languagePrivilegesCollection,
         }),
@@ -58,10 +58,10 @@ export default {
     },
     methods: {
         updateGridData() {
-            const fullDataList = Object.keys(this.languages).map(languageKey => ({
-                name: this.languages[languageKey],
-                description: languageKey,
-                privileges: { edit: `${languageKey}_EDIT`, read: `${languageKey}_READ` },
+            const fullDataList = this.getActiveLanguages.map(({ name, code }) => ({
+                name,
+                description: code,
+                privileges: { edit: `${code}_EDIT`, read: `${code}_READ` },
             }));
             const {
                 data, columns,

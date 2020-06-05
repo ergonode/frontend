@@ -12,6 +12,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { MODAL_TYPE } from '@Core/defaults/modals';
 
 export default {
     name: 'ProductEdit',
@@ -25,10 +26,10 @@ export default {
         store,
         params,
     }) {
-        const { languagePrivilegesDefaultCode } = store.state.core;
+        const { defaultLanguageCodeByPrivileges } = store.state.core;
         const { id } = params;
 
-        await store.dispatch('product/getProductDraft', { languageCode: languagePrivilegesDefaultCode, id });
+        await store.dispatch('product/getProductDraft', { languageCode: defaultLanguageCodeByPrivileges, id });
         await store.dispatch('product/getProductById', id);
     },
     computed: {
@@ -57,13 +58,13 @@ export default {
             this.$router.push({ name: 'catalog-products' });
         },
         onRemove() {
-            const isConfirmed = confirm('Are you sure you want to delete this product?'); /* eslint-disable-line no-restricted-globals */
-
-            if (isConfirmed) {
-                this.removeProduct({
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Are you sure you want to delete this product?',
+                confirmCallback: () => this.removeProduct({
                     onSuccess: this.onRemoveSuccess,
-                });
-            }
+                }),
+            });
         },
         async onSave() {
             const { params: { id } } = this.$route;

@@ -10,8 +10,7 @@
 
 <script>
 import deepmerge from 'deepmerge';
-import { mapState, mapActions } from 'vuex';
-import { getKeyByValue } from '@Core/models/objectWrapper';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
 export default {
@@ -31,11 +30,12 @@ export default {
         });
     },
     computed: {
+        ...mapGetters('core', [
+            'getActiveLanguageByCode',
+            'getActiveLanguageByName',
+        ]),
         ...mapState('authentication', {
             user: state => state.user,
-        }),
-        ...mapState('dictionaries', {
-            languages: state => state.languages,
         }),
         ...mapState('grid', {
             drafts: state => state.drafts,
@@ -76,12 +76,13 @@ export default {
             'onError',
             'removeValidationErrors',
         ]),
-        onSave() {
+        async onSave() {
+            let isUpdated = false;
             const activeLanguages = Object.keys(this.languagePrivilegesCollection)
                 .reduce((acc, languageCode) => {
                     const languages = acc;
 
-                    if (Object.keys(this.languages).find(e => e === languageCode)) {
+                    if (this.getActiveLanguageByCode(languageCode).name) {
                         languages[languageCode] = this.languagePrivilegesCollection[languageCode];
                     }
                     return languages;
@@ -89,7 +90,7 @@ export default {
             const user = {
                 firstName: this.firstName,
                 lastName: this.lastName,
-                language: getKeyByValue(this.languages, this.language),
+                language: this.getActiveLanguageByName(this.language).code,
                 password: this.password,
                 passwordRepeat: this.passwordRepeat,
                 roleId: this.role,
@@ -100,11 +101,17 @@ export default {
                 ),
             };
 
-            this.updateUser({
-                id: this.id,
-                data: user,
-                avatarId: this.avatarId,
-                onSuccess: () => {
+            try {
+                await this.$setLoader('footerButton');
+                isUpdated = await this.updateUser({
+                    id: this.id,
+                    data: user,
+                    avatarId: this.avatarId,
+                });
+            } catch (e) {
+                this.onError(e.data);
+            } finally {
+                if (isUpdated !== false) {
                     this.removeValidationErrors();
                     this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'User updated' });
                     this.setLanguagePrivileges(user.languagePrivilegesCollection);
@@ -114,9 +121,9 @@ export default {
                     if (this.user.id === this.id) {
                         this.getUser();
                     }
-                },
-                onError: this.onError,
-            });
+                }
+                await this.$removeLoader('footerButton');
+            }
         },
     },
 };

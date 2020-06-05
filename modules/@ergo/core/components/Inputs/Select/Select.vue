@@ -59,6 +59,7 @@
             :clearable="clearable"
             :fixed-content="fixedContent"
             :searchable="searchable"
+            :sticky-search="stickySearch"
             :options="options"
             :selected-options="selectedOptions"
             :search-result="searchResult"
@@ -191,6 +192,10 @@ export default {
             default: false,
         },
         searchable: {
+            type: Boolean,
+            default: false,
+        },
+        stickySearch: {
             type: Boolean,
             default: false,
         },

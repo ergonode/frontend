@@ -13,6 +13,7 @@
 import { mapState, mapActions } from 'vuex';
 import { getMappedConditionSetData } from '@Conditions/models/conditionSetMapper';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { MODAL_TYPE } from '@Core/defaults/modals';
 
 export default {
     name: 'SegmentEdit',
@@ -68,12 +69,13 @@ export default {
             'removeValidationErrors',
         ]),
         onRemove() {
-            const isConfirmed = confirm('Are you sure you want to delete this segment?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirmed) {
-                this.removeSegment({
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Are you sure you want to delete this segment?',
+                confirmCallback: () => this.removeSegment({
                     onSuccess: this.onRemoveSegmentSuccess,
-                });
-            }
+                }),
+            });
         },
         onSave() {
             const propertiesToUpdate = {

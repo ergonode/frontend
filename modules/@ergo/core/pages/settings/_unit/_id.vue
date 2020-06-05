@@ -12,6 +12,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { MODAL_TYPE } from '@Core/defaults/modals';
 
 export default {
     name: 'UnitEdit',
@@ -54,13 +55,13 @@ export default {
             'removeValidationErrors',
         ]),
         onRemove() {
-            const isConfirmed = confirm('Are you sure you want to delete this unit?'); /* eslint-disable-line no-restricted-globals */
-
-            if (isConfirmed) {
-                this.removeUnit({
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Are you sure you want to delete this unit?',
+                confirmCallback: () => this.removeUnit({
                     onSuccess: this.onRemoveUnitSuccess,
-                });
-            }
+                }),
+            });
         },
         onSave() {
             this.removeValidationErrors();

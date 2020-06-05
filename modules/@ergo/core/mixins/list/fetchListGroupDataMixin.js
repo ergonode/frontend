@@ -19,10 +19,10 @@ export default function ({ namespace }) {
             };
         },
         async created() {
-            const { languagePrivilegesDefaultCode } = this.$store.state.core;
+            const { defaultLanguageCodeByPrivileges } = this.$store.state.core;
 
-            await this.getGroups(languagePrivilegesDefaultCode);
-            await this.getUnassignedGroupItems(languagePrivilegesDefaultCode);
+            await this.getGroups(defaultLanguageCodeByPrivileges);
+            await this.getUnassignedGroupItems(defaultLanguageCodeByPrivileges);
             this.expandedGroupId = UNASSIGNED_GROUP_ID;
         },
         methods: {

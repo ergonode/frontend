@@ -3,7 +3,9 @@
  * See LICENSE for license details.
  */
 <template>
-    <div class="title-bar-header">
+    <div
+        data-cy="title-bar-header"
+        class="title-bar-header">
         <slot name="prepend" />
         <h1
             class="title-bar-header__title"

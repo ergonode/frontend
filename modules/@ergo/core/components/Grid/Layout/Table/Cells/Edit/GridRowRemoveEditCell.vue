@@ -15,6 +15,7 @@
 <script>
 import IconDelete from '@Core/components/Icons/Actions/IconDelete';
 import GridTableCell from '@Core/components/Grid/Layout/Table/Cells/GridTableCell';
+import { MODAL_TYPE } from '@Core/defaults/modals';
 
 export default {
     name: 'GridRowRemoveEditCell',
@@ -47,19 +48,21 @@ export default {
     methods: {
         onRemove() {
             if (this.link) {
-                const isConfirmed = confirm('Are you sure you want to remove this row?'); /* eslint-disable-line no-restricted-globals */
+                this.$openModal({
+                    key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                    message: 'Are you sure you want to remove this row?',
+                    confirmCallback: () => {
+                        this.$axios.$delete(this.link.href, { baseURL: '' }).then(() => {
+                            const element = document.documentElement.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
 
-                if (isConfirmed) {
-                    this.$axios.$delete(this.link.href, { baseURL: '' }).then(() => {
-                        const element = document.documentElement.querySelector(`.coordinates-${this.column}-${this.row - 1}`);
+                            if (element) {
+                                element.focus();
+                            }
 
-                        if (element) {
-                            element.focus();
-                        }
-
-                        this.$emit('remove', this.index);
-                    });
-                }
+                            this.$emit('remove', this.index);
+                        });
+                    },
+                });
             }
         },
     },

@@ -10,6 +10,7 @@
             :is-read-only="$isReadOnly('PRODUCT_COLLECTION')">
             <template #mainAction>
                 <Button
+                    data-cy="delete-collection"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE COLLECTION"
@@ -43,6 +44,7 @@
             @added="onCreatedData" />
         <Footer flex-end>
             <Button
+                data-cy="save-collection"
                 title="SAVE COLLECTION"
                 :size="smallSize"
                 :disabled="$isLoading('footerButton')"
