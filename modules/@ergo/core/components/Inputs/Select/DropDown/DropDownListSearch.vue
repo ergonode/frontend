@@ -6,6 +6,7 @@
     <li
         :class="['search-element', {
             'search-element--small': small,
+            'search-element--sticky': sticky,
         }]">
         <input
             class="search-element__input"
@@ -38,6 +39,10 @@ export default {
             default: '',
         },
         small: {
+            type: Boolean,
+            default: false,
+        },
+        sticky: {
             type: Boolean,
             default: false,
         },
@@ -82,6 +87,14 @@ export default {
         align-items: center;
         box-sizing: border-box;
         cursor: pointer;
+
+        &--sticky {
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: $Z_INDEX_LVL_1;
+            background: $WHITE;
+        }
 
         &--small {
             height: 32px;

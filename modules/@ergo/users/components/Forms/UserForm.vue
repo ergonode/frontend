@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 const getRolesOptions = () => import('@Users/services/getRolesOptions.service');
 
@@ -122,9 +122,9 @@ export default {
         };
     },
     computed: {
-        ...mapState('dictionaries', {
-            languages: state => state.languages,
-        }),
+        ...mapGetters('core', [
+            'getActiveLanguages',
+        ]),
         ...mapState('users', {
             userID: state => state.id,
             email: state => state.email,
@@ -147,7 +147,7 @@ export default {
             || (!this.isDisabled && !this.$hasAccess(['USER_CREATE']));
         },
         languageOptions() {
-            return Object.values(this.languages);
+            return this.getActiveLanguages.map(({ name }) => name);
         },
         emailFieldKey() {
             return 'email';

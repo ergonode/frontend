@@ -8,6 +8,7 @@
             <template #body="{ errorMessages }">
                 <FormSection>
                     <TextField
+                        :data-cy="dataCyGenerator(nameFieldKey)"
                         :value="translations.name[languageCode]"
                         solid
                         regular
@@ -43,6 +44,11 @@ export default {
         },
         nameFieldKey() {
             return `name_${this.languageCode}`;
+        },
+    },
+    methods: {
+        dataCyGenerator(key) {
+            return `category-tree-${key}`;
         },
     },
 };

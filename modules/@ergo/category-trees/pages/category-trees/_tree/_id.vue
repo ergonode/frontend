@@ -13,6 +13,7 @@
 import { mapState, mapActions } from 'vuex';
 import { getMappedTreeData } from '@Trees/models/treeMapper';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { MODAL_TYPE } from '@Core/defaults/modals';
 
 export default {
     name: 'EditCategoryTree',
@@ -59,12 +60,13 @@ export default {
             'removeValidationErrors',
         ]),
         onRemove() {
-            const isConfirmed = confirm('Are you sure you want to delete this category tree?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirmed) {
-                this.removeCategoryTree({
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Are you sure you want to delete this tree?',
+                confirmCallback: () => this.removeCategoryTree({
                     onSuccess: this.onRemoveSuccess,
-                });
-            }
+                }),
+            });
         },
         onSave() {
             const { name } = this.translations;

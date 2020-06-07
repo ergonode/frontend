@@ -5,7 +5,8 @@
 <template>
     <FormSection title="Option values">
         <AttributeOptionValue
-            v-for="index in optionIndexes"
+            v-for="(index, i) in optionIndexes"
+            :data-cy="`attribute-option_${languageCode}_${i}`"
             :key="index"
             :index="index"
             :option="options[index]"

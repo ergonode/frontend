@@ -63,6 +63,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { MODAL_TYPE } from '@Core/defaults/modals';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import Button from '@Core/components/Buttons/Button';
@@ -117,10 +118,10 @@ export default {
             'getProductById',
         ]),
         onUpdateStatus({ code }) {
-            const isConfirmed = confirm(`Are you sure you want to change status to ${code}?`); /* eslint-disable-line no-restricted-globals */
-
-            if (isConfirmed) {
-                this.updateProductStatus({
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: `Are you sure you want to change status to ${code}?`,
+                confirmCallback: () => this.updateProductStatus({
                     value: code,
                     attributeId: this.status.attribute_id,
                     onSuccess: () => {
@@ -129,8 +130,8 @@ export default {
                         this.getProductById(id);
                         this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Status updated' });
                     },
-                });
-            }
+                }),
+            });
         },
     },
 };

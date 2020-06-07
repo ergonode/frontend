@@ -51,6 +51,7 @@
 import { mapActions } from 'vuex';
 import { format as formatDate } from 'date-fns';
 import { THEME } from '@Core/defaults/theme';
+import { MODAL_TYPE } from '@Core/defaults/modals';
 import { DEFAULT_DATA_HOUR_FORMAT } from '@Core/defaults/date';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import {
@@ -104,15 +105,19 @@ export default {
             this.$emit('edit');
         },
         onRemove() {
-            const isConfirmed = confirm('Are you sure you want to delete this role?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirmed) {
-                const { id } = this.comment;
-                this.removeComment({
-                    id,
-                    onSuccess: this.onRemoveSuccess,
-                    onError: this.onRemoveError,
-                });
-            }
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Are you sure you want to delete this comment?',
+                confirmCallback: () => {
+                    const { id } = this.comment;
+
+                    this.removeComment({
+                        id,
+                        onSuccess: this.onRemoveSuccess,
+                        onError: this.onRemoveError,
+                    });
+                },
+            });
         },
         onRemoveSuccess() {
             this.$addAlert({ type: ALERT_TYPE.SUCCESS, message: 'Comment removed' });

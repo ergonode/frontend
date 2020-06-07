@@ -65,9 +65,6 @@ export default {
         secondaryTheme() {
             return THEME.SECONDARY;
         },
-        isEditCell() {
-            return typeof this.actions.edit !== 'undefined';
-        },
     },
     methods: {
         onClick() {

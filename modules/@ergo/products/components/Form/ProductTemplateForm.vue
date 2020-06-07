@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { SCOPE } from '@Attributes/defaults/attributes';
 import { capitalizeAndConcatenationArray } from '@Core/models/stringWrapper';
 import TemplateGridDesigner from '@Templates/components/Template/Base/TemplateGridDesigner';
@@ -55,16 +55,11 @@ export default {
         ...mapState('authentication', {
             user: state => state.user,
         }),
-        ...mapState('dictionaries', {
-            languagesTree: state => state.languagesTree,
-        }),
+        ...mapGetters('core', [
+            'getRootOnLanguagesTree',
+        ]),
         templateRowHeight() {
             return 48;
-        },
-        languageRootCode() {
-            return Object
-                .keys(this.languagesTree)
-                .find(language => this.languagesTree[language].level === 0);
         },
         maxRows() {
             const heights = this.elements.map(({ position, size }) => position.y + size.height);
@@ -91,7 +86,7 @@ export default {
 
             return !this.$hasAccess(['PRODUCT_UPDATE'])
                 || !languagePrivileges[code].edit
-                || (this.languageRootCode !== code && scope === SCOPE.GLOBAL);
+                || (this.getRootOnLanguagesTree.code !== code && scope === SCOPE.GLOBAL);
         },
         onValueChange(payload) {
             updateProductDraft().then(async (response) => {

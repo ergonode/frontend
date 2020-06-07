@@ -10,12 +10,12 @@
 </template>
 
 <script>
-
 import { mapState, mapActions } from 'vuex';
 import { isEmpty, getKeyByValue } from '@Core/models/objectWrapper';
 import { getParsedParameterKeys } from '@Attributes/models/attributeMapper';
 import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { MODAL_TYPE } from '@Core/defaults/modals';
 
 export default {
     name: 'EditAttribute',
@@ -77,12 +77,13 @@ export default {
             this.$router.push({ name: 'attributes-grid' });
         },
         onRemove() {
-            const isConfirmed = confirm('Are you sure you want to delete this attribute?'); /* eslint-disable-line no-restricted-globals */
-            if (isConfirmed) {
-                this.removeAttribute({
+            this.$openModal({
+                key: MODAL_TYPE.GLOBAL_CONFIRM_MODAL,
+                message: 'Are you sure you want to delete this attribute?',
+                confirmCallback: () => this.removeAttribute({
                     onSuccess: this.onRemoveSuccess,
-                });
-            }
+                }),
+            });
         },
         onSave() {
             this.removeValidationErrors();

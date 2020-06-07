@@ -11,22 +11,13 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import { DATA_LIMIT } from '@Core/defaults/grid';
-
+import { mapState } from 'vuex';
 import ModalGrid from '@Core/components/Modal/ModalGrid';
 
 export default {
     name: 'AddProductsFromListModalGrid',
     components: {
         ModalGrid,
-    },
-    props: {
-    },
-    data() {
-        return {
-
-        };
     },
     computed: {
         ...mapState('authentication', {

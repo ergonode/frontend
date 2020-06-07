@@ -2,9 +2,14 @@
  * Copyright © Bold Brand Commerce Sp. z o.o. All rights reserved.
  * See LICENSE for license details.
  */
-import { Then } from 'cypress-cucumber-preprocessor/steps';
+import { Then, And } from 'cypress-cucumber-preprocessor/steps';
 import {
-    sendRequest, getToken, checkGridRow, removeRequest,
+    sendPostRequest,
+    getToken,
+    checkGridRow,
+    noGridRow,
+    removeRequest,
+    removeOnGrid,
 } from '../../models/addingItems';
 
 beforeEach(() => {
@@ -13,7 +18,11 @@ beforeEach(() => {
 
 Then('I send a {string} request and status code should be {int}', (reqType, status) => {
     getToken();
-    sendRequest({ reqType, status, urlRegExp: /\/en\/trees$/ });
+    sendPostRequest({ reqType, status, urlRegExp: /\/en\/trees$/ });
+});
+
+And('On {string} I can not see row {int} with columns data: {string}', (gridId, rowNr, columns) => {
+    noGridRow({ gridId, rowNr, columns });
 });
 
 Then('On {string} I can see row {int} with columns data: {string}', (gridId, rowNr, columns) => {
@@ -22,4 +31,8 @@ Then('On {string} I can see row {int} with columns data: {string}', (gridId, row
 
 Then('I remove {string} element by {string} request', (element, reqType) => {
     removeRequest({ element, reqType, path: 'en/trees' });
+});
+
+And('On {string} I click on {string} button for row {int}', (gridId, action, rowNr) => {
+    removeOnGrid({ gridId, action, rowNr });
 });

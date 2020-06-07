@@ -11,7 +11,7 @@
         <List>
             <ListScrollableContainer>
                 <LanguagesListElement
-                    v-for="item in items[userLanguageCode]"
+                    v-for="item in activeLanguages"
                     :key="item.id"
                     :item="item"
                     :is-draggable="isUserAllowedToUpdateTree"
@@ -22,8 +22,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import fetchListDataMixin from '@Core/mixins/list/fetchListDataMixin';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
     name: 'LanguagesListTab',
@@ -34,27 +33,38 @@ export default {
         VerticalTabBarListWrapper: () => import('@Core/components/TabBar/VerticalTabBarListWrapper'),
         ListSearchHeader: () => import('@Core/components/List/ListSearchHeader'),
     },
-    mixins: [fetchListDataMixin({ namespace: 'languages', extraFilters: 'active=true' })],
+    data() {
+        return {
+            filteredValue: '',
+        };
+    },
     computed: {
         ...mapState('authentication', {
             userLanguageCode: state => state.user.language,
         }),
-        ...mapState('dictionaries', {
+        ...mapState('core', {
             languages: state => state.languages,
         }),
+        ...mapGetters('core', [
+            'getActiveLanguages',
+        ]),
+        activeLanguages() {
+            if (this.filteredValue) {
+                const rgx = new RegExp(this.filteredValue, 'i');
+
+                return this.getActiveLanguages.filter(
+                    ({ code, name }) => code.match(rgx) || name.match(rgx),
+                );
+            }
+            return this.getActiveLanguages;
+        },
         isUserAllowedToUpdateTree() {
             return this.$hasAccess(['SETTINGS_UPDATE']);
         },
     },
-    watch: {
-        languages() {
-            this.getItems(this.userLanguageCode);
-        },
-    },
     methods: {
         onSearch(value) {
-            this.codeFilter = value;
-            this.getItems(this.userLanguageCode);
+            this.filteredValue = value;
         },
     },
 };

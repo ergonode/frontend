@@ -8,6 +8,7 @@
             <template #body="{ errorMessages }">
                 <FormSection>
                     <TextField
+                        :data-cy="dataCyGenerator(nameKeyField)"
                         :value="translations.name[languageCode]"
                         solid
                         label="Condition set name"
@@ -16,6 +17,7 @@
                         :disabled="!isUserAllowedToUpdate"
                         @input="(value) => setTranslationPropertyValue(value, 'name')" />
                     <TextArea
+                        :data-cy="dataCyGenerator(descriptionKeyField)"
                         :value="translations.description[languageCode]"
                         solid
                         label="Description"
@@ -57,6 +59,11 @@ export default {
         },
         nameKeyField() {
             return `name_${this.languageCode}`;
+        },
+    },
+    methods: {
+        dataCyGenerator(key) {
+            return `segment-${key}`;
         },
     },
 };

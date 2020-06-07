@@ -10,6 +10,7 @@
             :is-read-only="$isReadOnly('CATEGORY_TREE')">
             <template #mainAction>
                 <Button
+                    data-cy="delete-category-tree"
                     :theme="secondaryTheme"
                     :size="smallSize"
                     title="REMOVE CATEGORY TREE"
@@ -24,6 +25,7 @@
         <HorizontalRoutingTabBar :items="tabs" />
         <Footer flex-end>
             <Button
+                data-cy="save-category-tree"
                 title="SAVE TREE"
                 :size="smallSize"
                 :disabled="$isLoading('footerButton')"

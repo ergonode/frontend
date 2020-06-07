@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
+import { SIZE } from '@Core/defaults/theme';
 import Button from '@Core/components/Buttons/Button';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
