@@ -87,6 +87,7 @@ import {
     COLUMN_ACTIONS_ID,
     COLUMN_GHOST,
     ROW_HEIGHT,
+    GRID_ACTIONS,
 } from '@Core/defaults/grid';
 import {
     capitalizeAndConcatenationArray,
@@ -181,7 +182,7 @@ export default {
             return COLUMN_ACTIONS_ID;
         },
         actionColumnComponents() {
-            return ['edit', 'delete'].reduce((prev, acc) => {
+            return GRID_ACTIONS.reduce((prev, acc) => {
                 const tmp = prev;
 
                 if (this.data[COLUMN_ACTIONS_ID][acc]) {

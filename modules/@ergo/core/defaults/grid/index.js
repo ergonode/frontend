@@ -14,6 +14,10 @@ export const ROW_INTERVALS = [
     25, 50, 100, 200,
 ];
 
+export const GRID_ACTIONS = [
+    'edit', 'delete',
+];
+
 export const COLUMN_WIDTH = {
     SELECT_ROW: '40px',
     ACTION: 'max-content',

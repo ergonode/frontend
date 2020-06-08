@@ -206,12 +206,14 @@ export default {
         collectionData() {
             const { imageColumn, descriptionColumn } = this.collectionCellBinding;
 
-            if (!(imageColumn && descriptionColumn) || !this.data[COLUMN_ACTIONS_ID]) {
+            if (!(imageColumn && descriptionColumn)) {
                 return [];
             }
 
             const collectionData = [];
-            const actionKeys = Object.keys(this.data[COLUMN_ACTIONS_ID]);
+            const actionKeys = this.data[COLUMN_ACTIONS_ID]
+                ? Object.keys(this.data[COLUMN_ACTIONS_ID])
+                : [];
 
             for (let i = 0; i < this.data[descriptionColumn].length; i += 1) {
                 const actions = {};
