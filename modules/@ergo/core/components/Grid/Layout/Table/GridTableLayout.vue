@@ -4,16 +4,8 @@
  */
 <template>
     <div
-        :class="[
-            'grid-table-layout',
-            { 'grid-table-layout--disabled': isColumnExists && isListElementDragging },
-        ]"
-        ref="gridTableLayout"
-        @keydown="onNavigateToCell"
-        @click="onFocusCell">
-        <GridDropZone
-            v-show="isListElementDragging && !isColumnExists"
-            @drop="onDrop" />
+        class="grid-table-layout"
+        ref="gridTableLayout">
         <GridTableLayoutPinnedSection
             v-if="isSelectColumn"
             :is-pinned="pinnedSections[pinnedState.LEFT]">
@@ -89,6 +81,7 @@ import {
     COLUMN_WIDTH,
     COLUMN_ACTIONS_ID,
     ROW_HEIGHT,
+    GRID_ACTIONS,
 } from '@Core/defaults/grid';
 import {
     capitalizeAndConcatenationArray,
@@ -98,13 +91,11 @@ import {
     swapItemPosition,
 } from '@Core/models/arrayWrapper';
 import {
-    insertCookieAtIndex,
     changeCookiePosition,
     removeCookieAtIndex,
 } from '@Core/models/cookies';
 import GridTableLayoutColumnsSection from '@Core/components/Grid/Layout/Table/Sections/GridTableLayoutColumnsSection';
 import GridDropZone from '@Core/components/Grid/GridDropZone';
-import gridNavigationCellMixin from '@Core/mixins/grid/cell/gridNavigationCellMixin';
 
 export default {
     name: 'GridTableLayout',
@@ -115,7 +106,6 @@ export default {
         GridSentinelColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSentinelColumn'),
         GridSelectRowColumn: () => import('@Core/components/Grid/Layout/Table/Columns/GridSelectRowColumn'),
     },
-    mixins: [gridNavigationCellMixin],
     props: {
         columns: {
             type: Array,
@@ -160,6 +150,8 @@ export default {
             hasInitialWidths: true,
             isSelectedAllRows: false,
             selectedRows: {},
+            editingCellCoordinates: { row: null, column: null },
+            focusedCellCoordinates: { row: null, column: null },
             orderedColumns: [],
             columnComponents: [],
             columnWidths: [],
@@ -173,7 +165,6 @@ export default {
             drafts: state => state.drafts,
         }),
         ...mapState('draggable', {
-            isListElementDragging: state => state.isListElementDragging,
             ghostIndex: state => state.ghostIndex,
             draggedElIndex: state => state.draggedElIndex,
             draggedElement: state => state.draggedElement,
@@ -182,7 +173,7 @@ export default {
             return COLUMN_ACTIONS_ID;
         },
         actionColumnComponents() {
-            return ['edit', 'delete'].reduce((prev, acc) => {
+            return GRID_ACTIONS.reduce((prev, acc) => {
                 const tmp = prev;
 
                 if (this.data[COLUMN_ACTIONS_ID][acc]) {
@@ -214,13 +205,6 @@ export default {
             return {
                 gridTemplateColumns: this.columnWidths.join(' '),
             };
-        },
-        isColumnExists() {
-            const draggedElIndex = this.orderedColumns.findIndex(
-                column => column.id === this.draggedElement,
-            );
-
-            return draggedElIndex !== -1;
         },
         templateRows() {
             const headerRowsTemplate = this.isBasicFilter ? `${ROW_HEIGHT.MEDIUM}px ${ROW_HEIGHT.MEDIUM}px` : `${ROW_HEIGHT.MEDIUM}px`;
@@ -352,6 +336,9 @@ export default {
             }
             this.focusedCellCoordinates = coordinates;
         },
+        getEditingCellCoordinates() {
+            return this.editingCellCoordinates;
+        },
         getTableLayoutElement() {
             return this.$refs.gridTableLayout;
         },
@@ -383,16 +370,6 @@ export default {
             this.isSelectedAllRows = isSelectedAllRows;
 
             this.$emit('rowsSelect', this.isSelectedAllRows);
-        },
-        onDrop(columnId) {
-            insertCookieAtIndex({
-                cookies: this.$cookies,
-                cookieName: `GRID_CONFIG:${this.$route.name}`,
-                index: this.isSelectColumn ? 1 : 0,
-                data: columnId,
-            });
-
-            this.$emit('dropColumn', columnId);
         },
         onEditCell(payload) {
             this.setDraftValue(payload);
@@ -494,7 +471,8 @@ export default {
         return {
             setEditingCellCoordinates: this.setEditingCellCoordinates,
             setFocusedCellCoordinates: this.setFocusedCellCoordinates,
-            editingCellCoordinates: () => this.editingCellCoordinates,
+            getEditingCellCoordinates: this.getEditingCellCoordinates,
+            getTableLayoutElement: this.getTableLayoutElement,
         };
     },
 };
@@ -505,19 +483,5 @@ export default {
         position: relative;
         display: flex;
         overflow: auto;
-
-        &::after {
-            position: absolute;
-            z-index: $Z_INDEX_NEGATIVE;
-            width: 100%;
-            height: 100%;
-            content: "";
-        }
-
-        &--disabled {
-            &::after {
-                z-index: $Z_INDEX_LVL_4;
-            }
-        }
     }
 </style>

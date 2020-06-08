@@ -11,14 +11,11 @@
                 'advanced-filter--exists': isFilterExists,
             }
         ]"
-        :draggable="!isMenuActive"
+        :draggable="!isFocused"
         @dragover="onDragOver"
         @dragstart="onDragStart"
-        @dragend="onDragEnd"
-        @drop="onDrop">
-        <GridAdvancedFilterGhost v-if="filter.isGhost" />
+        @dragend="onDragEnd">
         <div
-            v-else
             ref="activator"
             class="advanced-filter__activator"
             @mousedown="onMouseDown"
@@ -61,10 +58,11 @@
             ref="menu"
             :offset="offset"
             :filter="filter"
-            :is-visible="isMenuActive"
+            :is-visible="isFocused"
             @input="onValueChange"
             @clear="onClear"
             @apply="onApply"
+            @click.native.prevent
             @clickOutside="onClickOutside" />
     </div>
 </template>
@@ -78,7 +76,7 @@ import {
     addElementCopyToDocumentBody,
     removeElementCopyFromDocumentBody,
 } from '@Core/models/layout/ElementCopy';
-import { GHOST_ELEMENT_MODEL, DRAGGED_ELEMENT } from '@Core/defaults/grid';
+import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
 import {
     getDraggedColumnPositionState,
 } from '@Core/models/drag_and_drop/helpers';
@@ -92,7 +90,6 @@ export default {
     components: {
         AdvancedFilterDropDown,
         IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
-        GridAdvancedFilterGhost: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFilterGhost'),
     },
     mixins: [associatedLabelMixin],
     props: {
@@ -109,16 +106,14 @@ export default {
         return {
             mouseUpTime: 0,
             isFocused: false,
-            isMenuActive: false,
             isClickedOutside: false,
-            hasMouseDown: false,
             needsToRender: false,
             offset: {},
         };
     },
     computed: {
         ...mapState('draggable', {
-            ghostFilterIndex: state => state.ghostFilterIndex,
+            ghostIndex: state => state.ghostIndex,
             draggedElementOnGrid: state => state.draggedElementOnGrid,
             draggedElement: state => state.draggedElement,
         }),
@@ -130,7 +125,8 @@ export default {
             return this.filter.parameters[key];
         },
         isFilterExists() {
-            return this.draggedElement === this.filter.id;
+            return this.draggedElement === this.filter.id
+                || (this.draggedElement && this.draggedElement.id === this.filter.id);
         },
         arrowIconFillColor() {
             return this.isFilterExists ? WHITE : GRAPHITE_DARK;
@@ -180,7 +176,8 @@ export default {
     methods: {
         ...mapActions('draggable', [
             'setDraggableState',
-            'setGhostFilterIndex',
+            'setGhostIndex',
+            'setDraggedElement',
         ]),
         ...mapActions('list', [
             'setDisabledElement',
@@ -201,23 +198,13 @@ export default {
                 event,
                 element: this.$el,
                 width,
-                id: JSON.stringify(this.filter),
+                id: this.filter.id,
             });
+            this.setDraggedElement(this.filter);
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.FILTER });
 
             window.requestAnimationFrame(() => {
-                this.$emit('setGhost', { index: this.index, isGhost: true });
-                this.setGhostFilterIndex(this.index);
-            });
-        },
-        onDrop(event) {
-            event.preventDefault();
-
-            const data = event.dataTransfer.getData('text/plain');
-
-            this.$emit('drop', {
-                index: this.ghostFilterIndex,
-                data,
+                this.setGhostIndex(this.index);
             });
         },
         onDragEnd(event) {
@@ -225,12 +212,12 @@ export default {
                 cookies: this.$cookies,
                 cookieName: ADV_FILTERS_IDS,
                 from: this.index,
-                to: this.ghostFilterIndex,
+                to: this.ghostIndex,
             });
-            this.$emit('setGhost', { index: this.index, isGhost: false });
 
             removeElementCopyFromDocumentBody(event);
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
+            this.setDraggedElement();
         },
         onDragOver(event) {
             event.preventDefault();
@@ -245,25 +232,18 @@ export default {
                 columnWidth,
             );
 
-            if (this.index === this.ghostFilterIndex
-                || (isBefore && this.ghostFilterIndex === this.index - 1)
-                || (!isBefore && this.ghostFilterIndex === this.index + 1)
+            if (this.index === this.ghostIndex
+                || (isBefore && this.ghostIndex === this.index - 1)
+                || (!isBefore && this.ghostIndex === this.index + 1)
                 || this.draggedElementOnGrid === DRAGGED_ELEMENT.COLUMN) {
                 return false;
             }
 
-            if (this.ghostFilterIndex === -1) {
-                const ghostFilterIndex = isBefore ? this.index : this.index + 1;
-
-                this.setGhostFilterIndex(ghostFilterIndex);
-                this.$emit('insert', { index: ghostFilterIndex, filter: GHOST_ELEMENT_MODEL });
-            } else {
-                this.$emit('swap', {
-                    from: this.ghostFilterIndex,
-                    to: this.index,
-                });
-                this.setGhostFilterIndex(this.index);
-            }
+            this.$emit('swap', {
+                from: this.ghostIndex,
+                to: this.index,
+            });
+            this.setGhostIndex(this.index);
 
             return true;
         },
@@ -286,14 +266,13 @@ export default {
             this.$emit('clear', this.index);
         },
         onApply() {
+            console.log('Applied');
             this.deactivateFilter();
             this.$emit('apply');
         },
         onFocus() {
             if (!this.isFocused && this.mouseUpTime > 0) {
                 this.isFocused = true;
-                this.isMenuActive = true;
-                this.hasMouseDown = false;
                 this.offset = this.getDropDownOffset();
 
                 if (!this.needsToRender) {
@@ -309,8 +288,8 @@ export default {
             }
         },
         deactivateFilter() {
+            this.isClickedOutside = false;
             this.isFocused = false;
-            this.isMenuActive = false;
             this.mouseUpTime = 0;
 
             this.$emit('focus', false);
@@ -322,8 +301,6 @@ export default {
                 event.preventDefault();
                 event.stopPropagation();
             }
-
-            this.hasMouseDown = true;
         },
         onMouseUp(event) {
             this.mouseUpTime = new Date().getTime();
@@ -332,14 +309,12 @@ export default {
 
             if (isDblClicked) return;
 
-            if (this.isFocused && this.hasMouseDown) {
+            if (this.isFocused) {
                 this.isClickedOutside = true;
                 this.onBlur();
             } else {
                 this.onFocus();
             }
-
-            this.hasMouseDown = false;
         },
         onClickOutside({ event, isClickedOutside }) {
             const isClickedInsideActivator = this.$refs.activator.contains(event.target);
@@ -425,7 +400,7 @@ export default {
             background-color: $GREEN;
             box-shadow: $ELEVATOR_HOLE;
 
-            #{$filter}__label, #{$filter}__placeholder {
+            #{$filter}__label, #{$filter}__placeholder, #{$filter}__value {
                 color: $WHITE;
             }
         }

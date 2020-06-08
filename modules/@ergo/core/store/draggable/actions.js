@@ -14,12 +14,6 @@ export default {
     setGhostIndex({ commit }, index) {
         commit(types.SET_GHOST_INDEX, index);
     },
-    setGhostFilterIndex({ commit }, index) {
-        commit(types.SET_GHOST_FILTER_INDEX, index);
-    },
-    setDraggedElementProperty({ commit }, { propName, value }) {
-        commit(types.SET_DRAGGED_ELEMENT_PROPERTY, { propName, value });
-    },
     setDraggedElement({ commit }, element = null) {
         commit(types.SET_DRAGGED_ELEMENT, element);
     },

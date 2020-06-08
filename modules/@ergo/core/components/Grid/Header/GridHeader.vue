@@ -73,10 +73,7 @@
                 @apply="onApplyFilter"
                 @update="onUpdateFilterAtIndex"
                 @remove="onRemoveFilterAtIndex"
-                @insert="onInsertFilterAtIndex"
-                @setGhost="onSetGhostFilterAtIndex"
-                @swap="onSwapFiltersPosition"
-                @drop="onDropFilterAtIndex" />
+                @swap="onSwapFiltersPosition" />
             <GridAdvancedFilterPlaceholder v-if="!filters.length && !isListElementDragging" />
             <GridAdvancedFiltersRemoveAllButton
                 v-show="filtersNumber"
@@ -162,7 +159,7 @@ export default {
             return LayoutOrientation.HORIZONTAL;
         },
         filtersNumber() {
-            return this.filters.filter(filter => !filter.isGhost).length;
+            return this.filters.length;
         },
         isFilterExists() {
             const draggedElIndex = this.filters.findIndex(
@@ -183,7 +180,7 @@ export default {
     },
     methods: {
         ...mapActions('draggable', [
-            'setGhostFilterIndex',
+            'setGhostIndex',
         ]),
         onLayoutActivate(layout) {
             this.$emit('layoutChange', layout);
@@ -202,10 +199,7 @@ export default {
             this.$emit('applySettings', payload);
         },
         onDropFilter(id) {
-            this.onDropFilterAtIndex({ data: id, index: 0 });
-        },
-        onDropFilterAtIndex(payload) {
-            this.$emit('dropFilter', payload);
+            this.$emit('dropFilter', id);
         },
         onUpdateFilterAtIndex(payload) {
             this.$emit('updateFilter', payload);
@@ -213,14 +207,8 @@ export default {
         onRemoveFilterAtIndex(index) {
             this.$emit('removeFilter', index);
         },
-        onInsertFilterAtIndex(payload) {
-            this.$emit('insertFilter', payload);
-        },
         onClearFilterAtIndex(index) {
             this.$emit('clearFilter', index);
-        },
-        onSetGhostFilterAtIndex(payload) {
-            this.$emit('setGhostFilter', payload);
         },
         onSwapFiltersPosition(payload) {
             this.$emit('swapFilters', payload);

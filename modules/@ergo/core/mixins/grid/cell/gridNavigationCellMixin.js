@@ -10,10 +10,12 @@ export default {
         return {
             focusedCellCoordinates: { row: null, column: null },
             editingCellCoordinates: { row: null, column: null },
-            test: '',
         };
     },
     methods: {
+        getEditingCellCoordinates() {
+            return this.editingCellCoordinates;
+        },
         onNavigateToCell(event) {
             const { keyCode } = event;
             const { row, column } = this.focusedCellCoordinates;
@@ -30,7 +32,6 @@ export default {
                         row,
                         column,
                     };
-                    this.test = 'DUPA';
                 }
 
                 break;
@@ -107,5 +108,10 @@ export default {
                 };
             }
         },
+    },
+    provide() {
+        return {
+            getEditingCellCoordinates: this.getEditingCellCoordinates,
+        };
     },
 };

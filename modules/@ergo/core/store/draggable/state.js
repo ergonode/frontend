@@ -7,6 +7,5 @@ export default () => ({
     draggedElementOnGrid: null,
     draggedElement: null,
     ghostIndex: -1,
-    ghostFilterIndex: -1,
     draggedElIndex: -1,
 });
