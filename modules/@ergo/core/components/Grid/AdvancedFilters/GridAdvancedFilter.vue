@@ -16,9 +16,7 @@
         @dragstart="onDragStart"
         @dragend="onDragEnd"
         @drop="onDrop">
-        <GridAdvancedFilterGhost
-            v-if="filter.isGhost"
-            :is-mouse-over-filters="isMouseOverFilters" />
+        <GridAdvancedFilterGhost v-if="filter.isGhost" />
         <div
             v-else
             ref="activator"
@@ -87,6 +85,7 @@ import {
 import { ADV_FILTERS_IDS } from '@Core/defaults/grid/cookies';
 import { changeCookiePosition } from '@Core/models/cookies';
 import AdvancedFilterDropDown from '@Core/components/Grid/AdvancedFilters/DropDown/AdvancedFilterDropDown';
+import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'GridAdvancedFilter',
@@ -95,6 +94,7 @@ export default {
         IconArrowDropDown: () => import('@Core/components/Icons/Arrows/IconArrowDropDown'),
         GridAdvancedFilterGhost: () => import('@Core/components/Grid/AdvancedFilters/GridAdvancedFilterGhost'),
     },
+    mixins: [associatedLabelMixin],
     props: {
         index: {
             type: Number,
@@ -104,10 +104,6 @@ export default {
             type: Object,
             default: null,
         },
-        isMouseOverFilters: {
-            type: Boolean,
-            default: false,
-        },
     },
     data() {
         return {
@@ -116,7 +112,6 @@ export default {
             isMenuActive: false,
             isClickedOutside: false,
             hasMouseDown: false,
-            associatedLabel: '',
             needsToRender: false,
             offset: {},
         };
@@ -182,9 +177,6 @@ export default {
             return this.isFocused ? ARROW.UP : ARROW.DOWN;
         },
     },
-    mounted() {
-        this.associatedLabel = `input-${this._uid}`;
-    },
     methods: {
         ...mapActions('draggable', [
             'setDraggableState',
@@ -241,8 +233,6 @@ export default {
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
         },
         onDragOver(event) {
-            if (!this.isMouseOverFilters) this.$emit('mouseOverFilters', true);
-
             event.preventDefault();
 
             const { pageX } = event;

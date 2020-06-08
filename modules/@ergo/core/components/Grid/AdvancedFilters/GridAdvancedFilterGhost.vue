@@ -6,8 +6,10 @@
     <div
         :class="[
             'advanced-filters-ghost',
-            {'advanced-filters-ghost--hovered': isMouseOverFilters}
-        ]">
+            { 'advanced-filters-ghost--hovered': isHovered }
+        ]"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave">
         <IconAddFilter :fill-color="addIconFillColor" />
         ADD FILTER
     </div>
@@ -23,15 +25,22 @@ export default {
     components: {
         IconAddFilter: () => import('@Core/components/Icons/Actions/IconAddFilter'),
     },
-    props: {
-        isMouseOverFilters: {
-            type: Boolean,
-            default: false,
-        },
+    data() {
+        return {
+            isHovered: false,
+        };
     },
     computed: {
         addIconFillColor() {
-            return this.isMouseOverFilters ? WHITE : GRAPHITE;
+            return this.isHovered ? WHITE : GRAPHITE;
+        },
+    },
+    methods: {
+        onMouseEnter() {
+            this.isHovered = true;
+        },
+        onMouseLeave() {
+            this.isHovered = false;
         },
     },
 };

@@ -3,38 +3,14 @@
  * See LICENSE for license details.
  */
 <template>
-    <div
-        ref="filtersContent"
-        class="advanced-filters-container"
-        @dragleave="onDragLeave">
+    <div class="advanced-filters-container">
         <slot />
     </div>
 </template>
 
 <script>
-import {
-    isMouseOutOfBoundsElement,
-    getPositionForBrowser,
-} from '@Core/models/drag_and_drop/helpers';
-
 export default {
     name: 'GridAdvancedFiltersContainer',
-    methods: {
-        onDragLeave(event) {
-            const { xPos, yPos } = getPositionForBrowser(event);
-
-            if (xPos === 0 && yPos === 0) return false;
-
-            const { filtersContent } = this.$refs;
-            const isOutOfBounds = isMouseOutOfBoundsElement(filtersContent, xPos, yPos);
-
-            if (isOutOfBounds) {
-                this.$emit('mouseOverFilters', false);
-            }
-
-            return true;
-        },
-    },
 };
 </script>
 

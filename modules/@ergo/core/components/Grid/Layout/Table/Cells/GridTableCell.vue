@@ -5,11 +5,9 @@
 <template>
     <div
         :tabindex="-1"
-        :class="gridCellClasses"
-        @mousedown="onMouseDown"
-        @keydown="onKeyDown"
-        @focus="onFocus"
-        @blur="onBlur">
+        :row="row"
+        :column="column"
+        :class="gridCellClasses">
         <GridCellResizer
             v-if="copyable"
             @copy="onCopy" />
@@ -22,10 +20,7 @@
 export default {
     name: 'GridTableCell',
     inject: [
-        'getEditingCellCoordinates',
-        'setEditingCellCoordinates',
-        'setFocusedCellCoordinates',
-        'getTableLayoutElement',
+        'editingCellCoordinates',
     ],
     components: {
         GridCellResizer: () => import('@Core/components/Grid/Layout/Table/Cells/Resizer/GridCellResizer'),
@@ -72,7 +67,6 @@ export default {
         gridCellClasses() {
             return [
                 'grid-table-cell',
-                `coordinates-${this.column}-${this.row}`,
                 {
                     'grid-table-cell--error': this.error,
                     'grid-table-cell--locked': this.locked,
@@ -82,41 +76,13 @@ export default {
                 },
             ];
         },
-        isEditing: {
-            get() {
-                const { row, column } = this.getEditingCellCoordinates();
+        isEditing() {
+            const { row, column } = this.test;
 
-                return row === this.row && column === this.column;
-            },
-            set(value) {
-                if (value) {
-                    this.setEditingCellCoordinates({
-                        row: this.row,
-                        column: this.column,
-                    });
-                } else {
-                    this.setEditingCellCoordinates();
-                }
-            },
+            return row === this.row && column === this.column;
         },
-    },
-    mounted() {
-        if (!this.locked && !this.disabled) {
-            this.$el.addEventListener('dblclick', this.onDblcClick);
-        }
-    },
-    beforeDestroy() {
-        if (!this.locked && !this.disabled) {
-            this.$el.removeEventListener('dblclick', this.onDblcClick);
-        }
     },
     methods: {
-        onFocus() {
-            this.setFocusedCellCoordinates({ row: this.row, column: this.column });
-        },
-        onBlur() {
-            this.setFocusedCellCoordinates();
-        },
         onCopy(factor) {
             this.$emit('copy', {
                 from: {

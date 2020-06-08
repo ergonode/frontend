@@ -10,7 +10,6 @@
         :grid-gap="16"
         :is-dragging-enabled="true"
         :is-multi-draggable="true"
-        :dragged-element-size="{ width: 600, height: 60 }"
         :context-name="contextName"
         @afterDrop="onGetConditionConfigurationById"
         @afterRemove="removeConditionValue">
