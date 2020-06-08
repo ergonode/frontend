@@ -13,7 +13,7 @@ export default function ({ $axios, $store }) {
     return $axios.$post(`${language}/templates`, {
         name: title,
         image,
-        defaultText: defaultTextAttribute !== SKU_MODEL_ID
+        defaultLabel: defaultTextAttribute !== SKU_MODEL_ID
             ? defaultTextAttribute
             : null,
         defaultImage: defaultImageAttribute,

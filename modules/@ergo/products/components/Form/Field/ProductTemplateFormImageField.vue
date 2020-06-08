@@ -20,7 +20,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import UploadImageFile from '@Core/components/Inputs/UploadFile/UploadImageFile';
 
 export default {

@@ -52,13 +52,13 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import { SIZE, THEME } from '@Core/defaults/theme';
+import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 import getProductTemplate from '@Products/services/getProductTemplate.service';
 import getProductCompleteness from '@Products/services/getProductCompleteness.service';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import ProductTemplateForm from '@Products/components/Forms/ProductTemplateForm';
+import ProductTemplateForm from '@Products/components/Form/ProductTemplateForm';
 import Button from '@Core/components/Buttons/Button';
 import IconRestore from '@Core/components/Icons/Actions/IconRestore';
-import gridModalMixin from '@Core/mixins/modals/gridModalMixin';
 
 export default {
     name: 'ProductTemplateTab',

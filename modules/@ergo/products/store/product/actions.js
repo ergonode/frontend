@@ -9,6 +9,10 @@ export default {
     setDraftValue: ({ commit }, payload) => commit(types.SET_DRAFT_VALUE, payload),
     setProductStatus: ({ commit }, status) => commit(types.SET_PRODUCT_STATUS, status),
     setProductTemplate: ({ commit }, template) => commit(types.SET_PRODUCT_TEMPLATE, template),
+    setProductType: ({ commit }, type) => commit(types.SET_PRODUCT_TYPE, type),
+    setBindingAttributeId: ({ commit }, payload) => commit(types.SET_BINDING_ATTRIBUTE_ID, payload),
+    addBindingAttribute: ({ commit }) => commit(types.ADD_BINDING_ATTRIBUTE),
+    removeBindingAttribute: ({ commit }, index) => commit(types.REMOVE_BINDING_ATTRIBUTE, index),
     setProductCategories: (
         { commit },
         categories = [],
@@ -20,12 +24,13 @@ export default {
     },
     getProductById({ commit, rootState }, id) {
         const { language: userLanguageCode } = rootState.authentication.user;
-
-        return this.app.$axios.$get(`${userLanguageCode}/products/${id}`).then(({
+        const { productTypes } = rootState.dictionaries;
+        const getProductRequest = this.app.$axios.$get(`${userLanguageCode}/products/${id}`).then(({
             design_template_id: templateId,
             categories: categoryIds,
             attributes,
             sku,
+            type,
             status,
             workflow = [],
         }) => {
@@ -42,7 +47,17 @@ export default {
             commit(types.SET_PRODUCT_STATUS, status);
             commit(types.SET_PRODUCT_WORKFLOW, workflow);
             commit(types.SET_PRODUCT_DATA, attributes);
+            commit(types.SET_PRODUCT_TYPE, productTypes[type]);
         });
+        const getAttributesBindings = this.app.$axios.$get(`${userLanguageCode}/products/${id}/bindings`).then((bindings) => {
+            commit(types.SET_BINDING_ATTRIBUTE_IDS, bindings);
+            commit(types.SET_INITIAL_BINDING_ATTRIBUTE_IDS, bindings);
+        });
+
+        return Promise.all([
+            getProductRequest,
+            getAttributesBindings,
+        ]);
     },
     updateProductStatus({ state, rootState, dispatch }, {
         attributeId,

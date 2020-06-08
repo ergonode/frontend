@@ -30,7 +30,7 @@ export default [
             {
                 name: 'catalog-products',
                 path: 'products',
-                component: Tabs.ProductGridTab,
+                component: Tabs.ProductCatalogTab,
                 meta: {
                     title: '',
                     breadcrumbs: [
@@ -56,7 +56,7 @@ export default [
             {
                 name: 'product-id-general',
                 path: 'general',
-                component: Tabs.ProductBaseTab,
+                component: Tabs.ProductGeneralTab,
                 meta: {
                     title: 'General',
                     breadcrumbs: [
@@ -111,6 +111,44 @@ export default [
                 },
             },
             {
+                name: 'product-id-variants',
+                path: 'variants',
+                component: Tabs.ProductVariantsTab,
+                meta: {
+                    title: 'Variants',
+                    breadcrumbs: [
+                        {
+                            title: 'Products',
+                            icon: Icons.Product,
+                        },
+                        {
+                            title: 'Catalog',
+                            routeName: 'catalog-products',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+            {
+                name: 'product-id-group',
+                path: 'group',
+                component: Tabs.ProductGroupTab,
+                meta: {
+                    title: 'Group',
+                    breadcrumbs: [
+                        {
+                            title: 'Products',
+                            icon: Icons.Product,
+                        },
+                        {
+                            title: 'Catalog',
+                            routeName: 'catalog-products',
+                        },
+                    ],
+                    privileges: [],
+                },
+            },
+            {
                 name: 'product-id-comments',
                 path: 'comments',
                 component: Tabs.ProductCommentsTab,
@@ -132,7 +170,7 @@ export default [
             {
                 name: 'product-id-history',
                 path: 'history',
-                component: Tabs.ProductHistoryGridTab,
+                component: Tabs.ProductHistoryTab,
                 meta: {
                     title: 'History',
                     breadcrumbs: [

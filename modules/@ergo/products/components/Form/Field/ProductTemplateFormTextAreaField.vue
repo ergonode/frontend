@@ -33,7 +33,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import TextArea from '@Core/components/Inputs/TextArea';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 

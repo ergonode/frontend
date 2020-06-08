@@ -36,8 +36,10 @@ export default {
         ...mapState('product', {
             id: state => state.id,
             sku: state => state.sku,
+            type: state => state.type,
             template: state => state.template,
             categories: state => state.categories,
+            bindingAttributesIds: state => state.bindingAttributesIds,
         }),
     },
     destroyed() {
@@ -74,6 +76,7 @@ export default {
                 data: {
                     templateId: this.template,
                     categoryIds: this.categories,
+                    bindings: this.bindingAttributesIds,
                 },
             });
             await this.applyDraft({

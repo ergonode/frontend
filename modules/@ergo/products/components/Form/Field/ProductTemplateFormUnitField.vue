@@ -12,8 +12,8 @@
                     :value="fieldData"
                     solid
                     regular
+                    :input="{ type: 'number' }"
                     :label="label"
-                    :input="{ type: 'number'}"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
                     :required="properties.required"
@@ -37,13 +37,13 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import TextField from '@Core/components/Inputs/TextField';
-import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
+import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 
 export default {
-    name: 'ProductTemplateFormNumericField',
+    name: 'ProductTemplateFormUnitField',
     components: {
         ProductTemplateFormField,
         TextField,

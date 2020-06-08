@@ -97,7 +97,7 @@ export default {
                     data: {
                         name: this.templateTitle,
                         image: this.templateImage,
-                        defaultText: this.defaultTextAttribute !== SKU_MODEL_ID
+                        defaultLabel: this.defaultTextAttribute !== SKU_MODEL_ID
                             ? this.defaultTextAttribute
                             : null,
                         defaultImage: this.defaultImageAttribute,

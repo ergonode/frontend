@@ -26,7 +26,6 @@ export default {
     name: 'TransitionsGridTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        Grid: () => import('@Core/components/Grid/Grid'),
     },
     mixins: [fetchGridDataMixin({ path: 'workflow/default/transitions' })],
     methods: {

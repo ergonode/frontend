@@ -8,8 +8,11 @@ export default () => ({
     id: null,
     sku: '',
     status: null,
+    type: '',
     workflow: [],
     template: null,
     categories: [],
     templates: [],
+    bindingAttributesIds: [],
+    initialBindingAttributesIds: [],
 });

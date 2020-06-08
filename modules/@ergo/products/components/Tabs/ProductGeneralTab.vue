@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import ProductForm from '@Products/components/Forms/ProductForm';
+import ProductForm from '@Products/components/Form/ProductForm';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 
 export default {
-    name: 'ProductBaseTab',
+    name: 'ProductGeneralTab',
     components: {
         ProductForm,
         ResponsiveCenteredViewTemplate,

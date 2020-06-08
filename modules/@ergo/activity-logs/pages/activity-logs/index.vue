@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 
 export default {
@@ -23,12 +22,6 @@ export default {
         Page: () => import('@Core/components/Layout/Page'),
     },
     computed: {
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
         tabs() {
             return getNestedTabRoutes(this.$hasAccess, this.$router.options.routes, this.$route);
         },

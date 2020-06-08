@@ -10,7 +10,7 @@ export const Pages = {
 
 export const Tabs = {
     CollectionGridTab: () => import('@Collections/components/Tabs/CollectionGridTab').then(m => m.default || m),
-    CollectionBaseTab: () => import('@Collections/components/Tabs/CollectionBaseTab').then(m => m.default || m),
+    CollectionGeneralTab: () => import('@Collections/components/Tabs/CollectionGeneralTab').then(m => m.default || m),
     CollectionTranslationsTab: () => import('@Collections/components/Tabs/CollectionTranslationsTab').then(m => m.default || m),
     CollectionProductsTab: () => import('@Collections/components/Tabs/CollectionProductsTab').then(m => m.default || m),
 };

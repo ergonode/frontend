@@ -13,6 +13,7 @@
                     solid
                     regular
                     :label="label"
+                    :input="{ type: 'number'}"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
                     :required="properties.required"
@@ -36,13 +37,13 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
 import TextField from '@Core/components/Inputs/TextField';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
 import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
 
 export default {
-    name: 'ProductTemplateFormTextField',
+    name: 'ProductTemplateFormNumericField',
     components: {
         ProductTemplateFormField,
         TextField,

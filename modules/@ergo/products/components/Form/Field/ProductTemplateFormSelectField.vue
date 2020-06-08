@@ -8,47 +8,42 @@
         :position="position">
         <FormValidatorField :field-key="fieldKey">
             <template #validator="{ errorMessages }">
-                <TextField
+                <TranslationSelect
                     :value="fieldData"
                     solid
                     regular
-                    :input="{ type: 'number' }"
+                    :clearable="true"
                     :label="label"
+                    :options="options"
                     :placeholder="properties.placeholder"
                     :error-messages="errorMessages"
                     :required="properties.required"
                     :disabled="disabled"
                     :description="properties.hint"
-                    @focus="onFocus"
-                    @input="onValueChange">
-                    <template #append>
-                        <TextFieldSuffix
-                            v-if="parameter"
-                            :suffix="parameter" />
-                    </template>
+                    @input="debounceValueChange">
                     <template #informationLabel>
                         <div />
                     </template>
-                </TextField>
+                </TranslationSelect>
             </template>
         </FormValidatorField>
     </ProductTemplateFormField>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import ProductTemplateFormField from '@Products/components/Forms/Fields/ProductTemplateFormField';
-import TextField from '@Core/components/Inputs/TextField';
-import TextFieldSuffix from '@Core/components/Inputs/TextFieldSuffix';
+import { mapState, mapActions } from 'vuex';
+import { debounce } from 'debounce';
+import ProductTemplateFormField from '@Products/components/Form/Field/ProductTemplateFormField';
+import TranslationSelect from '@Core/components/Inputs/Select/TranslationSelect';
 import FormValidatorField from '@Core/components/Form/Field/FormValidatorField';
+import { getMappedObjectOptions, getMappedObjectOption } from '@Core/models/mappers/translationsMapper';
 
 export default {
-    name: 'ProductTemplateFormUnitField',
+    name: 'ProductTemplateFormSelectField',
     components: {
         ProductTemplateFormField,
-        TextField,
+        TranslationSelect,
         FormValidatorField,
-        TextFieldSuffix,
     },
     props: {
         size: {
@@ -80,46 +75,66 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            debounceValueChange: null,
+        };
+    },
     computed: {
         ...mapState('product', {
             draft: state => state.draft,
         }),
         fieldData() {
             const { attribute_code } = this.properties;
+            const value = this.draft[this.languageCode][attribute_code];
 
-            return this.draft[this.languageCode][attribute_code] || '';
-        },
-        parameter() {
-            if (!this.properties.parameters) return null;
+            if (!this.hasOptions || !value) {
+                return '';
+            }
 
-            const [key] = Object.keys(this.properties.parameters);
-
-            return this.properties.parameters[key];
+            return getMappedObjectOption({
+                option: {
+                    id: value,
+                    ...this.properties.options[value],
+                },
+                languageCode: this.languageCode,
+            });
         },
         fieldKey() {
             return `${this.properties.attribute_code}/${this.languageCode}`;
         },
+        hasOptions() {
+            return typeof this.properties.options !== 'undefined';
+        },
+        options() {
+            if (!this.hasOptions) return [];
+
+            return getMappedObjectOptions({
+                options: this.properties.options,
+                languageCode: this.languageCode,
+            });
+        },
+    },
+    created() {
+        this.debounceValueChange = debounce(this.onValueChange, 500);
     },
     methods: {
         ...mapActions('product', [
             'setDraftValue',
         ]),
-        onFocus(isFocused) {
-            if (!isFocused) {
-                this.$emit('input', {
-                    fieldKey: this.fieldKey,
-                    languageCode: this.languageCode,
-                    productId: this.$route.params.id,
-                    elementId: this.properties.attribute_id,
-                    value: this.fieldData,
-                });
-            }
-        },
         onValueChange(value) {
             this.setDraftValue({
                 languageCode: this.languageCode,
                 key: this.properties.attribute_code,
-                value,
+                value: value.id,
+            });
+
+            this.$emit('input', {
+                fieldKey: this.fieldKey,
+                languageCode: this.languageCode,
+                productId: this.$route.params.id,
+                elementId: this.properties.attribute_id,
+                value: value.id,
             });
         },
     },

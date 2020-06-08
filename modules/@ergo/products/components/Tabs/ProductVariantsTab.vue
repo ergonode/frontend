@@ -6,18 +6,13 @@
     <ResponsiveCenteredViewTemplate>
         <template #content>
             <Grid
-                :is-editable="$hasAccess(['PRODUCT_COLLECTION_UPDATE'])"
+                :is-editable="$hasAccess(['PRODUCT_UPDATE'])"
                 :columns="columns"
                 :data-count="filtered"
                 :data="data"
-                :collection-cell-binding="{
-                    imageColumn: 'default_image',
-                    descriptionColumn: 'default_label'
-                }"
-                :is-basic-filter="true"
-                :is-collection-layout="true"
                 :is-header-visible="true"
                 :is-centered-view="true"
+                :is-basic-filter="true"
                 @removeRow="onRemoveRow"
                 @fetchData="getGridData">
                 <template #actions>
@@ -45,33 +40,29 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import { SIZE, THEME } from '@Core/defaults/theme';
-import { ADD_PRODUCT } from '@Collections/defaults';
+import { ADD_PRODUCT } from '@Products/defaults';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
 import ActionButton from '@Core/components/Buttons/ActionButton';
 
 export default {
-    name: 'CollectionProductsTab',
+    name: 'ProductVariantsTab',
     components: {
         ResponsiveCenteredViewTemplate,
         ActionButton,
         IconAdd,
     },
-    mixins: [fetchGridDataMixin({ path: 'collections/_id/elements' })],
+    mixins: [fetchGridDataMixin({ path: 'products/_id/children' })],
     data() {
         return {
             selectedAppModalOption: null,
         };
     },
     computed: {
-        ...mapState('authentication', {
-            languageCode: state => state.user.language,
-        }),
         isUserAllowedToUpdate() {
-            return this.$hasAccess(['PRODUCT_COLLECTION_UPDATE']);
+            return this.$hasAccess(['PRODUCT_UPDATE']);
         },
         smallSize() {
             return SIZE.SMALL;
@@ -86,11 +77,11 @@ export default {
             switch (this.selectedAppModalOption) {
             // TODO: We may delay this functionality - selecting from Grid might product performance issues - need planning
             // case ADD_PRODUCT.FROM_LIST:
-            //     return () => import('@Collections/components/Modals/AddProductsFromListModalGrid');
+            //     return null;
             case ADD_PRODUCT.FROM_SEGMENT:
-                return () => import('@Collections/components/Modals/AddProductsFromSegmentModalForm');
+                return () => import('@Products/components/Modals/AddProductsFromSegmentModalForm');
             case ADD_PRODUCT.BY_SKU:
-                return () => import('@Collections/components/Modals/AddProductsBySKUModalForm');
+                return () => import('@Products/components/Modals/AddProductsBySKUModalForm');
             default: return null;
             }
         },
