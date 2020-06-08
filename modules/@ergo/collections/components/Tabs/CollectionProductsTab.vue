@@ -47,7 +47,7 @@
 <script>
 import { mapState } from 'vuex';
 import { SIZE, THEME } from '@Core/defaults/theme';
-import { ADD_PRODUCT } from '@Collections/defaults/add-product';
+import { ADD_PRODUCT } from '@Collections/defaults';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';

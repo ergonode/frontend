@@ -18,7 +18,7 @@
                     :options="productTypesValues"
                     @input="setProductType" />
                 <ProductAttributesBindingFormSection
-                    v-show="productTypeKey === 'VARIABLE-PRODUCT'"
+                    v-show="isProductWithVariants"
                     :disabled="isDisabledByPrivileges" />
                 <TextField
                     :value="sku"
@@ -58,6 +58,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getKeyByValue } from '@Core/models/objectWrapper';
+import { PRODUCT_TYPE } from '@PRODUCTS/defaults';
 
 const getCategoriesOptions = () => import('@Categories/services/getCategoriesOptions.service');
 const getTemplatesOptions = () => import('@Templates/services/getTemplatesOptions.service');
@@ -94,6 +95,9 @@ export default {
         },
         isDisabled() {
             return Boolean(this.productID);
+        },
+        isProductWithVariants() {
+            return this.productTypeKey === PRODUCT_TYPE.WITH_VARIANTS;
         },
         isDisabledByPrivileges() {
             return (this.isDisabled && !this.$hasAccess(['PRODUCT_UPDATE']))

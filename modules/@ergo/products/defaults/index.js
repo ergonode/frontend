@@ -8,3 +8,8 @@ export const ADD_PRODUCT = {
     // TODO: Uncomment when planned
     // FROM_LIST: 'Select from list',
 };
+
+export const PRODUCT_TYPE = {
+    WITH_VARIANTS: 'VARIABLE-PRODUCT',
+    GROUPING: 'GROUPING-PRODUCT',
+};

@@ -79,15 +79,9 @@ export default {
         },
         onAdd() {
             this.removeValidationErrors();
-            const preValidationErrors = {};
             const data = {
                 segments: this.segments.map(segment => segment.id),
             };
-
-            if (!isEmpty(preValidationErrors)) {
-                this.onError({ errors: preValidationErrors });
-                return;
-            }
 
             this.isRequestPending = true;
             this.$axios.$post(`${this.language}/collections/${this.id}/elements/add-from-segments`, data).then(() => {

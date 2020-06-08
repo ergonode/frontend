@@ -67,15 +67,9 @@ export default {
         },
         onAdd() {
             this.removeValidationErrors();
-            const preValidationErrors = {};
             const data = {
                 skus: this.productSkus,
             };
-
-            if (!isEmpty(preValidationErrors)) {
-                this.onError({ errors: preValidationErrors });
-                return;
-            }
 
             this.isRequestPending = true;
             this.$axios.$post(`${this.language}/collections/${this.id}/elements/add-from-skus`, data).then(() => {

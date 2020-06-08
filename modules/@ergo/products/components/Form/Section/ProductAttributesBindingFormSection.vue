@@ -4,7 +4,7 @@
  */
 <template>
     <FormListSection
-        :disabled="disabled || bindingAttributesIds.length === selectAttributes.length"
+        :disabled="isDisabled"
         add-list-title="ADD BINDING ATTRIBUTE"
         @add="addBindingAttribute">
         <FormListSubsection v-if="selectAttributes.length">
@@ -50,6 +50,10 @@ export default {
         ...mapState('product', {
             bindingAttributesIds: state => state.bindingAttributesIds,
         }),
+        isDisabled() {
+            return this.disabled
+                || this.bindingAttributesIds.length === this.selectAttributes.length;
+        },
     },
     mounted() {
         this.observer = new IntersectionObserver((entries) => {

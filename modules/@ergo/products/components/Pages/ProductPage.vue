@@ -64,6 +64,7 @@
 import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { MODAL_TYPE } from '@Core/defaults/modals';
+import { PRODUCT_TYPE } from '@Products/defaults';
 import { getKeyByValue } from '@Core/models/objectWrapper';
 import { getNestedTabRoutes } from '@Core/models/navigation/tabs';
 import Button from '@Core/components/Buttons/Button';
@@ -104,9 +105,9 @@ export default {
             );
 
             switch (getKeyByValue(this.productTypes, this.type)) {
-            case 'VARIABLE-PRODUCT':
+            case PRODUCT_TYPE.WITH_VARIANTS:
                 return tabs.filter(tab => tab.title !== 'Group');
-            case 'GROUPING-PRODUCT':
+            case PRODUCT_TYPE.GROUPING:
                 return tabs.filter(tab => tab.title !== 'Variants');
             default: return tabs.filter(tab => tab.title !== 'Variants' && tab.title !== 'Group');
             }

@@ -41,7 +41,7 @@
 
 <script>
 import { SIZE, THEME } from '@Core/defaults/theme';
-import { ADD_PRODUCT } from '@Products/defaults/add-product';
+import { ADD_PRODUCT } from '@Products/defaults';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
 import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
 import IconAdd from '@Core/components/Icons/Actions/IconAdd';
