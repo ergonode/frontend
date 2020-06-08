@@ -58,7 +58,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { getKeyByValue } from '@Core/models/objectWrapper';
-import { PRODUCT_TYPE } from '@PRODUCTS/defaults';
+import { PRODUCT_TYPE } from '@Products/defaults';
 
 const getCategoriesOptions = () => import('@Categories/services/getCategoriesOptions.service');
 const getTemplatesOptions = () => import('@Templates/services/getTemplatesOptions.service');

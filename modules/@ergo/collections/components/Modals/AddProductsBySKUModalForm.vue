@@ -26,7 +26,6 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { isEmpty } from '@Core/models/objectWrapper';
 import { THEME } from '@Core/defaults/theme';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 
