@@ -3,6 +3,7 @@
  * See LICENSE for license details.
  */
 import { getMappedParameterValues, getMappedArrayOptions } from '@Attributes/models/attributeMapper';
+import { TYPES } from '@Attributes/defaults/attributes';
 import { types } from './mutations';
 
 export default {
@@ -94,10 +95,17 @@ export default {
                 { root: true },
             );
 
-            if (parameters) {
+            if (parameters && type !== TYPES.TEXT_AREA) {
                 commit(
                     types.SET_ATTRIBUTE_PARAMETER,
                     getMappedParameterValues(type, parameters, rootState.dictionaries),
+                );
+            }
+
+            if (type === TYPES.TEXT_AREA) {
+                commit(
+                    types.SET_ATTRIBUTE_PARAMETER,
+                    parameters.simple_html,
                 );
             }
         });

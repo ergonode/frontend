@@ -16,6 +16,7 @@ import { getParsedParameterKeys } from '@Attributes/models/attributeMapper';
 import { getParamsOptionsForType } from '@Attributes/models/attributeTypes';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { MODAL_TYPE } from '@Core/defaults/modals';
+import { TYPES } from '@Attributes/defaults/attributes';
 
 export default {
     name: 'EditAttribute',
@@ -119,7 +120,7 @@ export default {
                 }
             }
 
-            if (this.parameter) {
+            if (this.parameter && typeKey !== TYPES.TEXT_AREA) {
                 let paramKey = null;
                 const paramsOptions = getParamsOptionsForType(
                     typeKey,
@@ -137,6 +138,12 @@ export default {
                     selectedType: typeKey,
                     selectedParam: paramKey,
                 });
+            }
+
+            if (typeKey === TYPES.TEXT_AREA) {
+                data.parameters = {
+                    simpleHtml: this.parameter,
+                };
             }
 
             this.updateAttribute({

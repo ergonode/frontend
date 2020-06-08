@@ -4,6 +4,7 @@
  */
 import { isEmpty, getKeyByValue } from '@Core/models/objectWrapper';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
+import { TYPES } from '@Attributes/defaults/attributes';
 import {
     getParsedParameterKeys,
 } from '@Attributes/models/attributeMapper';
@@ -45,7 +46,7 @@ export default async function ({
         }
     }
 
-    if (parameter) {
+    if (parameter && type !== TYPES.TEXT_AREA) {
         const paramsOptions = getParamsOptionsForType(typeKey, $store.state.dictionaries);
         let paramKey = null;
 
@@ -61,6 +62,13 @@ export default async function ({
             selectedParam: paramKey,
         });
     }
+
+    if (typeKey === TYPES.TEXT_AREA) {
+        data.parameters = {
+            simpleHtml: parameter,
+        };
+    }
+
     const { id } = await $axios.$post(`${language}/attributes`, data);
 
     await Promise.all(

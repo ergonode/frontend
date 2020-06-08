@@ -119,6 +119,7 @@ export default {
         justify-content: center;
         align-items: center;
         border: none;
+        box-sizing: border-box;
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
         text-transform: uppercase;
         cursor: pointer;
@@ -153,18 +154,21 @@ export default {
         }
 
         &--regular {
+            width: 40px;
             height: 40px;
             padding: 8px;
             border-radius: 20px;
         }
 
         &--small {
+            width: 32px;
             height: 32px;
             padding: 4px;
             border-radius: 16px;
         }
 
         &--tiny {
+            width: 24px;
             height: 24px;
             padding: 0;
             border-radius: 12px;

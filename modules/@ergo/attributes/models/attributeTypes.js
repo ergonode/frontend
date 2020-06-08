@@ -34,7 +34,7 @@ export function getParamsOptionsForType(type, data) {
     case TYPES.PRICE:
         return data.currencies;
     default:
-        return [];
+        return {};
     }
 }
 
