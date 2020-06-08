@@ -4,6 +4,7 @@
  */
 import {
     COLUMN_ACTIONS_ID,
+    GRID_ACTIONS,
 } from '@Core/defaults/grid';
 import { getUUID } from '@Core/models/stringWrapper';
 
@@ -91,19 +92,19 @@ export function getMappedData({ columns, rows, hasLinks }) {
         }
 
         if (hasLinks) {
-            const linkKeys = Object.keys(rows[j]._links.value);
-
             if (!data[COLUMN_ACTIONS_ID]) {
                 data[COLUMN_ACTIONS_ID] = {};
             }
 
-            linkKeys.forEach((key) => {
+            for (let x = 0; x < GRID_ACTIONS.length; x += 1) {
+                const key = GRID_ACTIONS[x];
+
                 if (!data[COLUMN_ACTIONS_ID][key]) {
                     data[COLUMN_ACTIONS_ID][key] = {};
                 }
 
                 data[COLUMN_ACTIONS_ID][key][j] = rows[j]._links.value[key];
-            });
+            }
         }
     }
 
