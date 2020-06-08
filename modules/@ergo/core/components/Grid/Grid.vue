@@ -206,7 +206,7 @@ export default {
         collectionData() {
             const { imageColumn, descriptionColumn } = this.collectionCellBinding;
 
-            if (!(imageColumn && descriptionColumn)) {
+            if (!(imageColumn && descriptionColumn && this.data[descriptionColumn])) {
                 return [];
             }
 
