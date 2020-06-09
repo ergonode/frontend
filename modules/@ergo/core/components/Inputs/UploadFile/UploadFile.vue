@@ -79,6 +79,7 @@ import { THEME } from '@Core/defaults/theme';
 import {
     GRAPHITE, GREEN, RED, WHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
+import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'UploadFile',
@@ -88,6 +89,7 @@ export default {
         IconRefresh: () => import('@Core/components/Icons/Actions/IconRefresh'),
         IconUploadFile: () => import('@Core/components/Icons/Actions/IconUploadFile'),
     },
+    mixins: [associatedLabelMixin],
     props: {
         label: {
             type: String,
@@ -125,7 +127,6 @@ export default {
     data() {
         return {
             deleteIconFillColor: GRAPHITE,
-            associatedLabel: '',
         };
     },
     computed: {
@@ -144,9 +145,6 @@ export default {
         whiteColor() {
             return WHITE;
         },
-    },
-    mounted() {
-        this.associatedLabel = `input-${this._uid}`;
     },
     methods: {
         onMouseEnter() {

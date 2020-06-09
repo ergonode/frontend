@@ -13,7 +13,6 @@
             :grid-data="filteredGridData"
             :is-dragging-enabled="isDraggingEnabled"
             :is-multi-draggable="isMultiDraggable"
-            :dragged-element-size="draggedElementSize"
             @removeDisabledElementsOnList="removeDisabledElementsOnList"
             @toggleItem="toggleItem"
             @afterDrop="id => $emit('afterDrop', id)"
@@ -124,13 +123,6 @@ export default {
         rowHeight: {
             type: Number,
             required: true,
-        },
-        draggedElementSize: {
-            type: Object,
-            default: () => ({
-                width: 247,
-                height: 40,
-            }),
         },
     },
     computed: {

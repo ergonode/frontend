@@ -89,15 +89,15 @@ function getUpperBoundsTransforms(
 }
 
 export default function (targetGhostIndex, draggedElIndex, ghostIndex) {
-    const gridTableLayout = document.documentElement.querySelector('.columns-section');
-    const { width: ghostWidth } = gridTableLayout.children[draggedElIndex]
+    const columnsSection = document.documentElement.querySelector('.columns-section');
+    const { width: ghostWidth } = columnsSection.children[draggedElIndex]
         .getBoundingClientRect();
-    const ghostTransform = +gridTableLayout.children[draggedElIndex].style.transform.replace(/[^0-9\-.,]/g, '');
+    const ghostTransform = +columnsSection.children[draggedElIndex].style.transform.replace(/[^0-9\-.,]/g, '');
     let bounds = {};
 
     if (targetGhostIndex < ghostIndex) {
         bounds = getLowerBoundsTransforms(
-            gridTableLayout,
+            columnsSection,
             ghostWidth,
             ghostTransform,
             targetGhostIndex,
@@ -106,7 +106,7 @@ export default function (targetGhostIndex, draggedElIndex, ghostIndex) {
         );
     } else {
         bounds = getUpperBoundsTransforms(
-            gridTableLayout,
+            columnsSection,
             ghostWidth,
             ghostTransform,
             targetGhostIndex,
@@ -115,8 +115,8 @@ export default function (targetGhostIndex, draggedElIndex, ghostIndex) {
         );
     }
     Object.keys(bounds.transforms).forEach((index) => {
-        gridTableLayout.children[index].style.transform = `translateX(${bounds.transforms[index]}px)`;
+        columnsSection.children[index].style.transform = `translateX(${bounds.transforms[index]}px)`;
     });
 
-    gridTableLayout.children[draggedElIndex].style.transform = `translateX(${bounds.updatedGhostTransform}px)`;
+    columnsSection.children[draggedElIndex].style.transform = `translateX(${bounds.updatedGhostTransform}px)`;
 }

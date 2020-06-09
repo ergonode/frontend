@@ -36,10 +36,7 @@ import {
     updateResizablePlaceholderHeight,
     removeResizablePlaceholder,
 } from '@Templates/models/layout/GhostElement';
-import {
-    addLayoutElementCopyToDocumentBody,
-    removeLayoutElementCopyFromDocumentBody,
-} from '@Templates/models/layout/LayoutElementCopy';
+import { addElementCopyToDocumentBody, removeElementCopyFromDocumentBody } from '@Core/models/layout/ElementCopy';
 import { DRAGGED_ELEMENT } from '@Core/defaults/grid';
 import { ELEVATOR_HOLE } from '@Core/assets/scss/_js-variables/elevators.scss';
 import { GREEN } from '@Core/assets/scss/_js-variables/colors.scss';
@@ -125,7 +122,11 @@ export default {
             this.setDraggedElement({ ...this.element, index: this.index });
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: DRAGGED_ELEMENT.TEMPLATE });
             window.requestAnimationFrame(() => { this.isDragged = true; });
-            addLayoutElementCopyToDocumentBody(event);
+            addElementCopyToDocumentBody({
+                event,
+                element: this.$el,
+                id: 'layoutElement',
+            });
             this.highlightingPositions = getHighlightingLayoutDropPositions({
                 draggedElWidth: width,
                 draggedElHeight: height,
@@ -141,7 +142,7 @@ export default {
             this.highlightingPositions = [];
             this.setDraggedElement();
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
-            removeLayoutElementCopyFromDocumentBody(event);
+            removeElementCopyFromDocumentBody(event);
             this.setDraggableState({ propName: 'draggedElementOnGrid', value: null });
 
             this.$emit('highlightedPositionChange', []);

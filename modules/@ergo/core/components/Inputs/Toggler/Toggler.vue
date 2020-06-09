@@ -25,8 +25,11 @@
 </template>
 
 <script>
+import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
+
 export default {
     name: 'Toggler',
+    mixins: [associatedLabelMixin],
     props: {
         value: {
             type: Boolean,
@@ -40,15 +43,6 @@ export default {
             type: String,
             default: '',
         },
-    },
-    data() {
-        return {
-            associatedLabel: '',
-        };
-    },
-    mounted() {
-        // eslint-disable-next-line no-underscore-dangle
-        this.associatedLabel = `input-${this._uid}`;
     },
     methods: {
         onValueChange() {

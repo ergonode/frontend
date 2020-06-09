@@ -51,10 +51,11 @@
 
 <script>
 import inputMixin from '@Core/mixins/inputs/inputMixin';
+import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'TextArea',
-    mixins: [inputMixin],
+    mixins: [inputMixin, associatedLabelMixin],
     props: {
         input: {
             type: Object,
