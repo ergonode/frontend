@@ -34,7 +34,13 @@
                 <slot name="configuration" />
             </template>
         </GridHeader>
-        <div :class="['grid__body', { 'grid__body--disabled': isColumnExists }]">
+        <div
+            :class="[
+                'grid__body',
+                {
+                    'grid__body--disabled': isListElementDragging && isColumnExists,
+                }
+            ]">
             <GridDropZone
                 v-show="isListElementDragging && !isColumnExists"
                 @drop="onDropColumn" />
