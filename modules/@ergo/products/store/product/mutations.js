@@ -15,7 +15,7 @@ export const types = {
     SET_PRODUCT_TEMPLATE: 'SET_PRODUCT_TEMPLATE',
     SET_BINDING_ATTRIBUTE_ID: 'SET_BINDING_ATTRIBUTE_ID',
     SET_BINDING_ATTRIBUTE_IDS: 'SET_BINDING_ATTRIBUTE_IDS',
-    SET_INITIAL_BINDING_ATTRIBUTE_IDS: 'SET_INITIAL_BINDING_ATTRIBUTE_IDS',
+    SET_SELECT_ATTRIBUTES: 'SET_SELECT_ATTRIBUTES',
     ADD_BINDING_ATTRIBUTE: 'ADD_BINDING_ATTRIBUTE',
     REMOVE_BINDING_ATTRIBUTE: 'REMOVE_BINDING_ATTRIBUTE',
     SET_PRODUCT_CATEGORIES: 'SET_PRODUCT_CATEGORIES',
@@ -45,8 +45,8 @@ export default {
     [types.SET_BINDING_ATTRIBUTE_IDS](state, bindingAttributesIds) {
         state.bindingAttributesIds = bindingAttributesIds;
     },
-    [types.SET_INITIAL_BINDING_ATTRIBUTE_IDS](state, initialBindingAttributesIds) {
-        state.initialBindingAttributesIds = initialBindingAttributesIds;
+    [types.SET_SELECT_ATTRIBUTES](state, selectAttributes) {
+        state.selectAttributes = selectAttributes;
     },
     [types.ADD_BINDING_ATTRIBUTE](state) {
         state.bindingAttributesIds.push(null);

@@ -13,6 +13,8 @@
 import { mapState, mapActions } from 'vuex';
 import { ALERT_TYPE } from '@Core/defaults/alerts';
 import { MODAL_TYPE } from '@Core/defaults/modals';
+import { PRODUCT_TYPE } from '@Products/defaults';
+import { getKeyByValue } from '@Core/models/objectWrapper';
 
 export default {
     name: 'ProductEdit',
@@ -40,6 +42,9 @@ export default {
             template: state => state.template,
             categories: state => state.categories,
             bindingAttributesIds: state => state.bindingAttributesIds,
+        }),
+        ...mapState('dictionaries', {
+            productTypes: state => state.productTypes,
         }),
     },
     destroyed() {
@@ -70,14 +75,18 @@ export default {
         },
         async onSave() {
             const { params: { id } } = this.$route;
+            const data = {
+                templateId: this.template,
+                categoryIds: this.categories,
+            };
+
+            if (getKeyByValue(this.productTypes, this.type) === PRODUCT_TYPE.WITH_VARIANTS) {
+                data.bindings = this.bindingAttributesIds;
+            }
 
             await this.updateProduct({
                 id,
-                data: {
-                    templateId: this.template,
-                    categoryIds: this.categories,
-                    bindings: this.bindingAttributesIds,
-                },
+                data,
             });
             await this.applyDraft({
                 id: this.id,
