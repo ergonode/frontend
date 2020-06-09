@@ -373,19 +373,17 @@ export default {
             border: $BORDER_1_GREY;
             background-color: $WHITESMOKE;
 
+            &::after {
+                position: absolute;
+                z-index: $Z_INDEX_NEGATIVE;
+                width: 100%;
+                height: 100%;
+                content: "";
+            }
+
             &--disabled {
                 &::after {
-                    position: absolute;
-                    z-index: $Z_INDEX_NEGATIVE;
-                    width: 100%;
-                    height: 100%;
-                    content: "";
-                }
-
-                &--disabled {
-                    &::after {
-                        z-index: $Z_INDEX_LVL_4;
-                    }
+                    z-index: $Z_INDEX_LVL_4;
                 }
             }
         }
