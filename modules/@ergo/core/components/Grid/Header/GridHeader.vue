@@ -86,7 +86,7 @@ import { mapActions, mapState } from 'vuex';
 import { THEME } from '@Core/defaults/theme';
 import { GRID_LAYOUT } from '@Core/defaults/grid';
 import { ARROW } from '@Core/defaults/icons';
-import { LayoutOrientation } from '@Core/defaults/layout';
+import { LAYOUT_ORIENTATION } from '@Core/defaults/layout';
 import GridTableLayoutActivator from '@Core/components/Grid/Layout/Table/GridTableLayoutActivator';
 import GridCollectionLayoutActivator from '@Core/components/Grid/Layout/Collection/GridCollectionLayoutActivator';
 import GridDropZone from '@Core/components/Grid/GridDropZone';
@@ -155,7 +155,7 @@ export default {
             draggedElement: state => state.draggedElement,
         }),
         horizontalOrientation() {
-            return LayoutOrientation.HORIZONTAL;
+            return LAYOUT_ORIENTATION.HORIZONTAL;
         },
         filtersNumber() {
             return this.filters.length;

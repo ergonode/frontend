@@ -37,7 +37,7 @@
 import {
     WHITE, GRAPHITE,
 } from '@Core/assets/scss/_js-variables/colors.scss';
-import { LayoutOrientation } from '@Core/defaults/layout';
+import { LAYOUT_ORIENTATION } from '@Core/defaults/layout';
 import IconAddColumn from '@Core/components/Icons/Actions/IconAddColumn';
 
 export default {
@@ -52,8 +52,8 @@ export default {
         },
         orientation: {
             type: String,
-            default: LayoutOrientation.VERTICAL,
-            validator: value => Object.values(LayoutOrientation).indexOf(value) !== -1,
+            default: LAYOUT_ORIENTATION.VERTICAL,
+            validator: value => Object.values(LAYOUT_ORIENTATION).indexOf(value) !== -1,
         },
     },
     data() {
@@ -69,7 +69,7 @@ export default {
             return this.isHovered ? WHITE : GRAPHITE;
         },
         isHorizontal() {
-            return this.orientation === LayoutOrientation.HORIZONTAL;
+            return this.orientation === LAYOUT_ORIENTATION.HORIZONTAL;
         },
     },
     methods: {

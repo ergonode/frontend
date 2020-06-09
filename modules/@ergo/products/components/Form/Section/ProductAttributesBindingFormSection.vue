@@ -25,8 +25,6 @@ import ProductAttributeBindingField from '@Products/components/Form/Field/Produc
 import FormListSection from '@Core/components/Form/Section/FormListSection';
 import FormListSubsection from '@Core/components/Form/Subsection/FormListSubsection';
 
-const getSelectAttributes = () => import('@Attributes/services/getSelectAttributes.service');
-
 export default {
     name: 'ProductAttributesBindingFormSection',
     components: {
@@ -40,37 +38,15 @@ export default {
             default: false,
         },
     },
-    data() {
-        return {
-            observer: null,
-            selectAttributes: [],
-        };
-    },
     computed: {
         ...mapState('product', {
             bindingAttributesIds: state => state.bindingAttributesIds,
+            selectAttributes: state => state.selectAttributes,
         }),
         isDisabled() {
             return this.disabled
                 || this.bindingAttributesIds.length === this.selectAttributes.length;
         },
-    },
-    mounted() {
-        this.observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                getSelectAttributes().then(response => response.default({
-                    $axios: this.$axios,
-                    $store: this.$store,
-                }).then((selectAttributes) => {
-                    this.selectAttributes = selectAttributes;
-                }));
-                this.observer.disconnect();
-            }
-        });
-        this.observer.observe(this.$el);
-    },
-    beforeDestroy() {
-        this.observer.disconnect();
     },
     methods: {
         ...mapActions('product', [

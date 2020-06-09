@@ -4,9 +4,7 @@
  */
 <template>
     <ResponsiveCenteredViewTemplate>
-        <template
-            #content
-            v-if="filtered > 0">
+        <template #content>
             <Grid
                 :is-editable="$hasAccess(['PRODUCT_UPDATE'])"
                 :columns="columns"
@@ -20,135 +18,99 @@
                 :is-header-visible="true"
                 :is-centered-view="true"
                 :is-basic-filter="true"
-                @removeRow="onRemoveRow"
-                @fetchData="getGridData">
-                <template #actions>
-                    <ActionButton
-                        title="ADD PRODUCTS"
-                        :theme="secondaryTheme"
-                        :disabled="!isUserAllowedToUpdate"
-                        :size="smallSize"
-                        :options="addProductOptions"
-                        :fixed-content="true"
-                        @input="onSelectAddProductOption">
-                        <template #prepend="{ color }">
-                            <IconAdd :fill-color="color" />
-                        </template>
-                    </ActionButton>
-                </template>
-            </Grid>
-            <Component
-                v-if="selectedAppModalOption"
-                :is="modalComponent"
-                @close="onCloseModal"
-                @added="onCreatedData" />
-        </template>
-        <template
-            #centeredContent
-            v-else>
-            <ListPlaceholder
-                title="Nothing to see here"
-                subtitle="Here you can manage the product variants"
-                :layout-orientation="horizontalOrientation"
-                :bg-url="require('@Core/assets/images/placeholders/comments.svg')">
-                <template #append>
-                    <ActionButton
-                        class="add-products-button"
-                        title="ADD PRODUCTS"
-                        :theme="primaryTheme"
-                        :disabled="!isUserAllowedToUpdate"
-                        :size="smallSize"
-                        :options="addProductOptions"
-                        :fixed-content="true"
-                        @input="onSelectAddProductOption">
-                        <template #prepend="{ color }">
-                            <IconAdd :fill-color="color" />
-                        </template>
-                    </ActionButton>
-                </template>
-            </ListPlaceholder>
-            <Component
-                v-if="selectedAppModalOption"
-                :is="modalComponent"
-                @close="onCloseModal"
-                @added="onCreatedData" />
+                @fetchData="getGridData" />
         </template>
     </ResponsiveCenteredViewTemplate>
 </template>
 
 <script>
-import { SIZE, THEME } from '@Core/defaults/theme';
-import { ADD_PRODUCT } from '@Products/defaults';
-import { LAYOUT_ORIENTATION } from '@Core/defaults/layout';
+import { mapState } from 'vuex';
+import { getGridData } from '@Core/services/grid/getGridData.service';
+import { getParsedFilters } from '@Core/models/mappers/gridDataMapper';
+import { DATA_LIMIT } from '@Core/defaults/grid';
 import ResponsiveCenteredViewTemplate from '@Core/components/Layout/Templates/ResponsiveCenteredViewTemplate';
-import fetchGridDataMixin from '@Core/mixins/grid/fetchGridDataMixin';
-import IconAdd from '@Core/components/Icons/Actions/IconAdd';
-import ActionButton from '@Core/components/Buttons/ActionButton';
 
 export default {
     name: 'ProductVariantsTab',
     components: {
         ResponsiveCenteredViewTemplate,
-        ActionButton,
-        IconAdd,
-        ListPlaceholder: () => import('@Core/components/List/ListPlaceholder'),
-        Button: () => import('@Core/components/Buttons/Button'),
+        Grid: () => import('@Core/components/Grid/Grid'),
     },
-    mixins: [fetchGridDataMixin({ path: 'products/_id/children' })],
+    fetch() {
+        return this.getGridData(this.localParams);
+    },
     data() {
         return {
-            selectedAppModalOption: null,
+            data: {},
+            columns: [],
+            filtered: 0,
+            localParams: {
+                offset: 0,
+                limit: DATA_LIMIT,
+                filters: {},
+                sortedColumn: {},
+            },
         };
     },
     computed: {
+        ...mapState('product', {
+            selectAttributes: state => state.selectAttributes,
+            bindingAttributesIds: state => state.bindingAttributesIds,
+        }),
+        ...mapState('authentication', {
+            languageCode: state => state.user.language,
+        }),
         isUserAllowedToUpdate() {
             return this.$hasAccess(['PRODUCT_UPDATE']);
         },
-        horizontalOrientation() {
-            return LAYOUT_ORIENTATION.HORIZONTAL;
-        },
-        smallSize() {
-            return SIZE.SMALL;
-        },
-        primaryTheme() {
-            return THEME.PRIMARY;
-        },
-        secondaryTheme() {
-            return THEME.SECONDARY;
-        },
-        addProductOptions() {
-            return Object.values(ADD_PRODUCT);
-        },
-        modalComponent() {
-            switch (this.selectedAppModalOption) {
-            // TODO: We may delay this functionality - selecting from Grid might product performance issues - need planning
-            // case ADD_PRODUCT.FROM_LIST:
-            //     return null;
-            case ADD_PRODUCT.FROM_SEGMENT:
-                return () => import('@Products/components/Modals/AddProductsFromSegmentModalForm');
-            case ADD_PRODUCT.BY_SKU:
-                return () => import('@Products/components/Modals/AddProductsBySKUModalForm');
-            default: return null;
-            }
+        attributeCodes() {
+            return this.selectAttributes
+                .filter(
+                    attribute => this.bindingAttributesIds
+                        .some(
+                            id => attribute.id === id,
+                        ),
+                )
+                .map(({ key }) => key).join(',');
         },
     },
     methods: {
-        onSelectAddProductOption(option) {
-            this.selectedAppModalOption = option;
-        },
-        onCloseModal() {
-            this.selectedAppModalOption = null;
-        },
-        onCreatedData() {
-            this.getGridData(this.localParams);
-            this.selectedAppModalOption = null;
+        getGridData({
+            offset, limit, filters, sortedColumn,
+        }) {
+            this.localParams = {
+                offset, limit, filters, sortedColumn,
+            };
+
+            const params = {
+                offset,
+                limit,
+                extended: true,
+                filter: getParsedFilters(filters, []),
+                columns: `esa_default_image:${this.languageCode},esa_default_label:${this.languageCode},${this.attributeCodes},sku,esa_template:${this.languageCode}`,
+            };
+
+            if (Object.keys(sortedColumn).length) {
+                const { index: colSortID, orderState } = sortedColumn;
+
+                params.field = colSortID;
+                params.order = orderState;
+            }
+
+            return getGridData({
+                $axios: this.$axios,
+                path: `${this.languageCode}/products`,
+                params,
+            }).then(({
+                columns,
+                data,
+                filtered,
+            }) => {
+                this.columns = columns;
+                this.data = data;
+                this.filtered = filtered;
+            });
         },
     },
 };
 </script>
-
-<style lang="scss" scoped>
-    .add-products-button {
-        margin-top: 16px;
-    }
-</style>
