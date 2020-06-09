@@ -55,16 +55,14 @@ export function getParsedAdvancedFilters(filters) {
     const mappedFilter = [];
 
     filters.forEach((filter) => {
-        if (!filter.isGhost) {
-            if (filter.value.isEmptyRecord) {
-                mappedFilter.push(`${filter.id}=`);
-            } else {
-                Object.keys(filter.value).forEach((key) => {
-                    if (key !== 'isEmptyRecord') {
-                        mappedFilter.push(`${filter.id}${key}${filter.value[key]}`);
-                    }
-                });
-            }
+        if (filter.value.isEmptyRecord) {
+            mappedFilter.push(`${filter.id}=`);
+        } else {
+            Object.keys(filter.value).forEach((key) => {
+                if (key !== 'isEmptyRecord') {
+                    mappedFilter.push(`${filter.id}${key}${filter.value[key]}`);
+                }
+            });
         }
     });
 

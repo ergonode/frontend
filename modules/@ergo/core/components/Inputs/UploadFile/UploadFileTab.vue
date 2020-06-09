@@ -61,6 +61,7 @@ import UploadFileList from '@Core/components/Inputs/UploadFile/List/UploadFileLi
 import UploadFileListElement from '@Core/components/Inputs/UploadFile/List/UploadFileListElement';
 import UploadFileListLoadingElement from '@Core/components/Inputs/UploadFile/List/UploadFileListLoadingElement';
 import ListScrollableContainer from '@Core/components/List/ListScrollableContainer';
+import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'UploadFileTab',
@@ -72,10 +73,10 @@ export default {
         UploadFileListLoadingElement,
         ListScrollableContainer,
     },
+    mixins: [associatedLabelMixin],
     data() {
         return {
             files: [],
-            associatedLabel: '',
             isDraggedFileOver: false,
         };
     },
@@ -86,9 +87,6 @@ export default {
         smallSize() {
             return SIZE.SMALL;
         },
-    },
-    mounted() {
-        this.associatedLabel = `input-${this._uid}`;
     },
     methods: {
         onDragEnter() {

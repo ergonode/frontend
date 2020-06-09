@@ -27,9 +27,11 @@
 </template>
 
 <script>
+import associatedLabelMixin from '@Core/mixins/inputs/associatedLabelMixin';
 
 export default {
     name: 'RadioButton',
+    mixins: [associatedLabelMixin],
     props: {
         value: {
             type: String,
@@ -47,11 +49,6 @@ export default {
             type: Boolean,
             default: false,
         },
-    },
-    data() {
-        return {
-            associatedLabel: '',
-        };
     },
     computed: {
         isSelected() {
@@ -73,9 +70,6 @@ export default {
                 },
             ];
         },
-    },
-    mounted() {
-        this.associatedLabel = `radio-${this._uid}`;
     },
 };
 </script>

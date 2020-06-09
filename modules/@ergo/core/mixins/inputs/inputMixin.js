@@ -11,7 +11,6 @@ export default {
         return {
             isFocused: false,
             isMouseMoving: false,
-            associatedLabel: '',
         };
     },
     mounted() {
@@ -20,8 +19,6 @@ export default {
                 this.$refs.input.focus();
             });
         }
-
-        this.associatedLabel = `input-${this._uid}`;
     },
     computed: {
         isAppendSlotVisible() {
