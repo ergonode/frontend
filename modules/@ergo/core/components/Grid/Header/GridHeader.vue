@@ -10,7 +10,6 @@
         }]">
         <GridDropZone
             v-show="isListElementDragging && !isFilterExists"
-            :style="{ margin: '8px', width: 'calc(100% - 16px)', height: 'calc(100% - 16px)' }"
             :orientation="horizontalOrientation"
             title="ADD FILTER"
             @drop="onDropFilter">

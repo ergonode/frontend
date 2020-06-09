@@ -7,21 +7,28 @@
         :class="[
             'grid-drop-zone',
             {
-                'grid-drop-zone--hovered': isHovered,
                 'grid-drop-zone--horizontal': isHorizontal,
             },
-        ]"
-        @dragenter="onDragEnter"
-        @dragleave="onDragLeave"
-        @dragover="onDragOver"
-        @drop="onDrop">
-        <div class="grid-drop-zone__body">
-            <slot
-                name="icon"
-                :color="addIconFillColor">
-                <IconAddColumn :fill-color="addIconFillColor" />
-            </slot>
-            <span v-text="title" />
+        ]">
+        <div
+            :class="[
+                'grid-drop-zone__container',
+                {
+                    'grid-drop-zone__container--hovered': isHovered,
+                }
+            ]"
+            @dragenter="onDragEnter"
+            @dragleave="onDragLeave"
+            @dragover="onDragOver"
+            @drop="onDrop">
+            <div class="grid-drop-zone__body">
+                <slot
+                    name="icon"
+                    :color="addIconFillColor">
+                    <IconAddColumn :fill-color="addIconFillColor" />
+                </slot>
+                <span v-text="title" />
+            </div>
         </div>
     </div>
 </template>
@@ -93,18 +100,26 @@ export default {
     position: absolute;
     z-index: $Z_INDEX_MAX;
     display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
     height: 100%;
-    background-color: $GREY_LIGHT;
-    box-shadow: $ELEVATOR_HOLE;
-    color: $GRAPHITE;
-    font: $FONT_BOLD_12_16;
+    background-color: $WHITE;
 
-    &--hovered {
-        background-color: $GREEN;
-        color: $WHITE;
+    &__container {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+        margin: 8px;
+        box-sizing: border-box;
+        background-color: $GREY_LIGHT;
+        box-shadow: $ELEVATOR_HOLE;
+        color: $GRAPHITE;
+        font: $FONT_BOLD_12_16;
+
+        &--hovered {
+            background-color: $GREEN;
+            color: $WHITE;
+        }
     }
 
     &__body {
