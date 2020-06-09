@@ -387,7 +387,7 @@ export default {
                 }
             }
         }
-
+        
         &__footer {
             z-index: $Z_INDEX_LVL_5;
             display: flex;
