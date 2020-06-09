@@ -39,6 +39,9 @@ export default {
         ProductForm: () => import('@Products/components/Form/ProductForm'),
     },
     mixins: [actionModalFormMixin({ action: MODAL_ACTION.CREATE, namespace: 'Product', request: createProduct })],
+    fetch() {
+        this.getSelectAttributes();
+    },
     computed: {
         secondaryTheme() {
             return THEME.SECONDARY;
@@ -46,6 +49,7 @@ export default {
     },
     methods: {
         ...mapActions('product', [
+            'getSelectAttributes',
             'clearStorage',
         ]),
         onClose() {
