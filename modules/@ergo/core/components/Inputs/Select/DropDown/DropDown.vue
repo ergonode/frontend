@@ -61,7 +61,8 @@ export default {
                         if (yPos < maxHeight
                             && this.offset.y >= maxHeight) {
                             position.bottom = `${yPos}px`;
-                        } else if (this.offset.y < maxHeight) {
+                        } else if (this.offset.y < maxHeight
+                            && yPos <= maxHeight) {
                             position.top = 0;
                         } else {
                             position.top = `${this.offset.y + this.offset.height}px`;
