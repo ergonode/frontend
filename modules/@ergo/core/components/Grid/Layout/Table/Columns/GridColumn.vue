@@ -22,7 +22,9 @@
                 :sorted-column="sortedColumn">
                 <GridInteractiveHeaderCell
                     :column-index="columnIndex"
-                    :column="column"
+                    :column-id="column.id"
+                    :label="column.label"
+                    :deletable="column.deletable"
                     :sorted-column="sortedColumn"
                     @focus="onHeaderFocus"
                     @sort="onSortColumn"

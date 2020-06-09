@@ -12,18 +12,14 @@
             :title="title"
             :hint="hint" />
         <div
-            :class="[
-                'header-cell__actions',
-                {
-                    'header-cell__actions--visible': isSorted || isMenuSelected || isColumnHovered,
-                }
-            ]">
+            v-show="isActionsVisible"
+            class="header-cell__actions">
             <IconArrowSort
                 :order="sortingOrder"
                 :fill-color="graphiteLightColor"
                 @click.native="onClickSort" />
             <ActionIconButton
-                v-if="column.deletable"
+                v-if="deletable"
                 :theme="secondaryPlainTheme"
                 :size="tinySize"
                 :options="contextualMenuItems"
@@ -52,8 +48,12 @@ export default {
         GridHeaderCell: () => import('@Core/components/Grid/Layout/Table/Cells/Header/GridHeaderCell'),
     },
     props: {
-        column: {
-            type: Object,
+        label: {
+            type: String,
+            default: 'Header',
+        },
+        columnId: {
+            type: [String, Number],
             required: true,
         },
         sortedColumn: {
@@ -63,6 +63,10 @@ export default {
         columnIndex: {
             type: Number,
             required: true,
+        },
+        deletable: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
@@ -89,27 +93,33 @@ export default {
             return GRAPHITE_LIGHT;
         },
         isColumnExists() {
-            return this.draggedElement === this.column.id;
+            return this.draggedElement === this.columnId;
         },
         isSorted() {
-            return this.sortedColumn.index === this.column.id;
+            return this.sortedColumn.index === this.columnId;
         },
         sortingOrder() {
             if (!this.isSorted) return null;
 
             return this.sortedColumn.orderState;
         },
+        isActionsVisible() {
+            return !this.isColumnExists
+                && (this.isSorted
+                    || this.isMenuSelected
+                    || this.isColumnHovered);
+        },
         title() {
-            const [code, languageCode] = this.column.id.split(':');
-            const title = this.column.label || `#${code}`;
+            const [code, languageCode] = this.columnId.split(':');
+            const title = this.label || `#${code}`;
             const languageTitle = languageCode ? languageCode.toUpperCase() : '';
 
             return `${title} ${languageTitle}`;
         },
         hint() {
-            const [code, languageCode] = this.column.id.split(':');
+            const [code, languageCode] = this.columnId.split(':');
 
-            return this.column.label ? `${code} ${languageCode}` : null;
+            return this.label ? `${code} ${languageCode}` : null;
         },
     },
     mounted() {
@@ -136,7 +146,7 @@ export default {
             }
 
             this.$emit('sort', {
-                index: this.column.id,
+                index: this.columnId,
                 orderState,
             });
         },
@@ -222,12 +232,7 @@ export default {
         &__actions {
             display: flex;
             align-items: center;
-            opacity: 0;
             cursor: pointer;
-
-            &--visible {
-                opacity: 1;
-            }
         }
     }
 </style>

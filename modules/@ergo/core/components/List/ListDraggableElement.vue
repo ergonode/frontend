@@ -15,7 +15,10 @@
 </template>
 
 <script>
-import { WHITE } from '@Core/assets/scss/_js-variables/colors.scss';
+import {
+    addElementCopyToDocumentBody,
+    removeElementCopyFromDocumentBody,
+} from '@Core/models/layout/ElementCopy';
 import IconDragDrop from '@Core/components/Icons/Actions/IconDragDrop';
 
 export default {
@@ -57,35 +60,17 @@ export default {
     },
     methods: {
         onDragStart(event) {
-            const width = 246;
-            const clonedDOMElementStyle = `
-                position: absolute;
-                background-color: ${WHITE};
-                height: 48px;
-                width: ${width}px;
-            `;
-            const clonedDOMElement = event.target.cloneNode(true);
-
-            clonedDOMElement.setAttribute('style', clonedDOMElementStyle);
-            clonedDOMElement.classList.add('cloned-list-element');
-            document.body.appendChild(clonedDOMElement);
-            event.dataTransfer.setDragImage(clonedDOMElement, width / 2, 0);
-            event.dataTransfer.setData('text/plain', this.draggableId);
+            addElementCopyToDocumentBody({
+                event,
+                element: this.$el,
+                id: this.draggableId,
+            });
 
             this.isDragged = true;
             this.$emit('drag', true);
         },
         onDragEnd(event) {
-            const clonedDOMElement = document.documentElement.querySelector('.cloned-list-element');
-
-            event.target.removeAttribute('style');
-            document.body.removeChild(clonedDOMElement);
-
-            if (navigator.userAgent.toLowerCase().indexOf('firefox') === -1) {
-                // TODO: Only Firefox Error: Modifications are not allowed for this document
-                // check why firefox does not support clearData
-                event.dataTransfer.clearData();
-            }
+            removeElementCopyFromDocumentBody(event);
 
             this.isDragged = false;
             this.$emit('drag', false);
