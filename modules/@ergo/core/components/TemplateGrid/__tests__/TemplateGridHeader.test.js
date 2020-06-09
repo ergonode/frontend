@@ -9,6 +9,7 @@ describe('TemplateGrid/TemplateGridHeader', () => {
     // eslint-disable-next-line no-unused-vars
     let wrapper;
     beforeEach(() => {
+        // eslint-disable-next-line no-unused-vars
         wrapper = shallowMount(TemplateGridHeader, {
             propsData: {
                 columns: 1,
